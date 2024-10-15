@@ -169,6 +169,57 @@ Finished goods are created (flat of tomatoes) for transport to final point of sa
 | | Business Transaction | Biz Transaction Type | ProdOrder |
 | | Activity ID | Biz Transaction ID | WO234 |
 
+#### Ship Finished Goods
+
+Finished goods are shipped to final point of sale.
+
+| Key Data Element | Name | EPCIS Translation | Example Value |
+|-------------------|------|-------------------|---------------|
+| Type | - | EPCIS Event Type | Object |
+| When | Date/Time | Event Time | 2017-05-22T13:15:00+06:00 |
+| | | Record Time | 2017-05-22T13:15:00+09:00 |
+| What | SSCC | SSCC | 095040001234567000 |
+| | GTIN | - | 9504000219109 |
+| | Batch/Lot | GTIN + Lot (LGTIN) | AB-123 |
+| | Serial # | GTIN + Serial # (SGTIN) | - |
+| | Quantity | QTY | 20 |
+| Where | Unit of Measure | UOM | CASES |
+| | - | Read Point | 9501101530928.PL-A023 |
+| | - | Biz Location | 9501101530928 |
+| Why | - | Biz Step | Shipping |
+| | - | Disposition | In Transit |
+| | Business Transaction | Biz Transaction Type | DesAdv |
+| | Activity ID | Biz Transaction ID | ASN789 |
+| | - | Sources | 9501101530911 |
+| | - | Destination | 9504000357001 |
+
+
+#### Receive Finished Goods
+
+Finished goods are received at final point of sale.
+
+| Key Data Element | Name | EPCIS Translation | Example Value |
+|-------------------|------|-------------------|---------------|
+| Type | - | EPCIS Event Type | Object |
+| When | Date/Time | Event Time | 2017-05-22T13:15:00+06:00 |
+| | | Record Time | 2017-05-22T13:15:00+09:00 |
+| What | SSCC | SSCC | 395011015300022000 |
+| | GTIN | - | 9504000219109 |
+| | Batch/Lot | GTIN + Lot (LGTIN) | AB-123 |
+| | Serial # | GTIN + Serial # (SGTIN) | - |
+| | Quantity | QTY | 10 |
+| Where | Unit of Measure | UOM | CASES |
+| | - | Read Point | 9504000357001 |
+| | - | Biz Location | 9504000357001 |
+| Why | - | Biz Step | Shipping |
+| | - | Disposition | In Transit |
+| | Business Transaction | Biz Transaction Type | RecAdv |
+| | Activity ID | Biz Transaction ID | RA789 |
+| | - | Sources | 9501101530911 |
+| | - | Destination | 9501101530928 |
+
+
+
 
 ### 参考资料
 
