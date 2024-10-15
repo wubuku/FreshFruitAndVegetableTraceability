@@ -26,7 +26,7 @@ Tomatoes (input) are harvested in the field into bushels, then loaded into “pa
 | What     | Type                 | EPCIS Event Type  | Object |
 | When     | Date/Time            | Event Time        | 2017-05-22T13:15:00+06:00 |
 |          |                      | Record Time       | 2017-05-22T16:15:00+06:00 |
-|          | GTIN                 |                   | 9504000219109* |
+|          |                      | GTIN                 | 9504000219109* |
 |          | Batch/Lot            | GTIN + Lot (LGTIN) | B20171202-1 |
 |          | Serial #             | GTIN + Serial # (SGTIN) | - |
 |          | Quantity             | QTY               | 200 |
@@ -420,13 +420,19 @@ https://gist.github.com/wubuku/525a892c07a9bc56b59572ee8314dec0
 
 https://help.sap.com/doc/saphelp_aii710/7.1/en-US/48/d1cbfe90d75430e10000000a42189b/content.htm?no_cache=true
 
-#### Others
+#### GS1 Application Identifiers
 
-GS1 EPCIS STANDARD：https://byteally.com/insights/supply-chain/gs1-epcis-standard/
+https://ref.gs1.org/ai/
+
 
 #### 术语表
 
 https://www.gs1.org/standards/fresh-fruit-and-vegetable-traceability-guideline/current-standard#A-Glossary+A-1-Glossary-of-terms
+
+#### Others
+
+GS1 EPCIS STANDARD：https://byteally.com/insights/supply-chain/gs1-epcis-standard/
+
 
 ### Tips
 
@@ -451,4 +457,18 @@ GDSN（全球数据同步网络）。
 GDSN 是一个全球性的网络，用于在供应链中的不同参与者之间同步和共享高质量的产品数据。通过 GDSN，企业可以确保其产品信息在全球范围内的一致性和准确性。GDSN 通过数据池（Data Pools）运作，这些数据池允许企业上传、维护和共享产品信息。
 
 
+#### JSON-LD
 
+JSON-LD，全称为 JavaScript Object Notation for Linked Data，是一种基于 JSON 的轻量级数据交换格式，旨在使数据在 Web 上更易于互操作。
+
+JSON-LD 的主要特点：
+1. 兼容性：JSON-LD 基于 JSON，因此与现有的 JSON 解析器和生成器兼容。
+2. 灵活性：支持在单个文档中混合表示互联数据和非互联数据。
+3. 可扩展性：允许使用自定义词汇表来扩展其功能。
+4. 语义化：不仅仅是一种数据交换格式，还支持语义化数据，使其对机器也有意义。
+
+JSON-LD 的应用场景：
+• Web 服务：构建可互操作的 Web 服务。
+• 语义网：在语义网中组织和表示数据。
+• 数据集成：整合来自不同源的数据。
+• 富互联网应用程序：处理大量交互式数据。
