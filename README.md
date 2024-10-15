@@ -219,6 +219,49 @@ Finished goods are received at final point of sale.
 | | - | Destination | 9501101530928 |
 
 
+#### Finished Goods Sold at Point of Sale or Consumption
+
+Finished goods (flat of tomatoes) are sold at point of sale.
+
+| Category | Key Data Element Name | EPCIS Translation | Example Value |
+|----------|----------------------|-------------------|---------------|
+| Type     | -                    | EPCIS Event Type  | Object |
+| When     | Date/Time            | Event Time        | 2017-05-22T13:15:00+06:00 |
+|          |                      | Record Time       | 2017-05-22T13:15:00+09:00 |
+| What     | GTIN                 | -                 | 9504000357662 |
+|          | Batch/Lot            | GTIN + Lot (LGTIN) | 2018040G11440 |
+|          | Serial #             | GTIN + Serial # (SGTIN) | - |
+|          | Quantity             | QTY               | 8 |
+| Where    | Unit of Measure      | UOM               | - |
+|          | -                    | Read Point        | 9504000357001 |
+|          | -                    | Biz Location      | 9504000357001 |
+| Why      | -                    | Biz Step          | Retail Selling |
+|          | -                    | Disposition       | Retail Sold |
+|          | Business Transaction | Biz Transaction Type | Receipt Transaction |
+|          | Activity ID          | Biz Transaction ID | POS 123 |
+
+#### Destroy Unsaleable Finished Goods
+
+Unsaleable finished goods are destroyed.
+
+| Category | Key Data Element Name | EPCIS Translation | Example Value |
+|----------|----------------------|-------------------|---------------|
+| Type     | -                    | EPCIS Event Type  | Object |
+| When     | Date/Time            | Event Time        | 2017-05-22T13:15:00+06:00 |
+|          |                      | Record Time       | 2017-05-22T13:15:00+09:00 |
+| What     | GTIN                 | -                 | 9504000357662 |
+|          | Batch/Lot            | GTIN + Lot (LGTIN) | 2018040G11440 |
+|          | Serial #             | GTIN + Serial # (SGTIN) | - |
+|          | Quantity             | QTY               | 2 |
+| Where    | Unit of Measure      | UOM               | - |
+|          | -                    | Read Point        | 9504000357001 |
+|          | -                    | Biz Location      | 9504000357001 |
+| Why      | -                    | Biz Step          | Destroying |
+|          | -                    | Disposition       | Destroyed |
+|          | Business Transaction | Biz Transaction Type | Work Order |
+|          | Activity ID          | Biz Transaction ID | WO456 |
+
+
 
 
 ### 参考资料
