@@ -1,0 +1,18 @@
+enumObjects:
+  EpcisEventType:
+    baseType: String
+    length: 1
+    description: "In the GS1 EPCIS realm, there are six standard EPCIS event types that represent real-world events."
+    values:
+      Commission:
+        value: "C"
+      Aggregation:
+        value: "A"
+      Disaggregation:
+        value: "D"
+      Observation:
+        value: "O"
+      Transformation:
+        value: "T"
+      Decommission:
+        value: "D"

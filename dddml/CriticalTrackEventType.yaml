@@ -1,0 +1,42 @@
+enumObjects:
+  CriticalTrackEventType:
+    description: "Critical tracking event type"
+    baseType: String
+    length: 1
+    values:
+      BeginningOfLife:
+        value: "B"
+        description: "Events that typically support the introduction of an item in the supply chain"
+      Transformation:
+        value: "T"
+        description: "Events that typically support internal traceability within the four walls of a supply chain company"
+      Transportation:
+        value: "P"
+        description: "Events that typically support external traceability between supply chain companies"
+      Depletion:
+        value: "D"
+        description: "Events that capture how traceable product is removed from the supply chain"
+
+  CriticalTrackEventSubtype:
+    baseType: String
+    length: 1
+    values:
+      BeginningOfLife:
+        value: "B"
+        description: "An event where a new item is introduced into the supply chain. (e.g. Harvesting a specific batch/lot of apples)."
+      Transformation:
+        value: "T"
+        description: "An event where one or more materials are used to produce a traceable product that enters the supply chain."
+      Shipping:
+        value: "S"
+        description: "An event where traceable product is dispatched from a defined location to another defined location"
+      Receiving:
+        value: "R"
+        description: "An event where traceable product is received at a defined location from another defined location"
+      Consumption:
+        value: "C"
+        description: "An event where a traceable product becomes available to consumers (point of sale or prepared)"
+      Disposal:
+        value: "D"
+        description: "An event where a traceable product is destroyed or discarded or otherwise handled in a manner that the product could no longer be used as a food ingredient or become available to consumers."
+
