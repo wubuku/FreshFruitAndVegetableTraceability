@@ -1,6 +1,9 @@
-# Fresh Fruit and Vegetable Traceability
+# Produce Traceability Implementation
 
-## 需求分析与领域建模
+
+## Fresh Fruit and Vegetable Traceability Guideline
+
+https://www.gs1.org/standards/fresh-fruit-and-vegetable-traceability-guideline/current-standard
 
 ###  What are the Critical Tracking Events?
 
@@ -406,6 +409,30 @@ Business rational: Sorting touch point which impacts pre and post GTIN & Lot/bat
 #### Customs checking
 
 #### Customs freight release
+
+
+## Produce Traceability Initiative FSMA 204 Implementation Guidance
+
+https://producetraceability.org/wp-content/uploads/2024/02/PTI-FSMA-204-Implementation-Guidance-FINAL-2.12.24.pdf
+
+### FSMA 204 Requirements
+
+#### CRITICAL TRACKING EVENTS (CTES) AND KEY DATA ELEMENTS (KDES)
+
+##### Shipping
+
+For each traceability lot of food covered by the rule you ship, you must maintain records containing the following information and linking this information to the traceability lot:
+
+| PTI KDE | FSMA 204 KDE | Comments |
+|---------|--------------|----------|
+| Traceability Lot Code (TLC) | The traceability lot code for the food | - Required - <br> AI (01) Case GTIN and AI (10) Case Batch/Lot <br> - Optional - <br> AI (00) Pallet SSCC <br> AI (13) Pack Date <br> AI (13) Harvest Date <br> AI (15) Best if Used by Date <br> AI (21) Serial Number |
+| Quantity and UOM | The quantity and unit of measure of the packed food (e.g., 6 cases, 25 reusable plastic containers, 100 tanks, 200 pounds) | This is the number of cases shipped. |
+| Product Description | The product description for the food. | This is the description for the Case, not the saleable unit in the case. Product description should include product name (including, if applicable, the brand name, commodity, and variety), packaging size, and packaging style. |
+| Ship To Location | The location description for the immediate subsequent recipient (other than a transporter) of the food. | Ship-to location is the actual physical location where the product was shipped to. Location description includes: <br> • business name <br> • phone number <br> • physical location address (or geographic coordinates) <br> • city <br> • State <br> • Zip code...zip code for domestic locations and comparable information for foreign locations, including country |
+| Ship From Location | The location description for the location from which you shipped the food. | Ship-from location is the actual physical location where product was shipped from. Location description includes: <br> business name <br> phone number <br> physical location address (or geographic coordinates) <br> city <br> State <br> zip code for domestic locations and comparable information for foreign locations, including country |
+| Ship Date | The date you shipped the food | The ship date is the actual date when product leaves the physical ship-from location. |
+| TLC Source or TLC Source Reference | The location description for the traceability lot code source, or the traceability lot code source reference | TLC Source is the actual physical location where TLC was assigned during initial packing or transformation. The description includes: <br> • business name <br> • phone number <br> • physical location address (or geographic coordinates) <br> • city <br> • State <br> • zip code for domestic locations and comparable information for foreign locations, including country. <br><br> Suppliers may provide a TLC Source Reference instead of a TLC Source. This could include: <br> • Web site <br> • FDA FFRN <br> • GLN from a registry available to FDA |
+| Reference Document Type and Reference Document Number | The reference document type and reference document number. | May list more than one document. For example, a shipper may list the customer's purchase order, their outbound packing list, bill of lading, invoice and advanced ship notice numbers. By capturing the document type and number, the shipper can provide FDA with additional information about the shipment that may assist in an outbreak investigation. This information is useful for double-checking your traceability records. |
 
 
 
