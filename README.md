@@ -262,6 +262,152 @@ Unsaleable finished goods are destroyed.
 |          | Activity ID          | Biz Transaction ID | WO456 |
 
 
+### Additional internal data to support traceability
+
+#### Seed
+
+#### Fertilizer
+
+#### Crop protection & Phytosanitary
+
+#### Irrigation method
+
+#### Harvesting
+
+#### Post-harvest treatment
+
+#### Packing
+
+Below are some of the events where data collection should be performed which impact packing.
+
+##### How can this be acquired/shared?
+
+###### Purchase
+
+- Business rational: Documentation of orders placed for possible recall issues
+- DEI: Purchase Order
+
+| KDE |  Data Source    |
+| -------------- | ---- |
+| Supplier (GLN) |      |
+| PO #           |      |
+| Invoice #      |      |
+| GTIN           |    GDSN  |
+| Quantity       |      |
+| Date           |      |
+
+###### Reception
+
+
+- Business rational: First contact with GTIN + supplemental information (Batch/lot) as well as a record of the transport company used in case of recall from source or recall from transport contamination
+- EDI: Despatch Advice
+
+| KDE | Data Source |
+| ----------------- | --------------- |
+| Transporter (GLN) | |
+| Invoice #         |                 |
+| PO #              |                 |
+| Reception Date    |                 |
+| Receiver (GLN)    |                 |
+| SSCC              |                 |
+| GTIN              | GDSN            |
+| Quantity          |                 |
+| Lot/Batch         | GS1-128         |
+
+###### Storage
+
+- Business rational: Accurate inventory control (in & out)
+
+| KDE            | Data Source |
+| -------------- | ----------- |
+| GTIN           | GDSN        |
+| Quantity       |             |
+| Lot/Batch      | GS1-128     |
+| Location (GLN) |             |
+| Date           |             |
+
+###### Packaging
+
+- Business rational: documentation of where items were used/applied.
+
+| KDE            | Data Source |
+| -------------- | ----------- |
+| GTIN           | GDSN        |
+| Quantity       |             |
+| Lot/Batch      | GS1-128     |
+| Location (GLN) |             |
+| Date           |             |
+
+#### Shipping
+
+#### Receiving
+
+Below are some of the events where data collection should be performed which impact receiving.
+
+##### Reception
+
+| Category | Key Data Element | Description |
+|----------|------------------|-------------|
+| What     | GTIN + batch/lot ID + quantity OR GTIN + serial ID | - |
+| When     | Reception date and time | - |
+| Where    | GLN of buyer | - |
+| Why      | - | Initial traceability reception into inventory |
+
+
+##### Storage
+
+| Category | Key Data Element | Description |
+|----------|------------------|-------------|
+| What     | GTIN + batch/lot ID + quantity OR GTIN + serial ID | - |
+| When     | Storage date and time | - |
+| Where    | GLN of product sub-location | - |
+| Why      | - | Efficient stock rotation |
+
+
+#### Quality check
+
+##### How can this be acquired/shared?
+
+Business rational: Sorting touch point which impacts pre and post GTIN & Lot/batch
+
+| KDE                   | EDI  | Data Source |
+| --------------------- | ---- | ----------- |
+| Seller/grower (GLN)   |      |             |
+| date of reception     |      |             |
+| GTIN                  |      | GDSN        |
+| Lot Batch             |      | GS1-128     |
+| Quantity              |      |             |
+| SSCC                  |      |             |
+| Location (pre) (GLN)  |      |             |
+| QC date               |      |             |
+| Grade                 |      |             |
+| Location (post) (GLN) |      |             |
+
+#### Processing
+
+##### How can this be acquired/shared?
+
+| KDE                          | EDI  | Data Source |
+| ---------------------------- | ---- | ----------- |
+| Source GTIN                  |      | GDSN        |
+| Source Lot/Batch             |      | GS1-128     |
+| Source Quantity              |      |             |
+| Storage Location (GLN)       |      |             |
+| Date                         |      |             |
+| Output GTIN                  |      | GDSN        |
+| Output Lot/Batch             |      | GS1-128     |
+| Output Quantity              |      |             |
+| Process Location (GLN)       |      |             |
+| Processing Materials GTIN    |      | GDSN        |
+| Final Storage Location (GLN) |      |             |
+
+#### Customs entry
+
+#### Customs checking
+
+#### Customs freight release
+
+
 
 
 ### 参考资料
@@ -277,3 +423,32 @@ https://help.sap.com/doc/saphelp_aii710/7.1/en-US/48/d1cbfe90d75430e10000000a421
 #### Others
 
 GS1 EPCIS STANDARD：https://byteally.com/insights/supply-chain/gs1-epcis-standard/
+
+#### 术语表
+
+https://www.gs1.org/standards/fresh-fruit-and-vegetable-traceability-guideline/current-standard#A-Glossary+A-1-Glossary-of-terms
+
+### Tips
+
+#### GIAI 和 GRAI
+
+GIAI 和 GRAI 是 GS1 标准中的两种标识符，用于不同的资产管理场景：
+1. GIAI（Global Individual Asset Identifier）：全球个体资产标识符，用于唯一标识单个资产。它由 GS1 公司前缀和个体资产参考组成，适用于固定资产的管理，例如计算机、办公桌或运输设备。
+2. GRAI（Global Returnable Asset Identifier）：全球可回收资产标识符，用于标识可重复使用的资产，如托盘、集装箱等。GRAI 由 GS1 公司前缀、资产类型和可选的序列号组成，帮助企业跟踪和管理这些可回收资产。
+
+这些标识符在供应链管理中起到重要作用，确保资产的唯一性和可追溯性。
+
+#### GDSN（Global Data Synchronization Network）
+
+GTIN（全球贸易项目代码）。
+
+GTIN 是用于唯一标识贸易项目的代码，通常用于条形码中。GTIN 可以有多种格式，包括 GTIN-12、GTIN-13、GTIN-14 等，具体取决于应用场景。每个 GTIN 都是唯一的，确保每个产品在全球范围内都能被唯一识别。
+
+#### GTIN（Global Trade Item Number）
+
+GDSN（全球数据同步网络）。
+
+GDSN 是一个全球性的网络，用于在供应链中的不同参与者之间同步和共享高质量的产品数据。通过 GDSN，企业可以确保其产品信息在全球范围内的一致性和准确性。GDSN 通过数据池（Data Pools）运作，这些数据池允许企业上传、维护和共享产品信息。
+
+
+
