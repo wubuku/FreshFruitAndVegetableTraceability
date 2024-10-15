@@ -434,6 +434,46 @@ For each traceability lot of food covered by the rule you ship, you must maintai
 | TLC Source or TLC Source Reference | The location description for the traceability lot code source, or the traceability lot code source reference | TLC Source is the actual physical location where TLC was assigned during initial packing or transformation. The description includes: <br> • business name <br> • phone number <br> • physical location address (or geographic coordinates) <br> • city <br> • State <br> • zip code for domestic locations and comparable information for foreign locations, including country. <br><br> Suppliers may provide a TLC Source Reference instead of a TLC Source. This could include: <br> • Web site <br> • FDA FFRN <br> • GLN from a registry available to FDA |
 | Reference Document Type and Reference Document Number | The reference document type and reference document number. | May list more than one document. For example, a shipper may list the customer's purchase order, their outbound packing list, bill of lading, invoice and advanced ship notice numbers. By capturing the document type and number, the shipper can provide FDA with additional information about the shipment that may assist in an outbreak investigation. This information is useful for double-checking your traceability records. |
 
+##### Receiving
+
+For each traceability lot of a food on the Food Traceability List you receive, you must maintain records containing the following information and linking this information to the traceability lot:
+
+| PTI KDE | FSMA 204 KDE | Comments |
+|---------|--------------|----------|
+| Code (TLC) | The traceability lot code for the food. | - Required - <br> AI (01) Case GTIN and AI (10) Case Batch/Lot <br> - Optional - <br> AI (00) Pallet SSCC <br> AI (13) Pack Date <br> AI (13) Harvest Date <br> AI (15) Best if Used by Date <br> AI (21) Serial Number |
+| Quantity and UOM | The quantity and unit of measure of the food (e.g., 6 cases, 25 reusable plastic containers, 100 tanks, 200 pounds) | This is the number of cases received |
+| Product Description | The product description for the food. | This is the description for the case, not the saleable unit in the case. Product description should include: <br> • product name (including, if applicable, the brand name, commodity, and variety) <br> • packaging size <br> • packaging style. |
+| Ship To Location | The location description for where the food was received | Ship-to location is the actual physical location where the product was shipped to. Location description includes: <br> • business name <br> • phone number <br> • physical location address (or geographic coordinates) <br> • city <br> • State <br> • zip code for domestic locations and comparable information for foreign locations, including country |
+| Ship From Location | The location description for the immediate previous source (other than a transporter) for the food | Ship-from location is the actual physical location where the product was shipped from. Location description includes: <br> • business name <br> • phone number <br> • physical location address (or geographic coordinates) <br> • city <br> • State <br> • zip code for domestic locations and comparable information for foreign locations, including country |
+| Receive Date | The date you received the food. | The receive date is the actual date when product reaches the physical ship-to location. |
+| TLC Source or TLC Source Reference | The location description for the traceability lot code source, or the traceability lot code source reference | TLC Source location is the actual physical location where TLC was assigned during initial packing or transformation. The description includes: <br> • business name <br> • phone number <br> • physical location address (or geographic coordinates) <br> • city <br> • State <br> • zip code for domestic locations and comparable information for foreign locations, including country. <br><br> Suppliers may provide a TLC Source Reference instead of a TLC Source. This could include: <br> • Web site <br> • FDA FFRN <br> • GLN from a registry available to FDA |
+| Reference Document Type and Reference Document Number | The reference document type and reference document number. | One may list one or more than one document. For example, a receiver may list their original purchase order, their supplier's packing list or bill of lading, invoice and advanced ship notice numbers. By capturing the document type and number, the receiver can provide FDA with additional information about the receipt that may assist in an outbreak investigation. This information is useful for double-checking your traceability records. |
+
+##### Transformation
+
+This can include repacking, commingling when items from various original bins, packs, etc. are combined, or cutting, trimming, etc., to create a fresh-cut product (i.e., minimal processing).
+For each new traceability lot of food, you produce through transformation, you must maintain records containing the following information and linking this information to the new traceability lot code:
+
+| PTI KDE | FSMA 204 KDE | Comments |
+|---------|--------------|----------|
+| FTL Food Used TLC | The traceability lot code for the food used | Minimum attributes:<br>AI (01) Case GTIN and AI (10) Case Batch/Lot<br>Optional attributes:<br>AI (00) Pallet SSCC<br>AI (13) Pack Date<br>AI (13) Harvest Date<br>AI (15) Best if Used by Date<br>AI (21) Serial Number |
+| FTL Food Used Product Description | The product description for the food to which the traceability lot code applies. | This is the description for the Case, not the saleable unit in the case. Product description should include:<br>• product name (including, if applicable, the brand name, commodity, and variety)<br>• packaging size<br>• packaging style. |
+| FTL Food Used Qty and FTL Food Used UOM | For each traceability lot used, the quantity and unit of measure of the food used from that lot. | Could be a variety of UOMs including cases, lbs., bins, etc. |
+| FTL Food Produced New TLC | The new traceability lot code for the food. | Minimum attributes:<br>AI (01) Case GTIN and AI (10) Case Batch/Lot<br>Optional attributes:<br>AI (00) Pallet SSCC<br>AI (13) Pack Date<br>AI (13) Harvest Date<br>AI (15) Best if Used by Date<br>AI (21) Serial Number |
+| Transformation Location | The location description for where you transformed the food (i.e., the traceability lot code source), and (if applicable) the traceability lot code source reference. | TLC Source is the actual physical location where TLC was assigned during initial packing or transformation. The description includes:<br>• business name<br>• phone number<br>• physical location address (or geographic coordinates),<br>• city<br>• State<br>• zip code for domestic locations and comparable information for foreign locations, including country.<br><br>Suppliers may provide a TLC Source Reference instead of a TLC Source. This could include:<br>• Web site<br>• FDA FFRN<br>• GLN from a registry available to FDA |
+| Date Transformed | The date transformation activities were completed. | This is the actual date when transformation was completed. |
+| FTL Food Produced Product Description | The product description for the food. | This is the description for the Case, not the saleable unit in the case. Product description should include:<br>• product name (including, if applicable, the brand name, commodity, and variety)<br>• packaging size<br>• packaging style. |
+| FTL Food Produced Quantity and FTL Food Produced UOM | The quantity and unit of measure of the food (e.g., 6 cases, 25 reusable plastic containers, 100 tanks, 200 pounds). | Usually this is expressed in the number of cases. |
+| Reference Document Type and Reference Document Number | The reference document type and reference document number. | One may list one or more than one document. For example, a receiver may list their original purchase order, their supplier's packing list or bill of lading, invoice and advanced ship notice numbers. By capturing the document type and number, the receiver can provide FDA with additional information about the receipt that may assist in an outbreak investigation. This information is useful for double-checking your traceability records. |
+
+### Supply Chain Role Considerations
+
+#### Persons who grow, harvest, cool, and initially pack covered foods
+
+#### PERSONS WHO RE-PACK OR TRANSFORM COVERED FOODS
+
+Transformation means an event in a food's supply chain that involves manufacturing or processing a food or changing a food (e.g., by commingling, repacking, or relabeling) or its packaging or packing, when the output is a food on the Food Traceability List. Transformation does not include the initial packing of a food or activities preceding that event (e.g., harvesting, cooling).
+
 
 
 
