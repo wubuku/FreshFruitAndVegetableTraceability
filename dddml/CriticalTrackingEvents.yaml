@@ -1,0 +1,105 @@
+# CRITICAL TRACKING EVENTS
+typeDefinitions:
+  CteEventId:
+    sqlType: BIGINT
+    javaType: Long
+
+aggregates:
+  ShippingEvent:
+    id:
+      name: EventId
+      type: CteEventId
+      generator:
+        class: sequence
+    properties:
+      TraceabilityLotCode:
+        type: KdeTraceabilityLotCode
+        description: "Traceability Lot Code"
+      QuantityAndUom:
+        type: KdeQuantityAndUom
+        description: "Quantity and UOM"
+      ProductDescription:
+        type: KdeProductDescription
+        description: "Product Description"
+      ShipToLocation:
+        type: KdeLocationDescription
+        description: "Ship To Location"
+      ShipFromLocation:
+        type: KdeLocationDescription
+        description: "Ship From Location"
+      ShipDate:
+        type: KdeDate
+        description: "Ship Date"
+      TlcSourceOrTlcSourceReference:
+        type: KdeTlcSourceOrTlcSourceReference
+        description: "TLC Source or TLC Source Reference"
+      ReferenceDocument:
+        type: KdeReferenceDocument
+        description: "Reference Document"
+
+  ReceivingEvent:
+    id:
+      name: EventId
+      type: CteEventId
+      generator:
+        class: sequence
+    properties:
+      TraceabilityLotCode:
+        type: KdeTraceabilityLotCode
+        description: "Traceability Lot Code"
+      QuantityAndUom:
+        type: KdeQuantityAndUom
+        description: "Quantity and UOM"
+      ProductDescription:
+        type: KdeProductDescription
+        description: "Product Description"
+      ShipToLocation:
+        type: KdeLocationDescription
+        description: "Ship To Location"
+      ShipFromLocation:
+        type: KdeLocationDescription
+        description: "Ship From Location"
+      ReceiveDate:
+        type: KdeDate
+        description: "Receive Date"
+      TlcSourceOrTlcSourceReference:
+        type: KdeTlcSourceOrTlcSourceReference
+        description: "TLC Source or TLC Source Reference"
+      ReferenceDocument:
+        type: KdeReferenceDocument
+        description: "Reference Document"
+
+  TransformationEvent:
+    id:
+      name: EventId
+      type: CteEventId
+      generator:
+        class: sequence
+    properties:
+      FoodUsedTlc:
+        type: KdeTraceabilityLotCode
+        description: "FTL Food Used TLC"
+      FoodUsedProductDescription:
+        type: KdeProductDescription
+        description: "Food Used Product Description"
+      FoodUsedQuantityAndUom:
+        type: KdeQuantityAndUom
+        description: "Food Used Quantity and UOM"
+      FoodProducedNewTlc:
+        type: KdeTraceabilityLotCode
+        description: "FTL Food Produced New TLC"
+      FoodProducedProductDescription:
+        type: KdeProductDescription
+        description: "FTL Food Produced Product Description"
+      FoodProducedQuantityAndUom:
+        type: KdeQuantityAndUom
+        description: "FTL Food Produced Quantity and FTL Food Produced UOM"
+      TransformationLocation:
+        type: KdeLocationDescription
+        description: "Transformation Location"
+      DateTransformed:
+        type: KdeDate
+        description: "Date Transformed"
+      ReferenceDocument:
+        type: KdeReferenceDocument
+        description: "The reference document type and reference document number"
