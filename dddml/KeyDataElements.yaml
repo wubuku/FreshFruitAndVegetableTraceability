@@ -1,0 +1,221 @@
+typeDefinitions:
+  GTIN:
+    sqlType: VARCHAR(14)
+    javaType: String
+
+  SSCC:
+    sqlType: VARCHAR(18)
+    javaType: String
+
+  FFRN:
+    description: "FDA Food Facility Registration Number"
+    sqlType: VARCHAR(11)
+    javaType: String
+
+  GLN:
+    description: "Global Location Number"
+    sqlType: VARCHAR(13)
+    javaType: String
+
+  GGN:
+    description: "GLOBALG.A.P. Number"
+    sqlType: VARCHAR(13)
+    javaType: String
+
+  KdeDate:
+    sqlType: VARCHAR(14)
+    javaType: String
+
+  KdeBatch:
+    sqlType: VARCHAR(20)
+    javaType: String
+
+  KdeSerialNumber:
+    sqlType: VARCHAR(20)
+    javaType: String
+
+  KdeQuantity:
+    sqlType: DECIMAL(20,2)
+    javaType: BigDecimal
+
+  KdeUom:
+    sqlType: VARCHAR(20)
+    javaType: String
+
+  KdeProductName:
+    sqlType: VARCHAR(100)
+    javaType: String
+
+  KdePackagingSize:
+    sqlType: VARCHAR(50)
+    javaType: String
+
+  KdePackagingStyle:
+    sqlType: VARCHAR(50)
+    javaType: String
+
+  KdeBusinessName:
+    sqlType: VARCHAR(200)
+    javaType: String
+
+  KdePhoneNumber:
+    sqlType: VARCHAR(20)
+    javaType: String
+
+  KdePhysicalLocationAddress:
+    description: "Physical location address (or geographic coordinates)"
+    # NOTE: Is this ok?
+    sqlType: VARCHAR(200)
+    javaType: String
+
+  KdeCity:
+    sqlType: VARCHAR(100)
+    javaType: String
+
+  KdeState:
+    sqlType: VARCHAR(50)
+    javaType: String
+
+  KdeZipCode:
+    sqlType: VARCHAR(20)
+    javaType: String
+
+  KdeUrl:
+    sqlType: VARCHAR(200)
+    javaType: String
+
+  KdeDocumentType:
+    sqlType: VARCHAR(50)
+    javaType: String
+
+  KdeDocumentNumber:
+    sqlType: VARCHAR(50)
+    javaType: String
+
+valueObjects:
+  KdeTraceabilityLotCode:
+    description: "The traceability lot code"
+    properties:
+      CaseGtin:
+        type: GTIN
+        description: "AI (01) Case GTIN"
+      CaseBatch:
+        type: KdeBatch
+        description: "AI (10) Case Batch/Lot"
+      PalletSscc:
+        type: SSCC
+        description: "AI (00) Pallet SSCC"
+      PackDate:
+        type: KdeDate
+        description: "AI (13) Pack Date"
+      HarvestDate:
+        type: KdeDate
+        description: "AI (13) Harvest Date"
+      BestIfUsedByDate:
+        type: KdeDate
+        description: "AI (15) Best if Used by Date"
+      SerialNumber:
+        type: KdeSerialNumber
+        description: "AI (21) Serial Number"
+
+  KdeQuantityAndUom:
+    description: "Quantity and UOM"
+    properties:
+      Quantity:
+        type: KdeQuantity
+      Uom:
+        type: KdeUom
+
+  # This is the description for the Case, not the saleable unit in the case.
+  # Product description should include:<br>
+  # • product name (including, if applicable, the brand name, commodity, and variety)<br>
+  # • packaging size<br>
+  # • packaging style.
+  KdeProductDescription:
+    description: "Product Description"
+    properties:
+      ProductName:
+        type: KdeProductName
+        description: "product name (including, if applicable, the brand name, commodity, and variety)"
+      PackagingSize:
+        type: KdePackagingSize
+        description: "packaging size"
+      PackagingStyle:
+        type: KdePackagingStyle
+        description: "packaging style"
+
+  # Location description includes: <br>
+  # • business name <br>
+  # • phone number <br>
+  # • physical location address (or geographic coordinates) <br>
+  # • city <br>
+  # • State <br>
+  # • Zip code for domestic locations and comparable information for foreign locations, including country
+  KdeLocationDescription:
+    properties:
+      BusinessName:
+        type: KdeBusinessName
+        description: "business name"
+      PhoneNumber:
+        type: KdePhoneNumber
+        description: "phone number"
+      PhysicalLocationAddress:
+        type: KdePhysicalLocationAddress
+        description: "physical location address (or geographic coordinates)"
+      City:
+        type: KdeCity
+        description: "city"
+      State:
+        type: KdeState
+        description: "State"
+      ZipCode:
+        type: KdeZipCode
+        description: "Zip code for domestic locations and comparable information for foreign locations, including country"
+
+  # Suppliers may provide a TLC Source Reference instead of a TLC Source. This could include: <br>
+  # • Web site <br>
+  # • FDA FFRN <br>
+  # • GLN from a registry available to FDA
+  KdeTlcSourceReference:
+    description: "TLC Source Reference"
+    properties:
+      WebSite:
+        type: KdeUrl
+        description: "Web site"
+      FdaFfrn:
+        type: FFRN
+        description: "FDA FFRN"
+        exampleValue: "123456789"
+      Gln:
+        type: GLN
+        description: "GLN from a registry available to FDA"
+        exampleValue: "0071430010204"
+      Ggn:
+        type: GGN
+        description: "GLOBALG.A.P. Number"
+
+  KdeTlcSourceOrTlcSourceReference:
+    description: "The location description for the traceability lot code source, or the traceability lot code source reference"
+    properties:
+      TlcSource:
+        type: KdeLocationDescription
+        description: "TLC Source is the actual physical location where TLC was assigned during initial packing or transformation"
+      TlcSourceReference:
+        type: KdeTlcSourceReference
+        description: "Suppliers may provide a TLC Source Reference instead of a TLC Source"
+
+  # One may list one or more than one document.
+  # For example, a receiver may list their original purchase order,
+  # their supplier's packing list or bill of lading, invoice and advanced ship notice numbers.
+  # By capturing the document type and number,
+  # the receiver can provide FDA with additional information about the receipt that may assist in an outbreak investigation.
+  # This information is useful for double-checking your traceability records.
+  KdeReferenceDocument:
+    description: "Reference Document"
+    properties:
+      DocumentType:
+        type: KdeDocumentType
+        description: "Document Type"
+      DocumentNumber:
+        type: KdeDocumentNumber
+        description: "Document Number"
