@@ -33,6 +33,18 @@ aggregates:
       TlcSourceOrTlcSourceReference:
         type: KdeTlcSourceOrTlcSourceReference
         description: "TLC Source or TLC Source Reference"
+        columnNames:
+          - tlc_source_business_name
+          - tlc_source_phone_number
+          - tlc_source_physical_location_address
+          - tlc_source_city
+          - tlc_source_state
+          - tlc_source_zip_code
+          - tlc_source_reference_web_site
+          - tlc_source_reference_fda_ffrn
+          - tlc_source_reference_gln
+          - tlc_source_reference_ggn
+
       ReferenceDocument:
         type: KdeReferenceDocument
         description: "Reference Document"
@@ -65,6 +77,17 @@ aggregates:
       TlcSourceOrTlcSourceReference:
         type: KdeTlcSourceOrTlcSourceReference
         description: "TLC Source or TLC Source Reference"
+        columnNames:
+          - tlc_source_business_name
+          - tlc_source_phone_number
+          - tlc_source_physical_location_address
+          - tlc_source_city
+          - tlc_source_state
+          - tlc_source_zip_code
+          - tlc_source_reference_web_site
+          - tlc_source_reference_fda_ffrn
+          - tlc_source_reference_gln
+          - tlc_source_reference_ggn
       ReferenceDocument:
         type: KdeReferenceDocument
         description: "Reference Document"
@@ -82,6 +105,10 @@ aggregates:
       FoodUsedProductDescription:
         type: KdeProductDescription
         description: "Food Used Product Description"
+        columnNames:
+          - food_used_product_name
+          - food_used_packaging_size
+          - food_used_packaging_style
       FoodUsedQuantityAndUom:
         type: KdeQuantityAndUom
         description: "Food Used Quantity and UOM"
@@ -91,12 +118,23 @@ aggregates:
       FoodProducedProductDescription:
         type: KdeProductDescription
         description: "FTL Food Produced Product Description"
+        columnNames:
+          - food_produced_product_name
+          - food_produced_packaging_size
+          - food_produced_packaging_style
       FoodProducedQuantityAndUom:
         type: KdeQuantityAndUom
         description: "FTL Food Produced Quantity and FTL Food Produced UOM"
       TransformationLocation:
         type: KdeLocationDescription
         description: "Transformation Location"
+        columnNames:
+          - transformation_location_business_name
+          - transformation_location_phone_number
+          - transformation_location_physical_address
+          - transformation_location_city
+          - transformation_location_state
+          - transformation_location_zip_code
       DateTransformed:
         type: KdeDate
         description: "Date Transformed"
