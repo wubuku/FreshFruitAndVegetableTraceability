@@ -1,0 +1,24 @@
+configuration:
+  sequenceNumber: 1000
+  hibernate:
+    hibernateTypes:
+      StringList:
+        mappingType: "io.hypersistence.utils.hibernate.type.json.JsonType"
+        parameters:
+          "org.hibernate.type.ParameterType": "java.util.ArrayList"
+      ObjectList:
+        mappingType: "io.hypersistence.utils.hibernate.type.json.JsonType"
+        parameters:
+          "org.hibernate.type.ParameterType": "java.util.ArrayList"
+  java:
+    typeMappings:
+      "boolean": "Boolean"
+      "integer": "Integer"
+
+typeDefinitions:
+  StringList:
+    sqlType: json
+    javaType: java.util.List<String>
+  ObjectList:
+    sqlType: json
+    javaType: java.util.List<Object>

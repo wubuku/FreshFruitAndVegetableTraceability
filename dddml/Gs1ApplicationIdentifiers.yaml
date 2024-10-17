@@ -1,0 +1,66 @@
+valueObjects:
+  Gs1AppIdComponent:
+    properties:
+      Optional:
+        type: boolean
+      Type:
+        type: string
+      FixedLength:
+        type: boolean
+      Length:
+        type: integer
+      CheckDigit:
+        type: boolean
+      Key:
+        type: boolean
+      Format:
+        type: string
+      CheckCharacters:
+        type: boolean
+  Gs1AppIdRange:
+    properties:
+      Start:
+        type: string
+      End:
+        type: string
+      Item:
+        type: string
+
+aggregates:
+  Gs1ApplicationIdentifier:
+    id:
+      name: ApplicationIdentifier
+      type: string
+    properties:
+      FormatString:
+        type: string
+      Label:
+        type: string
+      Description:
+        type: string
+      Fnc1required:
+        type: boolean
+      Regex:
+        type: string
+      Note:
+        type: string
+      Title:
+        type: string
+      SeparatorRequired:
+        type: boolean
+      # TODO: Components:
+      #   itemType: Gs1AppIdComponent
+      #   isList: true
+      Gs1DigitalLinkPrimaryKey:
+        type: boolean
+      #TODO: Gs1DigitalLinkQualifiers:
+      #  itemType: StringList
+      #  isList: true
+      Excludes:
+        type: ObjectList # item of list: Gs1AppIdRange or String
+      Requires:
+        type: ObjectList # item of list: Gs1AppIdRange or StringList or String
+      Start:
+        type: string
+      End:
+        type: string
