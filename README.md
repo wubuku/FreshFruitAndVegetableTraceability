@@ -293,12 +293,13 @@ Please see the following example of a sortable spreadsheet [here](https://produc
 
 #### [PTI FSMA 204 Electronic Sortable Spreadsheet Templates (2024)](https://producetraceability.org/resources/#sortable)
 
-- [Harvester/Cooler/Initial Packer/Transformer ](https://producetraceability.org/wp-content/uploads/2023/09/Harv-Init-Pk-Cool-Trans-2.xlsx)
+- [Harvester/Cooler/Initial Packer/Transformer](https://producetraceability.org/wp-content/uploads/2023/09/Harv-Init-Pk-Cool-Trans-2.xlsx)
 - [Receiver](https://producetraceability.org/wp-content/uploads/2023/09/PTI-Sortable-Spreadsheet-Receiving-2-1.xlsx)
 - [Shipper](https://producetraceability.org/wp-content/uploads/2023/09/PTI-Sortable-Spreadsheet-Shipping-2-1.xlsx)
 - [Final Distributor](https://producetraceability.org/wp-content/uploads/2023/09/PTI-Sortable-Spreadsheet-DC-to-Store-2-1.xlsx)
 - [Retail Store](https://producetraceability.org/wp-content/uploads/2023/09/PTI-Sortable-Spreadsheet-Retail-Store-2-1.xlsx)
 - [Foodservice Operation/Restaurant](https://producetraceability.org/wp-content/uploads/2023/09/PTI-Sortable-Spreadsheet-Foodservice-2-1.xlsx)
+
 
 #### PTI FSMA 204 Resources
 
@@ -309,88 +310,40 @@ https://producetraceability.org/wp-content/uploads/2024/02/PTI-FSMA-204-TLC-Sour
 https://producetraceability.org/wp-content/uploads/2024/06/Produce-Traceability-Initiative-PTI-Best-Practices-for-Formatting-Case-Labels-v2.2.pdf
 
 
+#### GS1 Digital Link
 
-#### ILMD
+GS1 Digital Link 是一项标准，用于将实体产品与网络上的数字信息连接。主要特点包括：
 
-https://gist.github.com/wubuku/525a892c07a9bc56b59572ee8314dec0
+1. **统一标识符**：将 GS1 标识符（如 GTIN）转换为标准 URL 格式。
+   例：`https://example.com/gtin/614141123452`
 
-#### Event Capture Notification for Sending EPCIS Events
+2. **多功能性**：一个 URL 可包含多种 GS1 标识符。
+   例：`https://example.com/gtin/614141123452/lot/ABC123/ser/XYZ789`
 
-https://help.sap.com/doc/saphelp_aii710/7.1/en-US/48/d1cbfe90d75430e10000000a42189b/content.htm?no_cache=true
+3. **可扫描性**：可编码为二维码或条形码，便于设备扫描。
 
-#### GS1 Application Identifiers
+4. **动态信息访问**：提供实时、定制的产品信息。
 
-https://ref.gs1.org/ai/
+5. **多应用支持**：支持产品信息、真伪验证、召回信息等多种应用。
 
+6. **标准化和互操作性**：促进不同系统间的互操作。
 
-#### 术语表
+7. **消费者互动**：简化消费者获取产品信息的方式。
 
-https://www.gs1.org/standards/fresh-fruit-and-vegetable-traceability-guideline/current-standard#A-Glossary+A-1-Glossary-of-terms
+8. **供应链可见性**：支持产品追踪和食品安全追溯。
 
-部分术语：
+9. **未来兼容性**：考虑物联网等未来技术发展。
 
-1. GLN (Global Location Number):
-   - 全球位置编码
-   - 由 GS1 分配的唯一标识符，用于识别公司、工厂、仓库等物理位置或法律实体
-   - 在供应链中广泛使用，用于精确定位和识别参与者
-2. FFRN (FDA Food Facility Registration Number):
-   - FDA 食品设施注册号
-   - 由美国食品和药物管理局 (FDA) 分配给食品生产、加工、包装或储存设施的唯一标识号
-   - 根据生物恐怖主义法案要求，所有处理食品的设施都必须向 FDA 注册并获得此号码
-3. URL (Uniform Resource Locator):
-   - 统一资源定位符
-   - 在这个上下文中，可能指向包含设施或公司信息的网页地址
-   - 用于提供额外的在线信息或验证来源
-4. GGN (GLOBALG.A.P. Number):
-   - GLOBALG.A.P. 编号
-   - 由 GLOBALG.A.P. 组织分配的 13 位唯一标识符
-   - 用于识别通过 GLOBALG.A.P. 认证的生产者或公司
-   - 主要用于农业和水产养殖领域，表示符合良好农业规范标准
-5. GTIN (Global Trade Item Number):
-   - 全球贸易项目代码
-   - 用于唯一标识贸易项目的代码，通常用于条形码中
-   - 有多种格式，如 GTIN-12、GTIN-13、GTIN-14 等
-6. TLC (Traceability Lot Code):
-   - 可追溯性批次代码
-   - 用于识别特定批次或批量的产品
-7. CTE (Critical Tracking Event):
-   - 关键追踪事件
-   - 在供应链中的重要节点，需要记录详细信息以确保可追溯性
-8. KDE (Key Data Element):
-   - 关键数据元素
-   - 与 CTE 相关的重要信息，需要被记录和传递
-9. FSMA (Food Safety Modernization Act):
-   - 食品安全现代化法案
-   - 美国的一项重要食品安全法规
-10. FTL (Food Traceability List):
-    - 食品可追溯性清单
-    - FDA 规定的需要特别关注可追溯性的食品清单
-11. SSCC (Serial Shipping Container Code):
-    - 系列货运容器代码
-    - 用于唯一标识物流单元的 18 位数字代码
-12. UOM (Unit of Measure):
-    - 计量单位
-    - 用于描述产品数量的标准单位
+GS1 Digital Link 适用于食品安全追溯、产品信息管理等领域，符合 FSMA 204 等法规要求。
 
-##### GIAI 和 GRAI
+详细信息：[GS1 Digital Link 官方文档](https://www.gs1.org/standards/gs1-digital-link)
 
-GIAI 和 GRAI 是 GS1 标准中的两种标识符，用于不同的资产管理场景：
-1. GIAI（Global Individual Asset Identifier）：全球个体资产标识符，用于唯一标识单个资产。它由 GS1 公司前缀和个体资产参考组成，适用于固定资产的管理，例如计算机、办公桌或运输设备。
-2. GRAI（Global Returnable Asset Identifier）：全球可回收资产标识符，用于标识可重复使用的资产，如托盘、集装箱等。GRAI 由 GS1 公司前缀、资产类型和可选的序列号组成，帮助企业跟踪和管理这些可回收资产。
-
-这些标识符在供应链管理中起到重要作用，确保资产的唯一性和可追溯性。
-
-##### GDSN（Global Data Synchronization Network）与 GTIN（Global Trade Item Number）
-
-GTIN（全球贸易项目代码）：
-GTIN 是用于唯一标识贸易项目的代码，通常用于条形码中。GTIN 可以有多种格式，包括 GTIN-12、GTIN-13、GTIN-14 等，具体取决于应用场景。每个 GTIN 都是唯一的，确保每个产品在全球范围内都能被唯一识别。
-
-GDSN（全球数据同步网络）：
-GDSN 是一个全球性的网络，用于在供应链中的不同参与者之间同步和共享高质量的产品数据。通过 GDSN，企业可以确保其产品信息在全球范围内的一致性和准确性。GDSN 通过数据池（Data Pools）运作，这些数据池允许企业上传、维护和共享产品信息。
 
 #### Others
 
 GS1 EPCIS STANDARD：https://byteally.com/insights/supply-chain/gs1-epcis-standard/
+
+[更多参考链接](docs/电子数据格式标准.md)。
 
 
 ### Tips
@@ -399,6 +352,13 @@ GS1 EPCIS STANDARD：https://byteally.com/insights/supply-chain/gs1-epcis-standa
 
 根据 FSMA 204 的标准，对于 Transformation（转换）这种类型的关键追溯事件（CTE），可能需要在一个事件中记录多个被使用的食品的可追溯批次代码（TLC）。例如，一个成品可能需要消耗多种原材料。还可能需要记录多个输出 TLC。
 
+#### ILMD
+
+https://gist.github.com/wubuku/525a892c07a9bc56b59572ee8314dec0
+
+#### Event Capture Notification for Sending EPCIS Events
+
+https://help.sap.com/doc/saphelp_aii710/7.1/en-US/48/d1cbfe90d75430e10000000a42189b/content.htm?no_cache=true
 
 #### JSON-LD
 
@@ -837,3 +797,68 @@ Business rational: Sorting touch point which impacts pre and post GTIN & Lot/bat
 
 #### Customs freight release
 
+
+#### 术语表
+
+https://www.gs1.org/standards/fresh-fruit-and-vegetable-traceability-guideline/current-standard#A-Glossary+A-1-Glossary-of-terms
+
+部分术语：
+
+1. GLN (Global Location Number):
+   - 全球位置编码
+   - 由 GS1 分配的唯一标识符，用于识别公司、工厂、仓库等物理位置或法律实体
+   - 在供应链中广泛使用，用于精确定位和识别参与者
+2. FFRN (FDA Food Facility Registration Number):
+   - FDA 食品设施注册号
+   - 由美国食品和药物管理局 (FDA) 分配给食品生产、加工、包装或储存设施的唯一标识号
+   - 根据生物恐怖主义法案要求，所有处理食品的设施都必须向 FDA 注册并获得此号码
+3. URL (Uniform Resource Locator):
+   - 统一资源定位符
+   - 在这个上下文中，可能指向包含设施或公司信息的网页地址
+   - 用于提供额外的在线信息或验证来源
+4. GGN (GLOBALG.A.P. Number):
+   - GLOBALG.A.P. 编号
+   - 由 GLOBALG.A.P. 组织分配的 13 位唯一标识符
+   - 用于识别通过 GLOBALG.A.P. 认证的生产者或公司
+   - 主要用于农业和水产养殖领域，表示符合良好农业规范标准
+5. GTIN (Global Trade Item Number):
+   - 全球贸易项目代码
+   - 用于唯一标识贸易项目的代码，通常用于条形码中
+   - 有多种格式，如 GTIN-12、GTIN-13、GTIN-14 等
+6. TLC (Traceability Lot Code):
+   - 可追溯性批次代码
+   - 用于识别特定批次或批量的产品
+7. CTE (Critical Tracking Event):
+   - 关键追踪事件
+   - 在供应链中的重要节点，需要记录详细信息以确保可追溯性
+8. KDE (Key Data Element):
+   - 关键数据元素
+   - 与 CTE 相关的重要信息，需要被记录和传递
+9. FSMA (Food Safety Modernization Act):
+   - 食品安全现代化法案
+   - 美国的一项重要食品安全法规
+10. FTL (Food Traceability List):
+    - 食品可追溯性清单
+    - FDA 规定的需要特别关注可追溯性的食品清单
+11. SSCC (Serial Shipping Container Code):
+    - 系列货运容器代码
+    - 用于唯一标识物流单元的 18 位数字代码
+12. UOM (Unit of Measure):
+    - 计量单位
+    - 用于描述产品数量的标准单位
+
+##### GIAI 和 GRAI
+
+GIAI 和 GRAI 是 GS1 标准中的两种标识符，用于不同的资产管理场景：
+1. GIAI（Global Individual Asset Identifier）：全球个体资产标识符，用于唯一标识单个资产。它由 GS1 公司前缀和个体资产参考组成，适用于固定资产的管理，例如计算机、办公桌或运输设备。
+2. GRAI（Global Returnable Asset Identifier）：全球可回收资产标识符，用于标识可重复使用的资产，如托盘、集装箱等。GRAI 由 GS1 公司前缀、资产类型和可选的序列号组成，帮助企业跟踪和管理这些可回收资产。
+
+这些标识符在供应链管理中起到重要作用，确保资产的唯一性和可追溯性。
+
+##### GDSN（Global Data Synchronization Network）与 GTIN（Global Trade Item Number）
+
+GTIN（全球贸易项目代码）：
+GTIN 是用于唯一标识贸易项目的代码，通常用于条形码中。GTIN 可以有多种格式，包括 GTIN-12、GTIN-13、GTIN-14 等，具体取决于应用场景。每个 GTIN 都是唯一的，确保每个产品在全球范围内都能被唯一识别。
+
+GDSN（全球数据同步网络）：
+GDSN 是一个全球性的网络，用于在供应链中的不同参与者之间同步和共享高质量的产品数据。通过 GDSN，企业可以确保其产品信息在全球范围内的一致性和准确性。GDSN 通过数据池（Data Pools）运作，这些数据池允许企业上传、维护和共享产品信息。
