@@ -352,6 +352,37 @@ GS1 EPCIS STANDARD：https://byteally.com/insights/supply-chain/gs1-epcis-standa
 
 根据 FSMA 204 的标准，对于 Transformation（转换）这种类型的关键追溯事件（CTE），可能需要在一个事件中记录多个被使用的食品的可追溯批次代码（TLC）。例如，一个成品可能需要消耗多种原材料。还可能需要记录多个输出 TLC。
 
+#### EPCIS 事件类型
+
+EPCIS（Electronic Product Code Information Services）定义了几种主要的事件类型，用于捕获供应链中不同类型的活动：
+
+1. **ObjectEvent（对象事件）**
+   - 用途：跟踪单个物品或一批物品的状态变化。
+   - 示例：产品被制造、销售、运输或丢弃。
+
+2. **AggregationEvent（聚合事件）**
+   - 用途：记录物品被添加到或从更大的容器中移除。
+   - 示例：将多个产品装入一个箱子，或从箱子中取出产品。
+
+3. **TransactionEvent（交易事件）**
+   - 用途：将物品与业务交易相关联。
+   - 示例：将产品与销售订单或发票关联。
+
+4. **TransformationEvent（转换事件）**
+   - 用途：记录输入物品被转换或组合成输出物品的过程。
+   - 示例：原材料被加工成成品。
+
+5. **QuantityEvent（数量事件）**（在 EPCIS 2.0 中已弃用）
+   - 用途：报告特定类型物品的数量，而不是单个物品。
+   - 示例：库存盘点。
+
+6. **AssociationEvent（关联事件，EPCIS 2.0 新增）**
+   - 用途：记录物品与其他物品或信息的关联。
+   - 示例：将传感器附加到集装箱上。
+
+这些事件类型允许企业详细记录和共享供应链中的各种活动，提高可见性和可追溯性。每种事件类型都有特定的数据结构和字段，用于捕获相关的详细信息，如时间、地点、涉及的物品等。
+
+
 #### ILMD
 
 https://gist.github.com/wubuku/525a892c07a9bc56b59572ee8314dec0
