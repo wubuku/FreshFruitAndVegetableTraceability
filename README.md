@@ -63,7 +63,79 @@ For each traceability lot of a food on the Food Traceability List you receive, y
 | 10123456000022        | 123456                 | 230715                   | Pack Date                     | 101234560000000008       | Grower / Shipper             | 40 CS                | Iceburg Lettuce Whole - Georgia Grown | Local Wholesaler of Georgia                                  | My Company Main DC          | 7/17/23                 |                                    |                                     | [http://tlclookupurl.com](http://tlclookup.com/) |                                    | Grower / Shipper                              | ASN-12005          | **LocaL Farm of Georgia Packhouse #3** | 80 Packinghouse Road         | Lagrange                   | GA                          | 30241                         | USA                            | (555) 444-1333                     |
 | 10124523000020        | 654321                 | 230711                   | Pack Date                     | 101245230000000006       | Grower / Shipper             | 40 CS                | Iceburg Lettuce Whole                 | LocaL Farm of Georgia Packhouse #3                           | My Company Main DC          | 7/16/23                 | 0071430010228                      |                                     |                                                  |                                    | Grower / Shipper                              | Sales Receipt      | **LocaL Farm of Georgia Packhouse #3** | 80 Packinghouse Road         | Lagrange                   | GA                          | 30241                         | USA                            | (555) 444-1333                     |
 
+上面的表格内容，我们来解读一下：
 
+1. **(a)(1) TLC - GTIN**: Global Trade Item Number，全球贸易项目代码。
+   例如：10333830000016
+
+2. **(a)(1) TLC - Batch**: 批次号。
+   例如：187
+
+3. **(a)(1) TLC - Date**: 日期，通常是包装日期。
+   例如：230712（可能表示2023年7月12日）
+
+4. **(a)(1) TLC - Date Type**: 日期类型。
+   例如：Pack Date（包装日期）
+
+5. **(a)(1) TLC - SSCC**: Serial Shipping Container Code，系列货运容器代码。
+   例如：103338389000000677
+
+6. **(b)(1) TLC - Assigned By**: TLC（Traceability Lot Code）分配者。
+   例如：Grower / Shipper
+
+7. **(a)(2) Qty & UOM**: 数量和计量单位。
+   例如：20 CS（20箱）
+
+8. **(a)(3) Product Description**: 产品描述。
+   例如：Iceberg Lettuce Wrapped - 24 heads（包装的冰山莴苣 - 24颗）
+
+9. **(a)(4) Immediate Previous Source (IPS) Location - (Shipped from Location)**: 直接前一个来源位置（发货地）。
+   例如：Company Distribution Center
+
+10. **(a)(5) Receive Location**: 接收位置。
+    例如：My Company Main DC
+
+11. **(a)(6) Receive Date**: 接收日期。
+    例如：7/18/23
+
+12. **(a)(7) TLC Source ReferenceGLN**: TLC来源参考的全球位置码。
+    例如：0071430010228
+
+13. **(a)(7) TLC Source ReferenceFFRN**: TLC来源参考的FDA设施注册号。
+    例如：123456789
+
+14. **(a)(7) TLC Source ReferenceURL**: TLC来源参考的URL。
+    例如：http://tlclookupurl.com
+
+15. **(a)(7) TLC Source ReferenceGGN**: TLC来源参考的全球GAP编号。
+    （在给定数据中没有示例）
+
+16. **(b)(5) TLC Source Reference - Assigned By**: TLC来源参考分配者。
+    例如：Grower / Shipper
+
+17. **(a)(8) Ref Doc**: 参考文档。
+    例如：ASN-12005
+
+18. **(a)(7) TLC Source Name**: TLC来源名称。
+    例如：Ed's Fresh Vegetables - Salinas
+
+19. **(a)(7) TLC Source Street**: TLC来源街道地址。
+    例如：3000 Salinas Hwy
+
+20. **(a)(7) TLC Source City**: TLC来源城市。
+    例如：Salinas
+
+21. **(a)(7) TLC Source State**: TLC来源州。
+    例如：CA
+
+22. **(a)(7) TLC Source Country**: TLC来源国家。
+    例如：USA
+
+23. **(a)(7) TLC Source Zip Code**: TLC来源邮政编码。
+    例如：93940
+
+24. **(a)(7) TLC Source Phone Number**: TLC来源电话号码。
+    例如：(555)641-7777
 
 
 ##### Transformation
