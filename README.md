@@ -35,6 +35,68 @@ For each traceability lot of food covered by the rule you ship, you must maintai
 | 10333830000023     | 188                 | 230713           | PACK DATE        | 6084             | 103338389000000684 | Grower / Shipper         | 20 CS             | Ed's Iceberg Lettuce Wrapped - 12 heads | Customer B Ship To Location | 0071430010550              | Company Distribution Center | 0071430010556                | 7/18/23           |                                  | 123456789                         |                                                              |                                  | Grower / Shipper                          | INV-12345 Line 3                |
 | 10333830000030     | 189                 | 230714           | PACK DATE        | 3105             | 103338389000000691 | Grower / Shipper         | 16 CS             | Ed's Lettuce Iceberg Wrapped - 16 heads | Customer B Ship To Location | 0071430010550              | Company Distribution Center | 0071430010556                | 7/19/23           | 0071430010204                    |                                   |                                                              |                                  | Grower / Shipper                          | INV-12372 Line 5                |
 
+我们来解读一下上面的表格：
+
+1. **(1) TLC - GTIN**: Global Trade Item Number，全球贸易项目代码。
+   例如：10333830000016
+
+2. **(1) TLC - Batch**: 批次号。
+   例如：186
+
+3. **Date Code**: 日期代码，通常是包装日期。
+   例如：230711（可能表示2023年7月11日）
+
+4. **Date Type**: 日期类型。
+   例如：PACK DATE
+
+5. **VoiceCode**: 语音代码，可能用于语音拣选系统。
+   例如：7557
+
+6. **Pallet ID**: 托盘标识符。
+   例如：103338389000000677
+
+7. **TLC - Assigned By**: TLC（Traceability Lot Code）分配者。
+   例如：Grower / Shipper
+
+8. **(2) Qty & UOM**: 数量和计量单位。
+   例如：10 CS（10箱）
+
+9. **(3) Product Description**: 产品描述。
+   例如：Ed's Iceberg Lettuce Wrapped - 24 heads
+
+10. **(4) Ship-To Location**: 收货地点。
+    例如：Customer A Ship To Location
+
+11. **Ship-To Location ID**: 收货地点标识符。
+    例如：0071430010440
+
+12. **(5) Ship-From Location**: 发货地点。
+    例如：Company Distribution Center
+
+13. **Ship-From Location ID**: 发货地点标识符。
+    例如：0071430010556
+
+14. **(6) Ship Date**: 发货日期。
+    例如：7/17/23
+
+15. **(7) TLC Source Reference GLN**: TLC来源参考的全球位置码。
+    例如：0071430010204（在最后一行数据中）
+
+16. **(7) TLC Source Reference FFRN**: TLC来源参考的FDA设施注册号。
+    例如：123456789（在第三行数据中）
+
+17. **(7) TLC Source Reference URL**: TLC来源参考的URL。
+    例如：https://www.EdsFreshFoodCo.com/
+
+18. **(7) TLC Source Reference GGN**: TLC来源参考的全球GAP编号。
+    （在给定数据中没有示例）
+
+19. **TLC Source Reference - Assigned By**: TLC来源参考分配者。
+    例如：Grower / Shipper
+
+20. **(8) Ref Doc Type and Number**: 参考文档类型和编号。
+    例如：INV-12005 Line 1
+
 
 ##### Receiving
 
@@ -335,7 +397,7 @@ GS1 EPCIS STANDARD：https://byteally.com/insights/supply-chain/gs1-epcis-standa
 
 #### FSMA 204 标准下 Transformation CTE 中的多个输入/输出 TLC
 
-根据 FSMA 204 的标准，对于 Transformation（转换）这种类型的关键追溯事件（CTE），可能需要在一个事件中记录多个被使用的食品的可追溯批次代码（TLC）。例如，一个成品可能需要消耗多种原材料。还可以需要记录多个输出 TLC。
+根据 FSMA 204 的标准，对于 Transformation（转换）这种类型的关键追溯事件（CTE），可能需要在一个事件中记录多个被使用的食品的可追溯批次代码（TLC）。例如，一个成品可能需要消耗多种原材料。还可能需要记录多个输出 TLC。
 
 
 #### JSON-LD
