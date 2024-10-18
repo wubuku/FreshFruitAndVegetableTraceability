@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.receivingevent">
+  <class name="org.dddml.ffvtraceability.domain.receivingevent.AbstractReceivingEventState$SimpleReceivingEventState" table="receiving_event">
+    <id name="eventId">
+      <column name="event_id" sql-type="BIGINT" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <component name="traceabilityLotCode" class="org.dddml.ffvtraceability.domain.KdeTraceabilityLotCode">
+      <property name="caseGtin">
+        <column name="traceability_lot_code_case_gtin" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="caseBatch">
+        <column name="traceability_lot_code_case_batch" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="palletSscc">
+        <column name="traceability_lot_code_pallet_sscc" sql-type="VARCHAR(18)" />
+      </property>
+      <property name="packDate">
+        <column name="traceability_lot_code_pack_date" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="harvestDate">
+        <column name="traceability_lot_code_harvest_date" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="bestIfUsedByDate">
+        <column name="traceability_lot_code_best_if_used_by_date" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="serialNumber">
+        <column name="traceability_lot_code_serial_number" sql-type="VARCHAR(20)" />
+      </property>
+    </component>
+    <component name="quantityAndUom" class="org.dddml.ffvtraceability.domain.KdeQuantityAndUom">
+      <property name="quantity">
+        <column name="quantity_and_uom_quantity" sql-type="DECIMAL(20,2)" />
+      </property>
+      <property name="uom">
+        <column name="quantity_and_uom_uom" sql-type="VARCHAR(20)" />
+      </property>
+    </component>
+    <component name="productDescription" class="org.dddml.ffvtraceability.domain.KdeProductDescription">
+      <property name="productName">
+        <column name="product_description_product_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="packagingSize">
+        <column name="product_description_packaging_size" sql-type="VARCHAR(50)" />
+      </property>
+      <property name="packagingStyle">
+        <column name="product_description_packaging_style" sql-type="VARCHAR(50)" />
+      </property>
+    </component>
+    <component name="shipToLocation" class="org.dddml.ffvtraceability.domain.KdeLocationDescription">
+      <property name="businessName">
+        <column name="ship_to_location_business_name" sql-type="VARCHAR(200)" />
+      </property>
+      <property name="phoneNumber">
+        <column name="ship_to_location_phone_number" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="physicalLocationAddress">
+        <column name="ship_to_location_physical_location_address" sql-type="VARCHAR(200)" />
+      </property>
+      <property name="city">
+        <column name="ship_to_location_city" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="state">
+        <column name="ship_to_location_state" sql-type="VARCHAR(50)" />
+      </property>
+      <property name="zipCode">
+        <column name="ship_to_location_zip_code" sql-type="VARCHAR(20)" />
+      </property>
+    </component>
+    <component name="shipFromLocation" class="org.dddml.ffvtraceability.domain.KdeLocationDescription">
+      <property name="businessName">
+        <column name="ship_from_location_business_name" sql-type="VARCHAR(200)" />
+      </property>
+      <property name="phoneNumber">
+        <column name="ship_from_location_phone_number" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="physicalLocationAddress">
+        <column name="ship_from_location_physical_location_address" sql-type="VARCHAR(200)" />
+      </property>
+      <property name="city">
+        <column name="ship_from_location_city" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="state">
+        <column name="ship_from_location_state" sql-type="VARCHAR(50)" />
+      </property>
+      <property name="zipCode">
+        <column name="ship_from_location_zip_code" sql-type="VARCHAR(20)" />
+      </property>
+    </component>
+    <property name="receiveDate">
+      <column name="receive_date" sql-type="VARCHAR(14)" />
+    </property>
+    <component name="tlcSourceOrTlcSourceReference" class="org.dddml.ffvtraceability.domain.KdeTlcSourceOrTlcSourceReference">
+      <property name="tlcSourceBusinessName">
+        <column name="tlc_source_business_name" sql-type="VARCHAR(200)" />
+      </property>
+      <property name="tlcSourcePhoneNumber">
+        <column name="tlc_source_phone_number" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="tlcSourcePhysicalLocationAddress">
+        <column name="tlc_source_physical_location_address" sql-type="VARCHAR(200)" />
+      </property>
+      <property name="tlcSourceCity">
+        <column name="tlc_source_city" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="tlcSourceState">
+        <column name="tlc_source_state" sql-type="VARCHAR(50)" />
+      </property>
+      <property name="tlcSourceZipCode">
+        <column name="tlc_source_zip_code" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="tlcSourceReferenceWebSite">
+        <column name="tlc_source_reference_web_site" sql-type="VARCHAR(200)" />
+      </property>
+      <property name="tlcSourceReferenceFdaFfrn">
+        <column name="tlc_source_reference_fda_ffrn" sql-type="VARCHAR(11)" />
+      </property>
+      <property name="tlcSourceReferenceGln">
+        <column name="tlc_source_reference_gln" sql-type="VARCHAR(13)" />
+      </property>
+      <property name="tlcSourceReferenceGgn">
+        <column name="tlc_source_reference_ggn" sql-type="VARCHAR(13)" />
+      </property>
+    </component>
+    <component name="referenceDocument" class="org.dddml.ffvtraceability.domain.KdeReferenceDocument">
+      <property name="documentType">
+        <column name="reference_document_document_type" sql-type="VARCHAR(50)" />
+      </property>
+      <property name="documentNumber">
+        <column name="reference_document_document_number" sql-type="VARCHAR(50)" />
+      </property>
+    </component>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="commandId" column="command_id" />
+  </class>
+</hibernate-mapping>

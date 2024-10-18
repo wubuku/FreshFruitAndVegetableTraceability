@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.gs1applicationidentifier">
+  <class name="org.dddml.ffvtraceability.domain.gs1applicationidentifier.AbstractGs1ApplicationIdentifierState$SimpleGs1ApplicationIdentifierState" table="gs1_application_identifier">
+    <id name="applicationIdentifier" length="50" column="application_identifier">
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <property name="formatString">
+      <column name="format_string" />
+    </property>
+    <property name="label">
+      <column name="label_" />
+    </property>
+    <property name="description">
+      <column name="description" />
+    </property>
+    <property name="fnc1required">
+      <column name="fnc1required" />
+    </property>
+    <property name="regex">
+      <column name="regex" />
+    </property>
+    <property name="note">
+      <column name="note" />
+    </property>
+    <property name="title">
+      <column name="title" />
+    </property>
+    <property name="separatorRequired">
+      <column name="separator_required" />
+    </property>
+    <property name="gs1DigitalLinkPrimaryKey">
+      <column name="gs1_digital_link_primary_key" />
+    </property>
+    <property name="gs1DigitalLinkQualifiers">
+      <column name="gs1_digital_link_qualifiers" sql-type="json" />
+      <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+        <param name="org.hibernate.type.ParameterType">java.util.ArrayList</param>
+      </type>
+    </property>
+    <property name="excludes">
+      <column name="excludes" sql-type="json" />
+      <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+        <param name="org.hibernate.type.ParameterType">java.util.ArrayList</param>
+      </type>
+    </property>
+    <property name="requires">
+      <column name="requires" sql-type="json" />
+      <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+        <param name="org.hibernate.type.ParameterType">java.util.ArrayList</param>
+      </type>
+    </property>
+    <property name="start">
+      <column name="start" />
+    </property>
+    <property name="end">
+      <column name="end" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="commandId" column="command_id" />
+    <list name="components" table="gs1_application_identifier_components" lazy="false">
+      <key column="ApplicationIdentifier" />
+      <index column="components_index" />
+      <composite-element class="org.dddml.ffvtraceability.domain.Gs1AppIdComponent">
+        <property name="optional">
+          <column name="optional" not-null="true" />
+        </property>
+        <property name="type">
+          <column name="type" not-null="true" />
+        </property>
+        <property name="fixedLength">
+          <column name="fixed_length" not-null="true" />
+        </property>
+        <property name="length">
+          <column name="length" not-null="true" />
+        </property>
+        <property name="checkDigit">
+          <column name="check_digit" not-null="true" />
+        </property>
+        <property name="key">
+          <column name="key_" not-null="true" />
+        </property>
+        <property name="format">
+          <column name="format" not-null="true" />
+        </property>
+        <property name="checkCharacters">
+          <column name="check_characters" not-null="true" />
+        </property>
+      </composite-element>
+    </list>
+  </class>
+</hibernate-mapping>

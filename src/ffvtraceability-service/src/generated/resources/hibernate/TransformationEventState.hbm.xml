@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.transformationevent">
+  <class name="org.dddml.ffvtraceability.domain.transformationevent.AbstractTransformationEventState$SimpleTransformationEventState" table="transformation_event">
+    <id name="eventId">
+      <column name="event_id" sql-type="BIGINT" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <component name="foodUsedTlc" class="org.dddml.ffvtraceability.domain.KdeTraceabilityLotCode">
+      <property name="caseGtin">
+        <column name="food_used_tlc_case_gtin" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="caseBatch">
+        <column name="food_used_tlc_case_batch" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="palletSscc">
+        <column name="food_used_tlc_pallet_sscc" sql-type="VARCHAR(18)" />
+      </property>
+      <property name="packDate">
+        <column name="food_used_tlc_pack_date" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="harvestDate">
+        <column name="food_used_tlc_harvest_date" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="bestIfUsedByDate">
+        <column name="food_used_tlc_best_if_used_by_date" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="serialNumber">
+        <column name="food_used_tlc_serial_number" sql-type="VARCHAR(20)" />
+      </property>
+    </component>
+    <component name="foodUsedProductDescription" class="org.dddml.ffvtraceability.domain.KdeProductDescription">
+      <property name="productName">
+        <column name="food_used_product_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="packagingSize">
+        <column name="food_used_packaging_size" sql-type="VARCHAR(50)" />
+      </property>
+      <property name="packagingStyle">
+        <column name="food_used_packaging_style" sql-type="VARCHAR(50)" />
+      </property>
+    </component>
+    <component name="foodUsedQuantityAndUom" class="org.dddml.ffvtraceability.domain.KdeQuantityAndUom">
+      <property name="quantity">
+        <column name="food_used_quantity_and_uom_quantity" sql-type="DECIMAL(20,2)" />
+      </property>
+      <property name="uom">
+        <column name="food_used_quantity_and_uom_uom" sql-type="VARCHAR(20)" />
+      </property>
+    </component>
+    <component name="foodProducedNewTlc" class="org.dddml.ffvtraceability.domain.KdeTraceabilityLotCode">
+      <property name="caseGtin">
+        <column name="food_produced_new_tlc_case_gtin" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="caseBatch">
+        <column name="food_produced_new_tlc_case_batch" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="palletSscc">
+        <column name="food_produced_new_tlc_pallet_sscc" sql-type="VARCHAR(18)" />
+      </property>
+      <property name="packDate">
+        <column name="food_produced_new_tlc_pack_date" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="harvestDate">
+        <column name="food_produced_new_tlc_harvest_date" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="bestIfUsedByDate">
+        <column name="food_produced_new_tlc_best_if_used_by_date" sql-type="VARCHAR(14)" />
+      </property>
+      <property name="serialNumber">
+        <column name="food_produced_new_tlc_serial_number" sql-type="VARCHAR(20)" />
+      </property>
+    </component>
+    <component name="foodProducedProductDescription" class="org.dddml.ffvtraceability.domain.KdeProductDescription">
+      <property name="productName">
+        <column name="food_produced_product_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="packagingSize">
+        <column name="food_produced_packaging_size" sql-type="VARCHAR(50)" />
+      </property>
+      <property name="packagingStyle">
+        <column name="food_produced_packaging_style" sql-type="VARCHAR(50)" />
+      </property>
+    </component>
+    <component name="foodProducedQuantityAndUom" class="org.dddml.ffvtraceability.domain.KdeQuantityAndUom">
+      <property name="quantity">
+        <column name="food_produced_quantity_and_uom_quantity" sql-type="DECIMAL(20,2)" />
+      </property>
+      <property name="uom">
+        <column name="food_produced_quantity_and_uom_uom" sql-type="VARCHAR(20)" />
+      </property>
+    </component>
+    <component name="transformationLocation" class="org.dddml.ffvtraceability.domain.KdeLocationDescription">
+      <property name="businessName">
+        <column name="transformation_location_business_name" sql-type="VARCHAR(200)" />
+      </property>
+      <property name="phoneNumber">
+        <column name="transformation_location_phone_number" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="physicalLocationAddress">
+        <column name="transformation_location_physical_address" sql-type="VARCHAR(200)" />
+      </property>
+      <property name="city">
+        <column name="transformation_location_city" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="state">
+        <column name="transformation_location_state" sql-type="VARCHAR(50)" />
+      </property>
+      <property name="zipCode">
+        <column name="transformation_location_zip_code" sql-type="VARCHAR(20)" />
+      </property>
+    </component>
+    <property name="dateTransformed">
+      <column name="date_transformed" sql-type="VARCHAR(14)" />
+    </property>
+    <component name="referenceDocument" class="org.dddml.ffvtraceability.domain.KdeReferenceDocument">
+      <property name="documentType">
+        <column name="reference_document_document_type" sql-type="VARCHAR(50)" />
+      </property>
+      <property name="documentNumber">
+        <column name="reference_document_document_number" sql-type="VARCHAR(50)" />
+      </property>
+    </component>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="commandId" column="command_id" />
+  </class>
+</hibernate-mapping>

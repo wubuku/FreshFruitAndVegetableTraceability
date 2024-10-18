@@ -6,6 +6,8 @@ typeDefinitions:
 
 aggregates:
   ShippingEvent:
+    metadata:
+      AbsolutelyNoEventSourcing: true
     id:
       name: EventId
       type: CteEventId
@@ -50,6 +52,8 @@ aggregates:
         description: "Reference Document"
 
   ReceivingEvent:
+    metadata:
+      AbsolutelyNoEventSourcing: true
     id:
       name: EventId
       type: CteEventId
@@ -93,6 +97,8 @@ aggregates:
         description: "Reference Document"
 
   TransformationEvent:
+    metadata:
+      AbsolutelyNoEventSourcing: true
     id:
       name: EventId
       type: CteEventId

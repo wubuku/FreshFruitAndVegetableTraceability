@@ -28,6 +28,8 @@ valueObjects:
 
 aggregates:
   Gs1ApplicationIdentifier:
+    metadata:
+      AbsolutelyNoEventSourcing: true
     id:
       name: ApplicationIdentifier
       type: string
@@ -48,13 +50,14 @@ aggregates:
         type: string
       SeparatorRequired:
         type: boolean
-      # TODO: Components:
-      #   itemType: Gs1AppIdComponent
-      #   isList: true
+      Components:
+        itemType: Gs1AppIdComponent
+        isList: true
       Gs1DigitalLinkPrimaryKey:
         type: boolean
-      #TODO: Gs1DigitalLinkQualifiers:
-      #  itemType: StringList
+      Gs1DigitalLinkQualifiers:
+        type: ObjectList # item of list: StringList
+      #TODO:  itemType: StringList
       #  isList: true
       Excludes:
         type: ObjectList # item of list: Gs1AppIdRange or String

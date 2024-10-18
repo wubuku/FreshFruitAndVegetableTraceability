@@ -1,4 +1,4 @@
-src
+src/**/target
 docs/fruit-veg.pdf
 docs/PTI-Sortable-Spreadsheet-DC-to-Store-2-1.xlsx
 docs/Harv-Init-Pk-Cool-Trans-2.xlsx
@@ -7,3 +7,4 @@ docs/PTI-Sortable-Spreadsheet-Receiving-2-1.xlsx
 docs/PTI-Sortable-Spreadsheet-Retail-Store-2-1.xlsx
 docs/PTI-Sortable-Spreadsheet-Shipping-2-1.xlsx
 docs/__GS1_AI_JSON_Schema.json
+src/scripts
