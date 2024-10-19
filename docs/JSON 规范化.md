@@ -52,6 +52,47 @@ JSON 数据规范化和指纹生成是一个强大的概念，可以应用于多
 
 ---
 
+# Java 实现 JSON Canonicalization Scheme (JCS)
+
+JSON Canonicalization Scheme (JCS) 是一个 IETF 标准（RFC 8785），用于 JSON 数据的规范化。
+
+## json-canonicalization
+
+对于 Java 开发者来说，目前有一个可靠的库实现了这个标准：
+
+- GitHub: https://github.com/erdtman/java-json-canonicalization
+- 这是一个专门实现 JCS 的 Java 库。
+- 由 JCS 规范的贡献者之一开发，与标准紧密对齐。
+
+使用示例：
+```java
+import org.erdtman.jcs.JsonCanonicalizer;
+
+public class JCSExample {
+    public static void main(String[] args) throws Exception {
+        String json = "{\"b\":\"y\",\"a\":\"x\"}";
+        JsonCanonicalizer jc = new JsonCanonicalizer(json);
+        String result = jc.getEncodedString();
+        System.out.println(result); // 输出: {"a":"x","b":"y"}
+    }
+}
+```
+
+注意事项：
+1. 这个库专注于 JCS 实现，不包含其他额外功能。
+2. 在使用时需要注意异常处理，因为 `JsonCanonicalizer` 构造函数可能抛出异常。
+3. 该库的最新版本应该与 JCS 标准（RFC 8785）保持一致。
+
+
+## json-canonicalization
+
+代码库包含多种语言的实现，包括 Java：
+
+https://github.com/cyberphone/json-canonicalization
+
+
+---
+
 # RDF 和 JSON-LD：理解它们的关系及规范化
 
 ## 1. RDF (Resource Description Framework)
