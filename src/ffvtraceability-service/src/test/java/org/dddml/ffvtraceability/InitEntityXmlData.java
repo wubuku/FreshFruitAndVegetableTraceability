@@ -15,17 +15,16 @@ import java.util.Map;
  */
 public class InitEntityXmlData {
 
-
     public static void _main(final String[] args) throws Exception {
-        //todo 为了支持 DDDML Builder 的调用的 main 代码……
-        //static
+        // TODO: Create a simple CLI tool to support DDDML Builder?
+
+        // static
         org.springframework.context.ApplicationContext springFrameworkApplicationContext;
-        //static {
-            springFrameworkApplicationContext = new ClassPathXmlApplicationContext(
-                    "config/SpringConfigs.xml",
-                    "config/TestDataSourceConfig.xml"
-            );
-        //}
+        // static {
+        springFrameworkApplicationContext = new ClassPathXmlApplicationContext(
+                "config/SpringConfigs.xml",
+                "config/TestDataSourceConfig.xml");
+        // }
         ApplicationContext.current = new SpringApplicationContext(springFrameworkApplicationContext);
         String xmlDataLocationPattern = null;
         if (args != null && args.length > 0) {
@@ -35,7 +34,7 @@ public class InitEntityXmlData {
     }
 
     // ///////////////////////////////////////////////////////////////////////////
-    // 使用 data 目录中的数据（xml）文件初始化
+    // Initialize data using XML files in the data directory
     // ///////////////////////////////////////////////////////////////////////////
     public static void createEntitiesFromXmlData(String xmlDataLocationPattern) {
         String pathPattern = XmlEntityDataTool.DEFAULT_XML_DATA_LOCATION_PATTERN;
@@ -48,7 +47,7 @@ public class InitEntityXmlData {
                 try {
                     ApplicationServiceReflectUtils.invokeApplicationServiceInitializeMethod(kv.getKey(), e);
                 } catch (Exception ex) {
-                    if(isCausedByConstraintViolation(ex)) {
+                    if (isCausedByConstraintViolation(ex)) {
                         ex.printStackTrace();
                     } else {
                         ex.printStackTrace();
@@ -71,7 +70,7 @@ public class InitEntityXmlData {
                 b = true;
                 break;
             }
-            if(c.getMessage() != null && c.getMessage().startsWith("[rebirth]")) {
+            if (c.getMessage() != null && c.getMessage().startsWith("[rebirth]")) {
                 b = true;
                 break;
             }

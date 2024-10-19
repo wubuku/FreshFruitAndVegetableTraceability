@@ -78,34 +78,6 @@ public class M {
         clsMap.put("java.time.OffsetDateTime", java.time.OffsetDateTime.class);
         clsMap.put("boolean", Boolean.class);
         clsMap.put("integer", Integer.class);
-        clsMap.put("GTIN", String.class);
-        clsMap.put("SSCC", String.class);
-        clsMap.put("FFRN", String.class);
-        clsMap.put("GLN", String.class);
-        clsMap.put("GGN", String.class);
-        clsMap.put("KdeDate", String.class);
-        clsMap.put("KdeBatch", String.class);
-        clsMap.put("KdeSerialNumber", String.class);
-        clsMap.put("KdeQuantity", java.math.BigDecimal.class);
-        clsMap.put("KdeUom", String.class);
-        clsMap.put("KdeProductName", String.class);
-        clsMap.put("KdePackagingSize", String.class);
-        clsMap.put("KdePackagingStyle", String.class);
-        clsMap.put("KdeBusinessName", String.class);
-        clsMap.put("KdePhoneNumber", String.class);
-        clsMap.put("KdePhysicalLocationAddress", String.class);
-        clsMap.put("KdeCity", String.class);
-        clsMap.put("KdeState", String.class);
-        clsMap.put("KdeZipCode", String.class);
-        clsMap.put("KdeUrl", String.class);
-        clsMap.put("KdeDocumentType", String.class);
-        clsMap.put("KdeDocumentNumber", String.class);
-        clsMap.put("CteEventId", Long.class);
-        clsMap.put("StringList", java.util.List.class);
-        clsMap.put("java.util.List<String>", java.util.List.class);
-        clsMap.put("java.util.List", java.util.List.class);
-        clsMap.put("ObjectList", java.util.List.class);
-        clsMap.put("java.util.List<Object>", java.util.List.class);
         clsMap.put("blob", java.sql.Blob.class);
         clsMap.put("java.sql.Blob", java.sql.Blob.class);
         clsMap.put("byte-array", byte[].class);
@@ -142,6 +114,34 @@ public class M {
         clsMap.put("id-long-ne", String.class);
         clsMap.put("id-vlong-ne", String.class);
         clsMap.put("tel-number", String.class);
+        clsMap.put("GTIN", String.class);
+        clsMap.put("SSCC", String.class);
+        clsMap.put("FFRN", String.class);
+        clsMap.put("GLN", String.class);
+        clsMap.put("GGN", String.class);
+        clsMap.put("KdeDate", String.class);
+        clsMap.put("KdeBatch", String.class);
+        clsMap.put("KdeSerialNumber", String.class);
+        clsMap.put("KdeQuantity", java.math.BigDecimal.class);
+        clsMap.put("KdeUom", String.class);
+        clsMap.put("KdeProductName", String.class);
+        clsMap.put("KdePackagingSize", String.class);
+        clsMap.put("KdePackagingStyle", String.class);
+        clsMap.put("KdeBusinessName", String.class);
+        clsMap.put("KdePhoneNumber", String.class);
+        clsMap.put("KdePhysicalLocationAddress", String.class);
+        clsMap.put("KdeCity", String.class);
+        clsMap.put("KdeState", String.class);
+        clsMap.put("KdeZipCode", String.class);
+        clsMap.put("KdeUrl", String.class);
+        clsMap.put("KdeDocumentType", String.class);
+        clsMap.put("KdeDocumentNumber", String.class);
+        clsMap.put("CteEventId", Long.class);
+        clsMap.put("StringList", java.util.List.class);
+        clsMap.put("java.util.List<String>", java.util.List.class);
+        clsMap.put("java.util.List", java.util.List.class);
+        clsMap.put("ObjectList", java.util.List.class);
+        clsMap.put("java.util.List<Object>", java.util.List.class);
         CLASS_MAP = clsMap;
     }
 
@@ -273,7 +273,7 @@ public class M {
         initAliasMap();
     }
 
-    private static  void initAliasMap() {
+    private static void initAliasMap() {
         aliasMap.put("eventId", "eventId");
         aliasMap.put("EventId", "eventId");
         aliasMap.put("shipDate", "shipDate");
@@ -518,7 +518,7 @@ public class M {
         initAliasMap();
     }
 
-    private static  void initAliasMap() {
+    private static void initAliasMap() {
         aliasMap.put("eventId", "eventId");
         aliasMap.put("EventId", "eventId");
         aliasMap.put("receiveDate", "receiveDate");
@@ -755,7 +755,7 @@ public class M {
         initAliasMap();
     }
 
-    private static  void initAliasMap() {
+    private static void initAliasMap() {
         aliasMap.put("eventId", "eventId");
         aliasMap.put("EventId", "eventId");
         aliasMap.put("dateTransformed", "dateTransformed");
@@ -926,7 +926,7 @@ public class M {
         initAliasMap();
     }
 
-    private static  void initAliasMap() {
+    private static void initAliasMap() {
         aliasMap.put("applicationIdentifier", "applicationIdentifier");
         aliasMap.put("ApplicationIdentifier", "applicationIdentifier");
         aliasMap.put("formatString", "formatString");

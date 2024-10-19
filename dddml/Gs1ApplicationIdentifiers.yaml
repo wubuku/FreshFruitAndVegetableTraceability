@@ -46,6 +46,7 @@ aggregates:
         type: string
       Note:
         type: string
+        length: 500
       Title:
         type: string
       SeparatorRequired:

@@ -22,7 +22,7 @@
       <column name="regex" />
     </property>
     <property name="note">
-      <column name="note" />
+      <column name="note" length="500" />
     </property>
     <property name="title">
       <column name="title" />
@@ -77,28 +77,28 @@
       <index column="components_index" />
       <composite-element class="org.dddml.ffvtraceability.domain.Gs1AppIdComponent">
         <property name="optional">
-          <column name="optional" not-null="true" />
+          <column name="optional" />
         </property>
         <property name="type">
-          <column name="type" not-null="true" />
+          <column name="type" />
         </property>
         <property name="fixedLength">
-          <column name="fixed_length" not-null="true" />
+          <column name="fixed_length" />
         </property>
         <property name="length">
-          <column name="length" not-null="true" />
+          <column name="length" />
         </property>
         <property name="checkDigit">
-          <column name="check_digit" not-null="true" />
+          <column name="check_digit" />
         </property>
         <property name="key">
-          <column name="key_" not-null="true" />
+          <column name="key_" />
         </property>
         <property name="format">
-          <column name="format" not-null="true" />
+          <column name="format" />
         </property>
         <property name="checkCharacters">
-          <column name="check_characters" not-null="true" />
+          <column name="check_characters" />
         </property>
       </composite-element>
     </list>
