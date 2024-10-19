@@ -1,0 +1,12 @@
+aggregates:
+  AttributeSetInstance:
+    immutable: true
+    # isDynamic: true
+    metadata:
+      CreationWithoutIdEnabled: true
+    id:
+      name: AttributeSetInstanceId
+      type: HexHash
+    properties:
+      Properties:
+        type: ConsistentEqualityMap

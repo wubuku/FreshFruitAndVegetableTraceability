@@ -17,6 +17,9 @@ import org.dddml.ffvtraceability.domain.transformationevent.hibernate.*;
 import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.gs1applicationidentifier.hibernate.*;
+import org.dddml.ffvtraceability.domain.attributesetinstance.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.attributesetinstance.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -168,6 +171,53 @@ public class AggregatesHibernateConfig {
         AbstractGs1ApplicationIdentifierApplicationService.SimpleGs1ApplicationIdentifierApplicationService applicationService = new AbstractGs1ApplicationIdentifierApplicationService.SimpleGs1ApplicationIdentifierApplicationService(
                 gs1ApplicationIdentifierStateRepository,
                 gs1ApplicationIdentifierStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AttributeSetInstanceStateRepository attributeSetInstanceStateRepository(
+            SessionFactory hibernateSessionFactory,
+            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+    ) {
+        HibernateAttributeSetInstanceStateRepository repository = new HibernateAttributeSetInstanceStateRepository();
+        repository.setSessionFactory(hibernateSessionFactory);
+        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+        return repository;
+    }
+
+    @Bean
+    public AttributeSetInstanceStateQueryRepository attributeSetInstanceStateQueryRepository(
+            SessionFactory hibernateSessionFactory,
+            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+    ) {
+        HibernateAttributeSetInstanceStateQueryRepository repository = new HibernateAttributeSetInstanceStateQueryRepository();
+        repository.setSessionFactory(hibernateSessionFactory);
+        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+        return repository;
+    }
+
+    @Bean
+    public HibernateAttributeSetInstanceEventStore attributeSetInstanceEventStore(SessionFactory hibernateSessionFactory) {
+        HibernateAttributeSetInstanceEventStore eventStore = new HibernateAttributeSetInstanceEventStore();
+        eventStore.setSessionFactory(hibernateSessionFactory);
+        return eventStore;
+    }
+
+    @Bean
+    public AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService attributeSetInstanceApplicationService(
+            @Qualifier("attributeSetInstanceEventStore") EventStore attributeSetInstanceEventStore,
+            AttributeSetInstanceStateRepository attributeSetInstanceStateRepository,
+            AttributeSetInstanceStateQueryRepository attributeSetInstanceStateQueryRepository
+            , IdGenerator<String, AttributeSetInstanceCommand.CreateAttributeSetInstance, AttributeSetInstanceState> attributeSetInstanceIdGenerator
+    ) {
+        AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService applicationService = new AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService(
+                attributeSetInstanceEventStore,
+                attributeSetInstanceStateRepository,
+                attributeSetInstanceStateQueryRepository
+                , attributeSetInstanceIdGenerator
         );
         return applicationService;
     }

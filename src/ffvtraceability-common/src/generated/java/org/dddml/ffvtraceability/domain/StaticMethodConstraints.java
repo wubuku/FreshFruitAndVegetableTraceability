@@ -14,6 +14,7 @@ import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.receivingevent.*;
 import org.dddml.ffvtraceability.domain.transformationevent.*;
 import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
+import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 
 public class StaticMethodConstraints {
 

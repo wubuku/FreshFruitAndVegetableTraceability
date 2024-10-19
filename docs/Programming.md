@@ -58,3 +58,15 @@ java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*.json" --json
 ```
 
+### Run service
+
+```shell
+mvn -pl ffvtraceability-service-rest -am spring-boot:run
+```
+
+Swagger UI:
+
+```text
+http://localhost:1023/api/swagger-ui/index.html
+```
+

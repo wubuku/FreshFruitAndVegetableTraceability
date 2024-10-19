@@ -10,6 +10,10 @@ configuration:
         mappingType: "io.hypersistence.utils.hibernate.type.json.JsonType"
         parameters:
           "org.hibernate.type.ParameterType": "java.util.ArrayList"
+      ConsistentEqualityMap:
+        mappingType: "io.hypersistence.utils.hibernate.type.json.JsonType"
+        parameters:
+          "org.hibernate.type.ParameterType": "org.dddml.ffvtraceability.domain.ConsistentEqualityMap"
   java:
     typeMappings:
       "boolean": "Boolean"
@@ -22,3 +26,9 @@ typeDefinitions:
   ObjectList:
     sqlType: json
     javaType: java.util.List<Object>
+  HexHash:
+    sqlType: VARCHAR(64)
+    javaType: String
+  ConsistentEqualityMap:
+    sqlType: json
+    javaType: org.dddml.ffvtraceability.domain.ConsistentEqualityMap
