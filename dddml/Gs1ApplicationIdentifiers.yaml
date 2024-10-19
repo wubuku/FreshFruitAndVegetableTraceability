@@ -54,6 +54,8 @@ aggregates:
       Components:
         itemType: Gs1AppIdComponent
         isList: true
+        tableName: gs1_application_identifier_component
+        indexColumnName: component_index
       Gs1DigitalLinkPrimaryKey:
         type: boolean
       Gs1DigitalLinkQualifiers:
