@@ -18,6 +18,9 @@ configuration:
     typeMappings:
       "boolean": "Boolean"
       "integer": "Integer"
+  
+  defaultReservedPropertyMetadata:
+    noActive: true
 
 typeDefinitions:
   StringList:

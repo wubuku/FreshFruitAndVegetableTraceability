@@ -194,18 +194,6 @@ public class Gs1ApplicationIdentifierStateDto {
         this.end = end;
     }
 
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
     private Long version;
 
     public Long getVersion()
@@ -349,9 +337,6 @@ public class Gs1ApplicationIdentifierStateDto {
             }
             if (returnedFieldsContains("End")) {
                 dto.setEnd(state.getEnd());
-            }
-            if (returnedFieldsContains("Active")) {
-                dto.setActive(state.getActive());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

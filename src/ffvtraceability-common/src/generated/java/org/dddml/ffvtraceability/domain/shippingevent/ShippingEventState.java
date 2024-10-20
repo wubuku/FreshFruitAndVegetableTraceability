@@ -45,8 +45,6 @@ public interface ShippingEventState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getActive();
-
     Boolean getDeleted();
 
     String getCommandId();
@@ -79,8 +77,6 @@ public interface ShippingEventState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setActive(Boolean active);
 
         void setDeleted(Boolean deleted);
 

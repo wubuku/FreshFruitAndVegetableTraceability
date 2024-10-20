@@ -50,7 +50,6 @@ public abstract class AbstractGs1ApplicationIdentifierApplicationService impleme
         ss.setRequires(c.getRequires());
         ss.setStart(c.getStart());
         ss.setEnd(c.getEnd());
-        ss.setActive(c.getActive());
         ss.setDeleted(false);
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -168,13 +167,6 @@ public abstract class AbstractGs1ApplicationIdentifierApplicationService impleme
             }
         } else {
             ss.setEnd(c.getEnd());
-        }
-        if (c.getActive() == null) {
-            if (c.getIsPropertyActiveRemoved() != null && c.getIsPropertyActiveRemoved()) {
-                ss.setActive(null);
-            }
-        } else {
-            ss.setActive(c.getActive());
         }
         ss.setUpdatedBy(c.getRequesterId());
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

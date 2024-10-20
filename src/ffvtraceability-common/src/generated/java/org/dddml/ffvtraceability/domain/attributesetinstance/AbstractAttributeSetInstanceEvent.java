@@ -125,16 +125,6 @@ public abstract class AbstractAttributeSetInstanceEvent extends AbstractEvent im
             this.getAttributeSetInstanceState().setProperties(properties);
         }
 
-        public Boolean getActive()
-        {
-            return this.getAttributeSetInstanceState().getActive();
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.getAttributeSetInstanceState().setActive(active);
-        }
-
         protected AbstractAttributeSetInstanceStateEvent(AttributeSetInstanceEventId eventId) {
             super(eventId);
         }

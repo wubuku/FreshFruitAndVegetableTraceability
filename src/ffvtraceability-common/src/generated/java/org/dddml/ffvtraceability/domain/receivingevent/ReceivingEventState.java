@@ -45,8 +45,6 @@ public interface ReceivingEventState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getActive();
-
     Boolean getDeleted();
 
     String getCommandId();
@@ -79,8 +77,6 @@ public interface ReceivingEventState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setActive(Boolean active);
 
         void setDeleted(Boolean deleted);
 

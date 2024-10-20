@@ -163,16 +163,6 @@ public abstract class AbstractTransformationEventState implements Transformation
         this.updatedAt = updatedAt;
     }
 
-    private Boolean active;
-
-    public Boolean getActive() {
-        return this.active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     private Boolean deleted;
 
     public Boolean getDeleted() {
@@ -254,7 +244,6 @@ public abstract class AbstractTransformationEventState implements Transformation
         this.setTransformationLocation(s.getTransformationLocation());
         this.setDateTransformed(s.getDateTransformed());
         this.setReferenceDocument(s.getReferenceDocument());
-        this.setActive(s.getActive());
     }
 
     public void save() {

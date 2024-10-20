@@ -31,8 +31,6 @@ public interface AttributeSetInstanceState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getActive();
-
     String getCommandId();
 
     interface MutableAttributeSetInstanceState extends AttributeSetInstanceState {
@@ -49,8 +47,6 @@ public interface AttributeSetInstanceState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setActive(Boolean active);
 
         void setCommandId(String commandId);
 

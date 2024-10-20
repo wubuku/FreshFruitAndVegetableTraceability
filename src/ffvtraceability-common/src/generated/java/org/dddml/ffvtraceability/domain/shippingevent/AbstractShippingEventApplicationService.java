@@ -41,7 +41,6 @@ public abstract class AbstractShippingEventApplicationService implements Shippin
         s.setShipDate(c.getShipDate());
         s.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
         s.setReferenceDocument(c.getReferenceDocument());
-        s.setActive(c.getActive());
         s.setDeleted(false);
         s.setCreatedBy(c.getRequesterId());
         s.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -111,13 +110,6 @@ public abstract class AbstractShippingEventApplicationService implements Shippin
             }
         } else {
             ss.setReferenceDocument(c.getReferenceDocument());
-        }
-        if (c.getActive() == null) {
-            if (c.getIsPropertyActiveRemoved() != null && c.getIsPropertyActiveRemoved()) {
-                ss.setActive(null);
-            }
-        } else {
-            ss.setActive(c.getActive());
         }
         ss.setUpdatedBy(c.getRequesterId());
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

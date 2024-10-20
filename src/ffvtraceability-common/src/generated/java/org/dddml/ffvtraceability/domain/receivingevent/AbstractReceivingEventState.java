@@ -153,16 +153,6 @@ public abstract class AbstractReceivingEventState implements ReceivingEventState
         this.updatedAt = updatedAt;
     }
 
-    private Boolean active;
-
-    public Boolean getActive() {
-        return this.active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     private Boolean deleted;
 
     public Boolean getDeleted() {
@@ -243,7 +233,6 @@ public abstract class AbstractReceivingEventState implements ReceivingEventState
         this.setReceiveDate(s.getReceiveDate());
         this.setTlcSourceOrTlcSourceReference(s.getTlcSourceOrTlcSourceReference());
         this.setReferenceDocument(s.getReferenceDocument());
-        this.setActive(s.getActive());
     }
 
     public void save() {

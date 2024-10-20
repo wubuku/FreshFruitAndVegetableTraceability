@@ -213,16 +213,6 @@ public abstract class AbstractGs1ApplicationIdentifierState implements Gs1Applic
         this.updatedAt = updatedAt;
     }
 
-    private Boolean active;
-
-    public Boolean getActive() {
-        return this.active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     private Boolean deleted;
 
     public Boolean getDeleted() {
@@ -320,7 +310,6 @@ public abstract class AbstractGs1ApplicationIdentifierState implements Gs1Applic
         this.setRequires(s.getRequires());
         this.setStart(s.getStart());
         this.setEnd(s.getEnd());
-        this.setActive(s.getActive());
     }
 
     public void save() {

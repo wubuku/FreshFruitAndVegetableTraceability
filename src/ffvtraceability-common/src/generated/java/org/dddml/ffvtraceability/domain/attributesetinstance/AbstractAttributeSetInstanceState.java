@@ -84,16 +84,6 @@ public abstract class AbstractAttributeSetInstanceState implements AttributeSetI
         this.updatedAt = updatedAt;
     }
 
-    private Boolean active;
-
-    public Boolean getActive() {
-        return this.active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -177,7 +167,6 @@ public abstract class AbstractAttributeSetInstanceState implements AttributeSetI
         throwOnWrongEvent(e);
 
         this.setProperties(e.getProperties());
-        this.setActive(e.getActive());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -189,7 +178,6 @@ public abstract class AbstractAttributeSetInstanceState implements AttributeSetI
             return;
         }
         this.setProperties(s.getProperties());
-        this.setActive(s.getActive());
     }
 
     public void save() {

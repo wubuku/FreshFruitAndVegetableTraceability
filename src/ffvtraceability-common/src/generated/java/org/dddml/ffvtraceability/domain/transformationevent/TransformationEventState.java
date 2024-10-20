@@ -47,8 +47,6 @@ public interface TransformationEventState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getActive();
-
     Boolean getDeleted();
 
     String getCommandId();
@@ -83,8 +81,6 @@ public interface TransformationEventState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setActive(Boolean active);
 
         void setDeleted(Boolean deleted);
 

@@ -153,16 +153,6 @@ public abstract class AbstractShippingEventState implements ShippingEventState.S
         this.updatedAt = updatedAt;
     }
 
-    private Boolean active;
-
-    public Boolean getActive() {
-        return this.active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     private Boolean deleted;
 
     public Boolean getDeleted() {
@@ -243,7 +233,6 @@ public abstract class AbstractShippingEventState implements ShippingEventState.S
         this.setShipDate(s.getShipDate());
         this.setTlcSourceOrTlcSourceReference(s.getTlcSourceOrTlcSourceReference());
         this.setReferenceDocument(s.getReferenceDocument());
-        this.setActive(s.getActive());
     }
 
     public void save() {

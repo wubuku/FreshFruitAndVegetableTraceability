@@ -134,18 +134,6 @@ public class TransformationEventStateDto {
         this.referenceDocument = referenceDocument;
     }
 
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
     private Long version;
 
     public Long getVersion()
@@ -264,9 +252,6 @@ public class TransformationEventStateDto {
             }
             if (returnedFieldsContains("ReferenceDocument")) {
                 dto.setReferenceDocument(state.getReferenceDocument());
-            }
-            if (returnedFieldsContains("Active")) {
-                dto.setActive(state.getActive());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

@@ -138,9 +138,6 @@
     <property name="updatedBy">
       <column name="updated_by" />
     </property>
-    <property name="active">
-      <column name="active" />
-    </property>
     <property name="deleted">
       <column name="deleted" />
     </property>

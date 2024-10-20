@@ -45,10 +45,6 @@ public interface AttributeSetInstanceEvent extends Event {
 
         void setProperties(org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface AttributeSetInstanceStateCreated extends AttributeSetInstanceStateEvent
