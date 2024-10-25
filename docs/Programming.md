@@ -78,13 +78,15 @@ http://localhost:1023/api/swagger-ui/index.html
 
 启用 [TenantFilter](../src/ffvtraceability-service-rest/src/main/java/org/dddml/ffvtraceability/servlet/TenantFilter.java)。允许通过 HTTP Header 传递租户 ID。
 
-执行下面的命令会失败：
+执行下面的命令会失败，因为我们想要在租户 `X` 下创建数据，但是当前上下文中没有找到租户 ID：
 
 ```shell
 curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"commandId\":\"CMD_17\",\"requesterId\":\"REQUESTER_ID_17\",\"sequenceId\":\"17\",\"statusCode\":\"TEST_STATUS_CODE_17\",\"statusId\":\"TEST_STATUS_17\",\"tenantId\":\"X\"}"
 ```
 
-执行下面的命令也会失败：
+执行下面的命令也会失败，虽然我们通过 HTTP Header 设置了上下文中的租户 ID， 
+但是我们的设置要求 `StatusItem` 的 Id 要包含租户 ID（以租户 ID 开头或结尾），
+而下面 POST 请求的 `statusId` 不满足要求：
 
 ```shell
 curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" \
@@ -102,7 +104,7 @@ curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/jso
 
 #### Get StatusItems
 
-执行下面的命令查看特定租户的数据：
+执行下面的命令查看特定租户（`X`）的数据：
 
 ```shell
 curl -X GET "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "X-TenantID:X"
