@@ -20,6 +20,9 @@ import org.dddml.ffvtraceability.domain.gs1applicationidentifier.hibernate.*;
 import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.attributesetinstance.hibernate.*;
+import org.dddml.ffvtraceability.domain.statusitem.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.statusitem.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -218,6 +221,42 @@ public class AggregatesHibernateConfig {
                 attributeSetInstanceStateRepository,
                 attributeSetInstanceStateQueryRepository
                 , attributeSetInstanceIdGenerator
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public StatusItemStateRepository statusItemStateRepository(
+            SessionFactory hibernateSessionFactory,
+            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+    ) {
+        HibernateStatusItemStateRepository repository = new HibernateStatusItemStateRepository();
+        repository.setSessionFactory(hibernateSessionFactory);
+        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+        return repository;
+    }
+
+    @Bean
+    public StatusItemStateQueryRepository statusItemStateQueryRepository(
+            SessionFactory hibernateSessionFactory,
+            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+    ) {
+        HibernateStatusItemStateQueryRepository repository = new HibernateStatusItemStateQueryRepository();
+        repository.setSessionFactory(hibernateSessionFactory);
+        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+        return repository;
+    }
+
+    @Bean
+    public AbstractStatusItemApplicationService.SimpleStatusItemApplicationService statusItemApplicationService(
+            StatusItemStateRepository statusItemStateRepository,
+            StatusItemStateQueryRepository statusItemStateQueryRepository
+    ) {
+        AbstractStatusItemApplicationService.SimpleStatusItemApplicationService applicationService = new AbstractStatusItemApplicationService.SimpleStatusItemApplicationService(
+                statusItemStateRepository,
+                statusItemStateQueryRepository
         );
         return applicationService;
     }

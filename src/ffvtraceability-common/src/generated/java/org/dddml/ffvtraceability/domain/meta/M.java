@@ -38,6 +38,7 @@ public class M {
         typeToAggMap.put("TransformationEvent", "TransformationEvent");
         typeToAggMap.put("Gs1ApplicationIdentifier", "Gs1ApplicationIdentifier");
         typeToAggMap.put("AttributeSetInstance", "AttributeSetInstance");
+        typeToAggMap.put("StatusItem", "StatusItem");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -107,7 +108,6 @@ public class M {
         clsMap.put("comment", String.class);
         clsMap.put("description", String.class);
         clsMap.put("name", String.class);
-        clsMap.put("value", String.class);
         clsMap.put("credit-card-number", String.class);
         clsMap.put("credit-card-date", String.class);
         clsMap.put("email", String.class);
@@ -146,6 +146,8 @@ public class M {
         clsMap.put("HexHash", String.class);
         clsMap.put("ConsistentEqualityMap", org.dddml.ffvtraceability.domain.ConsistentEqualityMap.class);
         clsMap.put("org.dddml.ffvtraceability.domain.ConsistentEqualityMap", org.dddml.ffvtraceability.domain.ConsistentEqualityMap.class);
+        clsMap.put("id", String.class);
+        clsMap.put("id-ne", String.class);
         CLASS_MAP = clsMap;
     }
 
@@ -1042,6 +1044,99 @@ public class M {
         aliasMap.put("AttributeSetInstanceId", "attributeSetInstanceId");
         aliasMap.put("properties", "properties");
         aliasMap.put("Properties", "properties");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class StatusItemMetadata {
+
+    private StatusItemMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "statusId",
+            "statusTypeId",
+            "statusCode",
+            "sequenceId",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "active",
+            "deleted",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("statusId", "statusId");
+        aliasMap.put("StatusId", "statusId");
+        aliasMap.put("statusTypeId", "statusTypeId");
+        aliasMap.put("StatusTypeId", "statusTypeId");
+        aliasMap.put("statusCode", "statusCode");
+        aliasMap.put("StatusCode", "statusCode");
+        aliasMap.put("sequenceId", "sequenceId");
+        aliasMap.put("SequenceId", "sequenceId");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

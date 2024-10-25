@@ -5,15 +5,35 @@
 
 package org.dddml.ffvtraceability.domain;
 
+import java.util.*;
 
-public interface TenantSupport {
+public class TenantSupport {
 
-    public static final String SUPER_TENANT_ID  = "*";
+    public static final String SUPER_TENANT_ID = "*";
 
-    String getTenantId();
+    private TenantSupport() {
+    }
 
-    void setTenantId(String tenantId);
+    private static final Map<String, String> tenantIdPropertyNameMap;
 
+    private static final Set<String> typesWithIdStartsWithOrEndsWithTenantId;
+
+    static {
+        tenantIdPropertyNameMap = new HashMap<>();
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.statusitem.StatusItemState", "tenantId");
+        typesWithIdStartsWithOrEndsWithTenantId = new HashSet<>();
+        typesWithIdStartsWithOrEndsWithTenantId.add("org.dddml.ffvtraceability.domain.statusitem.StatusItemState");
+    }
+
+    public static boolean hasTenantIdProperty(String typeName) {
+        return tenantIdPropertyNameMap.containsKey(typeName);
+    }
+
+    public static String getTenantIdPropertyName(String typeName) {
+        return tenantIdPropertyNameMap.get(typeName);
+    }
+
+    public static boolean idStartsWithOrEndsWithTenantId(String typeName) {
+        return typesWithIdStartsWithOrEndsWithTenantId.contains(typeName);
+    }
 }
-
-

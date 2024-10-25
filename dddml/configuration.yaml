@@ -18,7 +18,7 @@ configuration:
     typeMappings:
       "boolean": "Boolean"
       "integer": "Integer"
-  
+
   defaultReservedPropertyMetadata:
     noActive: true
 
@@ -35,3 +35,13 @@ typeDefinitions:
   ConsistentEqualityMap:
     sqlType: json
     javaType: org.dddml.ffvtraceability.domain.ConsistentEqualityMap
+
+  id:
+    sqlType: VARCHAR(20)
+    cSharpType: string
+    javaType: String
+  id-ne:
+    sqlType: VARCHAR(20)
+    cSharpType: string
+    javaType: String
+

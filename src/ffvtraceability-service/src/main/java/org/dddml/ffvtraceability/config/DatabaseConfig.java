@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.config;
 
+import org.dddml.ffvtraceability.domain.hibernate.TenantInterceptor;
 import org.dddml.ffvtraceability.specialization.NullReadOnlyProxyGenerator;
 import org.dddml.ffvtraceability.specialization.ReadOnlyProxyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Properties;
 
 // Enables Spring's annotation-driven transaction management capability, similar to the support found in Spring's <tx:*> XML namespace.
 @EnableTransactionManagement
@@ -47,9 +48,10 @@ public class DatabaseConfig {
         //hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         sessionFactory.setPhysicalNamingStrategy(new org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy());
 
-        sessionFactory.setHibernateProperties(
-                org.hibernate.cfg.Environment.getProperties() //resources/hibernate.properties
-        );
+        Properties hibernateProperties = org.hibernate.cfg.Environment.getProperties();
+        hibernateProperties.put("hibernate.session_factory.interceptor", entityInterceptor());
+        sessionFactory.setHibernateProperties(hibernateProperties);
+        
         return sessionFactory;
     }
 
@@ -58,4 +60,8 @@ public class DatabaseConfig {
         return new NullReadOnlyProxyGenerator();
     }
 
+    @Bean
+    public org.hibernate.Interceptor entityInterceptor() {
+        return new TenantInterceptor();
+    }
 }

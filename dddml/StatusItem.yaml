@@ -1,0 +1,22 @@
+﻿aggregates:
+  StatusItem:
+    metadata:
+      NoEventSourcing: true
+      DiscriminatorBasedMultiTenancyEnabled: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    id:
+      name: StatusId
+      type: id #-ne
+
+    properties:
+      StatusTypeId:
+        type: id #-ne
+      StatusCode:
+        type: short-varchar
+      SequenceId:
+        type: id
+      Description:
+        type: description
+
+    #references: {}

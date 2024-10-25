@@ -70,3 +70,19 @@ Swagger UI:
 http://localhost:1023/api/swagger-ui/index.html
 ```
 
+### Test application
+
+```shell
+curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"commandId\":\"CMD_12\",\"requesterId\":\"REQUESTER_ID_12\",\"sequenceId\":\"12\",\"statusCode\":\"TEST_STATUS_CODE_12\",\"statusId\":\"TEST_STATUS_12\",\"tenantId\":\"*\"}"
+```
+
+```shell
+curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" \
+-H "X-TenantID:*" \
+-d "{\"commandId\":\"CMD_12\",\"requesterId\":\"REQUESTER_ID_12\",\"sequenceId\":\"12\",\"statusCode\":\"TEST_STATUS_CODE_12\",\"statusId\":\"TEST_STATUS_12\",\"tenantId\":\"*\"}"
+```
+
+
+```shell
+curl -X GET "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "X-TenantID:*"
+```

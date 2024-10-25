@@ -1,0 +1,145 @@
+package org.dddml.ffvtraceability.domain.hibernate;
+
+import org.dddml.ffvtraceability.domain.TenantContext;
+import org.dddml.ffvtraceability.domain.TenantSupport;
+import org.dddml.ffvtraceability.specialization.*;
+import org.hibernate.*;
+import org.hibernate.type.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class TenantInterceptor extends EmptyInterceptor {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Override
+    public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+        String entityTypeName = getStateObjectTypeName(entity);
+        log.info("onSave: entityTypeName={}", entityTypeName);
+        if (entityTypeName == null || !TenantSupport.hasTenantIdProperty(entityTypeName)) {
+            return false;
+        }
+        log.debug("[save] Updating entity: type={}, id={}, currentTenantId={}",
+                entity.getClass().getSimpleName(), id, TenantContext.getTenantId());
+        return setTenantId(entity, id, state, propertyNames, types, entityTypeName);
+    }
+
+    @Override
+    public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+        String entityTypeName = getStateObjectTypeName(entity);
+        log.info("onDelete: entityTypeName={}", entityTypeName);
+        if (entityTypeName == null || !TenantSupport.hasTenantIdProperty(entityTypeName)) {
+            return;
+        }
+        log.debug("[delete] Updating entity: type={}, id={}, currentTenantId={}",
+                entity.getClass().getSimpleName(), id, TenantContext.getTenantId());
+        setTenantId(entity, id, state, propertyNames, types, entityTypeName);
+    }
+
+    @Override
+    public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState,
+            String[] propertyNames, Type[] types) {
+        String entityTypeName = getStateObjectTypeName(entity);
+        log.info("onFlushDirty: entityTypeName={}", entityTypeName);
+        if (entityTypeName == null || !TenantSupport.hasTenantIdProperty(entityTypeName)) {
+            return false;
+        }
+        log.debug("[flush-dirty] Updating entity: type={}, id={}, currentTenantId={}",
+                entity.getClass().getSimpleName(), id, TenantContext.getTenantId());
+        return setTenantId(entity, id, currentState, propertyNames, types, entityTypeName);
+    }
+
+    private static boolean setTenantId(Object entity, Serializable id, Object[] state, String[] propertyNames,
+            Type[] types, String entityTypeName) {
+        String currentTenantId = TenantContext.getTenantId();
+        if (null == currentTenantId || currentTenantId.isEmpty()) {
+            throw new CallbackException("Current context tenantId is null.");
+        }
+        if (TenantSupport.SUPER_TENANT_ID != null && !TenantSupport.SUPER_TENANT_ID.isEmpty()
+                && TenantSupport.SUPER_TENANT_ID.equals(currentTenantId)) {
+            // We're in a special context, assuming the developer knows what they're doing,
+            // so skip additional checks
+        } else {
+            if (TenantSupport.idStartsWithOrEndsWithTenantId(entityTypeName)) {
+                String stringEntityId = (id instanceof String) ? (String) id : null;
+                if (stringEntityId != null) {
+                    if (!(stringEntityId.startsWith(currentTenantId) || stringEntityId.endsWith(currentTenantId))) {
+                        throw new CallbackException("Entity Id MUST starts with or ends with currentTenantId.");
+                    }
+                }
+            }
+        }
+        String tenantIdPropertyName = TenantSupport.getTenantIdPropertyName(entityTypeName);
+        return setTenantIdProperty(entity, state, propertyNames, tenantIdPropertyName, currentTenantId);
+    }
+
+    private static boolean setTenantIdProperty(Object entity, Object[] state, String[] propertyNames,
+            String tenantIdPropertyName, String currentTenantId) {
+
+        for (int i = 0; i < propertyNames.length; i++) {
+            if (tenantIdPropertyName.equals(propertyNames[i])) {
+                if (!currentTenantId.equals(state[i])) {
+                    state[i] = currentTenantId;
+                    // It seems unnecessary to use reflection here:
+                    // entity.setTenantId(currentTenantId);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static String getStateObjectTypeName(Object entity) {
+        Class<?> currentClass = entity.getClass();
+        Set<Class<?>> allInterfaces = new HashSet<>();
+        Set<Class<?>> checkedInterfaces = new HashSet<>();
+
+        while (currentClass != null) {
+            String result = checkAllInterfaces(currentClass.getInterfaces(), checkedInterfaces, allInterfaces);
+            if (result != null) {
+                return result;
+            }
+            currentClass = currentClass.getSuperclass();
+        }
+
+        // If no interfaces match the criteria, check for a unique interface ending with
+        // "State"
+        List<Class<?>> allStateInterfaces = allInterfaces.stream()
+                .filter(iface -> iface.getName().endsWith("State") &&
+                        iface.getName().startsWith("org.dddml.ffvtraceability.domain"))
+                .collect(Collectors.toList());
+
+        if (allStateInterfaces.size() == 1) {
+            return allStateInterfaces.get(0).getName();
+        }
+
+        return null;
+    }
+
+    private static String checkAllInterfaces(Class<?>[] interfaces, Set<Class<?>> checkedInterfaces,
+            Set<Class<?>> allInterfaces) {
+        for (Class<?> iface : interfaces) {
+            if (checkedInterfaces.add(iface)) { // If the interface has not been checked yet
+                allInterfaces.add(iface); // Add to the set of all interfaces
+                if (iface.getName().endsWith("State") &&
+                        iface.getName().startsWith("org.dddml.ffvtraceability.domain") &&
+                        !iface.getSimpleName().startsWith("Mutable") &&
+                        !iface.getSimpleName().startsWith("Sql")) {
+                    return iface.getName();
+                }
+                // Recursively check the parent interfaces of this interface
+                String result = checkAllInterfaces(iface.getInterfaces(), checkedInterfaces, allInterfaces);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
+}
