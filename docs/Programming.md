@@ -72,17 +72,40 @@ http://localhost:1023/api/swagger-ui/index.html
 
 ### Test application
 
+#### Create StatusItem
+
+我们使用实体 `StatusItem` 作为示例，来测试“多租户”支持。
+
+启用 [TenantFilter](../src/ffvtraceability-service-rest/src/main/java/org/dddml/ffvtraceability/servlet/TenantFilter.java)。允许通过 HTTP Header 传递租户 ID。
+
+执行下面的命令会失败：
+
 ```shell
-curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"commandId\":\"CMD_12\",\"requesterId\":\"REQUESTER_ID_12\",\"sequenceId\":\"12\",\"statusCode\":\"TEST_STATUS_CODE_12\",\"statusId\":\"TEST_STATUS_12\",\"tenantId\":\"*\"}"
+curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"commandId\":\"CMD_17\",\"requesterId\":\"REQUESTER_ID_17\",\"sequenceId\":\"17\",\"statusCode\":\"TEST_STATUS_CODE_17\",\"statusId\":\"TEST_STATUS_17\",\"tenantId\":\"X\"}"
 ```
+
+执行下面的命令也会失败：
 
 ```shell
 curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" \
--H "X-TenantID:*" \
--d "{\"commandId\":\"CMD_12\",\"requesterId\":\"REQUESTER_ID_12\",\"sequenceId\":\"12\",\"statusCode\":\"TEST_STATUS_CODE_12\",\"statusId\":\"TEST_STATUS_12\",\"tenantId\":\"*\"}"
+-H "X-TenantID:X" \
+-d "{\"commandId\":\"CMD_17\",\"requesterId\":\"REQUESTER_ID_17\",\"sequenceId\":\"17\",\"statusCode\":\"TEST_STATUS_CODE_17\",\"statusId\":\"TEST_STATUS_17\",\"tenantId\":\"X\"}"
 ```
 
+执行下面的命令会成功：
 
 ```shell
-curl -X GET "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "X-TenantID:*"
+curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" \
+-H "X-TenantID:X" \
+-d "{\"commandId\":\"CMD_17\",\"requesterId\":\"REQUESTER_ID_17\",\"sequenceId\":\"17\",\"statusCode\":\"TEST_STATUS_CODE_17\",\"statusId\":\"X-TEST_STATUS_17\",\"tenantId\":\"X\"}"
 ```
+
+#### Get StatusItems
+
+执行下面的命令查看特定租户的数据：
+
+```shell
+curl -X GET "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "X-TenantID:X"
+```
+
+
