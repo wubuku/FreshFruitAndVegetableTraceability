@@ -72,20 +72,24 @@ http://localhost:1023/api/swagger-ui/index.html
 
 ### Test application
 
+#### 多租户支持
+
+我们编写了一个 [TenantFilter](../src/ffvtraceability-service-rest/src/main/java/org/dddml/ffvtraceability/servlet/TenantFilter.java)，它的作用是允许客户端通过 HTTP Header 来设置[租户上下文](../src/ffvtraceability-common/src/generated/java/org/dddml/ffvtraceability/domain/TenantContext.java)中的“当前租户 ID”。
+
+当然，以后我们还可以支持其他方式设置租户上下文中的“当前租户 ID”，比如从 HTTP 请求的域名中解析出租户 ID。
+
+下面我们使用实体 [`StatusItem`](../dddml/StatusItem.yaml) 作为示例，来测试“多租户”支持。
+
 #### Create StatusItem
 
-我们使用实体 `StatusItem` 作为示例，来测试“多租户”支持。
-
-启用 [TenantFilter](../src/ffvtraceability-service-rest/src/main/java/org/dddml/ffvtraceability/servlet/TenantFilter.java)。允许通过 HTTP Header 传递租户 ID。
-
-执行下面的命令会失败，因为我们想要在租户 `X` 下创建数据，但是当前上下文中没有找到租户 ID：
+执行下面的命令会失败，因为我们想要在租户 `X` 下创建数据，但是当前上下文中没有找到租户 ID（因为租户上下文没有被正确设置）：
 
 ```shell
 curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"commandId\":\"CMD_17\",\"requesterId\":\"REQUESTER_ID_17\",\"sequenceId\":\"17\",\"statusCode\":\"TEST_STATUS_CODE_17\",\"statusId\":\"TEST_STATUS_17\",\"tenantId\":\"X\"}"
 ```
 
 执行下面的命令也会失败，虽然我们通过 HTTP Header 设置了上下文中的租户 ID， 
-但是我们的设置要求 `StatusItem` 的 Id 要包含租户 ID（以租户 ID 开头或结尾），
+但是我们的 DDDML 模型中还明确要求 `StatusItem` 的 Id 要包含租户 ID（以租户 ID 开头或结尾），
 而下面 POST 请求的 `statusId` 不满足要求：
 
 ```shell
