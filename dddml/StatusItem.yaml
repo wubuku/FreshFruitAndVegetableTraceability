@@ -1,8 +1,10 @@
 ﻿aggregates:
   StatusItem:
+    multiTenancy:
+      discriminatorBasedMultiTenancyEnabled: true
+      idStartsWithOrEndsWithTenantId: true
     metadata:
       NoEventSourcing: true
-      DiscriminatorBasedMultiTenancyEnabled: true
     reservedPropertyMetadata:
       noDeleted: true
     id:

@@ -1,5 +1,7 @@
 configuration:
   sequenceNumber: 1000
+  multiTenancy:
+    discriminatorBasedMultiTenancyEnabled: false
   hibernate:
     hibernateTypes:
       StringList:
