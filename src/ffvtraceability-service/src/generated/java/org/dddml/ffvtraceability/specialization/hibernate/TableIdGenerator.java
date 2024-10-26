@@ -48,7 +48,7 @@ public class TableIdGenerator<TCommand, TState> implements IdGenerator<Long, TCo
         SessionImpl session = (SessionImpl) getSessionFactory().openSession();
         try {
             //System.out.println("================ Table Id Generator =================");
-            Serializable id = idGen.generate(session, null);
+            Object id = idGen.generate(session, null);
             return (Long) id;
         } finally {
             session.close();

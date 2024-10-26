@@ -1,5 +1,8 @@
 configuration:
   sequenceNumber: 1000
+  metadata:
+    NoHibernateCriteria: true
+    ShouldUseJakartaEE: true
   multiTenancy:
     discriminatorBasedMultiTenancyEnabled: false
   hibernate:

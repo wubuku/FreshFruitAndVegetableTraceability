@@ -9,14 +9,13 @@ import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.hibernate.Session;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projections;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
+import jakarta.persistence.TypedQuery;
 import org.hibernate.SessionFactory;
 import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.specialization.*;
-import org.dddml.ffvtraceability.specialization.hibernate.*;
+import org.dddml.ffvtraceability.specialization.jpa.*;
 import org.springframework.transaction.annotation.Transactional;
 
 public class HibernateStatusItemStateQueryRepository implements StatusItemStateQueryRepository {
@@ -41,7 +40,11 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
         filter.validate();
         return session;
     }
-    
+
+    protected EntityManager getEntityManager() {
+        return sessionFactory.createEntityManager();
+    }
+
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("StatusId", "StatusTypeId", "StatusCode", "SequenceId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
@@ -63,30 +66,41 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
 
     @Transactional(readOnly = true)
     public Iterable<StatusItemState> getAll(Integer firstResult, Integer maxResults) {
-        Criteria criteria = getCurrentSession().createCriteria(StatusItemState.class);
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        if (firstResult != null) { criteria.setFirstResult(firstResult); }
-        if (maxResults != null) { criteria.setMaxResults(maxResults); }
-         addNotDeletedRestriction(criteria);
-        return criteria.list();
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<StatusItemState> cq = cb.createQuery(StatusItemState.class);
+        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        cq.select(root);
+        TypedQuery<StatusItemState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        addNotDeletedRestriction(cb, cq, root);
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)
     public Iterable<StatusItemState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        Criteria criteria = getCurrentSession().createCriteria(StatusItemState.class);
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        HibernateUtils.criteriaAddFilterAndOrdersAndSetFirstResultAndMaxResults(criteria, filter, orders, firstResult, maxResults);
-        addNotDeletedRestriction(criteria);
-        return criteria.list();
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<StatusItemState> cq = cb.createQuery(StatusItemState.class);
+        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        cq.select(root);
+        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
+        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        addNotDeletedRestriction(cb, cq, root);
+        return em.createQuery(cq).getResultList();
     }
 
     @Transactional(readOnly = true)
     public Iterable<StatusItemState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        Criteria criteria = getCurrentSession().createCriteria(StatusItemState.class);
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        HibernateUtils.criteriaAddFilterAndOrdersAndSetFirstResultAndMaxResults(criteria, filter, orders, firstResult, maxResults);
-        addNotDeletedRestriction(criteria);
-        return criteria.list();
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<StatusItemState> cq = cb.createQuery(StatusItemState.class);
+        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        cq.select(root);
+        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
+        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        addNotDeletedRestriction(cb, cq, root);
+        return em.createQuery(cq).getResultList();
     }
 
     @Transactional(readOnly = true)
@@ -108,38 +122,42 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
 
     @Transactional(readOnly = true)
     public Iterable<StatusItemState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
-        Map.Entry<String, Object> keyValue = new java.util.AbstractMap.SimpleEntry<String, Object> (propertyName, propertyValue);
-        List<Map.Entry<String, Object>> filter = new ArrayList<Map.Entry<String, Object>>();
+        Map.Entry<String, Object> keyValue = new AbstractMap.SimpleEntry<>(propertyName, propertyValue);
+        List<Map.Entry<String, Object>> filter = new ArrayList<>();
         filter.add(keyValue);
         return get(filter, orders, firstResult, maxResults);
     }
 
     @Transactional(readOnly = true)
     public long getCount(Iterable<Map.Entry<String, Object>> filter) {
-        Criteria criteria = getCurrentSession().createCriteria(StatusItemState.class);
-        criteria.setProjection(Projections.rowCount());
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        cq.select(cb.count(root));
         if (filter != null) {
-            HibernateUtils.criteriaAddFilter(criteria, filter);
+            JpaUtils.criteriaAddFilter(cb, cq, root, filter);
         }
-        addNotDeletedRestriction(criteria);
-        return (long)criteria.uniqueResult();
+        addNotDeletedRestriction(cb, cq, root);
+        return em.createQuery(cq).getSingleResult();
     }
 
     @Transactional(readOnly = true)
     public long getCount(org.dddml.support.criterion.Criterion filter) {
-        Criteria criteria = getCurrentSession().createCriteria(StatusItemState.class);
-        criteria.setProjection(Projections.rowCount());
-        if (filter != null)
-        {
-            org.hibernate.criterion.Criterion hc = CriterionUtils.toHibernateCriterion(filter);
-            criteria.add(hc);
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        cq.select(cb.count(root));
+        if (filter != null) {
+            JpaUtils.criteriaAddFilter(cb, cq, root, filter);
         }
-        addNotDeletedRestriction(criteria);
-        return (long)criteria.uniqueResult();
+        addNotDeletedRestriction(cb, cq, root);
+        return em.createQuery(cq).getSingleResult();
     }
 
 
-    protected static void addNotDeletedRestriction(Criteria criteria) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<StatusItemState> root) {
     }
 
 }

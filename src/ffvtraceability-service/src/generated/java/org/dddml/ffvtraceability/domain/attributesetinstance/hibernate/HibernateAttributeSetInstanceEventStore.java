@@ -12,7 +12,6 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.hibernate.AbstractHibernateEventStore;
 import org.hibernate.*;
-import org.hibernate.criterion.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import java.util.function.Consumer;

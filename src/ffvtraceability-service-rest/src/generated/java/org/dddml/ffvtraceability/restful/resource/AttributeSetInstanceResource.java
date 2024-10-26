@@ -7,7 +7,7 @@ package org.dddml.ffvtraceability.restful.resource;
 
 import java.util.*;
 import java.util.stream.*;
-import javax.servlet.http.*;
+import jakarta.servlet.http.*;
 import javax.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;

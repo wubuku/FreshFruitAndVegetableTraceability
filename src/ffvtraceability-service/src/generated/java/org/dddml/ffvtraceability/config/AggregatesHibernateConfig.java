@@ -144,16 +144,16 @@ public class AggregatesHibernateConfig {
 
 
 
-    @Bean
-    public Gs1ApplicationIdentifierStateRepository gs1ApplicationIdentifierStateRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateGs1ApplicationIdentifierStateRepository repository = new HibernateGs1ApplicationIdentifierStateRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
+//     @Bean
+//     public Gs1ApplicationIdentifierStateRepository gs1ApplicationIdentifierStateRepository(
+//             //SessionFactory hibernateSessionFactory,
+//             ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+//     ) {
+//         HibernateGs1ApplicationIdentifierStateRepository repository = new HibernateGs1ApplicationIdentifierStateRepository();
+//         //repository.setSessionFactory(hibernateSessionFactory);
+//         repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+//         return repository;
+//     }
 
     @Bean
     public Gs1ApplicationIdentifierStateQueryRepository gs1ApplicationIdentifierStateQueryRepository(

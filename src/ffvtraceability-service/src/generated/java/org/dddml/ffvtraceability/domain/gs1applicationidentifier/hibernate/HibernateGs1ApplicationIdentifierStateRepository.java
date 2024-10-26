@@ -8,43 +8,39 @@ package org.dddml.ffvtraceability.domain.gs1applicationidentifier.hibernate;
 import java.util.*;
 import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
-import org.hibernate.Session;
-import org.hibernate.Criteria;
-//import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projections;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.hibernate.*;
-import org.springframework.transaction.annotation.Transactional;
 
+@Repository("gs1ApplicationIdentifierStateRepository")
 public class HibernateGs1ApplicationIdentifierStateRepository implements Gs1ApplicationIdentifierStateRepository {
-    private SessionFactory sessionFactory;
 
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
+    protected EntityManager getEntityManager() {
+        return this.entityManager;
     }
-    
+
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ApplicationIdentifier", "FormatString", "Label", "Description", "Fnc1required", "Regex", "Note", "Title", "SeparatorRequired", "Components", "Gs1DigitalLinkPrimaryKey", "Gs1DigitalLinkQualifiers", "Excludes", "Requires", "Start", "End", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
-    private ReadOnlyProxyGenerator readOnlyProxyGenerator;
+    // private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
-    public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
-        return readOnlyProxyGenerator;
-    }
+    // public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
+    //     return readOnlyProxyGenerator;
+    // }
 
-    public void setReadOnlyProxyGenerator(ReadOnlyProxyGenerator readOnlyProxyGenerator) {
-        this.readOnlyProxyGenerator = readOnlyProxyGenerator;
-    }
+    // public void setReadOnlyProxyGenerator(ReadOnlyProxyGenerator readOnlyProxyGenerator) {
+    //     this.readOnlyProxyGenerator = readOnlyProxyGenerator;
+    // }
 
     @Transactional(readOnly = true)
     public Gs1ApplicationIdentifierState get(String id, boolean nullAllowed) {
-        Gs1ApplicationIdentifierState.SqlGs1ApplicationIdentifierState state = (Gs1ApplicationIdentifierState.SqlGs1ApplicationIdentifierState)getCurrentSession().get(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, id);
+        Gs1ApplicationIdentifierState.SqlGs1ApplicationIdentifierState state = entityManager.find(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState();
             state.setApplicationIdentifier(id);
@@ -54,30 +50,28 @@ public class HibernateGs1ApplicationIdentifierStateRepository implements Gs1Appl
 
     @Transactional
     public void save(Gs1ApplicationIdentifierState state) {
-        Gs1ApplicationIdentifierState s = state;
-        if(s.getVersion() == null) {
-            getCurrentSession().save(s);
+        if(state.getVersion() == null) {
+            entityManager.persist(state);
         } else {
-            getCurrentSession().update(s);
+            entityManager.merge(state);
         }
 
-        if (s instanceof Saveable)
-        {
-            Saveable saveable = (Saveable) s;
-            saveable.save();
+        if (state instanceof Saveable) {
+            ((Saveable) state).save();
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
+    @Transactional
     public void merge(Gs1ApplicationIdentifierState detached) {
-        Gs1ApplicationIdentifierState persistent = getCurrentSession().get(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, detached.getApplicationIdentifier());
+        Gs1ApplicationIdentifierState persistent = entityManager.find(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, detached.getApplicationIdentifier());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().save(persistent);
+            entityManager.merge(persistent);
         } else {
-            getCurrentSession().save(detached);
+            entityManager.persist(detached);
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
     private void merge(Gs1ApplicationIdentifierState persistent, Gs1ApplicationIdentifierState detached) {
@@ -85,4 +79,3 @@ public class HibernateGs1ApplicationIdentifierStateRepository implements Gs1Appl
     }
 
 }
-

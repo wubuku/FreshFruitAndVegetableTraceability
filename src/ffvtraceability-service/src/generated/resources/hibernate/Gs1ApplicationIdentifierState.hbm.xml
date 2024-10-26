@@ -52,10 +52,10 @@
       </type>
     </property>
     <property name="start">
-      <column name="start" />
+      <column name="start_" />
     </property>
     <property name="end">
-      <column name="end" />
+      <column name="end_" />
     </property>
     <property name="createdBy">
       <column name="created_by" />
