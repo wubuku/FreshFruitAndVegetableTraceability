@@ -8,24 +8,23 @@ package org.dddml.ffvtraceability.domain.attributesetinstance.hibernate;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.hibernate.*;
 import org.springframework.transaction.annotation.Transactional;
 
+@Repository("attributeSetInstanceStateRepository")
 public class HibernateAttributeSetInstanceStateRepository implements AttributeSetInstanceStateRepository {
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
+    protected EntityManager getEntityManager() {
+        return this.entityManager;
     }
-    
+
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("AttributeSetInstanceId", "Properties", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
@@ -40,7 +39,7 @@ public class HibernateAttributeSetInstanceStateRepository implements AttributeSe
 
     @Transactional(readOnly = true)
     public AttributeSetInstanceState get(String id, boolean nullAllowed) {
-        AttributeSetInstanceState.SqlAttributeSetInstanceState state = (AttributeSetInstanceState.SqlAttributeSetInstanceState)getCurrentSession().get(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class, id);
+        AttributeSetInstanceState.SqlAttributeSetInstanceState state = (AttributeSetInstanceState.SqlAttributeSetInstanceState)getEntityManager().find(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState();
             state.setAttributeSetInstanceId(id);
@@ -56,29 +55,28 @@ public class HibernateAttributeSetInstanceStateRepository implements AttributeSe
         if (getReadOnlyProxyGenerator() != null) {
             s = (AttributeSetInstanceState) getReadOnlyProxyGenerator().getTarget(state);
         }
-        if(s.getVersion() == null) {
-            getCurrentSession().save(s);
+        if (s.getVersion() == null) {
+            entityManager.persist(s);
         } else {
-            getCurrentSession().update(s);
+            entityManager.merge(s);
         }
 
-        if (s instanceof Saveable)
-        {
+        if (s instanceof Saveable) {
             Saveable saveable = (Saveable) s;
             saveable.save();
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
     public void merge(AttributeSetInstanceState detached) {
-        AttributeSetInstanceState persistent = getCurrentSession().get(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class, detached.getAttributeSetInstanceId());
+        AttributeSetInstanceState persistent = getEntityManager().find(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class, detached.getAttributeSetInstanceId());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().save(persistent);
+            entityManager.merge(persistent);
         } else {
-            getCurrentSession().save(detached);
+            entityManager.persist(detached);
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
     private void merge(AttributeSetInstanceState persistent, AttributeSetInstanceState detached) {

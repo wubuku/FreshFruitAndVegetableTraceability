@@ -8,24 +8,23 @@ package org.dddml.ffvtraceability.domain.receivingevent.hibernate;
 import java.util.*;
 import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 import org.dddml.ffvtraceability.domain.receivingevent.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.hibernate.*;
 import org.springframework.transaction.annotation.Transactional;
 
+@Repository("receivingEventStateRepository")
 public class HibernateReceivingEventStateRepository implements ReceivingEventStateRepository {
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
+    protected EntityManager getEntityManager() {
+        return this.entityManager;
     }
-    
+
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ReceiveDate", "TlcSourceOrTlcSourceReference", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
@@ -40,7 +39,7 @@ public class HibernateReceivingEventStateRepository implements ReceivingEventSta
 
     @Transactional(readOnly = true)
     public ReceivingEventState get(Long id, boolean nullAllowed) {
-        ReceivingEventState.SqlReceivingEventState state = (ReceivingEventState.SqlReceivingEventState)getCurrentSession().get(AbstractReceivingEventState.SimpleReceivingEventState.class, id);
+        ReceivingEventState.SqlReceivingEventState state = (ReceivingEventState.SqlReceivingEventState)getEntityManager().find(AbstractReceivingEventState.SimpleReceivingEventState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractReceivingEventState.SimpleReceivingEventState();
             state.setEventId(id);
@@ -51,29 +50,28 @@ public class HibernateReceivingEventStateRepository implements ReceivingEventSta
     @Transactional
     public void save(ReceivingEventState state) {
         ReceivingEventState s = state;
-        if(s.getVersion() == null) {
-            getCurrentSession().save(s);
+        if (s.getVersion() == null) {
+            entityManager.persist(s);
         } else {
-            getCurrentSession().update(s);
+            entityManager.merge(s);
         }
 
-        if (s instanceof Saveable)
-        {
+        if (s instanceof Saveable) {
             Saveable saveable = (Saveable) s;
             saveable.save();
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
     public void merge(ReceivingEventState detached) {
-        ReceivingEventState persistent = getCurrentSession().get(AbstractReceivingEventState.SimpleReceivingEventState.class, detached.getEventId());
+        ReceivingEventState persistent = getEntityManager().find(AbstractReceivingEventState.SimpleReceivingEventState.class, detached.getEventId());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().save(persistent);
+            entityManager.merge(persistent);
         } else {
-            getCurrentSession().save(detached);
+            entityManager.persist(detached);
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
     private void merge(ReceivingEventState persistent, ReceivingEventState detached) {

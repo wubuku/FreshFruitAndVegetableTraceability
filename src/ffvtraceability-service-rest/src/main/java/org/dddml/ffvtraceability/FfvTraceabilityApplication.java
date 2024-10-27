@@ -7,22 +7,18 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import springfox.documentation.oas.annotations.EnableOpenApi;
 
-@EnableOpenApi
 @SpringBootApplication(exclude = {
         SecurityAutoConfiguration.class
 })
 @EntityScan(basePackages = {
-        "org.dddml.ffvtraceability.sui.contract"
+        //"org.dddml.ffvtraceability.sui.contract"
 })
 @EnableScheduling
-//@EnableAutoConfiguration
 public class FfvTraceabilityApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(FfvTraceabilityApplication.class, args);
-        //ApplicationContext.current = new SpringApplicationContext(ctx);
         ctx.publishEvent(new ContextStartedEvent(ctx));
     }
 

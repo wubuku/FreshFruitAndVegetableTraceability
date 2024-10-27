@@ -11,14 +11,13 @@ import java.time.OffsetDateTime;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.hibernate.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository("gs1ApplicationIdentifierStateRepository")
 public class HibernateGs1ApplicationIdentifierStateRepository implements Gs1ApplicationIdentifierStateRepository {
-
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -28,19 +27,19 @@ public class HibernateGs1ApplicationIdentifierStateRepository implements Gs1Appl
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ApplicationIdentifier", "FormatString", "Label", "Description", "Fnc1required", "Regex", "Note", "Title", "SeparatorRequired", "Components", "Gs1DigitalLinkPrimaryKey", "Gs1DigitalLinkQualifiers", "Excludes", "Requires", "Start", "End", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
-    // private ReadOnlyProxyGenerator readOnlyProxyGenerator;
+    private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
-    // public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
-    //     return readOnlyProxyGenerator;
-    // }
+    public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
+        return readOnlyProxyGenerator;
+    }
 
-    // public void setReadOnlyProxyGenerator(ReadOnlyProxyGenerator readOnlyProxyGenerator) {
-    //     this.readOnlyProxyGenerator = readOnlyProxyGenerator;
-    // }
+    public void setReadOnlyProxyGenerator(ReadOnlyProxyGenerator readOnlyProxyGenerator) {
+        this.readOnlyProxyGenerator = readOnlyProxyGenerator;
+    }
 
     @Transactional(readOnly = true)
     public Gs1ApplicationIdentifierState get(String id, boolean nullAllowed) {
-        Gs1ApplicationIdentifierState.SqlGs1ApplicationIdentifierState state = entityManager.find(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, id);
+        Gs1ApplicationIdentifierState.SqlGs1ApplicationIdentifierState state = (Gs1ApplicationIdentifierState.SqlGs1ApplicationIdentifierState)getEntityManager().find(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState();
             state.setApplicationIdentifier(id);
@@ -50,21 +49,22 @@ public class HibernateGs1ApplicationIdentifierStateRepository implements Gs1Appl
 
     @Transactional
     public void save(Gs1ApplicationIdentifierState state) {
-        if(state.getVersion() == null) {
-            entityManager.persist(state);
+        Gs1ApplicationIdentifierState s = state;
+        if (s.getVersion() == null) {
+            entityManager.persist(s);
         } else {
-            entityManager.merge(state);
+            entityManager.merge(s);
         }
 
-        if (state instanceof Saveable) {
-            ((Saveable) state).save();
+        if (s instanceof Saveable) {
+            Saveable saveable = (Saveable) s;
+            saveable.save();
         }
         entityManager.flush();
     }
 
-    @Transactional
     public void merge(Gs1ApplicationIdentifierState detached) {
-        Gs1ApplicationIdentifierState persistent = entityManager.find(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, detached.getApplicationIdentifier());
+        Gs1ApplicationIdentifierState persistent = getEntityManager().find(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, detached.getApplicationIdentifier());
         if (persistent != null) {
             merge(persistent, detached);
             entityManager.merge(persistent);
@@ -79,3 +79,4 @@ public class HibernateGs1ApplicationIdentifierStateRepository implements Gs1Appl
     }
 
 }
+

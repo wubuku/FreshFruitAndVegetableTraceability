@@ -8,36 +8,36 @@ package org.dddml.ffvtraceability.domain.statusitem.hibernate;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.hibernate.*;
 import org.springframework.transaction.annotation.Transactional;
 
+@Repository("statusItemStateRepository")
 public class HibernateStatusItemStateRepository implements StatusItemStateRepository {
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        Session session = this.sessionFactory.getCurrentSession();
+    protected EntityManager getEntityManager() {
+        EntityManager em = this.entityManager;
         String currentTenantId = TenantContext.getTenantId();
         if (currentTenantId == null || currentTenantId.isEmpty()) {
             throw new IllegalStateException("Tenant context not set");
         }
         if (TenantSupport.SUPER_TENANT_ID != null && !TenantSupport.SUPER_TENANT_ID.isEmpty()
             && TenantSupport.SUPER_TENANT_ID.equals(currentTenantId)) {
-            return session;
+            return em;
         }
+        org.hibernate.Session session = em.unwrap(org.hibernate.Session.class);
         org.hibernate.Filter filter = session.enableFilter("tenantFilter");
         filter.setParameter("tenantId", currentTenantId);
         filter.validate();
-        return session;
+        return em;
     }
-    
+
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("StatusId", "StatusTypeId", "StatusCode", "SequenceId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
@@ -52,7 +52,7 @@ public class HibernateStatusItemStateRepository implements StatusItemStateReposi
 
     @Transactional(readOnly = true)
     public StatusItemState get(String id, boolean nullAllowed) {
-        StatusItemState.SqlStatusItemState state = (StatusItemState.SqlStatusItemState)getCurrentSession().get(AbstractStatusItemState.SimpleStatusItemState.class, id);
+        StatusItemState.SqlStatusItemState state = (StatusItemState.SqlStatusItemState)getEntityManager().find(AbstractStatusItemState.SimpleStatusItemState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractStatusItemState.SimpleStatusItemState();
             state.setStatusId(id);
@@ -63,29 +63,28 @@ public class HibernateStatusItemStateRepository implements StatusItemStateReposi
     @Transactional
     public void save(StatusItemState state) {
         StatusItemState s = state;
-        if(s.getVersion() == null) {
-            getCurrentSession().save(s);
+        if (s.getVersion() == null) {
+            entityManager.persist(s);
         } else {
-            getCurrentSession().update(s);
+            entityManager.merge(s);
         }
 
-        if (s instanceof Saveable)
-        {
+        if (s instanceof Saveable) {
             Saveable saveable = (Saveable) s;
             saveable.save();
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
     public void merge(StatusItemState detached) {
-        StatusItemState persistent = getCurrentSession().get(AbstractStatusItemState.SimpleStatusItemState.class, detached.getStatusId());
+        StatusItemState persistent = getEntityManager().find(AbstractStatusItemState.SimpleStatusItemState.class, detached.getStatusId());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().save(persistent);
+            entityManager.merge(persistent);
         } else {
-            getCurrentSession().save(detached);
+            entityManager.persist(detached);
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
     private void merge(StatusItemState persistent, StatusItemState detached) {

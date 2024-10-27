@@ -13,16 +13,15 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.PersistenceContext;
-import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Repository;
+import java.util.stream.Collectors;
 
 @Repository
 public class HibernateStatusItemStateQueryRepository implements StatusItemStateQueryRepository {
-
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -36,7 +35,7 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
             && TenantSupport.SUPER_TENANT_ID.equals(currentTenantId)) {
             return em;
         }
-        Session session = em.unwrap(Session.class);
+        org.hibernate.Session session = em.unwrap(org.hibernate.Session.class);
         org.hibernate.Filter filter = session.enableFilter("tenantFilter");
         filter.setParameter("tenantId", currentTenantId);
         filter.validate();
@@ -57,48 +56,55 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
 
     @Transactional(readOnly = true)
     public StatusItemState get(String id) {
-        return getEntityManager().find(StatusItemState.class, id);
+        StatusItemState state = (StatusItemState)getEntityManager().find(AbstractStatusItemState.SimpleStatusItemState.class, id);
+        return state;
     }
 
     @Transactional(readOnly = true)
     public Iterable<StatusItemState> getAll(Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<StatusItemState> cq = cb.createQuery(StatusItemState.class);
-        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        CriteriaQuery<AbstractStatusItemState.SimpleStatusItemState> cq = cb.createQuery(AbstractStatusItemState.SimpleStatusItemState.class);
+        Root<AbstractStatusItemState.SimpleStatusItemState> root = cq.from(AbstractStatusItemState.SimpleStatusItemState.class);
         cq.select(root);
-        TypedQuery<StatusItemState> query = em.createQuery(cq);
+        TypedQuery<AbstractStatusItemState.SimpleStatusItemState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        return query.getResultList().stream()
+            .map(StatusItemState.class::cast)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<StatusItemState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<StatusItemState> cq = cb.createQuery(StatusItemState.class);
-        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        CriteriaQuery<AbstractStatusItemState.SimpleStatusItemState> cq = cb.createQuery(AbstractStatusItemState.SimpleStatusItemState.class);
+        Root<AbstractStatusItemState.SimpleStatusItemState> root = cq.from(AbstractStatusItemState.SimpleStatusItemState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<StatusItemState> query = em.createQuery(cq);
+        TypedQuery<AbstractStatusItemState.SimpleStatusItemState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        return query.getResultList().stream()
+                .map(StatusItemState.class::cast)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<StatusItemState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<StatusItemState> cq = cb.createQuery(StatusItemState.class);
-        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        CriteriaQuery<AbstractStatusItemState.SimpleStatusItemState> cq = cb.createQuery(AbstractStatusItemState.SimpleStatusItemState.class);
+        Root<AbstractStatusItemState.SimpleStatusItemState> root = cq.from(AbstractStatusItemState.SimpleStatusItemState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<StatusItemState> query = em.createQuery(cq);
+        TypedQuery<AbstractStatusItemState.SimpleStatusItemState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        return query.getResultList().stream()
+                .map(StatusItemState.class::cast)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -131,7 +137,7 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        Root<AbstractStatusItemState.SimpleStatusItemState> root = cq.from(AbstractStatusItemState.SimpleStatusItemState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -145,7 +151,7 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<StatusItemState> root = cq.from(StatusItemState.class);
+        Root<AbstractStatusItemState.SimpleStatusItemState> root = cq.from(AbstractStatusItemState.SimpleStatusItemState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -155,7 +161,8 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<StatusItemState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractStatusItemState.SimpleStatusItemState> root) {
     }
 
 }
+

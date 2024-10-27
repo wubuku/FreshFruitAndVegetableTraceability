@@ -37,28 +37,6 @@ public class AggregatesHibernateConfig {
 
 
     @Bean
-    public ShippingEventStateRepository shippingEventStateRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateShippingEventStateRepository repository = new HibernateShippingEventStateRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
-
-    @Bean
-    public ShippingEventStateQueryRepository shippingEventStateQueryRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateShippingEventStateQueryRepository repository = new HibernateShippingEventStateQueryRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
-
-    @Bean
     public AbstractShippingEventApplicationService.SimpleShippingEventApplicationService shippingEventApplicationService(
             ShippingEventStateRepository shippingEventStateRepository,
             ShippingEventStateQueryRepository shippingEventStateQueryRepository
@@ -71,28 +49,6 @@ public class AggregatesHibernateConfig {
     }
 
 
-
-    @Bean
-    public ReceivingEventStateRepository receivingEventStateRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateReceivingEventStateRepository repository = new HibernateReceivingEventStateRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
-
-    @Bean
-    public ReceivingEventStateQueryRepository receivingEventStateQueryRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateReceivingEventStateQueryRepository repository = new HibernateReceivingEventStateQueryRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
 
     @Bean
     public AbstractReceivingEventApplicationService.SimpleReceivingEventApplicationService receivingEventApplicationService(
@@ -109,28 +65,6 @@ public class AggregatesHibernateConfig {
 
 
     @Bean
-    public TransformationEventStateRepository transformationEventStateRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateTransformationEventStateRepository repository = new HibernateTransformationEventStateRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
-
-    @Bean
-    public TransformationEventStateQueryRepository transformationEventStateQueryRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateTransformationEventStateQueryRepository repository = new HibernateTransformationEventStateQueryRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
-
-    @Bean
     public AbstractTransformationEventApplicationService.SimpleTransformationEventApplicationService transformationEventApplicationService(
             TransformationEventStateRepository transformationEventStateRepository,
             TransformationEventStateQueryRepository transformationEventStateQueryRepository
@@ -143,28 +77,6 @@ public class AggregatesHibernateConfig {
     }
 
 
-
-//     @Bean
-//     public Gs1ApplicationIdentifierStateRepository gs1ApplicationIdentifierStateRepository(
-//             //SessionFactory hibernateSessionFactory,
-//             ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-//     ) {
-//         HibernateGs1ApplicationIdentifierStateRepository repository = new HibernateGs1ApplicationIdentifierStateRepository();
-//         //repository.setSessionFactory(hibernateSessionFactory);
-//         repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-//         return repository;
-//     }
-
-    @Bean
-    public Gs1ApplicationIdentifierStateQueryRepository gs1ApplicationIdentifierStateQueryRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateGs1ApplicationIdentifierStateQueryRepository repository = new HibernateGs1ApplicationIdentifierStateQueryRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
 
     @Bean
     public AbstractGs1ApplicationIdentifierApplicationService.SimpleGs1ApplicationIdentifierApplicationService gs1ApplicationIdentifierApplicationService(
@@ -179,35 +91,6 @@ public class AggregatesHibernateConfig {
     }
 
 
-
-    @Bean
-    public AttributeSetInstanceStateRepository attributeSetInstanceStateRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateAttributeSetInstanceStateRepository repository = new HibernateAttributeSetInstanceStateRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
-
-    @Bean
-    public AttributeSetInstanceStateQueryRepository attributeSetInstanceStateQueryRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateAttributeSetInstanceStateQueryRepository repository = new HibernateAttributeSetInstanceStateQueryRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
-
-    @Bean
-    public HibernateAttributeSetInstanceEventStore attributeSetInstanceEventStore(SessionFactory hibernateSessionFactory) {
-        HibernateAttributeSetInstanceEventStore eventStore = new HibernateAttributeSetInstanceEventStore();
-        eventStore.setSessionFactory(hibernateSessionFactory);
-        return eventStore;
-    }
 
     @Bean
     public AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService attributeSetInstanceApplicationService(
@@ -226,28 +109,6 @@ public class AggregatesHibernateConfig {
     }
 
 
-
-    @Bean
-    public StatusItemStateRepository statusItemStateRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateStatusItemStateRepository repository = new HibernateStatusItemStateRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
-
-//     @Bean
-//     public StatusItemStateQueryRepository statusItemStateQueryRepository(
-//             SessionFactory hibernateSessionFactory,
-//             ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-//     ) {
-//         HibernateStatusItemStateQueryRepository repository = new HibernateStatusItemStateQueryRepository();
-//         repository.setSessionFactory(hibernateSessionFactory);
-//         repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-//         return repository;
-//     }
 
     @Bean
     public AbstractStatusItemApplicationService.SimpleStatusItemApplicationService statusItemApplicationService(

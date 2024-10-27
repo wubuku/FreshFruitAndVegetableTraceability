@@ -8,24 +8,23 @@ package org.dddml.ffvtraceability.domain.transformationevent.hibernate;
 import java.util.*;
 import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 import org.dddml.ffvtraceability.domain.transformationevent.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.hibernate.*;
 import org.springframework.transaction.annotation.Transactional;
 
+@Repository("transformationEventStateRepository")
 public class HibernateTransformationEventStateRepository implements TransformationEventStateRepository {
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
+    protected EntityManager getEntityManager() {
+        return this.entityManager;
     }
-    
+
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
@@ -40,7 +39,7 @@ public class HibernateTransformationEventStateRepository implements Transformati
 
     @Transactional(readOnly = true)
     public TransformationEventState get(Long id, boolean nullAllowed) {
-        TransformationEventState.SqlTransformationEventState state = (TransformationEventState.SqlTransformationEventState)getCurrentSession().get(AbstractTransformationEventState.SimpleTransformationEventState.class, id);
+        TransformationEventState.SqlTransformationEventState state = (TransformationEventState.SqlTransformationEventState)getEntityManager().find(AbstractTransformationEventState.SimpleTransformationEventState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractTransformationEventState.SimpleTransformationEventState();
             state.setEventId(id);
@@ -51,29 +50,28 @@ public class HibernateTransformationEventStateRepository implements Transformati
     @Transactional
     public void save(TransformationEventState state) {
         TransformationEventState s = state;
-        if(s.getVersion() == null) {
-            getCurrentSession().save(s);
+        if (s.getVersion() == null) {
+            entityManager.persist(s);
         } else {
-            getCurrentSession().update(s);
+            entityManager.merge(s);
         }
 
-        if (s instanceof Saveable)
-        {
+        if (s instanceof Saveable) {
             Saveable saveable = (Saveable) s;
             saveable.save();
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
     public void merge(TransformationEventState detached) {
-        TransformationEventState persistent = getCurrentSession().get(AbstractTransformationEventState.SimpleTransformationEventState.class, detached.getEventId());
+        TransformationEventState persistent = getEntityManager().find(AbstractTransformationEventState.SimpleTransformationEventState.class, detached.getEventId());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().save(persistent);
+            entityManager.merge(persistent);
         } else {
-            getCurrentSession().save(detached);
+            entityManager.persist(detached);
         }
-        getCurrentSession().flush();
+        entityManager.flush();
     }
 
     private void merge(TransformationEventState persistent, TransformationEventState detached) {

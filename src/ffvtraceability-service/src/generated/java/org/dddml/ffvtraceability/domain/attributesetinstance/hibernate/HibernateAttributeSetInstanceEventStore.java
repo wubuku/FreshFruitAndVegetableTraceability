@@ -10,21 +10,24 @@ import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
-import org.dddml.ffvtraceability.specialization.hibernate.AbstractHibernateEventStore;
-import org.hibernate.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import java.util.function.Consumer;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+@Component("attributeSetInstanceEventStore")
 public class HibernateAttributeSetInstanceEventStore implements EventStore {
-    private SessionFactory sessionFactory;
+    
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
+    protected EntityManager getEntityManager() {
+        return this.entityManager;
     }
 
     @Transactional(readOnly = true)
@@ -39,18 +42,16 @@ public class HibernateAttributeSetInstanceEventStore implements EventStore {
         for (Event e : events) {
             if (e instanceof AbstractAttributeSetInstanceEvent.AbstractAttributeSetInstanceStateCreated) {
                 AttributeSetInstanceState s = ((AbstractAttributeSetInstanceEvent.AbstractAttributeSetInstanceStateCreated)e).getAttributeSetInstanceState();
-                getCurrentSession().save(s);
+                getEntityManager().persist(s);
             } else {
-                getCurrentSession().save(e);
+                getEntityManager().persist(e);
             }
             if (e instanceof Saveable) {
                 Saveable saveable = (Saveable) e;
                 saveable.save();
             }
         }
-        //System.out.println("####################################################");
         afterEventsAppended.accept(events);
-        //System.out.println("####################################################");
     }
 
     @Transactional(readOnly = true)
@@ -67,7 +68,7 @@ public class HibernateAttributeSetInstanceEventStore implements EventStore {
     @Override
     public Event getEvent(EventStoreAggregateId eventStoreAggregateId, long version) {
         String idObj = (String) eventStoreAggregateId.getId();
-        AttributeSetInstanceState state = getCurrentSession().get(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class, idObj);
+        AttributeSetInstanceState state = getEntityManager().find(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class, idObj);
         return new AbstractAttributeSetInstanceEvent.SimpleAttributeSetInstanceStateCreated(state);
     }
 
@@ -80,13 +81,13 @@ public class HibernateAttributeSetInstanceEventStore implements EventStore {
         }
         Event e = getEvent(eventStoreAggregateId, version);
         EventStream es = new EventStream();
-        es.setEvents(e != null ? Collections.singletonList(e) : Collections.EMPTY_LIST);
+        es.setEvents(e != null ? Collections.singletonList(e) : Collections.emptyList());
         return es;
     }
 
+    @Transactional(readOnly = true)
+    @Override
     public boolean isEventWithCommandIdExisted(Class eventType, EventStoreAggregateId eventStoreAggregateId, String commandId) {
         throw new UnsupportedOperationException();
     }
-
 }
-

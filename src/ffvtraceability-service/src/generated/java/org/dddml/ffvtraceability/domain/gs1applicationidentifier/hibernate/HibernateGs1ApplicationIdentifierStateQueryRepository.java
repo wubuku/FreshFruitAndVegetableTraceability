@@ -12,25 +12,20 @@ import org.hibernate.Session;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
 import org.springframework.transaction.annotation.Transactional;
 
+@Repository
 public class HibernateGs1ApplicationIdentifierStateQueryRepository implements Gs1ApplicationIdentifierStateQueryRepository {
-    private SessionFactory sessionFactory;
-
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {
-        return sessionFactory.createEntityManager();
+        return this.entityManager;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ApplicationIdentifier", "FormatString", "Label", "Description", "Fnc1required", "Regex", "Note", "Title", "SeparatorRequired", "Components", "Gs1DigitalLinkPrimaryKey", "Gs1DigitalLinkQualifiers", "Excludes", "Requires", "Start", "End", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
@@ -47,8 +42,7 @@ public class HibernateGs1ApplicationIdentifierStateQueryRepository implements Gs
 
     @Transactional(readOnly = true)
     public Gs1ApplicationIdentifierState get(String id) {
-
-        Gs1ApplicationIdentifierState state = (Gs1ApplicationIdentifierState)getCurrentSession().get(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, id);
+        Gs1ApplicationIdentifierState state = (Gs1ApplicationIdentifierState)getEntityManager().find(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class, id);
         return state;
     }
 
@@ -73,9 +67,10 @@ public class HibernateGs1ApplicationIdentifierStateQueryRepository implements Gs
         Root<Gs1ApplicationIdentifierState> root = cq.from(Gs1ApplicationIdentifierState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<Gs1ApplicationIdentifierState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)
@@ -86,9 +81,10 @@ public class HibernateGs1ApplicationIdentifierStateQueryRepository implements Gs
         Root<Gs1ApplicationIdentifierState> root = cq.from(Gs1ApplicationIdentifierState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<Gs1ApplicationIdentifierState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)

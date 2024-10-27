@@ -12,25 +12,20 @@ import org.hibernate.Session;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 import org.dddml.ffvtraceability.domain.transformationevent.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
 import org.springframework.transaction.annotation.Transactional;
 
+@Repository
 public class HibernateTransformationEventStateQueryRepository implements TransformationEventStateQueryRepository {
-    private SessionFactory sessionFactory;
-
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {
-        return sessionFactory.createEntityManager();
+        return this.entityManager;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
@@ -47,8 +42,7 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
 
     @Transactional(readOnly = true)
     public TransformationEventState get(Long id) {
-
-        TransformationEventState state = (TransformationEventState)getCurrentSession().get(AbstractTransformationEventState.SimpleTransformationEventState.class, id);
+        TransformationEventState state = (TransformationEventState)getEntityManager().find(AbstractTransformationEventState.SimpleTransformationEventState.class, id);
         return state;
     }
 
@@ -73,9 +67,10 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
         Root<TransformationEventState> root = cq.from(TransformationEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<TransformationEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)
@@ -86,9 +81,10 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
         Root<TransformationEventState> root = cq.from(TransformationEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<TransformationEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)

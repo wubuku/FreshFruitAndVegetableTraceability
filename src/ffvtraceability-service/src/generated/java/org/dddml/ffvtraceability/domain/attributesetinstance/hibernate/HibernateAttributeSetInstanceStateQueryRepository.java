@@ -12,25 +12,20 @@ import org.hibernate.Session;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
 import org.springframework.transaction.annotation.Transactional;
 
+@Repository
 public class HibernateAttributeSetInstanceStateQueryRepository implements AttributeSetInstanceStateQueryRepository {
-    private SessionFactory sessionFactory;
-
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {
-        return sessionFactory.createEntityManager();
+        return this.entityManager;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("AttributeSetInstanceId", "Properties", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
@@ -47,11 +42,7 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
 
     @Transactional(readOnly = true)
     public AttributeSetInstanceState get(String id) {
-
-        AttributeSetInstanceState state = (AttributeSetInstanceState)getCurrentSession().get(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class, id);
-        if (getReadOnlyProxyGenerator() != null && state != null) {
-            return (AttributeSetInstanceState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{AttributeSetInstanceState.SqlAttributeSetInstanceState.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
-        }
+        AttributeSetInstanceState state = (AttributeSetInstanceState)getEntityManager().find(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class, id);
         return state;
     }
 
@@ -76,9 +67,10 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
         Root<AttributeSetInstanceState> root = cq.from(AttributeSetInstanceState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<AttributeSetInstanceState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)
@@ -89,9 +81,10 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
         Root<AttributeSetInstanceState> root = cq.from(AttributeSetInstanceState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<AttributeSetInstanceState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)

@@ -12,25 +12,20 @@ import org.hibernate.Session;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 import org.dddml.ffvtraceability.domain.receivingevent.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
 import org.springframework.transaction.annotation.Transactional;
 
+@Repository
 public class HibernateReceivingEventStateQueryRepository implements ReceivingEventStateQueryRepository {
-    private SessionFactory sessionFactory;
-
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {
-        return sessionFactory.createEntityManager();
+        return this.entityManager;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ReceiveDate", "TlcSourceOrTlcSourceReference", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
@@ -47,8 +42,7 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
 
     @Transactional(readOnly = true)
     public ReceivingEventState get(Long id) {
-
-        ReceivingEventState state = (ReceivingEventState)getCurrentSession().get(AbstractReceivingEventState.SimpleReceivingEventState.class, id);
+        ReceivingEventState state = (ReceivingEventState)getEntityManager().find(AbstractReceivingEventState.SimpleReceivingEventState.class, id);
         return state;
     }
 
@@ -73,9 +67,10 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
         Root<ReceivingEventState> root = cq.from(ReceivingEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<ReceivingEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)
@@ -86,9 +81,10 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
         Root<ReceivingEventState> root = cq.from(ReceivingEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<ReceivingEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)
