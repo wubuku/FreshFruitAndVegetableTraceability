@@ -43,9 +43,9 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("StatusId", "StatusTypeId", "StatusCode", "SequenceId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
-    
+
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
-    
+
     public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
         return readOnlyProxyGenerator;
     }

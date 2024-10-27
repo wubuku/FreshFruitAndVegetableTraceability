@@ -30,9 +30,9 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ReceiveDate", "TlcSourceOrTlcSourceReference", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
-    
+
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
-    
+
     public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
         return readOnlyProxyGenerator;
     }

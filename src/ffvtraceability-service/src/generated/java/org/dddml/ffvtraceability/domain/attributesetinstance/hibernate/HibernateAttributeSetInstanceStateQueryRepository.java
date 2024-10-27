@@ -30,9 +30,9 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("AttributeSetInstanceId", "Properties", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
-    
+
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
-    
+
     public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
         return readOnlyProxyGenerator;
     }

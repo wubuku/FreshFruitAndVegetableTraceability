@@ -30,9 +30,9 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
-    
+
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
-    
+
     public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
         return readOnlyProxyGenerator;
     }

@@ -10,19 +10,15 @@ import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import java.util.function.Consumer;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-
 @Component("attributeSetInstanceEventStore")
 public class HibernateAttributeSetInstanceEventStore implements EventStore {
-    
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -90,4 +86,6 @@ public class HibernateAttributeSetInstanceEventStore implements EventStore {
     public boolean isEventWithCommandIdExisted(Class eventType, EventStoreAggregateId eventStoreAggregateId, String commandId) {
         throw new UnsupportedOperationException();
     }
+
 }
+
