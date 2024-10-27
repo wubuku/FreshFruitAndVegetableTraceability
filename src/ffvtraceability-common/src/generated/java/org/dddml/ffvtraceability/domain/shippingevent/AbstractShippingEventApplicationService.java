@@ -30,25 +30,24 @@ public abstract class AbstractShippingEventApplicationService implements Shippin
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public void when(ShippingEventCommand.CreateShippingEvent c) {
-        update(c, s -> {
+    public Long createWithoutId(ShippingEventCommand.CreateShippingEvent c) {
+        ShippingEventState.SqlShippingEventState s = new AbstractShippingEventState.SimpleShippingEventState();
         // //////////////////////////
-        throwOnConcurrencyConflict(s, c);
-        ShippingEventState.SqlShippingEventState ss = ((ShippingEventState.SqlShippingEventState)s);
-        ss.setTraceabilityLotCode(c.getTraceabilityLotCode());
-        ss.setQuantityAndUom(c.getQuantityAndUom());
-        ss.setProductDescription(c.getProductDescription());
-        ss.setShipToLocation(c.getShipToLocation());
-        ss.setShipFromLocation(c.getShipFromLocation());
-        ss.setShipDate(c.getShipDate());
-        ss.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
-        ss.setReferenceDocument(c.getReferenceDocument());
-        ss.setDeleted(false);
-        ss.setCreatedBy(c.getRequesterId());
-        ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        ss.setCommandId(c.getCommandId());
+        s.setTraceabilityLotCode(c.getTraceabilityLotCode());
+        s.setQuantityAndUom(c.getQuantityAndUom());
+        s.setProductDescription(c.getProductDescription());
+        s.setShipToLocation(c.getShipToLocation());
+        s.setShipFromLocation(c.getShipFromLocation());
+        s.setShipDate(c.getShipDate());
+        s.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
+        s.setReferenceDocument(c.getReferenceDocument());
+        s.setDeleted(false);
+        s.setCreatedBy(c.getRequesterId());
+        s.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        s.setCommandId(c.getCommandId());
         // //////////////////////////
-        });
+        getStateRepository().save(s);
+        return s.getEventId();
     }
 
     public void when(ShippingEventCommand.MergePatchShippingEvent c) {

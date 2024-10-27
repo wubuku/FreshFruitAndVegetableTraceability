@@ -178,12 +178,8 @@ public class ShippingEventResource {
     public Long post(@RequestBody CreateOrMergePatchShippingEventDto.CreateShippingEventDto value,  HttpServletResponse response) {
         try {
             ShippingEventCommand.CreateShippingEvent cmd = value;//.toCreateShippingEvent();
-            if (cmd.getEventId() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ShippingEvent");
-            }
-            Long idObj = cmd.getEventId();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            shippingEventApplicationService.when(cmd);
+            Long idObj = shippingEventApplicationService.createWithoutId(cmd);
 
             return idObj;
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
@@ -205,13 +201,7 @@ public class ShippingEventResource {
                 shippingEventApplicationService.when(cmd);
                 return;
             }
-
-            value.setCommandType(Command.COMMAND_TYPE_CREATE);
-            ShippingEventCommand.CreateShippingEvent cmd = (ShippingEventCommand.CreateShippingEvent) value.toSubclass();
-            ShippingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            shippingEventApplicationService.when(cmd);
-
+            throw DomainError.named("unsupportedOperation", "Unsupported HTTP PUT to create, aggregate Id %1$s", eventId);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

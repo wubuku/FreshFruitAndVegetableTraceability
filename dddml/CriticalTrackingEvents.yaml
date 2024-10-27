@@ -11,8 +11,8 @@ aggregates:
     id:
       name: EventId
       type: CteEventId
-      #generator:
-      #  class: sequence
+      generator:
+        class: sequence
     properties:
       TraceabilityLotCode:
         type: KdeTraceabilityLotCode

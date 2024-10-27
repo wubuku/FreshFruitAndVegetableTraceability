@@ -4,7 +4,12 @@
   <class name="org.dddml.ffvtraceability.domain.shippingevent.AbstractShippingEventState$SimpleShippingEventState" table="shipping_event">
     <id name="eventId">
       <column name="event_id" sql-type="BIGINT" />
-      <generator class="assigned" />
+      <generator class="enhanced-table">
+        <param name="segment_value">shipping_event</param>
+        <param name="initial_value">1</param>
+        <param name="increment_size">10</param>
+        <param name="optimizer">pooled-lo</param>
+      </generator>
     </id>
     <version name="version" column="version" type="long" />
     <component name="traceabilityLotCode" class="org.dddml.ffvtraceability.domain.KdeTraceabilityLotCode">
