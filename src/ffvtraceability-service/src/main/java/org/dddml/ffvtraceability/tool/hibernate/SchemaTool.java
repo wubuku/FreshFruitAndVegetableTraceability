@@ -228,8 +228,8 @@ public class SchemaTool {
                 .applyPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy())
                 .build();
 
-        // // Generate ddl update script
-        // hbm2DdlOutputUpdate(metadata);
+        // Generate ddl update script
+        hbm2DdlOutputUpdate(metadata);
 
         SchemaManagementTool tool = serviceRegistry.getService(SchemaManagementTool.class);
 
@@ -238,39 +238,9 @@ public class SchemaTool {
         TargetDescriptor dropTarget = new ScriptTargetOutputImpl(dropFilePath);
         tool.getSchemaDropper(null).doDrop(
                 metadata,
-                new ExecutionOptions() {
-                    @Override
-                    public boolean shouldManageNamespaces() {
-                        return true;
-                    }
-
-                    @Override
-                    public Map<String, Object> getConfigurationValues() {
-                        return Collections.emptyMap();
-                    }
-
-                    @Override
-                    public ExceptionHandler getExceptionHandler() {
-                        return ExceptionHandlerHaltImpl.INSTANCE;
-                    }
-
-                    @Override
-                    public SchemaFilter getSchemaFilter() {
-                        return SchemaFilter.ALL;
-                    }
-                },
+                createExecutionOptions(),
                 ContributableMatcher.ALL,
-                new SourceDescriptor() {
-                    @Override
-                    public SourceType getSourceType() {
-                        return SourceType.METADATA;
-                    }
-
-                    @Override
-                    public ScriptSourceInput getScriptSourceInput() {
-                        return null;
-                    }
-                },
+                createSourceDescriptor(),
                 dropTarget);
 
         String createFilePath = Path.combine(getSqlDirectory(), FILENAME_HBM2DDL_CREATE);
@@ -278,51 +248,30 @@ public class SchemaTool {
         TargetDescriptor createTarget = new ScriptTargetOutputImpl(createFilePath);
         tool.getSchemaCreator(null).doCreation(
                 metadata,
-                new ExecutionOptions() {
-                    @Override
-                    public boolean shouldManageNamespaces() {
-                        return true;
-                    }
-
-                    @Override
-                    public Map<String, Object> getConfigurationValues() {
-                        return Collections.emptyMap();
-                    }
-
-                    @Override
-                    public ExceptionHandler getExceptionHandler() {
-                        return ExceptionHandlerHaltImpl.INSTANCE;
-                    }
-
-                    @Override
-                    public SchemaFilter getSchemaFilter() {
-                        return SchemaFilter.ALL;
-                    }
-                },
+                createExecutionOptions(),
                 ContributableMatcher.ALL,
-                new SourceDescriptor() {
-                    @Override
-                    public SourceType getSourceType() {
-                        return SourceType.METADATA;
-                    }
-
-                    @Override
-                    public ScriptSourceInput getScriptSourceInput() {
-                        return null;
-                    }
-                },
+                createSourceDescriptor(),
                 createTarget);
     }
 
-    // private void hbm2DdlOutputUpdate(MetadataImplementor metadata) {
-    //     SchemaUpdate schemaUpdate = new SchemaUpdate();
-    //     String fileName = (new SimpleDateFormat("yyyyMMddHHmm").format(new Date())) +
-    //             FILENAME_HBM2DDL_UPDATE;
-    //     String updateFilePath = Path.combine(getSqlDirectory(), fileName);
-    //     FileUtils.deleteIfExists(updateFilePath);
-    //     schemaUpdate.setOutputFile(updateFilePath).setDelimiter(SQL_DELIMITER).execute(EnumSet.of(TargetType.SCRIPT),
-    //             metadata);
-    // }
+    private void hbm2DdlOutputUpdate(MetadataImplementor metadata) {
+        ServiceRegistry serviceRegistry = metadata.getMetadataBuildingOptions().getServiceRegistry();
+        SchemaManagementTool tool = serviceRegistry.getService(SchemaManagementTool.class);
+
+        String fileName = (new SimpleDateFormat("yyyyMMddHHmm").format(new Date())) +
+                FILENAME_HBM2DDL_UPDATE;
+        String updateFilePath = Path.combine(getSqlDirectory(), fileName);
+        FileUtils.deleteIfExists(updateFilePath);
+
+        TargetDescriptor updateTarget = new ScriptTargetOutputImpl(updateFilePath);
+
+        tool.getSchemaMigrator(null).doMigration(
+                metadata,
+                createExecutionOptions(),
+                ContributableMatcher.ALL,
+                updateTarget
+        );
+    }
 
     public final void copyAndFixHbm2DdlCreateSql() {
         String srcFilePath = Path.combine(getSqlDirectory(), FILENAME_HBM2DDL_CREATE);
@@ -525,6 +474,45 @@ public class SchemaTool {
         }
     }
 
+    // Add these new methods to the SchemaTool class
+    private ExecutionOptions createExecutionOptions() {
+        return new ExecutionOptions() {
+            @Override
+            public boolean shouldManageNamespaces() {
+                return true;
+            }
+
+            @Override
+            public Map<String, Object> getConfigurationValues() {
+                return Collections.emptyMap();
+            }
+
+            @Override
+            public ExceptionHandler getExceptionHandler() {
+                return ExceptionHandlerHaltImpl.INSTANCE;
+            }
+
+            @Override
+            public SchemaFilter getSchemaFilter() {
+                return SchemaFilter.ALL;
+            }
+        };
+    }
+
+    private SourceDescriptor createSourceDescriptor() {
+        return new SourceDescriptor() {
+            @Override
+            public SourceType getSourceType() {
+                return SourceType.METADATA;
+            }
+
+            @Override
+            public ScriptSourceInput getScriptSourceInput() {
+                return null;
+            }
+        };
+    }
+
 }
 
 // Update ScriptTargetOutputImpl to implement TargetDescriptor instead of
@@ -591,3 +579,4 @@ class ScriptTargetOutputImpl implements TargetDescriptor {
         }
     }
 }
+
