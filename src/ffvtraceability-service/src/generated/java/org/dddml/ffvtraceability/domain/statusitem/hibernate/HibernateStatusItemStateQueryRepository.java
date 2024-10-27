@@ -12,37 +12,35 @@ import org.hibernate.Session;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.PersistenceContext;
 import org.hibernate.SessionFactory;
 import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class HibernateStatusItemStateQueryRepository implements StatusItemStateQueryRepository {
-    private SessionFactory sessionFactory;
 
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        Session session = this.sessionFactory.getCurrentSession();
+    protected EntityManager getEntityManager() {
+        EntityManager em = this.entityManager;
         String currentTenantId = TenantContext.getTenantId();
         if (currentTenantId == null || currentTenantId.isEmpty()) {
             throw new IllegalStateException("Tenant context not set");
         }
         if (TenantSupport.SUPER_TENANT_ID != null && !TenantSupport.SUPER_TENANT_ID.isEmpty()
             && TenantSupport.SUPER_TENANT_ID.equals(currentTenantId)) {
-            return session;
+            return em;
         }
+        Session session = em.unwrap(Session.class);
         org.hibernate.Filter filter = session.enableFilter("tenantFilter");
         filter.setParameter("tenantId", currentTenantId);
         filter.validate();
-        return session;
-    }
-
-    protected EntityManager getEntityManager() {
-        return sessionFactory.createEntityManager();
+        return em;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("StatusId", "StatusTypeId", "StatusCode", "SequenceId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
@@ -59,9 +57,7 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
 
     @Transactional(readOnly = true)
     public StatusItemState get(String id) {
-
-        StatusItemState state = (StatusItemState)getCurrentSession().get(AbstractStatusItemState.SimpleStatusItemState.class, id);
-        return state;
+        return getEntityManager().find(StatusItemState.class, id);
     }
 
     @Transactional(readOnly = true)
@@ -85,9 +81,10 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
         Root<StatusItemState> root = cq.from(StatusItemState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<StatusItemState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)
@@ -98,9 +95,10 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
         Root<StatusItemState> root = cq.from(StatusItemState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        JpaUtils.applyPagination(em.createQuery(cq), firstResult, maxResults);
+        TypedQuery<StatusItemState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return em.createQuery(cq).getResultList();
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)
@@ -161,4 +159,3 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
     }
 
 }
-

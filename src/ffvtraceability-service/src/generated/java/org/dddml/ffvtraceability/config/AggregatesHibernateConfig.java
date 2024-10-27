@@ -238,16 +238,16 @@ public class AggregatesHibernateConfig {
         return repository;
     }
 
-    @Bean
-    public StatusItemStateQueryRepository statusItemStateQueryRepository(
-            SessionFactory hibernateSessionFactory,
-            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
-    ) {
-        HibernateStatusItemStateQueryRepository repository = new HibernateStatusItemStateQueryRepository();
-        repository.setSessionFactory(hibernateSessionFactory);
-        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
-        return repository;
-    }
+//     @Bean
+//     public StatusItemStateQueryRepository statusItemStateQueryRepository(
+//             SessionFactory hibernateSessionFactory,
+//             ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+//     ) {
+//         HibernateStatusItemStateQueryRepository repository = new HibernateStatusItemStateQueryRepository();
+//         repository.setSessionFactory(hibernateSessionFactory);
+//         repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+//         return repository;
+//     }
 
     @Bean
     public AbstractStatusItemApplicationService.SimpleStatusItemApplicationService statusItemApplicationService(
