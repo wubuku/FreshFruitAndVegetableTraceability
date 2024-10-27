@@ -50,6 +50,7 @@ public class HibernateArticleStateRepository implements ArticleStateRepository {
         return state;
     }
 
+    @Transactional
     public void save(ArticleState state) {
         ArticleState s = state;
         if (getReadOnlyProxyGenerator() != null) {

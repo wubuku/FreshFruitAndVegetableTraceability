@@ -49,6 +49,21 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         this.stateQueryRepository = stateQueryRepository;
     }
 
+    public Long createWithoutId(ArticleCommand.CreateArticle c) {
+        ArticleState.SqlArticleState s = new AbstractArticleState.SimpleArticleState();
+        // //////////////////////////
+        s.setTitle(c.getTitle());
+        s.setBody(c.getBody());
+        s.setAuthor(c.getAuthor());
+        s.setTags(new HashSet<>(Arrays.asList(c.getTags())));
+        s.setDeleted(false);
+        s.setCreatedBy(c.getRequesterId());
+        s.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        // //////////////////////////
+        getStateRepository().save(s);
+        return s.getArticleId();
+    }
+
     public void when(ArticleCommand.CreateArticle c) {
         update(c, ar -> ar.create(c));
     }

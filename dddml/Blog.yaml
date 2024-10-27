@@ -1,15 +1,16 @@
 aggregates:
   Article:
-    #metadata:
+    metadata:
+      NoEventSourcingOnCreation: true
     #  Preprocessors: ["CRUD_IT"]
     #  #CRUD_IT_NO_UPDATE: true
     #  CRUD_IT_NO_DELETE: true
     id:
       name: ArticleId
       type: long #number
-      #generator:
-      #  class: sequence
-      #  # structName: ArticleIdSequence
+      generator:
+        class: sequence
+        # structName: ArticleIdSequence
     properties:
       Title:
         type: description
@@ -48,4 +49,3 @@ aggregates:
     #         type: long-varchar
     #     event:
     #       name: "ArticleBodyUpdated"
-

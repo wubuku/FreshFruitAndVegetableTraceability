@@ -14,6 +14,8 @@ import org.dddml.ffvtraceability.specialization.Event;
 import org.dddml.ffvtraceability.domain.Command;
 
 public interface ArticleApplicationService {
+    Long createWithoutId(ArticleCommand.CreateArticle c);
+
     void when(ArticleCommand.CreateArticle c);
 
     void when(ArticleCommand.MergePatchArticle c);

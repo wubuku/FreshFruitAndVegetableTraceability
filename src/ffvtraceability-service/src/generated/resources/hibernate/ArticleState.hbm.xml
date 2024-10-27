@@ -3,7 +3,12 @@
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.article">
   <class name="org.dddml.ffvtraceability.domain.article.AbstractArticleState$SimpleArticleState" table="article">
     <id name="articleId" column="article_id">
-      <generator class="assigned" />
+      <generator class="enhanced-table">
+        <param name="segment_value">article</param>
+        <param name="initial_value">1</param>
+        <param name="increment_size">10</param>
+        <param name="optimizer">pooled-lo</param>
+      </generator>
     </id>
     <version name="version" column="version" type="long" />
     <set name="protectedComments" inverse="true" cascade="all-delete-orphan" fetch="join">
