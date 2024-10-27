@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.article">
+  <class name="AbstractArticleEvent" table="article_event" abstract="true">
+    <composite-id name="articleEventId" class="org.dddml.ffvtraceability.domain.article.ArticleEventId">
+      <key-property name="articleId">
+        <column name="article_id" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractArticleEvent$ArticleLobEvent" discriminator-value="ArticleLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractArticleEvent$AbstractArticleStateEvent" abstract="true">
+      <property name="title">
+        <column name="title" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="body">
+        <column name="body" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="author">
+        <column name="author" sql-type="VARCHAR(100)" />
+      </property>
+      <set name="tags" table="article_state_event_tags" lazy="false">
+        <key>
+          <column name="article_id" />
+          <column name="version" />
+        </key>
+        <element column="tags_item" type="string" not-null="true" />
+      </set>
+      <subclass name="AbstractArticleEvent$SimpleArticleStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractArticleEvent$SimpleArticleStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyTitleRemoved" column="is_property_title_removed" />
+        <property name="isPropertyBodyRemoved" column="is_property_body_removed" />
+        <property name="isPropertyAuthorRemoved" column="is_property_author_removed" />
+      </subclass>
+      <subclass name="AbstractArticleEvent$SimpleArticleStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

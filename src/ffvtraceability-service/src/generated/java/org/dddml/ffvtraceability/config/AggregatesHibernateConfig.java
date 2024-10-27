@@ -26,6 +26,9 @@ import org.dddml.ffvtraceability.domain.statusitem.hibernate.*;
 import org.dddml.ffvtraceability.domain.uomtype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.uomtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.article.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.article.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -137,6 +140,29 @@ public class AggregatesHibernateConfig {
                 uomTypeEventStore,
                 uomTypeStateRepository,
                 uomTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+//     @Bean
+//     public CommentEventDao commentEventDao(SessionFactory hibernateSessionFactory) {
+//         HibernateCommentEventDao dao = new HibernateCommentEventDao();
+//         dao.setSessionFactory(hibernateSessionFactory);
+//         return dao;
+//     }
+
+    @Bean
+    public AbstractArticleApplicationService.SimpleArticleApplicationService articleApplicationService(
+            @Qualifier("articleEventStore") EventStore articleEventStore,
+            ArticleStateRepository articleStateRepository,
+            ArticleStateQueryRepository articleStateQueryRepository
+    ) {
+        AbstractArticleApplicationService.SimpleArticleApplicationService applicationService = new AbstractArticleApplicationService.SimpleArticleApplicationService(
+                articleEventStore,
+                articleStateRepository,
+                articleStateQueryRepository
         );
         return applicationService;
     }

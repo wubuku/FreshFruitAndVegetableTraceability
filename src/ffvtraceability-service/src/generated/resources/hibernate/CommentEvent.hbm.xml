@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.article">
+  <class name="AbstractCommentEvent" table="comment_event" abstract="true">
+    <composite-id name="commentEventId" class="org.dddml.ffvtraceability.domain.article.CommentEventId">
+      <key-property name="articleId">
+        <column name="article_comment_id_article_id" />
+      </key-property>
+      <key-property name="commentSeqId">
+        <column name="article_comment_id_comment_seq_id" />
+      </key-property>
+      <key-property name="articleVersion">
+        <column name="article_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractCommentEvent$AbstractCommentStateEvent" abstract="true">
+      <property name="commenter">
+        <column name="commenter" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="body">
+        <column name="body" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractCommentEvent$SimpleCommentStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractCommentEvent$SimpleCommentStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyCommenterRemoved" column="is_property_commenter_removed" />
+        <property name="isPropertyBodyRemoved" column="is_property_body_removed" />
+      </subclass>
+      <subclass name="AbstractCommentEvent$SimpleCommentStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

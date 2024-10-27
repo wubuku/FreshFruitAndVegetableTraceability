@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.article">
+  <class name="org.dddml.ffvtraceability.domain.article.AbstractCommentState$SimpleCommentState" table="comment">
+    <composite-id name="articleCommentId" class="org.dddml.ffvtraceability.domain.article.ArticleCommentId">
+      <key-property name="articleId">
+        <column name="article_comment_id_article_id" />
+      </key-property>
+      <key-property name="commentSeqId">
+        <column name="article_comment_id_comment_seq_id" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <many-to-one name="protectedArticleState" class="org.dddml.ffvtraceability.domain.article.AbstractArticleState$SimpleArticleState" insert="false" update="false">
+      <column name="article_comment_id_article_id" />
+    </many-to-one>
+    <property name="commenter">
+      <column name="commenter" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="body">
+      <column name="body" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

@@ -17,6 +17,7 @@ import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
 import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.domain.uomtype.*;
+import org.dddml.ffvtraceability.domain.article.*;
 
 public class StaticMethodConstraints {
 

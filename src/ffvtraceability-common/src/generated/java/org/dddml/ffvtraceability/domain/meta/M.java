@@ -40,6 +40,8 @@ public class M {
         typeToAggMap.put("AttributeSetInstance", "AttributeSetInstance");
         typeToAggMap.put("StatusItem", "StatusItem");
         typeToAggMap.put("UomType", "UomType");
+        typeToAggMap.put("Article", "Article");
+        typeToAggMap.put("Comment", "Article");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -1241,6 +1243,190 @@ public class M {
         aliasMap.put("Active", "active");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ArticleMetadata {
+
+    private ArticleMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = Long.class;
+
+    public static final String[] propertyNames = new String[] {
+            "articleId",
+            "title",
+            "body",
+            "author",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "active",
+            "deleted",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "Long",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("articleId", "articleId");
+        aliasMap.put("ArticleId", "articleId");
+        aliasMap.put("title", "title");
+        aliasMap.put("Title", "title");
+        aliasMap.put("body", "body");
+        aliasMap.put("Body", "body");
+        aliasMap.put("author", "author");
+        aliasMap.put("Author", "author");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class CommentMetadata {
+
+    private CommentMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "commentSeqId",
+            "commenter",
+            "body",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "active",
+            "deleted",
+            "articleId",
+            "articleCommentId.articleId",
+            "articleCommentId.commentSeqId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "Long",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "Long",
+            "Long",
+            "Long",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("commentSeqId", "articleCommentId.commentSeqId");
+        aliasMap.put("CommentSeqId", "articleCommentId.commentSeqId");
+        aliasMap.put("commenter", "commenter");
+        aliasMap.put("Commenter", "commenter");
+        aliasMap.put("body", "body");
+        aliasMap.put("Body", "body");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+        aliasMap.put("articleId", "articleCommentId.articleId");
+        aliasMap.put("ArticleId", "articleCommentId.articleId");
+        aliasMap.put("articleCommentId.articleId", "articleCommentId.articleId");
+        aliasMap.put("ArticleCommentId.ArticleId", "articleCommentId.articleId");
+        aliasMap.put("articleCommentId.commentSeqId", "articleCommentId.commentSeqId");
+        aliasMap.put("ArticleCommentId.CommentSeqId", "articleCommentId.commentSeqId");
     }
 
     private static void initPropertyTypeMap() {

@@ -1,0 +1,51 @@
+aggregates:
+  Article:
+    #metadata:
+    #  Preprocessors: ["CRUD_IT"]
+    #  #CRUD_IT_NO_UPDATE: true
+    #  CRUD_IT_NO_DELETE: true
+    id:
+      name: ArticleId
+      type: long #number
+      generator:
+        class: sequence
+        # structName: ArticleIdSequence
+    properties:
+      Title:
+        type: description
+      Body:
+        type: long-varchar
+      Author:
+        type: name
+        # initializationLogic:
+        #   __CONTEXT_VARIABLE__: MsgSender
+        immutable: true
+      Comments:
+        itemType: Comment
+      Tags:
+        itemType: string
+    entities:
+      Comment:
+        # metadata:
+        #   Preprocessors: ["CRUD_IT"]
+        id:
+          name: CommentSeqId
+          type: long
+          #generator:
+          #  class: sequence
+        properties:
+          Commenter:
+            type: name
+          Body:
+            type: long-varchar
+    # methods:
+    #   UpdateBody:
+    #     #metadata:
+    #     #  MessagingCommandName: "UpdateArticleBody"
+    #     description: "Updates the body of an article"
+    #     parameters:
+    #       Body:
+    #         type: long-varchar
+    #     event:
+    #       name: "ArticleBodyUpdated"
+

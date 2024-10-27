@@ -13,28 +13,46 @@ public class JpaUtils {
     private JpaUtils() {
     }
 
-    public static <CQ, T> void criteriaAddFilterAndOrders(CriteriaBuilder cb,
+    public static <CQ, T> Predicate criteriaAddFilterAndOrders(CriteriaBuilder cb,
             CriteriaQuery<CQ> cq, Root<T> root, Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
+        Predicate filterPredicate = null;
         if (filter != null) {
-            criteriaAddFilter(cb, cq, root, filter);
+            filterPredicate = criteriaAddFilter(cb, cq, root, filter);
         }
         if (orders != null) {
             criteriaAddOrders(cb, cq, root, orders);
         }
+        return filterPredicate;
     }
 
-    public static <CQ, T> void criteriaAddFilter(CriteriaBuilder cb, CriteriaQuery<CQ> cq, Root<T> root,
+    public static Predicate criteriaAddFilterAndOrders(CriteriaBuilder cb, CriteriaQuery<?> cq,
+            Root<?> root, org.dddml.support.criterion.Criterion filter, List<String> orders) {
+        Predicate filterPredicate = null;
+        if (filter != null) {
+            filterPredicate = JpaCriterionUtils.toJpaPredicate(cb, root, filter);
+            cq.where(combinePredicates(cb, cq.getRestriction(), filterPredicate));
+        }
+        if (orders != null) {
+            criteriaAddOrders(cb, cq, root, orders);
+        }
+        return filterPredicate;
+    }
+
+    public static <CQ, T> Predicate criteriaAddFilter(CriteriaBuilder cb, CriteriaQuery<CQ> cq, Root<T> root,
             Iterable<Map.Entry<String, Object>> filter) {
         Predicate[] predicates = StreamSupport.stream(filter.spliterator(), false)
                 .map(entry -> criteriaCreatePredicate(cb, root, entry))
                 .toArray(Predicate[]::new);
-        cq.where(cb.and(predicates));
+        Predicate filterPredicate = cb.and(predicates);
+        cq.where(combinePredicates(cb, cq.getRestriction(), filterPredicate));
+        return filterPredicate;
     }
 
-    public static <CQ, T> void criteriaAddFilter(CriteriaBuilder cb, CriteriaQuery<CQ> cq, Root<T> root,
+    public static <CQ, T> Predicate criteriaAddFilter(CriteriaBuilder cb, CriteriaQuery<CQ> cq, Root<T> root,
             org.dddml.support.criterion.Criterion filter) {
-        Predicate predicate = JpaCriterionUtils.toJpaPredicate(cb, root, filter);
-        cq.where(predicate);
+        Predicate filterPredicate = JpaCriterionUtils.toJpaPredicate(cb, root, filter);
+        cq.where(combinePredicates(cb, cq.getRestriction(), filterPredicate));
+        return filterPredicate;
     }
 
     public static Predicate criteriaCreatePredicate(CriteriaBuilder cb, Root<?> root,
@@ -73,17 +91,6 @@ public class JpaUtils {
         cq.where(predicate);
     }
 
-    public static void criteriaAddFilterAndOrders(CriteriaBuilder cb, CriteriaQuery<?> cq,
-            Root<?> root, org.dddml.support.criterion.Criterion filter, List<String> orders) {
-        if (filter != null) {
-            Predicate predicate = JpaCriterionUtils.toJpaPredicate(cb, root, filter);
-            cq.where(predicate);
-        }
-        if (orders != null) {
-            criteriaAddOrders(cb, cq, root, orders);
-        }
-    }
-
     public static <T> TypedQuery<T> applyPagination(TypedQuery<T> query, Integer firstResult, Integer maxResults) {
         if (firstResult != null) {
             query.setFirstResult(firstResult);
@@ -92,5 +99,12 @@ public class JpaUtils {
             query.setMaxResults(maxResults);
         }
         return query;
+    }
+
+    private static Predicate combinePredicates(CriteriaBuilder cb, Predicate existing, Predicate newPredicate) {
+        if (existing == null) {
+            return newPredicate;
+        }
+        return cb.and(existing, newPredicate);
     }
 }
