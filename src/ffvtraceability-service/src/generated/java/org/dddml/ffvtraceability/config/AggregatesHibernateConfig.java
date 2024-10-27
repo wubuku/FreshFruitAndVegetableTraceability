@@ -146,13 +146,6 @@ public class AggregatesHibernateConfig {
 
 
 
-//     @Bean
-//     public CommentEventDao commentEventDao(SessionFactory hibernateSessionFactory) {
-//         HibernateCommentEventDao dao = new HibernateCommentEventDao();
-//         dao.setSessionFactory(hibernateSessionFactory);
-//         return dao;
-//     }
-
     @Bean
     public AbstractArticleApplicationService.SimpleArticleApplicationService articleApplicationService(
             @Qualifier("articleEventStore") EventStore articleEventStore,

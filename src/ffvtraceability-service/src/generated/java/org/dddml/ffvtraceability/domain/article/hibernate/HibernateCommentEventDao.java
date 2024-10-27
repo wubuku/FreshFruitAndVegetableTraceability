@@ -7,12 +7,12 @@ package org.dddml.ffvtraceability.domain.article.hibernate;
 
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.article.*;
-import org.dddml.ffvtraceability.specialization.*;
 import jakarta.persistence.criteria.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
+import org.dddml.ffvtraceability.domain.article.*;
+import org.dddml.ffvtraceability.specialization.*;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component("commentEventDao")
@@ -52,3 +52,4 @@ public class HibernateCommentEventDao implements CommentEventDao {
     }
 
 }
+

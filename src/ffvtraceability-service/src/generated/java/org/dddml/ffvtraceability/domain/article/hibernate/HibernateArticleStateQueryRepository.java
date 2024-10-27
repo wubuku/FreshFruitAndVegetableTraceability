@@ -143,7 +143,7 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
     @Transactional(readOnly = true)
     public CommentState getComment(Long articleId, Long commentSeqId) {
         ArticleCommentId entityId = new ArticleCommentId(articleId, commentSeqId);
-        return getEntityManager().find(AbstractCommentState.SimpleCommentState.class, entityId);
+        return (CommentState) getEntityManager().find(AbstractCommentState.SimpleCommentState.class, entityId);
     }
 
     @Transactional(readOnly = true)
@@ -154,9 +154,10 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
         Root<AbstractCommentState.SimpleCommentState> root = cq.from(AbstractCommentState.SimpleCommentState.class);
         cq.select(root);
 
-        // Add condition for articleId
-        Predicate articleIdPredicate = cb.equal(root.get("articleCommentId").get("articleId"), articleId);
-        cq.where(articleIdPredicate);
+        Predicate partIdCondition = cb.and(
+            cb.equal(root.get("articleCommentId").get("articleId"), articleId)
+        );
+        cq.where(partIdCondition);
 
         // Add filter and orders
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
