@@ -1,0 +1,26 @@
+aggregates:
+  UomType:
+    #reservedPropertyMetadata: {}
+    #metadata:
+    #  AbsolutelyNoEventSourcing: true
+    id:
+      name: UomTypeId
+      type: id #-ne
+
+    properties:
+      ParentTypeId:
+        type: id #-ne
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+
+    references:
+      ParentTypeId:
+        name: ParentTypeId
+        displayName: PARENT-TYPE-ID
+        description: Parent
+        type: UomType
+        properties:
+          - ParentTypeId
+        foreignKeyName: UOM_TYPE_PARENT

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.uomtype">
+  <class name="AbstractUomTypeEvent" table="uom_type_event" abstract="true">
+    <composite-id name="uomTypeEventId" class="org.dddml.ffvtraceability.domain.uomtype.UomTypeEventId">
+      <key-property name="uomTypeId">
+        <column name="uom_type_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractUomTypeEvent$UomTypeLobEvent" discriminator-value="UomTypeLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractUomTypeEvent$AbstractUomTypeStateEvent" abstract="true">
+      <property name="parentTypeId">
+        <column name="parent_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="hasTable">
+        <column name="has_table" sql-type="CHAR(1)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractUomTypeEvent$SimpleUomTypeStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractUomTypeEvent$SimpleUomTypeStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyParentTypeIdRemoved" column="is_property_parent_type_id_removed" />
+        <property name="isPropertyHasTableRemoved" column="is_property_has_table_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+      </subclass>
+      <subclass name="AbstractUomTypeEvent$SimpleUomTypeStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

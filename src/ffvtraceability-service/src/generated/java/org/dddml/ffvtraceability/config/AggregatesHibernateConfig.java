@@ -23,6 +23,9 @@ import org.dddml.ffvtraceability.domain.attributesetinstance.hibernate.*;
 import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.statusitem.hibernate.*;
+import org.dddml.ffvtraceability.domain.uomtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.uomtype.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -118,6 +121,22 @@ public class AggregatesHibernateConfig {
         AbstractStatusItemApplicationService.SimpleStatusItemApplicationService applicationService = new AbstractStatusItemApplicationService.SimpleStatusItemApplicationService(
                 statusItemStateRepository,
                 statusItemStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractUomTypeApplicationService.SimpleUomTypeApplicationService uomTypeApplicationService(
+            @Qualifier("uomTypeEventStore") EventStore uomTypeEventStore,
+            UomTypeStateRepository uomTypeStateRepository,
+            UomTypeStateQueryRepository uomTypeStateQueryRepository
+    ) {
+        AbstractUomTypeApplicationService.SimpleUomTypeApplicationService applicationService = new AbstractUomTypeApplicationService.SimpleUomTypeApplicationService(
+                uomTypeEventStore,
+                uomTypeStateRepository,
+                uomTypeStateQueryRepository
         );
         return applicationService;
     }
