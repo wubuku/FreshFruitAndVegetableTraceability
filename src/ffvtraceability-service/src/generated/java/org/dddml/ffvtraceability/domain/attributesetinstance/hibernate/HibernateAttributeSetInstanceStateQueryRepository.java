@@ -14,6 +14,7 @@ import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import java.util.stream.Collectors;
 import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
@@ -50,48 +51,47 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
     public Iterable<AttributeSetInstanceState> getAll(Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AttributeSetInstanceState> cq = cb.createQuery(AttributeSetInstanceState.class);
-        Root<AttributeSetInstanceState> root = cq.from(AttributeSetInstanceState.class);
+        CriteriaQuery<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> cq = cb.createQuery(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class);
+        Root<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> root = cq.from(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class);
         cq.select(root);
-        TypedQuery<AttributeSetInstanceState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(AttributeSetInstanceState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<AttributeSetInstanceState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AttributeSetInstanceState> cq = cb.createQuery(AttributeSetInstanceState.class);
-        Root<AttributeSetInstanceState> root = cq.from(AttributeSetInstanceState.class);
+        CriteriaQuery<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> cq = cb.createQuery(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class);
+        Root<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> root = cq.from(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<AttributeSetInstanceState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(AttributeSetInstanceState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<AttributeSetInstanceState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AttributeSetInstanceState> cq = cb.createQuery(AttributeSetInstanceState.class);
-        Root<AttributeSetInstanceState> root = cq.from(AttributeSetInstanceState.class);
+        CriteriaQuery<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> cq = cb.createQuery(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class);
+        Root<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> root = cq.from(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<AttributeSetInstanceState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(AttributeSetInstanceState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public AttributeSetInstanceState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
         List<AttributeSetInstanceState> list = (List<AttributeSetInstanceState>)get(filter, orders, 0, 1);
-        if (list == null || list.size() <= 0)
-        {
+        if (list == null || list.size() <= 0) {
             return null;
         }
         return list.get(0);
@@ -117,7 +117,7 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<AttributeSetInstanceState> root = cq.from(AttributeSetInstanceState.class);
+        Root<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> root = cq.from(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -131,7 +131,7 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<AttributeSetInstanceState> root = cq.from(AttributeSetInstanceState.class);
+        Root<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> root = cq.from(AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -141,7 +141,7 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AttributeSetInstanceState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> root) {
     }
 
 }

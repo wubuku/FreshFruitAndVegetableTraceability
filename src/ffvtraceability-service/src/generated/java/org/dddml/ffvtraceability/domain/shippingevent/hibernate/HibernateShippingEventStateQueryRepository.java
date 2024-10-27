@@ -14,6 +14,7 @@ import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import java.util.stream.Collectors;
 import org.dddml.ffvtraceability.domain.shippingevent.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
@@ -50,48 +51,47 @@ public class HibernateShippingEventStateQueryRepository implements ShippingEvent
     public Iterable<ShippingEventState> getAll(Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ShippingEventState> cq = cb.createQuery(ShippingEventState.class);
-        Root<ShippingEventState> root = cq.from(ShippingEventState.class);
+        CriteriaQuery<AbstractShippingEventState.SimpleShippingEventState> cq = cb.createQuery(AbstractShippingEventState.SimpleShippingEventState.class);
+        Root<AbstractShippingEventState.SimpleShippingEventState> root = cq.from(AbstractShippingEventState.SimpleShippingEventState.class);
         cq.select(root);
-        TypedQuery<ShippingEventState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractShippingEventState.SimpleShippingEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(ShippingEventState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<ShippingEventState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ShippingEventState> cq = cb.createQuery(ShippingEventState.class);
-        Root<ShippingEventState> root = cq.from(ShippingEventState.class);
+        CriteriaQuery<AbstractShippingEventState.SimpleShippingEventState> cq = cb.createQuery(AbstractShippingEventState.SimpleShippingEventState.class);
+        Root<AbstractShippingEventState.SimpleShippingEventState> root = cq.from(AbstractShippingEventState.SimpleShippingEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<ShippingEventState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractShippingEventState.SimpleShippingEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(ShippingEventState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<ShippingEventState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ShippingEventState> cq = cb.createQuery(ShippingEventState.class);
-        Root<ShippingEventState> root = cq.from(ShippingEventState.class);
+        CriteriaQuery<AbstractShippingEventState.SimpleShippingEventState> cq = cb.createQuery(AbstractShippingEventState.SimpleShippingEventState.class);
+        Root<AbstractShippingEventState.SimpleShippingEventState> root = cq.from(AbstractShippingEventState.SimpleShippingEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<ShippingEventState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractShippingEventState.SimpleShippingEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(ShippingEventState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ShippingEventState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
         List<ShippingEventState> list = (List<ShippingEventState>)get(filter, orders, 0, 1);
-        if (list == null || list.size() <= 0)
-        {
+        if (list == null || list.size() <= 0) {
             return null;
         }
         return list.get(0);
@@ -117,7 +117,7 @@ public class HibernateShippingEventStateQueryRepository implements ShippingEvent
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<ShippingEventState> root = cq.from(ShippingEventState.class);
+        Root<AbstractShippingEventState.SimpleShippingEventState> root = cq.from(AbstractShippingEventState.SimpleShippingEventState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -131,7 +131,7 @@ public class HibernateShippingEventStateQueryRepository implements ShippingEvent
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<ShippingEventState> root = cq.from(ShippingEventState.class);
+        Root<AbstractShippingEventState.SimpleShippingEventState> root = cq.from(AbstractShippingEventState.SimpleShippingEventState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -141,7 +141,11 @@ public class HibernateShippingEventStateQueryRepository implements ShippingEvent
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<ShippingEventState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractShippingEventState.SimpleShippingEventState> root) {
+        Predicate isNull = cb.isNull(root.get("deleted"));
+        Predicate isFalse = cb.equal(root.get("deleted"), false);
+        Predicate notDeleted = cb.or(isNull, isFalse);
+        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }

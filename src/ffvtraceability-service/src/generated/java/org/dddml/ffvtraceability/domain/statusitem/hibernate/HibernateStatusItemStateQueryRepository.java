@@ -14,11 +14,11 @@ import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import java.util.stream.Collectors;
 import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.stream.Collectors;
 
 @Repository
 public class HibernateStatusItemStateQueryRepository implements StatusItemStateQueryRepository {
@@ -67,12 +67,10 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
         CriteriaQuery<AbstractStatusItemState.SimpleStatusItemState> cq = cb.createQuery(AbstractStatusItemState.SimpleStatusItemState.class);
         Root<AbstractStatusItemState.SimpleStatusItemState> root = cq.from(AbstractStatusItemState.SimpleStatusItemState.class);
         cq.select(root);
+        addNotDeletedRestriction(cb, cq, root);
         TypedQuery<AbstractStatusItemState.SimpleStatusItemState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
-        addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList().stream()
-            .map(StatusItemState.class::cast)
-            .collect(Collectors.toList());
+        return query.getResultList().stream().map(StatusItemState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -83,12 +81,10 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
         Root<AbstractStatusItemState.SimpleStatusItemState> root = cq.from(AbstractStatusItemState.SimpleStatusItemState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
+        addNotDeletedRestriction(cb, cq, root);
         TypedQuery<AbstractStatusItemState.SimpleStatusItemState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
-        addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList().stream()
-                .map(StatusItemState.class::cast)
-                .collect(Collectors.toList());
+        return query.getResultList().stream().map(StatusItemState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -99,19 +95,16 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
         Root<AbstractStatusItemState.SimpleStatusItemState> root = cq.from(AbstractStatusItemState.SimpleStatusItemState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
+        addNotDeletedRestriction(cb, cq, root);
         TypedQuery<AbstractStatusItemState.SimpleStatusItemState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
-        addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList().stream()
-                .map(StatusItemState.class::cast)
-                .collect(Collectors.toList());
+        return query.getResultList().stream().map(StatusItemState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public StatusItemState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
         List<StatusItemState> list = (List<StatusItemState>)get(filter, orders, 0, 1);
-        if (list == null || list.size() <= 0)
-        {
+        if (list == null || list.size() <= 0) {
             return null;
         }
         return list.get(0);

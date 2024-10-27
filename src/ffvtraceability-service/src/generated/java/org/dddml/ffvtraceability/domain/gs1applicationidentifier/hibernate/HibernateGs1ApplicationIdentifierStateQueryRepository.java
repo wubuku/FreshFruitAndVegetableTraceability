@@ -14,6 +14,7 @@ import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import java.util.stream.Collectors;
 import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
@@ -50,48 +51,47 @@ public class HibernateGs1ApplicationIdentifierStateQueryRepository implements Gs
     public Iterable<Gs1ApplicationIdentifierState> getAll(Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Gs1ApplicationIdentifierState> cq = cb.createQuery(Gs1ApplicationIdentifierState.class);
-        Root<Gs1ApplicationIdentifierState> root = cq.from(Gs1ApplicationIdentifierState.class);
+        CriteriaQuery<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> cq = cb.createQuery(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class);
+        Root<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> root = cq.from(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class);
         cq.select(root);
-        TypedQuery<Gs1ApplicationIdentifierState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(Gs1ApplicationIdentifierState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<Gs1ApplicationIdentifierState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Gs1ApplicationIdentifierState> cq = cb.createQuery(Gs1ApplicationIdentifierState.class);
-        Root<Gs1ApplicationIdentifierState> root = cq.from(Gs1ApplicationIdentifierState.class);
+        CriteriaQuery<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> cq = cb.createQuery(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class);
+        Root<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> root = cq.from(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<Gs1ApplicationIdentifierState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(Gs1ApplicationIdentifierState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<Gs1ApplicationIdentifierState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Gs1ApplicationIdentifierState> cq = cb.createQuery(Gs1ApplicationIdentifierState.class);
-        Root<Gs1ApplicationIdentifierState> root = cq.from(Gs1ApplicationIdentifierState.class);
+        CriteriaQuery<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> cq = cb.createQuery(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class);
+        Root<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> root = cq.from(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<Gs1ApplicationIdentifierState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(Gs1ApplicationIdentifierState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Gs1ApplicationIdentifierState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
         List<Gs1ApplicationIdentifierState> list = (List<Gs1ApplicationIdentifierState>)get(filter, orders, 0, 1);
-        if (list == null || list.size() <= 0)
-        {
+        if (list == null || list.size() <= 0) {
             return null;
         }
         return list.get(0);
@@ -117,7 +117,7 @@ public class HibernateGs1ApplicationIdentifierStateQueryRepository implements Gs
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<Gs1ApplicationIdentifierState> root = cq.from(Gs1ApplicationIdentifierState.class);
+        Root<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> root = cq.from(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -131,7 +131,7 @@ public class HibernateGs1ApplicationIdentifierStateQueryRepository implements Gs
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<Gs1ApplicationIdentifierState> root = cq.from(Gs1ApplicationIdentifierState.class);
+        Root<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> root = cq.from(AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -141,7 +141,11 @@ public class HibernateGs1ApplicationIdentifierStateQueryRepository implements Gs
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<Gs1ApplicationIdentifierState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> root) {
+        Predicate isNull = cb.isNull(root.get("deleted"));
+        Predicate isFalse = cb.equal(root.get("deleted"), false);
+        Predicate notDeleted = cb.or(isNull, isFalse);
+        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }

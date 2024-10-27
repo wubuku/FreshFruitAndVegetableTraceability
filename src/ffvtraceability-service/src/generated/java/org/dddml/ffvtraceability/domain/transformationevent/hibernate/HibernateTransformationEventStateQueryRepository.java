@@ -14,6 +14,7 @@ import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import java.util.stream.Collectors;
 import org.dddml.ffvtraceability.domain.transformationevent.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
@@ -50,48 +51,47 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
     public Iterable<TransformationEventState> getAll(Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<TransformationEventState> cq = cb.createQuery(TransformationEventState.class);
-        Root<TransformationEventState> root = cq.from(TransformationEventState.class);
+        CriteriaQuery<AbstractTransformationEventState.SimpleTransformationEventState> cq = cb.createQuery(AbstractTransformationEventState.SimpleTransformationEventState.class);
+        Root<AbstractTransformationEventState.SimpleTransformationEventState> root = cq.from(AbstractTransformationEventState.SimpleTransformationEventState.class);
         cq.select(root);
-        TypedQuery<TransformationEventState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractTransformationEventState.SimpleTransformationEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(TransformationEventState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<TransformationEventState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<TransformationEventState> cq = cb.createQuery(TransformationEventState.class);
-        Root<TransformationEventState> root = cq.from(TransformationEventState.class);
+        CriteriaQuery<AbstractTransformationEventState.SimpleTransformationEventState> cq = cb.createQuery(AbstractTransformationEventState.SimpleTransformationEventState.class);
+        Root<AbstractTransformationEventState.SimpleTransformationEventState> root = cq.from(AbstractTransformationEventState.SimpleTransformationEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<TransformationEventState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractTransformationEventState.SimpleTransformationEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(TransformationEventState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<TransformationEventState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<TransformationEventState> cq = cb.createQuery(TransformationEventState.class);
-        Root<TransformationEventState> root = cq.from(TransformationEventState.class);
+        CriteriaQuery<AbstractTransformationEventState.SimpleTransformationEventState> cq = cb.createQuery(AbstractTransformationEventState.SimpleTransformationEventState.class);
+        Root<AbstractTransformationEventState.SimpleTransformationEventState> root = cq.from(AbstractTransformationEventState.SimpleTransformationEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<TransformationEventState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractTransformationEventState.SimpleTransformationEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(TransformationEventState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public TransformationEventState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
         List<TransformationEventState> list = (List<TransformationEventState>)get(filter, orders, 0, 1);
-        if (list == null || list.size() <= 0)
-        {
+        if (list == null || list.size() <= 0) {
             return null;
         }
         return list.get(0);
@@ -117,7 +117,7 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<TransformationEventState> root = cq.from(TransformationEventState.class);
+        Root<AbstractTransformationEventState.SimpleTransformationEventState> root = cq.from(AbstractTransformationEventState.SimpleTransformationEventState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -131,7 +131,7 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<TransformationEventState> root = cq.from(TransformationEventState.class);
+        Root<AbstractTransformationEventState.SimpleTransformationEventState> root = cq.from(AbstractTransformationEventState.SimpleTransformationEventState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -141,7 +141,11 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<TransformationEventState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractTransformationEventState.SimpleTransformationEventState> root) {
+        Predicate isNull = cb.isNull(root.get("deleted"));
+        Predicate isFalse = cb.equal(root.get("deleted"), false);
+        Predicate notDeleted = cb.or(isNull, isFalse);
+        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }

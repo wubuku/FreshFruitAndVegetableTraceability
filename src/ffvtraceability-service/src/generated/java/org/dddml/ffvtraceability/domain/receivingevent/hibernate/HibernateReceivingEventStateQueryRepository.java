@@ -14,6 +14,7 @@ import jakarta.persistence.criteria.*;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import java.util.stream.Collectors;
 import org.dddml.ffvtraceability.domain.receivingevent.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.jpa.*;
@@ -50,48 +51,47 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
     public Iterable<ReceivingEventState> getAll(Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ReceivingEventState> cq = cb.createQuery(ReceivingEventState.class);
-        Root<ReceivingEventState> root = cq.from(ReceivingEventState.class);
+        CriteriaQuery<AbstractReceivingEventState.SimpleReceivingEventState> cq = cb.createQuery(AbstractReceivingEventState.SimpleReceivingEventState.class);
+        Root<AbstractReceivingEventState.SimpleReceivingEventState> root = cq.from(AbstractReceivingEventState.SimpleReceivingEventState.class);
         cq.select(root);
-        TypedQuery<ReceivingEventState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractReceivingEventState.SimpleReceivingEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(ReceivingEventState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<ReceivingEventState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ReceivingEventState> cq = cb.createQuery(ReceivingEventState.class);
-        Root<ReceivingEventState> root = cq.from(ReceivingEventState.class);
+        CriteriaQuery<AbstractReceivingEventState.SimpleReceivingEventState> cq = cb.createQuery(AbstractReceivingEventState.SimpleReceivingEventState.class);
+        Root<AbstractReceivingEventState.SimpleReceivingEventState> root = cq.from(AbstractReceivingEventState.SimpleReceivingEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<ReceivingEventState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractReceivingEventState.SimpleReceivingEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(ReceivingEventState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<ReceivingEventState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ReceivingEventState> cq = cb.createQuery(ReceivingEventState.class);
-        Root<ReceivingEventState> root = cq.from(ReceivingEventState.class);
+        CriteriaQuery<AbstractReceivingEventState.SimpleReceivingEventState> cq = cb.createQuery(AbstractReceivingEventState.SimpleReceivingEventState.class);
+        Root<AbstractReceivingEventState.SimpleReceivingEventState> root = cq.from(AbstractReceivingEventState.SimpleReceivingEventState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        TypedQuery<ReceivingEventState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
         addNotDeletedRestriction(cb, cq, root);
-        return query.getResultList();
+        TypedQuery<AbstractReceivingEventState.SimpleReceivingEventState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(ReceivingEventState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ReceivingEventState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
         List<ReceivingEventState> list = (List<ReceivingEventState>)get(filter, orders, 0, 1);
-        if (list == null || list.size() <= 0)
-        {
+        if (list == null || list.size() <= 0) {
             return null;
         }
         return list.get(0);
@@ -117,7 +117,7 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<ReceivingEventState> root = cq.from(ReceivingEventState.class);
+        Root<AbstractReceivingEventState.SimpleReceivingEventState> root = cq.from(AbstractReceivingEventState.SimpleReceivingEventState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -131,7 +131,7 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<ReceivingEventState> root = cq.from(ReceivingEventState.class);
+        Root<AbstractReceivingEventState.SimpleReceivingEventState> root = cq.from(AbstractReceivingEventState.SimpleReceivingEventState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -141,7 +141,11 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<ReceivingEventState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractReceivingEventState.SimpleReceivingEventState> root) {
+        Predicate isNull = cb.isNull(root.get("deleted"));
+        Predicate isFalse = cb.equal(root.get("deleted"), false);
+        Predicate notDeleted = cb.or(isNull, isFalse);
+        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }
