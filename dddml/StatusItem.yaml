@@ -4,7 +4,7 @@
       discriminatorBasedMultiTenancyEnabled: true
       idStartsWithOrEndsWithTenantId: true
     metadata:
-      NoEventSourcing: true
+      PseudoEventSourcing: true
     reservedPropertyMetadata:
       noDeleted: true
     id:

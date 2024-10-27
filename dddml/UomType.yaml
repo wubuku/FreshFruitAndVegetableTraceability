@@ -2,7 +2,7 @@ aggregates:
   UomType:
     #reservedPropertyMetadata: {}
     #metadata:
-    #  AbsolutelyNoEventSourcing: true
+    #  NoEventSourcing: true
     id:
       name: UomTypeId
       type: id #-ne

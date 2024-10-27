@@ -7,7 +7,7 @@ typeDefinitions:
 aggregates:
   ShippingEvent:
     metadata:
-      AbsolutelyNoEventSourcing: true
+      NoEventSourcing: true
     id:
       name: EventId
       type: CteEventId
@@ -53,7 +53,7 @@ aggregates:
 
   ReceivingEvent:
     metadata:
-      AbsolutelyNoEventSourcing: true
+      NoEventSourcing: true
     id:
       name: EventId
       type: CteEventId
@@ -98,7 +98,7 @@ aggregates:
 
   TransformationEvent:
     metadata:
-      AbsolutelyNoEventSourcing: true
+      NoEventSourcing: true
     id:
       name: EventId
       type: CteEventId

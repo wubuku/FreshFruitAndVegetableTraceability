@@ -29,7 +29,7 @@ valueObjects:
 aggregates:
   Gs1ApplicationIdentifier:
     metadata:
-      AbsolutelyNoEventSourcing: true
+      NoEventSourcing: true
     id:
       name: ApplicationIdentifier
       type: string
