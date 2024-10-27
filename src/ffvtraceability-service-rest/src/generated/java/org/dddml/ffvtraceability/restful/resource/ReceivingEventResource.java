@@ -178,8 +178,12 @@ public class ReceivingEventResource {
     public Long post(@RequestBody CreateOrMergePatchReceivingEventDto.CreateReceivingEventDto value,  HttpServletResponse response) {
         try {
             ReceivingEventCommand.CreateReceivingEvent cmd = value;//.toCreateReceivingEvent();
+            if (cmd.getEventId() == null) {
+                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ReceivingEvent");
+            }
+            Long idObj = cmd.getEventId();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            Long idObj = receivingEventApplicationService.createWithoutId(cmd);
+            receivingEventApplicationService.when(cmd);
 
             return idObj;
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
@@ -201,7 +205,13 @@ public class ReceivingEventResource {
                 receivingEventApplicationService.when(cmd);
                 return;
             }
-            throw DomainError.named("unsupportedOperation", "Unsupported HTTP PUT to create, aggregate Id %1$s", eventId);
+
+            value.setCommandType(Command.COMMAND_TYPE_CREATE);
+            ReceivingEventCommand.CreateReceivingEvent cmd = (ReceivingEventCommand.CreateReceivingEvent) value.toSubclass();
+            ReceivingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            receivingEventApplicationService.when(cmd);
+
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

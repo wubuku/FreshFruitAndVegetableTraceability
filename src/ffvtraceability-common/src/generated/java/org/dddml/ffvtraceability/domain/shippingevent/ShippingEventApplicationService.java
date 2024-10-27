@@ -14,7 +14,7 @@ import org.dddml.ffvtraceability.specialization.Event;
 import org.dddml.ffvtraceability.domain.Command;
 
 public interface ShippingEventApplicationService {
-    Long createWithoutId(ShippingEventCommand.CreateShippingEvent c);
+    void when(ShippingEventCommand.CreateShippingEvent c);
 
     void when(ShippingEventCommand.MergePatchShippingEvent c);
 

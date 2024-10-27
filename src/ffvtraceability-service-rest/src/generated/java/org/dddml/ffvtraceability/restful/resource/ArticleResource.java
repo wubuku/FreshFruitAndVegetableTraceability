@@ -178,8 +178,12 @@ public class ArticleResource {
     public Long post(@RequestBody CreateOrMergePatchArticleDto.CreateArticleDto value,  HttpServletResponse response) {
         try {
             ArticleCommand.CreateArticle cmd = value;//.toCreateArticle();
+            if (cmd.getArticleId() == null) {
+                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Article");
+            }
+            Long idObj = cmd.getArticleId();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            Long idObj = articleApplicationService.createWithoutId(cmd);
+            articleApplicationService.when(cmd);
 
             return idObj;
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
@@ -201,7 +205,13 @@ public class ArticleResource {
                 articleApplicationService.when(cmd);
                 return;
             }
-            throw DomainError.named("unsupportedOperation", "Unsupported HTTP PUT to create, aggregate Id %1$s", articleId);
+
+            value.setCommandType(Command.COMMAND_TYPE_CREATE);
+            ArticleCommand.CreateArticle cmd = (ArticleCommand.CreateArticle) value.toSubclass();
+            ArticleResourceUtils.setNullIdOrThrowOnInconsistentIds(articleId, cmd);
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            articleApplicationService.when(cmd);
+
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

@@ -49,11 +49,6 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public Long createWithoutId(ArticleCommand.CreateArticle c) {
-        //todo unsupported !requires-Application(-layer-)Id-Generator && !Absolutely-No-EventSourcing
-        return null;
-    }
-
     public void when(ArticleCommand.CreateArticle c) {
         update(c, ar -> ar.create(c));
     }

@@ -7,9 +7,9 @@ aggregates:
     id:
       name: ArticleId
       type: long #number
-      generator:
-        class: sequence
-        # structName: ArticleIdSequence
+      #generator:
+      #  class: sequence
+      #  # structName: ArticleIdSequence
     properties:
       Title:
         type: description

@@ -30,24 +30,25 @@ public abstract class AbstractReceivingEventApplicationService implements Receiv
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public Long createWithoutId(ReceivingEventCommand.CreateReceivingEvent c) {
-        ReceivingEventState.SqlReceivingEventState s = new AbstractReceivingEventState.SimpleReceivingEventState();
+    public void when(ReceivingEventCommand.CreateReceivingEvent c) {
+        update(c, s -> {
         // //////////////////////////
-        s.setTraceabilityLotCode(c.getTraceabilityLotCode());
-        s.setQuantityAndUom(c.getQuantityAndUom());
-        s.setProductDescription(c.getProductDescription());
-        s.setShipToLocation(c.getShipToLocation());
-        s.setShipFromLocation(c.getShipFromLocation());
-        s.setReceiveDate(c.getReceiveDate());
-        s.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
-        s.setReferenceDocument(c.getReferenceDocument());
-        s.setDeleted(false);
-        s.setCreatedBy(c.getRequesterId());
-        s.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        s.setCommandId(c.getCommandId());
+        throwOnConcurrencyConflict(s, c);
+        ReceivingEventState.SqlReceivingEventState ss = ((ReceivingEventState.SqlReceivingEventState)s);
+        ss.setTraceabilityLotCode(c.getTraceabilityLotCode());
+        ss.setQuantityAndUom(c.getQuantityAndUom());
+        ss.setProductDescription(c.getProductDescription());
+        ss.setShipToLocation(c.getShipToLocation());
+        ss.setShipFromLocation(c.getShipFromLocation());
+        ss.setReceiveDate(c.getReceiveDate());
+        ss.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
+        ss.setReferenceDocument(c.getReferenceDocument());
+        ss.setDeleted(false);
+        ss.setCreatedBy(c.getRequesterId());
+        ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        ss.setCommandId(c.getCommandId());
         // //////////////////////////
-        getStateRepository().save(s);
-        return s.getEventId();
+        });
     }
 
     public void when(ReceivingEventCommand.MergePatchReceivingEvent c) {

@@ -30,25 +30,26 @@ public abstract class AbstractTransformationEventApplicationService implements T
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public Long createWithoutId(TransformationEventCommand.CreateTransformationEvent c) {
-        TransformationEventState.SqlTransformationEventState s = new AbstractTransformationEventState.SimpleTransformationEventState();
+    public void when(TransformationEventCommand.CreateTransformationEvent c) {
+        update(c, s -> {
         // //////////////////////////
-        s.setFoodUsedTlc(c.getFoodUsedTlc());
-        s.setFoodUsedProductDescription(c.getFoodUsedProductDescription());
-        s.setFoodUsedQuantityAndUom(c.getFoodUsedQuantityAndUom());
-        s.setFoodProducedNewTlc(c.getFoodProducedNewTlc());
-        s.setFoodProducedProductDescription(c.getFoodProducedProductDescription());
-        s.setFoodProducedQuantityAndUom(c.getFoodProducedQuantityAndUom());
-        s.setTransformationLocation(c.getTransformationLocation());
-        s.setDateTransformed(c.getDateTransformed());
-        s.setReferenceDocument(c.getReferenceDocument());
-        s.setDeleted(false);
-        s.setCreatedBy(c.getRequesterId());
-        s.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        s.setCommandId(c.getCommandId());
+        throwOnConcurrencyConflict(s, c);
+        TransformationEventState.SqlTransformationEventState ss = ((TransformationEventState.SqlTransformationEventState)s);
+        ss.setFoodUsedTlc(c.getFoodUsedTlc());
+        ss.setFoodUsedProductDescription(c.getFoodUsedProductDescription());
+        ss.setFoodUsedQuantityAndUom(c.getFoodUsedQuantityAndUom());
+        ss.setFoodProducedNewTlc(c.getFoodProducedNewTlc());
+        ss.setFoodProducedProductDescription(c.getFoodProducedProductDescription());
+        ss.setFoodProducedQuantityAndUom(c.getFoodProducedQuantityAndUom());
+        ss.setTransformationLocation(c.getTransformationLocation());
+        ss.setDateTransformed(c.getDateTransformed());
+        ss.setReferenceDocument(c.getReferenceDocument());
+        ss.setDeleted(false);
+        ss.setCreatedBy(c.getRequesterId());
+        ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        ss.setCommandId(c.getCommandId());
         // //////////////////////////
-        getStateRepository().save(s);
-        return s.getEventId();
+        });
     }
 
     public void when(TransformationEventCommand.MergePatchTransformationEvent c) {

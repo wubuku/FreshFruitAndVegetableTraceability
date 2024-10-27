@@ -14,7 +14,7 @@ import org.dddml.ffvtraceability.specialization.Event;
 import org.dddml.ffvtraceability.domain.Command;
 
 public interface ReceivingEventApplicationService {
-    Long createWithoutId(ReceivingEventCommand.CreateReceivingEvent c);
+    void when(ReceivingEventCommand.CreateReceivingEvent c);
 
     void when(ReceivingEventCommand.MergePatchReceivingEvent c);
 

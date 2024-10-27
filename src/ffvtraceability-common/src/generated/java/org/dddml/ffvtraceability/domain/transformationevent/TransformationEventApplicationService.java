@@ -14,7 +14,7 @@ import org.dddml.ffvtraceability.specialization.Event;
 import org.dddml.ffvtraceability.domain.Command;
 
 public interface TransformationEventApplicationService {
-    Long createWithoutId(TransformationEventCommand.CreateTransformationEvent c);
+    void when(TransformationEventCommand.CreateTransformationEvent c);
 
     void when(TransformationEventCommand.MergePatchTransformationEvent c);
 
