@@ -56,7 +56,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.2</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -91,7 +90,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
                 <configuration>
                     <generatedSourcesDirectory>src/generated/java</generatedSourcesDirectory>
                     <encoding>UTF-8</encoding>
@@ -102,7 +100,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.4</version>
                 <executions>
                     <execution>
                         <id>add-generated-source</id>

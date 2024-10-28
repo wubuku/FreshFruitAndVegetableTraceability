@@ -102,8 +102,10 @@ public class ServiceCli {
         t.copyAndFixHbm2DdlCreateSql();
         System.out.println("DDL copied and fixed successfully.");
 
-        t.dropCreateDatabaseAndSeed();
-        System.out.println("Database dropped, recreated, and seeded successfully.");
+        if (!ddlSubcommand.onlyOutputDdl) {
+            t.dropCreateDatabaseAndSeed();
+            System.out.println("Database dropped, recreated, and seeded successfully.");
+        }
     }
 
     public static void initData(InitDataSubcommand initDataSubcommand) {
@@ -159,6 +161,10 @@ public class ServiceCli {
                         +
                         "Generated DDL scripts will be saved here, and existing scripts may be read from this location.")
         String sqlDirectory;
+
+        @CommandLine.Option(names = {
+                "--only-output" }, description = "Only output the DDL scripts, do not drop-create database and seed.")
+        boolean onlyOutputDdl;
 
         @Override
         public DatabaseOptions getDatabaseOptions() {

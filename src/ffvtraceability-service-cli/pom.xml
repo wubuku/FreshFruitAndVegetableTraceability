@@ -21,7 +21,6 @@
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.6.1</version>
         </dependency>
     </dependencies>
 
@@ -42,7 +41,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
                 <configuration>
                     <generatedSourcesDirectory>src/generated/java</generatedSourcesDirectory>
                     <encoding>UTF-8</encoding>
@@ -53,7 +51,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.4</version>
                 <executions>
                     <execution>
                         <id>add-generated-source</id>

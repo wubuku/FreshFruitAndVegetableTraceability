@@ -15,11 +15,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.github.wubuku</groupId>
@@ -28,7 +23,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -39,18 +33,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
                 <configuration>
-                    <generatedSourcesDirectory>src/generated/java</generatedSourcesDirectory>
                     <encoding>UTF-8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <!-- source 和 target 建议从父 POM 继承 -->
                 </configuration>
             </plugin>
+            <!-- 这个插件是必需的，用于添加生成的源代码目录 -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.4</version>
                 <executions>
                     <execution>
                         <id>add-generated-source</id>
