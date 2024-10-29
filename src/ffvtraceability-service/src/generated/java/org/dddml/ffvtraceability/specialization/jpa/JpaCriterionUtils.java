@@ -15,7 +15,14 @@ public class JpaCriterionUtils {
         if (criterion instanceof SimpleExpression) {
             SimpleExpression e = (SimpleExpression) criterion;
             String op = e.getOp().trim().toUpperCase();
-            Path<Object> path = root.get(e.getPropertyName());
+
+            // Handle nested property paths (e.g., "supplierProductAssocId.productId")
+            Path<?> path = root;
+            String[] pathParts = e.getPropertyName().split("\\.");
+            for (String part : pathParts) {
+                path = path.get(part);
+            }
+
             Object value = e.getValue();
 
             switch (op) {
