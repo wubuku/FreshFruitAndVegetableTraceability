@@ -360,7 +360,7 @@ public class SupplierProductResource {
         }
 
         /*
-        public static SupplierProductStateDto[] toSupplierProductStateDtoArray(Iterable<SupplierProductAssocId> ids) {
+        public static SupplierProductStateDto[] toSupplierProductStateDtoArray(Iterable<SupplierProductTenantizedId> ids) {
             List<SupplierProductStateDto> states = new ArrayList<>();
             ids.forEach(i -> {
                 SupplierProductStateDto dto = new SupplierProductStateDto();
@@ -369,8 +369,8 @@ public class SupplierProductResource {
             });
             return states.toArray(new SupplierProductStateDto[0]);
         }
-        */
 
+        */
     }
 
 }

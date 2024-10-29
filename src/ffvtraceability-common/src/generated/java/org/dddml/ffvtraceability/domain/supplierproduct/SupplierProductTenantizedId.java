@@ -132,12 +132,12 @@ public class SupplierProductTenantizedId implements Serializable {
                 '}';
     }
 
-    public static SupplierProductTenantizedId toSupplierProductTenantizedId(SupplierProductAssocId supplierProductAssocId) {
+    public static SupplierProductTenantizedId toSupplierProductTenantizedId(SupplierProductAssocId originalId) {
         String currentTenantId = TenantContext.getTenantId();
         if (null == currentTenantId || currentTenantId.isEmpty()) {
             throw new IllegalStateException("Current context tenantId is null.");
         }
-        return new SupplierProductTenantizedId(currentTenantId, supplierProductAssocId);
+        return new SupplierProductTenantizedId(currentTenantId, originalId);
     }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
