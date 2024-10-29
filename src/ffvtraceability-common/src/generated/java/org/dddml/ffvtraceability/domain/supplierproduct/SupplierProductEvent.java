@@ -20,9 +20,9 @@ public interface SupplierProductEvent extends Event {
         void setEventReadOnly(boolean readOnly);
     }
 
-    SupplierProductAssocId getSupplierProductAssocId();
+    SupplierProductTenantizedId getSupplierProductAssocId();
 
-    //void setSupplierProductAssocId(SupplierProductAssocId supplierProductAssocId);
+    //void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId);
 
     Long getVersion();
     

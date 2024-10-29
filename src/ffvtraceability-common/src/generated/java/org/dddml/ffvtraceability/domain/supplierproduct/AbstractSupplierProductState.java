@@ -14,13 +14,13 @@ import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductEvent.*;
 
 public abstract class AbstractSupplierProductState implements SupplierProductState.SqlSupplierProductState {
 
-    private SupplierProductAssocId supplierProductAssocId;
+    private SupplierProductTenantizedId supplierProductAssocId;
 
-    public SupplierProductAssocId getSupplierProductAssocId() {
+    public SupplierProductTenantizedId getSupplierProductAssocId() {
         return this.supplierProductAssocId;
     }
 
-    public void setSupplierProductAssocId(SupplierProductAssocId supplierProductAssocId) {
+    public void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId) {
         this.supplierProductAssocId = supplierProductAssocId;
     }
 
@@ -591,8 +591,8 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
     }
 
     protected void throwOnWrongEvent(SupplierProductEvent event) {
-        SupplierProductAssocId stateEntityId = this.getSupplierProductAssocId(); // Aggregate Id
-        SupplierProductAssocId eventEntityId = ((SupplierProductEvent.SqlSupplierProductEvent)event).getSupplierProductEventId().getSupplierProductAssocId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
+        SupplierProductTenantizedId stateEntityId = this.getSupplierProductAssocId(); // Aggregate Id
+        SupplierProductTenantizedId eventEntityId = ((SupplierProductEvent.SqlSupplierProductEvent)event).getSupplierProductEventId().getSupplierProductAssocId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
         if (!stateEntityId.equals(eventEntityId)) {
             throw DomainError.named("mutateWrongEntity", "Entity Id %1$s in state but entity id %2$s in event", stateEntityId, eventEntityId);
         }

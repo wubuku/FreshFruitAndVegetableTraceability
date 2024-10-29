@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public interface SupplierProductStateQueryRepository {
-    SupplierProductState get(SupplierProductAssocId id);
+    SupplierProductState get(SupplierProductTenantizedId id);
 
     Iterable<SupplierProductState> getAll(Integer firstResult, Integer maxResults);
     

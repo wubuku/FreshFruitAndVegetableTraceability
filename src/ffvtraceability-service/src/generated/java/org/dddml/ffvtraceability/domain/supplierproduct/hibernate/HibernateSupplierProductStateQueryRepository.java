@@ -26,7 +26,20 @@ public class HibernateSupplierProductStateQueryRepository implements SupplierPro
     private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {
-        return this.entityManager;
+        EntityManager em = this.entityManager;
+        String currentTenantId = TenantContext.getTenantId();
+        if (currentTenantId == null || currentTenantId.isEmpty()) {
+            throw new IllegalStateException("Tenant context not set");
+        }
+        if (TenantSupport.SUPER_TENANT_ID != null && !TenantSupport.SUPER_TENANT_ID.isEmpty()
+            && TenantSupport.SUPER_TENANT_ID.equals(currentTenantId)) {
+            return em;
+        }
+        org.hibernate.Session session = em.unwrap(org.hibernate.Session.class);
+        org.hibernate.Filter filter = session.enableFilter("tenantFilter");
+        filter.setParameter("tenantId", currentTenantId);
+        filter.validate();
+        return em;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("SupplierProductAssocId", "AvailableThruDate", "SupplierPrefOrderId", "SupplierRatingTypeId", "StandardLeadTimeDays", "OrderQtyIncrements", "UnitsIncluded", "QuantityUomId", "AgreementId", "AgreementItemSeqId", "LastPrice", "ShippingPrice", "SupplierProductId", "SupplierProductName", "CanDropShip", "Comments", "TaxInPrice", "TaxAmount", "TaxPercentage", "LimitQuantityPerCustomer", "LimitQuantityPerOrder", "ProductPriceTypeId", "ShipmentMethodTypeId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
@@ -42,7 +55,7 @@ public class HibernateSupplierProductStateQueryRepository implements SupplierPro
     }
 
     @Transactional(readOnly = true)
-    public SupplierProductState get(SupplierProductAssocId id) {
+    public SupplierProductState get(SupplierProductTenantizedId id) {
         SupplierProductState state = (SupplierProductState)getEntityManager().find(AbstractSupplierProductState.SimpleSupplierProductState.class, id);
         return state;
     }

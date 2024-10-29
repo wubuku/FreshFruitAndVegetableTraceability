@@ -17,7 +17,7 @@ public interface SupplierProductState
 
     Long VERSION_NULL = VERSION_ZERO - 1;
 
-    SupplierProductAssocId getSupplierProductAssocId();
+    SupplierProductTenantizedId getSupplierProductAssocId();
 
     OffsetDateTime getAvailableThruDate();
 
@@ -74,7 +74,7 @@ public interface SupplierProductState
     OffsetDateTime getUpdatedAt();
 
     interface MutableSupplierProductState extends SupplierProductState {
-        void setSupplierProductAssocId(SupplierProductAssocId supplierProductAssocId);
+        void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId);
 
         void setAvailableThruDate(OffsetDateTime availableThruDate);
 

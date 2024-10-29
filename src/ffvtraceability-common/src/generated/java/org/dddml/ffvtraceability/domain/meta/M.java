@@ -1609,16 +1609,16 @@ public class M {
         aliasMap.put("Active", "active");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
-        aliasMap.put("supplierProductAssocId.productId", "supplierProductAssocId.productId");
-        aliasMap.put("SupplierProductAssocId.ProductId", "supplierProductAssocId.productId");
-        aliasMap.put("supplierProductAssocId.partyId", "supplierProductAssocId.partyId");
-        aliasMap.put("SupplierProductAssocId.PartyId", "supplierProductAssocId.partyId");
-        aliasMap.put("supplierProductAssocId.currencyUomId", "supplierProductAssocId.currencyUomId");
-        aliasMap.put("SupplierProductAssocId.CurrencyUomId", "supplierProductAssocId.currencyUomId");
-        aliasMap.put("supplierProductAssocId.minimumOrderQuantity", "supplierProductAssocId.minimumOrderQuantity");
-        aliasMap.put("SupplierProductAssocId.MinimumOrderQuantity", "supplierProductAssocId.minimumOrderQuantity");
-        aliasMap.put("supplierProductAssocId.availableFromDate", "supplierProductAssocId.availableFromDate");
-        aliasMap.put("SupplierProductAssocId.AvailableFromDate", "supplierProductAssocId.availableFromDate");
+        aliasMap.put("supplierProductAssocId.productId", "supplierProductAssocId.supplierProductAssocIdProductId");
+        aliasMap.put("SupplierProductAssocId.ProductId", "supplierProductAssocId.supplierProductAssocIdProductId");
+        aliasMap.put("supplierProductAssocId.partyId", "supplierProductAssocId.supplierProductAssocIdPartyId");
+        aliasMap.put("SupplierProductAssocId.PartyId", "supplierProductAssocId.supplierProductAssocIdPartyId");
+        aliasMap.put("supplierProductAssocId.currencyUomId", "supplierProductAssocId.supplierProductAssocIdCurrencyUomId");
+        aliasMap.put("SupplierProductAssocId.CurrencyUomId", "supplierProductAssocId.supplierProductAssocIdCurrencyUomId");
+        aliasMap.put("supplierProductAssocId.minimumOrderQuantity", "supplierProductAssocId.supplierProductAssocIdMinimumOrderQuantity");
+        aliasMap.put("SupplierProductAssocId.MinimumOrderQuantity", "supplierProductAssocId.supplierProductAssocId.minimumOrderQuantity");
+        aliasMap.put("supplierProductAssocId.availableFromDate", "supplierProductAssocId.supplierProductAssocIdAvailableFromDate");
+        aliasMap.put("SupplierProductAssocId.AvailableFromDate", "supplierProductAssocId.supplierProductAssocIdAvailableFromDate");
     }
 
     private static void initPropertyTypeMap() {

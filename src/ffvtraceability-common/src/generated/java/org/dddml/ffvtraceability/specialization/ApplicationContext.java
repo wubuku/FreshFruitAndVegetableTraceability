@@ -59,6 +59,24 @@ public class ApplicationContext {
 
         @Override
         public Object convertFromString(Class type, String text) {
+            if (type.equals(java.time.OffsetDateTime.class)) {
+                return java.time.OffsetDateTime.parse(text);
+            }
+            if (type.equals(java.time.ZonedDateTime.class)) {
+                return java.time.ZonedDateTime.parse(text);
+            }
+            if (type.equals(java.time.LocalDateTime.class)) {
+                return java.time.LocalDateTime.parse(text);
+            }
+            if (type.equals(java.time.LocalDate.class)) {
+                return java.time.LocalDate.parse(text);
+            }
+            if (type.equals(java.time.LocalTime.class)) {
+                return java.time.LocalTime.parse(text);
+            }
+            if (type.equals(java.time.OffsetTime.class)) {
+                return java.time.OffsetTime.parse(text);
+            }
             return innerTypeConverter.convertFromString(type, text);
         }
 

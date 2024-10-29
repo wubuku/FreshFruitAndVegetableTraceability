@@ -100,7 +100,7 @@ http://localhost:1023/api/swagger-ui/index.html
 
 下面我们使用实体 [`StatusItem`](../dddml/StatusItem.yaml) 作为示例，来测试“多租户”支持。
 
-#### Create StatusItem
+##### Create StatusItem
 
 执行下面的命令会失败，因为我们想要在租户 `X` 下创建数据，但是当前上下文中没有找到租户 ID（因为租户上下文没有被正确设置）：
 
@@ -126,12 +126,42 @@ curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/jso
 -d "{\"commandId\":\"CMD_21\",\"requesterId\":\"REQUESTER_ID_21\",\"sequenceId\":\"21\",\"statusCode\":\"TEST_STATUS_CODE_21\",\"statusId\":\"X-TEST_STATUS_21\",\"tenantId\":\"X\"}"
 ```
 
-#### Get StatusItems
+##### Get StatusItems
 
 执行下面的命令查看特定租户（`X`）的数据：
 
 ```shell
 curl -X GET "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "X-TenantID:X"
+```
+
+
+#### Test "Tenantized Id"
+
+Create:
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/SupplierProducts' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID:X" \
+  -d '{"commandType":"string","commandId":"string","requesterId":"string","supplierProductAssocId":{"productId":"string","partyId":"string","currencyUomId":"string","minimumOrderQuantity":0,"availableFromDate":"2024-10-29T08:53:18.748Z"},"availableThruDate":"2024-10-29T08:53:18.748Z","supplierPrefOrderId":"string","supplierRatingTypeId":"string","active":true}'
+```
+
+Get:
+
+```
+curl -X 'GET' \
+  'http://localhost:1023/api/SupplierProducts/string%2Cstring%2Cstring%2C0.000000%2C2024-10-29T08%3A53%3A18.748Z' \
+  -H 'accept: application/json' -H "X-TenantID:X"
+```
+
+Get with filter:
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/SupplierProducts?supplierProductAssocId.productId=string&firstResult=0&maxResults=2147483647' \
+  -H 'accept: application/json'  -H "X-TenantID:X"
 ```
 
 

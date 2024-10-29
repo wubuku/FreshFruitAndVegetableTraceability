@@ -49,7 +49,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
     }
 
     protected SupplierProductEvent map(SupplierProductCommand.CreateSupplierProduct c) {
-        SupplierProductEventId stateEventId = new SupplierProductEventId(c.getSupplierProductAssocId(), c.getVersion());
+        SupplierProductEventId stateEventId = new SupplierProductEventId(SupplierProductTenantizedId.toSupplierProductTenantizedId(c.getSupplierProductAssocId()), c.getVersion());
         SupplierProductEvent.SupplierProductStateCreated e = newSupplierProductStateCreated(stateEventId);
         e.setAvailableThruDate(c.getAvailableThruDate());
         e.setSupplierPrefOrderId(c.getSupplierPrefOrderId());
@@ -80,7 +80,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
     }
 
     protected SupplierProductEvent map(SupplierProductCommand.MergePatchSupplierProduct c) {
-        SupplierProductEventId stateEventId = new SupplierProductEventId(c.getSupplierProductAssocId(), c.getVersion());
+        SupplierProductEventId stateEventId = new SupplierProductEventId(SupplierProductTenantizedId.toSupplierProductTenantizedId(c.getSupplierProductAssocId()), c.getVersion());
         SupplierProductEvent.SupplierProductStateMergePatched e = newSupplierProductStateMergePatched(stateEventId);
         e.setAvailableThruDate(c.getAvailableThruDate());
         e.setSupplierPrefOrderId(c.getSupplierPrefOrderId());

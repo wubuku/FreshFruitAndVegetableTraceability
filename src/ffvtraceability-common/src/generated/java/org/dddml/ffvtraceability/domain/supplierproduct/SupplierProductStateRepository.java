@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public interface SupplierProductStateRepository {
-    SupplierProductState get(SupplierProductAssocId id, boolean nullAllowed);
+    SupplierProductState get(SupplierProductTenantizedId id, boolean nullAllowed);
 
     void save(SupplierProductState state);
 

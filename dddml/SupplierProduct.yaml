@@ -1,18 +1,19 @@
-﻿
-aggregates:
-
+﻿aggregates:
   SupplierProduct:
     tableName: SUPPLIER_PRODUCT
+    multiTenancy:
+      discriminatorBasedMultiTenancyEnabled: true
+      shouldTenantizeId: true
     id:
       name: SupplierProductAssocId
       type: SupplierProductAssocId
-      columnNames: 
-      - PRODUCT_ID
-      - PARTY_ID
-      - CURRENCY_UOM_ID
-      - MINIMUM_ORDER_QUANTITY
-      - AVAILABLE_FROM_DATE
-      
+      columnNames:
+        - PRODUCT_ID
+        - PARTY_ID
+        - CURRENCY_UOM_ID
+        - MINIMUM_ORDER_QUANTITY
+        - AVAILABLE_FROM_DATE
+
     properties:
       AvailableThruDate:
         columnName: AVAILABLE_THRU_DATE
@@ -78,12 +79,12 @@ aggregates:
 
       ShipmentMethodTypeId:
         type: id
-        
+
     references: {}
-    
+
     reservedPropertyMetadata:
       noDeleted: true
-    
+
     valueObjects:
       SupplierProductAssocId:
         properties:
@@ -102,5 +103,3 @@ aggregates:
           AvailableFromDate:
             columnName: AVAILABLE_FROM_DATE
             type: date-time
-
-

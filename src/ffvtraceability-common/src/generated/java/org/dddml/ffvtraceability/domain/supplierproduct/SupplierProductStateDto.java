@@ -14,14 +14,14 @@ import org.dddml.ffvtraceability.specialization.*;
 
 public class SupplierProductStateDto {
 
-    private SupplierProductAssocId supplierProductAssocId;
+    private SupplierProductTenantizedId supplierProductAssocId;
 
-    public SupplierProductAssocId getSupplierProductAssocId()
+    public SupplierProductTenantizedId getSupplierProductAssocId()
     {
         return this.supplierProductAssocId;
     }
 
-    public void setSupplierProductAssocId(SupplierProductAssocId supplierProductAssocId)
+    public void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId)
     {
         this.supplierProductAssocId = supplierProductAssocId;
     }

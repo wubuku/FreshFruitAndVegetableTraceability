@@ -3,6 +3,9 @@
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.supplierproduct">
   <class name="AbstractSupplierProductEvent" table="supplier_product_event" abstract="true">
     <composite-id name="supplierProductEventId" class="org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductEventId">
+      <key-property name="supplierProductAssocIdTenantId">
+        <column name="tenant_id" />
+      </key-property>
       <key-property name="supplierProductAssocIdProductId">
         <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
       </key-property>

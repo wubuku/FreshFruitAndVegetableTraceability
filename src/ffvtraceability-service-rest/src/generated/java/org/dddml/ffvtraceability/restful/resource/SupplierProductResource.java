@@ -359,6 +359,7 @@ public class SupplierProductResource {
             return filter.entrySet();
         }
 
+        /*
         public static SupplierProductStateDto[] toSupplierProductStateDtoArray(Iterable<SupplierProductAssocId> ids) {
             List<SupplierProductStateDto> states = new ArrayList<>();
             ids.forEach(i -> {
@@ -368,6 +369,7 @@ public class SupplierProductResource {
             });
             return states.toArray(new SupplierProductStateDto[0]);
         }
+        */
 
     }
 
