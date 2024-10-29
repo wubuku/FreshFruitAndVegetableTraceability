@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.supplierproduct">
+  <class name="AbstractSupplierProductEvent" table="supplier_product_event" abstract="true">
+    <composite-id name="supplierProductEventId" class="org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductEventId">
+      <key-property name="supplierProductAssocIdProductId">
+        <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="supplierProductAssocIdPartyId">
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="supplierProductAssocIdCurrencyUomId">
+        <column name="CURRENCY_UOM_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="supplierProductAssocIdMinimumOrderQuantity">
+        <column name="MINIMUM_ORDER_QUANTITY" sql-type="DECIMAL(18,6)" />
+      </key-property>
+      <key-property name="supplierProductAssocIdAvailableFromDate">
+        <column name="AVAILABLE_FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractSupplierProductEvent$SupplierProductLobEvent" discriminator-value="SupplierProductLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractSupplierProductEvent$AbstractSupplierProductStateEvent" abstract="true">
+      <property name="availableThruDate">
+        <column name="AVAILABLE_THRU_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="supplierPrefOrderId">
+        <column name="SUPPLIER_PREF_ORDER_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="supplierRatingTypeId">
+        <column name="SUPPLIER_RATING_TYPE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="standardLeadTimeDays">
+        <column name="STANDARD_LEAD_TIME_DAYS" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="orderQtyIncrements">
+        <column name="ORDER_QTY_INCREMENTS" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="unitsIncluded">
+        <column name="UNITS_INCLUDED" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="quantityUomId">
+        <column name="QUANTITY_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="agreementId">
+        <column name="AGREEMENT_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="agreementItemSeqId">
+        <column name="AGREEMENT_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="lastPrice">
+        <column name="LAST_PRICE" sql-type="DECIMAL(18,3)" />
+      </property>
+      <property name="shippingPrice">
+        <column name="SHIPPING_PRICE" sql-type="DECIMAL(18,3)" />
+      </property>
+      <property name="supplierProductId">
+        <column name="SUPPLIER_PRODUCT_ID" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="supplierProductName">
+        <column name="SUPPLIER_PRODUCT_NAME" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="canDropShip">
+        <column name="CAN_DROP_SHIP" sql-type="CHAR(1)" />
+      </property>
+      <property name="comments">
+        <column name="COMMENTS" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="taxInPrice">
+        <column name="tax_in_price" sql-type="CHAR(1)" />
+      </property>
+      <property name="taxAmount">
+        <column name="tax_amount" sql-type="DECIMAL(18,3)" />
+      </property>
+      <property name="taxPercentage">
+        <column name="tax_percentage" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="limitQuantityPerCustomer">
+        <column name="limit_quantity_per_customer" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="limitQuantityPerOrder">
+        <column name="limit_quantity_per_order" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="productPriceTypeId">
+        <column name="product_price_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="shipmentMethodTypeId">
+        <column name="shipment_method_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <subclass name="AbstractSupplierProductEvent$SimpleSupplierProductStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractSupplierProductEvent$SimpleSupplierProductStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyAvailableThruDateRemoved" column="is_property_available_thru_date_removed" />
+        <property name="isPropertySupplierPrefOrderIdRemoved" column="is_property_supplier_pref_order_id_removed" />
+        <property name="isPropertySupplierRatingTypeIdRemoved" column="is_property_supplier_rating_type_id_removed" />
+        <property name="isPropertyStandardLeadTimeDaysRemoved" column="is_property_standard_lead_time_days_removed" />
+        <property name="isPropertyOrderQtyIncrementsRemoved" column="is_property_order_qty_increments_removed" />
+        <property name="isPropertyUnitsIncludedRemoved" column="is_property_units_included_removed" />
+        <property name="isPropertyQuantityUomIdRemoved" column="is_property_quantity_uom_id_removed" />
+        <property name="isPropertyAgreementIdRemoved" column="is_property_agreement_id_removed" />
+        <property name="isPropertyAgreementItemSeqIdRemoved" column="is_property_agreement_item_seq_id_removed" />
+        <property name="isPropertyLastPriceRemoved" column="is_property_last_price_removed" />
+        <property name="isPropertyShippingPriceRemoved" column="is_property_shipping_price_removed" />
+        <property name="isPropertySupplierProductIdRemoved" column="is_property_supplier_product_id_removed" />
+        <property name="isPropertySupplierProductNameRemoved" column="is_property_supplier_product_name_removed" />
+        <property name="isPropertyCanDropShipRemoved" column="is_property_can_drop_ship_removed" />
+        <property name="isPropertyCommentsRemoved" column="is_property_comments_removed" />
+        <property name="isPropertyTaxInPriceRemoved" column="is_property_tax_in_price_removed" />
+        <property name="isPropertyTaxAmountRemoved" column="is_property_tax_amount_removed" />
+        <property name="isPropertyTaxPercentageRemoved" column="is_property_tax_percentage_removed" />
+        <property name="isPropertyLimitQuantityPerCustomerRemoved" column="is_property_limit_quantity_per_customer_removed" />
+        <property name="isPropertyLimitQuantityPerOrderRemoved" column="is_property_limit_quantity_per_order_removed" />
+        <property name="isPropertyProductPriceTypeIdRemoved" column="is_property_product_price_type_id_removed" />
+        <property name="isPropertyShipmentMethodTypeIdRemoved" column="is_property_shipment_method_type_id_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

@@ -29,6 +29,9 @@ import org.dddml.ffvtraceability.domain.uomtype.hibernate.*;
 import org.dddml.ffvtraceability.domain.article.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.article.hibernate.*;
+import org.dddml.ffvtraceability.domain.supplierproduct.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.supplierproduct.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -156,6 +159,22 @@ public class AggregatesHibernateConfig {
                 articleEventStore,
                 articleStateRepository,
                 articleStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractSupplierProductApplicationService.SimpleSupplierProductApplicationService supplierProductApplicationService(
+            @Qualifier("supplierProductEventStore") EventStore supplierProductEventStore,
+            SupplierProductStateRepository supplierProductStateRepository,
+            SupplierProductStateQueryRepository supplierProductStateQueryRepository
+    ) {
+        AbstractSupplierProductApplicationService.SimpleSupplierProductApplicationService applicationService = new AbstractSupplierProductApplicationService.SimpleSupplierProductApplicationService(
+                supplierProductEventStore,
+                supplierProductStateRepository,
+                supplierProductStateQueryRepository
         );
         return applicationService;
     }

@@ -18,6 +18,7 @@ import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.domain.uomtype.*;
 import org.dddml.ffvtraceability.domain.article.*;
+import org.dddml.ffvtraceability.domain.supplierproduct.*;
 
 public class StaticMethodConstraints {
 

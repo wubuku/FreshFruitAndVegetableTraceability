@@ -1,0 +1,106 @@
+﻿
+aggregates:
+
+  SupplierProduct:
+    tableName: SUPPLIER_PRODUCT
+    id:
+      name: SupplierProductAssocId
+      type: SupplierProductAssocId
+      columnNames: 
+      - PRODUCT_ID
+      - PARTY_ID
+      - CURRENCY_UOM_ID
+      - MINIMUM_ORDER_QUANTITY
+      - AVAILABLE_FROM_DATE
+      
+    properties:
+      AvailableThruDate:
+        columnName: AVAILABLE_THRU_DATE
+        type: date-time
+      SupplierPrefOrderId:
+        columnName: SUPPLIER_PREF_ORDER_ID
+        type: id
+      SupplierRatingTypeId:
+        columnName: SUPPLIER_RATING_TYPE_ID
+        type: id
+      StandardLeadTimeDays:
+        columnName: STANDARD_LEAD_TIME_DAYS
+        type: fixed-point
+      OrderQtyIncrements:
+        columnName: ORDER_QTY_INCREMENTS
+        type: fixed-point
+      UnitsIncluded:
+        columnName: UNITS_INCLUDED
+        type: fixed-point
+      QuantityUomId:
+        columnName: QUANTITY_UOM_ID
+        type: id
+      AgreementId:
+        columnName: AGREEMENT_ID
+        type: id
+      AgreementItemSeqId:
+        columnName: AGREEMENT_ITEM_SEQ_ID
+        type: id
+      LastPrice:
+        columnName: LAST_PRICE
+        type: currency-precise
+      ShippingPrice:
+        columnName: SHIPPING_PRICE
+        type: currency-precise
+
+      SupplierProductId:
+        columnName: SUPPLIER_PRODUCT_ID
+        type: id-long
+
+      SupplierProductName:
+        columnName: SUPPLIER_PRODUCT_NAME
+        type: name
+      CanDropShip:
+        columnName: CAN_DROP_SHIP
+        type: indicator
+      Comments:
+        columnName: COMMENTS
+        type: comment
+
+      TaxInPrice:
+        description: If Y the price field has tax included for the given taxAuthPartyId/taxAuthGeoId at the taxPercentage.
+        type: indicator
+      TaxAmount:
+        type: currency-precise
+      TaxPercentage:
+        type: fixed-point
+      LimitQuantityPerCustomer:
+        type: fixed-point
+      LimitQuantityPerOrder:
+        type: fixed-point
+      ProductPriceTypeId:
+        type: id
+
+      ShipmentMethodTypeId:
+        type: id
+        
+    references: {}
+    
+    reservedPropertyMetadata:
+      noDeleted: true
+    
+    valueObjects:
+      SupplierProductAssocId:
+        properties:
+          ProductId:
+            columnName: PRODUCT_ID
+            type: id-ne
+          PartyId:
+            columnName: PARTY_ID
+            type: id-ne
+          CurrencyUomId:
+            columnName: CURRENCY_UOM_ID
+            type: id
+          MinimumOrderQuantity:
+            columnName: MINIMUM_ORDER_QUANTITY
+            type: fixed-point
+          AvailableFromDate:
+            columnName: AVAILABLE_FROM_DATE
+            type: date-time
+
+

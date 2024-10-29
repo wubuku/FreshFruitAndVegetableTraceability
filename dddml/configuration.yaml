@@ -21,32 +21,45 @@ configuration:
           "org.hibernate.type.ParameterType": "org.dddml.ffvtraceability.domain.ConsistentEqualityMap"
   java:
     typeMappings:
-      "boolean": "Boolean"
-      "integer": "Integer"
+      boolean: Boolean
+      integer: Integer
+      OffsetDateTime: OffsetDateTime
+    typePackages:
+      OffsetDateTime: java.time
 
+  defaultTimestampType: OffsetDateTime
   defaultReservedPropertyMetadata:
     noActive: true
 
-typeDefinitions:
-  StringList:
-    sqlType: json
-    javaType: java.util.List<String>
-  ObjectList:
-    sqlType: json
-    javaType: java.util.List<Object>
-  HexHash:
-    sqlType: VARCHAR(64)
-    javaType: String
-  ConsistentEqualityMap:
-    sqlType: json
-    javaType: org.dddml.ffvtraceability.domain.ConsistentEqualityMap
+  typeDefinitions:
+    StringList:
+      sqlType: json
+      javaType: java.util.List<String>
+    ObjectList:
+      sqlType: json
+      javaType: java.util.List<Object>
+    HashHex:
+      sqlType: VARCHAR(64)
+      javaType: String
+    ConsistentEqualityMap:
+      sqlType: json
+      javaType: org.dddml.ffvtraceability.domain.ConsistentEqualityMap
 
-  id:
-    sqlType: VARCHAR(20)
-    cSharpType: string
-    javaType: String
-  id-ne:
-    sqlType: VARCHAR(20)
-    cSharpType: string
-    javaType: String
+    id:
+      sqlType: VARCHAR(20)
+      cSharpType: string
+      javaType: String
+    id-ne:
+      sqlType: VARCHAR(20)
+      cSharpType: string
+      javaType: String
 
+    date-time:
+      #cSharpType: DateTime?
+      sqlType: timestamptz
+      javaType: OffsetDateTime
+
+    # fixed-point:
+    #   sqlType: DECIMAL(18,6)
+    #   cSharpType: decimal?
+    #   javaType: java.math.BigDecimal

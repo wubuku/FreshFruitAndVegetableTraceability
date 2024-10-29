@@ -42,6 +42,7 @@ public class M {
         typeToAggMap.put("UomType", "UomType");
         typeToAggMap.put("Article", "Article");
         typeToAggMap.put("Comment", "Article");
+        typeToAggMap.put("SupplierProduct", "SupplierProduct");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -89,8 +90,7 @@ public class M {
         clsMap.put("byte[]", byte[].class);
         clsMap.put("object", Object.class);
         clsMap.put("Object", Object.class);
-        clsMap.put("date-time", java.sql.Timestamp.class);
-        clsMap.put("java.sql.Timestamp", java.sql.Timestamp.class);
+        clsMap.put("date-time", java.time.OffsetDateTime.class);
         clsMap.put("date", java.sql.Date.class);
         clsMap.put("java.sql.Date", java.sql.Date.class);
         clsMap.put("time", java.sql.Time.class);
@@ -146,11 +146,12 @@ public class M {
         clsMap.put("java.util.List", java.util.List.class);
         clsMap.put("ObjectList", java.util.List.class);
         clsMap.put("java.util.List<Object>", java.util.List.class);
-        clsMap.put("HexHash", String.class);
+        clsMap.put("HashHex", String.class);
         clsMap.put("ConsistentEqualityMap", org.dddml.ffvtraceability.domain.ConsistentEqualityMap.class);
         clsMap.put("org.dddml.ffvtraceability.domain.ConsistentEqualityMap", org.dddml.ffvtraceability.domain.ConsistentEqualityMap.class);
         clsMap.put("id", String.class);
         clsMap.put("id-ne", String.class);
+        clsMap.put("java.sql.Timestamp", java.sql.Timestamp.class);
         CLASS_MAP = clsMap;
     }
 
@@ -1427,6 +1428,197 @@ public class M {
         aliasMap.put("ArticleCommentId.ArticleId", "articleCommentId.articleId");
         aliasMap.put("articleCommentId.commentSeqId", "articleCommentId.commentSeqId");
         aliasMap.put("ArticleCommentId.CommentSeqId", "articleCommentId.commentSeqId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class SupplierProductMetadata {
+
+    private SupplierProductMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String URL_ID_FIELD_SEPARATOR = ",";
+
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId>(org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId.class, URL_ID_FIELD_SEPARATOR) {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    };
+
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId.class;
+
+    public static final String[] propertyNames = new String[] {
+            "availableThruDate",
+            "supplierPrefOrderId",
+            "supplierRatingTypeId",
+            "standardLeadTimeDays",
+            "orderQtyIncrements",
+            "unitsIncluded",
+            "quantityUomId",
+            "agreementId",
+            "agreementItemSeqId",
+            "lastPrice",
+            "shippingPrice",
+            "supplierProductId",
+            "supplierProductName",
+            "canDropShip",
+            "comments",
+            "taxInPrice",
+            "taxAmount",
+            "taxPercentage",
+            "limitQuantityPerCustomer",
+            "limitQuantityPerOrder",
+            "productPriceTypeId",
+            "shipmentMethodTypeId",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "active",
+            "deleted",
+            "supplierProductAssocId.productId",
+            "supplierProductAssocId.partyId",
+            "supplierProductAssocId.currencyUomId",
+            "supplierProductAssocId.minimumOrderQuantity",
+            "supplierProductAssocId.availableFromDate",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "OffsetDateTime",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "OffsetDateTime",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("availableThruDate", "availableThruDate");
+        aliasMap.put("AvailableThruDate", "availableThruDate");
+        aliasMap.put("supplierPrefOrderId", "supplierPrefOrderId");
+        aliasMap.put("SupplierPrefOrderId", "supplierPrefOrderId");
+        aliasMap.put("supplierRatingTypeId", "supplierRatingTypeId");
+        aliasMap.put("SupplierRatingTypeId", "supplierRatingTypeId");
+        aliasMap.put("standardLeadTimeDays", "standardLeadTimeDays");
+        aliasMap.put("StandardLeadTimeDays", "standardLeadTimeDays");
+        aliasMap.put("orderQtyIncrements", "orderQtyIncrements");
+        aliasMap.put("OrderQtyIncrements", "orderQtyIncrements");
+        aliasMap.put("unitsIncluded", "unitsIncluded");
+        aliasMap.put("UnitsIncluded", "unitsIncluded");
+        aliasMap.put("quantityUomId", "quantityUomId");
+        aliasMap.put("QuantityUomId", "quantityUomId");
+        aliasMap.put("agreementId", "agreementId");
+        aliasMap.put("AgreementId", "agreementId");
+        aliasMap.put("agreementItemSeqId", "agreementItemSeqId");
+        aliasMap.put("AgreementItemSeqId", "agreementItemSeqId");
+        aliasMap.put("lastPrice", "lastPrice");
+        aliasMap.put("LastPrice", "lastPrice");
+        aliasMap.put("shippingPrice", "shippingPrice");
+        aliasMap.put("ShippingPrice", "shippingPrice");
+        aliasMap.put("supplierProductId", "supplierProductId");
+        aliasMap.put("SupplierProductId", "supplierProductId");
+        aliasMap.put("supplierProductName", "supplierProductName");
+        aliasMap.put("SupplierProductName", "supplierProductName");
+        aliasMap.put("canDropShip", "canDropShip");
+        aliasMap.put("CanDropShip", "canDropShip");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("taxInPrice", "taxInPrice");
+        aliasMap.put("TaxInPrice", "taxInPrice");
+        aliasMap.put("taxAmount", "taxAmount");
+        aliasMap.put("TaxAmount", "taxAmount");
+        aliasMap.put("taxPercentage", "taxPercentage");
+        aliasMap.put("TaxPercentage", "taxPercentage");
+        aliasMap.put("limitQuantityPerCustomer", "limitQuantityPerCustomer");
+        aliasMap.put("LimitQuantityPerCustomer", "limitQuantityPerCustomer");
+        aliasMap.put("limitQuantityPerOrder", "limitQuantityPerOrder");
+        aliasMap.put("LimitQuantityPerOrder", "limitQuantityPerOrder");
+        aliasMap.put("productPriceTypeId", "productPriceTypeId");
+        aliasMap.put("ProductPriceTypeId", "productPriceTypeId");
+        aliasMap.put("shipmentMethodTypeId", "shipmentMethodTypeId");
+        aliasMap.put("ShipmentMethodTypeId", "shipmentMethodTypeId");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+        aliasMap.put("supplierProductAssocId.productId", "supplierProductAssocId.productId");
+        aliasMap.put("SupplierProductAssocId.ProductId", "supplierProductAssocId.productId");
+        aliasMap.put("supplierProductAssocId.partyId", "supplierProductAssocId.partyId");
+        aliasMap.put("SupplierProductAssocId.PartyId", "supplierProductAssocId.partyId");
+        aliasMap.put("supplierProductAssocId.currencyUomId", "supplierProductAssocId.currencyUomId");
+        aliasMap.put("SupplierProductAssocId.CurrencyUomId", "supplierProductAssocId.currencyUomId");
+        aliasMap.put("supplierProductAssocId.minimumOrderQuantity", "supplierProductAssocId.minimumOrderQuantity");
+        aliasMap.put("SupplierProductAssocId.MinimumOrderQuantity", "supplierProductAssocId.minimumOrderQuantity");
+        aliasMap.put("supplierProductAssocId.availableFromDate", "supplierProductAssocId.availableFromDate");
+        aliasMap.put("SupplierProductAssocId.AvailableFromDate", "supplierProductAssocId.availableFromDate");
     }
 
     private static void initPropertyTypeMap() {

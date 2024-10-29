@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.supplierproduct">
+  <class name="org.dddml.ffvtraceability.domain.supplierproduct.AbstractSupplierProductState$SimpleSupplierProductState" table="SUPPLIER_PRODUCT">
+    <composite-id name="supplierProductAssocId" class="org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId">
+      <key-property name="productId">
+        <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyId">
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="currencyUomId">
+        <column name="CURRENCY_UOM_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="minimumOrderQuantity">
+        <column name="MINIMUM_ORDER_QUANTITY" sql-type="DECIMAL(18,6)" />
+      </key-property>
+      <key-property name="availableFromDate">
+        <column name="AVAILABLE_FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <property name="availableThruDate">
+      <column name="AVAILABLE_THRU_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="supplierPrefOrderId">
+      <column name="SUPPLIER_PREF_ORDER_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="supplierRatingTypeId">
+      <column name="SUPPLIER_RATING_TYPE_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="standardLeadTimeDays">
+      <column name="STANDARD_LEAD_TIME_DAYS" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="orderQtyIncrements">
+      <column name="ORDER_QTY_INCREMENTS" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="unitsIncluded">
+      <column name="UNITS_INCLUDED" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="quantityUomId">
+      <column name="QUANTITY_UOM_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="agreementId">
+      <column name="AGREEMENT_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="agreementItemSeqId">
+      <column name="AGREEMENT_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="lastPrice">
+      <column name="LAST_PRICE" sql-type="DECIMAL(18,3)" />
+    </property>
+    <property name="shippingPrice">
+      <column name="SHIPPING_PRICE" sql-type="DECIMAL(18,3)" />
+    </property>
+    <property name="supplierProductId">
+      <column name="SUPPLIER_PRODUCT_ID" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="supplierProductName">
+      <column name="SUPPLIER_PRODUCT_NAME" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="canDropShip">
+      <column name="CAN_DROP_SHIP" sql-type="CHAR(1)" />
+    </property>
+    <property name="comments">
+      <column name="COMMENTS" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="taxInPrice">
+      <column name="tax_in_price" sql-type="CHAR(1)" />
+    </property>
+    <property name="taxAmount">
+      <column name="tax_amount" sql-type="DECIMAL(18,3)" />
+    </property>
+    <property name="taxPercentage">
+      <column name="tax_percentage" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="limitQuantityPerCustomer">
+      <column name="limit_quantity_per_customer" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="limitQuantityPerOrder">
+      <column name="limit_quantity_per_order" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="productPriceTypeId">
+      <column name="product_price_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="shipmentMethodTypeId">
+      <column name="shipment_method_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

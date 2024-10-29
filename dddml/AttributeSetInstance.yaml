@@ -6,7 +6,7 @@ aggregates:
       CreationWithoutIdEnabled: true
     id:
       name: AttributeSetInstanceId
-      type: HexHash
+      type: HashHex
     properties:
       Properties:
         type: ConsistentEqualityMap
