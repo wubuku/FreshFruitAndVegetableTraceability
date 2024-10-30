@@ -23,7 +23,7 @@ public interface ReceivingEventCommand extends Command {
 
     static void throwOnInvalidStateTransition(ReceivingEventState state, Command c) {
         if (state.getVersion() == null) {
-            if (isCommandCreate((ReceivingEventCommand)c)) {
+            if (isCreationCommand((ReceivingEventCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
@@ -31,11 +31,11 @@ public interface ReceivingEventCommand extends Command {
         if (state.getDeleted() != null && state.getDeleted()) {
             throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
         }
-        if (isCommandCreate((ReceivingEventCommand)c))
+        if (isCreationCommand((ReceivingEventCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(ReceivingEventCommand c) {
+    static boolean isCreationCommand(ReceivingEventCommand c) {
         if ((c instanceof ReceivingEventCommand.CreateReceivingEvent) 
             && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(ReceivingEventState.VERSION_NULL)))
             return true;
@@ -43,6 +43,10 @@ public interface ReceivingEventCommand extends Command {
             return false;
         if ((c instanceof ReceivingEventCommand.DeleteReceivingEvent))
             return false;
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+        }
+
         if (c.getVersion().equals(ReceivingEventState.VERSION_NULL))
             return true;
         return false;

@@ -23,7 +23,7 @@ public interface Gs1ApplicationIdentifierCommand extends Command {
 
     static void throwOnInvalidStateTransition(Gs1ApplicationIdentifierState state, Command c) {
         if (state.getVersion() == null) {
-            if (isCommandCreate((Gs1ApplicationIdentifierCommand)c)) {
+            if (isCreationCommand((Gs1ApplicationIdentifierCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
@@ -31,11 +31,11 @@ public interface Gs1ApplicationIdentifierCommand extends Command {
         if (state.getDeleted() != null && state.getDeleted()) {
             throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
         }
-        if (isCommandCreate((Gs1ApplicationIdentifierCommand)c))
+        if (isCreationCommand((Gs1ApplicationIdentifierCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(Gs1ApplicationIdentifierCommand c) {
+    static boolean isCreationCommand(Gs1ApplicationIdentifierCommand c) {
         if ((c instanceof Gs1ApplicationIdentifierCommand.CreateGs1ApplicationIdentifier) 
             && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(Gs1ApplicationIdentifierState.VERSION_NULL)))
             return true;
@@ -43,6 +43,10 @@ public interface Gs1ApplicationIdentifierCommand extends Command {
             return false;
         if ((c instanceof Gs1ApplicationIdentifierCommand.DeleteGs1ApplicationIdentifier))
             return false;
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+        }
+
         if (c.getVersion().equals(Gs1ApplicationIdentifierState.VERSION_NULL))
             return true;
         return false;

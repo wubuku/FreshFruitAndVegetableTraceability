@@ -23,7 +23,7 @@ public interface UomTypeCommand extends Command {
 
     static void throwOnInvalidStateTransition(UomTypeState state, Command c) {
         if (state.getVersion() == null) {
-            if (isCommandCreate((UomTypeCommand)c)) {
+            if (isCreationCommand((UomTypeCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
@@ -31,11 +31,11 @@ public interface UomTypeCommand extends Command {
         if (state.getDeleted() != null && state.getDeleted()) {
             throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
         }
-        if (isCommandCreate((UomTypeCommand)c))
+        if (isCreationCommand((UomTypeCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(UomTypeCommand c) {
+    static boolean isCreationCommand(UomTypeCommand c) {
         if ((c instanceof UomTypeCommand.CreateUomType) 
             && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(UomTypeState.VERSION_NULL)))
             return true;
@@ -43,6 +43,10 @@ public interface UomTypeCommand extends Command {
             return false;
         if ((c instanceof UomTypeCommand.DeleteUomType))
             return false;
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+        }
+
         if (c.getVersion().equals(UomTypeState.VERSION_NULL))
             return true;
         return false;

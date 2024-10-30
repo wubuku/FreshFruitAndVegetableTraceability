@@ -45,6 +45,7 @@ public interface SupplierProductCommand extends Command {
             if (commandType.equals("Disable"))
                 return false;
         }
+
         if (c.getVersion().equals(SupplierProductState.VERSION_NULL))
             return true;
         return false;

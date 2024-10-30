@@ -23,7 +23,7 @@ public interface TransformationEventCommand extends Command {
 
     static void throwOnInvalidStateTransition(TransformationEventState state, Command c) {
         if (state.getVersion() == null) {
-            if (isCommandCreate((TransformationEventCommand)c)) {
+            if (isCreationCommand((TransformationEventCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
@@ -31,11 +31,11 @@ public interface TransformationEventCommand extends Command {
         if (state.getDeleted() != null && state.getDeleted()) {
             throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
         }
-        if (isCommandCreate((TransformationEventCommand)c))
+        if (isCreationCommand((TransformationEventCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(TransformationEventCommand c) {
+    static boolean isCreationCommand(TransformationEventCommand c) {
         if ((c instanceof TransformationEventCommand.CreateTransformationEvent) 
             && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(TransformationEventState.VERSION_NULL)))
             return true;
@@ -43,6 +43,10 @@ public interface TransformationEventCommand extends Command {
             return false;
         if ((c instanceof TransformationEventCommand.DeleteTransformationEvent))
             return false;
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+        }
+
         if (c.getVersion().equals(TransformationEventState.VERSION_NULL))
             return true;
         return false;

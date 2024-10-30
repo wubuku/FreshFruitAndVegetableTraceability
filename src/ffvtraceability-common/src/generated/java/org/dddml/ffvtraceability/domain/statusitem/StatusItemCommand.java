@@ -23,21 +23,25 @@ public interface StatusItemCommand extends Command {
 
     static void throwOnInvalidStateTransition(StatusItemState state, Command c) {
         if (state.getVersion() == null) {
-            if (isCommandCreate((StatusItemCommand)c)) {
+            if (isCreationCommand((StatusItemCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
         }
-        if (isCommandCreate((StatusItemCommand)c))
+        if (isCreationCommand((StatusItemCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(StatusItemCommand c) {
+    static boolean isCreationCommand(StatusItemCommand c) {
         if ((c instanceof StatusItemCommand.CreateStatusItem) 
             && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(StatusItemState.VERSION_NULL)))
             return true;
         if ((c instanceof StatusItemCommand.MergePatchStatusItem))
             return false;
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+        }
+
         if (c.getVersion().equals(StatusItemState.VERSION_NULL))
             return true;
         return false;

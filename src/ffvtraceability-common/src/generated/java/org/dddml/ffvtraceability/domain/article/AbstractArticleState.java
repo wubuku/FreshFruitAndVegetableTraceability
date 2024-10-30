@@ -365,8 +365,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         if (eventVersion == null) {
             throw new NullPointerException("event.getArticleEventId().getVersion() == null");
         }
-        if (!(stateVersion == null && eventVersion.equals(ArticleState.VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
-            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion);
+        if (!(stateVersion == null && eventVersion.equals(VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
+            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion == VERSION_NULL ? "NULL" : eventVersion + "");
         }
 
     }

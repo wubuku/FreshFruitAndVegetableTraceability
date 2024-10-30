@@ -23,7 +23,7 @@ public interface ShippingEventCommand extends Command {
 
     static void throwOnInvalidStateTransition(ShippingEventState state, Command c) {
         if (state.getVersion() == null) {
-            if (isCommandCreate((ShippingEventCommand)c)) {
+            if (isCreationCommand((ShippingEventCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
@@ -31,11 +31,11 @@ public interface ShippingEventCommand extends Command {
         if (state.getDeleted() != null && state.getDeleted()) {
             throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
         }
-        if (isCommandCreate((ShippingEventCommand)c))
+        if (isCreationCommand((ShippingEventCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(ShippingEventCommand c) {
+    static boolean isCreationCommand(ShippingEventCommand c) {
         if ((c instanceof ShippingEventCommand.CreateShippingEvent) 
             && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(ShippingEventState.VERSION_NULL)))
             return true;
@@ -43,6 +43,10 @@ public interface ShippingEventCommand extends Command {
             return false;
         if ((c instanceof ShippingEventCommand.DeleteShippingEvent))
             return false;
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+        }
+
         if (c.getVersion().equals(ShippingEventState.VERSION_NULL))
             return true;
         return false;
