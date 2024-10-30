@@ -57,6 +57,14 @@ public abstract class AbstractSupplierProductApplicationService implements Suppl
         update(c, ar -> ar.mergePatch(c));
     }
 
+    public void when(SupplierProductCommands.UpdateAvailableThruDate c) {
+        update(c, ar -> ar.updateAvailableThruDate(c.getAvailableThruDate(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
+    public void when(SupplierProductCommands.Disable c) {
+        update(c, ar -> ar.disable(c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public SupplierProductState get(SupplierProductAssocId id) {
         SupplierProductState state = getStateRepository().get(SupplierProductTenantizedId.toSupplierProductTenantizedId(id), true);
         return state;

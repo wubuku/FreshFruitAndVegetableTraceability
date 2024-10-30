@@ -37,6 +37,8 @@
           <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
         </type>
       </property>
+      <subclass name="AbstractSupplierProductEvent$AvailableThruDateUpdated" discriminator-value="AvailableThruDateUpdated" />
+      <subclass name="AbstractSupplierProductEvent$SupplierProductDisabled" discriminator-value="SupplierProductDisabled" />
     </subclass>
     <subclass name="AbstractSupplierProductEvent$AbstractSupplierProductStateEvent" abstract="true">
       <property name="availableThruDate">

@@ -24,6 +24,38 @@ public class StaticMethodConstraints {
 
     public static void assertStaticVerificationAndMutationMethods() {
 
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.ffvtraceability.domain.supplierproduct.UpdateAvailableThruDateLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, SupplierProductState.class, OffsetDateTime.class, VerificationContext.class},
+                    new String[]{"_", "_", "availableThruDate"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.ffvtraceability.domain.supplierproduct.DisableLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, SupplierProductState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.ffvtraceability.domain.supplierproduct.UpdateAvailableThruDateLogic",
+                    "mutate",
+                    new Class[]{SupplierProductState.class, OffsetDateTime.class, MutationContext.class},
+                    new String[]{"_", "availableThruDate"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.ffvtraceability.domain.supplierproduct.DisableLogic",
+                    "mutate",
+                    new Class[]{SupplierProductState.class, MutationContext.class},
+                    new String[]{"_"}
+            );
+
+
 
     }
 

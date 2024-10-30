@@ -18,6 +18,10 @@ public interface SupplierProductApplicationService {
 
     void when(SupplierProductCommand.MergePatchSupplierProduct c);
 
+    void when(SupplierProductCommands.UpdateAvailableThruDate c);
+
+    void when(SupplierProductCommands.Disable c);
+
     SupplierProductState get(SupplierProductAssocId id);
 
     Iterable<SupplierProductState> getAll(Integer firstResult, Integer maxResults);

@@ -167,6 +167,100 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
             super(state);
         }
 
+        @Override
+        public void updateAvailableThruDate(OffsetDateTime availableThruDate, Long version, String commandId, String requesterId, SupplierProductCommands.UpdateAvailableThruDate c) {
+            java.util.function.Supplier<SupplierProductEvent.AvailableThruDateUpdated> eventFactory = () -> newAvailableThruDateUpdated(availableThruDate, version, commandId, requesterId);
+            SupplierProductEvent.AvailableThruDateUpdated e;
+            try {
+                e = verifyUpdateAvailableThruDate(eventFactory, availableThruDate, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        @Override
+        public void disable(Long version, String commandId, String requesterId, SupplierProductCommands.Disable c) {
+            java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory = () -> newSupplierProductDisabled(version, commandId, requesterId);
+            SupplierProductEvent.SupplierProductDisabled e;
+            try {
+                e = verifyDisable(eventFactory, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        protected SupplierProductEvent.AvailableThruDateUpdated verifyUpdateAvailableThruDate(java.util.function.Supplier<SupplierProductEvent.AvailableThruDateUpdated> eventFactory, OffsetDateTime availableThruDate, SupplierProductCommands.UpdateAvailableThruDate c) {
+            OffsetDateTime AvailableThruDate = availableThruDate;
+
+            SupplierProductEvent.AvailableThruDateUpdated e = (SupplierProductEvent.AvailableThruDateUpdated) ((UpdateAvailableThruDateVerification) UpdateAvailableThruDateLogic::verify).verify(
+                    eventFactory, getState(), availableThruDate, VerificationContext.forCommand(c));
+
+//package org.dddml.ffvtraceability.domain.supplierproduct;
+//
+//public class UpdateAvailableThruDateLogic {
+//    public static SupplierProductEvent.AvailableThruDateUpdated verify(java.util.function.Supplier<SupplierProductEvent.AvailableThruDateUpdated> eventFactory, SupplierProductState supplierProductState, OffsetDateTime availableThruDate, VerificationContext verificationContext) {
+//    }
+//}
+
+            return e;
+        }
+           
+
+        protected SupplierProductEvent.SupplierProductDisabled verifyDisable(java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory, SupplierProductCommands.Disable c) {
+
+            SupplierProductEvent.SupplierProductDisabled e = (SupplierProductEvent.SupplierProductDisabled) ((DisableVerification) DisableLogic::verify).verify(
+                    eventFactory, getState(), VerificationContext.forCommand(c));
+
+//package org.dddml.ffvtraceability.domain.supplierproduct;
+//
+//public class DisableLogic {
+//    public static SupplierProductEvent.SupplierProductDisabled verify(java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory, SupplierProductState supplierProductState, VerificationContext verificationContext) {
+//    }
+//}
+
+            return e;
+        }
+           
+
+        public interface UpdateAvailableThruDateVerification {
+            SupplierProductEvent.AvailableThruDateUpdated verify(java.util.function.Supplier<SupplierProductEvent.AvailableThruDateUpdated> eventFactory, SupplierProductState supplierProductState, OffsetDateTime availableThruDate, VerificationContext verificationContext);
+        }
+
+        public interface DisableVerification {
+            SupplierProductEvent.SupplierProductDisabled verify(java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory, SupplierProductState supplierProductState, VerificationContext verificationContext);
+        }
+
+        protected AbstractSupplierProductEvent.AvailableThruDateUpdated newAvailableThruDateUpdated(OffsetDateTime availableThruDate, Long version, String commandId, String requesterId) {
+            SupplierProductEventId eventId = new SupplierProductEventId(getState().getSupplierProductAssocId(), version);
+            AbstractSupplierProductEvent.AvailableThruDateUpdated e = new AbstractSupplierProductEvent.AvailableThruDateUpdated();
+
+            e.getDynamicProperties().put("availableThruDate", availableThruDate);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+            e.setSupplierProductEventId(eventId);
+            return e;
+        }
+
+        protected AbstractSupplierProductEvent.SupplierProductDisabled newSupplierProductDisabled(Long version, String commandId, String requesterId) {
+            SupplierProductEventId eventId = new SupplierProductEventId(getState().getSupplierProductAssocId(), version);
+            AbstractSupplierProductEvent.SupplierProductDisabled e = new AbstractSupplierProductEvent.SupplierProductDisabled();
+
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+            e.setSupplierProductEventId(eventId);
+            return e;
+        }
+
     }
 
 }

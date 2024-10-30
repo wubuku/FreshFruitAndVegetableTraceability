@@ -360,6 +360,10 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
             when((SupplierProductStateCreated) e);
         } else if (e instanceof SupplierProductStateMergePatched) {
             when((SupplierProductStateMergePatched) e);
+        } else if (e instanceof AbstractSupplierProductEvent.AvailableThruDateUpdated) {
+            when((AbstractSupplierProductEvent.AvailableThruDateUpdated)e);
+        } else if (e instanceof AbstractSupplierProductEvent.SupplierProductDisabled) {
+            when((AbstractSupplierProductEvent.SupplierProductDisabled)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -585,6 +589,72 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+    }
+
+    public void when(AbstractSupplierProductEvent.AvailableThruDateUpdated e) {
+        throwOnWrongEvent(e);
+
+        OffsetDateTime availableThruDate = e.getAvailableThruDate();
+        OffsetDateTime AvailableThruDate = availableThruDate;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        SupplierProductState updatedSupplierProductState = ((UpdateAvailableThruDateMutation) UpdateAvailableThruDateLogic::mutate).mutate(
+                this, availableThruDate, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+
+
+//package org.dddml.ffvtraceability.domain.supplierproduct;
+//
+//public class UpdateAvailableThruDateLogic {
+//    public static SupplierProductState mutate(SupplierProductState supplierProductState, OffsetDateTime availableThruDate, MutationContext<SupplierProductState, SupplierProductState.MutableSupplierProductState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedSupplierProductState) { merge(updatedSupplierProductState); } //else do nothing
+
+    }
+
+    public void when(AbstractSupplierProductEvent.SupplierProductDisabled e) {
+        throwOnWrongEvent(e);
+
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        SupplierProductState updatedSupplierProductState = ((DisableMutation) DisableLogic::mutate).mutate(
+                this, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+
+
+//package org.dddml.ffvtraceability.domain.supplierproduct;
+//
+//public class DisableLogic {
+//    public static SupplierProductState mutate(SupplierProductState supplierProductState, MutationContext<SupplierProductState, SupplierProductState.MutableSupplierProductState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedSupplierProductState) { merge(updatedSupplierProductState); } //else do nothing
+
+    }
+
+    public interface UpdateAvailableThruDateMutation {
+        SupplierProductState mutate(SupplierProductState supplierProductState, OffsetDateTime availableThruDate, MutationContext<SupplierProductState, SupplierProductState.MutableSupplierProductState> mutationContext);
+    }
+
+    public interface DisableMutation {
+        SupplierProductState mutate(SupplierProductState supplierProductState, MutationContext<SupplierProductState, SupplierProductState.MutableSupplierProductState> mutationContext);
     }
 
     public void save() {

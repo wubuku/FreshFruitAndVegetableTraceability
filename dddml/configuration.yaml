@@ -3,6 +3,7 @@ configuration:
   metadata:
     NoHibernate5: true
     ShouldUseJakartaEE: true
+    ShouldStaticallyInvokeJavaLogicFunctions: true
   multiTenancy:
     discriminatorBasedMultiTenancyEnabled: false
   hibernate:

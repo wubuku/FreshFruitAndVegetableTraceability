@@ -20,6 +20,16 @@ public interface SupplierProductEvent extends Event {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface AvailableThruDateUpdated extends SupplierProductEvent {
+        OffsetDateTime getAvailableThruDate();
+
+        void setAvailableThruDate(OffsetDateTime value);
+
+    }
+
+    interface SupplierProductDisabled extends SupplierProductEvent {
+    }
+
     SupplierProductTenantizedId getSupplierProductAssocId();
 
     //void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId);

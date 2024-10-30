@@ -81,9 +81,21 @@
         type: id
 
     references: {}
-
     reservedPropertyMetadata:
       noDeleted: true
+
+    methods:
+      UpdateAvailableThruDate:
+        parameters:
+          AvailableThruDate:
+            type: date-time
+        event:
+          name: AvailableThruDateUpdated
+      Disable:
+        description: "A SupplierProduct can be disabled by setting AvailableThruDate equal to AvailableFromDate"
+        event:
+          name: SupplierProductDisabled
+        
 
     valueObjects:
       SupplierProductAssocId:

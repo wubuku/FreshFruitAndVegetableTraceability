@@ -117,6 +117,36 @@ public abstract class AbstractSupplierProductEvent extends AbstractEvent impleme
 
     }
 
+    public static class AvailableThruDateUpdated extends SupplierProductLobEvent implements SupplierProductEvent.AvailableThruDateUpdated {
+
+        @Override
+        public String getEventType() {
+            return "AvailableThruDateUpdated";
+        }
+
+        public OffsetDateTime getAvailableThruDate() {
+            Object val = getDynamicProperties().get("availableThruDate");
+            if (val instanceof OffsetDateTime) {
+                return (OffsetDateTime) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, OffsetDateTime.class);
+        }
+
+        public void setAvailableThruDate(OffsetDateTime value) {
+            getDynamicProperties().put("availableThruDate", value);
+        }
+
+    }
+
+    public static class SupplierProductDisabled extends SupplierProductLobEvent implements SupplierProductEvent.SupplierProductDisabled {
+
+        @Override
+        public String getEventType() {
+            return "SupplierProductDisabled";
+        }
+
+    }
+
 
     public static abstract class AbstractSupplierProductStateEvent extends AbstractSupplierProductEvent implements SupplierProductEvent.SupplierProductStateEvent {
         private OffsetDateTime availableThruDate;

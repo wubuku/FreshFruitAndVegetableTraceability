@@ -20,6 +20,10 @@ public interface SupplierProductAggregate {
 
     void mergePatch(SupplierProductCommand.MergePatchSupplierProduct c);
 
+    void updateAvailableThruDate(OffsetDateTime availableThruDate, Long version, String commandId, String requesterId, SupplierProductCommands.UpdateAvailableThruDate c);
+
+    void disable(Long version, String commandId, String requesterId, SupplierProductCommands.Disable c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

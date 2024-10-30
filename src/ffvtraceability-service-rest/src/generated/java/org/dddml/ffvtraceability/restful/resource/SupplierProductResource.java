@@ -232,6 +232,42 @@ public class SupplierProductResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+
+    @PutMapping("{supplierProductAssocId}/_commands/UpdateAvailableThruDate")
+    public void updateAvailableThruDate(@PathVariable("supplierProductAssocId") String supplierProductAssocId, @RequestBody SupplierProductCommands.UpdateAvailableThruDate content) {
+        try {
+
+            SupplierProductCommands.UpdateAvailableThruDate cmd = content;//.toUpdateAvailableThruDate();
+            SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductAssocId);
+            if (cmd.getSupplierProductAssocId() == null) {
+                cmd.setSupplierProductAssocId(idObj);
+            } else if (!cmd.getSupplierProductAssocId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", supplierProductAssocId, cmd.getSupplierProductAssocId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            supplierProductApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+
+    @PutMapping("{supplierProductAssocId}/_commands/Disable")
+    public void disable(@PathVariable("supplierProductAssocId") String supplierProductAssocId, @RequestBody SupplierProductCommands.Disable content) {
+        try {
+
+            SupplierProductCommands.Disable cmd = content;//.toDisable();
+            SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductAssocId);
+            if (cmd.getSupplierProductAssocId() == null) {
+                cmd.setSupplierProductAssocId(idObj);
+            } else if (!cmd.getSupplierProductAssocId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", supplierProductAssocId, cmd.getSupplierProductAssocId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            supplierProductApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {
