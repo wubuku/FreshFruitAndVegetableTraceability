@@ -23,21 +23,28 @@ public interface SupplierProductCommand extends Command {
 
     static void throwOnInvalidStateTransition(SupplierProductState state, Command c) {
         if (state.getVersion() == null) {
-            if (isCommandCreate((SupplierProductCommand)c)) {
+            if (isCreationCommand((SupplierProductCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
         }
-        if (isCommandCreate((SupplierProductCommand)c))
+        if (isCreationCommand((SupplierProductCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(SupplierProductCommand c) {
+    static boolean isCreationCommand(SupplierProductCommand c) {
         if ((c instanceof SupplierProductCommand.CreateSupplierProduct) 
             && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(SupplierProductState.VERSION_NULL)))
             return true;
         if ((c instanceof SupplierProductCommand.MergePatchSupplierProduct))
             return false;
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+            if (commandType.equals("UpdateAvailableThruDate"))
+                return false;
+            if (commandType.equals("Disable"))
+                return false;
+        }
         if (c.getVersion().equals(SupplierProductState.VERSION_NULL))
             return true;
         return false;

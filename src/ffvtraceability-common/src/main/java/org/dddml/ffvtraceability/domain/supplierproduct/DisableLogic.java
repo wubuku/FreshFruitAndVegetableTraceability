@@ -11,7 +11,8 @@ import org.dddml.ffvtraceability.specialization.*;
 public class DisableLogic {
 
     public static SupplierProductEvent.SupplierProductDisabled verify(java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory, SupplierProductState supplierProductState, VerificationContext verificationContext) {
-        return new AbstractSupplierProductEvent.SupplierProductDisabled();
+        SupplierProductEvent.SupplierProductDisabled e = eventFactory.get();
+        return e;
     }
 
     public static SupplierProductState mutate(SupplierProductState supplierProductState, MutationContext<SupplierProductState, SupplierProductState.MutableSupplierProductState> mutationContext) {

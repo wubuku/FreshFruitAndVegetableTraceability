@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 public class UpdateAvailableThruDateLogic {
 
     public static SupplierProductEvent.AvailableThruDateUpdated verify(java.util.function.Supplier<SupplierProductEvent.AvailableThruDateUpdated> eventFactory, SupplierProductState supplierProductState, OffsetDateTime availableThruDate, VerificationContext verificationContext) {
-        AbstractSupplierProductEvent.AvailableThruDateUpdated e = new AbstractSupplierProductEvent.AvailableThruDateUpdated();
+        SupplierProductEvent.AvailableThruDateUpdated e = eventFactory.get();
         if (availableThruDate.isBefore(supplierProductState.getSupplierProductTenantizedId().getSupplierProductAssocId().getAvailableFromDate())) {
             throw new IllegalStateException("AvailableThruDate cannot be before AvailableFromDate");
         }

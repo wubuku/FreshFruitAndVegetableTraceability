@@ -160,7 +160,7 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID:X" \
-  -d '{"commandType":"string","commandId":"string","requesterId":"string","supplierProductAssocId":{"productId":"string","partyId":"string","currencyUomId":"string","minimumOrderQuantity":0,"availableFromDate":"2024-10-29T08:53:18.748Z"},"availableThruDate":"2024-10-29T08:53:18.748Z","supplierPrefOrderId":"string","supplierRatingTypeId":"string","active":true}'
+  -d '{"commandId":"string","requesterId":"string","supplierProductAssocId":{"productId":"string","partyId":"string","currencyUomId":"string","minimumOrderQuantity":0,"availableFromDate":"2024-10-29T08:53:18.748Z"},"availableThruDate":"2024-10-29T08:53:18.748Z","supplierPrefOrderId":"string","supplierRatingTypeId":"string","active":true}'
 ```
 
 Get:
@@ -179,4 +179,23 @@ curl -X 'GET' \
   -H 'accept: application/json'  -H "X-TenantID:X"
 ```
 
+Update AvailableThruDate:
 
+```shell
+curl -X 'PUT' \
+  'http://localhost:1023/api/SupplierProducts/string%2Cstring%2Cstring%2C0.000000%2C2024-10-29T08%3A53%3A18.748Z/_commands/UpdateAvailableThruDate' \
+  -H 'Content-Type: application/json' \
+  -H 'accept: application/json' -H "X-TenantID:X" \
+  -d '{"commandId":"UPDATE_AVAILABLE_THRU_DATE","requesterId":"REQUESTER_ID_11111","availableThruDate":"2024-11-29T08:53:18.748Z","version":0}'
+```
+
+
+Disable:
+
+```shell
+curl -X 'PUT' \
+  'http://localhost:1023/api/SupplierProducts/string%2Cstring%2Cstring%2C0.000000%2C2024-10-29T08%3A53%3A18.748Z/_commands/Disable' \
+  -H 'Content-Type: application/json' \
+  -H 'accept: application/json' -H "X-TenantID:X" \
+  -d '{"commandId":"DISABLE","requesterId":"REQUESTER_ID_22222","version":1}'
+```

@@ -673,8 +673,8 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         if (eventVersion == null) {
             throw new NullPointerException("event.getSupplierProductEventId().getVersion() == null");
         }
-        if (!(stateVersion == null && eventVersion.equals(SupplierProductState.VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
-            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion);
+        if (!(stateVersion == null && eventVersion.equals(VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
+            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion == VERSION_NULL ? "NULL" : eventVersion + "");
         }
 
     }
