@@ -14,14 +14,14 @@ import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductEvent.*;
 
 public abstract class AbstractSupplierProductState implements SupplierProductState.SqlSupplierProductState {
 
-    private SupplierProductTenantizedId supplierProductAssocId;
+    private SupplierProductTenantizedId supplierProductTenantizedId;
 
-    public SupplierProductTenantizedId getSupplierProductAssocId() {
-        return this.supplierProductAssocId;
+    public SupplierProductTenantizedId getSupplierProductTenantizedId() {
+        return this.supplierProductTenantizedId;
     }
 
-    public void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId) {
-        this.supplierProductAssocId = supplierProductAssocId;
+    public void setSupplierProductTenantizedId(SupplierProductTenantizedId supplierProductTenantizedId) {
+        this.supplierProductTenantizedId = supplierProductTenantizedId;
     }
 
     private OffsetDateTime availableThruDate;
@@ -317,7 +317,7 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
     public AbstractSupplierProductState(List<Event> events) {
         initializeForReapplying();
         if (events != null && events.size() > 0) {
-            this.setSupplierProductAssocId(((SupplierProductEvent.SqlSupplierProductEvent) events.get(0)).getSupplierProductEventId().getSupplierProductAssocId());
+            this.setSupplierProductTenantizedId(((SupplierProductEvent.SqlSupplierProductEvent) events.get(0)).getSupplierProductEventId().getSupplierProductTenantizedId());
             for (Event e : events) {
                 mutate(e);
                 this.setVersion((this.getVersion() == null ? SupplierProductState.VERSION_NULL : this.getVersion()) + 1);
@@ -341,14 +341,14 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
 
     @Override
     public int hashCode() {
-        return getSupplierProductAssocId().hashCode();
+        return getSupplierProductTenantizedId().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
         if (obj instanceof SupplierProductState) {
-            return Objects.equals(this.getSupplierProductAssocId(), ((SupplierProductState)obj).getSupplierProductAssocId());
+            return Objects.equals(this.getSupplierProductTenantizedId(), ((SupplierProductState)obj).getSupplierProductTenantizedId());
         }
         return false;
     }
@@ -607,7 +607,7 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setUpdatedAt(e.getCreatedAt());
 
         SupplierProductState updatedSupplierProductState = ((UpdateAvailableThruDateMutation) UpdateAvailableThruDateLogic::mutate).mutate(
-                this, availableThruDate, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, availableThruDate, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
 
 //package org.dddml.ffvtraceability.domain.supplierproduct;
@@ -635,7 +635,7 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setUpdatedAt(e.getCreatedAt());
 
         SupplierProductState updatedSupplierProductState = ((DisableMutation) DisableLogic::mutate).mutate(
-                this, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
 
 //package org.dddml.ffvtraceability.domain.supplierproduct;
@@ -661,8 +661,8 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
     }
 
     protected void throwOnWrongEvent(SupplierProductEvent event) {
-        SupplierProductTenantizedId stateEntityId = this.getSupplierProductAssocId(); // Aggregate Id
-        SupplierProductTenantizedId eventEntityId = ((SupplierProductEvent.SqlSupplierProductEvent)event).getSupplierProductEventId().getSupplierProductAssocId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
+        SupplierProductTenantizedId stateEntityId = this.getSupplierProductTenantizedId(); // Aggregate Id
+        SupplierProductTenantizedId eventEntityId = ((SupplierProductEvent.SqlSupplierProductEvent)event).getSupplierProductEventId().getSupplierProductTenantizedId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
         if (!stateEntityId.equals(eventEntityId)) {
             throw DomainError.named("mutateWrongEntity", "Entity Id %1$s in state but entity id %2$s in event", stateEntityId, eventEntityId);
         }

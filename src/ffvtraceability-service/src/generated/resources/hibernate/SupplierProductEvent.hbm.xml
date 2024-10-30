@@ -3,22 +3,22 @@
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.supplierproduct">
   <class name="AbstractSupplierProductEvent" table="supplier_product_event" abstract="true">
     <composite-id name="supplierProductEventId" class="org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductEventId">
-      <key-property name="supplierProductAssocIdTenantId">
+      <key-property name="supplierProductTenantizedIdTenantId">
         <column name="tenant_id" />
       </key-property>
-      <key-property name="supplierProductAssocIdProductId">
+      <key-property name="supplierProductTenantizedIdSupplierProductAssocIdProductId">
         <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="supplierProductAssocIdPartyId">
+      <key-property name="supplierProductTenantizedIdSupplierProductAssocIdPartyId">
         <column name="PARTY_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="supplierProductAssocIdCurrencyUomId">
+      <key-property name="supplierProductTenantizedIdSupplierProductAssocIdCurrencyUomId">
         <column name="CURRENCY_UOM_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="supplierProductAssocIdMinimumOrderQuantity">
+      <key-property name="supplierProductTenantizedIdSupplierProductAssocIdMinimumOrderQuantity">
         <column name="MINIMUM_ORDER_QUANTITY" sql-type="DECIMAL(18,6)" />
       </key-property>
-      <key-property name="supplierProductAssocIdAvailableFromDate">
+      <key-property name="supplierProductTenantizedIdSupplierProductAssocIdAvailableFromDate">
         <column name="AVAILABLE_FROM_DATE" sql-type="timestamptz" />
       </key-property>
       <key-property name="version">

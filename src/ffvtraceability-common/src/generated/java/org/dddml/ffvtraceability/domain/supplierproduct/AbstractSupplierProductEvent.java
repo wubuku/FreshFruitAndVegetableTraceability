@@ -22,12 +22,12 @@ public abstract class AbstractSupplierProductEvent extends AbstractEvent impleme
         this.supplierProductEventId = eventId;
     }
     
-    public SupplierProductTenantizedId getSupplierProductAssocId() {
-        return getSupplierProductEventId().getSupplierProductAssocId();
+    public SupplierProductTenantizedId getSupplierProductTenantizedId() {
+        return getSupplierProductEventId().getSupplierProductTenantizedId();
     }
 
-    public void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId) {
-        getSupplierProductEventId().setSupplierProductAssocId(supplierProductAssocId);
+    public void setSupplierProductTenantizedId(SupplierProductTenantizedId supplierProductTenantizedId) {
+        getSupplierProductEventId().setSupplierProductTenantizedId(supplierProductTenantizedId);
     }
 
     private boolean eventReadOnly;

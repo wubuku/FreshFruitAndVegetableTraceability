@@ -94,18 +94,18 @@ public abstract class AbstractSupplierProductApplicationService implements Suppl
         return getStateQueryRepository().getCount(filter);
     }
 
-    public SupplierProductEvent getEvent(SupplierProductAssocId supplierProductAssocId, long version) {
-        SupplierProductEvent e = (SupplierProductEvent)getEventStore().getEvent(toEventStoreAggregateId(supplierProductAssocId), version);
+    public SupplierProductEvent getEvent(SupplierProductAssocId supplierProductTenantizedId, long version) {
+        SupplierProductEvent e = (SupplierProductEvent)getEventStore().getEvent(toEventStoreAggregateId(supplierProductTenantizedId), version);
         if (e != null) {
             ((SupplierProductEvent.SqlSupplierProductEvent)e).setEventReadOnly(true); 
         } else if (version == -1) {
-            return getEvent(supplierProductAssocId, 0);
+            return getEvent(supplierProductTenantizedId, 0);
         }
         return e;
     }
 
-    public SupplierProductState getHistoryState(SupplierProductAssocId supplierProductAssocId, long version) {
-        EventStream eventStream = getEventStore().loadEventStream(AbstractSupplierProductEvent.class, toEventStoreAggregateId(supplierProductAssocId), version - 1);
+    public SupplierProductState getHistoryState(SupplierProductAssocId supplierProductTenantizedId, long version) {
+        EventStream eventStream = getEventStore().loadEventStream(AbstractSupplierProductEvent.class, toEventStoreAggregateId(supplierProductTenantizedId), version - 1);
         return new AbstractSupplierProductState.SimpleSupplierProductState(eventStream.getEvents());
     }
 
@@ -147,9 +147,9 @@ public abstract class AbstractSupplierProductApplicationService implements Suppl
     }
 
     public void initialize(SupplierProductEvent.SupplierProductStateCreated stateCreated) {
-        SupplierProductTenantizedId aggregateId = ((SupplierProductEvent.SqlSupplierProductEvent)stateCreated).getSupplierProductEventId().getSupplierProductAssocId();
+        SupplierProductTenantizedId aggregateId = ((SupplierProductEvent.SqlSupplierProductEvent)stateCreated).getSupplierProductEventId().getSupplierProductTenantizedId();
         SupplierProductState.SqlSupplierProductState state = new AbstractSupplierProductState.SimpleSupplierProductState();
-        state.setSupplierProductAssocId(aggregateId);
+        state.setSupplierProductTenantizedId(aggregateId);
 
         SupplierProductAggregate aggregate = getSupplierProductAggregate(state);
         ((AbstractSupplierProductAggregate) aggregate).apply(stateCreated);

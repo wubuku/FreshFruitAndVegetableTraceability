@@ -136,7 +136,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
     ////////////////////////
 
     protected SupplierProductEvent.SupplierProductStateCreated newSupplierProductStateCreated(Long version, String commandId, String requesterId) {
-        SupplierProductEventId stateEventId = new SupplierProductEventId(this.state.getSupplierProductAssocId(), version);
+        SupplierProductEventId stateEventId = new SupplierProductEventId(this.state.getSupplierProductTenantizedId(), version);
         SupplierProductEvent.SupplierProductStateCreated e = newSupplierProductStateCreated(stateEventId);
         ((AbstractSupplierProductEvent)e).setCommandId(commandId);
         e.setCreatedBy(requesterId);
@@ -145,7 +145,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
     }
 
     protected SupplierProductEvent.SupplierProductStateMergePatched newSupplierProductStateMergePatched(Long version, String commandId, String requesterId) {
-        SupplierProductEventId stateEventId = new SupplierProductEventId(this.state.getSupplierProductAssocId(), version);
+        SupplierProductEventId stateEventId = new SupplierProductEventId(this.state.getSupplierProductTenantizedId(), version);
         SupplierProductEvent.SupplierProductStateMergePatched e = newSupplierProductStateMergePatched(stateEventId);
         ((AbstractSupplierProductEvent)e).setCommandId(commandId);
         e.setCreatedBy(requesterId);
@@ -235,7 +235,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         }
 
         protected AbstractSupplierProductEvent.AvailableThruDateUpdated newAvailableThruDateUpdated(OffsetDateTime availableThruDate, Long version, String commandId, String requesterId) {
-            SupplierProductEventId eventId = new SupplierProductEventId(getState().getSupplierProductAssocId(), version);
+            SupplierProductEventId eventId = new SupplierProductEventId(getState().getSupplierProductTenantizedId(), version);
             AbstractSupplierProductEvent.AvailableThruDateUpdated e = new AbstractSupplierProductEvent.AvailableThruDateUpdated();
 
             e.getDynamicProperties().put("availableThruDate", availableThruDate);
@@ -249,7 +249,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         }
 
         protected AbstractSupplierProductEvent.SupplierProductDisabled newSupplierProductDisabled(Long version, String commandId, String requesterId) {
-            SupplierProductEventId eventId = new SupplierProductEventId(getState().getSupplierProductAssocId(), version);
+            SupplierProductEventId eventId = new SupplierProductEventId(getState().getSupplierProductTenantizedId(), version);
             AbstractSupplierProductEvent.SupplierProductDisabled e = new AbstractSupplierProductEvent.SupplierProductDisabled();
 
 

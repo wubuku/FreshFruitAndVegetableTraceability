@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.supplierproduct">
   <class name="org.dddml.ffvtraceability.domain.supplierproduct.AbstractSupplierProductState$SimpleSupplierProductState" table="SUPPLIER_PRODUCT">
-    <composite-id name="supplierProductAssocId" class="org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductTenantizedId">
+    <composite-id name="supplierProductTenantizedId" class="org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductTenantizedId">
       <key-property name="tenantId">
         <column name="tenant_id" />
       </key-property>

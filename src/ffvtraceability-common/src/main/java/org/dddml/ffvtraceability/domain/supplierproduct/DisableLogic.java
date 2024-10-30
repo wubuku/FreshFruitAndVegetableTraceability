@@ -11,11 +11,13 @@ import org.dddml.ffvtraceability.specialization.*;
 public class DisableLogic {
 
     public static SupplierProductEvent.SupplierProductDisabled verify(java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory, SupplierProductState supplierProductState, VerificationContext verificationContext) {
-        return null; // TODO: implement
+        return new AbstractSupplierProductEvent.SupplierProductDisabled();
     }
 
     public static SupplierProductState mutate(SupplierProductState supplierProductState, MutationContext<SupplierProductState, SupplierProductState.MutableSupplierProductState> mutationContext) {
-        return null; // TODO: implement
+        SupplierProductState.MutableSupplierProductState s = mutationContext.createMutableState(supplierProductState);
+        s.setAvailableThruDate(supplierProductState.getSupplierProductTenantizedId().getSupplierProductAssocId().getAvailableFromDate());
+        return s;
     }
 
 }

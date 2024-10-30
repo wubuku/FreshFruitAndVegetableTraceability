@@ -38,7 +38,7 @@ public class HibernateSupplierProductStateRepository implements SupplierProductS
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("SupplierProductAssocId", "AvailableThruDate", "SupplierPrefOrderId", "SupplierRatingTypeId", "StandardLeadTimeDays", "OrderQtyIncrements", "UnitsIncluded", "QuantityUomId", "AgreementId", "AgreementItemSeqId", "LastPrice", "ShippingPrice", "SupplierProductId", "SupplierProductName", "CanDropShip", "Comments", "TaxInPrice", "TaxAmount", "TaxPercentage", "LimitQuantityPerCustomer", "LimitQuantityPerOrder", "ProductPriceTypeId", "ShipmentMethodTypeId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("SupplierProductTenantizedId", "AvailableThruDate", "SupplierPrefOrderId", "SupplierRatingTypeId", "StandardLeadTimeDays", "OrderQtyIncrements", "UnitsIncluded", "QuantityUomId", "AgreementId", "AgreementItemSeqId", "LastPrice", "ShippingPrice", "SupplierProductId", "SupplierProductName", "CanDropShip", "Comments", "TaxInPrice", "TaxAmount", "TaxPercentage", "LimitQuantityPerCustomer", "LimitQuantityPerOrder", "ProductPriceTypeId", "ShipmentMethodTypeId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -55,7 +55,7 @@ public class HibernateSupplierProductStateRepository implements SupplierProductS
         SupplierProductState.SqlSupplierProductState state = (SupplierProductState.SqlSupplierProductState)getEntityManager().find(AbstractSupplierProductState.SimpleSupplierProductState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractSupplierProductState.SimpleSupplierProductState();
-            state.setSupplierProductAssocId(id);
+            state.setSupplierProductTenantizedId(id);
         }
         if (getReadOnlyProxyGenerator() != null && state != null) {
             return (SupplierProductState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{SupplierProductState.SqlSupplierProductState.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
@@ -82,7 +82,7 @@ public class HibernateSupplierProductStateRepository implements SupplierProductS
     }
 
     public void merge(SupplierProductState detached) {
-        SupplierProductState persistent = getEntityManager().find(AbstractSupplierProductState.SimpleSupplierProductState.class, detached.getSupplierProductAssocId());
+        SupplierProductState persistent = getEntityManager().find(AbstractSupplierProductState.SimpleSupplierProductState.class, detached.getSupplierProductTenantizedId());
         if (persistent != null) {
             merge(persistent, detached);
             entityManager.merge(persistent);

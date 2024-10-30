@@ -30,9 +30,9 @@ public interface SupplierProductEvent extends Event {
     interface SupplierProductDisabled extends SupplierProductEvent {
     }
 
-    SupplierProductTenantizedId getSupplierProductAssocId();
+    SupplierProductTenantizedId getSupplierProductTenantizedId();
 
-    //void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId);
+    //void setSupplierProductTenantizedId(SupplierProductTenantizedId supplierProductTenantizedId);
 
     Long getVersion();
     

@@ -10,16 +10,16 @@ import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public class SupplierProductEventId implements Serializable {
-    private SupplierProductTenantizedId supplierProductAssocId = new SupplierProductTenantizedId();
+    private SupplierProductTenantizedId supplierProductTenantizedId = new SupplierProductTenantizedId();
 
-    public SupplierProductTenantizedId getSupplierProductAssocId()
+    public SupplierProductTenantizedId getSupplierProductTenantizedId()
     {
-        return this.supplierProductAssocId;
+        return this.supplierProductTenantizedId;
     }
 
-    public void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId)
+    public void setSupplierProductTenantizedId(SupplierProductTenantizedId supplierProductTenantizedId)
     {
-        this.supplierProductAssocId = supplierProductAssocId;
+        this.supplierProductTenantizedId = supplierProductTenantizedId;
     }
 
     private Long version;
@@ -34,73 +34,73 @@ public class SupplierProductEventId implements Serializable {
         this.version = version;
     }
 
-    protected String getSupplierProductAssocIdTenantId()
+    protected String getSupplierProductTenantizedIdTenantId()
     {
-        return getSupplierProductAssocId().getTenantId();
+        return getSupplierProductTenantizedId().getTenantId();
     }
 
-    protected void setSupplierProductAssocIdTenantId(String supplierProductAssocIdTenantId)
+    protected void setSupplierProductTenantizedIdTenantId(String supplierProductTenantizedIdTenantId)
     {
-        getSupplierProductAssocId().setTenantId(supplierProductAssocIdTenantId);
+        getSupplierProductTenantizedId().setTenantId(supplierProductTenantizedIdTenantId);
     }
 
-    protected String getSupplierProductAssocIdProductId()
+    protected String getSupplierProductTenantizedIdSupplierProductAssocIdProductId()
     {
-        return getSupplierProductAssocId().getSupplierProductAssocId().getProductId();
+        return getSupplierProductTenantizedId().getSupplierProductAssocId().getProductId();
     }
 
-    protected void setSupplierProductAssocIdProductId(String supplierProductAssocIdProductId)
+    protected void setSupplierProductTenantizedIdSupplierProductAssocIdProductId(String supplierProductTenantizedIdSupplierProductAssocIdProductId)
     {
-        getSupplierProductAssocId().getSupplierProductAssocId().setProductId(supplierProductAssocIdProductId);
+        getSupplierProductTenantizedId().getSupplierProductAssocId().setProductId(supplierProductTenantizedIdSupplierProductAssocIdProductId);
     }
 
-    protected String getSupplierProductAssocIdPartyId()
+    protected String getSupplierProductTenantizedIdSupplierProductAssocIdPartyId()
     {
-        return getSupplierProductAssocId().getSupplierProductAssocId().getPartyId();
+        return getSupplierProductTenantizedId().getSupplierProductAssocId().getPartyId();
     }
 
-    protected void setSupplierProductAssocIdPartyId(String supplierProductAssocIdPartyId)
+    protected void setSupplierProductTenantizedIdSupplierProductAssocIdPartyId(String supplierProductTenantizedIdSupplierProductAssocIdPartyId)
     {
-        getSupplierProductAssocId().getSupplierProductAssocId().setPartyId(supplierProductAssocIdPartyId);
+        getSupplierProductTenantizedId().getSupplierProductAssocId().setPartyId(supplierProductTenantizedIdSupplierProductAssocIdPartyId);
     }
 
-    protected String getSupplierProductAssocIdCurrencyUomId()
+    protected String getSupplierProductTenantizedIdSupplierProductAssocIdCurrencyUomId()
     {
-        return getSupplierProductAssocId().getSupplierProductAssocId().getCurrencyUomId();
+        return getSupplierProductTenantizedId().getSupplierProductAssocId().getCurrencyUomId();
     }
 
-    protected void setSupplierProductAssocIdCurrencyUomId(String supplierProductAssocIdCurrencyUomId)
+    protected void setSupplierProductTenantizedIdSupplierProductAssocIdCurrencyUomId(String supplierProductTenantizedIdSupplierProductAssocIdCurrencyUomId)
     {
-        getSupplierProductAssocId().getSupplierProductAssocId().setCurrencyUomId(supplierProductAssocIdCurrencyUomId);
+        getSupplierProductTenantizedId().getSupplierProductAssocId().setCurrencyUomId(supplierProductTenantizedIdSupplierProductAssocIdCurrencyUomId);
     }
 
-    protected java.math.BigDecimal getSupplierProductAssocIdMinimumOrderQuantity()
+    protected java.math.BigDecimal getSupplierProductTenantizedIdSupplierProductAssocIdMinimumOrderQuantity()
     {
-        return getSupplierProductAssocId().getSupplierProductAssocId().getMinimumOrderQuantity();
+        return getSupplierProductTenantizedId().getSupplierProductAssocId().getMinimumOrderQuantity();
     }
 
-    protected void setSupplierProductAssocIdMinimumOrderQuantity(java.math.BigDecimal supplierProductAssocIdMinimumOrderQuantity)
+    protected void setSupplierProductTenantizedIdSupplierProductAssocIdMinimumOrderQuantity(java.math.BigDecimal supplierProductTenantizedIdSupplierProductAssocIdMinimumOrderQuantity)
     {
-        getSupplierProductAssocId().getSupplierProductAssocId().setMinimumOrderQuantity(supplierProductAssocIdMinimumOrderQuantity);
+        getSupplierProductTenantizedId().getSupplierProductAssocId().setMinimumOrderQuantity(supplierProductTenantizedIdSupplierProductAssocIdMinimumOrderQuantity);
     }
 
-    protected OffsetDateTime getSupplierProductAssocIdAvailableFromDate()
+    protected OffsetDateTime getSupplierProductTenantizedIdSupplierProductAssocIdAvailableFromDate()
     {
-        return getSupplierProductAssocId().getSupplierProductAssocId().getAvailableFromDate();
+        return getSupplierProductTenantizedId().getSupplierProductAssocId().getAvailableFromDate();
     }
 
-    protected void setSupplierProductAssocIdAvailableFromDate(OffsetDateTime supplierProductAssocIdAvailableFromDate)
+    protected void setSupplierProductTenantizedIdSupplierProductAssocIdAvailableFromDate(OffsetDateTime supplierProductTenantizedIdSupplierProductAssocIdAvailableFromDate)
     {
-        getSupplierProductAssocId().getSupplierProductAssocId().setAvailableFromDate(supplierProductAssocIdAvailableFromDate);
+        getSupplierProductTenantizedId().getSupplierProductAssocId().setAvailableFromDate(supplierProductTenantizedIdSupplierProductAssocIdAvailableFromDate);
     }
 
     public SupplierProductEventId()
     {
     }
 
-    public SupplierProductEventId(SupplierProductTenantizedId supplierProductAssocId, Long version)
+    public SupplierProductEventId(SupplierProductTenantizedId supplierProductTenantizedId, Long version)
     {
-        this.supplierProductAssocId = supplierProductAssocId;
+        this.supplierProductTenantizedId = supplierProductTenantizedId;
         this.version = version;
     }
 
@@ -116,7 +116,7 @@ public class SupplierProductEventId implements Serializable {
 
         SupplierProductEventId other = (SupplierProductEventId)obj;
         return true 
-            && (supplierProductAssocId == other.supplierProductAssocId || (supplierProductAssocId != null && supplierProductAssocId.equals(other.supplierProductAssocId)))
+            && (supplierProductTenantizedId == other.supplierProductTenantizedId || (supplierProductTenantizedId != null && supplierProductTenantizedId.equals(other.supplierProductTenantizedId)))
             && (version == other.version || (version != null && version.equals(other.version)))
             ;
     }
@@ -125,8 +125,8 @@ public class SupplierProductEventId implements Serializable {
     public int hashCode()
     {
         int hash = 0;
-        if (this.supplierProductAssocId != null) {
-            hash += 13 * this.supplierProductAssocId.hashCode();
+        if (this.supplierProductTenantizedId != null) {
+            hash += 13 * this.supplierProductTenantizedId.hashCode();
         }
         if (this.version != null) {
             hash += 13 * this.version.hashCode();
@@ -137,18 +137,18 @@ public class SupplierProductEventId implements Serializable {
     @Override
     public String toString() {
         return "SupplierProductEventId{" +
-                "supplierProductAssocId=" + supplierProductAssocId +
+                "supplierProductTenantizedId=" + supplierProductTenantizedId +
                 ", version=" + version +
                 '}';
     }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
-            "supplierProductAssocIdTenantId",
-            "supplierProductAssocIdProductId",
-            "supplierProductAssocIdPartyId",
-            "supplierProductAssocIdCurrencyUomId",
-            "supplierProductAssocIdMinimumOrderQuantity",
-            "supplierProductAssocIdAvailableFromDate",
+            "supplierProductTenantizedIdTenantId",
+            "supplierProductTenantizedIdSupplierProductAssocIdProductId",
+            "supplierProductTenantizedIdSupplierProductAssocIdPartyId",
+            "supplierProductTenantizedIdSupplierProductAssocIdCurrencyUomId",
+            "supplierProductTenantizedIdSupplierProductAssocIdMinimumOrderQuantity",
+            "supplierProductTenantizedIdSupplierProductAssocIdAvailableFromDate",
             "version",
     };
 

@@ -12,11 +12,18 @@ import java.time.OffsetDateTime;
 public class UpdateAvailableThruDateLogic {
 
     public static SupplierProductEvent.AvailableThruDateUpdated verify(java.util.function.Supplier<SupplierProductEvent.AvailableThruDateUpdated> eventFactory, SupplierProductState supplierProductState, OffsetDateTime availableThruDate, VerificationContext verificationContext) {
-        return null; // TODO: implement
+        AbstractSupplierProductEvent.AvailableThruDateUpdated e = new AbstractSupplierProductEvent.AvailableThruDateUpdated();
+        if (availableThruDate.isBefore(supplierProductState.getSupplierProductTenantizedId().getSupplierProductAssocId().getAvailableFromDate())) {
+            throw new IllegalStateException("AvailableThruDate cannot be before AvailableFromDate");
+        }
+        e.setAvailableThruDate(availableThruDate);
+        return e;
     }
 
     public static SupplierProductState mutate(SupplierProductState supplierProductState, OffsetDateTime availableThruDate, MutationContext<SupplierProductState, SupplierProductState.MutableSupplierProductState> mutationContext) {
-        return null; // TODO: implement
+        SupplierProductState.MutableSupplierProductState s = mutationContext.createMutableState(supplierProductState);
+        s.setAvailableThruDate(availableThruDate);
+        return s;
     }
 
 }

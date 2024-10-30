@@ -128,11 +128,11 @@ public class SupplierProductResource {
      * Retrieve.
      * Retrieves SupplierProduct with the specified ID.
      */
-    @GetMapping("{supplierProductAssocId}")
+    @GetMapping("{supplierProductTenantizedId}")
     @Transactional(readOnly = true)
-    public SupplierProductStateDto get(@PathVariable("supplierProductAssocId") String supplierProductAssocId, @RequestParam(value = "fields", required = false) String fields) {
+    public SupplierProductStateDto get(@PathVariable("supplierProductTenantizedId") String supplierProductTenantizedId, @RequestParam(value = "fields", required = false) String fields) {
         try {
-            SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductAssocId);
+            SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductTenantizedId);
             SupplierProductState state = supplierProductApplicationService.get(idObj);
             if (state == null) { return null; }
 
@@ -194,13 +194,13 @@ public class SupplierProductResource {
      * Create or update.
      * Create or update SupplierProduct
      */
-    @PutMapping("{supplierProductAssocId}")
-    public void put(@PathVariable("supplierProductAssocId") String supplierProductAssocId, @RequestBody CreateOrMergePatchSupplierProductDto value) {
+    @PutMapping("{supplierProductTenantizedId}")
+    public void put(@PathVariable("supplierProductTenantizedId") String supplierProductTenantizedId, @RequestBody CreateOrMergePatchSupplierProductDto value) {
         try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 SupplierProductCommand.MergePatchSupplierProduct cmd = (SupplierProductCommand.MergePatchSupplierProduct) value.toSubclass();
-                SupplierProductResourceUtils.setNullIdOrThrowOnInconsistentIds(supplierProductAssocId, cmd);
+                SupplierProductResourceUtils.setNullIdOrThrowOnInconsistentIds(supplierProductTenantizedId, cmd);
                 cmd.setRequesterId(SecurityContextUtil.getRequesterId());
                 supplierProductApplicationService.when(cmd);
                 return;
@@ -208,7 +208,7 @@ public class SupplierProductResource {
 
             value.setCommandType(Command.COMMAND_TYPE_CREATE);
             SupplierProductCommand.CreateSupplierProduct cmd = (SupplierProductCommand.CreateSupplierProduct) value.toSubclass();
-            SupplierProductResourceUtils.setNullIdOrThrowOnInconsistentIds(supplierProductAssocId, cmd);
+            SupplierProductResourceUtils.setNullIdOrThrowOnInconsistentIds(supplierProductTenantizedId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             supplierProductApplicationService.when(cmd);
 
@@ -220,12 +220,12 @@ public class SupplierProductResource {
      * Patch.
      * Patch SupplierProduct
      */
-    @PatchMapping("{supplierProductAssocId}")
-    public void patch(@PathVariable("supplierProductAssocId") String supplierProductAssocId, @RequestBody CreateOrMergePatchSupplierProductDto.MergePatchSupplierProductDto value) {
+    @PatchMapping("{supplierProductTenantizedId}")
+    public void patch(@PathVariable("supplierProductTenantizedId") String supplierProductTenantizedId, @RequestBody CreateOrMergePatchSupplierProductDto.MergePatchSupplierProductDto value) {
         try {
 
             SupplierProductCommand.MergePatchSupplierProduct cmd = value;//.toMergePatchSupplierProduct();
-            SupplierProductResourceUtils.setNullIdOrThrowOnInconsistentIds(supplierProductAssocId, cmd);
+            SupplierProductResourceUtils.setNullIdOrThrowOnInconsistentIds(supplierProductTenantizedId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             supplierProductApplicationService.when(cmd);
 
@@ -239,10 +239,10 @@ public class SupplierProductResource {
 
             SupplierProductCommands.UpdateAvailableThruDate cmd = content;//.toUpdateAvailableThruDate();
             SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductAssocId);
-            if (cmd.getSupplierProductAssocId() == null) {
-                cmd.setSupplierProductAssocId(idObj);
-            } else if (!cmd.getSupplierProductAssocId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", supplierProductAssocId, cmd.getSupplierProductAssocId());
+            if (cmd.getSupplierProductTenantizedId() == null) {
+                cmd.setSupplierProductTenantizedId(idObj);
+            } else if (!cmd.getSupplierProductTenantizedId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", supplierProductAssocId, cmd.getSupplierProductTenantizedId());
             }
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             supplierProductApplicationService.when(cmd);
@@ -257,10 +257,10 @@ public class SupplierProductResource {
 
             SupplierProductCommands.Disable cmd = content;//.toDisable();
             SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductAssocId);
-            if (cmd.getSupplierProductAssocId() == null) {
-                cmd.setSupplierProductAssocId(idObj);
-            } else if (!cmd.getSupplierProductAssocId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", supplierProductAssocId, cmd.getSupplierProductAssocId());
+            if (cmd.getSupplierProductTenantizedId() == null) {
+                cmd.setSupplierProductTenantizedId(idObj);
+            } else if (!cmd.getSupplierProductTenantizedId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", supplierProductAssocId, cmd.getSupplierProductTenantizedId());
             }
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             supplierProductApplicationService.when(cmd);
@@ -400,7 +400,7 @@ public class SupplierProductResource {
             List<SupplierProductStateDto> states = new ArrayList<>();
             ids.forEach(i -> {
                 SupplierProductStateDto dto = new SupplierProductStateDto();
-                dto.setSupplierProductAssocId(i);
+                dto.setSupplierProductTenantizedId(i);
                 states.add(dto);
             });
             return states.toArray(new SupplierProductStateDto[0]);

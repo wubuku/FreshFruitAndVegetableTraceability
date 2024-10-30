@@ -14,16 +14,16 @@ import org.dddml.ffvtraceability.specialization.*;
 
 public class SupplierProductStateDto {
 
-    private SupplierProductTenantizedId supplierProductAssocId;
+    private SupplierProductTenantizedId supplierProductTenantizedId;
 
-    public SupplierProductTenantizedId getSupplierProductAssocId()
+    public SupplierProductTenantizedId getSupplierProductTenantizedId()
     {
-        return this.supplierProductAssocId;
+        return this.supplierProductTenantizedId;
     }
 
-    public void setSupplierProductAssocId(SupplierProductTenantizedId supplierProductAssocId)
+    public void setSupplierProductTenantizedId(SupplierProductTenantizedId supplierProductTenantizedId)
     {
-        this.supplierProductAssocId = supplierProductAssocId;
+        this.supplierProductTenantizedId = supplierProductTenantizedId;
     }
 
     private OffsetDateTime availableThruDate;
@@ -379,8 +379,8 @@ public class SupplierProductStateDto {
                 return null;
             }
             SupplierProductStateDto dto = new SupplierProductStateDto();
-            if (returnedFieldsContains("SupplierProductAssocId")) {
-                dto.setSupplierProductAssocId(state.getSupplierProductAssocId());
+            if (returnedFieldsContains("SupplierProductTenantizedId")) {
+                dto.setSupplierProductTenantizedId(state.getSupplierProductTenantizedId());
             }
             if (returnedFieldsContains("AvailableThruDate")) {
                 dto.setAvailableThruDate(state.getAvailableThruDate());

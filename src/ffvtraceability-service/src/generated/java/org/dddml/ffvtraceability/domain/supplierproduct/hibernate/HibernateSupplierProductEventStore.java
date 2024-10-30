@@ -44,12 +44,12 @@ public class HibernateSupplierProductEventStore extends AbstractHibernateEventSt
    
         query.select(root)
                 .where(cb.and(
-                    cb.equal(root.get("supplierProductEventId").get("supplierProductAssocIdTenantId"), idObj.getTenantId()),
-                    cb.equal(root.get("supplierProductEventId").get("supplierProductAssocIdProductId"), idObj.getSupplierProductAssocId().getProductId()),
-                    cb.equal(root.get("supplierProductEventId").get("supplierProductAssocIdPartyId"), idObj.getSupplierProductAssocId().getPartyId()),
-                    cb.equal(root.get("supplierProductEventId").get("supplierProductAssocIdCurrencyUomId"), idObj.getSupplierProductAssocId().getCurrencyUomId()),
-                    cb.equal(root.get("supplierProductEventId").get("supplierProductAssocIdMinimumOrderQuantity"), idObj.getSupplierProductAssocId().getMinimumOrderQuantity()),
-                    cb.equal(root.get("supplierProductEventId").get("supplierProductAssocIdAvailableFromDate"), idObj.getSupplierProductAssocId().getAvailableFromDate()),
+                    cb.equal(root.get("supplierProductEventId").get("supplierProductTenantizedIdTenantId"), idObj.getTenantId()),
+                    cb.equal(root.get("supplierProductEventId").get("supplierProductTenantizedIdSupplierProductAssocIdProductId"), idObj.getSupplierProductAssocId().getProductId()),
+                    cb.equal(root.get("supplierProductEventId").get("supplierProductTenantizedIdSupplierProductAssocIdPartyId"), idObj.getSupplierProductAssocId().getPartyId()),
+                    cb.equal(root.get("supplierProductEventId").get("supplierProductTenantizedIdSupplierProductAssocIdCurrencyUomId"), idObj.getSupplierProductAssocId().getCurrencyUomId()),
+                    cb.equal(root.get("supplierProductEventId").get("supplierProductTenantizedIdSupplierProductAssocIdMinimumOrderQuantity"), idObj.getSupplierProductAssocId().getMinimumOrderQuantity()),
+                    cb.equal(root.get("supplierProductEventId").get("supplierProductTenantizedIdSupplierProductAssocIdAvailableFromDate"), idObj.getSupplierProductAssocId().getAvailableFromDate()),
                     cb.lessThanOrEqualTo(root.get("supplierProductEventId").get("version"), version)
                 ))
                 .orderBy(cb.asc(root.get("supplierProductEventId").get("version")));

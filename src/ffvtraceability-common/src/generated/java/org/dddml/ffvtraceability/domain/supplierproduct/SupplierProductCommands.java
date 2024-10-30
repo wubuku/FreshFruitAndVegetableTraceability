@@ -24,16 +24,16 @@ public class SupplierProductCommands {
         }
 
         /**
-         * Supplier Product Assoc Id
+         * Supplier Product Tenantized Id
          */
-        private SupplierProductAssocId supplierProductAssocId;
+        private SupplierProductAssocId supplierProductTenantizedId;
 
-        public SupplierProductAssocId getSupplierProductAssocId() {
-            return this.supplierProductAssocId;
+        public SupplierProductAssocId getSupplierProductTenantizedId() {
+            return this.supplierProductTenantizedId;
         }
 
-        public void setSupplierProductAssocId(SupplierProductAssocId supplierProductAssocId) {
-            this.supplierProductAssocId = supplierProductAssocId;
+        public void setSupplierProductTenantizedId(SupplierProductAssocId supplierProductTenantizedId) {
+            this.supplierProductTenantizedId = supplierProductTenantizedId;
         }
 
         /**
@@ -62,6 +62,14 @@ public class SupplierProductCommands {
             this.version = version;
         }
 
+        public SupplierProductAssocId getSupplierProductAssocId() {
+            return this.getSupplierProductTenantizedId();
+        }
+
+        public void setSupplierProductAssocId(SupplierProductAssocId id) {
+            this.setSupplierProductTenantizedId(id);
+        }
+
     }
 
     public static class Disable extends AbstractSupplierProductCommand implements SupplierProductCommand {
@@ -75,16 +83,16 @@ public class SupplierProductCommands {
         }
 
         /**
-         * Supplier Product Assoc Id
+         * Supplier Product Tenantized Id
          */
-        private SupplierProductAssocId supplierProductAssocId;
+        private SupplierProductAssocId supplierProductTenantizedId;
 
-        public SupplierProductAssocId getSupplierProductAssocId() {
-            return this.supplierProductAssocId;
+        public SupplierProductAssocId getSupplierProductTenantizedId() {
+            return this.supplierProductTenantizedId;
         }
 
-        public void setSupplierProductAssocId(SupplierProductAssocId supplierProductAssocId) {
-            this.supplierProductAssocId = supplierProductAssocId;
+        public void setSupplierProductTenantizedId(SupplierProductAssocId supplierProductTenantizedId) {
+            this.supplierProductTenantizedId = supplierProductTenantizedId;
         }
 
         /**
@@ -98,6 +106,14 @@ public class SupplierProductCommands {
 
         public void setVersion(Long version) {
             this.version = version;
+        }
+
+        public SupplierProductAssocId getSupplierProductAssocId() {
+            return this.getSupplierProductTenantizedId();
+        }
+
+        public void setSupplierProductAssocId(SupplierProductAssocId id) {
+            this.setSupplierProductTenantizedId(id);
         }
 
     }
