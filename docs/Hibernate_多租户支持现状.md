@@ -7,6 +7,7 @@ Hibernate 声称支持三种多租户策略：
 - SEPARATE_SCHEMA：租户共享数据库但使用独立 schema
 - DISCRIMINATOR：租户共享数据库和 schema，通过鉴别列（Discriminator，也可翻译为鉴别器）区分
 
+不过，尽管 DISCRIMINATOR 策略在配置选项中存在，但实际上 Hibernate 并未完整实现这个功能。从技术实现的角度来看，这个策略的复杂度确实比前两者要高很多。
 
 前两种方案（SEPARATE_DATABASE 和 SEPARATE_SCHEMA）其实并没有太本质上的差异。它们都依赖数据库层面提供的隔离机制，无非是隔离的层次不同。
 
@@ -107,11 +108,11 @@ Hibernate 声称支持三种多租户策略：
    - 特定租户数据迁移复杂
    - 审计和合规要求可能相对更难满足，特别是不同租户属于不同的法律主体时
 
-然而，尽管 DISCRIMINATOR 策略在配置选项中存在，但实际上 Hibernate 并未完整实现这个功能。
-这个问题已经存在多年，至今没有得到真正的解决。
 
 
 ## 相关 Issue
+
+如上所述，Hibernate 其实并没有真正实现 DISCRIMINATOR 策略，这个问题已经存在多年，至今没有得到真正的解决。
 
 以下是 Hibernate JIRA 上的相关问题报告：
 
@@ -121,7 +122,6 @@ Hibernate 声称支持三种多租户策略：
 
 
 在我们看来 Hibernate 的开发团队对该策略的支持并不积极，并且可能会持续下去。
-从技术实现的角度来看，这个策略的复杂度确实比前两者要高很多。
 
 
 ## 现有替代方案

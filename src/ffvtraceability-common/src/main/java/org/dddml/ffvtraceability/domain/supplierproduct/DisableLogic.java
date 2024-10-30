@@ -17,7 +17,7 @@ public class DisableLogic {
 
     public static SupplierProductState mutate(SupplierProductState supplierProductState, MutationContext<SupplierProductState, SupplierProductState.MutableSupplierProductState> mutationContext) {
         SupplierProductState.MutableSupplierProductState s = mutationContext.createMutableState(supplierProductState);
-        s.setAvailableThruDate(supplierProductState.getSupplierProductTenantizedId().getSupplierProductAssocId().getAvailableFromDate());
+        s.setAvailableThruDate(supplierProductState.getSupplierProductAssocId().getAvailableFromDate());
         return s;
     }
 

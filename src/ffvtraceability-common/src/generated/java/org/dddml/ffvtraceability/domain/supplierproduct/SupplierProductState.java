@@ -19,6 +19,8 @@ public interface SupplierProductState
 
     SupplierProductTenantizedId getSupplierProductTenantizedId();
 
+    SupplierProductAssocId getSupplierProductAssocId();
+
     OffsetDateTime getAvailableThruDate();
 
     String getSupplierPrefOrderId();

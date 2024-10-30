@@ -24,6 +24,10 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.supplierProductTenantizedId = supplierProductTenantizedId;
     }
 
+    public SupplierProductAssocId getSupplierProductAssocId() {
+        return this.supplierProductTenantizedId.getSupplierProductAssocId();
+    }
+
     private OffsetDateTime availableThruDate;
 
     public OffsetDateTime getAvailableThruDate() {

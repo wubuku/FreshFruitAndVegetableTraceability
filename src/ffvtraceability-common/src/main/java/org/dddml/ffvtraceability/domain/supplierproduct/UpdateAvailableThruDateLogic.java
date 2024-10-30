@@ -13,7 +13,7 @@ public class UpdateAvailableThruDateLogic {
 
     public static SupplierProductEvent.AvailableThruDateUpdated verify(java.util.function.Supplier<SupplierProductEvent.AvailableThruDateUpdated> eventFactory, SupplierProductState supplierProductState, OffsetDateTime availableThruDate, VerificationContext verificationContext) {
         SupplierProductEvent.AvailableThruDateUpdated e = eventFactory.get();
-        if (availableThruDate.isBefore(supplierProductState.getSupplierProductTenantizedId().getSupplierProductAssocId().getAvailableFromDate())) {
+        if (availableThruDate.isBefore(supplierProductState.getSupplierProductAssocId().getAvailableFromDate())) {
             throw new IllegalStateException("AvailableThruDate cannot be before AvailableFromDate");
         }
         e.setAvailableThruDate(availableThruDate);
