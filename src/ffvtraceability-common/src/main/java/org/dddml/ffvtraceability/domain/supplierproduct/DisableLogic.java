@@ -7,6 +7,7 @@ package org.dddml.ffvtraceability.domain.supplierproduct;
 
 import org.dddml.ffvtraceability.specialization.*;
 
+
 public class DisableLogic {
 
     public static SupplierProductEvent.SupplierProductDisabled verify(java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory, SupplierProductState supplierProductState, VerificationContext verificationContext) {
