@@ -95,11 +95,16 @@ http://localhost:1023/api/swagger-ui/index.html
 
 我们的应用在数据库访问层使用了 Hibernate ORM 框架，并且采用了基于鉴别器的多租户策略。
 
-Hibernate 其实并[没有对基于鉴别器的多租户策略提供“原生支持”](Hibernate 多租户支持现状.md)，这个策略实际上是我们自己来实现的。
+Hibernate 其实并[没有对基于鉴别器的多租户策略提供“原生支持”](Hibernate_多租户支持现状.md)，这个策略实际上是我们自己来实现的。
+
+
+#### 我们的实现
 
 我们编写了一个 [TenantFilter](../src/ffvtraceability-service-rest/src/main/java/org/dddml/ffvtraceability/servlet/TenantFilter.java)，它的作用是允许客户端通过 HTTP Header 来设置[租户上下文](../src/ffvtraceability-common/src/generated/java/org/dddml/ffvtraceability/domain/TenantContext.java)中的“当前租户 ID”。
 
 当然，以后我们还可以支持其他方式设置租户上下文中的“当前租户 ID”，比如从 HTTP 请求的域名中解析出租户 ID。
+
+【TBD：工具层面的改进已经基本完成，文档待更新】
 
 
 ### Test application
