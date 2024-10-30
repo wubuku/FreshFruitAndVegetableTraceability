@@ -90,13 +90,21 @@ Swagger UI:
 http://localhost:1023/api/swagger-ui/index.html
 ```
 
-### Test application
 
-#### 多租户支持
+### 多租户支持
+
+我们的应用在数据库访问层使用了 Hibernate ORM 框架，并且采用了基于鉴别器的多租户策略。
+
+Hibernate 其实并[没有对基于鉴别器的多租户策略提供“原生支持”](Hibernate 多租户支持现状.md)，这个策略实际上是我们自己来实现的。
 
 我们编写了一个 [TenantFilter](../src/ffvtraceability-service-rest/src/main/java/org/dddml/ffvtraceability/servlet/TenantFilter.java)，它的作用是允许客户端通过 HTTP Header 来设置[租户上下文](../src/ffvtraceability-common/src/generated/java/org/dddml/ffvtraceability/domain/TenantContext.java)中的“当前租户 ID”。
 
 当然，以后我们还可以支持其他方式设置租户上下文中的“当前租户 ID”，比如从 HTTP 请求的域名中解析出租户 ID。
+
+
+### Test application
+
+#### Test "StatusItem"
 
 下面我们使用实体 [`StatusItem`](../dddml/StatusItem.yaml) 作为示例，来测试“多租户”支持。
 
@@ -135,7 +143,9 @@ curl -X GET "http://localhost:1023/api/StatusItems" -H "accept: application/json
 ```
 
 
-#### Test "Tenantized Id"
+#### Test "SupplierProduct"
+
+我们对这个实体实现了 "Tenantized Id" 策略，将模型中定义的实体的 Id 在生成的代码中，自动转换为“包含租户 ID”的形式。
 
 Create:
 
