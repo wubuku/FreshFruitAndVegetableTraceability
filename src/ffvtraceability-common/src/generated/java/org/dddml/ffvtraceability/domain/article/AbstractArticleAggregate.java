@@ -263,10 +263,11 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         protected ArticleEvent.ArticleBodyUpdated verifyUpdateBody(java.util.function.Supplier<ArticleEvent.ArticleBodyUpdated> eventFactory, String body, ArticleCommands.UpdateBody c) {
             String Body = body;
 
-            ArticleEvent.ArticleBodyUpdated e = ApplicationContext.current.get(IUpdateBodyLogic.class).verify(eventFactory, getState(), body, VerificationContext.of(c));
+            ArticleEvent.ArticleBodyUpdated e = (ArticleEvent.ArticleBodyUpdated) ApplicationContext.current.get(IUpdateBodyLogic.class).verify(
+                    eventFactory, getState(), body, VerificationContext.of(c));
+
             return e;
         }
-           
 
         protected AbstractArticleEvent.ArticleBodyUpdated newArticleBodyUpdated(String body, Long version, String commandId, String requesterId) {
             ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), version);

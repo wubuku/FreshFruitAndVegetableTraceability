@@ -365,6 +365,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
 
         ArticleState updatedArticleState = ApplicationContext.current.get(IUpdateBodyLogic.class).mutate(
                 this, body, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+
+
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
     }

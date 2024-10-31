@@ -208,7 +208,6 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
 
             return e;
         }
-           
 
         protected SupplierProductEvent.SupplierProductDisabled verifyDisable(java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory, SupplierProductCommands.Disable c) {
 
@@ -224,7 +223,6 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
 
             return e;
         }
-           
 
         public interface UpdateAvailableThruDateVerification {
             SupplierProductEvent.AvailableThruDateUpdated verify(java.util.function.Supplier<SupplierProductEvent.AvailableThruDateUpdated> eventFactory, SupplierProductState supplierProductState, OffsetDateTime availableThruDate, VerificationContext verificationContext);
