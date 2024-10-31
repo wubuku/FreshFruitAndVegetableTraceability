@@ -197,7 +197,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
             OffsetDateTime AvailableThruDate = availableThruDate;
 
             SupplierProductEvent.AvailableThruDateUpdated e = (SupplierProductEvent.AvailableThruDateUpdated) ((UpdateAvailableThruDateVerification) UpdateAvailableThruDateLogic::verify).verify(
-                    eventFactory, getState(), availableThruDate, VerificationContext.forCommand(c));
+                    eventFactory, getState(), availableThruDate, VerificationContext.of(c));
 
 //package org.dddml.ffvtraceability.domain.supplierproduct;
 //
@@ -213,7 +213,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         protected SupplierProductEvent.SupplierProductDisabled verifyDisable(java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory, SupplierProductCommands.Disable c) {
 
             SupplierProductEvent.SupplierProductDisabled e = (SupplierProductEvent.SupplierProductDisabled) ((DisableVerification) DisableLogic::verify).verify(
-                    eventFactory, getState(), VerificationContext.forCommand(c));
+                    eventFactory, getState(), VerificationContext.of(c));
 
 //package org.dddml.ffvtraceability.domain.supplierproduct;
 //

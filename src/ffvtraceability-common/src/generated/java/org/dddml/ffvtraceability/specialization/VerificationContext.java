@@ -4,7 +4,7 @@ public interface VerificationContext {
 
     Object getCommand();
 
-    static VerificationContext forCommand(Object cmd) {
+    static VerificationContext of(Object cmd) {
         return new VerificationContext() {
             @Override
             public Object getCommand() {
