@@ -363,7 +363,10 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        // TODO: implement mutation logic
+        ArticleState updatedArticleState = ApplicationContext.current.get(IUpdateBodyLogic.class).mutate(
+                this, body, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+        if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
+
     }
 
     public void save() {

@@ -234,3 +234,25 @@ curl -X 'PUT' \
   -H 'accept: application/json' -H "X-TenantID:X" \
   -d '{"commandId":"DISABLE","requesterId":"REQUESTER_ID_22222","version":1}'
 ```
+
+#### Test "Blog"
+
+Create article:
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/Articles' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{"commandId":"create_article_21","requesterId":"string","title":"hello_21","body":"world","author":"string","active":true,"tags":["string"],"comments":[{"commentSeqId":1,"commenter":"string","body":"test_comment"}]}'
+```
+
+Update body:
+
+```shell
+curl -X 'PUT' \
+  'http://localhost:1023/api/Articles/21/_commands/UpdateBody' \
+  -H 'Content-Type: application/json' \
+  -H 'accept: application/json' \
+  -d '{"commandId":"UPDATE_BODY_21","requesterId":"REQUESTER_ID_11111","body":"new_world","version":0}'
+```

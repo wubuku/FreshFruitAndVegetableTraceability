@@ -6,16 +6,22 @@
 package org.dddml.ffvtraceability.domain.article;
 
 import org.dddml.ffvtraceability.specialization.*;
+import org.springframework.stereotype.Component;
 
 
+@Component
 public class UpdateBodyLogic implements IUpdateBodyLogic {
 
     public ArticleEvent.ArticleBodyUpdated verify(java.util.function.Supplier<ArticleEvent.ArticleBodyUpdated> eventFactory, ArticleState articleState, String body, VerificationContext verificationContext) {
-        return null; // TODO: implement
+        ArticleEvent.ArticleBodyUpdated e = eventFactory.get();
+        e.setBody(body);
+        return e;
     }
 
     public ArticleState mutate(ArticleState articleState, String body, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-        return null; // TODO: implement
+        ArticleState.MutableArticleState s = mutationContext.createMutableState(articleState);
+        s.setBody(body);
+        return s;
     }
 
 }
