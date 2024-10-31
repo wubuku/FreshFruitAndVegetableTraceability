@@ -22,6 +22,8 @@ public interface ArticleApplicationService {
 
     void when(ArticleCommand.DeleteArticle c);
 
+    void when(ArticleCommands.UpdateBody c);
+
     ArticleState get(Long id);
 
     Iterable<ArticleState> getAll(Integer firstResult, Integer maxResults);

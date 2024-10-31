@@ -76,6 +76,10 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         update(c, ar -> ar.delete(c));
     }
 
+    public void when(ArticleCommands.UpdateBody c) {
+        update(c, ar -> ar.updateBody(c.getBody(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public ArticleState get(Long id) {
         ArticleState state = getStateRepository().get(id, true);
         return state;

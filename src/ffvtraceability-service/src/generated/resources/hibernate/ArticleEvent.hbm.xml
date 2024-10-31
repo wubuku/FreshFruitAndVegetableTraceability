@@ -22,6 +22,7 @@
           <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
         </type>
       </property>
+      <subclass name="AbstractArticleEvent$ArticleBodyUpdated" discriminator-value="ArticleBodyUpdated" />
     </subclass>
     <subclass name="AbstractArticleEvent$AbstractArticleStateEvent" abstract="true">
       <property name="title">

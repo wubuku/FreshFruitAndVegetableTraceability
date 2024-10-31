@@ -1,5 +1,7 @@
 ﻿aggregates:
   SupplierProduct:
+    metadata:
+      ShouldStaticallyInvokeJavaLogicFunctions: true
     tableName: SUPPLIER_PRODUCT
     multiTenancy:
       discriminatorBasedMultiTenancyEnabled: true

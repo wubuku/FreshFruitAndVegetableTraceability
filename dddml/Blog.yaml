@@ -39,13 +39,13 @@ aggregates:
             type: name
           Body:
             type: long-varchar
-    # methods:
-    #   UpdateBody:
-    #     #metadata:
-    #     #  MessagingCommandName: "UpdateArticleBody"
-    #     description: "Updates the body of an article"
-    #     parameters:
-    #       Body:
-    #         type: long-varchar
-    #     event:
-    #       name: "ArticleBodyUpdated"
+    methods:
+      UpdateBody:
+        #metadata:
+        #  MessagingCommandName: "UpdateArticleBody"
+        description: "Updates the body of an article"
+        parameters:
+          Body:
+            type: long-varchar
+        event:
+          name: "ArticleBodyUpdated"

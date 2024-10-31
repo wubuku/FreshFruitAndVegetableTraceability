@@ -213,6 +213,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
             when((ArticleStateMergePatched) e);
         } else if (e instanceof ArticleStateDeleted) {
             when((ArticleStateDeleted) e);
+        } else if (e instanceof AbstractArticleEvent.ArticleBodyUpdated) {
+            when((AbstractArticleEvent.ArticleBodyUpdated)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -344,6 +346,24 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
             ((CommentState.MutableCommentState)innerState).mutate(innerE);
             //e.addCommentEvent(innerE);
         }
+    }
+
+    public void when(AbstractArticleEvent.ArticleBodyUpdated e) {
+        throwOnWrongEvent(e);
+
+        String body = e.getBody();
+        String Body = body;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        // TODO: implement mutation logic
     }
 
     public void save() {

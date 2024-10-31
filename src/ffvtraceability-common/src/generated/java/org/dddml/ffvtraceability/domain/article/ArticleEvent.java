@@ -20,6 +20,13 @@ public interface ArticleEvent extends Event {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface ArticleBodyUpdated extends ArticleEvent {
+        String getBody();
+
+        void setBody(String value);
+
+    }
+
     Long getArticleId();
 
     //void setArticleId(Long articleId);

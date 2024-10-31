@@ -245,6 +245,24 @@ public class ArticleResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+
+    @PutMapping("{articleId}/_commands/UpdateBody")
+    public void updateBody(@PathVariable("articleId") Long articleId, @RequestBody ArticleCommands.UpdateBody content) {
+        try {
+
+            ArticleCommands.UpdateBody cmd = content;//.toUpdateBody();
+            Long idObj = articleId;
+            if (cmd.getArticleId() == null) {
+                cmd.setArticleId(idObj);
+            } else if (!cmd.getArticleId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", articleId, cmd.getArticleId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            articleApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

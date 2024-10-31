@@ -155,6 +155,27 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
+    public static class ArticleBodyUpdated extends ArticleLobEvent implements ArticleEvent.ArticleBodyUpdated {
+
+        @Override
+        public String getEventType() {
+            return "ArticleBodyUpdated";
+        }
+
+        public String getBody() {
+            Object val = getDynamicProperties().get("body");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setBody(String value) {
+            getDynamicProperties().put("body", value);
+        }
+
+    }
+
 
     public static abstract class AbstractArticleStateEvent extends AbstractArticleEvent implements ArticleEvent.ArticleStateEvent {
         private String title;

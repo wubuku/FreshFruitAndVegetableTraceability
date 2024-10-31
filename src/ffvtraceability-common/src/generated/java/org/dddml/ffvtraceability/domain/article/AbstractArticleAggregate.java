@@ -247,6 +247,41 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             super(state);
         }
 
+        @Override
+        public void updateBody(String body, Long version, String commandId, String requesterId, ArticleCommands.UpdateBody c) {
+            java.util.function.Supplier<ArticleEvent.ArticleBodyUpdated> eventFactory = () -> newArticleBodyUpdated(body, version, commandId, requesterId);
+            ArticleEvent.ArticleBodyUpdated e;
+            try {
+                e = verifyUpdateBody(eventFactory, body, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        protected ArticleEvent.ArticleBodyUpdated verifyUpdateBody(java.util.function.Supplier<ArticleEvent.ArticleBodyUpdated> eventFactory, String body, ArticleCommands.UpdateBody c) {
+            String Body = body;
+
+            ArticleEvent.ArticleBodyUpdated e = (ArticleEvent.ArticleBodyUpdated) null; // TODO: implement verification logic
+            return e;
+        }
+           
+
+        protected AbstractArticleEvent.ArticleBodyUpdated newArticleBodyUpdated(String body, Long version, String commandId, String requesterId) {
+            ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), version);
+            AbstractArticleEvent.ArticleBodyUpdated e = new AbstractArticleEvent.ArticleBodyUpdated();
+
+            e.getDynamicProperties().put("body", body);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+            e.setArticleEventId(eventId);
+            return e;
+        }
+
     }
 
 }

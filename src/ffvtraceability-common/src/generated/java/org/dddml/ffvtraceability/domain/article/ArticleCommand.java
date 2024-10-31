@@ -45,6 +45,8 @@ public interface ArticleCommand extends Command {
             return false;
         if (c.getCommandType() != null) {
             String commandType = c.getCommandType();
+            if (commandType.equals("UpdateBody"))
+                return false;
         }
 
         if (c.getVersion().equals(ArticleState.VERSION_NULL))

@@ -22,6 +22,8 @@ public interface ArticleAggregate {
 
     void delete(ArticleCommand.DeleteArticle c);
 
+    void updateBody(String body, Long version, String commandId, String requesterId, ArticleCommands.UpdateBody c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 
