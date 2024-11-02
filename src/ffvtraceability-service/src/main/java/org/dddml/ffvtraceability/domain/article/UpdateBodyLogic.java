@@ -8,19 +8,47 @@ package org.dddml.ffvtraceability.domain.article;
 import org.dddml.ffvtraceability.specialization.*;
 import org.springframework.stereotype.Component;
 
-
+/**
+ * Implementation of the Article.UpdateBody command logic.
+ * This class contains the business logic for updating an article's body text.
+ */
 @Component
 public class UpdateBodyLogic implements IUpdateBodyLogic {
 
+    /**
+     * Verifies the Article.UpdateBody command by performing validation logic
+     * before the state mutation. Creates and returns an event that represents
+     * the body update operation.
+     * 
+     * @param eventFactory      The supplier that creates new ArticleBodyUpdated events
+     * @param articleState      The current state of the Article aggregate
+     * @param body             The new body text to be set
+     * @param verificationContext The context information for the verification process
+     * @return                 An ArticleBodyUpdated event containing the new body text
+     */
     public ArticleEvent.ArticleBodyUpdated verify(java.util.function.Supplier<ArticleEvent.ArticleBodyUpdated> eventFactory, ArticleState articleState, String body, VerificationContext verificationContext) {
         ArticleEvent.ArticleBodyUpdated e = eventFactory.get();
+        // Set the new body text in the event
         e.setBody(body);
+        // Return the event for further processing
         return e;
     }
 
+    /**
+     * Performs the state mutation operation of Article.UpdateBody command.
+     * Creates a mutable copy of the state, updates it with the new body text,
+     * and returns the new state.
+     * 
+     * @param articleState     The current immutable state of the Article
+     * @param body            The new body text to be set
+     * @param mutationContext The context that provides the ability to create mutable state
+     * @return               The new state of the Article with updated body text
+     */
     public ArticleState mutate(ArticleState articleState, String body, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
         ArticleState.MutableArticleState s = mutationContext.createMutableState(articleState);
+        // Update the body text in the mutable state
         s.setBody(body);
+        // Return the updated state
         return s;
     }
 
