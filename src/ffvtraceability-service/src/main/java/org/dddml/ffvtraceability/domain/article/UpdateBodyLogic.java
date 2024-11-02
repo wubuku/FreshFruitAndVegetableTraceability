@@ -20,11 +20,11 @@ public class UpdateBodyLogic implements IUpdateBodyLogic {
      * before the state mutation. Creates and returns an event that represents
      * the body update operation.
      * 
-     * @param eventFactory      The supplier that creates new ArticleBodyUpdated events
-     * @param articleState      The current state of the Article aggregate
-     * @param body             The new body text to be set
+     * @param eventFactory The supplier that creates new ArticleBodyUpdated events
+     * @param articleState The current state of the Article aggregate
+     * @param body The new body text to be set
      * @param verificationContext The context information for the verification process
-     * @return                 An ArticleBodyUpdated event containing the new body text
+     * @return An ArticleBodyUpdated event that will be applied to the current state to update the Article
      */
     public ArticleEvent.ArticleBodyUpdated verify(java.util.function.Supplier<ArticleEvent.ArticleBodyUpdated> eventFactory, ArticleState articleState, String body, VerificationContext verificationContext) {
         ArticleEvent.ArticleBodyUpdated e = eventFactory.get();
@@ -39,10 +39,10 @@ public class UpdateBodyLogic implements IUpdateBodyLogic {
      * Creates a mutable copy of the state, updates it with the new body text,
      * and returns the new state.
      * 
-     * @param articleState     The current immutable state of the Article
-     * @param body            The new body text to be set
-     * @param mutationContext The context that provides the ability to create mutable state
-     * @return               The new state of the Article with updated body text
+     * @param articleState The current immutable state of the Article
+     * @param body The new body text to be set
+     * @param mutationContext The context that provides functionality including creating mutable state
+     * @return The new state of the Article
      */
     public ArticleState mutate(ArticleState articleState, String body, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
         ArticleState.MutableArticleState s = mutationContext.createMutableState(articleState);

@@ -47,5 +47,6 @@ aggregates:
         parameters:
           Body:
             type: long-varchar
+            description: "The new body text to be set"
         event:
           name: "ArticleBodyUpdated"
