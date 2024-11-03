@@ -1,12 +1,19 @@
 package org.dddml.ffvtraceability.domain.attributesetinstance;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-
 import org.dddml.ffvtraceability.domain.attributesetinstance.AttributeSetInstanceCommand.CreateAttributeSetInstance;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
+import org.erdtman.jcs.JsonCanonicalizer;
+import org.springframework.util.DigestUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AttributeSetInstanceIdGenerator implements
         IdGenerator<String, AttributeSetInstanceCommand.CreateAttributeSetInstance, AttributeSetInstanceState> {
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public boolean isArbitraryIdEnabled() {
         return true;
@@ -14,7 +21,18 @@ public class AttributeSetInstanceIdGenerator implements
 
     @Override
     public String generateId(CreateAttributeSetInstance command) {
-        return command.getProperties().hashCode() + ""; // TODO: use a better hash function
+        String json;
+        try {
+            json = objectMapper.writeValueAsString(command.getProperties());
+            JsonCanonicalizer jc = new JsonCanonicalizer(json);
+            String encoded = jc.getEncodedString();
+            // MessageDigest md = MessageDigest.getInstance("SHA-1");
+            // byte[] hashBytes = md.digest(encoded.getBytes(StandardCharsets.UTF_8));
+            // return bytesToHex(hashBytes);
+            return DigestUtils.md5DigestAsHex(encoded.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            return "OBJ_HASH" + command.hashCode() + "";
+        }
     }
 
     @Override
@@ -26,4 +44,12 @@ public class AttributeSetInstanceIdGenerator implements
     public boolean equals(CreateAttributeSetInstance command, AttributeSetInstanceState state) {
         return command.getProperties().equals(state.getProperties());
     }
+
+    // private String bytesToHex(byte[] bytes) {
+    //     StringBuilder sb = new StringBuilder();
+    //     for (byte b : bytes) {
+    //         sb.append(String.format("%02x", b));
+    //     }
+    //     return sb.toString();
+    // }
 }
