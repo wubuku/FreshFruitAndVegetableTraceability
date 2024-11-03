@@ -422,6 +422,252 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
    - 定期轮换密钥
 
 
+## 主要面向 Android 等原生应用的 RESTful APIs 自包含认证授权服务
+
+本文介绍如何在 Spring Boot 项目中实现一个简单的自包含认证授权服务，主要面向 Android 等原生应用的 RESTful APIs。
+
+### 核心配置
+
+#### application.yml
+```yaml
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: your-256-bit-secret-key  # 生产环境请使用更安全的方式存储
+```
+
+#### SecurityConfig.java
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated())
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(Customizer.withDefaults()));
+
+        return http.build();
+    }
+
+    @Bean
+    public JwtEncoder jwtEncoder() {
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+        SecretKey key = new SecretKeySpec(keyBytes, "HmacSHA256");
+        return new NimbusJwtEncoder(new ImmutableSecret<>(key));
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(provider);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+```
+
+### 认证相关代码
+
+#### LoginRequest.java
+```java
+public class LoginRequest {
+    private String username;
+    private String password;
+    
+    // getters and setters
+}
+```
+
+#### AuthController.java
+```java
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+    
+    @Autowired
+    private JwtEncoder jwtEncoder;
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @PostMapping("/login")
+    public TokenResponse login(@RequestBody LoginRequest request) {
+        // 验证用户名密码
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+        
+        // 生成JWT
+        Instant now = Instant.now();
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+            .issuer("self")
+            .issuedAt(now)
+            .expiresAt(now.plusSeconds(36000L))  // 10小时过期
+            .subject(authentication.getName())
+            .claim("authorities", authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()))
+            .build();
+
+        String token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        
+        return new TokenResponse(token);
+    }
+}
+```
+
+#### TokenResponse.java
+```java
+public class TokenResponse {
+    private String accessToken;
+    private String tokenType = "Bearer";
+    private long expiresIn = 36000L;  // 10小时，与token生成时一致
+
+    public TokenResponse(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    // getters
+}
+```
+
+### API 示例
+
+#### ApiController.java
+```java
+@RestController
+@RequestMapping("/api")
+public class ApiController {
+    
+    @GetMapping("/user-info")
+    public Map<String, Object> getUserInfo(@AuthenticationPrincipal Jwt jwt) {
+        return Map.of(
+            "username", jwt.getSubject(),
+            "authorities", jwt.getClaims().get("authorities")
+        );
+    }
+    
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/admin-only")
+    public String adminOnly() {
+        return "Only admins can see this";
+    }
+}
+```
+
+### API 使用说明
+
+#### 1. 登录获取令牌
+```http
+POST /auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "password"
+}
+```
+
+响应示例：
+```json
+{
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9...",
+    "tokenType": "Bearer",
+    "expiresIn": 36000
+}
+```
+
+#### 2. 使用令牌访问 API
+```http
+GET /api/user-info
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+```
+
+### Android 客户端示例
+
+```kotlin
+class ApiClient {
+    private val retrofit: Retrofit = // Retrofit 配置
+    private val authApi: AuthApi = retrofit.create(AuthApi::class.java)
+    private val apiService: ApiService = retrofit.create(ApiService::class.java)
+    
+    private var tokenResponse: TokenResponse? = null
+    
+    suspend fun login(username: String, password: String) {
+        tokenResponse = authApi.login(LoginRequest(username, password))
+    }
+    
+    suspend fun getUserInfo(): UserInfo {
+        tokenResponse?.let { token ->
+            return apiService.getUserInfo("Bearer ${token.accessToken}")
+        } ?: throw IllegalStateException("Not logged in")
+    }
+}
+
+interface AuthApi {
+    @POST("auth/login")
+    suspend fun login(@Body request: LoginRequest): TokenResponse
+}
+
+interface ApiService {
+    @GET("api/user-info")
+    suspend fun getUserInfo(@Header("Authorization") authHeader: String): UserInfo
+}
+```
+
+### 注意事项
+
+1. **安全配置**
+   - 使用 HTTPS
+   - 使用强密钥
+   - 合理设置令牌过期时间
+   - 实现请求限流
+
+2. **生产环境建议**
+   - 使用配置服务器或密钥管理系统
+   - 实现令牌刷新机制
+   - 添加设备绑定机制
+   - 实现用户管理功能
+
+3. **监控和日志**
+   - 记录认证事件
+   - 监控异常登录
+   - 实现审计日志
+
+### 扩展建议
+
+1. **令牌刷新**
+   - 添加 refresh_token 支持
+   - 实现令牌自动刷新
+
+2. **设备管理**
+   - 添加设备注册
+   - 实现设备绑定
+   - 支持多设备管理
+
+3. **安全增强**
+   - 添加 rate limiting
+   - 实现密钥轮换
+   - 支持双因素认证
+
+
 ## 扩展功能实现
 
 ### JWT 失效方案
