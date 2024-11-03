@@ -1,5 +1,7 @@
 # Spring Authorization Server
 
+> 注意：以下内容基于与 AI 对话的结果整理而成，细节上没有经过验证，仅供参考。
+
 ## Spring Authorization Server 最小化生产实现
 
 本文介绍如何使用 Spring Authorization Server 和 Spring Security 标准组件实现一个认证授权服务，主要面向 Android 等原生应用的 RESTful APIs。

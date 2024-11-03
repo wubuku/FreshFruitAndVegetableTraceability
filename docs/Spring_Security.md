@@ -1,5 +1,7 @@
 # Spring Security
 
+> 注意：以下内容基于与 AI 对话的结果整理而成，细节上没有经过验证，仅供参考。
+
 ## Authorities
 
 ROLE_ 前缀是 Spring Security 的一个特殊约定，但 authorities 不一定要以 ROLE_ 开头。Authorities 可以是任何权限标识符。

@@ -1,5 +1,6 @@
 # Spring Security OAuth2 Resource Server JWT 认证授权
 
+> 注意：以下内容基于与 AI 对话的结果整理而成，细节上没有经过验证，仅供参考。
 
 ## 资源服务器配置
 

@@ -1,5 +1,7 @@
 # Spring Security：结合使用 JWT 和 Group Authorities
 
+> 注意：以下内容基于与 AI 对话的结果整理而成，细节上没有经过验证，仅供参考。
+
 本文介绍如何在 Spring Security 中结合使用 JWT（JSON Web Token）认证和 Group Authorities 功能。
 
 ## 基础配置
@@ -745,7 +747,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
 }
 ```
 
-#### 资源服务器的 JWT 权限转换实现
+### 资源服务器的 JWT 权限转换实现
 
 在资源服务器端，我们需要从 JWT 中的组信息恢复出实际的权限，以支持标准的 `hasAuthority` 注解。
 
