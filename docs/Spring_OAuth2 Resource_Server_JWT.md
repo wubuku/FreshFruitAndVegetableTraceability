@@ -234,3 +234,568 @@ public void processOrder() {
 这种设计既保持了与 OAuth2 规范的兼容性，又提供了 Spring Security 特有的细粒度权限控制能力。
 
 
+
+## Spring Security + OAuth2 Resource Server 自授权最小实现
+
+
+### 依赖配置
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+</dependency>
+```
+
+### 核心代码
+
+#### SecurityConfig.java
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    
+    @Value("${spring.security.oauth2.resourceserver.jwt.secret-key}")
+    private String secretKey;
+    
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated())
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(Customizer.withDefaults()));  // 会自动使用配置的 secret-key
+
+        return http.build();
+    }
+
+    // 使用同一个密钥创建 encoder，用于生成 token
+    @Bean
+    public JwtEncoder jwtEncoder() {
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+        SecretKey key = new SecretKeySpec(keyBytes, "HmacSHA256");
+        return new NimbusJwtEncoder(new ImmutableSecret<>(key));
+    }
+}
+```
+
+使用 Spring Security OAuth2 Resource Server 的默认配置，需要配置对称密钥：
+
+```yaml
+# application.yml
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: your-256-bit-secret-key
+```
+
+#### AuthController.java
+```java
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+    
+    @Autowired
+    private JwtEncoder jwtEncoder;
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest request) {
+        // 验证用户名密码
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+        
+        // 生成JWT
+        Instant now = Instant.now();
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+            .issuer("self")
+            .issuedAt(now)
+            .expiresAt(now.plusSeconds(36000L))
+            .subject(authentication.getName())
+            .claim("authorities", authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()))
+            .build();
+
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+    }
+}
+```
+
+#### ApiController.java
+```java
+@RestController
+@RequestMapping("/api")
+public class ApiController {
+    
+    @GetMapping("/user-info")
+    public Map<String, Object> getUserInfo(@AuthenticationPrincipal Jwt jwt) {
+        return Map.of(
+            "username", jwt.getSubject(),
+            "authorities", jwt.getClaims().get("authorities")
+        );
+    }
+    
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/admin-only")
+    public String adminOnly() {
+        return "Only admins can see this";
+    }
+}
+```
+
+#### LoginRequest.java
+```java
+public class LoginRequest {
+    private String username;
+    private String password;
+    
+    // getters and setters
+}
+```
+
+
+
+### API 使用说明
+
+#### 1. 获取令牌
+```http
+POST /auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "password"
+}
+```
+
+#### 2. 使用令牌访问 API
+```http
+GET /api/user-info
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+```
+
+### 实现特点
+
+1. **简单直接**
+   - 无需外部授权服务器
+   - 自包含的认证授权功能
+   - 基于 JWT 的无状态设计
+
+2. **标准安全特性**
+   - 支持基于权限的访问控制
+   - JWT 令牌验证
+   - 可配置的令牌过期时间
+
+3. **易于扩展**
+   - 可以方便地添加新的安全规则
+   - 支持自定义认证逻辑
+   - 为将来迁移到完整 OAuth2 架构预留空间
+
+### 注意事项
+
+1. 生产环境使用时需要：
+   - 使用强密钥
+   - 配置适当的令牌过期时间
+   - 实现用户管理功能
+   - 添加必要的安全头部
+   - 考虑实现令牌刷新机制
+
+2. 安全建议：
+   - 使用 HTTPS
+   - 实现请求限流
+   - 添加审计日志
+   - 定期轮换密钥
+
+
+## 扩展功能实现
+
+### JWT 失效方案
+
+#### 基于数据库的 JWT 失效方案
+
+##### 1. 创建失效令牌表
+```sql
+CREATE TABLE revoked_tokens (
+    jti VARCHAR(255) PRIMARY KEY,
+    revoked_at TIMESTAMP NOT NULL,
+    revoked_by VARCHAR(255) NOT NULL,
+    reason VARCHAR(255),
+    expires_at TIMESTAMP NOT NULL
+);
+```
+
+##### 2. 令牌失效服务
+```java
+@Service
+@Transactional
+public class TokenRevocationService {
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+    public void revokeToken(String jti, String revokedBy, String reason, Instant expiresAt) {
+        String sql = """
+            INSERT INTO revoked_tokens (jti, revoked_at, revoked_by, reason, expires_at)
+            VALUES (?, ?, ?, ?, ?)
+            """;
+            
+        jdbcTemplate.update(sql,
+            jti,
+            Timestamp.from(Instant.now()),
+            revokedBy,
+            reason,
+            Timestamp.from(expiresAt)
+        );
+    }
+    
+    public boolean isTokenRevoked(String jti) {
+        String sql = """
+            SELECT COUNT(1) FROM revoked_tokens 
+            WHERE jti = ? AND expires_at > ?
+            """;
+            
+        int count = jdbcTemplate.queryForObject(sql,
+            Integer.class,
+            jti,
+            Timestamp.from(Instant.now())
+        );
+        
+        return count > 0;
+    }
+    
+    // 清理过期记录（可以通过定时任务调用）
+    public void cleanupExpiredTokens() {
+        String sql = "DELETE FROM revoked_tokens WHERE expires_at <= ?";
+        jdbcTemplate.update(sql, Timestamp.from(Instant.now()));
+    }
+}
+```
+
+##### 3. JWT 认证转换器
+```java
+@Component
+public class ResourceServerJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+    
+    @Autowired
+    private TokenRevocationService revocationService;
+    
+    @Override
+    public AbstractAuthenticationToken convert(Jwt jwt) {
+        // 检查令牌是否被撤销
+        String jti = jwt.getId();
+        if (jti != null && revocationService.isTokenRevoked(jti)) {
+            throw new BadJwtException("Token has been revoked");
+        }
+        
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        
+        // 添加直接权限
+        getClaimAsSet(jwt, "directAuthorities")
+            .stream()
+            .map(SimpleGrantedAuthority::new)
+            .forEach(authorities::add);
+            
+        // 从组恢复权限
+        getClaimAsSet(jwt, "groups")
+            .stream()
+            .map(this::getGroupAuthorities)
+            .flatMap(Set::stream)
+            .map(SimpleGrantedAuthority::new)
+            .forEach(authorities::add);
+        
+        return new JwtAuthenticationToken(jwt, authorities);
+    }
+    
+    // ... 其他现有方法 ...
+}
+```
+
+##### 4. 管理接口
+```java
+@RestController
+@RequestMapping("/admin/tokens")
+public class TokenManagementController {
+    
+    @Autowired
+    private TokenRevocationService revocationService;
+    
+    @PostMapping("/revoke")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> revokeToken(
+            @RequestParam String jti,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant expiresAt,
+            @RequestParam(required = false) String reason,
+            @AuthenticationPrincipal Jwt currentUserJwt) {
+            
+        revocationService.revokeToken(
+            jti,
+            currentUserJwt.getSubject(),
+            reason,
+            expiresAt
+        );
+        
+        return ResponseEntity.ok().build();
+    }
+}
+```
+
+##### 5. 定时清理任务（可选）
+```java
+@Configuration
+@EnableScheduling
+public class SchedulingConfig {
+    
+    @Autowired
+    private TokenRevocationService revocationService;
+    
+    @Scheduled(cron = "0 0 2 * * *")  // 每天凌晨2点执行
+    public void cleanupExpiredTokens() {
+        revocationService.cleanupExpiredTokens();
+    }
+}
+```
+
+#### 使用说明
+
+1. **生成 JWT 时确保包含 JTI**：
+```java
+public String generateToken(Authentication authentication) {
+    return Jwts.builder()
+        .setId(UUID.randomUUID().toString())  // 添加 JTI
+        .setClaims(claims)
+        .setSubject(authentication.getName())
+        .setIssuedAt(new Date())
+        .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
+        .compact();
+}
+```
+
+2. **撤销令牌**：
+```http
+POST /admin/tokens/revoke?jti=123&expiresAt=2024-12-31T23:59:59Z&reason=Security%20concern
+Authorization: Bearer <admin-token>
+```
+
+#### 优势
+
+1. 简单的实现方式
+2. 不需要额外的基础设施
+3. 支持审计追踪
+4. 自动清理过期记录
+
+#### 注意事项
+
+1. 数据库查询性能
+   - 建议在 `jti` 列上创建索引
+   - 定期清理过期记录
+   - 考虑添加应用层缓存（如果需要）
+
+2. 并发处理
+   - 使用事务确保数据一致性
+   - 考虑数据库锁的影响
+
+3. 存储空间
+   - 监控表的增长情况
+   - 及时清理过期记录
+
+
+#### 基于数据库的 JWT 失效方案（带本地缓存）
+
+##### 1. 添加 Caffeine 缓存依赖
+```xml
+<dependency>
+    <groupId>com.github.ben-manes.caffeine</groupId>
+    <artifactId>caffeine</artifactId>
+</dependency>
+```
+
+##### 2. 改进的令牌失效服务
+```java
+@Service
+@Transactional
+public class TokenRevocationService {
+    
+    private final JdbcTemplate jdbcTemplate;
+    private final Cache<String, Boolean> revocationCache;
+    
+    public TokenRevocationService(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        // 配置本地缓存
+        this.revocationCache = Caffeine.newBuilder()
+            .maximumSize(10_000)                 // 最多缓存1万个记录
+            .expireAfterWrite(1, TimeUnit.HOURS) // 缓存1小时后过期
+            .build();
+    }
+    
+    public void revokeToken(String jti, String revokedBy, String reason, Instant expiresAt) {
+        String sql = """
+            INSERT INTO revoked_tokens (jti, revoked_at, revoked_by, reason, expires_at)
+            VALUES (?, ?, ?, ?, ?)
+            """;
+            
+        jdbcTemplate.update(sql,
+            jti,
+            Timestamp.from(Instant.now()),
+            revokedBy,
+            reason,
+            Timestamp.from(expiresAt)
+        );
+        
+        // 更新缓存
+        revocationCache.put(jti, Boolean.TRUE);
+    }
+    
+    public boolean isTokenRevoked(String jti) {
+        // 先检查缓存
+        Boolean cached = revocationCache.getIfPresent(jti);
+        if (cached != null) {
+            return cached;
+        }
+        
+        // 缓存未命中，查询数据库
+        String sql = """
+            SELECT COUNT(1) FROM revoked_tokens 
+            WHERE jti = ? AND expires_at > ?
+            """;
+            
+        int count = jdbcTemplate.queryForObject(sql,
+            Integer.class,
+            jti,
+            Timestamp.from(Instant.now())
+        );
+        
+        boolean isRevoked = count > 0;
+        // 只缓存已撤销的令牌，未撤销的不缓存（避免缓存穿透）
+        if (isRevoked) {
+            revocationCache.put(jti, true);
+        }
+        
+        return isRevoked;
+    }
+    
+    public void cleanupExpiredTokens() {
+        String sql = "DELETE FROM revoked_tokens WHERE expires_at <= ?";
+        int deleted = jdbcTemplate.update(sql, Timestamp.from(Instant.now()));
+        
+        // 如果有记录被删除，清空缓存
+        if (deleted > 0) {
+            revocationCache.invalidateAll();
+        }
+    }
+}
+```
+
+##### 3. 缓存监控（可选）
+```java
+@RestController
+@RequestMapping("/admin/system")
+public class SystemMonitorController {
+    
+    @Autowired
+    private TokenRevocationService revocationService;
+    
+    @GetMapping("/cache/stats")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Map<String, Object> getCacheStats() {
+        Cache<String, Boolean> cache = revocationService.getRevocationCache();
+        CacheStats stats = cache.stats();
+        
+        return Map.of(
+            "hitCount", stats.hitCount(),
+            "missCount", stats.missCount(),
+            "hitRate", stats.hitRate(),
+            "size", cache.estimatedSize()
+        );
+    }
+}
+```
+
+#### 缓存策略说明
+
+1. **缓存配置**
+   - 最大缓存数量：10,000条
+   - 缓存过期时间：1小时
+   - 仅缓存已撤销的令牌
+
+2. **缓存更新策略**
+   - 撤销令牌时直接更新缓存
+   - 清理过期记录时清空缓存
+   - 只缓存阳性结果（已撤销的令牌）
+
+3. **性能优化**
+   - 避免缓存穿透（不缓存未撤销的令牌）
+   - 定期清理过期记录
+   - 缓存统计监控
+
+#### 使用示例
+
+1. **检查令牌状态**：
+```java
+@Component
+public class ResourceServerJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+    
+    @Autowired
+    private TokenRevocationService revocationService;
+    
+    @Override
+    public AbstractAuthenticationToken convert(Jwt jwt) {
+        String jti = jwt.getId();
+        // 快速检查令牌是否被撤销（使用缓存）
+        if (jti != null && revocationService.isTokenRevoked(jti)) {
+            throw new BadJwtException("Token has been revoked");
+        }
+        
+        // ... 其余代码保持不变 ...
+    }
+}
+```
+
+#### 优势
+
+1. **高性能**
+   - 本地缓存，无网络开销
+   - 只缓存必要的数据
+   - 自动过期管理
+
+2. **低复杂度**
+   - 无需额外服务
+   - 简单的缓存策略
+   - 易于维护
+
+3. **可靠性**
+   - 缓存未命中时自动回退到数据库
+   - 定期清理过期数据
+   - 支持缓存统计和监控
+
+#### 注意事项
+
+1. **内存使用**
+   - 监控缓存大小
+   - 适当调整最大缓存数量
+   - 注意 JVM 内存配置
+
+2. **缓存一致性**
+   - 缓存过期时间要小于令牌过期时间
+   - 集群环境下考虑缓存同步问题
+   - 关键操作时主动清除缓存
+
+3. **监控**
+   - 定期检查缓存命中率
+   - 监控内存使用情况
+   - 观察数据库查询频率
