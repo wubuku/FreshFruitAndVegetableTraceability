@@ -828,12 +828,16 @@ Business rational: Sorting touch point which impacts pre and post GTIN & Lot/bat
 
 #### Customs freight release
 
+--------
 
-#### 术语表
+## 术语表
+
+Fresh Fruit and Vegetable Traceability Guideline 中的术语：
 
 https://www.gs1.org/standards/fresh-fruit-and-vegetable-traceability-guideline/current-standard#A-Glossary+A-1-Glossary-of-terms
 
-部分术语：
+
+### 供应链管理领域常见缩写词
 
 1. GLN (Global Location Number):
    - 全球位置编码
@@ -878,7 +882,8 @@ https://www.gs1.org/standards/fresh-fruit-and-vegetable-traceability-guideline/c
     - 计量单位
     - 用于描述产品数量的标准单位
 
-##### GIAI 和 GRAI
+
+### GIAI 和 GRAI（资产标识）
 
 GIAI 和 GRAI 是 GS1 标准中的两种标识符，用于不同的资产管理场景：
 1. GIAI（Global Individual Asset Identifier）：全球个体资产标识符，用于唯一标识单个资产。它由 GS1 公司前缀和个体资产参考组成，适用于固定资产的管理，例如计算机、办公桌或运输设备。
@@ -886,10 +891,123 @@ GIAI 和 GRAI 是 GS1 标准中的两种标识符，用于不同的资产管理�
 
 这些标识符在供应链管理中起到重要作用，确保资产的唯一性和可追溯性。
 
-##### GDSN（Global Data Synchronization Network）与 GTIN（Global Trade Item Number）
+### GDSN（Global Data Synchronization Network）与 GTIN（Global Trade Item Number）
 
 GTIN（全球贸易项目代码）：
 GTIN 是用于唯一标识贸易项目的代码，通常用于条形码中。GTIN 可以有多种格式，包括 GTIN-12、GTIN-13、GTIN-14 等，具体取决于应用场景。每个 GTIN 都是唯一的，确保每个产品在全球范围内都能被唯一识别。
 
 GDSN（全球数据同步网络）：
 GDSN 是一个全球性的网络，用于在供应链中的不同参与者之间同步和共享高质量的产品数据。通过 GDSN，企业可以确保其产品信息在全球范围内的一致性和准确性。GDSN 通过数据池（Data Pools）运作，这些数据池允许企业上传、维护和共享产品信息。
+
+
+### ASN (Advanced Shipping Notice)
+
+#### 基本概念
+
+ASN 是发货方在发货前或发货时向收货方发送的详细电子通知。
+
+#### 主要功能
+
+1. **提前通知**
+   - 告知收货方货物即将到达
+   - 提供预计到达时间（ETA）
+   - 便于收货方做好接收准备
+
+2. **详细信息传递**
+   - 货物清单和数量
+   - 包装信息（包装层次、类型）
+   - 运输信息（承运人、运单号）
+   - 订单参考信息
+
+3. **供应链协同**
+   - 提高收货效率
+   - 减少等待时间
+   - 优化仓库作业计划
+
+#### ASN 包含的关键信息
+
+1. **基础信息**
+   - ASN 编号
+   - 发送日期和时间
+   - 预计到达日期（ETA）
+
+2. **参与方信息**
+   - 发货方信息
+   - 收货方信息
+   - 承运人信息
+
+3. **参考文档**
+   - 采购订单号
+   - 销售订单号
+   - 装运单号
+   - 集装箱号
+
+4. **货物信息**
+   - 产品编号（SKU）
+   - 批次号（Batch/Lot）
+   - 序列号（Serial Number）
+   - 数量和单位
+   - 包装层次结构
+
+#### ASN 的业务流程
+
+1. **发送时机**
+   ```
+   订单确认 -> 拣货完成 -> 发送ASN -> 装车发运 -> 货物在途 -> 收货
+   ```
+
+2. **处理流程**
+   ```
+   ASN生成 -> EDI传输 -> 系统接收 -> 数据验证 -> 入库准备
+   ```
+
+#### 实施建议
+
+1. **系统集成**
+   - 与 WMS（仓库管理系统）集成
+   - 与 TMS（运输管理系统）集成
+   - 与 ERP 系统集成
+
+2. **数据标准**
+   - 使用标准的 EDI 格式（如 EDI 856）
+   - 采用统一的编码标准（如 GS1）
+   - 确保数据的准确性和完整性
+
+3. **业务规范**
+   - 制定 ASN 发送时间要求
+   - 规范 ASN 内容格式
+   - 建立异常处理机制
+
+#### ASN 的优势
+
+1. **对收货方**
+   - 提前了解到货信息
+   - 优化劳动力安排
+   - 提高收货效率
+   - 减少文档处理时间
+
+2. **对发货方**
+   - 提高发货准确性
+   - 减少沟通成本
+   - 提升客户满意度
+   - 便于跟踪管理
+
+3. **对供应链整体**
+   - 提高透明度
+   - 减少库存积压
+   - 优化物流效率
+   - 降低运营成本
+
+#### 常见挑战和解决方案
+
+1. **数据准确性**
+   - 问题：ASN 信息与实际发货不符
+   - 解决：建立数据验证机制，实施条码扫描
+
+2. **及时性**
+   - 问题：ASN 发送延迟
+   - 解决：自动化 ASN 生成和发送流程
+
+3. **系统集成**
+   - 问题：不同系统间数据格式不兼容
+   - 解决：采用标准化的 EDI 格式，建立数据映射规则
