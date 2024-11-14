@@ -84,6 +84,12 @@ java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1
 mvn -pl ffvtraceability-service-rest -am spring-boot:run
 ```
 
+### Run tests
+
+```shell
+mvn -pl ffvtraceability-service-rest -am test
+```
+
 Swagger UI:
 
 ```text

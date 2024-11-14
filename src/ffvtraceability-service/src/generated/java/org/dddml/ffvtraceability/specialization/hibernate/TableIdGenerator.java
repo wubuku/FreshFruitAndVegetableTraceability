@@ -7,11 +7,9 @@ import org.hibernate.id.enhanced.TableGenerator;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.internal.SessionImpl;
 
-import java.io.Serializable;
-
 public class TableIdGenerator<TCommand, TState> implements IdGenerator<Long, TCommand, TState> {
 
-    private static final String DEFAULT_ROOT_ENTITY_NAME = "org.dddml.ffvtraceability.tool.hibernate.Hello";
+    private static final String DEFAULT_ROOT_ENTITY_NAME = "org.dddml.ffvtraceability.tool.hibernate.TableIdGeneratorAnchor";
 
     private String rootEntityName = DEFAULT_ROOT_ENTITY_NAME;
 

@@ -1,9 +1,10 @@
 package org.dddml.ffvtraceability.tool.hibernate;
 
 /**
- * Created by yangjiefeng on 2017/9/18.
+ * This entity exists solely to bootstrap Hibernate's ID generator infrastructure.
+ * It has no business meaning and should not be used directly.
  */
-public class Hello {
+public class TableIdGeneratorAnchor {
 
     private Long id;
 

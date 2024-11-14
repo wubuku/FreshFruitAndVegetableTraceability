@@ -6,7 +6,7 @@
 
 <hibernate-mapping package="org.dddml.ffvtraceability.tool.hibernate">
 
-    <class name="Hello" table="hibernate_hello">
+    <class name="TableIdGeneratorAnchor" table="hibernate_table_id_generator_anchor">
 
         <id name="id">
             <generator class="enhanced-table">
