@@ -5,6 +5,7 @@ configuration:
     ShouldUseJakartaEE: true
     #ShouldStaticallyInvokeJavaLogicFunctions: true
     ShouldInvokeJavaDefaultLogicFunctions: true
+    JsonUriPathVariableEnabled: true
   multiTenancy:
     discriminatorBasedMultiTenancyEnabled: false
   hibernate:

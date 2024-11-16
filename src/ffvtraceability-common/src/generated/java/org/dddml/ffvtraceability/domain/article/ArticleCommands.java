@@ -37,7 +37,7 @@ public class ArticleCommands {
         }
 
         /**
-         * Body
+         * The new body text to be set
          */
         private String body;
 

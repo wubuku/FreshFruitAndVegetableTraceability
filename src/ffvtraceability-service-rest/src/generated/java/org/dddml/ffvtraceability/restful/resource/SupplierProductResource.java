@@ -333,9 +333,25 @@ public class SupplierProductResource {
  
     public static class SupplierProductResourceUtils {
 
+        private static final com.fasterxml.jackson.databind.ObjectMapper objectMapper;
+
+        static {
+            objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+            objectMapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule())
+                    .setDateFormat(new com.fasterxml.jackson.databind.util.StdDateFormat().withColonInTimeZone(true))
+                    .configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                    .configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
+                    .configure(com.fasterxml.jackson.databind.DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
+        }
+
         public static SupplierProductAssocId parseIdString(String idString) {
-            TextFormatter<SupplierProductAssocId> formatter = SupplierProductMetadata.URL_ID_TEXT_FORMATTER;
-            return formatter.parse(idString);
+            try {
+                return objectMapper.readValue(idString, SupplierProductAssocId.class);
+            } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         public static void setNullIdOrThrowOnInconsistentIds(String supplierProductAssocId, org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductCommand value) {

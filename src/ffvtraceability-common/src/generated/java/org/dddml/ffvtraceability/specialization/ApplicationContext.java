@@ -10,7 +10,7 @@ public class ApplicationContext {
 
     protected static final TimestampService DEFAULT_TIMESTAMP_SERVICE = new TimestampService() {
         @Override
-        public Object now(Class type) {
+        public Object now(Class<?> type) {
             if (type.equals(java.sql.Timestamp.class)) {
                 return new java.sql.Timestamp(new java.util.Date().getTime());
             } else if (type.equals(java.time.OffsetDateTime.class)) {
@@ -27,11 +27,7 @@ public class ApplicationContext {
         }
     };
 
-    public static volatile ApplicationContext current;
-
-    public static void setCurrent(ApplicationContext context) {
-        current = context;
-    }
+    public static ApplicationContext current;
 
     public Object get(String name) {
         throw new UnsupportedOperationException();
@@ -58,7 +54,7 @@ public class ApplicationContext {
         private org.dddml.support.criterion.DefaultTypeConverter innerTypeConverter = new org.dddml.support.criterion.DefaultTypeConverter();
 
         @Override
-        public Object convertFromString(Class type, String text) {
+        public Object convertFromString(Class<?> type, String text) {
             if (type.equals(java.time.OffsetDateTime.class)) {
                 return java.time.OffsetDateTime.parse(text);
             }
@@ -86,7 +82,7 @@ public class ApplicationContext {
         }
 
         @Override
-        public String convertToString(Class type, Object value) {
+        public String convertToString(Class<?> type, Object value) {
             return innerTypeConverter.convertToString(value);
         }
 

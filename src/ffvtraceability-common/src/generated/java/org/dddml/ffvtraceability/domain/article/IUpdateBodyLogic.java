@@ -5,6 +5,9 @@
 
 package org.dddml.ffvtraceability.domain.article;
 
+import java.math.*;
+import java.util.*;
+import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 
 public interface IUpdateBodyLogic {
