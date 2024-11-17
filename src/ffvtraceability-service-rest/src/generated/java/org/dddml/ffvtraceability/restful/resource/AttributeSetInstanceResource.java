@@ -264,7 +264,6 @@ public class AttributeSetInstanceResource {
         };
     }
 
-    // ////////////////////////////////
  
     public static class AttributeSetInstanceResourceUtils {
 

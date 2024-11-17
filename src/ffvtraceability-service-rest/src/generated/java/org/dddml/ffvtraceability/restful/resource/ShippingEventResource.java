@@ -272,7 +272,6 @@ public class ShippingEventResource {
         };
     }
 
-    // ////////////////////////////////
  
     public static class ShippingEventResourceUtils {
 

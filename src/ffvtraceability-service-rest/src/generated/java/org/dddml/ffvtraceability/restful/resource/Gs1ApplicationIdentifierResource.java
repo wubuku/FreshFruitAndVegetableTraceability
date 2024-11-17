@@ -282,7 +282,6 @@ public class Gs1ApplicationIdentifierResource {
         };
     }
 
-    // ////////////////////////////////
  
     public static class Gs1ApplicationIdentifierResourceUtils {
 

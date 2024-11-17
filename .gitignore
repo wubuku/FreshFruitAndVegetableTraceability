@@ -8,3 +8,7 @@ docs/PTI-Sortable-Spreadsheet-Retail-Store-2-1.xlsx
 docs/PTI-Sortable-Spreadsheet-Shipping-2-1.xlsx
 docs/__GS1_AI_JSON_Schema.json
 src/scripts
+src/ffvtraceability-auth-server/scripts/tokens.env
+src/ffvtraceability-auth-server/scripts/session.env
+src/ffvtraceability-auth-server/scripts/cookies.txt
+src/ffvtraceability-auth-server/scripts/auth.env

@@ -316,7 +316,6 @@ public class UomTypeResource {
         };
     }
 
-    // ////////////////////////////////
  
     public static class UomTypeResourceUtils {
 

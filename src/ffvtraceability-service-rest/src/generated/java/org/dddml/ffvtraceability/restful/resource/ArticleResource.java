@@ -460,7 +460,6 @@ public class ArticleResource {
         };
     }
 
-    // ////////////////////////////////
  
     public static class ArticleResourceUtils {
 

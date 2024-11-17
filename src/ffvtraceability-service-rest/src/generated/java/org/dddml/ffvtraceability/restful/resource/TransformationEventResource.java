@@ -282,7 +282,6 @@ public class TransformationEventResource {
         };
     }
 
-    // ////////////////////////////////
  
     public static class TransformationEventResourceUtils {
 

@@ -264,7 +264,6 @@ public class StatusItemResource {
         };
     }
 
-    // ////////////////////////////////
  
     public static class StatusItemResourceUtils {
 

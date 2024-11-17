@@ -282,7 +282,6 @@ public class ReceivingEventResource {
         };
     }
 
-    // ////////////////////////////////
  
     public static class ReceivingEventResourceUtils {
 

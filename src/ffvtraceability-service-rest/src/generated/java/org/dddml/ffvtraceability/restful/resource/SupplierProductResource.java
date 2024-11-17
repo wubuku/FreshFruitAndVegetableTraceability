@@ -329,7 +329,6 @@ public class SupplierProductResource {
         };
     }
 
-    // ////////////////////////////////
  
     public static class SupplierProductResourceUtils {
 
