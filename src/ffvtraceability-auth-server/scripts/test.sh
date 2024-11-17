@@ -1,12 +1,30 @@
 #!/bin/bash
 
-# 生成 code verifier (43-128位随机字符)
+
+# Base64URL encode function (no padding)
+base64url_encode() {
+    # Read binary input and encode to base64, then transform to base64url
+    base64 | tr '/+' '_-' | tr -d '='
+}
+
+# URL encode function
+urlencode() {
+    python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=''))" "$1"
+}
+
+# Generate code_verifier (random string)
 code_verifier=$(openssl rand -base64 32 | tr -d /=+ | cut -c -43)
 echo "🔑 Code Verifier: $code_verifier"
 
-# 生成 code challenge
-code_challenge=$(echo -n $code_verifier | openssl sha256 -binary | base64 | tr -d /=+ )
+# Generate code_challenge (base64url-encode(sha256(code_verifier)))
+code_challenge=$(printf "%s" "$code_verifier" | openssl sha256 -binary | base64url_encode)
 echo "🔒 Code Challenge: $code_challenge"
+
+# Verify the code_challenge is not empty
+if [ -z "$code_challenge" ]; then
+    echo "❌ Error: Failed to generate code_challenge"
+    exit 1
+fi
 
 # 清理旧的 cookies
 rm -f cookies.txt
@@ -15,7 +33,7 @@ rm -f cookies.txt
 csrf_token=$(curl -c cookies.txt -b cookies.txt -s http://localhost:9000/login | sed -n 's/.*name="_csrf" type="hidden" value="\([^"]*\).*/\1/p')
 echo "🔐 CSRF Token: $csrf_token"
 
-encoded_csrf_token=$(echo -n "$csrf_token" | perl -pe 's/([^A-Za-z0-9])/sprintf("%%%02X", ord($1))/seg')
+encoded_csrf_token=$(urlencode "$csrf_token")
 echo "📝 Encoded CSRF Token: $encoded_csrf_token"
 
 # 执行登录
@@ -52,11 +70,12 @@ fi
 echo "export SESSION_ID=$session_id" > session.env
 
 
-# 设置重定向 URI
+# 设置重定向 URI 并编码
 redirect_uri="http://127.0.0.1:3000/callback"
+encoded_redirect_uri=$(urlencode "$redirect_uri")
 echo "🌐 Redirect URI: $redirect_uri"
 
-# 获取授权页面（禁用自动重定向）
+# 获取授权页面时使用编码后的 URI
 auth_page=$(curl -s \
     -c cookies.txt -b cookies.txt \
     --max-redirs 0 \
@@ -65,7 +84,7 @@ auth_page=$(curl -s \
 client_id=ffv-client&\
 response_type=code&\
 scope=openid%20read%20write&\
-redirect_uri=${redirect_uri}&\
+redirect_uri=${encoded_redirect_uri}&\
 code_challenge=${code_challenge}&\
 code_challenge_method=S256" \
     -D - 2>/dev/null)
@@ -150,6 +169,12 @@ scope=openid%20read%20write"
 echo -e "\n📝 Request Body:"
 echo "$request_body"
 
+# 编码 code_verifier
+encoded_code_verifier=$(urlencode "$code_verifier")
+
+# 编码 auth_code
+encoded_auth_code=$(urlencode "$auth_code")
+
 # 获取访问令牌
 echo -e "\n🔄 Requesting access token..."
 token_response=$(curl -v -X POST "http://localhost:9000/oauth2/token" \
@@ -157,9 +182,10 @@ token_response=$(curl -v -X POST "http://localhost:9000/oauth2/token" \
     -H "Authorization: Basic $(echo -n 'ffv-client:secret' | base64)" \
     -H "Accept: application/json" \
     -d "grant_type=authorization_code" \
-    -d "code=$auth_code" \
-    -d "redirect_uri=$redirect_uri" \
-    -d "code_verifier=$code_verifier" \
+    -d "code=$encoded_auth_code" \
+    -d "redirect_uri=$encoded_redirect_uri" \
+    -d "code_verifier=$encoded_code_verifier" \
+    -d "scope=openid%20read%20write" \
     2>&1)
 
 # 打印完整的响应
