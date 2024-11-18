@@ -6,9 +6,9 @@ DELETE FROM authorities;
 DELETE FROM users;
 
 -- 创建测试用户
-INSERT INTO users (username, password, enabled) VALUES
-    ('admin', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true),  -- password=admin
-    ('user', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true);   -- password=admin
+INSERT INTO users (username, password, enabled, password_change_required, first_login) VALUES
+    ('admin', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', false, false, false),  -- password=admin
+    ('user', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, true, true);   -- password=admin
 
 -- 创建用户组
 INSERT INTO groups (id, group_name) VALUES 

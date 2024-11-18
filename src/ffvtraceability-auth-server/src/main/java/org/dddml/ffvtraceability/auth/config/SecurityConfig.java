@@ -1,6 +1,11 @@
 package org.dddml.ffvtraceability.auth.config;
 
 import org.dddml.ffvtraceability.auth.security.CustomUserDetails;
+import org.dddml.ffvtraceability.auth.security.handler.CustomAuthenticationSuccessHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -18,16 +23,53 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(AuthStateProperties.class)
 public class SecurityConfig {
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
+    @Autowired
+    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+
+    private static OffsetDateTime toOffsetDateTime(Object dbValue) {
+        OffsetDateTime passwordLastChanged = null;
+
+        if (dbValue != null) {
+            // 处理所有可能的时间类型
+            if (dbValue instanceof OffsetDateTime) {
+                passwordLastChanged = (OffsetDateTime) dbValue;
+            } else if (dbValue instanceof Timestamp ts) {
+                passwordLastChanged = ts.toInstant()
+                        .atOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+            } else if (dbValue instanceof LocalDateTime ldt) {
+                passwordLastChanged = ldt.atOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+            } else if (dbValue instanceof Date date) {
+                passwordLastChanged = date.toInstant()
+                        .atOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+            } else {
+//                logger.warn("Unexpected datetime type: {} for value: {}",
+//                        dbValue.getClass().getName(), dbValue);
+                throw new IllegalArgumentException("Unsupported datetime type: " + dbValue.getClass().getName());
+            }
+        }
+        logger.debug("Password last changed type: {}, value: {}",
+                dbValue != null ? dbValue.getClass().getName() : "null",
+                passwordLastChanged);
+        return passwordLastChanged;
+    }
 
     @Bean
     @Order(2)
@@ -40,14 +82,14 @@ public class SecurityConfig {
                                 "/login",              // 登录页面
                                 "/error",              // 错误页面
                                 "/oauth2-test",        // 测试首页
-                                "/oauth2-test-callback" // 回调页面
+                                "/oauth2-test-callback", // 回调页面
+                                "/password/change"     // 密码修改页面
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/oauth2-test", true) // 登录成功后强制跳转到测试页面
-                        .permitAll()
+                        .successHandler(authenticationSuccessHandler)
                 );
 
         return http.build();
@@ -62,10 +104,13 @@ public class SecurityConfig {
                     SELECT u.username, 
                            u.password, 
                            u.enabled,
-                           ua.authority,
+                           u.password_change_required,
+                           u.password_last_changed,
+                           u.first_login,
+                           a.authority,
                            g.group_name
                     FROM users u
-                    LEFT JOIN authorities ua ON u.username = ua.username
+                    LEFT JOIN authorities a ON u.username = a.username
                     LEFT JOIN group_members gm ON u.username = gm.username
                     LEFT JOIN groups g ON gm.group_id = g.id
                     WHERE u.username = ?
@@ -77,43 +122,57 @@ public class SecurityConfig {
                 throw new UsernameNotFoundException("User not found: " + username);
             }
 
-            // 收集直接权限
-            Set<GrantedAuthority> authorities = results.stream()
-                    .map(row -> (String) row.get("authority"))
-                    .filter(Objects::nonNull)
-                    .map(authority -> new SimpleGrantedAuthority(authority))
-                    .collect(Collectors.toSet());
+            Set<GrantedAuthority> authorities = new HashSet<>();
+            Set<String> groups = new HashSet<>();
 
-            // 收集组名
-            Set<String> groups = results.stream()
-                    .map(row -> (String) row.get("group_name"))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toSet());
+            for (Map<String, Object> row : results) {
+                String authority = (String) row.get("authority");
+                String groupName = (String) row.get("group_name");
+
+                if (authority != null) {
+                    authorities.add(new SimpleGrantedAuthority(authority));
+                }
+                if (groupName != null) {
+                    groups.add(groupName);
+                }
+            }
+
+            Map<String, Object> firstRow = results.get(0);
+
+            OffsetDateTime passwordLastChanged = toOffsetDateTime(firstRow.get("password_last_changed"));
 
             return new CustomUserDetails(
                     username,
-                    (String) results.get(0).get("password"),
+                    (String) firstRow.get("password"),
                     authorities,
-                    groups
+                    groups,
+                    (Boolean) firstRow.get("password_change_required"),
+                    passwordLastChanged,
+                    (Boolean) firstRow.get("first_login")
             );
         };
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        PasswordEncoder delegate = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        DelegatingPasswordEncoder delegatingPasswordEncoder = (DelegatingPasswordEncoder)
+                PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        // 添加日志记录
         return new PasswordEncoder() {
             @Override
             public String encode(CharSequence rawPassword) {
-                return delegate.encode(rawPassword);
+                String encoded = delegatingPasswordEncoder.encode(rawPassword);
+                logger.debug("Password encoding - Raw length: {}, Encoded: {}",
+                        rawPassword.length(), encoded);
+                return encoded;
             }
 
             @Override
             public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                boolean matches = delegate.matches(rawPassword, encodedPassword);
-                System.out.println("Password matching: raw=" + rawPassword +
-                        ", encoded=" + encodedPassword +
-                        ", matches=" + matches);
+                boolean matches = delegatingPasswordEncoder.matches(rawPassword, encodedPassword);
+                logger.debug("Password matching - Raw length: {}, Encoded: {}, Matches: {}",
+                        rawPassword.length(), encodedPassword, matches);
                 return matches;
             }
         };

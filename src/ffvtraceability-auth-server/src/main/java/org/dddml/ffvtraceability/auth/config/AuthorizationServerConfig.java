@@ -1,6 +1,8 @@
 package org.dddml.ffvtraceability.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -146,6 +148,9 @@ public class AuthorizationServerConfig {
             JdbcTemplate jdbcTemplate,
             RegisteredClientRepository registeredClientRepository,
             ObjectMapper objectMapper) {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
         JdbcOAuth2AuthorizationService service = new JdbcOAuth2AuthorizationService(
                 jdbcTemplate,
                 registeredClientRepository

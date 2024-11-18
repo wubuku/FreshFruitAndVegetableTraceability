@@ -66,3 +66,9 @@ logging:
 #   pattern:
 #     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
 #     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+auth:
+  state:
+    encryption:
+      password: "your-strong-password-here"
+      salt: "5c0744940b5c369b"  # 16位十六进制值
