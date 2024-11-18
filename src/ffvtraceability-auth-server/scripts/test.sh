@@ -30,19 +30,31 @@ fi
 rm -f cookies.txt
 
 # 获取登录页面和 CSRF token
-csrf_token=$(curl -c cookies.txt -b cookies.txt -s http://localhost:9000/login | sed -n 's/.*name="_csrf" type="hidden" value="\([^"]*\).*/\1/p')
+login_page=$(curl -c cookies.txt -b cookies.txt -s -H "Accept: text/html" http://localhost:9000/login)
+csrf_token=$(echo "$login_page" | grep -o 'name="_csrf".*value="[^"]*"' | sed 's/.*value="\([^"]*\)".*/\1/' | tr -d '\n')
+
 echo "🔐 CSRF Token: $csrf_token"
 
-encoded_csrf_token=$(urlencode "$csrf_token")
-echo "📝 Encoded CSRF Token: $encoded_csrf_token"
+# 验证是否成功获取到 CSRF token
+if [ -z "$csrf_token" ]; then
+    echo "❌ Error: Failed to get CSRF token"
+    echo "Login page response:"
+    echo "$login_page"
+    exit 1
+fi
+
+# 直接使用原始 CSRF token，不进行 URL 编码
+#encoded_csrf_token=$(urlencode "$csrf_token")
+#echo "📝 Encoded CSRF Token: $encoded_csrf_token"
 
 # 执行登录
 login_response=$(curl -X POST http://localhost:9000/login \
     -c cookies.txt -b cookies.txt \
+    -H "Accept: text/html,application/xhtml+xml" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "username=admin" \
     -d "password=admin" \
-    -d "_csrf=$encoded_csrf_token" \
+    -d "_csrf=$csrf_token" \
     -v 2>&1)
 
 # 提取 Location 头和会话 ID
@@ -54,16 +66,16 @@ echo "🎫 Session ID: $session_id"
 
 
 # 验证登录是否成功
-if [ "$location" = "http://localhost:9000/" ]; then
-    echo "✅ Login successful!"
+if echo "$location" | grep -q "/error\|/login?error"; then
+    echo "❌ Login failed! Redirected to: $location"
+    exit 1
 elif [ -z "$location" ]; then
     echo "❌ Error: No redirect location found"
     echo "📋 Response headers:"
     echo "$login_response"
     exit 1
 else
-    echo "❌ Login failed! Redirected to: $location"
-    exit 1
+    echo "✅ Login successful! Redirected to: $location"
 fi
 
 # 保存会话 ID 供后续使用（可选）

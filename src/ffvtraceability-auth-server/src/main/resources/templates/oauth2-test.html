@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>OAuth2 Test Home</title>
+    <style>
+        body { font-family: monospace; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .btn { 
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .code { 
+            font-family: monospace; 
+            background: #f5f5f5; 
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .success { color: #00a650; }
+        .error { color: #dc3545; }
+        .token-info {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .token-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OAuth2 Authorization Code Flow Test</h1>
+        <p>This page simulates a third-party application that wants to access your resources.</p>
+        
+        <div>
+            <h2>Start OAuth2 Flow</h2>
+            <a href="#" onclick="startOAuth2Flow()" class="btn">Access Protected Resources</a>
+        </div>
+
+        <div id="result" style="display: none;">
+            <div id="status" class="code"></div>
+            <div id="token-details" class="token-info" style="display: none;">
+                <div class="token-header">🔑 Token Information:</div>
+                <div class="code" id="access-token"></div>
+                <div class="token-header">🔄 Refresh Token:</div>
+                <div class="code" id="refresh-token"></div>
+                <div class="token-header">🎫 ID Token:</div>
+                <div class="code" id="id-token"></div>
+                <div class="token-header">📝 Decoded Access Token Claims:</div>
+                <div class="code" id="decoded-access-token"></div>
+                <div class="token-header">📝 Decoded ID Token Claims:</div>
+                <div class="code" id="decoded-id-token"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base64URL decode function
+        function base64URLDecode(str) {
+            str = str.replace(/-/g, '+').replace(/_/g, '/');
+            while (str.length % 4) str += '=';
+            return atob(str);
+        }
+
+        // JWT decode function
+        function decodeJWT(token) {
+            try {
+                const parts = token.split('.');
+                if (parts.length !== 3) return null;
+                const payload = base64URLDecode(parts[1]);
+                return JSON.parse(payload);
+            } catch (e) {
+                console.error('Error decoding JWT:', e);
+                return null;
+            }
+        }
+
+        // 生成 PKCE 参数
+        async function generatePKCE() {
+            const array = new Uint8Array(32);
+            window.crypto.getRandomValues(array);
+            const codeVerifier = base64URLEncode(array);
+            
+            const encoder = new TextEncoder();
+            const data = encoder.encode(codeVerifier);
+            const hash = await window.crypto.subtle.digest('SHA-256', data);
+            const codeChallenge = base64URLEncode(new Uint8Array(hash));
+            
+            return { codeVerifier, codeChallenge };
+        }
+
+        function base64URLEncode(buffer) {
+            return btoa(String.fromCharCode.apply(null, buffer))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
+        }
+
+        async function startOAuth2Flow() {
+            const { codeVerifier, codeChallenge } = await generatePKCE();
+            
+            // 保存 code_verifier 到 sessionStorage
+            sessionStorage.setItem('code_verifier', codeVerifier);
+            
+            const params = new URLSearchParams({
+                response_type: 'code',
+                client_id: 'ffv-client',
+                redirect_uri: 'http://localhost:9000/oauth2-test-callback',
+                scope: 'openid read write',
+                code_challenge: codeChallenge,
+                code_challenge_method: 'S256'
+            });
+
+            // 重定向到授权端点
+            window.location.href = '/oauth2/authorize?' + params.toString();
+        }
+
+        // 检查是否有错误消息或成功消息要显示
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const error = params.get('error');
+            const success = params.get('success');
+            const tokens = sessionStorage.getItem('oauth2_tokens');
+            
+            if (error || success || tokens) {
+                const result = document.getElementById('result');
+                const status = document.getElementById('status');
+                result.style.display = 'block';
+                
+                if (error) {
+                    status.className = 'code error';
+                    status.textContent = '❌ ' + error;
+                } else if (success) {
+                    status.className = 'code success';
+                    status.textContent = '✅ ' + success;
+                    
+                    // 如果有令牌信息，显示它们
+                    if (tokens) {
+                        const tokenData = JSON.parse(tokens);
+                        document.getElementById('token-details').style.display = 'block';
+                        
+                        // 显示令牌（只显示前50个字符）
+                        document.getElementById('access-token').textContent = 
+                            tokenData.access_token.substring(0, 50) + '...';
+                        document.getElementById('refresh-token').textContent = 
+                            tokenData.refresh_token.substring(0, 50) + '...';
+                        document.getElementById('id-token').textContent = 
+                            tokenData.id_token.substring(0, 50) + '...';
+                        
+                        // 解码并显示令牌内容
+                        const accessTokenClaims = decodeJWT(tokenData.access_token);
+                        const idTokenClaims = decodeJWT(tokenData.id_token);
+                        
+                        document.getElementById('decoded-access-token').textContent = 
+                            JSON.stringify(accessTokenClaims, null, 2);
+                        document.getElementById('decoded-id-token').textContent = 
+                            JSON.stringify(idTokenClaims, null, 2);
+                    }
+                }
+                
+                // 清除 URL 参数
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        };
+    </script>
+</body>
+</html>

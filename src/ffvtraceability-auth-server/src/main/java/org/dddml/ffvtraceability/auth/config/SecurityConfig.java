@@ -7,7 +7,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -25,10 +24,20 @@ public class SecurityConfig {
         http
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/oauth2/**", "/login", "/error").permitAll()
+                        .requestMatchers(
+                            "/oauth2/**",          // OAuth2 endpoints
+                            "/login",              // 登录页面
+                            "/error",              // 错误页面
+                            "/oauth2-test",        // 测试首页
+                            "/oauth2-test-callback" // 回调页面
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults());
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/oauth2-test", true) // 登录成功后强制跳转到测试页面
+                        .permitAll()
+                );
 
         return http.build();
     }
@@ -64,12 +73,13 @@ public class SecurityConfig {
             public String encode(CharSequence rawPassword) {
                 return delegate.encode(rawPassword);
             }
+
             @Override
             public boolean matches(CharSequence rawPassword, String encodedPassword) {
                 boolean matches = delegate.matches(rawPassword, encodedPassword);
-                System.out.println("Password matching: raw=" + rawPassword + 
-                                 ", encoded=" + encodedPassword + 
-                                 ", matches=" + matches);
+                System.out.println("Password matching: raw=" + rawPassword +
+                        ", encoded=" + encodedPassword +
+                        ", matches=" + matches);
                 return matches;
             }
         };

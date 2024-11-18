@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>OAuth2 Callback</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .code { 
+            font-family: monospace; 
+            background: #f5f5f5; 
+            padding: 10px; 
+            margin: 10px 0;
+        }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Processing Authorization Response</h1>
+        <div id="status">Processing...</div>
+        <div id="result" class="code"></div>
+    </div>
+
+    <script>
+        window.onload = async function() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const error = params.get('error');
+            
+            if (error) {
+                showError('Authorization failed: ' + error);
+                return;
+            }
+            
+            if (!code) {
+                showError('No authorization code received');
+                return;
+            }
+
+            try {
+                const codeVerifier = sessionStorage.getItem('code_verifier');
+                if (!codeVerifier) {
+                    throw new Error('No code verifier found');
+                }
+
+                // 交换访问令牌
+                const tokenResponse = await fetch('/oauth2/token', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Basic ' + btoa('ffv-client:secret'),
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        grant_type: 'authorization_code',
+                        code: code,
+                        redirect_uri: 'http://localhost:9000/oauth2-test-callback',
+                        code_verifier: codeVerifier
+                    })
+                });
+
+                const result = await tokenResponse.json();
+                
+                if (result.error) {
+                    throw new Error(result.error_description || result.error);
+                }
+
+                showSuccess('Authorization successful!', result);
+                
+                // 清除 code_verifier
+                sessionStorage.removeItem('code_verifier');
+                
+                // 保存令牌信息到 sessionStorage
+                sessionStorage.setItem('oauth2_tokens', JSON.stringify(result));
+                
+                // 3秒后重定向回测试页面
+                setTimeout(() => {
+                    window.location.href = '/oauth2-test?success=' + 
+                        encodeURIComponent('Successfully obtained access token');
+                }, 3000);
+                
+            } catch (error) {
+                showError(error.message);
+                // 3秒后重定向回测试页面
+                setTimeout(() => {
+                    window.location.href = '/oauth2-test?error=' + 
+                        encodeURIComponent(error.message);
+                }, 3000);
+            }
+        };
+
+        function showError(message) {
+            document.getElementById('status').className = 'error';
+            document.getElementById('status').textContent = 'Error: ' + message;
+        }
+
+        function showSuccess(message, details) {
+            document.getElementById('status').className = 'success';
+            document.getElementById('status').textContent = message;
+            document.getElementById('result').textContent = 
+                JSON.stringify(details, null, 2);
+        }
+    </script>
+</body>
+</html>
