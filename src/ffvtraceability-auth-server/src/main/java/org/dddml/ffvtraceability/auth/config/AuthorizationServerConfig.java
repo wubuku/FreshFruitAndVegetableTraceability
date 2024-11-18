@@ -1,10 +1,12 @@
 package org.dddml.ffvtraceability.auth.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.dddml.ffvtraceability.auth.jackson.CustomJacksonModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,6 +19,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.jackson2.SecurityJackson2Modules;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
@@ -26,8 +31,8 @@ import org.springframework.security.oauth2.server.authorization.client.JdbcRegis
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -38,10 +43,7 @@ import java.security.*;
 import java.security.cert.Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -101,12 +103,24 @@ public class AuthorizationServerConfig {
         // 添加自定义的 token claims
         jwtGenerator.setJwtCustomizer(context -> {
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
-                Authentication principal = context.getPrincipal();
-                Set<String> authorities = principal.getAuthorities().stream()
+                JwtClaimsSet.Builder claims = context.getClaims();
+                Authentication authentication = context.getPrincipal();
+
+                // 添加标准权限
+                Set<String> authorities = authentication.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toSet());
+                claims.claim("authorities", authorities);
 
-                context.getClaims().claim("authorities", authorities);
+                // 从 Authentication details 中获取组信息
+                Object details = authentication.getDetails();
+                if (details instanceof Map) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> detailsMap = (Map<String, Object>) details;
+                    if (detailsMap.containsKey("groups")) {
+                        claims.claim("groups", detailsMap.get("groups"));
+                    }
+                }
             }
         });
 
@@ -130,8 +144,21 @@ public class AuthorizationServerConfig {
     @Bean
     public OAuth2AuthorizationService authorizationService(
             JdbcTemplate jdbcTemplate,
-            RegisteredClientRepository registeredClientRepository) {
-        return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+            RegisteredClientRepository registeredClientRepository,
+            ObjectMapper objectMapper) {
+        JdbcOAuth2AuthorizationService service = new JdbcOAuth2AuthorizationService(
+                jdbcTemplate,
+                registeredClientRepository
+        );
+        JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper rowMapper = new JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper(
+                registeredClientRepository
+        );
+        rowMapper.setObjectMapper(objectMapper);
+        service.setAuthorizationRowMapper(
+                rowMapper
+        );
+
+        return service;
     }
 
     @Bean
@@ -175,6 +202,30 @@ public class AuthorizationServerConfig {
         return AuthorizationServerSettings.builder()
                 .issuer(authServerProperties.getIssuer())
                 .build();
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
+        return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        // 注册 Spring Security 核心模块
+        ClassLoader classLoader = getClass().getClassLoader();
+        List<com.fasterxml.jackson.databind.Module> securityModules =
+                SecurityJackson2Modules.getModules(classLoader);
+        mapper.registerModules(securityModules);
+
+        // 注册 OAuth2 相关的模块
+        mapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
+
+        // 注册我们的自定义模块
+        mapper.registerModule(new CustomJacksonModule());
+
+        return mapper;
     }
 
 }

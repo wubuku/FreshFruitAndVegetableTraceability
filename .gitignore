@@ -12,3 +12,4 @@ src/ffvtraceability-auth-server/scripts/tokens.env
 src/ffvtraceability-auth-server/scripts/session.env
 src/ffvtraceability-auth-server/scripts/cookies.txt
 src/ffvtraceability-auth-server/scripts/auth.env
+src/ffvtraceability-auth-server/__TEMP__.md
