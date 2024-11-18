@@ -25,6 +25,15 @@ spring:
       hibernate:
         format_sql: false
 
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      schema: classpath:org/springframework/session/jdbc/schema-postgresql.sql
+      table-name: SPRING_SESSION
+    timeout: 30m
+
+
 server:
   port: ${SERVER_PORT:9000}
   error:
@@ -72,3 +81,4 @@ auth:
     encryption:
       password: "your-strong-password-here"
       salt: "5c0744940b5c369b"  # 16位十六进制值
+
