@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# 用户凭证配置
+USERNAME="user" # admin / user
+PASSWORD="admin"
+NEW_PASSWORD="newPassword123!"  # 当需要修改密码时使用的新密码
 
 # Base64URL encode function (no padding)
 base64url_encode() {
@@ -52,10 +56,66 @@ login_response=$(curl -X POST http://localhost:9000/login \
     -c cookies.txt -b cookies.txt \
     -H "Accept: text/html,application/xhtml+xml" \
     -H "Content-Type: application/x-www-form-urlencoded" \
-    -d "username=admin" \
-    -d "password=admin" \
+    -d "username=$USERNAME" \
+    -d "password=$PASSWORD" \
     -d "_csrf=$csrf_token" \
     -v 2>&1)
+
+# 检查是否重定向到密码修改页面
+if echo "$login_response" | grep -q "/password/change"; then
+    echo "🔄 Redirected to password change page"
+    
+    # 获取密码修改页面和新的 CSRF token
+    change_password_page=$(curl -s \
+        -c cookies.txt -b cookies.txt \
+        -H "Accept: text/html" \
+        ${session_headers:+-H "X-Auth-Token: $header_session_id"} \
+        http://localhost:9000/password/change)
+    
+    new_csrf_token=$(echo "$change_password_page" | grep -o 'name="_csrf".*value="[^"]*"' | sed 's/.*value="\([^"]*\)".*/\1/' | tr -d '\n')
+    state_token=$(echo "$change_password_page" | grep -o 'name="state".*value="[^"]*"' | sed 's/.*value="\([^"]*\)".*/\1/' | tr -d '\n')
+    
+    echo "🔐 New CSRF Token: $new_csrf_token"
+    echo "🔐 State Token: $state_token"
+    
+    # 提交密码修改
+    change_password_response=$(curl -s -X POST http://localhost:9000/password/change \
+        -c cookies.txt -b cookies.txt \
+        ${session_headers:+-H "X-Auth-Token: $header_session_id"} \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -d "_csrf=$new_csrf_token" \
+        -d "state=$state_token" \
+        -d "currentPassword=$PASSWORD" \
+        -d "newPassword=$NEW_PASSWORD" \
+        -d "confirmPassword=$NEW_PASSWORD" \
+        -D - 2>/dev/null)
+    
+    # 检查密码修改是否成功
+    if echo "$change_password_response" | grep -q "error"; then
+        echo "❌ Password change failed!"
+        echo "$change_password_response"
+        exit 1
+    fi
+    
+    echo "✅ Password changed successfully"
+    
+    # 使用新密码重新登录
+    echo "🔄 Logging in with new password..."
+    
+    # 获取新的登录页面和 CSRF token
+    login_page=$(curl -c cookies.txt -b cookies.txt -s -H "Accept: text/html" http://localhost:9000/login)
+    csrf_token=$(echo "$login_page" | grep -o 'name="_csrf".*value="[^"]*"' | sed 's/.*value="\([^"]*\)".*/\1/' | tr -d '\n')
+    
+    # 使用新密码登录
+    login_response=$(curl -X POST http://localhost:9000/login \
+        -c cookies.txt -b cookies.txt \
+        -H "Accept: text/html,application/xhtml+xml" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -d "username=$USERNAME" \
+        -d "password=$NEW_PASSWORD" \
+        -d "_csrf=$csrf_token" \
+        -v 2>&1)
+fi
 
 # 提取会话标识符（同时支持 Cookie 和 Header 方式）
 location=$(echo "$login_response" | grep -i "location:" | sed 's/.*Location: //' | tr -d '\r\n')
