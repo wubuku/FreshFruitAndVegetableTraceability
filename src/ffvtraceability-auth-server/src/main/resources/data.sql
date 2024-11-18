@@ -29,3 +29,41 @@ INSERT INTO group_members (username, group_id) VALUES
 -- 设置直接权限（可选）
 INSERT INTO authorities (username, authority) VALUES 
     ('admin', 'DIRECT_ADMIN_AUTH');
+
+-- 添加默认的OAuth2客户端
+INSERT INTO oauth2_registered_client (
+    id,
+    client_id,
+    client_id_issued_at,
+    client_secret,
+    client_name,
+    client_authentication_methods,
+    authorization_grant_types,
+    redirect_uris,
+    post_logout_redirect_uris,
+    scopes,
+    client_settings,
+    token_settings
+) VALUES (
+    'ffv-client-static-id',
+    'ffv-client',
+    CURRENT_TIMESTAMP,
+    '{bcrypt}$2a$10$RxycSRXenJ6CeGMP0.LGIOzesA2VwJXBOlmq33t9dn.yU8nX1fqsK',
+    'FFV Client',
+    'client_secret_basic',
+    'authorization_code,refresh_token',
+    'http://127.0.0.1:3000/callback,com.ffv.app://oauth2/callback',
+    'http://127.0.0.1:3000/logout,com.ffv.app://oauth2/logout',
+    'openid,profile,read,write',
+    '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":true,"settings.client.require-authorization-consent":true}',
+    '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.access-token-time-to-live":["java.time.Duration",3600.000000000],"settings.token.refresh-token-time-to-live":["java.time.Duration",604800.000000000],"settings.token.authorization-code-time-to-live":["java.time.Duration",300.000000000]}'
+) ON CONFLICT (id) DO UPDATE SET
+    client_secret = EXCLUDED.client_secret,
+    client_name = EXCLUDED.client_name,
+    client_authentication_methods = EXCLUDED.client_authentication_methods,
+    authorization_grant_types = EXCLUDED.authorization_grant_types,
+    redirect_uris = EXCLUDED.redirect_uris,
+    post_logout_redirect_uris = EXCLUDED.post_logout_redirect_uris,
+    scopes = EXCLUDED.scopes,
+    client_settings = EXCLUDED.client_settings,
+    token_settings = EXCLUDED.token_settings;

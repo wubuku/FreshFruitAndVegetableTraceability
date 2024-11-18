@@ -10,29 +10,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -40,8 +32,6 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.time.Duration;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -117,32 +107,15 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
-        RegisteredClient client = RegisteredClient.withId("ffv-client-static-id")
-                .clientId("ffv-client")
-                .clientSecret(passwordEncoder.encode("secret"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://127.0.0.1:3000/callback")
-                .redirectUri("com.ffv.app://oauth2/callback")
-                .scope(OidcScopes.OPENID)
-                .scope("read")
-                .scope("write")
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenTimeToLive(Duration.ofHours(1))      // 增加访问令牌有效期
-                        .authorizationCodeTimeToLive(Duration.ofMinutes(10))  // 增加授权码有效期
-                        .refreshTokenTimeToLive(Duration.ofDays(7))     // 增加刷新令牌有效期
-                        .reuseRefreshTokens(true)
-                        .build())
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(true)
-                        .requireProofKey(true)
-                        .build())
-                .build();
+    public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
+        return new JdbcRegisteredClientRepository(jdbcTemplate);
+    }
 
-        logger.info("Registering OAuth2 client with ID: {}", client.getId());
-        return new InMemoryRegisteredClientRepository(client);
+    @Bean
+    public OAuth2AuthorizationService authorizationService(
+            JdbcTemplate jdbcTemplate,
+            RegisteredClientRepository registeredClientRepository) {
+        return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
     }
 
     @Bean
@@ -166,67 +139,4 @@ public class AuthorizationServerConfig {
                 .build();
     }
 
-    @Bean
-    public OAuth2AuthorizationService authorizationService() {
-        return new OAuth2AuthorizationService() {
-            private final InMemoryOAuth2AuthorizationService delegate = new InMemoryOAuth2AuthorizationService();
-
-            @Override
-            public void save(OAuth2Authorization authorization) {
-                // logger.info("Saving authorization [{}] at {}", 
-                //     authorization.getId(), 
-                //     new java.util.Date());
-
-                OAuth2Authorization.Token<?> authorizationCode =
-                        authorization.getToken(OAuth2ParameterNames.CODE);
-                if (authorizationCode != null) {
-                    // logger.info("Authorization code details:");
-                    // logger.info("  Code: {}", authorizationCode.getToken().getTokenValue());
-                    // logger.info("  Issued at: {}", 
-                    //     new java.util.Date(authorizationCode.getToken().getIssuedAt().toEpochMilli()));
-                    // logger.info("  Expires at: {}", 
-                    //     new java.util.Date(authorizationCode.getToken().getExpiresAt().toEpochMilli()));
-
-                    // Log PKCE parameters
-                    Map<String, Object> metadata = authorizationCode.getMetadata();
-                    // logger.info("PKCE parameters:");
-                    // logger.info("  code_challenge: {}", metadata.get("code_challenge"));
-                    // logger.info("  code_challenge_method: {}", metadata.get("code_challenge_method"));
-                }
-                delegate.save(authorization);
-            }
-
-            @Override
-            public void remove(OAuth2Authorization authorization) {
-                delegate.remove(authorization);
-            }
-
-            @Override
-            public OAuth2Authorization findById(String id) {
-                return delegate.findById(id);
-            }
-
-            @Override
-            public OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
-                OAuth2Authorization auth = delegate.findByToken(token, tokenType);
-                if (auth != null && OAuth2ParameterNames.CODE.equals(tokenType.getValue())) {
-                    OAuth2Authorization.Token<?> authorizationCode =
-                            auth.getToken(OAuth2ParameterNames.CODE);
-                    if (authorizationCode != null) {
-                        // logger.info("Token request verification at {}", new java.util.Date());
-                        // logger.info("Authorization code details:");
-                        // logger.info("  ID: {}", auth.getId());
-                        // logger.info("  Code: {}", authorizationCode.getToken().getTokenValue());
-
-                        // Log PKCE parameters
-                        Map<String, Object> metadata = authorizationCode.getMetadata();
-                        // logger.info("PKCE parameters:");
-                        // logger.info("  code_challenge: {}", metadata.get("code_challenge"));
-                        // logger.info("  code_challenge_method: {}", metadata.get("code_challenge_method"));
-                    }
-                }
-                return auth;
-            }
-        };
-    }
 }
