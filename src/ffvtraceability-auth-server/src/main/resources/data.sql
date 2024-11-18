@@ -56,7 +56,11 @@ INSERT INTO oauth2_registered_client (
     'http://127.0.0.1:3000/logout,com.ffv.app://oauth2/logout',
     'openid,profile,read,write',
     '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":true,"settings.client.require-authorization-consent":true}',
-    '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.access-token-time-to-live":["java.time.Duration",3600.000000000],"settings.token.refresh-token-time-to-live":["java.time.Duration",604800.000000000],"settings.token.authorization-code-time-to-live":["java.time.Duration",300.000000000]}'
+    '{"@class":"java.util.Collections$UnmodifiableMap",
+    "settings.token.reuse-refresh-tokens":true,
+    "settings.token.access-token-time-to-live":["java.time.Duration",3600.000000000],
+    "settings.token.refresh-token-time-to-live":["java.time.Duration",86400.000000000],
+    "settings.token.authorization-code-time-to-live":["java.time.Duration",600.000000000]}'
 ) ON CONFLICT (id) DO UPDATE SET
     client_secret = EXCLUDED.client_secret,
     client_name = EXCLUDED.client_name,

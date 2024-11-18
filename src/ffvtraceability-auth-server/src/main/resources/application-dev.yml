@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: ffvtraceability-auth-server
+    
+  datasource:
+    url: jdbc:postgresql://127.0.0.1/ffvtraceability
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+    
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+      schema-locations:
+        - classpath:schema.sql
+      data-locations:
+        - classpath:data.sql
+        
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: always
+    include-exception: true
+
+# 添加 JWT 密钥配置
+security:
+  jwt:
+    key-store: classpath:keys/jwt-signing-keys.jks
+    key-store-password: ffvtraceability
+    key-alias: jwt-signing-key
+    private-key-passphrase: ffvtraceability
+    # 考虑使用环境变量来传递密码：
+    #key-store-password: ${JWT_KEYSTORE_PASSWORD:ffvtraceability}
+    #private-key-passphrase: ${JWT_KEY_PASSWORD:ffvtraceability}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.web: DEBUG
+    org.dddml.ffvtraceability: DEBUG

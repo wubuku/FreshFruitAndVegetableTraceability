@@ -27,26 +27,34 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Configuration
-@EnableConfigurationProperties(JwtKeyProperties.class)
+@EnableConfigurationProperties({JwtKeyProperties.class, AuthServerProperties.class})
 public class AuthorizationServerConfig {
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationServerConfig.class);
 
     private final JwtKeyProperties jwtKeyProperties;
+    private final AuthServerProperties authServerProperties;
 
-    public AuthorizationServerConfig(JwtKeyProperties jwtKeyProperties) {
+    public AuthorizationServerConfig(JwtKeyProperties jwtKeyProperties, AuthServerProperties authServerProperties) {
         this.jwtKeyProperties = jwtKeyProperties;
+        this.authServerProperties = authServerProperties;
     }
 
     @Bean
@@ -54,25 +62,36 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
 
         authorizationServerConfigurer
-                .tokenGenerator(tokenGenerator())
                 .clientAuthentication(clientAuth -> {
                     clientAuth.authenticationProviders(providers ->
                             providers.removeIf(provider ->
                                     provider.getClass().getSimpleName().startsWith("X509")
                             )
                     );
-                    // logger.debug("Configuring client authentication");
                 })
+                .tokenGenerator(tokenGenerator())
                 .oidc(Customizer.withDefaults());
 
-        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                .cors(Customizer.withDefaults());
-
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(authServerProperties.getCors().getAllowedOrigins().split(",")));
+        configuration.setAllowedMethods(Arrays.asList(authServerProperties.getCors().getAllowedMethods().split(",")));
+        configuration.setAllowedHeaders(Arrays.asList(authServerProperties.getCors().getAllowedHeaders().split(",")));
+        configuration.setAllowCredentials(authServerProperties.getCors().isAllowCredentials());
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     private OAuth2TokenGenerator<?> tokenGenerator() {
@@ -93,6 +112,8 @@ public class AuthorizationServerConfig {
 
         OAuth2AccessTokenGenerator accessTokenGenerator = new OAuth2AccessTokenGenerator();
         OAuth2RefreshTokenGenerator refreshTokenGenerator = new OAuth2RefreshTokenGenerator();
+
+        // 令牌有效期将通过 RegisteredClient 配置来设置
 
         return new DelegatingOAuth2TokenGenerator(
                 jwtGenerator,
@@ -152,7 +173,7 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-                .issuer("http://localhost:9000")
+                .issuer(authServerProperties.getIssuer())
                 .build();
     }
 
