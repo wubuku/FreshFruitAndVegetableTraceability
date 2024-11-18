@@ -47,7 +47,7 @@ fi
 #encoded_csrf_token=$(urlencode "$csrf_token")
 #echo "📝 Encoded CSRF Token: $encoded_csrf_token"
 
-# 执行登录
+# 执行登录并捕获完整响应
 login_response=$(curl -X POST http://localhost:9000/login \
     -c cookies.txt -b cookies.txt \
     -H "Accept: text/html,application/xhtml+xml" \
@@ -57,13 +57,23 @@ login_response=$(curl -X POST http://localhost:9000/login \
     -d "_csrf=$csrf_token" \
     -v 2>&1)
 
-# 提取 Location 头和会话 ID
+# 提取会话标识符（同时支持 Cookie 和 Header 方式）
 location=$(echo "$login_response" | grep -i "location:" | sed 's/.*Location: //' | tr -d '\r\n')
-session_id=$(echo "$login_response" | grep -i "set-cookie:" | grep -o "JSESSIONID=[^;]*" | cut -d= -f2)
+cookie_session_id=$(echo "$login_response" | grep -i "set-cookie:" | grep -o "JSESSIONID=[^;]*" | cut -d= -f2)
+header_session_id=$(echo "$login_response" | grep -i "x-auth-token:" | sed 's/.*X-Auth-Token: //' | tr -d '\r\n')
+
+# 使用可用的会话标识符
+session_id=${header_session_id:-$cookie_session_id}
 
 echo "🔄 Redirect Location: $location"
-echo "🎫 Session ID: $session_id"
+echo "🎫 Session ID: $session_id (${header_session_id:+header}${cookie_session_id:+cookie})"
 
+# 为后续请求准备会话头
+if [ -n "$header_session_id" ]; then
+    session_headers="-H \"X-Auth-Token: $header_session_id\""
+else
+    session_headers=""
+fi
 
 # 验证登录是否成功
 if echo "$location" | grep -q "/error\|/login?error"; then
@@ -87,8 +97,9 @@ redirect_uri="http://127.0.0.1:3000/callback"
 encoded_redirect_uri=$(urlencode "$redirect_uri")
 echo "🌐 Redirect URI: $redirect_uri"
 
-# 获取授权页面时使用编码后的 URI
+# 获取授权页面时使用会话信息
 auth_page=$(curl -s \
+    ${session_headers:+-H "X-Auth-Token: $header_session_id"} \
     -c cookies.txt -b cookies.txt \
     --max-redirs 0 \
     --no-location \
@@ -117,6 +128,7 @@ if echo "$auth_page" | grep -q "Consent required"; then
     
     # 提交授权确认
     auth_response=$(curl -s \
+        ${session_headers:+-H "X-Auth-Token: $header_session_id"} \
         -c cookies.txt -b cookies.txt \
         "http://localhost:9000/oauth2/authorize" \
         -H "Content-Type: application/x-www-form-urlencoded" \
@@ -190,6 +202,7 @@ encoded_auth_code=$(urlencode "$auth_code")
 # 获取访问令牌
 echo -e "\n🔄 Requesting access token..."
 token_response=$(curl -v -X POST "http://localhost:9000/oauth2/token" \
+    ${session_headers:+-H "X-Auth-Token: $header_session_id"} \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -H "Authorization: Basic $(echo -n 'ffv-client:secret' | base64)" \
     -H "Accept: application/json" \

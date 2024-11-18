@@ -106,11 +106,36 @@
                 .replace(/=+$/, '');
         }
 
+        // 添加会话管理函数
+        function getSessionId() {
+            return sessionStorage.getItem('X-Auth-Token') || null;
+        }
+
+        function setSessionId(sessionId) {
+            if (sessionId) {
+                sessionStorage.setItem('X-Auth-Token', sessionId);
+            }
+        }
+
+        // 修改 startOAuth2Flow 函数
         async function startOAuth2Flow() {
             const { codeVerifier, codeChallenge } = await generatePKCE();
-            
-            // 保存 code_verifier 到 sessionStorage
             sessionStorage.setItem('code_verifier', codeVerifier);
+            
+            // 先检查服务器是否返回新的会话标识符
+            try {
+                const response = await fetch('/session/check', {
+                    headers: {
+                        'X-Auth-Token': getSessionId() || ''
+                    }
+                });
+                const newSessionId = response.headers.get('X-Auth-Token');
+                if (newSessionId) {
+                    setSessionId(newSessionId);
+                }
+            } catch (e) {
+                console.warn('Session check failed:', e);
+            }
             
             const params = new URLSearchParams({
                 response_type: 'code',
@@ -121,12 +146,17 @@
                 code_challenge_method: 'S256'
             });
 
-            // 重定向到授权端点
             window.location.href = '/oauth2/authorize?' + params.toString();
         }
 
         // 检查是否有错误消息或成功消息要显示
         window.onload = function() {
+            // 检查响应头中的会话标识符
+            const sessionId = document.querySelector('meta[name="X-Auth-Token"]')?.content;
+            if (sessionId) {
+                setSessionId(sessionId);
+            }
+
             const params = new URLSearchParams(window.location.search);
             const error = params.get('error');
             const success = params.get('success');

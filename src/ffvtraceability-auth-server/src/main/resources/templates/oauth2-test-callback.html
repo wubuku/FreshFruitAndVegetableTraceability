@@ -44,13 +44,21 @@
                     throw new Error('No code verifier found');
                 }
 
+                // 添加会话头
+                const headers = {
+                    'Authorization': 'Basic ' + btoa('ffv-client:secret'),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                };
+                
+                const sessionId = sessionStorage.getItem('X-Auth-Token');
+                if (sessionId) {
+                    headers['X-Auth-Token'] = sessionId;
+                }
+
                 // 交换访问令牌
                 const tokenResponse = await fetch('/oauth2/token', {
                     method: 'POST',
-                    headers: {
-                        'Authorization': 'Basic ' + btoa('ffv-client:secret'),
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
+                    headers: headers,
                     body: new URLSearchParams({
                         grant_type: 'authorization_code',
                         code: code,
@@ -58,6 +66,12 @@
                         code_verifier: codeVerifier
                     })
                 });
+
+                // 检查响应头中的会话标识符
+                const newSessionId = tokenResponse.headers.get('X-Auth-Token');
+                if (newSessionId) {
+                    sessionStorage.setItem('X-Auth-Token', newSessionId);
+                }
 
                 const result = await tokenResponse.json();
                 
