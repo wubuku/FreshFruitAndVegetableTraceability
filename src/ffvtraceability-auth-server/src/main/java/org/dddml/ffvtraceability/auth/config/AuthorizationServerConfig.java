@@ -2,10 +2,12 @@ package org.dddml.ffvtraceability.auth.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -28,8 +30,8 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
+import java.security.*;
+import java.security.cert.Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Set;
@@ -37,21 +39,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Configuration
+@EnableConfigurationProperties(JwtKeyProperties.class)
 public class AuthorizationServerConfig {
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationServerConfig.class);
-    // 保持 RSA 密钥对在服务器运行期间不变
-    private static final KeyPair rsaKeyPair = generateRsaKey();
 
-    private static KeyPair generateRsaKey() {
-        KeyPair keyPair;
-        try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            keyPairGenerator.initialize(2048);
-            keyPair = keyPairGenerator.generateKeyPair();
-        } catch (Exception ex) {
-            throw new IllegalStateException(ex);
-        }
-        return keyPair;
+    private final JwtKeyProperties jwtKeyProperties;
+
+    public AuthorizationServerConfig(JwtKeyProperties jwtKeyProperties) {
+        this.jwtKeyProperties = jwtKeyProperties;
     }
 
     @Bean
@@ -120,16 +115,38 @@ public class AuthorizationServerConfig {
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
-        RSAPublicKey publicKey = (RSAPublicKey) rsaKeyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey) rsaKeyPair.getPrivate();
-
+        KeyPair keyPair = loadKeyPair();
+        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
         RSAKey rsaKey = new RSAKey.Builder(publicKey)
                 .privateKey(privateKey)
                 .keyID(UUID.randomUUID().toString())
                 .build();
-
         JWKSet jwkSet = new JWKSet(rsaKey);
-        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+        return new ImmutableJWKSet<>(jwkSet);
+    }
+
+    private KeyPair loadKeyPair() {
+        try {
+            KeyStore keyStore = KeyStore.getInstance("JKS");
+            keyStore.load(
+                    jwtKeyProperties.getKeyStore().getInputStream(),
+                    jwtKeyProperties.getKeyStorePassword().toCharArray()
+            );
+
+            Key key = keyStore.getKey(
+                    jwtKeyProperties.getKeyAlias(),
+                    jwtKeyProperties.getPrivateKeyPassphrase().toCharArray()
+            );
+
+            Certificate cert = keyStore.getCertificate(jwtKeyProperties.getKeyAlias());
+            PublicKey publicKey = cert.getPublicKey();
+
+            return new KeyPair(publicKey, (PrivateKey) key);
+        } catch (Exception e) {
+            logger.error("Error loading JWT key pair", e);
+            throw new RuntimeException("Could not load JWT key pair", e);
+        }
     }
 
     @Bean

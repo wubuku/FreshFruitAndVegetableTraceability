@@ -136,7 +136,7 @@ echo "🎫 Authorization Code: $auth_code"
 
 # 添加较短延迟
 echo "⏳ Waiting for authorization code to be processed..."
-sleep 0.3
+sleep 0.1
 
 # 然后再使用授权码
 
