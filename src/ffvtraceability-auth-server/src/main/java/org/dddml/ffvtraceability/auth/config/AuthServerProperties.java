@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "auth-server")
 public class AuthServerProperties {
     private String issuer;
-    private TokenConfig token;
     private CorsConfig cors;
 
     // Getters and setters
@@ -19,51 +18,12 @@ public class AuthServerProperties {
         this.issuer = issuer;
     }
 
-    public TokenConfig getToken() {
-        return token;
-    }
-
-    public void setToken(TokenConfig token) {
-        this.token = token;
-    }
-
     public CorsConfig getCors() {
         return cors;
     }
 
     public void setCors(CorsConfig cors) {
         this.cors = cors;
-    }
-
-    public static class TokenConfig {
-        private long accessTokenTtl;
-        private long refreshTokenTtl;
-        private long authorizationCodeTtl;
-
-        // Getters and setters
-        public long getAccessTokenTtl() {
-            return accessTokenTtl;
-        }
-
-        public void setAccessTokenTtl(long accessTokenTtl) {
-            this.accessTokenTtl = accessTokenTtl;
-        }
-
-        public long getRefreshTokenTtl() {
-            return refreshTokenTtl;
-        }
-
-        public void setRefreshTokenTtl(long refreshTokenTtl) {
-            this.refreshTokenTtl = refreshTokenTtl;
-        }
-
-        public long getAuthorizationCodeTtl() {
-            return authorizationCodeTtl;
-        }
-
-        public void setAuthorizationCodeTtl(long authorizationCodeTtl) {
-            this.authorizationCodeTtl = authorizationCodeTtl;
-        }
     }
 
     public static class CorsConfig {

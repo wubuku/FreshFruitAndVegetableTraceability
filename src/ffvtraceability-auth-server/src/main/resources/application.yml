@@ -41,8 +41,9 @@ auth-server:
     allowed-methods: GET,POST,PUT,DELETE,OPTIONS
     allowed-headers: "*"
     allow-credentials: true
-  token:
-    authorization-code-ttl: ${AUTHORIZATION_CODE_TTL:600}
+    # 与令牌相关的配置都通过 data.sql 中的客户端配置来控制，
+    # 这样更符合 OAuth2 的最佳实践，因为不同的客户端可能需要不同的令牌配置。
+
 
 # 安全配置
 security:
