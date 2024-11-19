@@ -1,6 +1,7 @@
 package org.dddml.ffvtraceability.resource.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -16,7 +17,8 @@ import java.util.*;
 public class CustomJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
     
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @Qualifier("securityJdbcTemplate")
+    private JdbcTemplate securityJdbcTemplate;
     
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
