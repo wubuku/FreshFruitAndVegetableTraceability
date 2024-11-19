@@ -40,12 +40,18 @@ spring:
         order_inserts: true
         order_updates: true
 
+  cache:
+    caffeine:
+      spec: maximumSize=100,expireAfterWrite=3600s
+    cache-names: groupAuthorities
+
 logging:
   level:
     org.springframework.security: DEBUG
     org.dddml.ffvtraceability: DEBUG
     org.hibernate.SQL: DEBUG  # 开发环境可以开启
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # 开发环境可以开启
+    org.springframework.cache: DEBUG  # 可选：用于调试缓存行为
 
 cors:
   allowed-origins: "http://localhost:3000,http://127.0.0.1:3000"
