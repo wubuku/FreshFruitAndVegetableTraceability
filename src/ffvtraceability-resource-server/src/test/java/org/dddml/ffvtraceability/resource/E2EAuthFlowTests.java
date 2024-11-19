@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -131,7 +132,8 @@ public class E2EAuthFlowTests {
                 "response_type=code" +
                 "&client_id=" + CLIENT_ID +
                 "&redirect_uri=" + REDIRECT_URI +
-                "&scope=openid+read+write" +
+                //"&scope=openid+read+write" +
+                "&scope=openid+profile" +
                 "&code_challenge=" + codeChallenge +
                 "&code_challenge_method=S256";
         System.out.println("🌐 Authorization URL: " + authorizationUrl);
@@ -160,7 +162,7 @@ public class E2EAuthFlowTests {
                     consentRequest.setHeader("Origin", AUTH_SERVER);
                     consentRequest.setHeader("Referer", authorizationUrl);
                     
-                    String consentData = String.format("client_id=%s&state=%s&scope=openid&scope=read&scope=write&_csrf=%s",
+                    String consentData = String.format("client_id=%s&state=%s&scope=openid&scope=profile&_csrf=%s",
                             CLIENT_ID,
                             state,
                             consentCsrfToken);
@@ -198,10 +200,37 @@ public class E2EAuthFlowTests {
         tokenRequest.setEntity(new StringEntity(tokenRequestBody, ContentType.APPLICATION_FORM_URLENCODED));
 
         try (CloseableHttpResponse response = client.execute(tokenRequest)) {
+            int statusCode = response.getCode();
             String json = EntityUtils.toString(response.getEntity());
-            System.out.println("📤 Token Response: " + json);
+            
+            System.out.println("\n📤 Token Response Details:");
+            System.out.println("Status Code: " + statusCode);
+            System.out.println("Response Headers:");
+            Arrays.stream(response.getHeaders()).forEach(header -> 
+                System.out.println("  " + header.getName() + ": " + header.getValue())
+            );
+            System.out.println("Response Body: " + json);
+
+            // 检查状态码
+            if (statusCode < 200 || statusCode >= 300) {
+                throw new RuntimeException(String.format(
+                    "Token request failed with status %d. Response: %s", 
+                    statusCode, 
+                    json
+                ));
+            }
+
+            // 解析响应
             JsonNode node = objectMapper.readTree(json);
-            return node.get("access_token").asText();
+            if (!node.has("access_token")) {
+                throw new RuntimeException(
+                    "Token response does not contain access_token. Response: " + json
+                );
+            }
+
+            String accessToken = node.get("access_token").asText();
+            System.out.println("\n✅ Successfully obtained access token");
+            return accessToken;
         }
     }
 

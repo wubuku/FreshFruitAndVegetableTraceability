@@ -79,6 +79,9 @@ public class AuthorizationServerConfig {
                             )
                     );
                 })
+                // .authorizationEndpoint(authorizationEndpoint ->
+                //     authorizationEndpoint.consentPage(null) // 禁用用户同意页面
+                // )
                 .tokenGenerator(tokenGenerator())
                 .oidc(Customizer.withDefaults());
 

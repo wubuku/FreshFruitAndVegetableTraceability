@@ -166,7 +166,7 @@ auth_page=$(curl -s \
     "http://localhost:9000/oauth2/authorize?\
 client_id=ffv-client&\
 response_type=code&\
-scope=openid%20read%20write&\
+scope=openid%20profile&\
 redirect_uri=${encoded_redirect_uri}&\
 code_challenge=${code_challenge}&\
 code_challenge_method=S256" \
@@ -194,9 +194,8 @@ if echo "$auth_page" | grep -q "Consent required"; then
         -H "Content-Type: application/x-www-form-urlencoded" \
         -d "client_id=ffv-client" \
         -d "state=$state" \
-        -d "scope=read" \
-        -d "scope=write" \
         -d "scope=openid" \
+        -d "scope=profile" \
         -d "submit=Submit+Consent" \
         -D - 2>/dev/null)
 else
@@ -243,15 +242,15 @@ echo "Code Verifier: $code_verifier"
 echo "Redirect URI: $redirect_uri"
 echo "Basic Auth: $(echo -n 'ffv-client:secret' | base64)"
 
-# 构建完整的请求体
-request_body="grant_type=authorization_code&\
-code=${auth_code}&\
-redirect_uri=${redirect_uri}&\
-code_verifier=${code_verifier}&\
-scope=openid%20read%20write"
+# # 构建完整的请求体
+# request_body="grant_type=authorization_code&\
+# code=${auth_code}&\
+# redirect_uri=${redirect_uri}&\
+# code_verifier=${code_verifier}&\
+# scope=openid%20profile"
 
-echo -e "\n📝 Request Body:"
-echo "$request_body"
+# echo -e "\n📝 Request Body:"
+# echo "$request_body"
 
 # 编码 code_verifier
 encoded_code_verifier=$(urlencode "$code_verifier")
@@ -270,7 +269,7 @@ token_response=$(curl -v -X POST "http://localhost:9000/oauth2/token" \
     -d "code=$encoded_auth_code" \
     -d "redirect_uri=$encoded_redirect_uri" \
     -d "code_verifier=$encoded_code_verifier" \
-    -d "scope=openid%20read%20write" \
+    -d "scope=openid%20profile" \
     2>&1)
 
 # 打印完整的响应
