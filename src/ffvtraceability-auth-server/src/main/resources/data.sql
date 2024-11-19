@@ -5,10 +5,15 @@ DELETE FROM groups;
 DELETE FROM authorities;
 DELETE FROM users;
 
+-- 我们使用了 JDBC 来存储 session，在测试阶段，我们自动清理 session 表中的数据！
+DELETE FROM SPRING_SESSION_ATTRIBUTES;
+DELETE FROM SPRING_SESSION;
+
+
 -- 创建测试用户
-INSERT INTO users (username, password, enabled, password_change_required, first_login) VALUES
-    ('admin', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', false, false, false),  -- password=admin
-    ('user', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, true, true);   -- password=admin
+INSERT INTO users (username, password, enabled, password_change_required, first_login, password_last_changed) VALUES
+    ('admin', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, false, false, CURRENT_TIMESTAMP),  -- password=admin
+    ('user', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, true, true, null);   -- password=admin
 
 -- 创建用户组
 INSERT INTO groups (id, group_name) VALUES 
