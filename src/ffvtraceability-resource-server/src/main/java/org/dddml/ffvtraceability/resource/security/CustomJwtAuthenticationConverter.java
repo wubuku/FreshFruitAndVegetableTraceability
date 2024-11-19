@@ -58,7 +58,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
             WHERE g.group_name = ?
             """;
             
-        return new HashSet<>(jdbcTemplate.queryForList(sql, String.class, 
+        return new HashSet<>(securityJdbcTemplate.queryForList(sql, String.class,
             groupName.replace("GROUP_", "")));  // 移除GROUP_前缀
     }
-} 
+}

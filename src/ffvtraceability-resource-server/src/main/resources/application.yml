@@ -8,17 +8,18 @@ spring:
         jwt:
           issuer-uri: http://localhost:9000
           jwk-set-uri: http://localhost:9000/oauth2/jwks
-  datasource:
-    url: jdbc:postgresql://${BUSINESS_DB_HOST:127.0.0.1}:${BUSINESS_DB_PORT:5432}/${BUSINESS_DB_NAME:ffvtraceability_business}
-    username: ${BUSINESS_DB_USERNAME:postgres}
-    password: ${BUSINESS_DB_PASSWORD:123456}
-    driver-class-name: org.postgresql.Driver
-  security:
     datasource:
       url: jdbc:postgresql://${AUTH_DB_HOST:127.0.0.1}:${AUTH_DB_PORT:5432}/${AUTH_DB_NAME:ffvtraceability}
       username: ${AUTH_DB_USERNAME:postgres}
       password: ${AUTH_DB_PASSWORD:123456}
       driver-class-name: org.postgresql.Driver
+
+  # 业务数据源
+  datasource:
+    url: jdbc:postgresql://${BUSINESS_DB_HOST:127.0.0.1}:${BUSINESS_DB_PORT:5432}/${BUSINESS_DB_NAME:ffvtraceability_business}
+    username: ${BUSINESS_DB_USERNAME:postgres}
+    password: ${BUSINESS_DB_PASSWORD:123456}
+    driver-class-name: org.postgresql.Driver
 
 logging:
   level:
