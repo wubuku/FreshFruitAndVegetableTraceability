@@ -1,8 +1,8 @@
 package org.dddml.ffvtraceability.resource.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -15,15 +15,28 @@ public class DataSourceConfig {
 
     @Primary
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource businessDataSource() {
-        return DataSourceBuilder.create().build();
+    @ConfigurationProperties("spring.datasource")
+    public DataSourceProperties businessDataSourceProperties() {
+        return new DataSourceProperties();
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.security.datasource")
-    public DataSource securityDataSource() {
-        return DataSourceBuilder.create().build();
+    @ConfigurationProperties("spring.security.datasource")
+    public DataSourceProperties securityDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Primary
+    @Bean
+    public DataSource businessDataSource(
+            @Qualifier("businessDataSourceProperties") DataSourceProperties properties) {
+        return properties.initializeDataSourceBuilder().build();
+    }
+
+    @Bean
+    public DataSource securityDataSource(
+            @Qualifier("securityDataSourceProperties") DataSourceProperties properties) {
+        return properties.initializeDataSourceBuilder().build();
     }
 
     @Primary

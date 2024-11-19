@@ -1,12 +1,10 @@
 package org.dddml.ffvtraceability.resource.security;
 
+import org.dddml.ffvtraceability.resource.service.GroupAuthorityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,8 +20,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
     private static final Logger logger = LoggerFactory.getLogger(CustomJwtAuthenticationConverter.class);
     
     @Autowired
-    @Qualifier("securityJdbcTemplate")
-    private JdbcTemplate securityJdbcTemplate;
+    private GroupAuthorityService groupAuthorityService;
     
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
@@ -45,7 +42,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
         
         groups.stream()
             .map(group -> {
-                Set<String> groupAuths = getGroupAuthoritiesWithCache(group);
+                Set<String> groupAuths = groupAuthorityService.getGroupAuthorities(group);
                 logger.debug("Authorities for group {}: {}", group, groupAuths);
                 return groupAuths;
             })
@@ -65,21 +62,5 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
         }
         logger.debug("No {} found in JWT claims", claimName);
         return Collections.emptySet();
-    }
-    
-    @Cacheable(value = "groupAuthorities", key = "#groupName")
-    public Set<String> getGroupAuthoritiesWithCache(String groupName) {
-        logger.info("Cache MISS - Loading authorities from database for group: {}", groupName);
-        String sql = """
-            SELECT authority 
-            FROM group_authorities ga 
-            JOIN groups g ON ga.group_id = g.id 
-            WHERE g.group_name = ?
-            """;
-            
-        Set<String> authorities = new HashSet<>(securityJdbcTemplate.queryForList(sql, String.class,
-            groupName.replace("GROUP_", "")));
-        logger.debug("Loaded {} authorities from database for group: {}", authorities.size(), groupName);
-        return authorities;
     }
 }

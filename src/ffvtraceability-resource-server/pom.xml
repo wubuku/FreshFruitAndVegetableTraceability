@@ -78,6 +78,28 @@
                     <skip>false</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <classpathScope>test</classpathScope>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>cache-test</id>
+                        <configuration>
+                            <mainClass>org.dddml.ffvtraceability.resource.CacheTestClient</mainClass>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>other-test</id>
+                        <configuration>
+                            <mainClass>org.dddml.ffvtraceability.resource.SomeOtherTestClient</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project> 

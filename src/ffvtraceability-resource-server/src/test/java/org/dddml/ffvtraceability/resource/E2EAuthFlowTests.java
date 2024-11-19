@@ -4,15 +4,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.cookie.BasicCookieStore;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.apache.hc.client5.http.cookie.BasicCookieStore;
-import org.apache.hc.client5.http.impl.cookie.BasicClientCookie;
-import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,16 +22,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Base64;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class E2EAuthFlowTests {
-
-    @LocalServerPort
-    private int port;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final String AUTH_SERVER = "http://localhost:9000";
@@ -41,17 +35,17 @@ public class E2EAuthFlowTests {
     private final String REDIRECT_URI = "http://127.0.0.1:3000/callback";
     private final BasicCookieStore cookieStore = new BasicCookieStore();
     private final HttpClientContext context = HttpClientContext.create();
-
     private final String TEST_USERNAME = "admin";
     private final String TEST_PASSWORD = "admin";
-
     private final String[] OAUTH2_SCOPES = {"openid", "profile"};
     private final String FORMATTED_SCOPES = String.join("+", OAUTH2_SCOPES);
+    @LocalServerPort
+    private int port;
 
     @Test
     public void testFullAuthorizationCodeFlow() throws Exception {
         System.out.println("\n🚀 Starting OAuth2 Authorization Code Flow Test\n");
-        
+
         context.setCookieStore(cookieStore);
         try (CloseableHttpClient client = HttpClients.custom()
                 .setDefaultCookieStore(cookieStore)
@@ -60,7 +54,7 @@ public class E2EAuthFlowTests {
             // 1. 生成 PKCE 参数
             String codeVerifier = generateCodeVerifier();
             System.out.println("🔑 Code Verifier: " + codeVerifier);
-            
+
             String codeChallenge = generateCodeChallenge(codeVerifier);
             System.out.println("🔒 Code Challenge: " + codeChallenge);
 
@@ -77,7 +71,7 @@ public class E2EAuthFlowTests {
             // 4. 测试资源访问
             System.out.println("\n🧪 Testing Resource Access...");
             testResourceAccess(client, accessToken);
-            
+
             System.out.println("\n✨ All Tests Completed Successfully!\n");
         }
     }
@@ -103,7 +97,7 @@ public class E2EAuthFlowTests {
         HttpGet loginPageRequest = new HttpGet(AUTH_SERVER + "/login");
         loginPageRequest.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9");
         String csrfToken = null;
-        
+
         try (CloseableHttpResponse response = client.execute(loginPageRequest, context)) {
             String html = EntityUtils.toString(response.getEntity());
             Document doc = Jsoup.parse(html);
@@ -124,9 +118,9 @@ public class E2EAuthFlowTests {
 
         String formData = String.format("username=%s&password=%s&_csrf=%s",
                 TEST_USERNAME, TEST_PASSWORD, csrfToken);
-        
+
         loginRequest.setEntity(new StringEntity(formData, ContentType.APPLICATION_FORM_URLENCODED));
-        
+
         try (CloseableHttpResponse response = client.execute(loginRequest, context)) {
             System.out.println("📤 Login Response Status: " + response.getCode());
             System.out.println("📍 Login Response Location: " + response.getHeader("Location"));
@@ -145,35 +139,35 @@ public class E2EAuthFlowTests {
 
         HttpGet authorizationRequest = new HttpGet(authorizationUrl);
         authorizationRequest.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9");
-        
+
         try (CloseableHttpResponse response = client.execute(authorizationRequest, context)) {
             System.out.println("📤 Authorization Response Status: " + response.getCode());
-            
+
             if (response.getCode() == 200) {
                 System.out.println("👉 Consent required, processing consent form...");
                 String html = EntityUtils.toString(response.getEntity());
                 Document doc = Jsoup.parse(html);
                 Element csrfElement = doc.selectFirst("input[name=_csrf]");
                 Element stateElement = doc.selectFirst("input[name=state]");
-                
+
                 if (csrfElement != null && stateElement != null) {
                     String consentCsrfToken = csrfElement.attr("value");
                     String state = stateElement.attr("value");
                     System.out.println("🔐 Consent CSRF Token: " + consentCsrfToken);
                     System.out.println("🔐 State: " + state);
-                    
+
                     HttpPost consentRequest = new HttpPost(AUTH_SERVER + "/oauth2/authorize");
                     consentRequest.setHeader("Content-Type", "application/x-www-form-urlencoded");
                     consentRequest.setHeader("Origin", AUTH_SERVER);
                     consentRequest.setHeader("Referer", authorizationUrl);
-                    
+
                     String consentData = String.format("client_id=%s&state=%s&scope=openid&scope=profile&_csrf=%s",
                             CLIENT_ID,
                             state,
                             consentCsrfToken);
-                    
+
                     consentRequest.setEntity(new StringEntity(consentData, ContentType.APPLICATION_FORM_URLENCODED));
-                    
+
                     try (CloseableHttpResponse consentResponse = client.execute(consentRequest, context)) {
                         System.out.println("📤 Consent Response Status: " + consentResponse.getCode());
                         System.out.println("📍 Consent Response Location: " + consentResponse.getHeader("Location"));
@@ -185,7 +179,7 @@ public class E2EAuthFlowTests {
                 return extractCode(response.getHeader("Location").getValue());
             }
         }
-        
+
         throw new RuntimeException("Failed to get authorization code");
     }
 
@@ -200,28 +194,28 @@ public class E2EAuthFlowTests {
                 "&code=" + code +
                 "&redirect_uri=" + REDIRECT_URI +
                 "&code_verifier=" + codeVerifier;
-        
+
         System.out.println("📝 Token Request Body: " + tokenRequestBody);
         tokenRequest.setEntity(new StringEntity(tokenRequestBody, ContentType.APPLICATION_FORM_URLENCODED));
 
         try (CloseableHttpResponse response = client.execute(tokenRequest)) {
             int statusCode = response.getCode();
             String json = EntityUtils.toString(response.getEntity());
-            
+
             System.out.println("\n📤 Token Response Details:");
             System.out.println("Status Code: " + statusCode);
             System.out.println("Response Headers:");
-            Arrays.stream(response.getHeaders()).forEach(header -> 
-                System.out.println("  " + header.getName() + ": " + header.getValue())
+            Arrays.stream(response.getHeaders()).forEach(header ->
+                    System.out.println("  " + header.getName() + ": " + header.getValue())
             );
             System.out.println("Response Body: " + json);
 
             // 检查状态码
             if (statusCode < 200 || statusCode >= 300) {
                 throw new RuntimeException(String.format(
-                    "Token request failed with status %d. Response: %s", 
-                    statusCode, 
-                    json
+                        "Token request failed with status %d. Response: %s",
+                        statusCode,
+                        json
                 ));
             }
 
@@ -229,7 +223,7 @@ public class E2EAuthFlowTests {
             JsonNode node = objectMapper.readTree(json);
             if (!node.has("access_token")) {
                 throw new RuntimeException(
-                    "Token response does not contain access_token. Response: " + json
+                        "Token response does not contain access_token. Response: " + json
                 );
             }
 
@@ -280,6 +274,7 @@ public class E2EAuthFlowTests {
             System.out.println("📤 Response Status: " + response.getCode());
             System.out.println("📄 Response Body: " + EntityUtils.toString(response.getEntity()));
         }
+
     }
 
     private String extractCode(String location) {
