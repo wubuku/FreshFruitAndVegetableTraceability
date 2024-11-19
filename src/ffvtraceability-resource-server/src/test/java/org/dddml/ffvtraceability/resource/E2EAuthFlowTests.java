@@ -42,6 +42,12 @@ public class E2EAuthFlowTests {
     private final BasicCookieStore cookieStore = new BasicCookieStore();
     private final HttpClientContext context = HttpClientContext.create();
 
+    private final String TEST_USERNAME = "admin";
+    private final String TEST_PASSWORD = "admin";
+
+    private final String[] OAUTH2_SCOPES = {"openid", "profile"};
+    private final String FORMATTED_SCOPES = String.join("+", OAUTH2_SCOPES);
+
     @Test
     public void testFullAuthorizationCodeFlow() throws Exception {
         System.out.println("\n🚀 Starting OAuth2 Authorization Code Flow Test\n");
@@ -117,7 +123,7 @@ public class E2EAuthFlowTests {
         loginRequest.setHeader("Referer", AUTH_SERVER + "/login");
 
         String formData = String.format("username=%s&password=%s&_csrf=%s",
-                "admin", "admin", csrfToken);
+                TEST_USERNAME, TEST_PASSWORD, csrfToken);
         
         loginRequest.setEntity(new StringEntity(formData, ContentType.APPLICATION_FORM_URLENCODED));
         
@@ -132,8 +138,7 @@ public class E2EAuthFlowTests {
                 "response_type=code" +
                 "&client_id=" + CLIENT_ID +
                 "&redirect_uri=" + REDIRECT_URI +
-                //"&scope=openid+read+write" +
-                "&scope=openid+profile" +
+                "&scope=" + FORMATTED_SCOPES +
                 "&code_challenge=" + codeChallenge +
                 "&code_challenge_method=S256";
         System.out.println("🌐 Authorization URL: " + authorizationUrl);
