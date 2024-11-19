@@ -14,17 +14,38 @@ spring:
       password: ${AUTH_DB_PASSWORD:123456}
       driver-class-name: org.postgresql.Driver
 
-  # 业务数据源
+  # 业务数据源配置
   datasource:
     url: jdbc:postgresql://${BUSINESS_DB_HOST:127.0.0.1}:${BUSINESS_DB_PORT:5432}/${BUSINESS_DB_NAME:ffvtraceability_business}
     username: ${BUSINESS_DB_USERNAME:postgres}
     password: ${BUSINESS_DB_PASSWORD:123456}
     driver-class-name: org.postgresql.Driver
+    hikari:  # 连接池配置
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+
+  # JPA 配置
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: none  # 生产环境建议使用 none 或 validate
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
 
 logging:
   level:
     org.springframework.security: DEBUG
     org.dddml.ffvtraceability: DEBUG
+    org.hibernate.SQL: DEBUG  # 开发环境可以开启
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # 开发环境可以开启
 
 cors:
   allowed-origins: "http://localhost:3000,http://127.0.0.1:3000"
