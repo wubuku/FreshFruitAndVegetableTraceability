@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 用户凭证配置
-USERNAME="user" # admin / user
+USERNAME="admin" # admin / user
 PASSWORD="admin"
 NEW_PASSWORD="newPassword123!"  # 当需要修改密码时使用的新密码
 
