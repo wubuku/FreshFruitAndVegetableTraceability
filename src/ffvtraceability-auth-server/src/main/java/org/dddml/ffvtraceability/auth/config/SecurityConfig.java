@@ -14,8 +14,10 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,6 +40,7 @@ import java.util.*;
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(AuthStateProperties.class)
+@EnableGlobalMethodSecurity(prePostEnabled = true) // 启用方法级安全
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
@@ -72,26 +75,42 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(1)
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/api/**")
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated()
+                );
+        return http.build();
+    }
+
+    @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(                // 公开页面
-                                "/oauth2/**",          
-                                "/login",              
-                                "/error",              
-                                "/oauth2-test",        
+                                "/oauth2/**",
+                                "/login",
+                                "/error",
+                                "/oauth2-test",
                                 "/oauth2-test-callback",
-                                "/password/change"     
+                                "/password/change"
                         ).permitAll()
-                        .requestMatchers("/pre-register/**", "/permission-management/**")  // 管理员页面
+                        .requestMatchers(
+                                "/pre-register/**",
+                                "/permission-management/**",
+                                "/user-management",
+                                "/group-management"
+                        )  // 管理员页面
                         .hasAuthority("ROLE_ADMIN")  // 使用 hasAuthority 而不是 hasRole
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)  
+                        .defaultSuccessUrl("/", true)
                         .successHandler(authenticationSuccessHandler)
                 );
 
@@ -203,4 +222,5 @@ public class SecurityConfig {
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
+
 }

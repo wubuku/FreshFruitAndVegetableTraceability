@@ -8,12 +8,12 @@ import org.springframework.session.web.http.HttpSessionIdResolver;
 
 @Configuration
 public class SessionConfig {
-    
+
     @Bean
     public HttpSessionIdResolver httpSessionIdResolver() {
         return new CompositeSessionIdResolver(
-            new CookieHttpSessionIdResolver(),  // 支持 cookie
-            HeaderHttpSessionIdResolver.xAuthToken()  // 支持 header
+                new CookieHttpSessionIdResolver(),  // 支持 cookie
+                HeaderHttpSessionIdResolver.xAuthToken()  // 支持 header
         );
     }
 } 

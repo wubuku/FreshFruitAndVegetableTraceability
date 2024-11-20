@@ -1,7 +1,6 @@
 package org.dddml.ffvtraceability.auth.util;
 
 import org.dddml.ffvtraceability.auth.config.AuthStateProperties;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,7 @@ public class UrlStateEncoder {
         String salt = properties.getSalt();
         if (!salt.matches("[0-9a-fA-F]{16}")) {
             throw new IllegalArgumentException(
-                "Salt must be a 16 character hex-encoded string");
+                    "Salt must be a 16 character hex-encoded string");
         }
         this.encryptor = Encryptors.text(properties.getPassword(), salt);
     }

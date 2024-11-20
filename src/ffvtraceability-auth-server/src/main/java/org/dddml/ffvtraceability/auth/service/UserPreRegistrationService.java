@@ -39,14 +39,14 @@ public class UserPreRegistrationService {
 
         // Insert new user
         jdbcTemplate.update(
-            "INSERT INTO users (username, password, enabled, password_change_required, first_login) VALUES (?, ?, ?, ?, ?)",
-            username, encodedPassword, true, true, true
+                "INSERT INTO users (username, password, enabled, password_change_required, first_login) VALUES (?, ?, ?, ?, ?)",
+                username, encodedPassword, true, true, true
         );
 
         // Add to USER_GROUP
         jdbcTemplate.update(
-            "INSERT INTO group_members (username, group_id) SELECT ?, id FROM groups WHERE group_name = 'USER_GROUP'",
-            username
+                "INSERT INTO group_members (username, group_id) SELECT ?, id FROM groups WHERE group_name = 'USER_GROUP'",
+                username
         );
 
         logger.info("Pre-registered user: {}", username);
@@ -55,9 +55,9 @@ public class UserPreRegistrationService {
 
     private boolean userExists(String username) {
         Integer count = jdbcTemplate.queryForObject(
-            "SELECT COUNT(*) FROM users WHERE username = ?",
-            Integer.class,
-            username
+                "SELECT COUNT(*) FROM users WHERE username = ?",
+                Integer.class,
+                username
         );
         return count != null && count > 0;
     }

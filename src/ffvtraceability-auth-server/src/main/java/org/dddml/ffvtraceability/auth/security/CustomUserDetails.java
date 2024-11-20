@@ -38,7 +38,7 @@ public class CustomUserDetails extends User {
             return true;
         }
         return passwordLastChanged.plusMonths(3)
-            .isBefore(OffsetDateTime.now());
+                .isBefore(OffsetDateTime.now());
     }
 
     public boolean isPasswordChangeRequired() {

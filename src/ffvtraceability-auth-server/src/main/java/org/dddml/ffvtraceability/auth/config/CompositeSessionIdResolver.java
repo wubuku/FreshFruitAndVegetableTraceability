@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CompositeSessionIdResolver implements HttpSessionIdResolver {
@@ -12,9 +13,7 @@ public class CompositeSessionIdResolver implements HttpSessionIdResolver {
 
     public CompositeSessionIdResolver(HttpSessionIdResolver... resolvers) {
         this.resolvers = new ArrayList<>();
-        for (HttpSessionIdResolver resolver : resolvers) {
-            this.resolvers.add(resolver);
-        }
+        Collections.addAll(this.resolvers, resolvers);
     }
 
     @Override
