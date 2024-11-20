@@ -98,3 +98,9 @@ CREATE TABLE IF NOT EXISTS oauth2_registered_client (
     PRIMARY KEY (id)
 );
 
+-- 基础权限表
+CREATE TABLE permissions (
+    permission_id VARCHAR(50) NOT NULL PRIMARY KEY,
+    description VARCHAR(200)
+);
+

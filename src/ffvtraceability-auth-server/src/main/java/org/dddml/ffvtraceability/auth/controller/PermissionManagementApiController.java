@@ -40,11 +40,18 @@ public class PermissionManagementApiController {
     public List<String> getBasePermissions() {
         logger.debug("Fetching base permissions...");
         List<String> permissions = jdbcTemplate.queryForList(
-                "SELECT authority FROM authorities WHERE username = '*' ORDER BY authority",
+                "SELECT permission_id FROM permissions ORDER BY permission_id",
                 String.class
         );
         logger.debug("Found {} base permissions: {}", permissions.size(), permissions);
         return permissions;
+    }
+
+    @GetMapping("/base/details")
+    public List<Map<String, Object>> getBasePermissionsWithDetails() {
+        return jdbcTemplate.queryForList(
+                "SELECT permission_id, description FROM permissions ORDER BY permission_id"
+        );
     }
 
     @GetMapping("/user/{username}")

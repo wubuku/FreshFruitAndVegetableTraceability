@@ -44,22 +44,24 @@ INSERT INTO group_members (username, group_id) VALUES
 INSERT INTO authorities (username, authority) VALUES 
     ('admin', 'DIRECT_ADMIN_AUTH');
 
+-- 删除原来的特殊基础权限用户相关的数据
+DELETE FROM authorities WHERE username = '*';
+DELETE FROM users WHERE username = '*';
 
-
--- 添加基础权限（使用特殊用户名 '*'）
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ITEM_CREATE'),
-    ('*', 'ITEM_READ'),
-    ('*', 'ITEM_UPDATE'),
-    ('*', 'ITEM_DELETE'),
-    ('*', 'ORDER_PO_CREATE'),
-    ('*', 'ORDER_PO_READ'),
-    ('*', 'ORDER_PO_UPDATE'),
-    ('*', 'ORDER_PO_DEACTIVATE'),
-    ('*', 'ORDER_SO_CREATE'),
-    ('*', 'ORDER_SO_READ'),
-    ('*', 'ORDER_SO_UPDATE'),
-    ('*', 'ORDER_SO_DEACTIVATE');
+-- 添加基础权限
+INSERT INTO permissions (permission_id, description) VALUES 
+    ('ITEM_CREATE', '创建物料的权限'),
+    ('ITEM_READ', '读取物料的权限'),
+    ('ITEM_UPDATE', '更新物料的权限'),
+    ('ITEM_DELETE', '删除物料的权限'),
+    ('ORDER_PO_CREATE', '创建采购订单的权限'),
+    ('ORDER_PO_READ', '读取采购订单的权限'),
+    ('ORDER_PO_UPDATE', '更新采购订单的权限'),
+    ('ORDER_PO_DEACTIVATE', '停用采购订单的权限'),
+    ('ORDER_SO_CREATE', '创建销售订单的权限'),
+    ('ORDER_SO_READ', '读取销售订单的权限'),
+    ('ORDER_SO_UPDATE', '更新销售订单的权限'),
+    ('ORDER_SO_DEACTIVATE', '停用销售订单的权限');
 
 -- 为测试用户添加一些初始权限
 INSERT INTO authorities (username, authority) VALUES 

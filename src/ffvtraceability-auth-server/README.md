@@ -185,44 +185,29 @@ CREATE TABLE authorities (
 );
 ```
 
-可见，默认只是支持“扁平化”的权限。
+可见，默认只是支持扁平化的权限。
 
-让我在不修改 Schema 的情况下支持有层级的权限（呈现为树形结构）。
+我们在不修改 Spring Security 默认的 Schema 的情况下支持有层级的权限（呈现为树形结构）。
 
-我们使用特定的分隔符来区分权限的层级关系。比如：
+我们新增了一个表 `permissions，用于存储所有的基础权限。这些基础权限是系统中可在“权限管理界面”进行设置的权限的集合。
+
+表 `permissions` 包含两列：
+* `permission_id` - 权限的唯一标识符
+* `description` - 权限的描述信息（可以为 null）
+
+基础权限的示例：
 
 ```sql
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ITEM_CREATE');
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ITEM_READ');
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ITEM_UPDATE');
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ITEM_DELETE');
-
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ORDER_PO_CREATE');
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ORDER_PO_READ');
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ORDER_PO_UPDATE');
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ORDER_PO_DEACTIVATE');
-
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ORDER_SO_CREATE');
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ORDER_SO_READ');
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ORDER_SO_UPDATE');
-INSERT INTO authorities (username, authority) VALUES 
-    ('*', 'ORDER_SO_DEACTIVATE');
+INSERT INTO permissions (permission_id, description) VALUES 
+    ('ITEM_CREATE', '创建物料的权限'),
+    ('ITEM_READ', '读取物料的权限'),
+    ('ITEM_UPDATE', '更新物料的权限'),
+    ('ITEM_DELETE', '删除物料的权限'),
+    ('ORDER_PO_CREATE', '创建采购订单的权限'),
+    -- 更多权限...
 ```
 
-在上面的示例中，权限的分隔符是 `_`，表示层级关系。
-其中的 `*` 是一个特殊的 `username`，不代表任何用户，仅用于设置“基础权限”。
-这些特殊的记录（基础权限）可以在数据库初始化的时候插入，一般不需要进行“手动管理”。
+在上面的示例中，权限的分隔符是 `_`，表示层级关系。这些基础权限在数据库初始化时插入，一般不需要进行手动管理。
 
 
 ### 用户权限管理 UI 的实现
@@ -230,8 +215,8 @@ INSERT INTO authorities (username, authority) VALUES
 假设在“用户权限管理”界面，我们可以将某个权限赋予某个用户，或者从用户身上收回某个权限。
 只有“管理员”用户可以使用这个界面进行操作。
 
-我们将上面所举例的“扁平化的权限”在界面上呈现为类似这样的树形结构
-（读取那些 `authorities` 表中的 `username` 为 `*` 的记录，整理为树形结构）：
+我们将上面所举例的扁平化的权限在界面上呈现为类似这样的树形结构
+（读取 `permissions` 表中的记录，整理为树形结构）：
 
 ```
 ./
@@ -264,6 +249,6 @@ INSERT INTO authorities (username, authority) VALUES
 * 管理员可取消选中某个“父节点”，这时候，界面上自动取消选中其下的所有子节点。自动向后端发送请求，一次性删除该用户身上的多个权限（Delete 多行数据）。
 * 后端进行“批量处理”时，可以忽略 Insert 或 Delete（单条权限记录）操作的“错误”，以容忍可能发生的并发冲突（概率极低）。
 
-所有这些操作，后端最终操作的都是 `authorities`，插入或者删除的记录的 `authority` 列的值都是“叶子节点权限”。
+所有这些操作，后端最终操作的都是 `authorities` 表，插入或者删除的记录的 `authority` 列的值都是“叶子节点权限”。
 
 
