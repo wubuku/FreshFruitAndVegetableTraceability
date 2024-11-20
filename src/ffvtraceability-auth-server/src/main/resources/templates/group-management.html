@@ -221,6 +221,54 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-enabled {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-disabled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-right: 8px;
+        }
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .enable-btn {
+            background: #28a745;
+            color: white;
+        }
+        .enable-btn:hover {
+            background: #218838;
+        }
+        .disable-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .disable-btn:hover {
+            background: #c82333;
+        }
+        .manage-btn {
+            background: #17a2b8;
+            color: white;
+        }
+        .manage-btn:hover {
+            background: #138496;
+        }
     </style>
 </head>
 <body>
@@ -247,6 +295,7 @@
             <thead>
                 <tr>
                     <th>Group Name</th>
+                    <th>Status</th>
                     <th>Members</th>
                     <th>Actions</th>
                 </tr>
@@ -378,10 +427,22 @@
                 tbody.innerHTML = groups.map(group => `
                     <tr>
                         <td>${group.group_name}</td>
+                        <td>
+                            <span class="status-badge ${group.enabled ? 'status-enabled' : 'status-disabled'}">
+                                ${group.enabled ? 'Enabled' : 'Disabled'}
+                            </span>
+                        </td>
                         <td>${group.members || '-'}</td>
                         <td>
+                            ${group.group_name !== 'ADMIN_GROUP' ? `
+                                <button onclick="toggleGroupEnabled(${group.id}, ${group.enabled})" 
+                                        class="action-btn ${group.enabled ? 'disable-btn' : 'enable-btn'}">
+                                    ${group.enabled ? 'Disable' : 'Enable'}
+                                </button>
+                            ` : ''}
                             <button onclick="showManageMembersModal(${group.id}, '${group.group_name}')" 
-                                    class="btn add-group-btn">
+                                    class="action-btn manage-btn"
+                                    ${!group.enabled ? 'disabled' : ''}>
                                 Manage Members (${group.member_count || 0})
                             </button>
                         </td>
@@ -467,7 +528,16 @@
                         [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
                     }
                 });
-                availableUsers = await response.json();
+                const allUsers = await response.json();
+                
+                const memberResponse = await fetch(`/api/groups/${currentGroupId}/members`, {
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+                const currentMembers = await memberResponse.json();
+                
+                const availableUsers = allUsers.filter(user => !currentMembers.includes(user));
                 
                 const select = document.getElementById('addMember');
                 select.innerHTML = '<option value="">Select user to add...</option>' +
@@ -505,6 +575,7 @@
                 select.value = '';
                 await loadGroupMembers();
                 await loadGroups();
+                await loadAvailableUsers();
             } catch (error) {
                 console.error('Error adding member:', error);
                 showError(error.message);
@@ -532,8 +603,34 @@
                 showSuccess('Member removed successfully');
                 await loadGroupMembers();
                 await loadGroups();
+                await loadAvailableUsers();
             } catch (error) {
                 console.error('Error removing member:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function toggleGroupEnabled(groupId, currentEnabled) {
+            showLoading();
+            try {
+                const response = await fetch(`/api/groups/${groupId}/toggle-enabled`, {
+                    method: 'POST',
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(error || 'Failed to update group status');
+                }
+
+                showSuccess(`Group ${currentEnabled ? 'disabled' : 'enabled'} successfully`);
+                await loadGroups();
+            } catch (error) {
+                console.error('Error updating group:', error);
                 showError(error.message);
             } finally {
                 hideLoading();

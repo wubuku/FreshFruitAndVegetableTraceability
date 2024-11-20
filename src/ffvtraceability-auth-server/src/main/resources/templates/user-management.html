@@ -182,14 +182,13 @@
             font-size: 14px;
         }
         .add-user-btn {
-            padding: 8px 16px;
             background: #28a745;
             color: white;
+            padding: 8px 16px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-            text-decoration: none;
             transition: background-color 0.2s;
         }
         .add-user-btn:hover {
@@ -211,12 +210,12 @@
                 <h1>User Management</h1>
             </div>
             <div class="actions">
-                <a href="/pre-register" class="add-user-btn">
+                <button onclick="showAddUserModal()" class="btn add-user-btn">
                     <i>👤</i> Add New User
-                </a>
+                </button>
                 <form th:action="@{/logout}" method="post" style="margin: 0;">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    <button type="submit" class="logout-btn">Logout</button>
+                    <button type="submit" class="btn logout-btn">Logout</button>
                 </form>
             </div>
         </div>
@@ -365,6 +364,10 @@
             } finally {
                 hideLoading();
             }
+        }
+
+        function showAddUserModal() {
+            window.location.href = '/pre-register?from=user-management';
         }
 
         // Load users when page loads

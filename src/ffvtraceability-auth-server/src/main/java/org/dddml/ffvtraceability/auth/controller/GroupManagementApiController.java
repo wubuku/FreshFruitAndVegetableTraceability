@@ -28,13 +28,13 @@ public class GroupManagementApiController {
     @GetMapping("/list")
     public List<Map<String, Object>> getGroups() {
         String sql = """
-            SELECT g.id, g.group_name,
+            SELECT g.id, g.group_name, g.enabled,
                    STRING_AGG(u.username, ', ') as members,
                    COUNT(gm.username) as member_count
             FROM groups g
             LEFT JOIN group_members gm ON g.id = gm.group_id
             LEFT JOIN users u ON gm.username = u.username
-            GROUP BY g.id, g.group_name
+            GROUP BY g.id, g.group_name, g.enabled
             ORDER BY g.group_name
             """;
             
@@ -131,6 +131,43 @@ public class GroupManagementApiController {
         } catch (Exception e) {
             logger.error("Failed to remove group member", e);
             return ResponseEntity.badRequest().body("Failed to remove member from group");
+        }
+    }
+    
+    @PostMapping("/{groupId}/toggle-enabled")
+    public ResponseEntity<?> toggleGroupEnabled(@PathVariable Long groupId) {
+        try {
+            // 首先检查是否是 ADMIN_GROUP，不允许禁用
+            Integer count = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM groups WHERE id = ? AND group_name = 'ADMIN_GROUP'",
+                Integer.class,
+                groupId
+            );
+            
+            if (count != null && count > 0) {
+                return ResponseEntity.badRequest().body("Cannot disable ADMIN_GROUP");
+            }
+
+            // 切换状态
+            int rows = jdbcTemplate.update(
+                "UPDATE groups SET enabled = NOT enabled WHERE id = ?",
+                groupId
+            );
+            
+            if (rows == 0) {
+                return ResponseEntity.badRequest().body("Group not found");
+            }
+            
+            // 如果组被禁用，同时删除所有组成员关系
+            jdbcTemplate.update(
+                "DELETE FROM group_members WHERE group_id = ? AND EXISTS (SELECT 1 FROM groups WHERE id = ? AND enabled = false)",
+                groupId, groupId
+            );
+            
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error("Failed to toggle group status", e);
+            return ResponseEntity.badRequest().body("Failed to update group status");
         }
     }
 } 

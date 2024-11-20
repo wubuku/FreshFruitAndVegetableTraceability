@@ -5,6 +5,14 @@ DELETE FROM groups;
 DELETE FROM authorities;
 DELETE FROM users;
 
+-- 重置组 ID 序列
+ALTER SEQUENCE groups_id_seq RESTART WITH 1;
+
+-- 创建用户组（不再手动指定 ID）
+INSERT INTO groups (group_name, enabled) VALUES 
+    ('ADMIN_GROUP', true),
+    ('USER_GROUP', true);
+
 -- 我们使用了 JDBC 来存储 session，在测试阶段，我们自动清理 session 表中的数据！
 DELETE FROM SPRING_SESSION_ATTRIBUTES;
 DELETE FROM SPRING_SESSION;
@@ -20,11 +28,6 @@ INSERT INTO users (username, password, enabled, password_change_required, first_
 
 -- 给 admin 用户添加 ROLE_ADMIN 权限（auth server 使用这个权限对特权操作进行保护）
 INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_ADMIN');
-
--- 创建用户组
-INSERT INTO groups (id, group_name) VALUES 
-    (1, 'ADMIN_GROUP'),
-    (2, 'USER_GROUP');
 
 -- 设置组权限
 INSERT INTO group_authorities (group_id, authority) VALUES 
