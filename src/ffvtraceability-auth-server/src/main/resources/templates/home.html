@@ -104,6 +104,17 @@
             border-radius: 4px;
             border-left: 4px solid #007bff;
         }
+        .welcome-message .admin-badge {
+            display: inline-block;
+            position: static;
+            background: #dc3545;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -117,8 +128,8 @@
         </div>
 
         <div class="welcome-message">
-            Welcome, <span sec:authentication="principal.username">User</span>!
-            <div sec:authorize="hasRole('ADMIN')">(Administrator)</div>
+            Welcome, <span th:text="${username}"></span>
+            <span th:if="${isAdmin}" class="admin-badge">Administrator</span>!
         </div>
 
         <div class="menu-grid">
