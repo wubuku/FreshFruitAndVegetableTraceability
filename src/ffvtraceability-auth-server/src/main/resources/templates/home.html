@@ -163,6 +163,14 @@
                 <h3>User Management</h3>
                 <p>Manage system users</p>
             </a>
+
+            <!-- Group Management - Admin only -->
+            <a href="/group-management" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
+                <span class="admin-badge">Admin</span>
+                <i>👥</i>
+                <h3>Group Management</h3>
+                <p>Manage user groups</p>
+            </a>
         </div>
     </div>
 </body>
