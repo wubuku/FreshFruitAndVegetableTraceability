@@ -174,12 +174,34 @@
         .permission-checkbox {
             cursor: pointer;
         }
+        .home-btn {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        .home-btn:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 <body>
     <div class="container" sec:authorize="hasRole('ADMIN')">
         <div class="header">
-            <h1>User Permission Management</h1>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <a href="/" class="home-btn">
+                    <i>🏠</i> Home
+                </a>
+                <h1>User Permission Management</h1>
+            </div>
             <form th:action="@{/logout}" method="post" style="margin: 0;">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <button type="submit" class="logout-btn">Logout</button>

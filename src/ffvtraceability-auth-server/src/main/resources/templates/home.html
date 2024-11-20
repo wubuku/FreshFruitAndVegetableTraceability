@@ -155,6 +155,14 @@
                 <h3>Permission Management</h3>
                 <p>Manage user permissions</p>
             </a>
+
+            <!-- User Management - Admin only -->
+            <a href="/user-management" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
+                <span class="admin-badge">Admin</span>
+                <i>👥</i>
+                <h3>User Management</h3>
+                <p>Manage system users</p>
+            </a>
         </div>
     </div>
 </body>

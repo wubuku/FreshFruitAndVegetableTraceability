@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>User Management</title>
+    <meta name="X-Auth-Token" th:if="${session != null}" th:content="${session.id}">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin: 0;
+        }
+        .home-btn {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        .home-btn:hover {
+            background: #0056b3;
+        }
+        .logout-btn {
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .user-table th, 
+        .user-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .user-table th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+        .user-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-right: 8px;
+        }
+        .enable-btn {
+            background: #28a745;
+            color: white;
+        }
+        .enable-btn:hover {
+            background: #218838;
+        }
+        .disable-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .disable-btn:hover {
+            background: #c82333;
+        }
+        .password-btn {
+            background: #ffc107;
+            color: #000;
+        }
+        .password-btn:hover {
+            background: #e0a800;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-enabled {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-disabled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .message-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        .error, .success {
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .error {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+        .success {
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+        .error.show, .success.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+        .add-user-btn {
+            padding: 8px 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .add-user-btn:hover {
+            background: #218838;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" sec:authorize="hasRole('ADMIN')">
+        <div class="header">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <a href="/" class="home-btn">
+                    <i>🏠</i> Home
+                </a>
+                <h1>User Management</h1>
+            </div>
+            <div class="actions">
+                <a href="/pre-register" class="add-user-btn">
+                    <i>👤</i> Add New User
+                </a>
+                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Status</th>
+                    <th>Groups</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <!-- Users will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div style="text-align: center;">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
+    <div class="message-container">
+        <div id="error-message" class="error"></div>
+        <div id="success-message" class="success"></div>
+    </div>
+
+    <script th:inline="javascript">
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            errorDiv.textContent = message;
+            successDiv.classList.remove('show');
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            errorDiv.classList.remove('show');
+            successDiv.classList.add('show');
+            setTimeout(() => {
+                successDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        async function loadUsers() {
+            showLoading();
+            try {
+                const response = await fetch('/api/users/list', {
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+                const users = await response.json();
+                
+                const tbody = document.getElementById('userTableBody');
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.username}</td>
+                        <td>
+                            <span class="status-badge ${user.enabled ? 'status-enabled' : 'status-disabled'}">
+                                ${user.enabled ? 'Enabled' : 'Disabled'}
+                            </span>
+                        </td>
+                        <td>${user.groups || '-'}</td>
+                        <td>
+                            <button onclick="toggleUserEnabled('${user.username}', ${user.enabled})" 
+                                    class="action-btn ${user.enabled ? 'disable-btn' : 'enable-btn'}">
+                                ${user.enabled ? 'Disable' : 'Enable'}
+                            </button>
+                            <button onclick="requirePasswordChange('${user.username}')" 
+                                    class="action-btn password-btn">
+                                Require Password Change
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showError('Failed to load users');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function toggleUserEnabled(username, currentEnabled) {
+            showLoading();
+            try {
+                const response = await fetch(`/api/users/${username}/toggle-enabled`, {
+                    method: 'POST',
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update user status');
+                }
+
+                showSuccess(`User ${username} ${currentEnabled ? 'disabled' : 'enabled'} successfully`);
+                await loadUsers();
+            } catch (error) {
+                console.error('Error updating user:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function requirePasswordChange(username) {
+            showLoading();
+            try {
+                const response = await fetch(`/api/users/${username}/require-password-change`, {
+                    method: 'POST',
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to require password change');
+                }
+
+                showSuccess(`Password change required for user ${username}`);
+                await loadUsers();
+            } catch (error) {
+                console.error('Error updating user:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Load users when page loads
+        document.addEventListener('DOMContentLoaded', loadUsers);
+    </script>
+</body>
+</html> 

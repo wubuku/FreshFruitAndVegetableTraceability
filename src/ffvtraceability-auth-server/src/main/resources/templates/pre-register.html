@@ -125,13 +125,35 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .home-btn {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        .home-btn:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 <body>
     <!-- Only show to users with ROLE_ADMIN -->
     <div class="container" sec:authorize="hasRole('ADMIN')">
         <div class="header">
-            <h1>Pre-register New User</h1>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <a href="/" class="home-btn">
+                    <i>🏠</i> Home
+                </a>
+                <h1>Pre-register New User</h1>
+            </div>
             <form th:action="@{/logout}" method="post" style="margin: 0;">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <button type="submit" class="logout-btn">Logout</button>
