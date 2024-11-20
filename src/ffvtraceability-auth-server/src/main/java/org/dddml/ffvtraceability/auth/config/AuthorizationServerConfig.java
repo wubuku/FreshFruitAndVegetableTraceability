@@ -217,6 +217,7 @@ public class AuthorizationServerConfig {
         return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
     }
 
+    /*
     @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
@@ -224,16 +225,17 @@ public class AuthorizationServerConfig {
         // 注册 Spring Security 核心模块
         ClassLoader classLoader = getClass().getClassLoader();
         List<com.fasterxml.jackson.databind.Module> securityModules =
-                SecurityJackson2Modules.getModules(classLoader);
+        SecurityJackson2Modules.getModules(classLoader);
         mapper.registerModules(securityModules);
-
+        
         // 注册 OAuth2 相关的模块
         mapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
-
+        
         // 注册我们的自定义模块
         mapper.registerModule(new CustomJacksonModule());
-
+        
         return mapper;
     }
+    */
 
 }

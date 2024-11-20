@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>User Permission Management</title>
+    <meta name="X-Auth-Token" th:if="${session != null}" th:content="${session.id}">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .user-select {
+            margin-bottom: 20px;
+        }
+        .permission-tree {
+            margin: 20px 0;
+        }
+        .tree-node {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+        .tree-node label {
+            display: inline-block;
+            margin-left: 5px;
+        }
+        .error {
+            color: #dc3545;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #dc3545;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            color: #28a745;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #28a745;
+            border-radius: 4px;
+            display: none;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+        .message-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .error, .success {
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 4px;
+            opacity: 0.9;
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" sec:authorize="hasRole('ADMIN')">
+        <div class="header">
+            <h1>User Permission Management</h1>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+
+        <div id="error-message" class="error"></div>
+        <div id="success-message" class="success"></div>
+
+        <div class="user-select">
+            <label for="username">Select User:</label>
+            <select id="username"></select>
+        </div>
+
+        <div id="permission-tree" class="permission-tree"></div>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div style="text-align: center;">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        let basePermissions = [];
+        let userPermissions = new Set();
+        let currentUsername = null;
+
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        // Load users and permissions when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadUsers();
+            await loadBasePermissions();
+            
+            // Listen for user selection changes
+            document.getElementById('username').addEventListener('change', async (e) => {
+                currentUsername = e.target.value;
+                if (currentUsername) {
+                    await loadUserPermissions(currentUsername);
+                    renderPermissionTree();
+                }
+            });
+        });
+
+        // Load users from backend
+        async function loadUsers() {
+            showLoading();
+            try {
+                console.log('Fetching users list...');
+                const response = await fetch('/api/permissions/users', {
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+                const users = await response.json();
+                console.log('Received users data:', users);
+                
+                const select = document.getElementById('username');
+                select.innerHTML = '<option value="">Select a user...</option>';
+                if (Array.isArray(users)) {
+                    users.forEach(username => {
+                        const option = document.createElement('option');
+                        option.value = username;
+                        option.textContent = username;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showError('Failed to load users: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Load base permissions
+        async function loadBasePermissions() {
+            showLoading();
+            try {
+                console.log('Loading base permissions...');
+                const response = await fetch('/api/permissions/base', {
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+                const permissions = await response.json();
+                console.log('Received base permissions:', permissions);
+                basePermissions = permissions;
+            } catch (error) {
+                console.error('Error loading base permissions:', error);
+                showError('Failed to load permissions: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Load user's current permissions
+        async function loadUserPermissions(username) {
+            showLoading();
+            try {
+                console.log('Loading permissions for user:', username);
+                const response = await fetch(`/api/permissions/user/${username}`, {
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+                const permissions = await response.json();
+                console.log('Received user permissions:', permissions);
+                userPermissions = new Set(permissions);
+            } catch (error) {
+                console.error('Error loading user permissions:', error);
+                showError('Failed to load user permissions: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Build and render the permission tree
+        function renderPermissionTree() {
+            const tree = buildPermissionTree(basePermissions);
+            const treeHtml = renderTreeNode(tree);
+            document.getElementById('permission-tree').innerHTML = treeHtml;
+            
+            // Add event listeners to checkboxes
+            document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', handlePermissionChange);
+            });
+        }
+
+        // Build tree structure from flat permissions
+        function buildPermissionTree(permissions) {
+            const tree = {};
+            permissions.forEach(permission => {
+                const parts = permission.split('_');
+                let current = tree;
+                for (let i = 0; i < parts.length; i++) {
+                    const part = parts[i];
+                    if (i === parts.length - 1) {
+                        current[part] = {};  // 叶子节点
+                    } else {
+                        current[part] = current[part] || {};
+                        current = current[part];
+                    }
+                }
+            });
+            return tree;
+        }
+
+        // Render tree node recursively
+        function renderTreeNode(node, path = []) {
+            console.log('Rendering tree node, path:', path);
+            let html = '<ul>';
+            for (const [key, value] of Object.entries(node)) {
+                const currentPath = [...path, key];
+                const fullPermission = currentPath.join('_');
+                const isLeaf = Object.keys(value).length === 0;
+                
+                html += `<li class="tree-node">`;
+                html += `<input type="checkbox" class="permission-checkbox" 
+                               id="${fullPermission}" 
+                               data-permission="${fullPermission}"
+                               data-is-parent="${!isLeaf}"
+                               ${userPermissions.has(fullPermission) ? 'checked' : ''}>`;
+                html += `<label for="${fullPermission}">${key}</label>`;
+                
+                if (!isLeaf) {
+                    html += renderTreeNode(value, currentPath);
+                }
+                html += '</li>';
+            }
+            html += '</ul>';
+            return html;
+        }
+
+        // Handle permission checkbox changes
+        async function handlePermissionChange(event) {
+            if (!currentUsername) return;
+
+            const checkbox = event.target;
+            const permission = checkbox.dataset.permission;
+            const isParent = checkbox.dataset.isParent === 'true';
+            const isChecked = checkbox.checked;
+            
+            if (isParent) {
+                // 获取所有子节点的权限
+                const childPermissions = getChildPermissions(permission);
+                
+                showLoading();
+                try {
+                    // 批量更新权限
+                    const response = await fetch('/api/permissions/batch-update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                        },
+                        body: JSON.stringify({
+                            username: currentUsername,
+                            permissions: childPermissions,
+                            granted: isChecked
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to update permissions');
+                    }
+
+                    // 更新复选框状态
+                    childPermissions.forEach(perm => {
+                        const childCheckbox = document.querySelector(`input[data-permission="${perm}"]`);
+                        if (childCheckbox) {
+                            childCheckbox.checked = isChecked;
+                        }
+                        if (isChecked) {
+                            userPermissions.add(perm);
+                        } else {
+                            userPermissions.delete(perm);
+                        }
+                    });
+
+                    showSuccess(`Permissions ${isChecked ? 'granted' : 'revoked'} successfully`);
+                } catch (error) {
+                    showError('Failed to update permissions: ' + error.message);
+                    checkbox.checked = !isChecked; // Revert checkbox state
+                } finally {
+                    hideLoading();
+                }
+            } else {
+                // 叶子节点处理逻辑
+                showLoading();
+                try {
+                    const response = await fetch('/api/permissions/update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                        },
+                        body: JSON.stringify({
+                            username: currentUsername,
+                            permission: permission,
+                            granted: isChecked
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to update permission');
+                    }
+
+                    if (isChecked) {
+                        userPermissions.add(permission);
+                    } else {
+                        userPermissions.delete(permission);
+                    }
+
+                    showSuccess(`Permission ${isChecked ? 'granted' : 'revoked'} successfully`);
+                } catch (error) {
+                    showError('Failed to update permission: ' + error.message);
+                    checkbox.checked = !isChecked; // Revert checkbox state
+                } finally {
+                    hideLoading();
+                }
+            }
+        }
+
+        // 添加获取子节点权限的辅助函数
+        function getChildPermissions(parentPermission) {
+            const permissions = [];
+            const parentParts = parentPermission.split('_');
+            
+            // 递归查找所有叶子节点权限
+            function findLeafPermissions(node, currentPath) {
+                for (const [key, value] of Object.entries(node)) {
+                    const newPath = [...currentPath, key];
+                    if (Object.keys(value).length === 0) {
+                        permissions.push(newPath.join('_'));
+                    } else {
+                        findLeafPermissions(value, newPath);
+                    }
+                }
+            }
+            
+            // 从父节点开始查找
+            let currentNode = buildPermissionTree(basePermissions);
+            let path = [];
+            for (const part of parentParts) {
+                path.push(part);
+                currentNode = findNodeByPath(currentNode, part);
+            }
+            
+            findLeafPermissions(currentNode, path);
+            return permissions;
+        }
+
+        // 添加查找节点的辅助函数
+        function findNodeByPath(node, pathPart) {
+            // 如果输入是数组，需要先将其转换为树形结构
+            if (Array.isArray(node)) {
+                node = buildPermissionTree(node);
+            }
+            
+            for (const [key, value] of Object.entries(node)) {
+                if (key === pathPart) {
+                    return value;
+                }
+            }
+            return {};
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html> 

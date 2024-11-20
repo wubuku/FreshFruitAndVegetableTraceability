@@ -9,6 +9,9 @@ DELETE FROM users;
 DELETE FROM SPRING_SESSION_ATTRIBUTES;
 DELETE FROM SPRING_SESSION;
 
+-- 创建特殊的基础权限用户
+INSERT INTO users (username, password, enabled, password_change_required, first_login, password_last_changed) VALUES
+    ('*', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, false, false, CURRENT_TIMESTAMP);
 
 -- 创建测试用户
 INSERT INTO users (username, password, enabled, password_change_required, first_login, password_last_changed) VALUES
@@ -34,6 +37,27 @@ INSERT INTO group_members (username, group_id) VALUES
 -- 设置直接权限（可选）
 INSERT INTO authorities (username, authority) VALUES 
     ('admin', 'DIRECT_ADMIN_AUTH');
+
+-- 添加基础权限（使用特殊用户名 '*'）
+INSERT INTO authorities (username, authority) VALUES 
+    ('*', 'ITEM_CREATE'),
+    ('*', 'ITEM_READ'),
+    ('*', 'ITEM_UPDATE'),
+    ('*', 'ITEM_DELETE'),
+    ('*', 'ORDER_PO_CREATE'),
+    ('*', 'ORDER_PO_READ'),
+    ('*', 'ORDER_PO_UPDATE'),
+    ('*', 'ORDER_PO_DEACTIVATE'),
+    ('*', 'ORDER_SO_CREATE'),
+    ('*', 'ORDER_SO_READ'),
+    ('*', 'ORDER_SO_UPDATE'),
+    ('*', 'ORDER_SO_DEACTIVATE');
+
+-- 为测试用户添加一些初始权限
+INSERT INTO authorities (username, authority) VALUES 
+    ('user', 'ITEM_READ'),
+    ('user', 'ORDER_PO_READ'),
+    ('user', 'ORDER_SO_READ');
 
 -- 添加默认的OAuth2客户端
 INSERT INTO oauth2_registered_client (
