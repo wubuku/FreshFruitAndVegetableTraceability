@@ -18,6 +18,9 @@ INSERT INTO users (username, password, enabled, password_change_required, first_
     ('admin', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, false, false, CURRENT_TIMESTAMP),  -- password=admin
     ('user', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, true, true, null);   -- password=admin
 
+-- 给 admin 用户添加 ROLE_ADMIN 权限（auth server 使用这个权限对特权操作进行保护）
+INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_ADMIN');
+
 -- 创建用户组
 INSERT INTO groups (id, group_name) VALUES 
     (1, 'ADMIN_GROUP'),
@@ -37,6 +40,8 @@ INSERT INTO group_members (username, group_id) VALUES
 -- 设置直接权限（可选）
 INSERT INTO authorities (username, authority) VALUES 
     ('admin', 'DIRECT_ADMIN_AUTH');
+
+
 
 -- 添加基础权限（使用特殊用户名 '*'）
 INSERT INTO authorities (username, authority) VALUES 

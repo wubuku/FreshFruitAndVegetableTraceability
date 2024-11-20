@@ -8,7 +8,7 @@ public class HomeController {
     
     @GetMapping("/")
     public String home() {
-        return "redirect:/oauth2-test";  // 重定向到测试页面
+        return "home";
     }
 
 }

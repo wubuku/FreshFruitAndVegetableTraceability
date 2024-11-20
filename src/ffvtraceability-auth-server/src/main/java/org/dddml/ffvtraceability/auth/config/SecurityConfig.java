@@ -77,18 +77,21 @@ public class SecurityConfig {
         http
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                                "/oauth2/**",          // OAuth2 endpoints
-                                "/login",              // 登录页面
-                                "/error",              // 错误页面
-                                "/oauth2-test",        // 测试首页
-                                "/oauth2-test-callback", // 回调页面
-                                "/password/change"     // 密码修改页面
+                        .requestMatchers(                // 公开页面
+                                "/oauth2/**",          
+                                "/login",              
+                                "/error",              
+                                "/oauth2-test",        
+                                "/oauth2-test-callback",
+                                "/password/change"     
                         ).permitAll()
+                        .requestMatchers("/pre-register/**", "/permission-management/**")  // 管理员页面
+                        .hasAuthority("ROLE_ADMIN")  // 使用 hasAuthority 而不是 hasRole
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .defaultSuccessUrl("/", true)  
                         .successHandler(authenticationSuccessHandler)
                 );
 
