@@ -263,6 +263,9 @@
             document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', handlePermissionChange);
             });
+
+            // 初始化父节点状态
+            updateParentNodeStates();
         }
 
         // Build tree structure from flat permissions
@@ -320,12 +323,16 @@
             const isChecked = checkbox.checked;
             
             if (isParent) {
-                // 获取所有子节点的权限
+                // 如果是中间状态，点击后应该变为未选中状态
+                if (checkbox.indeterminate) {
+                    checkbox.indeterminate = false;
+                    checkbox.checked = false;
+                }
+                
                 const childPermissions = getChildPermissions(permission);
                 
                 showLoading();
                 try {
-                    // 批量更新权限
                     const response = await fetch('/api/permissions/batch-update', {
                         method: 'POST',
                         headers: {
@@ -359,9 +366,10 @@
                     showSuccess(`Permissions ${isChecked ? 'granted' : 'revoked'} successfully`);
                 } catch (error) {
                     showError('Failed to update permissions: ' + error.message);
-                    checkbox.checked = !isChecked; // Revert checkbox state
+                    checkbox.checked = !isChecked;
                 } finally {
                     hideLoading();
+                    updateParentNodeStates(); // 更新所有父节点状态
                 }
             } else {
                 // 叶子节点处理逻辑
@@ -396,6 +404,7 @@
                     checkbox.checked = !isChecked; // Revert checkbox state
                 } finally {
                     hideLoading();
+                    updateParentNodeStates(); // 更新所有父节点状态
                 }
             }
         }
@@ -442,6 +451,44 @@
                 }
             }
             return {};
+        }
+
+        // 添加更新父节点状态的函数
+        function updateParentNodeStates() {
+            // 从下往上遍历，更新父节点状态
+            const parents = new Set();
+            document.querySelectorAll('.permission-checkbox[data-is-parent="true"]').forEach(parentCheckbox => {
+                parents.add(parentCheckbox.dataset.permission);
+            });
+
+            parents.forEach(parentPermission => {
+                const parentCheckbox = document.querySelector(`input[data-permission="${parentPermission}"]`);
+                const childCheckboxes = getChildCheckboxes(parentPermission);
+                
+                const checkedCount = childCheckboxes.filter(cb => cb.checked).length;
+                
+                if (checkedCount === 0) {
+                    // 没有子节点选中
+                    parentCheckbox.checked = false;
+                    parentCheckbox.indeterminate = false;
+                } else if (checkedCount === childCheckboxes.length) {
+                    // 所有子节点都选中
+                    parentCheckbox.checked = true;
+                    parentCheckbox.indeterminate = false;
+                } else {
+                    // 部分子节点选中
+                    parentCheckbox.checked = false;
+                    parentCheckbox.indeterminate = true;
+                }
+            });
+        }
+
+        // 获取子节点复选框的辅助函数
+        function getChildCheckboxes(parentPermission) {
+            const childPermissions = getChildPermissions(parentPermission);
+            return childPermissions.map(perm => 
+                document.querySelector(`input[data-permission="${perm}"]`)
+            ).filter(Boolean);
         }
 
         function showError(message) {
