@@ -4,6 +4,7 @@ import org.dddml.ffvtraceability.resource.security.CustomJwtAuthenticationConver
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,6 +16,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // 启用方法级安全
 public class ResourceServerConfig {
 
     @Autowired
@@ -27,7 +29,8 @@ public class ResourceServerConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/public/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasAnyAuthority("DIRECT_ADMIN_AUTH", "ROLE_ADMIN")
+                        //.requestMatchers("/api/admin/**").hasAnyAuthority("DIRECT_ADMIN_AUTH", "ROLE_ADMIN")
+                        // 👆如果不在这里设置，可以在方法上使用注解进行设置。但是需要启用方法级安全。
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

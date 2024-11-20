@@ -35,7 +35,8 @@ public class E2EAuthFlowTests {
     private final String REDIRECT_URI = "http://127.0.0.1:3000/callback";
     private final BasicCookieStore cookieStore = new BasicCookieStore();
     private final HttpClientContext context = HttpClientContext.create();
-    private final String TEST_USERNAME = "admin";
+    private final String TEST_ADMIN_NAME = "admin";
+    private final String TEST_USER_NAME = "user"; // 我们假设 "user" 和 "admin" 使用同样的密码
     private final String TEST_PASSWORD = "admin";
     private final String[] OAUTH2_SCOPES = {"openid", "profile"};
     private final String FORMATTED_SCOPES = String.join("+", OAUTH2_SCOPES);
@@ -44,8 +45,17 @@ public class E2EAuthFlowTests {
 
     @Test
     public void testFullAuthorizationCodeFlow() throws Exception {
-        System.out.println("\n🚀 Starting OAuth2 Authorization Code Flow Test\n");
+        System.out.println("\n🚀 Starting OAuth2 Authorization Code Flow Test with Admin User\n");
+        executeAuthFlowAndTest(TEST_ADMIN_NAME);
+    }
 
+    @Test
+    public void testNormalUserAccessDenied() throws Exception {
+        System.out.println("\n🚀 Starting OAuth2 Authorization Code Flow Test with Normal User\n");
+        executeAuthFlowAndTest(TEST_USER_NAME);
+    }
+
+    private void executeAuthFlowAndTest(String username) throws Exception {
         context.setCookieStore(cookieStore);
         try (CloseableHttpClient client = HttpClients.custom()
                 .setDefaultCookieStore(cookieStore)
@@ -60,7 +70,7 @@ public class E2EAuthFlowTests {
 
             // 2. 获取授权码
             System.out.println("\n📨 Starting Authorization Code Request...");
-            String authorizationCode = getAuthorizationCode(client, codeChallenge);
+            String authorizationCode = getAuthorizationCode(client, codeChallenge, username);
             System.out.println("✅ Authorization Code: " + authorizationCode);
 
             // 3. 交换访问令牌
@@ -70,9 +80,7 @@ public class E2EAuthFlowTests {
 
             // 4. 测试资源访问
             System.out.println("\n🧪 Testing Resource Access...");
-            testResourceAccess(client, accessToken);
-
-            System.out.println("\n✨ All Tests Completed Successfully!\n");
+            testResourceAccess(client, accessToken, username);
         }
     }
 
@@ -91,7 +99,7 @@ public class E2EAuthFlowTests {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
     }
 
-    private String getAuthorizationCode(CloseableHttpClient client, String codeChallenge) throws Exception {
+    private String getAuthorizationCode(CloseableHttpClient client, String codeChallenge, String username) throws Exception {
         // 1. 获取登录页面和 CSRF token
         System.out.println("📝 Getting login page and CSRF token...");
         HttpGet loginPageRequest = new HttpGet(AUTH_SERVER + "/login");
@@ -117,7 +125,7 @@ public class E2EAuthFlowTests {
         loginRequest.setHeader("Referer", AUTH_SERVER + "/login");
 
         String formData = String.format("username=%s&password=%s&_csrf=%s",
-                TEST_USERNAME, TEST_PASSWORD, csrfToken);
+                username, TEST_PASSWORD, csrfToken);
 
         loginRequest.setEntity(new StringEntity(formData, ContentType.APPLICATION_FORM_URLENCODED));
 
@@ -233,48 +241,55 @@ public class E2EAuthFlowTests {
         }
     }
 
-    private void testResourceAccess(CloseableHttpClient client, String accessToken) throws Exception {
+    private void testResourceAccess(CloseableHttpClient client, String accessToken, String username) throws Exception {
         // 解码并打印 JWT 内容
         String[] parts = accessToken.split("\\.");
         String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
         System.out.println("\n📝 Access Token Claims:");
         System.out.println(objectMapper.readTree(payload).toPrettyString());
 
-        // 测试公开 API
+        // 测试公开 API - 所有用户都应该能访问
         System.out.println("\n🧪 Testing Public API...");
         HttpGet publicRequest = new HttpGet("http://localhost:" + port + "/api/public/test");
         try (CloseableHttpResponse response = client.execute(publicRequest)) {
             System.out.println("📤 Response Status: " + response.getCode());
+            assert response.getCode() == 200 : "Public API should be accessible";
             System.out.println("📄 Response Body: " + EntityUtils.toString(response.getEntity()));
         }
 
-        // 测试需要认证的 API
+        // 测试需要认证的 API - 所有认证用户都应该能访问
         System.out.println("\n🧪 Testing Protected API...");
         HttpGet protectedRequest = new HttpGet("http://localhost:" + port + "/api/test");
         protectedRequest.setHeader("Authorization", "Bearer " + accessToken);
         try (CloseableHttpResponse response = client.execute(protectedRequest)) {
             System.out.println("📤 Response Status: " + response.getCode());
+            assert response.getCode() == 200 : "Protected API should be accessible for authenticated users";
             System.out.println("📄 Response Body: " + EntityUtils.toString(response.getEntity()));
         }
 
-        // 测试管理员 API
+        // 测试管理员 API - 只有管理员用户能访问
         System.out.println("\n🧪 Testing Admin API...");
         HttpGet adminRequest = new HttpGet("http://localhost:" + port + "/api/admin/test");
         adminRequest.setHeader("Authorization", "Bearer " + accessToken);
         try (CloseableHttpResponse response = client.execute(adminRequest)) {
             System.out.println("📤 Response Status: " + response.getCode());
+            if (username.equals(TEST_ADMIN_NAME)) {
+                assert response.getCode() == 200 : "Admin API should be accessible for admin users";
+            } else {
+                assert response.getCode() == 403 : "Admin API should return 403 for non-admin users";
+            }
             System.out.println("📄 Response Body: " + EntityUtils.toString(response.getEntity()));
         }
 
-        // 测试用户信息 API
+        // 测试用户信息 API - 所有认证用户都应该能访问
         System.out.println("\n🧪 Testing User Info API...");
         HttpGet userInfoRequest = new HttpGet("http://localhost:" + port + "/api/user/me");
         userInfoRequest.setHeader("Authorization", "Bearer " + accessToken);
         try (CloseableHttpResponse response = client.execute(userInfoRequest)) {
             System.out.println("📤 Response Status: " + response.getCode());
+            assert response.getCode() == 200 : "User Info API should be accessible for authenticated users";
             System.out.println("📄 Response Body: " + EntityUtils.toString(response.getEntity()));
         }
-
     }
 
     private String extractCode(String location) {
