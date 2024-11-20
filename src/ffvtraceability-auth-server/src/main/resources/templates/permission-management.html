@@ -15,7 +15,7 @@
             max-width: 800px; 
             margin: 0 auto;
             background: white;
-            padding: 20px;
+            padding: 30px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -29,15 +29,17 @@
             margin-bottom: 20px;
         }
         .permission-tree {
-            margin: 20px 0;
+            margin: 24px 0;
+            font-size: 14px;
         }
         .tree-node {
-            margin: 5px 0;
-            padding-left: 20px;
+            margin: 6px 0;
+            padding-left: 24px;
         }
         .tree-node label {
             display: inline-block;
-            margin-left: 5px;
+            margin-left: 8px;
+            cursor: pointer;
         }
         .error {
             color: #dc3545;
@@ -72,6 +74,8 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
         }
         .logout-btn:hover {
             background: #c82333;
@@ -120,6 +124,56 @@
             opacity: 1;
             transform: translateY(0);
         }
+        
+        .select-type {
+            margin-bottom: 16px;
+        }
+        
+        .select-type label {
+            margin-right: 24px;
+            cursor: pointer;
+        }
+        
+        .select-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .current-target {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin: 0;
+        }
+        select, input[type="radio"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+        }
+        label {
+            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .permission-checkbox {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -133,8 +187,18 @@
         </div>
 
         <div class="user-select">
-            <label for="username">Select User:</label>
-            <select id="username"></select>
+            <div class="select-type">
+                <label>
+                    <input type="radio" name="targetType" value="user" checked> User
+                </label>
+                <label>
+                    <input type="radio" name="targetType" value="group"> Group
+                </label>
+            </div>
+            <div class="select-container">
+                <label for="target">Select User or Group:</label>
+                <select id="target"></select>
+            </div>
         </div>
 
         <div id="permission-tree" class="permission-tree"></div>
@@ -154,8 +218,10 @@
 
     <script th:inline="javascript">
         let basePermissions = [];
-        let userPermissions = new Set();
-        let currentUsername = null;
+        let currentPermissions = new Set();
+        let currentTarget = null;
+        let currentTargetType = 'user';
+        let groups = [];
 
         function showLoading() {
             document.getElementById('loading-overlay').style.display = 'flex';
@@ -167,14 +233,25 @@
 
         // Load users and permissions when page loads
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadUsers();
             await loadBasePermissions();
+            await loadGroups();  // 预加载组信息
             
-            // Listen for user selection changes
-            document.getElementById('username').addEventListener('change', async (e) => {
-                currentUsername = e.target.value;
-                if (currentUsername) {
-                    await loadUserPermissions(currentUsername);
+            // 初始化选择器
+            await updateTargetSelect();  // 立即更新选择器，加载用户列表
+            
+            // 监听类型选择变化
+            document.querySelectorAll('input[name="targetType"]').forEach(radio => {
+                radio.addEventListener('change', async (e) => {
+                    currentTargetType = e.target.value;
+                    await updateTargetSelect();
+                });
+            });
+            
+            // 监听目标选择变化
+            document.getElementById('target').addEventListener('change', async (e) => {
+                currentTarget = e.target.value;
+                if (currentTarget) {
+                    await loadTargetPermissions();
                     renderPermissionTree();
                 }
             });
@@ -192,20 +269,11 @@
                 });
                 const users = await response.json();
                 console.log('Received users data:', users);
-                
-                const select = document.getElementById('username');
-                select.innerHTML = '<option value="">Select a user...</option>';
-                if (Array.isArray(users)) {
-                    users.forEach(username => {
-                        const option = document.createElement('option');
-                        option.value = username;
-                        option.textContent = username;
-                        select.appendChild(option);
-                    });
-                }
+                return users;
             } catch (error) {
                 console.error('Error loading users:', error);
                 showError('Failed to load users: ' + error.message);
+                return [];
             } finally {
                 hideLoading();
             }
@@ -232,22 +300,66 @@
             }
         }
 
-        // Load user's current permissions
-        async function loadUserPermissions(username) {
-            showLoading();
+        // Load users from backend
+        async function loadGroups() {
             try {
-                console.log('Loading permissions for user:', username);
-                const response = await fetch(`/api/permissions/user/${username}`, {
+                const response = await fetch('/api/permissions/groups', {
                     headers: {
                         [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
                     }
                 });
-                const permissions = await response.json();
-                console.log('Received user permissions:', permissions);
-                userPermissions = new Set(permissions);
+                groups = await response.json();
             } catch (error) {
-                console.error('Error loading user permissions:', error);
-                showError('Failed to load user permissions: ' + error.message);
+                console.error('Error loading groups:', error);
+                showError('Failed to load groups: ' + error.message);
+            }
+        }
+
+        // 更新选择器选项
+        async function updateTargetSelect() {
+            const select = document.getElementById('target');
+            select.innerHTML = '<option value="">Select...</option>';
+            
+            if (currentTargetType === 'user') {
+                const users = await loadUsers();
+                if (Array.isArray(users)) {
+                    users.forEach(username => {
+                        const option = document.createElement('option');
+                        option.value = username;
+                        option.textContent = username;
+                        select.appendChild(option);
+                    });
+                }
+            } else {
+                groups.forEach(group => {
+                    const option = document.createElement('option');
+                    option.value = group.id;
+                    option.textContent = group.name;
+                    select.appendChild(option);
+                });
+            }
+            
+            // 清空当前权限
+            currentTarget = null;
+            currentPermissions.clear();
+            renderPermissionTree();
+        }
+
+        // 加载目标的权限
+        async function loadTargetPermissions() {
+            showLoading();
+            try {
+                let response;
+                if (currentTargetType === 'user') {
+                    response = await fetch(`/api/permissions/user/${currentTarget}`);
+                } else {
+                    response = await fetch(`/api/permissions/group/${currentTarget}`);
+                }
+                const permissions = await response.json();
+                currentPermissions = new Set(permissions);
+            } catch (error) {
+                console.error('Error loading permissions:', error);
+                showError('Failed to load permissions: ' + error.message);
             } finally {
                 hideLoading();
             }
@@ -301,7 +413,7 @@
                                id="${fullPermission}" 
                                data-permission="${fullPermission}"
                                data-is-parent="${!isLeaf}"
-                               ${userPermissions.has(fullPermission) ? 'checked' : ''}>`;
+                               ${currentPermissions.has(fullPermission) ? 'checked' : ''}>`;
                 html += `<label for="${fullPermission}">${key}</label>`;
                 
                 if (!isLeaf) {
@@ -315,7 +427,7 @@
 
         // Handle permission checkbox changes
         async function handlePermissionChange(event) {
-            if (!currentUsername) return;
+            if (!currentTarget) return;
 
             const checkbox = event.target;
             const permission = checkbox.dataset.permission;
@@ -333,14 +445,22 @@
                 
                 showLoading();
                 try {
-                    const response = await fetch('/api/permissions/batch-update', {
+                    const endpoint = currentTargetType === 'user' ? 
+                        '/api/permissions/batch-update' : 
+                        '/api/permissions/group/batch-update';
+                    
+                    const response = await fetch(endpoint, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
                         },
-                        body: JSON.stringify({
-                            username: currentUsername,
+                        body: JSON.stringify(currentTargetType === 'user' ? {
+                            username: currentTarget,
+                            permissions: childPermissions,
+                            granted: isChecked
+                        } : {
+                            groupId: currentTarget,
                             permissions: childPermissions,
                             granted: isChecked
                         })
@@ -357,9 +477,9 @@
                             childCheckbox.checked = isChecked;
                         }
                         if (isChecked) {
-                            userPermissions.add(perm);
+                            currentPermissions.add(perm);
                         } else {
-                            userPermissions.delete(perm);
+                            currentPermissions.delete(perm);
                         }
                     });
 
@@ -375,14 +495,22 @@
                 // 叶子节点处理逻辑
                 showLoading();
                 try {
-                    const response = await fetch('/api/permissions/update', {
+                    const endpoint = currentTargetType === 'user' ? 
+                        '/api/permissions/update' : 
+                        '/api/permissions/group/update';
+                    
+                    const response = await fetch(endpoint, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
                         },
-                        body: JSON.stringify({
-                            username: currentUsername,
+                        body: JSON.stringify(currentTargetType === 'user' ? {
+                            username: currentTarget,
+                            permission: permission,
+                            granted: isChecked
+                        } : {
+                            groupId: currentTarget,
                             permission: permission,
                             granted: isChecked
                         })
@@ -393,9 +521,9 @@
                     }
 
                     if (isChecked) {
-                        userPermissions.add(permission);
+                        currentPermissions.add(permission);
                     } else {
-                        userPermissions.delete(permission);
+                        currentPermissions.delete(permission);
                     }
 
                     showSuccess(`Permission ${isChecked ? 'granted' : 'revoked'} successfully`);

@@ -66,22 +66,64 @@
             font-size: 24px;
             text-align: center;
             margin: 20px 0;
-            padding: 10px;
+            padding: 16px;
             background: #f8f9fa;
             border-radius: 4px;
+            border: 1px solid #e9ecef;
             display: none;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         .logout-btn {
+            padding: 8px 16px;
             background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
         }
         .logout-btn:hover {
             background: #c82333;
+        }
+        .message-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .error, .success {
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .error {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .success {
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+
+        .error.show, .success.show {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -96,8 +138,11 @@
             </form>
         </div>
 
-        <div id="error-message" class="error"></div>
-        <div id="success-message" class="success"></div>
+        <div class="message-container">
+            <div id="error-message" class="error"></div>
+            <div id="success-message" class="success"></div>
+        </div>
+
         <div id="otp-display" class="otp-display"></div>
 
         <form id="pre-register-form">
@@ -162,6 +207,30 @@
                 errorDiv.textContent = error.message || 'An error occurred';
             }
         });
+    </script>
+
+    <script>
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            errorDiv.textContent = message;
+            successDiv.classList.remove('show');
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            errorDiv.classList.remove('show');
+            successDiv.classList.add('show');
+            setTimeout(() => {
+                successDiv.classList.remove('show');
+            }, 3000);
+        }
     </script>
 </body>
 </html> 

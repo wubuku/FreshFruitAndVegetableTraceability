@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <script>
+    <script th:inline="javascript">
         // Base64URL decode function
         function base64URLDecode(str) {
             str = str.replace(/-/g, '+').replace(/_/g, '/');
@@ -126,7 +126,8 @@
             try {
                 const response = await fetch('/session/check', {
                     headers: {
-                        'X-Auth-Token': getSessionId() || ''
+                        'X-Auth-Token': getSessionId() || '',
+                        '[[${_csrf.headerName}]]': '[[${_csrf.token}]]'
                     }
                 });
                 const newSessionId = response.headers.get('X-Auth-Token');
@@ -141,7 +142,7 @@
                 response_type: 'code',
                 client_id: 'ffv-client',
                 redirect_uri: 'http://localhost:9000/oauth2-test-callback',
-                scope: 'openid read write',
+                scope: 'openid profile',
                 code_challenge: codeChallenge,
                 code_challenge_method: 'S256'
             });
