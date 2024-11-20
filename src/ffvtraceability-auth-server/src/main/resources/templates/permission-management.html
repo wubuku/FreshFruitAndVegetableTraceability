@@ -41,19 +41,29 @@
         }
         .error {
             color: #dc3545;
-            padding: 10px;
+            padding: 10px 20px;
             margin: 10px 0;
             border: 1px solid #dc3545;
             border-radius: 4px;
-            display: none;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
         }
         .success {
             color: #28a745;
-            padding: 10px;
+            padding: 10px 20px;
             margin: 10px 0;
             border: 1px solid #28a745;
             border-radius: 4px;
-            display: none;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
         }
         .logout-btn {
             background: #dc3545;
@@ -103,14 +113,12 @@
             bottom: 20px;
             right: 20px;
             z-index: 1000;
+            pointer-events: none;
         }
 
-        .error, .success {
-            padding: 10px 20px;
-            margin: 10px 0;
-            border-radius: 4px;
-            opacity: 0.9;
-            min-width: 200px;
+        .error.show, .success.show {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -123,9 +131,6 @@
                 <button type="submit" class="logout-btn">Logout</button>
             </form>
         </div>
-
-        <div id="error-message" class="error"></div>
-        <div id="success-message" class="success"></div>
 
         <div class="user-select">
             <label for="username">Select User:</label>
@@ -140,6 +145,11 @@
             <div class="spinner"></div>
             <div class="loading-text">Loading...</div>
         </div>
+    </div>
+
+    <div class="message-container">
+        <div id="error-message" class="error"></div>
+        <div id="success-message" class="success"></div>
     </div>
 
     <script th:inline="javascript">
@@ -438,22 +448,22 @@
             const errorDiv = document.getElementById('error-message');
             const successDiv = document.getElementById('success-message');
             errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            successDiv.style.display = 'none';
+            successDiv.classList.remove('show');
+            errorDiv.classList.add('show');
             setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 5000);
+                errorDiv.classList.remove('show');
+            }, 3000);
         }
 
         function showSuccess(message) {
             const errorDiv = document.getElementById('error-message');
             const successDiv = document.getElementById('success-message');
             successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            errorDiv.style.display = 'none';
+            errorDiv.classList.remove('show');
+            successDiv.classList.add('show');
             setTimeout(() => {
-                successDiv.style.display = 'none';
-            }, 5000);
+                successDiv.classList.remove('show');
+            }, 3000);
         }
     </script>
 </body>
