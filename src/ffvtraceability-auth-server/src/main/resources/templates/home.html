@@ -133,30 +133,7 @@
         </div>
 
         <div class="menu-grid">
-            <!-- OAuth2 Test - Available to all authenticated users -->
-            <a href="/oauth2-test" class="menu-item">
-                <i>🔑</i>
-                <h3>OAuth2 Test</h3>
-                <p>Test OAuth2 authorization flow</p>
-            </a>
-
-            <!-- Pre-register - Admin only -->
-            <a href="/pre-register" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
-                <span class="admin-badge">Admin</span>
-                <i>👥</i>
-                <h3>User Pre-registration</h3>
-                <p>Pre-register users</p>
-            </a>
-
-            <!-- Permission Management - Admin only -->
-            <a href="/permission-management" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
-                <span class="admin-badge">Admin</span>
-                <i>🔒</i>
-                <h3>Permission Management</h3>
-                <p>Manage user permissions</p>
-            </a>
-
-            <!-- User Management - Admin only -->
+            <!-- 1. 用户管理 -->
             <a href="/user-management" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
                 <span class="admin-badge">Admin</span>
                 <i>👥</i>
@@ -164,12 +141,35 @@
                 <p>Manage system users</p>
             </a>
 
-            <!-- Group Management - Admin only -->
+            <!-- 2. 组管理 -->
             <a href="/group-management" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
                 <span class="admin-badge">Admin</span>
                 <i>👥</i>
                 <h3>Group Management</h3>
                 <p>Manage user groups</p>
+            </a>
+
+            <!-- 3. 权限管理 -->
+            <a href="/permission-management" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
+                <span class="admin-badge">Admin</span>
+                <i>🔒</i>
+                <h3>Permission Management</h3>
+                <p>Manage user permissions</p>
+            </a>
+
+            <!-- 4. 预注册用户 -->
+            <a href="/pre-register" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
+                <span class="admin-badge">Admin</span>
+                <i>👥</i>
+                <h3>User Pre-registration</h3>
+                <p>Pre-register users</p>
+            </a>
+
+            <!-- 5. OAuth2测试 -->
+            <a href="/oauth2-test" class="menu-item">
+                <i>🔑</i>
+                <h3>OAuth2 Test</h3>
+                <p>Test OAuth2 authorization flow</p>
             </a>
         </div>
     </div>

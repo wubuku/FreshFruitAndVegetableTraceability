@@ -26,6 +26,78 @@
 - 大量现成的客户端实现库
 - 便于与其他系统集成
 
+
+### OAuth2 授权抽象流程
+
+```
++--------+                               +---------------+
+|        |--(A)- Authorization Request ->|   Resource    |
+|        |                              |     Owner     |
+|        |<-(B)-- Authorization Grant ---|               |
+|        |                              +---------------+
+|        |
+|        |                              +---------------+
+|        |--(C)-- Authorization Grant -->| Authorization |
+| Client |                              |     Server    |
+|        |<-(D)----- Access Token -------|               |
+|        |                              +---------------+
+|        |
+|        |                              +---------------+
+|        |--(E)----- Access Token ------>|    Resource   |
+|        |                              |     Server    |
+|        |<-(F)--- Protected Resource ---|               |
++--------+                              +---------------+
+```
+
+### OAuth2 授权码流程（带 PKCE）
+
+```
++--------+                                          +---------------+
+|        |                                         |               |
+|        |                                         |     Auth      |
+|        |                                         |    Server     |
+|        |                                         |               |
+|        |<-(A)-- Create Code Verifier            |               |
+|        |        & Code Challenge                 |               |
+|        |                                         |               |
+|        |--(B)-- Authorization Request + Code Challenge --------->|
+|        |                                         |               |
+|        |<-(C)-- Authorization Code --------------|               |
+|        |                                         |               |
+|        |                                         |               |
+|        |--(D)-- Authorization Code + Code Verifier ------------>|
+|        |                                         |               |
+|        |<-(E)-- Access Token + Refresh Token ---|               |
+|        |                                         |               |
++--------+                                         +---------------+
+
+步骤说明：
+A. 客户端创建一个随机的 code_verifier 并计算其 code_challenge
+B. 客户端将 code_challenge 连同授权请求发送给授权服务器
+C. 授权服务器返回授权码
+D. 客户端发送授权码和原始 code_verifier
+E. 授权服务器验证 code_verifier，返回访问令牌和刷新令牌
+```
+
+这两个流程图展示了：
+
+1. **OAuth2 抽象流程**：
+   - 展示了参与方之间的基本交互
+   - 包括资源所有者、客户端、授权服务器和资源服务器
+   - 显示了从授权请求到访问受保护资源的完整流程
+
+2. **授权码流程（带PKCE）**：
+   - 展示了具体的授权码授权类型实现
+   - 包含了 PKCE 安全增强机制
+   - 详细展示了 code_verifier 和 code_challenge 的使用
+   - 显示了完整的令牌交换过程
+
+这些流程图有助于理解：
+- OAuth2 的基本参与方和交互过程
+- PKCE 如何增强授权码流程的安全性
+- 客户端与授权服务器之间的具体交互步骤
+- 令牌的获取和使用过程
+
 ## 二、授权码流程测试脚本解析
 
 脚本见代码库根目录下的 `src/ffvtraceability-auth-server/scripts/test.sh`。

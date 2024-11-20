@@ -391,7 +391,10 @@
         }
 
         function showAddGroupModal() {
-            document.getElementById('addGroupModal').style.display = 'block';
+            const modal = document.getElementById('addGroupModal');
+            const input = document.getElementById('groupName');
+            modal.style.display = 'block';
+            input.focus();
         }
 
         function hideAddGroupModal() {

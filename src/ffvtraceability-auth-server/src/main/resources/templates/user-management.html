@@ -198,6 +198,57 @@
             display: flex;
             gap: 10px;
         }
+        .password-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .password-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .password-change-required {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .password-normal {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+        .status-column {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        .action-btn:disabled::after {
+            content: "Cannot disable your own account";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .action-btn:disabled:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -225,6 +276,7 @@
                 <tr>
                     <th>Username</th>
                     <th>Status</th>
+                    <th>Password Status</th>
                     <th>Groups</th>
                     <th>Actions</th>
                 </tr>
@@ -248,6 +300,9 @@
     </div>
 
     <script th:inline="javascript">
+        // 从 Model 中获取当前用户名
+        const currentUsername = [[${currentUsername}]];
+
         function showLoading() {
             document.getElementById('loading-overlay').style.display = 'flex';
         }
@@ -289,27 +344,38 @@
                 const users = await response.json();
                 
                 const tbody = document.getElementById('userTableBody');
-                tbody.innerHTML = users.map(user => `
-                    <tr>
-                        <td>${user.username}</td>
-                        <td>
-                            <span class="status-badge ${user.enabled ? 'status-enabled' : 'status-disabled'}">
-                                ${user.enabled ? 'Enabled' : 'Disabled'}
-                            </span>
-                        </td>
-                        <td>${user.groups || '-'}</td>
-                        <td>
-                            <button onclick="toggleUserEnabled('${user.username}', ${user.enabled})" 
-                                    class="action-btn ${user.enabled ? 'disable-btn' : 'enable-btn'}">
-                                ${user.enabled ? 'Disable' : 'Enable'}
-                            </button>
-                            <button onclick="requirePasswordChange('${user.username}')" 
-                                    class="action-btn password-btn">
-                                Require Password Change
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
+                tbody.innerHTML = users.map(user => {
+                    const isCurrentUser = user.username === currentUsername;
+                    return `
+                        <tr>
+                            <td>${user.username}</td>
+                            <td>
+                                <span class="status-badge ${user.enabled ? 'status-enabled' : 'status-disabled'}">
+                                    ${user.enabled ? 'Enabled' : 'Disabled'}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="password-status">
+                                    <span class="password-badge ${user.password_change_required ? 'password-change-required' : 'password-normal'}">
+                                        ${user.password_change_required ? 'Password Change Required' : 'Password Normal'}
+                                    </span>
+                                </div>
+                            </td>
+                            <td>${user.groups || '-'}</td>
+                            <td>
+                                <button onclick="toggleUserEnabled('${user.username}', ${user.enabled})" 
+                                        class="action-btn ${user.enabled ? 'disable-btn' : 'enable-btn'}"
+                                        ${isCurrentUser ? 'disabled title="Cannot disable your own account"' : ''}>
+                                    ${user.enabled ? 'Disable' : 'Enable'}
+                                </button>
+                                <button onclick="togglePasswordChange('${user.username}')" 
+                                        class="action-btn password-btn">
+                                    ${user.password_change_required ? 'Cancel Password Change' : 'Require Password Change'}
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
             } catch (error) {
                 console.error('Error loading users:', error);
                 showError('Failed to load users');
@@ -318,7 +384,36 @@
             }
         }
 
+        async function togglePasswordChange(username) {
+            showLoading();
+            try {
+                const response = await fetch(`/api/users/${username}/toggle-password-change`, {
+                    method: 'POST',
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update password change status');
+                }
+
+                showSuccess(`Password change status updated for user ${username}`);
+                await loadUsers();
+            } catch (error) {
+                console.error('Error updating password change status:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
         async function toggleUserEnabled(username, currentEnabled) {
+            if (username === currentUsername) {
+                showError('You cannot disable your own account');
+                return;
+            }
+
             showLoading();
             try {
                 const response = await fetch(`/api/users/${username}/toggle-enabled`, {
@@ -329,34 +424,11 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to update user status');
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Failed to update user status');
                 }
 
                 showSuccess(`User ${username} ${currentEnabled ? 'disabled' : 'enabled'} successfully`);
-                await loadUsers();
-            } catch (error) {
-                console.error('Error updating user:', error);
-                showError(error.message);
-            } finally {
-                hideLoading();
-            }
-        }
-
-        async function requirePasswordChange(username) {
-            showLoading();
-            try {
-                const response = await fetch(`/api/users/${username}/require-password-change`, {
-                    method: 'POST',
-                    headers: {
-                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to require password change');
-                }
-
-                showSuccess(`Password change required for user ${username}`);
                 await loadUsers();
             } catch (error) {
                 console.error('Error updating user:', error);

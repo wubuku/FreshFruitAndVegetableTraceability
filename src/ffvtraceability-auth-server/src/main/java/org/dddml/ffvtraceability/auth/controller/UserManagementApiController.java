@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +40,13 @@ public class UserManagementApiController {
 
     @PostMapping("/{username}/toggle-enabled")
     public ResponseEntity<?> toggleEnabled(@PathVariable String username) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = auth.getName();
+
+        if (username.equals(currentUsername)) {
+            return ResponseEntity.badRequest().body("Cannot disable your own account");
+        }
+
         try {
             jdbcTemplate.update(
                     "UPDATE users SET enabled = NOT enabled WHERE username = ?",
@@ -50,17 +59,17 @@ public class UserManagementApiController {
         }
     }
 
-    @PostMapping("/{username}/require-password-change")
-    public ResponseEntity<?> requirePasswordChange(@PathVariable String username) {
+    @PostMapping("/{username}/toggle-password-change")
+    public ResponseEntity<?> togglePasswordChange(@PathVariable String username) {
         try {
             jdbcTemplate.update(
-                    "UPDATE users SET password_change_required = true WHERE username = ?",
+                    "UPDATE users SET password_change_required = NOT password_change_required WHERE username = ?",
                     username
             );
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            logger.error("Failed to set password change required", e);
-            return ResponseEntity.badRequest().body("Failed to update user");
+            logger.error("Failed to toggle password change required", e);
+            return ResponseEntity.badRequest().body("Failed to update password change status");
         }
     }
 } 
