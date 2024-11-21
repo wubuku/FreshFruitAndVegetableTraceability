@@ -26,10 +26,12 @@ public class UserManagementApiController {
     public List<Map<String, Object>> getUsers() {
         String sql = """
                 SELECT u.username, u.enabled, u.password_change_required,
-                       STRING_AGG(g.group_name, ', ') as groups
+                       STRING_AGG(DISTINCT g.group_name, ', ') as groups,
+                       STRING_AGG(DISTINCT a.authority, ', ') as authorities
                 FROM users u
                 LEFT JOIN group_members gm ON u.username = gm.username
                 LEFT JOIN groups g ON gm.group_id = g.id
+                LEFT JOIN authorities a ON u.username = a.username
                 WHERE u.username != '*'
                 GROUP BY u.username, u.enabled, u.password_change_required
                 ORDER BY u.username

@@ -27,11 +27,13 @@ public class GroupManagementApiController {
     public List<Map<String, Object>> getGroups() {
         String sql = """
                 SELECT g.id, g.group_name, g.enabled,
-                       STRING_AGG(u.username, ', ') as members,
-                       COUNT(gm.username) as member_count
+                       STRING_AGG(DISTINCT u.username, ', ') as members,
+                       COUNT(DISTINCT gm.username) as member_count,
+                       STRING_AGG(DISTINCT ga.authority, ', ') as authorities
                 FROM groups g
                 LEFT JOIN group_members gm ON g.id = gm.group_id
                 LEFT JOIN users u ON gm.username = u.username
+                LEFT JOIN group_authorities ga ON g.id = ga.group_id
                 GROUP BY g.id, g.group_name, g.enabled
                 ORDER BY g.group_name
                 """;

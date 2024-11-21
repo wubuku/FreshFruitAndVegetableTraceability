@@ -269,6 +269,31 @@
         .manage-btn:hover {
             background: #138496;
         }
+        
+        .authority-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            margin: 2px;
+            border-radius: 12px;
+            font-size: 12px;
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .authorities-cell {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .authorities-cell:hover {
+            overflow: visible;
+            white-space: normal;
+            background: white;
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
@@ -297,6 +322,7 @@
                     <th>Group Name</th>
                     <th>Status</th>
                     <th>Members</th>
+                    <th>Authorities</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -436,6 +462,11 @@
                             </span>
                         </td>
                         <td>${group.members || '-'}</td>
+                        <td class="authorities-cell">
+                            ${group.authorities ? group.authorities.split(', ').map(auth => 
+                                `<span class="authority-badge">${auth}</span>`
+                            ).join('') : '-'}
+                        </td>
                         <td>
                             ${group.group_name !== 'ADMIN_GROUP' ? `
                                 <button onclick="toggleGroupEnabled(${group.id}, ${group.enabled})" 

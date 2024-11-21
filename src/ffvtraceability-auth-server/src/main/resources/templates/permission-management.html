@@ -191,6 +191,24 @@
         .home-btn:hover {
             background: #0056b3;
         }
+        .back-btn {
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        
+        .back-btn:hover {
+            background: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -199,6 +217,9 @@
             <div style="display: flex; align-items: center; gap: 20px;">
                 <a href="/" class="home-btn">
                     <i>🏠</i> Home
+                </a>
+                <a id="back-btn" class="back-btn">
+                    <i>⬅️</i> Back
                 </a>
                 <h1>User Permission Management</h1>
             </div>
@@ -211,10 +232,12 @@
         <div class="user-select">
             <div class="select-type">
                 <label>
-                    <input type="radio" name="targetType" value="user" checked> User
+                    <input type="radio" name="targetType" value="user" checked 
+                           id="userTypeRadio"> User
                 </label>
                 <label>
-                    <input type="radio" name="targetType" value="group"> Group
+                    <input type="radio" name="targetType" value="group" 
+                           id="groupTypeRadio"> Group
                 </label>
             </div>
             <div class="select-container">
@@ -253,30 +276,86 @@
             document.getElementById('loading-overlay').style.display = 'none';
         }
 
-        // Load users and permissions when page loads
+        // 页面加载时的初始化函数
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadBasePermissions();
-            await loadGroups();  // 预加载组信息
-            
-            // 初始化选择器
-            await updateTargetSelect();  // 立即更新选择器，加载用户列表
-            
-            // 监听类型选择变化
-            document.querySelectorAll('input[name="targetType"]').forEach(radio => {
-                radio.addEventListener('change', async (e) => {
-                    currentTargetType = e.target.value;
+            try {
+                showLoading();
+                
+                // 1. 设置回退按钮
+                const urlParams = new URLSearchParams(window.location.search);
+                const fromPage = urlParams.get('from');
+                const backBtn = document.getElementById('back-btn');
+                if (fromPage === 'user-management') {
+                    backBtn.href = '/user-management';
+                } else {
+                    backBtn.href = '/';
+                }
+
+                // 2. 加载基础数据
+                await loadBasePermissions();
+                await loadGroups();
+
+                // 3. 处理从用户管理页面进入的情况
+                const type = urlParams.get('type');
+                const target = urlParams.get('target');
+                
+                if (type === 'user' && target && fromPage === 'user-management') {
+                    // 从用户管理页面进入的特殊处理
+                    console.log('Entering from user management page');
+                    
+                    // 禁用选择器
+                    document.getElementById('userTypeRadio').disabled = true;
+                    document.getElementById('groupTypeRadio').disabled = true;
+                    document.getElementById('target').disabled = true;
+                    
+                    // 设置当前值
+                    currentTargetType = 'user';
+                    document.getElementById('userTypeRadio').checked = true;
+                    
+                    // 更新选择器并设置值
                     await updateTargetSelect();
-                });
-            });
-            
-            // 监听目标选择变化
-            document.getElementById('target').addEventListener('change', async (e) => {
-                currentTarget = e.target.value;
-                if (currentTarget) {
+                    const targetSelect = document.getElementById('target');
+                    targetSelect.value = target;
+                    
+                    // 加载目标权限
+                    currentTarget = target;
                     await loadTargetPermissions();
                     renderPermissionTree();
+                } else {
+                    // 从首页进入的原有逻辑
+                    console.log('Entering from home page');
+                    
+                    // 启用所有控件
+                    document.getElementById('userTypeRadio').disabled = false;
+                    document.getElementById('groupTypeRadio').disabled = false;
+                    document.getElementById('target').disabled = false;
+                    
+                    // 监听类型选择变化
+                    document.querySelectorAll('input[name="targetType"]').forEach(radio => {
+                        radio.addEventListener('change', async (e) => {
+                            currentTargetType = e.target.value;
+                            await updateTargetSelect();
+                        });
+                    });
+                    
+                    // 监听目标选择变化
+                    document.getElementById('target').addEventListener('change', async (e) => {
+                        currentTarget = e.target.value;
+                        if (currentTarget) {
+                            await loadTargetPermissions();
+                            renderPermissionTree();
+                        }
+                    });
+                    
+                    // 初始化选择器
+                    await updateTargetSelect();
                 }
-            });
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showError('Failed to initialize: ' + error.message);
+            } finally {
+                hideLoading();
+            }
         });
 
         // Load users from backend

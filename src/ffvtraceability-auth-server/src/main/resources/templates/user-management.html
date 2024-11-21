@@ -249,6 +249,38 @@
             visibility: visible;
             opacity: 1;
         }
+        .authority-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            margin: 2px;
+            border-radius: 12px;
+            font-size: 12px;
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .authorities-cell {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .authorities-cell:hover {
+            overflow: visible;
+            white-space: normal;
+            background: white;
+            position: relative;
+            z-index: 1;
+        }
+        .permission-btn {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .permission-btn:hover {
+            background: #138496;
+        }
     </style>
 </head>
 <body>
@@ -278,6 +310,7 @@
                     <th>Status</th>
                     <th>Password Status</th>
                     <th>Groups</th>
+                    <th>Direct Authorities</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -362,6 +395,11 @@
                                 </div>
                             </td>
                             <td>${user.groups || '-'}</td>
+                            <td class="authorities-cell">
+                                ${user.authorities ? user.authorities.split(', ').map(auth => 
+                                    `<span class="authority-badge">${auth}</span>`
+                                ).join('') : '-'}
+                            </td>
                             <td>
                                 <button onclick="toggleUserEnabled('${user.username}', ${user.enabled})" 
                                         class="action-btn ${user.enabled ? 'disable-btn' : 'enable-btn'}"
@@ -371,6 +409,10 @@
                                 <button onclick="togglePasswordChange('${user.username}')" 
                                         class="action-btn password-btn">
                                     ${user.password_change_required ? 'Cancel Password Change' : 'Require Password Change'}
+                                </button>
+                                <button onclick="managePermissions('${user.username}')" 
+                                        class="action-btn permission-btn">
+                                    Manage Permissions
                                 </button>
                             </td>
                         </tr>
@@ -440,6 +482,10 @@
 
         function showAddUserModal() {
             window.location.href = '/pre-register?from=user-management';
+        }
+
+        function managePermissions(username) {
+            window.location.href = `/permission-management?type=user&target=${username}&from=user-management`;
         }
 
         // Load users when page loads
