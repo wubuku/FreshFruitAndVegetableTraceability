@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Permission Settings</title>
+    <meta name="X-Auth-Token" th:if="${session != null}" th:content="${session.id}">
+    <style>
+        /* 基础样式 */
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin: 0;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        .home-btn {
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .home-btn:hover {
+            background: #0056b3;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        .add-permission-btn {
+            background: #28a745;
+            color: white;
+        }
+        .add-permission-btn:hover {
+            background: #218838;
+        }
+        
+        /* 表格样式 */
+        .permission-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .permission-table th, 
+        .permission-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .permission-table th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+        .permission-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        /* 状态徽章 */
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-enabled {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-disabled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* 操作按钮 */
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-right: 8px;
+        }
+        .enable-btn {
+            background: #28a745;
+            color: white;
+        }
+        .enable-btn:hover {
+            background: #218838;
+        }
+        .disable-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .disable-btn:hover {
+            background: #c82333;
+        }
+        .edit-btn {
+            background: #17a2b8;
+            color: white;
+        }
+        .edit-btn:hover {
+            background: #138496;
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .modal-content {
+            position: relative;
+            background: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        /* 加载和消息样式 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .message-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        .error, .success {
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .error {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+        .success {
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+        .error.show, .success.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" sec:authorize="hasRole('ADMIN')">
+        <div class="header">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <a href="/" class="btn home-btn">
+                    <i>🏠</i> Home
+                </a>
+                <h1>Permission Settings</h1>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="showAddPermissionModal()" class="btn add-permission-btn">
+                    <i>🔒</i> Add New Permission
+                </button>
+                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn logout-btn">Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <table class="permission-table">
+            <thead>
+                <tr>
+                    <th>Permission ID</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="permissionTableBody">
+                <!-- Permissions will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Permission Modal -->
+    <div id="addPermissionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="hideAddPermissionModal()">&times;</span>
+            <h2>Add New Permission</h2>
+            <form id="addPermissionForm" onsubmit="return handleAddPermission(event)">
+                <div class="form-group">
+                    <label for="permissionId">Permission ID:</label>
+                    <input type="text" id="permissionId" name="permissionId" required
+                           pattern="^[A-Z][A-Z0-9_]{2,49}$"
+                           title="Permission ID must start with a capital letter and contain only capital letters, numbers, and underscores"/>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" required/>
+                </div>
+                <button type="submit" class="btn add-permission-btn">Create Permission</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Permission Modal -->
+    <div id="editPermissionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="hideEditPermissionModal()">&times;</span>
+            <h2>Edit Permission</h2>
+            <form id="editPermissionForm" onsubmit="return handleEditPermission(event)">
+                <input type="hidden" id="editPermissionId" name="editPermissionId"/>
+                <div class="form-group">
+                    <label for="editDescription">Description:</label>
+                    <input type="text" id="editDescription" name="editDescription" required/>
+                </div>
+                <button type="submit" class="btn edit-btn">Update Permission</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div style="text-align: center;">
+            <div class="spinner"></div>
+            <div style="margin-top: 10px;">Loading...</div>
+        </div>
+    </div>
+
+    <div class="message-container">
+        <div id="error-message" class="error"></div>
+        <div id="success-message" class="success"></div>
+    </div>
+
+    <script th:inline="javascript">
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            errorDiv.textContent = message;
+            successDiv.classList.remove('show');
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            errorDiv.classList.remove('show');
+            successDiv.classList.add('show');
+            setTimeout(() => {
+                successDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        function showAddPermissionModal() {
+            document.getElementById('addPermissionModal').style.display = 'block';
+            document.getElementById('permissionId').focus();
+        }
+
+        function hideAddPermissionModal() {
+            document.getElementById('addPermissionModal').style.display = 'none';
+            document.getElementById('addPermissionForm').reset();
+        }
+
+        function showEditPermissionModal(permissionId, description) {
+            document.getElementById('editPermissionId').value = permissionId;
+            document.getElementById('editDescription').value = description;
+            document.getElementById('editPermissionModal').style.display = 'block';
+            document.getElementById('editDescription').focus();
+        }
+
+        function hideEditPermissionModal() {
+            document.getElementById('editPermissionModal').style.display = 'none';
+            document.getElementById('editPermissionForm').reset();
+        }
+
+        async function loadPermissions() {
+            showLoading();
+            try {
+                const response = await fetch('/api/permissions/base', {
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+                const permissions = await response.json();
+                
+                const tbody = document.getElementById('permissionTableBody');
+                tbody.innerHTML = permissions.map(permission => `
+                    <tr>
+                        <td>${permission.permission_id}</td>
+                        <td>${permission.description || '-'}</td>
+                        <td>
+                            <span class="status-badge ${permission.enabled !== false ? 'status-enabled' : 'status-disabled'}">
+                                ${permission.enabled !== false ? 'Enabled' : 'Disabled'}
+                            </span>
+                        </td>
+                        <td>
+                            <button onclick="togglePermissionEnabled('${permission.permission_id}', ${permission.enabled !== false})" 
+                                    class="action-btn ${permission.enabled !== false ? 'disable-btn' : 'enable-btn'}">
+                                ${permission.enabled !== false ? 'Disable' : 'Enable'}
+                            </button>
+                            <button onclick="showEditPermissionModal('${permission.permission_id}', '${permission.description || ''}')" 
+                                    class="action-btn edit-btn">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading permissions:', error);
+                showError('Failed to load permissions');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function handleAddPermission(event) {
+            event.preventDefault();
+            showLoading();
+            
+            const permissionId = document.getElementById('permissionId').value;
+            const description = document.getElementById('description').value;
+            
+            try {
+                const response = await fetch('/api/permissions/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    },
+                    body: JSON.stringify({ permissionId, description })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    throw new Error(errorData || 'Failed to create permission');
+                }
+
+                showSuccess('Permission created successfully');
+                hideAddPermissionModal();
+                await loadPermissions();
+            } catch (error) {
+                console.error('Error creating permission:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+            
+            return false;
+        }
+
+        async function handleEditPermission(event) {
+            event.preventDefault();
+            showLoading();
+            
+            const permissionId = document.getElementById('editPermissionId').value;
+            const description = document.getElementById('editDescription').value;
+            
+            try {
+                const response = await fetch(`/api/permissions/${permissionId}/update`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    },
+                    body: JSON.stringify({ description })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update permission');
+                }
+
+                showSuccess('Permission updated successfully');
+                hideEditPermissionModal();
+                await loadPermissions();
+            } catch (error) {
+                console.error('Error updating permission:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+            
+            return false;
+        }
+
+        async function togglePermissionEnabled(permissionId, currentEnabled) {
+            showLoading();
+            try {
+                const response = await fetch(`/api/permissions/${permissionId}/toggle-enabled`, {
+                    method: 'POST',
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update permission status');
+                }
+
+                showSuccess(`Permission ${currentEnabled ? 'disabled' : 'enabled'} successfully`);
+                await loadPermissions();
+            } catch (error) {
+                console.error('Error updating permission:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Load permissions when page loads
+        document.addEventListener('DOMContentLoaded', loadPermissions);
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+                if (event.target.id === 'addPermissionModal') {
+                    document.getElementById('addPermissionForm').reset();
+                } else if (event.target.id === 'editPermissionModal') {
+                    document.getElementById('editPermissionForm').reset();
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

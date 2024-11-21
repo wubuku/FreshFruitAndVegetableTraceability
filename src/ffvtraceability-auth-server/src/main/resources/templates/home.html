@@ -160,12 +160,20 @@
             <!-- 4. 预注册用户 -->
             <a href="/pre-register" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
                 <span class="admin-badge">Admin</span>
-                <i>👥</i>
+                <i>👤</i>
                 <h3>User Pre-registration</h3>
                 <p>Pre-register users</p>
             </a>
 
-            <!-- 5. OAuth2测试 -->
+            <!-- 5. 权限设置（倒数第二位） -->
+            <a href="/permission-settings" class="menu-item admin-only" sec:authorize="hasRole('ADMIN')">
+                <span class="admin-badge">Admin</span>
+                <i>⚙️</i>
+                <h3>Permission Settings</h3>
+                <p>Configure system permissions</p>
+            </a>
+
+            <!-- 6. OAuth2测试（最后一位） -->
             <a href="/oauth2-test" class="menu-item">
                 <i>🔑</i>
                 <h3>OAuth2 Test</h3>

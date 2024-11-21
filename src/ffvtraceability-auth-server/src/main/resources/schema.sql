@@ -101,6 +101,7 @@ CREATE TABLE IF NOT EXISTS oauth2_registered_client (
 -- 基础权限表
 CREATE TABLE permissions (
     permission_id VARCHAR(50) NOT NULL PRIMARY KEY,
-    description VARCHAR(200)
+    description VARCHAR(200),
+    enabled BOOLEAN DEFAULT NULL
 );
 

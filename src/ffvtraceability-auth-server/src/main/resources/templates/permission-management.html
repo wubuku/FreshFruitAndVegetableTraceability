@@ -414,7 +414,8 @@
                 });
                 const permissions = await response.json();
                 console.log('Received base permissions:', permissions);
-                basePermissions = permissions;
+                basePermissions = permissions.filter(p => p.enabled !== false);
+                console.log('Filtered active permissions:', basePermissions);
             } catch (error) {
                 console.error('Error loading base permissions:', error);
                 showError('Failed to load permissions: ' + error.message);
@@ -519,7 +520,12 @@
         function buildPermissionTree(permissions) {
             const tree = {};
             permissions.forEach(permission => {
-                const parts = permission.split('_');
+                // 如果权限被明确禁用（enabled = false），则跳过
+                if (permission.enabled === false) {
+                    return;
+                }
+
+                const parts = permission.permission_id.split('_');
                 let current = tree;
                 for (let i = 0; i < parts.length; i++) {
                     const part = parts[i];

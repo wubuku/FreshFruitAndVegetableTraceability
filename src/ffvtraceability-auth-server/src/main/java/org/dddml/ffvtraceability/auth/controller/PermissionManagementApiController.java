@@ -37,30 +37,34 @@ public class PermissionManagementApiController {
     }
 
     @GetMapping("/base")
-    public List<String> getBasePermissions() {
+    public List<Map<String, Object>> getBasePermissions() {
         logger.debug("Fetching base permissions...");
-        List<String> permissions = jdbcTemplate.queryForList(
-                "SELECT permission_id FROM permissions ORDER BY permission_id",
-                String.class
-        );
-        logger.debug("Found {} base permissions: {}", permissions.size(), permissions);
-        return permissions;
-    }
-
-    @GetMapping("/base/details")
-    public List<Map<String, Object>> getBasePermissionsWithDetails() {
-        return jdbcTemplate.queryForList(
-                "SELECT permission_id, description FROM permissions ORDER BY permission_id"
-        );
+        try {
+            String sql = """
+                SELECT permission_id, description, enabled 
+                FROM permissions 
+                ORDER BY permission_id
+                """;
+            List<Map<String, Object>> permissions = jdbcTemplate.queryForList(sql);
+            logger.debug("Found {} base permissions: {}", permissions.size(), permissions);
+            return permissions;
+        } catch (Exception e) {
+            logger.error("Error fetching base permissions", e);
+            throw e;
+        }
     }
 
     @GetMapping("/user/{username}")
     public List<String> getUserPermissions(@PathVariable String username) {
-        return jdbcTemplate.queryForList(
-                "SELECT authority FROM authorities WHERE username = ? ORDER BY authority",
-                String.class,
-                username
-        );
+        String sql = """
+            SELECT a.authority 
+            FROM authorities a
+            JOIN permissions p ON a.authority = p.permission_id
+            WHERE a.username = ? 
+            AND (p.enabled IS NULL OR p.enabled = true)
+            ORDER BY a.authority
+            """;
+        return jdbcTemplate.queryForList(sql, String.class, username);
     }
 
     @PostMapping("/update")
@@ -133,11 +137,15 @@ public class PermissionManagementApiController {
 
     @GetMapping("/group/{groupId}")
     public List<String> getGroupPermissions(@PathVariable Long groupId) {
-        return jdbcTemplate.queryForList(
-                "SELECT authority FROM group_authorities WHERE group_id = ? ORDER BY authority",
-                String.class,
-                groupId
-        );
+        String sql = """
+            SELECT ga.authority 
+            FROM group_authorities ga
+            JOIN permissions p ON ga.authority = p.permission_id
+            WHERE ga.group_id = ? 
+            AND (p.enabled IS NULL OR p.enabled = true)
+            ORDER BY ga.authority
+            """;
+        return jdbcTemplate.queryForList(sql, String.class, groupId);
     }
 
     @PostMapping("/group/update")
@@ -195,6 +203,68 @@ public class PermissionManagementApiController {
         } catch (Exception e) {
             logger.error("Failed to batch update group permissions", e);
             return ResponseEntity.badRequest().body("Failed to batch update group permissions");
+        }
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createPermission(@RequestBody Map<String, String> request) {
+        String permissionId = request.get("permissionId");
+        String description = request.get("description");
+
+        try {
+            jdbcTemplate.update(
+                "INSERT INTO permissions (permission_id, description, enabled) VALUES (?, ?, NULL)",
+                permissionId, description
+            );
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error("Failed to create permission", e);
+            if (e.getMessage().contains("duplicate key")) {
+                return ResponseEntity.badRequest().body("Permission already exists");
+            }
+            return ResponseEntity.badRequest().body("Failed to create permission");
+        }
+    }
+
+    @PostMapping("/{permissionId}/toggle-enabled")
+    public ResponseEntity<?> togglePermissionEnabled(@PathVariable String permissionId) {
+        try {
+            // 先检查当前状态
+            Boolean currentEnabled = jdbcTemplate.queryForObject(
+                "SELECT enabled FROM permissions WHERE permission_id = ?",
+                Boolean.class,
+                permissionId
+            );
+
+            // 如果当前是 null，设置为 false；如果当前是 false，设置为 null
+            Boolean newEnabled = (currentEnabled == null) ? false : null;
+
+            jdbcTemplate.update(
+                "UPDATE permissions SET enabled = ? WHERE permission_id = ?",
+                newEnabled, permissionId
+            );
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error("Failed to toggle permission enabled status", e);
+            return ResponseEntity.badRequest().body("Failed to update permission status");
+        }
+    }
+
+    @PostMapping("/{permissionId}/update")
+    public ResponseEntity<?> updatePermission(
+            @PathVariable String permissionId,
+            @RequestBody Map<String, String> request) {
+        String description = request.get("description");
+
+        try {
+            jdbcTemplate.update(
+                "UPDATE permissions SET description = ? WHERE permission_id = ?",
+                description, permissionId
+            );
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error("Failed to update permission", e);
+            return ResponseEntity.badRequest().body("Failed to update permission");
         }
     }
 
