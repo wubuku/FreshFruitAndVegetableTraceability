@@ -263,11 +263,11 @@
             background: #c82333;
         }
         .manage-btn {
-            background: #17a2b8;
+            background: #6f42c1;
             color: white;
         }
         .manage-btn:hover {
-            background: #138496;
+            background: #5a32a3;
         }
         
         .authority-badge {
@@ -293,6 +293,15 @@
             background: white;
             position: relative;
             z-index: 1;
+        }
+        
+        .permission-btn {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .permission-btn:hover {
+            background: #138496;
         }
     </style>
 </head>
@@ -478,6 +487,11 @@
                                     class="action-btn manage-btn"
                                     ${!group.enabled ? 'disabled' : ''}>
                                 Manage Members (${group.member_count || 0})
+                            </button>
+                            <button onclick="managePermissions(${group.id}, '${group.group_name}')" 
+                                    class="action-btn permission-btn"
+                                    ${!group.enabled ? 'disabled' : ''}>
+                                Manage Permissions
                             </button>
                         </td>
                     </tr>
@@ -669,6 +683,10 @@
             } finally {
                 hideLoading();
             }
+        }
+
+        function managePermissions(groupId, groupName) {
+            window.location.href = `/permission-management?type=group&target=${groupId}&from=group-management`;
         }
 
         // Load groups when page loads

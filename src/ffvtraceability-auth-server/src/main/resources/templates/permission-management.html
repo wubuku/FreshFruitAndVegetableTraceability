@@ -287,6 +287,8 @@
                 const backBtn = document.getElementById('back-btn');
                 if (fromPage === 'user-management') {
                     backBtn.href = '/user-management';
+                } else if (fromPage === 'group-management') {
+                    backBtn.href = '/group-management';
                 } else {
                     backBtn.href = '/';
                 }
@@ -295,13 +297,14 @@
                 await loadBasePermissions();
                 await loadGroups();
 
-                // 3. 处理从用户管理页面进入的情况
+                // 3. 处理从用户管理或组管理页面进入的情况
                 const type = urlParams.get('type');
                 const target = urlParams.get('target');
                 
-                if (type === 'user' && target && fromPage === 'user-management') {
-                    // 从用户管理页面进入的特殊处理
-                    console.log('Entering from user management page');
+                if ((type === 'user' && fromPage === 'user-management') || 
+                    (type === 'group' && fromPage === 'group-management')) {
+                    // 从管理页面进入的特殊处理
+                    console.log(`Entering from ${fromPage}`);
                     
                     // 禁用选择器
                     document.getElementById('userTypeRadio').disabled = true;
@@ -309,8 +312,8 @@
                     document.getElementById('target').disabled = true;
                     
                     // 设置当前值
-                    currentTargetType = 'user';
-                    document.getElementById('userTypeRadio').checked = true;
+                    currentTargetType = type;
+                    document.getElementById(`${type}TypeRadio`).checked = true;
                     
                     // 更新选择器并设置值
                     await updateTargetSelect();
