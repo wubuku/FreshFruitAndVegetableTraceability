@@ -36,8 +36,9 @@ public class E2EAuthFlowTests {
     private final BasicCookieStore cookieStore = new BasicCookieStore();
     private final HttpClientContext context = HttpClientContext.create();
     private final String TEST_ADMIN_NAME = "admin";
-    private final String TEST_USER_NAME = "user"; // 我们假设 "user" 和 "admin" 使用同样的密码
+    private final String TEST_USER_NAME = "user";
     private final String TEST_PASSWORD = "admin";
+    private final String NEW_PASSWORD = "newPassword123!";
     private final String[] OAUTH2_SCOPES = {"openid", "profile"};
     private final String FORMATTED_SCOPES = String.join("+", OAUTH2_SCOPES);
     @LocalServerPort
@@ -126,12 +127,29 @@ public class E2EAuthFlowTests {
 
         String formData = String.format("username=%s&password=%s&_csrf=%s",
                 username, TEST_PASSWORD, csrfToken);
-
         loginRequest.setEntity(new StringEntity(formData, ContentType.APPLICATION_FORM_URLENCODED));
 
         try (CloseableHttpResponse response = client.execute(loginRequest, context)) {
             System.out.println("📤 Login Response Status: " + response.getCode());
-            System.out.println("📍 Login Response Location: " + response.getHeader("Location"));
+            String location = response.getHeader("Location").getValue();
+            System.out.println("📍 Login Response Location: " + location);
+
+            // 检查是否需要修改密码
+            if (location.contains("/password/change")) {
+                System.out.println("\n🔄 Password change required, handling password change...");
+                handlePasswordChange(client);
+                
+                // 密码修改后需要重新登录
+                System.out.println("\n🔑 Re-logging in with new password...");
+                formData = String.format("username=%s&password=%s&_csrf=%s",
+                        username, NEW_PASSWORD, csrfToken);
+                loginRequest.setEntity(new StringEntity(formData, ContentType.APPLICATION_FORM_URLENCODED));
+                
+                try (CloseableHttpResponse reLoginResponse = client.execute(loginRequest, context)) {
+                    System.out.println("📤 Re-login Response Status: " + reLoginResponse.getCode());
+                    System.out.println("📍 Re-login Response Location: " + reLoginResponse.getHeader("Location"));
+                }
+            }
         }
 
         // 3. 发起授权请求
@@ -189,6 +207,55 @@ public class E2EAuthFlowTests {
         }
 
         throw new RuntimeException("Failed to get authorization code");
+    }
+
+    private void handlePasswordChange(CloseableHttpClient client) throws Exception {
+        // 1. 获取密码修改页面和新的 CSRF token
+        HttpGet changePasswordPageRequest = new HttpGet(AUTH_SERVER + "/password/change");
+        changePasswordPageRequest.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9");
+
+        String newCsrfToken = null;
+        String stateToken = null;
+
+        try (CloseableHttpResponse response = client.execute(changePasswordPageRequest, context)) {
+            String html = EntityUtils.toString(response.getEntity());
+            Document doc = Jsoup.parse(html);
+            Element csrfElement = doc.selectFirst("input[name=_csrf]");
+            Element stateElement = doc.selectFirst("input[name=state]");
+
+            if (csrfElement != null) {
+                newCsrfToken = csrfElement.attr("value");
+                System.out.println("🔐 New CSRF Token for password change: " + newCsrfToken);
+            }
+            if (stateElement != null) {
+                stateToken = stateElement.attr("value");
+                System.out.println("🔐 State Token for password change: " + stateToken);
+            }
+        }
+
+        // 2. 提交密码修改请求
+        System.out.println("\n📝 Submitting password change...");
+        HttpPost changePasswordRequest = new HttpPost(AUTH_SERVER + "/password/change");
+        changePasswordRequest.setHeader("Content-Type", "application/x-www-form-urlencoded");
+        changePasswordRequest.setHeader("Origin", AUTH_SERVER);
+        changePasswordRequest.setHeader("Referer", AUTH_SERVER + "/password/change");
+
+        String formData = String.format("_csrf=%s&state=%s&currentPassword=%s&newPassword=%s&confirmPassword=%s",
+                newCsrfToken, stateToken, TEST_PASSWORD, NEW_PASSWORD, NEW_PASSWORD);
+        changePasswordRequest.setEntity(new StringEntity(formData, ContentType.APPLICATION_FORM_URLENCODED));
+
+        try (CloseableHttpResponse response = client.execute(changePasswordRequest, context)) {
+            System.out.println("📤 Password Change Response Status: " + response.getCode());
+            if (response.getCode() == 302) {
+                System.out.println("✅ Password changed successfully");
+                System.out.println("📍 Redirect Location: " + response.getHeader("Location"));
+            } else {
+                System.out.println("❌ Password change failed!");
+                String responseBody = EntityUtils.toString(response.getEntity());
+                System.out.println("Response body: " + responseBody);
+                throw new RuntimeException("Failed to change password");
+            }
+        }
     }
 
     private String getAccessToken(CloseableHttpClient client, String code, String codeVerifier) throws Exception {
