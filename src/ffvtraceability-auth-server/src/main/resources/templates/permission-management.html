@@ -209,6 +209,22 @@
         .back-btn:hover {
             background: #5a6268;
         }
+        .permission-tree-placeholder {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            color: #6c757d;
+            border: 1px dashed #dee2e6;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        /* 未选择目标时禁用复选框的样式 */
+        .permission-checkbox[disabled] {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
     </style>
 </head>
 <body>
@@ -344,10 +360,13 @@
                     // 监听目标选择变化
                     document.getElementById('target').addEventListener('change', async (e) => {
                         currentTarget = e.target.value;
+                        currentPermissions.clear();
+                        
                         if (currentTarget) {
                             await loadTargetPermissions();
-                            renderPermissionTree();
                         }
+                        
+                        renderPermissionTree();
                     });
                     
                     // 初始化选择器
@@ -471,9 +490,21 @@
 
         // Build and render the permission tree
         function renderPermissionTree() {
+            const treeContainer = document.getElementById('permission-tree');
+            
+            if (!currentTarget) {
+                // 当没有选择目标时显示提示信息
+                treeContainer.innerHTML = `
+                    <div class="permission-tree-placeholder">
+                        <i>ℹ️</i> Please select a ${currentTargetType} to manage permissions
+                    </div>
+                `;
+                return;
+            }
+
             const tree = buildPermissionTree(basePermissions);
             const treeHtml = renderTreeNode(tree);
-            document.getElementById('permission-tree').innerHTML = treeHtml;
+            treeContainer.innerHTML = treeHtml;
             
             // Add event listeners to checkboxes
             document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
@@ -505,7 +536,6 @@
 
         // Render tree node recursively
         function renderTreeNode(node, path = []) {
-            console.log('Rendering tree node, path:', path);
             let html = '<ul>';
             for (const [key, value] of Object.entries(node)) {
                 const currentPath = [...path, key];
@@ -517,8 +547,9 @@
                                id="${fullPermission}" 
                                data-permission="${fullPermission}"
                                data-is-parent="${!isLeaf}"
-                               ${currentPermissions.has(fullPermission) ? 'checked' : ''}>`;
-                html += `<label for="${fullPermission}">${key}</label>`;
+                               ${currentPermissions.has(fullPermission) ? 'checked' : ''}
+                               ${!currentTarget ? 'disabled' : ''}>`;
+                html += `<label for="${fullPermission}" ${!currentTarget ? 'style="cursor: default;"' : ''}>${key}</label>`;
                 
                 if (!isLeaf) {
                     html += renderTreeNode(value, currentPath);
