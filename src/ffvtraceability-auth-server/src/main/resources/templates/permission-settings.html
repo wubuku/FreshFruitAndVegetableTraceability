@@ -238,6 +238,28 @@
             opacity: 1;
             transform: translateY(0);
         }
+        
+        .import-btn {
+            background: #6610f2;
+            color: white;
+        }
+        
+        .import-btn:hover {
+            background: #520dc2;
+        }
+        
+        .import-instructions {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #6610f2;
+        }
+        
+        .import-instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
     </style>
 </head>
 <body>
@@ -252,6 +274,9 @@
             <div style="display: flex; gap: 10px;">
                 <button onclick="showAddPermissionModal()" class="btn add-permission-btn">
                     <i>🔒</i> Add New Permission
+                </button>
+                <button onclick="showImportModal()" class="btn import-btn">
+                    <i>📥</i> Import from CSV
                 </button>
                 <form th:action="@{/logout}" method="post" style="margin: 0;">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -308,6 +333,29 @@
                     <input type="text" id="editDescription" name="editDescription" required/>
                 </div>
                 <button type="submit" class="btn edit-btn">Update Permission</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Import Permission Modal -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="hideImportModal()">&times;</span>
+            <h2>Import Permissions from CSV</h2>
+            <div class="import-instructions">
+                <p>Please upload a CSV file with the following columns:</p>
+                <ul>
+                    <li><strong>permission_id</strong> (required): The unique identifier for the permission</li>
+                    <li><strong>description</strong> (optional): Description of the permission</li>
+                    <li><strong>enabled</strong> (optional): Permission status (true/yes/y/1 for enabled, other values for disabled)</li>
+                </ul>
+            </div>
+            <form id="importForm" onsubmit="return handleImport(event)">
+                <div class="form-group">
+                    <label for="csvFile">Select CSV File:</label>
+                    <input type="file" id="csvFile" accept=".csv" required/>
+                </div>
+                <button type="submit" class="btn import-btn">Import</button>
             </form>
         </div>
     </div>
@@ -375,6 +423,15 @@
         function hideEditPermissionModal() {
             document.getElementById('editPermissionModal').style.display = 'none';
             document.getElementById('editPermissionForm').reset();
+        }
+
+        function showImportModal() {
+            document.getElementById('importModal').style.display = 'block';
+        }
+
+        function hideImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+            document.getElementById('importForm').reset();
         }
 
         async function loadPermissions() {
@@ -510,6 +567,50 @@
             }
         }
 
+        async function handleImport(event) {
+            event.preventDefault();
+            showLoading();
+            
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+            if (!file) {
+                showError('Please select a file');
+                hideLoading();
+                return false;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/api/permissions/import-csv', {
+                    method: 'POST',
+                    headers: {
+                        [[${ _csrf.headerName }]]: [[${ _csrf.token }]]
+                    },
+                    body: formData
+                });
+
+                const result = await response.text();
+                
+                if (response.ok) {
+                    showSuccess('Import completed');
+                    console.log(result); // 详细的导入结果
+                    hideImportModal();
+                    await loadPermissions();
+                } else {
+                    throw new Error(result);
+                }
+            } catch (error) {
+                console.error('Error importing permissions:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+            
+            return false;
+        }
+
         // Load permissions when page loads
         document.addEventListener('DOMContentLoaded', loadPermissions);
 
@@ -521,6 +622,8 @@
                     document.getElementById('addPermissionForm').reset();
                 } else if (event.target.id === 'editPermissionModal') {
                     document.getElementById('editPermissionForm').reset();
+                } else if (event.target.id === 'importModal') {
+                    document.getElementById('importForm').reset();
                 }
             }
         }
