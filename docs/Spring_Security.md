@@ -145,3 +145,151 @@ INSERT INTO group_members VALUES
 2. 更容易理解和维护
 3. 更灵活的权限管理
 4. 更好的可扩展性
+
+
+## Spring Security 授权注解
+
+### 注解来源和依赖
+
+#### 1. `@RolesAllowed` - JSR-250 标准注解
+
+**包路径：**
+```java
+javax.annotation.security.RolesAllowed  // Java EE
+jakarta.annotation.security.RolesAllowed // Jakarta EE
+```
+
+**Maven 依赖：**
+```xml
+<dependency>
+    <groupId>jakarta.annotation</groupId>
+    <artifactId>jakarta.annotation-api</artifactId>
+    <version>2.1.1</version>
+</dependency>
+```
+
+#### 2. `@Secured` - Spring Security 的原生注解
+
+**包路径：**
+```java
+org.springframework.security.access.annotation.Secured
+```
+
+**Maven 依赖：**
+```xml
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-core</artifactId>
+</dependency>
+```
+
+#### 3. `@PreAuthorize` - Spring Security 的原生注解
+
+**包路径：**
+```java
+org.springframework.security.access.prepost.PreAuthorize
+```
+
+### 启用注解支持
+
+#### Spring Security 5.x 配置
+
+```java
+@Configuration
+@EnableGlobalMethodSecurity(
+    prePostEnabled = true,    // 启用 @PreAuthorize, @PostAuthorize
+    securedEnabled = true,    // 启用 @Secured
+    jsr250Enabled = true      // 启用 @RolesAllowed
+)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    // ...
+}
+```
+
+### Spring Security 6.x 配置
+
+```java
+@Configuration
+@EnableMethodSecurity(
+    prePostEnabled = true,    // 默认为 true
+    securedEnabled = true,    // 默认为 false
+    jsr250Enabled = true      // 默认为 false
+)
+public class SecurityConfig {
+    // ...
+}
+```
+
+### 注解使用示例
+
+#### 基本使用
+
+```java
+// 使用 @Secured
+@Secured("ROLE_ADMIN")
+public void adminMethod() { }
+
+// 使用 @RolesAllowed
+@RolesAllowed("ROLE_ADMIN")
+public void adminMethod() { }
+
+// 使用 @PreAuthorize
+@PreAuthorize("hasRole('ADMIN')")
+public void adminMethod() { }
+```
+
+#### 多角色/权限控制
+
+```java
+// 使用 and 组合
+@PreAuthorize("hasAnyRole('ADMIN') and hasAnyAuthority('USER')")  
+
+// 使用 or 组合
+@PreAuthorize("hasAnyRole('ADMIN') or hasAnyAuthority('USER')")   
+
+// 更复杂的组合
+@PreAuthorize("(hasAnyRole('ADMIN','MANAGER') and hasAnyAuthority('READ','WRITE')) or hasRole('SUPER_ADMIN')")
+```
+
+#### 角色前缀说明
+
+Spring Security 中的 `hasRole()` 和 `hasAnyRole()` 会自动添加 "ROLE_" 前缀：
+
+```java
+// 错误方式 - 会变成检查 "ROLE_ROLE_ADMIN" 角色
+@PreAuthorize("hasAnyRole('ROLE_ADMIN')")  
+
+// 正确方式 - 会自动变成检查 "ROLE_ADMIN"
+@PreAuthorize("hasAnyRole('ADMIN')")       
+
+// 使用 hasAuthority - 直接检查 "ROLE_ADMIN"
+@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")  
+```
+
+源码实现：
+```java
+private static String defaultRolePrefix = "ROLE_";
+
+public final boolean hasRole(String role) {
+    return hasAuthority(defaultRolePrefix + role);
+}
+
+public final boolean hasAnyRole(String... roles) {
+    return hasAnyAuthorityName(defaultRolePrefix, roles);
+}
+```
+
+### 最佳实践建议
+
+1. 推荐使用 `@PreAuthorize`，因为：
+   - 表达能力最强
+   - 可以使用 SpEL 表达式
+   - 可以访问方法参数
+   - Spring Security 默认启用
+
+2. 角色命名规范：
+   - 使用 `hasRole()` 时不要手动添加 "ROLE_" 前缀
+   - 使用 `hasAuthority()` 时需要完整的权限名称
+
+3. 保持团队使用风格的一致性，避免混用不同注解
+

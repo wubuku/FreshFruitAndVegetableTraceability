@@ -50,18 +50,18 @@ DELETE FROM users WHERE username = '*';
 
 -- 添加基础权限
 INSERT INTO permissions (permission_id, description, enabled) VALUES 
-    ('ITEM_CREATE', '创建物料的权限', NULL),
-    ('ITEM_READ', '读取物料的权限', NULL),
-    ('ITEM_UPDATE', '更新物料的权限', NULL),
-    ('ITEM_DELETE', '删除物料的权限', NULL),
-    ('ORDER_PO_CREATE', '创建采购订单的权限', NULL),
-    ('ORDER_PO_READ', '读取采购订单的权限', NULL),
-    ('ORDER_PO_UPDATE', '更新采购订单的权限', NULL),
-    ('ORDER_PO_DEACTIVATE', '停用采购订单的权限', NULL),
-    ('ORDER_SO_CREATE', '创建销售订单的权限', NULL),
-    ('ORDER_SO_READ', '读取销售订单的权限', NULL),
-    ('ORDER_SO_UPDATE', '更新销售订单的权限', NULL),
-    ('ORDER_SO_DEACTIVATE', '停用销售订单的权限', NULL);
+    ('ITEM_CREATE', 'Permission to create items', NULL),
+    ('ITEM_READ', 'Permission to read items', NULL),
+    ('ITEM_UPDATE', 'Permission to update items', NULL),
+    ('ITEM_DELETE', 'Permission to delete items', NULL),
+    ('ORDER_PO_CREATE', 'Permission to create purchase orders', NULL),
+    ('ORDER_PO_READ', 'Permission to read purchase orders', NULL),
+    ('ORDER_PO_UPDATE', 'Permission to update purchase orders', NULL),
+    ('ORDER_PO_DEACTIVATE', 'Permission to deactivate purchase orders', NULL),
+    ('ORDER_SO_CREATE', 'Permission to create sales orders', NULL),
+    ('ORDER_SO_READ', 'Permission to read sales orders', NULL),
+    ('ORDER_SO_UPDATE', 'Permission to update sales orders', NULL),
+    ('ORDER_SO_DEACTIVATE', 'Permission to deactivate sales orders', NULL);
 
 -- 为测试用户添加一些初始权限
 INSERT INTO authorities (username, authority) VALUES 

@@ -41,6 +41,25 @@ CREATE TABLE group_members (
     CONSTRAINT fk_group_members_group FOREIGN KEY(group_id) REFERENCES groups(id)
 );
 
+--
+-- 扩展：权限设置（for Permission Settings）
+--
+
+-- 删除旧的权限表
+DROP TABLE IF EXISTS permissions;
+
+-- 基础权限表
+CREATE TABLE permissions (
+    permission_id VARCHAR(50) NOT NULL PRIMARY KEY,
+    description VARCHAR(200),
+    enabled BOOLEAN DEFAULT NULL
+);
+
+
+--
+-- OAuth Server Schema
+--
+
 -- OAuth2 授权表
 CREATE TABLE IF NOT EXISTS oauth2_authorization (
     id varchar(100) NOT NULL,
@@ -97,11 +116,3 @@ CREATE TABLE IF NOT EXISTS oauth2_registered_client (
     token_settings varchar(2000) NOT NULL,
     PRIMARY KEY (id)
 );
-
--- 基础权限表
-CREATE TABLE permissions (
-    permission_id VARCHAR(50) NOT NULL PRIMARY KEY,
-    description VARCHAR(200),
-    enabled BOOLEAN DEFAULT NULL
-);
-
