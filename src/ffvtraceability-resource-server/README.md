@@ -1,8 +1,7 @@
-# 测试 OAuth2 资源服务
+# 测试 OAuth2 资源服务器
 
-本文档描述如何测试 Auth Server 以及资源服务器。
-
-特别是，我们下面会测试观察资源服务器上“组权限”的缓存机制。
+本文档描述如何测试资源服务器。 为了测试资源服务器，我们需要先启动授权服务器（Auth Server）。
+关于 Auth Server 的更多内容请参考 [Auth Server README](../ffvtraceability-auth-server/README.md)。
 
 
 ## 1. 启动授权服务器
@@ -29,9 +28,24 @@ cd src/ffvtraceability-resource-server
 mvn spring-boot:run
 ```
 
-## 3. 获取访问令牌
+## 注意事项
 
-在第三个终端窗口中，运行测试脚本获取访问令牌：
+1. 确保 PostgreSQL 数据库已启动
+2. 确保授权服务器和资源服务器使用的是相同的数据库（或数据同步的主从库）
+3. 可以修改 application.yml 中的缓存配置来调整缓存行为：
+```yaml
+spring:
+  cache:
+    caffeine:
+      spec: maximumSize=100,expireAfterWrite=3600s
+```
+
+之所以特别提到缓存配置，是因为我们下面会介绍测试观察资源服务器上“权限组”的缓存机制。
+
+
+## 关于如何获取访问令牌
+
+可以在第三个终端窗口中，运行 Auth Server 的测试脚本获取访问令牌：
 
 ```bash
 # 进入测试脚本目录
@@ -47,7 +61,22 @@ cat tokens.env
 # export ACCESS_TOKEN=eyJhbGciOiJSUzI1...
 ```
 
-## 4. 运行缓存测试客户端
+
+## E2E 测试
+
+我们在 `src/ffvtraceability-resource-server/src/test/java/org/dddml/ffvtraceability/resource/E2EAuthFlowTests.java` 中编写了一个 E2E（端到端）测试，可以用来测试资源服务器的整个 OAuth2 流程。
+
+它使用了真实的 HTTP Client 而不是 Mock 测试，所以需要启动授权服务器和资源服务器。
+
+
+
+## 关于资源服务使用的缓存机制的测试
+
+资源服务器中使用了 Spring Cache 来缓存“权限组”数据。（见：`src/ffvtraceability-resource-server/src/main/java/org/dddml/ffvtraceability/resource/service/GroupAuthorityService.java`）
+
+我们写了一些测试代码来观察缓存的行为。
+
+### 运行缓存测试客户端
 
 在第四个终端窗口中，使用获取到的访问令牌运行测试客户端：
 
@@ -62,7 +91,7 @@ export ACCESS_TOKEN=eyJhbGciOiJSUzI1...
 mvn exec:java -Dexec.mainClass="org.dddml.ffvtraceability.resource.CacheTestClient"
 ```
 
-## 5. 观察缓存行为
+### 观察缓存行为
 
 在资源服务器的日志输出中，你应该能看到：
 
@@ -75,26 +104,11 @@ Cache MISS - Loading authorities from database for group: GROUP_ADMIN_GROUP
 
 3. 等待缓存过期（默认1小时）后，又会看到缓存未命中日志
 
-## 6. 停止测试
+
+### 停止测试
 
 可以随时按 `Ctrl+C` 停止测试客户端。
 
-## 7. E2E 测试
-
-`src/ffvtraceability-resource-server/src/test/java/org/dddml/ffvtraceability/resource/E2EAuthFlowTests.java` 中定义了一个 E2E 测试流程，可以用来测试资源服务器的整个 OAuth2 流程。
-
-
-## 注意事项
-
-1. 确保 PostgreSQL 数据库已启动
-2. 确保授权服务器和资源服务器使用的是相同的数据库（或数据同步的主从库）
-3. 可以修改 application.yml 中的缓存配置来调整缓存行为：
-```yaml
-spring:
-  cache:
-    caffeine:
-      spec: maximumSize=100,expireAfterWrite=3600s
-```
 
 ## 故障排除
 
