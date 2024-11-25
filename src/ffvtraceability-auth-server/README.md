@@ -9,7 +9,7 @@ mvn clean spring-boot:run
 
 服务器将在 9000 端口启动。
 
-## 2. OAuth 2.0 授权码流程测试
+## 2. OAuth 2.0 授权码浏览器流程测试
 
 ### 2.1 浏览器访问测试页面
 
@@ -140,7 +140,6 @@ function decodeJWT(token) {
 }
 ```
 
-
 ### 2.4 安全考虑
 
 1. **PKCE (Proof Key for Code Exchange)**
@@ -170,8 +169,17 @@ function decodeJWT(token) {
 - 完整的请求/响应信息
 
 
-## 关于 Spring Security OAuth2 Authorization Server
+## 使用 Shell 脚本测试授权码流程
 
+见：`src/ffvtraceability-auth-server/scripts/test.sh`
+
+## 测试资源服务器的端到端测试（授权码流程测试）
+
+见：`src/ffvtraceability-resource-server/README.md`
+
+
+
+## 关于 Spring Security OAuth2 Authorization Server 的扩展
 
 ### 支持有层级的权限
 
