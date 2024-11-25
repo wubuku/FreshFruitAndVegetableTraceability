@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1/test3
+    username: postgres
+    password: 123456
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+
+server:
+  port: 0
+
+# 禁用 OAuth2 资源服务器配置（仅用于测试）
+security:
+  oauth2:
+    resource:
+      enabled: false 

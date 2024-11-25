@@ -91,7 +91,7 @@ INSERT INTO oauth2_registered_client (
     'FFV Client',
     'client_secret_basic',
     'authorization_code,refresh_token',
-    'http://127.0.0.1:3000/callback,com.ffv.app://oauth2/callback,http://localhost:9000/oauth2-test-callback',
+    'http://127.0.0.1:3000/callback,com.ffv.app://oauth2/callback,http://localhost:9000/oauth2-test-callback,http://localhost:1023/api/index.html',
     'http://127.0.0.1:3000/logout,com.ffv.app://oauth2/logout',
     'openid,profile',
     '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":true,"settings.client.require-authorization-consent":false}',
@@ -110,3 +110,4 @@ INSERT INTO oauth2_registered_client (
     scopes = EXCLUDED.scopes,
     client_settings = EXCLUDED.client_settings,
     token_settings = EXCLUDED.token_settings;
+

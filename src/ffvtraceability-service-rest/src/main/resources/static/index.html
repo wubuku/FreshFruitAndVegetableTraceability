@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .token-info {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JWT Test Page</h1>
+    <div id="tokenInfo" class="token-info">
+        Checking JWT status...
+    </div>
+    <button id="loginButton" class="button" style="display: none">Login</button>
+    <button id="logoutButton" class="button" style="display: none">Logout</button>
+
+    <script>
+        const AUTH_SERVER = 'http://localhost:9000';
+        const CLIENT_ID = 'ffv-client';
+        const REDIRECT_URI = 'http://localhost:1023/api/index.html';
+
+        // 解析JWT
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                return JSON.parse(window.atob(base64));
+            } catch (e) {
+                console.error('Error parsing JWT:', e);
+                return null;
+            }
+        }
+
+        // 检查JWT是否过期
+        function isTokenExpired(token) {
+            const payload = parseJwt(token);
+            if (!payload) return true;
+            const expiry = payload.exp * 1000;
+            return Date.now() >= expiry;
+        }
+
+        // 显示JWT信息
+        function displayTokenInfo(token) {
+            const payload = parseJwt(token);
+            if (!payload) {
+                document.getElementById('tokenInfo').innerHTML = 'Invalid JWT';
+                return;
+            }
+            
+            const tokenInfo = `JWT Information:
+Subject: ${payload.sub}
+Expires: ${new Date(payload.exp * 1000).toLocaleString()}
+Scopes: ${payload.scope}
+
+Full payload:
+${JSON.stringify(payload, null, 2)}`;
+            
+            document.getElementById('tokenInfo').innerHTML = tokenInfo;
+        }
+
+        // 初始化状态
+        function initializeAuthState() {
+            const token = localStorage.getItem('jwt_token');
+            const loginButton = document.getElementById('loginButton');
+            const logoutButton = document.getElementById('logoutButton');
+            
+            if (token && !isTokenExpired(token)) {
+                displayTokenInfo(token);
+                loginButton.style.display = 'none';
+                logoutButton.style.display = 'inline-block';
+            } else {
+                document.getElementById('tokenInfo').innerHTML = 'No valid JWT found';
+                loginButton.style.display = 'inline-block';
+                logoutButton.style.display = 'none';
+                localStorage.removeItem('jwt_token');
+            }
+        }
+
+        // 生成随机字符串
+        function generateRandomString(length) {
+            const array = new Uint8Array(length);
+            window.crypto.getRandomValues(array);
+            return Array.from(array, byte => ('0' + (byte & 0xFF).toString(16)).slice(-2)).join('');
+        }
+
+        // Base64URL编码
+        function base64URLEncode(str) {
+            return btoa(str)
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=/g, '');
+        }
+
+        // 生成PKCE挑战
+        async function generateCodeChallenge(verifier) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(verifier);
+            const digest = await window.crypto.subtle.digest('SHA-256', data);
+            return base64URLEncode(String.fromCharCode(...new Uint8Array(digest)));
+        }
+
+        // 处理OAuth回调
+        async function handleCallback() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const error = urlParams.get('error');
+            
+            if (error) {
+                console.error('Authorization error:', error);
+                document.getElementById('tokenInfo').innerHTML = `Authorization Error: ${error}`;
+                return;
+            }
+            
+            if (code) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                const codeVerifier = sessionStorage.getItem('code_verifier');
+                if (!codeVerifier) {
+                    console.error('No code verifier found');
+                    return;
+                }
+
+                try {
+                    // 添加更多调试信息
+                    console.log('Exchanging code for token with:', {
+                        code: code,
+                        codeVerifier: codeVerifier,
+                        redirectUri: REDIRECT_URI
+                    });
+
+                    // 修改 token 请求
+                    const response = await fetch(`${AUTH_SERVER}/oauth2/token`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Authorization': 'Basic ' + btoa(`${CLIENT_ID}:secret`),
+                            'Accept': 'application/json'
+                        },
+                        credentials: 'include',  // 包含 cookies
+                        body: new URLSearchParams({
+                            grant_type: 'authorization_code',
+                            code: code,
+                            redirect_uri: REDIRECT_URI,
+                            code_verifier: codeVerifier
+                        })
+                    });
+
+                    console.log('Token response status:', response.status);
+                    console.log('Token response headers:', Object.fromEntries(response.headers.entries()));
+
+                    const data = await response.json();
+                    console.log('Token response data:', data);
+
+                    if (data.error) {
+                        throw new Error(data.error_description || data.error);
+                    }
+
+                    localStorage.setItem('jwt_token', data.access_token);
+                    sessionStorage.removeItem('code_verifier');
+                    initializeAuthState();
+                } catch (error) {
+                    console.error('Token exchange error:', error);
+                    document.getElementById('tokenInfo').innerHTML = 'Error getting token: ' + error.message;
+                }
+            }
+        }
+
+        // 登录函数，保持简单，就像浏览器中手动输入 URL 一样
+        async function login() {
+            try {
+                // 1. 生成 PKCE 参数
+                const codeVerifier = generateRandomString(64);
+                const codeChallenge = await generateCodeChallenge(codeVerifier);
+                sessionStorage.setItem('code_verifier', codeVerifier);
+
+                // 2. 构建授权 URL
+                const params = new URLSearchParams({
+                    response_type: 'code',
+                    client_id: CLIENT_ID,
+                    redirect_uri: REDIRECT_URI,
+                    scope: 'openid profile',
+                    code_challenge: codeChallenge,
+                    code_challenge_method: 'S256'
+                });
+
+                // 3. 就像在浏览器地址栏输入 URL 一样
+                const authUrl = `${AUTH_SERVER}/oauth2/authorize?${params.toString()}`;
+                console.log('Redirecting to:', authUrl);
+                
+                // 4. 简单的重定向，让浏览器处理剩下的事情
+                window.location.replace(authUrl);
+            } catch (error) {
+                console.error('Login error:', error);
+                document.getElementById('tokenInfo').innerHTML = `Login error: ${error.message}`;
+            }
+        }
+
+        // 登出
+        function logout() {
+            localStorage.removeItem('jwt_token');
+            sessionStorage.removeItem('code_verifier');
+            initializeAuthState();
+        }
+
+        // 添加事件监听器
+        document.getElementById('loginButton').addEventListener('click', login);
+        document.getElementById('logoutButton').addEventListener('click', logout);
+
+        // 初始化
+        handleCallback();
+        initializeAuthState();
+    </script>
+</body>
+</html> 

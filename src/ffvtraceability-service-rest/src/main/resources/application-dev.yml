@@ -1,0 +1,16 @@
+server:
+  port: 1023
+
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1/test3
+    username: postgres
+    password: 123456
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+

@@ -1,14 +1,17 @@
 package org.dddml.ffvtraceability.restful.test;
 
+import org.dddml.ffvtraceability.restful.config.TestSecurityConfig;
 import org.dddml.ffvtraceability.specialization.hibernate.TableIdGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@ContextConfiguration(classes = {TestSecurityConfig.class})
 public class TableIdGeneratorTest {
 
     // @Autowired
