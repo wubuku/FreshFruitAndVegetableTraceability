@@ -68,8 +68,7 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable());
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
@@ -96,13 +95,22 @@ public class AuthorizationServerConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(authServerProperties.getCors().getAllowedOrigins().split(",")));
-        configuration.setAllowedMethods(Arrays.asList(authServerProperties.getCors().getAllowedMethods().split(",")));
-        configuration.setAllowedHeaders(Arrays.asList(authServerProperties.getCors().getAllowedHeaders().split(",")));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "Accept",
+                "X-Requested-With",
+                "Origin",
+                "Sec-Fetch-Mode",
+                "Sec-Fetch-Site",
+                "Sec-Fetch-Dest"
+        ));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(0L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-        source.registerCorsConfiguration("/oauth2/**", configuration);
         source.registerCorsConfiguration("/oauth2/token", configuration);
         return source;
     }

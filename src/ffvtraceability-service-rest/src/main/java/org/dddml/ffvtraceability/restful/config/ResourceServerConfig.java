@@ -30,13 +30,18 @@ public class ResourceServerConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(new AntPathRequestMatcher("/api/v3/api-docs/**"),
                                 new AntPathRequestMatcher("/api/swagger-ui/**"),
-                                new AntPathRequestMatcher("/api/swagger-ui.html")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/"),
+                                new AntPathRequestMatcher("/api/swagger-ui.html"),
+                                new AntPathRequestMatcher("/api/"),
                                 new AntPathRequestMatcher("/api/index.html"),
                                 new AntPathRequestMatcher("/api/*.js"),
                                 new AntPathRequestMatcher("/api/*.css"),
-                                new AntPathRequestMatcher("/api/*.ico")).permitAll()
-                        .anyRequest().authenticated()
+                                new AntPathRequestMatcher("/api/*.ico"),
+                                new AntPathRequestMatcher("/api/oauth2/token"),
+                                new AntPathRequestMatcher("/api/UomTypes/**"),
+                                new AntPathRequestMatcher("/api/Articles/**")
+                        ).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/protected/**")).authenticated()
+                        .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.decoder(jwtDecoder()))

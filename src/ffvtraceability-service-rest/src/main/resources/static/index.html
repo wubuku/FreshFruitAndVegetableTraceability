@@ -48,8 +48,17 @@
 
         // 解析JWT
         function parseJwt(token) {
+            if (!token) {
+                console.log('No token provided');
+                return null;
+            }
             try {
-                const base64Url = token.split('.')[1];
+                const parts = token.split('.');
+                if (parts.length !== 3) {
+                    console.log('Invalid token format');
+                    return null;
+                }
+                const base64Url = parts[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                 return JSON.parse(window.atob(base64));
             } catch (e) {
@@ -60,14 +69,24 @@
 
         // 检查JWT是否过期
         function isTokenExpired(token) {
+            if (!token) {
+                return true;
+            }
             const payload = parseJwt(token);
-            if (!payload) return true;
+            if (!payload) {
+                return true;
+            }
             const expiry = payload.exp * 1000;
             return Date.now() >= expiry;
         }
 
         // 显示JWT信息
         function displayTokenInfo(token) {
+            if (!token) {
+                document.getElementById('tokenInfo').innerHTML = 'No token available';
+                return;
+            }
+            
             const payload = parseJwt(token);
             if (!payload) {
                 document.getElementById('tokenInfo').innerHTML = 'Invalid JWT';
@@ -75,9 +94,9 @@
             }
             
             const tokenInfo = `JWT Information:
-Subject: ${payload.sub}
-Expires: ${new Date(payload.exp * 1000).toLocaleString()}
-Scopes: ${payload.scope}
+Subject: ${payload.sub || 'N/A'}
+Expires: ${payload.exp ? new Date(payload.exp * 1000).toLocaleString() : 'N/A'}
+Scopes: ${payload.scope || 'N/A'}
 
 Full payload:
 ${JSON.stringify(payload, null, 2)}`;
@@ -99,7 +118,9 @@ ${JSON.stringify(payload, null, 2)}`;
                 document.getElementById('tokenInfo').innerHTML = 'No valid JWT found';
                 loginButton.style.display = 'inline-block';
                 logoutButton.style.display = 'none';
-                localStorage.removeItem('jwt_token');
+                if (token) {
+                    localStorage.removeItem('jwt_token');
+                }
             }
         }
 
@@ -130,60 +151,62 @@ ${JSON.stringify(payload, null, 2)}`;
         async function handleCallback() {
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
-            const error = urlParams.get('error');
-            
-            if (error) {
-                console.error('Authorization error:', error);
-                document.getElementById('tokenInfo').innerHTML = `Authorization Error: ${error}`;
-                return;
-            }
             
             if (code) {
-                window.history.replaceState({}, document.title, window.location.pathname);
-                
                 const codeVerifier = sessionStorage.getItem('code_verifier');
-                if (!codeVerifier) {
-                    console.error('No code verifier found');
-                    return;
-                }
-
+                
                 try {
-                    // 添加更多调试信息
-                    console.log('Exchanging code for token with:', {
-                        code: code,
-                        codeVerifier: codeVerifier,
-                        redirectUri: REDIRECT_URI
-                    });
-
-                    // 修改 token 请求
-                    const response = await fetch(`${AUTH_SERVER}/oauth2/token`, {
+                    console.log('Exchanging code for token...');
+                    const response = await fetch('/api/oauth2/token', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
-                            'Authorization': 'Basic ' + btoa(`${CLIENT_ID}:secret`),
-                            'Accept': 'application/json'
                         },
-                        credentials: 'include',  // 包含 cookies
                         body: new URLSearchParams({
-                            grant_type: 'authorization_code',
                             code: code,
                             redirect_uri: REDIRECT_URI,
                             code_verifier: codeVerifier
                         })
                     });
 
-                    console.log('Token response status:', response.status);
-                    console.log('Token response headers:', Object.fromEntries(response.headers.entries()));
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
 
-                    const data = await response.json();
-                    console.log('Token response data:', data);
+                    let data = await response.json();
+                    console.log('Token response:', data);
+                    
+                    // 如果响应是字符串，尝试再次解析
+                    if (typeof data === 'string') {
+                        try {
+                            data = JSON.parse(data);
+                            console.log('Parsed token data:', data);
+                        } catch (e) {
+                            console.error('Error parsing token response:', e);
+                            throw new Error('Invalid token response format');
+                        }
+                    }
 
                     if (data.error) {
                         throw new Error(data.error_description || data.error);
                     }
 
+                    if (!data.access_token) {
+                        throw new Error('No access token in response');
+                    }
+
                     localStorage.setItem('jwt_token', data.access_token);
+                    console.log('Token stored in localStorage');
+                    
                     sessionStorage.removeItem('code_verifier');
+                    
+                    // 验证存储的 token
+                    const storedToken = localStorage.getItem('jwt_token');
+                    console.log('Stored token:', storedToken);
+                    
+                    const payload = parseJwt(storedToken);
+                    console.log('Parsed token payload:', payload);
+                    
                     initializeAuthState();
                 } catch (error) {
                     console.error('Token exchange error:', error);
