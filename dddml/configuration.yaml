@@ -6,6 +6,7 @@ configuration:
     #ShouldStaticallyInvokeJavaLogicFunctions: true
     ShouldInvokeJavaDefaultLogicFunctions: true
     JsonUriPathVariableEnabled: true
+    SpringSecurityEnabled: true
   multiTenancy:
     discriminatorBasedMultiTenancyEnabled: false
   hibernate:

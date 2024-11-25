@@ -2,9 +2,10 @@ aggregates:
   Article:
     metadata:
       NoEventSourcingOnCreation: true
-    #  Preprocessors: ["CRUD_IT"]
-    #  #CRUD_IT_NO_UPDATE: true
-    #  CRUD_IT_NO_DELETE: true
+      # Preprocessors: ["CRUD_IT"]
+      # #CRUD_IT_NO_UPDATE: true
+      #  CRUD_IT_NO_DELETE: true
+      MethodsSecuredByDefault: true
     id:
       name: ArticleId
       type: long #number
