@@ -31,6 +31,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
@@ -43,12 +46,18 @@ import java.util.*;
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(AuthStateProperties.class)
-@EnableMethodSecurity(prePostEnabled = true) // 启用方法级安全
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Autowired
     private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private AuthServerProperties authServerProperties;
+
+    @Autowired
+    private CorsConfigurationSource corsConfigurationSource;
 
     private static OffsetDateTime toOffsetDateTime(Object dbValue) {
         OffsetDateTime passwordLastChanged = null;
@@ -92,11 +101,13 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/web-clients/oauth2/**"))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(
                                 "/oauth2/**",
+                                "/web-clients/oauth2/**",
                                 "/login",
                                 "/error",
                                 "/oauth2-test",

@@ -50,6 +50,9 @@ auth-server:
     allowed-methods: GET,POST,PUT,DELETE,OPTIONS
     allowed-headers: Authorization,Content-Type,Accept,X-Requested-With,Origin,Sec-Fetch-Mode,Sec-Fetch-Site,Sec-Fetch-Dest
     allow-credentials: true
+  web-clients:
+    allowed-client-ids: ${WEB_CLIENT_IDS:ffv-client,other-web-client}
+    client-secrets: ${WEB_CLIENT_SECRETS:secret,other-secret}
 
 # 安全配置
 security:

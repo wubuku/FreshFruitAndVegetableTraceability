@@ -9,7 +9,8 @@ mvn clean spring-boot:run
 
 服务器将在 9000 端口启动。
 
-## 2. OAuth 2.0 授权码浏览器流程测试
+
+## 2. 在 Auth Server 测试页面上测试 OAuth 2.0 授权码流程
 
 ### 2.1 浏览器访问测试页面
 
@@ -178,8 +179,22 @@ function decodeJWT(token) {
 见：`src/ffvtraceability-resource-server/README.md`
 
 
+## 测试 Web 前端 OAuth2 授权码流程
+
+见这里的描述：`src/ffvtraceability-service-rest/README.md`
+
+
+## 更多参考信息
+
+见：`docs/OAuth2_授权码流程与安全实践详解.md`
+
+---
+
 
 ## 关于 Spring Security OAuth2 Authorization Server 的扩展
+
+下面讨论的是我们对 Spring Security OAuth2 Authorization Server 所做的扩展。
+
 
 ### 支持有层级的权限
 

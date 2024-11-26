@@ -94,24 +94,28 @@ public class AuthorizationServerConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(authServerProperties.getCors().getAllowedOrigins().split(",")));
+        
+        String[] origins = authServerProperties.getCors().getAllowedOrigins().split(",");
+        configuration.setAllowedOriginPatterns(Arrays.asList(origins));
+        
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        
         configuration.setAllowedHeaders(Arrays.asList(
-                "Authorization",
-                "Content-Type",
-                "Accept",
-                "X-Requested-With",
-                "Origin",
-                "Sec-Fetch-Mode",
-                "Sec-Fetch-Site",
-                "Sec-Fetch-Dest"
+            "Authorization",
+            "Content-Type",
+            "Accept",
+            "X-Requested-With",
+            "Origin",
+            "Access-Control-Request-Method",
+            "Access-Control-Request-Headers"
         ));
+        
         configuration.setAllowCredentials(true);
-        configuration.setMaxAge(0L);
-
+        
+        configuration.setMaxAge(3600L);
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-        source.registerCorsConfiguration("/oauth2/token", configuration);
         return source;
     }
 
