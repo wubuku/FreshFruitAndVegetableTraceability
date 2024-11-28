@@ -460,6 +460,53 @@ public class OrderService {
 }
 ```
 
+或者，参考上文，通过 `DatabaseMarkerEvent` 先发布“数据库标记”事件：
+
+```java
+// 发布者的代码
+@Transactional
+public void createOrder(Order order) {
+    orderRepository.save(order);  // 实体进入持久化状态
+    eventPublisher.publishEvent(new DatabaseMarkerEvent<>(order, ...));
+}
+
+// 监听器的代码
+@EventListener
+public void handleDatabaseMarker(DatabaseMarkerEvent<Order> event) {
+    Order order = orderRepository.findById(event.getPayload().getId())
+        .orElseThrow();  // 获取同一个实体实例
+    order.setProcessingStatus(ProcessingStatus.PENDING);  // 修改这个实例
+}
+// 这里使用 findById 是安全的。
+// 由于 @Transactional 注解，这个监听器方法与发布事件的方法在同一个事务中。
+// 在同一个事务中，Hibernate 的一级缓存（Session）会确保同一个 ID 的实体只有一个实例，
+// 所以 findById 会返回与之前 save 时完全相同的实体实例。
+```
+
+或者简化监听者的也可以这样写：
+
+```java
+// 监听者的代码
+@Component
+@Transactional
+public class DatabaseMarkerListener {
+    
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+    
+    @EventListener
+    public void handleDatabaseMarker(DatabaseMarkerEvent<Order> event) {
+        Order order = event.getPayload();
+        order.setProcessingStatus(ProcessingStatus.PENDING);
+        order.setProcessingType(event.getMarkType());
+        order.setLastProcessingTime(LocalDateTime.now());
+        
+        // 发布异步处理事件
+        eventPublisher.publishEvent(new ProcessingEvent<>(order));
+    }
+}
+```
+
 ### 方案优势
 
 1. **状态清晰**
@@ -498,9 +545,10 @@ public class OrderService {
 
 
 
-## Spring Events 与企业集成模式
+## Spring Events 与 Spring Integration
 
-### 企业集成模式概述
+
+### 背景：企业集成模式
 
 企业集成模式（Enterprise Integration Patterns，EIP）是一系列用于解决企业应用集成问题的设计模式，由 Gregor Hohpe 和 Bobby Woolf 在其著作《Enterprise Integration Patterns》中系统化地提出。这些模式主要解决以下问题：
 
@@ -758,9 +806,428 @@ public class OrderService {
    - 支持灵活的配置调整
 
 
+### Spring Integration 的通道实现选择
+
+Spring Integration 提供了灵活的消息通道实现，可以根据实际需求选择合适的方案。
+
+#### 是否需要消息代理？
+
+Spring Integration 的通道实现不一定需要消息代理：
+
+1. **无需消息代理的方案**
+   - `DirectChannel`：直接的方法调用
+   - `QueueChannel`：内存中的队列实现
+   - 适用于单机部署，无需消息持久化的场景
+
+2. **需要消息代理的场景**
+   - 需要消息持久化
+   - 需要跨 JVM 通信
+   - 需要高可用和扩展性
+
+#### 通道实现示例
+
+```java:config/ChannelConfig.java
+@Configuration
+public class ChannelConfig {
+    
+    // 方案1：使用直接通道（方法调用，无需消息代理）
+    @Bean
+    public MessageChannel eventChannel() {
+        return new DirectChannel();
+    }
+    
+    // 方案2：使用内存队列（异步，无需消息代理）
+    @Bean
+    public MessageChannel eventChannel() {
+        return new QueueChannel(100); // 容量为100的队列
+    }
+    
+    // 方案3：使用 RabbitMQ 通道（需要消息代理）
+    @Bean
+    public MessageChannel eventChannel() {
+        return Amqp.channel()
+            .connectionFactory(connectionFactory)
+            .queue("eventQueue")
+            .get();
+    }
+    
+    // 方案4：使用 Kafka 通道（需要消息代理）
+    @Bean
+    public MessageChannel eventChannel() {
+        return Kafka.channel()
+            .connectionFactory(kafkaConnectionFactory)
+            .topic("eventTopic")
+            .get();
+    }
+}
+```
+
+#### 业务代码的稳定性
+
+得益于 Spring Integration 的良好抽象，业务代码可以保持稳定：
+
+```java:services/OrderService.java
+@Service
+public class OrderService {
+    @Autowired
+    private EventGateway eventGateway;
+    
+    public void processOrder(Order order) {
+        // 业务代码不需要关心底层实现
+        eventGateway.publishEvent(new ProcessingEvent<>(order));
+    }
+}
+```
+
+#### 实现方案的演进
+
+Spring Integration 支持系统实现的渐进式演进：
+
+1. **起步阶段**
+   - 使用 DirectChannel
+   - 简单直接，无需额外依赖
+   - 适合功能验证和开发测试
+
+2. **异步需求**
+   - 切换到 QueueChannel
+   - 实现异步处理
+   - 仍然无需外部依赖
+
+3. **分布式需求**
+   - 切换到 RabbitMQ 或 Kafka
+   - 获得消息持久化和分布式能力
+   - 业务代码无需改动
+
+#### 方案优势
+
+1. **灵活性**
+   - 可以从简单实现开始
+   - 根据需求逐步升级
+   - 支持多种实现方式
+
+2. **代码稳定**
+   - 业务代码与实现解耦
+   - 切换实现无需改代码
+   - 降低维护成本
+
+3. **渐进式采用**
+   - 可以随业务增长逐步演进
+   - 避免过度设计
+   - 降低前期投入
+
+
+
+#### Maven 依赖配置
+
+根据不同的通道实现，需要添加相应的依赖：
+
+```xml
+<!-- Spring Integration 核心（必需）-->
+<dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-core</artifactId>
+    <version>${spring-integration.version}</version>
+</dependency>
+
+<!-- 使用 RabbitMQ 时需要添加 -->
+<dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-amqp</artifactId>
+    <version>${spring-integration.version}</version>
+</dependency>
+
+<!-- 使用 Kafka 时需要添加 -->
+<dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-kafka</artifactId>
+    <version>${spring-integration.version}</version>
+</dependency>
+```
+
+#### 消息代理配置
+
+##### 1. 使用内存通道（无需消息代理）
+```yaml:application.yml
+# 无需特殊配置
+spring:
+  integration:
+    channel:
+      auto-create: true
+```
+
+##### 2. 使用 RabbitMQ 通道
+```yaml:application.yml
+spring:
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASS:guest}
+    # 可靠性配置
+    publisher-confirm-type: correlated
+    publisher-returns: true
+```
+
+##### 3. 使用 Kafka 通道
+```yaml:application.yml
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    producer:
+      # 可靠性配置
+      acks: all
+      retries: 3
+    consumer:
+      group-id: ${spring.application.name}
+      auto-offset-reset: earliest
+```
+
+#### 切换步骤说明
+
+1. **从内存通道切换到消息代理**
+   - 添加相应的 Maven 依赖
+   - 添加消息代理的配置
+   - 修改通道配置类（如前文的 ChannelConfig）
+   - 业务代码无需改动
+
+2. **在不同消息代理间切换**
+   - 修改 Maven 依赖
+   - 更新消息代理配置
+   - 更新通道配置
+   - 业务代码保持不变
+
+#### 最佳实践建议
+
+1. **环境隔离**
+   - 开发环境可以使用内存通道
+   - 测试环境可以使用轻量级的 RabbitMQ
+   - 生产环境根据需求选择合适的消息代理
+
+2. **配置外部化**
+   - 使用配置中心管理消息代理配置
+   - 通过环境变量注入敏感信息
+   - 便于不同环境之间切换
+
+3. **监控和运维**
+   - 添加适当的日志记录
+   - 配置监控指标
+   - 设置告警阈值
+
+
+
+### 消息通道类型对比
+
+#### 内存通道
+
+##### DirectChannel（点对点通道）
+- 一条消息只会被一个消费者处理
+- 使用轮询（Round-Robin）方式在多个消费者之间分发消息
+- 同步处理：发送者线程会等待消费者处理完成
+- 适用场景：需要确保消息被精确处理一次
+
+```java
+@Bean
+public MessageChannel orderChannel() {
+    return new DirectChannel();
+}
+
+// 消费者1
+@ServiceActivator(inputChannel = "orderChannel")
+public void processOrder1(Order order) {
+    // 只有一个消费者会收到消息
+}
+
+// 消费者2
+@ServiceActivator(inputChannel = "orderChannel")
+public void processOrder2(Order order) {
+    // 与消费者1轮流处理消息
+}
+```
+
+##### PublishSubscribeChannel（发布订阅通道）
+- 一条消息会被所有订阅者接收和处理
+- 支持广播：每个消费者都会收到相同的消息
+- 异步处理：发送者不会等待消费者处理完成
+- 适用场景：需要多个系统同时处理同一个消息
+
+```java
+@Bean
+public MessageChannel notificationChannel() {
+    return new PublishSubscribeChannel();
+}
+
+// 消费者1
+@ServiceActivator(inputChannel = "notificationChannel")
+public void sendEmail(Order order) {
+    // 发送邮件通知
+}
+
+// 消费者2
+@ServiceActivator(inputChannel = "notificationChannel")
+public void sendSMS(Order order) {
+    // 同时发送短信通知
+}
+```
+
+#### 使用消息代理时的实现
+
+##### 1. RabbitMQ 实现
+```java
+@Bean
+public MessageChannel orderChannel() {
+    return Amqp.channel()
+        .connectionFactory(connectionFactory)
+        .queue("orders")        // 点对点队列
+        .get();
+}
+
+@Bean
+public MessageChannel notificationChannel() {
+    return Amqp.channel()
+        .connectionFactory(connectionFactory)
+        .exchange("notifications")  // 发布订阅交换器
+        .get();
+}
+```
+
+##### 2. Kafka 实现
+```java
+@Bean
+public MessageChannel orderChannel() {
+    return Kafka.channel()
+        .connectionFactory(kafkaConnectionFactory)
+        .topic("orders")        // 单分区主题实现点对点
+        .get();
+}
+
+@Bean
+public MessageChannel notificationChannel() {
+    return Kafka.channel()
+        .connectionFactory(kafkaConnectionFactory)
+        .topic("notifications") // 多消费者组实现发布订阅
+        .get();
+}
+```
+
+##### 消息代理支持说明
+
+1. **RabbitMQ**
+   - 点对点：使用普通队列
+   - 发布订阅：使用 fanout 类型的交换器（Exchange）
+   - 原生支持这两种模式
+
+2. **Kafka**
+   - 点对点：同一消费者组的多个消费者共同消费一个主题
+   - 发布订阅：不同消费者组各自独立消费同一个主题
+   - 通过消费者组机制实现这两种模式
+
+3. **切换注意事项**
+   - 从内存通道切换到消息代理需要添加相应配置
+   - 消息的持久化和可靠性需要额外配置
+   - 需要考虑消息序列化和反序列化
+
+
+
+### 使用内嵌 RabbitMQ
+
+#### Maven 依赖
+
+```xml
+<!-- Spring AMQP + 内嵌 RabbitMQ -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-amqp</artifactId>
+</dependency>
+
+<!-- 内嵌 RabbitMQ 服务器，仅用于开发和测试环境 -->
+<dependency>
+    <groupId>io.arivera.oss</groupId>
+    <artifactId>embedded-rabbitmq</artifactId>
+    <version>1.5.0</version>
+    <scope>test</scope>  <!-- 仅用于测试 -->
+</dependency>
+```
+
+#### 内嵌 RabbitMQ 配置
+
+```java:config/EmbeddedRabbitConfig.java
+@Configuration
+@Profile("dev")  // 仅在开发环境启用
+public class EmbeddedRabbitConfig {
+    
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    public EmbeddedRabbitMqServer embeddedRabbitMq() throws IOException {
+        return new EmbeddedRabbitMqServer();
+    }
+    
+    // 内部类用于启动内嵌 RabbitMQ
+    private static class EmbeddedRabbitMqServer {
+        private EmbeddedRabbitMq rabbitmq;
+        
+        public void start() throws IOException {
+            EmbeddedRabbitMqConfig config = new EmbeddedRabbitMqConfig.Builder()
+                .port(5672)
+                .build();
+            rabbitmq = new EmbeddedRabbitMq(config);
+            rabbitmq.start();
+        }
+        
+        public void stop() {
+            if (rabbitmq != null) {
+                rabbitmq.stop();
+            }
+        }
+    }
+}
+```
+
+#### 应用配置
+
+```yaml:application.yml
+spring:
+  profiles:
+    active: dev  # 开发环境
+    
+  rabbitmq:
+    # 开发环境使用内嵌模式的配置
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    
+    # 消息确认机制
+    listener:
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          initial-interval: 2s
+          max-attempts: 3
+          multiplier: 2
+```
+
+#### 使用说明
+
+1. **环境区分**
+   - 开发环境（dev profile）：使用内嵌 RabbitMQ
+   - 其他环境：使用独立部署的 RabbitMQ
+
+2. **启动顺序**
+   - 应用启动时会自动启动内嵌的 RabbitMQ
+   - 应用关闭时会自动关闭内嵌的 RabbitMQ
+
+3. **注意事项**
+   - 内嵌 RabbitMQ 需要系统安装 Erlang 运行时
+   - 仅推荐用于开发和测试环境
+   - 每次启动都是全新的实例，数据不会持久化
+
+4. **优势**
+   - 开发环境无需额外部署 RabbitMQ
+   - 保证了开发环境的独立性
+   - 便于自动化测试
+
 
 ## Spring Events 与 Spring Integration 的结合使用
-
 
 ### 从 Spring Events 到 Spring Integration
 
@@ -859,6 +1326,10 @@ public class KafkaIntegrationConfig {
 3. **渐进式采用**
    - 先用 Spring Events 实现核心功能
    - 需要外部集成时，通过监听器桥接到 Integration
+
+
+
+
 
 ## 附录：类、注解与依赖说明
 
@@ -972,3 +1443,348 @@ com.example.project/
 2. 使用 Spring Integration 需要额外引入相关依赖
 3. 如果需要特定的集成（如 Kafka），需要引入对应的集成模块
 4. 建议按功能模块组织包结构，保持代码的清晰和可维护性
+
+
+## 附录：RabbitMQ 开发环境搭建方案
+
+### 方案一：安装 Erlang 运行时
+
+由于 RabbitMQ 是用 Erlang 语言开发的，使用内嵌 RabbitMQ 时需要安装 Erlang 运行时环境。
+
+#### Windows 安装
+```bash
+# 使用 Chocolatey 包管理器
+choco install erlang
+```
+或者从官网下载安装包：https://www.erlang.org/downloads
+
+#### macOS 安装
+```bash
+# 使用 Homebrew
+brew install erlang
+```
+
+#### Ubuntu/Debian 安装
+```bash
+# 添加 Erlang Solutions 仓库
+wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+sudo dpkg -i erlang-solutions_2.0_all.deb
+
+# 更新包列表
+sudo apt-get update
+
+# 安装 Erlang
+sudo apt-get install erlang
+```
+
+#### CentOS/RHEL 安装
+```bash
+# 添加 Erlang Solutions 仓库
+curl -s https://packages.erlang-solutions.com/rpm/centos/erlang_solutions.repo > /etc/yum.repos.d/erlang.repo
+
+# 安装 Erlang
+yum install erlang
+```
+
+安装完成后，验证安装：
+```bash
+erl -version
+```
+
+### 方案二：使用 Docker（推荐）
+
+使用 Docker 可以避免安装 Erlang，同时提供更一致的开发环境。
+
+#### Docker Compose 配置
+
+```yaml:docker-compose.yml
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management  # 包含管理界面的版本
+    ports:
+      - "5672:5672"    # AMQP 协议端口
+      - "15672:15672"  # 管理界面端口
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq  # 数据持久化
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  rabbitmq_data:
+```
+
+#### 基本使用命令
+
+```bash
+# 启动 RabbitMQ
+docker-compose up -d rabbitmq
+
+# 查看日志
+docker-compose logs -f rabbitmq
+
+# 停止服务
+docker-compose down
+```
+
+#### 访问管理界面
+- URL: http://localhost:15672
+- 默认用户名/密码: guest/guest
+
+### 方案对比
+
+1. **Erlang 安装方案**
+   - 优点：
+     - 直接在本机运行，性能较好
+     - 资源占用相对较少
+   - 缺点：
+     - 需要安装 Erlang
+     - 不同系统安装方式不同
+     - 可能遇到版本兼容问题
+
+2. **Docker 方案（推荐）**
+   - 优点：
+     - 无需安装 Erlang
+     - 环境一致性好
+     - 提供管理界面
+     - 支持数据持久化
+     - 便于团队协作
+   - 缺点：
+     - 需要安装 Docker
+     - 占用更多系统资源
+
+
+
+## 附录：企业集成模式与 Spring Integration 实现
+
+### 常用的企业集成模式
+
+#### 1. 消息通道（Message Channel）
+最基础的模式，提供消息传递的通道。
+
+```java:config/ChannelConfig.java
+@Configuration
+public class ChannelConfig {
+    
+    @Bean
+    public MessageChannel orderChannel() {
+        return new DirectChannel();  // 点对点通道
+    }
+    
+    @Bean
+    public MessageChannel notificationChannel() {
+        return new PublishSubscribeChannel();  // 发布订阅通道
+    }
+}
+```
+
+#### 2. 消息路由器（Message Router）
+根据消息内容或元数据决定消息的目标通道。
+
+```java:integration/OrderRouter.java
+@Component
+public class OrderRouter {
+    
+    @Router(inputChannel = "orderChannel")
+    public String routeOrder(Order order) {
+        if (order.getAmount() > 10000) {
+            return "vipOrderChannel";
+        } else if (order.isUrgent()) {
+            return "urgentOrderChannel";
+        }
+        return "normalOrderChannel";
+    }
+}
+```
+
+#### 3. 消息过滤器（Message Filter）
+根据条件过滤消息。
+
+```java:integration/OrderFilter.java
+@Component
+public class OrderFilter {
+    
+    @Filter(inputChannel = "orderChannel", outputChannel = "validOrderChannel")
+    public boolean filterOrder(Order order) {
+        return order.getAmount() > 0 && order.getCustomerId() != null;
+    }
+}
+```
+
+#### 4. 消息转换器（Message Transformer）
+转换消息的格式或内容。
+
+```java:integration/OrderTransformer.java
+@Component
+public class OrderTransformer {
+    
+    @Transformer(inputChannel = "orderChannel", outputChannel = "processedChannel")
+    public OrderDTO transformOrder(Order order) {
+        return OrderDTO.builder()
+            .orderId(order.getId())
+            .customerName(order.getCustomer().getName())
+            .totalAmount(order.getAmount())
+            .status(order.getStatus())
+            .build();
+    }
+}
+```
+
+#### 5. 消息分割器（Splitter）
+将一个大消息分割成多个小消息。
+
+```java:integration/OrderSplitter.java
+@Component
+public class OrderSplitter {
+    
+    @Splitter(inputChannel = "batchOrderChannel", outputChannel = "singleOrderChannel")
+    public List<Order> splitBatchOrder(BatchOrder batchOrder) {
+        return batchOrder.getOrders();
+    }
+}
+```
+
+#### 6. 消息聚合器（Aggregator）
+将多个相关消息合并成一个消息。
+
+```java:integration/OrderAggregator.java
+@Component
+public class OrderAggregator {
+    
+    @Aggregator(inputChannel = "orderItemChannel", outputChannel = "completeOrderChannel")
+    public Order aggregateOrder(List<OrderItem> items) {
+        return Order.builder()
+            .items(items)
+            .totalAmount(calculateTotal(items))
+            .build();
+    }
+    
+    private BigDecimal calculateTotal(List<OrderItem> items) {
+        return items.stream()
+            .map(OrderItem::getAmount)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+}
+```
+
+#### 7. 服务激活器（Service Activator）
+将消息连接到服务的处理方法。
+
+```java:integration/OrderProcessor.java
+@Component
+public class OrderProcessor {
+    
+    @Autowired
+    private OrderService orderService;
+    
+    @ServiceActivator(inputChannel = "orderChannel")
+    public void processOrder(Order order) {
+        orderService.process(order);
+    }
+}
+```
+
+### 完整的集成流程示例
+
+下面是一个结合多个模式的订单处理流程示例：
+
+```java:config/OrderIntegrationConfig.java
+@Configuration
+public class OrderIntegrationConfig {
+    
+    @Bean
+    public IntegrationFlow orderProcessingFlow() {
+        return IntegrationFlows
+            .from("orderChannel")
+            // 过滤无效订单
+            .filter(Order.class, order -> order.getAmount().compareTo(BigDecimal.ZERO) > 0)
+            // 转换订单格式
+            .transform(order -> {
+                OrderDTO dto = new OrderDTO();
+                // 转换逻辑
+                return dto;
+            })
+            // 根据订单金额路由
+            .<Order, String>route(order -> {
+                if (order.getAmount().compareTo(new BigDecimal("10000")) > 0) {
+                    return "vip";
+                }
+                return "normal";
+            }, mapping -> mapping
+                .subFlowMapping("vip", sf -> sf
+                    .channel("vipOrderChannel")
+                    .handle(vipOrderHandler()))
+                .subFlowMapping("normal", sf -> sf
+                    .channel("normalOrderChannel")
+                    .handle(normalOrderHandler())))
+            .get();
+    }
+    
+    @Bean
+    public MessageHandler vipOrderHandler() {
+        return message -> {
+            Order order = (Order) message.getPayload();
+            // VIP订单处理逻辑
+        };
+    }
+    
+    @Bean
+    public MessageHandler normalOrderHandler() {
+        return message -> {
+            Order order = (Order) message.getPayload();
+            // 普通订单处理逻辑
+        };
+    }
+}
+```
+
+### 实际应用场景
+
+#### 1. 订单处理系统
+```
+订单创建 -> 验证过滤 -> 格式转换 -> 业务路由 ->
+├── VIP订单处理
+└── 普通订单处理
+```
+
+#### 2. 数据同步系统
+```
+数据变更 -> 分割大批量 -> 格式转换 -> 并行处理 -> 结果聚合
+```
+
+#### 3. 消息通知系统
+```
+事件发生 -> 消息转换 -> 多通道广播 ->
+├── 邮件通知
+├── 短信通知
+└── APP推送
+```
+
+### Spring Integration 的优势
+
+1. **声明式配置**
+   - 使用注解或 Java 配置
+   - 代码清晰易读
+   - 便于维护
+
+2. **模块化设计**
+   - 各个组件职责单一
+   - 易于测试和调试
+   - 支持复用
+
+3. **灵活性**
+   - 支持多种集成模式
+   - 可以组合使用
+   - 支持自定义扩展
+
+4. **可靠性**
+   - 内置错误处理
+   - 支持事务
+   - 提供监控能力
+
