@@ -1788,3 +1788,193 @@ public class OrderIntegrationConfig {
    - 支持事务
    - 提供监控能力
 
+
+## 附录：多事件聚合处理方案
+
+### 场景描述
+在电商系统中，创建发货单需要同时满足两个条件：
+1. 订单已确认（来自订单事件流）
+2. 付款已完成（来自支付事件流）
+
+当这两个条件都满足时，系统需要：
+1. 从两个事件中提取必要信息
+2. 创建新的发货单实体
+3. 触发后续的发货流程
+
+这个场景非常适合使用 Spring Integration 的聚合器模式，它可以：
+1. 自动关联相关的事件
+2. 等待所有必要事件就绪
+3. 处理超时和异常情况
+
+### 实现方案
+
+#### 1. 事件定义
+```java:events/OrderEvent.java
+@Data
+@Builder
+public class OrderEvent {
+    private String orderId;
+    private String customerId;
+    private Address shippingAddress;
+    private OrderStatus status;
+}
+```
+
+```java:events/PaymentEvent.java
+@Data
+@Builder
+public class PaymentEvent {
+    private String paymentId;
+    private String orderId;
+    private BigDecimal amount;
+    private PaymentStatus status;
+}
+```
+
+#### 2. 聚合器实现
+```java:integration/ShipmentAggregator.java
+@Component
+@Slf4j
+public class ShipmentAggregator {
+    
+    @Aggregator(inputChannel = "aggregationChannel", 
+                outputChannel = "shipmentChannel")
+    private Shipment createShipment(List<Message<?>> messages) {
+        OrderEvent orderEvent = null;
+        PaymentEvent paymentEvent = null;
+        
+        for (Message<?> message : messages) {
+            if (message.getPayload() instanceof OrderEvent) {
+                orderEvent = (OrderEvent) message.getPayload();
+            } else if (message.getPayload() instanceof PaymentEvent) {
+                paymentEvent = (PaymentEvent) message.getPayload();
+            }
+        }
+        
+        return Shipment.builder()
+            .orderId(orderEvent.getOrderId())
+            .paymentId(paymentEvent.getPaymentId())
+            .shippingAddress(orderEvent.getShippingAddress())
+            .amount(paymentEvent.getAmount())
+            .status(ShipmentStatus.CREATED)
+            .build();
+    }
+    
+    @CorrelationStrategy
+    private Object correlateBy(Message<?> message) {
+        if (message.getPayload() instanceof OrderEvent) {
+            return ((OrderEvent) message.getPayload()).getOrderId();
+        }
+        return ((PaymentEvent) message.getPayload()).getOrderId();
+    }
+    
+    @ReleaseStrategy
+    private boolean canRelease(List<Message<?>> messages) {
+        if (messages.size() != 2) return false;
+        
+        OrderEvent orderEvent = null;
+        PaymentEvent paymentEvent = null;
+        
+        for (Message<?> message : messages) {
+            Object payload = message.getPayload();
+            if (payload instanceof OrderEvent) {
+                orderEvent = (OrderEvent) payload;
+            } else if (payload instanceof PaymentEvent) {
+                paymentEvent = (PaymentEvent) payload;
+            }
+        }
+        
+        return orderEvent != null 
+            && paymentEvent != null
+            && orderEvent.getStatus() == OrderStatus.CONFIRMED
+            && paymentEvent.getStatus() == PaymentStatus.SUCCESS;
+    }
+}
+```
+
+#### 3. 配置类
+```java:config/IntegrationConfig.java
+@Configuration
+@EnableIntegration
+public class IntegrationConfig {
+    
+    @Bean
+    public IntegrationFlow shipmentFlow(ShipmentAggregator aggregator) {
+        return IntegrationFlows
+            .from(MessageChannels.direct("orderEventChannel"))
+            .aggregate(aggregator)
+            .get();
+    }
+    
+    @ServiceActivator(inputChannel = "shipmentChannel")
+    public void handleShipment(Shipment shipment) {
+        log.info("Created shipment for order: {}", shipment.getOrderId());
+        // 处理发货单
+    }
+}
+```
+
+### 消息流向说明
+
+#### 1. 通道概览
+```
+orderEventChannel    -> 接收订单事件的入口通道
+aggregationChannel   -> 聚合器处理通道（框架自动创建）
+shipmentChannel     -> 发送聚合结果的出口通道
+```
+
+#### 2. 消息流动过程
+
+```mermaid
+graph LR
+    OE[订单事件] --> OC[orderEventChannel]
+    PE[支付事件] --> OC
+    OC --> AC[aggregationChannel]
+    AC --> |聚合处理| AGG[ShipmentAggregator]
+    AGG --> |聚合完成| SC[shipmentChannel]
+    SC --> H[ShipmentHandler]
+```
+
+#### 3. 详细流程说明
+
+1. **事件进入系统**
+```java
+// 发布订单事件
+eventPublisher.publishEvent(orderEvent);  // -> orderEventChannel
+
+// 发布支付事件
+eventPublisher.publishEvent(paymentEvent); // -> orderEventChannel
+```
+
+2. **聚合器处理**
+   - 消息从 orderEventChannel 进入系统
+   - Spring Integration 自动将消息路由到 aggregationChannel
+   - 聚合器根据 `@CorrelationStrategy` 关联相关消息
+   - 当 `@ReleaseStrategy` 条件满足时触发聚合
+   - 聚合结果发送到 shipmentChannel
+
+3. **结果处理**
+   - ServiceActivator 从 shipmentChannel 接收聚合结果
+   - 处理最终的发货单
+
+### 实现特点
+
+1. **通道类型**
+   - `orderEventChannel`: DirectChannel（点对点）
+   - `aggregationChannel`: 由框架自动管理
+   - `shipmentChannel`: DirectChannel（点对点）
+
+2. **消息存储**
+   - 未完成的消息组会被临时存储
+   - 可以配置消息存储策略（内存/数据库）
+
+3. **错误处理**
+   - 可以配置错误通道
+   - 支持超时处理
+   - 可以处理部分结果
+
+4. **优势**
+   - 代码简洁清晰
+   - 自动处理事件关联
+   - 内置错误处理
+   - 可配置超时策略
