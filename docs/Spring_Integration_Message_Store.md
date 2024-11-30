@@ -829,3 +829,150 @@ class IntegrationFlowTest {
 }
 ```
 
+## 7. 使用 JdbcChannelMessageStore 替代消息中间件
+
+在某些特定场景下，我们可以使用 JdbcChannelMessageStore 来替代专业的消息中间件（如 Kafka）。这种方案适用于性能要求不高、规模较小的系统。
+
+### 7.1 实现点对点通道
+
+```java
+@Configuration
+public class JdbcChannelConfig {
+    @Bean
+    public MessageChannel pointToPointChannel(JdbcChannelMessageStore messageStore) {
+        return MessageChannels
+            .queue("pointToPointChannel", messageStore) // 使用队列通道
+            .capacity(1000)  // 设置容量
+            .datatype(String.class)  // 指定数据类型
+            .get();
+    }
+
+    @Bean
+    public IntegrationFlow consumerFlow() {
+        return IntegrationFlows
+            .from("pointToPointChannel",
+                c -> c.poller(Pollers  // 配置轮询
+                    .fixedRate(5000)   // 每5秒轮询一次
+                    .maxMessagesPerPoll(10)  // 每次最多处理10条
+                    .errorHandler(t -> log.error("处理失败,将在下次轮询重试", t))
+                ))
+            .handle(msg -> process(msg))
+            .get();
+    }
+}
+```
+
+### 7.2 实现发布订阅通道
+
+```java
+@Configuration 
+public class JdbcPubSubConfig {
+    @Bean
+    public MessageChannel pubSubChannel(JdbcChannelMessageStore messageStore) {
+        // 创建多个队列通道作为订阅者
+        return MessageChannels
+            .publishSubscribe("pubSubChannel")
+            .subscriberChannel(subscriber -> 
+                MessageChannels.queue("subscriber1", messageStore).get())
+            .subscriberChannel(subscriber ->
+                MessageChannels.queue("subscriber2", messageStore).get())
+            .get();
+    }
+
+    // 订阅者1
+    @Bean 
+    public IntegrationFlow subscriber1Flow() {
+        return IntegrationFlows
+            .from("subscriber1",
+                c -> c.poller(Pollers.fixedRate(5000)))
+            .handle(msg -> processSubscriber1(msg))
+            .get();
+    }
+
+    // 订阅者2
+    @Bean
+    public IntegrationFlow subscriber2Flow() {
+        return IntegrationFlows
+            .from("subscriber2", 
+                c -> c.poller(Pollers.fixedRate(5000)))
+            .handle(msg -> processSubscriber2(msg))
+            .get();
+    }
+}
+```
+
+### 7.3 容错和恢复机制
+
+```java
+@Configuration
+public class FaultTolerantConfig {
+    @Bean
+    public JdbcChannelMessageStore messageStore(DataSource dataSource) {
+        JdbcChannelMessageStore store = new JdbcChannelMessageStore(dataSource);
+        
+        // 设置消息过期时间
+        store.setTimeoutOnIdle(true);
+        store.setIdleTimeout(24 * 60 * 60 * 1000); // 24小时
+        
+        return store;
+    }
+
+    @Bean
+    public IntegrationFlow reliableFlow(JdbcChannelMessageStore messageStore) {
+        return IntegrationFlows
+            .from("inputChannel",
+                c -> c.poller(Pollers
+                    .fixedRate(5000)
+                    .errorHandler(t -> {
+                        log.error("处理失败", t);
+                        // 错误处理逻辑
+                    })
+                    .maxMessagesPerPoll(10)
+                    .transactional() // 添加事务支持
+                ))
+            .handle(msg -> {
+                try {
+                    return process(msg);
+                } catch (Exception e) {
+                    // 处理失败的消息会保留在数据库中
+                    // 下次轮询时会重试
+                    throw e;
+                }
+            })
+            .get();
+    }
+}
+```
+
+### 7.4 使用场景分析
+
+#### 适用场景
+- 内部系统集成
+- 消息量较小（建议每秒数百条以内）
+- 对实时性要求不高
+- 已有数据库基础设施
+- 简单的消息通信需求
+
+#### 不建议场景
+- 高并发系统
+- 需要消息分区
+- 跨数据中心通信
+- 对延迟敏感的场景
+- 大规模分布式系统
+
+### 7.5 优缺点分析
+
+优点：
+- 实现简单，无需额外中间件
+- 与数据库事务集成方便
+- 支持消息持久化
+- 轮询机制提供自动恢复能力
+- 适合小规模应用
+
+缺点：
+- 性能较低，不适合高并发
+- 数据库负载增加
+- 扩展性受限
+- 实时性不如专业消息中间件
+- 需要定期清理过期消息
+
