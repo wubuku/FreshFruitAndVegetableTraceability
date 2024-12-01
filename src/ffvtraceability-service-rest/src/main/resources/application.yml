@@ -39,6 +39,24 @@ spring:
       static-locations: classpath:/static/
       add-mappings: true
 
+  integration:
+    #jdbc:
+    #  initialize-schema: always  # 可选值: always, never, embedded
+    channel:
+      auto-create: true  # 允许自动创建通道
+
+  # 如果需要使用 Kafka
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: ffvtraceability
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 server:
   port: 1023
   servlet:

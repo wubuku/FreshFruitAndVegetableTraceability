@@ -964,6 +964,117 @@ public MessageGroupStore jdbcMessageStore(DataSource dataSource) {
 - 优点：完全持久化、便于查询
 - 缺点：性能较低
 
+### 2.4 JDBC 消息存储表结构说明
+
+Spring Integration 的 JDBC 消息存储使用以下表结构：
+
+#### 1. INT_MESSAGE
+- **用途**：存储消息的主体内容
+- **主要字段**：
+  - MESSAGE_ID：消息唯一标识
+  - REGION：消息所属区域
+  - CREATED_DATE：消息创建时间
+  - MESSAGE_BYTES：序列化后的消息内容
+- **说明**：每条消息都会存储在这个表中，包含消息的完整内容
+
+#### 2. INT_MESSAGE_GROUP
+- **用途**：存储消息分组信息
+- **主要字段**：
+  - GROUP_KEY：分组标识
+  - REGION：分组所属区域
+  - COMPLETE：分组是否完成
+  - LAST_RELEASED_SEQUENCE：最后释放的序列号
+  - CREATED_DATE：分组创建时间
+  - UPDATED_DATE：分组更新时间
+- **说明**：用于聚合器模式，管理消息的分组状态
+
+#### 3. INT_GROUP_TO_MESSAGE
+- **用途**：维护消息组和消息之间的关系
+- **主要字段**：
+  - GROUP_KEY：分组标识
+  - MESSAGE_ID：消息标识
+  - REGION：所属区域
+- **说明**：建立消息组和具体消息之间的多对多关系
+
+#### 4. INT_LOCK
+- **用途**：实现分布式锁机制
+- **主要字段**：
+  - LOCK_KEY：锁定标识
+  - REGION：锁定区域
+  - CLIENT_ID：客户端标识
+  - CREATED_DATE：锁创建时间
+- **说明**：在分布式环境中确保消息处理的同步性
+
+#### 5. INT_CHANNEL_MESSAGE
+- **用途**：存储通道相关的消息
+- **主要字段**：
+  - MESSAGE_ID：消息标识
+  - CHANNEL_NAME：通道名称
+  - CREATED_DATE：创建时间
+  - MESSAGE_BYTES：消息内容
+- **说明**：专门用于 JdbcChannelMessageStore，支持消息通道的持久化
+
+#### 6. INT_METADATA_STORE
+- **用途**：存储元数据信息
+- **主要字段**：
+  - KEY：元数据键
+  - REGION：所属区域
+  - VALUE：元数据值
+- **说明**：存储系统运行时的各种元数据信息
+
+#### 表关系示意
+```sql
+-- 示例查询：获取某个分组的所有消息
+SELECT m.* 
+FROM INT_MESSAGE m
+JOIN INT_GROUP_TO_MESSAGE gm ON m.MESSAGE_ID = gm.MESSAGE_ID
+WHERE gm.GROUP_KEY = 'someGroupKey' 
+AND gm.REGION = 'someRegion';
+
+-- 示例查询：获取某个通道的待处理消息
+SELECT * 
+FROM INT_CHANNEL_MESSAGE 
+WHERE CHANNEL_NAME = 'someChannel'
+ORDER BY CREATED_DATE;
+
+-- 示例查询：检查分布式锁状态
+SELECT * 
+FROM INT_LOCK 
+WHERE LOCK_KEY = 'someLock'
+AND REGION = 'someRegion';
+```
+
+#### 性能优化建议
+
+1. **索引优化**
+```sql
+-- 消息查询索引
+CREATE INDEX idx_message_region ON INT_MESSAGE(REGION, CREATED_DATE);
+
+-- 分组查询索引
+CREATE INDEX idx_group_region ON INT_MESSAGE_GROUP(REGION, UPDATED_DATE);
+
+-- 通道消息索引
+CREATE INDEX idx_channel_date ON INT_CHANNEL_MESSAGE(CHANNEL_NAME, CREATED_DATE);
+```
+
+2. **定期清理**
+```sql
+-- 清理已完成的消息组
+DELETE FROM INT_MESSAGE_GROUP 
+WHERE COMPLETE = 1 
+AND UPDATED_DATE < DATE_SUB(NOW(), INTERVAL 7 DAY);
+
+-- 清理过期的锁
+DELETE FROM INT_LOCK 
+WHERE CREATED_DATE < DATE_SUB(NOW(), INTERVAL 1 HOUR);
+```
+
+3. **分区策略**
+- 按 REGION 字段分区
+- 按时间范围分区
+- 根据实际数据量选择合适的分区策略
+
 ## 3. Region 机制详解
 
 ### 3.1 概念与作用
@@ -1056,24 +1167,6 @@ public class RegionManager {
   - 支持优先级队列
   - 支持 FIFO 语义
 
-### 4.3 使用场景对比
-
-#### JdbcChannelMessageStore
-
-适用于：
-- 应用内部的消息队列
-- 需要数据库级别持久化的场景
-- 消息量相对较小的场景
-- 不需要高吞吐量的场景
-
-#### 消息代理（如 Kafka）
-
-适用于：
-- 跨应用通信
-- 高吞吐量场景
-- 需要消息分区的场景
-- 需要消息广播的场景
-- 需要横向扩展的场景
 
 ## 5. 最佳实践
 

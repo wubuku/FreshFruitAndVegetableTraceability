@@ -14,3 +14,10 @@ spring:
         hbm2ddl:
           auto: update
 
+  integration:
+    jdbc:
+      initialize-schema: always
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
