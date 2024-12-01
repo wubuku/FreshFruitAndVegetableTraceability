@@ -571,7 +571,7 @@ public class HybridFlow {
 4. 代码 `Kafka.messageDrivenChannelAdapter()` 创建的是一个消息源适配器，而不是 Kafka 通道，它会自动创建一个内存 DirectChannel 作为输出通道
 
 
-### 0.6 通道创建和注入说明
+### 0.6 通道创建说明
 
 Spring Integration 中的消息通道(MessageChannel)分为两大类:
 
@@ -759,18 +759,25 @@ Spring Integration 提供了以下几种基于 JVM 内存实现的通道类型�
 - 同步点对点传输
 - 无消息缓冲
 - 发送者线程直接执行处理逻辑
+- 处理完成前发送者线程会被阻塞
+- 如果处理过程抛出异常，会直接传播给发送者
 
 2. **QueueChannel（内存队列通道）**
 - 异步点对点传输
 - 带内存消息缓冲队列
 - 支持多个消费者轮询处理
 - 可以设置队列容量
+- 发送者只负责把消息放入队列就立即返回
+- 需要单独的消费者（通常通过轮询）来处理消息
+- 如果队列满了，发送者会阻塞
 
 3. **PublishSubscribeChannel（内存发布订阅通道）**
 - 消息广播给所有订阅者
-- 支持异步处理
+- 默认是同步的（除非配置了executor）
 - 适合一对多的场景
 - 可以配置是否错误传播
+- 发送者线程会依次调用所有订阅者
+- 可以通过配置 executor 实现异步调用订阅者
 
 4. **PriorityChannel（内存优先级通道）**
 - 基于优先级的内存队列通道
@@ -784,7 +791,53 @@ Spring Integration 提供了以下几种基于 JVM 内存实现的通道类型�
 - 没有消息缓冲
 - 适合需要同步协调的场景
 
-注意：如果需要消息持久化或跨应用通信，应该考虑使用消息代理通道（如 Kafka、RabbitMQ 等），相关配置请参考 0.6 节的消息代理通道配置。
+6. **ExecutorChannel（执行器通道）**
+- 异步执行
+- 使用线程池处理消息
+- 发送者立即返回
+- 适合需要控制并发的场景
+
+配置示例：
+
+```java
+@Configuration
+public class ChannelConfig {
+    // DirectChannel（默认通道）
+    @Bean
+    public MessageChannel directChannel() {
+        return MessageChannels.direct().get();
+    }
+    
+    // QueueChannel（队列通道）
+    @Bean
+    public MessageChannel queueChannel() {
+        return MessageChannels.queue(10).get(); // 容量为10的队列
+    }
+    
+    // PublishSubscribeChannel（发布订阅通道）
+    @Bean
+    public MessageChannel pubSubChannel() {
+        return MessageChannels.publishSubscribe().get(); // 默认同步
+    }
+    
+    // 异步的发布订阅通道
+    @Bean
+    public MessageChannel asyncPubSubChannel() {
+        return MessageChannels.publishSubscribe()
+            .executor(Executors.newCachedThreadPool()) // 配置执行器实现异步
+            .get();
+    }
+    
+    // ExecutorChannel（执行器通道）
+    @Bean
+    public MessageChannel executorChannel() {
+        return MessageChannels.executor(Executors.newFixedThreadPool(5))
+            .get();
+    }
+}
+```
+
+注意：如果需要消息持久化或跨应用通信，应该考虑使用消息代理通道（如 Kafka、RabbitMQ 等）或 JdbcChannelMessageStore，相关配置请参考 0.6 节的消息代理通道配置。
 
 ### 0.10 注意事项
 
@@ -1291,37 +1344,43 @@ public class JdbcChannelConfig {
 public class JdbcPubSubConfig {
     @Bean
     public MessageChannel pubSubChannel(JdbcChannelMessageStore messageStore) {
-        // 创建多个队列通道作为订阅者
         return MessageChannels
             .publishSubscribe("pubSubChannel")
-            .subscriberChannel(subscriber -> 
-                MessageChannels.queue("subscriber1", messageStore).get())
-            .subscriberChannel(subscriber ->
-                MessageChannels.queue("subscriber2", messageStore).get())
-            .get();
-    }
-
-    // 订阅者1
-    @Bean 
-    public IntegrationFlow subscriber1Flow() {
-        return IntegrationFlows
-            .from("subscriber1",
-                c -> c.poller(Pollers.fixedRate(5000)))
-            .handle(msg -> processSubscriber1(msg))
-            .get();
-    }
-
-    // 订阅者2
-    @Bean
-    public IntegrationFlow subscriber2Flow() {
-        return IntegrationFlows
-            .from("subscriber2", 
-                c -> c.poller(Pollers.fixedRate(5000)))
-            .handle(msg -> processSubscriber2(msg))
+            .subscriberChannel(subscriber -> {
+                QueueChannel channel = MessageChannels.queue("subscriber1", messageStore).get();
+                channel.addInterceptor(new ChannelInterceptor() {
+                    @Override
+                    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                        logger.debug("Persisting message to subscriber1");
+                        return message;
+                    }
+                });
+                return channel;
+            })
+            .subscriberChannel(subscriber -> {
+                QueueChannel channel = MessageChannels.queue("subscriber2", messageStore).get();
+                channel.addInterceptor(new ChannelInterceptor() {
+                    @Override
+                    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                        logger.debug("Persisting message to subscriber2");
+                        return message;
+                    }
+                });
+                return channel;
+            })
             .get();
     }
 }
 ```
+
+注：
+1. 调用 `publishSubscribe()` 方法创建的是一个广播通道（broadcast channel），它本身是在内存中的。但是它的订阅者通道（`subscriber1` 和 `subscriber2`）是使用 JdbcChannelMessageStore 持久化的队列通道。
+2. 当在一个 @Transactional 事务中向 `pubSubChannel` 发送消息时，流程是这样的：
+    - 消息首先到达内存中的广播通道
+    - 广播通道会将消息复制并转发给两个订阅者通道
+    - 由于使用了 JdbcChannelMessageStore，每个订阅者通道都会将收到的消息持久化到数据库中
+    - 这些持久化操作会在同一个事务中完成
+
 
 ### 7.3 容错和恢复机制
 
