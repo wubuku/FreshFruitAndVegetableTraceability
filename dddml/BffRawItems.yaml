@@ -1,0 +1,66 @@
+valueObjects:
+  BffRawItemDto:
+    properties:
+      ProductId:
+        type: id
+      # <field name="productName" type="name"></field>
+      # <field name="description" type="description"></field>
+      ProductName:
+        type: name
+      Description:
+        type: description
+      # <field name="smallImageUrl" type="url"></field>
+      # <field name="mediumImageUrl" type="url"></field>
+      # <field name="largeImageUrl" type="url"></field>
+      SmallImageUrl:
+        type: url
+      MediumImageUrl:
+        type: url
+      LargeImageUrl:
+        type: url
+      # <field name="quantityUomId" type="id"></field>
+      # <field name="quantityIncluded" type="fixed-point"><description>If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.</description></field> 
+      # <field name="piecesIncluded" type="numeric"></field>
+      QuantityUomId:
+        type: id
+      QuantityIncluded:
+        description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+        type: fixed-point
+      PiecesIncluded:
+        type: numeric
+      Status:
+        type: id
+      SupplierId:
+        type: id
+
+
+services:
+  BffRawItemService:
+    restfulResourceName: RawItems
+    methods:
+      GetRawItems:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        result:
+          itemType: BffRawItemDto
+      CreateRawItem:
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: RawItem
+        parameters:
+          RawItem:
+            type: BffRawItemDto
+      UpdateRawItem:
+        metadata:
+          RestfulPathVariable: ProductId
+          HttpRequestBody: RawItem
+        httpMethod: PUT
+        parameters:
+          RawItem:
+            type: BffRawItemDto
+
+
+
