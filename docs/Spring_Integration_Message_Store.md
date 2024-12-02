@@ -1734,155 +1734,7 @@ public IntegrationFlow concurrentPollerFlow(MessageChannel inputChannel) {
 4. 消息的处理顺序由队列的 FIFO 特性保证
 
 
-### 7.9 基于状态的消息处理机制
-
-我们可以通过在消息表中添加状态字段来实现这种机制：
-
-1. **修改消息表结构**
-```sql
-CREATE TABLE INT_CHANNEL_MESSAGE (
-    MESSAGE_ID VARCHAR(100),
-    CHANNEL_NAME VARCHAR(100),
-    STATUS VARCHAR(20),       -- 新增：消息状态
-    PROCESS_TIME TIMESTAMP,   -- 新增：处理时间
-    RETRY_COUNT INT,          -- 新增：重试次数
-    CREATED_DATE TIMESTAMP,
-    MESSAGE_BYTES BLOB,
-    PRIMARY KEY (MESSAGE_ID)
-);
-
--- 创建索引以支持高效查询
-CREATE INDEX idx_channel_status ON INT_CHANNEL_MESSAGE(CHANNEL_NAME, STATUS, CREATED_DATE);
-```
-
-2. **扩展 JdbcChannelMessageStore**
-```java
-@Component
-public class StatefulJdbcChannelMessageStore extends JdbcChannelMessageStore {
-    
-    public StatefulJdbcChannelMessageStore(DataSource dataSource) {
-        super(dataSource);
-    }
-    
-    // 重写接收消息的方法，不删除消息而是更新状态
-    @Override
-    @Transactional
-    protected Message<?> doReceive(String channelName) {
-        // 1. 查找并锁定一条待处理的消息
-        String sql = "SELECT * FROM INT_CHANNEL_MESSAGE " +
-                    "WHERE CHANNEL_NAME = ? AND STATUS = 'PENDING' " +
-                    "ORDER BY CREATED_DATE LIMIT 1 FOR UPDATE";
-                    
-        Message<?> message = jdbcTemplate.queryForObject(sql, 
-            (rs, rowNum) -> deserializeMessage(rs));
-            
-        if (message != null) {
-            // 2. 更新消息状态为处理中
-            jdbcTemplate.update(
-                "UPDATE INT_CHANNEL_MESSAGE " +
-                "SET STATUS = 'PROCESSING', " +
-                "    PROCESS_TIME = CURRENT_TIMESTAMP " +
-                "WHERE MESSAGE_ID = ?",
-                message.getHeaders().getId());
-        }
-        
-        return message;
-    }
-    
-    // 标记消息处理完成
-    @Transactional
-    public void markAsComplete(Message<?> message) {
-        jdbcTemplate.update(
-            "UPDATE INT_CHANNEL_MESSAGE " +
-            "SET STATUS = 'COMPLETED' " +
-            "WHERE MESSAGE_ID = ?",
-            message.getHeaders().getId());
-    }
-    
-    // 标记消息处理失败
-    @Transactional
-    public void markAsFailed(Message<?> message, Exception e) {
-        jdbcTemplate.update(
-            "UPDATE INT_CHANNEL_MESSAGE " +
-            "SET STATUS = 'FAILED', " +
-            "    RETRY_COUNT = RETRY_COUNT + 1, " +
-            "    ERROR_MESSAGE = ? " +
-            "WHERE MESSAGE_ID = ?",
-            e.getMessage(), message.getHeaders().getId());
-    }
-}
-```
-
-3. **使用状态感知的消息处理流程**
-```java
-@Configuration
-public class StatefulMessageProcessingConfig {
-    
-    @Bean
-    public IntegrationFlow statefulFlow(
-            StatefulJdbcChannelMessageStore messageStore) {
-        return IntegrationFlows
-            .from("inputChannel",
-                c -> c.poller(Pollers
-                    .fixedRate(1000)
-                    .maxMessagesPerPoll(10)
-                    .transactional()))
-            .handle(msg -> {
-                try {
-                    // 处理消息
-                    process(msg);
-                    // 标记成功
-                    messageStore.markAsComplete(msg);
-                } catch (Exception e) {
-                    // 标记失败
-                    messageStore.markAsFailed(msg, e);
-                    throw e;
-                }
-            })
-            .get();
-    }
-    
-    // 定期清理已完成的消息
-    @Scheduled(cron = "0 0 * * * *") // 每小时执行
-    public void cleanupCompletedMessages() {
-        // 清理7天前的已完成消息
-        jdbcTemplate.update(
-            "DELETE FROM INT_CHANNEL_MESSAGE " +
-            "WHERE STATUS = 'COMPLETED' " +
-            "AND PROCESS_TIME < ?",
-            LocalDateTime.now().minusDays(7));
-    }
-    
-    // 重试失败的消息
-    @Scheduled(fixedRate = 300000) // 每5分钟执行
-    public void retryFailedMessages() {
-        jdbcTemplate.update(
-            "UPDATE INT_CHANNEL_MESSAGE " +
-            "SET STATUS = 'PENDING' " +
-            "WHERE STATUS = 'FAILED' " +
-            "AND RETRY_COUNT < 3 " +  // 最多重试3次
-            "AND PROCESS_TIME < ?",   // 避免太频繁重试
-            LocalDateTime.now().minusMinutes(5));
-    }
-}
-```
-
-这种设计的优点：
-1. 消息处理更安全，不会丢失
-2. 支持重试机制
-3. 可以追踪消息处理状态
-4. 便于问题诊断和补偿处理
-5. 可以实现更复杂的重试策略
-6. 提供处理历史审计
-
-注意事项：
-1. 需要定期清理已完成的消息
-2. 要控制重试次数和频率
-3. 需要监控失败消息数量
-4. 考虑添加告警机制
-
-
-### 7.10 基于现有表结构的状态管理
+### 7.9 基于现有表结构的状态管理
 
 现有的 INT_CHANNEL_MESSAGE 表结构已经包含了一些重要字段：
 
@@ -2048,3 +1900,89 @@ public class MessageMaintenanceTask {
 3. 监控各个状态的消息数量
 4. 考虑添加消息处理超时检测
 
+
+
+### 7.10 事务性消息分发处理
+
+```java
+@Configuration 
+public class AtomicMessageDistributionConfig {
+    @Bean
+    public IntegrationFlow atomicDistributionFlow(
+            @Qualifier("outboxChannel") MessageChannel outboxChannel,
+            PlatformTransactionManager transactionManager,
+            JdbcChannelMessageStore messageStore) {
+            
+        return IntegrationFlows
+            // 1. 从发件箱读取消息，开启事务
+            .from(outboxChannel,
+                c -> c.poller(Pollers
+                    .fixedRate(1000)
+                    .maxMessagesPerPoll(10)
+                    .transactional(transactionManager)))
+            // 2. 在同一事务中处理整个流程    
+            .transform(msg -> {
+                try {
+                    // 在内存中进行消息分割
+                    List<Message<?>> splitMessages = splitMessage(msg);
+                    
+                    // 路由并处理每个分割后的消息
+                    for (Message<?> splitMsg : splitMessages) {
+                        String subscriber = (String) splitMsg.getHeaders().get("subscriber");
+                        if ("subscriber1".equals(subscriber)) {
+                            handleSubscriber1(splitMsg);
+                        } else if ("subscriber2".equals(subscriber)) {
+                            handleSubscriber2(splitMsg);
+                        }
+                    }
+                    
+                    // 处理成功，返回原消息（稍后会被删除）
+                    return msg;
+                    
+                } catch (Exception e) {
+                    // 如果处理失败，抛出异常会导致事务回滚
+                    // 消息会保留在发件箱中
+                    log.error("处理失败，消息将保留在发件箱中", e);
+                    throw e;
+                }
+            })
+            .get();
+    }
+    
+    private List<Message<?>> splitMessage(Message<?> message) {
+        return Arrays.asList(
+            MessageBuilder.fromMessage(message)
+                .setHeader("subscriber", "subscriber1")
+                .build(),
+            MessageBuilder.fromMessage(message)
+                .setHeader("subscriber", "subscriber2")
+                .build()
+        );
+    }
+    
+    private void handleSubscriber1(Message<?> message) {
+        // 处理逻辑...
+    }
+    
+    private void handleSubscriber2(Message<?> message) {
+        // 处理逻辑...
+    }
+}
+```
+
+这种设计的特点：
+
+1. **原子性保证**
+- 整个处理流程在一个事务中完成
+- 要么全部成功，要么全部失败
+- 不会出现部分处理的情况
+
+2. **简化的错误处理**
+- 任何步骤失败都会导致整个事务回滚
+- 消息会保留在发件箱中等待重试
+- 不需要复杂的补偿逻辑
+
+3. **注意事项**
+- 事务时间可能较长，需要合理设置事务超时时间
+- 应避免在事务中进行远程调用或耗时操作
+- 考虑添加死信队列机制处理始终失败的消息
