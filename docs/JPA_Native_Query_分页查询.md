@@ -1,6 +1,7 @@
-# JPA Native Query 分页查询最佳实践
+# JPA Native Query 分页查询
 
 
+一个示例，使用 JPA 的 Native Query 进行分页查询，并使用 Jackson 进行 DTO 转换。
 
 ## 1. DTO 类定义
 
@@ -411,3 +412,219 @@ public class RawItemService {
    - **提高缓存命中率**：减少数据扫描范围
 
    但需注意，子查询优化的效果取决于具体查询和数据库执行计划，建议通过实际测试验证效果。
+
+
+## 另一个示例，使用注解
+
+Repository 类：
+
+```java
+package org.dddml.aptosflexswap.repository;
+
+import org.dddml.aptosflexswap.domain.dto.TokenPairProjection;
+import org.dddml.aptosflexswap.domain.fungibleassetpair.AbstractFungibleAssetPairState.SimpleFungibleAssetPairState;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+@Repository
+@Transactional(readOnly = true)
+public interface TokenPairRepository extends JpaRepository<SimpleFungibleAssetPairState, String> {
+
+    String BASE_TOKEN_PAIRS_QUERY = """
+            SELECT id as id,
+                off_chain_version as offChainVersion,
+                x_reserve_value as x_ReserveValue,
+                y_reserve_value as y_ReserveValue,
+                total_liquidity as totalLiquidity,
+                liquidity_burned as liquidityBurned,
+                fee_numerator as feeNumerator,
+                fee_denominator as feeDenominator,
+                k_last as k_Last,
+                fee_to as feeTo,
+                version as version,
+                x_token_type as x_TokenType,
+                y_token_type as y_TokenType,
+                created_at as createdAt,
+                updated_at as updatedAt,
+                created_by as createdBy,
+                updated_by as updatedBy,
+                active as active,
+                deleted as deleted,
+                pair_type as pairType
+            FROM (
+                SELECT cp.id,
+                    cp.off_chain_version,
+                    cp.x_reserve_value,
+                    cp.y_reserve_value,
+                    cp.total_liquidity,
+                    cp.liquidity_burned,
+                    cp.fee_numerator,
+                    cp.fee_denominator,
+                    cp.k_last,
+                    cp.fee_to,
+                    cp.version,
+                    cp.x_token_type,
+                    cp.y_token_type,
+                    cp.created_at,
+                    cp.updated_at,
+                    cp.created_by,
+                    cp.updated_by,
+                    cp.active,
+                    cp.deleted,
+                    'COIN_PAIR' as pair_type
+                FROM coin_pair cp
+                UNION ALL
+                SELECT facp.id,
+                    facp.off_chain_version,
+                    afs.balance as x_reserve_value,
+                    facp.y_reserve_value,
+                    facp.total_liquidity,
+                    facp.liquidity_burned,
+                    facp.fee_numerator,
+                    facp.fee_denominator,
+                    facp.k_last,
+                    facp.fee_to,
+                    facp.version,
+                    afs.metadata as x_token_type,
+                    facp.y_token_type,
+                    facp.created_at,
+                    facp.updated_at,
+                    facp.created_by,
+                    facp.updated_by,
+                    facp.active,
+                    facp.deleted,
+                    'FUNGIBLE_ASSET_COIN_PAIR' as pair_type
+                FROM fungible_asset_coin_pair facp
+                    LEFT JOIN aptos_fungible_store afs ON facp.x_reserve = afs.object_address
+                UNION ALL
+                SELECT fap.id,
+                    fap.off_chain_version,
+                    afs_x.balance as x_reserve_value,
+                    afs_y.balance as y_reserve_value,
+                    fap.total_liquidity,
+                    fap.liquidity_burned,
+                    fap.fee_numerator,
+                    fap.fee_denominator,
+                    fap.k_last,
+                    fap.fee_to,
+                    fap.version,
+                    afs_x.metadata as x_token_type,
+                    afs_y.metadata as y_token_type,
+                    fap.created_at,
+                    fap.updated_at,
+                    fap.created_by,
+                    fap.updated_by,
+                    fap.active,
+                    fap.deleted,
+                    'FUNGIBLE_ASSET_PAIR' as pair_type
+                FROM fungible_asset_pair fap
+                    LEFT JOIN aptos_fungible_store afs_x ON fap.x_reserve = afs_x.object_address
+                    LEFT JOIN aptos_fungible_store afs_y ON fap.y_reserve = afs_y.object_address
+            ) all_pairs""";
+
+    String COUNT_QUERY = """
+            SELECT COUNT(1) FROM (
+            """ + BASE_TOKEN_PAIRS_QUERY + """
+            ) t""";
+
+    @Query(value = BASE_TOKEN_PAIRS_QUERY + 
+           "\nORDER BY id" +
+           "\nLIMIT :#{#pageable.pageSize} OFFSET :#{#pageable.offset}",
+           countQuery = COUNT_QUERY,
+           nativeQuery = true)
+    Page<TokenPairProjection> findAllTokenPairs(Pageable pageable);
+
+    @Query(value = 
+            "SELECT * FROM (" + BASE_TOKEN_PAIRS_QUERY + ") tp " +
+            "WHERE pair_type = :pairType " +
+            "ORDER BY id " +
+            "LIMIT :#{#pageable.pageSize} OFFSET :#{#pageable.offset}",
+            countQuery = "SELECT COUNT(1) FROM (" + BASE_TOKEN_PAIRS_QUERY + ") tp WHERE pair_type = :pairType",
+            nativeQuery = true)
+    Page<TokenPairProjection> findByPairType(@Param("pairType") String pairType, Pageable pageable);
+
+    @Query(value = 
+            "SELECT * FROM (" + BASE_TOKEN_PAIRS_QUERY + ") tp " +
+            "WHERE x_token_type = :tokenType OR y_token_type = :tokenType " +
+            "ORDER BY id " +
+            "LIMIT :#{#pageable.pageSize} OFFSET :#{#pageable.offset}",
+            countQuery = "SELECT COUNT(1) FROM (" + BASE_TOKEN_PAIRS_QUERY + ") tp " +
+                        "WHERE x_token_type = :tokenType OR y_token_type = :tokenType",
+            nativeQuery = true)
+    Page<TokenPairProjection> findByTokenType(@Param("tokenType") String tokenType, Pageable pageable);
+
+    @Query(value = 
+            "SELECT DISTINCT tp.*, " +
+            "    CASE WHEN ftp.token_pair_id IS NOT NULL THEN 0 ELSE 1 END as sort_featured, " +
+            "    ftp.priority_order as sort_priority " +
+            "FROM (" + BASE_TOKEN_PAIRS_QUERY + ") tp " +
+            "LEFT JOIN featured_token_pair ftp ON tp.id = ftp.token_pair_id " +
+            "WHERE (:featureType IS NULL " +
+            "      OR (ftp.token_pair_id IS NOT NULL " +
+            "          AND ftp.feature_type = :featureType)) " +
+            "ORDER BY sort_featured, " +
+            "    CASE WHEN sort_priority IS NULL THEN 1 ELSE 0 END, " +
+            "    sort_priority, " +
+            "    tp.id " +
+            "LIMIT :#{#pageable.pageSize} OFFSET :#{#pageable.offset}",
+            countQuery = 
+            "SELECT COUNT(DISTINCT tp.id) " +
+            "FROM (" + BASE_TOKEN_PAIRS_QUERY + ") tp " +
+            "LEFT JOIN featured_token_pair ftp ON tp.id = ftp.token_pair_id " +
+            "WHERE (:featureType IS NULL " +
+            "      OR (ftp.token_pair_id IS NOT NULL " +
+            "          AND ftp.feature_type = :featureType))",
+            nativeQuery = true)
+    Page<TokenPairProjection> findAllFeaturedTokenPairs(@Param("featureType") String featureType, Pageable pageable);
+}
+```
+
+上面的代码中的 `@Query` 注解，使用了 `countQuery` 属性，来指定 count 查询的 SQL 语句；
+之前的 `RawItemRepository` 示例中，通过注入 `EntityManager`，使用字符串拼接的方式来构建查询语句，共享 `baseSQL` 语句，拼接字符串的方式灵活度灰更大一些。
+
+
+RestController 代码：
+
+```java
+package org.dddml.aptosflexswap.restful.resource;
+
+import org.dddml.aptosflexswap.domain.dto.TokenPairProjection;
+import org.dddml.aptosflexswap.repository.TokenPairRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RequestMapping(path = "TokenPairs", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController
+public class TokenPairResource {
+    @Autowired
+    private TokenPairRepository tokenPairRepository;
+
+    @GetMapping
+    public Page<TokenPairProjection> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        return tokenPairRepository.findAllTokenPairs(PageRequest.of(page, size));
+    }
+
+    @GetMapping(path = "featured")
+    public Page<TokenPairProjection> getFeatured(
+            @RequestParam(required = false) String featureType,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        return tokenPairRepository.findAllFeaturedTokenPairs(featureType, PageRequest.of(page, size));
+    }
+}
+```
