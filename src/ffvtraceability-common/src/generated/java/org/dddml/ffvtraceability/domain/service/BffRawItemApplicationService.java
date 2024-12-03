@@ -6,10 +6,11 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.specialization.Page;
 
 public interface BffRawItemApplicationService {
 
-    Iterable<BffRawItemDto> when(BffRawItemServiceCommands.GetRawItems c);
+    Page<BffRawItemDto> when(BffRawItemServiceCommands.GetRawItems c);
 
     void when(BffRawItemServiceCommands.CreateRawItem c);
 

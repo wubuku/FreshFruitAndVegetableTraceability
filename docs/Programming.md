@@ -43,7 +43,7 @@ wubuku/dddappp-java:master \
 ```shell
 cd src
 
-mvn package
+mvn clean &&  mvn package -Dmaven.test.skip=true
 ```
 
 ### Generate database schema

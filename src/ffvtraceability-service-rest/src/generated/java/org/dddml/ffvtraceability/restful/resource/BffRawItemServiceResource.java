@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.*;
 
-@RequestMapping(path = "BffRawItemService", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "RawItems", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class BffRawItemServiceResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -30,30 +30,43 @@ public class BffRawItemServiceResource {
     @Autowired
     private BffRawItemApplicationService bffRawItemApplicationService;
 
-    @PostMapping("GetRawItems")
-    public BffRawItemDto[] getRawItems(@RequestBody BffRawItemServiceCommands.GetRawItems requestContent)
-    {
+    @GetMapping
+    public Page<BffRawItemDto> getRawItems(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size
+    ) {
+        BffRawItemServiceCommands.GetRawItems getRawItems = new BffRawItemServiceCommands.GetRawItems();
+        getRawItems.setPage(page);
+        getRawItems.setSize(size);
         try {
-        requestContent.setRequesterId(SecurityContextUtil.getRequesterId());
-        return java.util.stream.StreamSupport.stream((bffRawItemApplicationService.when(requestContent)).spliterator(), false).collect(java.util.stream.Collectors.toList()).toArray(new BffRawItemDto[0]);
+        getRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffRawItemApplicationService.when(getRawItems);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @PostMapping("CreateRawItem")
-    public void createRawItem(@RequestBody BffRawItemServiceCommands.CreateRawItem requestContent)
-    {
+    @PostMapping
+    public void createRawItem(
+        @RequestBody BffRawItemDto rawItem
+    ) {
+        BffRawItemServiceCommands.CreateRawItem createRawItem = new BffRawItemServiceCommands.CreateRawItem();
+        createRawItem.setRawItem(rawItem);
         try {
-        requestContent.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffRawItemApplicationService.when(requestContent);
+        createRawItem.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffRawItemApplicationService.when(createRawItem);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @PostMapping("UpdateRawItem")
-    public void updateRawItem(@RequestBody BffRawItemServiceCommands.UpdateRawItem requestContent)
-    {
+    @PutMapping("{productId}")
+    public void updateRawItem(
+        @PathVariable("productId") String productId,
+        @RequestBody BffRawItemDto rawItem
+    ) {
+        BffRawItemServiceCommands.UpdateRawItem updateRawItem = new BffRawItemServiceCommands.UpdateRawItem();
+        updateRawItem.setProductId(productId);
+        updateRawItem.setRawItem(rawItem);
         try {
-        requestContent.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffRawItemApplicationService.when(requestContent);
+        updateRawItem.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffRawItemApplicationService.when(updateRawItem);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

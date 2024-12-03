@@ -59,6 +59,9 @@ services:
           HttpRequestBody: RawItem
         httpMethod: PUT
         parameters:
+          ProductId:
+            type: id
+            optional: false # is required
           RawItem:
             type: BffRawItemDto
 
