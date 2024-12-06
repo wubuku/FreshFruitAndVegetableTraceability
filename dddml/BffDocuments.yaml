@@ -1,0 +1,17 @@
+valueObjects:
+  BffDocumentDto:
+    properties:
+      DocumentId:
+        type: id
+      DocumentTypeId:
+        type: id
+      Comments:
+        type: comment
+      DocumentLocation:
+        type: long-varchar
+      DocumentText:
+        type: long-varchar
+      # ImageData:
+      #   type: object
+
+

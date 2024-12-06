@@ -32,6 +32,12 @@ import org.dddml.ffvtraceability.domain.article.hibernate.*;
 import org.dddml.ffvtraceability.domain.supplierproduct.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.supplierproduct.hibernate.*;
+import org.dddml.ffvtraceability.domain.document.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.document.hibernate.*;
+import org.dddml.ffvtraceability.domain.documentassociation.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.documentassociation.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -175,6 +181,38 @@ public class AggregatesHibernateConfig {
                 supplierProductEventStore,
                 supplierProductStateRepository,
                 supplierProductStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractDocumentApplicationService.SimpleDocumentApplicationService documentApplicationService(
+            @Qualifier("documentEventStore") EventStore documentEventStore,
+            DocumentStateRepository documentStateRepository,
+            DocumentStateQueryRepository documentStateQueryRepository
+    ) {
+        AbstractDocumentApplicationService.SimpleDocumentApplicationService applicationService = new AbstractDocumentApplicationService.SimpleDocumentApplicationService(
+                documentEventStore,
+                documentStateRepository,
+                documentStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractDocumentAssociationApplicationService.SimpleDocumentAssociationApplicationService documentAssociationApplicationService(
+            @Qualifier("documentAssociationEventStore") EventStore documentAssociationEventStore,
+            DocumentAssociationStateRepository documentAssociationStateRepository,
+            DocumentAssociationStateQueryRepository documentAssociationStateQueryRepository
+    ) {
+        AbstractDocumentAssociationApplicationService.SimpleDocumentAssociationApplicationService applicationService = new AbstractDocumentAssociationApplicationService.SimpleDocumentAssociationApplicationService(
+                documentAssociationEventStore,
+                documentAssociationStateRepository,
+                documentAssociationStateQueryRepository
         );
         return applicationService;
     }

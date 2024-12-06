@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.document">
+  <class name="AbstractDocumentEvent" table="document_event" abstract="true">
+    <composite-id name="documentEventId" class="org.dddml.ffvtraceability.domain.document.DocumentEventId">
+      <key-property name="documentId">
+        <column name="document_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractDocumentEvent$DocumentLobEvent" discriminator-value="DocumentLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractDocumentEvent$AbstractDocumentStateEvent" abstract="true">
+      <property name="documentTypeId">
+        <column name="document_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="comments">
+        <column name="comments" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="documentLocation">
+        <column name="document_location" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="documentText">
+        <column name="document_text" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractDocumentEvent$SimpleDocumentStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractDocumentEvent$SimpleDocumentStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyDocumentTypeIdRemoved" column="is_property_document_type_id_removed" />
+        <property name="isPropertyCommentsRemoved" column="is_property_comments_removed" />
+        <property name="isPropertyDocumentLocationRemoved" column="is_property_document_location_removed" />
+        <property name="isPropertyDocumentTextRemoved" column="is_property_document_text_removed" />
+      </subclass>
+      <subclass name="AbstractDocumentEvent$SimpleDocumentStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

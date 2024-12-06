@@ -1,0 +1,51 @@
+aggregates:
+  Document:
+    id:
+      name: DocumentId
+      type: id
+    properties:
+      DocumentTypeId:
+        type: id
+      Comments:
+        type: comment
+      DocumentLocation:
+        type: long-varchar
+      DocumentText:
+        type: long-varchar
+      # ImageData:
+      #   type: object
+
+  DocumentAssociation:
+    id:
+      type: DocumentAssociationId
+      name: DocumentAssociationId
+      columnNames:
+        - document_id
+        - document_id_to
+        - document_assoc_type_id
+        - from_date
+    properties:
+      DocumentId:
+        type: id
+      DocumentIdTo:
+        type: id
+      DocumentAssocTypeId:
+        type: id
+      FromDate:
+        type: date-time
+      ThruDate:
+        type: date-time
+
+valueObjects:
+  DocumentAssociationId:
+    properties:
+      DocumentId:
+        type: id
+      DocumentIdTo:
+        type: id
+      DocumentAssocTypeId:
+        type: id
+      FromDate:
+        type: date-time
+
+

@@ -43,6 +43,8 @@ public class M {
         typeToAggMap.put("Article", "Article");
         typeToAggMap.put("Comment", "Article");
         typeToAggMap.put("SupplierProduct", "SupplierProduct");
+        typeToAggMap.put("Document", "Document");
+        typeToAggMap.put("DocumentAssociation", "DocumentAssociation");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -1635,6 +1637,218 @@ public class M {
         aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdAvailableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
         aliasMap.put("supplierProductAssocId.availableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
         aliasMap.put("SupplierProductAssocId.AvailableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class DocumentMetadata {
+
+    private DocumentMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "documentId",
+            "documentTypeId",
+            "comments",
+            "documentLocation",
+            "documentText",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "active",
+            "deleted",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("documentId", "documentId");
+        aliasMap.put("DocumentId", "documentId");
+        aliasMap.put("documentTypeId", "documentTypeId");
+        aliasMap.put("DocumentTypeId", "documentTypeId");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("documentLocation", "documentLocation");
+        aliasMap.put("DocumentLocation", "documentLocation");
+        aliasMap.put("documentText", "documentText");
+        aliasMap.put("DocumentText", "documentText");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class DocumentAssociationMetadata {
+
+    private DocumentAssociationMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String URL_ID_FIELD_SEPARATOR = ",";
+
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.DocumentAssociationId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.DocumentAssociationId>(org.dddml.ffvtraceability.domain.DocumentAssociationId.class, URL_ID_FIELD_SEPARATOR) {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    };
+
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.DocumentAssociationId.class;
+
+    public static final String[] propertyNames = new String[] {
+            "documentId",
+            "documentIdTo",
+            "documentAssocTypeId",
+            "fromDate",
+            "thruDate",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "active",
+            "deleted",
+            "documentAssociationId.documentId",
+            "documentAssociationId.documentIdTo",
+            "documentAssociationId.documentAssocTypeId",
+            "documentAssociationId.fromDate",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "OffsetDateTime",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("documentId", "documentId");
+        aliasMap.put("DocumentId", "documentId");
+        aliasMap.put("documentIdTo", "documentIdTo");
+        aliasMap.put("DocumentIdTo", "documentIdTo");
+        aliasMap.put("documentAssocTypeId", "documentAssocTypeId");
+        aliasMap.put("DocumentAssocTypeId", "documentAssocTypeId");
+        aliasMap.put("fromDate", "fromDate");
+        aliasMap.put("FromDate", "fromDate");
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+        aliasMap.put("documentAssociationId.documentId", "documentAssociationId.documentId");
+        aliasMap.put("DocumentAssociationId.DocumentId", "documentAssociationId.documentId");
+        aliasMap.put("documentAssociationId.documentIdTo", "documentAssociationId.documentIdTo");
+        aliasMap.put("DocumentAssociationId.DocumentIdTo", "documentAssociationId.documentIdTo");
+        aliasMap.put("documentAssociationId.documentAssocTypeId", "documentAssociationId.documentAssocTypeId");
+        aliasMap.put("DocumentAssociationId.DocumentAssocTypeId", "documentAssociationId.documentAssocTypeId");
+        aliasMap.put("documentAssociationId.fromDate", "documentAssociationId.fromDate");
+        aliasMap.put("DocumentAssociationId.FromDate", "documentAssociationId.fromDate");
     }
 
     private static void initPropertyTypeMap() {
