@@ -68,7 +68,7 @@ valueObjects:
 
 services:
   BffReceivingService:
-    restfulResourceName: Receipts
+    restfulResourceName: BffReceipts
     methods:
       GetReceivingDocuments:
         metadata:

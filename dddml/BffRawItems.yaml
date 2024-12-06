@@ -36,7 +36,7 @@ valueObjects:
 
 services:
   BffRawItemService:
-    restfulResourceName: RawItems
+    restfulResourceName: BffRawItems
     methods:
       GetRawItems:
         metadata:

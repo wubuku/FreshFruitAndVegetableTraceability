@@ -1,0 +1,67 @@
+valueObjects:
+  BffFacilityDto:
+    properties:
+      FacilityId:
+        type: id
+      Locations:
+        itemType: BffFacilityLocationDto
+        isList: true
+
+  BffFacilityLocationDto:
+    properties:
+      LocationSeqId:
+        type: id
+      LocationTypeEnumId:
+        type: id
+      AreaId:
+        type: id
+      AisleId:
+        type: id
+      SectionId:
+        type: id
+      LevelId:
+        type: id
+      PositionId:
+        type: id
+      GeoPointId:
+        type: id
+
+services:
+  BffFacilityService:
+    restfulResourceName: BffFacilities
+    methods:
+      GetFacilities:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        result:
+          itemType: BffFacilityDto
+
+
+      GetFacility:
+        restfulResourceName: "{FacilityId}"
+        metadata:
+          RestfulPathVariable: FacilityId
+        isQuery: true
+        result:
+          type: BffFacilityDto
+        parameters:
+          FacilityId:
+            type: id
+
+      GetFacilityLocation:
+        restfulResourceName: "{FacilityId}/Locations/{LocationSeqId}"
+        metadata:
+          RestfulPathVariables:
+            - FacilityId
+            - LocationSeqId
+        isQuery: true
+        result:
+          type: BffFacilityLocationDto
+        parameters:
+          FacilityId:
+            type: id
+          LocationSeqId:
+            type: id
+
