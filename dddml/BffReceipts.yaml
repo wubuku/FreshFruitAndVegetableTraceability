@@ -66,3 +66,41 @@ valueObjects:
       ShipmentPackageSeqId:
         type: id
 
+services:
+  BffReceivingService:
+    restfulResourceName: Receipts
+    methods:
+      GetReceivingDocuments:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        result:
+          itemType: BffReceivingDocumentDto
+
+      GetReceivingDocument:
+        restfulResourceName: "{DocumentId}"
+        metadata:
+          RestfulPathVariable: DocumentId
+        isQuery: true
+        result:
+          type: BffReceivingDocumentDto
+        parameters:
+          DocumentId:
+            type: id
+
+      GetReceivingItem:
+        restfulResourceName: "{DocumentId}/Items/{ReceiptId}"
+        metadata:
+          RestfulPathVariables:
+            - DocumentId
+            - ReceiptId
+        isQuery: true
+        result:
+          type: BffReceivingItemDto
+        parameters:
+          DocumentId:
+            type: id
+          ReceiptId:
+            type: id
+
