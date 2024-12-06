@@ -1,0 +1,19 @@
+valueObjects:
+  BffSupplierDto:
+    properties:
+      SupplierId:
+        type: id
+      Ggn:
+        description: "GGN (GLOBALG.A.P. Number)"
+        type: id
+      Gln:
+        description: "GLN (Global Location Number)"
+        type: id
+      ExternalId:
+        type: id
+      PreferredCurrencyUomId:
+        type: id
+      Description:
+        type: very-long
+      StatusId:
+        type: id

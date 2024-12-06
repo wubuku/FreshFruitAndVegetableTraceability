@@ -12,6 +12,9 @@ valueObjects:
       # <field name="smallImageUrl" type="url"></field>
       # <field name="mediumImageUrl" type="url"></field>
       # <field name="largeImageUrl" type="url"></field>
+      Gtin:
+        description: "GTIN (Global Trade Item Number)"
+        type: id
       SmallImageUrl:
         type: url
       MediumImageUrl:

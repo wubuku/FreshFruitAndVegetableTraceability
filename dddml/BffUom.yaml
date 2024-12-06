@@ -1,0 +1,16 @@
+valueObjects:
+  BffUomDto:
+    properties:
+      UomId:
+        type: id
+      UomTypeId:
+        type: id
+      Abbreviation:
+        type: short-varchar
+      NumericCode:
+        type: numeric
+      Description:
+        type: description
+      Gs1AI:
+        description: "GS1 Application Identifiers"
+        type: id

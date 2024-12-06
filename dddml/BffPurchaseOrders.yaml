@@ -1,0 +1,81 @@
+valueObjects:
+  BffPurchaseOrderDto:
+    properties:
+      OrderId:
+        type: id
+      OrderItems:
+        itemType: BffPurchaseOrderItemDto
+        isList: true
+
+
+  BffPurchaseOrderItemDto:
+    properties:
+      OrderItemSeqId:
+        type: id
+      ExternalId:
+        type: id
+      # OrderItemTypeId:
+      #   type: id
+      # OrderItemGroupSeqId:
+      #   type: id
+      # IsItemGroupPrimary:
+      #   type: indicator
+      ProductId:
+        type: id
+      SupplierProductId:
+        type: id-long
+      # ProductFeatureId:
+      #   type: id
+      # ProdCatalogId:
+      #   type: id
+      # ProductCategoryId:
+      #   type: id
+      # IsPromo:
+      #   type: indicator
+      # QuoteId:
+      #   type: id
+      # QuoteItemSeqId:
+      #   type: id
+      # ShoppingListId:
+      #   type: id
+      # ShoppingListItemSeqId:
+      #   type: id
+      # SubscriptionId:
+      #   type: id
+      # DeploymentId:
+      #   type: id
+      Quantity:
+        type: fixed-point
+        #enableAuditLog: true
+      CancelQuantity:
+        type: fixed-point
+      SelectedAmount:
+        type: fixed-point
+      UnitPrice:
+        type: currency-precise
+        # enableAuditLog: true
+      # UnitListPrice:
+      #   type: currency-precise
+      # UnitAverageCost:
+      #   type: currency-amount
+      # UnitRecurringPrice:
+      #   type: currency-amount
+      # DiscountRate:
+      #   type: fixed-point
+      # IsModifiedPrice:
+      #   type: indicator
+      # RecurringFreqUomId:
+      #   type: id
+      ItemDescription:
+        type: description
+      Comments:
+        type: comment
+      # <field name="correspondingPoId" type="id"></field>
+      StatusId:
+        type: id
+      SyncStatusId:
+        type: id
+      EstimatedShipDate:
+        type: date-time
+      EstimatedDeliveryDate:
+        type: date-time

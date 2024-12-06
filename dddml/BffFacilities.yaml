@@ -3,6 +3,12 @@ valueObjects:
     properties:
       FacilityId:
         type: id
+      Gln:
+        description: "GLN (Global Location Number)"
+        type: id
+      Ffrn:
+        description: "FFRN (FDA Food Facility Registration Number)"
+        type: id
       Locations:
         itemType: BffFacilityLocationDto
         isList: true

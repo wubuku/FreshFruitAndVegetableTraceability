@@ -45,6 +45,18 @@ public class BffRawItemDto implements Serializable {
         this.description = description;
     }
 
+    private String gtin;
+
+    public String getGtin()
+    {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin)
+    {
+        this.gtin = gtin;
+    }
+
     private String smallImageUrl;
 
     public String getSmallImageUrl()
@@ -145,11 +157,12 @@ public class BffRawItemDto implements Serializable {
     {
     }
 
-    public BffRawItemDto(String productId, String productName, String description, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId)
+    public BffRawItemDto(String productId, String productName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId)
     {
         this.productId = productId;
         this.productName = productName;
         this.description = description;
+        this.gtin = gtin;
         this.smallImageUrl = smallImageUrl;
         this.mediumImageUrl = mediumImageUrl;
         this.largeImageUrl = largeImageUrl;
@@ -175,6 +188,7 @@ public class BffRawItemDto implements Serializable {
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
             && (productName == other.productName || (productName != null && productName.equals(other.productName)))
             && (description == other.description || (description != null && description.equals(other.description)))
+            && (gtin == other.gtin || (gtin != null && gtin.equals(other.gtin)))
             && (smallImageUrl == other.smallImageUrl || (smallImageUrl != null && smallImageUrl.equals(other.smallImageUrl)))
             && (mediumImageUrl == other.mediumImageUrl || (mediumImageUrl != null && mediumImageUrl.equals(other.mediumImageUrl)))
             && (largeImageUrl == other.largeImageUrl || (largeImageUrl != null && largeImageUrl.equals(other.largeImageUrl)))
@@ -198,6 +212,9 @@ public class BffRawItemDto implements Serializable {
         }
         if (this.description != null) {
             hash += 13 * this.description.hashCode();
+        }
+        if (this.gtin != null) {
+            hash += 13 * this.gtin.hashCode();
         }
         if (this.smallImageUrl != null) {
             hash += 13 * this.smallImageUrl.hashCode();
@@ -232,6 +249,7 @@ public class BffRawItemDto implements Serializable {
                 "productId=" + '\'' + productId + '\'' +
                 ", productName=" + '\'' + productName + '\'' +
                 ", description=" + '\'' + description + '\'' +
+                ", gtin=" + '\'' + gtin + '\'' +
                 ", smallImageUrl=" + '\'' + smallImageUrl + '\'' +
                 ", mediumImageUrl=" + '\'' + mediumImageUrl + '\'' +
                 ", largeImageUrl=" + '\'' + largeImageUrl + '\'' +

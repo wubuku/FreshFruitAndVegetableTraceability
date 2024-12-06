@@ -21,6 +21,30 @@ public class BffFacilityDto implements Serializable {
         this.facilityId = facilityId;
     }
 
+    private String gln;
+
+    public String getGln()
+    {
+        return this.gln;
+    }
+
+    public void setGln(String gln)
+    {
+        this.gln = gln;
+    }
+
+    private String ffrn;
+
+    public String getFfrn()
+    {
+        return this.ffrn;
+    }
+
+    public void setFfrn(String ffrn)
+    {
+        this.ffrn = ffrn;
+    }
+
     private java.util.List<BffFacilityLocationDto> locations;
 
     public java.util.List<BffFacilityLocationDto> getLocations() {
@@ -35,9 +59,11 @@ public class BffFacilityDto implements Serializable {
     {
     }
 
-    public BffFacilityDto(String facilityId, java.util.List<BffFacilityLocationDto> locations)
+    public BffFacilityDto(String facilityId, String gln, String ffrn, java.util.List<BffFacilityLocationDto> locations)
     {
         this.facilityId = facilityId;
+        this.gln = gln;
+        this.ffrn = ffrn;
         this.locations = locations;
     }
 
@@ -54,6 +80,8 @@ public class BffFacilityDto implements Serializable {
         BffFacilityDto other = (BffFacilityDto)obj;
         return true 
             && (facilityId == other.facilityId || (facilityId != null && facilityId.equals(other.facilityId)))
+            && (gln == other.gln || (gln != null && gln.equals(other.gln)))
+            && (ffrn == other.ffrn || (ffrn != null && ffrn.equals(other.ffrn)))
             && (locations == other.locations || (locations != null && locations.equals(other.locations)))
             ;
     }
@@ -65,6 +93,12 @@ public class BffFacilityDto implements Serializable {
         if (this.facilityId != null) {
             hash += 13 * this.facilityId.hashCode();
         }
+        if (this.gln != null) {
+            hash += 13 * this.gln.hashCode();
+        }
+        if (this.ffrn != null) {
+            hash += 13 * this.ffrn.hashCode();
+        }
         if (this.locations != null) {
             hash += 13 * this.locations.hashCode();
         }
@@ -75,6 +109,8 @@ public class BffFacilityDto implements Serializable {
     public String toString() {
         return "BffFacilityDto{" +
                 "facilityId=" + '\'' + facilityId + '\'' +
+                ", gln=" + '\'' + gln + '\'' +
+                ", ffrn=" + '\'' + ffrn + '\'' +
                 ", locations=" + locations +
                 '}';
     }

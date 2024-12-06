@@ -1,0 +1,8 @@
+valueObjects:
+  BffLotDto:
+    properties:
+      LotId:
+        type: id
+      Gs1Batch:
+        description: "GS1 BATCH (AI=10)"
+        type: id
