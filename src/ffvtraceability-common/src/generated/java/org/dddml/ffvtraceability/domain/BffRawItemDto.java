@@ -117,16 +117,16 @@ public class BffRawItemDto implements Serializable {
         this.piecesIncluded = piecesIncluded;
     }
 
-    private String status;
+    private String statusId;
 
-    public String getStatus()
+    public String getStatusId()
     {
-        return this.status;
+        return this.statusId;
     }
 
-    public void setStatus(String status)
+    public void setStatusId(String statusId)
     {
-        this.status = status;
+        this.statusId = statusId;
     }
 
     private String supplierId;
@@ -145,7 +145,7 @@ public class BffRawItemDto implements Serializable {
     {
     }
 
-    public BffRawItemDto(String productId, String productName, String description, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String status, String supplierId)
+    public BffRawItemDto(String productId, String productName, String description, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId)
     {
         this.productId = productId;
         this.productName = productName;
@@ -156,7 +156,7 @@ public class BffRawItemDto implements Serializable {
         this.quantityUomId = quantityUomId;
         this.quantityIncluded = quantityIncluded;
         this.piecesIncluded = piecesIncluded;
-        this.status = status;
+        this.statusId = statusId;
         this.supplierId = supplierId;
     }
 
@@ -181,7 +181,7 @@ public class BffRawItemDto implements Serializable {
             && (quantityUomId == other.quantityUomId || (quantityUomId != null && quantityUomId.equals(other.quantityUomId)))
             && (quantityIncluded == other.quantityIncluded || (quantityIncluded != null && quantityIncluded.equals(other.quantityIncluded)))
             && (piecesIncluded == other.piecesIncluded || (piecesIncluded != null && piecesIncluded.equals(other.piecesIncluded)))
-            && (status == other.status || (status != null && status.equals(other.status)))
+            && (statusId == other.statusId || (statusId != null && statusId.equals(other.statusId)))
             && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
             ;
     }
@@ -217,8 +217,8 @@ public class BffRawItemDto implements Serializable {
         if (this.piecesIncluded != null) {
             hash += 13 * this.piecesIncluded.hashCode();
         }
-        if (this.status != null) {
-            hash += 13 * this.status.hashCode();
+        if (this.statusId != null) {
+            hash += 13 * this.statusId.hashCode();
         }
         if (this.supplierId != null) {
             hash += 13 * this.supplierId.hashCode();
@@ -238,7 +238,7 @@ public class BffRawItemDto implements Serializable {
                 ", quantityUomId=" + '\'' + quantityUomId + '\'' +
                 ", quantityIncluded=" + quantityIncluded +
                 ", piecesIncluded=" + piecesIncluded +
-                ", status=" + '\'' + status + '\'' +
+                ", statusId=" + '\'' + statusId + '\'' +
                 ", supplierId=" + '\'' + supplierId + '\'' +
                 '}';
     }

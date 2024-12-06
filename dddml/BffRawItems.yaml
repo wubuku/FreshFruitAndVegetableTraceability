@@ -28,7 +28,7 @@ valueObjects:
         type: fixed-point
       PiecesIncluded:
         type: numeric
-      Status:
+      StatusId:
         type: id
       SupplierId:
         type: id

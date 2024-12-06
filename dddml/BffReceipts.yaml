@@ -1,0 +1,68 @@
+valueObjects:
+  BffReceivingDocumentDto:
+    properties:
+      DocumentId:
+        type: id
+      StatusId:
+        type: id
+      PartyIdTo:
+        type: id
+      PartyIdFrom:
+        type: id
+      OriginFacilityId:
+        type: id
+      DestinationFacilityId:
+        type: id
+      PrimaryOrderId:
+        type: id
+      PrimaryReturnId:
+        type: id
+      PrimaryShipGroupSeqId:
+        type: id
+      ReceivingItems:
+        itemType: BffReceivingItemDto
+        isList: true
+
+  BffReceivingItemDto:
+    properties:
+      ReceiptId:
+        type: id
+      ProductId:
+        type: id
+      # AttributeSetInstanceId:
+      #   type: HashHex
+      LotId:
+        type: id
+      LocationSeqId:
+        type: id
+      ItemDescription:
+        type: description
+      QuantityAccepted:
+        type: fixed-point
+      QuantityRejected:
+        type: fixed-point
+      # CaseUomId:
+      #   type: id
+      CasesAccepted:
+        description: The number of cases accepted
+        type: numeric
+      CasesRejected:
+        description: The number of cases rejected
+        type: numeric
+      OrderId:
+        type: id
+      OrderItemSeqId:
+        type: id
+      ReturnId:
+        type: id
+      ReturnItemSeqId:
+        type: id
+      RejectionId:
+        type: id
+      ShipmentId:
+        type: id
+      ShipmentItemSeqId:
+        type: id
+      ShipmentPackageSeqId:
+        type: id
+
