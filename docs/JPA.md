@@ -332,3 +332,194 @@ public interface TokenPairRepository {
 - [Spring Data JPA - Projections](https://docs.spring.io/spring-data/jpa/reference/repositories/projections.html)
 
 
+
+
+### 附录：Vavr 简介
+
+[Vavr](https://www.vavr.io/) (原名 Javaslang) 是一个函数式编程库，为 Java 提供了不可变数据类型和函数式编程特性。
+
+#### 1. 不可变集合
+
+##### 简介
+提供 `List`, `Set`, `Map` 等不可变集合类型，所有修改操作都返回新的集合实例，原集合保持不变。
+
+##### 代码示例
+```java
+import io.vavr.collection.*;
+
+// List 示例
+List<Integer> list1 = List.of(1, 2, 3);
+List<Integer> list2 = list1.append(4);  // list1 不变，返回新列表
+List<Integer> list3 = list1.prepend(0); // [0,1,2,3]
+
+// Map 示例
+Map<String, Integer> map1 = HashMap.of(
+    "a", 1,
+    "b", 2
+);
+Map<String, Integer> map2 = map1.put("c", 3); // 返回新 Map
+
+// Set 示例
+Set<String> set1 = HashSet.of("a", "b", "c");
+Set<String> set2 = set1.add("d");  // 返回新 Set
+```
+
+#### 2. 元组（Tuple）
+
+##### 简介
+提供最多8个元素的元组类型，支持模式匹配和转换操作。
+
+##### 基础用法
+```java
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+
+// 基本使用
+Tuple2<String, Integer> person = Tuple.of("Alex", 30);
+String name = person._1;    // "Alex"
+Integer age = person._2;    // 30
+```
+
+##### 高级操作
+```java
+// 元组转换
+Tuple2<Integer, String> swapped = person.map(
+    (name, age) -> Tuple.of(age, name)
+);
+
+// 三元组示例
+Tuple3<String, Integer, Boolean> data = Tuple.of("test", 123, true);
+Tuple3<String, Integer, Boolean> mapped = data.map(
+    (s, i, b) -> Tuple.of(s.toUpperCase(), i * 2, !b)
+);
+```
+
+#### 3. 函数式接口
+
+##### 简介
+支持函数组合、柯里化和部分应用，提供丰富的函数转换操作。
+
+##### 函数组合
+```java
+import io.vavr.Function1;
+import io.vavr.Function2;
+
+Function1<Integer, Integer> plusOne = a -> a + 1;
+Function1<Integer, Integer> multiplyByTwo = a -> a * 2;
+Function1<Integer, Integer> composed = plusOne.andThen(multiplyByTwo);
+Integer result = composed.apply(5);  // (5 + 1) * 2 = 12
+```
+
+##### 柯里化与记忆化
+```java
+// 柯里化
+Function2<Integer, Integer, Integer> sum = (a, b) -> a + b;
+Function1<Integer, Integer> add5 = sum.curried().apply(5);
+Integer sumResult = add5.apply(3);  // 5 + 3 = 8
+
+// 记忆化（缓存函数结果）
+Function1<Integer, Integer> factorial = Function1
+    .of(n -> n <= 1 ? 1 : n * factorial.apply(n - 1))
+    .memoized();
+```
+
+#### 4. Option 类型
+
+##### 简介
+提供更安全的空值处理和丰富的函数式转换方法。
+
+##### 基础操作
+```java
+import io.vavr.control.Option;
+
+Option<String> maybeName = Option.of(null);
+String result1 = maybeName.getOrElse("unknown");
+
+Option<String> name = Option.of("Alex");
+Option<String> greeting = name
+    .map(n -> "Hello, " + n)
+    .filter(g -> g.length() > 0);
+```
+
+##### 高级用法
+```java
+// 模式匹配
+String result2 = name.match(
+    Case($(Some($)), value -> "Got: " + value),
+    Case($(None()), () -> "Nothing here")
+);
+
+// 与 Stream 结合
+List<Option<String>> options = List.of(
+    Option.of("a"),
+    Option.none(),
+    Option.of("c")
+);
+List<String> validValues = options
+    .filter(Option::isDefined)
+    .map(Option::get);
+```
+
+#### 5. Either 类型
+
+##### 简介
+用于错误处理和条件分支，可以携带成功或失败的详细信息。
+
+##### 基础用法
+```java
+import io.vavr.control.Either;
+
+Either<String, Integer> divide(Integer a, Integer b) {
+    if (b == 0) {
+        return Either.left("Division by zero");
+    }
+    return Either.right(a / b);
+}
+```
+
+##### 链式操作
+```java
+Either<String, Integer> result = divide(10, 2)
+    .map(r -> r * 2)
+    .mapLeft(error -> "Error: " + error);
+
+String output = result.match(
+    left -> "Failed: " + left,
+    right -> "Success: " + right
+);
+```
+
+##### 实际应用示例
+```java
+public Either<String, User> findUser(String id) {
+    try {
+        User user = userRepository.findById(id);
+        return user != null 
+            ? Either.right(user)
+            : Either.left("User not found");
+    } catch (Exception e) {
+        return Either.left("Error: " + e.getMessage());
+    }
+}
+```
+
+#### 使用建议
+
+##### 性能考虑
+- 不可变集合的修改操作会创建新实例，注意大量数据时的性能影响
+- 适当使用 `memoized()` 可以提高重复计算的性能
+
+##### 与 Java 标准库互操作
+- Vavr 提供了与 Java 集合框架的转换方法
+- 可以通过 `toJavaXXX()` 和 `ofAll()` 方法进行转换
+
+##### Spring 框架集成
+- Spring 5+ 原生支持 Vavr 的 `Option` 类型
+- 可以在 Controller 方法返回值中直接使用 Vavr 类型
+
+#### 参考资料
+- [Vavr 官方文档](https://docs.vavr.io/)
+- [Vavr API 文档](https://www.javadoc.io/doc/io.vavr/vavr/latest/index.html)
+- [Vavr GitHub](https://github.com/vavr-io/vavr)
+
