@@ -7,7 +7,7 @@ valueObjects:
       # <field name="description" type="description"></field>
       ProductName:
         type: name
-      Description:
+      Description: #Addtional Notes
         type: description
       # <field name="smallImageUrl" type="url"></field>
       # <field name="mediumImageUrl" type="url"></field>
@@ -33,7 +33,7 @@ valueObjects:
         type: numeric
       StatusId:
         type: id
-      SupplierId:
+      SupplierId: #Vendor
         type: id
 
 
@@ -41,22 +41,22 @@ services:
   BffRawItemService:
     restfulResourceName: BffRawItems
     methods:
-      GetRawItems:
+      GetRawItems: #根据条件分页查询 Items
         metadata:
           IsPageable: true
           ReturnPageEnvelope: true
         isQuery: true
         #httpMethod: GET
         result:
-          itemType: BffRawItemDto
-      CreateRawItem:
+          itemType: BffRawItemDto #返回类型为 BffRawItemDto 的数组
+      CreateRawItem: # 新增 Item
         httpMethod: POST
         metadata:
           HttpRequestBody: RawItem
         parameters:
           RawItem:
             type: BffRawItemDto
-      UpdateRawItem:
+      UpdateRawItem: #更新指定的 Item 的信息
         metadata:
           RestfulPathVariable: ProductId
           HttpRequestBody: RawItem
@@ -67,6 +67,10 @@ services:
             optional: false # is required
           RawItem:
             type: BffRawItemDto
+
+      #添加方法禁用指定 Id 的 Item; /{itemId}/disable 返回值:void; HttpMethod:Patch
+      #添加方法激活指定 Id 的 Item; /{itemId}/active 返回值:void; HttpMethod:Patch
+      #增加方法用以支持csv导入，/batchAdd;返回值：List<BffRawItemDto>;RequestBody:含有从csv中信息整合而来的List<BffRawItemDto>;HttpMethod:Post
 
 
 
