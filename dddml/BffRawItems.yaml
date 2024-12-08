@@ -68,9 +68,10 @@ services:
           RawItem:
             type: BffRawItemDto
 
+      #根据Id查询产品的详细信息
       #添加方法禁用指定 Id 的 Item; /{itemId}/disable 返回值:void; HttpMethod:Patch
       #添加方法激活指定 Id 的 Item; /{itemId}/active 返回值:void; HttpMethod:Patch
-      #增加方法用以支持csv导入，/batchAdd;返回值：List<BffRawItemDto>;RequestBody:含有从csv中信息整合而来的List<BffRawItemDto>;HttpMethod:Post
+      #增加方法用以支持cvs导入，/batchAdd;返回值：List<BffRawItemDto>;RequestBody:含有从csv中信息整合而来的List<BffRawItemDto>;HttpMethod:Post
 
 
 
