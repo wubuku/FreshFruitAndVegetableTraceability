@@ -17,3 +17,6 @@ valueObjects:
         type: very-long
       StatusId:
         type: id
+
+
+# 增 改 查 激活/禁用
