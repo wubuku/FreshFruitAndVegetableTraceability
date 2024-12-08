@@ -14,3 +14,5 @@ valueObjects:
       Gs1AI:
         description: "GS1 Application Identifiers"
         type: id
+
+#增 改 查 禁用/启用

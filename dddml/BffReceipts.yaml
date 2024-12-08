@@ -25,9 +25,9 @@ valueObjects:
 
   BffReceivingItemDto:
     properties:
-      ReceiptId:
+      ReceiptId: #收货行项 Id
         type: id
-      ProductId:
+      ProductId: #ItemId
         type: id
       # AttributeSetInstanceId:
       #   type: HashHex
@@ -78,7 +78,7 @@ services:
         result:
           itemType: BffReceivingDocumentDto
 
-      GetReceivingDocument:
+      GetReceivingDocument: #获取指定收货单详情
         restfulResourceName: "{DocumentId}"
         metadata:
           RestfulPathVariable: DocumentId
@@ -89,7 +89,7 @@ services:
           DocumentId:
             type: id
 
-      GetReceivingItem:
+      GetReceivingItem: #指定收货单下指定行项的详情
         restfulResourceName: "{DocumentId}/Items/{ReceiptId}"
         metadata:
           RestfulPathVariables:
@@ -103,4 +103,8 @@ services:
             type: id
           ReceiptId:
             type: id
+      # 收货 CreateReceivingDocument 参数：PO（可为空），List<BffReceivingItemDto>,List<DocumentDto>; 返回值:BffReceivingDocumentDto; HttpMethod:Post
+      # 给收货时未填写 PO 单号的收货单补充 PO 单号。返回值：void；HttpMethod:Patch
+      # 更新行项的货位(Location)，{DocumentId}/UpdateItemLocation;参数：路径参数 DocumentId，RequestBody中是ItemId和新的Location组成对象的数组，返回值void；HttpMethod:Patch
+
 

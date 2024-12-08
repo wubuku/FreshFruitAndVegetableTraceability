@@ -79,3 +79,7 @@ valueObjects:
         type: date-time
       EstimatedDeliveryDate:
         type: date-time
+
+
+
+    #根据采购单号查询采购单明细 /{OrderId};返回对象类型：BffPurchaseOrderItemDto;HttpMethod:Get
