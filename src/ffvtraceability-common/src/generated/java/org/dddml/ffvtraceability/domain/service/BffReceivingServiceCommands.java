@@ -85,16 +85,16 @@ public class BffReceivingServiceCommands {
     public static class CreateReceivingDocument extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
-         * Receiving Items
+         * Receiving Document
          */
-        private BffReceivingItemDto[] receivingItems;
+        private BffReceivingDocumentDto receivingDocument;
 
-        public BffReceivingItemDto[] getReceivingItems() {
-            return receivingItems;
+        public BffReceivingDocumentDto getReceivingDocument() {
+            return receivingDocument;
         }
 
-        public void setReceivingItems(BffReceivingItemDto[] receivingItems) {
-            this.receivingItems = receivingItems;
+        public void setReceivingDocument(BffReceivingDocumentDto receivingDocument) {
+            this.receivingDocument = receivingDocument;
         }
 
     }
@@ -129,7 +129,67 @@ public class BffReceivingServiceCommands {
 
     }
 
-    public static class UpdateReceivingItemLocation extends org.dddml.ffvtraceability.domain.AbstractCommand {
+    public static class CreateReceivingItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+        /**
+         * Receiving Item
+         */
+        private BffReceivingItemDto receivingItem;
+
+        public BffReceivingItemDto getReceivingItem() {
+            return receivingItem;
+        }
+
+        public void setReceivingItem(BffReceivingItemDto receivingItem) {
+            this.receivingItem = receivingItem;
+        }
+
+    }
+
+    public static class DeleteReceivingItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+        /**
+         * Receiving Item
+         */
+        private BffReceivingItemDto receivingItem;
+
+        public BffReceivingItemDto getReceivingItem() {
+            return receivingItem;
+        }
+
+        public void setReceivingItem(BffReceivingItemDto receivingItem) {
+            this.receivingItem = receivingItem;
+        }
+
+    }
+
+    public static class UpdateReceivingItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
          * Document Id
@@ -171,6 +231,19 @@ public class BffReceivingServiceCommands {
         }
 
         /**
+         * Lot Id
+         */
+        private String lotId;
+
+        public String getLotId() {
+            return lotId;
+        }
+
+        public void setLotId(String lotId) {
+            this.lotId = lotId;
+        }
+
+        /**
          * Location Seq Id
          */
         private String locationSeqId;
@@ -181,6 +254,71 @@ public class BffReceivingServiceCommands {
 
         public void setLocationSeqId(String locationSeqId) {
             this.locationSeqId = locationSeqId;
+        }
+
+        /**
+         * Item Description
+         */
+        private String itemDescription;
+
+        public String getItemDescription() {
+            return itemDescription;
+        }
+
+        public void setItemDescription(String itemDescription) {
+            this.itemDescription = itemDescription;
+        }
+
+        /**
+         * Quantity Accepted
+         */
+        private java.math.BigDecimal quantityAccepted;
+
+        public java.math.BigDecimal getQuantityAccepted() {
+            return quantityAccepted;
+        }
+
+        public void setQuantityAccepted(java.math.BigDecimal quantityAccepted) {
+            this.quantityAccepted = quantityAccepted;
+        }
+
+        /**
+         * Quantity Rejected
+         */
+        private java.math.BigDecimal quantityRejected;
+
+        public java.math.BigDecimal getQuantityRejected() {
+            return quantityRejected;
+        }
+
+        public void setQuantityRejected(java.math.BigDecimal quantityRejected) {
+            this.quantityRejected = quantityRejected;
+        }
+
+        /**
+         * The number of cases accepted
+         */
+        private Long casesAccepted;
+
+        public Long getCasesAccepted() {
+            return casesAccepted;
+        }
+
+        public void setCasesAccepted(Long casesAccepted) {
+            this.casesAccepted = casesAccepted;
+        }
+
+        /**
+         * The number of cases rejected
+         */
+        private Long casesRejected;
+
+        public Long getCasesRejected() {
+            return casesRejected;
+        }
+
+        public void setCasesRejected(Long casesRejected) {
+            this.casesRejected = casesRejected;
         }
 
     }

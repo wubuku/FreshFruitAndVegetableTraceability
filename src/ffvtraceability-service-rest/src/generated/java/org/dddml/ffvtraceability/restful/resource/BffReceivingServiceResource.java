@@ -72,10 +72,10 @@ public class BffReceivingServiceResource {
 
     @PostMapping
     public void createReceivingDocument(
-        @RequestBody BffReceivingItemDto[] receivingItems
+        @RequestBody BffReceivingDocumentDto receivingDocument
     ) {
         BffReceivingServiceCommands.CreateReceivingDocument createReceivingDocument = new BffReceivingServiceCommands.CreateReceivingDocument();
-        createReceivingDocument.setReceivingItems(receivingItems);
+        createReceivingDocument.setReceivingDocument(receivingDocument);
         try {
         createReceivingDocument.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(createReceivingDocument);
@@ -96,16 +96,44 @@ public class BffReceivingServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @PutMapping("{documentId}/Items/{receiptId}/Location")
-    public void updateReceivingItemLocation(
+    @PostMapping("{documentId}/Items")
+    public void createReceivingItem(
+        @PathVariable("documentId") String documentId,
+        @RequestBody BffReceivingItemDto receivingItem
+    ) {
+        BffReceivingServiceCommands.CreateReceivingItem createReceivingItem = new BffReceivingServiceCommands.CreateReceivingItem();
+        createReceivingItem.setDocumentId(documentId);
+        createReceivingItem.setReceivingItem(receivingItem);
+        try {
+        createReceivingItem.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(createReceivingItem);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @DeleteMapping("{documentId}/Items/{receiptId}")
+    public void deleteReceivingItem(
+        @PathVariable("documentId") String documentId,
+        @RequestParam(value = "receivingItem", required = false) BffReceivingItemDto receivingItem
+    ) {
+        BffReceivingServiceCommands.DeleteReceivingItem deleteReceivingItem = new BffReceivingServiceCommands.DeleteReceivingItem();
+        deleteReceivingItem.setDocumentId(documentId);
+        deleteReceivingItem.setReceivingItem(receivingItem);
+        try {
+        deleteReceivingItem.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(deleteReceivingItem);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("{documentId}/Items/{receiptId}")
+    public void updateReceivingItem(
         @PathVariable("documentId") String documentId,
         @PathVariable("receiptId") String receiptId,
-        @RequestBody BffReceivingServiceCommands.UpdateReceivingItemLocation requestBody
+        @RequestBody BffReceivingServiceCommands.UpdateReceivingItem requestBody
     ) {
-        try {
-        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
         requestBody.setDocumentId(documentId);
         requestBody.setReceiptId(receiptId);
+        try {
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(requestBody);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }

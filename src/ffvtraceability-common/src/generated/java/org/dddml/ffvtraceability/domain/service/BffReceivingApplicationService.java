@@ -20,7 +20,11 @@ public interface BffReceivingApplicationService {
 
     void when(BffReceivingServiceCommands.UpdateReceivingDocumentPrimaryOrderId c);
 
-    void when(BffReceivingServiceCommands.UpdateReceivingItemLocation c);
+    void when(BffReceivingServiceCommands.CreateReceivingItem c);
+
+    void when(BffReceivingServiceCommands.DeleteReceivingItem c);
+
+    void when(BffReceivingServiceCommands.UpdateReceivingItem c);
 
 
 }

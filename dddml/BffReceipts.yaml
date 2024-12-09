@@ -110,16 +110,15 @@ services:
         # 创建收货单
         httpMethod: POST
         metadata:
-          HttpRequestBody: ReceivingItems
+          HttpRequestBody: ReceivingDocument
         parameters:
-          # TODO 支持在创建时指定当前仓库（DestinationFacilityId）？
-          ReceivingItems:
-            # 一般这里只要有一个行项，即在添加第一个行项的时候生成收货单。
-            # 行项中包含了 PO 的 Id（OrderId）。传入第一个行项的 PO 的 Id 作为收货单的 PrimaryOrderId。
-            itemType: BffReceivingItemDto
-      # TODO 添加行项
-      # TODO 删除行项
-      # TODO 更新行项是否需要？
+          ReceivingDocument:
+            type: BffReceivingDocumentDto
+          # 在创建收货单时指定当前仓库（DestinationFacilityId）？
+          # ReceivingItems:
+          #   # 一般这里只要有一个行项，即在添加第一个行项的时候生成收货单。
+          #   # 行项中包含了 PO 的 Id（OrderId）。传入第一个行项的 PO 的 Id 作为收货单的 PrimaryOrderId。
+          #   itemType: BffReceivingItemDto
 
       UpdateReceivingDocumentPrimaryOrderId:
         # 给收货时未填写 PO 单号的收货单补充 PO 单号。
@@ -134,10 +133,39 @@ services:
           PrimaryOrderId:
             type: id
 
-      UpdateReceivingItemLocation:
-        # 更新行项的货位（Location）
+
+      CreateReceivingItem:
+        # 添加行项的方法
+        httpMethod: POST
+        restfulResourceName: "{DocumentId}/Items"
+        metadata:
+          RestfulPathVariables:
+            - DocumentId
+          HttpRequestBody: ReceivingItem
+        parameters:
+          DocumentId:
+            type: id
+          ReceivingItem:
+            type: BffReceivingItemDto
+
+      DeleteReceivingItem:
+        # 删除行项的方法
+        httpMethod: DELETE
+        restfulResourceName: "{DocumentId}/Items/{ReceiptId}"
+        metadata:
+          RestfulPathVariables:
+            - DocumentId
+            - ReceiptId
+        parameters:
+          DocumentId:
+            type: id
+          ReceivingItem:
+            type: BffReceivingItemDto
+
+      UpdateReceivingItem:
+        # 更新行项的方法
         httpMethod: PUT
-        restfulResourceName: "{DocumentId}/Items/{ReceiptId}/Location"
+        restfulResourceName: "{DocumentId}/Items/{ReceiptId}"
         metadata:
           RestfulPathVariables:
             - DocumentId
@@ -148,8 +176,24 @@ services:
           ReceiptId:
             type: id
           DestinationFacilityId:
-            # 只有当收货单的 DestinationFacilityId 为空时，才能传入这个参数。
+            # 只有当收货单的只存在一个行项（当前行项）时，才允许修改 DestinationFacilityId？
+            type: id
+          LotId:
             type: id
           LocationSeqId:
             type: id
-
+            # 更新行项的货位（Location）
+          ItemDescription:
+            type: description
+          QuantityAccepted:
+            type: fixed-point
+          QuantityRejected:
+            type: fixed-point
+          # CaseUomId:
+          #   type: id
+          CasesAccepted:
+            description: The number of cases accepted
+            type: numeric
+          CasesRejected:
+            description: The number of cases rejected
+            type: numeric
