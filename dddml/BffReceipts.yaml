@@ -146,7 +146,7 @@ services:
           DocumentId:
             type: id
           ReferenceDocuments:
-            itemType: id
+            itemType: BffDocumentDto #id
 
 
       CreateReceivingItem:
