@@ -18,5 +18,62 @@ valueObjects:
       StatusId:
         type: id
 
+services:
+  BffSupplierService:
+    restfulResourceName: BffSuppliers
+    methods:
+      GetSuppliers:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        result:
+          itemType: BffSupplierDto
 
-# 增 改 查 激活/禁用
+      GetSupplier:
+        #根据 Id 查询供应商的详细信息
+        metadata:
+          RestfulPathVariable: SupplierId
+        isQuery: true
+        result:
+          type: BffSupplierDto
+        parameters:
+          SupplierId:
+            type: id
+
+      CreateSupplier:
+        # 新增 Supplier
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: Supplier
+        parameters:
+          Supplier:
+            type: BffSupplierDto
+
+      UpdateSupplier:
+        metadata:
+          RestfulPathVariable: SupplierId
+          HttpRequestBody: Supplier
+        httpMethod: PUT
+        parameters:
+          SupplierId:
+            type: id
+            optional: false # is required
+          Supplier:
+            type: BffSupplierDto
+
+      ActivateSupplier:
+        # 禁用 / 激活指定 Id 的 Supplier
+        restfulResourceName: "{SupplierId}/active"
+        metadata:
+          RestfulPathVariable: SupplierId
+          HttpRequestBody: Active
+        httpMethod: PUT
+        parameters:
+          SupplierId:
+            type: id
+            optional: false # is required 
+          Active:
+            # 禁用传入 false；激活传入 true。
+            type: boolean

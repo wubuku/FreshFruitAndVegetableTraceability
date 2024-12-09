@@ -6,6 +6,7 @@
 package org.dddml.ffvtraceability.domain;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public class BffLotDto implements Serializable {
@@ -33,14 +34,40 @@ public class BffLotDto implements Serializable {
         this.gs1Batch = gs1Batch;
     }
 
+    private java.math.BigDecimal quantity;
+
+    public java.math.BigDecimal getQuantity()
+    {
+        return this.quantity;
+    }
+
+    public void setQuantity(java.math.BigDecimal quantity)
+    {
+        this.quantity = quantity;
+    }
+
+    private OffsetDateTime expirationDate;
+
+    public OffsetDateTime getExpirationDate()
+    {
+        return this.expirationDate;
+    }
+
+    public void setExpirationDate(OffsetDateTime expirationDate)
+    {
+        this.expirationDate = expirationDate;
+    }
+
     public BffLotDto()
     {
     }
 
-    public BffLotDto(String lotId, String gs1Batch)
+    public BffLotDto(String lotId, String gs1Batch, java.math.BigDecimal quantity, OffsetDateTime expirationDate)
     {
         this.lotId = lotId;
         this.gs1Batch = gs1Batch;
+        this.quantity = quantity;
+        this.expirationDate = expirationDate;
     }
 
     @Override
@@ -57,6 +84,8 @@ public class BffLotDto implements Serializable {
         return true 
             && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
             && (gs1Batch == other.gs1Batch || (gs1Batch != null && gs1Batch.equals(other.gs1Batch)))
+            && (quantity == other.quantity || (quantity != null && quantity.equals(other.quantity)))
+            && (expirationDate == other.expirationDate || (expirationDate != null && expirationDate.equals(other.expirationDate)))
             ;
     }
 
@@ -70,6 +99,12 @@ public class BffLotDto implements Serializable {
         if (this.gs1Batch != null) {
             hash += 13 * this.gs1Batch.hashCode();
         }
+        if (this.quantity != null) {
+            hash += 13 * this.quantity.hashCode();
+        }
+        if (this.expirationDate != null) {
+            hash += 13 * this.expirationDate.hashCode();
+        }
         return hash;
     }
 
@@ -78,6 +113,8 @@ public class BffLotDto implements Serializable {
         return "BffLotDto{" +
                 "lotId=" + '\'' + lotId + '\'' +
                 ", gs1Batch=" + '\'' + gs1Batch + '\'' +
+                ", quantity=" + quantity +
+                ", expirationDate=" + expirationDate +
                 '}';
     }
 

@@ -6,3 +6,7 @@ valueObjects:
       Gs1Batch:
         description: "GS1 BATCH (AI=10)"
         type: id
+      Quantity:
+        type: fixed-point
+      ExpirationDate:
+        type: date-time

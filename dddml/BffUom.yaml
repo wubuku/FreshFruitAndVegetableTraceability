@@ -15,4 +15,63 @@ valueObjects:
         description: "GS1 Application Identifiers"
         type: id
 
-#增 改 查 禁用/启用
+
+services:
+  BffUomService:
+    restfulResourceName: "UnitsOfMeasure"
+    methods:
+      GetUnitsOfMeasure:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        result:
+          itemType: BffUomDto
+
+      GetUnitOfMeasure:
+        #根据 Id 查询供应商的详细信息
+        metadata:
+          RestfulPathVariable: UomId
+        isQuery: true
+        result:
+          type: BffUomDto
+        parameters:
+          UomId:
+            type: id
+
+      CreateUnitOfMeasure:
+        # 新增 Uom
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: Uom
+        parameters:
+          Uom:
+            type: BffUomDto
+
+      UpdateUnitOfMeasure:
+        metadata:
+          RestfulPathVariable: UomId
+          HttpRequestBody: Uom
+        httpMethod: PUT
+        parameters:
+          UomId:
+            type: id
+            optional: false # is required
+          Uom:
+            type: BffUomDto
+
+      ActivateUnitOfMeasure:
+        # 禁用 / 激活指定 Id 的 Uom
+        restfulResourceName: "{UomId}/active"
+        metadata:
+          RestfulPathVariable: UomId
+          HttpRequestBody: Active
+        httpMethod: PUT
+        parameters:
+          UomId:
+            type: id
+            optional: false # is required 
+          Active:
+            # 禁用传入 false；激活传入 true。
+            type: boolean
