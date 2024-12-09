@@ -56,6 +56,46 @@ public class BffFacilityServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping
+    public void createFacility(
+        @RequestBody BffFacilityDto facility
+    ) {
+        BffFacilityServiceCommands.CreateFacility createFacility = new BffFacilityServiceCommands.CreateFacility();
+        createFacility.setFacility(facility);
+        try {
+        createFacility.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffFacilityApplicationService.when(createFacility);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("{facilityId}")
+    public void updateFacility(
+        @PathVariable("facilityId") String facilityId,
+        @RequestBody BffFacilityDto facility
+    ) {
+        BffFacilityServiceCommands.UpdateFacility updateFacility = new BffFacilityServiceCommands.UpdateFacility();
+        updateFacility.setFacilityId(facilityId);
+        updateFacility.setFacility(facility);
+        try {
+        updateFacility.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffFacilityApplicationService.when(updateFacility);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("{facilityId}/active")
+    public void activateFacility(
+        @PathVariable("facilityId") String facilityId,
+        @RequestBody Boolean active
+    ) {
+        BffFacilityServiceCommands.ActivateFacility activateFacility = new BffFacilityServiceCommands.ActivateFacility();
+        activateFacility.setFacilityId(facilityId);
+        activateFacility.setActive(active);
+        try {
+        activateFacility.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffFacilityApplicationService.when(activateFacility);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @GetMapping("{facilityId}/Locations/{locationSeqId}")
     public BffFacilityLocationDto getFacilityLocation(
         @PathVariable("facilityId") String facilityId,
@@ -67,6 +107,52 @@ public class BffFacilityServiceResource {
         try {
         getFacilityLocation.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffFacilityApplicationService.when(getFacilityLocation);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PostMapping("{facilityId}/Locations")
+    public void createFacilityLocation(
+        @PathVariable("facilityId") String facilityId,
+        @RequestBody BffFacilityLocationDto facilityLocation
+    ) {
+        BffFacilityServiceCommands.CreateFacilityLocation createFacilityLocation = new BffFacilityServiceCommands.CreateFacilityLocation();
+        createFacilityLocation.setFacilityId(facilityId);
+        createFacilityLocation.setFacilityLocation(facilityLocation);
+        try {
+        createFacilityLocation.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffFacilityApplicationService.when(createFacilityLocation);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("{facilityId}/Locations/{locationSeqId}")
+    public void updateFacilityLocation(
+        @PathVariable("facilityId") String facilityId,
+        @PathVariable("locationSeqId") String locationSeqId,
+        @RequestBody BffFacilityLocationDto facilityLocation
+    ) {
+        BffFacilityServiceCommands.UpdateFacilityLocation updateFacilityLocation = new BffFacilityServiceCommands.UpdateFacilityLocation();
+        updateFacilityLocation.setFacilityId(facilityId);
+        updateFacilityLocation.setLocationSeqId(locationSeqId);
+        updateFacilityLocation.setFacilityLocation(facilityLocation);
+        try {
+        updateFacilityLocation.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffFacilityApplicationService.when(updateFacilityLocation);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("{facilityId}/Locations/{locationSeqId}/active")
+    public void activateFacilityLocation(
+        @PathVariable("facilityId") String facilityId,
+        @PathVariable("locationSeqId") String locationSeqId,
+        @RequestBody Boolean active
+    ) {
+        BffFacilityServiceCommands.ActivateFacilityLocation activateFacilityLocation = new BffFacilityServiceCommands.ActivateFacilityLocation();
+        activateFacilityLocation.setFacilityId(facilityId);
+        activateFacilityLocation.setLocationSeqId(locationSeqId);
+        activateFacilityLocation.setActive(active);
+        try {
+        activateFacilityLocation.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffFacilityApplicationService.when(activateFacilityLocation);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

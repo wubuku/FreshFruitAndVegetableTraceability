@@ -14,7 +14,19 @@ public interface BffFacilityApplicationService {
 
     BffFacilityDto when(BffFacilityServiceCommands.GetFacility c);
 
+    void when(BffFacilityServiceCommands.CreateFacility c);
+
+    void when(BffFacilityServiceCommands.UpdateFacility c);
+
+    void when(BffFacilityServiceCommands.ActivateFacility c);
+
     BffFacilityLocationDto when(BffFacilityServiceCommands.GetFacilityLocation c);
+
+    void when(BffFacilityServiceCommands.CreateFacilityLocation c);
+
+    void when(BffFacilityServiceCommands.UpdateFacilityLocation c);
+
+    void when(BffFacilityServiceCommands.ActivateFacilityLocation c);
 
 
 }

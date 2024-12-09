@@ -44,7 +44,6 @@ services:
         result:
           itemType: BffFacilityDto
 
-
       GetFacility:
         restfulResourceName: "{FacilityId}"
         metadata:
@@ -55,6 +54,38 @@ services:
         parameters:
           FacilityId:
             type: id
+
+      CreateFacility:
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: Facility
+        parameters:
+          Facility:
+            type: BffFacilityDto
+
+      UpdateFacility:
+        httpMethod: PUT
+        metadata:
+          RestfulPathVariable: FacilityId
+          HttpRequestBody: Facility
+        parameters:
+          FacilityId:
+            type: id
+          Facility:
+            type: BffFacilityDto
+
+      ActivateFacility:
+        httpMethod: PUT
+        restfulResourceName: "{FacilityId}/active"
+        metadata:
+          RestfulPathVariable: FacilityId
+          HttpRequestBody: Active
+        parameters:
+          FacilityId:
+            type: id
+          Active:
+            type: boolean
+
 
       GetFacilityLocation:
         restfulResourceName: "{FacilityId}/Locations/{LocationSeqId}"
@@ -71,3 +102,47 @@ services:
           LocationSeqId:
             type: id
 
+      CreateFacilityLocation:
+        httpMethod: POST
+        restfulResourceName: "{FacilityId}/Locations"
+        metadata:
+          RestfulPathVariables:
+            - FacilityId
+          HttpRequestBody: FacilityLocation
+        parameters:
+          FacilityId:
+            type: id
+          FacilityLocation:
+            type: BffFacilityLocationDto
+
+      UpdateFacilityLocation:
+        httpMethod: PUT
+        restfulResourceName: "{FacilityId}/Locations/{LocationSeqId}"
+        metadata:
+          RestfulPathVariables:
+            - FacilityId
+            - LocationSeqId
+          HttpRequestBody: FacilityLocation
+        parameters:
+          FacilityId:
+            type: id
+          LocationSeqId:
+            type: id
+          FacilityLocation:
+            type: BffFacilityLocationDto
+
+      ActivateFacilityLocation:
+        httpMethod: PUT
+        restfulResourceName: "{FacilityId}/Locations/{LocationSeqId}/active"
+        metadata:
+          RestfulPathVariables:
+            - FacilityId
+            - LocationSeqId
+          HttpRequestBody: Active
+        parameters:
+          FacilityId:
+            type: id
+          LocationSeqId:
+            type: id
+          Active:
+            type: boolean

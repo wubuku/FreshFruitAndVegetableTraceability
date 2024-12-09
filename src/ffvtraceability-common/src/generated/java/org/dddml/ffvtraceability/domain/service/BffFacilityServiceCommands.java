@@ -52,6 +52,83 @@ public class BffFacilityServiceCommands {
 
     }
 
+    public static class CreateFacility extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility
+         */
+        private BffFacilityDto facility;
+
+        public BffFacilityDto getFacility() {
+            return facility;
+        }
+
+        public void setFacility(BffFacilityDto facility) {
+            this.facility = facility;
+        }
+
+    }
+
+    public static class UpdateFacility extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Facility
+         */
+        private BffFacilityDto facility;
+
+        public BffFacilityDto getFacility() {
+            return facility;
+        }
+
+        public void setFacility(BffFacilityDto facility) {
+            this.facility = facility;
+        }
+
+    }
+
+    public static class ActivateFacility extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Active
+         */
+        private Boolean active;
+
+        public Boolean getActive() {
+            return active;
+        }
+
+        public void setActive(Boolean active) {
+            this.active = active;
+        }
+
+    }
+
     public static class GetFacilityLocation extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
@@ -78,6 +155,122 @@ public class BffFacilityServiceCommands {
 
         public void setLocationSeqId(String locationSeqId) {
             this.locationSeqId = locationSeqId;
+        }
+
+    }
+
+    public static class CreateFacilityLocation extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Facility Location
+         */
+        private BffFacilityLocationDto facilityLocation;
+
+        public BffFacilityLocationDto getFacilityLocation() {
+            return facilityLocation;
+        }
+
+        public void setFacilityLocation(BffFacilityLocationDto facilityLocation) {
+            this.facilityLocation = facilityLocation;
+        }
+
+    }
+
+    public static class UpdateFacilityLocation extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Location Seq Id
+         */
+        private String locationSeqId;
+
+        public String getLocationSeqId() {
+            return locationSeqId;
+        }
+
+        public void setLocationSeqId(String locationSeqId) {
+            this.locationSeqId = locationSeqId;
+        }
+
+        /**
+         * Facility Location
+         */
+        private BffFacilityLocationDto facilityLocation;
+
+        public BffFacilityLocationDto getFacilityLocation() {
+            return facilityLocation;
+        }
+
+        public void setFacilityLocation(BffFacilityLocationDto facilityLocation) {
+            this.facilityLocation = facilityLocation;
+        }
+
+    }
+
+    public static class ActivateFacilityLocation extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Location Seq Id
+         */
+        private String locationSeqId;
+
+        public String getLocationSeqId() {
+            return locationSeqId;
+        }
+
+        public void setLocationSeqId(String locationSeqId) {
+            this.locationSeqId = locationSeqId;
+        }
+
+        /**
+         * Active
+         */
+        private Boolean active;
+
+        public Boolean getActive() {
+            return active;
+        }
+
+        public void setActive(Boolean active) {
+            this.active = active;
         }
 
     }
