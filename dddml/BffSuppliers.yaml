@@ -1,3 +1,4 @@
+# 供应商相关
 valueObjects:
   BffSupplierDto:
     properties:

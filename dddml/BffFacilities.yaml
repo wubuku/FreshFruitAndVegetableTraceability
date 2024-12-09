@@ -37,6 +37,7 @@ services:
     restfulResourceName: BffFacilities
     methods:
       GetFacilities:
+        # 获取设施（仓库）的列表
         metadata:
           IsPageable: true
           ReturnPageEnvelope: true
@@ -56,6 +57,7 @@ services:
             type: id
 
       CreateFacility:
+        # 创建设施（仓库是设施的一种）
         httpMethod: POST
         metadata:
           HttpRequestBody: Facility
@@ -103,6 +105,7 @@ services:
             type: id
 
       CreateFacilityLocation:
+        # 创建设施位置（仓库的货位是设施位置的一种）
         httpMethod: POST
         restfulResourceName: "{FacilityId}/Locations"
         metadata:

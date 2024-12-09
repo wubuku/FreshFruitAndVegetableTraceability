@@ -1,3 +1,4 @@
+# 产品 / 原材料相关
 valueObjects:
   BffRawItemDto:
     properties:

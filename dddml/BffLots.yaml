@@ -1,3 +1,4 @@
+# 批次（Batch / Lot）相关
 valueObjects:
   BffLotDto:
     properties:
