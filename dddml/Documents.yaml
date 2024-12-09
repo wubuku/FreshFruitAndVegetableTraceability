@@ -25,14 +25,6 @@ aggregates:
         - document_assoc_type_id
         - from_date
     properties:
-      DocumentId:
-        type: id
-      DocumentIdTo:
-        type: id
-      DocumentAssocTypeId:
-        type: id
-      FromDate:
-        type: date-time
       ThruDate:
         type: date-time
 

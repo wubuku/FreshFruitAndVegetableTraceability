@@ -26,54 +26,6 @@ public class DocumentAssociationStateDto {
         this.documentAssociationId = documentAssociationId;
     }
 
-    private String documentId;
-
-    public String getDocumentId()
-    {
-        return this.documentId;
-    }
-
-    public void setDocumentId(String documentId)
-    {
-        this.documentId = documentId;
-    }
-
-    private String documentIdTo;
-
-    public String getDocumentIdTo()
-    {
-        return this.documentIdTo;
-    }
-
-    public void setDocumentIdTo(String documentIdTo)
-    {
-        this.documentIdTo = documentIdTo;
-    }
-
-    private String documentAssocTypeId;
-
-    public String getDocumentAssocTypeId()
-    {
-        return this.documentAssocTypeId;
-    }
-
-    public void setDocumentAssocTypeId(String documentAssocTypeId)
-    {
-        this.documentAssocTypeId = documentAssocTypeId;
-    }
-
-    private OffsetDateTime fromDate;
-
-    public OffsetDateTime getFromDate()
-    {
-        return this.fromDate;
-    }
-
-    public void setFromDate(OffsetDateTime fromDate)
-    {
-        this.fromDate = fromDate;
-    }
-
     private OffsetDateTime thruDate;
 
     public OffsetDateTime getThruDate()
@@ -177,18 +129,6 @@ public class DocumentAssociationStateDto {
             DocumentAssociationStateDto dto = new DocumentAssociationStateDto();
             if (returnedFieldsContains("DocumentAssociationId")) {
                 dto.setDocumentAssociationId(state.getDocumentAssociationId());
-            }
-            if (returnedFieldsContains("DocumentId")) {
-                dto.setDocumentId(state.getDocumentId());
-            }
-            if (returnedFieldsContains("DocumentIdTo")) {
-                dto.setDocumentIdTo(state.getDocumentIdTo());
-            }
-            if (returnedFieldsContains("DocumentAssocTypeId")) {
-                dto.setDocumentAssocTypeId(state.getDocumentAssocTypeId());
-            }
-            if (returnedFieldsContains("FromDate")) {
-                dto.setFromDate(state.getFromDate());
             }
             if (returnedFieldsContains("ThruDate")) {
                 dto.setThruDate(state.getThruDate());

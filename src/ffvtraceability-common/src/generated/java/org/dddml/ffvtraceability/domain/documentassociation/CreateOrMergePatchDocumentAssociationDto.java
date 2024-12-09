@@ -11,66 +11,6 @@ import java.time.OffsetDateTime;
 public class CreateOrMergePatchDocumentAssociationDto extends AbstractDocumentAssociationCommandDto implements DocumentAssociationCommand.CreateOrMergePatchDocumentAssociation {
 
     /**
-     * Document Id
-     */
-    private String documentId;
-
-    public String getDocumentId()
-    {
-        return this.documentId;
-    }
-
-    public void setDocumentId(String documentId)
-    {
-        this.documentId = documentId;
-    }
-
-    /**
-     * Document Id To
-     */
-    private String documentIdTo;
-
-    public String getDocumentIdTo()
-    {
-        return this.documentIdTo;
-    }
-
-    public void setDocumentIdTo(String documentIdTo)
-    {
-        this.documentIdTo = documentIdTo;
-    }
-
-    /**
-     * Document Assoc Type Id
-     */
-    private String documentAssocTypeId;
-
-    public String getDocumentAssocTypeId()
-    {
-        return this.documentAssocTypeId;
-    }
-
-    public void setDocumentAssocTypeId(String documentAssocTypeId)
-    {
-        this.documentAssocTypeId = documentAssocTypeId;
-    }
-
-    /**
-     * From Date
-     */
-    private OffsetDateTime fromDate;
-
-    public OffsetDateTime getFromDate()
-    {
-        return this.fromDate;
-    }
-
-    public void setFromDate(OffsetDateTime fromDate)
-    {
-        this.fromDate = fromDate;
-    }
-
-    /**
      * Thru Date
      */
     private OffsetDateTime thruDate;
@@ -101,54 +41,6 @@ public class CreateOrMergePatchDocumentAssociationDto extends AbstractDocumentAs
     }
 
 
-    private Boolean isPropertyDocumentIdRemoved;
-
-    public Boolean getIsPropertyDocumentIdRemoved()
-    {
-        return this.isPropertyDocumentIdRemoved;
-    }
-
-    public void setIsPropertyDocumentIdRemoved(Boolean removed)
-    {
-        this.isPropertyDocumentIdRemoved = removed;
-    }
-
-    private Boolean isPropertyDocumentIdToRemoved;
-
-    public Boolean getIsPropertyDocumentIdToRemoved()
-    {
-        return this.isPropertyDocumentIdToRemoved;
-    }
-
-    public void setIsPropertyDocumentIdToRemoved(Boolean removed)
-    {
-        this.isPropertyDocumentIdToRemoved = removed;
-    }
-
-    private Boolean isPropertyDocumentAssocTypeIdRemoved;
-
-    public Boolean getIsPropertyDocumentAssocTypeIdRemoved()
-    {
-        return this.isPropertyDocumentAssocTypeIdRemoved;
-    }
-
-    public void setIsPropertyDocumentAssocTypeIdRemoved(Boolean removed)
-    {
-        this.isPropertyDocumentAssocTypeIdRemoved = removed;
-    }
-
-    private Boolean isPropertyFromDateRemoved;
-
-    public Boolean getIsPropertyFromDateRemoved()
-    {
-        return this.isPropertyFromDateRemoved;
-    }
-
-    public void setIsPropertyFromDateRemoved(Boolean removed)
-    {
-        this.isPropertyFromDateRemoved = removed;
-    }
-
     private Boolean isPropertyThruDateRemoved;
 
     public Boolean getIsPropertyThruDateRemoved()
@@ -176,10 +68,6 @@ public class CreateOrMergePatchDocumentAssociationDto extends AbstractDocumentAs
     public void copyTo(CreateOrMergePatchDocumentAssociation command)
     {
         ((AbstractDocumentAssociationCommandDto) this).copyTo(command);
-        command.setDocumentId(this.getDocumentId());
-        command.setDocumentIdTo(this.getDocumentIdTo());
-        command.setDocumentAssocTypeId(this.getDocumentAssocTypeId());
-        command.setFromDate(this.getFromDate());
         command.setThruDate(this.getThruDate());
         command.setActive(this.getActive());
     }
@@ -226,10 +114,6 @@ public class CreateOrMergePatchDocumentAssociationDto extends AbstractDocumentAs
     public void copyTo(MergePatchDocumentAssociation command)
     {
         copyTo((CreateOrMergePatchDocumentAssociation) command);
-        command.setIsPropertyDocumentIdRemoved(this.getIsPropertyDocumentIdRemoved());
-        command.setIsPropertyDocumentIdToRemoved(this.getIsPropertyDocumentIdToRemoved());
-        command.setIsPropertyDocumentAssocTypeIdRemoved(this.getIsPropertyDocumentAssocTypeIdRemoved());
-        command.setIsPropertyFromDateRemoved(this.getIsPropertyFromDateRemoved());
         command.setIsPropertyThruDateRemoved(this.getIsPropertyThruDateRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }

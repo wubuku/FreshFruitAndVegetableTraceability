@@ -55,22 +55,6 @@ public interface DocumentAssociationCommand extends Command {
     interface CreateOrMergePatchDocumentAssociation extends DocumentAssociationCommand
     {
 
-        String getDocumentId();
-
-        void setDocumentId(String documentId);
-
-        String getDocumentIdTo();
-
-        void setDocumentIdTo(String documentIdTo);
-
-        String getDocumentAssocTypeId();
-
-        void setDocumentAssocTypeId(String documentAssocTypeId);
-
-        OffsetDateTime getFromDate();
-
-        void setFromDate(OffsetDateTime fromDate);
-
         OffsetDateTime getThruDate();
 
         void setThruDate(OffsetDateTime thruDate);
@@ -87,22 +71,6 @@ public interface DocumentAssociationCommand extends Command {
 
     interface MergePatchDocumentAssociation extends CreateOrMergePatchDocumentAssociation
     {
-        Boolean getIsPropertyDocumentIdRemoved();
-
-        void setIsPropertyDocumentIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyDocumentIdToRemoved();
-
-        void setIsPropertyDocumentIdToRemoved(Boolean removed);
-
-        Boolean getIsPropertyDocumentAssocTypeIdRemoved();
-
-        void setIsPropertyDocumentAssocTypeIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyFromDateRemoved();
-
-        void setIsPropertyFromDateRemoved(Boolean removed);
-
         Boolean getIsPropertyThruDateRemoved();
 
         void setIsPropertyThruDateRemoved(Boolean removed);

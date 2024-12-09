@@ -84,16 +84,22 @@ java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1
 mvn -pl ffvtraceability-service-rest -am spring-boot:run
 ```
 
+> 说明：
+> `-pl` 是 `--projects` 的缩写，用于指定要构建的模块或项目。
+> `-am` 是 `--also-make` 的缩写，用于指定在构建目标模块时，也构建依赖的模块。
+> `spring-boot:run`：这是 Spring Boot Maven 插件的一个目标，用于运行 Spring Boot 应用程序。它会编译代码、打包应用并启动嵌入的服务器（如 Tomcat）。
+
+
+查看 API 文档（Swagger UI）：
+
+```text
+http://localhost:1023/api/swagger-ui/index.html
+```
+
 ### Run tests
 
 ```shell
 mvn -pl ffvtraceability-service-rest -am test
-```
-
-Swagger UI:
-
-```text
-http://localhost:1023/api/swagger-ui/index.html
 ```
 
 

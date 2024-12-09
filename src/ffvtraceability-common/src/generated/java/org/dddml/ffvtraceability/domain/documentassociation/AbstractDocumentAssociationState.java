@@ -24,46 +24,6 @@ public abstract class AbstractDocumentAssociationState implements DocumentAssoci
         this.documentAssociationId = documentAssociationId;
     }
 
-    private String documentId;
-
-    public String getDocumentId() {
-        return this.documentId;
-    }
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
-
-    private String documentIdTo;
-
-    public String getDocumentIdTo() {
-        return this.documentIdTo;
-    }
-
-    public void setDocumentIdTo(String documentIdTo) {
-        this.documentIdTo = documentIdTo;
-    }
-
-    private String documentAssocTypeId;
-
-    public String getDocumentAssocTypeId() {
-        return this.documentAssocTypeId;
-    }
-
-    public void setDocumentAssocTypeId(String documentAssocTypeId) {
-        this.documentAssocTypeId = documentAssocTypeId;
-    }
-
-    private OffsetDateTime fromDate;
-
-    public OffsetDateTime getFromDate() {
-        return this.fromDate;
-    }
-
-    public void setFromDate(OffsetDateTime fromDate) {
-        this.fromDate = fromDate;
-    }
-
     private OffsetDateTime thruDate;
 
     public OffsetDateTime getThruDate() {
@@ -210,10 +170,6 @@ public abstract class AbstractDocumentAssociationState implements DocumentAssoci
     public void when(DocumentAssociationStateCreated e) {
         throwOnWrongEvent(e);
 
-        this.setDocumentId(e.getDocumentId());
-        this.setDocumentIdTo(e.getDocumentIdTo());
-        this.setDocumentAssocTypeId(e.getDocumentAssocTypeId());
-        this.setFromDate(e.getFromDate());
         this.setThruDate(e.getThruDate());
 
         this.setDeleted(false);
@@ -227,44 +183,12 @@ public abstract class AbstractDocumentAssociationState implements DocumentAssoci
         if (s == this) {
             return;
         }
-        this.setDocumentId(s.getDocumentId());
-        this.setDocumentIdTo(s.getDocumentIdTo());
-        this.setDocumentAssocTypeId(s.getDocumentAssocTypeId());
-        this.setFromDate(s.getFromDate());
         this.setThruDate(s.getThruDate());
     }
 
     public void when(DocumentAssociationStateMergePatched e) {
         throwOnWrongEvent(e);
 
-        if (e.getDocumentId() == null) {
-            if (e.getIsPropertyDocumentIdRemoved() != null && e.getIsPropertyDocumentIdRemoved()) {
-                this.setDocumentId(null);
-            }
-        } else {
-            this.setDocumentId(e.getDocumentId());
-        }
-        if (e.getDocumentIdTo() == null) {
-            if (e.getIsPropertyDocumentIdToRemoved() != null && e.getIsPropertyDocumentIdToRemoved()) {
-                this.setDocumentIdTo(null);
-            }
-        } else {
-            this.setDocumentIdTo(e.getDocumentIdTo());
-        }
-        if (e.getDocumentAssocTypeId() == null) {
-            if (e.getIsPropertyDocumentAssocTypeIdRemoved() != null && e.getIsPropertyDocumentAssocTypeIdRemoved()) {
-                this.setDocumentAssocTypeId(null);
-            }
-        } else {
-            this.setDocumentAssocTypeId(e.getDocumentAssocTypeId());
-        }
-        if (e.getFromDate() == null) {
-            if (e.getIsPropertyFromDateRemoved() != null && e.getIsPropertyFromDateRemoved()) {
-                this.setFromDate(null);
-            }
-        } else {
-            this.setFromDate(e.getFromDate());
-        }
         if (e.getThruDate() == null) {
             if (e.getIsPropertyThruDateRemoved() != null && e.getIsPropertyThruDateRemoved()) {
                 this.setThruDate(null);

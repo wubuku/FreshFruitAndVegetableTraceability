@@ -56,10 +56,6 @@ public abstract class AbstractDocumentAssociationAggregate extends AbstractAggre
     protected DocumentAssociationEvent map(DocumentAssociationCommand.CreateDocumentAssociation c) {
         DocumentAssociationEventId stateEventId = new DocumentAssociationEventId(c.getDocumentAssociationId(), c.getVersion());
         DocumentAssociationEvent.DocumentAssociationStateCreated e = newDocumentAssociationStateCreated(stateEventId);
-        e.setDocumentId(c.getDocumentId());
-        e.setDocumentIdTo(c.getDocumentIdTo());
-        e.setDocumentAssocTypeId(c.getDocumentAssocTypeId());
-        e.setFromDate(c.getFromDate());
         e.setThruDate(c.getThruDate());
         ((AbstractDocumentAssociationEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
@@ -70,15 +66,7 @@ public abstract class AbstractDocumentAssociationAggregate extends AbstractAggre
     protected DocumentAssociationEvent map(DocumentAssociationCommand.MergePatchDocumentAssociation c) {
         DocumentAssociationEventId stateEventId = new DocumentAssociationEventId(c.getDocumentAssociationId(), c.getVersion());
         DocumentAssociationEvent.DocumentAssociationStateMergePatched e = newDocumentAssociationStateMergePatched(stateEventId);
-        e.setDocumentId(c.getDocumentId());
-        e.setDocumentIdTo(c.getDocumentIdTo());
-        e.setDocumentAssocTypeId(c.getDocumentAssocTypeId());
-        e.setFromDate(c.getFromDate());
         e.setThruDate(c.getThruDate());
-        e.setIsPropertyDocumentIdRemoved(c.getIsPropertyDocumentIdRemoved());
-        e.setIsPropertyDocumentIdToRemoved(c.getIsPropertyDocumentIdToRemoved());
-        e.setIsPropertyDocumentAssocTypeIdRemoved(c.getIsPropertyDocumentAssocTypeIdRemoved());
-        e.setIsPropertyFromDateRemoved(c.getIsPropertyFromDateRemoved());
         e.setIsPropertyThruDateRemoved(c.getIsPropertyThruDateRemoved());
         ((AbstractDocumentAssociationEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());

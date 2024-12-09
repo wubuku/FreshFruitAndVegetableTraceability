@@ -9,9 +9,8 @@ import java.util.*;
 import jakarta.servlet.http.*;
 import jakarta.validation.constraints.*;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
 import org.dddml.support.criterion.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
@@ -27,17 +26,6 @@ import org.springframework.security.access.prepost.*;
 @RestController
 public class BffRawItemServiceResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-   
-    @PostMapping("/import-csv")
-    public void importFromCsv(@RequestParam String x1, @RequestParam String x2, @RequestParam("file") MultipartFile file) {
-        //org.apache.commons.csv.CSVParser parser = new org.apache.commons.csv.CSVParser(new InputStreamReader(file.getInputStream()), CSVFormat.DEFAULT);
-    }
-
-    @PostMapping("/import-csv")
-    public void importFromCsv(@RequestParam String x1, @RequestParam String x2, 
-        @RequestParam("file") /* MultipartFile */org.apache.commons.csv.CSVParser parser) {
-        //org.apache.commons.csv.CSVParser parser = new org.apache.commons.csv.CSVParser(new InputStreamReader(file.getInputStream()), CSVFormat.DEFAULT);
-    }
 
     @Autowired
     private BffRawItemApplicationService bffRawItemApplicationService;
@@ -108,7 +96,7 @@ public class BffRawItemServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @PostMapping
+    @PostMapping("batchAddRawItems")
     public void batchAddRawItems(
         @RequestBody BffRawItemDto[] rawItems
     ) {

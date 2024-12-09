@@ -102,6 +102,7 @@ services:
       BatchAddRawItems:
         # 批量添加 RawItem
         httpMethod: POST
+        restfulResourceName: "batchAddRawItems"
         metadata:
           HttpRequestBody: RawItems
         parameters:

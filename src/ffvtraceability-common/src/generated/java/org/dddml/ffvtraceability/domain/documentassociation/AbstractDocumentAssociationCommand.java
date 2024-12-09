@@ -40,54 +40,6 @@ public abstract class AbstractDocumentAssociationCommand extends AbstractCommand
     public static abstract class AbstractCreateOrMergePatchDocumentAssociation extends AbstractDocumentAssociationCommand implements CreateOrMergePatchDocumentAssociation
     {
 
-        private String documentId;
-
-        public String getDocumentId()
-        {
-            return this.documentId;
-        }
-
-        public void setDocumentId(String documentId)
-        {
-            this.documentId = documentId;
-        }
-
-        private String documentIdTo;
-
-        public String getDocumentIdTo()
-        {
-            return this.documentIdTo;
-        }
-
-        public void setDocumentIdTo(String documentIdTo)
-        {
-            this.documentIdTo = documentIdTo;
-        }
-
-        private String documentAssocTypeId;
-
-        public String getDocumentAssocTypeId()
-        {
-            return this.documentAssocTypeId;
-        }
-
-        public void setDocumentAssocTypeId(String documentAssocTypeId)
-        {
-            this.documentAssocTypeId = documentAssocTypeId;
-        }
-
-        private OffsetDateTime fromDate;
-
-        public OffsetDateTime getFromDate()
-        {
-            return this.fromDate;
-        }
-
-        public void setFromDate(OffsetDateTime fromDate)
-        {
-            this.fromDate = fromDate;
-        }
-
         private OffsetDateTime thruDate;
 
         public OffsetDateTime getThruDate()
@@ -128,54 +80,6 @@ public abstract class AbstractDocumentAssociationCommand extends AbstractCommand
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_MERGE_PATCH;
-        }
-
-        private Boolean isPropertyDocumentIdRemoved;
-
-        public Boolean getIsPropertyDocumentIdRemoved()
-        {
-            return this.isPropertyDocumentIdRemoved;
-        }
-
-        public void setIsPropertyDocumentIdRemoved(Boolean removed)
-        {
-            this.isPropertyDocumentIdRemoved = removed;
-        }
-
-        private Boolean isPropertyDocumentIdToRemoved;
-
-        public Boolean getIsPropertyDocumentIdToRemoved()
-        {
-            return this.isPropertyDocumentIdToRemoved;
-        }
-
-        public void setIsPropertyDocumentIdToRemoved(Boolean removed)
-        {
-            this.isPropertyDocumentIdToRemoved = removed;
-        }
-
-        private Boolean isPropertyDocumentAssocTypeIdRemoved;
-
-        public Boolean getIsPropertyDocumentAssocTypeIdRemoved()
-        {
-            return this.isPropertyDocumentAssocTypeIdRemoved;
-        }
-
-        public void setIsPropertyDocumentAssocTypeIdRemoved(Boolean removed)
-        {
-            this.isPropertyDocumentAssocTypeIdRemoved = removed;
-        }
-
-        private Boolean isPropertyFromDateRemoved;
-
-        public Boolean getIsPropertyFromDateRemoved()
-        {
-            return this.isPropertyFromDateRemoved;
-        }
-
-        public void setIsPropertyFromDateRemoved(Boolean removed)
-        {
-            this.isPropertyFromDateRemoved = removed;
         }
 
         private Boolean isPropertyThruDateRemoved;

@@ -19,14 +19,6 @@ public interface DocumentAssociationState
 
     DocumentAssociationId getDocumentAssociationId();
 
-    String getDocumentId();
-
-    String getDocumentIdTo();
-
-    String getDocumentAssocTypeId();
-
-    OffsetDateTime getFromDate();
-
     OffsetDateTime getThruDate();
 
     Long getVersion();
@@ -43,14 +35,6 @@ public interface DocumentAssociationState
 
     interface MutableDocumentAssociationState extends DocumentAssociationState {
         void setDocumentAssociationId(DocumentAssociationId documentAssociationId);
-
-        void setDocumentId(String documentId);
-
-        void setDocumentIdTo(String documentIdTo);
-
-        void setDocumentAssocTypeId(String documentAssocTypeId);
-
-        void setFromDate(OffsetDateTime fromDate);
 
         void setThruDate(OffsetDateTime thruDate);
 

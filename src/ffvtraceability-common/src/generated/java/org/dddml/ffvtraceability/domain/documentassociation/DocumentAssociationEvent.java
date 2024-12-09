@@ -41,22 +41,6 @@ public interface DocumentAssociationEvent extends Event {
     void setCommandId(String commandId);
 
     interface DocumentAssociationStateEvent extends DocumentAssociationEvent {
-        String getDocumentId();
-
-        void setDocumentId(String documentId);
-
-        String getDocumentIdTo();
-
-        void setDocumentIdTo(String documentIdTo);
-
-        String getDocumentAssocTypeId();
-
-        void setDocumentAssocTypeId(String documentAssocTypeId);
-
-        OffsetDateTime getFromDate();
-
-        void setFromDate(OffsetDateTime fromDate);
-
         OffsetDateTime getThruDate();
 
         void setThruDate(OffsetDateTime thruDate);
@@ -71,22 +55,6 @@ public interface DocumentAssociationEvent extends Event {
 
     interface DocumentAssociationStateMergePatched extends DocumentAssociationStateEvent
     {
-        Boolean getIsPropertyDocumentIdRemoved();
-
-        void setIsPropertyDocumentIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyDocumentIdToRemoved();
-
-        void setIsPropertyDocumentIdToRemoved(Boolean removed);
-
-        Boolean getIsPropertyDocumentAssocTypeIdRemoved();
-
-        void setIsPropertyDocumentAssocTypeIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyFromDateRemoved();
-
-        void setIsPropertyFromDateRemoved(Boolean removed);
-
         Boolean getIsPropertyThruDateRemoved();
 
         void setIsPropertyThruDateRemoved(Boolean removed);

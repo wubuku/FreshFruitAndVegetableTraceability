@@ -1768,10 +1768,6 @@ public class M {
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.DocumentAssociationId.class;
 
     public static final String[] propertyNames = new String[] {
-            "documentId",
-            "documentIdTo",
-            "documentAssocTypeId",
-            "fromDate",
             "thruDate",
             "version",
             "createdBy",
@@ -1787,10 +1783,6 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "OffsetDateTime",
             "OffsetDateTime",
             "Long",
             "String",
@@ -1817,14 +1809,6 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("documentId", "documentId");
-        aliasMap.put("DocumentId", "documentId");
-        aliasMap.put("documentIdTo", "documentIdTo");
-        aliasMap.put("DocumentIdTo", "documentIdTo");
-        aliasMap.put("documentAssocTypeId", "documentAssocTypeId");
-        aliasMap.put("DocumentAssocTypeId", "documentAssocTypeId");
-        aliasMap.put("fromDate", "fromDate");
-        aliasMap.put("FromDate", "fromDate");
         aliasMap.put("thruDate", "thruDate");
         aliasMap.put("ThruDate", "thruDate");
         aliasMap.put("version", "version");

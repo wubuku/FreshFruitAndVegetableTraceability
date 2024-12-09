@@ -33,27 +33,11 @@
       </property>
     </subclass>
     <subclass name="AbstractDocumentAssociationEvent$AbstractDocumentAssociationStateEvent" abstract="true">
-      <property name="documentId">
-        <column name="document_id" sql-type="VARCHAR(20)" />
-      </property>
-      <property name="documentIdTo">
-        <column name="document_id_to" sql-type="VARCHAR(20)" />
-      </property>
-      <property name="documentAssocTypeId">
-        <column name="document_assoc_type_id" sql-type="VARCHAR(20)" />
-      </property>
-      <property name="fromDate">
-        <column name="from_date" sql-type="timestamptz" />
-      </property>
       <property name="thruDate">
         <column name="thru_date" sql-type="timestamptz" />
       </property>
       <subclass name="AbstractDocumentAssociationEvent$SimpleDocumentAssociationStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractDocumentAssociationEvent$SimpleDocumentAssociationStateMergePatched" discriminator-value="MergePatched">
-        <property name="isPropertyDocumentIdRemoved" column="is_property_document_id_removed" />
-        <property name="isPropertyDocumentIdToRemoved" column="is_property_document_id_to_removed" />
-        <property name="isPropertyDocumentAssocTypeIdRemoved" column="is_property_document_assoc_type_id_removed" />
-        <property name="isPropertyFromDateRemoved" column="is_property_from_date_removed" />
         <property name="isPropertyThruDateRemoved" column="is_property_thru_date_removed" />
       </subclass>
       <subclass name="AbstractDocumentAssociationEvent$SimpleDocumentAssociationStateDeleted" discriminator-value="Deleted"></subclass>
