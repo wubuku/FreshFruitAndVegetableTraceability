@@ -12,9 +12,15 @@ public interface BffRawItemApplicationService {
 
     Page<BffRawItemDto> when(BffRawItemServiceCommands.GetRawItems c);
 
+    BffRawItemDto when(BffRawItemServiceCommands.GetRawItem c);
+
     void when(BffRawItemServiceCommands.CreateRawItem c);
 
     void when(BffRawItemServiceCommands.UpdateRawItem c);
+
+    void when(BffRawItemServiceCommands.ActivateRawItem c);
+
+    void when(BffRawItemServiceCommands.BatchAddRawItems c);
 
 
 }

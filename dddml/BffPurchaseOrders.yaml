@@ -82,5 +82,26 @@ valueObjects:
 
 
 
-    #根据采购单号查询采购单明细 /{OrderId};返回对象类型：BffPurchaseOrderItemDto;HttpMethod:Get
-    #PO如果通过csv导入的话也需要共导入使用的接口
+services:
+  BffPurchaseOrderService:
+    restfulResourceName: BffPurchaseOrders
+    methods:
+      GetPurchaseOrderItems:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        result:
+          itemType: BffPurchaseOrderDto
+      GetPurchaseOrder:
+        metadata:
+          RestfulPathVariable: OrderId
+        isQuery: true
+        result:
+          type: BffPurchaseOrderDto
+        parameters:
+          OrderId:
+            type: id
+
+    # TODO： 是否需要支持 PO 的 CSV 导入？

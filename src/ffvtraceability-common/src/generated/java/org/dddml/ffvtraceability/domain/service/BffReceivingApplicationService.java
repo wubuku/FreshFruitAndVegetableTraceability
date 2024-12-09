@@ -16,6 +16,12 @@ public interface BffReceivingApplicationService {
 
     BffReceivingItemDto when(BffReceivingServiceCommands.GetReceivingItem c);
 
+    void when(BffReceivingServiceCommands.CreateReceivingDocument c);
+
+    void when(BffReceivingServiceCommands.UpdateReceivingDocumentPrimaryOrderId c);
+
+    void when(BffReceivingServiceCommands.UpdateReceivingItemLocation c);
+
 
 }
 

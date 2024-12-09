@@ -35,6 +35,23 @@ public class BffRawItemServiceCommands {
 
     }
 
+    public static class GetRawItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+    }
+
     public static class CreateRawItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
@@ -78,6 +95,53 @@ public class BffRawItemServiceCommands {
 
         public void setRawItem(BffRawItemDto rawItem) {
             this.rawItem = rawItem;
+        }
+
+    }
+
+    public static class ActivateRawItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Active
+         */
+        private Boolean active;
+
+        public Boolean getActive() {
+            return active;
+        }
+
+        public void setActive(Boolean active) {
+            this.active = active;
+        }
+
+    }
+
+    public static class BatchAddRawItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Raw Items
+         */
+        private BffRawItemDto[] rawItems;
+
+        public BffRawItemDto[] getRawItems() {
+            return rawItems;
+        }
+
+        public void setRawItems(BffRawItemDto[] rawItems) {
+            this.rawItems = rawItems;
         }
 
     }

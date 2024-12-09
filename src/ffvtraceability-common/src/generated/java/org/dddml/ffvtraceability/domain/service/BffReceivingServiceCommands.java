@@ -82,6 +82,109 @@ public class BffReceivingServiceCommands {
 
     }
 
+    public static class CreateReceivingDocument extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Receiving Items
+         */
+        private BffReceivingItemDto[] receivingItems;
+
+        public BffReceivingItemDto[] getReceivingItems() {
+            return receivingItems;
+        }
+
+        public void setReceivingItems(BffReceivingItemDto[] receivingItems) {
+            this.receivingItems = receivingItems;
+        }
+
+    }
+
+    public static class UpdateReceivingDocumentPrimaryOrderId extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+        /**
+         * Primary Order Id
+         */
+        private String primaryOrderId;
+
+        public String getPrimaryOrderId() {
+            return primaryOrderId;
+        }
+
+        public void setPrimaryOrderId(String primaryOrderId) {
+            this.primaryOrderId = primaryOrderId;
+        }
+
+    }
+
+    public static class UpdateReceivingItemLocation extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+        /**
+         * Receipt Id
+         */
+        private String receiptId;
+
+        public String getReceiptId() {
+            return receiptId;
+        }
+
+        public void setReceiptId(String receiptId) {
+            this.receiptId = receiptId;
+        }
+
+        /**
+         * Destination Facility Id
+         */
+        private String destinationFacilityId;
+
+        public String getDestinationFacilityId() {
+            return destinationFacilityId;
+        }
+
+        public void setDestinationFacilityId(String destinationFacilityId) {
+            this.destinationFacilityId = destinationFacilityId;
+        }
+
+        /**
+         * Location Seq Id
+         */
+        private String locationSeqId;
+
+        public String getLocationSeqId() {
+            return locationSeqId;
+        }
+
+        public void setLocationSeqId(String locationSeqId) {
+            this.locationSeqId = locationSeqId;
+        }
+
+    }
+
 
 }
 

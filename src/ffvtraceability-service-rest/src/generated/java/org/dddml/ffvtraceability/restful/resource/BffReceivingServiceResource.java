@@ -70,5 +70,45 @@ public class BffReceivingServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping
+    public void createReceivingDocument(
+        @RequestBody BffReceivingItemDto[] receivingItems
+    ) {
+        BffReceivingServiceCommands.CreateReceivingDocument createReceivingDocument = new BffReceivingServiceCommands.CreateReceivingDocument();
+        createReceivingDocument.setReceivingItems(receivingItems);
+        try {
+        createReceivingDocument.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(createReceivingDocument);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("{documentId}/PrimaryOrderId")
+    public void updateReceivingDocumentPrimaryOrderId(
+        @PathVariable("documentId") String documentId,
+        @RequestBody String primaryOrderId
+    ) {
+        BffReceivingServiceCommands.UpdateReceivingDocumentPrimaryOrderId updateReceivingDocumentPrimaryOrderId = new BffReceivingServiceCommands.UpdateReceivingDocumentPrimaryOrderId();
+        updateReceivingDocumentPrimaryOrderId.setDocumentId(documentId);
+        updateReceivingDocumentPrimaryOrderId.setPrimaryOrderId(primaryOrderId);
+        try {
+        updateReceivingDocumentPrimaryOrderId.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(updateReceivingDocumentPrimaryOrderId);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("{documentId}/Items/{receiptId}/Location")
+    public void updateReceivingItemLocation(
+        @PathVariable("documentId") String documentId,
+        @PathVariable("receiptId") String receiptId,
+        @RequestBody BffReceivingServiceCommands.UpdateReceivingItemLocation requestBody
+    ) {
+        try {
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
+        requestBody.setDocumentId(documentId);
+        requestBody.setReceiptId(receiptId);
+        bffReceivingApplicationService.when(requestBody);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 }
 

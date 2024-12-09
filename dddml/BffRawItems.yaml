@@ -49,14 +49,26 @@ services:
         #httpMethod: GET
         result:
           itemType: BffRawItemDto #返回类型为 BffRawItemDto 的数组
-      CreateRawItem: # 新增 Item
+      GetRawItem:
+        #根据 Id 查询产品的详细信息
+        metadata:
+          RestfulPathVariable: ProductId
+        isQuery: true
+        result:
+          type: BffRawItemDto
+        parameters:
+          ProductId:
+            type: id
+      CreateRawItem:
+        # 新增 Item
         httpMethod: POST
         metadata:
           HttpRequestBody: RawItem
         parameters:
           RawItem:
             type: BffRawItemDto
-      UpdateRawItem: #更新指定的 Item 的信息
+      UpdateRawItem:
+        #更新指定的 Item 的信息
         metadata:
           RestfulPathVariable: ProductId
           HttpRequestBody: RawItem
@@ -67,11 +79,29 @@ services:
             optional: false # is required
           RawItem:
             type: BffRawItemDto
+      ActivateRawItem:
+        # 禁用 / 激活指定 Id 的 Item
+        restfulResourceName: "{ProductId}/active"
+        metadata:
+          RestfulPathVariable: ProductId
+          HttpRequestBody: Active
+        httpMethod: PUT
+        parameters:
+          ProductId:
+            type: id
+            optional: false # is required
+          Active:
+            # 禁用传入 false；激活传入 true。 
+            type: bool
 
-      #根据Id查询产品的详细信息
-      #添加方法禁用指定 Id 的 Item; /{itemId}/disable 返回值:void; HttpMethod:Patch
-      #添加方法激活指定 Id 的 Item; /{itemId}/active 返回值:void; HttpMethod:Patch
-      #增加方法用以支持cvs导入，/batchAdd;返回值：List<BffRawItemDto>;RequestBody:含有从csv中信息整合而来的List<BffRawItemDto>;HttpMethod:Post
-
+      BatchAddRawItems:
+        # 批量导入接口 
+        # todo 支持 CVS 文件导入。工具改进支持：DDDML 模型中是否可以直接定义接受除了 JSON 之外的其他 Request Body？
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: RawItems
+        parameters:
+          RawItems:
+            itemType: BffRawItemDto
 
 

@@ -78,7 +78,8 @@ services:
         result:
           itemType: BffReceivingDocumentDto
 
-      GetReceivingDocument: #获取指定收货单详情
+      GetReceivingDocument:
+        # 获取指定收货单详情
         restfulResourceName: "{DocumentId}"
         metadata:
           RestfulPathVariable: DocumentId
@@ -89,7 +90,8 @@ services:
           DocumentId:
             type: id
 
-      GetReceivingItem: #指定收货单下指定行项的详情
+      GetReceivingItem:
+        # 获取指定收货单下指定行项的详情
         restfulResourceName: "{DocumentId}/Items/{ReceiptId}"
         metadata:
           RestfulPathVariables:
@@ -104,10 +106,50 @@ services:
           ReceiptId:
             type: id
 
+      CreateReceivingDocument:
+        # 创建收货单
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: ReceivingItems
+        parameters:
+          # TODO 支持在创建时指定当前仓库（DestinationFacilityId）？
+          ReceivingItems:
+            # 一般这里只要有一个行项，即在添加第一个行项的时候生成收货单。
+            # 行项中包含了 PO 的 Id（OrderId）。传入第一个行项的 PO 的 Id 作为收货单的 PrimaryOrderId。
+            itemType: BffReceivingItemDto
+      # TODO 添加行项
+      # TODO 删除行项
+      # TODO 更新行项是否需要？
 
-      # 收货 CreateReceivingDocument 参数：PO（可为空），List<BffReceivingItemDto>,List<DocumentDto>; 返回值:BffReceivingDocumentDto; HttpMethod:Post
-      # 添加第一个产品的时候就生成收货单。
-      # 给收货时未填写 PO 单号的收货单补充 PO 单号。返回值：void；HttpMethod:Patch
-      # 更新行项的货位(Location)，{DocumentId}/UpdateItemLocation;参数：路径参数 DocumentId，RequestBody中是ItemId和新的Location组成对象的数组，返回值void；HttpMethod:Patch
+      UpdateReceivingDocumentPrimaryOrderId:
+        # 给收货时未填写 PO 单号的收货单补充 PO 单号。
+        httpMethod: PUT
+        restfulResourceName: "{DocumentId}/PrimaryOrderId"
+        metadata:
+          RestfulPathVariable: DocumentId
+          HttpRequestBody: PrimaryOrderId
+        parameters:
+          DocumentId:
+            type: id
+          PrimaryOrderId:
+            type: id
 
+      UpdateReceivingItemLocation:
+        # 更新行项的货位（Location）
+        httpMethod: PUT
+        restfulResourceName: "{DocumentId}/Items/{ReceiptId}/Location"
+        metadata:
+          RestfulPathVariables:
+            - DocumentId
+            - ReceiptId
+        parameters:
+          DocumentId:
+            type: id
+          ReceiptId:
+            type: id
+          DestinationFacilityId:
+            # 只有当收货单的 DestinationFacilityId 为空时，才能传入这个参数。
+            type: id
+          LocationSeqId:
+            type: id
 
