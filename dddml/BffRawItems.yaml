@@ -99,8 +99,7 @@ services:
             type: bool
 
       BatchAddRawItems:
-        # 批量导入接口 
-        # todo 支持 CVS 文件导入。工具改进支持：DDDML 模型中是否可以直接定义接受除了 JSON 之外的其他 Request Body？
+        # 批量添加 RawItem
         httpMethod: POST
         metadata:
           HttpRequestBody: RawItems
@@ -108,4 +107,10 @@ services:
           RawItems:
             itemType: BffRawItemDto
 
+      # 关于支持通过 CVS 文件导入 RawItem：
+      # 可以为这样的功能单独开发开发一个 RestController。它的方法可以不在 DDDML 模型中定义。
+      #
+      # 未来还可以考虑在工具层面改进：支持在 DDDML 模型中定义参数类型为采用“自定义参数解析器”的类型？
+      # 对于 Spring MVC 来说，这里的参数解析器指：
+      #   org.springframework.web.method.support.HandlerMethodArgumentResolver
 

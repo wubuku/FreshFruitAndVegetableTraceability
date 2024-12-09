@@ -284,19 +284,17 @@ public class PermissionManagementApiController {
             return ResponseEntity.badRequest().body("Please upload a CSV file");
         }
 
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-
-            // 使用 Apache Commons CSV 解析文件
-            CSVParser csvParser = CSVFormat.DEFAULT
-                    .builder()
-                    .setHeader()
-                    .setSkipHeaderRecord(true)
-                    .setIgnoreHeaderCase(true)
-                    .setTrim(true)
-                    .build()
-                    .parse(reader);
-
+        try (BufferedReader reader
+                     = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
+             CSVParser csvParser = CSVFormat.DEFAULT
+                     .builder()
+                     .setHeader()
+                     .setSkipHeaderRecord(true)
+                     .setIgnoreHeaderCase(true)
+                     .setTrim(true)
+                     .build()
+                     .parse(reader)
+        ) {
             // 验证必需的列是否存在
             Set<String> headers = new HashSet<>(csvParser.getHeaderNames());
             if (!headers.contains("permission_id")) {
