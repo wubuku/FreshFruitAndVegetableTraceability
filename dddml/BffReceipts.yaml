@@ -22,6 +22,9 @@ valueObjects:
       ReceivingItems:
         itemType: BffReceivingItemDto
         isList: true
+      ReferenceDocuments:
+        itemType: id
+        isList: true
 
   BffReceivingItemDto:
     properties:
@@ -120,7 +123,7 @@ services:
           #   # 行项中包含了 PO 的 Id（OrderId）。传入第一个行项的 PO 的 Id 作为收货单的 PrimaryOrderId。
           #   itemType: BffReceivingItemDto
 
-      UpdateReceivingDocumentPrimaryOrderId:
+      UpdateReceivingPrimaryOrderId:
         # 给收货时未填写 PO 单号的收货单补充 PO 单号。
         httpMethod: PUT
         restfulResourceName: "{DocumentId}/PrimaryOrderId"
@@ -132,6 +135,18 @@ services:
             type: id
           PrimaryOrderId:
             type: id
+
+      UpdateReceivingReferenceDocuments:
+        httpMethod: PUT
+        restfulResourceName: "{DocumentId}/ReferenceDocuments"
+        metadata:
+          RestfulPathVariable: DocumentId
+          HttpRequestBody: ReferenceDocuments
+        parameters:
+          DocumentId:
+            type: id
+          ReferenceDocuments:
+            itemType: id
 
 
       CreateReceivingItem:

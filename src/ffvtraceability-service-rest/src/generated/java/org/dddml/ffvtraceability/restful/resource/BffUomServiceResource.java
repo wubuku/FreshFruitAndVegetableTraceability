@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.*;
 
-@RequestMapping(path = "UnitsOfMeasure", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "BffUnitsOfMeasure", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class BffUomServiceResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());

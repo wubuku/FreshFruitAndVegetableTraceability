@@ -10,3 +10,62 @@ valueObjects:
         type: fixed-point
       ExpirationDate:
         type: date-time
+
+services:
+  BffLotService:
+    restfulResourceName: "BffLots"
+    methods:
+      GetLots:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        result:
+          itemType: BffLotDto
+
+      GetLot:
+        metadata:
+          RestfulPathVariable: LotId
+        isQuery: true
+        result:
+          type: BffLotDto
+        parameters:
+          LotId:
+            type: id
+
+      CreateLot:
+        # 新增 Lot
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: Lot
+        parameters:
+          Lot:
+            type: BffLotDto
+
+      UpdateLot:
+        metadata:
+          RestfulPathVariable: LotId
+          HttpRequestBody: Lot
+        httpMethod: PUT
+        parameters:
+          LotId:
+            type: id
+            optional: false # is required
+          Lot:
+            type: BffLotDto
+
+      ActivateLot:
+        # 禁用 / 激活指定 Id 的 Lot
+        restfulResourceName: "{LotId}/active"
+        metadata:
+          RestfulPathVariable: LotId
+          HttpRequestBody: Active
+        httpMethod: PUT
+        parameters:
+          LotId:
+            type: id
+            optional: false # is required 
+          Active:
+            # 禁用传入 false；激活传入 true。
+            type: boolean

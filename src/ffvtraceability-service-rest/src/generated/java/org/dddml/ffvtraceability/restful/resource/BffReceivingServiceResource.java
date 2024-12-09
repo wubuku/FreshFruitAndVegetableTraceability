@@ -83,16 +83,30 @@ public class BffReceivingServiceResource {
     }
 
     @PutMapping("{documentId}/PrimaryOrderId")
-    public void updateReceivingDocumentPrimaryOrderId(
+    public void updateReceivingPrimaryOrderId(
         @PathVariable("documentId") String documentId,
         @RequestBody String primaryOrderId
     ) {
-        BffReceivingServiceCommands.UpdateReceivingDocumentPrimaryOrderId updateReceivingDocumentPrimaryOrderId = new BffReceivingServiceCommands.UpdateReceivingDocumentPrimaryOrderId();
-        updateReceivingDocumentPrimaryOrderId.setDocumentId(documentId);
-        updateReceivingDocumentPrimaryOrderId.setPrimaryOrderId(primaryOrderId);
+        BffReceivingServiceCommands.UpdateReceivingPrimaryOrderId updateReceivingPrimaryOrderId = new BffReceivingServiceCommands.UpdateReceivingPrimaryOrderId();
+        updateReceivingPrimaryOrderId.setDocumentId(documentId);
+        updateReceivingPrimaryOrderId.setPrimaryOrderId(primaryOrderId);
         try {
-        updateReceivingDocumentPrimaryOrderId.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffReceivingApplicationService.when(updateReceivingDocumentPrimaryOrderId);
+        updateReceivingPrimaryOrderId.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(updateReceivingPrimaryOrderId);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("{documentId}/ReferenceDocuments")
+    public void updateReceivingReferenceDocuments(
+        @PathVariable("documentId") String documentId,
+        @RequestBody String[] referenceDocuments
+    ) {
+        BffReceivingServiceCommands.UpdateReceivingReferenceDocuments updateReceivingReferenceDocuments = new BffReceivingServiceCommands.UpdateReceivingReferenceDocuments();
+        updateReceivingReferenceDocuments.setDocumentId(documentId);
+        updateReceivingReferenceDocuments.setReferenceDocuments(referenceDocuments);
+        try {
+        updateReceivingReferenceDocuments.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(updateReceivingReferenceDocuments);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

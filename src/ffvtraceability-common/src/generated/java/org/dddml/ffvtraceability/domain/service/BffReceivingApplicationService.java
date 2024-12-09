@@ -18,7 +18,9 @@ public interface BffReceivingApplicationService {
 
     void when(BffReceivingServiceCommands.CreateReceivingDocument c);
 
-    void when(BffReceivingServiceCommands.UpdateReceivingDocumentPrimaryOrderId c);
+    void when(BffReceivingServiceCommands.UpdateReceivingPrimaryOrderId c);
+
+    void when(BffReceivingServiceCommands.UpdateReceivingReferenceDocuments c);
 
     void when(BffReceivingServiceCommands.CreateReceivingItem c);
 

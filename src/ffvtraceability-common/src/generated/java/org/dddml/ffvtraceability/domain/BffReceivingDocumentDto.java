@@ -127,11 +127,21 @@ public class BffReceivingDocumentDto implements Serializable {
         this.receivingItems = receivingItems;
     }
 
+    private java.util.List<String> referenceDocuments;
+
+    public java.util.List<String> getReferenceDocuments() {
+        return this.referenceDocuments;
+    }
+
+    public void setReferenceDocuments(java.util.List<String> referenceDocuments) {
+        this.referenceDocuments = referenceDocuments;
+    }
+
     public BffReceivingDocumentDto()
     {
     }
 
-    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String originFacilityId, String destinationFacilityId, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, java.util.List<BffReceivingItemDto> receivingItems)
+    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String originFacilityId, String destinationFacilityId, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<String> referenceDocuments)
     {
         this.documentId = documentId;
         this.statusId = statusId;
@@ -143,6 +153,7 @@ public class BffReceivingDocumentDto implements Serializable {
         this.primaryReturnId = primaryReturnId;
         this.primaryShipGroupSeqId = primaryShipGroupSeqId;
         this.receivingItems = receivingItems;
+        this.referenceDocuments = referenceDocuments;
     }
 
     @Override
@@ -167,6 +178,7 @@ public class BffReceivingDocumentDto implements Serializable {
             && (primaryReturnId == other.primaryReturnId || (primaryReturnId != null && primaryReturnId.equals(other.primaryReturnId)))
             && (primaryShipGroupSeqId == other.primaryShipGroupSeqId || (primaryShipGroupSeqId != null && primaryShipGroupSeqId.equals(other.primaryShipGroupSeqId)))
             && (receivingItems == other.receivingItems || (receivingItems != null && receivingItems.equals(other.receivingItems)))
+            && (referenceDocuments == other.referenceDocuments || (referenceDocuments != null && referenceDocuments.equals(other.referenceDocuments)))
             ;
     }
 
@@ -204,6 +216,9 @@ public class BffReceivingDocumentDto implements Serializable {
         if (this.receivingItems != null) {
             hash += 13 * this.receivingItems.hashCode();
         }
+        if (this.referenceDocuments != null) {
+            hash += 13 * this.referenceDocuments.hashCode();
+        }
         return hash;
     }
 
@@ -220,6 +235,7 @@ public class BffReceivingDocumentDto implements Serializable {
                 ", primaryReturnId=" + '\'' + primaryReturnId + '\'' +
                 ", primaryShipGroupSeqId=" + '\'' + primaryShipGroupSeqId + '\'' +
                 ", receivingItems=" + receivingItems +
+                ", referenceDocuments=" + '\'' + referenceDocuments + '\'' +
                 '}';
     }
 

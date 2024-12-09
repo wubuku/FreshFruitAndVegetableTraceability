@@ -99,7 +99,7 @@ public class BffReceivingServiceCommands {
 
     }
 
-    public static class UpdateReceivingDocumentPrimaryOrderId extends org.dddml.ffvtraceability.domain.AbstractCommand {
+    public static class UpdateReceivingPrimaryOrderId extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
          * Document Id
@@ -125,6 +125,36 @@ public class BffReceivingServiceCommands {
 
         public void setPrimaryOrderId(String primaryOrderId) {
             this.primaryOrderId = primaryOrderId;
+        }
+
+    }
+
+    public static class UpdateReceivingReferenceDocuments extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+        /**
+         * Reference Documents
+         */
+        private String[] referenceDocuments;
+
+        public String[] getReferenceDocuments() {
+            return referenceDocuments;
+        }
+
+        public void setReferenceDocuments(String[] referenceDocuments) {
+            this.referenceDocuments = referenceDocuments;
         }
 
     }

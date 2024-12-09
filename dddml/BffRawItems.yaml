@@ -7,7 +7,7 @@ valueObjects:
       # <field name="description" type="description"></field>
       ProductName:
         type: name
-      Description: #Addtional Notes
+      Description:
         type: description
       # <field name="smallImageUrl" type="url"></field>
       # <field name="mediumImageUrl" type="url"></field>

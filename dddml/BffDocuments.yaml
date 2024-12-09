@@ -14,4 +14,47 @@ valueObjects:
       # ImageData:
       #   type: object
 
+services:
+  BffDocumentService:
+    restfulResourceName: "BffDocuments"
+    methods:
+      GetDocuments:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        result:
+          itemType: BffDocumentDto
+
+      GetDocument:
+        metadata:
+          RestfulPathVariable: DocumentId
+        isQuery: true
+        result:
+          type: BffDocumentDto
+        parameters:
+          DocumentId:
+            type: id
+
+      CreateDocument:
+        # 新增 Document
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: Document
+        parameters:
+          Document:
+            type: BffDocumentDto
+
+      UpdateDocument:
+        metadata:
+          RestfulPathVariable: DocumentId
+          HttpRequestBody: Document
+        httpMethod: PUT
+        parameters:
+          DocumentId:
+            type: id
+            optional: false # is required
+          Document:
+            type: BffDocumentDto
 

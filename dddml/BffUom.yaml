@@ -18,7 +18,7 @@ valueObjects:
 
 services:
   BffUomService:
-    restfulResourceName: "UnitsOfMeasure"
+    restfulResourceName: "BffUnitsOfMeasure"
     methods:
       GetUnitsOfMeasure:
         metadata:
@@ -30,7 +30,6 @@ services:
           itemType: BffUomDto
 
       GetUnitOfMeasure:
-        #根据 Id 查询供应商的详细信息
         metadata:
           RestfulPathVariable: UomId
         isQuery: true
