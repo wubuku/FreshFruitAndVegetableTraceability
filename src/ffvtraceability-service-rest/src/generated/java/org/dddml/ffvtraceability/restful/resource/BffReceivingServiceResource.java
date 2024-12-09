@@ -99,7 +99,7 @@ public class BffReceivingServiceResource {
     @PutMapping("{documentId}/ReferenceDocuments")
     public void updateReceivingReferenceDocuments(
         @PathVariable("documentId") String documentId,
-        @RequestBody String[] referenceDocuments
+        @RequestBody BffDocumentDto[] referenceDocuments
     ) {
         BffReceivingServiceCommands.UpdateReceivingReferenceDocuments updateReceivingReferenceDocuments = new BffReceivingServiceCommands.UpdateReceivingReferenceDocuments();
         updateReceivingReferenceDocuments.setDocumentId(documentId);

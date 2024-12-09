@@ -147,13 +147,13 @@ public class BffReceivingServiceCommands {
         /**
          * Reference Documents
          */
-        private String[] referenceDocuments;
+        private BffDocumentDto[] referenceDocuments;
 
-        public String[] getReferenceDocuments() {
+        public BffDocumentDto[] getReferenceDocuments() {
             return referenceDocuments;
         }
 
-        public void setReferenceDocuments(String[] referenceDocuments) {
+        public void setReferenceDocuments(BffDocumentDto[] referenceDocuments) {
             this.referenceDocuments = referenceDocuments;
         }
 
