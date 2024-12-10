@@ -332,6 +332,208 @@ public interface TokenPairRepository {
 - [Spring Data JPA - Projections](https://docs.spring.io/spring-data/jpa/reference/repositories/projections.html)
 
 
+### JPA 投影查询：如何优雅地处理只读 DTO
+
+#### 问题背景
+在实际开发中，我们经常遇到这样的情况：需要使用一个无法修改的 DTO 类（可能是其他团队维护的接口）来接收查询结果。这个 DTO：
+- 有完整的 getter/setter 方法
+- 是典型的数据结构类型
+- 无法修改其构造方法
+
+传统的 Class-based Projection 方式会导致冗长的查询语句：
+```java
+@Query("SELECT new com.example.TokenPairMetadataDto(tp.id, tp.pairType) FROM TokenPairCache tp")
+```
+
+#### 解决方案
+
+##### Interface-based Projection + 对象映射（推荐方案）
+
+###### 基本实现
+```java
+// 1. 定义投影接口
+public interface FooProjection {
+    String getField1();
+    String getField2();
+    // ... 其他与 FooDto 一致的 getter 方法
+}
+
+// 2. Repository 实现
+@Repository
+public interface FooRepository extends JpaRepository<Foo, Long> {
+    @Query(value = "SELECT f.field1 as field1, f.field2 as field2 FROM foo f", 
+           nativeQuery = true)
+    List<FooProjection> findAllProjections();
+}
+```
+
+###### 对象映射方案比较
+
+**A. 使用 MapStruct（推荐）**
+```java
+@Mapper(componentModel = "spring")
+public interface FooMapper {
+    FooDto projectionToDto(FooProjection projection);
+}
+
+// 在 Repository 中使用
+default List<FooDto> findAllDtos() {
+    return findAllProjections().stream()
+        .map(mapper::projectionToDto)
+        .collect(Collectors.toList());
+}
+```
+
+**B. 使用 Spring BeanUtils**
+```java
+default List<FooDto> findAllDtos() {
+    return findAllProjections().stream()
+        .map(proj -> {
+            FooDto dto = new FooDto();
+            BeanUtils.copyProperties(proj, dto);
+            return dto;
+        })
+        .collect(Collectors.toList());
+}
+```
+
+**C. 使用 ModelMapper**
+```java
+default List<FooDto> findAllDtos() {
+    ModelMapper modelMapper = new ModelMapper();
+    return findAllProjections().stream()
+        .map(proj -> modelMapper.map(proj, FooDto.class))
+        .collect(Collectors.toList());
+}
+```
+
+###### 映射工具对比
+
+| 特性       | MapStruct | Spring BeanUtils | ModelMapper  |
+| ---------- | --------- | ---------------- | ------------ |
+| 性能       | 最佳      | 中等             | 较低         |
+| 类型检查   | 编译时    | 运行时           | 运行时       |
+| 配置复杂度 | 低        | 最低             | 高           |
+| 错误检测   | 编译时    | 运行时静默失败   | 运行时可配置 |
+| 额外依赖   | 需要      | 不需要           | 需要         |
+
+
+##### 使用 ResultTransformer（如果使用 Hibernate）
+
+```java
+@Repository
+public interface FooRepository extends JpaRepository<Foo, Long> {
+    @Query(value = "SELECT f.field1 as field1, f.field2 as field2 FROM foo f", 
+           nativeQuery = true)
+    @org.hibernate.annotations.ResultTransformer(
+        org.hibernate.transform.AliasToBeanResultTransformer.class)
+    List<FooDto> findAllDtos();
+}
+```
+
+##### 使用 JdbcTemplate 和 BeanPropertyRowMapper
+
+```java
+@Repository
+public class FooRepositoryImpl {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+    public List<FooDto> findAllDtos() {
+        String sql = "SELECT field1, field2 FROM foo";
+        return jdbcTemplate.query(sql, 
+            new BeanPropertyRowMapper<>(FooDto.class));
+    }
+}
+```
+
+##### MapStruct 最佳实践
+
+###### 严格配置
+```java
+@Mapper(
+    componentModel = "spring",
+    unmappedTargetPolicy = ReportingPolicy.ERROR,
+    unmappedSourcePolicy = ReportingPolicy.ERROR
+)
+public interface FooMapper {
+    @Mapping(target = "fullName", source = "name")
+    FooDto projectionToDto(FooProjection projection);
+}
+```
+
+###### Maven 依赖
+```xml
+<properties>
+    <mapstruct.version>1.5.5.Final</mapstruct.version>
+</properties>
+
+<dependencies>
+    <!-- MapStruct 核心库 -->
+    <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct</artifactId>
+        <version>${mapstruct.version}</version>
+    </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <source>1.8</source>
+                <target>1.8</target>
+                <annotationProcessorPaths>
+                    <!-- MapStruct 注解处理器 -->
+                    <path>
+                        <groupId>org.mapstruct</groupId>
+                        <artifactId>mapstruct-processor</artifactId>
+                        <version>${mapstruct.version}</version>
+                    </path>
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
+
+###### 方案优势
+
+1. **类型安全**
+   - MapStruct 提供编译时检查
+   - 属性变更时立即发现问题
+   - IDE 重构支持
+
+2. **代码简洁**
+   - 避免手写映射代码
+   - 查询语句清晰
+   - 维护成本低
+
+3. **性能优秀**
+   - MapStruct 生成接近手写的代码
+   - 零反射调用
+   - 运行时开销最小
+
+###### 注意事项
+
+1. 选择 MapStruct 的原因：
+   - 编译时类型检查最安全
+   - 性能最优
+   - 错误提示清晰
+   - 支持复杂映射场景
+
+2. 避免使用：
+   - 手动编写映射代码
+   - 运行时反射映射
+   - 不安全的属性拷贝
+
+3. 重构建议：
+   - 使用 MapStruct 的严格配置
+   - 明确声明所有映射关系
+   - 保持接口和 DTO 的属性命名一致
 
 
 ### 附录：Vavr 简介
