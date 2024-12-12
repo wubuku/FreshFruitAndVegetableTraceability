@@ -49,33 +49,60 @@ public class HibernateDocumentStateQueryRepository implements DocumentStateQuery
 
     @Transactional(readOnly = true)
     public Iterable<DocumentState> getAll(Integer firstResult, Integer maxResults) {
-        EntityManager em = getEntityManager();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractDocumentState.SimpleDocumentState> cq = cb.createQuery(AbstractDocumentState.SimpleDocumentState.class);
-        Root<AbstractDocumentState.SimpleDocumentState> root = cq.from(AbstractDocumentState.SimpleDocumentState.class);
-        cq.select(root);
-        addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractDocumentState.SimpleDocumentState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
-        return query.getResultList().stream().map(DocumentState.class::cast).collect(Collectors.toList());
+        return getAll(DocumentState.class, firstResult, maxResults);
     }
-
+    
     @Transactional(readOnly = true)
     public Iterable<DocumentState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        EntityManager em = getEntityManager();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractDocumentState.SimpleDocumentState> cq = cb.createQuery(AbstractDocumentState.SimpleDocumentState.class);
-        Root<AbstractDocumentState.SimpleDocumentState> root = cq.from(AbstractDocumentState.SimpleDocumentState.class);
-        cq.select(root);
-        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractDocumentState.SimpleDocumentState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
-        return query.getResultList().stream().map(DocumentState.class::cast).collect(Collectors.toList());
+        return get(DocumentState.class, filter, orders, firstResult, maxResults);
     }
 
     @Transactional(readOnly = true)
     public Iterable<DocumentState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
+        return get(DocumentState.class, filter, orders, firstResult, maxResults);
+    }
+
+    @Transactional(readOnly = true)
+    public DocumentState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
+        return getFirst(DocumentState.class, filter, orders);
+    }
+
+    @Transactional(readOnly = true)
+    public DocumentState getFirst(Map.Entry<String, Object> keyValue, List<String> orders) {
+        return getFirst(DocumentState.class, keyValue, orders);
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable<DocumentState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
+        return getByProperty(DocumentState.class, propertyName, propertyValue, orders, firstResult, maxResults);
+    }
+
+    @Transactional(readOnly = true)
+    public long getCount(Iterable<Map.Entry<String, Object>> filter) {
+        return getCount(DocumentState.class, filter);
+    }
+
+    @Transactional(readOnly = true)
+    public long getCount(org.dddml.support.criterion.Criterion filter) {
+        return getCount(DocumentState.class, filter);
+    }
+    // //////////////////////////////////////
+
+    @Transactional(readOnly = true)
+    public Iterable<DocumentState> getAll(Class<? extends DocumentState> stateType, Integer firstResult, Integer maxResults) {
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbstractDocumentState.SimpleDocumentState> cq = cb.createQuery(AbstractDocumentState.SimpleDocumentState.class);
+        Root<AbstractDocumentState.SimpleDocumentState> root = cq.from(AbstractDocumentState.SimpleDocumentState.class);
+        cq.select(root);
+        addNotDeletedRestriction(cb, cq, root);
+        TypedQuery<AbstractDocumentState.SimpleDocumentState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(DocumentState.class::cast).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable<DocumentState> get(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<AbstractDocumentState.SimpleDocumentState> cq = cb.createQuery(AbstractDocumentState.SimpleDocumentState.class);
@@ -89,8 +116,22 @@ public class HibernateDocumentStateQueryRepository implements DocumentStateQuery
     }
 
     @Transactional(readOnly = true)
-    public DocumentState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
-        List<DocumentState> list = (List<DocumentState>)get(filter, orders, 0, 1);
+    public Iterable<DocumentState> get(Class<? extends DocumentState> stateType, org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbstractDocumentState.SimpleDocumentState> cq = cb.createQuery(AbstractDocumentState.SimpleDocumentState.class);
+        Root<AbstractDocumentState.SimpleDocumentState> root = cq.from(AbstractDocumentState.SimpleDocumentState.class);
+        cq.select(root);
+        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
+        addNotDeletedRestriction(cb, cq, root);
+        TypedQuery<AbstractDocumentState.SimpleDocumentState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(DocumentState.class::cast).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public DocumentState getFirst(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
+        List<DocumentState> list = (List<DocumentState>)get(stateType, filter, orders, 0, 1);
         if (list == null || list.size() <= 0) {
             return null;
         }
@@ -98,14 +139,14 @@ public class HibernateDocumentStateQueryRepository implements DocumentStateQuery
     }
 
     @Transactional(readOnly = true)
-    public DocumentState getFirst(Map.Entry<String, Object> keyValue, List<String> orders) {
+    public DocumentState getFirst(Class<? extends DocumentState> stateType, Map.Entry<String, Object> keyValue, List<String> orders) {
         List<Map.Entry<String, Object>> filter = new ArrayList<>();
         filter.add(keyValue);
-        return getFirst(filter, orders);
+        return getFirst(stateType, filter, orders);
     }
 
     @Transactional(readOnly = true)
-    public Iterable<DocumentState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
+    public Iterable<DocumentState> getByProperty(Class<? extends DocumentState> stateType, String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
         Map.Entry<String, Object> keyValue = new AbstractMap.SimpleEntry<>(propertyName, propertyValue);
         List<Map.Entry<String, Object>> filter = new ArrayList<>();
         filter.add(keyValue);
@@ -113,7 +154,7 @@ public class HibernateDocumentStateQueryRepository implements DocumentStateQuery
     }
 
     @Transactional(readOnly = true)
-    public long getCount(Iterable<Map.Entry<String, Object>> filter) {
+    public long getCount(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
@@ -127,7 +168,7 @@ public class HibernateDocumentStateQueryRepository implements DocumentStateQuery
     }
 
     @Transactional(readOnly = true)
-    public long getCount(org.dddml.support.criterion.Criterion filter) {
+    public long getCount(Class<? extends DocumentState> stateType, org.dddml.support.criterion.Criterion filter) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);

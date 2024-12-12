@@ -197,6 +197,16 @@ public abstract class AbstractDocumentCommand extends AbstractCommand implements
         public String getCommandType() {
             return COMMAND_TYPE_DELETE;
         }
+
+        private String documentTypeId;
+
+        public String getDocumentTypeId() {
+            return this.documentTypeId;
+        }
+
+        public void setDocumentTypeId(String documentTypeId) {
+            this.documentTypeId = documentTypeId;
+        }
     }
 
     

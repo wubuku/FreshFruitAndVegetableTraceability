@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.party">
+  <class name="AbstractPartyEvent" table="party_event" abstract="true">
+    <composite-id name="partyEventId" class="org.dddml.ffvtraceability.domain.party.PartyEventId">
+      <key-property name="partyId">
+        <column name="party_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractPartyEvent$PartyLobEvent" discriminator-value="PartyLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractPartyEvent$AbstractPartyStateEvent" abstract="true">
+      <property name="partyTypeId">
+        <column name="party_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="primaryRoleTypeId">
+        <column name="primary_role_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="externalId">
+        <column name="external_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="preferredCurrencyUomId">
+        <column name="preferred_currency_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="LONGTEXT" />
+      </property>
+      <property name="statusId">
+        <column name="STATUS_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <subclass name="AbstractPartyEvent$SimplePartyStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractPartyEvent$SimplePartyStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
+        <property name="isPropertyPrimaryRoleTypeIdRemoved" column="is_property_primary_role_type_id_removed" />
+        <property name="isPropertyExternalIdRemoved" column="is_property_external_id_removed" />
+        <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+      </subclass>
+      <subclass name="AbstractPartyEvent$SimplePartyStateDeleted" discriminator-value="Deleted"></subclass>
+      <subclass name="AbstractPersonEvent$AbstractPersonStateEvent" abstract="true">
+        <property name="salutation">
+          <column name="salutation" sql-type="VARCHAR(100)" />
+        </property>
+        <property name="firstName">
+          <column name="first_name" sql-type="VARCHAR(100)" />
+        </property>
+        <property name="middleName">
+          <column name="middle_name" sql-type="VARCHAR(100)" />
+        </property>
+        <property name="lastName">
+          <column name="last_name" sql-type="VARCHAR(100)" />
+        </property>
+        <property name="personalTitle">
+          <column name="personal_title" sql-type="VARCHAR(100)" />
+        </property>
+        <property name="nickname">
+          <column name="nickname" sql-type="VARCHAR(100)" />
+        </property>
+        <property name="gender">
+          <column name="gender" sql-type="CHAR(1)" />
+        </property>
+        <property name="birthDate">
+          <column name="birth_date" sql-type="DATE" />
+        </property>
+        <property name="deceasedDate">
+          <column name="deceased_date" sql-type="DATE" />
+        </property>
+        <property name="socialSecurityNumber">
+          <column name="social_security_number" sql-type="VARCHAR(255)" />
+        </property>
+        <property name="passportNumber">
+          <column name="passport_number" sql-type="VARCHAR(255)" />
+        </property>
+        <property name="passportExpireDate">
+          <column name="passport_expire_date" sql-type="DATE" />
+        </property>
+        <property name="existingCustomer">
+          <column name="existing_customer" sql-type="CHAR(1)" />
+        </property>
+        <subclass name="AbstractPersonEvent$SimplePersonStateCreated" discriminator-value="PersonCreated"></subclass>
+        <subclass name="AbstractPersonEvent$SimplePersonStateMergePatched" discriminator-value="PersonMergePatched">
+          <property name="isPropertySalutationRemoved" column="is_property_salutation_removed" />
+          <property name="isPropertyFirstNameRemoved" column="is_property_first_name_removed" />
+          <property name="isPropertyMiddleNameRemoved" column="is_property_middle_name_removed" />
+          <property name="isPropertyLastNameRemoved" column="is_property_last_name_removed" />
+          <property name="isPropertyPersonalTitleRemoved" column="is_property_personal_title_removed" />
+          <property name="isPropertyNicknameRemoved" column="is_property_nickname_removed" />
+          <property name="isPropertyGenderRemoved" column="is_property_gender_removed" />
+          <property name="isPropertyBirthDateRemoved" column="is_property_birth_date_removed" />
+          <property name="isPropertyDeceasedDateRemoved" column="is_property_deceased_date_removed" />
+          <property name="isPropertySocialSecurityNumberRemoved" column="is_property_social_security_number_removed" />
+          <property name="isPropertyPassportNumberRemoved" column="is_property_passport_number_removed" />
+          <property name="isPropertyPassportExpireDateRemoved" column="is_property_passport_expire_date_removed" />
+          <property name="isPropertyExistingCustomerRemoved" column="is_property_existing_customer_removed" />
+          <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
+          <property name="isPropertyPrimaryRoleTypeIdRemoved" column="is_property_primary_role_type_id_removed" />
+          <property name="isPropertyExternalIdRemoved" column="is_property_external_id_removed" />
+          <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
+          <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+          <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        </subclass>
+        <subclass name="AbstractPersonEvent$SimplePersonStateDeleted" discriminator-value="PersonDeleted"></subclass>
+      </subclass>
+      <subclass name="AbstractOrganizationEvent$AbstractOrganizationStateEvent" abstract="true">
+        <property name="organizationName">
+          <column name="organization_name" sql-type="VARCHAR(250)" />
+        </property>
+        <subclass name="AbstractOrganizationEvent$SimpleOrganizationStateCreated" discriminator-value="OrganizationCreated"></subclass>
+        <subclass name="AbstractOrganizationEvent$SimpleOrganizationStateMergePatched" discriminator-value="OrganizationMergePatched">
+          <property name="isPropertyOrganizationNameRemoved" column="is_property_organization_name_removed" />
+          <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
+          <property name="isPropertyPrimaryRoleTypeIdRemoved" column="is_property_primary_role_type_id_removed" />
+          <property name="isPropertyExternalIdRemoved" column="is_property_external_id_removed" />
+          <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
+          <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+          <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        </subclass>
+        <subclass name="AbstractOrganizationEvent$SimpleOrganizationStateDeleted" discriminator-value="OrganizationDeleted"></subclass>
+        <subclass name="AbstractLegalOrganizationEvent$AbstractLegalOrganizationStateEvent" abstract="true">
+          <property name="taxIdNum">
+            <column name="tax_id_num" />
+          </property>
+          <subclass name="AbstractLegalOrganizationEvent$SimpleLegalOrganizationStateCreated" discriminator-value="LegalOrganizationCreated"></subclass>
+          <subclass name="AbstractLegalOrganizationEvent$SimpleLegalOrganizationStateMergePatched" discriminator-value="LegalOrganizationMergePatched">
+            <property name="isPropertyTaxIdNumRemoved" column="is_property_tax_id_num_removed" />
+            <property name="isPropertyOrganizationNameRemoved" column="is_property_organization_name_removed" />
+            <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
+            <property name="isPropertyPrimaryRoleTypeIdRemoved" column="is_property_primary_role_type_id_removed" />
+            <property name="isPropertyExternalIdRemoved" column="is_property_external_id_removed" />
+            <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
+            <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+            <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+          </subclass>
+          <subclass name="AbstractLegalOrganizationEvent$SimpleLegalOrganizationStateDeleted" discriminator-value="LegalOrganizationDeleted"></subclass>
+          <subclass name="AbstractCompanyEvent$AbstractCompanyStateEvent" abstract="true">
+            <subclass name="AbstractCompanyEvent$SimpleCompanyStateCreated" discriminator-value="CompanyCreated"></subclass>
+            <subclass name="AbstractCompanyEvent$SimpleCompanyStateMergePatched" discriminator-value="CompanyMergePatched">
+              <property name="isPropertyTaxIdNumRemoved" column="is_property_tax_id_num_removed" />
+              <property name="isPropertyOrganizationNameRemoved" column="is_property_organization_name_removed" />
+              <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
+              <property name="isPropertyPrimaryRoleTypeIdRemoved" column="is_property_primary_role_type_id_removed" />
+              <property name="isPropertyExternalIdRemoved" column="is_property_external_id_removed" />
+              <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
+              <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+              <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+            </subclass>
+            <subclass name="AbstractCompanyEvent$SimpleCompanyStateDeleted" discriminator-value="CompanyDeleted"></subclass>
+          </subclass>
+        </subclass>
+        <subclass name="AbstractDepartmentEvent$AbstractDepartmentStateEvent" abstract="true">
+          <subclass name="AbstractDepartmentEvent$SimpleDepartmentStateCreated" discriminator-value="DepartmentCreated"></subclass>
+          <subclass name="AbstractDepartmentEvent$SimpleDepartmentStateMergePatched" discriminator-value="DepartmentMergePatched">
+            <property name="isPropertyOrganizationNameRemoved" column="is_property_organization_name_removed" />
+            <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
+            <property name="isPropertyPrimaryRoleTypeIdRemoved" column="is_property_primary_role_type_id_removed" />
+            <property name="isPropertyExternalIdRemoved" column="is_property_external_id_removed" />
+            <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
+            <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+            <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+          </subclass>
+          <subclass name="AbstractDepartmentEvent$SimpleDepartmentStateDeleted" discriminator-value="DepartmentDeleted"></subclass>
+        </subclass>
+        <subclass name="AbstractInformalOrganizationEvent$AbstractInformalOrganizationStateEvent" abstract="true">
+          <subclass name="AbstractFamilyEvent$AbstractFamilyStateEvent" abstract="true">
+            <property name="familyName">
+              <column name="family_name" sql-type="VARCHAR(60)" />
+            </property>
+            <subclass name="AbstractFamilyEvent$SimpleFamilyStateCreated" discriminator-value="FamilyCreated"></subclass>
+            <subclass name="AbstractFamilyEvent$SimpleFamilyStateMergePatched" discriminator-value="FamilyMergePatched">
+              <property name="isPropertyFamilyNameRemoved" column="is_property_family_name_removed" />
+              <property name="isPropertyOrganizationNameRemoved" column="is_property_organization_name_removed" />
+              <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
+              <property name="isPropertyPrimaryRoleTypeIdRemoved" column="is_property_primary_role_type_id_removed" />
+              <property name="isPropertyExternalIdRemoved" column="is_property_external_id_removed" />
+              <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
+              <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+              <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+            </subclass>
+            <subclass name="AbstractFamilyEvent$SimpleFamilyStateDeleted" discriminator-value="FamilyDeleted"></subclass>
+          </subclass>
+        </subclass>
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.product">
+  <class name="AbstractProductEvent" table="product_event" abstract="true">
+    <composite-id name="productEventId" class="org.dddml.ffvtraceability.domain.product.ProductEventId">
+      <key-property name="productId">
+        <column name="product_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractProductEvent$ProductLobEvent" discriminator-value="ProductLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractProductEvent$AbstractProductStateEvent" abstract="true">
+      <property name="productTypeId">
+        <column name="product_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="primaryProductCategoryId">
+        <column name="primary_product_category_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="manufacturerPartyId">
+        <column name="MANUFACTURER_PARTY_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="facilityId">
+        <column name="FACILITY_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="introductionDate">
+        <column name="INTRODUCTION_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="releaseDate">
+        <column name="RELEASE_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="supportDiscontinuationDate">
+        <column name="SUPPORT_DISCONTINUATION_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="salesDiscontinuationDate">
+        <column name="SALES_DISCONTINUATION_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="salesDiscWhenNotAvail">
+        <column name="SALES_DISC_WHEN_NOT_AVAIL" sql-type="CHAR(1)" />
+      </property>
+      <property name="internalName">
+        <column name="INTERNAL_NAME" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="brandName">
+        <column name="BRAND_NAME" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="comments">
+        <column name="COMMENTS" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="productName">
+        <column name="PRODUCT_NAME" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="description">
+        <column name="DESCRIPTION" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="longDescription">
+        <column name="LONG_DESCRIPTION" sql-type="LONGTEXT" />
+      </property>
+      <property name="priceDetailText">
+        <column name="PRICE_DETAIL_TEXT" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="smallImageUrl">
+        <column name="SMALL_IMAGE_URL" sql-type="VARCHAR(2000)" />
+      </property>
+      <property name="mediumImageUrl">
+        <column name="MEDIUM_IMAGE_URL" sql-type="VARCHAR(2000)" />
+      </property>
+      <property name="largeImageUrl">
+        <column name="LARGE_IMAGE_URL" sql-type="VARCHAR(2000)" />
+      </property>
+      <property name="detailImageUrl">
+        <column name="DETAIL_IMAGE_URL" sql-type="VARCHAR(2000)" />
+      </property>
+      <property name="originalImageUrl">
+        <column name="ORIGINAL_IMAGE_URL" sql-type="VARCHAR(2000)" />
+      </property>
+      <property name="detailScreen">
+        <column name="DETAIL_SCREEN" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="inventoryMessage">
+        <column name="INVENTORY_MESSAGE" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="quantityUomId">
+        <column name="QUANTITY_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="quantityIncluded">
+        <column name="QUANTITY_INCLUDED" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="piecesIncluded">
+        <column name="PIECES_INCLUDED" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="requireAmount">
+        <column name="REQUIRE_AMOUNT" sql-type="CHAR(1)" />
+      </property>
+      <property name="fixedAmount">
+        <column name="FIXED_AMOUNT" sql-type="DECIMAL(18,2)" />
+      </property>
+      <property name="amountUomTypeId">
+        <column name="AMOUNT_UOM_TYPE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="weightUomId">
+        <column name="WEIGHT_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="shippingWeight">
+        <column name="SHIPPING_WEIGHT" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="productWeight">
+        <column name="PRODUCT_WEIGHT" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="heightUomId">
+        <column name="HEIGHT_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="productHeight">
+        <column name="PRODUCT_HEIGHT" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="shippingHeight">
+        <column name="SHIPPING_HEIGHT" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="widthUomId">
+        <column name="WIDTH_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="productWidth">
+        <column name="PRODUCT_WIDTH" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="shippingWidth">
+        <column name="SHIPPING_WIDTH" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="depthUomId">
+        <column name="DEPTH_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="productDepth">
+        <column name="PRODUCT_DEPTH" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="shippingDepth">
+        <column name="SHIPPING_DEPTH" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="diameterUomId">
+        <column name="DIAMETER_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="productDiameter">
+        <column name="PRODUCT_DIAMETER" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="productRating">
+        <column name="PRODUCT_RATING" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="ratingTypeEnum">
+        <column name="RATING_TYPE_ENUM" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="returnable">
+        <column name="RETURNABLE" sql-type="CHAR(1)" />
+      </property>
+      <property name="taxable">
+        <column name="TAXABLE" sql-type="CHAR(1)" />
+      </property>
+      <property name="chargeShipping">
+        <column name="CHARGE_SHIPPING" sql-type="CHAR(1)" />
+      </property>
+      <property name="autoCreateKeywords">
+        <column name="AUTO_CREATE_KEYWORDS" sql-type="CHAR(1)" />
+      </property>
+      <property name="includeInPromotions">
+        <column name="INCLUDE_IN_PROMOTIONS" sql-type="CHAR(1)" />
+      </property>
+      <property name="isVirtual">
+        <column name="IS_VIRTUAL" sql-type="CHAR(1)" />
+      </property>
+      <property name="isVariant">
+        <column name="IS_VARIANT" sql-type="CHAR(1)" />
+      </property>
+      <property name="virtualVariantMethodEnum">
+        <column name="VIRTUAL_VARIANT_METHOD_ENUM" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="originGeoId">
+        <column name="ORIGIN_GEO_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="requirementMethodEnumId">
+        <column name="REQUIREMENT_METHOD_ENUM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="billOfMaterialLevel">
+        <column name="BILL_OF_MATERIAL_LEVEL" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="inShippingBox">
+        <column name="IN_SHIPPING_BOX" sql-type="CHAR(1)" />
+      </property>
+      <property name="defaultShipmentBoxTypeId">
+        <column name="DEFAULT_SHIPMENT_BOX_TYPE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="lotIdFilledIn">
+        <column name="LOT_ID_FILLED_IN" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="orderDecimalQuantity">
+        <column name="ORDER_DECIMAL_QUANTITY" sql-type="CHAR(1)" />
+      </property>
+      <subclass name="AbstractProductEvent$SimpleProductStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractProductEvent$SimpleProductStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyProductTypeIdRemoved" column="is_property_product_type_id_removed" />
+        <property name="isPropertyPrimaryProductCategoryIdRemoved" column="is_property_primary_product_category_id_removed" />
+        <property name="isPropertyManufacturerPartyIdRemoved" column="is_property_manufacturer_party_id_removed" />
+        <property name="isPropertyFacilityIdRemoved" column="is_property_facility_id_removed" />
+        <property name="isPropertyIntroductionDateRemoved" column="is_property_introduction_date_removed" />
+        <property name="isPropertyReleaseDateRemoved" column="is_property_release_date_removed" />
+        <property name="isPropertySupportDiscontinuationDateRemoved" column="is_property_support_discontinuation_date_removed" />
+        <property name="isPropertySalesDiscontinuationDateRemoved" column="is_property_sales_discontinuation_date_removed" />
+        <property name="isPropertySalesDiscWhenNotAvailRemoved" column="is_property_sales_disc_when_not_avail_removed" />
+        <property name="isPropertyInternalNameRemoved" column="is_property_internal_name_removed" />
+        <property name="isPropertyBrandNameRemoved" column="is_property_brand_name_removed" />
+        <property name="isPropertyCommentsRemoved" column="is_property_comments_removed" />
+        <property name="isPropertyProductNameRemoved" column="is_property_product_name_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+        <property name="isPropertyLongDescriptionRemoved" column="is_property_long_description_removed" />
+        <property name="isPropertyPriceDetailTextRemoved" column="is_property_price_detail_text_removed" />
+        <property name="isPropertySmallImageUrlRemoved" column="is_property_small_image_url_removed" />
+        <property name="isPropertyMediumImageUrlRemoved" column="is_property_medium_image_url_removed" />
+        <property name="isPropertyLargeImageUrlRemoved" column="is_property_large_image_url_removed" />
+        <property name="isPropertyDetailImageUrlRemoved" column="is_property_detail_image_url_removed" />
+        <property name="isPropertyOriginalImageUrlRemoved" column="is_property_original_image_url_removed" />
+        <property name="isPropertyDetailScreenRemoved" column="is_property_detail_screen_removed" />
+        <property name="isPropertyInventoryMessageRemoved" column="is_property_inventory_message_removed" />
+        <property name="isPropertyQuantityUomIdRemoved" column="is_property_quantity_uom_id_removed" />
+        <property name="isPropertyQuantityIncludedRemoved" column="is_property_quantity_included_removed" />
+        <property name="isPropertyPiecesIncludedRemoved" column="is_property_pieces_included_removed" />
+        <property name="isPropertyRequireAmountRemoved" column="is_property_require_amount_removed" />
+        <property name="isPropertyFixedAmountRemoved" column="is_property_fixed_amount_removed" />
+        <property name="isPropertyAmountUomTypeIdRemoved" column="is_property_amount_uom_type_id_removed" />
+        <property name="isPropertyWeightUomIdRemoved" column="is_property_weight_uom_id_removed" />
+        <property name="isPropertyShippingWeightRemoved" column="is_property_shipping_weight_removed" />
+        <property name="isPropertyProductWeightRemoved" column="is_property_product_weight_removed" />
+        <property name="isPropertyHeightUomIdRemoved" column="is_property_height_uom_id_removed" />
+        <property name="isPropertyProductHeightRemoved" column="is_property_product_height_removed" />
+        <property name="isPropertyShippingHeightRemoved" column="is_property_shipping_height_removed" />
+        <property name="isPropertyWidthUomIdRemoved" column="is_property_width_uom_id_removed" />
+        <property name="isPropertyProductWidthRemoved" column="is_property_product_width_removed" />
+        <property name="isPropertyShippingWidthRemoved" column="is_property_shipping_width_removed" />
+        <property name="isPropertyDepthUomIdRemoved" column="is_property_depth_uom_id_removed" />
+        <property name="isPropertyProductDepthRemoved" column="is_property_product_depth_removed" />
+        <property name="isPropertyShippingDepthRemoved" column="is_property_shipping_depth_removed" />
+        <property name="isPropertyDiameterUomIdRemoved" column="is_property_diameter_uom_id_removed" />
+        <property name="isPropertyProductDiameterRemoved" column="is_property_product_diameter_removed" />
+        <property name="isPropertyProductRatingRemoved" column="is_property_product_rating_removed" />
+        <property name="isPropertyRatingTypeEnumRemoved" column="is_property_rating_type_enum_removed" />
+        <property name="isPropertyReturnableRemoved" column="is_property_returnable_removed" />
+        <property name="isPropertyTaxableRemoved" column="is_property_taxable_removed" />
+        <property name="isPropertyChargeShippingRemoved" column="is_property_charge_shipping_removed" />
+        <property name="isPropertyAutoCreateKeywordsRemoved" column="is_property_auto_create_keywords_removed" />
+        <property name="isPropertyIncludeInPromotionsRemoved" column="is_property_include_in_promotions_removed" />
+        <property name="isPropertyIsVirtualRemoved" column="is_property_is_virtual_removed" />
+        <property name="isPropertyIsVariantRemoved" column="is_property_is_variant_removed" />
+        <property name="isPropertyVirtualVariantMethodEnumRemoved" column="is_property_virtual_variant_method_enum_removed" />
+        <property name="isPropertyOriginGeoIdRemoved" column="is_property_origin_geo_id_removed" />
+        <property name="isPropertyRequirementMethodEnumIdRemoved" column="is_property_requirement_method_enum_id_removed" />
+        <property name="isPropertyBillOfMaterialLevelRemoved" column="is_property_bill_of_material_level_removed" />
+        <property name="isPropertyInShippingBoxRemoved" column="is_property_in_shipping_box_removed" />
+        <property name="isPropertyDefaultShipmentBoxTypeIdRemoved" column="is_property_default_shipment_box_type_id_removed" />
+        <property name="isPropertyLotIdFilledInRemoved" column="is_property_lot_id_filled_in_removed" />
+        <property name="isPropertyOrderDecimalQuantityRemoved" column="is_property_order_decimal_quantity_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

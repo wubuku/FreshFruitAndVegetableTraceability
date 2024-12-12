@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.productcategory">
+  <class name="org.dddml.ffvtraceability.domain.productcategory.AbstractProductCategoryState$SimpleProductCategoryState" table="product_category">
+    <id name="productCategoryId" length="20">
+      <column name="product_category_id" sql-type="VARCHAR(20)" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <property name="productCategoryTypeId">
+      <column name="product_category_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="primaryParentCategoryId">
+      <column name="primary_parent_category_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="categoryName">
+      <column name="category_name" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="description">
+      <column name="description" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="categoryImageUrl">
+      <column name="category_image_url" sql-type="VARCHAR(2000)" />
+    </property>
+    <property name="detailScreen">
+      <column name="detail_screen" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="showInSelect">
+      <column name="show_in_select" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

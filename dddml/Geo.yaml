@@ -1,0 +1,57 @@
+﻿aggregates:
+  Geo:
+    metadata:
+      NoEventSourcing: true
+    discriminator: GeoTypeId
+    # reservedPropertyMetadata: {}
+    id:
+      name: GeoId
+      type: id
+    properties:
+      GeoTypeId:
+        type: id
+      GeoName:
+        type: name
+      GeoCode:
+        type: short-varchar
+      GeoSecCode:
+        type: short-varchar
+      Abbreviation:
+        type: short-varchar
+      WellKnownText:
+        type: very-long
+      # # -----------------------------------
+      # # 序号
+      # SequenceNum:
+      #   type: numeric
+
+    references:
+      GeoType:
+        displayName: GeoType
+        type: GeoType
+        properties:
+          - GeoTypeId
+        foreignKeyName: GEO_TO_TYPE
+
+  GeoType:
+    id:
+      name: GeoTypeId
+      type: id      
+    metadata: 
+      NoEventSourcing: true
+    properties:
+      ParentTypeId:
+        type: id-ne
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+    references:
+      ParentTypeId:
+        displayName: PARENT-TYPE-ID
+        description: Parent
+        type: GeoType
+        properties:
+        - ParentTypeId
+        foreignKeyName: GEO_TYPE_PARENT
+

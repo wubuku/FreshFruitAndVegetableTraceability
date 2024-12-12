@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.lot">
+  <class name="AbstractLotEvent" table="lot_event" abstract="true">
+    <composite-id name="lotEventId" class="org.dddml.ffvtraceability.domain.lot.LotEventId">
+      <key-property name="lotId">
+        <column name="lot_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractLotEvent$LotLobEvent" discriminator-value="LotLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractLotEvent$AbstractLotStateEvent" abstract="true">
+      <property name="gs1Batch">
+        <column name="gs1_batch" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="quantity">
+        <column name="quantity" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="expirationDate">
+        <column name="expiration_date" sql-type="timestamptz" />
+      </property>
+      <subclass name="AbstractLotEvent$SimpleLotStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractLotEvent$SimpleLotStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyGs1BatchRemoved" column="is_property_gs1_batch_removed" />
+        <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed" />
+        <property name="isPropertyExpirationDateRemoved" column="is_property_expiration_date_removed" />
+      </subclass>
+      <subclass name="AbstractLotEvent$SimpleLotStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

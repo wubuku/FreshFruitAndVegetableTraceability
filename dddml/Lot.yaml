@@ -1,0 +1,32 @@
+aggregates:
+  Lot:
+    id:
+      name: LotId
+      type: id
+    properties:
+      Gs1Batch:
+        description: "GS1 BATCH (AI=10)"
+        type: id
+      Quantity:
+        type: fixed-point
+      ExpirationDate:
+        type: date-time
+      LotIdentifications:
+        itemType: LotIdentification
+
+    entities:
+      LotIdentification:
+        id:
+          name: LotIdentificationTypeId
+          type: id
+        properties:
+          IdValue:
+            type: id
+
+  LotIdentificationType:
+    id:
+      name: LotIdentificationTypeId
+      type: id-ne
+    properties:
+      Description:
+        type: description

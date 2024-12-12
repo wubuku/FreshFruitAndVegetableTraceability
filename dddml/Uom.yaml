@@ -1,0 +1,55 @@
+﻿aggregates:
+  Uom:
+    id:
+      name: UomId
+      type: id
+    # metadata:
+      # NoEventSourcing: true
+    # reservedPropertyMetadata: {}
+    discriminator: UomTypeId
+    properties:
+      UomTypeId:
+        type: id
+      Abbreviation:
+        type: short-varchar
+      NumericCode:
+        type: numeric
+      Gs1AI:
+        description: "GS1 Application Identifiers"
+        type: id
+      Description:
+        type: description
+
+    references:
+      UomType:
+        displayName: UomType
+        type: UomType
+        properties:
+        - UomTypeId
+        foreignKeyName: UOM_TO_TYPE
+
+
+  UomType:
+    #reservedPropertyMetadata: {}
+    #metadata:
+    #  NoEventSourcing: true
+    id:
+      name: UomTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+    references:
+      ParentTypeId:
+        name: ParentTypeId
+        displayName: PARENT-TYPE-ID
+        description: Parent
+        type: UomType
+        properties:
+          - ParentTypeId
+        foreignKeyName: UOM_TYPE_PARENT
+

@@ -90,6 +90,30 @@ public abstract class AbstractDocumentApplicationService implements DocumentAppl
         return getStateQueryRepository().getCount(filter);
     }
 
+    public Iterable<DocumentState> getAll(Class<? extends DocumentState> stateType, Integer firstResult, Integer maxResults) {
+        return getStateQueryRepository().getAll(stateType, firstResult, maxResults);
+    }
+
+    public Iterable<DocumentState> get(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
+        return getStateQueryRepository().get(stateType, filter, orders, firstResult, maxResults);
+    }
+
+    public Iterable<DocumentState> get(Class<? extends DocumentState> stateType, Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
+        return getStateQueryRepository().get(stateType, filter, orders, firstResult, maxResults);
+    }
+
+    public Iterable<DocumentState> getByProperty(Class<? extends DocumentState> stateType, String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
+        return getStateQueryRepository().getByProperty(stateType, propertyName, propertyValue, orders, firstResult, maxResults);
+    }
+
+    public long getCount(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter) {
+        return getStateQueryRepository().getCount(stateType, filter);
+    }
+
+    public long getCount(Class<? extends DocumentState> stateType, Criterion filter) {
+        return getStateQueryRepository().getCount(stateType, filter);
+    }
+
     public DocumentEvent getEvent(String documentId, long version) {
         DocumentEvent e = (DocumentEvent)getEventStore().getEvent(toEventStoreAggregateId(documentId), version);
         if (e != null) {
@@ -117,7 +141,8 @@ public abstract class AbstractDocumentApplicationService implements DocumentAppl
     protected void update(DocumentCommand c, Consumer<DocumentAggregate> action) {
         String aggregateId = c.getDocumentId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        DocumentState state = getStateRepository().get(aggregateId, false);
+        Class<? extends DocumentState> stateType = getStateType(c);
+        DocumentState state = getStateRepository().get(stateType, aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);
         if (duplicate) { return; }
 
@@ -148,6 +173,24 @@ public abstract class AbstractDocumentApplicationService implements DocumentAppl
 
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
         persist(eventStoreAggregateId, ((DocumentEvent.SqlDocumentEvent)stateCreated).getDocumentEventId().getVersion(), aggregate, state);
+    }
+
+    protected Class<? extends DocumentState> getStateType(DocumentCommand c) {
+        Class<? extends DocumentState> clazz = DocumentState.class;
+        String discriminatorVal = null;
+        if (c instanceof DocumentCommand.CreateOrMergePatchDocument) {
+            discriminatorVal = ((DocumentCommand.CreateOrMergePatchDocument) c).getDocumentTypeId();
+        } else if (c instanceof DocumentCommand.DeleteDocument) {
+            discriminatorVal = ((DocumentCommand.DeleteDocument) c).getDocumentTypeId();
+        }
+        if (discriminatorVal != null) {
+            switch (discriminatorVal) {
+                case DocumentTypeId.DOCUMENT:
+                    clazz = DocumentState.class;
+                    break;
+            }
+        }
+        return clazz;
     }
 
     protected boolean isDuplicateCommand(DocumentCommand command, EventStoreAggregateId eventStoreAggregateId, DocumentState state) {

@@ -30,5 +30,21 @@ public interface DocumentStateQueryRepository {
 
     long getCount(Criterion filter);
 
+    Iterable<DocumentState> getAll(Class<? extends DocumentState> stateType, Integer firstResult, Integer maxResults);
+    
+    Iterable<DocumentState> get(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults);
+
+    Iterable<DocumentState> get(Class<? extends DocumentState> stateType, Criterion filter, List<String> orders, Integer firstResult, Integer maxResults);
+
+    DocumentState getFirst(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders);
+
+    DocumentState getFirst(Class<? extends DocumentState> stateType, Map.Entry<String, Object> keyValue, List<String> orders);
+
+    Iterable<DocumentState> getByProperty(Class<? extends DocumentState> stateType, String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults);
+
+    long getCount(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter);
+
+    long getCount(Class<? extends DocumentState> stateType, Criterion filter);
+
 }
 

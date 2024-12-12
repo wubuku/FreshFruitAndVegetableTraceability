@@ -2,7 +2,8 @@
   SupplierProduct:
     metadata:
       ShouldStaticallyInvokeJavaLogicFunctions: true
-    tableName: SUPPLIER_PRODUCT
+    reservedPropertyMetadata:
+      noDeleted: true
     multiTenancy:
       discriminatorBasedMultiTenancyEnabled: true
       shouldTenantizeId: true
@@ -81,10 +82,6 @@
 
       ShipmentMethodTypeId:
         type: id
-
-    references: {}
-    reservedPropertyMetadata:
-      noDeleted: true
 
     methods:
       UpdateAvailableThruDate:

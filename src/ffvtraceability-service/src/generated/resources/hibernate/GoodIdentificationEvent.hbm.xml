@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.product">
+  <class name="AbstractGoodIdentificationEvent" table="good_identification_event" abstract="true">
+    <composite-id name="goodIdentificationEventId" class="org.dddml.ffvtraceability.domain.product.GoodIdentificationEventId">
+      <key-property name="productId">
+        <column name="product_good_identification_id_product_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="goodIdentificationTypeId">
+        <column name="product_good_identification_id_good_identification_type_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="productVersion">
+        <column name="product_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractGoodIdentificationEvent$AbstractGoodIdentificationStateEvent" abstract="true">
+      <property name="idValue">
+        <column name="id_value" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractGoodIdentificationEvent$SimpleGoodIdentificationStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractGoodIdentificationEvent$SimpleGoodIdentificationStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyIdValueRemoved" column="is_property_id_value_removed" />
+      </subclass>
+      <subclass name="AbstractGoodIdentificationEvent$SimpleGoodIdentificationStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

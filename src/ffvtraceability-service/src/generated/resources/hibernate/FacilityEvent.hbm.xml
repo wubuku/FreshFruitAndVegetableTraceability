@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.facility">
+  <class name="AbstractFacilityEvent" table="facility_event" abstract="true">
+    <composite-id name="facilityEventId" class="org.dddml.ffvtraceability.domain.facility.FacilityEventId">
+      <key-property name="facilityId">
+        <column name="facility_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractFacilityEvent$FacilityLobEvent" discriminator-value="FacilityLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractFacilityEvent$AbstractFacilityStateEvent" abstract="true">
+      <property name="facilityTypeId">
+        <column name="facility_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="parentFacilityId">
+        <column name="parent_facility_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="ownerPartyId">
+        <column name="owner_party_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="defaultInventoryItemTypeId">
+        <column name="default_inventory_item_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="facilityName">
+        <column name="facility_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="primaryFacilityGroupId">
+        <column name="primary_facility_group_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="oldSquareFootage">
+        <column name="old_square_footage" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="facilitySize">
+        <column name="facility_size" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="facilitySizeUomId">
+        <column name="facility_size_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="productStoreId">
+        <column name="product_store_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="defaultDaysToShip">
+        <column name="default_days_to_ship" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="openedDate">
+        <column name="opened_date" sql-type="timestamptz" />
+      </property>
+      <property name="closedDate">
+        <column name="closed_date" sql-type="timestamptz" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="defaultDimensionUomId">
+        <column name="default_dimension_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="defaultWeightUomId">
+        <column name="default_weight_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="geoPointId">
+        <column name="geo_point_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="geoId">
+        <column name="geo_id" sql-type="VARCHAR(20)" />
+      </property>
+      <subclass name="AbstractFacilityEvent$SimpleFacilityStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractFacilityEvent$SimpleFacilityStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyFacilityTypeIdRemoved" column="is_property_facility_type_id_removed" />
+        <property name="isPropertyParentFacilityIdRemoved" column="is_property_parent_facility_id_removed" />
+        <property name="isPropertyOwnerPartyIdRemoved" column="is_property_owner_party_id_removed" />
+        <property name="isPropertyDefaultInventoryItemTypeIdRemoved" column="is_property_default_inventory_item_type_id_removed" />
+        <property name="isPropertyFacilityNameRemoved" column="is_property_facility_name_removed" />
+        <property name="isPropertyPrimaryFacilityGroupIdRemoved" column="is_property_primary_facility_group_id_removed" />
+        <property name="isPropertyOldSquareFootageRemoved" column="is_property_old_square_footage_removed" />
+        <property name="isPropertyFacilitySizeRemoved" column="is_property_facility_size_removed" />
+        <property name="isPropertyFacilitySizeUomIdRemoved" column="is_property_facility_size_uom_id_removed" />
+        <property name="isPropertyProductStoreIdRemoved" column="is_property_product_store_id_removed" />
+        <property name="isPropertyDefaultDaysToShipRemoved" column="is_property_default_days_to_ship_removed" />
+        <property name="isPropertyOpenedDateRemoved" column="is_property_opened_date_removed" />
+        <property name="isPropertyClosedDateRemoved" column="is_property_closed_date_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+        <property name="isPropertyDefaultDimensionUomIdRemoved" column="is_property_default_dimension_uom_id_removed" />
+        <property name="isPropertyDefaultWeightUomIdRemoved" column="is_property_default_weight_uom_id_removed" />
+        <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
+        <property name="isPropertyGeoIdRemoved" column="is_property_geo_id_removed" />
+      </subclass>
+      <subclass name="AbstractFacilityEvent$SimpleFacilityStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

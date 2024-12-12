@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.party">
+  <class name="org.dddml.ffvtraceability.domain.party.AbstractPartyIdentificationState$SimplePartyIdentificationState" table="party_identification">
+    <composite-id name="partyIdentificationId" class="org.dddml.ffvtraceability.domain.party.PartyIdentificationId">
+      <key-property name="partyId">
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyIdentificationTypeId">
+        <column name="PARTY_IDENTIFICATION_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <many-to-one name="protectedPartyState" class="org.dddml.ffvtraceability.domain.party.AbstractPartyState" insert="false" update="false">
+      <column name="PARTY_ID" />
+    </many-to-one>
+    <property name="idValue">
+      <column name="ID_VALUE" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="verified">
+      <column name="verified" sql-type="CHAR(1)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

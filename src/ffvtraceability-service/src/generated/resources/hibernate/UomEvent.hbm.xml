@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.uom">
+  <class name="AbstractUomEvent" table="uom_event" abstract="true">
+    <composite-id name="uomEventId" class="org.dddml.ffvtraceability.domain.uom.UomEventId">
+      <key-property name="uomId">
+        <column name="uom_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractUomEvent$UomLobEvent" discriminator-value="UomLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractUomEvent$AbstractUomStateEvent" abstract="true">
+      <property name="uomTypeId">
+        <column name="uom_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="abbreviation">
+        <column name="abbreviation" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="numericCode">
+        <column name="numeric_code" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="gs1AI">
+        <column name="gs1_ai" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractUomEvent$SimpleUomStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractUomEvent$SimpleUomStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyUomTypeIdRemoved" column="is_property_uom_type_id_removed" />
+        <property name="isPropertyAbbreviationRemoved" column="is_property_abbreviation_removed" />
+        <property name="isPropertyNumericCodeRemoved" column="is_property_numeric_code_removed" />
+        <property name="isPropertyGs1AIRemoved" column="is_property_gs1_ai_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+      </subclass>
+      <subclass name="AbstractUomEvent$SimpleUomStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

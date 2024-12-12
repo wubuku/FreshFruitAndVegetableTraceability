@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.productcategory">
+  <class name="AbstractProductCategoryEvent" table="product_category_event" abstract="true">
+    <composite-id name="productCategoryEventId" class="org.dddml.ffvtraceability.domain.productcategory.ProductCategoryEventId">
+      <key-property name="productCategoryId">
+        <column name="product_category_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractProductCategoryEvent$ProductCategoryLobEvent" discriminator-value="ProductCategoryLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractProductCategoryEvent$AbstractProductCategoryStateEvent" abstract="true">
+      <property name="productCategoryTypeId">
+        <column name="product_category_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="primaryParentCategoryId">
+        <column name="primary_parent_category_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="categoryName">
+        <column name="category_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="categoryImageUrl">
+        <column name="category_image_url" sql-type="VARCHAR(2000)" />
+      </property>
+      <property name="detailScreen">
+        <column name="detail_screen" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="showInSelect">
+        <column name="show_in_select" />
+      </property>
+      <subclass name="AbstractProductCategoryEvent$SimpleProductCategoryStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractProductCategoryEvent$SimpleProductCategoryStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyProductCategoryTypeIdRemoved" column="is_property_product_category_type_id_removed" />
+        <property name="isPropertyPrimaryParentCategoryIdRemoved" column="is_property_primary_parent_category_id_removed" />
+        <property name="isPropertyCategoryNameRemoved" column="is_property_category_name_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+        <property name="isPropertyCategoryImageUrlRemoved" column="is_property_category_image_url_removed" />
+        <property name="isPropertyDetailScreenRemoved" column="is_property_detail_screen_removed" />
+        <property name="isPropertyShowInSelectRemoved" column="is_property_show_in_select_removed" />
+      </subclass>
+      <subclass name="AbstractProductCategoryEvent$SimpleProductCategoryStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

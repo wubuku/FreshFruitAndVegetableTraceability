@@ -17,10 +17,21 @@ public class DeleteDocumentDto extends AbstractDocumentCommandDto implements Doc
         return COMMAND_TYPE_DELETE;
     }
 
+    private String documentTypeId;
+
+    public String getDocumentTypeId() {
+        return this.documentTypeId;
+    }
+
+    public void setDocumentTypeId(String documentTypeId) {
+        this.documentTypeId = documentTypeId;
+    }
+
     public DocumentCommand.DeleteDocument toDeleteDocument()
     {
         AbstractDocumentCommand.SimpleDeleteDocument command = new AbstractDocumentCommand.SimpleDeleteDocument();
         ((AbstractDocumentCommandDto)this).copyTo(command);
+        command.setDocumentTypeId(this.getDocumentTypeId());
         return command;
     }
 }

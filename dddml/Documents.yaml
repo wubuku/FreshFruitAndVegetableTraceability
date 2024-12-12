@@ -1,5 +1,8 @@
 aggregates:
   Document:
+    inheritanceMappingStrategy: tpcc
+    discriminator: DocumentTypeId
+    discriminatorValue: "DOCUMENT"
     id:
       name: DocumentId
       type: id

@@ -1,0 +1,75 @@
+﻿aggregates:
+  ProductCategory:
+    # 产品分类
+    # discriminator: ProductCategoryTypeId    
+    # metadata:
+      # StateEventDatabaseTableName: PRODUCT_CATEGORY_STATE_EVENT
+    id:
+      name: ProductCategoryId
+      type: id
+    properties:
+      ProductCategoryTypeId:
+        type: id
+      PrimaryParentCategoryId:
+        type: id
+      CategoryName:
+        type: name
+      Description:
+        type: description
+      # LongDescription:
+        # type: very-long
+      CategoryImageUrl:
+        type: url
+      # LinkOneImageUrl:
+        # type: url
+      # LinkTwoImageUrl:
+        # type: url
+      DetailScreen:
+        type: long-varchar
+      ShowInSelect:
+        type: bool
+      # # ------------------------------------
+      # AttributeSetId:
+      #   type: id
+      #   referenceType: AttributeSet
+      #   notNull: false
+      # # ------------------------------------
+      ChildProductCategories:
+        itemType: ProductCategory
+        isDerived: true
+        itemPropertyMap:
+        - propertyName: ProductCategoryId
+          relatedPropertyName: PrimaryParentCategoryId
+    references:
+      PrimaryParentCategoryId:
+        displayName: PRIMARY-PARENT-CATEGORY-ID
+        description: PrimaryParent
+        type: ProductCategory
+        properties:
+        - PrimaryParentCategoryId
+        foreignKeyName: PROD_CTGRY_PARENT
+
+  ProductCategoryType:
+    metadata: 
+      NoEventSourcing: true
+    id:
+      name: ProductCategoryTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        columnName: PARENT_TYPE_ID
+        type: id
+      HasTable:
+        columnName: HAS_TABLE
+        type: indicator
+      Description:
+        columnName: DESCRIPTION
+        type: description
+    references:
+      ParentTypeId:
+        displayName: PARENT-TYPE-ID
+        description: Parent
+        type: ProductCategoryType
+        properties:
+        - ParentTypeId
+        foreignKeyName: PROD_CTGRY_TYPEPAR

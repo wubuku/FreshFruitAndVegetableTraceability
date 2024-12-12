@@ -1,0 +1,110 @@
+﻿aggregates:
+  Facility:
+    id:
+      name: FacilityId
+      type: id
+    # reservedPropertyMetadata: {}
+    # discriminator: FacilityTypeId
+    properties:
+      FacilityTypeId:
+        type: id
+      ParentFacilityId:
+        type: id
+      OwnerPartyId:
+        type: id-ne
+      DefaultInventoryItemTypeId:
+        type: id
+      FacilityName:
+        type: name
+      PrimaryFacilityGroupId:
+        type: id
+      OldSquareFootage:
+        type: numeric
+      FacilitySize:
+        type: fixed-point
+      FacilitySizeUomId:
+        type: id
+      ProductStoreId:
+        type: id
+      DefaultDaysToShip:
+        description: In the absence of a product specific days to ship in ProductFacility, this will be used
+        type: numeric
+      OpenedDate:
+        type: date-time
+      ClosedDate:
+        type: date-time
+      Description:
+        type: description
+      DefaultDimensionUomId:
+        description: This field store the unit of measurement of dimension (length, width and height)
+        type: id
+      DefaultWeightUomId:
+        type: id
+      # ---------------------
+      # 地理位置点 Id（经纬度）
+      GeoPointId:
+        type: id
+      # ---------------------
+      # 位置 Id
+      GeoId:
+        type: id
+      # # ----------------------------------
+      # # 设施（仓库）的联系地址 Id.
+      # # 不使用 FacilityContactMech 实体？
+      # PostalAddressContactMechId:
+      #   type: id-ne
+      
+    # references:
+      # ParentFacilityId:
+        # name: ParentFacilityId
+        # displayName: PARENT-FACILITY-ID
+        # description: Parent
+        # type: Facility
+        # properties:
+        # - ParentFacilityId
+        # foreignKeyName: FACILITY_PARENT
+
+
+  FacilityIdentification:
+    id:
+      name: FacilityIdentificationTypeId
+      type: id
+    properties:
+      IdValue:
+        type: id
+
+
+  FacilityIdentificationType:
+    id:
+      name: FacilityIdentificationTypeId
+      type: id-ne
+    properties:
+      Description:
+        type: description
+
+
+  FacilityType:
+    metadata: 
+      NoEventSourcing: true
+    id:
+      name: FacilityTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        columnName: PARENT_TYPE_ID
+        type: id-ne
+      HasTable:
+        columnName: HAS_TABLE
+        type: indicator
+      Description:
+        columnName: DESCRIPTION
+        type: description
+    references:
+      ParentTypeId:
+        name: ParentTypeId
+        displayName: PARENT-TYPE-ID
+        description: Parent
+        type: FacilityType
+        properties:
+        - ParentTypeId
+        foreignKeyName: FACILITY_TYPEPAR

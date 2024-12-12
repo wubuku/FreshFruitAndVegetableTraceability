@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.party">
+  <class name="org.dddml.ffvtraceability.domain.party.AbstractPartyState" table="party" abstract="true">
+    <id name="partyId" length="20">
+      <column name="party_id" sql-type="VARCHAR(20)" />
+      <generator class="assigned" />
+    </id>
+    <discriminator column="party_type_id" type="string" />
+    <version name="version" column="version" type="long" />
+    <set name="protectedPartyIdentifications" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="PARTY_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.party.AbstractPartyIdentificationState$SimplePartyIdentificationState" />
+    </set>
+    <property name="primaryRoleTypeId">
+      <column name="primary_role_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="externalId">
+      <column name="external_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="preferredCurrencyUomId">
+      <column name="preferred_currency_uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="description">
+      <column name="description" sql-type="LONGTEXT" />
+    </property>
+    <property name="statusId">
+      <column name="STATUS_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <subclass name="org.dddml.ffvtraceability.domain.party.AbstractPartyState$SimplePartyState" discriminator-value="PARTY"></subclass>
+    <subclass name="org.dddml.ffvtraceability.domain.party.AbstractPersonState$SimplePersonState" discriminator-value="PERSON" abstract="false">
+      <property name="salutation">
+        <column name="salutation" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="firstName">
+        <column name="first_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="middleName">
+        <column name="middle_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="lastName">
+        <column name="last_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="personalTitle">
+        <column name="personal_title" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="nickname">
+        <column name="nickname" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="gender">
+        <column name="gender" sql-type="CHAR(1)" />
+      </property>
+      <property name="birthDate">
+        <column name="birth_date" sql-type="DATE" />
+      </property>
+      <property name="deceasedDate">
+        <column name="deceased_date" sql-type="DATE" />
+      </property>
+      <property name="socialSecurityNumber">
+        <column name="social_security_number" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="passportNumber">
+        <column name="passport_number" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="passportExpireDate">
+        <column name="passport_expire_date" sql-type="DATE" />
+      </property>
+      <property name="existingCustomer">
+        <column name="existing_customer" sql-type="CHAR(1)" />
+      </property>
+    </subclass>
+    <subclass name="org.dddml.ffvtraceability.domain.party.AbstractOrganizationState" abstract="true">
+      <property name="organizationName">
+        <column name="organization_name" sql-type="VARCHAR(250)" />
+      </property>
+      <subclass name="org.dddml.ffvtraceability.domain.party.AbstractOrganizationState$SimpleOrganizationState" discriminator-value="ORGANIZATION"></subclass>
+      <subclass name="org.dddml.ffvtraceability.domain.party.AbstractLegalOrganizationState" abstract="true">
+        <property name="taxIdNum">
+          <column name="tax_id_num" />
+        </property>
+        <subclass name="org.dddml.ffvtraceability.domain.party.AbstractLegalOrganizationState$SimpleLegalOrganizationState" discriminator-value="LEGAL_ORGANIZATION"></subclass>
+        <subclass name="org.dddml.ffvtraceability.domain.party.AbstractCompanyState$SimpleCompanyState" discriminator-value="COMPANY" abstract="false"></subclass>
+      </subclass>
+      <subclass name="org.dddml.ffvtraceability.domain.party.AbstractDepartmentState$SimpleDepartmentState" discriminator-value="DEPARTMENT" abstract="false"></subclass>
+      <subclass name="org.dddml.ffvtraceability.domain.party.AbstractInformalOrganizationState" abstract="true">
+        <subclass name="org.dddml.ffvtraceability.domain.party.AbstractFamilyState$SimpleFamilyState" discriminator-value="FAMILY" abstract="false">
+          <property name="familyName">
+            <column name="family_name" sql-type="VARCHAR(60)" />
+          </property>
+        </subclass>
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

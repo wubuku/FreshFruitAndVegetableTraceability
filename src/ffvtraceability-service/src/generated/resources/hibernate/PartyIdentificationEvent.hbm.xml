@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.party">
+  <class name="AbstractPartyIdentificationEvent" table="party_identification_event" abstract="true">
+    <composite-id name="partyIdentificationEventId" class="org.dddml.ffvtraceability.domain.party.PartyIdentificationEventId">
+      <key-property name="partyId">
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyIdentificationTypeId">
+        <column name="PARTY_IDENTIFICATION_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyVersion">
+        <column name="party_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractPartyIdentificationEvent$AbstractPartyIdentificationStateEvent" abstract="true">
+      <property name="idValue">
+        <column name="ID_VALUE" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="verified">
+        <column name="verified" sql-type="CHAR(1)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractPartyIdentificationEvent$SimplePartyIdentificationStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractPartyIdentificationEvent$SimplePartyIdentificationStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyIdValueRemoved" column="is_property_id_value_removed" />
+        <property name="isPropertyVerifiedRemoved" column="is_property_verified_removed" />
+      </subclass>
+      <subclass name="AbstractPartyIdentificationEvent$SimplePartyIdentificationStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

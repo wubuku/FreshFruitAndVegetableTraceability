@@ -1,0 +1,300 @@
+﻿
+aggregates:
+
+  Product:
+    reservedPropertyMetadata:
+      noDeleted: true
+    discriminator: ProductTypeId
+    inheritanceMappingStrategy: tpch
+    discriminatorValue: "PRODUCT"    
+    # metadata:
+    #   EventDatabaseTableName: PRODUCT_STATE_EVENT
+    id:
+      name: ProductId
+      type: id
+    properties:
+      ProductTypeId:
+        type: id
+      PrimaryProductCategoryId:
+        description: The primary category ; it should be one of the productCategoryId already setup in ProductCategoryMember
+        type: id
+      ManufacturerPartyId:
+        columnName: MANUFACTURER_PARTY_ID
+        type: id
+      FacilityId:
+        columnName: FACILITY_ID
+        type: id
+      IntroductionDate:
+        columnName: INTRODUCTION_DATE
+        type: date-time
+      ReleaseDate:
+        columnName: RELEASE_DATE
+        type: date-time
+      SupportDiscontinuationDate:
+        columnName: SUPPORT_DISCONTINUATION_DATE
+        type: date-time
+      SalesDiscontinuationDate:
+        columnName: SALES_DISCONTINUATION_DATE
+        type: date-time
+      SalesDiscWhenNotAvail:
+        columnName: SALES_DISC_WHEN_NOT_AVAIL
+        type: indicator
+      InternalName:
+        columnName: INTERNAL_NAME
+        type: description
+      BrandName:
+        columnName: BRAND_NAME
+        type: name
+      Comments:
+        columnName: COMMENTS
+        type: comment
+      ProductName:
+        columnName: PRODUCT_NAME
+        type: name
+      Description:
+        columnName: DESCRIPTION
+        type: description
+      LongDescription:
+        columnName: LONG_DESCRIPTION
+        type: very-long
+      PriceDetailText:
+        columnName: PRICE_DETAIL_TEXT
+        type: description
+      SmallImageUrl:
+        columnName: SMALL_IMAGE_URL
+        type: url
+      MediumImageUrl:
+        columnName: MEDIUM_IMAGE_URL
+        type: url
+      LargeImageUrl:
+        columnName: LARGE_IMAGE_URL
+        type: url
+      DetailImageUrl:
+        columnName: DETAIL_IMAGE_URL
+        type: url
+      OriginalImageUrl:
+        columnName: ORIGINAL_IMAGE_URL
+        type: url
+      DetailScreen:
+        columnName: DETAIL_SCREEN
+        type: long-varchar
+      InventoryMessage:
+        columnName: INVENTORY_MESSAGE
+        type: description
+      # InventoryItemTypeId:
+      #   columnName: INVENTORY_ITEM_TYPE_ID
+      #   type: id
+      # RequireInventory:
+      #   columnName: REQUIRE_INVENTORY
+      #   type: indicator
+      QuantityUomId:
+        columnName: QUANTITY_UOM_ID
+        type: id
+      QuantityIncluded:
+        description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+        columnName: QUANTITY_INCLUDED
+        type: fixed-point
+      PiecesIncluded:
+        columnName: PIECES_INCLUDED
+        type: numeric
+      RequireAmount:
+        columnName: REQUIRE_AMOUNT
+        type: indicator
+      FixedAmount:
+        description: Use this for products which are sold in fixed denominations, such as gift certificates or calling cards.
+        columnName: FIXED_AMOUNT
+        type: currency-amount
+      AmountUomTypeId:
+        columnName: AMOUNT_UOM_TYPE_ID
+        type: id
+      WeightUomId:
+        columnName: WEIGHT_UOM_ID
+        type: id
+      ShippingWeight:
+        description: The shipping weight of the product.
+        columnName: SHIPPING_WEIGHT
+        type: fixed-point
+      ProductWeight:
+        columnName: PRODUCT_WEIGHT
+        type: fixed-point
+      HeightUomId:
+        columnName: HEIGHT_UOM_ID
+        type: id
+      ProductHeight:
+        columnName: PRODUCT_HEIGHT
+        type: fixed-point
+      ShippingHeight:
+        columnName: SHIPPING_HEIGHT
+        type: fixed-point
+      WidthUomId:
+        columnName: WIDTH_UOM_ID
+        type: id
+      ProductWidth:
+        columnName: PRODUCT_WIDTH
+        type: fixed-point
+      ShippingWidth:
+        columnName: SHIPPING_WIDTH
+        type: fixed-point
+      DepthUomId:
+        columnName: DEPTH_UOM_ID
+        type: id
+      ProductDepth:
+        columnName: PRODUCT_DEPTH
+        type: fixed-point
+      ShippingDepth:
+        columnName: SHIPPING_DEPTH
+        type: fixed-point
+      DiameterUomId:
+        columnName: DIAMETER_UOM_ID
+        type: id
+      ProductDiameter:
+        columnName: PRODUCT_DIAMETER
+        type: fixed-point
+      ProductRating:
+        columnName: PRODUCT_RATING
+        type: fixed-point
+      RatingTypeEnum:
+        columnName: RATING_TYPE_ENUM
+        type: id
+      Returnable:
+        columnName: RETURNABLE
+        type: indicator
+      Taxable:
+        columnName: TAXABLE
+        type: indicator
+      ChargeShipping:
+        columnName: CHARGE_SHIPPING
+        type: indicator
+      AutoCreateKeywords:
+        columnName: AUTO_CREATE_KEYWORDS
+        type: indicator
+      IncludeInPromotions:
+        columnName: INCLUDE_IN_PROMOTIONS
+        type: indicator
+      IsVirtual:
+        columnName: IS_VIRTUAL
+        type: indicator
+      IsVariant:
+        columnName: IS_VARIANT
+        type: indicator
+      VirtualVariantMethodEnum:
+        description: This field defines the method of selecting a variant from the selectable features on the virtual product. Either as a variant explosion which will work to about 200 variants or as feature explosion which almost has no limits
+        columnName: VIRTUAL_VARIANT_METHOD_ENUM
+        type: id
+      OriginGeoId:
+        columnName: ORIGIN_GEO_ID
+        type: id
+      RequirementMethodEnumId:
+        columnName: REQUIREMENT_METHOD_ENUM_ID
+        type: id
+      BillOfMaterialLevel:
+        columnName: BILL_OF_MATERIAL_LEVEL
+        type: numeric
+      # ReservMaxPersons:
+      #   description: maximum number of persons who can rent this asset at the same time
+      #   columnName: RESERV_MAX_PERSONS
+      #   type: fixed-point
+      # Reserv2ndPPPerc:
+      #   description: percentage of the end price for the 2nd person renting this asset connected to this product
+      #   columnName: RESERV2ND_P_P_PERC
+      #   type: fixed-point
+      # ReservNthPPPerc:
+      #   description: percentage of the end price for the Nth person renting this asset connected to this product
+      #   columnName: RESERV_NTH_P_P_PERC
+      #   type: fixed-point
+      # ConfigId:
+      #   description: Used to safe the persisted configuration Id for AGGREGATED products.
+      #   columnName: CONFIG_ID
+      #   type: id
+      InShippingBox:
+        columnName: IN_SHIPPING_BOX
+        type: indicator
+      DefaultShipmentBoxTypeId:
+        columnName: DEFAULT_SHIPMENT_BOX_TYPE_ID
+        type: id
+      LotIdFilledIn:
+        description: Indicate if the lotId must be informed
+        columnName: LOT_ID_FILLED_IN
+        type: long-varchar
+      OrderDecimalQuantity:
+        description: use to indicate if decimal quantity can be ordered for this product. Default value is Y
+        columnName: ORDER_DECIMAL_QUANTITY
+        type: indicator
+
+      # # -------------------------------------------------------------------      
+      # # 产品属性集 Id.
+      # # 可用于决定产品的库存实例需要具备的属性信息。比如说，收货的时候，需要录入相应的“产品属性集实例”。
+      # # 也可用于决定 SKU 应该明确的属性信息。
+      # AttributeSetId:
+      #   type: id
+      #   referenceType: AttributeSet
+      #   notNull: false
+
+      # #----------------------------------------  
+      # # 产品属性集实例 Id.，描述产品（而不是产品的库存实例）的共同属性。
+      # AttributeSetInstanceId:
+      #   type: id
+      #   referenceType: AttributeSetInstance
+      #   notNull: false
+
+      #----------------------------------------
+      GoodIdentifications:
+        itemType: GoodIdentification
+        
+      # LargeImages:
+      #   itemType: ProductLargeImageResource
+      # DetailImages:
+      #   itemType: ProductDetailImageResource
+
+    references:
+      ProductCategory:
+        displayName: ProductCategory
+        description: Primary
+        type: ProductCategory
+        properties:
+        - PrimaryProductCategoryId
+        foreignKeyName: PROD_PRIMARY_CAT
+      
+    # subtypes:
+    #   ProductGroup:
+    #     discriminatorValue: "PRODUCT_GROUP"
+
+    # ---------------------------------------------------
+    entities:
+      # 货物标识
+      GoodIdentification:
+        id:
+          name: GoodIdentificationTypeId
+          type: id
+          # referenceType: GoodIdentificationType
+        properties:
+          IdValue:
+            type: id-long
+            notNull: true
+
+      # # ---------------------------------------
+      # # 产品大图资源
+      # ProductLargeImageResource:
+      #   id: 
+      #     name: DataResourceId
+      #     type: id-ne
+      #   properties:
+      #     # -----------------------------------
+      #     # 序号
+      #     SequenceNum:
+      #       type: numeric
+            
+      # # ---------------------------------------
+      # # 产品详情图资源
+      # ProductDetailImageResource:
+      #   id: 
+      #     name: DataResourceId
+      #     type: id-ne
+      #   properties:
+      #     # -----------------------------------
+      #     # 序号
+      #     SequenceNum:
+      #       type: numeric
+          
+            
+                    
