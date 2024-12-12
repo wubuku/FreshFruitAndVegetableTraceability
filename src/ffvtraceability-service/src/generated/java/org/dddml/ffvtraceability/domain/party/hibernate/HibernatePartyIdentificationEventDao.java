@@ -39,7 +39,7 @@ public class HibernatePartyIdentificationEventDao implements PartyIdentification
     public Iterable<PartyIdentificationEvent> findByPartyEventId(PartyEventId partyEventId) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<PartyIdentificationEvent> cq = cb.createQuery(PartyIdentificationEvent.class);
-        Root<PartyIdentificationEvent> root = cq.from(PartyIdentificationEvent.class);
+        Root<AbstractPartyIdentificationEvent> root = cq.from(AbstractPartyIdentificationEvent.class);
 
         Predicate condition = cb.and(
             cb.equal(root.get("partyIdentificationEventId").get("partyId"), partyEventId.getPartyId()),

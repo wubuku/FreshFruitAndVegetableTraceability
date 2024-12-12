@@ -208,7 +208,7 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractProductState.SimpleProductState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
     }
 
 }

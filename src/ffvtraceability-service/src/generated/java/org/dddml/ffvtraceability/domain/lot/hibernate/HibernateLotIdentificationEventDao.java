@@ -39,7 +39,7 @@ public class HibernateLotIdentificationEventDao implements LotIdentificationEven
     public Iterable<LotIdentificationEvent> findByLotEventId(LotEventId lotEventId) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<LotIdentificationEvent> cq = cb.createQuery(LotIdentificationEvent.class);
-        Root<LotIdentificationEvent> root = cq.from(LotIdentificationEvent.class);
+        Root<AbstractLotIdentificationEvent> root = cq.from(AbstractLotIdentificationEvent.class);
 
         Predicate condition = cb.and(
             cb.equal(root.get("lotIdentificationEventId").get("lotId"), lotEventId.getLotId()),

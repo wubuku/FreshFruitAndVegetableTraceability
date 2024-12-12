@@ -141,7 +141,7 @@ public class HibernateGs1ApplicationIdentifierStateQueryRepository implements Gs
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractGs1ApplicationIdentifierState.SimpleGs1ApplicationIdentifierState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
         Predicate isNull = cb.isNull(root.get("deleted"));
         Predicate isFalse = cb.equal(root.get("deleted"), false);
         Predicate notDeleted = cb.or(isNull, isFalse);

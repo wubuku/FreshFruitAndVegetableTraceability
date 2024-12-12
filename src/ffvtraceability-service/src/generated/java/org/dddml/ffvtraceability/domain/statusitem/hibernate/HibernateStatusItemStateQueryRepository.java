@@ -154,7 +154,7 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractStatusItemState.SimpleStatusItemState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
     }
 
 }

@@ -39,7 +39,7 @@ public class HibernateGoodIdentificationEventDao implements GoodIdentificationEv
     public Iterable<GoodIdentificationEvent> findByProductEventId(ProductEventId productEventId) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<GoodIdentificationEvent> cq = cb.createQuery(GoodIdentificationEvent.class);
-        Root<GoodIdentificationEvent> root = cq.from(GoodIdentificationEvent.class);
+        Root<AbstractGoodIdentificationEvent> root = cq.from(AbstractGoodIdentificationEvent.class);
 
         Predicate condition = cb.and(
             cb.equal(root.get("goodIdentificationEventId").get("productId"), productEventId.getProductId()),

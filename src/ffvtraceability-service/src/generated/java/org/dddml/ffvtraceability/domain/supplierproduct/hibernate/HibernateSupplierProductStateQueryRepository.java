@@ -154,7 +154,7 @@ public class HibernateSupplierProductStateQueryRepository implements SupplierPro
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractSupplierProductState.SimpleSupplierProductState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
     }
 
 }

@@ -141,7 +141,7 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
     }
 
 }

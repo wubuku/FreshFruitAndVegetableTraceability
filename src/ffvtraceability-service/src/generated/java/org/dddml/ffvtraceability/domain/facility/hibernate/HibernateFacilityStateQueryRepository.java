@@ -141,7 +141,7 @@ public class HibernateFacilityStateQueryRepository implements FacilityStateQuery
     }
 
 
-    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractFacilityState.SimpleFacilityState> root) {
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
         Predicate isNull = cb.isNull(root.get("deleted"));
         Predicate isFalse = cb.equal(root.get("deleted"), false);
         Predicate notDeleted = cb.or(isNull, isFalse);

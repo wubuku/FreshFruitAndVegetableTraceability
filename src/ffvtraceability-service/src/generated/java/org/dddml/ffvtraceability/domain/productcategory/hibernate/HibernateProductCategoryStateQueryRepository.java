@@ -54,7 +54,7 @@ public class HibernateProductCategoryStateQueryRepository implements ProductCate
         CriteriaQuery<AbstractProductCategoryState.SimpleProductCategoryState> cq = cb.createQuery(AbstractProductCategoryState.SimpleProductCategoryState.class);
         Root<AbstractProductCategoryState.SimpleProductCategoryState> root = cq.from(AbstractProductCategoryState.SimpleProductCategoryState.class);
         cq.select(root);
-        //addNotDeletedRestriction(cb, cq, root);
+        addNotDeletedRestriction(cb, cq, root);
         TypedQuery<AbstractProductCategoryState.SimpleProductCategoryState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
         return query.getResultList().stream().map(ProductCategoryState.class::cast).collect(Collectors.toList());
@@ -68,7 +68,7 @@ public class HibernateProductCategoryStateQueryRepository implements ProductCate
         Root<AbstractProductCategoryState.SimpleProductCategoryState> root = cq.from(AbstractProductCategoryState.SimpleProductCategoryState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        //addNotDeletedRestriction(cb, cq, root);
+        addNotDeletedRestriction(cb, cq, root);
         TypedQuery<AbstractProductCategoryState.SimpleProductCategoryState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
         return query.getResultList().stream().map(ProductCategoryState.class::cast).collect(Collectors.toList());
@@ -82,7 +82,7 @@ public class HibernateProductCategoryStateQueryRepository implements ProductCate
         Root<AbstractProductCategoryState.SimpleProductCategoryState> root = cq.from(AbstractProductCategoryState.SimpleProductCategoryState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        //addNotDeletedRestriction(cb, cq, root);
+        addNotDeletedRestriction(cb, cq, root);
         TypedQuery<AbstractProductCategoryState.SimpleProductCategoryState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
         return query.getResultList().stream().map(ProductCategoryState.class::cast).collect(Collectors.toList());
@@ -122,7 +122,7 @@ public class HibernateProductCategoryStateQueryRepository implements ProductCate
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
         }
-        //addNotDeletedRestriction(cb, cq, root);
+        addNotDeletedRestriction(cb, cq, root);
         return em.createQuery(cq).getSingleResult();
     }
 
@@ -136,22 +136,21 @@ public class HibernateProductCategoryStateQueryRepository implements ProductCate
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
         }
-        //addNotDeletedRestriction(cb, cq, root);
+        addNotDeletedRestriction(cb, cq, root);
         return em.createQuery(cq).getSingleResult();
     }
 
     @Transactional(readOnly = true)
     public Iterable<ProductCategoryState> getChildProductCategories(String productCategoryId) {
-        return null; //TODO: not completed
+        return null;//TODO: not completed
     }
 
-//    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<AbstractProductCategoryState.SimpleProductCategoryState> root) {
-//        Predicate isNull = cb.isNull(root.get("deleted"));
-//        Predicate isFalse = cb.equal(root.get("deleted"), false);
-//        Predicate notDeleted = cb.or(isNull, isFalse);
-//        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
-//    }
-
+    protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
+        Predicate isNull = cb.isNull(root.get("deleted"));
+        Predicate isFalse = cb.equal(root.get("deleted"), false);
+        Predicate notDeleted = cb.or(isNull, isFalse);
+        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
+    }
 
 }
 
