@@ -142,7 +142,24 @@ public class HibernateProductCategoryStateQueryRepository implements ProductCate
 
     @Transactional(readOnly = true)
     public Iterable<ProductCategoryState> getChildProductCategories(String productCategoryId) {
-        return null;//TODO: not completed
+        ProductCategoryState productCategoryState = getEntityManager().find(AbstractProductCategoryState.SimpleProductCategoryState.class, productCategoryId);
+        if (productCategoryState == null) { return null; }
+
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<AbstractProductCategoryState.SimpleProductCategoryState> cq = cb.createQuery(AbstractProductCategoryState.SimpleProductCategoryState.class);
+        Root<AbstractProductCategoryState.SimpleProductCategoryState> root = cq.from(AbstractProductCategoryState.SimpleProductCategoryState.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(JpaUtils.getPathPredicate(cb, root, "primaryParentCategoryId", productCategoryState.getProductCategoryId()));
+        cq.select(root).where(cb.and(predicates.toArray(new Predicate[0])));
+        addNotDeletedRestriction(cb, cq, root);
+
+        return getEntityManager()
+                .createQuery(cq)
+                .getResultList()
+                .stream()
+                .map(ProductCategoryState.class::cast)
+                .collect(Collectors.toList());
     }
 
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {

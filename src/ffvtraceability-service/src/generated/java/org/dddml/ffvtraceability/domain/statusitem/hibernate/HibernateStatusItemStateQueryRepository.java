@@ -153,7 +153,6 @@ public class HibernateStatusItemStateQueryRepository implements StatusItemStateQ
         return em.createQuery(cq).getSingleResult();
     }
 
-
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
     }
 

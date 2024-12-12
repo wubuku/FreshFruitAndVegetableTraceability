@@ -140,7 +140,6 @@ public class HibernateAttributeSetInstanceStateQueryRepository implements Attrib
         return em.createQuery(cq).getSingleResult();
     }
 
-
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
     }
 

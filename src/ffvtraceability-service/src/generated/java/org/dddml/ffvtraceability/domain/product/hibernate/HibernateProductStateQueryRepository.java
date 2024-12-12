@@ -207,7 +207,6 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
         return query.getResultList().stream().map(GoodIdentificationState.class::cast).collect(Collectors.toList());
     }
 
-
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
     }
 

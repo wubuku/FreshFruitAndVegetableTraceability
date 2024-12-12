@@ -166,7 +166,6 @@ public class HibernateFamilyStateQueryRepository implements FamilyStateQueryRepo
         return query.getResultList().stream().map(PartyIdentificationState.class::cast).collect(Collectors.toList());
     }
 
-
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
         Predicate isNull = cb.isNull(root.get("deleted"));
         Predicate isFalse = cb.equal(root.get("deleted"), false);

@@ -153,7 +153,6 @@ public class HibernateSupplierProductStateQueryRepository implements SupplierPro
         return em.createQuery(cq).getSingleResult();
     }
 
-
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
     }
 

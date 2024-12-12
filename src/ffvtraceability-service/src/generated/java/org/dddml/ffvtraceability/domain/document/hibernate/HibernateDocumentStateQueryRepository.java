@@ -181,7 +181,6 @@ public class HibernateDocumentStateQueryRepository implements DocumentStateQuery
         return em.createQuery(cq).getSingleResult();
     }
 
-
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
         Predicate isNull = cb.isNull(root.get("deleted"));
         Predicate isFalse = cb.equal(root.get("deleted"), false);

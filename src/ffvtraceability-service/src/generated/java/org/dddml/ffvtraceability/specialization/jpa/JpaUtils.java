@@ -197,4 +197,13 @@ public class JpaUtils {
         }
         return cb.and(existing, newPredicate);
     }
+
+    public static Predicate getPathPredicate(CriteriaBuilder cb, Root<?> root, String propertyPath, Object value) {
+        String[] pathParts = propertyPath.split("\\.");
+        Path<?> path = root;
+        for (String part : pathParts) {
+            path = path.get(part);
+        }
+        return cb.equal(path, value);
+    }
 }

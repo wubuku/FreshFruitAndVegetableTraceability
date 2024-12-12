@@ -166,7 +166,6 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
         return query.getResultList().stream().map(CommentState.class::cast).collect(Collectors.toList());
     }
 
-
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
         Predicate isNull = cb.isNull(root.get("deleted"));
         Predicate isFalse = cb.equal(root.get("deleted"), false);
