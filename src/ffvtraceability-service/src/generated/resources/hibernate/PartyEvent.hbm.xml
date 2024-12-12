@@ -37,7 +37,7 @@
         <column name="preferred_currency_uom_id" sql-type="VARCHAR(20)" />
       </property>
       <property name="description">
-        <column name="description" sql-type="LONGTEXT" />
+        <column name="description" sql-type="TEXT" />
       </property>
       <property name="statusId">
         <column name="STATUS_ID" sql-type="VARCHAR(20)" />

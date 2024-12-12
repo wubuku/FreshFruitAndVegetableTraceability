@@ -54,7 +54,7 @@
       <column name="DESCRIPTION" sql-type="VARCHAR(255)" />
     </property>
     <property name="longDescription">
-      <column name="LONG_DESCRIPTION" sql-type="LONGTEXT" />
+      <column name="LONG_DESCRIPTION" sql-type="TEXT" />
     </property>
     <property name="priceDetailText">
       <column name="PRICE_DETAIL_TEXT" sql-type="VARCHAR(255)" />

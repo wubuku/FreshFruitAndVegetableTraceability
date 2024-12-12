@@ -67,3 +67,8 @@ configuration:
     #   sqlType: DECIMAL(18,6)
     #   cSharpType: decimal?
     #   javaType: java.math.BigDecimal
+
+    very-long:
+      sqlType: TEXT
+      cSharpType: string
+      javaType: String

@@ -23,7 +23,7 @@
       <column name="abbreviation" sql-type="VARCHAR(60)" />
     </property>
     <property name="wellKnownText">
-      <column name="well_known_text" sql-type="LONGTEXT" />
+      <column name="well_known_text" sql-type="TEXT" />
     </property>
     <property name="createdBy">
       <column name="created_by" />
