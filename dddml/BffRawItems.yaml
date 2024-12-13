@@ -4,15 +4,10 @@ valueObjects:
     properties:
       ProductId:
         type: id
-      # <field name="productName" type="name"></field>
-      # <field name="description" type="description"></field>
       ProductName:
         type: name
       Description:
         type: description
-      # <field name="smallImageUrl" type="url"></field>
-      # <field name="mediumImageUrl" type="url"></field>
-      # <field name="largeImageUrl" type="url"></field>
       Gtin:
         description: "GTIN (Global Trade Item Number)"
         type: id
@@ -22,9 +17,6 @@ valueObjects:
         type: url
       LargeImageUrl:
         type: url
-      # <field name="quantityUomId" type="id"></field>
-      # <field name="quantityIncluded" type="fixed-point"><description>If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.</description></field>
-      # <field name="piecesIncluded" type="numeric"></field>
       QuantityUomId:
         type: id
       QuantityIncluded:

@@ -30,6 +30,7 @@ import org.dddml.ffvtraceability.domain.lotidentificationtype.*;
 import org.dddml.ffvtraceability.domain.party.*;
 import org.dddml.ffvtraceability.domain.partyidentificationtype.*;
 import org.dddml.ffvtraceability.domain.product.*;
+import org.dddml.ffvtraceability.domain.producttype.*;
 import org.dddml.ffvtraceability.domain.productcategory.*;
 import org.dddml.ffvtraceability.domain.productcategorytype.*;
 import org.dddml.ffvtraceability.domain.supplierproduct.*;

@@ -65,6 +65,9 @@ import org.dddml.ffvtraceability.domain.partyidentificationtype.hibernate.*;
 import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.product.hibernate.*;
+import org.dddml.ffvtraceability.domain.producttype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.producttype.hibernate.*;
 import org.dddml.ffvtraceability.domain.productcategory.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.productcategory.hibernate.*;
@@ -418,6 +421,20 @@ public class AggregatesHibernateConfig {
                 productEventStore,
                 productStateRepository,
                 productStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractProductTypeApplicationService.SimpleProductTypeApplicationService productTypeApplicationService(
+            ProductTypeStateRepository productTypeStateRepository,
+            ProductTypeStateQueryRepository productTypeStateQueryRepository
+    ) {
+        AbstractProductTypeApplicationService.SimpleProductTypeApplicationService applicationService = new AbstractProductTypeApplicationService.SimpleProductTypeApplicationService(
+                productTypeStateRepository,
+                productTypeStateQueryRepository
         );
         return applicationService;
     }

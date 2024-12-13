@@ -270,6 +270,39 @@
             type: id-long
             notNull: true
 
+
+  ProductType:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: ProductTypeId
+      type: id
+      columnName: PRODUCT_TYPE_ID
+    properties:
+      ParentTypeId:
+        type: id
+        columnName: PARENT_TYPE_ID
+      IsPhysical:
+        type: indicator
+        columnName: IS_PHYSICAL
+      IsDigital:
+        type: indicator
+        columnName: IS_DIGITAL
+      HasTable:
+        type: indicator
+        columnName: HAS_TABLE
+      Description:
+        type: description
+        columnName: DESCRIPTION
+    references:
+      ParentTypeId:
+        displayName: PARENT-TYPE-ID
+        description: Parent
+        type: ProductType
+        properties:
+          - ParentTypeId
+        foreignKeyName: PROD_TYPE_PARENT
+
       # # ---------------------------------------
       # # 产品大图资源
       # ProductLargeImageResource:
