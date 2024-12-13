@@ -41,6 +41,7 @@ import org.dddml.ffvtraceability.domain.roletype.*;
 import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.orderadjustmenttype.*;
 import org.dddml.ffvtraceability.domain.shipment.*;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
 
 public class StaticMethodConstraints {
 

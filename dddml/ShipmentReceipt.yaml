@@ -1,0 +1,110 @@
+﻿aggregates:
+  ShipmentReceipt:
+    id:
+      name: ReceiptId
+      type: id
+      columnName: RECEIPT_ID
+    properties:
+      InventoryItemId:
+        type: id
+        columnName: INVENTORY_ITEM_ID
+      ProductId:
+        type: id
+        columnName: PRODUCT_ID
+      ShipmentId:
+        type: id
+        columnName: SHIPMENT_ID
+      ShipmentItemSeqId:
+        type: id
+        columnName: SHIPMENT_ITEM_SEQ_ID
+      ShipmentPackageSeqId:
+        type: id
+        columnName: SHIPMENT_PACKAGE_SEQ_ID
+      OrderId:
+        type: id
+        columnName: ORDER_ID
+      OrderItemSeqId:
+        type: id
+        columnName: ORDER_ITEM_SEQ_ID
+      ReturnId:
+        type: id
+        columnName: RETURN_ID
+      ReturnItemSeqId:
+        type: id
+        columnName: RETURN_ITEM_SEQ_ID
+      RejectionId:
+        type: id
+        columnName: REJECTION_ID
+      ReceivedByUserLoginId:
+        type: id-vlong
+        columnName: RECEIVED_BY_USER_LOGIN_ID
+      DatetimeReceived:
+        type: date-time
+        columnName: DATETIME_RECEIVED
+      ItemDescription:
+        type: description
+        columnName: ITEM_DESCRIPTION
+      QuantityAccepted:
+        type: fixed-point
+        columnName: QUANTITY_ACCEPTED
+      QuantityRejected:
+        type: fixed-point
+        columnName: QUANTITY_REJECTED
+
+      ShipmentReceiptRoles:
+        itemType: ShipmentReceiptRole
+
+    references:
+      # RejectionReason:
+      #   displayName: RejectionReason
+      #   type: RejectionReason
+      #   properties:
+      #     - RejectionId
+      #   foreignKeyName: SHP_RCPT_REJRSN
+      Shipment:
+        displayName: Shipment
+        type: Shipment
+        properties:
+          - ShipmentId
+        foreignKeyName: SHP_RCPT_SHIPMT
+      ShipmentItem:
+        displayName: ShipmentItem
+        type: ShipmentItem
+        properties:
+          - ShipmentId
+          - ShipmentItemSeqId
+        foreignKeyName: SHP_RCPT_SHIPIT
+
+    entities:
+      ShipmentReceiptRole:
+        id:
+          name: PartyRoleId
+          type: PartyRoleId
+        globalId:
+          name: ShipmentReceiptRoleId
+          type: ShipmentReceiptRoleId
+          columnNames:
+            - RECEIPT_ID
+            - PARTY_ID
+            - ROLE_TYPE_ID
+        properties: {}
+        # references:
+        # ShipmentReceipt:
+        # displayName: ShipmentReceipt
+        # type: ShipmentReceipt
+        # properties:
+        # - ShipmentReceiptRoleId.ReceiptId
+        # foreignKeyName: SHP_RCPTRL_RCPT
+        # reservedProperties: {}
+        # valueObjects:
+        # ShipmentReceiptRoleId:
+        # properties:
+        # ReceiptId:
+        # columnName: RECEIPT_ID
+        # type: id
+        # PartyId:
+        # columnName: PARTY_ID
+        # type: id
+        # RoleTypeId:
+        # columnName: ROLE_TYPE_ID
+        # type: id

@@ -98,6 +98,9 @@ import org.dddml.ffvtraceability.domain.orderadjustmenttype.hibernate.*;
 import org.dddml.ffvtraceability.domain.shipment.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.shipment.hibernate.*;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -577,6 +580,22 @@ public class AggregatesHibernateConfig {
                 shipmentEventStore,
                 shipmentStateRepository,
                 shipmentStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShipmentReceiptApplicationService.SimpleShipmentReceiptApplicationService shipmentReceiptApplicationService(
+            @Qualifier("shipmentReceiptEventStore") EventStore shipmentReceiptEventStore,
+            ShipmentReceiptStateRepository shipmentReceiptStateRepository,
+            ShipmentReceiptStateQueryRepository shipmentReceiptStateQueryRepository
+    ) {
+        AbstractShipmentReceiptApplicationService.SimpleShipmentReceiptApplicationService applicationService = new AbstractShipmentReceiptApplicationService.SimpleShipmentReceiptApplicationService(
+                shipmentReceiptEventStore,
+                shipmentReceiptStateRepository,
+                shipmentReceiptStateQueryRepository
         );
         return applicationService;
     }

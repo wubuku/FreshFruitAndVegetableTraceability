@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipmentreceipt">
+  <class name="org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptState$SimpleShipmentReceiptState" table="shipment_receipt">
+    <id name="receiptId" length="20">
+      <column name="RECEIPT_ID" sql-type="VARCHAR(20)" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <set name="protectedShipmentReceiptRoles" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="RECEIPT_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptRoleState$SimpleShipmentReceiptRoleState" />
+    </set>
+    <property name="inventoryItemId">
+      <column name="INVENTORY_ITEM_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="productId">
+      <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="shipmentId">
+      <column name="SHIPMENT_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="shipmentItemSeqId">
+      <column name="SHIPMENT_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="shipmentPackageSeqId">
+      <column name="SHIPMENT_PACKAGE_SEQ_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="orderId">
+      <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="orderItemSeqId">
+      <column name="ORDER_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="returnId">
+      <column name="RETURN_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="returnItemSeqId">
+      <column name="RETURN_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="rejectionId">
+      <column name="REJECTION_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="receivedByUserLoginId">
+      <column name="RECEIVED_BY_USER_LOGIN_ID" sql-type="VARCHAR(250)" />
+    </property>
+    <property name="datetimeReceived">
+      <column name="DATETIME_RECEIVED" sql-type="timestamptz" />
+    </property>
+    <property name="itemDescription">
+      <column name="ITEM_DESCRIPTION" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="quantityAccepted">
+      <column name="QUANTITY_ACCEPTED" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="quantityRejected">
+      <column name="QUANTITY_REJECTED" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

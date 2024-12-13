@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipmentreceipt">
+  <class name="AbstractShipmentReceiptRoleEvent" table="shipment_receipt_role_event" abstract="true">
+    <composite-id name="shipmentReceiptRoleEventId" class="org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptRoleEventId">
+      <key-property name="shipmentReceiptReceiptId">
+        <column name="RECEIPT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyRoleIdPartyId">
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyRoleIdRoleTypeId">
+        <column name="ROLE_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="shipmentReceiptVersion">
+        <column name="shipment_receipt_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractShipmentReceiptRoleEvent$AbstractShipmentReceiptRoleStateEvent" abstract="true">
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractShipmentReceiptRoleEvent$SimpleShipmentReceiptRoleStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractShipmentReceiptRoleEvent$SimpleShipmentReceiptRoleStateMergePatched" discriminator-value="MergePatched"></subclass>
+      <subclass name="AbstractShipmentReceiptRoleEvent$SimpleShipmentReceiptRoleStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>
