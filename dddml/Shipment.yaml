@@ -180,4 +180,15 @@
                 # 替代产品数量
                 type: fixed-point
 
+  ShipmentType:
+    id:
+      name: ShipmentTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
 

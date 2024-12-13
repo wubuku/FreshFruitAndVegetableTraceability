@@ -338,6 +338,54 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             this.quantityRejected = quantityRejected;
         }
 
+        private String lotId;
+
+        public String getLotId()
+        {
+            return this.lotId;
+        }
+
+        public void setLotId(String lotId)
+        {
+            this.lotId = lotId;
+        }
+
+        private String locationSeqId;
+
+        public String getLocationSeqId()
+        {
+            return this.locationSeqId;
+        }
+
+        public void setLocationSeqId(String locationSeqId)
+        {
+            this.locationSeqId = locationSeqId;
+        }
+
+        private Long casesAccepted;
+
+        public Long getCasesAccepted()
+        {
+            return this.casesAccepted;
+        }
+
+        public void setCasesAccepted(Long casesAccepted)
+        {
+            this.casesAccepted = casesAccepted;
+        }
+
+        private Long casesRejected;
+
+        public Long getCasesRejected()
+        {
+            return this.casesRejected;
+        }
+
+        public void setCasesRejected(Long casesRejected)
+        {
+            this.casesRejected = casesRejected;
+        }
+
         protected AbstractShipmentReceiptStateEvent(ShipmentReceiptEventId eventId) {
             super(eventId);
         }
@@ -570,6 +618,46 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
 
         public void setIsPropertyQuantityRejectedRemoved(Boolean removed) {
             this.isPropertyQuantityRejectedRemoved = removed;
+        }
+
+        private Boolean isPropertyLotIdRemoved;
+
+        public Boolean getIsPropertyLotIdRemoved() {
+            return this.isPropertyLotIdRemoved;
+        }
+
+        public void setIsPropertyLotIdRemoved(Boolean removed) {
+            this.isPropertyLotIdRemoved = removed;
+        }
+
+        private Boolean isPropertyLocationSeqIdRemoved;
+
+        public Boolean getIsPropertyLocationSeqIdRemoved() {
+            return this.isPropertyLocationSeqIdRemoved;
+        }
+
+        public void setIsPropertyLocationSeqIdRemoved(Boolean removed) {
+            this.isPropertyLocationSeqIdRemoved = removed;
+        }
+
+        private Boolean isPropertyCasesAcceptedRemoved;
+
+        public Boolean getIsPropertyCasesAcceptedRemoved() {
+            return this.isPropertyCasesAcceptedRemoved;
+        }
+
+        public void setIsPropertyCasesAcceptedRemoved(Boolean removed) {
+            this.isPropertyCasesAcceptedRemoved = removed;
+        }
+
+        private Boolean isPropertyCasesRejectedRemoved;
+
+        public Boolean getIsPropertyCasesRejectedRemoved() {
+            return this.isPropertyCasesRejectedRemoved;
+        }
+
+        public void setIsPropertyCasesRejectedRemoved(Boolean removed) {
+            this.isPropertyCasesRejectedRemoved = removed;
         }
 
 

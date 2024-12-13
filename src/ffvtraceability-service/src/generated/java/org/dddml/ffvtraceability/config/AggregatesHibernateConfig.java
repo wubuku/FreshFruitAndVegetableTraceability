@@ -98,6 +98,12 @@ import org.dddml.ffvtraceability.domain.orderadjustmenttype.hibernate.*;
 import org.dddml.ffvtraceability.domain.shipment.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.shipment.hibernate.*;
+import org.dddml.ffvtraceability.domain.shipmenttype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shipmenttype.hibernate.*;
+import org.dddml.ffvtraceability.domain.shippingdocument.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shippingdocument.hibernate.*;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.hibernate.*;
@@ -580,6 +586,38 @@ public class AggregatesHibernateConfig {
                 shipmentEventStore,
                 shipmentStateRepository,
                 shipmentStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService shipmentTypeApplicationService(
+            @Qualifier("shipmentTypeEventStore") EventStore shipmentTypeEventStore,
+            ShipmentTypeStateRepository shipmentTypeStateRepository,
+            ShipmentTypeStateQueryRepository shipmentTypeStateQueryRepository
+    ) {
+        AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService applicationService = new AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService(
+                shipmentTypeEventStore,
+                shipmentTypeStateRepository,
+                shipmentTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShippingDocumentApplicationService.SimpleShippingDocumentApplicationService shippingDocumentApplicationService(
+            @Qualifier("shippingDocumentEventStore") EventStore shippingDocumentEventStore,
+            ShippingDocumentStateRepository shippingDocumentStateRepository,
+            ShippingDocumentStateQueryRepository shippingDocumentStateQueryRepository
+    ) {
+        AbstractShippingDocumentApplicationService.SimpleShippingDocumentApplicationService applicationService = new AbstractShippingDocumentApplicationService.SimpleShippingDocumentApplicationService(
+                shippingDocumentEventStore,
+                shippingDocumentStateRepository,
+                shippingDocumentStateQueryRepository
         );
         return applicationService;
     }

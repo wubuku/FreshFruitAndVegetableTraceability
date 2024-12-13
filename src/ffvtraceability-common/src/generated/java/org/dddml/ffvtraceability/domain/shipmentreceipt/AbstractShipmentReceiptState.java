@@ -175,6 +175,46 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.quantityRejected = quantityRejected;
     }
 
+    private String lotId;
+
+    public String getLotId() {
+        return this.lotId;
+    }
+
+    public void setLotId(String lotId) {
+        this.lotId = lotId;
+    }
+
+    private String locationSeqId;
+
+    public String getLocationSeqId() {
+        return this.locationSeqId;
+    }
+
+    public void setLocationSeqId(String locationSeqId) {
+        this.locationSeqId = locationSeqId;
+    }
+
+    private Long casesAccepted;
+
+    public Long getCasesAccepted() {
+        return this.casesAccepted;
+    }
+
+    public void setCasesAccepted(Long casesAccepted) {
+        this.casesAccepted = casesAccepted;
+    }
+
+    private Long casesRejected;
+
+    public Long getCasesRejected() {
+        return this.casesRejected;
+    }
+
+    public void setCasesRejected(Long casesRejected) {
+        this.casesRejected = casesRejected;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -347,6 +387,10 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setItemDescription(e.getItemDescription());
         this.setQuantityAccepted(e.getQuantityAccepted());
         this.setQuantityRejected(e.getQuantityRejected());
+        this.setLotId(e.getLotId());
+        this.setLocationSeqId(e.getLocationSeqId());
+        this.setCasesAccepted(e.getCasesAccepted());
+        this.setCasesRejected(e.getCasesRejected());
 
         this.setDeleted(false);
 
@@ -378,6 +422,10 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setItemDescription(s.getItemDescription());
         this.setQuantityAccepted(s.getQuantityAccepted());
         this.setQuantityRejected(s.getQuantityRejected());
+        this.setLotId(s.getLotId());
+        this.setLocationSeqId(s.getLocationSeqId());
+        this.setCasesAccepted(s.getCasesAccepted());
+        this.setCasesRejected(s.getCasesRejected());
 
         if (s.getShipmentReceiptRoles() != null) {
             Iterable<ShipmentReceiptRoleState> iterable;
@@ -523,6 +571,34 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
             }
         } else {
             this.setQuantityRejected(e.getQuantityRejected());
+        }
+        if (e.getLotId() == null) {
+            if (e.getIsPropertyLotIdRemoved() != null && e.getIsPropertyLotIdRemoved()) {
+                this.setLotId(null);
+            }
+        } else {
+            this.setLotId(e.getLotId());
+        }
+        if (e.getLocationSeqId() == null) {
+            if (e.getIsPropertyLocationSeqIdRemoved() != null && e.getIsPropertyLocationSeqIdRemoved()) {
+                this.setLocationSeqId(null);
+            }
+        } else {
+            this.setLocationSeqId(e.getLocationSeqId());
+        }
+        if (e.getCasesAccepted() == null) {
+            if (e.getIsPropertyCasesAcceptedRemoved() != null && e.getIsPropertyCasesAcceptedRemoved()) {
+                this.setCasesAccepted(null);
+            }
+        } else {
+            this.setCasesAccepted(e.getCasesAccepted());
+        }
+        if (e.getCasesRejected() == null) {
+            if (e.getIsPropertyCasesRejectedRemoved() != null && e.getIsPropertyCasesRejectedRemoved()) {
+                this.setCasesRejected(null);
+            }
+        } else {
+            this.setCasesRejected(e.getCasesRejected());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

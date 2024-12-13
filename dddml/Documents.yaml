@@ -18,7 +18,9 @@ aggregates:
       # ImageData:
       #   type: object
 
+
   DocumentAssociation:
+    # TODO: remove this entity
     id:
       type: DocumentAssociationId
       name: DocumentAssociationId
@@ -33,6 +35,7 @@ aggregates:
 
 valueObjects:
   DocumentAssociationId:
+    # TODO: remove this value object
     properties:
       DocumentId:
         type: id

@@ -237,6 +237,66 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
     }
 
     /**
+     * Lot Id
+     */
+    private String lotId;
+
+    public String getLotId()
+    {
+        return this.lotId;
+    }
+
+    public void setLotId(String lotId)
+    {
+        this.lotId = lotId;
+    }
+
+    /**
+     * Location Seq Id
+     */
+    private String locationSeqId;
+
+    public String getLocationSeqId()
+    {
+        return this.locationSeqId;
+    }
+
+    public void setLocationSeqId(String locationSeqId)
+    {
+        this.locationSeqId = locationSeqId;
+    }
+
+    /**
+     * The number of cases accepted
+     */
+    private Long casesAccepted;
+
+    public Long getCasesAccepted()
+    {
+        return this.casesAccepted;
+    }
+
+    public void setCasesAccepted(Long casesAccepted)
+    {
+        this.casesAccepted = casesAccepted;
+    }
+
+    /**
+     * The number of cases rejected
+     */
+    private Long casesRejected;
+
+    public Long getCasesRejected()
+    {
+        return this.casesRejected;
+    }
+
+    public void setCasesRejected(Long casesRejected)
+    {
+        this.casesRejected = casesRejected;
+    }
+
+    /**
      * Active
      */
     private Boolean active;
@@ -444,6 +504,54 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         this.isPropertyQuantityRejectedRemoved = removed;
     }
 
+    private Boolean isPropertyLotIdRemoved;
+
+    public Boolean getIsPropertyLotIdRemoved()
+    {
+        return this.isPropertyLotIdRemoved;
+    }
+
+    public void setIsPropertyLotIdRemoved(Boolean removed)
+    {
+        this.isPropertyLotIdRemoved = removed;
+    }
+
+    private Boolean isPropertyLocationSeqIdRemoved;
+
+    public Boolean getIsPropertyLocationSeqIdRemoved()
+    {
+        return this.isPropertyLocationSeqIdRemoved;
+    }
+
+    public void setIsPropertyLocationSeqIdRemoved(Boolean removed)
+    {
+        this.isPropertyLocationSeqIdRemoved = removed;
+    }
+
+    private Boolean isPropertyCasesAcceptedRemoved;
+
+    public Boolean getIsPropertyCasesAcceptedRemoved()
+    {
+        return this.isPropertyCasesAcceptedRemoved;
+    }
+
+    public void setIsPropertyCasesAcceptedRemoved(Boolean removed)
+    {
+        this.isPropertyCasesAcceptedRemoved = removed;
+    }
+
+    private Boolean isPropertyCasesRejectedRemoved;
+
+    public Boolean getIsPropertyCasesRejectedRemoved()
+    {
+        return this.isPropertyCasesRejectedRemoved;
+    }
+
+    public void setIsPropertyCasesRejectedRemoved(Boolean removed)
+    {
+        this.isPropertyCasesRejectedRemoved = removed;
+    }
+
     private Boolean isPropertyActiveRemoved;
 
     public Boolean getIsPropertyActiveRemoved()
@@ -474,6 +582,10 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         command.setItemDescription(this.getItemDescription());
         command.setQuantityAccepted(this.getQuantityAccepted());
         command.setQuantityRejected(this.getQuantityRejected());
+        command.setLotId(this.getLotId());
+        command.setLocationSeqId(this.getLocationSeqId());
+        command.setCasesAccepted(this.getCasesAccepted());
+        command.setCasesRejected(this.getCasesRejected());
         command.setActive(this.getActive());
     }
 
@@ -555,6 +667,10 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         command.setIsPropertyItemDescriptionRemoved(this.getIsPropertyItemDescriptionRemoved());
         command.setIsPropertyQuantityAcceptedRemoved(this.getIsPropertyQuantityAcceptedRemoved());
         command.setIsPropertyQuantityRejectedRemoved(this.getIsPropertyQuantityRejectedRemoved());
+        command.setIsPropertyLotIdRemoved(this.getIsPropertyLotIdRemoved());
+        command.setIsPropertyLocationSeqIdRemoved(this.getIsPropertyLocationSeqIdRemoved());
+        command.setIsPropertyCasesAcceptedRemoved(this.getIsPropertyCasesAcceptedRemoved());
+        command.setIsPropertyCasesRejectedRemoved(this.getIsPropertyCasesRejectedRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 

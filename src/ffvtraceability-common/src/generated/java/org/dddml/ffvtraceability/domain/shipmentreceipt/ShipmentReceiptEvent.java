@@ -102,6 +102,22 @@ public interface ShipmentReceiptEvent extends Event {
 
         void setQuantityRejected(java.math.BigDecimal quantityRejected);
 
+        String getLotId();
+
+        void setLotId(String lotId);
+
+        String getLocationSeqId();
+
+        void setLocationSeqId(String locationSeqId);
+
+        Long getCasesAccepted();
+
+        void setCasesAccepted(Long casesAccepted);
+
+        Long getCasesRejected();
+
+        void setCasesRejected(Long casesRejected);
+
     }
 
     interface ShipmentReceiptStateCreated extends ShipmentReceiptStateEvent
@@ -177,6 +193,22 @@ public interface ShipmentReceiptEvent extends Event {
         Boolean getIsPropertyQuantityRejectedRemoved();
 
         void setIsPropertyQuantityRejectedRemoved(Boolean removed);
+
+        Boolean getIsPropertyLotIdRemoved();
+
+        void setIsPropertyLotIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyLocationSeqIdRemoved();
+
+        void setIsPropertyLocationSeqIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyCasesAcceptedRemoved();
+
+        void setIsPropertyCasesAcceptedRemoved(Boolean removed);
+
+        Boolean getIsPropertyCasesRejectedRemoved();
+
+        void setIsPropertyCasesRejectedRemoved(Boolean removed);
 
 
         Iterable<ShipmentReceiptRoleEvent> getShipmentReceiptRoleEvents();

@@ -51,6 +51,21 @@
         type: fixed-point
         columnName: QUANTITY_REJECTED
 
+      # AttributeSetInstanceId:
+      #   type: HashHex
+      LotId:
+        type: id
+      LocationSeqId:
+        type: id
+      # CaseUomId:
+      #   type: id
+      CasesAccepted:
+        description: The number of cases accepted
+        type: numeric
+      CasesRejected:
+        description: The number of cases rejected
+        type: numeric
+
       ShipmentReceiptRoles:
         itemType: ShipmentReceiptRole
 

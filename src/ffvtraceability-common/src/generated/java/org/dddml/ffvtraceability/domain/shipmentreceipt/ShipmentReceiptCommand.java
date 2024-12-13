@@ -116,6 +116,22 @@ public interface ShipmentReceiptCommand extends Command {
 
         void setQuantityRejected(java.math.BigDecimal quantityRejected);
 
+        String getLotId();
+
+        void setLotId(String lotId);
+
+        String getLocationSeqId();
+
+        void setLocationSeqId(String locationSeqId);
+
+        Long getCasesAccepted();
+
+        void setCasesAccepted(Long casesAccepted);
+
+        Long getCasesRejected();
+
+        void setCasesRejected(Long casesRejected);
+
         Boolean getActive();
 
         void setActive(Boolean active);
@@ -191,6 +207,22 @@ public interface ShipmentReceiptCommand extends Command {
         Boolean getIsPropertyQuantityRejectedRemoved();
 
         void setIsPropertyQuantityRejectedRemoved(Boolean removed);
+
+        Boolean getIsPropertyLotIdRemoved();
+
+        void setIsPropertyLotIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyLocationSeqIdRemoved();
+
+        void setIsPropertyLocationSeqIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyCasesAcceptedRemoved();
+
+        void setIsPropertyCasesAcceptedRemoved(Boolean removed);
+
+        Boolean getIsPropertyCasesRejectedRemoved();
+
+        void setIsPropertyCasesRejectedRemoved(Boolean removed);
 
         Boolean getIsPropertyActiveRemoved();
 

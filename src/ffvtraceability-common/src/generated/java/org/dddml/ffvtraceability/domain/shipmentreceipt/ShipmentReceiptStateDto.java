@@ -207,6 +207,54 @@ public class ShipmentReceiptStateDto {
         this.quantityRejected = quantityRejected;
     }
 
+    private String lotId;
+
+    public String getLotId()
+    {
+        return this.lotId;
+    }
+
+    public void setLotId(String lotId)
+    {
+        this.lotId = lotId;
+    }
+
+    private String locationSeqId;
+
+    public String getLocationSeqId()
+    {
+        return this.locationSeqId;
+    }
+
+    public void setLocationSeqId(String locationSeqId)
+    {
+        this.locationSeqId = locationSeqId;
+    }
+
+    private Long casesAccepted;
+
+    public Long getCasesAccepted()
+    {
+        return this.casesAccepted;
+    }
+
+    public void setCasesAccepted(Long casesAccepted)
+    {
+        this.casesAccepted = casesAccepted;
+    }
+
+    private Long casesRejected;
+
+    public Long getCasesRejected()
+    {
+        return this.casesRejected;
+    }
+
+    public void setCasesRejected(Long casesRejected)
+    {
+        this.casesRejected = casesRejected;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -355,6 +403,18 @@ public class ShipmentReceiptStateDto {
             }
             if (returnedFieldsContains("QuantityRejected")) {
                 dto.setQuantityRejected(state.getQuantityRejected());
+            }
+            if (returnedFieldsContains("LotId")) {
+                dto.setLotId(state.getLotId());
+            }
+            if (returnedFieldsContains("LocationSeqId")) {
+                dto.setLocationSeqId(state.getLocationSeqId());
+            }
+            if (returnedFieldsContains("CasesAccepted")) {
+                dto.setCasesAccepted(state.getCasesAccepted());
+            }
+            if (returnedFieldsContains("CasesRejected")) {
+                dto.setCasesRejected(state.getCasesRejected());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

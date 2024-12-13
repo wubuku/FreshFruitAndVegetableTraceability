@@ -72,6 +72,10 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setItemDescription(c.getItemDescription());
         e.setQuantityAccepted(c.getQuantityAccepted());
         e.setQuantityRejected(c.getQuantityRejected());
+        e.setLotId(c.getLotId());
+        e.setLocationSeqId(c.getLocationSeqId());
+        e.setCasesAccepted(c.getCasesAccepted());
+        e.setCasesRejected(c.getCasesRejected());
         ((AbstractShipmentReceiptEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -103,6 +107,10 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setItemDescription(c.getItemDescription());
         e.setQuantityAccepted(c.getQuantityAccepted());
         e.setQuantityRejected(c.getQuantityRejected());
+        e.setLotId(c.getLotId());
+        e.setLocationSeqId(c.getLocationSeqId());
+        e.setCasesAccepted(c.getCasesAccepted());
+        e.setCasesRejected(c.getCasesRejected());
         e.setIsPropertyInventoryItemIdRemoved(c.getIsPropertyInventoryItemIdRemoved());
         e.setIsPropertyProductIdRemoved(c.getIsPropertyProductIdRemoved());
         e.setIsPropertyShipmentIdRemoved(c.getIsPropertyShipmentIdRemoved());
@@ -118,6 +126,10 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setIsPropertyItemDescriptionRemoved(c.getIsPropertyItemDescriptionRemoved());
         e.setIsPropertyQuantityAcceptedRemoved(c.getIsPropertyQuantityAcceptedRemoved());
         e.setIsPropertyQuantityRejectedRemoved(c.getIsPropertyQuantityRejectedRemoved());
+        e.setIsPropertyLotIdRemoved(c.getIsPropertyLotIdRemoved());
+        e.setIsPropertyLocationSeqIdRemoved(c.getIsPropertyLocationSeqIdRemoved());
+        e.setIsPropertyCasesAcceptedRemoved(c.getIsPropertyCasesAcceptedRemoved());
+        e.setIsPropertyCasesRejectedRemoved(c.getIsPropertyCasesRejectedRemoved());
         ((AbstractShipmentReceiptEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

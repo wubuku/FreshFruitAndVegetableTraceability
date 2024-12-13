@@ -69,6 +69,18 @@
       <property name="quantityRejected">
         <column name="QUANTITY_REJECTED" sql-type="DECIMAL(18,6)" />
       </property>
+      <property name="lotId">
+        <column name="lot_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="locationSeqId">
+        <column name="location_seq_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="casesAccepted">
+        <column name="cases_accepted" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="casesRejected">
+        <column name="cases_rejected" sql-type="DECIMAL(20,0)" />
+      </property>
       <subclass name="AbstractShipmentReceiptEvent$SimpleShipmentReceiptStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractShipmentReceiptEvent$SimpleShipmentReceiptStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyInventoryItemIdRemoved" column="is_property_inventory_item_id_removed" />
@@ -86,6 +98,10 @@
         <property name="isPropertyItemDescriptionRemoved" column="is_property_item_description_removed" />
         <property name="isPropertyQuantityAcceptedRemoved" column="is_property_quantity_accepted_removed" />
         <property name="isPropertyQuantityRejectedRemoved" column="is_property_quantity_rejected_removed" />
+        <property name="isPropertyLotIdRemoved" column="is_property_lot_id_removed" />
+        <property name="isPropertyLocationSeqIdRemoved" column="is_property_location_seq_id_removed" />
+        <property name="isPropertyCasesAcceptedRemoved" column="is_property_cases_accepted_removed" />
+        <property name="isPropertyCasesRejectedRemoved" column="is_property_cases_rejected_removed" />
       </subclass>
       <subclass name="AbstractShipmentReceiptEvent$SimpleShipmentReceiptStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>

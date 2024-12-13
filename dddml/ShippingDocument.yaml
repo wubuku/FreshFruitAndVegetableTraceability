@@ -1,0 +1,16 @@
+aggregates:
+  ShippingDocument:
+    id:
+      name: DocumentId
+      type: id
+    properties:
+      ShipmentId:
+        type: id
+      ShipmentItemSeqId:
+        type: id
+      ShipmentPackageSeqId:
+        type: id
+      Description:
+        type: description
+
+

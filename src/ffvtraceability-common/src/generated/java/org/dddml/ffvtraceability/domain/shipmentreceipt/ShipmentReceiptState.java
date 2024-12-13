@@ -50,6 +50,14 @@ public interface ShipmentReceiptState
 
     java.math.BigDecimal getQuantityRejected();
 
+    String getLotId();
+
+    String getLocationSeqId();
+
+    Long getCasesAccepted();
+
+    Long getCasesRejected();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -96,6 +104,14 @@ public interface ShipmentReceiptState
         void setQuantityAccepted(java.math.BigDecimal quantityAccepted);
 
         void setQuantityRejected(java.math.BigDecimal quantityRejected);
+
+        void setLotId(String lotId);
+
+        void setLocationSeqId(String locationSeqId);
+
+        void setCasesAccepted(Long casesAccepted);
+
+        void setCasesRejected(Long casesRejected);
 
         void setVersion(Long version);
 
