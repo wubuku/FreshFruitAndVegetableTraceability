@@ -536,6 +536,154 @@ public interface FooMapper {
    - 保持接口和 DTO 的属性命名一致
 
 
+##### MapStruct 处理属性不对等的映射关系
+
+###### 问题描述
+
+当使用 MapStruct 进行对象映射时，如果目标对象（下面上示例中的 `FooDto`）的属性比源对象（`FooProjection`）多，会出现以下情况：
+- 匹配的属性会正常映射
+- 多出的属性会被设置为默认值（null, 0, false 等）
+- MapStruct 会在编译时产生警告，提示有未映射的目标属性
+
+###### 处理方案
+
+####### 1. 显式忽略多余属性（推荐）
+```java
+@Mapper(componentModel = "spring")
+public interface FooMapper {
+    @Mapping(target = "extraField1", ignore = true)
+    @Mapping(target = "extraField2", ignore = true)
+    FooDto projectionToDto(FooProjection projection);
+}
+```
+
+####### 2. 设置默认值
+```java
+@Mapper(componentModel = "spring")
+public interface FooMapper {
+    @Mapping(target = "extraField1", constant = "defaultValue")
+    @Mapping(target = "extraField2", expression = "java(getDefaultValue())")
+    FooDto projectionToDto(FooProjection projection);
+
+    default String getDefaultValue() {
+        return "computed default value";
+    }
+}
+```
+
+####### 3. 使用 after mapping 方法
+```java
+@Mapper(componentModel = "spring")
+public interface FooMapper {
+    @Mapping(target = "extraField1", ignore = true)
+    FooDto projectionToDto(FooProjection projection);
+
+    @AfterMapping
+    default void setExtraFields(@MappingTarget FooDto target) {
+        target.setExtraField1("computed value");
+        // 可以在这里设置其他额外的字段
+    }
+}
+```
+
+####### 4. 调整映射策略
+```java
+@Mapper(
+    componentModel = "spring",
+    unmappedTargetPolicy = ReportingPolicy.IGNORE  // 忽略所有未映射的目标属性
+)
+public interface FooMapper {
+    FooDto projectionToDto(FooProjection projection);
+}
+```
+
+###### MapStruct 的映射策略详解
+
+####### unmappedTargetPolicy vs unmappedSourcePolicy
+
+######## 1. unmappedTargetPolicy
+- **作用**：控制目标对象（转换后的对象）中未被映射的属性的处理方式
+- **场景**：当 FooDto（目标）有属性，但在 FooProjection（源）中找不到对应的属性时
+- **示例**：
+```java
+// 源对象
+public interface FooProjection {
+    String getName();
+}
+
+// 目标对象
+public class FooDto {
+    private String name;
+    private String age;  // 这个属性在源对象中不存在！
+}
+```
+
+######## 2. unmappedSourcePolicy
+- **作用**：控制源对象中未被映射的属性的处理方式
+- **场景**：当 FooProjection（源）有属性，但在 FooDto（目标）中找不到对应的属性时
+- **示例**：
+```java
+// 源对象
+public interface FooProjection {
+    String getName();
+    String getAddress();  // 这个属性在目标对象中不存在！
+}
+
+// 目标对象
+public class FooDto {
+    private String name;
+}
+```
+
+####### ReportingPolicy 的可选值
+
+```java
+@Mapper(
+    componentModel = "spring",
+    unmappedTargetPolicy = ReportingPolicy.ERROR,    // 可选 ERROR, WARN, IGNORE
+    unmappedSourcePolicy = ReportingPolicy.ERROR     // 可选 ERROR, WARN, IGNORE
+)
+```
+
+######## 1. ERROR
+- 在编译时报错
+- 强制开发者处理所有未映射的属性
+- 最严格的策略，推荐在开发环境使用
+
+######## 2. WARN
+- 编译时产生警告
+- 允许代码编译通过
+- 适合迁移期或不确定是否所有属性都需要映射时使用
+
+######## 3. IGNORE
+- 完全忽略未映射的属性
+- 不产生任何警告或错误
+- 最宽松的策略，需要谨慎使用
+
+###### 最佳实践建议
+
+####### 1. 开发阶段
+- 使用 ERROR 策略
+- 强制处理所有映射关系
+- 避免意外的属性遗漏
+
+####### 2. 迁移阶段
+- 可以临时使用 WARN 策略
+- 逐步完善映射关系
+- 记录并跟踪警告信息
+
+####### 3. 生产环境
+- 回到 ERROR 策略
+- 确保所有映射关系明确定义
+- 提高代码的可维护性和可靠性
+
+####### 4. 避免使用 IGNORE
+- 可能导致难以发现的 bug
+- 降低代码的可维护性
+- 只在特殊情况下使用
+
+
+
 ### JPA 原生查询结果的父子关系映射
 
 在实际开发中，我们经常需要处理这样的场景：从数据库查询父子表的关联数据，并映射到带有集合属性的 DTO 对象中。例如，一个父实体有多个子实体，我们希望通过一次查询获取所有数据并在内存中组装。
