@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipment">
+  <class name="org.dddml.ffvtraceability.domain.shipment.AbstractShipmentPackageContentState$SimpleShipmentPackageContentState" table="shipment_package_content">
+    <composite-id name="shipmentPackageContentId" class="org.dddml.ffvtraceability.domain.shipment.ShipmentPackageContentId">
+      <key-property name="shipmentId">
+        <column name="SHIPMENT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="shipmentPackageSeqId">
+        <column name="SHIPMENT_PACKAGE_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="shipmentItemSeqId">
+        <column name="SHIPMENT_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <many-to-one name="protectedShipmentPackageState" class="org.dddml.ffvtraceability.domain.shipment.AbstractShipmentPackageState$SimpleShipmentPackageState" insert="false" update="false">
+      <column name="SHIPMENT_ID" />
+      <column name="SHIPMENT_PACKAGE_SEQ_ID" />
+    </many-to-one>
+    <property name="quantity">
+      <column name="quantity" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="subProductId">
+      <column name="sub_product_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="subProductQuantity">
+      <column name="sub_product_quantity" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

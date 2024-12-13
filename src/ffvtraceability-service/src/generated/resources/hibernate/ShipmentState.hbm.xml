@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipment">
+  <class name="org.dddml.ffvtraceability.domain.shipment.AbstractShipmentState$SimpleShipmentState" table="shipment">
+    <id name="shipmentId" length="20">
+      <column name="shipment_id" sql-type="VARCHAR(20)" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <set name="protectedShipmentItems" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="SHIPMENT_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.shipment.AbstractShipmentItemState$SimpleShipmentItemState" />
+    </set>
+    <set name="protectedShipmentPackages" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="SHIPMENT_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.shipment.AbstractShipmentPackageState$SimpleShipmentPackageState" />
+    </set>
+    <property name="shipmentTypeId">
+      <column name="SHIPMENT_TYPE_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="statusId">
+      <column name="STATUS_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="primaryOrderId">
+      <column name="PRIMARY_ORDER_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="primaryReturnId">
+      <column name="PRIMARY_RETURN_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="primaryShipGroupSeqId">
+      <column name="PRIMARY_SHIP_GROUP_SEQ_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="picklistBinId">
+      <column name="PICKLIST_BIN_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="estimatedReadyDate">
+      <column name="ESTIMATED_READY_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="estimatedShipDate">
+      <column name="ESTIMATED_SHIP_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="estimatedShipWorkEffId">
+      <column name="ESTIMATED_SHIP_WORK_EFF_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="estimatedArrivalDate">
+      <column name="ESTIMATED_ARRIVAL_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="estimatedArrivalWorkEffId">
+      <column name="ESTIMATED_ARRIVAL_WORK_EFF_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="latestCancelDate">
+      <column name="LATEST_CANCEL_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="estimatedShipCost">
+      <column name="ESTIMATED_SHIP_COST" sql-type="DECIMAL(18,2)" />
+    </property>
+    <property name="currencyUomId">
+      <column name="CURRENCY_UOM_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="handlingInstructions">
+      <column name="HANDLING_INSTRUCTIONS" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="originFacilityId">
+      <column name="ORIGIN_FACILITY_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="destinationFacilityId">
+      <column name="DESTINATION_FACILITY_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="originContactMechId">
+      <column name="ORIGIN_CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="originTelecomNumberId">
+      <column name="ORIGIN_TELECOM_NUMBER_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="destinationContactMechId">
+      <column name="DESTINATION_CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="destinationTelecomNumberId">
+      <column name="DESTINATION_TELECOM_NUMBER_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="partyIdTo">
+      <column name="PARTY_ID_TO" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="partyIdFrom">
+      <column name="PARTY_ID_FROM" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="additionalShippingCharge">
+      <column name="ADDITIONAL_SHIPPING_CHARGE" sql-type="DECIMAL(18,2)" />
+    </property>
+    <property name="addtlShippingChargeDesc">
+      <column name="ADDTL_SHIPPING_CHARGE_DESC" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

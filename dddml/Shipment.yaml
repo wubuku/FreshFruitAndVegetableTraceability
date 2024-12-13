@@ -1,0 +1,183 @@
+﻿aggregates:
+  Shipment:
+    # 装运单
+    discriminator: ShipmentTypeId
+    # reservedPropertyMetadata:
+    # createdAt: CreatedDate
+    # createdBy: CreatedByUserLogin
+    # updatedAt: LastModifiedDate
+    # updatedBy: LastModifiedByUserLogin
+    id:
+      name: ShipmentId
+      type: id
+    properties:
+      ShipmentTypeId:
+        type: id
+        columnName: SHIPMENT_TYPE_ID
+      StatusId:
+        type: id
+        columnName: STATUS_ID
+      PrimaryOrderId:
+        type: id
+        columnName: PRIMARY_ORDER_ID
+      PrimaryReturnId:
+        type: id
+        columnName: PRIMARY_RETURN_ID
+      PrimaryShipGroupSeqId:
+        type: id
+        columnName: PRIMARY_SHIP_GROUP_SEQ_ID
+      PicklistBinId:
+        type: id
+        columnName: PICKLIST_BIN_ID
+      EstimatedReadyDate:
+        type: date-time
+        columnName: ESTIMATED_READY_DATE
+      EstimatedShipDate:
+        type: date-time
+        columnName: ESTIMATED_SHIP_DATE
+      EstimatedShipWorkEffId:
+        type: id
+        columnName: ESTIMATED_SHIP_WORK_EFF_ID
+      EstimatedArrivalDate:
+        type: date-time
+        columnName: ESTIMATED_ARRIVAL_DATE
+      EstimatedArrivalWorkEffId:
+        type: id
+        columnName: ESTIMATED_ARRIVAL_WORK_EFF_ID
+      LatestCancelDate:
+        type: date-time
+        columnName: LATEST_CANCEL_DATE
+      EstimatedShipCost:
+        type: currency-amount
+        columnName: ESTIMATED_SHIP_COST
+      CurrencyUomId:
+        type: id
+        columnName: CURRENCY_UOM_ID
+      HandlingInstructions:
+        type: long-varchar
+        columnName: HANDLING_INSTRUCTIONS
+      OriginFacilityId:
+        type: id
+        columnName: ORIGIN_FACILITY_ID
+      DestinationFacilityId:
+        type: id
+        columnName: DESTINATION_FACILITY_ID
+      OriginContactMechId:
+        type: id
+        columnName: ORIGIN_CONTACT_MECH_ID
+      OriginTelecomNumberId:
+        type: id
+        columnName: ORIGIN_TELECOM_NUMBER_ID
+      DestinationContactMechId:
+        type: id
+        columnName: DESTINATION_CONTACT_MECH_ID
+      DestinationTelecomNumberId:
+        type: id
+        columnName: DESTINATION_TELECOM_NUMBER_ID
+      PartyIdTo:
+        type: id
+        columnName: PARTY_ID_TO
+      PartyIdFrom:
+        type: id
+        columnName: PARTY_ID_FROM
+      AdditionalShippingCharge:
+        type: currency-amount
+        columnName: ADDITIONAL_SHIPPING_CHARGE
+      AddtlShippingChargeDesc:
+        type: long-varchar
+        columnName: ADDTL_SHIPPING_CHARGE_DESC
+
+      ShipmentItems:
+        itemType: ShipmentItem
+      ShipmentPackages:
+        itemType: ShipmentPackage
+
+    references:
+      OrderShipGroup:
+        description: Primary
+        type: OrderShipGroup
+        properties:
+          - PrimaryOrderId
+          - PrimaryShipGroupSeqId
+
+    entities:
+      ShipmentItem:
+        # 装运项目
+        id:
+          name: ShipmentItemSeqId
+          type: id
+        globalId:
+          name: ShipmentItemId
+          type: ShipmentItemId
+          columnNames:
+            - SHIPMENT_ID
+            - SHIPMENT_ITEM_SEQ_ID
+        properties:
+          ProductId:
+            type: id
+          Quantity:
+            type: fixed-point
+          ShipmentContentDescription:
+            type: description
+
+      ShipmentPackage:
+        # 装运包裹
+        id:
+          name: ShipmentPackageSeqId
+          type: id
+        globalId:
+          name: ShipmentPackageId
+          type: ShipmentPackageId
+          columnNames:
+            - SHIPMENT_ID
+            - SHIPMENT_PACKAGE_SEQ_ID
+        properties:
+          ShipmentBoxTypeId:
+            type: id
+          DateCreated:
+            type: date-time
+          BoxLength:
+            description: This field store the length of package; if a shipmentBoxTypeId is specified then this overrides the dimension specified there; this field is meant to be used when there is no applicable ShipmentBoxType
+            type: fixed-point
+          BoxHeight:
+            description: This field store the height of package; if a shipmentBoxTypeId is specified then this overrides the dimension specified there; this field is meant to be used when there is no applicable ShipmentBoxType
+            type: fixed-point
+          BoxWidth:
+            description: This field store the width of package; if a shipmentBoxTypeId is specified then this overrides the dimension specified there; this field is meant to be used when there is no applicable ShipmentBoxType
+            type: fixed-point
+          DimensionUomId:
+            description: This field store the unit of measurement of dimension (length, width and height)
+            type: id
+          Weight:
+            type: fixed-point
+          WeightUomId:
+            type: id
+          InsuredValue:
+            type: currency-amount
+          ShipmentPackageContents:
+            itemType: ShipmentPackageContent
+
+        entities:
+          ShipmentPackageContent:
+            # 装运包裹内容
+            id:
+              name: ShipmentItemSeqId
+              type: id
+            globalId:
+              name: ShipmentPackageContentId
+              type: ShipmentPackageContentId
+              columnNames:
+                - SHIPMENT_ID
+                - SHIPMENT_PACKAGE_SEQ_ID
+                - SHIPMENT_ITEM_SEQ_ID
+            properties:
+              Quantity:
+                type: fixed-point
+              SubProductId:
+                # 替代产品 Id
+                type: id
+              SubProductQuantity:
+                # 替代产品数量
+                type: fixed-point
+
+

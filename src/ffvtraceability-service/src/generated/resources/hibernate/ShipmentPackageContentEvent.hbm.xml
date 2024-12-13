@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipment">
+  <class name="AbstractShipmentPackageContentEvent" table="shipment_package_content_event" abstract="true">
+    <composite-id name="shipmentPackageContentEventId" class="org.dddml.ffvtraceability.domain.shipment.ShipmentPackageContentEventId">
+      <key-property name="shipmentId">
+        <column name="SHIPMENT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="shipmentPackageSeqId">
+        <column name="SHIPMENT_PACKAGE_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="shipmentItemSeqId">
+        <column name="SHIPMENT_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="shipmentVersion">
+        <column name="shipment_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractShipmentPackageContentEvent$AbstractShipmentPackageContentStateEvent" abstract="true">
+      <property name="quantity">
+        <column name="quantity" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="subProductId">
+        <column name="sub_product_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="subProductQuantity">
+        <column name="sub_product_quantity" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractShipmentPackageContentEvent$SimpleShipmentPackageContentStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractShipmentPackageContentEvent$SimpleShipmentPackageContentStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed" />
+        <property name="isPropertySubProductIdRemoved" column="is_property_sub_product_id_removed" />
+        <property name="isPropertySubProductQuantityRemoved" column="is_property_sub_product_quantity_removed" />
+      </subclass>
+      <subclass name="AbstractShipmentPackageContentEvent$SimpleShipmentPackageContentStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

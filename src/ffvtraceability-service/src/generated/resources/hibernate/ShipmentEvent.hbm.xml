@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipment">
+  <class name="AbstractShipmentEvent" table="shipment_event" abstract="true">
+    <composite-id name="shipmentEventId" class="org.dddml.ffvtraceability.domain.shipment.ShipmentEventId">
+      <key-property name="shipmentId">
+        <column name="shipment_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractShipmentEvent$ShipmentLobEvent" discriminator-value="ShipmentLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractShipmentEvent$AbstractShipmentStateEvent" abstract="true">
+      <property name="shipmentTypeId">
+        <column name="SHIPMENT_TYPE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="statusId">
+        <column name="STATUS_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="primaryOrderId">
+        <column name="PRIMARY_ORDER_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="primaryReturnId">
+        <column name="PRIMARY_RETURN_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="primaryShipGroupSeqId">
+        <column name="PRIMARY_SHIP_GROUP_SEQ_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="picklistBinId">
+        <column name="PICKLIST_BIN_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="estimatedReadyDate">
+        <column name="ESTIMATED_READY_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="estimatedShipDate">
+        <column name="ESTIMATED_SHIP_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="estimatedShipWorkEffId">
+        <column name="ESTIMATED_SHIP_WORK_EFF_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="estimatedArrivalDate">
+        <column name="ESTIMATED_ARRIVAL_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="estimatedArrivalWorkEffId">
+        <column name="ESTIMATED_ARRIVAL_WORK_EFF_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="latestCancelDate">
+        <column name="LATEST_CANCEL_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="estimatedShipCost">
+        <column name="ESTIMATED_SHIP_COST" sql-type="DECIMAL(18,2)" />
+      </property>
+      <property name="currencyUomId">
+        <column name="CURRENCY_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="handlingInstructions">
+        <column name="HANDLING_INSTRUCTIONS" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="originFacilityId">
+        <column name="ORIGIN_FACILITY_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="destinationFacilityId">
+        <column name="DESTINATION_FACILITY_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="originContactMechId">
+        <column name="ORIGIN_CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="originTelecomNumberId">
+        <column name="ORIGIN_TELECOM_NUMBER_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="destinationContactMechId">
+        <column name="DESTINATION_CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="destinationTelecomNumberId">
+        <column name="DESTINATION_TELECOM_NUMBER_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="partyIdTo">
+        <column name="PARTY_ID_TO" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="partyIdFrom">
+        <column name="PARTY_ID_FROM" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="additionalShippingCharge">
+        <column name="ADDITIONAL_SHIPPING_CHARGE" sql-type="DECIMAL(18,2)" />
+      </property>
+      <property name="addtlShippingChargeDesc">
+        <column name="ADDTL_SHIPPING_CHARGE_DESC" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractShipmentEvent$SimpleShipmentStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractShipmentEvent$SimpleShipmentStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyShipmentTypeIdRemoved" column="is_property_shipment_type_id_removed" />
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyPrimaryOrderIdRemoved" column="is_property_primary_order_id_removed" />
+        <property name="isPropertyPrimaryReturnIdRemoved" column="is_property_primary_return_id_removed" />
+        <property name="isPropertyPrimaryShipGroupSeqIdRemoved" column="is_property_primary_ship_group_seq_id_removed" />
+        <property name="isPropertyPicklistBinIdRemoved" column="is_property_picklist_bin_id_removed" />
+        <property name="isPropertyEstimatedReadyDateRemoved" column="is_property_estimated_ready_date_removed" />
+        <property name="isPropertyEstimatedShipDateRemoved" column="is_property_estimated_ship_date_removed" />
+        <property name="isPropertyEstimatedShipWorkEffIdRemoved" column="is_property_estimated_ship_work_eff_id_removed" />
+        <property name="isPropertyEstimatedArrivalDateRemoved" column="is_property_estimated_arrival_date_removed" />
+        <property name="isPropertyEstimatedArrivalWorkEffIdRemoved" column="is_property_estimated_arrival_work_eff_id_removed" />
+        <property name="isPropertyLatestCancelDateRemoved" column="is_property_latest_cancel_date_removed" />
+        <property name="isPropertyEstimatedShipCostRemoved" column="is_property_estimated_ship_cost_removed" />
+        <property name="isPropertyCurrencyUomIdRemoved" column="is_property_currency_uom_id_removed" />
+        <property name="isPropertyHandlingInstructionsRemoved" column="is_property_handling_instructions_removed" />
+        <property name="isPropertyOriginFacilityIdRemoved" column="is_property_origin_facility_id_removed" />
+        <property name="isPropertyDestinationFacilityIdRemoved" column="is_property_destination_facility_id_removed" />
+        <property name="isPropertyOriginContactMechIdRemoved" column="is_property_origin_contact_mech_id_removed" />
+        <property name="isPropertyOriginTelecomNumberIdRemoved" column="is_property_origin_telecom_number_id_removed" />
+        <property name="isPropertyDestinationContactMechIdRemoved" column="is_property_destination_contact_mech_id_removed" />
+        <property name="isPropertyDestinationTelecomNumberIdRemoved" column="is_property_destination_telecom_number_id_removed" />
+        <property name="isPropertyPartyIdToRemoved" column="is_property_party_id_to_removed" />
+        <property name="isPropertyPartyIdFromRemoved" column="is_property_party_id_from_removed" />
+        <property name="isPropertyAdditionalShippingChargeRemoved" column="is_property_additional_shipping_charge_removed" />
+        <property name="isPropertyAddtlShippingChargeDescRemoved" column="is_property_addtl_shipping_charge_desc_removed" />
+      </subclass>
+      <subclass name="AbstractShipmentEvent$SimpleShipmentStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>
