@@ -536,6 +536,315 @@ public interface FooMapper {
    - 保持接口和 DTO 的属性命名一致
 
 
+### JPA 原生查询结果的父子关系映射
+
+在实际开发中，我们经常需要处理这样的场景：从数据库查询父子表的关联数据，并映射到带有集合属性的 DTO 对象中。例如，一个父实体有多个子实体，我们希望通过一次查询获取所有数据并在内存中组装。
+
+#### 1. 定义数据结构
+
+首先定义我们需要的 DTO 类：
+
+```java
+// 父实体 DTO（包含子实体集合）
+public class ParentDTO {
+    private final Long id;
+    private final String name;
+    private final List<ChildDTO> children;
+    
+    public ParentDTO(Long id, String name, List<ChildDTO> children) {
+        this.id = id;
+        this.name = name;
+        this.children = children != null ? children : Collections.emptyList();
+    }
+    
+    // getters...
+    
+    // 重要：需要重写 equals 和 hashCode，因为要作为 groupingBy 的 key
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParentDTO that = (ParentDTO) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}
+
+// 子实体 DTO
+public class ChildDTO {
+    private final Long id;
+    private final String name;
+    
+    public ChildDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    // getters...
+}
+```
+
+#### 2. 定义查询投影接口
+
+使用接口定义原生 SQL 查询的结果映射：
+
+```java
+public interface ParentChildProjection {
+    Long getParentId();
+    String getParentName();
+    Long getChildId();
+    String getChildName();
+}
+```
+
+#### 3. Repository 实现
+
+```java
+@Repository
+public interface ParentRepository extends JpaRepository<Parent, Long> {
+    @Query(value = 
+        "SELECT " +
+        "   p.id as parentId, " +
+        "   p.name as parentName, " +
+        "   c.id as childId, " +
+        "   c.name as childName " +
+        "FROM parent p " +
+        "LEFT JOIN child c ON p.id = c.parent_id",
+        nativeQuery = true)
+    List<ParentChildProjection> findAllParentsAndChildren();
+}
+```
+
+#### 4. Service 层实现
+
+在 Service 层使用 Stream API 进行数据组装：
+
+```java
+@Service
+public class ParentService {
+    private final ParentRepository repository;
+    
+    public List<ParentDTO> getAllParentsWithChildren() {
+        List<ParentChildProjection> projections = repository.findAllParentsAndChildren();
+        
+        return projections.stream()
+            .collect(Collectors.groupingBy(
+                proj -> new ParentDTO(
+                    proj.getParentId(), 
+                    proj.getParentName(),
+                    Collections.emptyList()  // 临时创建，后面会被替换
+                ),
+                Collectors.mapping(
+                    proj -> proj.getChildId() != null 
+                        ? new ChildDTO(proj.getChildId(), proj.getChildName())
+                        : null,
+                    Collectors.filtering(
+                        Objects::nonNull,
+                        Collectors.toList()
+                    )
+                )
+            ))
+            .entrySet().stream()
+            .map(entry -> new ParentDTO(
+                entry.getKey().getId(),
+                entry.getKey().getName(),
+                entry.getValue()
+            ))
+            .collect(Collectors.toList());
+    }
+}
+```
+
+#### 5. 关键点说明
+
+1. **DTO 设计优化**
+   - ParentDTO 直接包含 children 集合属性
+   - 使用不可变类设计
+   - 构造函数确保 children 不为 null
+
+2. **投影接口设计**
+   - 使用接口而不是类来定义查询结果映射
+   - 属性名要与 SQL 查询结果的别名匹配
+   - 支持原生 SQL 查询
+
+3. **数据转换处理**
+   - 使用 Stream API 的 groupingBy 进行分组
+   - 使用 mapping 和 filtering 处理子实体集合
+   - 处理 LEFT JOIN 产生的空值情况
+
+4. **性能考虑**
+   - 只需一次数据库查询
+   - 在内存中完成数据组装
+   - 适用于数据量不是特别大的场景
+
+#### 6. 注意事项
+
+1. 如果数据量很大，考虑使用分页查询
+2. 注意 LEFT JOIN 可能产生的空值处理
+3. 确保 DTO 的 equals 和 hashCode 实现正确
+4. 考虑缓存策略优化性能
+
+#### 7. 参考文档
+
+- [Spring Data JPA - Native Queries](https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html#jpa.query-methods.native-queries)
+- [Spring Data JPA - Projections](https://docs.spring.io/spring-data/jpa/reference/repositories/projections.html)
+
+
+#### 8. 其他实现方案
+
+##### 8.1 使用 JPQL 和嵌套投影
+
+如果实体间已经建立了 JPA 关联关系，可以直接使用 JPQL 和嵌套投影：
+
+```java
+// 实体定义
+@Entity
+public class Parent {
+    @Id
+    private Long id;
+    private String name;
+    
+    @OneToMany(mappedBy = "parent")
+    private List<Child> children;
+}
+
+@Entity
+public class Child {
+    @Id
+    private Long id;
+    private String name;
+    
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Parent parent;
+}
+
+// 投影接口
+public interface ParentProjection {
+    Long getId();
+    String getName();
+    List<ChildProjection> getChildren();  // 嵌套投影接口
+}
+
+public interface ChildProjection {
+    Long getId();
+    String getName();
+}
+
+// Repository
+@Repository
+public interface ParentRepository extends JpaRepository<Parent, Long> {
+    @Query("SELECT p FROM Parent p LEFT JOIN FETCH p.children")
+    List<ParentProjection> findAllWithChildren();
+}
+```
+
+优点：
+- 代码最简洁
+- 无需手动处理数据组装
+- 充分利用 JPA 的关联关系
+
+缺点：
+- 不支持原生 SQL
+- 依赖实体间的关联关系
+- 可能产生 N+1 查询问题
+
+
+在 JPA 的投影（Projections）机制中：
+- 实体类不需要实现投影接口
+- JPA 会根据属性名称的匹配来自动完成映射
+- 只要确保：
+  - 实体的属性名与投影接口中的 getter 方法名匹配（去掉 "get" 后首字母小写）
+  - 对于集合类型，JPA 会自动处理一对多的关系映射
+
+例如：
+
+```java
+// 实体不需要实现接口
+@Entity
+public class Parent {
+    private Long id;      // 匹配 getId()
+    private String name;  // 匹配 getName()
+    private List<Child> children;  // 匹配 getChildren()
+}
+
+// 投影接口
+public interface ParentProjection {
+    Long getId();
+    String getName();
+    List<ChildProjection> getChildren();
+}
+```
+
+
+##### 8.2 两次查询方案
+
+如果担心一次查询返回的数据量过大，或者需要更灵活的查询条件，可以采用两次查询的方式：
+
+```java
+@Repository
+public interface ParentRepository extends JpaRepository<Parent, Long> {
+    // 第一次查询：获取父实体
+    @Query(value = 
+        "SELECT p.id as id, p.name as name " +
+        "FROM parent p",
+        nativeQuery = true)
+    List<ParentProjection> findAllParents();
+    
+    // 第二次查询：根据父ID获取子实体
+    @Query(value = 
+        "SELECT c.id as id, c.name as name " +
+        "FROM child c " +
+        "WHERE c.parent_id = :parentId",
+        nativeQuery = true)
+    List<ChildProjection> findChildrenByParentId(@Param("parentId") Long parentId);
+}
+
+// Service 实现
+@Service
+public class ParentService {
+    private final ParentRepository repository;
+    
+    public List<ParentDTO> getAllParentsWithChildren() {
+        // 1. 获取所有父实体
+        List<ParentProjection> parents = repository.findAllParents();
+        
+        // 2. 为每个父实体查询子实体
+        return parents.stream()
+            .map(parent -> new ParentDTO(
+                parent.getId(),
+                parent.getName(),
+                repository.findChildrenByParentId(parent.getId()).stream()
+                    .map(child -> new ChildDTO(child.getId(), child.getName()))
+                    .collect(Collectors.toList())
+            ))
+            .collect(Collectors.toList());
+    }
+}
+```
+
+优点：
+- 支持原生 SQL
+- 查询逻辑清晰
+- 可以灵活控制每次查询的数据量
+- 便于添加缓存
+
+缺点：
+- 需要多次数据库查询
+- 可能存在性能问题（如果父实体数量较多）
+
+使用建议：
+1. 如果实体间已建立 JPA 关联关系，优先使用 JPQL 和嵌套投影
+2. 如果需要使用原生 SQL：
+   - 数据量较小时，使用单次查询方案
+   - 数据量较大时，考虑使用两次查询方案并配合缓存
+3. 根据实际场景选择合适的方案，没有最好的方案，只有最合适的方案
+
+
 ### 附录：Vavr 简介
 
 [Vavr](https://www.vavr.io/) (原名 Javaslang) 是一个函数式编程库，为 Java 提供了不可变数据类型和函数式编程特性。
