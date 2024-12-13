@@ -1,0 +1,15 @@
+﻿aggregates:
+  PartyRole:
+    # reservedPropertyMetadata: {}
+    id:
+      name: PartyRoleId
+      type: PartyRoleId
+    properties: {}
+
+    valueObjects:
+      PartyRoleId:
+        properties:
+          PartyId:
+            type: id-ne
+          RoleTypeId:
+            type: id-ne

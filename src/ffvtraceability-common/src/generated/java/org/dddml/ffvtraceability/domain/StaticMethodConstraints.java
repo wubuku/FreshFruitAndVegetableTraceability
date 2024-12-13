@@ -35,6 +35,9 @@ import org.dddml.ffvtraceability.domain.productcategorytype.*;
 import org.dddml.ffvtraceability.domain.supplierproduct.*;
 import org.dddml.ffvtraceability.domain.document.*;
 import org.dddml.ffvtraceability.domain.documentassociation.*;
+import org.dddml.ffvtraceability.domain.geopoint.*;
+import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.roletype.*;
 
 public class StaticMethodConstraints {
 

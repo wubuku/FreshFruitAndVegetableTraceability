@@ -23,7 +23,7 @@ valueObjects:
       LargeImageUrl:
         type: url
       # <field name="quantityUomId" type="id"></field>
-      # <field name="quantityIncluded" type="fixed-point"><description>If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.</description></field> 
+      # <field name="quantityIncluded" type="fixed-point"><description>If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.</description></field>
       # <field name="piecesIncluded" type="numeric"></field>
       QuantityUomId:
         type: id
@@ -36,7 +36,6 @@ valueObjects:
         type: id
       SupplierId: #Vendor
         type: id
-
 
 services:
   BffRawItemService:
@@ -96,7 +95,7 @@ services:
             type: id
             optional: false # is required
           Active:
-            # 禁用传入 false；激活传入 true。 
+            # 禁用传入 false；激活传入 true。
             type: bool
 
       BatchAddRawItems:
@@ -115,4 +114,3 @@ services:
       # 未来还可以考虑在工具层面改进：支持在 DDDML 模型中定义参数类型为采用“自定义参数解析器”的类型？
       # 对于 Spring MVC 来说，这里的参数解析器指：
       #   org.springframework.web.method.support.HandlerMethodArgumentResolver
-

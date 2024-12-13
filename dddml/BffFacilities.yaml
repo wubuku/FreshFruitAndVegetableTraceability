@@ -88,7 +88,6 @@ services:
           Active:
             type: boolean
 
-
       GetFacilityLocation:
         restfulResourceName: "{FacilityId}/Locations/{LocationSeqId}"
         metadata:

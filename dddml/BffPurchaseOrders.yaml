@@ -80,8 +80,6 @@ valueObjects:
       EstimatedDeliveryDate:
         type: date-time
 
-
-
 services:
   BffPurchaseOrderService:
     restfulResourceName: BffPurchaseOrders

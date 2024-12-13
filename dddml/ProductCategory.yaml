@@ -1,9 +1,9 @@
 ﻿aggregates:
   ProductCategory:
     # 产品分类
-    # discriminator: ProductCategoryTypeId    
+    # discriminator: ProductCategoryTypeId
     # metadata:
-      # StateEventDatabaseTableName: PRODUCT_CATEGORY_STATE_EVENT
+    # StateEventDatabaseTableName: PRODUCT_CATEGORY_STATE_EVENT
     id:
       name: ProductCategoryId
       type: id
@@ -17,13 +17,13 @@
       Description:
         type: description
       # LongDescription:
-        # type: very-long
+      # type: very-long
       CategoryImageUrl:
         type: url
       # LinkOneImageUrl:
-        # type: url
+      # type: url
       # LinkTwoImageUrl:
-        # type: url
+      # type: url
       DetailScreen:
         type: long-varchar
       ShowInSelect:
@@ -38,19 +38,19 @@
         itemType: ProductCategory
         isDerived: true
         itemPropertyMap:
-        - propertyName: ProductCategoryId
-          relatedPropertyName: PrimaryParentCategoryId
+          - propertyName: ProductCategoryId
+            relatedPropertyName: PrimaryParentCategoryId
     references:
       PrimaryParentCategoryId:
         displayName: PRIMARY-PARENT-CATEGORY-ID
         description: PrimaryParent
         type: ProductCategory
         properties:
-        - PrimaryParentCategoryId
+          - PrimaryParentCategoryId
         foreignKeyName: PROD_CTGRY_PARENT
 
   ProductCategoryType:
-    metadata: 
+    metadata:
       NoEventSourcing: true
     id:
       name: ProductCategoryTypeId
@@ -71,5 +71,5 @@
         description: Parent
         type: ProductCategoryType
         properties:
-        - ParentTypeId
+          - ParentTypeId
         foreignKeyName: PROD_CTGRY_TYPEPAR

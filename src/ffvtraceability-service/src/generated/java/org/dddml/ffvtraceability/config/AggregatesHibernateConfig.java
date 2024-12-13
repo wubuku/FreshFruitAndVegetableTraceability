@@ -80,6 +80,15 @@ import org.dddml.ffvtraceability.domain.document.hibernate.*;
 import org.dddml.ffvtraceability.domain.documentassociation.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.documentassociation.hibernate.*;
+import org.dddml.ffvtraceability.domain.geopoint.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.geopoint.hibernate.*;
+import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.partyrole.hibernate.*;
+import org.dddml.ffvtraceability.domain.roletype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.roletype.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -469,6 +478,50 @@ public class AggregatesHibernateConfig {
                 documentAssociationEventStore,
                 documentAssociationStateRepository,
                 documentAssociationStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractGeoPointApplicationService.SimpleGeoPointApplicationService geoPointApplicationService(
+            GeoPointStateRepository geoPointStateRepository,
+            GeoPointStateQueryRepository geoPointStateQueryRepository
+    ) {
+        AbstractGeoPointApplicationService.SimpleGeoPointApplicationService applicationService = new AbstractGeoPointApplicationService.SimpleGeoPointApplicationService(
+                geoPointStateRepository,
+                geoPointStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractPartyRoleApplicationService.SimplePartyRoleApplicationService partyRoleApplicationService(
+            @Qualifier("partyRoleEventStore") EventStore partyRoleEventStore,
+            PartyRoleStateRepository partyRoleStateRepository,
+            PartyRoleStateQueryRepository partyRoleStateQueryRepository
+    ) {
+        AbstractPartyRoleApplicationService.SimplePartyRoleApplicationService applicationService = new AbstractPartyRoleApplicationService.SimplePartyRoleApplicationService(
+                partyRoleEventStore,
+                partyRoleStateRepository,
+                partyRoleStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService roleTypeApplicationService(
+            RoleTypeStateRepository roleTypeStateRepository,
+            RoleTypeStateQueryRepository roleTypeStateQueryRepository
+    ) {
+        AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService applicationService = new AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService(
+                roleTypeStateRepository,
+                roleTypeStateQueryRepository
         );
         return applicationService;
     }

@@ -16,7 +16,6 @@ valueObjects:
         description: "GS1 Application Identifiers"
         type: id
 
-
 services:
   BffUomService:
     restfulResourceName: "BffUnitsOfMeasure"
@@ -71,7 +70,7 @@ services:
         parameters:
           UomId:
             type: id
-            optional: false # is required 
+            optional: false # is required
           Active:
             # 禁用传入 false；激活传入 true。
             type: boolean

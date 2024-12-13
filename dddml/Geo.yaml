@@ -36,8 +36,8 @@
   GeoType:
     id:
       name: GeoTypeId
-      type: id      
-    metadata: 
+      type: id
+    metadata:
       NoEventSourcing: true
     properties:
       ParentTypeId:
@@ -52,6 +52,5 @@
         description: Parent
         type: GeoType
         properties:
-        - ParentTypeId
+          - ParentTypeId
         foreignKeyName: GEO_TYPE_PARENT
-

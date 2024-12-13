@@ -1,0 +1,24 @@
+﻿aggregates:
+  GeoPoint:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: GeoPointId
+      type: id
+    properties:
+      GeoPointTypeEnumId:
+        type: id
+      Description:
+        type: description
+      # DataSourceId:
+      #   type: id
+      Latitude:
+        type: fixed-point
+      Longitude:
+        type: fixed-point
+      Elevation:
+        type: fixed-point
+      ElevationUomId:
+        type: id
+      Information:
+        type: comment

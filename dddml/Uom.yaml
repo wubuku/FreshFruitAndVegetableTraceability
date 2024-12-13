@@ -4,7 +4,7 @@
       name: UomId
       type: id
     # metadata:
-      # NoEventSourcing: true
+    # NoEventSourcing: true
     # reservedPropertyMetadata: {}
     discriminator: UomTypeId
     properties:
@@ -25,9 +25,8 @@
         displayName: UomType
         type: UomType
         properties:
-        - UomTypeId
+          - UomTypeId
         foreignKeyName: UOM_TO_TYPE
-
 
   UomType:
     #reservedPropertyMetadata: {}
@@ -52,4 +51,3 @@
         properties:
           - ParentTypeId
         foreignKeyName: UOM_TYPE_PARENT
-

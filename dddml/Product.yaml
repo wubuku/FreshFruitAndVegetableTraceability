@@ -1,12 +1,10 @@
-﻿
-aggregates:
-
+﻿aggregates:
   Product:
     reservedPropertyMetadata:
       noDeleted: true
     discriminator: ProductTypeId
     inheritanceMappingStrategy: tpch
-    discriminatorValue: "PRODUCT"    
+    discriminatorValue: "PRODUCT"
     # metadata:
     #   EventDatabaseTableName: PRODUCT_STATE_EVENT
     id:
@@ -221,7 +219,7 @@ aggregates:
         columnName: ORDER_DECIMAL_QUANTITY
         type: indicator
 
-      # # -------------------------------------------------------------------      
+      # # -------------------------------------------------------------------
       # # 产品属性集 Id.
       # # 可用于决定产品的库存实例需要具备的属性信息。比如说，收货的时候，需要录入相应的“产品属性集实例”。
       # # 也可用于决定 SKU 应该明确的属性信息。
@@ -230,7 +228,7 @@ aggregates:
       #   referenceType: AttributeSet
       #   notNull: false
 
-      # #----------------------------------------  
+      # #----------------------------------------
       # # 产品属性集实例 Id.，描述产品（而不是产品的库存实例）的共同属性。
       # AttributeSetInstanceId:
       #   type: id
@@ -240,7 +238,7 @@ aggregates:
       #----------------------------------------
       GoodIdentifications:
         itemType: GoodIdentification
-        
+
       # LargeImages:
       #   itemType: ProductLargeImageResource
       # DetailImages:
@@ -252,9 +250,9 @@ aggregates:
         description: Primary
         type: ProductCategory
         properties:
-        - PrimaryProductCategoryId
+          - PrimaryProductCategoryId
         foreignKeyName: PROD_PRIMARY_CAT
-      
+
     # subtypes:
     #   ProductGroup:
     #     discriminatorValue: "PRODUCT_GROUP"
@@ -275,7 +273,7 @@ aggregates:
       # # ---------------------------------------
       # # 产品大图资源
       # ProductLargeImageResource:
-      #   id: 
+      #   id:
       #     name: DataResourceId
       #     type: id-ne
       #   properties:
@@ -283,11 +281,11 @@ aggregates:
       #     # 序号
       #     SequenceNum:
       #       type: numeric
-            
+
       # # ---------------------------------------
       # # 产品详情图资源
       # ProductDetailImageResource:
-      #   id: 
+      #   id:
       #     name: DataResourceId
       #     type: id-ne
       #   properties:
@@ -295,6 +293,3 @@ aggregates:
       #     # 序号
       #     SequenceNum:
       #       type: numeric
-          
-            
-                    

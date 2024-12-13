@@ -66,7 +66,7 @@ services:
         parameters:
           LotId:
             type: id
-            optional: false # is required 
+            optional: false # is required
           Active:
             # 禁用传入 false；激活传入 true。
             type: boolean

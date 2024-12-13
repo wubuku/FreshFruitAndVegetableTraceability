@@ -53,17 +53,16 @@
       # # 不使用 FacilityContactMech 实体？
       # PostalAddressContactMechId:
       #   type: id-ne
-      
-    # references:
-      # ParentFacilityId:
-        # name: ParentFacilityId
-        # displayName: PARENT-FACILITY-ID
-        # description: Parent
-        # type: Facility
-        # properties:
-        # - ParentFacilityId
-        # foreignKeyName: FACILITY_PARENT
 
+    # references:
+    # ParentFacilityId:
+    # name: ParentFacilityId
+    # displayName: PARENT-FACILITY-ID
+    # description: Parent
+    # type: Facility
+    # properties:
+    # - ParentFacilityId
+    # foreignKeyName: FACILITY_PARENT
 
   FacilityIdentification:
     id:
@@ -73,7 +72,6 @@
       IdValue:
         type: id
 
-
   FacilityIdentificationType:
     id:
       name: FacilityIdentificationTypeId
@@ -82,9 +80,8 @@
       Description:
         type: description
 
-
   FacilityType:
-    metadata: 
+    metadata:
       NoEventSourcing: true
     id:
       name: FacilityTypeId
@@ -106,5 +103,5 @@
         description: Parent
         type: FacilityType
         properties:
-        - ParentTypeId
+          - ParentTypeId
         foreignKeyName: FACILITY_TYPEPAR

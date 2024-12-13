@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.partyrole">
+  <class name="AbstractPartyRoleEvent" table="party_role_event" abstract="true">
+    <composite-id name="partyRoleEventId" class="org.dddml.ffvtraceability.domain.partyrole.PartyRoleEventId">
+      <key-property name="partyRoleIdPartyId">
+        <column name="party_role_id_party_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyRoleIdRoleTypeId">
+        <column name="party_role_id_role_type_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractPartyRoleEvent$PartyRoleLobEvent" discriminator-value="PartyRoleLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractPartyRoleEvent$AbstractPartyRoleStateEvent" abstract="true">
+      <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateMergePatched" discriminator-value="MergePatched"></subclass>
+      <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

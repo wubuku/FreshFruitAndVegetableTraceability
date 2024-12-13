@@ -58,4 +58,3 @@ services:
             optional: false # is required
           Document:
             type: BffDocumentDto
-

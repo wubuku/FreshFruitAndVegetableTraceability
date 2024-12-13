@@ -94,7 +94,6 @@
         description: "A SupplierProduct can be disabled by setting AvailableThruDate equal to AvailableFromDate"
         event:
           name: SupplierProductDisabled
-        
 
     valueObjects:
       SupplierProductAssocId:

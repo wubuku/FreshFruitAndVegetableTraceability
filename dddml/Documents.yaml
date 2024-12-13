@@ -42,5 +42,3 @@ valueObjects:
         type: id
       FromDate:
         type: date-time
-
-

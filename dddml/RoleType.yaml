@@ -1,0 +1,23 @@
+﻿aggregates:
+  RoleType:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: RoleTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+    references:
+      ParentTypeId:
+        name: ParentTypeId
+        displayName: PARENT-TYPE-ID
+        description: Parent
+        type: RoleType
+        properties:
+          - ParentTypeId
+        foreignKeyName: ROLE_TYPE_PAR

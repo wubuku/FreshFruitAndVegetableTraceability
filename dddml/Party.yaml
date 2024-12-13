@@ -28,16 +28,14 @@
         columnName: STATUS_ID
         type: id-ne
       # DataSourceId:
-        # type: id
+      # type: id
       # IsUnread:
       #   type: indicator
       PartyIdentifications:
         itemType: PartyIdentification
 
-
     # ---------------------
     subtypes:
-
       # --------------------------------
       # 个人（业务实体的子类型）
       Person:
@@ -46,9 +44,9 @@
         #inheritedFrom: Party
         # ---------------------------------
         # id:
-          # name: PartyId
-          # columnName: PARTY_ID
-          # type: id-ne
+        # name: PartyId
+        # columnName: PARTY_ID
+        # type: id-ne
         properties:
           # 称谓（称呼）
           Salutation:
@@ -65,21 +63,21 @@
           PersonalTitle:
             type: name
           # Suffix:
-            # type: name
+          # type: name
           # 昵称
           Nickname:
             type: name
           # FirstNameLocal:
-            # type: name
+          # type: name
           # MiddleNameLocal:
-            # type: name
+          # type: name
           # LastNameLocal:
-            # type: name
+          # type: name
           # OtherLocal:
-            # type: name
+          # type: name
           # # 会员 Id
           # MemberId:
-          #   type: id  
+          #   type: id
           # 性别
           Gender:
             type: indicator
@@ -95,7 +93,7 @@
           # Weight:
           #   type: floating-point
           #MothersMaidenName:
-            #type: long-varchar
+          #type: long-varchar
           # 婚姻状况
           # MaritalStatus:
           #   type: indicator
@@ -107,109 +105,108 @@
             type: long-varchar
           # 护照过期日期
           PassportExpireDate:
-            type: date            
+            type: date
           # 工作经验（年）
           # TotalYearsWorkExperience:
-            # type: floating-point
+          # type: floating-point
           # 备注
           # Comments:
-            # type: comment
+          # type: comment
           # EmploymentStatusEnumId:
-            # type: id
+          # type: id
           # ResidenceStatusEnumId:
-            # type: id
-            
+          # type: id
+
           # 民族
           # EthnicGroup:
-            # type: name
+          # type: name
           # 职业
           # Occupation:
-            # type: name
+          # type: name
           # 学历
           # EducationalBackground:
-            # type: long-varchar
+          # type: long-varchar
           # YearsWithEmployer:
-            # type: numeric
+          # type: numeric
           # MonthsWithEmployer:
-            # type: numeric
+          # type: numeric
           ExistingCustomer:
             type: indicator
-            
+
           # 身份证号
           # CardId:
-            # type: id-long
-          
+          # type: id-long
+
           # -------------------------------
           # 兴趣爱好
           # Hobbies:
-            # type: long-varchar
-            
+          # type: long-varchar
+
           # 家庭情况
           # AboutFamily:
-            # type: comment
-            
+          # type: comment
+
         # references:
-          # Party:
-            # name: Party
-            # displayName: Party
-            # type: Party
-            # properties:
-            # - PartyId
-            # foreignKeyName: PERSON_PARTY
+        # Party:
+        # name: Party
+        # displayName: Party
+        # type: Party
+        # properties:
+        # - PartyId
+        # foreignKeyName: PERSON_PARTY
 
         # metadata:
-          # StateEventDatabaseTableName: PERSON_STATE_EVENT
+        # StateEventDatabaseTableName: PERSON_STATE_EVENT
 
         # -----------------------------
         subtypes:
           # ------------------------------
           # 客户
           # Customer:
-            # discriminatorValue: "CUSTOMER"
-            # properties:
-              # # 会员推荐人 Id.
-              # MembershipReferrerId:
-                # type: id
-                # referenceType: Party
-              # # 会员等级（星级）
-              # MembershipLevelId:
-                # type: id
-              # # 会员所属者（门店）Id.
-              # MemberOwnerPartyId:
-                # type: id
-                # referenceType: Party
-              # 意向产品及其类别
-              # ProductsInterestedIn:
-                # type: comment
-              # 已购买产品备注
-              # PurchasedProductsNote:
-                # type: comment
-              # 录入时间
-              # EntryDate:
-                # type: DateTime
-              # 预约回访时间  
-              # ScheduledContactDate:
-                # type: DateTime
-              # 上次通讯事件状态
-              # LastCommEventStatusId:
-                # type: id
-                # referenceType: CommunicationEventStatus
-                
-          # ------------------------------
-          # 员工  
-          # Employee:
-            # discriminatorValue: "EMPLOYEE"
-            # properties:
-              ## 工号
-              # EmployeeNum:
-                # type: id-long-ne
-                # displayName: Employee number
+          # discriminatorValue: "CUSTOMER"
+          # properties:
+          # # 会员推荐人 Id.
+          # MembershipReferrerId:
+          # type: id
+          # referenceType: Party
+          # # 会员等级（星级）
+          # MembershipLevelId:
+          # type: id
+          # # 会员所属者（门店）Id.
+          # MemberOwnerPartyId:
+          # type: id
+          # referenceType: Party
+          # 意向产品及其类别
+          # ProductsInterestedIn:
+          # type: comment
+          # 已购买产品备注
+          # PurchasedProductsNote:
+          # type: comment
+          # 录入时间
+          # EntryDate:
+          # type: DateTime
+          # 预约回访时间
+          # ScheduledContactDate:
+          # type: DateTime
+          # 上次通讯事件状态
+          # LastCommEventStatusId:
+          # type: id
+          # referenceType: CommunicationEventStatus
 
-    
+          # ------------------------------
+          # 员工
+          # Employee:
+          # discriminatorValue: "EMPLOYEE"
+          # properties:
+          ## 工号
+          # EmployeeNum:
+          # type: id-long-ne
+          # displayName: Employee number
+
       # ---------------------
       # 组织
       Organization:
-        discriminatorValue: "ORGANIZATION"    
+        discriminatorValue: "ORGANIZATION"
         properties:
           OrganizationName:
             type: id-vlong-ne
@@ -219,11 +216,11 @@
           # 法人组织
           LegalOrganization:
             discriminatorValue: "LEGAL_ORGANIZATION"
-            
+
             properties:
               TaxIdNum:
                 type: string
-          
+
             subtypes:
               # -----------------------
               # 公司
@@ -236,29 +233,29 @@
           Department:
             discriminatorValue: "DEPARTMENT"
             displayName: Department
-            
+
           # ------------------------
           # 门店
           # Store:
-            # displayName: Store
-            # discriminatorValue: "STORE"
-            
+          # displayName: Store
+          # discriminatorValue: "STORE"
+
           # ------------------------
           # 非正式组织
           InformalOrganization:
             discriminatorValue: "INFORMAL_ORGANIZATION"
             abstract: true
-            
+
             subtypes:
               # -------------------------
               # 家庭
-              Family:            
+              Family:
                 discriminatorValue: "FAMILY"
                 properties:
                   # 姓
                   FamilyName:
                     type: id-long-ne
-                    
+
     # ---------------------
 
     entities:
@@ -270,8 +267,8 @@
           name: PartyIdentificationId
           type: PartyIdentificationId
           columnNames:
-          - PARTY_ID
-          - PARTY_IDENTIFICATION_TYPE_ID
+            - PARTY_ID
+            - PARTY_IDENTIFICATION_TYPE_ID
         properties:
           IdValue:
             columnName: ID_VALUE
@@ -281,35 +278,34 @@
           Verified:
             type: indicator
           # ------------------------------
-            
+
         references:
           PartyIdentificationType:
             name: PartyIdentificationType
             displayName: PartyIdentificationType
             type: PartyIdentificationType
             properties:
-            - PartyIdentificationId.PartyIdentificationTypeId
+              - PartyIdentificationId.PartyIdentificationTypeId
             foreignKeyName: PARTY_ID_TYPE
-        
-        reservedPropertyMetadata: {}
-        
-        # valueObjects:
-          # PartyIdentificationId:
-            # properties:
-              # PartyId:
-                # columnName: PARTY_ID
-                # type: id-ne
-              # PartyIdentificationTypeId:
-                # columnName: PARTY_IDENTIFICATION_TYPE_ID
-                # type: id-ne
 
+        reservedPropertyMetadata: {}
+
+        # valueObjects:
+        # PartyIdentificationId:
+        # properties:
+        # PartyId:
+        # columnName: PARTY_ID
+        # type: id-ne
+        # PartyIdentificationTypeId:
+        # columnName: PARTY_IDENTIFICATION_TYPE_ID
+        # type: id-ne
 
   PartyIdentificationType:
     id:
       name: PartyIdentificationTypeId
       columnName: PARTY_IDENTIFICATION_TYPE_ID
       type: id-ne
-      
+
     properties:
       ParentTypeId:
         type: id
@@ -317,17 +313,16 @@
         type: indicator
       Description:
         type: description
-    
-    # references:
-      # ParentTypeId:
-        # name: ParentTypeId
-        # displayName: PARENT-TYPE-ID
-        # description: Parent
-        # type: PartyIdentificationType
-        # properties:
-        # - ParentTypeId
-        # foreignKeyName: PARTY_ID_TYPE_PAR
-    # reservedPropertyMetadata: {}
-    metadata: 
-      NoEventSourcing: true
 
+    # references:
+    # ParentTypeId:
+    # name: ParentTypeId
+    # displayName: PARENT-TYPE-ID
+    # description: Parent
+    # type: PartyIdentificationType
+    # properties:
+    # - ParentTypeId
+    # foreignKeyName: PARTY_ID_TYPE_PAR
+    # reservedPropertyMetadata: {}
+    metadata:
+      NoEventSourcing: true
