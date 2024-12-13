@@ -38,6 +38,8 @@ import org.dddml.ffvtraceability.domain.documentassociation.*;
 import org.dddml.ffvtraceability.domain.geopoint.*;
 import org.dddml.ffvtraceability.domain.partyrole.*;
 import org.dddml.ffvtraceability.domain.roletype.*;
+import org.dddml.ffvtraceability.domain.order.*;
+import org.dddml.ffvtraceability.domain.orderadjustmenttype.*;
 
 public class StaticMethodConstraints {
 

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.order">
+  <class name="AbstractOrderContactMechEvent" table="order_contact_mech_event" abstract="true">
+    <composite-id name="orderContactMechEventId" class="org.dddml.ffvtraceability.domain.order.OrderContactMechEventId">
+      <key-property name="orderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="contactMechPurposeTypeId">
+        <column name="CONTACT_MECH_PURPOSE_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="orderHeaderVersion">
+        <column name="order_header_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractOrderContactMechEvent$AbstractOrderContactMechStateEvent" abstract="true">
+      <property name="contactMechId">
+        <column name="contact_mech_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractOrderContactMechEvent$SimpleOrderContactMechStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractOrderContactMechEvent$SimpleOrderContactMechStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyContactMechIdRemoved" column="is_property_contact_mech_id_removed" />
+      </subclass>
+      <subclass name="AbstractOrderContactMechEvent$SimpleOrderContactMechStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

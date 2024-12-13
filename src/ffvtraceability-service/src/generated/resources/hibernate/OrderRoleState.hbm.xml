@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.order">
+  <class name="org.dddml.ffvtraceability.domain.order.AbstractOrderRoleState$SimpleOrderRoleState" table="order_role">
+    <composite-id name="orderRoleId" class="org.dddml.ffvtraceability.domain.order.OrderRoleId">
+      <key-property name="orderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyRoleIdPartyId">
+        <column name="order_role_id_party_role_id_party_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyRoleIdRoleTypeId">
+        <column name="order_role_id_party_role_id_role_type_id" sql-type="VARCHAR(20)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <many-to-one name="protectedOrderHeaderState" class="org.dddml.ffvtraceability.domain.order.AbstractOrderHeaderState$SimpleOrderHeaderState" insert="false" update="false">
+      <column name="ORDER_ID" />
+    </many-to-one>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

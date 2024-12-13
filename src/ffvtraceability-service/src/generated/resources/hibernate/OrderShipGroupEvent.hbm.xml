@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.order">
+  <class name="AbstractOrderShipGroupEvent" table="order_ship_group_event" abstract="true">
+    <composite-id name="orderShipGroupEventId" class="org.dddml.ffvtraceability.domain.order.OrderShipGroupEventId">
+      <key-property name="orderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="shipGroupSeqId">
+        <column name="SHIP_GROUP_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="orderHeaderVersion">
+        <column name="order_header_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractOrderShipGroupEvent$AbstractOrderShipGroupStateEvent" abstract="true">
+      <property name="shipmentMethodTypeId">
+        <column name="shipment_method_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="supplierPartyId">
+        <column name="supplier_party_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="vendorPartyId">
+        <column name="vendor_party_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="carrierPartyId">
+        <column name="carrier_party_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="carrierRoleTypeId">
+        <column name="carrier_role_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="facilityId">
+        <column name="facility_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="contactMechId">
+        <column name="contact_mech_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="telecomContactMechId">
+        <column name="telecom_contact_mech_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="trackingNumber">
+        <column name="tracking_number" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="shippingInstructions">
+        <column name="shipping_instructions" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="maySplit">
+        <column name="may_split" sql-type="CHAR(1)" />
+      </property>
+      <property name="giftMessage">
+        <column name="gift_message" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="isGift">
+        <column name="is_gift" sql-type="CHAR(1)" />
+      </property>
+      <property name="shipAfterDate">
+        <column name="ship_after_date" sql-type="timestamptz" />
+      </property>
+      <property name="shipByDate">
+        <column name="ship_by_date" sql-type="timestamptz" />
+      </property>
+      <property name="estimatedShipDate">
+        <column name="estimated_ship_date" sql-type="timestamptz" />
+      </property>
+      <property name="estimatedDeliveryDate">
+        <column name="estimated_delivery_date" sql-type="timestamptz" />
+      </property>
+      <property name="supplierCurrencyUomId">
+        <column name="supplier_currency_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="supplierPayableAmount">
+        <column name="supplier_payable_amount" sql-type="DECIMAL(18,2)" />
+      </property>
+      <property name="supplierSyncStatusId">
+        <column name="supplier_sync_status_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="supplierSyncCode">
+        <column name="supplier_sync_code" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="supplierSyncMessage">
+        <column name="supplier_sync_message" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractOrderShipGroupEvent$SimpleOrderShipGroupStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractOrderShipGroupEvent$SimpleOrderShipGroupStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyShipmentMethodTypeIdRemoved" column="is_property_shipment_method_type_id_removed" />
+        <property name="isPropertySupplierPartyIdRemoved" column="is_property_supplier_party_id_removed" />
+        <property name="isPropertyVendorPartyIdRemoved" column="is_property_vendor_party_id_removed" />
+        <property name="isPropertyCarrierPartyIdRemoved" column="is_property_carrier_party_id_removed" />
+        <property name="isPropertyCarrierRoleTypeIdRemoved" column="is_property_carrier_role_type_id_removed" />
+        <property name="isPropertyFacilityIdRemoved" column="is_property_facility_id_removed" />
+        <property name="isPropertyContactMechIdRemoved" column="is_property_contact_mech_id_removed" />
+        <property name="isPropertyTelecomContactMechIdRemoved" column="is_property_telecom_contact_mech_id_removed" />
+        <property name="isPropertyTrackingNumberRemoved" column="is_property_tracking_number_removed" />
+        <property name="isPropertyShippingInstructionsRemoved" column="is_property_shipping_instructions_removed" />
+        <property name="isPropertyMaySplitRemoved" column="is_property_may_split_removed" />
+        <property name="isPropertyGiftMessageRemoved" column="is_property_gift_message_removed" />
+        <property name="isPropertyIsGiftRemoved" column="is_property_is_gift_removed" />
+        <property name="isPropertyShipAfterDateRemoved" column="is_property_ship_after_date_removed" />
+        <property name="isPropertyShipByDateRemoved" column="is_property_ship_by_date_removed" />
+        <property name="isPropertyEstimatedShipDateRemoved" column="is_property_estimated_ship_date_removed" />
+        <property name="isPropertyEstimatedDeliveryDateRemoved" column="is_property_estimated_delivery_date_removed" />
+        <property name="isPropertySupplierCurrencyUomIdRemoved" column="is_property_supplier_currency_uom_id_removed" />
+        <property name="isPropertySupplierPayableAmountRemoved" column="is_property_supplier_payable_amount_removed" />
+        <property name="isPropertySupplierSyncStatusIdRemoved" column="is_property_supplier_sync_status_id_removed" />
+        <property name="isPropertySupplierSyncCodeRemoved" column="is_property_supplier_sync_code_removed" />
+        <property name="isPropertySupplierSyncMessageRemoved" column="is_property_supplier_sync_message_removed" />
+      </subclass>
+      <subclass name="AbstractOrderShipGroupEvent$SimpleOrderShipGroupStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

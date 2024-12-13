@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.order">
+  <class name="org.dddml.ffvtraceability.domain.order.AbstractOrderShipGroupState$SimpleOrderShipGroupState" table="order_ship_group">
+    <composite-id name="orderShipGroupId" class="org.dddml.ffvtraceability.domain.order.OrderShipGroupId">
+      <key-property name="orderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="shipGroupSeqId">
+        <column name="SHIP_GROUP_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <set name="protectedOrderItemShipGroupAssociations" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="ORDER_ID" />
+        <column name="SHIP_GROUP_SEQ_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.order.AbstractOrderItemShipGroupAssociationState$SimpleOrderItemShipGroupAssociationState" />
+    </set>
+    <many-to-one name="protectedOrderHeaderState" class="org.dddml.ffvtraceability.domain.order.AbstractOrderHeaderState$SimpleOrderHeaderState" insert="false" update="false">
+      <column name="ORDER_ID" />
+    </many-to-one>
+    <property name="shipmentMethodTypeId">
+      <column name="shipment_method_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="supplierPartyId">
+      <column name="supplier_party_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="vendorPartyId">
+      <column name="vendor_party_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="carrierPartyId">
+      <column name="carrier_party_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="carrierRoleTypeId">
+      <column name="carrier_role_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="facilityId">
+      <column name="facility_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="contactMechId">
+      <column name="contact_mech_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="telecomContactMechId">
+      <column name="telecom_contact_mech_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="trackingNumber">
+      <column name="tracking_number" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="shippingInstructions">
+      <column name="shipping_instructions" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="maySplit">
+      <column name="may_split" sql-type="CHAR(1)" />
+    </property>
+    <property name="giftMessage">
+      <column name="gift_message" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="isGift">
+      <column name="is_gift" sql-type="CHAR(1)" />
+    </property>
+    <property name="shipAfterDate">
+      <column name="ship_after_date" sql-type="timestamptz" />
+    </property>
+    <property name="shipByDate">
+      <column name="ship_by_date" sql-type="timestamptz" />
+    </property>
+    <property name="estimatedShipDate">
+      <column name="estimated_ship_date" sql-type="timestamptz" />
+    </property>
+    <property name="estimatedDeliveryDate">
+      <column name="estimated_delivery_date" sql-type="timestamptz" />
+    </property>
+    <property name="supplierCurrencyUomId">
+      <column name="supplier_currency_uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="supplierPayableAmount">
+      <column name="supplier_payable_amount" sql-type="DECIMAL(18,2)" />
+    </property>
+    <property name="supplierSyncStatusId">
+      <column name="supplier_sync_status_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="supplierSyncCode">
+      <column name="supplier_sync_code" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="supplierSyncMessage">
+      <column name="supplier_sync_message" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

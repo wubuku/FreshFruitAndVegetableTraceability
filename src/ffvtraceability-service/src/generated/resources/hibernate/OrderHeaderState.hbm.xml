@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.order">
+  <class name="org.dddml.ffvtraceability.domain.order.AbstractOrderHeaderState$SimpleOrderHeaderState" table="order_header">
+    <id name="orderId" length="20">
+      <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <set name="protectedOrderRoles" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="ORDER_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.order.AbstractOrderRoleState$SimpleOrderRoleState" />
+    </set>
+    <set name="protectedOrderContactMechanisms" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="ORDER_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.order.AbstractOrderContactMechState$SimpleOrderContactMechState" />
+    </set>
+    <set name="protectedOrderItems" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="ORDER_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.order.AbstractOrderItemState$SimpleOrderItemState" />
+    </set>
+    <set name="protectedOrderAdjustments" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="ORDER_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.order.AbstractOrderAdjustmentState$SimpleOrderAdjustmentState" />
+    </set>
+    <set name="protectedOrderShipGroups" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="ORDER_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.order.AbstractOrderShipGroupState$SimpleOrderShipGroupState" />
+    </set>
+    <property name="orderTypeId">
+      <column name="ORDER_TYPE_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="orderName">
+      <column name="ORDER_NAME" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="externalId">
+      <column name="EXTERNAL_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="salesChannelEnumId">
+      <column name="SALES_CHANNEL_ENUM_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="orderDate">
+      <column name="ORDER_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="priority">
+      <column name="PRIORITY" sql-type="CHAR(1)" />
+    </property>
+    <property name="entryDate">
+      <column name="ENTRY_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="pickSheetPrintedDate">
+      <column name="PICK_SHEET_PRINTED_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="visitId">
+      <column name="VISIT_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="statusId">
+      <column name="STATUS_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="firstAttemptOrderId">
+      <column name="FIRST_ATTEMPT_ORDER_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="currencyUomId">
+      <column name="currency_uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="syncStatusId">
+      <column name="SYNC_STATUS_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="billingAccountId">
+      <column name="BILLING_ACCOUNT_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="originFacilityId">
+      <column name="ORIGIN_FACILITY_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="webSiteId">
+      <column name="WEB_SITE_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="productStoreId">
+      <column name="PRODUCT_STORE_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="terminalId">
+      <column name="TERMINAL_ID" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="transactionId">
+      <column name="TRANSACTION_ID" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="autoOrderShoppingListId">
+      <column name="AUTO_ORDER_SHOPPING_LIST_ID" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="needsInventoryIssuance">
+      <column name="NEEDS_INVENTORY_ISSUANCE" sql-type="CHAR(1)" />
+    </property>
+    <property name="isRushOrder">
+      <column name="IS_RUSH_ORDER" sql-type="CHAR(1)" />
+    </property>
+    <property name="internalCode">
+      <column name="INTERNAL_CODE" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="remainingSubTotal">
+      <column name="REMAINING_SUB_TOTAL" sql-type="DECIMAL(18,2)" />
+    </property>
+    <property name="grandTotal">
+      <column name="GRAND_TOTAL" sql-type="DECIMAL(18,2)" />
+    </property>
+    <property name="isViewed">
+      <column name="IS_VIEWED" sql-type="CHAR(1)" />
+    </property>
+    <property name="invoicePerShipment">
+      <column name="INVOICE_PER_SHIPMENT" sql-type="CHAR(1)" />
+    </property>
+    <property name="memo">
+      <column name="memo" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

@@ -89,6 +89,12 @@ import org.dddml.ffvtraceability.domain.partyrole.hibernate.*;
 import org.dddml.ffvtraceability.domain.roletype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.roletype.hibernate.*;
+import org.dddml.ffvtraceability.domain.order.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.order.hibernate.*;
+import org.dddml.ffvtraceability.domain.orderadjustmenttype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.orderadjustmenttype.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -522,6 +528,36 @@ public class AggregatesHibernateConfig {
         AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService applicationService = new AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService(
                 roleTypeStateRepository,
                 roleTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractOrderApplicationService.SimpleOrderApplicationService orderApplicationService(
+            @Qualifier("orderEventStore") EventStore orderEventStore,
+            OrderHeaderStateRepository orderHeaderStateRepository,
+            OrderHeaderStateQueryRepository orderHeaderStateQueryRepository
+    ) {
+        AbstractOrderApplicationService.SimpleOrderApplicationService applicationService = new AbstractOrderApplicationService.SimpleOrderApplicationService(
+                orderEventStore,
+                orderHeaderStateRepository,
+                orderHeaderStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService orderAdjustmentTypeApplicationService(
+            OrderAdjustmentTypeStateRepository orderAdjustmentTypeStateRepository,
+            OrderAdjustmentTypeStateQueryRepository orderAdjustmentTypeStateQueryRepository
+    ) {
+        AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService applicationService = new AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService(
+                orderAdjustmentTypeStateRepository,
+                orderAdjustmentTypeStateQueryRepository
         );
         return applicationService;
     }

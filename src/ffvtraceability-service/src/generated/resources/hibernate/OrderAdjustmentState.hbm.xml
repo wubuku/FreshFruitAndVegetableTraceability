@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.order">
+  <class name="org.dddml.ffvtraceability.domain.order.AbstractOrderAdjustmentState$SimpleOrderAdjustmentState" table="order_adjustment">
+    <composite-id name="orderIdOrderAdjustmentIdPair" class="org.dddml.ffvtraceability.domain.order.OrderIdOrderAdjustmentIdPair">
+      <key-property name="orderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="orderAdjustmentId">
+        <column name="ORDER_ADJUSTMENT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <many-to-one name="protectedOrderHeaderState" class="org.dddml.ffvtraceability.domain.order.AbstractOrderHeaderState$SimpleOrderHeaderState" insert="false" update="false">
+      <column name="ORDER_ID" />
+    </many-to-one>
+    <property name="orderAdjustmentTypeId">
+      <column name="order_adjustment_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="orderItemSeqId">
+      <column name="order_item_seq_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="shipGroupSeqId">
+      <column name="ship_group_seq_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="comments">
+      <column name="comments" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="description">
+      <column name="description" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="amount">
+      <column name="amount" sql-type="DECIMAL(18,3)" />
+    </property>
+    <property name="currencyUomId">
+      <column name="currency_uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="recurringAmount">
+      <column name="recurring_amount" sql-type="DECIMAL(18,3)" />
+    </property>
+    <property name="amountAlreadyIncluded">
+      <column name="amount_already_included" sql-type="DECIMAL(18,3)" />
+    </property>
+    <property name="productPromoId">
+      <column name="product_promo_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="productPromoRuleId">
+      <column name="product_promo_rule_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="productPromoActionSeqId">
+      <column name="product_promo_action_seq_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="productFeatureId">
+      <column name="product_feature_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="correspondingProductId">
+      <column name="corresponding_product_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="taxAuthorityRateSeqId">
+      <column name="tax_authority_rate_seq_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="sourceReferenceId">
+      <column name="source_reference_id" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="sourcePercentage">
+      <column name="source_percentage" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="customerReferenceId">
+      <column name="customer_reference_id" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="primaryGeoId">
+      <column name="primary_geo_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="secondaryGeoId">
+      <column name="secondary_geo_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="exemptAmount">
+      <column name="exempt_amount" sql-type="DECIMAL(18,2)" />
+    </property>
+    <property name="taxAuthGeoId">
+      <column name="tax_auth_geo_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="taxAuthPartyId">
+      <column name="tax_auth_party_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="overrideGlAccountId">
+      <column name="override_gl_account_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="includeInTax">
+      <column name="include_in_tax" sql-type="CHAR(1)" />
+    </property>
+    <property name="includeInShipping">
+      <column name="include_in_shipping" sql-type="CHAR(1)" />
+    </property>
+    <property name="isManual">
+      <column name="is_manual" sql-type="CHAR(1)" />
+    </property>
+    <property name="originalAdjustmentId">
+      <column name="original_adjustment_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="oldAmountPerQuantity">
+      <column name="old_amount_per_quantity" sql-type="DECIMAL(18,2)" />
+    </property>
+    <property name="oldPercentage">
+      <column name="old_percentage" sql-type="DOUBLE" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

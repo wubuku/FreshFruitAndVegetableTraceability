@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.order">
+  <class name="AbstractOrderEvent" table="order_event" abstract="true">
+    <composite-id name="orderEventId" class="org.dddml.ffvtraceability.domain.order.OrderEventId">
+      <key-property name="orderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractOrderEvent$OrderLobEvent" discriminator-value="OrderLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractOrderEvent$AbstractOrderStateEvent" abstract="true">
+      <property name="orderTypeId">
+        <column name="ORDER_TYPE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="orderName">
+        <column name="ORDER_NAME" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="externalId">
+        <column name="EXTERNAL_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="salesChannelEnumId">
+        <column name="SALES_CHANNEL_ENUM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="orderDate">
+        <column name="ORDER_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="priority">
+        <column name="PRIORITY" sql-type="CHAR(1)" />
+      </property>
+      <property name="entryDate">
+        <column name="ENTRY_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="pickSheetPrintedDate">
+        <column name="PICK_SHEET_PRINTED_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="visitId">
+        <column name="VISIT_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="statusId">
+        <column name="STATUS_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="firstAttemptOrderId">
+        <column name="FIRST_ATTEMPT_ORDER_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="currencyUomId">
+        <column name="currency_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="syncStatusId">
+        <column name="SYNC_STATUS_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="billingAccountId">
+        <column name="BILLING_ACCOUNT_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="originFacilityId">
+        <column name="ORIGIN_FACILITY_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="webSiteId">
+        <column name="WEB_SITE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="productStoreId">
+        <column name="PRODUCT_STORE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="terminalId">
+        <column name="TERMINAL_ID" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="transactionId">
+        <column name="TRANSACTION_ID" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="autoOrderShoppingListId">
+        <column name="AUTO_ORDER_SHOPPING_LIST_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="needsInventoryIssuance">
+        <column name="NEEDS_INVENTORY_ISSUANCE" sql-type="CHAR(1)" />
+      </property>
+      <property name="isRushOrder">
+        <column name="IS_RUSH_ORDER" sql-type="CHAR(1)" />
+      </property>
+      <property name="internalCode">
+        <column name="INTERNAL_CODE" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="remainingSubTotal">
+        <column name="REMAINING_SUB_TOTAL" sql-type="DECIMAL(18,2)" />
+      </property>
+      <property name="grandTotal">
+        <column name="GRAND_TOTAL" sql-type="DECIMAL(18,2)" />
+      </property>
+      <property name="isViewed">
+        <column name="IS_VIEWED" sql-type="CHAR(1)" />
+      </property>
+      <property name="invoicePerShipment">
+        <column name="INVOICE_PER_SHIPMENT" sql-type="CHAR(1)" />
+      </property>
+      <property name="memo">
+        <column name="memo" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractOrderEvent$SimpleOrderStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractOrderEvent$SimpleOrderStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyOrderTypeIdRemoved" column="is_property_order_type_id_removed" />
+        <property name="isPropertyOrderNameRemoved" column="is_property_order_name_removed" />
+        <property name="isPropertyExternalIdRemoved" column="is_property_external_id_removed" />
+        <property name="isPropertySalesChannelEnumIdRemoved" column="is_property_sales_channel_enum_id_removed" />
+        <property name="isPropertyOrderDateRemoved" column="is_property_order_date_removed" />
+        <property name="isPropertyPriorityRemoved" column="is_property_priority_removed" />
+        <property name="isPropertyEntryDateRemoved" column="is_property_entry_date_removed" />
+        <property name="isPropertyPickSheetPrintedDateRemoved" column="is_property_pick_sheet_printed_date_removed" />
+        <property name="isPropertyVisitIdRemoved" column="is_property_visit_id_removed" />
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyFirstAttemptOrderIdRemoved" column="is_property_first_attempt_order_id_removed" />
+        <property name="isPropertyCurrencyUomIdRemoved" column="is_property_currency_uom_id_removed" />
+        <property name="isPropertySyncStatusIdRemoved" column="is_property_sync_status_id_removed" />
+        <property name="isPropertyBillingAccountIdRemoved" column="is_property_billing_account_id_removed" />
+        <property name="isPropertyOriginFacilityIdRemoved" column="is_property_origin_facility_id_removed" />
+        <property name="isPropertyWebSiteIdRemoved" column="is_property_web_site_id_removed" />
+        <property name="isPropertyProductStoreIdRemoved" column="is_property_product_store_id_removed" />
+        <property name="isPropertyTerminalIdRemoved" column="is_property_terminal_id_removed" />
+        <property name="isPropertyTransactionIdRemoved" column="is_property_transaction_id_removed" />
+        <property name="isPropertyAutoOrderShoppingListIdRemoved" column="is_property_auto_order_shopping_list_id_removed" />
+        <property name="isPropertyNeedsInventoryIssuanceRemoved" column="is_property_needs_inventory_issuance_removed" />
+        <property name="isPropertyIsRushOrderRemoved" column="is_property_is_rush_order_removed" />
+        <property name="isPropertyInternalCodeRemoved" column="is_property_internal_code_removed" />
+        <property name="isPropertyRemainingSubTotalRemoved" column="is_property_remaining_sub_total_removed" />
+        <property name="isPropertyGrandTotalRemoved" column="is_property_grand_total_removed" />
+        <property name="isPropertyIsViewedRemoved" column="is_property_is_viewed_removed" />
+        <property name="isPropertyInvoicePerShipmentRemoved" column="is_property_invoice_per_shipment_removed" />
+        <property name="isPropertyMemoRemoved" column="is_property_memo_removed" />
+      </subclass>
+      <subclass name="AbstractOrderEvent$SimpleOrderStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

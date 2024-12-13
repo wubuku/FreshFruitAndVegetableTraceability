@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.order">
+  <class name="AbstractOrderItemEvent" table="order_item_event" abstract="true">
+    <composite-id name="orderItemEventId" class="org.dddml.ffvtraceability.domain.order.OrderItemEventId">
+      <key-property name="orderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="orderItemSeqId">
+        <column name="ORDER_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="orderHeaderVersion">
+        <column name="order_header_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractOrderItemEvent$AbstractOrderItemStateEvent" abstract="true">
+      <property name="externalId">
+        <column name="EXTERNAL_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="orderItemTypeId">
+        <column name="ORDER_ITEM_TYPE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="orderItemGroupSeqId">
+        <column name="ORDER_ITEM_GROUP_SEQ_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="isItemGroupPrimary">
+        <column name="IS_ITEM_GROUP_PRIMARY" sql-type="CHAR(1)" />
+      </property>
+      <property name="fromInventoryItemId">
+        <column name="FROM_INVENTORY_ITEM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="budgetId">
+        <column name="BUDGET_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="budgetItemSeqId">
+        <column name="BUDGET_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="productId">
+        <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="supplierProductId">
+        <column name="SUPPLIER_PRODUCT_ID" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="productFeatureId">
+        <column name="PRODUCT_FEATURE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="prodCatalogId">
+        <column name="PROD_CATALOG_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="productCategoryId">
+        <column name="PRODUCT_CATEGORY_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="isPromo">
+        <column name="IS_PROMO" sql-type="CHAR(1)" />
+      </property>
+      <property name="quoteId">
+        <column name="QUOTE_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="quoteItemSeqId">
+        <column name="QUOTE_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="shoppingListId">
+        <column name="SHOPPING_LIST_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="shoppingListItemSeqId">
+        <column name="SHOPPING_LIST_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="subscriptionId">
+        <column name="SUBSCRIPTION_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="deploymentId">
+        <column name="DEPLOYMENT_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="quantity">
+        <column name="QUANTITY" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="cancelQuantity">
+        <column name="CANCEL_QUANTITY" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="selectedAmount">
+        <column name="SELECTED_AMOUNT" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="unitPrice">
+        <column name="UNIT_PRICE" sql-type="DECIMAL(18,3)" />
+      </property>
+      <property name="unitListPrice">
+        <column name="UNIT_LIST_PRICE" sql-type="DECIMAL(18,3)" />
+      </property>
+      <property name="unitAverageCost">
+        <column name="UNIT_AVERAGE_COST" sql-type="DECIMAL(18,2)" />
+      </property>
+      <property name="unitRecurringPrice">
+        <column name="UNIT_RECURRING_PRICE" sql-type="DECIMAL(18,2)" />
+      </property>
+      <property name="isModifiedPrice">
+        <column name="IS_MODIFIED_PRICE" sql-type="CHAR(1)" />
+      </property>
+      <property name="recurringFreqUomId">
+        <column name="RECURRING_FREQ_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="itemDescription">
+        <column name="ITEM_DESCRIPTION" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="comments">
+        <column name="COMMENTS" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="correspondingPoId">
+        <column name="CORRESPONDING_PO_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="statusId">
+        <column name="STATUS_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="syncStatusId">
+        <column name="SYNC_STATUS_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="estimatedShipDate">
+        <column name="ESTIMATED_SHIP_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="estimatedDeliveryDate">
+        <column name="ESTIMATED_DELIVERY_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="autoCancelDate">
+        <column name="AUTO_CANCEL_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="shipBeforeDate">
+        <column name="SHIP_BEFORE_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="shipAfterDate">
+        <column name="SHIP_AFTER_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="cancelBackOrderDate">
+        <column name="CANCEL_BACK_ORDER_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="overrideGlAccountId">
+        <column name="OVERRIDE_GL_ACCOUNT_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="salesOpportunityId">
+        <column name="SALES_OPPORTUNITY_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractOrderItemEvent$SimpleOrderItemStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractOrderItemEvent$SimpleOrderItemStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyExternalIdRemoved" column="is_property_external_id_removed" />
+        <property name="isPropertyOrderItemTypeIdRemoved" column="is_property_order_item_type_id_removed" />
+        <property name="isPropertyOrderItemGroupSeqIdRemoved" column="is_property_order_item_group_seq_id_removed" />
+        <property name="isPropertyIsItemGroupPrimaryRemoved" column="is_property_is_item_group_primary_removed" />
+        <property name="isPropertyFromInventoryItemIdRemoved" column="is_property_from_inventory_item_id_removed" />
+        <property name="isPropertyBudgetIdRemoved" column="is_property_budget_id_removed" />
+        <property name="isPropertyBudgetItemSeqIdRemoved" column="is_property_budget_item_seq_id_removed" />
+        <property name="isPropertyProductIdRemoved" column="is_property_product_id_removed" />
+        <property name="isPropertySupplierProductIdRemoved" column="is_property_supplier_product_id_removed" />
+        <property name="isPropertyProductFeatureIdRemoved" column="is_property_product_feature_id_removed" />
+        <property name="isPropertyProdCatalogIdRemoved" column="is_property_prod_catalog_id_removed" />
+        <property name="isPropertyProductCategoryIdRemoved" column="is_property_product_category_id_removed" />
+        <property name="isPropertyIsPromoRemoved" column="is_property_is_promo_removed" />
+        <property name="isPropertyQuoteIdRemoved" column="is_property_quote_id_removed" />
+        <property name="isPropertyQuoteItemSeqIdRemoved" column="is_property_quote_item_seq_id_removed" />
+        <property name="isPropertyShoppingListIdRemoved" column="is_property_shopping_list_id_removed" />
+        <property name="isPropertyShoppingListItemSeqIdRemoved" column="is_property_shopping_list_item_seq_id_removed" />
+        <property name="isPropertySubscriptionIdRemoved" column="is_property_subscription_id_removed" />
+        <property name="isPropertyDeploymentIdRemoved" column="is_property_deployment_id_removed" />
+        <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed" />
+        <property name="isPropertyCancelQuantityRemoved" column="is_property_cancel_quantity_removed" />
+        <property name="isPropertySelectedAmountRemoved" column="is_property_selected_amount_removed" />
+        <property name="isPropertyUnitPriceRemoved" column="is_property_unit_price_removed" />
+        <property name="isPropertyUnitListPriceRemoved" column="is_property_unit_list_price_removed" />
+        <property name="isPropertyUnitAverageCostRemoved" column="is_property_unit_average_cost_removed" />
+        <property name="isPropertyUnitRecurringPriceRemoved" column="is_property_unit_recurring_price_removed" />
+        <property name="isPropertyIsModifiedPriceRemoved" column="is_property_is_modified_price_removed" />
+        <property name="isPropertyRecurringFreqUomIdRemoved" column="is_property_recurring_freq_uom_id_removed" />
+        <property name="isPropertyItemDescriptionRemoved" column="is_property_item_description_removed" />
+        <property name="isPropertyCommentsRemoved" column="is_property_comments_removed" />
+        <property name="isPropertyCorrespondingPoIdRemoved" column="is_property_corresponding_po_id_removed" />
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertySyncStatusIdRemoved" column="is_property_sync_status_id_removed" />
+        <property name="isPropertyEstimatedShipDateRemoved" column="is_property_estimated_ship_date_removed" />
+        <property name="isPropertyEstimatedDeliveryDateRemoved" column="is_property_estimated_delivery_date_removed" />
+        <property name="isPropertyAutoCancelDateRemoved" column="is_property_auto_cancel_date_removed" />
+        <property name="isPropertyShipBeforeDateRemoved" column="is_property_ship_before_date_removed" />
+        <property name="isPropertyShipAfterDateRemoved" column="is_property_ship_after_date_removed" />
+        <property name="isPropertyCancelBackOrderDateRemoved" column="is_property_cancel_back_order_date_removed" />
+        <property name="isPropertyOverrideGlAccountIdRemoved" column="is_property_override_gl_account_id_removed" />
+        <property name="isPropertySalesOpportunityIdRemoved" column="is_property_sales_opportunity_id_removed" />
+      </subclass>
+      <subclass name="AbstractOrderItemEvent$SimpleOrderItemStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

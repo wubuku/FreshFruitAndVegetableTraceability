@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.order">
+  <class name="AbstractOrderRoleEvent" table="order_role_event" abstract="true">
+    <composite-id name="orderRoleEventId" class="org.dddml.ffvtraceability.domain.order.OrderRoleEventId">
+      <key-property name="orderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyRoleIdPartyId">
+        <column name="order_role_id_party_role_id_party_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyRoleIdRoleTypeId">
+        <column name="order_role_id_party_role_id_role_type_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="orderHeaderVersion">
+        <column name="order_header_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractOrderRoleEvent$AbstractOrderRoleStateEvent" abstract="true">
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractOrderRoleEvent$SimpleOrderRoleStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractOrderRoleEvent$SimpleOrderRoleStateMergePatched" discriminator-value="MergePatched"></subclass>
+      <subclass name="AbstractOrderRoleEvent$SimpleOrderRoleStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

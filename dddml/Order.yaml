@@ -1,0 +1,511 @@
+﻿aggregates:
+  Order:
+    aggregateRootName: OrderHeader
+    # 聚合根（实体）的名称，这里它不同于聚合名称
+    # metadata: {}
+    # reservedPropertyMetadata: {}
+    id:
+      name: OrderId
+      type: id
+      columnName: ORDER_ID
+    properties:
+      OrderTypeId:
+        columnName: ORDER_TYPE_ID
+        type: id
+      OrderName:
+        columnName: ORDER_NAME
+        type: name
+      ExternalId:
+        columnName: EXTERNAL_ID
+        type: id
+      SalesChannelEnumId:
+        columnName: SALES_CHANNEL_ENUM_ID
+        type: id
+      OrderDate:
+        columnName: ORDER_DATE
+        type: date-time
+      Priority:
+        description: Sets priority for Inventory Reservation
+        columnName: PRIORITY
+        type: indicator
+      EntryDate:
+        columnName: ENTRY_DATE
+        type: date-time
+      PickSheetPrintedDate:
+        description: This will be set to a date when pick sheet of the order is printed
+        columnName: PICK_SHEET_PRINTED_DATE
+        type: date-time
+      VisitId:
+        columnName: VISIT_ID
+        type: id
+      StatusId:
+        columnName: STATUS_ID
+        type: id
+      # CreatedBy:
+      #   columnName: CREATED_BY
+      #   type: id-vlong
+      # CreatedByDescription:
+      #   type: id-vlong
+      FirstAttemptOrderId:
+        columnName: FIRST_ATTEMPT_ORDER_ID
+        type: id
+      CurrencyUomId:
+        # CurrencyUom
+        # columnName: CURRENCY_UOM
+        type: id
+      SyncStatusId:
+        columnName: SYNC_STATUS_ID
+        type: id
+      BillingAccountId:
+        columnName: BILLING_ACCOUNT_ID
+        type: id
+      OriginFacilityId:
+        columnName: ORIGIN_FACILITY_ID
+        type: id
+      WebSiteId:
+        columnName: WEB_SITE_ID
+        type: id
+      ProductStoreId:
+        columnName: PRODUCT_STORE_ID
+        type: id
+      TerminalId:
+        columnName: TERMINAL_ID
+        type: id-long
+      TransactionId:
+        columnName: TRANSACTION_ID
+        type: id-long
+      AutoOrderShoppingListId:
+        columnName: AUTO_ORDER_SHOPPING_LIST_ID
+        type: id
+      NeedsInventoryIssuance:
+        columnName: NEEDS_INVENTORY_ISSUANCE
+        type: indicator
+      IsRushOrder:
+        columnName: IS_RUSH_ORDER
+        type: indicator
+      InternalCode:
+        columnName: INTERNAL_CODE
+        type: id-long
+      RemainingSubTotal:
+        columnName: REMAINING_SUB_TOTAL
+        type: currency-amount
+      GrandTotal:
+        columnName: GRAND_TOTAL
+        type: currency-amount
+      IsViewed:
+        columnName: IS_VIEWED
+        type: indicator
+      InvoicePerShipment:
+        columnName: INVOICE_PER_SHIPMENT
+        type: indicator
+      # ---------------------------------
+      # 订单备注
+      Memo:
+        type: long-varchar
+      # ---------------------------------
+      OrderItems:
+        itemType: OrderItem
+      OrderRoles:
+        itemType: OrderRole
+      OrderAdjustments:
+        itemType: OrderAdjustment
+      OrderContactMechanisms:
+        #OrderContactMechs:
+        itemType: OrderContactMech
+      OrderShipGroups:
+        itemType: OrderShipGroup
+
+    entities:
+      OrderRole:
+        # 订单角色
+        id:
+          name: PartyRoleId
+          type: PartyRoleId
+        properties: {}
+
+      OrderContactMech:
+        # 订单联系方式
+        id:
+          name: ContactMechPurposeTypeId
+          type: id
+        globalId:
+          name: OrderContactMechId
+          type: OrderContactMechId
+          columnNames:
+            - ORDER_ID
+            - CONTACT_MECH_PURPOSE_TYPE_ID
+        properties:
+          ContactMechId:
+            type: id
+
+      OrderItem:
+        # 订单行项
+        discriminator: OrderItemTypeId
+        # reservedPropertyMetadata: {}
+        id:
+          name: OrderItemSeqId
+          type: id
+        globalId:
+          name: OrderItemId
+          type: OrderItemId
+          columnNames:
+            - ORDER_ID
+            - ORDER_ITEM_SEQ_ID
+
+        properties:
+          ExternalId:
+            columnName: EXTERNAL_ID
+            type: id
+          OrderItemTypeId:
+            columnName: ORDER_ITEM_TYPE_ID
+            type: id
+          OrderItemGroupSeqId:
+            columnName: ORDER_ITEM_GROUP_SEQ_ID
+            type: id
+          IsItemGroupPrimary:
+            columnName: IS_ITEM_GROUP_PRIMARY
+            type: indicator
+          FromInventoryItemId:
+            columnName: FROM_INVENTORY_ITEM_ID
+            type: id
+          BudgetId:
+            columnName: BUDGET_ID
+            type: id
+          BudgetItemSeqId:
+            columnName: BUDGET_ITEM_SEQ_ID
+            type: id
+          ProductId:
+            columnName: PRODUCT_ID
+            type: id
+          SupplierProductId:
+            columnName: SUPPLIER_PRODUCT_ID
+            type: id-long
+          ProductFeatureId:
+            columnName: PRODUCT_FEATURE_ID
+            type: id
+          ProdCatalogId:
+            columnName: PROD_CATALOG_ID
+            type: id
+          ProductCategoryId:
+            columnName: PRODUCT_CATEGORY_ID
+            type: id
+          IsPromo:
+            columnName: IS_PROMO
+            type: indicator
+          QuoteId:
+            columnName: QUOTE_ID
+            type: id
+          QuoteItemSeqId:
+            columnName: QUOTE_ITEM_SEQ_ID
+            type: id
+          ShoppingListId:
+            columnName: SHOPPING_LIST_ID
+            type: id
+          ShoppingListItemSeqId:
+            columnName: SHOPPING_LIST_ITEM_SEQ_ID
+            type: id
+          SubscriptionId:
+            columnName: SUBSCRIPTION_ID
+            type: id
+          DeploymentId:
+            columnName: DEPLOYMENT_ID
+            type: id
+          Quantity:
+            columnName: QUANTITY
+            type: fixed-point
+          CancelQuantity:
+            columnName: CANCEL_QUANTITY
+            type: fixed-point
+          SelectedAmount:
+            columnName: SELECTED_AMOUNT
+            type: fixed-point
+          UnitPrice:
+            columnName: UNIT_PRICE
+            type: currency-precise
+          UnitListPrice:
+            columnName: UNIT_LIST_PRICE
+            type: currency-precise
+          UnitAverageCost:
+            columnName: UNIT_AVERAGE_COST
+            type: currency-amount
+          UnitRecurringPrice:
+            columnName: UNIT_RECURRING_PRICE
+            type: currency-amount
+          IsModifiedPrice:
+            columnName: IS_MODIFIED_PRICE
+            type: indicator
+          RecurringFreqUomId:
+            columnName: RECURRING_FREQ_UOM_ID
+            type: id
+          ItemDescription:
+            columnName: ITEM_DESCRIPTION
+            type: description
+          Comments:
+            columnName: COMMENTS
+            type: comment
+          CorrespondingPoId:
+            columnName: CORRESPONDING_PO_ID
+            type: id
+          StatusId:
+            columnName: STATUS_ID
+            type: id
+          SyncStatusId:
+            columnName: SYNC_STATUS_ID
+            type: id
+          EstimatedShipDate:
+            columnName: ESTIMATED_SHIP_DATE
+            type: date-time
+          EstimatedDeliveryDate:
+            columnName: ESTIMATED_DELIVERY_DATE
+            type: date-time
+          AutoCancelDate:
+            columnName: AUTO_CANCEL_DATE
+            type: date-time
+          # DontCancelSetDate:
+          #   columnName: DONT_CANCEL_SET_DATE
+          #   type: date-time
+          # DontCancelSetUserLogin:
+          #   columnName: DONT_CANCEL_SET_USER_LOGIN
+          #   type: id-vlong
+          ShipBeforeDate:
+            columnName: SHIP_BEFORE_DATE
+            type: date-time
+          ShipAfterDate:
+            columnName: SHIP_AFTER_DATE
+            type: date-time
+          CancelBackOrderDate:
+            description: Used to cancel all orders from suppliers when its in past
+            columnName: CANCEL_BACK_ORDER_DATE
+            type: date-time
+          OverrideGlAccountId:
+            description: Used to specify the override or actual glAccountId used for the adjustment, avoids problems if configuration changes after initial posting, etc.
+            columnName: OVERRIDE_GL_ACCOUNT_ID
+            type: id
+          SalesOpportunityId:
+            columnName: SALES_OPPORTUNITY_ID
+            type: id
+          # ChangeByUserLoginId:
+          #   columnName: CHANGE_BY_USER_LOGIN_ID
+          #   type: id-vlong
+        references:
+          OrderHeader:
+            name: OrderHeader
+            displayName: OrderHeader
+            type: OrderHeader
+            properties:
+              - OrderItemId.OrderId
+            foreignKeyName: ORDER_ITEM_HDR
+
+      OrderAdjustment:
+        # 订单调整
+        discriminator: OrderAdjustmentTypeId
+        #metadata:
+        id:
+          name: OrderAdjustmentId
+          type: id
+        globalId:
+          name: OrderIdOrderAdjustmentIdPair
+          type: OrderIdOrderAdjustmentIdPair
+          columnNames:
+            - ORDER_ID
+            - ORDER_ADJUSTMENT_ID
+
+        properties:
+          OrderAdjustmentTypeId:
+            type: id
+          # OrderId:
+          # type: id
+          OrderItemSeqId:
+            type: id
+          ShipGroupSeqId:
+            type: id
+          Comments:
+            type: comment
+          Description:
+            type: description
+          Amount:
+            type: currency-precise
+          # -------------------------------------
+          CurrencyUomId:
+            type: id
+          # -------------------------------------
+          RecurringAmount:
+            type: currency-precise
+          AmountAlreadyIncluded:
+            description: The amount here is already represented in the price, such as VAT taxes.
+            type: currency-precise
+          ProductPromoId:
+            type: id
+          ProductPromoRuleId:
+            type: id
+          ProductPromoActionSeqId:
+            type: id
+          ProductFeatureId:
+            type: id
+          CorrespondingProductId:
+            type: id
+          TaxAuthorityRateSeqId:
+            type: id
+          SourceReferenceId:
+            type: id-long
+          SourcePercentage:
+            description: for tax entries this is the tax percentage
+            type: fixed-point
+          CustomerReferenceId:
+            description: for tax entries this is partyTaxId
+            type: id-long
+          PrimaryGeoId:
+            description: for tax entries this is the primary jurisdiction Geo (the smallest or most local Geo that this tax is for, usually a state/province, perhaps a county or a city)
+            type: id
+          SecondaryGeoId:
+            description: for tax entries this is the secondary jurisdiction Geo (usually a country, or other Geo that the primary is within)
+            type: id
+          ExemptAmount:
+            description: an amount that would normally apply, but not to this order; for tax exemption represents the what the tax would have been
+            type: currency-amount
+          TaxAuthGeoId:
+            description: these taxAuth fields deprecate the primaryGeoId and secondaryGeoId fields and will be used with the newer tax calc stuff
+            type: id
+          TaxAuthPartyId:
+            type: id
+          OverrideGlAccountId:
+            description: used to specify the override or actual glAccountId used for the adjustment, avoids problems if configuration changes after initial posting, etc
+            type: id
+          IncludeInTax:
+            type: indicator
+          IncludeInShipping:
+            type: indicator
+          IsManual:
+            type: indicator
+          OriginalAdjustmentId:
+            description: specifies relation to source OrderAdjustment - eg. for tax on shipping charges
+            type: id
+          OldAmountPerQuantity:
+            type: currency-amount
+          OldPercentage:
+            type: floating-point
+
+        references:
+          OrderAdjustmentType:
+            name: OrderAdjustmentType
+            displayName: OrderAdjustmentType
+            type: OrderAdjustmentType
+            properties:
+              - OrderAdjustmentTypeId
+            foreignKeyName: ORDER_ADJ_TYPE
+          # OriginalAdjustmentId:
+          # name: OriginalAdjustmentId
+          # displayName: ORIGINAL-ADJUSTMENT-ID
+          # type: OrderAdjustment
+          # properties:
+          # - OriginalAdjustmentId
+          # foreignKeyName: ORDER_ADJ_OA
+
+      OrderShipGroup:
+        # 订单装运组
+        id:
+          name: ShipGroupSeqId
+          type: id
+        globalId:
+          name: OrderShipGroupId
+          type: OrderShipGroupId
+          columnNames:
+            - ORDER_ID
+            - SHIP_GROUP_SEQ_ID
+        properties:
+          ShipmentMethodTypeId:
+            type: id
+          SupplierPartyId:
+            type: id
+          VendorPartyId:
+            type: id
+          CarrierPartyId:
+            type: id
+          CarrierRoleTypeId:
+            type: id
+          FacilityId:
+            type: id
+          ContactMechId:
+            type: id
+          TelecomContactMechId:
+            type: id
+          TrackingNumber:
+            type: long-varchar
+          ShippingInstructions:
+            type: long-varchar
+          MaySplit:
+            type: indicator
+          GiftMessage:
+            type: long-varchar
+          IsGift:
+            type: indicator
+          ShipAfterDate:
+            type: date-time
+          ShipByDate:
+            type: date-time
+          EstimatedShipDate:
+            type: date-time
+          EstimatedDeliveryDate:
+            type: date-time
+          # ---------------------------------------------
+          SupplierCurrencyUomId:
+            # 应付供应商金额
+            type: id
+          SupplierPayableAmount:
+            type: currency-amount
+          # ----------------------------------------------
+          SupplierSyncStatusId:
+            # 供应商同步状态 ID
+            type: id
+          SupplierSyncCode:
+            # 供应商同步（结果）代码
+            type: id
+          SupplierSyncMessage:
+            # 供应商同步消息
+            type: description
+          # ---------------------------------------------
+          OrderItemShipGroupAssociations:
+            itemType: OrderItemShipGroupAssociation
+
+        entities:
+          OrderItemShipGroupAssociation:
+            # 订单项（行）装运组关联
+            id:
+              name: OrderItemSeqId
+              type: id
+              # 订单项（行）序号
+            globalId:
+              name: OrderItemShipGroupAssociationId
+              type: OrderItemShipGroupAssociationId
+              columnNames:
+                - ORDER_ID
+                - SHIP_GROUP_SEQ_ID
+                - ORDER_ITEM_SEQ_ID
+            properties:
+              Quantity:
+                type: fixed-point
+              CancelQuantity:
+                type: fixed-point
+
+  OrderAdjustmentType:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: OrderAdjustmentTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+    references:
+      ParentTypeId:
+        name: ParentTypeId
+        displayName: PARENT-TYPE-ID
+        description: Parent
+        type: OrderAdjustmentType
+        properties:
+          - ParentTypeId
+        foreignKeyName: ORDER_ADJ_TYPPAR
