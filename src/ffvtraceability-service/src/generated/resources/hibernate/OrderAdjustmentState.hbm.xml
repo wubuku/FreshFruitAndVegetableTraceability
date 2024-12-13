@@ -102,7 +102,7 @@
       <column name="old_amount_per_quantity" sql-type="DECIMAL(18,2)" />
     </property>
     <property name="oldPercentage">
-      <column name="old_percentage" sql-type="DOUBLE" />
+      <column name="old_percentage" sql-type="FLOAT8" />
     </property>
     <property name="createdBy">
       <column name="created_by" />

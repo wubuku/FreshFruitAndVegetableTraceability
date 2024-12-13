@@ -63,12 +63,28 @@ configuration:
       sqlType: timestamptz
       javaType: OffsetDateTime
 
-    # fixed-point:
-    #   sqlType: DECIMAL(18,6)
-    #   cSharpType: decimal?
-    #   javaType: java.math.BigDecimal
-
     very-long:
       sqlType: TEXT
       cSharpType: string
       javaType: String
+
+    fixed-point:
+      sqlType: DECIMAL(18,6)
+      javaType: java.math.BigDecimal
+    # The types decimal and numeric are equivalent. Both types are part of the SQL standard.
+    # fixed-point:
+    #   sqlType: NUMERIC(18,6)
+    #   cSharpType: decimal?
+    #   javaType: java.math.BigDecimal
+
+    floating-point:
+      sqlType: FLOAT8
+      javaType: Double
+
+    integer:
+      sqlType: INTEGER
+      javaType: Integer
+
+    numeric:
+      sqlType: DECIMAL(20,0)
+      javaType: Long

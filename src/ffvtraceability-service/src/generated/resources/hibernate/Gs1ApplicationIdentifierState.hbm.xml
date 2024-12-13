@@ -83,7 +83,7 @@
           <column name="fixed_length" />
         </property>
         <property name="length">
-          <column name="length" />
+          <column name="length" sql-type="INTEGER" />
         </property>
         <property name="checkDigit">
           <column name="check_digit" />
