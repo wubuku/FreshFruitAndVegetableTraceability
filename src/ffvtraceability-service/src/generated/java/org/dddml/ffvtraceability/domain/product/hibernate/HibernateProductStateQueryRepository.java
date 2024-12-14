@@ -43,7 +43,7 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
 
     @Transactional(readOnly = true)
     public ProductState get(String id) {
-        ProductState state = (ProductState)getEntityManager().find(AbstractProductState.SimpleProductState.class, id);
+        ProductState state = (ProductState)getEntityManager().find(AbstractProductState.class, id);
         return state;
     }
 
@@ -92,11 +92,11 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
     public Iterable<ProductState> getAll(Class<? extends ProductState> stateType, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractProductState.SimpleProductState> cq = cb.createQuery(AbstractProductState.SimpleProductState.class);
-        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
+        CriteriaQuery<AbstractProductState> cq = cb.createQuery(AbstractProductState.class);
+        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
         cq.select(root);
         addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractProductState.SimpleProductState> query = em.createQuery(cq);
+        TypedQuery<AbstractProductState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
         return query.getResultList().stream().map(ProductState.class::cast).collect(Collectors.toList());
     }
@@ -105,12 +105,12 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
     public Iterable<ProductState> get(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractProductState.SimpleProductState> cq = cb.createQuery(AbstractProductState.SimpleProductState.class);
-        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
+        CriteriaQuery<AbstractProductState> cq = cb.createQuery(AbstractProductState.class);
+        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
         addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractProductState.SimpleProductState> query = em.createQuery(cq);
+        TypedQuery<AbstractProductState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
         return query.getResultList().stream().map(ProductState.class::cast).collect(Collectors.toList());
     }
@@ -119,12 +119,12 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
     public Iterable<ProductState> get(Class<? extends ProductState> stateType, org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractProductState.SimpleProductState> cq = cb.createQuery(AbstractProductState.SimpleProductState.class);
-        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
+        CriteriaQuery<AbstractProductState> cq = cb.createQuery(AbstractProductState.class);
+        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
         addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractProductState.SimpleProductState> query = em.createQuery(cq);
+        TypedQuery<AbstractProductState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
         return query.getResultList().stream().map(ProductState.class::cast).collect(Collectors.toList());
     }
@@ -158,7 +158,7 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
+        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -172,7 +172,7 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
+        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);

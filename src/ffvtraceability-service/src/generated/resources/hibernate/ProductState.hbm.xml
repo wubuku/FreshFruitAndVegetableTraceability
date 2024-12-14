@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.product">
-  <class name="org.dddml.ffvtraceability.domain.product.AbstractProductState$SimpleProductState" table="product">
+  <class name="org.dddml.ffvtraceability.domain.product.AbstractProductState" table="product" abstract="true">
     <id name="productId" length="20">
       <column name="product_id" sql-type="VARCHAR(20)" />
       <generator class="assigned" />
@@ -199,5 +199,6 @@
     </property>
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
+    <subclass name="org.dddml.ffvtraceability.domain.product.AbstractProductState$SimpleProductState" discriminator-value="PRODUCT"></subclass>
   </class>
 </hibernate-mapping>

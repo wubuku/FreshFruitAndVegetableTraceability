@@ -156,6 +156,34 @@ Hibernate 其实并[没有对基于鉴别器的多租户策略提供“原生支
 
 ### Test application
 
+
+#### 测试 "BffRawItem"
+
+测试创建新的 BffRawItem：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffRawItems' \
+  -H 'accept: */*' \
+  -H "X-TenantID:X" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "productName": "Organic Green Tea",
+  "description": "Premium organic green tea leaves from Japanese highlands, rich in antioxidants",
+  "gtin": "4912345678901",
+  "smallImageUrl": "https://example.com/images/green-tea-small.jpg",
+  "mediumImageUrl": "https://example.com/images/green-tea-medium.jpg", 
+  "largeImageUrl": "https://example.com/images/green-tea-large.jpg",
+  "quantityUomId": "GRM",
+  "quantityIncluded": 100,
+  "piecesIncluded": 20,
+  "statusId": "ACTIVE",
+  "supplierId": "SUPPLIER_001"
+}'
+```
+
+
+
 #### Test "StatusItem"
 
 下面我们使用实体 [`StatusItem`](../dddml/StatusItem.yaml) 作为示例，来测试“多租户”支持。

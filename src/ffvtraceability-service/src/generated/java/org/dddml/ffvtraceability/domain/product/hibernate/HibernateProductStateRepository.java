@@ -44,7 +44,7 @@ public class HibernateProductStateRepository implements ProductStateRepository {
 
     @Transactional(readOnly = true)
     public ProductState get(Class<? extends ProductState> type, String id, boolean nullAllowed) {
-        ProductState.SqlProductState state = (ProductState.SqlProductState)getEntityManager().find(AbstractProductState.SimpleProductState.class, id);
+        ProductState.SqlProductState state = (ProductState.SqlProductState)getEntityManager().find(AbstractProductState.class, id);
         if (state != null && !type.isAssignableFrom(state.getClass())) {
             throw new ClassCastException(String.format("state is NOT instance of %1$s", type.getName()));
         }
@@ -94,7 +94,7 @@ public class HibernateProductStateRepository implements ProductStateRepository {
     }
 
     public void merge(ProductState detached) {
-        ProductState persistent = getEntityManager().find(AbstractProductState.SimpleProductState.class, detached.getProductId());
+        ProductState persistent = getEntityManager().find(AbstractProductState.class, detached.getProductId());
         if (persistent != null) {
             merge(persistent, detached);
             entityManager.merge(persistent);
