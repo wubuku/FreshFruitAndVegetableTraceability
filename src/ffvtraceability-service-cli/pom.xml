@@ -44,8 +44,8 @@
                 <configuration>
                     <generatedSourcesDirectory>src/generated/java</generatedSourcesDirectory>
                     <encoding>UTF-8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>15</source>
+                    <target>15</target>
                 </configuration>
             </plugin>
             <plugin>

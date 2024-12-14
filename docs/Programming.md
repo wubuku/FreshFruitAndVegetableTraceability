@@ -182,6 +182,15 @@ curl -X 'POST' \
 }'
 ```
 
+查询 BffRawItem：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffRawItems?page=0&size=20' \
+  -H 'accept: application/json' \
+  -H "X-TenantID:X"
+```
+
 
 
 #### Test "StatusItem"

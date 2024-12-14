@@ -1,17 +1,21 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
+import org.dddml.ffvtraceability.domain.mapper.BffRawItemMapper;
 import org.dddml.ffvtraceability.domain.party.PartyApplicationService;
 import org.dddml.ffvtraceability.domain.product.AbstractGoodIdentificationCommand;
 import org.dddml.ffvtraceability.domain.product.AbstractProductCommand;
 import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
+import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
 import org.dddml.ffvtraceability.domain.supplierproduct.AbstractSupplierProductCommand;
 import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductApplicationService;
 import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId;
 import org.dddml.ffvtraceability.domain.uom.UomApplicationService;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
+import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +39,19 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Autowired
     private PartyApplicationService partyApplicationService;
 
+    @Autowired
+    private BffRawItemRepository bffRawItemRepository;
+
+    @Autowired
+    private BffRawItemMapper bffRawItemMapper;
+
     @Override
+    @Transactional(readOnly = true)
     public Page<BffRawItemDto> when(BffRawItemServiceCommands.GetRawItems c) {
-        return null;
+        return PageUtils.toPage(
+                bffRawItemRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize())),
+                bffRawItemMapper::toBffRawItemDto
+        );
     }
 
     @Override

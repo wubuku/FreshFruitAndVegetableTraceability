@@ -35,7 +35,7 @@ public interface Page<T> {
      */
     int getNumber();
 
-    class PageImpl<T> implements Page {
+    class PageImpl<T> implements Page<T> {
 
         private List<T> content;
         private long totalElements;
