@@ -169,6 +169,14 @@ public interface TokenPairMetadataDto {
 }
 ```
 
+Spring Data JPA 支持从父接口继承的 getter 方法进行投影，所以可以使用接口继承来组织投影接口。
+
+Spring Data JPA 会：
+- 识别继承层次结构中的所有 getter 方法
+- 正确映射所有属性，包括父接口中定义的属性
+- 在运行时生成正确的代理实现
+
+
 ##### 1.2 基于类的投影（Class-based Projections）
 - 可以包含业务逻辑
 - 必须提供匹配的构造函数
