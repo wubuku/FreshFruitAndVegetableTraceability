@@ -19,7 +19,7 @@ public interface BffRawItemProjection {
 
     BigDecimal getQuantityIncluded();
 
-    BigDecimal getPiecesIncluded();
+    Long getPiecesIncluded();
 
     String getGtin();
 
