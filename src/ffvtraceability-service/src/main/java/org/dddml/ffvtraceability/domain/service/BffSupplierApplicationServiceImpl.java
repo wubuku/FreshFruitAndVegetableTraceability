@@ -2,6 +2,7 @@ package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.specialization.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

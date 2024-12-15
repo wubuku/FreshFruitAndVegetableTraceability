@@ -42,10 +42,6 @@ public interface ShipmentReceiptEvent extends Event {
     void setCommandId(String commandId);
 
     interface ShipmentReceiptStateEvent extends ShipmentReceiptEvent {
-        String getInventoryItemId();
-
-        void setInventoryItemId(String inventoryItemId);
-
         String getProductId();
 
         void setProductId(String productId);
@@ -82,9 +78,9 @@ public interface ShipmentReceiptEvent extends Event {
 
         void setRejectionId(String rejectionId);
 
-        String getReceivedByUserLoginId();
+        String getReceivedBy();
 
-        void setReceivedByUserLoginId(String receivedByUserLoginId);
+        void setReceivedBy(String receivedBy);
 
         OffsetDateTime getDatetimeReceived();
 
@@ -134,10 +130,6 @@ public interface ShipmentReceiptEvent extends Event {
 
     interface ShipmentReceiptStateMergePatched extends ShipmentReceiptStateEvent
     {
-        Boolean getIsPropertyInventoryItemIdRemoved();
-
-        void setIsPropertyInventoryItemIdRemoved(Boolean removed);
-
         Boolean getIsPropertyProductIdRemoved();
 
         void setIsPropertyProductIdRemoved(Boolean removed);
@@ -174,9 +166,9 @@ public interface ShipmentReceiptEvent extends Event {
 
         void setIsPropertyRejectionIdRemoved(Boolean removed);
 
-        Boolean getIsPropertyReceivedByUserLoginIdRemoved();
+        Boolean getIsPropertyReceivedByRemoved();
 
-        void setIsPropertyReceivedByUserLoginIdRemoved(Boolean removed);
+        void setIsPropertyReceivedByRemoved(Boolean removed);
 
         Boolean getIsPropertyDatetimeReceivedRemoved();
 

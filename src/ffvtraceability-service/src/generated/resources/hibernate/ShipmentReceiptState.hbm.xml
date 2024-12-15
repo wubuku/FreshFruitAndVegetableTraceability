@@ -2,8 +2,8 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.shipmentreceipt">
   <class name="org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptState$SimpleShipmentReceiptState" table="shipment_receipt">
-    <id name="receiptId" length="20">
-      <column name="RECEIPT_ID" sql-type="VARCHAR(20)" />
+    <id name="receiptId" length="60">
+      <column name="RECEIPT_ID" sql-type="VARCHAR(60)" />
       <generator class="assigned" />
     </id>
     <version name="version" column="version" type="long" />
@@ -13,9 +13,6 @@
       </key>
       <one-to-many class="org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptRoleState$SimpleShipmentReceiptRoleState" />
     </set>
-    <property name="inventoryItemId">
-      <column name="INVENTORY_ITEM_ID" sql-type="VARCHAR(20)" />
-    </property>
     <property name="productId">
       <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
     </property>
@@ -43,7 +40,7 @@
     <property name="rejectionId">
       <column name="REJECTION_ID" sql-type="VARCHAR(20)" />
     </property>
-    <property name="receivedByUserLoginId">
+    <property name="receivedBy">
       <column name="RECEIVED_BY_USER_LOGIN_ID" sql-type="VARCHAR(250)" />
     </property>
     <property name="datetimeReceived">

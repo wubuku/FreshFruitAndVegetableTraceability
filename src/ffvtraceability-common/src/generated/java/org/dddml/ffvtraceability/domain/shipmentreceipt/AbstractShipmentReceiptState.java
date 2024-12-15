@@ -25,16 +25,6 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.receiptId = receiptId;
     }
 
-    private String inventoryItemId;
-
-    public String getInventoryItemId() {
-        return this.inventoryItemId;
-    }
-
-    public void setInventoryItemId(String inventoryItemId) {
-        this.inventoryItemId = inventoryItemId;
-    }
-
     private String productId;
 
     public String getProductId() {
@@ -125,14 +115,14 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.rejectionId = rejectionId;
     }
 
-    private String receivedByUserLoginId;
+    private String receivedBy;
 
-    public String getReceivedByUserLoginId() {
-        return this.receivedByUserLoginId;
+    public String getReceivedBy() {
+        return this.receivedBy;
     }
 
-    public void setReceivedByUserLoginId(String receivedByUserLoginId) {
-        this.receivedByUserLoginId = receivedByUserLoginId;
+    public void setReceivedBy(String receivedBy) {
+        this.receivedBy = receivedBy;
     }
 
     private OffsetDateTime datetimeReceived;
@@ -372,7 +362,6 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
     public void when(ShipmentReceiptStateCreated e) {
         throwOnWrongEvent(e);
 
-        this.setInventoryItemId(e.getInventoryItemId());
         this.setProductId(e.getProductId());
         this.setShipmentId(e.getShipmentId());
         this.setShipmentItemSeqId(e.getShipmentItemSeqId());
@@ -382,7 +371,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setReturnId(e.getReturnId());
         this.setReturnItemSeqId(e.getReturnItemSeqId());
         this.setRejectionId(e.getRejectionId());
-        this.setReceivedByUserLoginId(e.getReceivedByUserLoginId());
+        this.setReceivedBy(e.getReceivedBy());
         this.setDatetimeReceived(e.getDatetimeReceived());
         this.setItemDescription(e.getItemDescription());
         this.setQuantityAccepted(e.getQuantityAccepted());
@@ -407,7 +396,6 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         if (s == this) {
             return;
         }
-        this.setInventoryItemId(s.getInventoryItemId());
         this.setProductId(s.getProductId());
         this.setShipmentId(s.getShipmentId());
         this.setShipmentItemSeqId(s.getShipmentItemSeqId());
@@ -417,7 +405,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setReturnId(s.getReturnId());
         this.setReturnItemSeqId(s.getReturnItemSeqId());
         this.setRejectionId(s.getRejectionId());
-        this.setReceivedByUserLoginId(s.getReceivedByUserLoginId());
+        this.setReceivedBy(s.getReceivedBy());
         this.setDatetimeReceived(s.getDatetimeReceived());
         this.setItemDescription(s.getItemDescription());
         this.setQuantityAccepted(s.getQuantityAccepted());
@@ -467,13 +455,6 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
     public void when(ShipmentReceiptStateMergePatched e) {
         throwOnWrongEvent(e);
 
-        if (e.getInventoryItemId() == null) {
-            if (e.getIsPropertyInventoryItemIdRemoved() != null && e.getIsPropertyInventoryItemIdRemoved()) {
-                this.setInventoryItemId(null);
-            }
-        } else {
-            this.setInventoryItemId(e.getInventoryItemId());
-        }
         if (e.getProductId() == null) {
             if (e.getIsPropertyProductIdRemoved() != null && e.getIsPropertyProductIdRemoved()) {
                 this.setProductId(null);
@@ -537,12 +518,12 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         } else {
             this.setRejectionId(e.getRejectionId());
         }
-        if (e.getReceivedByUserLoginId() == null) {
-            if (e.getIsPropertyReceivedByUserLoginIdRemoved() != null && e.getIsPropertyReceivedByUserLoginIdRemoved()) {
-                this.setReceivedByUserLoginId(null);
+        if (e.getReceivedBy() == null) {
+            if (e.getIsPropertyReceivedByRemoved() != null && e.getIsPropertyReceivedByRemoved()) {
+                this.setReceivedBy(null);
             }
         } else {
-            this.setReceivedByUserLoginId(e.getReceivedByUserLoginId());
+            this.setReceivedBy(e.getReceivedBy());
         }
         if (e.getDatetimeReceived() == null) {
             if (e.getIsPropertyDatetimeReceivedRemoved() != null && e.getIsPropertyDatetimeReceivedRemoved()) {

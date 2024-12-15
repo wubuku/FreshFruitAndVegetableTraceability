@@ -27,18 +27,6 @@ public class ShipmentReceiptStateDto {
         this.receiptId = receiptId;
     }
 
-    private String inventoryItemId;
-
-    public String getInventoryItemId()
-    {
-        return this.inventoryItemId;
-    }
-
-    public void setInventoryItemId(String inventoryItemId)
-    {
-        this.inventoryItemId = inventoryItemId;
-    }
-
     private String productId;
 
     public String getProductId()
@@ -147,16 +135,16 @@ public class ShipmentReceiptStateDto {
         this.rejectionId = rejectionId;
     }
 
-    private String receivedByUserLoginId;
+    private String receivedBy;
 
-    public String getReceivedByUserLoginId()
+    public String getReceivedBy()
     {
-        return this.receivedByUserLoginId;
+        return this.receivedBy;
     }
 
-    public void setReceivedByUserLoginId(String receivedByUserLoginId)
+    public void setReceivedBy(String receivedBy)
     {
-        this.receivedByUserLoginId = receivedByUserLoginId;
+        this.receivedBy = receivedBy;
     }
 
     private OffsetDateTime datetimeReceived;
@@ -359,9 +347,6 @@ public class ShipmentReceiptStateDto {
             if (returnedFieldsContains("ReceiptId")) {
                 dto.setReceiptId(state.getReceiptId());
             }
-            if (returnedFieldsContains("InventoryItemId")) {
-                dto.setInventoryItemId(state.getInventoryItemId());
-            }
             if (returnedFieldsContains("ProductId")) {
                 dto.setProductId(state.getProductId());
             }
@@ -389,8 +374,8 @@ public class ShipmentReceiptStateDto {
             if (returnedFieldsContains("RejectionId")) {
                 dto.setRejectionId(state.getRejectionId());
             }
-            if (returnedFieldsContains("ReceivedByUserLoginId")) {
-                dto.setReceivedByUserLoginId(state.getReceivedByUserLoginId());
+            if (returnedFieldsContains("ReceivedBy")) {
+                dto.setReceivedBy(state.getReceivedBy());
             }
             if (returnedFieldsContains("DatetimeReceived")) {
                 dto.setDatetimeReceived(state.getDatetimeReceived());

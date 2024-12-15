@@ -12,21 +12,6 @@ import org.dddml.ffvtraceability.domain.*;
 public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceiptCommandDto implements ShipmentReceiptCommand.CreateOrMergePatchShipmentReceipt {
 
     /**
-     * Inventory Item Id
-     */
-    private String inventoryItemId;
-
-    public String getInventoryItemId()
-    {
-        return this.inventoryItemId;
-    }
-
-    public void setInventoryItemId(String inventoryItemId)
-    {
-        this.inventoryItemId = inventoryItemId;
-    }
-
-    /**
      * Product Id
      */
     private String productId;
@@ -162,18 +147,18 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
     }
 
     /**
-     * Received By User Login Id
+     * Received By
      */
-    private String receivedByUserLoginId;
+    private String receivedBy;
 
-    public String getReceivedByUserLoginId()
+    public String getReceivedBy()
     {
-        return this.receivedByUserLoginId;
+        return this.receivedBy;
     }
 
-    public void setReceivedByUserLoginId(String receivedByUserLoginId)
+    public void setReceivedBy(String receivedBy)
     {
-        this.receivedByUserLoginId = receivedByUserLoginId;
+        this.receivedBy = receivedBy;
     }
 
     /**
@@ -324,18 +309,6 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         this.shipmentReceiptRoles = shipmentReceiptRoles;
     }
 
-    private Boolean isPropertyInventoryItemIdRemoved;
-
-    public Boolean getIsPropertyInventoryItemIdRemoved()
-    {
-        return this.isPropertyInventoryItemIdRemoved;
-    }
-
-    public void setIsPropertyInventoryItemIdRemoved(Boolean removed)
-    {
-        this.isPropertyInventoryItemIdRemoved = removed;
-    }
-
     private Boolean isPropertyProductIdRemoved;
 
     public Boolean getIsPropertyProductIdRemoved()
@@ -444,16 +417,16 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         this.isPropertyRejectionIdRemoved = removed;
     }
 
-    private Boolean isPropertyReceivedByUserLoginIdRemoved;
+    private Boolean isPropertyReceivedByRemoved;
 
-    public Boolean getIsPropertyReceivedByUserLoginIdRemoved()
+    public Boolean getIsPropertyReceivedByRemoved()
     {
-        return this.isPropertyReceivedByUserLoginIdRemoved;
+        return this.isPropertyReceivedByRemoved;
     }
 
-    public void setIsPropertyReceivedByUserLoginIdRemoved(Boolean removed)
+    public void setIsPropertyReceivedByRemoved(Boolean removed)
     {
-        this.isPropertyReceivedByUserLoginIdRemoved = removed;
+        this.isPropertyReceivedByRemoved = removed;
     }
 
     private Boolean isPropertyDatetimeReceivedRemoved;
@@ -567,7 +540,6 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
     public void copyTo(CreateOrMergePatchShipmentReceipt command)
     {
         ((AbstractShipmentReceiptCommandDto) this).copyTo(command);
-        command.setInventoryItemId(this.getInventoryItemId());
         command.setProductId(this.getProductId());
         command.setShipmentId(this.getShipmentId());
         command.setShipmentItemSeqId(this.getShipmentItemSeqId());
@@ -577,7 +549,7 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         command.setReturnId(this.getReturnId());
         command.setReturnItemSeqId(this.getReturnItemSeqId());
         command.setRejectionId(this.getRejectionId());
-        command.setReceivedByUserLoginId(this.getReceivedByUserLoginId());
+        command.setReceivedBy(this.getReceivedBy());
         command.setDatetimeReceived(this.getDatetimeReceived());
         command.setItemDescription(this.getItemDescription());
         command.setQuantityAccepted(this.getQuantityAccepted());
@@ -652,7 +624,6 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
     public void copyTo(MergePatchShipmentReceipt command)
     {
         copyTo((CreateOrMergePatchShipmentReceipt) command);
-        command.setIsPropertyInventoryItemIdRemoved(this.getIsPropertyInventoryItemIdRemoved());
         command.setIsPropertyProductIdRemoved(this.getIsPropertyProductIdRemoved());
         command.setIsPropertyShipmentIdRemoved(this.getIsPropertyShipmentIdRemoved());
         command.setIsPropertyShipmentItemSeqIdRemoved(this.getIsPropertyShipmentItemSeqIdRemoved());
@@ -662,7 +633,7 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         command.setIsPropertyReturnIdRemoved(this.getIsPropertyReturnIdRemoved());
         command.setIsPropertyReturnItemSeqIdRemoved(this.getIsPropertyReturnItemSeqIdRemoved());
         command.setIsPropertyRejectionIdRemoved(this.getIsPropertyRejectionIdRemoved());
-        command.setIsPropertyReceivedByUserLoginIdRemoved(this.getIsPropertyReceivedByUserLoginIdRemoved());
+        command.setIsPropertyReceivedByRemoved(this.getIsPropertyReceivedByRemoved());
         command.setIsPropertyDatetimeReceivedRemoved(this.getIsPropertyDatetimeReceivedRemoved());
         command.setIsPropertyItemDescriptionRemoved(this.getIsPropertyItemDescriptionRemoved());
         command.setIsPropertyQuantityAcceptedRemoved(this.getIsPropertyQuantityAcceptedRemoved());

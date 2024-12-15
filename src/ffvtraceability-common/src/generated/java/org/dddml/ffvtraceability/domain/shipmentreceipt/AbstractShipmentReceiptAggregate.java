@@ -57,7 +57,6 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
     protected ShipmentReceiptEvent map(ShipmentReceiptCommand.CreateShipmentReceipt c) {
         ShipmentReceiptEventId stateEventId = new ShipmentReceiptEventId(c.getReceiptId(), c.getVersion());
         ShipmentReceiptEvent.ShipmentReceiptStateCreated e = newShipmentReceiptStateCreated(stateEventId);
-        e.setInventoryItemId(c.getInventoryItemId());
         e.setProductId(c.getProductId());
         e.setShipmentId(c.getShipmentId());
         e.setShipmentItemSeqId(c.getShipmentItemSeqId());
@@ -67,7 +66,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setReturnId(c.getReturnId());
         e.setReturnItemSeqId(c.getReturnItemSeqId());
         e.setRejectionId(c.getRejectionId());
-        e.setReceivedByUserLoginId(c.getReceivedByUserLoginId());
+        e.setReceivedBy(c.getReceivedBy());
         e.setDatetimeReceived(c.getDatetimeReceived());
         e.setItemDescription(c.getItemDescription());
         e.setQuantityAccepted(c.getQuantityAccepted());
@@ -92,7 +91,6 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
     protected ShipmentReceiptEvent map(ShipmentReceiptCommand.MergePatchShipmentReceipt c) {
         ShipmentReceiptEventId stateEventId = new ShipmentReceiptEventId(c.getReceiptId(), c.getVersion());
         ShipmentReceiptEvent.ShipmentReceiptStateMergePatched e = newShipmentReceiptStateMergePatched(stateEventId);
-        e.setInventoryItemId(c.getInventoryItemId());
         e.setProductId(c.getProductId());
         e.setShipmentId(c.getShipmentId());
         e.setShipmentItemSeqId(c.getShipmentItemSeqId());
@@ -102,7 +100,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setReturnId(c.getReturnId());
         e.setReturnItemSeqId(c.getReturnItemSeqId());
         e.setRejectionId(c.getRejectionId());
-        e.setReceivedByUserLoginId(c.getReceivedByUserLoginId());
+        e.setReceivedBy(c.getReceivedBy());
         e.setDatetimeReceived(c.getDatetimeReceived());
         e.setItemDescription(c.getItemDescription());
         e.setQuantityAccepted(c.getQuantityAccepted());
@@ -111,7 +109,6 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setLocationSeqId(c.getLocationSeqId());
         e.setCasesAccepted(c.getCasesAccepted());
         e.setCasesRejected(c.getCasesRejected());
-        e.setIsPropertyInventoryItemIdRemoved(c.getIsPropertyInventoryItemIdRemoved());
         e.setIsPropertyProductIdRemoved(c.getIsPropertyProductIdRemoved());
         e.setIsPropertyShipmentIdRemoved(c.getIsPropertyShipmentIdRemoved());
         e.setIsPropertyShipmentItemSeqIdRemoved(c.getIsPropertyShipmentItemSeqIdRemoved());
@@ -121,7 +118,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setIsPropertyReturnIdRemoved(c.getIsPropertyReturnIdRemoved());
         e.setIsPropertyReturnItemSeqIdRemoved(c.getIsPropertyReturnItemSeqIdRemoved());
         e.setIsPropertyRejectionIdRemoved(c.getIsPropertyRejectionIdRemoved());
-        e.setIsPropertyReceivedByUserLoginIdRemoved(c.getIsPropertyReceivedByUserLoginIdRemoved());
+        e.setIsPropertyReceivedByRemoved(c.getIsPropertyReceivedByRemoved());
         e.setIsPropertyDatetimeReceivedRemoved(c.getIsPropertyDatetimeReceivedRemoved());
         e.setIsPropertyItemDescriptionRemoved(c.getIsPropertyItemDescriptionRemoved());
         e.setIsPropertyQuantityAcceptedRemoved(c.getIsPropertyQuantityAcceptedRemoved());

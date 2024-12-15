@@ -31,7 +31,7 @@ valueObjects:
     properties:
       ReceiptId:
         # 收货行项 Id
-        type: id
+        type: id-long
       ProductId:
         # RawItem Id
         type: id

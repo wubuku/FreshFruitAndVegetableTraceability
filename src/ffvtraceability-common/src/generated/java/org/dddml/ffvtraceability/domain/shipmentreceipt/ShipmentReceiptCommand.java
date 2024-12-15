@@ -56,10 +56,6 @@ public interface ShipmentReceiptCommand extends Command {
     interface CreateOrMergePatchShipmentReceipt extends ShipmentReceiptCommand
     {
 
-        String getInventoryItemId();
-
-        void setInventoryItemId(String inventoryItemId);
-
         String getProductId();
 
         void setProductId(String productId);
@@ -96,9 +92,9 @@ public interface ShipmentReceiptCommand extends Command {
 
         void setRejectionId(String rejectionId);
 
-        String getReceivedByUserLoginId();
+        String getReceivedBy();
 
-        void setReceivedByUserLoginId(String receivedByUserLoginId);
+        void setReceivedBy(String receivedBy);
 
         OffsetDateTime getDatetimeReceived();
 
@@ -148,10 +144,6 @@ public interface ShipmentReceiptCommand extends Command {
 
     interface MergePatchShipmentReceipt extends CreateOrMergePatchShipmentReceipt
     {
-        Boolean getIsPropertyInventoryItemIdRemoved();
-
-        void setIsPropertyInventoryItemIdRemoved(Boolean removed);
-
         Boolean getIsPropertyProductIdRemoved();
 
         void setIsPropertyProductIdRemoved(Boolean removed);
@@ -188,9 +180,9 @@ public interface ShipmentReceiptCommand extends Command {
 
         void setIsPropertyRejectionIdRemoved(Boolean removed);
 
-        Boolean getIsPropertyReceivedByUserLoginIdRemoved();
+        Boolean getIsPropertyReceivedByRemoved();
 
-        void setIsPropertyReceivedByUserLoginIdRemoved(Boolean removed);
+        void setIsPropertyReceivedByRemoved(Boolean removed);
 
         Boolean getIsPropertyDatetimeReceivedRemoved();
 

@@ -158,18 +158,6 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
 
 
     public static abstract class AbstractShipmentReceiptStateEvent extends AbstractShipmentReceiptEvent implements ShipmentReceiptEvent.ShipmentReceiptStateEvent {
-        private String inventoryItemId;
-
-        public String getInventoryItemId()
-        {
-            return this.inventoryItemId;
-        }
-
-        public void setInventoryItemId(String inventoryItemId)
-        {
-            this.inventoryItemId = inventoryItemId;
-        }
-
         private String productId;
 
         public String getProductId()
@@ -278,16 +266,16 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             this.rejectionId = rejectionId;
         }
 
-        private String receivedByUserLoginId;
+        private String receivedBy;
 
-        public String getReceivedByUserLoginId()
+        public String getReceivedBy()
         {
-            return this.receivedByUserLoginId;
+            return this.receivedBy;
         }
 
-        public void setReceivedByUserLoginId(String receivedByUserLoginId)
+        public void setReceivedBy(String receivedBy)
         {
-            this.receivedByUserLoginId = receivedByUserLoginId;
+            this.receivedBy = receivedBy;
         }
 
         private OffsetDateTime datetimeReceived;
@@ -470,16 +458,6 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             return StateEventType.MERGE_PATCHED;
         }
 
-        private Boolean isPropertyInventoryItemIdRemoved;
-
-        public Boolean getIsPropertyInventoryItemIdRemoved() {
-            return this.isPropertyInventoryItemIdRemoved;
-        }
-
-        public void setIsPropertyInventoryItemIdRemoved(Boolean removed) {
-            this.isPropertyInventoryItemIdRemoved = removed;
-        }
-
         private Boolean isPropertyProductIdRemoved;
 
         public Boolean getIsPropertyProductIdRemoved() {
@@ -570,14 +548,14 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             this.isPropertyRejectionIdRemoved = removed;
         }
 
-        private Boolean isPropertyReceivedByUserLoginIdRemoved;
+        private Boolean isPropertyReceivedByRemoved;
 
-        public Boolean getIsPropertyReceivedByUserLoginIdRemoved() {
-            return this.isPropertyReceivedByUserLoginIdRemoved;
+        public Boolean getIsPropertyReceivedByRemoved() {
+            return this.isPropertyReceivedByRemoved;
         }
 
-        public void setIsPropertyReceivedByUserLoginIdRemoved(Boolean removed) {
-            this.isPropertyReceivedByUserLoginIdRemoved = removed;
+        public void setIsPropertyReceivedByRemoved(Boolean removed) {
+            this.isPropertyReceivedByRemoved = removed;
         }
 
         private Boolean isPropertyDatetimeReceivedRemoved;

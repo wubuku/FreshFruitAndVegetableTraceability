@@ -6083,7 +6083,6 @@ public class M {
 
     public static final String[] propertyNames = new String[] {
             "receiptId",
-            "inventoryItemId",
             "productId",
             "shipmentId",
             "shipmentItemSeqId",
@@ -6093,7 +6092,7 @@ public class M {
             "returnId",
             "returnItemSeqId",
             "rejectionId",
-            "receivedByUserLoginId",
+            "receivedBy",
             "datetimeReceived",
             "itemDescription",
             "quantityAccepted",
@@ -6112,7 +6111,6 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
-            "String",
             "String",
             "String",
             "String",
@@ -6155,8 +6153,6 @@ public class M {
     private static void initAliasMap() {
         aliasMap.put("receiptId", "receiptId");
         aliasMap.put("ReceiptId", "receiptId");
-        aliasMap.put("inventoryItemId", "inventoryItemId");
-        aliasMap.put("InventoryItemId", "inventoryItemId");
         aliasMap.put("productId", "productId");
         aliasMap.put("ProductId", "productId");
         aliasMap.put("shipmentId", "shipmentId");
@@ -6175,8 +6171,8 @@ public class M {
         aliasMap.put("ReturnItemSeqId", "returnItemSeqId");
         aliasMap.put("rejectionId", "rejectionId");
         aliasMap.put("RejectionId", "rejectionId");
-        aliasMap.put("receivedByUserLoginId", "receivedByUserLoginId");
-        aliasMap.put("ReceivedByUserLoginId", "receivedByUserLoginId");
+        aliasMap.put("receivedBy", "receivedBy");
+        aliasMap.put("ReceivedBy", "receivedBy");
         aliasMap.put("datetimeReceived", "datetimeReceived");
         aliasMap.put("DatetimeReceived", "datetimeReceived");
         aliasMap.put("itemDescription", "itemDescription");

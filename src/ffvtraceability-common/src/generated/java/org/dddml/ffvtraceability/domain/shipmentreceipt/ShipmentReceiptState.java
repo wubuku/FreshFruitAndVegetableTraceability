@@ -20,8 +20,6 @@ public interface ShipmentReceiptState
 
     String getReceiptId();
 
-    String getInventoryItemId();
-
     String getProductId();
 
     String getShipmentId();
@@ -40,7 +38,7 @@ public interface ShipmentReceiptState
 
     String getRejectionId();
 
-    String getReceivedByUserLoginId();
+    String getReceivedBy();
 
     OffsetDateTime getDatetimeReceived();
 
@@ -75,8 +73,6 @@ public interface ShipmentReceiptState
     interface MutableShipmentReceiptState extends ShipmentReceiptState {
         void setReceiptId(String receiptId);
 
-        void setInventoryItemId(String inventoryItemId);
-
         void setProductId(String productId);
 
         void setShipmentId(String shipmentId);
@@ -95,7 +91,7 @@ public interface ShipmentReceiptState
 
         void setRejectionId(String rejectionId);
 
-        void setReceivedByUserLoginId(String receivedByUserLoginId);
+        void setReceivedBy(String receivedBy);
 
         void setDatetimeReceived(OffsetDateTime datetimeReceived);
 

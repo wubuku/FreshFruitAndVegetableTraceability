@@ -4,7 +4,7 @@
   <class name="org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptRoleState$SimpleShipmentReceiptRoleState" table="shipment_receipt_role">
     <composite-id name="shipmentReceiptRoleId" class="org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptRoleId">
       <key-property name="shipmentReceiptReceiptId">
-        <column name="RECEIPT_ID" sql-type="VARCHAR(20)" />
+        <column name="RECEIPT_ID" sql-type="VARCHAR(60)" />
       </key-property>
       <key-property name="partyRoleIdPartyId">
         <column name="PARTY_ID" sql-type="VARCHAR(20)" />

@@ -41,18 +41,6 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
     public static abstract class AbstractCreateOrMergePatchShipmentReceipt extends AbstractShipmentReceiptCommand implements CreateOrMergePatchShipmentReceipt
     {
 
-        private String inventoryItemId;
-
-        public String getInventoryItemId()
-        {
-            return this.inventoryItemId;
-        }
-
-        public void setInventoryItemId(String inventoryItemId)
-        {
-            this.inventoryItemId = inventoryItemId;
-        }
-
         private String productId;
 
         public String getProductId()
@@ -161,16 +149,16 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
             this.rejectionId = rejectionId;
         }
 
-        private String receivedByUserLoginId;
+        private String receivedBy;
 
-        public String getReceivedByUserLoginId()
+        public String getReceivedBy()
         {
-            return this.receivedByUserLoginId;
+            return this.receivedBy;
         }
 
-        public void setReceivedByUserLoginId(String receivedByUserLoginId)
+        public void setReceivedBy(String receivedBy)
         {
-            this.receivedByUserLoginId = receivedByUserLoginId;
+            this.receivedBy = receivedBy;
         }
 
         private OffsetDateTime datetimeReceived;
@@ -333,18 +321,6 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
             return COMMAND_TYPE_MERGE_PATCH;
         }
 
-        private Boolean isPropertyInventoryItemIdRemoved;
-
-        public Boolean getIsPropertyInventoryItemIdRemoved()
-        {
-            return this.isPropertyInventoryItemIdRemoved;
-        }
-
-        public void setIsPropertyInventoryItemIdRemoved(Boolean removed)
-        {
-            this.isPropertyInventoryItemIdRemoved = removed;
-        }
-
         private Boolean isPropertyProductIdRemoved;
 
         public Boolean getIsPropertyProductIdRemoved()
@@ -453,16 +429,16 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
             this.isPropertyRejectionIdRemoved = removed;
         }
 
-        private Boolean isPropertyReceivedByUserLoginIdRemoved;
+        private Boolean isPropertyReceivedByRemoved;
 
-        public Boolean getIsPropertyReceivedByUserLoginIdRemoved()
+        public Boolean getIsPropertyReceivedByRemoved()
         {
-            return this.isPropertyReceivedByUserLoginIdRemoved;
+            return this.isPropertyReceivedByRemoved;
         }
 
-        public void setIsPropertyReceivedByUserLoginIdRemoved(Boolean removed)
+        public void setIsPropertyReceivedByRemoved(Boolean removed)
         {
-            this.isPropertyReceivedByUserLoginIdRemoved = removed;
+            this.isPropertyReceivedByRemoved = removed;
         }
 
         private Boolean isPropertyDatetimeReceivedRemoved;

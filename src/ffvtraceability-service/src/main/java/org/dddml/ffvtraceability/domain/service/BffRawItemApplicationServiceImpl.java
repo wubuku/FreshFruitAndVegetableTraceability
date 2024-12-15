@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Service
 public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationService {
@@ -79,6 +80,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         // If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
         createProduct.setQuantityIncluded(c.getRawItem().getQuantityIncluded());
         createProduct.setPiecesIncluded(c.getRawItem().getPiecesIncluded());
+        createProduct.setCommandId(createProduct.getProductId());
         if (c.getRawItem().getGtin() != null) {
             AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification createGoodIdentification
                     = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
@@ -100,6 +102,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
             createSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
             createSupplierProduct.setActive(true);
+            createSupplierProduct.setCommandId(UUID.randomUUID().toString());
             supplierProductApplicationService.when(createSupplierProduct);
         }
     }

@@ -4,7 +4,7 @@
   <class name="AbstractShipmentReceiptEvent" table="shipment_receipt_event" abstract="true">
     <composite-id name="shipmentReceiptEventId" class="org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptEventId">
       <key-property name="receiptId">
-        <column name="RECEIPT_ID" sql-type="VARCHAR(20)" />
+        <column name="RECEIPT_ID" sql-type="VARCHAR(60)" />
       </key-property>
       <key-property name="version">
         <column name="version" />
@@ -24,9 +24,6 @@
       </property>
     </subclass>
     <subclass name="AbstractShipmentReceiptEvent$AbstractShipmentReceiptStateEvent" abstract="true">
-      <property name="inventoryItemId">
-        <column name="INVENTORY_ITEM_ID" sql-type="VARCHAR(20)" />
-      </property>
       <property name="productId">
         <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
       </property>
@@ -54,7 +51,7 @@
       <property name="rejectionId">
         <column name="REJECTION_ID" sql-type="VARCHAR(20)" />
       </property>
-      <property name="receivedByUserLoginId">
+      <property name="receivedBy">
         <column name="RECEIVED_BY_USER_LOGIN_ID" sql-type="VARCHAR(250)" />
       </property>
       <property name="datetimeReceived">
@@ -83,7 +80,6 @@
       </property>
       <subclass name="AbstractShipmentReceiptEvent$SimpleShipmentReceiptStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractShipmentReceiptEvent$SimpleShipmentReceiptStateMergePatched" discriminator-value="MergePatched">
-        <property name="isPropertyInventoryItemIdRemoved" column="is_property_inventory_item_id_removed" />
         <property name="isPropertyProductIdRemoved" column="is_property_product_id_removed" />
         <property name="isPropertyShipmentIdRemoved" column="is_property_shipment_id_removed" />
         <property name="isPropertyShipmentItemSeqIdRemoved" column="is_property_shipment_item_seq_id_removed" />
@@ -93,7 +89,7 @@
         <property name="isPropertyReturnIdRemoved" column="is_property_return_id_removed" />
         <property name="isPropertyReturnItemSeqIdRemoved" column="is_property_return_item_seq_id_removed" />
         <property name="isPropertyRejectionIdRemoved" column="is_property_rejection_id_removed" />
-        <property name="isPropertyReceivedByUserLoginIdRemoved" column="is_property_received_by_user_login_id_removed" />
+        <property name="isPropertyReceivedByRemoved" column="is_property_received_by_removed" />
         <property name="isPropertyDatetimeReceivedRemoved" column="is_property_datetime_received_removed" />
         <property name="isPropertyItemDescriptionRemoved" column="is_property_item_description_removed" />
         <property name="isPropertyQuantityAcceptedRemoved" column="is_property_quantity_accepted_removed" />

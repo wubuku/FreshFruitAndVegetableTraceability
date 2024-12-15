@@ -191,6 +191,39 @@ curl -X 'GET' \
   -H "X-TenantID:X"
 ```
 
+#### 测试 Receiving
+
+创建一个“收货单”：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffReceipts' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "partyIdTo": "FRESH_MART_DC",
+  "partyIdFrom": "ORGANIC_FARM_01",
+  "originFacilityId": "FARM_WAREHOUSE",
+  "destinationFacilityId": "DC_FRESH",
+  "primaryOrderId": "PO2024031501",
+  "receivingItems": [
+    {
+      "productId": "ORGANIC_TOMATO_01",
+      "lotId": "LOT20240315A",
+      "locationSeqId": "FRESH_ZONE_A",
+      "itemDescription": "Organic Tomato",
+      "quantityAccepted": 500.00,
+      "quantityRejected": 20.00,
+      "casesAccepted": 25,
+      "casesRejected": 1
+    }
+  ],
+  "referenceDocuments": [
+    "ASN2024031501"
+  ]
+}'
+```
+
 
 
 #### Test "StatusItem"
