@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BffReceiptRepository extends JpaRepository<AbstractShipmentReceiptState, String> {
+public interface BffReceiptRepository extends JpaRepository<AbstractShipmentReceiptState.SimpleShipmentReceiptState, String> {
 
     @Query(value = "SELECT " +
             "   s.shipment_id as documentId, " +
@@ -18,7 +18,7 @@ public interface BffReceiptRepository extends JpaRepository<AbstractShipmentRece
             "   s.origin_facility_id as originFacilityId, " +
             "   s.destination_facility_id as destinationFacilityId, " +
             "   s.primary_order_id as primaryOrderId, " +
-            "   sr.receipt_id as itemId, " +
+            "   sr.receipt_id as receiptId, " +
             "   sr.product_id as productId, " +
             "   sr.lot_id as lotId, " +
             "   sr.location_seq_id as locationSeqId, " +

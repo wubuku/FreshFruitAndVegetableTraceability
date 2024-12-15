@@ -219,11 +219,20 @@ curl -X 'POST' \
     }
   ],
   "referenceDocuments": [
-    "ASN2024031501"
+    {
+      "documentId": "ASN2024031501"
+    }
   ]
 }'
 ```
 
+查询收货单信息：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffReceipts?page=0&size=20' \
+  -H 'accept: application/json'
+```
 
 
 #### Test "StatusItem"

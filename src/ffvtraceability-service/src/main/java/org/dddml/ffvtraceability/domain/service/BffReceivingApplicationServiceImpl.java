@@ -4,6 +4,9 @@ import org.dddml.ffvtraceability.domain.BffDocumentDto;
 import org.dddml.ffvtraceability.domain.BffReceivingDocumentDto;
 import org.dddml.ffvtraceability.domain.BffReceivingItemDto;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
+import org.dddml.ffvtraceability.domain.mapper.BffReceiptMapper;
+import org.dddml.ffvtraceability.domain.repository.BffReceiptRepository;
+import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProjection;
 import org.dddml.ffvtraceability.domain.shipment.AbstractShipmentCommand;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptCommand;
@@ -13,28 +16,64 @@ import org.dddml.ffvtraceability.domain.shippingdocument.ShippingDocumentApplica
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class BffReceivingApplicationServiceImpl implements BffReceivingApplicationService {
     @Autowired
+    private BffReceiptMapper bffReceiptMapper;
+    @Autowired
     private ShipmentReceiptApplicationService shipmentReceiptApplicationService;
-
     @Autowired
     private ShipmentApplicationService shipmentApplicationService;
-
     @Autowired
     private ShippingDocumentApplicationService shippingDocumentApplicationService;
-
     @Autowired
     private DocumentApplicationService documentApplicationService;
+    @Autowired
+    private BffReceiptRepository bffReceiptRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<BffReceivingDocumentDto> when(BffReceivingServiceCommands.GetReceivingDocuments c) {
-        return null;
+        org.springframework.data.domain.Page<BffReceivingDocumentItemProjection> projections
+                = bffReceiptRepository.findAllReceivingDocumentsWithItems(PageRequest.of(c.getPage(), c.getSize()));
+
+        List<BffReceivingDocumentDto> receivingDocuments = projections.getContent().stream()
+                .collect(Collectors.groupingBy(
+                        proj -> bffReceiptMapper.toBffReceivingDocumentDto(proj),
+                        Collectors.mapping(
+                                proj -> proj.getReceiptId() != null
+                                        ? bffReceiptMapper.toBffReceivingItemDto(proj)
+                                        : null,
+                                Collectors.collectingAndThen(
+                                        Collectors.toList(),
+                                        list -> list.stream()
+                                                .filter(Objects::nonNull)
+                                                .collect(Collectors.toList())
+                                )
+                        )
+                ))
+                .entrySet().stream()
+                .map(entry -> {
+                            BffReceivingDocumentDto d = entry.getKey();
+                            d.setReceivingItems(entry.getValue());
+                            return d;
+                        }
+                ).collect(Collectors.toList());
+        return Page.builder(receivingDocuments)
+                .totalElements(projections.getTotalElements())
+                .size(projections.getSize())
+                .number(projections.getNumber())
+                .build();
     }
 
     @Override
@@ -48,6 +87,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     }
 
     @Override
+    @Transactional
     public void when(BffReceivingServiceCommands.CreateReceivingDocument c) {
         // NOTE: 将“BFF 文档 Id”映射到 Shipment Id
         AbstractShipmentCommand.SimpleCreateShipment createShipment = new AbstractShipmentCommand.SimpleCreateShipment();
