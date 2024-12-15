@@ -8,9 +8,7 @@ import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProje
 import org.springframework.stereotype.Component;
 
 @Generated(
-    value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-16T03:15:03+0800",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
+    value = "org.mapstruct.ap.MappingProcessor"
 )
 @Component
 public class BffReceiptMapperImpl implements BffReceiptMapper {
