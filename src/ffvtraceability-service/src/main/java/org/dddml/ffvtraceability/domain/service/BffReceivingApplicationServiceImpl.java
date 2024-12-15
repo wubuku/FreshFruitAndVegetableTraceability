@@ -21,9 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +45,26 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         org.springframework.data.domain.Page<BffReceivingDocumentItemProjection> projections
                 = bffReceiptRepository.findAllReceivingDocumentsWithItems(PageRequest.of(c.getPage(), c.getSize()));
 
+        // 获取所有shipmentIds用于查询关联文档
+        List<String> shipmentIds = projections.getContent().stream()
+                .map(BffReceivingDocumentItemProjection::getDocumentId)
+                .distinct()
+                .collect(Collectors.toList());
+
+        // 查询关联文档
+        List<BffReceivingDocumentItemProjection> referenceDocuments =
+                bffReceiptRepository.findReferenceDocumentsByShipmentIds(shipmentIds);
+
+        // 构建文档ID到引用文档列表的映射
+        Map<String, List<BffDocumentDto>> documentReferenceMap = referenceDocuments.stream()
+                .collect(Collectors.groupingBy(
+                        BffReceivingDocumentItemProjection::getDocumentId,
+                        Collectors.mapping(
+                                bffReceiptMapper::toReferenceDocument,
+                                Collectors.toList()
+                        )
+                ));
+
         List<BffReceivingDocumentDto> receivingDocuments = projections.getContent().stream()
                 .collect(Collectors.groupingBy(
                         proj -> bffReceiptMapper.toBffReceivingDocumentDto(proj),
@@ -66,9 +84,14 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 .map(entry -> {
                             BffReceivingDocumentDto d = entry.getKey();
                             d.setReceivingItems(entry.getValue());
+                            // 设置关联文档
+                            d.setReferenceDocuments(
+                                    documentReferenceMap.getOrDefault(d.getDocumentId(), new ArrayList<>())
+                            );
                             return d;
                         }
                 ).collect(Collectors.toList());
+
         return Page.builder(receivingDocuments)
                 .totalElements(projections.getTotalElements())
                 .size(projections.getSize())

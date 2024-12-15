@@ -5,7 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface BffReceiptRepository extends JpaRepository<AbstractShipmentReceiptState.SimpleShipmentReceiptState, String> {
@@ -35,4 +38,16 @@ public interface BffReceiptRepository extends JpaRepository<AbstractShipmentRece
             nativeQuery = true
     )
     Page<BffReceivingDocumentItemProjection> findAllReceivingDocumentsWithItems(Pageable pageable);
+
+    @Query(value = "SELECT " +
+            "   sd.shipment_id as documentId, " +
+            "   d.document_id as referenceDocumentId, " +
+            "   d.comments as referenceComments, " +
+            "   d.document_location as referenceDocumentLocation, " +
+            "   d.document_text as referenceDocumentText " +
+            "FROM shipping_document sd " +
+            "JOIN document d ON sd.document_id = d.document_id " +
+            "WHERE sd.shipment_id IN :shipmentIds",
+            nativeQuery = true)
+    List<BffReceivingDocumentItemProjection> findReferenceDocumentsByShipmentIds(@Param("shipmentIds") List<String> shipmentIds);
 }
