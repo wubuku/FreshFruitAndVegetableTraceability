@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.domain.service;
 
+import org.dddml.ffvtraceability.domain.BffDocumentDto;
 import org.dddml.ffvtraceability.domain.BffReceivingDocumentDto;
 import org.dddml.ffvtraceability.domain.BffReceivingItemDto;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
@@ -48,26 +49,19 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
     @Override
     public void when(BffReceivingServiceCommands.CreateReceivingDocument c) {
-        //        DocumentId: 将“BFF 文档 Id”映射到 Shipment Id
+        // NOTE: 将“BFF 文档 Id”映射到 Shipment Id
         AbstractShipmentCommand.SimpleCreateShipment createShipment = new AbstractShipmentCommand.SimpleCreateShipment();
         createShipment.setShipmentId(IdUtils.randomId());//Ignore??? (c.getReceivingDocument().getDocumentId());
-        //        StatusId:
-        //        PartyIdTo:
         createShipment.setPartyIdTo(c.getReceivingDocument().getPartyIdTo());
-        //        PartyIdFrom:
         createShipment.setPartyIdFrom(c.getReceivingDocument().getPartyIdFrom());
-        //        OriginFacilityId:
         createShipment.setOriginFacilityId(c.getReceivingDocument().getOriginFacilityId());
-        //        DestinationFacilityId:
         createShipment.setDestinationFacilityId(c.getReceivingDocument().getDestinationFacilityId());
-        //        PrimaryOrderId:
         createShipment.setPrimaryOrderId(c.getReceivingDocument().getPrimaryOrderId());
         //        PrimaryReturnId:
         //        PrimaryShipGroupSeqId:
         createShipment.setCommandId(c.getCommandId());
         shipmentApplicationService.when(createShipment);
-        //        ReceivingItems:
-        //        itemType: BffReceivingItemDto
+
         if (c.getReceivingDocument().getReceivingItems() != null) {
             int itemSeq = 1;
             for (BffReceivingItemDto receivingItem : c.getReceivingDocument().getReceivingItems()) {
@@ -91,13 +85,12 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 itemSeq++;
             }
         }
-        //        ReferenceDocuments:
-        //        itemType: id
+
         if (c.getReceivingDocument() != null) {
-            for (String referenceDocumentId : c.getReceivingDocument().getReferenceDocuments()) {
+            for (BffDocumentDto referenceDocument : c.getReceivingDocument().getReferenceDocuments()) {
                 AbstractShippingDocumentCommand.SimpleCreateShippingDocument createShippingDocument = new AbstractShippingDocumentCommand.SimpleCreateShippingDocument();
                 // TODO 判断文档 Id 是否存在
-                createShippingDocument.setDocumentId(referenceDocumentId);
+                createShippingDocument.setDocumentId(referenceDocument.getDocumentId());
                 createShippingDocument.setShipmentId(createShipment.getShipmentId());
                 createShippingDocument.setCommandId(UUID.randomUUID().toString());//createShipment.getShipmentId() + "-" + createShippingDocument.getDocumentId());
                 shippingDocumentApplicationService.when(createShippingDocument);

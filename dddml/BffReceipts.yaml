@@ -24,7 +24,7 @@ valueObjects:
         itemType: BffReceivingItemDto
         isList: true
       ReferenceDocuments:
-        itemType: id
+        itemType: BffDocumentDto # itemType: id
         isList: true
 
   BffReceivingItemDto:

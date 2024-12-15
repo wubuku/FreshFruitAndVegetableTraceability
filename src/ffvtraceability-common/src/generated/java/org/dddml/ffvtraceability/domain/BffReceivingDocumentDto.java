@@ -127,13 +127,13 @@ public class BffReceivingDocumentDto implements Serializable {
         this.receivingItems = receivingItems;
     }
 
-    private java.util.List<String> referenceDocuments;
+    private java.util.List<BffDocumentDto> referenceDocuments;
 
-    public java.util.List<String> getReferenceDocuments() {
+    public java.util.List<BffDocumentDto> getReferenceDocuments() {
         return this.referenceDocuments;
     }
 
-    public void setReferenceDocuments(java.util.List<String> referenceDocuments) {
+    public void setReferenceDocuments(java.util.List<BffDocumentDto> referenceDocuments) {
         this.referenceDocuments = referenceDocuments;
     }
 
@@ -141,7 +141,7 @@ public class BffReceivingDocumentDto implements Serializable {
     {
     }
 
-    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String originFacilityId, String destinationFacilityId, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<String> referenceDocuments)
+    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String originFacilityId, String destinationFacilityId, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<BffDocumentDto> referenceDocuments)
     {
         this.documentId = documentId;
         this.statusId = statusId;
@@ -235,7 +235,7 @@ public class BffReceivingDocumentDto implements Serializable {
                 ", primaryReturnId=" + '\'' + primaryReturnId + '\'' +
                 ", primaryShipGroupSeqId=" + '\'' + primaryShipGroupSeqId + '\'' +
                 ", receivingItems=" + receivingItems +
-                ", referenceDocuments=" + '\'' + referenceDocuments + '\'' +
+                ", referenceDocuments=" + referenceDocuments +
                 '}';
     }
 
