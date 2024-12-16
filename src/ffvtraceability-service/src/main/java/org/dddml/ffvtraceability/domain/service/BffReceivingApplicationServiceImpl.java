@@ -122,7 +122,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         createShipment.setPrimaryOrderId(c.getReceivingDocument().getPrimaryOrderId());
         //        PrimaryReturnId:
         //        PrimaryShipGroupSeqId:
-        createShipment.setCommandId(c.getCommandId());
+        createShipment.setCommandId(createShipment.getShipmentId());// c.getCommandId());
+        createShipment.setRequesterId(c.getRequesterId());
         shipmentApplicationService.when(createShipment);
 
         if (c.getReceivingDocument().getReceivingItems() != null) {

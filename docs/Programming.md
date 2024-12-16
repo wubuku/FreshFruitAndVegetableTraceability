@@ -234,6 +234,29 @@ curl -X 'GET' \
   -H 'accept: application/json'
 ```
 
+#### 测试 "BffSuppliers"
+
+添加供应商：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffSuppliers' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: tenant1" \
+  -d '{
+  "supplierId": "SUP20240116001",
+  "ggn": "4049929999999",         
+  "gln": "5420000000008",         
+  "externalId": "ORGANIC_FARM_01",
+  "preferredCurrencyUomId": "USD",
+  "description": "Organic Vegetables Farm - specializing in greenhouse vegetables with GLOBALG.A.P. certification"
+}'
+
+# GLOBALG.A.P. Number - 13位数字
+# Global Location Number - 13位数字
+```
+
 
 #### Test "StatusItem"
 

@@ -80,13 +80,14 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         // If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
         createProduct.setQuantityIncluded(c.getRawItem().getQuantityIncluded());
         createProduct.setPiecesIncluded(c.getRawItem().getPiecesIncluded());
-        createProduct.setCommandId(createProduct.getProductId());
+        createProduct.setCommandId(createProduct.getProductId()); //c.getCommandId());
+        createProduct.setRequesterId(c.getRequesterId());
         if (c.getRawItem().getGtin() != null) {
             AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification createGoodIdentification
                     = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
             createGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
             createGoodIdentification.setIdValue(c.getRawItem().getGtin());
-            createProduct.getGoodIdentifications().add(createGoodIdentification);
+            createProduct.getCreateGoodIdentificationCommands().add(createGoodIdentification);
         }
         productApplicationService.when(createProduct);
 
