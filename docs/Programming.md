@@ -156,6 +156,30 @@ Hibernate 其实并[没有对基于鉴别器的多租户策略提供“原生支
 
 ### Test application
 
+#### 测试“文档”
+
+创建：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffDocuments' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "comments": "Quality certification document for organic vegetables batch #2024001", 
+  "documentLocation": "https://example.com/docs/cert/2024001.pdf",
+  "documentText": "Batch #2024001 passed QA inspections"
+}'
+```
+
+查询：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffDocuments?page=0&size=20' \
+  -H 'accept: application/json'
+```
+
 
 #### 测试 "BffRawItem"
 

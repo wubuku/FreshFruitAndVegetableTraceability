@@ -1,27 +1,69 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffDocumentDto;
+import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
+import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
+import org.dddml.ffvtraceability.domain.document.DocumentState;
+import org.dddml.ffvtraceability.domain.mapper.BffDocumentMapper;
+import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.specialization.Page;
+import org.dddml.support.criterion.Criterion;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class BffDocumentApplicationServiceImpl implements BffDocumentApplicationService {
+    @Autowired
+    private DocumentApplicationService documentApplicationService;
+
+    @Autowired
+    private BffDocumentMapper bffDocumentMapper;
+
     @Override
+    @Transactional(readOnly = true)
     public Page<BffDocumentDto> when(BffDocumentServiceCommands.GetDocuments c) {
-        return null;
+        int firstResult = c.getPage() * c.getSize();
+        int maxResults = c.getSize();
+        List<BffDocumentDto> ds = StreamSupport.stream(documentApplicationService.get(
+                        (Criterion) null, Collections.emptyList(), firstResult, maxResults).spliterator(), false
+                ).map(x -> bffDocumentMapper.toBffDocumentDto(x))
+                .collect(Collectors.toUnmodifiableList());
+        return Page.builder(ds).size(c.getSize()).number(c.getPage()).build();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BffDocumentDto when(BffDocumentServiceCommands.GetDocument c) {
-        return null;
+        DocumentState d = documentApplicationService.get(c.getDocumentId());
+        if (d == null) {
+            return null;
+        }
+        return bffDocumentMapper.toBffDocumentDto(d);
     }
 
     @Override
+    @Transactional
     public void when(BffDocumentServiceCommands.CreateDocument c) {
-
+        AbstractDocumentCommand.SimpleCreateDocument createDocument = new AbstractDocumentCommand.SimpleCreateDocument();
+        createDocument.setDocumentId(IdUtils.randomId());
+        createDocument.setActive(true);
+        createDocument.setDocumentLocation(c.getDocument().getDocumentLocation());
+        //createDocument.setDocumentTypeId(c.getDocument().getDocumentTypeId());
+        createDocument.setDocumentText(c.getDocument().getDocumentText());
+        createDocument.setComments(c.getDocument().getComments());
+        createDocument.setCommandId(createDocument.getDocumentId());
+        createDocument.setRequesterId(c.getRequesterId());
+        documentApplicationService.when(createDocument);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void when(BffDocumentServiceCommands.UpdateDocument c) {
 
     }
