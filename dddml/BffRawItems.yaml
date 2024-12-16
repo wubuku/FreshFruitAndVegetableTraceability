@@ -1,6 +1,8 @@
 # 产品 / 原材料相关
 valueObjects:
   BffRawItemDto:
+    metadata:
+      JpaProjectionInterfaceName: BffRawItemProjection
     properties:
       ProductId:
         type: id

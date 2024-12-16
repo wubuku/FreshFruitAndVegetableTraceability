@@ -1,6 +1,8 @@
 # 批次（Batch / Lot）相关
 valueObjects:
   BffLotDto:
+    metadata:
+      JpaProjectionInterfaceName: BffLotProjection
     properties:
       LotId:
         type: id

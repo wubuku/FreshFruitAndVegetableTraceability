@@ -1,6 +1,8 @@
 # 采购订单相关
 valueObjects:
   BffPurchaseOrderDto:
+    metadata:
+      JpaProjectionInterfaceName: BffPurchaseOrderProjection
     properties:
       OrderId:
         type: id
@@ -9,6 +11,8 @@ valueObjects:
         isList: true
 
   BffPurchaseOrderItemDto:
+    metadata:
+      JpaProjectionInterfaceName: BffPurchaseOrderItemProjection
     properties:
       OrderItemSeqId:
         type: id

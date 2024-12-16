@@ -1,6 +1,8 @@
 # 度量单位（Uom）相关
 valueObjects:
   BffUomDto:
+    metadata:
+      JpaProjectionInterfaceName: BffUomProjection
     properties:
       UomId:
         type: id

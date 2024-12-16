@@ -1,6 +1,8 @@
 # 供应商相关
 valueObjects:
   BffSupplierDto:
+    metadata:
+      JpaProjectionInterfaceName: BffSupplierProjection
     properties:
       SupplierId:
         type: id

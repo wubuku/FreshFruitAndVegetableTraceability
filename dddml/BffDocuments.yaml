@@ -1,6 +1,8 @@
 # 文档相关（比如在收货时，可以上传关联文档）
 valueObjects:
   BffDocumentDto:
+    metadata:
+      JpaProjectionInterfaceName: BffDocumentProjection
     properties:
       DocumentId:
         type: id

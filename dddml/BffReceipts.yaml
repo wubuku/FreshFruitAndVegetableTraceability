@@ -1,6 +1,8 @@
 # 收货相关
 valueObjects:
   BffReceivingDocumentDto:
+    metadata:
+      JpaProjectionInterfaceName: BffReceivingDocumentProjection
     properties:
       DocumentId:
         type: id
@@ -28,6 +30,8 @@ valueObjects:
         isList: true
 
   BffReceivingItemDto:
+    metadata:
+      JpaProjectionInterfaceName: BffReceivingItemProjection
     properties:
       ReceiptId:
         # 收货行项 Id
