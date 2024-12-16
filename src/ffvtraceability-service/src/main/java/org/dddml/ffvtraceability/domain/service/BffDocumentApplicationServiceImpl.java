@@ -4,6 +4,7 @@ import org.dddml.ffvtraceability.domain.BffDocumentDto;
 import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
+import org.dddml.ffvtraceability.domain.document.DocumentTypeId;
 import org.dddml.ffvtraceability.domain.mapper.BffDocumentMapper;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.specialization.Page;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -63,8 +65,22 @@ public class BffDocumentApplicationServiceImpl implements BffDocumentApplication
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public void when(BffDocumentServiceCommands.UpdateDocument c) {
-
+        String documentId = c.getDocumentId();
+        DocumentState d = documentApplicationService.get(documentId);
+        if (d == null) {
+            throw new IllegalArgumentException("Document not found: " + documentId);
+        }
+        AbstractDocumentCommand.SimpleMergePatchDocument mergePatchDocument = new AbstractDocumentCommand.SimpleMergePatchDocument();
+        mergePatchDocument.setDocumentId(documentId);
+        mergePatchDocument.setVersion(d.getVersion()); // 注意，我们默认实体是使用了乐观锁的，所以这里要传入“当前版本号”
+        mergePatchDocument.setDocumentTypeId(DocumentTypeId.DOCUMENT); // 目前只有一种文档类型，先硬编码
+        mergePatchDocument.setDocumentLocation(c.getDocument().getDocumentLocation());
+        mergePatchDocument.setDocumentText(c.getDocument().getDocumentText());
+        mergePatchDocument.setComments(c.getDocument().getComments());
+        mergePatchDocument.setCommandId(c.getCommandId() == null ? UUID.randomUUID().toString() : c.getCommandId());
+        mergePatchDocument.setRequesterId(c.getRequesterId());
+        documentApplicationService.when(mergePatchDocument);
     }
 }

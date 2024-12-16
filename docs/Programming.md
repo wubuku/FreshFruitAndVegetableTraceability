@@ -181,6 +181,22 @@ curl -X 'GET' \
 ```
 
 
+更新文档（注意将下面示例中的 `0CGN8Q7LSZANXF4VC9` 替换为实际的要更新的文档 ID）：
+
+```shell
+curl -X 'PUT' \
+  'http://localhost:1023/api/BffDocuments/0CGN8Q7LSZANXF4VC9' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "comments": "Quality certification document for organic vegetables batch #2024001",
+  "documentLocation": "https://example.com/docs/cert/2024022.pdf",
+  "documentText": "Batch #2024001 passed QA inspections"
+}'
+```
+
+
+
 #### 测试 "BffRawItem"
 
 测试创建新的 BffRawItem：
