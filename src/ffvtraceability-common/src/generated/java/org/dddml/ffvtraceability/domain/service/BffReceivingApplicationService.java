@@ -16,13 +16,13 @@ public interface BffReceivingApplicationService {
 
     BffReceivingItemDto when(BffReceivingServiceCommands.GetReceivingItem c);
 
-    void when(BffReceivingServiceCommands.CreateReceivingDocument c);
+    String when(BffReceivingServiceCommands.CreateReceivingDocument c);
 
     void when(BffReceivingServiceCommands.UpdateReceivingPrimaryOrderId c);
 
     void when(BffReceivingServiceCommands.UpdateReceivingReferenceDocuments c);
 
-    void when(BffReceivingServiceCommands.CreateReceivingItem c);
+    String when(BffReceivingServiceCommands.CreateReceivingItem c);
 
     void when(BffReceivingServiceCommands.DeleteReceivingItem c);
 

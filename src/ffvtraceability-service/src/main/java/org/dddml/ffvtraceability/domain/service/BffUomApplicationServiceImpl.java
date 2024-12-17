@@ -17,8 +17,8 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
     }
 
     @Override
-    public void when(BffUomServiceCommands.CreateUnitOfMeasure c) {
-
+    public String when(BffUomServiceCommands.CreateUnitOfMeasure c) {
+        return null;//todo
     }
 
     @Override

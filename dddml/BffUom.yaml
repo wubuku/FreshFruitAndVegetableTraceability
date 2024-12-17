@@ -49,6 +49,8 @@ services:
         parameters:
           Uom:
             type: BffUomDto
+        result:
+          type: id # UomId
 
       UpdateUnitOfMeasure:
         metadata:

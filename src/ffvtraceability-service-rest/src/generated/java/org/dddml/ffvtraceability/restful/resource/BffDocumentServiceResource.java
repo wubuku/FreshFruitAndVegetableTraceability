@@ -57,14 +57,14 @@ public class BffDocumentServiceResource {
     }
 
     @PostMapping
-    public void createDocument(
+    public String createDocument(
         @RequestBody BffDocumentDto document
     ) {
         BffDocumentServiceCommands.CreateDocument createDocument = new BffDocumentServiceCommands.CreateDocument();
         createDocument.setDocument(document);
         try {
         createDocument.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffDocumentApplicationService.when(createDocument);
+        return bffDocumentApplicationService.when(createDocument);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

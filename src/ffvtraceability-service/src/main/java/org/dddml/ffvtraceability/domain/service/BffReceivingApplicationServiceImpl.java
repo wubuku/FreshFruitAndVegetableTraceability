@@ -111,7 +111,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
     @Override
     @Transactional
-    public void when(BffReceivingServiceCommands.CreateReceivingDocument c) {
+    public String when(BffReceivingServiceCommands.CreateReceivingDocument c) {
         // NOTE: 将“BFF 文档 Id”映射到 Shipment Id
         AbstractShipmentCommand.SimpleCreateShipment createShipment = new AbstractShipmentCommand.SimpleCreateShipment();
         createShipment.setShipmentId(IdUtils.randomId());//Ignore??? (c.getReceivingDocument().getDocumentId());
@@ -160,6 +160,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 shippingDocumentApplicationService.when(createShippingDocument);
             }
         }
+
+        return createShipment.getShipmentId();
     }
 
     @Override
@@ -173,8 +175,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     }
 
     @Override
-    public void when(BffReceivingServiceCommands.CreateReceivingItem c) {
-
+    public String when(BffReceivingServiceCommands.CreateReceivingItem c) {
+        return null;//todo
     }
 
     @Override

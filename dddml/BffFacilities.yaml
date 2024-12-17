@@ -68,6 +68,8 @@ services:
         parameters:
           Facility:
             type: BffFacilityDto
+        result:
+          type: id # FacilityId
 
       UpdateFacility:
         httpMethod: PUT

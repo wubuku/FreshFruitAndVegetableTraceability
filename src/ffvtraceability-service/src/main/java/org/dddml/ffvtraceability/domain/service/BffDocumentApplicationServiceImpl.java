@@ -51,7 +51,7 @@ public class BffDocumentApplicationServiceImpl implements BffDocumentApplication
 
     @Override
     @Transactional
-    public void when(BffDocumentServiceCommands.CreateDocument c) {
+    public String when(BffDocumentServiceCommands.CreateDocument c) {
         AbstractDocumentCommand.SimpleCreateDocument createDocument = new AbstractDocumentCommand.SimpleCreateDocument();
         createDocument.setDocumentId(IdUtils.randomId());
         createDocument.setActive(true);
@@ -62,6 +62,7 @@ public class BffDocumentApplicationServiceImpl implements BffDocumentApplication
         createDocument.setCommandId(createDocument.getDocumentId());
         createDocument.setRequesterId(c.getRequesterId());
         documentApplicationService.when(createDocument);
+        return createDocument.getDocumentId();
     }
 
     @Override

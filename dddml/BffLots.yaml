@@ -45,6 +45,8 @@ services:
         parameters:
           Lot:
             type: BffLotDto
+        result:
+          type: id # LotId
 
       UpdateLot:
         metadata:

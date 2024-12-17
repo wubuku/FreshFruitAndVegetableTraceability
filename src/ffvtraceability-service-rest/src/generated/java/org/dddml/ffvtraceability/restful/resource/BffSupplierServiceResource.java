@@ -57,14 +57,14 @@ public class BffSupplierServiceResource {
     }
 
     @PostMapping
-    public void createSupplier(
+    public String createSupplier(
         @RequestBody BffSupplierDto supplier
     ) {
         BffSupplierServiceCommands.CreateSupplier createSupplier = new BffSupplierServiceCommands.CreateSupplier();
         createSupplier.setSupplier(supplier);
         try {
         createSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffSupplierApplicationService.when(createSupplier);
+        return bffSupplierApplicationService.when(createSupplier);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

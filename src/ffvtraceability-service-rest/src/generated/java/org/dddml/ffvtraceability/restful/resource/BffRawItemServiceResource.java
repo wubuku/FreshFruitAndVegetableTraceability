@@ -57,14 +57,14 @@ public class BffRawItemServiceResource {
     }
 
     @PostMapping
-    public void createRawItem(
+    public String createRawItem(
         @RequestBody BffRawItemDto rawItem
     ) {
         BffRawItemServiceCommands.CreateRawItem createRawItem = new BffRawItemServiceCommands.CreateRawItem();
         createRawItem.setRawItem(rawItem);
         try {
         createRawItem.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffRawItemApplicationService.when(createRawItem);
+        return bffRawItemApplicationService.when(createRawItem);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

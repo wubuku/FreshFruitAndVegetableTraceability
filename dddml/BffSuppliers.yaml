@@ -53,6 +53,8 @@ services:
         parameters:
           Supplier:
             type: BffSupplierDto
+        result:
+          type: id # Supplier (party) Id
 
       UpdateSupplier:
         metadata:

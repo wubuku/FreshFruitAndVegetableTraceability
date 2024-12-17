@@ -57,14 +57,14 @@ public class BffLotServiceResource {
     }
 
     @PostMapping
-    public void createLot(
+    public String createLot(
         @RequestBody BffLotDto lot
     ) {
         BffLotServiceCommands.CreateLot createLot = new BffLotServiceCommands.CreateLot();
         createLot.setLot(lot);
         try {
         createLot.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffLotApplicationService.when(createLot);
+        return bffLotApplicationService.when(createLot);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

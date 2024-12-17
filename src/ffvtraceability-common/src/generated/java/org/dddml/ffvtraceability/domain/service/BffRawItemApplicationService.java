@@ -14,7 +14,7 @@ public interface BffRawItemApplicationService {
 
     BffRawItemDto when(BffRawItemServiceCommands.GetRawItem c);
 
-    void when(BffRawItemServiceCommands.CreateRawItem c);
+    String when(BffRawItemServiceCommands.CreateRawItem c);
 
     void when(BffRawItemServiceCommands.UpdateRawItem c);
 

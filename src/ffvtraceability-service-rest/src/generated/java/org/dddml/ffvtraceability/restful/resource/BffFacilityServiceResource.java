@@ -57,14 +57,14 @@ public class BffFacilityServiceResource {
     }
 
     @PostMapping
-    public void createFacility(
+    public String createFacility(
         @RequestBody BffFacilityDto facility
     ) {
         BffFacilityServiceCommands.CreateFacility createFacility = new BffFacilityServiceCommands.CreateFacility();
         createFacility.setFacility(facility);
         try {
         createFacility.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffFacilityApplicationService.when(createFacility);
+        return bffFacilityApplicationService.when(createFacility);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

@@ -14,7 +14,7 @@ public interface BffSupplierApplicationService {
 
     BffSupplierDto when(BffSupplierServiceCommands.GetSupplier c);
 
-    void when(BffSupplierServiceCommands.CreateSupplier c);
+    String when(BffSupplierServiceCommands.CreateSupplier c);
 
     void when(BffSupplierServiceCommands.UpdateSupplier c);
 

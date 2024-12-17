@@ -129,6 +129,8 @@ services:
           #   # 创建收货单时，一般这里只有一个行项。即我们可以在添加第一个行项的时候生成收货单。
           #   # 行项中包含了 PO 的 Id（OrderId）。第一个行项的 PO 的 Id 可以作为收货单的 PrimaryOrderId。
           #   itemType: BffReceivingItemDto
+        result:
+          type: id # DocumentId
 
       UpdateReceivingPrimaryOrderId:
         # 给收货时未填写 PO 单号的收货单补充 PO 单号。
@@ -172,6 +174,8 @@ services:
             type: id
           ReceivingItem:
             type: BffReceivingItemDto
+        result:
+          type: id # ReceiptId (receiving item Id)
 
       DeleteReceivingItem:
         # 删除行项的方法

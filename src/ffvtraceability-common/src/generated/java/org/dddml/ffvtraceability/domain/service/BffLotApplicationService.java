@@ -14,7 +14,7 @@ public interface BffLotApplicationService {
 
     BffLotDto when(BffLotServiceCommands.GetLot c);
 
-    void when(BffLotServiceCommands.CreateLot c);
+    String when(BffLotServiceCommands.CreateLot c);
 
     void when(BffLotServiceCommands.UpdateLot c);
 

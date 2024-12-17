@@ -62,7 +62,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
 
     @Override
     @Transactional
-    public void when(BffRawItemServiceCommands.CreateRawItem c) {
+    public String when(BffRawItemServiceCommands.CreateRawItem c) {
 //        if (uomApplicationService.get(c.getRawItem().getQuantityUomId()) == null) {
 //            throw new IllegalArgumentException("QuantityUomId is not valid.");
 //        }
@@ -106,6 +106,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             createSupplierProduct.setCommandId(UUID.randomUUID().toString());
             supplierProductApplicationService.when(createSupplierProduct);
         }
+        return createProduct.getProductId();
     }
 
     @Override

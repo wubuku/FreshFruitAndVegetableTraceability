@@ -14,7 +14,7 @@ public interface BffDocumentApplicationService {
 
     BffDocumentDto when(BffDocumentServiceCommands.GetDocument c);
 
-    void when(BffDocumentServiceCommands.CreateDocument c);
+    String when(BffDocumentServiceCommands.CreateDocument c);
 
     void when(BffDocumentServiceCommands.UpdateDocument c);
 

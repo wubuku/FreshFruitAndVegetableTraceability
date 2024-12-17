@@ -17,8 +17,8 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     }
 
     @Override
-    public void when(BffLotServiceCommands.CreateLot c) {
-
+    public String when(BffLotServiceCommands.CreateLot c) {
+        return null;//todo
     }
 
     @Override

@@ -63,6 +63,8 @@ services:
         parameters:
           RawItem:
             type: BffRawItemDto
+        result:
+          type: id # ProductId
 
       UpdateRawItem:
         #更新指定的 Item 的信息

@@ -18,8 +18,8 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     }
 
     @Override
-    public void when(BffFacilityServiceCommands.CreateFacility c) {
-
+    public String when(BffFacilityServiceCommands.CreateFacility c) {
+        return null;//todo
     }
 
     @Override

@@ -14,7 +14,7 @@ public interface BffFacilityApplicationService {
 
     BffFacilityDto when(BffFacilityServiceCommands.GetFacility c);
 
-    void when(BffFacilityServiceCommands.CreateFacility c);
+    String when(BffFacilityServiceCommands.CreateFacility c);
 
     void when(BffFacilityServiceCommands.UpdateFacility c);
 

@@ -71,14 +71,14 @@ public class BffReceivingServiceResource {
     }
 
     @PostMapping
-    public void createReceivingDocument(
+    public String createReceivingDocument(
         @RequestBody BffReceivingDocumentDto receivingDocument
     ) {
         BffReceivingServiceCommands.CreateReceivingDocument createReceivingDocument = new BffReceivingServiceCommands.CreateReceivingDocument();
         createReceivingDocument.setReceivingDocument(receivingDocument);
         try {
         createReceivingDocument.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffReceivingApplicationService.when(createReceivingDocument);
+        return bffReceivingApplicationService.when(createReceivingDocument);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
@@ -111,7 +111,7 @@ public class BffReceivingServiceResource {
     }
 
     @PostMapping("{documentId}/Items")
-    public void createReceivingItem(
+    public String createReceivingItem(
         @PathVariable("documentId") String documentId,
         @RequestBody BffReceivingItemDto receivingItem
     ) {
@@ -120,7 +120,7 @@ public class BffReceivingServiceResource {
         createReceivingItem.setReceivingItem(receivingItem);
         try {
         createReceivingItem.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffReceivingApplicationService.when(createReceivingItem);
+        return bffReceivingApplicationService.when(createReceivingItem);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

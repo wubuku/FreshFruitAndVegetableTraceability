@@ -57,14 +57,14 @@ public class BffUomServiceResource {
     }
 
     @PostMapping
-    public void createUnitOfMeasure(
+    public String createUnitOfMeasure(
         @RequestBody BffUomDto uom
     ) {
         BffUomServiceCommands.CreateUnitOfMeasure createUnitOfMeasure = new BffUomServiceCommands.CreateUnitOfMeasure();
         createUnitOfMeasure.setUom(uom);
         try {
         createUnitOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffUomApplicationService.when(createUnitOfMeasure);
+        return bffUomApplicationService.when(createUnitOfMeasure);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

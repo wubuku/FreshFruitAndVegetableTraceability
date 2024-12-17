@@ -48,6 +48,8 @@ services:
         parameters:
           Document:
             type: BffDocumentDto
+        result:
+          type: id # DocumentId
 
       UpdateDocument:
         metadata:

@@ -14,7 +14,7 @@ public interface BffUomApplicationService {
 
     BffUomDto when(BffUomServiceCommands.GetUnitOfMeasure c);
 
-    void when(BffUomServiceCommands.CreateUnitOfMeasure c);
+    String when(BffUomServiceCommands.CreateUnitOfMeasure c);
 
     void when(BffUomServiceCommands.UpdateUnitOfMeasure c);
 

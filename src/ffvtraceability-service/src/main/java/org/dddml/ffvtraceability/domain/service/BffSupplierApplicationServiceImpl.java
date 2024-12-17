@@ -48,7 +48,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Override
     @Transactional
-    public void when(BffSupplierServiceCommands.CreateSupplier c) {
+    public String when(BffSupplierServiceCommands.CreateSupplier c) {
         AbstractPartyCommand.SimpleCreateParty createParty = new AbstractPartyCommand.SimpleCreateParty();
         createParty.setPartyId(IdUtils.randomId());
         createParty.setExternalId(c.getSupplier().getExternalId());
@@ -79,6 +79,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         createPartyRole.setCommandId(createParty.getPartyId() + "-SUPPLIER"); //c.getCommandId());
         createPartyRole.setRequesterId(c.getRequesterId());
         partyRoleApplicationService.when(createPartyRole);
+
+        return createParty.getPartyId();
     }
 
     @Override
