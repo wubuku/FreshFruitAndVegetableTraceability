@@ -102,7 +102,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         var oldGgn = partyState.getPartyIdentifications().stream()
                 .filter(t -> t.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GGN))
                 .findFirst();
-        // 检查是否存在PartyIdentification A
+        // 检查是否存在 PartyIdentification 
         if (oldGgn.isPresent()) {//原来有 GGN
             // 如果bffSupplier.getGgn()不等于现有的Ggn，更新IdValue
             if (StringUtils.hasText(bffSupplier.getGgn())) {
@@ -122,6 +122,33 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
                 PartyIdentificationCommand.CreatePartyIdentification createPartyIdentification = mergePatchParty.newCreatePartyIdentification();
                 createPartyIdentification.setPartyIdentificationTypeId(PARTY_IDENTIFICATION_TYPE_GGN);
                 createPartyIdentification.setIdValue(bffSupplier.getGgn());
+                mergePatchParty.getPartyIdentificationCommands().add(createPartyIdentification);
+            }
+        }
+        // 检查GLN
+        var oldGln = partyState.getPartyIdentifications().stream()
+                .filter(t -> t.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GLN))
+                .findFirst();
+        // 检查是否存在 PartyIdentification 
+        if (oldGln.isPresent()) { // 原来有 GLN
+            // 如果bffSupplier.getGln()不等于现有的Gln，更新IdValue
+            if (StringUtils.hasText(bffSupplier.getGln())) {
+                if (!oldGln.get().getIdValue().equals(bffSupplier.getGln())) {
+                    PartyIdentificationCommand.MergePatchPartyIdentification m = mergePatchParty.newMergePatchPartyIdentification();
+                    m.setPartyIdentificationTypeId(PARTY_IDENTIFICATION_TYPE_GLN);
+                    m.setIdValue(bffSupplier.getGln());
+                    mergePatchParty.getPartyIdentificationCommands().add(m);
+                }
+            } else {
+                PartyIdentificationCommand.RemovePartyIdentification r = mergePatchParty.newRemovePartyIdentification();
+                r.setPartyIdentificationTypeId(PARTY_IDENTIFICATION_TYPE_GLN);
+                mergePatchParty.getPartyIdentificationCommands().add(r);
+            }
+        } else { // 原来没有GLN且bffSupplier.getGln()不为空，添加新的PartyIdentification
+            if (StringUtils.hasText(bffSupplier.getGln())) {
+                PartyIdentificationCommand.CreatePartyIdentification createPartyIdentification = mergePatchParty.newCreatePartyIdentification();
+                createPartyIdentification.setPartyIdentificationTypeId(PARTY_IDENTIFICATION_TYPE_GLN);
+                createPartyIdentification.setIdValue(bffSupplier.getGln());
                 mergePatchParty.getPartyIdentificationCommands().add(createPartyIdentification);
             }
         }
