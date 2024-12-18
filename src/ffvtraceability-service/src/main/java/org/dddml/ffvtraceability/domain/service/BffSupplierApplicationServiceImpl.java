@@ -1,9 +1,7 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
-import org.dddml.ffvtraceability.domain.party.AbstractPartyCommand;
-import org.dddml.ffvtraceability.domain.party.PartyApplicationService;
-import org.dddml.ffvtraceability.domain.party.PartyIdentificationCommand;
+import org.dddml.ffvtraceability.domain.party.*;
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
@@ -12,6 +10,9 @@ import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import java.util.Objects;
 
 @Service
 public class BffSupplierApplicationServiceImpl implements BffSupplierApplicationService {
@@ -85,7 +86,41 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Override
     public void when(BffSupplierServiceCommands.UpdateSupplier c) {
-
+        String supplierId = c.getSupplierId();
+        PartyState partyState = partyApplicationService.get(supplierId);
+        if (partyState == null) {
+            throw new IllegalArgumentException("Supplier not found:" + c.getSupplierId());
+        }
+        BffSupplierDto bffSupplier = c.getSupplier();
+        AbstractPartyCommand.SimpleMergePatchParty mergePatchParty = new AbstractPartyCommand.SimpleMergePatchCompany();
+        mergePatchParty.setPartyId(supplierId);
+        mergePatchParty.setVersion(partyState.getVersion());//乐观锁
+        mergePatchParty.setRequesterId(c.getRequesterId());
+        mergePatchParty.setExternalId(bffSupplier.getExternalId());
+        mergePatchParty.setDescription(bffSupplier.getDescription());
+        //检查GGN
+        var oldGgn = partyState.getPartyIdentifications().stream()
+                .filter(t -> t.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GGN))
+                .findFirst();
+        // 检查是否存在PartyIdentification A
+        if (oldGgn.isPresent()) {//原来有 GGN
+            // 如果bffSupplier.getGgn()不等于现有的Ggn，更新IdValue
+            if (StringUtils.hasText(bffSupplier.getGgn())) {
+                if (!oldGgn.get().getIdValue().equals(bffSupplier.getGgn())) {
+                    //修改已有的
+                }
+            } else {
+                //删除原有的PartyIdentification
+            }
+        } else { //原来没有GGN且bffSupplier.getGgn()不为空，添加新的PartyIdentification
+            if (StringUtils.hasText(bffSupplier.getGgn())) {
+                PartyIdentificationCommand.CreatePartyIdentification createPartyIdentification = mergePatchParty.newCreatePartyIdentification();
+                createPartyIdentification.setPartyIdentificationTypeId(PARTY_IDENTIFICATION_TYPE_GGN);
+                createPartyIdentification.setIdValue(bffSupplier.getGgn());
+                mergePatchParty.getPartyIdentificationCommands().add(createPartyIdentification);
+            }
+        }
+        partyApplicationService.when(mergePatchParty);
     }
 
     @Override
