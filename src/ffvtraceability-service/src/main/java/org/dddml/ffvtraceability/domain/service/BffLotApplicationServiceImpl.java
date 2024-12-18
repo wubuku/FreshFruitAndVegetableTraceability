@@ -4,6 +4,7 @@ import org.dddml.ffvtraceability.domain.BffLotDto;
 import org.dddml.ffvtraceability.domain.lot.AbstractLotCommand;
 import org.dddml.ffvtraceability.domain.lot.LotApplicationService;
 import org.dddml.ffvtraceability.domain.lot.LotIdentificationCommand;
+import org.dddml.ffvtraceability.domain.lot.LotState;
 import org.dddml.ffvtraceability.domain.mapper.BffLotMapper;
 import org.dddml.ffvtraceability.domain.repository.BffLotRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 public class BffLotApplicationServiceImpl implements BffLotApplicationService {
@@ -42,6 +45,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     }
 
     @Override
+    @Transactional
     public String when(BffLotServiceCommands.CreateLot c) {
         AbstractLotCommand.SimpleCreateLot createLot = new AbstractLotCommand.SimpleCreateLot();
         createLot.setLotId(c.getLot().getLotId() != null ? c.getLot().getLotId() : IdUtils.randomId());
@@ -60,12 +64,36 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     }
 
     @Override
+    @Transactional
     public void when(BffLotServiceCommands.UpdateLot c) {
-
+        String lotId = c.getLotId();
+        LotState lotState = lotApplicationService.get(lotId);
+        if (lotState == null) {
+            throw new IllegalArgumentException("Lot not found: " + lotId);
+        }
+        AbstractLotCommand.SimpleMergePatchLot mergePatchLot = new AbstractLotCommand.SimpleMergePatchLot();
+        mergePatchLot.setLotId(lotId);
+        mergePatchLot.setVersion(lotState.getVersion());
+        mergePatchLot.setExpirationDate(c.getLot().getExpirationDate());
+        mergePatchLot.setQuantity(c.getLot().getQuantity());
+        mergePatchLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchLot.setRequesterId(c.getRequesterId());
+        lotApplicationService.when(mergePatchLot);
     }
 
     @Override
     public void when(BffLotServiceCommands.ActivateLot c) {
-
+        String lotId = c.getLotId();
+        LotState lotState = lotApplicationService.get(lotId);
+        if (lotState == null) {
+            throw new IllegalArgumentException("Lot not found: " + lotId);
+        }
+        AbstractLotCommand.SimpleMergePatchLot mergePatchLot = new AbstractLotCommand.SimpleMergePatchLot();
+        mergePatchLot.setLotId(lotId);
+        mergePatchLot.setVersion(lotState.getVersion());
+        mergePatchLot.setActive(c.getActive());
+        mergePatchLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchLot.setRequesterId(c.getRequesterId());
+        lotApplicationService.when(mergePatchLot);
     }
 }

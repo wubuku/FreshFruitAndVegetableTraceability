@@ -256,6 +256,21 @@ curl -X 'GET' \
   -H 'accept: application/json'
 ```
 
+更新 Lot：
+
+```shell
+curl -X 'PUT' \
+  'http://localhost:1023/api/BffLots/LOT-2023.001' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "lotId": "LOT-2023.001",
+  "quantity": 120,
+  "expirationDate": "2034-12-18T08:53:18.475Z"
+}'
+```
+
+
 #### 测试 Receiving
 
 创建一个“收货单”：
