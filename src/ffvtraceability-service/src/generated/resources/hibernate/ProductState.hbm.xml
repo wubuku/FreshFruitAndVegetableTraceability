@@ -10,7 +10,7 @@
     <version name="version" column="version" type="long" />
     <set name="protectedGoodIdentifications" inverse="true" cascade="all-delete-orphan" fetch="join">
       <key>
-        <column name="product_id" />
+        <column name="PRODUCT_ID" />
       </key>
       <one-to-many class="org.dddml.ffvtraceability.domain.product.AbstractGoodIdentificationState$SimpleGoodIdentificationState" />
     </set>

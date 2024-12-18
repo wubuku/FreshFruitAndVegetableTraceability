@@ -3,10 +3,12 @@ aggregates:
     id:
       name: LotId
       type: id
+    reservedPropertyMetadata:
+      noActive: false
     properties:
-      Gs1Batch:
-        description: "GS1 BATCH (AI=10)"
-        type: id
+      # Gs1Batch:
+      #   description: "GS1 BATCH (AI=10)"
+      #   type: id
       Quantity:
         type: fixed-point
       ExpirationDate:
@@ -19,6 +21,12 @@ aggregates:
         id:
           name: LotIdentificationTypeId
           type: id
+        globalId:
+          name: LotIdentificationId
+          type: LotIdentificationId
+          columnNames:
+            - lot_id
+            - lot_identification_type_id
         properties:
           IdValue:
             type: id

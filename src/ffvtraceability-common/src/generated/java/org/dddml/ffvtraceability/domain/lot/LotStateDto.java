@@ -26,18 +26,6 @@ public class LotStateDto {
         this.lotId = lotId;
     }
 
-    private String gs1Batch;
-
-    public String getGs1Batch()
-    {
-        return this.gs1Batch;
-    }
-
-    public void setGs1Batch(String gs1Batch)
-    {
-        this.gs1Batch = gs1Batch;
-    }
-
     private java.math.BigDecimal quantity;
 
     public java.math.BigDecimal getQuantity()
@@ -60,6 +48,18 @@ public class LotStateDto {
     public void setExpirationDate(OffsetDateTime expirationDate)
     {
         this.expirationDate = expirationDate;
+    }
+
+    private Boolean active;
+
+    public Boolean getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(Boolean active)
+    {
+        this.active = active;
     }
 
     private Long version;
@@ -166,14 +166,14 @@ public class LotStateDto {
             if (returnedFieldsContains("LotId")) {
                 dto.setLotId(state.getLotId());
             }
-            if (returnedFieldsContains("Gs1Batch")) {
-                dto.setGs1Batch(state.getGs1Batch());
-            }
             if (returnedFieldsContains("Quantity")) {
                 dto.setQuantity(state.getQuantity());
             }
             if (returnedFieldsContains("ExpirationDate")) {
                 dto.setExpirationDate(state.getExpirationDate());
+            }
+            if (returnedFieldsContains("Active")) {
+                dto.setActive(state.getActive());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

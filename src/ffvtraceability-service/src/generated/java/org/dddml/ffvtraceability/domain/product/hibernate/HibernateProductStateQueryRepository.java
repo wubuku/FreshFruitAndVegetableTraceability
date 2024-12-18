@@ -183,7 +183,7 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
 
     @Transactional(readOnly = true)
     public GoodIdentificationState getGoodIdentification(String productId, String goodIdentificationTypeId) {
-        ProductGoodIdentificationId entityId = new ProductGoodIdentificationId(productId, goodIdentificationTypeId);
+        GoodIdentificationId entityId = new GoodIdentificationId(productId, goodIdentificationTypeId);
         return (GoodIdentificationState) getEntityManager().find(AbstractGoodIdentificationState.SimpleGoodIdentificationState.class, entityId);
     }
 
@@ -196,7 +196,7 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
         cq.select(root);
 
         Predicate partIdCondition = cb.and(
-            cb.equal(root.get("productGoodIdentificationId").get("productId"), productId)
+            cb.equal(root.get("goodIdentificationId").get("productId"), productId)
         );
         cq.where(partIdCondition);
 

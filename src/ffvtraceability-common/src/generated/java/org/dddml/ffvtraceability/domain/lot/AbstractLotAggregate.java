@@ -56,9 +56,9 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
     protected LotEvent map(LotCommand.CreateLot c) {
         LotEventId stateEventId = new LotEventId(c.getLotId(), c.getVersion());
         LotEvent.LotStateCreated e = newLotStateCreated(stateEventId);
-        e.setGs1Batch(c.getGs1Batch());
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
+        e.setActive(c.getActive());
         ((AbstractLotEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -75,12 +75,12 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
     protected LotEvent map(LotCommand.MergePatchLot c) {
         LotEventId stateEventId = new LotEventId(c.getLotId(), c.getVersion());
         LotEvent.LotStateMergePatched e = newLotStateMergePatched(stateEventId);
-        e.setGs1Batch(c.getGs1Batch());
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
-        e.setIsPropertyGs1BatchRemoved(c.getIsPropertyGs1BatchRemoved());
+        e.setActive(c.getActive());
         e.setIsPropertyQuantityRemoved(c.getIsPropertyQuantityRemoved());
         e.setIsPropertyExpirationDateRemoved(c.getIsPropertyExpirationDateRemoved());
+        e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
         ((AbstractLotEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

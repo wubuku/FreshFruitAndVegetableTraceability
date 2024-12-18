@@ -40,18 +40,6 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
     public static abstract class AbstractCreateOrMergePatchLot extends AbstractLotCommand implements CreateOrMergePatchLot
     {
 
-        private String gs1Batch;
-
-        public String getGs1Batch()
-        {
-            return this.gs1Batch;
-        }
-
-        public void setGs1Batch(String gs1Batch)
-        {
-            this.gs1Batch = gs1Batch;
-        }
-
         private java.math.BigDecimal quantity;
 
         public java.math.BigDecimal getQuantity()
@@ -138,18 +126,6 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_MERGE_PATCH;
-        }
-
-        private Boolean isPropertyGs1BatchRemoved;
-
-        public Boolean getIsPropertyGs1BatchRemoved()
-        {
-            return this.isPropertyGs1BatchRemoved;
-        }
-
-        public void setIsPropertyGs1BatchRemoved(Boolean removed)
-        {
-            this.isPropertyGs1BatchRemoved = removed;
         }
 
         private Boolean isPropertyQuantityRemoved;

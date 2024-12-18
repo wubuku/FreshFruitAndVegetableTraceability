@@ -231,6 +231,31 @@ curl -X 'GET' \
   -H "X-TenantID:X"
 ```
 
+#### 测试 BATCH/Lot
+
+创建 Lot：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffLots' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "lotId": "LOT-2023.001",
+  "gs1Batch": "LOT-2023.001",
+  "quantity": 100,
+  "expirationDate": "2034-12-18T08:53:18.475Z"
+}'
+```
+
+查询 Lots：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffLots?page=0&size=20' \
+  -H 'accept: application/json'
+```
+
 #### 测试 Receiving
 
 创建一个“收货单”：

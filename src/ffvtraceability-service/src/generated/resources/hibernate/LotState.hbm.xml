@@ -9,13 +9,10 @@
     <version name="version" column="version" type="long" />
     <set name="protectedLotIdentifications" inverse="true" cascade="all-delete-orphan" fetch="join">
       <key>
-        <column name="lot_identification_id_lot_id" />
+        <column name="lot_id" />
       </key>
       <one-to-many class="org.dddml.ffvtraceability.domain.lot.AbstractLotIdentificationState$SimpleLotIdentificationState" />
     </set>
-    <property name="gs1Batch">
-      <column name="gs1_batch" sql-type="VARCHAR(20)" />
-    </property>
     <property name="quantity">
       <column name="quantity" sql-type="DECIMAL(18,6)" />
     </property>
@@ -27,6 +24,9 @@
     </property>
     <property name="updatedBy">
       <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
     </property>
     <property name="deleted">
       <column name="deleted" />

@@ -80,9 +80,6 @@ import org.dddml.ffvtraceability.domain.supplierproduct.hibernate.*;
 import org.dddml.ffvtraceability.domain.document.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.document.hibernate.*;
-import org.dddml.ffvtraceability.domain.documentassociation.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.documentassociation.hibernate.*;
 import org.dddml.ffvtraceability.domain.geopoint.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.geopoint.hibernate.*;
@@ -497,22 +494,6 @@ public class AggregatesHibernateConfig {
                 documentEventStore,
                 documentStateRepository,
                 documentStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractDocumentAssociationApplicationService.SimpleDocumentAssociationApplicationService documentAssociationApplicationService(
-            @Qualifier("documentAssociationEventStore") EventStore documentAssociationEventStore,
-            DocumentAssociationStateRepository documentAssociationStateRepository,
-            DocumentAssociationStateQueryRepository documentAssociationStateQueryRepository
-    ) {
-        AbstractDocumentAssociationApplicationService.SimpleDocumentAssociationApplicationService applicationService = new AbstractDocumentAssociationApplicationService.SimpleDocumentAssociationApplicationService(
-                documentAssociationEventStore,
-                documentAssociationStateRepository,
-                documentAssociationStateQueryRepository
         );
         return applicationService;
     }

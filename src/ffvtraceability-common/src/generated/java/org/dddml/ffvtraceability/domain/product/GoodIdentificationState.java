@@ -65,9 +65,9 @@ public interface GoodIdentificationState
     }
 
     interface SqlGoodIdentificationState extends MutableGoodIdentificationState {
-        ProductGoodIdentificationId getProductGoodIdentificationId();
+        GoodIdentificationId getGoodIdentificationId();
 
-        void setProductGoodIdentificationId(ProductGoodIdentificationId productGoodIdentificationId);
+        void setGoodIdentificationId(GoodIdentificationId goodIdentificationId);
 
 
         boolean isStateUnsaved();

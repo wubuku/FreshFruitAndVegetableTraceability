@@ -5,6 +5,7 @@
 
 package org.dddml.ffvtraceability.domain.repository;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
@@ -15,7 +16,7 @@ public interface BffLotProjection {
 
     java.math.BigDecimal getQuantity();
 
-    OffsetDateTime getExpirationDate();
+    Instant getExpirationDateInstant();
 
 }
 

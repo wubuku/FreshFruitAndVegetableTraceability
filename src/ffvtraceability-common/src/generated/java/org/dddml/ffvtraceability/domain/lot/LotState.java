@@ -19,8 +19,6 @@ public interface LotState
 
     String getLotId();
 
-    String getGs1Batch();
-
     java.math.BigDecimal getQuantity();
 
     OffsetDateTime getExpirationDate();
@@ -35,14 +33,14 @@ public interface LotState
 
     OffsetDateTime getUpdatedAt();
 
+    Boolean getActive();
+
     Boolean getDeleted();
 
     EntityStateCollection<String, LotIdentificationState> getLotIdentifications();
 
     interface MutableLotState extends LotState {
         void setLotId(String lotId);
-
-        void setGs1Batch(String gs1Batch);
 
         void setQuantity(java.math.BigDecimal quantity);
 
@@ -57,6 +55,8 @@ public interface LotState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setActive(Boolean active);
 
         void setDeleted(Boolean deleted);
 

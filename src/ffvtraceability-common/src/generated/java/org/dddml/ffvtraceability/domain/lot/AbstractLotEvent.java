@@ -157,18 +157,6 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
 
 
     public static abstract class AbstractLotStateEvent extends AbstractLotEvent implements LotEvent.LotStateEvent {
-        private String gs1Batch;
-
-        public String getGs1Batch()
-        {
-            return this.gs1Batch;
-        }
-
-        public void setGs1Batch(String gs1Batch)
-        {
-            this.gs1Batch = gs1Batch;
-        }
-
         private java.math.BigDecimal quantity;
 
         public java.math.BigDecimal getQuantity()
@@ -191,6 +179,18 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
         public void setExpirationDate(OffsetDateTime expirationDate)
         {
             this.expirationDate = expirationDate;
+        }
+
+        private Boolean active;
+
+        public Boolean getActive()
+        {
+            return this.active;
+        }
+
+        public void setActive(Boolean active)
+        {
+            this.active = active;
         }
 
         protected AbstractLotStateEvent(LotEventId eventId) {
@@ -277,16 +277,6 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
             return StateEventType.MERGE_PATCHED;
         }
 
-        private Boolean isPropertyGs1BatchRemoved;
-
-        public Boolean getIsPropertyGs1BatchRemoved() {
-            return this.isPropertyGs1BatchRemoved;
-        }
-
-        public void setIsPropertyGs1BatchRemoved(Boolean removed) {
-            this.isPropertyGs1BatchRemoved = removed;
-        }
-
         private Boolean isPropertyQuantityRemoved;
 
         public Boolean getIsPropertyQuantityRemoved() {
@@ -305,6 +295,16 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
 
         public void setIsPropertyExpirationDateRemoved(Boolean removed) {
             this.isPropertyExpirationDateRemoved = removed;
+        }
+
+        private Boolean isPropertyActiveRemoved;
+
+        public Boolean getIsPropertyActiveRemoved() {
+            return this.isPropertyActiveRemoved;
+        }
+
+        public void setIsPropertyActiveRemoved(Boolean removed) {
+            this.isPropertyActiveRemoved = removed;
         }
 
 

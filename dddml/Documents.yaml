@@ -19,29 +19,29 @@ aggregates:
       #   type: object
 
 
-  DocumentAssociation:
-    # TODO: remove this entity
-    id:
-      type: DocumentAssociationId
-      name: DocumentAssociationId
-      columnNames:
-        - document_id
-        - document_id_to
-        - document_assoc_type_id
-        - from_date
-    properties:
-      ThruDate:
-        type: date-time
+#   DocumentAssociation:
+#     # TODO: remove this entity
+#     id:
+#       type: DocumentAssociationId
+#       name: DocumentAssociationId
+#       columnNames:
+#         - document_id
+#         - document_id_to
+#         - document_assoc_type_id
+#         - from_date
+#     properties:
+#       ThruDate:
+#         type: date-time
 
-valueObjects:
-  DocumentAssociationId:
-    # TODO: remove this value object
-    properties:
-      DocumentId:
-        type: id
-      DocumentIdTo:
-        type: id
-      DocumentAssocTypeId:
-        type: id
-      FromDate:
-        type: date-time
+# valueObjects:
+#   DocumentAssociationId:
+#     # TODO: remove this value object
+#     properties:
+#       DocumentId:
+#         type: id
+#       DocumentIdTo:
+#         type: id
+#       DocumentAssocTypeId:
+#         type: id
+#       FromDate:
+#         type: date-time

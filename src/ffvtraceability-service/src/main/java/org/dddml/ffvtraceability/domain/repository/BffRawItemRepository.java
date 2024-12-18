@@ -53,5 +53,6 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
     Page<BffRawItemProjection> findAllRawItems(Pageable pageable);
     //String tenantId
     //todo AND p.tenant_id = :tenantId
+    //todo WHERE p.product_type_id = 'PRODUCT' ??? 这个地方应该过滤出“原材料”类型的产品？
 
 }

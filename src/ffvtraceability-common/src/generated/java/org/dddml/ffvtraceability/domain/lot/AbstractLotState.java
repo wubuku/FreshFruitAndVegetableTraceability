@@ -24,16 +24,6 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.lotId = lotId;
     }
 
-    private String gs1Batch;
-
-    public String getGs1Batch() {
-        return this.gs1Batch;
-    }
-
-    public void setGs1Batch(String gs1Batch) {
-        this.gs1Batch = gs1Batch;
-    }
-
     private java.math.BigDecimal quantity;
 
     public java.math.BigDecimal getQuantity() {
@@ -102,6 +92,16 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
 
     public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    private Boolean active;
+
+    public Boolean getActive() {
+        return this.active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     private Boolean deleted;
@@ -211,9 +211,9 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
     public void when(LotStateCreated e) {
         throwOnWrongEvent(e);
 
-        this.setGs1Batch(e.getGs1Batch());
         this.setQuantity(e.getQuantity());
         this.setExpirationDate(e.getExpirationDate());
+        this.setActive(e.getActive());
 
         this.setDeleted(false);
 
@@ -230,9 +230,9 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         if (s == this) {
             return;
         }
-        this.setGs1Batch(s.getGs1Batch());
         this.setQuantity(s.getQuantity());
         this.setExpirationDate(s.getExpirationDate());
+        this.setActive(s.getActive());
 
         if (s.getLotIdentifications() != null) {
             Iterable<LotIdentificationState> iterable;
@@ -274,13 +274,6 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
     public void when(LotStateMergePatched e) {
         throwOnWrongEvent(e);
 
-        if (e.getGs1Batch() == null) {
-            if (e.getIsPropertyGs1BatchRemoved() != null && e.getIsPropertyGs1BatchRemoved()) {
-                this.setGs1Batch(null);
-            }
-        } else {
-            this.setGs1Batch(e.getGs1Batch());
-        }
         if (e.getQuantity() == null) {
             if (e.getIsPropertyQuantityRemoved() != null && e.getIsPropertyQuantityRemoved()) {
                 this.setQuantity(null);
@@ -294,6 +287,13 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
             }
         } else {
             this.setExpirationDate(e.getExpirationDate());
+        }
+        if (e.getActive() == null) {
+            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
+                this.setActive(null);
+            }
+        } else {
+            this.setActive(e.getActive());
         }
 
         this.setUpdatedBy(e.getCreatedBy());
