@@ -107,10 +107,15 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             // 如果bffSupplier.getGgn()不等于现有的Ggn，更新IdValue
             if (StringUtils.hasText(bffSupplier.getGgn())) {
                 if (!oldGgn.get().getIdValue().equals(bffSupplier.getGgn())) {
-                    //修改已有的
+                    PartyIdentificationCommand.MergePatchPartyIdentification m = mergePatchParty.newMergePatchPartyIdentification();
+                    m.setPartyIdentificationTypeId(PARTY_IDENTIFICATION_TYPE_GGN);
+                    m.setIdValue(bffSupplier.getGgn());
+                    mergePatchParty.getPartyIdentificationCommands().add(m);
                 }
             } else {
-                //删除原有的PartyIdentification
+                PartyIdentificationCommand.RemovePartyIdentification r = mergePatchParty.newRemovePartyIdentification();
+                r.setPartyIdentificationTypeId(PARTY_IDENTIFICATION_TYPE_GGN);
+                mergePatchParty.getPartyIdentificationCommands().add(r);
             }
         } else { //原来没有GGN且bffSupplier.getGgn()不为空，添加新的PartyIdentification
             if (StringUtils.hasText(bffSupplier.getGgn())) {
