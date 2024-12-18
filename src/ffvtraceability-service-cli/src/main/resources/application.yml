@@ -10,5 +10,12 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        dialect: "org.hibernate.dialect.PostgreSQLDialect"
         hbm2ddl:
           auto: update
+        connection:
+          pool_size: 2
+        cache:
+          provider_class: "org.hibernate.cache.EhCacheProvider"
+          use_second_level_cache: false
+
