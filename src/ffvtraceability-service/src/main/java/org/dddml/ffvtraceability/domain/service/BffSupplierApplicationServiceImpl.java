@@ -50,7 +50,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Transactional
     public String when(BffSupplierServiceCommands.CreateSupplier c) {
         AbstractPartyCommand.SimpleCreateParty createParty = new AbstractPartyCommand.SimpleCreateParty();
-        createParty.setPartyId(IdUtils.randomId());
+        createParty.setPartyId(c.getSupplier().getSupplierId() != null ? c.getSupplier().getSupplierId() : IdUtils.randomId());
         createParty.setExternalId(c.getSupplier().getExternalId());
         createParty.setDescription(c.getSupplier().getDescription());
         createParty.setPreferredCurrencyUomId(c.getSupplier().getPreferredCurrencyUomId() != null ? c.getSupplier().getPreferredCurrencyUomId() : DEFAULT_PREFERRED_CURRENCY_UOM_ID);

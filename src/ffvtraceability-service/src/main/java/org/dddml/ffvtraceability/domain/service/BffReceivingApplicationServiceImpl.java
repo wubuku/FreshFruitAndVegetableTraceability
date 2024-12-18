@@ -19,7 +19,6 @@ import org.dddml.ffvtraceability.domain.shippingdocument.ShippingDocumentState;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,11 +46,11 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     public Page<BffReceivingDocumentDto> when(BffReceivingServiceCommands.GetReceivingDocuments c) {
         int offset = c.getPage() * c.getSize();
         long totalElements = bffReceiptRepository.countTotalShipments(c.getDocumentIdOrItem());
-        
-        List<BffReceivingDocumentItemProjection> projections = 
+
+        List<BffReceivingDocumentItemProjection> projections =
                 bffReceiptRepository.findAllReceivingDocumentsWithItems(
-                        offset, 
-                        c.getSize(), 
+                        offset,
+                        c.getSize(),
                         c.getDocumentIdOrItem());
 
         // 获取所有shipmentIds用于查询关联文档
@@ -123,7 +122,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     public String when(BffReceivingServiceCommands.CreateReceivingDocument c) {
         // NOTE: 将“BFF 文档 Id”映射到 Shipment Id
         AbstractShipmentCommand.SimpleCreateShipment createShipment = new AbstractShipmentCommand.SimpleCreateShipment();
-        createShipment.setShipmentId(IdUtils.randomId());//Ignore??? (c.getReceivingDocument().getDocumentId());
+        createShipment.setShipmentId(c.getReceivingDocument().getDocumentId() != null ? c.getReceivingDocument().getDocumentId() : IdUtils.randomId());
         createShipment.setPartyIdTo(c.getReceivingDocument().getPartyIdTo());
         createShipment.setPartyIdFrom(c.getReceivingDocument().getPartyIdFrom());
         createShipment.setOriginFacilityId(c.getReceivingDocument().getOriginFacilityId());

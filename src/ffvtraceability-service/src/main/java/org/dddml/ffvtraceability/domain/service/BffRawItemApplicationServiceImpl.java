@@ -70,7 +70,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
 //            throw new IllegalArgumentException("SupplierId is not valid.");
 //        }
         AbstractProductCommand.SimpleCreateProduct createProduct = new AbstractProductCommand.SimpleCreateProduct();
-        createProduct.setProductId(IdUtils.randomId());
+        createProduct.setProductId(c.getRawItem().getProductId() != null ? c.getRawItem().getProductId() : IdUtils.randomId());
         //(c.getRawItem().getProductId()); // NOTE: ignore the productId from the client side?
         createProduct.setProductName(c.getRawItem().getProductName());
         createProduct.setSmallImageUrl(c.getRawItem().getSmallImageUrl());

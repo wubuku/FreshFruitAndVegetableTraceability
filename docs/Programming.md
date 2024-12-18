@@ -280,7 +280,7 @@ curl -X 'POST' \
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:1023/api/BffReceipts?page=0&size=20' \
+  'http://localhost:1023/api/BffReceipts?page=0&size=20&documentIdOrItem=ORGANIC_TOMATO_02' \
   -H 'accept: application/json'
 ```
 
