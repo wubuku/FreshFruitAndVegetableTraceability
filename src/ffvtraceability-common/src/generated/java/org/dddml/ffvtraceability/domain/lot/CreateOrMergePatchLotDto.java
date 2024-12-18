@@ -11,21 +11,6 @@ import org.dddml.ffvtraceability.domain.*;
 public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements LotCommand.CreateOrMergePatchLot {
 
     /**
-     * GS1 BATCH (AI=10)
-     */
-    private String gs1Batch;
-
-    public String getGs1Batch()
-    {
-        return this.gs1Batch;
-    }
-
-    public void setGs1Batch(String gs1Batch)
-    {
-        this.gs1Batch = gs1Batch;
-    }
-
-    /**
      * Quantity
      */
     private java.math.BigDecimal quantity;
@@ -83,18 +68,6 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.lotIdentifications = lotIdentifications;
     }
 
-    private Boolean isPropertyGs1BatchRemoved;
-
-    public Boolean getIsPropertyGs1BatchRemoved()
-    {
-        return this.isPropertyGs1BatchRemoved;
-    }
-
-    public void setIsPropertyGs1BatchRemoved(Boolean removed)
-    {
-        this.isPropertyGs1BatchRemoved = removed;
-    }
-
     private Boolean isPropertyQuantityRemoved;
 
     public Boolean getIsPropertyQuantityRemoved()
@@ -134,7 +107,6 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     public void copyTo(CreateOrMergePatchLot command)
     {
         ((AbstractLotCommandDto) this).copyTo(command);
-        command.setGs1Batch(this.getGs1Batch());
         command.setQuantity(this.getQuantity());
         command.setExpirationDate(this.getExpirationDate());
         command.setActive(this.getActive());
@@ -203,7 +175,6 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     public void copyTo(MergePatchLot command)
     {
         copyTo((CreateOrMergePatchLot) command);
-        command.setIsPropertyGs1BatchRemoved(this.getIsPropertyGs1BatchRemoved());
         command.setIsPropertyQuantityRemoved(this.getIsPropertyQuantityRemoved());
         command.setIsPropertyExpirationDateRemoved(this.getIsPropertyExpirationDateRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());

@@ -19,10 +19,10 @@ public class BffLotMapperImpl implements BffLotMapper {
 
         BffLotDto bffLotDto = new BffLotDto();
 
+        bffLotDto.setExpirationDate( instantToOffsetDateTime( bffLotProjection.getExpirationDateInstant() ) );
         bffLotDto.setLotId( bffLotProjection.getLotId() );
         bffLotDto.setGs1Batch( bffLotProjection.getGs1Batch() );
         bffLotDto.setQuantity( bffLotProjection.getQuantity() );
-        bffLotDto.setExpirationDate( bffLotProjection.getExpirationDate() );
 
         return bffLotDto;
     }

@@ -15,7 +15,6 @@ public interface BffLotProjection {
 
     java.math.BigDecimal getQuantity();
 
-    OffsetDateTime getExpirationDate();
-
+    java.time.Instant getExpirationDateInstant();
 }
 

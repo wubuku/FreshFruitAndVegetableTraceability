@@ -4,10 +4,10 @@
   <class name="AbstractLotIdentificationEvent" table="lot_identification_event" abstract="true">
     <composite-id name="lotIdentificationEventId" class="org.dddml.ffvtraceability.domain.lot.LotIdentificationEventId">
       <key-property name="lotId">
-        <column name="lot_identification_id_lot_id" sql-type="VARCHAR(20)" />
+        <column name="lot_id" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="lotIdentificationTypeId">
-        <column name="lot_identification_id_lot_identification_type_id" sql-type="VARCHAR(20)" />
+        <column name="lot_identification_type_id" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="lotVersion">
         <column name="lot_version" />

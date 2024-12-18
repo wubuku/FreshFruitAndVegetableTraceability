@@ -41,10 +41,6 @@ public interface LotEvent extends Event {
     void setCommandId(String commandId);
 
     interface LotStateEvent extends LotEvent {
-        String getGs1Batch();
-
-        void setGs1Batch(String gs1Batch);
-
         java.math.BigDecimal getQuantity();
 
         void setQuantity(java.math.BigDecimal quantity);
@@ -52,6 +48,10 @@ public interface LotEvent extends Event {
         OffsetDateTime getExpirationDate();
 
         void setExpirationDate(OffsetDateTime expirationDate);
+
+        Boolean getActive();
+
+        void setActive(Boolean active);
 
     }
 
@@ -69,10 +69,6 @@ public interface LotEvent extends Event {
 
     interface LotStateMergePatched extends LotStateEvent
     {
-        Boolean getIsPropertyGs1BatchRemoved();
-
-        void setIsPropertyGs1BatchRemoved(Boolean removed);
-
         Boolean getIsPropertyQuantityRemoved();
 
         void setIsPropertyQuantityRemoved(Boolean removed);
@@ -80,6 +76,10 @@ public interface LotEvent extends Event {
         Boolean getIsPropertyExpirationDateRemoved();
 
         void setIsPropertyExpirationDateRemoved(Boolean removed);
+
+        Boolean getIsPropertyActiveRemoved();
+
+        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         Iterable<LotIdentificationEvent> getLotIdentificationEvents();

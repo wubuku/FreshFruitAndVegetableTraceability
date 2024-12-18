@@ -14,14 +14,14 @@ import org.dddml.ffvtraceability.domain.product.GoodIdentificationEvent.*;
 
 public abstract class AbstractGoodIdentificationState implements GoodIdentificationState.SqlGoodIdentificationState {
 
-    private ProductGoodIdentificationId productGoodIdentificationId = new ProductGoodIdentificationId();
+    private GoodIdentificationId goodIdentificationId = new GoodIdentificationId();
 
-    public ProductGoodIdentificationId getProductGoodIdentificationId() {
-        return this.productGoodIdentificationId;
+    public GoodIdentificationId getGoodIdentificationId() {
+        return this.goodIdentificationId;
     }
 
-    public void setProductGoodIdentificationId(ProductGoodIdentificationId productGoodIdentificationId) {
-        this.productGoodIdentificationId = productGoodIdentificationId;
+    public void setGoodIdentificationId(GoodIdentificationId goodIdentificationId) {
+        this.goodIdentificationId = goodIdentificationId;
     }
 
     private transient ProductState productState;
@@ -45,19 +45,19 @@ public abstract class AbstractGoodIdentificationState implements GoodIdentificat
     }
 
     public String getProductId() {
-        return this.getProductGoodIdentificationId().getProductId();
+        return this.getGoodIdentificationId().getProductId();
     }
         
     public void setProductId(String productId) {
-        this.getProductGoodIdentificationId().setProductId(productId);
+        this.getGoodIdentificationId().setProductId(productId);
     }
 
     public String getGoodIdentificationTypeId() {
-        return this.getProductGoodIdentificationId().getGoodIdentificationTypeId();
+        return this.getGoodIdentificationId().getGoodIdentificationTypeId();
     }
         
     public void setGoodIdentificationTypeId(String goodIdentificationTypeId) {
-        this.getProductGoodIdentificationId().setGoodIdentificationTypeId(goodIdentificationTypeId);
+        this.getGoodIdentificationId().setGoodIdentificationTypeId(goodIdentificationTypeId);
     }
 
     private String idValue;
@@ -240,13 +240,13 @@ public abstract class AbstractGoodIdentificationState implements GoodIdentificat
     }
 
     protected void throwOnWrongEvent(GoodIdentificationEvent event) {
-        String stateEntityIdProductId = this.getProductGoodIdentificationId().getProductId();
+        String stateEntityIdProductId = this.getGoodIdentificationId().getProductId();
         String eventEntityIdProductId = ((GoodIdentificationEvent.SqlGoodIdentificationEvent)event).getGoodIdentificationEventId().getProductId();
         if (!stateEntityIdProductId.equals(eventEntityIdProductId)) {
             throw DomainError.named("mutateWrongEntity", "Entity Id ProductId %1$s in state but entity id ProductId %2$s in event", stateEntityIdProductId, eventEntityIdProductId);
         }
 
-        String stateEntityIdGoodIdentificationTypeId = this.getProductGoodIdentificationId().getGoodIdentificationTypeId();
+        String stateEntityIdGoodIdentificationTypeId = this.getGoodIdentificationId().getGoodIdentificationTypeId();
         String eventEntityIdGoodIdentificationTypeId = ((GoodIdentificationEvent.SqlGoodIdentificationEvent)event).getGoodIdentificationEventId().getGoodIdentificationTypeId();
         if (!stateEntityIdGoodIdentificationTypeId.equals(eventEntityIdGoodIdentificationTypeId)) {
             throw DomainError.named("mutateWrongEntity", "Entity Id GoodIdentificationTypeId %1$s in state but entity id GoodIdentificationTypeId %2$s in event", stateEntityIdGoodIdentificationTypeId, eventEntityIdGoodIdentificationTypeId);

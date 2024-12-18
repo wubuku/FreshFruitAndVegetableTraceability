@@ -55,10 +55,6 @@ public interface LotCommand extends Command {
     interface CreateOrMergePatchLot extends LotCommand
     {
 
-        String getGs1Batch();
-
-        void setGs1Batch(String gs1Batch);
-
         java.math.BigDecimal getQuantity();
 
         void setQuantity(java.math.BigDecimal quantity);
@@ -83,10 +79,6 @@ public interface LotCommand extends Command {
 
     interface MergePatchLot extends CreateOrMergePatchLot
     {
-        Boolean getIsPropertyGs1BatchRemoved();
-
-        void setIsPropertyGs1BatchRemoved(Boolean removed);
-
         Boolean getIsPropertyQuantityRemoved();
 
         void setIsPropertyQuantityRemoved(Boolean removed);

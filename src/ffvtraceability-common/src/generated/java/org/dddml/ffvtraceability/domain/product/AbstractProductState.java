@@ -1450,9 +1450,9 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         public GoodIdentificationState getOrAddDefault(String goodIdentificationTypeId) {
             GoodIdentificationState s = get(goodIdentificationTypeId);
             if (s == null) {
-                ProductGoodIdentificationId globalId = new ProductGoodIdentificationId(getProductId(), goodIdentificationTypeId);
+                GoodIdentificationId globalId = new GoodIdentificationId(getProductId(), goodIdentificationTypeId);
                 AbstractGoodIdentificationState state = new AbstractGoodIdentificationState.SimpleGoodIdentificationState();
-                state.setProductGoodIdentificationId(globalId);
+                state.setGoodIdentificationId(globalId);
                 add(state);
                 s = state;
             }

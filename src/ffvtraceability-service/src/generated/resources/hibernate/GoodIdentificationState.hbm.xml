@@ -2,17 +2,17 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.product">
   <class name="org.dddml.ffvtraceability.domain.product.AbstractGoodIdentificationState$SimpleGoodIdentificationState" table="good_identification">
-    <composite-id name="productGoodIdentificationId" class="org.dddml.ffvtraceability.domain.product.ProductGoodIdentificationId">
+    <composite-id name="goodIdentificationId" class="org.dddml.ffvtraceability.domain.product.GoodIdentificationId">
       <key-property name="productId">
-        <column name="product_id" sql-type="VARCHAR(20)" />
+        <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="goodIdentificationTypeId">
-        <column name="good_identification_type_id" sql-type="VARCHAR(20)" />
+        <column name="GOOD_IDENTIFICATION_TYPE_ID" sql-type="VARCHAR(20)" />
       </key-property>
     </composite-id>
     <version name="version" column="version" type="long" />
     <many-to-one name="protectedProductState" class="org.dddml.ffvtraceability.domain.product.AbstractProductState" insert="false" update="false">
-      <column name="product_id" />
+      <column name="PRODUCT_ID" />
     </many-to-one>
     <property name="idValue">
       <column name="id_value" not-null="true" sql-type="VARCHAR(60)" />
