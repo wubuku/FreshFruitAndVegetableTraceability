@@ -256,11 +256,21 @@ curl -X 'POST' \
       "quantityRejected": 20.00,
       "casesAccepted": 25,
       "casesRejected": 1
+    },
+    {
+      "productId": "ORGANIC_TOMATO_02",
+      "lotId": "LOT20240315B",
+      "locationSeqId": "FRESH_ZONE_B",
+      "itemDescription": "Organic Tomato",
+      "quantityAccepted": 500.00,
+      "quantityRejected": 20.00,
+      "casesAccepted": 25,
+      "casesRejected": 1
     }
   ],
   "referenceDocuments": [
     {
-      "documentId": "ASN2024031501"
+      "documentId": "ASN2024031502"
     }
   ]
 }'

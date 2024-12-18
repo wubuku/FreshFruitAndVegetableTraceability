@@ -45,11 +45,17 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Override
     @Transactional(readOnly = true)
     public Page<BffReceivingDocumentDto> when(BffReceivingServiceCommands.GetReceivingDocuments c) {
-        org.springframework.data.domain.Page<BffReceivingDocumentItemProjection> projections
-                = bffReceiptRepository.findAllReceivingDocumentsWithItems(PageRequest.of(c.getPage(), c.getSize()), c.getDocumentIdOrItem());
+        int offset = c.getPage() * c.getSize();
+        long totalElements = bffReceiptRepository.countTotalShipments(c.getDocumentIdOrItem());
+        
+        List<BffReceivingDocumentItemProjection> projections = 
+                bffReceiptRepository.findAllReceivingDocumentsWithItems(
+                        offset, 
+                        c.getSize(), 
+                        c.getDocumentIdOrItem());
 
         // 获取所有shipmentIds用于查询关联文档
-        List<String> shipmentIds = projections.getContent().stream()
+        List<String> shipmentIds = projections.stream()
                 .map(BffReceivingDocumentItemProjection::getDocumentId)
                 .distinct()
                 .collect(Collectors.toList());
@@ -68,7 +74,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                         )
                 ));
 
-        List<BffReceivingDocumentDto> receivingDocuments = projections.getContent().stream()
+        List<BffReceivingDocumentDto> receivingDocuments = projections.stream()
                 .collect(Collectors.groupingBy(
                         proj -> bffReceiptMapper.toBffReceivingDocumentDto(proj),
                         Collectors.mapping(
@@ -96,9 +102,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 ).collect(Collectors.toList());
 
         return Page.builder(receivingDocuments)
-                .totalElements(projections.getTotalElements())
-                .size(projections.getSize())
-                .number(projections.getNumber())
+                .totalElements(totalElements)
+                .size(c.getSize())
+                .number(c.getPage())
                 .build();
     }
 
