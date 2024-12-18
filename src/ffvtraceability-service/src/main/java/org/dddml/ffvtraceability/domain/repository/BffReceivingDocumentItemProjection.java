@@ -1,5 +1,7 @@
 package org.dddml.ffvtraceability.domain.repository;
 
+import java.time.Instant;
+
 public interface BffReceivingDocumentItemProjection extends BffReceivingDocumentProjection, BffReceivingItemProjection {
 
     String getReferenceDocumentId();
@@ -11,4 +13,6 @@ public interface BffReceivingDocumentItemProjection extends BffReceivingDocument
     String getReferenceDocumentLocation();
 
     String getReferenceDocumentText();
+
+    Instant getCreatedAtInstant();
 }

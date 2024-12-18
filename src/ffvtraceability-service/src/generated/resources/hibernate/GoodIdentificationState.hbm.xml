@@ -4,15 +4,15 @@
   <class name="org.dddml.ffvtraceability.domain.product.AbstractGoodIdentificationState$SimpleGoodIdentificationState" table="good_identification">
     <composite-id name="productGoodIdentificationId" class="org.dddml.ffvtraceability.domain.product.ProductGoodIdentificationId">
       <key-property name="productId">
-        <column name="product_good_identification_id_product_id" sql-type="VARCHAR(20)" />
+        <column name="product_id" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="goodIdentificationTypeId">
-        <column name="product_good_identification_id_good_identification_type_id" sql-type="VARCHAR(20)" />
+        <column name="good_identification_type_id" sql-type="VARCHAR(20)" />
       </key-property>
     </composite-id>
     <version name="version" column="version" type="long" />
     <many-to-one name="protectedProductState" class="org.dddml.ffvtraceability.domain.product.AbstractProductState" insert="false" update="false">
-      <column name="product_good_identification_id_product_id" />
+      <column name="product_id" />
     </many-to-one>
     <property name="idValue">
       <column name="id_value" not-null="true" sql-type="VARCHAR(60)" />

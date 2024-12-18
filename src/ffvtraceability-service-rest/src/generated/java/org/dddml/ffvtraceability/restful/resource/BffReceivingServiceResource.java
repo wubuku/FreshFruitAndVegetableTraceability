@@ -33,11 +33,13 @@ public class BffReceivingServiceResource {
     @GetMapping
     public Page<BffReceivingDocumentDto> getReceivingDocuments(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
-        @RequestParam(value = "size", defaultValue = "20") Integer size
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "documentIdOrItem", required = false) String documentIdOrItem
     ) {
         BffReceivingServiceCommands.GetReceivingDocuments getReceivingDocuments = new BffReceivingServiceCommands.GetReceivingDocuments();
         getReceivingDocuments.setPage(page);
         getReceivingDocuments.setSize(size);
+        getReceivingDocuments.setDocumentIdOrItem(documentIdOrItem);
         try {
         getReceivingDocuments.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(getReceivingDocuments);

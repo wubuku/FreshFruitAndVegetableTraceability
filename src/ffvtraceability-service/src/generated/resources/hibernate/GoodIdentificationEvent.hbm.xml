@@ -4,10 +4,10 @@
   <class name="AbstractGoodIdentificationEvent" table="good_identification_event" abstract="true">
     <composite-id name="goodIdentificationEventId" class="org.dddml.ffvtraceability.domain.product.GoodIdentificationEventId">
       <key-property name="productId">
-        <column name="product_good_identification_id_product_id" sql-type="VARCHAR(20)" />
+        <column name="product_id" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="goodIdentificationTypeId">
-        <column name="product_good_identification_id_good_identification_type_id" sql-type="VARCHAR(20)" />
+        <column name="good_identification_type_id" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="productVersion">
         <column name="product_version" />

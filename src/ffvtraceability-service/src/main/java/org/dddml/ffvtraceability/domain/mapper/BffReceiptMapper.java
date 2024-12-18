@@ -6,9 +6,17 @@ import org.dddml.ffvtraceability.domain.BffReceivingItemDto;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProjection;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 @Mapper(componentModel = "spring")
 public interface BffReceiptMapper {
+    default OffsetDateTime instantToOffsetDateTime(Instant instant) {
+        return instant != null ? instant.atOffset(ZoneOffset.UTC) : null;
+    }
+
+    @Mapping(source = "createdAtInstant", target = "createdAt")
     BffReceivingDocumentDto toBffReceivingDocumentDto(BffReceivingDocumentItemProjection documentItemProjection);
 
     BffReceivingItemDto toBffReceivingItemDto(BffReceivingDocumentItemProjection documentItemProjection);

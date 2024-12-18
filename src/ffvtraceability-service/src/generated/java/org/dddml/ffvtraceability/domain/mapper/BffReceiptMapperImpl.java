@@ -21,11 +21,14 @@ public class BffReceiptMapperImpl implements BffReceiptMapper {
 
         BffReceivingDocumentDto bffReceivingDocumentDto = new BffReceivingDocumentDto();
 
+        bffReceivingDocumentDto.setCreatedAt( instantToOffsetDateTime( documentItemProjection.getCreatedAtInstant() ) );
         bffReceivingDocumentDto.setDocumentId( documentItemProjection.getDocumentId() );
         bffReceivingDocumentDto.setStatusId( documentItemProjection.getStatusId() );
         bffReceivingDocumentDto.setPartyIdTo( documentItemProjection.getPartyIdTo() );
         bffReceivingDocumentDto.setPartyIdFrom( documentItemProjection.getPartyIdFrom() );
+        bffReceivingDocumentDto.setPartyNameFrom( documentItemProjection.getPartyNameFrom() );
         bffReceivingDocumentDto.setOriginFacilityId( documentItemProjection.getOriginFacilityId() );
+        bffReceivingDocumentDto.setOriginFacilityName( documentItemProjection.getOriginFacilityName() );
         bffReceivingDocumentDto.setDestinationFacilityId( documentItemProjection.getDestinationFacilityId() );
         bffReceivingDocumentDto.setPrimaryOrderId( documentItemProjection.getPrimaryOrderId() );
         bffReceivingDocumentDto.setPrimaryReturnId( documentItemProjection.getPrimaryReturnId() );
@@ -44,6 +47,8 @@ public class BffReceiptMapperImpl implements BffReceiptMapper {
 
         bffReceivingItemDto.setReceiptId( documentItemProjection.getReceiptId() );
         bffReceivingItemDto.setProductId( documentItemProjection.getProductId() );
+        bffReceivingItemDto.setProductName( documentItemProjection.getProductName() );
+        bffReceivingItemDto.setGtin( documentItemProjection.getGtin() );
         bffReceivingItemDto.setLotId( documentItemProjection.getLotId() );
         bffReceivingItemDto.setLocationSeqId( documentItemProjection.getLocationSeqId() );
         bffReceivingItemDto.setItemDescription( documentItemProjection.getItemDescription() );

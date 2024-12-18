@@ -33,6 +33,19 @@ public class BffReceivingServiceCommands {
             this.size = size;
         }
 
+        /**
+         * Document Id Or Item
+         */
+        private String documentIdOrItem;
+
+        public String getDocumentIdOrItem() {
+            return documentIdOrItem;
+        }
+
+        public void setDocumentIdOrItem(String documentIdOrItem) {
+            this.documentIdOrItem = documentIdOrItem;
+        }
+
     }
 
     public static class GetReceivingDocument extends org.dddml.ffvtraceability.domain.AbstractCommand {

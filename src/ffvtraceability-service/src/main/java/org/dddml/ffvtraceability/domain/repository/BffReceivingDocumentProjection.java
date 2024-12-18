@@ -5,6 +5,7 @@
 
 package org.dddml.ffvtraceability.domain.repository;
 
+import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public interface BffReceivingDocumentProjection {
@@ -16,7 +17,11 @@ public interface BffReceivingDocumentProjection {
 
     String getPartyIdFrom();
 
+    String getPartyNameFrom();
+
     String getOriginFacilityId();
+
+    String getOriginFacilityName();
 
     String getDestinationFacilityId();
 
@@ -25,6 +30,8 @@ public interface BffReceivingDocumentProjection {
     String getPrimaryReturnId();
 
     String getPrimaryShipGroupSeqId();
+
+    OffsetDateTime getCreatedAt();
 
 }
 

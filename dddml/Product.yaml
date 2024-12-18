@@ -265,11 +265,16 @@
           name: GoodIdentificationTypeId
           type: id
           # referenceType: GoodIdentificationType
+        globalId:
+          name: GoodIdentificationId
+          type: GoodIdentificationId
+          columnNames:
+            - PRODUCT_ID
+            - GOOD_IDENTIFICATION_TYPE_ID
         properties:
           IdValue:
             type: id-long
             notNull: true
-
 
   ProductType:
     metadata:

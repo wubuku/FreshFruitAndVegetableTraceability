@@ -24,12 +24,12 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             FROM product p
             LEFT JOIN (
                 SELECT
-                    gi.product_good_identification_id_product_id,
+                    gi.product_id,
                     gi.id_value
                 FROM good_identification gi
-                WHERE gi.product_good_identification_id_good_identification_type_id = 'GTIN'
+                WHERE gi.good_identification_type_id = 'GTIN'
                     AND (gi.deleted IS NULL OR gi.deleted = false)
-            ) gi ON gi.product_good_identification_id_product_id = p.product_id
+            ) gi ON gi.product_id = p.product_id
             LEFT JOIN (
                 SELECT DISTINCT ON (sp.product_id)
                     sp.product_id,

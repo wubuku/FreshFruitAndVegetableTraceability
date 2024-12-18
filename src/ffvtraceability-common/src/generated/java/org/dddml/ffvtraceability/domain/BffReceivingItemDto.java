@@ -33,6 +33,30 @@ public class BffReceivingItemDto implements Serializable {
         this.productId = productId;
     }
 
+    private String productName;
+
+    public String getProductName()
+    {
+        return this.productName;
+    }
+
+    public void setProductName(String productName)
+    {
+        this.productName = productName;
+    }
+
+    private String gtin;
+
+    public String getGtin()
+    {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin)
+    {
+        this.gtin = gtin;
+    }
+
     private String lotId;
 
     public String getLotId()
@@ -217,10 +241,12 @@ public class BffReceivingItemDto implements Serializable {
     {
     }
 
-    public BffReceivingItemDto(String receiptId, String productId, String lotId, String locationSeqId, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId)
+    public BffReceivingItemDto(String receiptId, String productId, String productName, String gtin, String lotId, String locationSeqId, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId)
     {
         this.receiptId = receiptId;
         this.productId = productId;
+        this.productName = productName;
+        this.gtin = gtin;
         this.lotId = lotId;
         this.locationSeqId = locationSeqId;
         this.itemDescription = itemDescription;
@@ -252,6 +278,8 @@ public class BffReceivingItemDto implements Serializable {
         return true 
             && (receiptId == other.receiptId || (receiptId != null && receiptId.equals(other.receiptId)))
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
+            && (productName == other.productName || (productName != null && productName.equals(other.productName)))
+            && (gtin == other.gtin || (gtin != null && gtin.equals(other.gtin)))
             && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
             && (locationSeqId == other.locationSeqId || (locationSeqId != null && locationSeqId.equals(other.locationSeqId)))
             && (itemDescription == other.itemDescription || (itemDescription != null && itemDescription.equals(other.itemDescription)))
@@ -279,6 +307,12 @@ public class BffReceivingItemDto implements Serializable {
         }
         if (this.productId != null) {
             hash += 13 * this.productId.hashCode();
+        }
+        if (this.productName != null) {
+            hash += 13 * this.productName.hashCode();
+        }
+        if (this.gtin != null) {
+            hash += 13 * this.gtin.hashCode();
         }
         if (this.lotId != null) {
             hash += 13 * this.lotId.hashCode();
@@ -333,6 +367,8 @@ public class BffReceivingItemDto implements Serializable {
         return "BffReceivingItemDto{" +
                 "receiptId=" + '\'' + receiptId + '\'' +
                 ", productId=" + '\'' + productId + '\'' +
+                ", productName=" + '\'' + productName + '\'' +
+                ", gtin=" + '\'' + gtin + '\'' +
                 ", lotId=" + '\'' + lotId + '\'' +
                 ", locationSeqId=" + '\'' + locationSeqId + '\'' +
                 ", itemDescription=" + '\'' + itemDescription + '\'' +

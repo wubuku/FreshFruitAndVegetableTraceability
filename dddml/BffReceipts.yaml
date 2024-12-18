@@ -12,8 +12,13 @@ valueObjects:
         type: id
       PartyIdFrom:
         type: id
+      PartyNameFrom:
+        # 一般情况下，使用 party 的 organization_name 即可。
+        type: name
       OriginFacilityId:
         type: id
+      OriginFacilityName:
+        type: name
       DestinationFacilityId:
         type: id
       PrimaryOrderId:
@@ -22,6 +27,8 @@ valueObjects:
         type: id
       PrimaryShipGroupSeqId:
         type: id
+      CreatedAt:
+        type: date-time
       ReceivingItems:
         itemType: BffReceivingItemDto
         isList: true
@@ -39,8 +46,13 @@ valueObjects:
       ProductId:
         # RawItem Id
         type: id
+      ProductName:
+        type: name
       # AttributeSetInstanceId:
       #   type: HashHex
+      Gtin:
+        description: "GTIN (Global Trade Item Number)"
+        type: id
       LotId:
         type: id
       LocationSeqId:
@@ -85,6 +97,9 @@ services:
           IsPageable: true
           ReturnPageEnvelope: true
         isQuery: true
+        parameters:
+          DocumentIdOrItem:
+            type: id
         result:
           itemType: BffReceivingDocumentDto
 

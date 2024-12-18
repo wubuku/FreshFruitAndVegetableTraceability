@@ -18,11 +18,16 @@ public interface BffReceiptRepository extends JpaRepository<AbstractShipmentRece
             "   s.status_id as statusId, " +
             "   s.party_id_to as partyIdTo, " +
             "   s.party_id_from as partyIdFrom, " +
+            "   p.organization_name as partyNameFrom, " +
             "   s.origin_facility_id as originFacilityId, " +
+            "   f.facility_name as originFacilityName, " +
             "   s.destination_facility_id as destinationFacilityId, " +
             "   s.primary_order_id as primaryOrderId, " +
+            "   s.created_at as createdAtInstant, " +
             "   sr.receipt_id as receiptId, " +
             "   sr.product_id as productId, " +
+            "   prod.product_name as productName, " +
+            "   gi.id_value as gtin, " +
             "   sr.lot_id as lotId, " +
             "   sr.location_seq_id as locationSeqId, " +
             "   sr.item_description as itemDescription, " +
@@ -33,11 +38,27 @@ public interface BffReceiptRepository extends JpaRepository<AbstractShipmentRece
             "   sr.datetime_received as datetimeReceived " +
             "FROM shipment s " +
             "LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id " +
-            "ORDER BY s.shipment_id, sr.receipt_id",
-            countQuery = "SELECT COUNT(DISTINCT s.shipment_id) FROM shipment s",
+            "LEFT JOIN party p ON s.party_id_from = p.party_id " +
+            "LEFT JOIN facility f ON s.origin_facility_id = f.facility_id " +
+            "LEFT JOIN product prod ON sr.product_id = prod.product_id " +
+            "LEFT JOIN good_identification gi ON prod.product_id = gi.product_id AND gi.good_identification_type_id = 'GTIN' " +
+            "WHERE (:documentIdOrItem IS NULL OR " +
+            "      s.shipment_id LIKE CONCAT(:documentIdOrItem, '%') OR " +
+            "      sr.product_id LIKE CONCAT(:documentIdOrItem, '%') OR " +
+            "      gi.id_value LIKE CONCAT(:documentIdOrItem, '%')) " +
+            "ORDER BY s.created_at DESC",
+            countQuery = "SELECT COUNT(DISTINCT s.shipment_id) " +
+                    "FROM shipment s " +
+                    "LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id " +
+                    "LEFT JOIN product prod ON sr.product_id = prod.product_id " +
+                    "LEFT JOIN good_identification gi ON prod.product_id = gi.product_id AND gi.good_identification_type_id = 'GTIN' " +
+                    "WHERE (:documentIdOrItem IS NULL OR " +
+                    "      s.shipment_id LIKE CONCAT(:documentIdOrItem, '%') OR " +
+                    "      sr.product_id LIKE CONCAT(:documentIdOrItem, '%') OR " +
+                    "      gi.id_value LIKE CONCAT(:documentIdOrItem, '%'))",
             nativeQuery = true
     )
-    Page<BffReceivingDocumentItemProjection> findAllReceivingDocumentsWithItems(Pageable pageable);
+    Page<BffReceivingDocumentItemProjection> findAllReceivingDocumentsWithItems(Pageable pageable, @Param("documentIdOrItem") String documentIdOrItem);
 
     @Query(value = "SELECT " +
             "   sd.shipment_id as documentId, " +

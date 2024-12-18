@@ -3,7 +3,9 @@ package org.dddml.ffvtraceability.domain.service;
 import org.dddml.ffvtraceability.domain.BffDocumentDto;
 import org.dddml.ffvtraceability.domain.BffReceivingDocumentDto;
 import org.dddml.ffvtraceability.domain.BffReceivingItemDto;
+import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
+import org.dddml.ffvtraceability.domain.document.DocumentState;
 import org.dddml.ffvtraceability.domain.mapper.BffReceiptMapper;
 import org.dddml.ffvtraceability.domain.repository.BffReceiptRepository;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProjection;
@@ -13,6 +15,7 @@ import org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptC
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
 import org.dddml.ffvtraceability.domain.shippingdocument.AbstractShippingDocumentCommand;
 import org.dddml.ffvtraceability.domain.shippingdocument.ShippingDocumentApplicationService;
+import org.dddml.ffvtraceability.domain.shippingdocument.ShippingDocumentState;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Transactional(readOnly = true)
     public Page<BffReceivingDocumentDto> when(BffReceivingServiceCommands.GetReceivingDocuments c) {
         org.springframework.data.domain.Page<BffReceivingDocumentItemProjection> projections
-                = bffReceiptRepository.findAllReceivingDocumentsWithItems(PageRequest.of(c.getPage(), c.getSize()));
+                = bffReceiptRepository.findAllReceivingDocumentsWithItems(PageRequest.of(c.getPage(), c.getSize()), c.getDocumentIdOrItem());
 
         // 获取所有shipmentIds用于查询关联文档
         List<String> shipmentIds = projections.getContent().stream()
@@ -52,8 +55,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 .collect(Collectors.toList());
 
         // 查询关联文档
-        List<BffReceivingDocumentItemProjection> referenceDocuments =
-                bffReceiptRepository.findReferenceDocumentsByShipmentIds(shipmentIds);
+        List<BffReceivingDocumentItemProjection> referenceDocuments = shipmentIds.isEmpty() ? Collections.emptyList()
+                : bffReceiptRepository.findReferenceDocumentsByShipmentIds(shipmentIds);
 
         // 构建文档ID到引用文档列表的映射
         Map<String, List<BffDocumentDto>> documentReferenceMap = referenceDocuments.stream()
@@ -152,8 +155,30 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
         if (c.getReceivingDocument() != null) {
             for (BffDocumentDto referenceDocument : c.getReceivingDocument().getReferenceDocuments()) {
+                String documentId;
+                if (referenceDocument.getDocumentId() == null) {
+                    AbstractDocumentCommand.SimpleCreateDocument createDocument = new AbstractDocumentCommand.SimpleCreateDocument();
+                    createDocument.setDocumentId(IdUtils.randomId());
+                    createDocument.setDocumentLocation(referenceDocument.getDocumentLocation());
+                    createDocument.setDocumentText(referenceDocument.getDocumentText());
+                    createDocument.setComments(referenceDocument.getComments());
+                    createDocument.setCommandId(UUID.randomUUID().toString());
+                    createDocument.setRequesterId(c.getRequesterId());
+                    documentApplicationService.when(createDocument);
+                    documentId = createDocument.getDocumentId();
+                } else {
+                    documentId = referenceDocument.getDocumentId();
+                    DocumentState d = documentApplicationService.get(documentId);
+                    if (d == null) {
+                        //todo throw new IllegalArgumentException("Document not found: " + documentId);
+                    }
+                }
+                // 这里每个“文档 Id”都只能与一个 Shipment 关联。判断“关联”是否已经存在，如果存在则报错。
+                ShippingDocumentState sd = shippingDocumentApplicationService.get(documentId);
+                if (sd != null) {
+                    throw new IllegalArgumentException("Document already associated with a shipment: " + documentId);
+                }
                 AbstractShippingDocumentCommand.SimpleCreateShippingDocument createShippingDocument = new AbstractShippingDocumentCommand.SimpleCreateShippingDocument();
-                // TODO 判断文档 Id 是否存在
                 createShippingDocument.setDocumentId(referenceDocument.getDocumentId());
                 createShippingDocument.setShipmentId(createShipment.getShipmentId());
                 createShippingDocument.setCommandId(UUID.randomUUID().toString());//createShipment.getShipmentId() + "-" + createShippingDocument.getDocumentId());
