@@ -3,6 +3,10 @@ valueObjects:
   BffLotDto:
     metadata:
       JpaProjectionInterfaceName: BffLotProjection
+      JpaProjectionPropertyAliases:
+        ExpirationDate: ExpirationDateInstant
+      JpaProjectionPropertyTypes:
+        ExpirationDate: java.time.Instant
     properties:
       LotId:
         type: id

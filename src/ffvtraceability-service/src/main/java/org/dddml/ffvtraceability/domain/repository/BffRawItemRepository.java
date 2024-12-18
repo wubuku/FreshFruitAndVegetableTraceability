@@ -55,4 +55,10 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
     //todo AND p.tenant_id = :tenantId
     //todo WHERE p.product_type_id = 'PRODUCT' ??? 这个地方应该过滤出“原材料”类型的产品？
 
+
+    // 这个查询保证了每个产品只返回一个供应商：
+    // `DISTINCT ON (sp.product_id)` - PostgreSQL 特有的语法，它会为每个 product_id 只保留一行。
+    // `ORDER BY sp.product_id, sp.available_from_date DESC` - 配合 DISTINCT ON 使用，确保保留的是最新的供应商记录。
+    // 所以即使一个产品有多个供应商，这个查询也只会返回 available_from_date 最新的那个供应商的信息。
+
 }
