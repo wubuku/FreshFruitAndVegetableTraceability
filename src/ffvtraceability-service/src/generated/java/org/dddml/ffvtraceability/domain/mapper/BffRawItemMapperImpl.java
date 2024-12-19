@@ -19,16 +19,16 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
 
         BffRawItemDto bffRawItemDto = new BffRawItemDto();
 
-        bffRawItemDto.setProductId( bffRawItem.getProductId() );
-        bffRawItemDto.setProductName( bffRawItem.getProductName() );
         bffRawItemDto.setDescription( bffRawItem.getDescription() );
         bffRawItemDto.setGtin( bffRawItem.getGtin() );
-        bffRawItemDto.setSmallImageUrl( bffRawItem.getSmallImageUrl() );
-        bffRawItemDto.setMediumImageUrl( bffRawItem.getMediumImageUrl() );
         bffRawItemDto.setLargeImageUrl( bffRawItem.getLargeImageUrl() );
-        bffRawItemDto.setQuantityUomId( bffRawItem.getQuantityUomId() );
-        bffRawItemDto.setQuantityIncluded( bffRawItem.getQuantityIncluded() );
+        bffRawItemDto.setMediumImageUrl( bffRawItem.getMediumImageUrl() );
         bffRawItemDto.setPiecesIncluded( bffRawItem.getPiecesIncluded() );
+        bffRawItemDto.setProductId( bffRawItem.getProductId() );
+        bffRawItemDto.setProductName( bffRawItem.getProductName() );
+        bffRawItemDto.setQuantityIncluded( bffRawItem.getQuantityIncluded() );
+        bffRawItemDto.setQuantityUomId( bffRawItem.getQuantityUomId() );
+        bffRawItemDto.setSmallImageUrl( bffRawItem.getSmallImageUrl() );
         bffRawItemDto.setStatusId( bffRawItem.getStatusId() );
         bffRawItemDto.setSupplierId( bffRawItem.getSupplierId() );
 

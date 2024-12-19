@@ -8,9 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication(exclude = {
-        SecurityAutoConfiguration.class
-})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @EntityScan(basePackages = {
         //"org.dddml.ffvtraceability.sui.contract"
 })

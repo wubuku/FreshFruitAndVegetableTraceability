@@ -1,7 +1,11 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
-import org.dddml.ffvtraceability.domain.party.*;
+import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
+import org.dddml.ffvtraceability.domain.party.AbstractPartyCommand;
+import org.dddml.ffvtraceability.domain.party.PartyApplicationService;
+import org.dddml.ffvtraceability.domain.party.PartyIdentificationCommand;
+import org.dddml.ffvtraceability.domain.party.PartyState;
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
@@ -11,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.util.Objects;
 
 @Service
 public class BffSupplierApplicationServiceImpl implements BffSupplierApplicationService {
@@ -36,6 +38,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Autowired
     private PartyRoleApplicationService partyRoleApplicationService;
 
+    @Autowired
+    private BffSupplierMapper bffSupplierMapper;
 
     @Override
     public Page<BffSupplierDto> when(BffSupplierServiceCommands.GetSuppliers c) {
@@ -43,7 +47,21 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BffSupplierDto when(BffSupplierServiceCommands.GetSupplier c) {
+        PartyState party = partyApplicationService.get(c.getSupplierId());
+        if (party != null) {
+            BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(party);
+            party.getPartyIdentifications().stream().forEach(x -> {
+                if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GLN)) {
+                    dto.setGln(x.getIdValue());
+                } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GGN)) {
+                    dto.setGgn(x.getIdValue());
+                }
+            });
+
+            return dto;
+        }
         return null;
     }
 
