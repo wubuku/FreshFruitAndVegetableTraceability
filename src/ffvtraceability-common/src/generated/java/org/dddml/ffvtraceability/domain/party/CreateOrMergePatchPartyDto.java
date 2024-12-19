@@ -340,21 +340,6 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         this.familyName = familyName;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private CreateOrMergePatchPartyIdentificationDto[] partyIdentifications = new CreateOrMergePatchPartyIdentificationDto[0];
 
@@ -632,18 +617,6 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         this.isPropertyFamilyNameRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchParty command)
     {
         ((AbstractPartyCommandDto) this).copyTo(command);
@@ -669,7 +642,6 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         command.setOrganizationName(this.getOrganizationName());
         command.setTaxIdNum(this.getTaxIdNum());
         command.setFamilyName(this.getFamilyName());
-        command.setActive(this.getActive());
     }
 
     public PartyCommand toCommand()
@@ -757,7 +729,6 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         command.setIsPropertyOrganizationNameRemoved(this.getIsPropertyOrganizationNameRemoved());
         command.setIsPropertyTaxIdNumRemoved(this.getIsPropertyTaxIdNumRemoved());
         command.setIsPropertyFamilyNameRemoved(this.getIsPropertyFamilyNameRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreatePartyDto extends CreateOrMergePatchPartyDto implements PartyCommand.CreateParty

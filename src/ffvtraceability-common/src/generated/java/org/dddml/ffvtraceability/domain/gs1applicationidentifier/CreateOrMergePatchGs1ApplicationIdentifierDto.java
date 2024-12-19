@@ -221,21 +221,6 @@ public class CreateOrMergePatchGs1ApplicationIdentifierDto extends AbstractGs1Ap
     }
 
     /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
-    /**
      * Components
      */
     private Gs1AppIdComponent[] components;
@@ -427,18 +412,6 @@ public class CreateOrMergePatchGs1ApplicationIdentifierDto extends AbstractGs1Ap
     public void setIsPropertyEndRemoved(Boolean removed)
     {
         this.isPropertyEndRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public Gs1ApplicationIdentifierCommand toCommand()
@@ -665,16 +638,6 @@ public class CreateOrMergePatchGs1ApplicationIdentifierDto extends AbstractGs1Ap
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchGs1ApplicationIdentifierDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchGs1ApplicationIdentifierDto.this.setActive(p);
-            }
-
-            @Override
             public Gs1AppIdComponent[] getComponents() {
                 return CreateOrMergePatchGs1ApplicationIdentifierDto.this.getComponents();
             }
@@ -886,16 +849,6 @@ public class CreateOrMergePatchGs1ApplicationIdentifierDto extends AbstractGs1Ap
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchGs1ApplicationIdentifierDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchGs1ApplicationIdentifierDto.this.setActive(p);
-            }
-
-            @Override
             public Gs1AppIdComponent[] getComponents() {
                 return CreateOrMergePatchGs1ApplicationIdentifierDto.this.getComponents();
             }
@@ -1053,16 +1006,6 @@ public class CreateOrMergePatchGs1ApplicationIdentifierDto extends AbstractGs1Ap
             @Override
             public void setIsPropertyEndRemoved(Boolean removed) {
                 CreateOrMergePatchGs1ApplicationIdentifierDto.this.setIsPropertyEndRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchGs1ApplicationIdentifierDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchGs1ApplicationIdentifierDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

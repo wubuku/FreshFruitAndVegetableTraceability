@@ -70,21 +70,6 @@ public class CreateOrMergePatchShippingDocumentDto extends AbstractShippingDocum
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyShipmentIdRemoved;
 
@@ -134,18 +119,6 @@ public class CreateOrMergePatchShippingDocumentDto extends AbstractShippingDocum
         this.isPropertyDescriptionRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchShippingDocument command)
     {
         ((AbstractShippingDocumentCommandDto) this).copyTo(command);
@@ -153,7 +126,6 @@ public class CreateOrMergePatchShippingDocumentDto extends AbstractShippingDocum
         command.setShipmentItemSeqId(this.getShipmentItemSeqId());
         command.setShipmentPackageSeqId(this.getShipmentPackageSeqId());
         command.setDescription(this.getDescription());
-        command.setActive(this.getActive());
     }
 
     public ShippingDocumentCommand toCommand()
@@ -202,7 +174,6 @@ public class CreateOrMergePatchShippingDocumentDto extends AbstractShippingDocum
         command.setIsPropertyShipmentItemSeqIdRemoved(this.getIsPropertyShipmentItemSeqIdRemoved());
         command.setIsPropertyShipmentPackageSeqIdRemoved(this.getIsPropertyShipmentPackageSeqIdRemoved());
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateShippingDocumentDto extends CreateOrMergePatchShippingDocumentDto implements ShippingDocumentCommand.CreateShippingDocument

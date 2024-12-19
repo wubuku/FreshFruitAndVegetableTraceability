@@ -40,21 +40,6 @@ public class CreateOrMergePatchCommentDto extends AbstractCommentCommandDto impl
         this.body = body;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyCommenterRemoved;
 
@@ -80,24 +65,11 @@ public class CreateOrMergePatchCommentDto extends AbstractCommentCommandDto impl
         this.isPropertyBodyRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchComment command)
     {
         ((AbstractCommentCommandDto) this).copyTo(command);
         command.setCommenter(this.getCommenter());
         command.setBody(this.getBody());
-        command.setActive(this.getActive());
     }
 
     public CommentCommand toCommand()
@@ -154,7 +126,6 @@ public class CreateOrMergePatchCommentDto extends AbstractCommentCommandDto impl
         copyTo((CreateOrMergePatchComment) command);
         command.setIsPropertyCommenterRemoved(this.getIsPropertyCommenterRemoved());
         command.setIsPropertyBodyRemoved(this.getIsPropertyBodyRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateCommentDto extends CreateOrMergePatchCommentDto implements CommentCommand.CreateComment

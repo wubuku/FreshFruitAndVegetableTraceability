@@ -25,21 +25,6 @@ public class CreateOrMergePatchGoodIdentificationDto extends AbstractGoodIdentif
         this.idValue = idValue;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyIdValueRemoved;
 
@@ -53,23 +38,10 @@ public class CreateOrMergePatchGoodIdentificationDto extends AbstractGoodIdentif
         this.isPropertyIdValueRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchGoodIdentification command)
     {
         ((AbstractGoodIdentificationCommandDto) this).copyTo(command);
         command.setIdValue(this.getIdValue());
-        command.setActive(this.getActive());
     }
 
     public GoodIdentificationCommand toCommand()
@@ -125,7 +97,6 @@ public class CreateOrMergePatchGoodIdentificationDto extends AbstractGoodIdentif
     {
         copyTo((CreateOrMergePatchGoodIdentification) command);
         command.setIsPropertyIdValueRemoved(this.getIsPropertyIdValueRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateGoodIdentificationDto extends CreateOrMergePatchGoodIdentificationDto implements GoodIdentificationCommand.CreateGoodIdentification

@@ -625,21 +625,6 @@ public class CreateOrMergePatchOrderItemDto extends AbstractOrderItemCommandDto 
         this.salesOpportunityId = salesOpportunityId;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyExternalIdRemoved;
 
@@ -1133,18 +1118,6 @@ public class CreateOrMergePatchOrderItemDto extends AbstractOrderItemCommandDto 
         this.isPropertySalesOpportunityIdRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchOrderItem command)
     {
         ((AbstractOrderItemCommandDto) this).copyTo(command);
@@ -1189,7 +1162,6 @@ public class CreateOrMergePatchOrderItemDto extends AbstractOrderItemCommandDto 
         command.setCancelBackOrderDate(this.getCancelBackOrderDate());
         command.setOverrideGlAccountId(this.getOverrideGlAccountId());
         command.setSalesOpportunityId(this.getSalesOpportunityId());
-        command.setActive(this.getActive());
     }
 
     public OrderItemCommand toCommand()
@@ -1285,7 +1257,6 @@ public class CreateOrMergePatchOrderItemDto extends AbstractOrderItemCommandDto 
         command.setIsPropertyCancelBackOrderDateRemoved(this.getIsPropertyCancelBackOrderDateRemoved());
         command.setIsPropertyOverrideGlAccountIdRemoved(this.getIsPropertyOverrideGlAccountIdRemoved());
         command.setIsPropertySalesOpportunityIdRemoved(this.getIsPropertySalesOpportunityIdRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateOrderItemDto extends CreateOrMergePatchOrderItemDto implements OrderItemCommand.CreateOrderItem

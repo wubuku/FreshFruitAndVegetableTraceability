@@ -910,21 +910,6 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         this.orderDecimalQuantity = orderDecimalQuantity;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private CreateOrMergePatchGoodIdentificationDto[] goodIdentifications = new CreateOrMergePatchGoodIdentificationDto[0];
 
@@ -1658,18 +1643,6 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         this.isPropertyOrderDecimalQuantityRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchProduct command)
     {
         ((AbstractProductCommandDto) this).copyTo(command);
@@ -1733,7 +1706,6 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setDefaultShipmentBoxTypeId(this.getDefaultShipmentBoxTypeId());
         command.setLotIdFilledIn(this.getLotIdFilledIn());
         command.setOrderDecimalQuantity(this.getOrderDecimalQuantity());
-        command.setActive(this.getActive());
     }
 
     public ProductCommand toCommand()
@@ -1859,7 +1831,6 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setIsPropertyDefaultShipmentBoxTypeIdRemoved(this.getIsPropertyDefaultShipmentBoxTypeIdRemoved());
         command.setIsPropertyLotIdFilledInRemoved(this.getIsPropertyLotIdFilledInRemoved());
         command.setIsPropertyOrderDecimalQuantityRemoved(this.getIsPropertyOrderDecimalQuantityRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateProductDto extends CreateOrMergePatchProductDto implements ProductCommand.CreateProduct

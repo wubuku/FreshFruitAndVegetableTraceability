@@ -130,21 +130,6 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
         this.referenceDocument = referenceDocument;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyTraceabilityLotCodeRemoved;
 
@@ -240,18 +225,6 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
     public void setIsPropertyReferenceDocumentRemoved(Boolean removed)
     {
         this.isPropertyReferenceDocumentRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public ShippingEventCommand toCommand()
@@ -417,16 +390,6 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
                 CreateOrMergePatchShippingEventDto.this.setReferenceDocument(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchShippingEventDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchShippingEventDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -569,16 +532,6 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchShippingEventDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchShippingEventDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyTraceabilityLotCodeRemoved() {
                 return CreateOrMergePatchShippingEventDto.this.getIsPropertyTraceabilityLotCodeRemoved();
             }
@@ -656,16 +609,6 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
             @Override
             public void setIsPropertyReferenceDocumentRemoved(Boolean removed) {
                 CreateOrMergePatchShippingEventDto.this.setIsPropertyReferenceDocumentRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchShippingEventDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchShippingEventDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

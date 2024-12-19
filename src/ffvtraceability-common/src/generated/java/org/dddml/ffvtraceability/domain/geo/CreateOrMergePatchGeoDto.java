@@ -100,21 +100,6 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
         this.wellKnownText = wellKnownText;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyGeoTypeIdRemoved;
 
@@ -186,18 +171,6 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
     public void setIsPropertyWellKnownTextRemoved(Boolean removed)
     {
         this.isPropertyWellKnownTextRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public GeoCommand toCommand()
@@ -343,16 +316,6 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
                 CreateOrMergePatchGeoDto.this.setWellKnownText(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchGeoDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchGeoDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -475,16 +438,6 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchGeoDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchGeoDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyGeoTypeIdRemoved() {
                 return CreateOrMergePatchGeoDto.this.getIsPropertyGeoTypeIdRemoved();
             }
@@ -542,16 +495,6 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
             @Override
             public void setIsPropertyWellKnownTextRemoved(Boolean removed) {
                 CreateOrMergePatchGeoDto.this.setIsPropertyWellKnownTextRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchGeoDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchGeoDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

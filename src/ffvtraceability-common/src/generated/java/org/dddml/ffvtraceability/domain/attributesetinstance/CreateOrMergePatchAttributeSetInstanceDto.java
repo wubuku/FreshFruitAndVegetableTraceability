@@ -25,21 +25,6 @@ public class CreateOrMergePatchAttributeSetInstanceDto extends AbstractAttribute
         this.properties = properties;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyPropertiesRemoved;
 
@@ -53,23 +38,10 @@ public class CreateOrMergePatchAttributeSetInstanceDto extends AbstractAttribute
         this.isPropertyPropertiesRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchAttributeSetInstance command)
     {
         ((AbstractAttributeSetInstanceCommandDto) this).copyTo(command);
         command.setProperties(this.getProperties());
-        command.setActive(this.getActive());
     }
 
     public AttributeSetInstanceCommand toCommand()

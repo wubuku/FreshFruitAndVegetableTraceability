@@ -55,21 +55,6 @@ public class CreateOrMergePatchOrderAdjustmentTypeDto extends AbstractOrderAdjus
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyParentTypeIdRemoved;
 
@@ -105,18 +90,6 @@ public class CreateOrMergePatchOrderAdjustmentTypeDto extends AbstractOrderAdjus
     public void setIsPropertyDescriptionRemoved(Boolean removed)
     {
         this.isPropertyDescriptionRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public OrderAdjustmentTypeCommand toCommand()
@@ -232,16 +205,6 @@ public class CreateOrMergePatchOrderAdjustmentTypeDto extends AbstractOrderAdjus
                 CreateOrMergePatchOrderAdjustmentTypeDto.this.setDescription(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchOrderAdjustmentTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchOrderAdjustmentTypeDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -334,16 +297,6 @@ public class CreateOrMergePatchOrderAdjustmentTypeDto extends AbstractOrderAdjus
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchOrderAdjustmentTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchOrderAdjustmentTypeDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyParentTypeIdRemoved() {
                 return CreateOrMergePatchOrderAdjustmentTypeDto.this.getIsPropertyParentTypeIdRemoved();
             }
@@ -371,16 +324,6 @@ public class CreateOrMergePatchOrderAdjustmentTypeDto extends AbstractOrderAdjus
             @Override
             public void setIsPropertyDescriptionRemoved(Boolean removed) {
                 CreateOrMergePatchOrderAdjustmentTypeDto.this.setIsPropertyDescriptionRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchOrderAdjustmentTypeDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchOrderAdjustmentTypeDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

@@ -55,21 +55,6 @@ public class CreateOrMergePatchRoleTypeDto extends AbstractRoleTypeCommandDto im
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyParentTypeIdRemoved;
 
@@ -105,18 +90,6 @@ public class CreateOrMergePatchRoleTypeDto extends AbstractRoleTypeCommandDto im
     public void setIsPropertyDescriptionRemoved(Boolean removed)
     {
         this.isPropertyDescriptionRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public RoleTypeCommand toCommand()
@@ -232,16 +205,6 @@ public class CreateOrMergePatchRoleTypeDto extends AbstractRoleTypeCommandDto im
                 CreateOrMergePatchRoleTypeDto.this.setDescription(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchRoleTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchRoleTypeDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -334,16 +297,6 @@ public class CreateOrMergePatchRoleTypeDto extends AbstractRoleTypeCommandDto im
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchRoleTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchRoleTypeDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyParentTypeIdRemoved() {
                 return CreateOrMergePatchRoleTypeDto.this.getIsPropertyParentTypeIdRemoved();
             }
@@ -371,16 +324,6 @@ public class CreateOrMergePatchRoleTypeDto extends AbstractRoleTypeCommandDto im
             @Override
             public void setIsPropertyDescriptionRemoved(Boolean removed) {
                 CreateOrMergePatchRoleTypeDto.this.setIsPropertyDescriptionRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchRoleTypeDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchRoleTypeDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

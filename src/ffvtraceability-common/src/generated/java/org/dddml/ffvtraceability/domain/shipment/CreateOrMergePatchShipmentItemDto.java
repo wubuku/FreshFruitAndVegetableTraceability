@@ -55,21 +55,6 @@ public class CreateOrMergePatchShipmentItemDto extends AbstractShipmentItemComma
         this.shipmentContentDescription = shipmentContentDescription;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyProductIdRemoved;
 
@@ -107,25 +92,12 @@ public class CreateOrMergePatchShipmentItemDto extends AbstractShipmentItemComma
         this.isPropertyShipmentContentDescriptionRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchShipmentItem command)
     {
         ((AbstractShipmentItemCommandDto) this).copyTo(command);
         command.setProductId(this.getProductId());
         command.setQuantity(this.getQuantity());
         command.setShipmentContentDescription(this.getShipmentContentDescription());
-        command.setActive(this.getActive());
     }
 
     public ShipmentItemCommand toCommand()
@@ -183,7 +155,6 @@ public class CreateOrMergePatchShipmentItemDto extends AbstractShipmentItemComma
         command.setIsPropertyProductIdRemoved(this.getIsPropertyProductIdRemoved());
         command.setIsPropertyQuantityRemoved(this.getIsPropertyQuantityRemoved());
         command.setIsPropertyShipmentContentDescriptionRemoved(this.getIsPropertyShipmentContentDescriptionRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateShipmentItemDto extends CreateOrMergePatchShipmentItemDto implements ShipmentItemCommand.CreateShipmentItem

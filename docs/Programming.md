@@ -333,7 +333,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffSuppliers' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
-  -H "X-TenantID: tenant1" \
+  -H "X-TenantID: X" \
   -d '{
   "supplierId": "SUP20240116001",
   "ggn": "4049929999999",         
@@ -346,6 +346,8 @@ curl -X 'POST' \
 # GLOBALG.A.P. Number - 13位数字
 # Global Location Number - 13位数字
 ```
+
+
 
 
 #### Test "StatusItem"

@@ -460,21 +460,6 @@ public class CreateOrMergePatchOrderAdjustmentDto extends AbstractOrderAdjustmen
         this.oldPercentage = oldPercentage;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyOrderAdjustmentTypeIdRemoved;
 
@@ -836,18 +821,6 @@ public class CreateOrMergePatchOrderAdjustmentDto extends AbstractOrderAdjustmen
         this.isPropertyOldPercentageRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchOrderAdjustment command)
     {
         ((AbstractOrderAdjustmentCommandDto) this).copyTo(command);
@@ -881,7 +854,6 @@ public class CreateOrMergePatchOrderAdjustmentDto extends AbstractOrderAdjustmen
         command.setOriginalAdjustmentId(this.getOriginalAdjustmentId());
         command.setOldAmountPerQuantity(this.getOldAmountPerQuantity());
         command.setOldPercentage(this.getOldPercentage());
-        command.setActive(this.getActive());
     }
 
     public OrderAdjustmentCommand toCommand()
@@ -966,7 +938,6 @@ public class CreateOrMergePatchOrderAdjustmentDto extends AbstractOrderAdjustmen
         command.setIsPropertyOriginalAdjustmentIdRemoved(this.getIsPropertyOriginalAdjustmentIdRemoved());
         command.setIsPropertyOldAmountPerQuantityRemoved(this.getIsPropertyOldAmountPerQuantityRemoved());
         command.setIsPropertyOldPercentageRemoved(this.getIsPropertyOldPercentageRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateOrderAdjustmentDto extends CreateOrMergePatchOrderAdjustmentDto implements OrderAdjustmentCommand.CreateOrderAdjustment

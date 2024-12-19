@@ -115,21 +115,6 @@ public class CreateOrMergePatchGeoPointDto extends AbstractGeoPointCommandDto im
         this.information = information;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyGeoPointTypeEnumIdRemoved;
 
@@ -213,18 +198,6 @@ public class CreateOrMergePatchGeoPointDto extends AbstractGeoPointCommandDto im
     public void setIsPropertyInformationRemoved(Boolean removed)
     {
         this.isPropertyInformationRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public GeoPointCommand toCommand()
@@ -380,16 +353,6 @@ public class CreateOrMergePatchGeoPointDto extends AbstractGeoPointCommandDto im
                 CreateOrMergePatchGeoPointDto.this.setInformation(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchGeoPointDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchGeoPointDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -522,16 +485,6 @@ public class CreateOrMergePatchGeoPointDto extends AbstractGeoPointCommandDto im
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchGeoPointDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchGeoPointDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyGeoPointTypeEnumIdRemoved() {
                 return CreateOrMergePatchGeoPointDto.this.getIsPropertyGeoPointTypeEnumIdRemoved();
             }
@@ -599,16 +552,6 @@ public class CreateOrMergePatchGeoPointDto extends AbstractGeoPointCommandDto im
             @Override
             public void setIsPropertyInformationRemoved(Boolean removed) {
                 CreateOrMergePatchGeoPointDto.this.setIsPropertyInformationRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchGeoPointDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchGeoPointDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

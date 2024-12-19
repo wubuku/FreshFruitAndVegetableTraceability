@@ -280,21 +280,6 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         this.geoId = geoId;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyFacilityTypeIdRemoved;
 
@@ -512,18 +497,6 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         this.isPropertyGeoIdRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchFacility command)
     {
         ((AbstractFacilityCommandDto) this).copyTo(command);
@@ -545,7 +518,6 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         command.setDefaultWeightUomId(this.getDefaultWeightUomId());
         command.setGeoPointId(this.getGeoPointId());
         command.setGeoId(this.getGeoId());
-        command.setActive(this.getActive());
     }
 
     public FacilityCommand toCommand()
@@ -608,7 +580,6 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         command.setIsPropertyDefaultWeightUomIdRemoved(this.getIsPropertyDefaultWeightUomIdRemoved());
         command.setIsPropertyGeoPointIdRemoved(this.getIsPropertyGeoPointIdRemoved());
         command.setIsPropertyGeoIdRemoved(this.getIsPropertyGeoIdRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateFacilityDto extends CreateOrMergePatchFacilityDto implements FacilityCommand.CreateFacility

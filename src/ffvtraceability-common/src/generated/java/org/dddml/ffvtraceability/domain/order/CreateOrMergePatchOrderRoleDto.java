@@ -11,38 +11,10 @@ import org.dddml.ffvtraceability.domain.*;
 
 public class CreateOrMergePatchOrderRoleDto extends AbstractOrderRoleCommandDto implements OrderRoleCommand.CreateOrMergePatchOrderRole {
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
 
     public void copyTo(CreateOrMergePatchOrderRole command)
     {
         ((AbstractOrderRoleCommandDto) this).copyTo(command);
-        command.setActive(this.getActive());
     }
 
     public OrderRoleCommand toCommand()
@@ -97,7 +69,6 @@ public class CreateOrMergePatchOrderRoleDto extends AbstractOrderRoleCommandDto 
     public void copyTo(MergePatchOrderRole command)
     {
         copyTo((CreateOrMergePatchOrderRole) command);
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateOrderRoleDto extends CreateOrMergePatchOrderRoleDto implements OrderRoleCommand.CreateOrderRole

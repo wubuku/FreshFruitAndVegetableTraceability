@@ -40,21 +40,6 @@ public class CreateOrMergePatchOrderItemShipGroupAssociationDto extends Abstract
         this.cancelQuantity = cancelQuantity;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyQuantityRemoved;
 
@@ -80,24 +65,11 @@ public class CreateOrMergePatchOrderItemShipGroupAssociationDto extends Abstract
         this.isPropertyCancelQuantityRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchOrderItemShipGroupAssociation command)
     {
         ((AbstractOrderItemShipGroupAssociationCommandDto) this).copyTo(command);
         command.setQuantity(this.getQuantity());
         command.setCancelQuantity(this.getCancelQuantity());
-        command.setActive(this.getActive());
     }
 
     public OrderItemShipGroupAssociationCommand toCommand()
@@ -154,7 +126,6 @@ public class CreateOrMergePatchOrderItemShipGroupAssociationDto extends Abstract
         copyTo((CreateOrMergePatchOrderItemShipGroupAssociation) command);
         command.setIsPropertyQuantityRemoved(this.getIsPropertyQuantityRemoved());
         command.setIsPropertyCancelQuantityRemoved(this.getIsPropertyCancelQuantityRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateOrderItemShipGroupAssociationDto extends CreateOrMergePatchOrderItemShipGroupAssociationDto implements OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation

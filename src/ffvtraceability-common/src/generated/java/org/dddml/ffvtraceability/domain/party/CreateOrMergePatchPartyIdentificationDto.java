@@ -40,21 +40,6 @@ public class CreateOrMergePatchPartyIdentificationDto extends AbstractPartyIdent
         this.verified = verified;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyIdValueRemoved;
 
@@ -80,24 +65,11 @@ public class CreateOrMergePatchPartyIdentificationDto extends AbstractPartyIdent
         this.isPropertyVerifiedRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchPartyIdentification command)
     {
         ((AbstractPartyIdentificationCommandDto) this).copyTo(command);
         command.setIdValue(this.getIdValue());
         command.setVerified(this.getVerified());
-        command.setActive(this.getActive());
     }
 
     public PartyIdentificationCommand toCommand()
@@ -154,7 +126,6 @@ public class CreateOrMergePatchPartyIdentificationDto extends AbstractPartyIdent
         copyTo((CreateOrMergePatchPartyIdentification) command);
         command.setIsPropertyIdValueRemoved(this.getIsPropertyIdValueRemoved());
         command.setIsPropertyVerifiedRemoved(this.getIsPropertyVerifiedRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreatePartyIdentificationDto extends CreateOrMergePatchPartyIdentificationDto implements PartyIdentificationCommand.CreatePartyIdentification

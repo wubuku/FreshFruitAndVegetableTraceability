@@ -55,21 +55,6 @@ public class CreateOrMergePatchShipmentTypeDto extends AbstractShipmentTypeComma
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyParentTypeIdRemoved;
 
@@ -107,25 +92,12 @@ public class CreateOrMergePatchShipmentTypeDto extends AbstractShipmentTypeComma
         this.isPropertyDescriptionRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchShipmentType command)
     {
         ((AbstractShipmentTypeCommandDto) this).copyTo(command);
         command.setParentTypeId(this.getParentTypeId());
         command.setHasTable(this.getHasTable());
         command.setDescription(this.getDescription());
-        command.setActive(this.getActive());
     }
 
     public ShipmentTypeCommand toCommand()
@@ -173,7 +145,6 @@ public class CreateOrMergePatchShipmentTypeDto extends AbstractShipmentTypeComma
         command.setIsPropertyParentTypeIdRemoved(this.getIsPropertyParentTypeIdRemoved());
         command.setIsPropertyHasTableRemoved(this.getIsPropertyHasTableRemoved());
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateShipmentTypeDto extends CreateOrMergePatchShipmentTypeDto implements ShipmentTypeCommand.CreateShipmentType

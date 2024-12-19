@@ -85,21 +85,6 @@ public class CreateOrMergePatchProductTypeDto extends AbstractProductTypeCommand
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyParentTypeIdRemoved;
 
@@ -159,18 +144,6 @@ public class CreateOrMergePatchProductTypeDto extends AbstractProductTypeCommand
     public void setIsPropertyDescriptionRemoved(Boolean removed)
     {
         this.isPropertyDescriptionRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public ProductTypeCommand toCommand()
@@ -306,16 +279,6 @@ public class CreateOrMergePatchProductTypeDto extends AbstractProductTypeCommand
                 CreateOrMergePatchProductTypeDto.this.setDescription(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchProductTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchProductTypeDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -428,16 +391,6 @@ public class CreateOrMergePatchProductTypeDto extends AbstractProductTypeCommand
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchProductTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchProductTypeDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyParentTypeIdRemoved() {
                 return CreateOrMergePatchProductTypeDto.this.getIsPropertyParentTypeIdRemoved();
             }
@@ -485,16 +438,6 @@ public class CreateOrMergePatchProductTypeDto extends AbstractProductTypeCommand
             @Override
             public void setIsPropertyDescriptionRemoved(Boolean removed) {
                 CreateOrMergePatchProductTypeDto.this.setIsPropertyDescriptionRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchProductTypeDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchProductTypeDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

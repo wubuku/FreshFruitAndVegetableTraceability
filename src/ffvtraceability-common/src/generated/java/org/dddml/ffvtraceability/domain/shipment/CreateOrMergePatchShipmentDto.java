@@ -385,21 +385,6 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         this.addtlShippingChargeDesc = addtlShippingChargeDesc;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private CreateOrMergePatchShipmentItemDto[] shipmentItems = new CreateOrMergePatchShipmentItemDto[0];
 
@@ -725,18 +710,6 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         this.isPropertyAddtlShippingChargeDescRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchShipment command)
     {
         ((AbstractShipmentCommandDto) this).copyTo(command);
@@ -765,7 +738,6 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         command.setPartyIdFrom(this.getPartyIdFrom());
         command.setAdditionalShippingCharge(this.getAdditionalShippingCharge());
         command.setAddtlShippingChargeDesc(this.getAddtlShippingChargeDesc());
-        command.setActive(this.getActive());
     }
 
     public ShipmentCommand toCommand()
@@ -877,7 +849,6 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         command.setIsPropertyPartyIdFromRemoved(this.getIsPropertyPartyIdFromRemoved());
         command.setIsPropertyAdditionalShippingChargeRemoved(this.getIsPropertyAdditionalShippingChargeRemoved());
         command.setIsPropertyAddtlShippingChargeDescRemoved(this.getIsPropertyAddtlShippingChargeDescRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateShipmentDto extends CreateOrMergePatchShipmentDto implements ShipmentCommand.CreateShipment

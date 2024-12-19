@@ -340,21 +340,6 @@ public class CreateOrMergePatchOrderShipGroupDto extends AbstractOrderShipGroupC
         this.supplierSyncMessage = supplierSyncMessage;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private CreateOrMergePatchOrderItemShipGroupAssociationDto[] orderItemShipGroupAssociations = new CreateOrMergePatchOrderItemShipGroupAssociationDto[0];
 
@@ -632,18 +617,6 @@ public class CreateOrMergePatchOrderShipGroupDto extends AbstractOrderShipGroupC
         this.isPropertySupplierSyncMessageRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchOrderShipGroup command)
     {
         ((AbstractOrderShipGroupCommandDto) this).copyTo(command);
@@ -669,7 +642,6 @@ public class CreateOrMergePatchOrderShipGroupDto extends AbstractOrderShipGroupC
         command.setSupplierSyncStatusId(this.getSupplierSyncStatusId());
         command.setSupplierSyncCode(this.getSupplierSyncCode());
         command.setSupplierSyncMessage(this.getSupplierSyncMessage());
-        command.setActive(this.getActive());
     }
 
     public OrderShipGroupCommand toCommand()
@@ -767,7 +739,6 @@ public class CreateOrMergePatchOrderShipGroupDto extends AbstractOrderShipGroupC
         command.setIsPropertySupplierSyncStatusIdRemoved(this.getIsPropertySupplierSyncStatusIdRemoved());
         command.setIsPropertySupplierSyncCodeRemoved(this.getIsPropertySupplierSyncCodeRemoved());
         command.setIsPropertySupplierSyncMessageRemoved(this.getIsPropertySupplierSyncMessageRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateOrderShipGroupDto extends CreateOrMergePatchOrderShipGroupDto implements OrderShipGroupCommand.CreateOrderShipGroup

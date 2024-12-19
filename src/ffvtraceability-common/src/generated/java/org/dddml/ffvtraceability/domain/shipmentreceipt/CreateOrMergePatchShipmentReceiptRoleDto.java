@@ -11,38 +11,10 @@ import org.dddml.ffvtraceability.domain.*;
 
 public class CreateOrMergePatchShipmentReceiptRoleDto extends AbstractShipmentReceiptRoleCommandDto implements ShipmentReceiptRoleCommand.CreateOrMergePatchShipmentReceiptRole {
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
 
     public void copyTo(CreateOrMergePatchShipmentReceiptRole command)
     {
         ((AbstractShipmentReceiptRoleCommandDto) this).copyTo(command);
-        command.setActive(this.getActive());
     }
 
     public ShipmentReceiptRoleCommand toCommand()
@@ -97,7 +69,6 @@ public class CreateOrMergePatchShipmentReceiptRoleDto extends AbstractShipmentRe
     public void copyTo(MergePatchShipmentReceiptRole command)
     {
         copyTo((CreateOrMergePatchShipmentReceiptRole) command);
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateShipmentReceiptRoleDto extends CreateOrMergePatchShipmentReceiptRoleDto implements ShipmentReceiptRoleCommand.CreateShipmentReceiptRole

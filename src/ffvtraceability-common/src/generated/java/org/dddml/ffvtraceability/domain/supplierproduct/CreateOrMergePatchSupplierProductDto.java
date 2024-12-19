@@ -340,21 +340,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         this.shipmentMethodTypeId = shipmentMethodTypeId;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyAvailableThruDateRemoved;
 
@@ -620,18 +605,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         this.isPropertyShipmentMethodTypeIdRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchSupplierProduct command)
     {
         ((AbstractSupplierProductCommandDto) this).copyTo(command);
@@ -657,7 +630,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         command.setLimitQuantityPerOrder(this.getLimitQuantityPerOrder());
         command.setProductPriceTypeId(this.getProductPriceTypeId());
         command.setShipmentMethodTypeId(this.getShipmentMethodTypeId());
-        command.setActive(this.getActive());
     }
 
     public SupplierProductCommand toCommand()
@@ -724,7 +696,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         command.setIsPropertyLimitQuantityPerOrderRemoved(this.getIsPropertyLimitQuantityPerOrderRemoved());
         command.setIsPropertyProductPriceTypeIdRemoved(this.getIsPropertyProductPriceTypeIdRemoved());
         command.setIsPropertyShipmentMethodTypeIdRemoved(this.getIsPropertyShipmentMethodTypeIdRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateSupplierProductDto extends CreateOrMergePatchSupplierProductDto implements SupplierProductCommand.CreateSupplierProduct

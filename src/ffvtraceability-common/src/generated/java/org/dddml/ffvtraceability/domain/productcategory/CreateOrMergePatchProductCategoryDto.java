@@ -115,21 +115,6 @@ public class CreateOrMergePatchProductCategoryDto extends AbstractProductCategor
         this.showInSelect = showInSelect;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyProductCategoryTypeIdRemoved;
 
@@ -215,18 +200,6 @@ public class CreateOrMergePatchProductCategoryDto extends AbstractProductCategor
         this.isPropertyShowInSelectRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchProductCategory command)
     {
         ((AbstractProductCategoryCommandDto) this).copyTo(command);
@@ -237,7 +210,6 @@ public class CreateOrMergePatchProductCategoryDto extends AbstractProductCategor
         command.setCategoryImageUrl(this.getCategoryImageUrl());
         command.setDetailScreen(this.getDetailScreen());
         command.setShowInSelect(this.getShowInSelect());
-        command.setActive(this.getActive());
     }
 
     public ProductCategoryCommand toCommand()
@@ -289,7 +261,6 @@ public class CreateOrMergePatchProductCategoryDto extends AbstractProductCategor
         command.setIsPropertyCategoryImageUrlRemoved(this.getIsPropertyCategoryImageUrlRemoved());
         command.setIsPropertyDetailScreenRemoved(this.getIsPropertyDetailScreenRemoved());
         command.setIsPropertyShowInSelectRemoved(this.getIsPropertyShowInSelectRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateProductCategoryDto extends CreateOrMergePatchProductCategoryDto implements ProductCategoryCommand.CreateProductCategory

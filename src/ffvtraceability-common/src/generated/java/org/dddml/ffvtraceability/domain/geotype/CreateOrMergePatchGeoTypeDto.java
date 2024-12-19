@@ -55,21 +55,6 @@ public class CreateOrMergePatchGeoTypeDto extends AbstractGeoTypeCommandDto impl
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyParentTypeIdRemoved;
 
@@ -105,18 +90,6 @@ public class CreateOrMergePatchGeoTypeDto extends AbstractGeoTypeCommandDto impl
     public void setIsPropertyDescriptionRemoved(Boolean removed)
     {
         this.isPropertyDescriptionRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public GeoTypeCommand toCommand()
@@ -232,16 +205,6 @@ public class CreateOrMergePatchGeoTypeDto extends AbstractGeoTypeCommandDto impl
                 CreateOrMergePatchGeoTypeDto.this.setDescription(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchGeoTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchGeoTypeDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -334,16 +297,6 @@ public class CreateOrMergePatchGeoTypeDto extends AbstractGeoTypeCommandDto impl
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchGeoTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchGeoTypeDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyParentTypeIdRemoved() {
                 return CreateOrMergePatchGeoTypeDto.this.getIsPropertyParentTypeIdRemoved();
             }
@@ -371,16 +324,6 @@ public class CreateOrMergePatchGeoTypeDto extends AbstractGeoTypeCommandDto impl
             @Override
             public void setIsPropertyDescriptionRemoved(Boolean removed) {
                 CreateOrMergePatchGeoTypeDto.this.setIsPropertyDescriptionRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchGeoTypeDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchGeoTypeDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

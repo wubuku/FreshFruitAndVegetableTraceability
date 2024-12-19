@@ -25,21 +25,6 @@ public class CreateOrMergePatchLotIdentificationTypeDto extends AbstractLotIdent
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyDescriptionRemoved;
 
@@ -53,23 +38,10 @@ public class CreateOrMergePatchLotIdentificationTypeDto extends AbstractLotIdent
         this.isPropertyDescriptionRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchLotIdentificationType command)
     {
         ((AbstractLotIdentificationTypeCommandDto) this).copyTo(command);
         command.setDescription(this.getDescription());
-        command.setActive(this.getActive());
     }
 
     public LotIdentificationTypeCommand toCommand()
@@ -115,7 +87,6 @@ public class CreateOrMergePatchLotIdentificationTypeDto extends AbstractLotIdent
     {
         copyTo((CreateOrMergePatchLotIdentificationType) command);
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateLotIdentificationTypeDto extends CreateOrMergePatchLotIdentificationTypeDto implements LotIdentificationTypeCommand.CreateLotIdentificationType

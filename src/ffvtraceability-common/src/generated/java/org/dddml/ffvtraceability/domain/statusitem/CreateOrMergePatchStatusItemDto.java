@@ -70,21 +70,6 @@ public class CreateOrMergePatchStatusItemDto extends AbstractStatusItemCommandDt
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyStatusTypeIdRemoved;
 
@@ -134,18 +119,6 @@ public class CreateOrMergePatchStatusItemDto extends AbstractStatusItemCommandDt
         this.isPropertyDescriptionRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchStatusItem command)
     {
         ((AbstractStatusItemCommandDto) this).copyTo(command);
@@ -153,7 +126,6 @@ public class CreateOrMergePatchStatusItemDto extends AbstractStatusItemCommandDt
         command.setStatusCode(this.getStatusCode());
         command.setSequenceId(this.getSequenceId());
         command.setDescription(this.getDescription());
-        command.setActive(this.getActive());
     }
 
     public StatusItemCommand toCommand()
@@ -202,7 +174,6 @@ public class CreateOrMergePatchStatusItemDto extends AbstractStatusItemCommandDt
         command.setIsPropertyStatusCodeRemoved(this.getIsPropertyStatusCodeRemoved());
         command.setIsPropertySequenceIdRemoved(this.getIsPropertySequenceIdRemoved());
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateStatusItemDto extends CreateOrMergePatchStatusItemDto implements StatusItemCommand.CreateStatusItem

@@ -10,38 +10,10 @@ import org.dddml.ffvtraceability.domain.*;
 
 public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto implements PartyRoleCommand.CreateOrMergePatchPartyRole {
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
 
     public void copyTo(CreateOrMergePatchPartyRole command)
     {
         ((AbstractPartyRoleCommandDto) this).copyTo(command);
-        command.setActive(this.getActive());
     }
 
     public PartyRoleCommand toCommand()
@@ -86,7 +58,6 @@ public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto 
     public void copyTo(MergePatchPartyRole command)
     {
         copyTo((CreateOrMergePatchPartyRole) command);
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreatePartyRoleDto extends CreateOrMergePatchPartyRoleDto implements PartyRoleCommand.CreatePartyRole

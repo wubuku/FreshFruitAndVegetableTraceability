@@ -9,9 +9,12 @@ import org.dddml.ffvtraceability.domain.party.PartyState;
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
+import org.dddml.ffvtraceability.domain.repository.BffSupplierRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
+import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -46,9 +49,16 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Autowired
     private BffSupplierMapper bffSupplierMapper;
 
+    @Autowired
+    private BffSupplierRepository bffSupplierRepository;
+
     @Override
+    @Transactional(readOnly = true)
     public Page<BffSupplierDto> when(BffSupplierServiceCommands.GetSuppliers c) {
-        return null;
+        return PageUtils.toPage(
+                bffSupplierRepository.findAllSuppliers(PageRequest.of(c.getPage(), c.getSize())),
+                bffSupplierMapper::toBffSupplierDto
+        );
     }
 
     @Override

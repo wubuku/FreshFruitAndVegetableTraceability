@@ -145,21 +145,6 @@ public class CreateOrMergePatchShipmentPackageDto extends AbstractShipmentPackag
         this.insuredValue = insuredValue;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private CreateOrMergePatchShipmentPackageContentDto[] shipmentPackageContents = new CreateOrMergePatchShipmentPackageContentDto[0];
 
@@ -281,18 +266,6 @@ public class CreateOrMergePatchShipmentPackageDto extends AbstractShipmentPackag
         this.isPropertyInsuredValueRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchShipmentPackage command)
     {
         ((AbstractShipmentPackageCommandDto) this).copyTo(command);
@@ -305,7 +278,6 @@ public class CreateOrMergePatchShipmentPackageDto extends AbstractShipmentPackag
         command.setWeight(this.getWeight());
         command.setWeightUomId(this.getWeightUomId());
         command.setInsuredValue(this.getInsuredValue());
-        command.setActive(this.getActive());
     }
 
     public ShipmentPackageCommand toCommand()
@@ -390,7 +362,6 @@ public class CreateOrMergePatchShipmentPackageDto extends AbstractShipmentPackag
         command.setIsPropertyWeightRemoved(this.getIsPropertyWeightRemoved());
         command.setIsPropertyWeightUomIdRemoved(this.getIsPropertyWeightUomIdRemoved());
         command.setIsPropertyInsuredValueRemoved(this.getIsPropertyInsuredValueRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateShipmentPackageDto extends CreateOrMergePatchShipmentPackageDto implements ShipmentPackageCommand.CreateShipmentPackage

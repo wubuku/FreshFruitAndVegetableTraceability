@@ -55,21 +55,6 @@ public class CreateOrMergePatchFacilityTypeDto extends AbstractFacilityTypeComma
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyParentTypeIdRemoved;
 
@@ -105,18 +90,6 @@ public class CreateOrMergePatchFacilityTypeDto extends AbstractFacilityTypeComma
     public void setIsPropertyDescriptionRemoved(Boolean removed)
     {
         this.isPropertyDescriptionRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public FacilityTypeCommand toCommand()
@@ -232,16 +205,6 @@ public class CreateOrMergePatchFacilityTypeDto extends AbstractFacilityTypeComma
                 CreateOrMergePatchFacilityTypeDto.this.setDescription(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchFacilityTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchFacilityTypeDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -334,16 +297,6 @@ public class CreateOrMergePatchFacilityTypeDto extends AbstractFacilityTypeComma
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchFacilityTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchFacilityTypeDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyParentTypeIdRemoved() {
                 return CreateOrMergePatchFacilityTypeDto.this.getIsPropertyParentTypeIdRemoved();
             }
@@ -371,16 +324,6 @@ public class CreateOrMergePatchFacilityTypeDto extends AbstractFacilityTypeComma
             @Override
             public void setIsPropertyDescriptionRemoved(Boolean removed) {
                 CreateOrMergePatchFacilityTypeDto.this.setIsPropertyDescriptionRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchFacilityTypeDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchFacilityTypeDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

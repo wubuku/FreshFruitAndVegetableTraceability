@@ -55,21 +55,6 @@ public class CreateOrMergePatchPartyIdentificationTypeDto extends AbstractPartyI
         this.description = description;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyParentTypeIdRemoved;
 
@@ -105,18 +90,6 @@ public class CreateOrMergePatchPartyIdentificationTypeDto extends AbstractPartyI
     public void setIsPropertyDescriptionRemoved(Boolean removed)
     {
         this.isPropertyDescriptionRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public PartyIdentificationTypeCommand toCommand()
@@ -232,16 +205,6 @@ public class CreateOrMergePatchPartyIdentificationTypeDto extends AbstractPartyI
                 CreateOrMergePatchPartyIdentificationTypeDto.this.setDescription(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchPartyIdentificationTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchPartyIdentificationTypeDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -334,16 +297,6 @@ public class CreateOrMergePatchPartyIdentificationTypeDto extends AbstractPartyI
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchPartyIdentificationTypeDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchPartyIdentificationTypeDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyParentTypeIdRemoved() {
                 return CreateOrMergePatchPartyIdentificationTypeDto.this.getIsPropertyParentTypeIdRemoved();
             }
@@ -371,16 +324,6 @@ public class CreateOrMergePatchPartyIdentificationTypeDto extends AbstractPartyI
             @Override
             public void setIsPropertyDescriptionRemoved(Boolean removed) {
                 CreateOrMergePatchPartyIdentificationTypeDto.this.setIsPropertyDescriptionRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchPartyIdentificationTypeDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchPartyIdentificationTypeDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

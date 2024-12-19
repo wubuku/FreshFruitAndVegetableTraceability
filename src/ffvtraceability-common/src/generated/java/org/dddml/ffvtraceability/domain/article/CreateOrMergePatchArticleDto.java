@@ -56,21 +56,6 @@ public class CreateOrMergePatchArticleDto extends AbstractArticleCommandDto impl
     }
 
     /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
-    /**
      * Tags
      */
     private String[] tags;
@@ -144,25 +129,12 @@ public class CreateOrMergePatchArticleDto extends AbstractArticleCommandDto impl
         this.isPropertyTagsRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchArticle command)
     {
         ((AbstractArticleCommandDto) this).copyTo(command);
         command.setTitle(this.getTitle());
         command.setBody(this.getBody());
         command.setAuthor(this.getAuthor());
-        command.setActive(this.getActive());
         command.setTags(this.getTags());
     }
 
@@ -233,7 +205,6 @@ public class CreateOrMergePatchArticleDto extends AbstractArticleCommandDto impl
         command.setIsPropertyBodyRemoved(this.getIsPropertyBodyRemoved());
         command.setIsPropertyAuthorRemoved(this.getIsPropertyAuthorRemoved());
         command.setIsPropertyTagsRemoved(this.getIsPropertyTagsRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateArticleDto extends CreateOrMergePatchArticleDto implements ArticleCommand.CreateArticle

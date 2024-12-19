@@ -70,21 +70,6 @@ public class CreateOrMergePatchDocumentDto extends AbstractDocumentCommandDto im
         this.documentText = documentText;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyDocumentTypeIdRemoved;
 
@@ -134,18 +119,6 @@ public class CreateOrMergePatchDocumentDto extends AbstractDocumentCommandDto im
         this.isPropertyDocumentTextRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchDocument command)
     {
         ((AbstractDocumentCommandDto) this).copyTo(command);
@@ -153,7 +126,6 @@ public class CreateOrMergePatchDocumentDto extends AbstractDocumentCommandDto im
         command.setComments(this.getComments());
         command.setDocumentLocation(this.getDocumentLocation());
         command.setDocumentText(this.getDocumentText());
-        command.setActive(this.getActive());
     }
 
     public DocumentCommand toCommand()
@@ -202,7 +174,6 @@ public class CreateOrMergePatchDocumentDto extends AbstractDocumentCommandDto im
         command.setIsPropertyCommentsRemoved(this.getIsPropertyCommentsRemoved());
         command.setIsPropertyDocumentLocationRemoved(this.getIsPropertyDocumentLocationRemoved());
         command.setIsPropertyDocumentTextRemoved(this.getIsPropertyDocumentTextRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateDocumentDto extends CreateOrMergePatchDocumentDto implements DocumentCommand.CreateDocument

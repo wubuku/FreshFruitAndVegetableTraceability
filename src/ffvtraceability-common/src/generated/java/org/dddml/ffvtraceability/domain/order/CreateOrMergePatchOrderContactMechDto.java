@@ -25,21 +25,6 @@ public class CreateOrMergePatchOrderContactMechDto extends AbstractOrderContactM
         this.contactMechId = contactMechId;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyContactMechIdRemoved;
 
@@ -53,23 +38,10 @@ public class CreateOrMergePatchOrderContactMechDto extends AbstractOrderContactM
         this.isPropertyContactMechIdRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchOrderContactMech command)
     {
         ((AbstractOrderContactMechCommandDto) this).copyTo(command);
         command.setContactMechId(this.getContactMechId());
-        command.setActive(this.getActive());
     }
 
     public OrderContactMechCommand toCommand()
@@ -125,7 +97,6 @@ public class CreateOrMergePatchOrderContactMechDto extends AbstractOrderContactM
     {
         copyTo((CreateOrMergePatchOrderContactMech) command);
         command.setIsPropertyContactMechIdRemoved(this.getIsPropertyContactMechIdRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateOrderContactMechDto extends CreateOrMergePatchOrderContactMechDto implements OrderContactMechCommand.CreateOrderContactMech

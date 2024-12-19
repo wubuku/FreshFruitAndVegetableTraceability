@@ -25,21 +25,6 @@ public class CreateOrMergePatchFacilityIdentificationDto extends AbstractFacilit
         this.idValue = idValue;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyIdValueRemoved;
 
@@ -53,23 +38,10 @@ public class CreateOrMergePatchFacilityIdentificationDto extends AbstractFacilit
         this.isPropertyIdValueRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchFacilityIdentification command)
     {
         ((AbstractFacilityIdentificationCommandDto) this).copyTo(command);
         command.setIdValue(this.getIdValue());
-        command.setActive(this.getActive());
     }
 
     public FacilityIdentificationCommand toCommand()
@@ -115,7 +87,6 @@ public class CreateOrMergePatchFacilityIdentificationDto extends AbstractFacilit
     {
         copyTo((CreateOrMergePatchFacilityIdentification) command);
         command.setIsPropertyIdValueRemoved(this.getIsPropertyIdValueRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateFacilityIdentificationDto extends CreateOrMergePatchFacilityIdentificationDto implements FacilityIdentificationCommand.CreateFacilityIdentification

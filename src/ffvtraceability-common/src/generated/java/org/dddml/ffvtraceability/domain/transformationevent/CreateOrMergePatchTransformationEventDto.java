@@ -145,21 +145,6 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
         this.referenceDocument = referenceDocument;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private Boolean isPropertyFoodUsedTlcRemoved;
 
@@ -267,18 +252,6 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
     public void setIsPropertyReferenceDocumentRemoved(Boolean removed)
     {
         this.isPropertyReferenceDocumentRemoved = removed;
-    }
-
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
     }
 
     public TransformationEventCommand toCommand()
@@ -454,16 +427,6 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
                 CreateOrMergePatchTransformationEventDto.this.setReferenceDocument(p);
             }
 
-            @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchTransformationEventDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchTransformationEventDto.this.setActive(p);
-            }
-
 
         };
     }
@@ -616,16 +579,6 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
             }
 
             @Override
-            public Boolean getActive() {
-                return CreateOrMergePatchTransformationEventDto.this.getActive();
-            }
-
-            @Override
-            public void setActive(Boolean p) {
-                CreateOrMergePatchTransformationEventDto.this.setActive(p);
-            }
-
-            @Override
             public Boolean getIsPropertyFoodUsedTlcRemoved() {
                 return CreateOrMergePatchTransformationEventDto.this.getIsPropertyFoodUsedTlcRemoved();
             }
@@ -713,16 +666,6 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
             @Override
             public void setIsPropertyReferenceDocumentRemoved(Boolean removed) {
                 CreateOrMergePatchTransformationEventDto.this.setIsPropertyReferenceDocumentRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyActiveRemoved() {
-                return CreateOrMergePatchTransformationEventDto.this.getIsPropertyActiveRemoved();
-            }
-
-            @Override
-            public void setIsPropertyActiveRemoved(Boolean removed) {
-                CreateOrMergePatchTransformationEventDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

@@ -281,21 +281,6 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         this.casesRejected = casesRejected;
     }
 
-    /**
-     * Active
-     */
-    private Boolean active;
-
-    public Boolean getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
-    }
-
 
     private CreateOrMergePatchShipmentReceiptRoleDto[] shipmentReceiptRoles = new CreateOrMergePatchShipmentReceiptRoleDto[0];
 
@@ -525,18 +510,6 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         this.isPropertyCasesRejectedRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchShipmentReceipt command)
     {
         ((AbstractShipmentReceiptCommandDto) this).copyTo(command);
@@ -558,7 +531,6 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         command.setLocationSeqId(this.getLocationSeqId());
         command.setCasesAccepted(this.getCasesAccepted());
         command.setCasesRejected(this.getCasesRejected());
-        command.setActive(this.getActive());
     }
 
     public ShipmentReceiptCommand toCommand()
@@ -642,7 +614,6 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         command.setIsPropertyLocationSeqIdRemoved(this.getIsPropertyLocationSeqIdRemoved());
         command.setIsPropertyCasesAcceptedRemoved(this.getIsPropertyCasesAcceptedRemoved());
         command.setIsPropertyCasesRejectedRemoved(this.getIsPropertyCasesRejectedRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateShipmentReceiptDto extends CreateOrMergePatchShipmentReceiptDto implements ShipmentReceiptCommand.CreateShipmentReceipt

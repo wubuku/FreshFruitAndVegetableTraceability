@@ -55,21 +55,6 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.active = active;
     }
 
-    /**
-     * __ Active__
-     */
-    private Boolean __Active__;
-
-    public Boolean get__Active__()
-    {
-        return this.__Active__;
-    }
-
-    public void set__Active__(Boolean __Active__)
-    {
-        this.__Active__ = __Active__;
-    }
-
 
     private CreateOrMergePatchLotIdentificationDto[] lotIdentifications = new CreateOrMergePatchLotIdentificationDto[0];
 
@@ -119,25 +104,12 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.isPropertyActiveRemoved = removed;
     }
 
-    private Boolean isProperty__Active__Removed;
-
-    public Boolean getIsProperty__Active__Removed()
-    {
-        return this.isProperty__Active__Removed;
-    }
-
-    public void setIsProperty__Active__Removed(Boolean removed)
-    {
-        this.isProperty__Active__Removed = removed;
-    }
-
     public void copyTo(CreateOrMergePatchLot command)
     {
         ((AbstractLotCommandDto) this).copyTo(command);
         command.setQuantity(this.getQuantity());
         command.setExpirationDate(this.getExpirationDate());
         command.setActive(this.getActive());
-        command.set__Active__(this.get__Active__());
     }
 
     public LotCommand toCommand()
@@ -206,7 +178,6 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         command.setIsPropertyQuantityRemoved(this.getIsPropertyQuantityRemoved());
         command.setIsPropertyExpirationDateRemoved(this.getIsPropertyExpirationDateRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
-        command.setIsProperty__Active__Removed(this.getIsProperty__Active__Removed());
     }
 
     public static class CreateLotDto extends CreateOrMergePatchLotDto implements LotCommand.CreateLot
