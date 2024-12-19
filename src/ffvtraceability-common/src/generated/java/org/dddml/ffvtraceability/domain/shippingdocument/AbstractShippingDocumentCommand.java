@@ -88,18 +88,6 @@ public abstract class AbstractShippingDocumentCommand extends AbstractCommand im
             this.description = description;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateShippingDocument extends AbstractCreateOrMergePatchShippingDocument implements CreateShippingDocument
@@ -164,18 +152,6 @@ public abstract class AbstractShippingDocumentCommand extends AbstractCommand im
         public void setIsPropertyDescriptionRemoved(Boolean removed)
         {
             this.isPropertyDescriptionRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

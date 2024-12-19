@@ -87,10 +87,6 @@ public interface ShippingEventCommand extends Command {
 
         void setReferenceDocument(KdeReferenceDocument referenceDocument);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateShippingEvent extends CreateOrMergePatchShippingEvent
@@ -130,10 +126,6 @@ public interface ShippingEventCommand extends Command {
         Boolean getIsPropertyReferenceDocumentRemoved();
 
         void setIsPropertyReferenceDocumentRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

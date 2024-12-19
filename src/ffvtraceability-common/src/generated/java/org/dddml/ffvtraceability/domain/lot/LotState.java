@@ -23,6 +23,8 @@ public interface LotState
 
     OffsetDateTime getExpirationDate();
 
+    String getActive();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -32,8 +34,6 @@ public interface LotState
     String getUpdatedBy();
 
     OffsetDateTime getUpdatedAt();
-
-    Boolean getActive();
 
     Boolean getDeleted();
 
@@ -46,6 +46,8 @@ public interface LotState
 
         void setExpirationDate(OffsetDateTime expirationDate);
 
+        void setActive(String active);
+
         void setVersion(Long version);
 
         void setCreatedBy(String createdBy);
@@ -55,8 +57,6 @@ public interface LotState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setActive(Boolean active);
 
         void setDeleted(Boolean deleted);
 

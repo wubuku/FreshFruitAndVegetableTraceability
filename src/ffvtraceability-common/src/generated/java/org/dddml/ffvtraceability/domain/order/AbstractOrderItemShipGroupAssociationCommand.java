@@ -76,18 +76,6 @@ public abstract class AbstractOrderItemShipGroupAssociationCommand extends Abstr
             this.cancelQuantity = cancelQuantity;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateOrderItemShipGroupAssociation extends AbstractCreateOrMergePatchOrderItemShipGroupAssociation implements CreateOrderItemShipGroupAssociation
@@ -128,18 +116,6 @@ public abstract class AbstractOrderItemShipGroupAssociationCommand extends Abstr
         public void setIsPropertyCancelQuantityRemoved(Boolean removed)
         {
             this.isPropertyCancelQuantityRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

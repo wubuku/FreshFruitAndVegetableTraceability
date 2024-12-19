@@ -128,10 +128,6 @@ public interface ShipmentReceiptCommand extends Command {
 
         void setCasesRejected(Long casesRejected);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateShipmentReceipt extends CreateOrMergePatchShipmentReceipt
@@ -215,10 +211,6 @@ public interface ShipmentReceiptCommand extends Command {
         Boolean getIsPropertyCasesRejectedRemoved();
 
         void setIsPropertyCasesRejectedRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         ShipmentReceiptRoleCommandCollection getShipmentReceiptRoleCommands();

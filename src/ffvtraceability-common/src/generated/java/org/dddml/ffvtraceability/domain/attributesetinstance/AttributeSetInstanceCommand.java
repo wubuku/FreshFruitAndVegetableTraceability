@@ -52,10 +52,6 @@ public interface AttributeSetInstanceCommand extends Command {
 
         void setProperties(org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateAttributeSetInstance extends CreateOrMergePatchAttributeSetInstance

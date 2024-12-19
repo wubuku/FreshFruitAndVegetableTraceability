@@ -340,18 +340,6 @@ public abstract class AbstractShipmentCommand extends AbstractCommand implements
             this.addtlShippingChargeDesc = addtlShippingChargeDesc;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
         public ShipmentItemCommand.CreateShipmentItem newCreateShipmentItem()
         {
             AbstractShipmentItemCommand.SimpleCreateShipmentItem c = new AbstractShipmentItemCommand.SimpleCreateShipmentItem();
@@ -736,18 +724,6 @@ public abstract class AbstractShipmentCommand extends AbstractCommand implements
         public void setIsPropertyAddtlShippingChargeDescRemoved(Boolean removed)
         {
             this.isPropertyAddtlShippingChargeDescRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

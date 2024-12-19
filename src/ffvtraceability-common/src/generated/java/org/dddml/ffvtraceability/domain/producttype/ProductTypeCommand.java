@@ -75,10 +75,6 @@ public interface ProductTypeCommand extends Command {
 
         void setDescription(String description);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateProductType extends CreateOrMergePatchProductType
@@ -106,10 +102,6 @@ public interface ProductTypeCommand extends Command {
         Boolean getIsPropertyDescriptionRemoved();
 
         void setIsPropertyDescriptionRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

@@ -155,10 +155,6 @@ public interface ShipmentCommand extends Command {
 
         void setAddtlShippingChargeDesc(String addtlShippingChargeDesc);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateShipment extends CreateOrMergePatchShipment
@@ -274,10 +270,6 @@ public interface ShipmentCommand extends Command {
         Boolean getIsPropertyAddtlShippingChargeDescRemoved();
 
         void setIsPropertyAddtlShippingChargeDescRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         ShipmentItemCommandCollection getShipmentItemCommands();

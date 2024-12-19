@@ -32,10 +32,6 @@ public interface ShipmentPackageContentCommand extends Command {
 
         void setSubProductQuantity(java.math.BigDecimal subProductQuantity);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateShipmentPackageContent extends CreateOrMergePatchShipmentPackageContent
@@ -55,10 +51,6 @@ public interface ShipmentPackageContentCommand extends Command {
         Boolean getIsPropertySubProductQuantityRemoved();
 
         void setIsPropertySubProductQuantityRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

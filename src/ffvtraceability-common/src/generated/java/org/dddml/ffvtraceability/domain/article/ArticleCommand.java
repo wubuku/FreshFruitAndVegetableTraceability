@@ -69,10 +69,6 @@ public interface ArticleCommand extends Command {
 
         void setAuthor(String author);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
         String[] getTags();
 
         void setTags(String[] tags);
@@ -104,10 +100,6 @@ public interface ArticleCommand extends Command {
         Boolean getIsPropertyTagsRemoved();
 
         void setIsPropertyTagsRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         CommentCommandCollection getCommentCommands();

@@ -532,18 +532,6 @@ public abstract class AbstractOrderItemCommand extends AbstractCommand implement
             this.salesOpportunityId = salesOpportunityId;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateOrderItem extends AbstractCreateOrMergePatchOrderItem implements CreateOrderItem
@@ -1052,18 +1040,6 @@ public abstract class AbstractOrderItemCommand extends AbstractCommand implement
         public void setIsPropertySalesOpportunityIdRemoved(Boolean removed)
         {
             this.isPropertySalesOpportunityIdRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

@@ -28,10 +28,6 @@ public interface PartyIdentificationCommand extends Command {
 
         void setVerified(String verified);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreatePartyIdentification extends CreateOrMergePatchPartyIdentification
@@ -47,10 +43,6 @@ public interface PartyIdentificationCommand extends Command {
         Boolean getIsPropertyVerifiedRemoved();
 
         void setIsPropertyVerifiedRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

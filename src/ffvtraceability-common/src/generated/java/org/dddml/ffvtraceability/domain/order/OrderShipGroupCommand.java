@@ -108,10 +108,6 @@ public interface OrderShipGroupCommand extends Command {
 
         void setSupplierSyncMessage(String supplierSyncMessage);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateOrderShipGroup extends CreateOrMergePatchOrderShipGroup
@@ -211,10 +207,6 @@ public interface OrderShipGroupCommand extends Command {
         Boolean getIsPropertySupplierSyncMessageRemoved();
 
         void setIsPropertySupplierSyncMessageRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         OrderItemShipGroupAssociationCommandCollection getOrderItemShipGroupAssociationCommands();

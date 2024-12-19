@@ -24,10 +24,6 @@ public interface OrderContactMechCommand extends Command {
 
         void setContactMechId(String contactMechId);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateOrderContactMech extends CreateOrMergePatchOrderContactMech
@@ -39,10 +35,6 @@ public interface OrderContactMechCommand extends Command {
         Boolean getIsPropertyContactMechIdRemoved();
 
         void setIsPropertyContactMechIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

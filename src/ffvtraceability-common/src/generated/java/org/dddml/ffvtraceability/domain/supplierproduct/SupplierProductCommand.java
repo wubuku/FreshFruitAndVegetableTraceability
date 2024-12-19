@@ -142,10 +142,6 @@ public interface SupplierProductCommand extends Command {
 
         void setShipmentMethodTypeId(String shipmentMethodTypeId);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateSupplierProduct extends CreateOrMergePatchSupplierProduct
@@ -241,10 +237,6 @@ public interface SupplierProductCommand extends Command {
         Boolean getIsPropertyShipmentMethodTypeIdRemoved();
 
         void setIsPropertyShipmentMethodTypeIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

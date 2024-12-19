@@ -54,7 +54,6 @@ public class BffDocumentApplicationServiceImpl implements BffDocumentApplication
     public String when(BffDocumentServiceCommands.CreateDocument c) {
         AbstractDocumentCommand.SimpleCreateDocument createDocument = new AbstractDocumentCommand.SimpleCreateDocument();
         createDocument.setDocumentId(c.getDocument().getDocumentId() != null ? c.getDocument().getDocumentId() : IdUtils.randomId());
-        createDocument.setActive(true);
         createDocument.setDocumentLocation(c.getDocument().getDocumentLocation());
         //createDocument.setDocumentTypeId(c.getDocument().getDocumentTypeId());
         createDocument.setDocumentText(c.getDocument().getDocumentText());

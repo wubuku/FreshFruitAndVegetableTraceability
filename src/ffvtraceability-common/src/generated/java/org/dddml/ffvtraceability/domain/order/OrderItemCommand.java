@@ -184,10 +184,6 @@ public interface OrderItemCommand extends Command {
 
         void setSalesOpportunityId(String salesOpportunityId);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateOrderItem extends CreateOrMergePatchOrderItem
@@ -359,10 +355,6 @@ public interface OrderItemCommand extends Command {
         Boolean getIsPropertySalesOpportunityIdRemoved();
 
         void setIsPropertySalesOpportunityIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

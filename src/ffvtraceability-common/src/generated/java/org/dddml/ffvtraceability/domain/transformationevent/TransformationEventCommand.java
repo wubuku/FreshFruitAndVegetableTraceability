@@ -91,10 +91,6 @@ public interface TransformationEventCommand extends Command {
 
         void setReferenceDocument(KdeReferenceDocument referenceDocument);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateTransformationEvent extends CreateOrMergePatchTransformationEvent
@@ -138,10 +134,6 @@ public interface TransformationEventCommand extends Command {
         Boolean getIsPropertyReferenceDocumentRemoved();
 
         void setIsPropertyReferenceDocumentRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

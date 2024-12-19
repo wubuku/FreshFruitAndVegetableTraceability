@@ -49,9 +49,9 @@ public interface LotEvent extends Event {
 
         void setExpirationDate(OffsetDateTime expirationDate);
 
-        Boolean getActive();
+        String getActive();
 
-        void setActive(Boolean active);
+        void setActive(String active);
 
     }
 

@@ -121,6 +121,13 @@
         id:
           name: PartyRoleId
           type: PartyRoleId
+        globalId:
+          name: OrderRoleId
+          type: OrderRoleId
+          columnNames:
+            - ORDER_ID
+            - PARTY_ID
+            - ROLE_TYPE_ID
         properties: {}
 
       OrderContactMech:

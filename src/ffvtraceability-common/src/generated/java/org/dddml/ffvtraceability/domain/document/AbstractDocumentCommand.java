@@ -88,18 +88,6 @@ public abstract class AbstractDocumentCommand extends AbstractCommand implements
             this.documentText = documentText;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateDocument extends AbstractCreateOrMergePatchDocument implements CreateDocument
@@ -164,18 +152,6 @@ public abstract class AbstractDocumentCommand extends AbstractCommand implements
         public void setIsPropertyDocumentTextRemoved(Boolean removed)
         {
             this.isPropertyDocumentTextRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

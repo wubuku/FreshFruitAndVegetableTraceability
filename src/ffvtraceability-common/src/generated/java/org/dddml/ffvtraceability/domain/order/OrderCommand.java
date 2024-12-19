@@ -168,10 +168,6 @@ public interface OrderCommand extends Command {
 
         void setMemo(String memo);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateOrder extends CreateOrMergePatchOrder
@@ -311,10 +307,6 @@ public interface OrderCommand extends Command {
         Boolean getIsPropertyMemoRemoved();
 
         void setIsPropertyMemoRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         OrderRoleCommandCollection getOrderRoleCommands();

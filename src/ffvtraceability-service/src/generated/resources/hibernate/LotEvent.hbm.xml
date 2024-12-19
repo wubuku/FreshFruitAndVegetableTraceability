@@ -31,7 +31,7 @@
         <column name="expiration_date" sql-type="timestamptz" />
       </property>
       <property name="active">
-        <column name="active" />
+        <column name="active" sql-type="CHAR(1)" />
       </property>
       <subclass name="AbstractLotEvent$SimpleLotStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractLotEvent$SimpleLotStateMergePatched" discriminator-value="MergePatched">

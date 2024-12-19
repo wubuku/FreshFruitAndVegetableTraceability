@@ -28,10 +28,6 @@ public interface OrderItemShipGroupAssociationCommand extends Command {
 
         void setCancelQuantity(java.math.BigDecimal cancelQuantity);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateOrderItemShipGroupAssociation extends CreateOrMergePatchOrderItemShipGroupAssociation
@@ -47,10 +43,6 @@ public interface OrderItemShipGroupAssociationCommand extends Command {
         Boolean getIsPropertyCancelQuantityRemoved();
 
         void setIsPropertyCancelQuantityRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

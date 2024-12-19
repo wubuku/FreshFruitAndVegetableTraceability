@@ -377,18 +377,6 @@ public abstract class AbstractOrderCommand extends AbstractCommand implements Or
             this.memo = memo;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
         public OrderRoleCommand.CreateOrderRole newCreateOrderRole()
         {
             AbstractOrderRoleCommand.SimpleCreateOrderRole c = new AbstractOrderRoleCommand.SimpleCreateOrderRole();
@@ -911,18 +899,6 @@ public abstract class AbstractOrderCommand extends AbstractCommand implements Or
         public void setIsPropertyMemoRemoved(Boolean removed)
         {
             this.isPropertyMemoRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

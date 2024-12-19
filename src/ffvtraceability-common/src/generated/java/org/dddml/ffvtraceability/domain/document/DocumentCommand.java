@@ -71,10 +71,6 @@ public interface DocumentCommand extends Command {
 
         void setDocumentText(String documentText);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateDocument extends CreateOrMergePatchDocument
@@ -98,10 +94,6 @@ public interface DocumentCommand extends Command {
         Boolean getIsPropertyDocumentTextRemoved();
 
         void setIsPropertyDocumentTextRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

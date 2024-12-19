@@ -20,6 +20,8 @@ import java.util.UUID;
 @Service
 public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     public static final String LOT_IDENTIFICATION_TYPE_GS1_BATCH = "GS1_BATCH";
+    public static final String INDICATOR_YES = "Y";
+    public static final String INDICATOR_NO = "N";
 
     @Autowired
     private LotApplicationService lotApplicationService;
@@ -51,7 +53,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
         createLot.setLotId(c.getLot().getLotId() != null ? c.getLot().getLotId() : IdUtils.randomId());
         createLot.setExpirationDate(c.getLot().getExpirationDate());
         createLot.setQuantity(c.getLot().getQuantity());
-        createLot.setActive(true);
+        createLot.setActive(INDICATOR_YES);
         createLot.setCommandId(createLot.getLotId());
         createLot.setRequesterId(c.getRequesterId());
         if (c.getLot().getGs1Batch() != null) {
@@ -91,7 +93,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
         AbstractLotCommand.SimpleMergePatchLot mergePatchLot = new AbstractLotCommand.SimpleMergePatchLot();
         mergePatchLot.setLotId(lotId);
         mergePatchLot.setVersion(lotState.getVersion());
-        mergePatchLot.setActive(c.getActive());
+        mergePatchLot.setActive(c.getActive() ? INDICATOR_YES : INDICATOR_NO);
         mergePatchLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchLot.setRequesterId(c.getRequesterId());
         lotApplicationService.when(mergePatchLot);

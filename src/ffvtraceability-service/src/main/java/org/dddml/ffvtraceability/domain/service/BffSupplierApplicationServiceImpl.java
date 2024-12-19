@@ -16,8 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.UUID;
+
 @Service
 public class BffSupplierApplicationServiceImpl implements BffSupplierApplicationService {
+    public static final String PARTY_STATUS_ACTIVE = "ACTIVE";
+    public static final String PARTY_STATUS_INACTIVE = "INACTIVE";
+
     /**
      * GGN (GLOBALG.A.P. Number)
      */
@@ -49,17 +54,16 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Override
     @Transactional(readOnly = true)
     public BffSupplierDto when(BffSupplierServiceCommands.GetSupplier c) {
-        PartyState party = partyApplicationService.get(c.getSupplierId());
-        if (party != null) {
-            BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(party);
-            party.getPartyIdentifications().stream().forEach(x -> {
+        PartyState partyState = partyApplicationService.get(c.getSupplierId());
+        if (partyState != null) {
+            BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(partyState);
+            partyState.getPartyIdentifications().stream().forEach(x -> {
                 if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GLN)) {
                     dto.setGln(x.getIdValue());
                 } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GGN)) {
                     dto.setGgn(x.getIdValue());
                 }
             });
-
             return dto;
         }
         return null;
@@ -85,6 +89,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             createPartyIdentification.setIdValue(c.getSupplier().getGln());
             createParty.getCreatePartyIdentificationCommands().add(createPartyIdentification);
         }
+        createParty.setStatusId(PARTY_STATUS_ACTIVE); // default status
         createParty.setCommandId(createParty.getPartyId()); //c.getCommandId());
         createParty.setRequesterId(c.getRequesterId());
         partyApplicationService.when(createParty);
@@ -94,7 +99,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         partyRoleId.setPartyId(createParty.getPartyId());
         partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
         createPartyRole.setPartyRoleId(partyRoleId);
-        createPartyRole.setActive(true);
         createPartyRole.setCommandId(createParty.getPartyId() + "-SUPPLIER"); //c.getCommandId());
         createPartyRole.setRequesterId(c.getRequesterId());
         partyRoleApplicationService.when(createPartyRole);
@@ -170,11 +174,32 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
                 mergePatchParty.getPartyIdentificationCommands().add(createPartyIdentification);
             }
         }
+        if (StringUtils.hasText(c.getSupplier().getStatusId()) && (
+                PARTY_STATUS_ACTIVE.equals(c.getSupplier().getStatusId())
+                        || PARTY_STATUS_INACTIVE.equals(c.getSupplier().getStatusId())
+        )) {
+            mergePatchParty.setStatusId(c.getSupplier().getStatusId());
+        }
         partyApplicationService.when(mergePatchParty);
     }
 
     @Override
     public void when(BffSupplierServiceCommands.ActivateSupplier c) {
-
+        String supplierId = c.getSupplierId();
+        PartyState partyState = partyApplicationService.get(supplierId);
+        if (partyState == null) {
+            throw new IllegalArgumentException("Supplier not found:" + c.getSupplierId());
+        }
+        AbstractPartyCommand.SimpleMergePatchParty mergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
+        mergePatchParty.setPartyId(supplierId);
+        mergePatchParty.setVersion(partyState.getVersion());
+        if (c.getActive()) {
+            mergePatchParty.setStatusId(PARTY_STATUS_ACTIVE);
+        } else {
+            mergePatchParty.setStatusId(PARTY_STATUS_INACTIVE);
+        }
+        mergePatchParty.setRequesterId(c.getRequesterId());
+        mergePatchParty.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        partyApplicationService.when(mergePatchParty);
     }
 }

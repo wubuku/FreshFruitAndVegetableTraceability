@@ -56,10 +56,6 @@ public interface ShipmentPackageCommand extends Command {
 
         void setInsuredValue(java.math.BigDecimal insuredValue);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateShipmentPackage extends CreateOrMergePatchShipmentPackage
@@ -107,10 +103,6 @@ public interface ShipmentPackageCommand extends Command {
         Boolean getIsPropertyInsuredValueRemoved();
 
         void setIsPropertyInsuredValueRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         ShipmentPackageContentCommandCollection getShipmentPackageContentCommands();

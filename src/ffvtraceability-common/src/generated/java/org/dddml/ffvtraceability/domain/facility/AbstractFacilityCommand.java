@@ -256,18 +256,6 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
             this.geoId = geoId;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateFacility extends AbstractCreateOrMergePatchFacility implements CreateFacility
@@ -500,18 +488,6 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
         public void setIsPropertyGeoIdRemoved(Boolean removed)
         {
             this.isPropertyGeoIdRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

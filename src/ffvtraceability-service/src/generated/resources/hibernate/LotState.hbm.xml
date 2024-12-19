@@ -19,14 +19,14 @@
     <property name="expirationDate">
       <column name="expiration_date" sql-type="timestamptz" />
     </property>
+    <property name="active">
+      <column name="active" sql-type="CHAR(1)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>
     <property name="updatedBy">
       <column name="updated_by" />
-    </property>
-    <property name="active">
-      <column name="active" />
     </property>
     <property name="deleted">
       <column name="deleted" />

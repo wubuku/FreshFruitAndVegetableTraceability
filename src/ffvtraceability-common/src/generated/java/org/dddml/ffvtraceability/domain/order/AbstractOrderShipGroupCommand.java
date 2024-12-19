@@ -304,18 +304,6 @@ public abstract class AbstractOrderShipGroupCommand extends AbstractCommand impl
             this.supplierSyncMessage = supplierSyncMessage;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
         public OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation newCreateOrderItemShipGroupAssociation()
         {
             AbstractOrderItemShipGroupAssociationCommand.SimpleCreateOrderItemShipGroupAssociation c = new AbstractOrderItemShipGroupAssociationCommand.SimpleCreateOrderItemShipGroupAssociation();
@@ -636,18 +624,6 @@ public abstract class AbstractOrderShipGroupCommand extends AbstractCommand impl
         public void setIsPropertySupplierSyncMessageRemoved(Boolean removed)
         {
             this.isPropertySupplierSyncMessageRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

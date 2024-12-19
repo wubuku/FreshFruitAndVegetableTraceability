@@ -76,18 +76,6 @@ public abstract class AbstractArticleCommand extends AbstractCommand implements 
             this.author = author;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
         private String[] tags;
 
         public String[] getTags() {
@@ -196,18 +184,6 @@ public abstract class AbstractArticleCommand extends AbstractCommand implements 
         public void setIsPropertyTagsRemoved(Boolean removed)
         {
             this.isPropertyTagsRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

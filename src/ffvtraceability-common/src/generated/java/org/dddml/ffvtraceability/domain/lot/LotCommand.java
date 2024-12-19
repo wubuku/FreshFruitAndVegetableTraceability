@@ -63,9 +63,9 @@ public interface LotCommand extends Command {
 
         void setExpirationDate(OffsetDateTime expirationDate);
 
-        Boolean getActive();
+        String getActive();
 
-        void setActive(Boolean active);
+        void setActive(String active);
 
     }
 

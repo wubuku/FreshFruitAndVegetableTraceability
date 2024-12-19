@@ -88,18 +88,6 @@ public abstract class AbstractStatusItemCommand extends AbstractCommand implemen
             this.description = description;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateStatusItem extends AbstractCreateOrMergePatchStatusItem implements CreateStatusItem
@@ -164,18 +152,6 @@ public abstract class AbstractStatusItemCommand extends AbstractCommand implemen
         public void setIsPropertyDescriptionRemoved(Boolean removed)
         {
             this.isPropertyDescriptionRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

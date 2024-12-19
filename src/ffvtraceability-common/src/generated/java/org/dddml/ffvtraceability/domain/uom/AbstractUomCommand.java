@@ -100,18 +100,6 @@ public abstract class AbstractUomCommand extends AbstractCommand implements UomC
             this.description = description;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateUom extends AbstractCreateOrMergePatchUom implements CreateUom
@@ -188,18 +176,6 @@ public abstract class AbstractUomCommand extends AbstractCommand implements UomC
         public void setIsPropertyDescriptionRemoved(Boolean removed)
         {
             this.isPropertyDescriptionRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

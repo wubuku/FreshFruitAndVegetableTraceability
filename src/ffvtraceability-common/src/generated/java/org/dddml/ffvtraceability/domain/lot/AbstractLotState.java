@@ -44,6 +44,16 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.expirationDate = expirationDate;
     }
 
+    private String active;
+
+    public String getActive() {
+        return this.active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -92,16 +102,6 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
 
     public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    private Boolean active;
-
-    public Boolean getActive() {
-        return this.active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 
     private Boolean deleted;

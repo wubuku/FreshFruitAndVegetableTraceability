@@ -124,18 +124,6 @@ public abstract class AbstractProductCategoryCommand extends AbstractCommand imp
             this.showInSelect = showInSelect;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateProductCategory extends AbstractCreateOrMergePatchProductCategory implements CreateProductCategory
@@ -236,18 +224,6 @@ public abstract class AbstractProductCategoryCommand extends AbstractCommand imp
         public void setIsPropertyShowInSelectRemoved(Boolean removed)
         {
             this.isPropertyShowInSelectRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

@@ -143,10 +143,6 @@ public interface PartyCommand extends Command {
 
         void setFamilyName(String familyName);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateParty extends CreateOrMergePatchParty
@@ -246,10 +242,6 @@ public interface PartyCommand extends Command {
         Boolean getIsPropertyFamilyNameRemoved();
 
         void setIsPropertyFamilyNameRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         PartyIdentificationCommandCollection getPartyIdentificationCommands();

@@ -52,18 +52,6 @@ public abstract class AbstractOrderContactMechCommand extends AbstractCommand im
             this.contactMechId = contactMechId;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateOrderContactMech extends AbstractCreateOrMergePatchOrderContactMech implements CreateOrderContactMech
@@ -92,18 +80,6 @@ public abstract class AbstractOrderContactMechCommand extends AbstractCommand im
         public void setIsPropertyContactMechIdRemoved(Boolean removed)
         {
             this.isPropertyContactMechIdRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

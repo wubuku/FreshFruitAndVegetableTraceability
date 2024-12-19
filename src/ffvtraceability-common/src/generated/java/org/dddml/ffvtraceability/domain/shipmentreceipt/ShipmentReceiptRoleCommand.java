@@ -21,10 +21,6 @@ public interface ShipmentReceiptRoleCommand extends Command {
     interface CreateOrMergePatchShipmentReceiptRole extends ShipmentReceiptRoleCommand
     {
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateShipmentReceiptRole extends CreateOrMergePatchShipmentReceiptRole
@@ -33,10 +29,6 @@ public interface ShipmentReceiptRoleCommand extends Command {
 
     interface MergePatchShipmentReceiptRole extends CreateOrMergePatchShipmentReceiptRole
     {
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
-
 
     }
 

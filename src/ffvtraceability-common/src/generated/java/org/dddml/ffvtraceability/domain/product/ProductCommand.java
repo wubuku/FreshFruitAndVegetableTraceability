@@ -290,10 +290,6 @@ public interface ProductCommand extends Command {
 
         void setOrderDecimalQuantity(String orderDecimalQuantity);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateProduct extends CreateOrMergePatchProduct
@@ -545,10 +541,6 @@ public interface ProductCommand extends Command {
         Boolean getIsPropertyOrderDecimalQuantityRemoved();
 
         void setIsPropertyOrderDecimalQuantityRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         GoodIdentificationCommandCollection getGoodIdentificationCommands();

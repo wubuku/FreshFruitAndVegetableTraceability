@@ -111,10 +111,6 @@ public interface Gs1ApplicationIdentifierCommand extends Command {
 
         void setEnd(String end);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
         Gs1AppIdComponent[] getComponents();
 
         void setComponents(Gs1AppIdComponent[] components);
@@ -186,10 +182,6 @@ public interface Gs1ApplicationIdentifierCommand extends Command {
         Boolean getIsPropertyEndRemoved();
 
         void setIsPropertyEndRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

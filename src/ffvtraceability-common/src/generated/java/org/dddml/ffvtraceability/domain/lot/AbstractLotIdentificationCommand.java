@@ -52,18 +52,6 @@ public abstract class AbstractLotIdentificationCommand extends AbstractCommand i
             this.idValue = idValue;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateLotIdentification extends AbstractCreateOrMergePatchLotIdentification implements CreateLotIdentification
@@ -92,18 +80,6 @@ public abstract class AbstractLotIdentificationCommand extends AbstractCommand i
         public void setIsPropertyIdValueRemoved(Boolean removed)
         {
             this.isPropertyIdValueRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

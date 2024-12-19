@@ -148,18 +148,6 @@ public abstract class AbstractShipmentPackageCommand extends AbstractCommand imp
             this.insuredValue = insuredValue;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
         public ShipmentPackageContentCommand.CreateShipmentPackageContent newCreateShipmentPackageContent()
         {
             AbstractShipmentPackageContentCommand.SimpleCreateShipmentPackageContent c = new AbstractShipmentPackageContentCommand.SimpleCreateShipmentPackageContent();
@@ -324,18 +312,6 @@ public abstract class AbstractShipmentPackageCommand extends AbstractCommand imp
         public void setIsPropertyInsuredValueRemoved(Boolean removed)
         {
             this.isPropertyInsuredValueRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

@@ -64,18 +64,6 @@ public abstract class AbstractPartyIdentificationCommand extends AbstractCommand
             this.verified = verified;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreatePartyIdentification extends AbstractCreateOrMergePatchPartyIdentification implements CreatePartyIdentification
@@ -116,18 +104,6 @@ public abstract class AbstractPartyIdentificationCommand extends AbstractCommand
         public void setIsPropertyVerifiedRemoved(Boolean removed)
         {
             this.isPropertyVerifiedRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

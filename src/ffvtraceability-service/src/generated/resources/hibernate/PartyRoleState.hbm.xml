@@ -4,10 +4,10 @@
   <class name="org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleState$SimplePartyRoleState" table="party_role">
     <composite-id name="partyRoleId" class="org.dddml.ffvtraceability.domain.partyrole.PartyRoleId">
       <key-property name="partyId">
-        <column name="party_role_id_party_id" sql-type="VARCHAR(20)" />
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="roleTypeId">
-        <column name="party_role_id_role_type_id" sql-type="VARCHAR(20)" />
+        <column name="ROLE_TYPE_ID" sql-type="VARCHAR(20)" />
       </key-property>
     </composite-id>
     <version name="version" column="version" type="long" />

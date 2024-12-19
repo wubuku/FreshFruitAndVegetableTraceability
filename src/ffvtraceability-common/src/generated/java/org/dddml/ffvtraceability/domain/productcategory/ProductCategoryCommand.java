@@ -83,10 +83,6 @@ public interface ProductCategoryCommand extends Command {
 
         void setShowInSelect(Boolean showInSelect);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateProductCategory extends CreateOrMergePatchProductCategory
@@ -122,10 +118,6 @@ public interface ProductCategoryCommand extends Command {
         Boolean getIsPropertyShowInSelectRemoved();
 
         void setIsPropertyShowInSelectRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

@@ -64,18 +64,6 @@ public abstract class AbstractCommentCommand extends AbstractCommand implements 
             this.body = body;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateComment extends AbstractCreateOrMergePatchComment implements CreateComment
@@ -116,18 +104,6 @@ public abstract class AbstractCommentCommand extends AbstractCommand implements 
         public void setIsPropertyBodyRemoved(Boolean removed)
         {
             this.isPropertyBodyRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

@@ -28,10 +28,6 @@ public interface CommentCommand extends Command {
 
         void setBody(String body);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateComment extends CreateOrMergePatchComment
@@ -47,10 +43,6 @@ public interface CommentCommand extends Command {
         Boolean getIsPropertyBodyRemoved();
 
         void setIsPropertyBodyRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

@@ -304,18 +304,6 @@ public abstract class AbstractSupplierProductCommand extends AbstractCommand imp
             this.shipmentMethodTypeId = shipmentMethodTypeId;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateSupplierProduct extends AbstractCreateOrMergePatchSupplierProduct implements CreateSupplierProduct
@@ -596,18 +584,6 @@ public abstract class AbstractSupplierProductCommand extends AbstractCommand imp
         public void setIsPropertyShipmentMethodTypeIdRemoved(Boolean removed)
         {
             this.isPropertyShipmentMethodTypeIdRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

@@ -4,10 +4,10 @@
   <class name="AbstractPartyRoleEvent" table="party_role_event" abstract="true">
     <composite-id name="partyRoleEventId" class="org.dddml.ffvtraceability.domain.partyrole.PartyRoleEventId">
       <key-property name="partyRoleIdPartyId">
-        <column name="party_role_id_party_id" sql-type="VARCHAR(20)" />
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="partyRoleIdRoleTypeId">
-        <column name="party_role_id_role_type_id" sql-type="VARCHAR(20)" />
+        <column name="ROLE_TYPE_ID" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="version">
         <column name="version" />

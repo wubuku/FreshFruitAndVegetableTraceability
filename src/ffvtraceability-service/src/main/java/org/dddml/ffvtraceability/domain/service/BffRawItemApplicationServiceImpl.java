@@ -102,7 +102,6 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
             createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
             createSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
-            createSupplierProduct.setActive(true);
             createSupplierProduct.setCommandId(UUID.randomUUID().toString());
             supplierProductApplicationService.when(createSupplierProduct);
         }

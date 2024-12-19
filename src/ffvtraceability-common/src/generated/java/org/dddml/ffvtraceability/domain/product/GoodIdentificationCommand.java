@@ -24,10 +24,6 @@ public interface GoodIdentificationCommand extends Command {
 
         void setIdValue(String idValue);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateGoodIdentification extends CreateOrMergePatchGoodIdentification
@@ -39,10 +35,6 @@ public interface GoodIdentificationCommand extends Command {
         Boolean getIsPropertyIdValueRemoved();
 
         void setIsPropertyIdValueRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

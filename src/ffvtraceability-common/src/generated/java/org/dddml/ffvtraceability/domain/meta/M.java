@@ -2178,7 +2178,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -2191,12 +2191,13 @@ public class M {
             "lotId",
             "quantity",
             "expirationDate",
+            "active",
             "version",
             "createdBy",
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -2204,6 +2205,7 @@ public class M {
             "String",
             "java.math.BigDecimal",
             "OffsetDateTime",
+            "String",
             "Long",
             "String",
             "OffsetDateTime",
@@ -2231,6 +2233,8 @@ public class M {
         aliasMap.put("Quantity", "quantity");
         aliasMap.put("expirationDate", "expirationDate");
         aliasMap.put("ExpirationDate", "expirationDate");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -2241,8 +2245,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }

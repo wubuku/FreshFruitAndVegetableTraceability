@@ -41,18 +41,6 @@ public abstract class AbstractShipmentReceiptRoleCommand extends AbstractCommand
     public static abstract class AbstractCreateOrMergePatchShipmentReceiptRole extends AbstractShipmentReceiptRoleCommand implements CreateOrMergePatchShipmentReceiptRole
     {
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateShipmentReceiptRole extends AbstractCreateOrMergePatchShipmentReceiptRole implements CreateShipmentReceiptRole
@@ -69,18 +57,6 @@ public abstract class AbstractShipmentReceiptRoleCommand extends AbstractCommand
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_MERGE_PATCH;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

@@ -4,7 +4,10 @@ aggregates:
       name: LotId
       type: id
     reservedPropertyMetadata:
-      noActive: false
+      #noActive: true
+      active:
+        name: "__Active__"
+
     properties:
       # Gs1Batch:
       #   description: "GS1 BATCH (AI=10)"
@@ -15,6 +18,8 @@ aggregates:
         type: date-time
       LotIdentifications:
         itemType: LotIdentification
+      Active:
+        type: indicator
 
     entities:
       LotIdentification:

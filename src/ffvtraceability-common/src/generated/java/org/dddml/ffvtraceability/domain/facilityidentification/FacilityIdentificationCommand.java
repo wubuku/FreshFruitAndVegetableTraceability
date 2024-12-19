@@ -59,10 +59,6 @@ public interface FacilityIdentificationCommand extends Command {
 
         void setIdValue(String idValue);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateFacilityIdentification extends CreateOrMergePatchFacilityIdentification
@@ -74,10 +70,6 @@ public interface FacilityIdentificationCommand extends Command {
         Boolean getIsPropertyIdValueRemoved();
 
         void setIsPropertyIdValueRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

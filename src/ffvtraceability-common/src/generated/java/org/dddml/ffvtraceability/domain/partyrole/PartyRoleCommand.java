@@ -55,10 +55,6 @@ public interface PartyRoleCommand extends Command {
     interface CreateOrMergePatchPartyRole extends PartyRoleCommand
     {
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreatePartyRole extends CreateOrMergePatchPartyRole
@@ -67,10 +63,6 @@ public interface PartyRoleCommand extends Command {
 
     interface MergePatchPartyRole extends CreateOrMergePatchPartyRole
     {
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
-
 
     }
 

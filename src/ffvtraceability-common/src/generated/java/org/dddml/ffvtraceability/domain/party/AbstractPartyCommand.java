@@ -304,18 +304,6 @@ public abstract class AbstractPartyCommand extends AbstractCommand implements Pa
             this.familyName = familyName;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
         public PartyIdentificationCommand.CreatePartyIdentification newCreatePartyIdentification()
         {
             AbstractPartyIdentificationCommand.SimpleCreatePartyIdentification c = new AbstractPartyIdentificationCommand.SimpleCreatePartyIdentification();
@@ -630,18 +618,6 @@ public abstract class AbstractPartyCommand extends AbstractCommand implements Pa
         public void setIsPropertyFamilyNameRemoved(Boolean removed)
         {
             this.isPropertyFamilyNameRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

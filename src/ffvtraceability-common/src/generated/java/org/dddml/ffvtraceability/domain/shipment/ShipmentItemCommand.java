@@ -32,10 +32,6 @@ public interface ShipmentItemCommand extends Command {
 
         void setShipmentContentDescription(String shipmentContentDescription);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateShipmentItem extends CreateOrMergePatchShipmentItem
@@ -55,10 +51,6 @@ public interface ShipmentItemCommand extends Command {
         Boolean getIsPropertyShipmentContentDescriptionRemoved();
 
         void setIsPropertyShipmentContentDescriptionRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

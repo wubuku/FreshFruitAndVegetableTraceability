@@ -7,10 +7,10 @@
         <column name="ORDER_ID" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="partyRoleIdPartyId">
-        <column name="order_role_id_party_role_id_party_id" sql-type="VARCHAR(20)" />
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="partyRoleIdRoleTypeId">
-        <column name="order_role_id_party_role_id_role_type_id" sql-type="VARCHAR(20)" />
+        <column name="ROLE_TYPE_ID" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="orderHeaderVersion">
         <column name="order_header_version" />

@@ -83,10 +83,6 @@ public interface GeoPointCommand extends Command {
 
         void setInformation(String information);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateGeoPoint extends CreateOrMergePatchGeoPoint
@@ -122,10 +118,6 @@ public interface GeoPointCommand extends Command {
         Boolean getIsPropertyInformationRemoved();
 
         void setIsPropertyInformationRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

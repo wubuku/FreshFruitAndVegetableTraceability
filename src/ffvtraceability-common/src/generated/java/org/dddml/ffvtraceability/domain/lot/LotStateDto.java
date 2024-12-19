@@ -50,14 +50,14 @@ public class LotStateDto {
         this.expirationDate = expirationDate;
     }
 
-    private Boolean active;
+    private String active;
 
-    public Boolean getActive()
+    public String getActive()
     {
         return this.active;
     }
 
-    public void setActive(Boolean active)
+    public void setActive(String active)
     {
         this.active = active;
     }

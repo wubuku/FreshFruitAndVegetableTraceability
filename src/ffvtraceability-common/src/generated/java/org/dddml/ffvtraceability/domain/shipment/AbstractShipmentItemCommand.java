@@ -76,18 +76,6 @@ public abstract class AbstractShipmentItemCommand extends AbstractCommand implem
             this.shipmentContentDescription = shipmentContentDescription;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateShipmentItem extends AbstractCreateOrMergePatchShipmentItem implements CreateShipmentItem
@@ -140,18 +128,6 @@ public abstract class AbstractShipmentItemCommand extends AbstractCommand implem
         public void setIsPropertyShipmentContentDescriptionRemoved(Boolean removed)
         {
             this.isPropertyShipmentContentDescriptionRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

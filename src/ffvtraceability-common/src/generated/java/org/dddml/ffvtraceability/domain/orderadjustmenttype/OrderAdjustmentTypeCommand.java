@@ -67,10 +67,6 @@ public interface OrderAdjustmentTypeCommand extends Command {
 
         void setDescription(String description);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateOrderAdjustmentType extends CreateOrMergePatchOrderAdjustmentType
@@ -90,10 +86,6 @@ public interface OrderAdjustmentTypeCommand extends Command {
         Boolean getIsPropertyDescriptionRemoved();
 
         void setIsPropertyDescriptionRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

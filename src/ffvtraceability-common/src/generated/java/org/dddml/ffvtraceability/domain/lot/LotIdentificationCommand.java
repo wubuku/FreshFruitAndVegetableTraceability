@@ -24,10 +24,6 @@ public interface LotIdentificationCommand extends Command {
 
         void setIdValue(String idValue);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateLotIdentification extends CreateOrMergePatchLotIdentification
@@ -39,10 +35,6 @@ public interface LotIdentificationCommand extends Command {
         Boolean getIsPropertyIdValueRemoved();
 
         void setIsPropertyIdValueRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

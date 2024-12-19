@@ -66,10 +66,6 @@ public interface StatusItemCommand extends Command {
 
         void setDescription(String description);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateStatusItem extends CreateOrMergePatchStatusItem
@@ -93,10 +89,6 @@ public interface StatusItemCommand extends Command {
         Boolean getIsPropertyDescriptionRemoved();
 
         void setIsPropertyDescriptionRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

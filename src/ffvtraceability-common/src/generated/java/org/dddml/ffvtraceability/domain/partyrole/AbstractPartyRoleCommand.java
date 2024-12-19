@@ -40,18 +40,6 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
     public static abstract class AbstractCreateOrMergePatchPartyRole extends AbstractPartyRoleCommand implements CreateOrMergePatchPartyRole
     {
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreatePartyRole extends AbstractCreateOrMergePatchPartyRole implements CreatePartyRole
@@ -68,18 +56,6 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_MERGE_PATCH;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

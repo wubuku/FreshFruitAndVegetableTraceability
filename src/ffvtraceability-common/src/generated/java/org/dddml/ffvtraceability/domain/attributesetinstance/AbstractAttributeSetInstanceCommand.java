@@ -52,18 +52,6 @@ public abstract class AbstractAttributeSetInstanceCommand extends AbstractComman
             this.properties = properties;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateAttributeSetInstance extends AbstractCreateOrMergePatchAttributeSetInstance implements CreateAttributeSetInstance

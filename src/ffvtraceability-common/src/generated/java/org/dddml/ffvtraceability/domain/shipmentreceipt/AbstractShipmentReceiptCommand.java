@@ -257,18 +257,6 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
             this.casesRejected = casesRejected;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
         public ShipmentReceiptRoleCommand.CreateShipmentReceiptRole newCreateShipmentReceiptRole()
         {
             AbstractShipmentReceiptRoleCommand.SimpleCreateShipmentReceiptRole c = new AbstractShipmentReceiptRoleCommand.SimpleCreateShipmentReceiptRole();
@@ -535,18 +523,6 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
         public void setIsPropertyCasesRejectedRemoved(Boolean removed)
         {
             this.isPropertyCasesRejectedRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

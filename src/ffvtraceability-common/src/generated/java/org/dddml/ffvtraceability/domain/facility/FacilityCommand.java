@@ -127,10 +127,6 @@ public interface FacilityCommand extends Command {
 
         void setGeoId(String geoId);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateFacility extends CreateOrMergePatchFacility
@@ -210,10 +206,6 @@ public interface FacilityCommand extends Command {
         Boolean getIsPropertyGeoIdRemoved();
 
         void setIsPropertyGeoIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

@@ -88,18 +88,6 @@ public abstract class AbstractShipmentPackageContentCommand extends AbstractComm
             this.subProductQuantity = subProductQuantity;
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
     }
 
     public static abstract class AbstractCreateShipmentPackageContent extends AbstractCreateOrMergePatchShipmentPackageContent implements CreateShipmentPackageContent
@@ -152,18 +140,6 @@ public abstract class AbstractShipmentPackageContentCommand extends AbstractComm
         public void setIsPropertySubProductQuantityRemoved(Boolean removed)
         {
             this.isPropertySubProductQuantityRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
 

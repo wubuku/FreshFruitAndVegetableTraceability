@@ -140,10 +140,6 @@ public interface OrderAdjustmentCommand extends Command {
 
         void setOldPercentage(Double oldPercentage);
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateOrderAdjustment extends CreateOrMergePatchOrderAdjustment
@@ -271,10 +267,6 @@ public interface OrderAdjustmentCommand extends Command {
         Boolean getIsPropertyOldPercentageRemoved();
 
         void setIsPropertyOldPercentageRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

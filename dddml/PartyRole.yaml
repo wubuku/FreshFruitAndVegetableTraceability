@@ -4,6 +4,9 @@
     id:
       name: PartyRoleId
       type: PartyRoleId
+      columnNames:
+        - PARTY_ID
+        - ROLE_TYPE_ID
     properties: {}
 
     valueObjects:

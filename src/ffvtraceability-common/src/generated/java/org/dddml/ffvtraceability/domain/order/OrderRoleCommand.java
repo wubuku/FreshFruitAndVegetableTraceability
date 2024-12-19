@@ -21,10 +21,6 @@ public interface OrderRoleCommand extends Command {
     interface CreateOrMergePatchOrderRole extends OrderRoleCommand
     {
 
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
     }
 
     interface CreateOrderRole extends CreateOrMergePatchOrderRole
@@ -33,10 +29,6 @@ public interface OrderRoleCommand extends Command {
 
     interface MergePatchOrderRole extends CreateOrMergePatchOrderRole
     {
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
-
 
     }
 
