@@ -347,7 +347,21 @@ curl -X 'POST' \
 # Global Location Number - 13位数字
 ```
 
+查询供应商：
 
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffSuppliers?page=0&size=20' \
+  -H 'accept: application/json'
+```
+
+查询单个供应商（注意将下面示例 URL 路径中的 `SUP20240116001` 替换为实际的供应商 ID）：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffSuppliers/SUP20240116001' \
+  -H 'accept: application/json'
+```
 
 
 #### Test "StatusItem"
