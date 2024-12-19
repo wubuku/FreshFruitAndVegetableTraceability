@@ -211,11 +211,11 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
     @Override
     public void when(BffReceivingServiceCommands.DeleteReceivingItem c) {
-
+        //todo
     }
 
     @Override
     public void when(BffReceivingServiceCommands.UpdateReceivingItem c) {
-
+        //todo
     }
 }

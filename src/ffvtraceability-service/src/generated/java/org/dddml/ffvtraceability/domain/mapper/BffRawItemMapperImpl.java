@@ -2,11 +2,14 @@ package org.dddml.ffvtraceability.domain.mapper;
 
 import javax.annotation.processing.Generated;
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
+import org.dddml.ffvtraceability.domain.product.ProductState;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemProjection;
 import org.springframework.stereotype.Component;
 
 @Generated(
-    value = "org.mapstruct.ap.MappingProcessor"
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2024-12-19T18:46:41+0800",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
 )
 @Component
 public class BffRawItemMapperImpl implements BffRawItemMapper {
@@ -31,6 +34,27 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setPiecesIncluded( bffRawItem.getPiecesIncluded() );
         bffRawItemDto.setStatusId( bffRawItem.getStatusId() );
         bffRawItemDto.setSupplierId( bffRawItem.getSupplierId() );
+
+        return bffRawItemDto;
+    }
+
+    @Override
+    public BffRawItemDto toBffRawItemDto(ProductState productState) {
+        if ( productState == null ) {
+            return null;
+        }
+
+        BffRawItemDto bffRawItemDto = new BffRawItemDto();
+
+        bffRawItemDto.setProductId( productState.getProductId() );
+        bffRawItemDto.setProductName( productState.getProductName() );
+        bffRawItemDto.setDescription( productState.getDescription() );
+        bffRawItemDto.setSmallImageUrl( productState.getSmallImageUrl() );
+        bffRawItemDto.setMediumImageUrl( productState.getMediumImageUrl() );
+        bffRawItemDto.setLargeImageUrl( productState.getLargeImageUrl() );
+        bffRawItemDto.setQuantityUomId( productState.getQuantityUomId() );
+        bffRawItemDto.setQuantityIncluded( productState.getQuantityIncluded() );
+        bffRawItemDto.setPiecesIncluded( productState.getPiecesIncluded() );
 
         return bffRawItemDto;
     }

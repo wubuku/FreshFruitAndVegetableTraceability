@@ -3,10 +3,13 @@ package org.dddml.ffvtraceability.domain.mapper;
 import javax.annotation.processing.Generated;
 import org.dddml.ffvtraceability.domain.BffUomDto;
 import org.dddml.ffvtraceability.domain.repository.BffUomProjection;
+import org.dddml.ffvtraceability.domain.uom.UomState;
 import org.springframework.stereotype.Component;
 
 @Generated(
-    value = "org.mapstruct.ap.MappingProcessor"
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2024-12-19T18:46:41+0800",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
 )
 @Component
 public class BffUomMapperImpl implements BffUomMapper {
@@ -25,6 +28,24 @@ public class BffUomMapperImpl implements BffUomMapper {
         bffUomDto.setNumericCode( bffUomProjection.getNumericCode() );
         bffUomDto.setDescription( bffUomProjection.getDescription() );
         bffUomDto.setGs1AI( bffUomProjection.getGs1AI() );
+
+        return bffUomDto;
+    }
+
+    @Override
+    public BffUomDto toBffUomDto(UomState uomState) {
+        if ( uomState == null ) {
+            return null;
+        }
+
+        BffUomDto bffUomDto = new BffUomDto();
+
+        bffUomDto.setUomId( uomState.getUomId() );
+        bffUomDto.setUomTypeId( uomState.getUomTypeId() );
+        bffUomDto.setAbbreviation( uomState.getAbbreviation() );
+        bffUomDto.setNumericCode( uomState.getNumericCode() );
+        bffUomDto.setDescription( uomState.getDescription() );
+        bffUomDto.setGs1AI( uomState.getGs1AI() );
 
         return bffUomDto;
     }

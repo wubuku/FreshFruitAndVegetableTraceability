@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderApplicationService {
     @Override
     public Page<BffPurchaseOrderDto> when(BffPurchaseOrderServiceCommands.GetPurchaseOrderItems c) {
-        return null;
+        return null; // todo
     }
 
     @Override
     public BffPurchaseOrderDto when(BffPurchaseOrderServiceCommands.GetPurchaseOrder c) {
-        return null;
+        return null; //todo
     }
 }

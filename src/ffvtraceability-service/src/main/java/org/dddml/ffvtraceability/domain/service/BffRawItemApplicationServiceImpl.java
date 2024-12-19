@@ -3,9 +3,7 @@ package org.dddml.ffvtraceability.domain.service;
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
 import org.dddml.ffvtraceability.domain.mapper.BffRawItemMapper;
 import org.dddml.ffvtraceability.domain.party.PartyApplicationService;
-import org.dddml.ffvtraceability.domain.product.AbstractGoodIdentificationCommand;
-import org.dddml.ffvtraceability.domain.product.AbstractProductCommand;
-import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
+import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
 import org.dddml.ffvtraceability.domain.supplierproduct.AbstractSupplierProductCommand;
 import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductApplicationService;
@@ -22,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
+
+import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
+import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
 
 @Service
 public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationService {
@@ -56,7 +57,18 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BffRawItemDto when(BffRawItemServiceCommands.GetRawItem c) {
+        ProductState productState = productApplicationService.get(c.getProductId());
+        if (productState != null) {
+            BffRawItemDto dto = bffRawItemMapper.toBffRawItemDto(productState);
+            productState.getGoodIdentifications().stream().forEach(x -> {
+                if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN)) {
+                    dto.setGtin(x.getIdValue());
+                }
+            });
+            return dto;
+        }
         return null;
     }
 
@@ -109,17 +121,102 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     }
 
     @Override
+    @Transactional
     public void when(BffRawItemServiceCommands.UpdateRawItem c) {
+        String productId = c.getProductId();
+        ProductState productState = productApplicationService.get(productId);
+        if (productState == null) {
+            throw new IllegalArgumentException("Raw item not found: " + productId);
+        }
+        AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
+        mergePatchProduct.setProductId(productId);
+        mergePatchProduct.setVersion(productState.getVersion());
+        mergePatchProduct.setProductName(c.getRawItem().getProductName());
+        mergePatchProduct.setDescription(c.getRawItem().getDescription());
+        mergePatchProduct.setSmallImageUrl(c.getRawItem().getSmallImageUrl());
+        mergePatchProduct.setMediumImageUrl(c.getRawItem().getMediumImageUrl());
+        mergePatchProduct.setLargeImageUrl(c.getRawItem().getLargeImageUrl());
+        mergePatchProduct.setQuantityUomId(c.getRawItem().getQuantityUomId());
+        mergePatchProduct.setQuantityIncluded(c.getRawItem().getQuantityIncluded());
+        mergePatchProduct.setPiecesIncluded(c.getRawItem().getPiecesIncluded());
+        mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchProduct.setRequesterId(c.getRequesterId());
+        productApplicationService.when(mergePatchProduct);
 
+        if (c.getRawItem().getGtin() != null) {
+            var existingGtin = productState.getGoodIdentifications().stream()
+                    .filter(x -> x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN))
+                    .findFirst();
+
+            if (existingGtin.isPresent()) {
+                if (!existingGtin.get().getIdValue().equals(c.getRawItem().getGtin())) {
+                    GoodIdentificationCommand.MergePatchGoodIdentification mergePatchGoodIdentification
+                            = mergePatchProduct.newMergePatchGoodIdentification();
+                    mergePatchGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
+                    mergePatchGoodIdentification.setIdValue(c.getRawItem().getGtin());
+                    mergePatchProduct.getGoodIdentificationCommands().add(mergePatchGoodIdentification);
+                }
+            } else {
+                GoodIdentificationCommand.CreateGoodIdentification createGoodIdentification
+                        = mergePatchProduct.newCreateGoodIdentification();
+                createGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
+                createGoodIdentification.setIdValue(c.getRawItem().getGtin());
+                mergePatchProduct.getGoodIdentificationCommands().add(createGoodIdentification);
+            }
+        }
+        if (c.getRawItem().getSupplierId() != null) {
+            SupplierProductAssocId supplierProductAssocId = new SupplierProductAssocId();
+            supplierProductAssocId.setProductId(productId);
+            supplierProductAssocId.setPartyId(c.getRawItem().getSupplierId());
+            supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
+            supplierProductAssocId.setAvailableFromDate(OffsetDateTime.now());
+            supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
+            //todo 不需要使用完整的 ID 进行查询，使用部分 Id 查询即可
+            if (supplierProductApplicationService.get(supplierProductAssocId) == null) {
+                AbstractSupplierProductCommand.SimpleCreateSupplierProduct createSupplierProduct
+                        = new AbstractSupplierProductCommand.SimpleCreateSupplierProduct();
+                createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
+                createSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
+                createSupplierProduct.setCommandId(UUID.randomUUID().toString());
+                createSupplierProduct.setRequesterId(c.getRequesterId());
+                supplierProductApplicationService.when(createSupplierProduct);
+            }
+        }
     }
 
     @Override
+    @Transactional
     public void when(BffRawItemServiceCommands.ActivateRawItem c) {
-
+        String productId = c.getProductId();
+        ProductState productState = productApplicationService.get(productId);
+        if (productState == null) {
+            throw new IllegalArgumentException("Raw item not found: " + productId);
+        }
+        AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
+        mergePatchProduct.setProductId(productId);
+        mergePatchProduct.setVersion(productState.getVersion());
+        mergePatchProduct.setActive(c.getActive() ? INDICATOR_YES : INDICATOR_NO);
+        mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchProduct.setRequesterId(c.getRequesterId());
+        productApplicationService.when(mergePatchProduct);
     }
 
     @Override
+    @Transactional
     public void when(BffRawItemServiceCommands.BatchAddRawItems c) {
+        if (c.getRawItems() == null) {
+            return;
+        }
 
+        for (BffRawItemDto rawItem : c.getRawItems()) {
+            // 创建 CreateRawItem 命令
+            BffRawItemServiceCommands.CreateRawItem createCommand = new BffRawItemServiceCommands.CreateRawItem();
+            createCommand.setRawItem(rawItem);
+            createCommand.setRequesterId(c.getRequesterId());
+            createCommand.setCommandId(UUID.randomUUID().toString());
+
+            // 调用已有的创建方法
+            when(createCommand);
+        }
     }
 }

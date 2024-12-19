@@ -39,8 +39,13 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BffUomDto when(BffUomServiceCommands.GetUnitOfMeasure c) {
-        return null;//todo
+        UomState uomState = uomApplicationService.get(c.getUomId());
+        if (uomState != null) {
+            return bffUomMapper.toBffUomDto(uomState);
+        }
+        return null;
     }
 
     @Override
@@ -60,8 +65,23 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
     }
 
     @Override
+    @Transactional
     public void when(BffUomServiceCommands.UpdateUnitOfMeasure c) {
-
+        String uomId = c.getUomId();
+        UomState uomState = uomApplicationService.get(uomId);
+        if (uomState == null) {
+            throw new IllegalArgumentException("Unit of measure not found: " + uomId);
+        }
+        AbstractUomCommand.SimpleMergePatchUom mergePatchUom = new AbstractUomCommand.SimpleMergePatchUom();
+        mergePatchUom.setUomId(uomId);
+        mergePatchUom.setVersion(uomState.getVersion());
+        mergePatchUom.setAbbreviation(c.getUom().getAbbreviation());
+        mergePatchUom.setDescription(c.getUom().getDescription());
+        mergePatchUom.setNumericCode(c.getUom().getNumericCode());
+        mergePatchUom.setGs1AI(c.getUom().getGs1AI());
+        mergePatchUom.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchUom.setRequesterId(c.getRequesterId());
+        uomApplicationService.when(mergePatchUom);
     }
 
     @Override
