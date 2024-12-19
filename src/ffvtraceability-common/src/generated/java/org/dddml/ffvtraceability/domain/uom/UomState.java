@@ -29,6 +29,8 @@ public interface UomState
 
     String getDescription();
 
+    String getActive();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -53,6 +55,8 @@ public interface UomState
         void setGs1AI(String gs1AI);
 
         void setDescription(String description);
+
+        void setActive(String active);
 
         void setVersion(Long version);
 

@@ -25,7 +25,7 @@ public class HibernateUomStateRepository implements UomStateRepository {
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("UomId", "UomTypeId", "Abbreviation", "NumericCode", "Gs1AI", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("UomId", "UomTypeId", "Abbreviation", "NumericCode", "Gs1AI", "Description", "Active", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

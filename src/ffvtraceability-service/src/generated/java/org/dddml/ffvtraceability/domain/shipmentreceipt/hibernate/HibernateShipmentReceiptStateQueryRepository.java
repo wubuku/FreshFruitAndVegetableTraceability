@@ -30,7 +30,7 @@ public class HibernateShipmentReceiptStateQueryRepository implements ShipmentRec
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ReceiptId", "ProductId", "ShipmentId", "ShipmentItemSeqId", "ShipmentPackageSeqId", "OrderId", "OrderItemSeqId", "ReturnId", "ReturnItemSeqId", "RejectionId", "ReceivedBy", "DatetimeReceived", "ItemDescription", "QuantityAccepted", "QuantityRejected", "LotId", "LocationSeqId", "CasesAccepted", "CasesRejected", "ShipmentReceiptRoles", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ReceiptId", "ProductId", "ShipmentId", "ShipmentItemSeqId", "ShipmentPackageSeqId", "OrderId", "OrderItemSeqId", "ReturnId", "ReturnItemSeqId", "RejectionId", "ReceivedBy", "DatetimeReceived", "ItemDescription", "QuantityAccepted", "QuantityRejected", "LotId", "LocationSeqId", "CasesAccepted", "CasesRejected", "ShipmentReceiptRoles", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

@@ -19,6 +19,8 @@
         type: id
       Description:
         type: description
+      Active:
+        type: indicator
 
     references:
       UomType:

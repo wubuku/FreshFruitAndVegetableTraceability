@@ -29,7 +29,7 @@ public class HibernateGeoStateQueryRepository implements GeoStateQueryRepository
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("GeoId", "GeoTypeId", "GeoName", "GeoCode", "GeoSecCode", "Abbreviation", "WellKnownText", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("GeoId", "GeoTypeId", "GeoName", "GeoCode", "GeoSecCode", "Abbreviation", "WellKnownText", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

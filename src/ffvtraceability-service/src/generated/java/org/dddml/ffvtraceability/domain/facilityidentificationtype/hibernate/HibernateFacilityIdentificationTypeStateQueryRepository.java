@@ -29,7 +29,7 @@ public class HibernateFacilityIdentificationTypeStateQueryRepository implements 
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityIdentificationTypeId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityIdentificationTypeId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

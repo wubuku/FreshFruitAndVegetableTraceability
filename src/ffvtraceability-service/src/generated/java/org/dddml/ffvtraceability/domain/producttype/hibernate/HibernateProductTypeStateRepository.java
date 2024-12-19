@@ -25,7 +25,7 @@ public class HibernateProductTypeStateRepository implements ProductTypeStateRepo
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductTypeId", "ParentTypeId", "IsPhysical", "IsDigital", "HasTable", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductTypeId", "ParentTypeId", "IsPhysical", "IsDigital", "HasTable", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

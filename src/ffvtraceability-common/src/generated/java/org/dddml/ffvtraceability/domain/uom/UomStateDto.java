@@ -86,6 +86,18 @@ public class UomStateDto {
         this.description = description;
     }
 
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -192,6 +204,9 @@ public class UomStateDto {
             }
             if (returnedFieldsContains("Description")) {
                 dto.setDescription(state.getDescription());
+            }
+            if (returnedFieldsContains("Active")) {
+                dto.setActive(state.getActive());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

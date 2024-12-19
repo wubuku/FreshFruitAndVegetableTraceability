@@ -85,6 +85,21 @@ public class CreateOrMergePatchUomDto extends AbstractUomCommandDto implements U
         this.description = description;
     }
 
+    /**
+     * Active
+     */
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
 
     private Boolean isPropertyUomTypeIdRemoved;
 
@@ -146,6 +161,18 @@ public class CreateOrMergePatchUomDto extends AbstractUomCommandDto implements U
         this.isPropertyDescriptionRemoved = removed;
     }
 
+    private Boolean isPropertyActiveRemoved;
+
+    public Boolean getIsPropertyActiveRemoved()
+    {
+        return this.isPropertyActiveRemoved;
+    }
+
+    public void setIsPropertyActiveRemoved(Boolean removed)
+    {
+        this.isPropertyActiveRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchUom command)
     {
         ((AbstractUomCommandDto) this).copyTo(command);
@@ -154,6 +181,7 @@ public class CreateOrMergePatchUomDto extends AbstractUomCommandDto implements U
         command.setNumericCode(this.getNumericCode());
         command.setGs1AI(this.getGs1AI());
         command.setDescription(this.getDescription());
+        command.setActive(this.getActive());
     }
 
     public UomCommand toCommand()
@@ -203,6 +231,7 @@ public class CreateOrMergePatchUomDto extends AbstractUomCommandDto implements U
         command.setIsPropertyNumericCodeRemoved(this.getIsPropertyNumericCodeRemoved());
         command.setIsPropertyGs1AIRemoved(this.getIsPropertyGs1AIRemoved());
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
+        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateUomDto extends CreateOrMergePatchUomDto implements UomCommand.CreateUom

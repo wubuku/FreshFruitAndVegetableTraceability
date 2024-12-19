@@ -29,7 +29,7 @@ public class HibernateCompanyStateQueryRepository implements CompanyStateQueryRe
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("PartyId", "PartyTypeId", "PrimaryRoleTypeId", "ExternalId", "PreferredCurrencyUomId", "Description", "StatusId", "PartyIdentifications", "Salutation", "FirstName", "MiddleName", "LastName", "PersonalTitle", "Nickname", "Gender", "BirthDate", "DeceasedDate", "SocialSecurityNumber", "PassportNumber", "PassportExpireDate", "ExistingCustomer", "OrganizationName", "TaxIdNum", "FamilyName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("PartyId", "PartyTypeId", "PrimaryRoleTypeId", "ExternalId", "PreferredCurrencyUomId", "Description", "StatusId", "PartyIdentifications", "Salutation", "FirstName", "MiddleName", "LastName", "PersonalTitle", "Nickname", "Gender", "BirthDate", "DeceasedDate", "SocialSecurityNumber", "PassportNumber", "PassportExpireDate", "ExistingCustomer", "OrganizationName", "TaxIdNum", "FamilyName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

@@ -25,7 +25,7 @@ public class HibernateShippingDocumentStateRepository implements ShippingDocumen
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("DocumentId", "ShipmentId", "ShipmentItemSeqId", "ShipmentPackageSeqId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("DocumentId", "ShipmentId", "ShipmentItemSeqId", "ShipmentPackageSeqId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

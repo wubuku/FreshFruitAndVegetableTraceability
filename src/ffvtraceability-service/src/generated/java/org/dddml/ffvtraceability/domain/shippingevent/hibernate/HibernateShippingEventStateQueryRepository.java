@@ -29,7 +29,7 @@ public class HibernateShippingEventStateQueryRepository implements ShippingEvent
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ShipDate", "TlcSourceOrTlcSourceReference", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ShipDate", "TlcSourceOrTlcSourceReference", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

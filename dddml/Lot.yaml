@@ -3,10 +3,10 @@ aggregates:
     id:
       name: LotId
       type: id
-    reservedPropertyMetadata:
-      #noActive: true
-      active:
-        name: "__Active__"
+    # reservedPropertyMetadata:
+    #   noActive: true
+    #   active:
+    #     name: "__Active__"
 
     properties:
       # Gs1Batch:

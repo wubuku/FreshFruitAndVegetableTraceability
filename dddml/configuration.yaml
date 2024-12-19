@@ -35,8 +35,8 @@ configuration:
   defaultTimestampType: OffsetDateTime
   defaultReservedPropertyMetadata:
     noActive: true
-    # active:
-    #   name: "__Active__"
+    active:
+      name: "__Active__" # A placeholder that should not be used.
 
   typeDefinitions:
     StringList:

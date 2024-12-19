@@ -25,7 +25,7 @@ public class HibernateDocumentStateRepository implements DocumentStateRepository
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("DocumentId", "DocumentTypeId", "Comments", "DocumentLocation", "DocumentText", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("DocumentId", "DocumentTypeId", "Comments", "DocumentLocation", "DocumentText", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

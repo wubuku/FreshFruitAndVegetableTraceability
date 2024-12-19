@@ -25,7 +25,7 @@ public class HibernateFacilityStateRepository implements FacilityStateRepository
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityId", "FacilityTypeId", "ParentFacilityId", "OwnerPartyId", "DefaultInventoryItemTypeId", "FacilityName", "PrimaryFacilityGroupId", "OldSquareFootage", "FacilitySize", "FacilitySizeUomId", "ProductStoreId", "DefaultDaysToShip", "OpenedDate", "ClosedDate", "Description", "DefaultDimensionUomId", "DefaultWeightUomId", "GeoPointId", "GeoId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityId", "FacilityTypeId", "ParentFacilityId", "OwnerPartyId", "DefaultInventoryItemTypeId", "FacilityName", "PrimaryFacilityGroupId", "OldSquareFootage", "FacilitySize", "FacilitySizeUomId", "ProductStoreId", "DefaultDaysToShip", "OpenedDate", "ClosedDate", "Description", "DefaultDimensionUomId", "DefaultWeightUomId", "GeoPointId", "GeoId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

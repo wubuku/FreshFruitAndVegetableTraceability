@@ -212,7 +212,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -231,7 +231,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -279,8 +279,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -301,7 +301,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -317,7 +317,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "articleId",
             "articleCommentId.articleId",
@@ -368,8 +368,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("articleId", "articleCommentId.articleId");
@@ -396,7 +396,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -413,7 +413,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "traceabilityLotCode.caseGtin",
             "traceabilityLotCode.caseBatch",
@@ -527,8 +527,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("traceabilityLotCode.caseGtin", "traceabilityLotCode.caseGtin");
@@ -641,7 +641,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -658,7 +658,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "traceabilityLotCode.caseGtin",
             "traceabilityLotCode.caseBatch",
@@ -772,8 +772,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("traceabilityLotCode.caseGtin", "traceabilityLotCode.caseGtin");
@@ -886,7 +886,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -903,7 +903,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "foodUsedTlc.caseGtin",
             "foodUsedTlc.caseBatch",
@@ -1009,8 +1009,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("foodUsedTlc.caseGtin", "foodUsedTlc.caseGtin");
@@ -1095,7 +1095,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -1125,7 +1125,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -1206,8 +1206,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -1228,7 +1228,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -1245,7 +1245,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -1287,8 +1287,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -1309,7 +1309,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -1329,7 +1329,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -1380,8 +1380,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -1402,7 +1402,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -1418,12 +1418,13 @@ public class M {
             "numericCode",
             "gs1AI",
             "description",
+            "active",
             "version",
             "createdBy",
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -1432,6 +1433,7 @@ public class M {
             "String",
             "String",
             "Long",
+            "String",
             "String",
             "String",
             "Long",
@@ -1467,6 +1469,8 @@ public class M {
         aliasMap.put("Gs1AI", "gs1AI");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -1477,8 +1481,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -1499,7 +1503,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -1518,7 +1522,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -1566,8 +1570,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -1588,7 +1592,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -1622,7 +1626,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -1715,8 +1719,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -1737,7 +1741,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -1754,7 +1758,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -1796,8 +1800,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -1818,7 +1822,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -1835,7 +1839,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -1877,8 +1881,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -1899,7 +1903,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -1918,7 +1922,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -1966,8 +1970,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -1988,7 +1992,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -2010,7 +2014,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -2067,8 +2071,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -2089,7 +2093,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -2108,7 +2112,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -2156,8 +2160,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -2267,7 +2271,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -2282,7 +2286,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "lotId",
             "lotIdentificationId.lotId",
@@ -2330,8 +2334,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("lotId", "lotIdentificationId.lotId");
@@ -2358,7 +2362,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -2375,7 +2379,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -2417,8 +2421,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -2439,7 +2443,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -2477,7 +2481,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -2582,8 +2586,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -2604,7 +2608,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -2620,7 +2624,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "partyId",
             "partyIdentificationId.partyId",
@@ -2671,8 +2675,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("partyId", "partyIdentificationId.partyId");
@@ -2699,7 +2703,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -2718,7 +2722,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -2766,8 +2770,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -2788,7 +2792,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -2864,7 +2868,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -3083,8 +3087,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -3105,7 +3109,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -3120,7 +3124,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "productId",
             "goodIdentificationId.productId",
@@ -3168,8 +3172,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("productId", "goodIdentificationId.productId");
@@ -3196,7 +3200,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -3217,7 +3221,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -3271,8 +3275,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -3293,7 +3297,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -3316,7 +3320,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -3376,8 +3380,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -3398,7 +3402,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -3417,7 +3421,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -3465,8 +3469,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -3487,7 +3491,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -3534,7 +3538,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "supplierProductTenantizedId.tenantId",
             "supplierProductTenantizedId.supplierProductAssocIdProductId",
@@ -3648,8 +3652,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("supplierProductTenantizedId.tenantId", "supplierProductTenantizedId.tenantId");
@@ -3694,7 +3698,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -3714,7 +3718,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -3765,8 +3769,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -3787,7 +3791,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -3810,7 +3814,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -3870,8 +3874,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -3892,7 +3896,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -3917,7 +3921,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "partyRoleId.partyId",
             "partyRoleId.roleTypeId",
@@ -3957,8 +3961,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("partyRoleId.partyId", "partyRoleId.partyId");
@@ -3983,7 +3987,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -4002,7 +4006,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -4050,8 +4054,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -4072,7 +4076,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -4116,7 +4120,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -4239,8 +4243,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -4261,7 +4265,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -4274,7 +4278,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "orderId",
             "partyRoleId.partyId",
@@ -4322,8 +4326,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("orderId", "orderRoleId.orderId");
@@ -4364,7 +4368,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -4379,7 +4383,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "orderId",
             "orderContactMechId.orderId",
@@ -4427,8 +4431,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("orderId", "orderContactMechId.orderId");
@@ -4455,7 +4459,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -4510,7 +4514,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "orderId",
             "orderItemId.orderId",
@@ -4678,8 +4682,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("orderId", "orderItemId.orderId");
@@ -4706,7 +4710,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -4750,7 +4754,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "orderId",
             "orderIdOrderAdjustmentIdPair.orderId",
@@ -4885,8 +4889,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("orderId", "orderIdOrderAdjustmentIdPair.orderId");
@@ -4913,7 +4917,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -4949,7 +4953,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "orderId",
             "orderShipGroupId.orderId",
@@ -5060,8 +5064,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("orderId", "orderShipGroupId.orderId");
@@ -5088,7 +5092,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -5104,7 +5108,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "orderId",
             "orderShipGroupShipGroupSeqId",
@@ -5159,8 +5163,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("orderId", "orderItemShipGroupAssociationId.orderId");
@@ -5191,7 +5195,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -5210,7 +5214,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -5258,8 +5262,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -5280,7 +5284,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -5321,7 +5325,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -5435,8 +5439,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -5457,7 +5461,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -5474,7 +5478,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "shipmentId",
             "shipmentItemId.shipmentId",
@@ -5528,8 +5532,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("shipmentId", "shipmentItemId.shipmentId");
@@ -5556,7 +5560,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -5579,7 +5583,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "shipmentId",
             "shipmentPackageId.shipmentId",
@@ -5651,8 +5655,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("shipmentId", "shipmentPackageId.shipmentId");
@@ -5679,7 +5683,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -5696,7 +5700,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "shipmentId",
             "shipmentPackageSeqId",
@@ -5754,8 +5758,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("shipmentId", "shipmentPackageContentId.shipmentId");
@@ -5786,7 +5790,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -5805,7 +5809,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -5853,8 +5857,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -5875,7 +5879,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -5895,7 +5899,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -5946,8 +5950,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -5968,7 +5972,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -6002,7 +6006,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
     };
 
@@ -6095,8 +6099,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
     }
@@ -6117,7 +6121,7 @@ public class M {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
@@ -6130,7 +6134,7 @@ public class M {
             "createdAt",
             "updatedBy",
             "updatedAt",
-            "active",
+            "__Active__",
             "deleted",
             "shipmentReceiptReceiptId",
             "partyRoleId.partyId",
@@ -6178,8 +6182,8 @@ public class M {
         aliasMap.put("UpdatedBy", "updatedBy");
         aliasMap.put("updatedAt", "updatedAt");
         aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
         aliasMap.put("shipmentReceiptReceiptId", "shipmentReceiptRoleId.shipmentReceiptReceiptId");

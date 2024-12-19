@@ -179,6 +179,18 @@ public abstract class AbstractUomEvent extends AbstractEvent implements UomEvent
             this.description = description;
         }
 
+        private String active;
+
+        public String getActive()
+        {
+            return this.active;
+        }
+
+        public void setActive(String active)
+        {
+            this.active = active;
+        }
+
         protected AbstractUomStateEvent(UomEventId eventId) {
             super(eventId);
         }
@@ -263,6 +275,16 @@ public abstract class AbstractUomEvent extends AbstractEvent implements UomEvent
 
         public void setIsPropertyDescriptionRemoved(Boolean removed) {
             this.isPropertyDescriptionRemoved = removed;
+        }
+
+        private Boolean isPropertyActiveRemoved;
+
+        public Boolean getIsPropertyActiveRemoved() {
+            return this.isPropertyActiveRemoved;
+        }
+
+        public void setIsPropertyActiveRemoved(Boolean removed) {
+            this.isPropertyActiveRemoved = removed;
         }
 
 

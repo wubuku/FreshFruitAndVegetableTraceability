@@ -42,7 +42,7 @@ public class HibernateSupplierProductStateQueryRepository implements SupplierPro
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("SupplierProductTenantizedId", "AvailableThruDate", "SupplierPrefOrderId", "SupplierRatingTypeId", "StandardLeadTimeDays", "OrderQtyIncrements", "UnitsIncluded", "QuantityUomId", "AgreementId", "AgreementItemSeqId", "LastPrice", "ShippingPrice", "SupplierProductId", "SupplierProductName", "CanDropShip", "Comments", "TaxInPrice", "TaxAmount", "TaxPercentage", "LimitQuantityPerCustomer", "LimitQuantityPerOrder", "ProductPriceTypeId", "ShipmentMethodTypeId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("SupplierProductTenantizedId", "AvailableThruDate", "SupplierPrefOrderId", "SupplierRatingTypeId", "StandardLeadTimeDays", "OrderQtyIncrements", "UnitsIncluded", "QuantityUomId", "AgreementId", "AgreementItemSeqId", "LastPrice", "ShippingPrice", "SupplierProductId", "SupplierProductName", "CanDropShip", "Comments", "TaxInPrice", "TaxAmount", "TaxPercentage", "LimitQuantityPerCustomer", "LimitQuantityPerOrder", "ProductPriceTypeId", "ShipmentMethodTypeId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
