@@ -2863,6 +2863,7 @@ public class M {
             "defaultShipmentBoxTypeId",
             "lotIdFilledIn",
             "orderDecimalQuantity",
+            "active",
             "version",
             "createdBy",
             "createdAt",
@@ -2930,6 +2931,7 @@ public class M {
             "String",
             "String",
             "Long",
+            "String",
             "String",
             "String",
             "String",
@@ -3077,6 +3079,8 @@ public class M {
         aliasMap.put("LotIdFilledIn", "lotIdFilledIn");
         aliasMap.put("orderDecimalQuantity", "orderDecimalQuantity");
         aliasMap.put("OrderDecimalQuantity", "orderDecimalQuantity");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

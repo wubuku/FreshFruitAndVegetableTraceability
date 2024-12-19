@@ -33,6 +33,19 @@ public class BffUomServiceCommands {
             this.size = size;
         }
 
+        /**
+         * Active
+         */
+        private String active;
+
+        public String getActive() {
+            return active;
+        }
+
+        public void setActive(String active) {
+            this.active = active;
+        }
+
     }
 
     public static class GetUnitOfMeasure extends org.dddml.ffvtraceability.domain.AbstractCommand {

@@ -624,6 +624,16 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.orderDecimalQuantity = orderDecimalQuantity;
     }
 
+    private String active;
+
+    public String getActive() {
+        return this.active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -829,6 +839,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setDefaultShipmentBoxTypeId(e.getDefaultShipmentBoxTypeId());
         this.setLotIdFilledIn(e.getLotIdFilledIn());
         this.setOrderDecimalQuantity(e.getOrderDecimalQuantity());
+        this.setActive(e.getActive());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -903,6 +914,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setDefaultShipmentBoxTypeId(s.getDefaultShipmentBoxTypeId());
         this.setLotIdFilledIn(s.getLotIdFilledIn());
         this.setOrderDecimalQuantity(s.getOrderDecimalQuantity());
+        this.setActive(s.getActive());
 
         if (s.getGoodIdentifications() != null) {
             Iterable<GoodIdentificationState> iterable;
@@ -1363,6 +1375,13 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             }
         } else {
             this.setOrderDecimalQuantity(e.getOrderDecimalQuantity());
+        }
+        if (e.getActive() == null) {
+            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
+                this.setActive(null);
+            }
+        } else {
+            this.setActive(e.getActive());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

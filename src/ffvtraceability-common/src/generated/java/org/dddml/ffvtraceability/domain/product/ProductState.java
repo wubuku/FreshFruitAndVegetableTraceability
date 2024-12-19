@@ -139,6 +139,8 @@ public interface ProductState
 
     String getOrderDecimalQuantity();
 
+    String getActive();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -273,6 +275,8 @@ public interface ProductState
         void setLotIdFilledIn(String lotIdFilledIn);
 
         void setOrderDecimalQuantity(String orderDecimalQuantity);
+
+        void setActive(String active);
 
         void setVersion(Long version);
 

@@ -33,6 +33,19 @@ public class BffLotServiceCommands {
             this.size = size;
         }
 
+        /**
+         * Active
+         */
+        private String active;
+
+        public String getActive() {
+            return active;
+        }
+
+        public void setActive(String active) {
+            this.active = active;
+        }
+
     }
 
     public static class GetLot extends org.dddml.ffvtraceability.domain.AbstractCommand {

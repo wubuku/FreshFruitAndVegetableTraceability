@@ -281,6 +281,10 @@ public interface ProductEvent extends Event {
 
         void setOrderDecimalQuantity(String orderDecimalQuantity);
 
+        String getActive();
+
+        void setActive(String active);
+
     }
 
     interface ProductStateCreated extends ProductStateEvent
@@ -536,6 +540,10 @@ public interface ProductEvent extends Event {
         Boolean getIsPropertyOrderDecimalQuantityRemoved();
 
         void setIsPropertyOrderDecimalQuantityRemoved(Boolean removed);
+
+        Boolean getIsPropertyActiveRemoved();
+
+        void setIsPropertyActiveRemoved(Boolean removed);
 
 
         Iterable<GoodIdentificationEvent> getGoodIdentificationEvents();

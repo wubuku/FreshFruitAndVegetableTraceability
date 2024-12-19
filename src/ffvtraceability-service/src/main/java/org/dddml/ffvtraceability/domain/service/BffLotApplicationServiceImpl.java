@@ -17,11 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.*;
+
 @Service
 public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     public static final String LOT_IDENTIFICATION_TYPE_GS1_BATCH = "GS1_BATCH";
-    public static final String INDICATOR_YES = "Y";
-    public static final String INDICATOR_NO = "N";
 
     @Autowired
     private LotApplicationService lotApplicationService;
@@ -36,7 +36,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     @Transactional(readOnly = true)
     public Page<BffLotDto> when(BffLotServiceCommands.GetLots c) {
         return PageUtils.toPage(
-                bffLotRepository.findAllLots(PageRequest.of(c.getPage(), c.getSize())),
+                bffLotRepository.findAllLots(PageRequest.of(c.getPage(), c.getSize()), c.getActive()),
                 bffLotMapper::toBffLotDto
         );
     }

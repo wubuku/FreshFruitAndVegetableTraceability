@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface BffRawItemRepository extends JpaRepository<AbstractProductState, String> {
 
@@ -19,6 +20,7 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 p.quantity_uom_id as quantityUomId,
                 p.quantity_included as quantityIncluded,
                 p.pieces_included as piecesIncluded,
+                p.active as active,
                 gi.id_value as gtin,
                 party.party_id as supplierId
             FROM product p
@@ -44,21 +46,25 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 ORDER BY sp.product_id, sp.available_from_date DESC
             ) party ON party.product_id = p.product_id
             WHERE p.product_type_id = 'PRODUCT'
+                AND (:active IS NULL OR p.active = :active)
+                AND (p.deleted IS NULL OR p.deleted = false)
             ORDER BY p.created_at DESC
             """,
             countQuery = """
                     SELECT COUNT(*)
                     FROM product p
                     WHERE p.product_type_id = 'PRODUCT'
+                        AND (:active IS NULL OR p.active = :active)
+                        AND (p.deleted IS NULL OR p.deleted = false)
                     """,
             nativeQuery = true)
-    Page<BffRawItemProjection> findAllRawItems(Pageable pageable);
+    Page<BffRawItemProjection> findAllRawItems(Pageable pageable, @Param("active") String active);
     //String tenantId
     //todo AND p.tenant_id = :tenantId
     //todo WHERE p.product_type_id = 'PRODUCT' ??? 这个地方应该过滤出“原材料”类型的产品？
 
 
-    // 这个查询保证了每个产品只返回一个供应商：
+    // NOTE: 这个查询保证了每个产品只返回一个供应商：
     // `DISTINCT ON (sp.product_id)` - PostgreSQL 特有的语法，它会为每个 product_id 只保留一行。
     // `ORDER BY sp.product_id, sp.available_from_date DESC` - 配合 DISTINCT ON 使用，确保保留的是最新的供应商记录。
     // 所以即使一个产品有多个供应商，这个查询也只会返回 available_from_date 最新的那个供应商的信息。

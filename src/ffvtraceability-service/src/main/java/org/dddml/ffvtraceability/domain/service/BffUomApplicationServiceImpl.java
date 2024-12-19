@@ -1,33 +1,46 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffUomDto;
+import org.dddml.ffvtraceability.domain.mapper.BffUomMapper;
+import org.dddml.ffvtraceability.domain.repository.BffUomRepository;
 import org.dddml.ffvtraceability.domain.uom.AbstractUomCommand;
 import org.dddml.ffvtraceability.domain.uom.UomApplicationService;
 import org.dddml.ffvtraceability.domain.uom.UomState;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
+import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
+import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
+
 @Service
 public class BffUomApplicationServiceImpl implements BffUomApplicationService {
-    public static final String PARTY_STATUS_ACTIVE = "ACTIVE";
-    public static final String PARTY_STATUS_INACTIVE = "INACTIVE";
-
     @Autowired
     private UomApplicationService uomApplicationService;
 
+    @Autowired
+    private BffUomRepository bffUomRepository;
+
+    @Autowired
+    private BffUomMapper bffUomMapper;
+
     @Override
     public Page<BffUomDto> when(BffUomServiceCommands.GetUnitsOfMeasure c) {
-        return null;
+        return PageUtils.toPage(
+                bffUomRepository.findAllUnitsOfMeasure(PageRequest.of(c.getPage(), c.getSize()), c.getActive()),
+                bffUomMapper::toBffUomDto
+        );
     }
 
     @Override
     public BffUomDto when(BffUomServiceCommands.GetUnitOfMeasure c) {
-        return null;
+        return null;//todo
     }
 
     @Override
@@ -61,8 +74,8 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
         AbstractUomCommand.SimpleMergePatchUom mergePatchUom = new AbstractUomCommand.SimpleMergePatchUom();
         mergePatchUom.setUomId(c.getUomId());
         mergePatchUom.setVersion(uomState.getVersion());
-        mergePatchUom.setActive(c.getActive() ? PARTY_STATUS_ACTIVE : PARTY_STATUS_INACTIVE);
-        mergePatchUom.setCommandId(c.getCommandId()!= null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchUom.setActive(c.getActive() ? INDICATOR_YES : INDICATOR_NO);
+        mergePatchUom.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchUom.setRequesterId(c.getRequesterId());
         uomApplicationService.when(mergePatchUom);
     }

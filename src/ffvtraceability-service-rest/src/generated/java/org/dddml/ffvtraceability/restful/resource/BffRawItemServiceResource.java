@@ -33,11 +33,13 @@ public class BffRawItemServiceResource {
     @GetMapping
     public Page<BffRawItemDto> getRawItems(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
-        @RequestParam(value = "size", defaultValue = "20") Integer size
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "active", required = false) String active
     ) {
         BffRawItemServiceCommands.GetRawItems getRawItems = new BffRawItemServiceCommands.GetRawItems();
         getRawItems.setPage(page);
         getRawItems.setSize(size);
+        getRawItems.setActive(active);
         try {
         getRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffRawItemApplicationService.when(getRawItems);

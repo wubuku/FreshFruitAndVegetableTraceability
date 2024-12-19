@@ -28,6 +28,9 @@ services:
           ReturnPageEnvelope: true
         isQuery: true
         #httpMethod: GET
+        parameters:
+          Active:
+            type: indicator
         result:
           itemType: BffLotDto
 

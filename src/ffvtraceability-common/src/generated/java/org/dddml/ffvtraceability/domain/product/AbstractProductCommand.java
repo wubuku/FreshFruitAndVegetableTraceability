@@ -760,6 +760,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
             this.orderDecimalQuantity = orderDecimalQuantity;
         }
 
+        private String active;
+
+        public String getActive()
+        {
+            return this.active;
+        }
+
+        public void setActive(String active)
+        {
+            this.active = active;
+        }
+
         public GoodIdentificationCommand.CreateGoodIdentification newCreateGoodIdentification()
         {
             AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification c = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
@@ -1530,6 +1542,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
         public void setIsPropertyOrderDecimalQuantityRemoved(Boolean removed)
         {
             this.isPropertyOrderDecimalQuantityRemoved = removed;
+        }
+
+        private Boolean isPropertyActiveRemoved;
+
+        public Boolean getIsPropertyActiveRemoved()
+        {
+            return this.isPropertyActiveRemoved;
+        }
+
+        public void setIsPropertyActiveRemoved(Boolean removed)
+        {
+            this.isPropertyActiveRemoved = removed;
         }
 
 

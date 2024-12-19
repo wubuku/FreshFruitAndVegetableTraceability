@@ -50,7 +50,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Transactional(readOnly = true)
     public Page<BffRawItemDto> when(BffRawItemServiceCommands.GetRawItems c) {
         return PageUtils.toPage(
-                bffRawItemRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize())),
+                bffRawItemRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize()), c.getActive()),
                 bffRawItemMapper::toBffRawItemDto
         );
     }

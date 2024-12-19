@@ -33,11 +33,13 @@ public class BffSupplierServiceResource {
     @GetMapping
     public Page<BffSupplierDto> getSuppliers(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
-        @RequestParam(value = "size", defaultValue = "20") Integer size
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "active", required = false) String active
     ) {
         BffSupplierServiceCommands.GetSuppliers getSuppliers = new BffSupplierServiceCommands.GetSuppliers();
         getSuppliers.setPage(page);
         getSuppliers.setSize(size);
+        getSuppliers.setActive(active);
         try {
         getSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffSupplierApplicationService.when(getSuppliers);

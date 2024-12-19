@@ -33,11 +33,13 @@ public class BffLotServiceResource {
     @GetMapping
     public Page<BffLotDto> getLots(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
-        @RequestParam(value = "size", defaultValue = "20") Integer size
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "active", required = false) String active
     ) {
         BffLotServiceCommands.GetLots getLots = new BffLotServiceCommands.GetLots();
         getLots.setPage(page);
         getLots.setSize(size);
+        getLots.setActive(active);
         try {
         getLots.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffLotApplicationService.when(getLots);

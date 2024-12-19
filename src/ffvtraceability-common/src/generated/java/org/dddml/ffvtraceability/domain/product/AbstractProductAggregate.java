@@ -118,6 +118,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setDefaultShipmentBoxTypeId(c.getDefaultShipmentBoxTypeId());
         e.setLotIdFilledIn(c.getLotIdFilledIn());
         e.setOrderDecimalQuantity(c.getOrderDecimalQuantity());
+        e.setActive(c.getActive());
         ((AbstractProductEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -201,6 +202,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setDefaultShipmentBoxTypeId(c.getDefaultShipmentBoxTypeId());
         e.setLotIdFilledIn(c.getLotIdFilledIn());
         e.setOrderDecimalQuantity(c.getOrderDecimalQuantity());
+        e.setActive(c.getActive());
         e.setIsPropertyProductTypeIdRemoved(c.getIsPropertyProductTypeIdRemoved());
         e.setIsPropertyPrimaryProductCategoryIdRemoved(c.getIsPropertyPrimaryProductCategoryIdRemoved());
         e.setIsPropertyManufacturerPartyIdRemoved(c.getIsPropertyManufacturerPartyIdRemoved());
@@ -261,6 +263,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setIsPropertyDefaultShipmentBoxTypeIdRemoved(c.getIsPropertyDefaultShipmentBoxTypeIdRemoved());
         e.setIsPropertyLotIdFilledInRemoved(c.getIsPropertyLotIdFilledInRemoved());
         e.setIsPropertyOrderDecimalQuantityRemoved(c.getIsPropertyOrderDecimalQuantityRemoved());
+        e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
         ((AbstractProductEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

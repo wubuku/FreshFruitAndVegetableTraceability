@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface BffSupplierRepository extends JpaRepository<AbstractPartyState, String> {
     @Query(value = """
@@ -35,6 +36,7 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                     AND (pi.deleted IS NULL OR pi.deleted = false)
             ) gln ON gln.party_id = p.party_id
             WHERE pr.role_type_id = 'SUPPLIER'
+                AND (:statusId IS NULL OR p.status_id = :statusId)
                 AND (p.deleted IS NULL OR p.deleted = false)
                 AND (pr.deleted IS NULL OR pr.deleted = false)
             ORDER BY p.created_at DESC
@@ -44,9 +46,10 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                     FROM party p
                     JOIN party_role pr ON pr.party_id = p.party_id
                     WHERE pr.role_type_id = 'SUPPLIER'
+                        AND (:statusId IS NULL OR p.status_id = :statusId)
                         AND (p.deleted IS NULL OR p.deleted = false)
                         AND (pr.deleted IS NULL OR pr.deleted = false)
                     """,
             nativeQuery = true)
-    Page<BffSupplierProjection> findAllSuppliers(Pageable pageable);
+    Page<BffSupplierProjection> findAllSuppliers(Pageable pageable, @Param("statusId") String statusId);
 }

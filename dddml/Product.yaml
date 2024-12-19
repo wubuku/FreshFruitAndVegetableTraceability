@@ -218,6 +218,8 @@
         description: use to indicate if decimal quantity can be ordered for this product. Default value is Y
         columnName: ORDER_DECIMAL_QUANTITY
         type: indicator
+      Active:
+        type: indicator
 
       # # -------------------------------------------------------------------
       # # 产品属性集 Id.

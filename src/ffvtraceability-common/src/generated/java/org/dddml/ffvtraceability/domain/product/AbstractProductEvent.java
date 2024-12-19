@@ -877,6 +877,18 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
             this.orderDecimalQuantity = orderDecimalQuantity;
         }
 
+        private String active;
+
+        public String getActive()
+        {
+            return this.active;
+        }
+
+        public void setActive(String active)
+        {
+            this.active = active;
+        }
+
         protected AbstractProductStateEvent(ProductEventId eventId) {
             super(eventId);
         }
@@ -1559,6 +1571,16 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
         public void setIsPropertyOrderDecimalQuantityRemoved(Boolean removed) {
             this.isPropertyOrderDecimalQuantityRemoved = removed;
+        }
+
+        private Boolean isPropertyActiveRemoved;
+
+        public Boolean getIsPropertyActiveRemoved() {
+            return this.isPropertyActiveRemoved;
+        }
+
+        public void setIsPropertyActiveRemoved(Boolean removed) {
+            this.isPropertyActiveRemoved = removed;
         }
 
 

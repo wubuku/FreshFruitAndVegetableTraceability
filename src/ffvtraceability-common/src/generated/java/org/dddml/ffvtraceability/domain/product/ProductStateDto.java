@@ -746,6 +746,18 @@ public class ProductStateDto {
         this.orderDecimalQuantity = orderDecimalQuantity;
     }
 
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -1029,6 +1041,9 @@ public class ProductStateDto {
             }
             if (returnedFieldsContains("OrderDecimalQuantity")) {
                 dto.setOrderDecimalQuantity(state.getOrderDecimalQuantity());
+            }
+            if (returnedFieldsContains("Active")) {
+                dto.setActive(state.getActive());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
