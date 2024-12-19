@@ -39,6 +39,8 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 JOIN party o ON o.party_id = sp.party_id
                 WHERE o.party_type_id = 'ORGANIZATION'
                     AND (o.deleted IS NULL OR o.deleted = false)
+                    AND sp.available_from_date <= CURRENT_TIMESTAMP
+                    AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
                 ORDER BY sp.product_id, sp.available_from_date DESC
             ) party ON party.product_id = p.product_id
             WHERE p.product_type_id = 'PRODUCT'
