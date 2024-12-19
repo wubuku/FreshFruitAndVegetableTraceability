@@ -44,7 +44,7 @@ public class M {
         typeToAggMap.put("Uom", "Uom");
         typeToAggMap.put("UomType", "UomType");
         typeToAggMap.put("Facility", "Facility");
-        typeToAggMap.put("FacilityIdentification", "FacilityIdentification");
+        typeToAggMap.put("FacilityIdentification", "Facility");
         typeToAggMap.put("FacilityIdentificationType", "FacilityIdentificationType");
         typeToAggMap.put("FacilityType", "FacilityType");
         typeToAggMap.put("Geo", "Geo");
@@ -1621,6 +1621,7 @@ public class M {
             "defaultWeightUomId",
             "geoPointId",
             "geoId",
+            "active",
             "version",
             "createdBy",
             "createdAt",
@@ -1645,6 +1646,7 @@ public class M {
             "Long",
             "OffsetDateTime",
             "OffsetDateTime",
+            "String",
             "String",
             "String",
             "String",
@@ -1709,6 +1711,8 @@ public class M {
         aliasMap.put("GeoPointId", "geoPointId");
         aliasMap.put("geoId", "geoId");
         aliasMap.put("GeoId", "geoId");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -1748,8 +1752,6 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
-    public static final Class ID_CLASS = String.class;
-
     public static final String[] propertyNames = new String[] {
             "facilityIdentificationTypeId",
             "idValue",
@@ -1760,6 +1762,9 @@ public class M {
             "updatedAt",
             "__Active__",
             "deleted",
+            "facilityId",
+            "facilityIdentificationId.facilityId",
+            "facilityIdentificationId.facilityIdentificationTypeId",
     };
 
     public static final String[] propertyTypes = new String[] {
@@ -1772,6 +1777,9 @@ public class M {
             "OffsetDateTime",
             "Boolean",
             "Boolean",
+            "String",
+            "String",
+            "String",
     };
 
     public static final Map<String, String> propertyTypeMap;
@@ -1786,8 +1794,8 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("facilityIdentificationTypeId", "facilityIdentificationTypeId");
-        aliasMap.put("FacilityIdentificationTypeId", "facilityIdentificationTypeId");
+        aliasMap.put("facilityIdentificationTypeId", "facilityIdentificationId.facilityIdentificationTypeId");
+        aliasMap.put("FacilityIdentificationTypeId", "facilityIdentificationId.facilityIdentificationTypeId");
         aliasMap.put("idValue", "idValue");
         aliasMap.put("IdValue", "idValue");
         aliasMap.put("version", "version");
@@ -1804,6 +1812,12 @@ public class M {
         aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
+        aliasMap.put("facilityId", "facilityIdentificationId.facilityId");
+        aliasMap.put("FacilityId", "facilityIdentificationId.facilityId");
+        aliasMap.put("facilityIdentificationId.facilityId", "facilityIdentificationId.facilityId");
+        aliasMap.put("FacilityIdentificationId.FacilityId", "facilityIdentificationId.facilityId");
+        aliasMap.put("facilityIdentificationId.facilityIdentificationTypeId", "facilityIdentificationId.facilityIdentificationTypeId");
+        aliasMap.put("FacilityIdentificationId.FacilityIdentificationTypeId", "facilityIdentificationId.facilityIdentificationTypeId");
     }
 
     private static void initPropertyTypeMap() {

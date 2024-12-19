@@ -1,37 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
-<hibernate-mapping package="org.dddml.ffvtraceability.domain.facilityidentification">
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.facility">
   <class name="AbstractFacilityIdentificationEvent" table="facility_identification_event" abstract="true">
-    <composite-id name="facilityIdentificationEventId" class="org.dddml.ffvtraceability.domain.facilityidentification.FacilityIdentificationEventId">
-      <key-property name="facilityIdentificationTypeId">
-        <column name="facility_identification_type_id" sql-type="VARCHAR(20)" />
+    <composite-id name="facilityIdentificationEventId" class="org.dddml.ffvtraceability.domain.facility.FacilityIdentificationEventId">
+      <key-property name="facilityId">
+        <column name="FACILITY_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="version">
-        <column name="version" />
+      <key-property name="facilityIdentificationTypeId">
+        <column name="FACILITY_IDENTIFICATION_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="facilityVersion">
+        <column name="facility_version" />
       </key-property>
     </composite-id>
     <discriminator column="event_type" type="string" />
     <property name="createdBy" column="created_by" />
     <property name="createdAt" column="created_at" />
     <property name="commandId" column="command_id" />
-    <property name="commandType" column="command_type" length="50" />
-    <subclass name="AbstractFacilityIdentificationEvent$FacilityIdentificationLobEvent" discriminator-value="FacilityIdentificationLobEvent">
-      <property name="dynamicProperties">
-        <column name="dynamic_properties" sql-type="json" />
-        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
-          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
-        </type>
-      </property>
-    </subclass>
     <subclass name="AbstractFacilityIdentificationEvent$AbstractFacilityIdentificationStateEvent" abstract="true">
       <property name="idValue">
         <column name="id_value" sql-type="VARCHAR(20)" />
       </property>
+      <property name="version" column="version" not-null="true" />
       <subclass name="AbstractFacilityIdentificationEvent$SimpleFacilityIdentificationStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractFacilityIdentificationEvent$SimpleFacilityIdentificationStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyIdValueRemoved" column="is_property_id_value_removed" />
       </subclass>
-      <subclass name="AbstractFacilityIdentificationEvent$SimpleFacilityIdentificationStateDeleted" discriminator-value="Deleted"></subclass>
+      <subclass name="AbstractFacilityIdentificationEvent$SimpleFacilityIdentificationStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

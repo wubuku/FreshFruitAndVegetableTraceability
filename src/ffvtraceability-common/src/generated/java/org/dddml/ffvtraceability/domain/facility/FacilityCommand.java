@@ -127,10 +127,18 @@ public interface FacilityCommand extends Command {
 
         void setGeoId(String geoId);
 
+        String getActive();
+
+        void setActive(String active);
+
     }
 
     interface CreateFacility extends CreateOrMergePatchFacility
     {
+        CreateFacilityIdentificationCommandCollection getCreateFacilityIdentificationCommands();
+
+        FacilityIdentificationCommand.CreateFacilityIdentification newCreateFacilityIdentification();
+
     }
 
     interface MergePatchFacility extends CreateOrMergePatchFacility
@@ -207,11 +215,41 @@ public interface FacilityCommand extends Command {
 
         void setIsPropertyGeoIdRemoved(Boolean removed);
 
+        Boolean getIsPropertyActiveRemoved();
+
+        void setIsPropertyActiveRemoved(Boolean removed);
+
+
+        FacilityIdentificationCommandCollection getFacilityIdentificationCommands();
+
+        FacilityIdentificationCommand.CreateFacilityIdentification newCreateFacilityIdentification();
+
+        FacilityIdentificationCommand.MergePatchFacilityIdentification newMergePatchFacilityIdentification();
+
+        FacilityIdentificationCommand.RemoveFacilityIdentification newRemoveFacilityIdentification();
 
     }
 
     interface DeleteFacility extends FacilityCommand
     {
+    }
+
+    interface CreateFacilityIdentificationCommandCollection extends Iterable<FacilityIdentificationCommand.CreateFacilityIdentification>
+    {
+        void add(FacilityIdentificationCommand.CreateFacilityIdentification c);
+
+        void remove(FacilityIdentificationCommand.CreateFacilityIdentification c);
+
+        void clear();
+    }
+
+    interface FacilityIdentificationCommandCollection extends Iterable<FacilityIdentificationCommand>
+    {
+        void add(FacilityIdentificationCommand c);
+
+        void remove(FacilityIdentificationCommand c);
+
+        void clear();
     }
 
 }

@@ -298,6 +298,133 @@ public class FacilityResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    /**
+     * Retrieve.
+     * Retrieves FacilityIdentification with the specified FacilityIdentificationTypeId.
+     */
+    @GetMapping("{facilityId}/FacilityIdentifications/{facilityIdentificationTypeId}")
+    @Transactional(readOnly = true)
+    public FacilityIdentificationStateDto getFacilityIdentification(@PathVariable("facilityId") String facilityId, @PathVariable("facilityIdentificationTypeId") String facilityIdentificationTypeId) {
+        try {
+
+            FacilityIdentificationState state = facilityApplicationService.getFacilityIdentification(facilityId, facilityIdentificationTypeId);
+            if (state == null) { return null; }
+            FacilityIdentificationStateDto.DtoConverter dtoConverter = new FacilityIdentificationStateDto.DtoConverter();
+            FacilityIdentificationStateDto stateDto = dtoConverter.toFacilityIdentificationStateDto(state);
+            dtoConverter.setAllFieldsReturned(true);
+            return stateDto;
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * Create or update.
+     * Create or update FacilityIdentification
+     */
+    @PutMapping(path = "{facilityId}/FacilityIdentifications/{facilityIdentificationTypeId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void putFacilityIdentification(@PathVariable("facilityId") String facilityId, @PathVariable("facilityIdentificationTypeId") String facilityIdentificationTypeId,
+                       @RequestParam(value = "commandId", required = false) String commandId,
+                       @RequestParam(value = "version", required = false) Long version,
+                       @RequestParam(value = "requesterId", required = false) String requesterId,
+                       @RequestBody CreateOrMergePatchFacilityIdentificationDto.MergePatchFacilityIdentificationDto body) {
+        try {
+            FacilityCommand.MergePatchFacility mergePatchFacility = new CreateOrMergePatchFacilityDto.MergePatchFacilityDto();
+            mergePatchFacility.setFacilityId(facilityId);
+            mergePatchFacility.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
+            if (version != null) { mergePatchFacility.setVersion(version); }
+            mergePatchFacility.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
+            FacilityIdentificationCommand.MergePatchFacilityIdentification mergePatchFacilityIdentification = body;//.toMergePatchFacilityIdentification();
+            mergePatchFacilityIdentification.setFacilityIdentificationTypeId(facilityIdentificationTypeId);
+            mergePatchFacility.getFacilityIdentificationCommands().add(mergePatchFacilityIdentification);
+            mergePatchFacility.setRequesterId(SecurityContextUtil.getRequesterId());
+            facilityApplicationService.when(mergePatchFacility);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * Delete.
+     * Delete FacilityIdentification
+     */
+    @DeleteMapping("{facilityId}/FacilityIdentifications/{facilityIdentificationTypeId}")
+    public void deleteFacilityIdentification(@PathVariable("facilityId") String facilityId, @PathVariable("facilityIdentificationTypeId") String facilityIdentificationTypeId,
+                       @RequestParam(value = "commandId", required = false) String commandId,
+                       @RequestParam(value = "version", required = false) Long version,
+                       @RequestParam(value = "requesterId", required = false) String requesterId) {
+        try {
+            FacilityCommand.MergePatchFacility mergePatchFacility = new CreateOrMergePatchFacilityDto.MergePatchFacilityDto();
+            mergePatchFacility.setFacilityId(facilityId);
+            mergePatchFacility.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
+            if (version != null) { 
+                mergePatchFacility.setVersion(version); 
+            } else {
+                mergePatchFacility.setVersion(facilityApplicationService.get(facilityId).getVersion());
+            }
+            mergePatchFacility.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
+            FacilityIdentificationCommand.RemoveFacilityIdentification removeFacilityIdentification = new RemoveFacilityIdentificationDto();
+            removeFacilityIdentification.setFacilityIdentificationTypeId(facilityIdentificationTypeId);
+            mergePatchFacility.getFacilityIdentificationCommands().add(removeFacilityIdentification);
+            mergePatchFacility.setRequesterId(SecurityContextUtil.getRequesterId());
+            facilityApplicationService.when(mergePatchFacility);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * FacilityIdentification List
+     */
+    @GetMapping("{facilityId}/FacilityIdentifications")
+    @Transactional(readOnly = true)
+    public FacilityIdentificationStateDto[] getFacilityIdentifications(@PathVariable("facilityId") String facilityId,
+                    @RequestParam(value = "sort", required = false) String sort,
+                    @RequestParam(value = "fields", required = false) String fields,
+                    @RequestParam(value = "filter", required = false) String filter,
+                     HttpServletRequest request) {
+        try {
+            CriterionDto criterion = null;
+            if (!StringHelper.isNullOrEmpty(filter)) {
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+            } else {
+                criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
+                    .filter(kv -> FacilityResourceUtils.getFacilityIdentificationFilterPropertyName(kv.getKey()) != null)
+                    .collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue())));
+            }
+            Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
+                n -> (FacilityIdentificationMetadata.aliasMap.containsKey(n) ? FacilityIdentificationMetadata.aliasMap.get(n) : n));
+            Iterable<FacilityIdentificationState> states = facilityApplicationService.getFacilityIdentifications(facilityId, c,
+                    FacilityResourceUtils.getFacilityIdentificationQuerySorts(request.getParameterMap()));
+            if (states == null) { return null; }
+            FacilityIdentificationStateDto.DtoConverter dtoConverter = new FacilityIdentificationStateDto.DtoConverter();
+            if (StringHelper.isNullOrEmpty(fields)) {
+                dtoConverter.setAllFieldsReturned(true);
+            } else {
+                dtoConverter.setReturnedFieldsString(fields);
+            }
+            return dtoConverter.toFacilityIdentificationStateDtoArray(states);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * Create.
+     * Create FacilityIdentification
+     */
+    @PostMapping(path = "{facilityId}/FacilityIdentifications", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void postFacilityIdentifications(@PathVariable("facilityId") String facilityId,
+                       @RequestParam(value = "commandId", required = false) String commandId,
+                       @RequestParam(value = "version", required = false) Long version,
+                       @RequestParam(value = "requesterId", required = false) String requesterId,
+                       @RequestBody CreateOrMergePatchFacilityIdentificationDto.CreateFacilityIdentificationDto body) {
+        try {
+            FacilityCommand.MergePatchFacility mergePatchFacility = new AbstractFacilityCommand.SimpleMergePatchFacility();
+            mergePatchFacility.setFacilityId(facilityId);
+            mergePatchFacility.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
+            if (version != null) { mergePatchFacility.setVersion(version); }
+            mergePatchFacility.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
+            FacilityIdentificationCommand.CreateFacilityIdentification createFacilityIdentification = body.toCreateFacilityIdentification();
+            mergePatchFacility.getFacilityIdentificationCommands().add(createFacilityIdentification);
+            mergePatchFacility.setRequesterId(SecurityContextUtil.getRequesterId());
+            facilityApplicationService.when(mergePatchFacility);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 
 
     //protected  FacilityStateEventDtoConverter getFacilityStateEventDtoConverter() {
@@ -313,6 +440,15 @@ public class FacilityResource {
             @Override
             public Class resolveTypeByPropertyName(String propertyName) {
                 return FacilityResourceUtils.getFilterPropertyType(propertyName);
+            }
+        };
+    }
+
+    protected PropertyTypeResolver getFacilityIdentificationPropertyTypeResolver() {
+        return new PropertyTypeResolver() {
+            @Override
+            public Class resolveTypeByPropertyName(String propertyName) {
+                return FacilityResourceUtils.getFacilityIdentificationFilterPropertyType(propertyName);
             }
         };
     }
@@ -370,6 +506,54 @@ public class FacilityResource {
                     String pName = getFilterPropertyName(key);
                     if (!StringHelper.isNullOrEmpty(pName)) {
                         Class pClass = getFilterPropertyType(pName);
+                        filter.put(pName, ApplicationContext.current.getTypeConverter().convertFromString(pClass, values[0]));
+                    }
+                }
+            });
+            return filter.entrySet();
+        }
+
+        public static List<String> getFacilityIdentificationQueryOrders(String str, String separator) {
+            return QueryParamUtils.getQueryOrders(str, separator, FacilityIdentificationMetadata.aliasMap);
+        }
+
+        public static List<String> getFacilityIdentificationQuerySorts(Map<String, String[]> queryNameValuePairs) {
+            String[] values = queryNameValuePairs.get("sort");
+            return QueryParamUtils.getQuerySorts(values, FacilityIdentificationMetadata.aliasMap);
+        }
+
+        public static String getFacilityIdentificationFilterPropertyName(String fieldName) {
+            if ("sort".equalsIgnoreCase(fieldName)
+                    || "firstResult".equalsIgnoreCase(fieldName)
+                    || "maxResults".equalsIgnoreCase(fieldName)
+                    || "fields".equalsIgnoreCase(fieldName)) {
+                return null;
+            }
+            if (FacilityIdentificationMetadata.aliasMap.containsKey(fieldName)) {
+                return FacilityIdentificationMetadata.aliasMap.get(fieldName);
+            }
+            return null;
+        }
+
+        public static Class getFacilityIdentificationFilterPropertyType(String propertyName) {
+            if (FacilityIdentificationMetadata.propertyTypeMap.containsKey(propertyName)) {
+                String propertyType = FacilityIdentificationMetadata.propertyTypeMap.get(propertyName);
+                if (!StringHelper.isNullOrEmpty(propertyType)) {
+                    if (BoundedContextMetadata.CLASS_MAP.containsKey(propertyType)) {
+                        return BoundedContextMetadata.CLASS_MAP.get(propertyType);
+                    }
+                }
+            }
+            return String.class;
+        }
+
+        public static Iterable<Map.Entry<String, Object>> getFacilityIdentificationQueryFilterMap(Map<String, String[]> queryNameValuePairs) {
+            Map<String, Object> filter = new HashMap<>();
+            queryNameValuePairs.forEach((key, values) -> {
+                if (values.length > 0) {
+                    String pName = getFacilityIdentificationFilterPropertyName(key);
+                    if (!StringHelper.isNullOrEmpty(pName)) {
+                        Class pClass = getFacilityIdentificationFilterPropertyType(pName);
                         filter.put(pName, ApplicationContext.current.getTypeConverter().convertFromString(pClass, values[0]));
                     }
                 }

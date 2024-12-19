@@ -1,12 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
-<hibernate-mapping package="org.dddml.ffvtraceability.domain.facilityidentification">
-  <class name="org.dddml.ffvtraceability.domain.facilityidentification.AbstractFacilityIdentificationState$SimpleFacilityIdentificationState" table="facility_identification">
-    <id name="facilityIdentificationTypeId" length="20">
-      <column name="facility_identification_type_id" sql-type="VARCHAR(20)" />
-      <generator class="assigned" />
-    </id>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.facility">
+  <class name="org.dddml.ffvtraceability.domain.facility.AbstractFacilityIdentificationState$SimpleFacilityIdentificationState" table="facility_identification">
+    <composite-id name="facilityIdentificationId" class="org.dddml.ffvtraceability.domain.facility.FacilityIdentificationId">
+      <key-property name="facilityId">
+        <column name="FACILITY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="facilityIdentificationTypeId">
+        <column name="FACILITY_IDENTIFICATION_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+    </composite-id>
     <version name="version" column="version" type="long" />
+    <many-to-one name="protectedFacilityState" class="org.dddml.ffvtraceability.domain.facility.AbstractFacilityState$SimpleFacilityState" insert="false" update="false">
+      <column name="FACILITY_ID" />
+    </many-to-one>
     <property name="idValue">
       <column name="id_value" sql-type="VARCHAR(20)" />
     </property>

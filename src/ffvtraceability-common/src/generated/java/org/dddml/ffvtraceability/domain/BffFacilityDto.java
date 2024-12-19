@@ -21,6 +21,126 @@ public class BffFacilityDto implements Serializable {
         this.facilityId = facilityId;
     }
 
+    private String facilityTypeId;
+
+    public String getFacilityTypeId()
+    {
+        return this.facilityTypeId;
+    }
+
+    public void setFacilityTypeId(String facilityTypeId)
+    {
+        this.facilityTypeId = facilityTypeId;
+    }
+
+    private String parentFacilityId;
+
+    public String getParentFacilityId()
+    {
+        return this.parentFacilityId;
+    }
+
+    public void setParentFacilityId(String parentFacilityId)
+    {
+        this.parentFacilityId = parentFacilityId;
+    }
+
+    private String ownerPartyId;
+
+    public String getOwnerPartyId()
+    {
+        return this.ownerPartyId;
+    }
+
+    public void setOwnerPartyId(String ownerPartyId)
+    {
+        this.ownerPartyId = ownerPartyId;
+    }
+
+    private String facilityName;
+
+    public String getFacilityName()
+    {
+        return this.facilityName;
+    }
+
+    public void setFacilityName(String facilityName)
+    {
+        this.facilityName = facilityName;
+    }
+
+    private java.math.BigDecimal facilitySize;
+
+    public java.math.BigDecimal getFacilitySize()
+    {
+        return this.facilitySize;
+    }
+
+    public void setFacilitySize(java.math.BigDecimal facilitySize)
+    {
+        this.facilitySize = facilitySize;
+    }
+
+    private String facilitySizeUomId;
+
+    public String getFacilitySizeUomId()
+    {
+        return this.facilitySizeUomId;
+    }
+
+    public void setFacilitySizeUomId(String facilitySizeUomId)
+    {
+        this.facilitySizeUomId = facilitySizeUomId;
+    }
+
+    private String description;
+
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    private String geoPointId;
+
+    public String getGeoPointId()
+    {
+        return this.geoPointId;
+    }
+
+    public void setGeoPointId(String geoPointId)
+    {
+        this.geoPointId = geoPointId;
+    }
+
+    private String geoId;
+
+    public String getGeoId()
+    {
+        return this.geoId;
+    }
+
+    public void setGeoId(String geoId)
+    {
+        this.geoId = geoId;
+    }
+
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
     private String gln;
 
     public String getGln()
@@ -59,9 +179,19 @@ public class BffFacilityDto implements Serializable {
     {
     }
 
-    public BffFacilityDto(String facilityId, String gln, String ffrn, java.util.List<BffFacilityLocationDto> locations)
+    public BffFacilityDto(String facilityId, String facilityTypeId, String parentFacilityId, String ownerPartyId, String facilityName, java.math.BigDecimal facilitySize, String facilitySizeUomId, String description, String geoPointId, String geoId, String active, String gln, String ffrn, java.util.List<BffFacilityLocationDto> locations)
     {
         this.facilityId = facilityId;
+        this.facilityTypeId = facilityTypeId;
+        this.parentFacilityId = parentFacilityId;
+        this.ownerPartyId = ownerPartyId;
+        this.facilityName = facilityName;
+        this.facilitySize = facilitySize;
+        this.facilitySizeUomId = facilitySizeUomId;
+        this.description = description;
+        this.geoPointId = geoPointId;
+        this.geoId = geoId;
+        this.active = active;
         this.gln = gln;
         this.ffrn = ffrn;
         this.locations = locations;
@@ -80,6 +210,16 @@ public class BffFacilityDto implements Serializable {
         BffFacilityDto other = (BffFacilityDto)obj;
         return true 
             && (facilityId == other.facilityId || (facilityId != null && facilityId.equals(other.facilityId)))
+            && (facilityTypeId == other.facilityTypeId || (facilityTypeId != null && facilityTypeId.equals(other.facilityTypeId)))
+            && (parentFacilityId == other.parentFacilityId || (parentFacilityId != null && parentFacilityId.equals(other.parentFacilityId)))
+            && (ownerPartyId == other.ownerPartyId || (ownerPartyId != null && ownerPartyId.equals(other.ownerPartyId)))
+            && (facilityName == other.facilityName || (facilityName != null && facilityName.equals(other.facilityName)))
+            && (facilitySize == other.facilitySize || (facilitySize != null && facilitySize.equals(other.facilitySize)))
+            && (facilitySizeUomId == other.facilitySizeUomId || (facilitySizeUomId != null && facilitySizeUomId.equals(other.facilitySizeUomId)))
+            && (description == other.description || (description != null && description.equals(other.description)))
+            && (geoPointId == other.geoPointId || (geoPointId != null && geoPointId.equals(other.geoPointId)))
+            && (geoId == other.geoId || (geoId != null && geoId.equals(other.geoId)))
+            && (active == other.active || (active != null && active.equals(other.active)))
             && (gln == other.gln || (gln != null && gln.equals(other.gln)))
             && (ffrn == other.ffrn || (ffrn != null && ffrn.equals(other.ffrn)))
             && (locations == other.locations || (locations != null && locations.equals(other.locations)))
@@ -92,6 +232,36 @@ public class BffFacilityDto implements Serializable {
         int hash = 0;
         if (this.facilityId != null) {
             hash += 13 * this.facilityId.hashCode();
+        }
+        if (this.facilityTypeId != null) {
+            hash += 13 * this.facilityTypeId.hashCode();
+        }
+        if (this.parentFacilityId != null) {
+            hash += 13 * this.parentFacilityId.hashCode();
+        }
+        if (this.ownerPartyId != null) {
+            hash += 13 * this.ownerPartyId.hashCode();
+        }
+        if (this.facilityName != null) {
+            hash += 13 * this.facilityName.hashCode();
+        }
+        if (this.facilitySize != null) {
+            hash += 13 * this.facilitySize.hashCode();
+        }
+        if (this.facilitySizeUomId != null) {
+            hash += 13 * this.facilitySizeUomId.hashCode();
+        }
+        if (this.description != null) {
+            hash += 13 * this.description.hashCode();
+        }
+        if (this.geoPointId != null) {
+            hash += 13 * this.geoPointId.hashCode();
+        }
+        if (this.geoId != null) {
+            hash += 13 * this.geoId.hashCode();
+        }
+        if (this.active != null) {
+            hash += 13 * this.active.hashCode();
         }
         if (this.gln != null) {
             hash += 13 * this.gln.hashCode();
@@ -109,6 +279,16 @@ public class BffFacilityDto implements Serializable {
     public String toString() {
         return "BffFacilityDto{" +
                 "facilityId=" + '\'' + facilityId + '\'' +
+                ", facilityTypeId=" + '\'' + facilityTypeId + '\'' +
+                ", parentFacilityId=" + '\'' + parentFacilityId + '\'' +
+                ", ownerPartyId=" + '\'' + ownerPartyId + '\'' +
+                ", facilityName=" + '\'' + facilityName + '\'' +
+                ", facilitySize=" + facilitySize +
+                ", facilitySizeUomId=" + '\'' + facilitySizeUomId + '\'' +
+                ", description=" + '\'' + description + '\'' +
+                ", geoPointId=" + '\'' + geoPointId + '\'' +
+                ", geoId=" + '\'' + geoId + '\'' +
+                ", active=" + '\'' + active + '\'' +
                 ", gln=" + '\'' + gln + '\'' +
                 ", ffrn=" + '\'' + ffrn + '\'' +
                 ", locations=" + locations +

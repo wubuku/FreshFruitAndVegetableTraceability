@@ -33,11 +33,13 @@ public class BffFacilityServiceResource {
     @GetMapping
     public Page<BffFacilityDto> getFacilities(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
-        @RequestParam(value = "size", defaultValue = "20") Integer size
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "active", required = false) String active
     ) {
         BffFacilityServiceCommands.GetFacilities getFacilities = new BffFacilityServiceCommands.GetFacilities();
         getFacilities.setPage(page);
         getFacilities.setSize(size);
+        getFacilities.setActive(active);
         try {
         getFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffFacilityApplicationService.when(getFacilities);
@@ -93,6 +95,16 @@ public class BffFacilityServiceResource {
         try {
         activateFacility.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(activateFacility);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @GetMapping("{facilityId}/Locations")
+    public BffFacilityLocationDto[] getFacilityLocations(
+    ) {
+        BffFacilityServiceCommands.GetFacilityLocations getFacilityLocations = new BffFacilityServiceCommands.GetFacilityLocations();
+        try {
+        getFacilityLocations.setRequesterId(SecurityContextUtil.getRequesterId());
+        return java.util.stream.StreamSupport.stream((bffFacilityApplicationService.when(getFacilityLocations)).spliterator(), false).collect(java.util.stream.Collectors.toList()).toArray(new BffFacilityLocationDto[0]);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

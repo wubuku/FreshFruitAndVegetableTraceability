@@ -53,6 +53,11 @@
       # # 不使用 FacilityContactMech 实体？
       # PostalAddressContactMechId:
       #   type: id-ne
+      Active:
+        type: indicator
+
+      FacilityIdentifications:
+        itemType: FacilityIdentification
 
     # references:
     # ParentFacilityId:
@@ -64,13 +69,22 @@
     # - ParentFacilityId
     # foreignKeyName: FACILITY_PARENT
 
-  FacilityIdentification:
-    id:
-      name: FacilityIdentificationTypeId
-      type: id
-    properties:
-      IdValue:
-        type: id
+
+    entities:
+      FacilityIdentification:
+        id:
+          name: FacilityIdentificationTypeId
+          type: id
+        globalId:
+          type: FacilityIdentificationId
+          name: FacilityIdentificationId
+          columnNames:
+            - FACILITY_ID
+            - FACILITY_IDENTIFICATION_TYPE_ID
+        properties:
+          IdValue:
+            type: id
+
 
   FacilityIdentificationType:
     id:

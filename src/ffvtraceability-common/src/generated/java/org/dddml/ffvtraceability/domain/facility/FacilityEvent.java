@@ -113,10 +113,20 @@ public interface FacilityEvent extends Event {
 
         void setGeoId(String geoId);
 
+        String getActive();
+
+        void setActive(String active);
+
     }
 
     interface FacilityStateCreated extends FacilityStateEvent
     {
+        Iterable<FacilityIdentificationEvent.FacilityIdentificationStateCreated> getFacilityIdentificationEvents();
+        
+        void addFacilityIdentificationEvent(FacilityIdentificationEvent.FacilityIdentificationStateCreated e);
+
+        FacilityIdentificationEvent.FacilityIdentificationStateCreated newFacilityIdentificationStateCreated(String facilityIdentificationTypeId);
+
     
     }
 
@@ -195,12 +205,32 @@ public interface FacilityEvent extends Event {
 
         void setIsPropertyGeoIdRemoved(Boolean removed);
 
+        Boolean getIsPropertyActiveRemoved();
+
+        void setIsPropertyActiveRemoved(Boolean removed);
+
+
+        Iterable<FacilityIdentificationEvent> getFacilityIdentificationEvents();
+        
+        void addFacilityIdentificationEvent(FacilityIdentificationEvent e);
+
+        FacilityIdentificationEvent.FacilityIdentificationStateCreated newFacilityIdentificationStateCreated(String facilityIdentificationTypeId);
+
+        FacilityIdentificationEvent.FacilityIdentificationStateMergePatched newFacilityIdentificationStateMergePatched(String facilityIdentificationTypeId);
+
+        FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(String facilityIdentificationTypeId);
 
 
     }
 
     interface FacilityStateDeleted extends FacilityStateEvent
     {
+        Iterable<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> getFacilityIdentificationEvents();
+        
+        void addFacilityIdentificationEvent(FacilityIdentificationEvent.FacilityIdentificationStateRemoved e);
+        
+        FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(String facilityIdentificationTypeId);
+
     }
 
 

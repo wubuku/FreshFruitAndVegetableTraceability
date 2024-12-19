@@ -20,7 +20,6 @@ import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.domain.uom.*;
 import org.dddml.ffvtraceability.domain.uomtype.*;
 import org.dddml.ffvtraceability.domain.facility.*;
-import org.dddml.ffvtraceability.domain.facilityidentification.*;
 import org.dddml.ffvtraceability.domain.facilityidentificationtype.*;
 import org.dddml.ffvtraceability.domain.facilitytype.*;
 import org.dddml.ffvtraceability.domain.geo.*;

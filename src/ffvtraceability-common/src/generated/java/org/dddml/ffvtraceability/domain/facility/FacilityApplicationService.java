@@ -38,5 +38,9 @@ public interface FacilityApplicationService {
 
     FacilityState getHistoryState(String facilityId, long version);
 
+    FacilityIdentificationState getFacilityIdentification(String facilityId, String facilityIdentificationTypeId);
+
+    Iterable<FacilityIdentificationState> getFacilityIdentifications(String facilityId, Criterion filter, List<String> orders);
+
 }
 

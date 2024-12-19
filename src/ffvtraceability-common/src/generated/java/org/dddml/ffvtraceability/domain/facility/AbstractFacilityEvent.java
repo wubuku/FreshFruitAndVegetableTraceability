@@ -92,6 +92,44 @@ public abstract class AbstractFacilityEvent extends AbstractEvent implements Fac
         this.facilityEventId = eventId;
     }
 
+    protected FacilityIdentificationEventDao getFacilityIdentificationEventDao() {
+        return (FacilityIdentificationEventDao)ApplicationContext.current.get("facilityIdentificationEventDao");
+    }
+
+    protected FacilityIdentificationEventId newFacilityIdentificationEventId(String facilityIdentificationTypeId)
+    {
+        FacilityIdentificationEventId eventId = new FacilityIdentificationEventId(this.getFacilityEventId().getFacilityId(), 
+            facilityIdentificationTypeId, 
+            this.getFacilityEventId().getVersion());
+        return eventId;
+    }
+
+    protected void throwOnInconsistentEventIds(FacilityIdentificationEvent.SqlFacilityIdentificationEvent e)
+    {
+        throwOnInconsistentEventIds(this, e);
+    }
+
+    public static void throwOnInconsistentEventIds(FacilityEvent.SqlFacilityEvent oe, FacilityIdentificationEvent.SqlFacilityIdentificationEvent e)
+    {
+        if (!oe.getFacilityEventId().getFacilityId().equals(e.getFacilityIdentificationEventId().getFacilityId()))
+        { 
+            throw DomainError.named("inconsistentEventIds", "Outer Id FacilityId %1$s but inner id FacilityId %2$s", 
+                oe.getFacilityEventId().getFacilityId(), e.getFacilityIdentificationEventId().getFacilityId());
+        }
+    }
+
+    public FacilityIdentificationEvent.FacilityIdentificationStateCreated newFacilityIdentificationStateCreated(String facilityIdentificationTypeId) {
+        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateCreated(newFacilityIdentificationEventId(facilityIdentificationTypeId));
+    }
+
+    public FacilityIdentificationEvent.FacilityIdentificationStateMergePatched newFacilityIdentificationStateMergePatched(String facilityIdentificationTypeId) {
+        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateMergePatched(newFacilityIdentificationEventId(facilityIdentificationTypeId));
+    }
+
+    public FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(String facilityIdentificationTypeId) {
+        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateRemoved(newFacilityIdentificationEventId(facilityIdentificationTypeId));
+    }
+
 
     public abstract String getEventType();
 
@@ -335,12 +373,24 @@ public abstract class AbstractFacilityEvent extends AbstractEvent implements Fac
             this.geoId = geoId;
         }
 
+        private String active;
+
+        public String getActive()
+        {
+            return this.active;
+        }
+
+        public void setActive(String active)
+        {
+            this.active = active;
+        }
+
         protected AbstractFacilityStateEvent(FacilityEventId eventId) {
             super(eventId);
         }
     }
 
-    public static abstract class AbstractFacilityStateCreated extends AbstractFacilityStateEvent implements FacilityEvent.FacilityStateCreated
+    public static abstract class AbstractFacilityStateCreated extends AbstractFacilityStateEvent implements FacilityEvent.FacilityStateCreated, Saveable
     {
         public AbstractFacilityStateCreated() {
             this(new FacilityEventId());
@@ -354,10 +404,58 @@ public abstract class AbstractFacilityEvent extends AbstractEvent implements Fac
             return StateEventType.CREATED;
         }
 
+        private Map<FacilityIdentificationEventId, FacilityIdentificationEvent.FacilityIdentificationStateCreated> facilityIdentificationEvents = new HashMap<FacilityIdentificationEventId, FacilityIdentificationEvent.FacilityIdentificationStateCreated>();
+        
+        private Iterable<FacilityIdentificationEvent.FacilityIdentificationStateCreated> readOnlyFacilityIdentificationEvents;
+
+        public Iterable<FacilityIdentificationEvent.FacilityIdentificationStateCreated> getFacilityIdentificationEvents()
+        {
+            if (!getEventReadOnly())
+            {
+                return this.facilityIdentificationEvents.values();
+            }
+            else
+            {
+                if (readOnlyFacilityIdentificationEvents != null) { return readOnlyFacilityIdentificationEvents; }
+                FacilityIdentificationEventDao eventDao = getFacilityIdentificationEventDao();
+                List<FacilityIdentificationEvent.FacilityIdentificationStateCreated> eL = new ArrayList<FacilityIdentificationEvent.FacilityIdentificationStateCreated>();
+                for (FacilityIdentificationEvent e : eventDao.findByFacilityEventId(this.getFacilityEventId()))
+                {
+                    ((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e).setEventReadOnly(true);
+                    eL.add((FacilityIdentificationEvent.FacilityIdentificationStateCreated)e);
+                }
+                return (readOnlyFacilityIdentificationEvents = eL);
+            }
+        }
+
+        public void setFacilityIdentificationEvents(Iterable<FacilityIdentificationEvent.FacilityIdentificationStateCreated> es)
+        {
+            if (es != null)
+            {
+                for (FacilityIdentificationEvent.FacilityIdentificationStateCreated e : es)
+                {
+                    addFacilityIdentificationEvent(e);
+                }
+            }
+            else { this.facilityIdentificationEvents.clear(); }
+        }
+        
+        public void addFacilityIdentificationEvent(FacilityIdentificationEvent.FacilityIdentificationStateCreated e)
+        {
+            throwOnInconsistentEventIds((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e);
+            this.facilityIdentificationEvents.put(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e).getFacilityIdentificationEventId(), e);
+        }
+
+        public void save()
+        {
+            for (FacilityIdentificationEvent.FacilityIdentificationStateCreated e : this.getFacilityIdentificationEvents()) {
+                getFacilityIdentificationEventDao().save(e);
+            }
+        }
     }
 
 
-    public static abstract class AbstractFacilityStateMergePatched extends AbstractFacilityStateEvent implements FacilityEvent.FacilityStateMergePatched
+    public static abstract class AbstractFacilityStateMergePatched extends AbstractFacilityStateEvent implements FacilityEvent.FacilityStateMergePatched, Saveable
     {
         public AbstractFacilityStateMergePatched() {
             this(new FacilityEventId());
@@ -551,11 +649,69 @@ public abstract class AbstractFacilityEvent extends AbstractEvent implements Fac
             this.isPropertyGeoIdRemoved = removed;
         }
 
+        private Boolean isPropertyActiveRemoved;
 
+        public Boolean getIsPropertyActiveRemoved() {
+            return this.isPropertyActiveRemoved;
+        }
+
+        public void setIsPropertyActiveRemoved(Boolean removed) {
+            this.isPropertyActiveRemoved = removed;
+        }
+
+
+        private Map<FacilityIdentificationEventId, FacilityIdentificationEvent> facilityIdentificationEvents = new HashMap<FacilityIdentificationEventId, FacilityIdentificationEvent>();
+        
+        private Iterable<FacilityIdentificationEvent> readOnlyFacilityIdentificationEvents;
+
+        public Iterable<FacilityIdentificationEvent> getFacilityIdentificationEvents()
+        {
+            if (!getEventReadOnly())
+            {
+                return this.facilityIdentificationEvents.values();
+            }
+            else
+            {
+                if (readOnlyFacilityIdentificationEvents != null) { return readOnlyFacilityIdentificationEvents; }
+                FacilityIdentificationEventDao eventDao = getFacilityIdentificationEventDao();
+                List<FacilityIdentificationEvent> eL = new ArrayList<FacilityIdentificationEvent>();
+                for (FacilityIdentificationEvent e : eventDao.findByFacilityEventId(this.getFacilityEventId()))
+                {
+                    ((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e).setEventReadOnly(true);
+                    eL.add((FacilityIdentificationEvent)e);
+                }
+                return (readOnlyFacilityIdentificationEvents = eL);
+            }
+        }
+
+        public void setFacilityIdentificationEvents(Iterable<FacilityIdentificationEvent> es)
+        {
+            if (es != null)
+            {
+                for (FacilityIdentificationEvent e : es)
+                {
+                    addFacilityIdentificationEvent(e);
+                }
+            }
+            else { this.facilityIdentificationEvents.clear(); }
+        }
+        
+        public void addFacilityIdentificationEvent(FacilityIdentificationEvent e)
+        {
+            throwOnInconsistentEventIds((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e);
+            this.facilityIdentificationEvents.put(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e).getFacilityIdentificationEventId(), e);
+        }
+
+        public void save()
+        {
+            for (FacilityIdentificationEvent e : this.getFacilityIdentificationEvents()) {
+                getFacilityIdentificationEventDao().save(e);
+            }
+        }
     }
 
 
-    public static abstract class AbstractFacilityStateDeleted extends AbstractFacilityStateEvent implements FacilityEvent.FacilityStateDeleted
+    public static abstract class AbstractFacilityStateDeleted extends AbstractFacilityStateEvent implements FacilityEvent.FacilityStateDeleted, Saveable
     {
         public AbstractFacilityStateDeleted() {
             this(new FacilityEventId());
@@ -569,6 +725,55 @@ public abstract class AbstractFacilityEvent extends AbstractEvent implements Fac
             return StateEventType.DELETED;
         }
 
+        
+        private Map<FacilityIdentificationEventId, FacilityIdentificationEvent.FacilityIdentificationStateRemoved> facilityIdentificationEvents = new HashMap<FacilityIdentificationEventId, FacilityIdentificationEvent.FacilityIdentificationStateRemoved>();
+        
+        private Iterable<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> readOnlyFacilityIdentificationEvents;
+
+        public Iterable<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> getFacilityIdentificationEvents()
+        {
+            if (!getEventReadOnly())
+            {
+                return this.facilityIdentificationEvents.values();
+            }
+            else
+            {
+                if (readOnlyFacilityIdentificationEvents != null) { return readOnlyFacilityIdentificationEvents; }
+                FacilityIdentificationEventDao eventDao = getFacilityIdentificationEventDao();
+                List<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> eL = new ArrayList<FacilityIdentificationEvent.FacilityIdentificationStateRemoved>();
+                for (FacilityIdentificationEvent e : eventDao.findByFacilityEventId(this.getFacilityEventId()))
+                {
+                    ((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e).setEventReadOnly(true);
+                    eL.add((FacilityIdentificationEvent.FacilityIdentificationStateRemoved)e);
+                }
+                return (readOnlyFacilityIdentificationEvents = eL);
+            }
+        }
+
+        public void setFacilityIdentificationEvents(Iterable<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> es)
+        {
+            if (es != null)
+            {
+                for (FacilityIdentificationEvent.FacilityIdentificationStateRemoved e : es)
+                {
+                    addFacilityIdentificationEvent(e);
+                }
+            }
+            else { this.facilityIdentificationEvents.clear(); }
+        }
+        
+        public void addFacilityIdentificationEvent(FacilityIdentificationEvent.FacilityIdentificationStateRemoved e)
+        {
+            throwOnInconsistentEventIds((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e);
+            this.facilityIdentificationEvents.put(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e).getFacilityIdentificationEventId(), e);
+        }
+
+        public void save()
+        {
+            for (FacilityIdentificationEvent.FacilityIdentificationStateRemoved e : this.getFacilityIdentificationEvents()) {
+                getFacilityIdentificationEventDao().save(e);
+            }
+        }
     }
 
     public static class SimpleFacilityStateCreated extends AbstractFacilityStateCreated

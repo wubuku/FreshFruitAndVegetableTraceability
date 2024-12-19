@@ -30,5 +30,9 @@ public interface FacilityStateQueryRepository {
 
     long getCount(Criterion filter);
 
+    FacilityIdentificationState getFacilityIdentification(String facilityId, String facilityIdentificationTypeId);
+
+    Iterable<FacilityIdentificationState> getFacilityIdentifications(String facilityId, Criterion filter, List<String> orders);
+
 }
 

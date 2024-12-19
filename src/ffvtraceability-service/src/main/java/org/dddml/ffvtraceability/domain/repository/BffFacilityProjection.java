@@ -10,6 +10,26 @@ import org.dddml.ffvtraceability.domain.*;
 public interface BffFacilityProjection {
     String getFacilityId();
 
+    String getFacilityTypeId();
+
+    String getParentFacilityId();
+
+    String getOwnerPartyId();
+
+    String getFacilityName();
+
+    java.math.BigDecimal getFacilitySize();
+
+    String getFacilitySizeUomId();
+
+    String getDescription();
+
+    String getGeoPointId();
+
+    String getGeoId();
+
+    String getActive();
+
     String getGln();
 
     String getFfrn();

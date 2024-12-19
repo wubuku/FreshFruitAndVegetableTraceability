@@ -35,9 +35,6 @@ import org.dddml.ffvtraceability.domain.uomtype.hibernate.*;
 import org.dddml.ffvtraceability.domain.facility.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.facility.hibernate.*;
-import org.dddml.ffvtraceability.domain.facilityidentification.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.facilityidentification.hibernate.*;
 import org.dddml.ffvtraceability.domain.facilityidentificationtype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.facilityidentificationtype.hibernate.*;
@@ -266,22 +263,6 @@ public class AggregatesHibernateConfig {
                 facilityEventStore,
                 facilityStateRepository,
                 facilityStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractFacilityIdentificationApplicationService.SimpleFacilityIdentificationApplicationService facilityIdentificationApplicationService(
-            @Qualifier("facilityIdentificationEventStore") EventStore facilityIdentificationEventStore,
-            FacilityIdentificationStateRepository facilityIdentificationStateRepository,
-            FacilityIdentificationStateQueryRepository facilityIdentificationStateQueryRepository
-    ) {
-        AbstractFacilityIdentificationApplicationService.SimpleFacilityIdentificationApplicationService applicationService = new AbstractFacilityIdentificationApplicationService.SimpleFacilityIdentificationApplicationService(
-                facilityIdentificationEventStore,
-                facilityIdentificationStateRepository,
-                facilityIdentificationStateQueryRepository
         );
         return applicationService;
     }

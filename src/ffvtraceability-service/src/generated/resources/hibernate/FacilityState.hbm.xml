@@ -7,6 +7,12 @@
       <generator class="assigned" />
     </id>
     <version name="version" column="version" type="long" />
+    <set name="protectedFacilityIdentifications" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="FACILITY_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.facility.AbstractFacilityIdentificationState$SimpleFacilityIdentificationState" />
+    </set>
     <property name="facilityTypeId">
       <column name="facility_type_id" sql-type="VARCHAR(20)" />
     </property>
@@ -60,6 +66,9 @@
     </property>
     <property name="geoId">
       <column name="geo_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="active">
+      <column name="active" sql-type="CHAR(1)" />
     </property>
     <property name="createdBy">
       <column name="created_by" />

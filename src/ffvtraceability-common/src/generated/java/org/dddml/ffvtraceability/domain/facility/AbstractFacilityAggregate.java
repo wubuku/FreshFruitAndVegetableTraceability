@@ -74,9 +74,17 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         e.setDefaultWeightUomId(c.getDefaultWeightUomId());
         e.setGeoPointId(c.getGeoPointId());
         e.setGeoId(c.getGeoId());
+        e.setActive(c.getActive());
         ((AbstractFacilityEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        Long version = c.getVersion();
+        for (FacilityIdentificationCommand.CreateFacilityIdentification innerCommand : c.getCreateFacilityIdentificationCommands()) {
+            throwOnInconsistentCommands(c, innerCommand);
+            FacilityIdentificationEvent.FacilityIdentificationStateCreated innerEvent = mapCreate(innerCommand, c, version, this.state);
+            e.addFacilityIdentificationEvent(innerEvent);
+        }
+
         return e;
     }
 
@@ -101,6 +109,7 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         e.setDefaultWeightUomId(c.getDefaultWeightUomId());
         e.setGeoPointId(c.getGeoPointId());
         e.setGeoId(c.getGeoId());
+        e.setActive(c.getActive());
         e.setIsPropertyFacilityTypeIdRemoved(c.getIsPropertyFacilityTypeIdRemoved());
         e.setIsPropertyParentFacilityIdRemoved(c.getIsPropertyParentFacilityIdRemoved());
         e.setIsPropertyOwnerPartyIdRemoved(c.getIsPropertyOwnerPartyIdRemoved());
@@ -119,9 +128,17 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         e.setIsPropertyDefaultWeightUomIdRemoved(c.getIsPropertyDefaultWeightUomIdRemoved());
         e.setIsPropertyGeoPointIdRemoved(c.getIsPropertyGeoPointIdRemoved());
         e.setIsPropertyGeoIdRemoved(c.getIsPropertyGeoIdRemoved());
+        e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
         ((AbstractFacilityEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        Long version = c.getVersion();
+        for (FacilityIdentificationCommand innerCommand : c.getFacilityIdentificationCommands()) {
+            throwOnInconsistentCommands(c, innerCommand);
+            FacilityIdentificationEvent innerEvent = map(innerCommand, c, version, this.state);
+            e.addFacilityIdentificationEvent(innerEvent);
+        }
+
         return e;
     }
 
@@ -133,6 +150,84 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         return e;
     }
+
+
+    protected FacilityIdentificationEvent map(FacilityIdentificationCommand c, FacilityCommand outerCommand, Long version, FacilityState outerState) {
+        FacilityIdentificationCommand.CreateFacilityIdentification create = (c.getCommandType().equals(CommandType.CREATE)) ? ((FacilityIdentificationCommand.CreateFacilityIdentification)c) : null;
+        if(create != null) {
+            return mapCreate(create, outerCommand, version, outerState);
+        }
+
+        FacilityIdentificationCommand.MergePatchFacilityIdentification merge = (c.getCommandType().equals(CommandType.MERGE_PATCH)) ? ((FacilityIdentificationCommand.MergePatchFacilityIdentification)c) : null;
+        if(merge != null) {
+            return mapMergePatch(merge, outerCommand, version, outerState);
+        }
+
+        FacilityIdentificationCommand.RemoveFacilityIdentification remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((FacilityIdentificationCommand.RemoveFacilityIdentification)c) : null;
+        if (remove != null) {
+            return mapRemove(remove, outerCommand, version, outerState);
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    protected FacilityIdentificationEvent.FacilityIdentificationStateCreated mapCreate(FacilityIdentificationCommand.CreateFacilityIdentification c, FacilityCommand outerCommand, Long version, FacilityState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        FacilityIdentificationEventId stateEventId = new FacilityIdentificationEventId(outerState.getFacilityId(), c.getFacilityIdentificationTypeId(), version);
+        FacilityIdentificationEvent.FacilityIdentificationStateCreated e = newFacilityIdentificationStateCreated(stateEventId);
+        FacilityIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)outerState.getFacilityIdentifications()).getOrAddDefault(c.getFacilityIdentificationTypeId());
+
+        e.setIdValue(c.getIdValue());
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(ICreate... ////////////////////////////
+
+    protected FacilityIdentificationEvent.FacilityIdentificationStateMergePatched mapMergePatch(FacilityIdentificationCommand.MergePatchFacilityIdentification c, FacilityCommand outerCommand, Long version, FacilityState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        FacilityIdentificationEventId stateEventId = new FacilityIdentificationEventId(outerState.getFacilityId(), c.getFacilityIdentificationTypeId(), version);
+        FacilityIdentificationEvent.FacilityIdentificationStateMergePatched e = newFacilityIdentificationStateMergePatched(stateEventId);
+        FacilityIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)outerState.getFacilityIdentifications()).getOrAddDefault(c.getFacilityIdentificationTypeId());
+
+        e.setIdValue(c.getIdValue());
+        e.setIsPropertyIdValueRemoved(c.getIsPropertyIdValueRemoved());
+
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(IMergePatch... ////////////////////////////
+
+    protected FacilityIdentificationEvent.FacilityIdentificationStateRemoved mapRemove(FacilityIdentificationCommand.RemoveFacilityIdentification c, FacilityCommand outerCommand, Long version, FacilityState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        FacilityIdentificationEventId stateEventId = new FacilityIdentificationEventId(outerState.getFacilityId(), c.getFacilityIdentificationTypeId(), version);
+        FacilityIdentificationEvent.FacilityIdentificationStateRemoved e = newFacilityIdentificationStateRemoved(stateEventId);
+
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(IRemove... ////////////////////////////
+
+    protected void throwOnInconsistentCommands(FacilityCommand command, FacilityIdentificationCommand innerCommand) {
+        AbstractFacilityCommand properties = command instanceof AbstractFacilityCommand ? (AbstractFacilityCommand) command : null;
+        AbstractFacilityIdentificationCommand innerProperties = innerCommand instanceof AbstractFacilityIdentificationCommand ? (AbstractFacilityIdentificationCommand) innerCommand : null;
+        if (properties == null || innerProperties == null) { return; }
+        String outerFacilityIdName = "FacilityId";
+        String outerFacilityIdValue = properties.getFacilityId();
+        String innerFacilityIdName = "FacilityId";
+        String innerFacilityIdValue = innerProperties.getFacilityId();
+        if (innerFacilityIdValue == null) {
+            innerProperties.setFacilityId(outerFacilityIdValue);
+        }
+        else if (innerFacilityIdValue != outerFacilityIdValue 
+            && (innerFacilityIdValue == null || innerFacilityIdValue != null && !innerFacilityIdValue.equals(outerFacilityIdValue))) {
+            throw DomainError.named("inconsistentId", "Outer %1$s %2$s NOT equals inner %3$s %4$s", outerFacilityIdName, outerFacilityIdValue, innerFacilityIdName, innerFacilityIdValue);
+        }
+    }// END throwOnInconsistentCommands /////////////////////
 
 
     ////////////////////////
@@ -174,6 +269,18 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
 
     protected FacilityEvent.FacilityStateDeleted newFacilityStateDeleted(FacilityEventId stateEventId) {
         return new AbstractFacilityEvent.SimpleFacilityStateDeleted(stateEventId);
+    }
+
+    protected FacilityIdentificationEvent.FacilityIdentificationStateCreated newFacilityIdentificationStateCreated(FacilityIdentificationEventId stateEventId) {
+        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateCreated(stateEventId);
+    }
+
+    protected FacilityIdentificationEvent.FacilityIdentificationStateMergePatched newFacilityIdentificationStateMergePatched(FacilityIdentificationEventId stateEventId) {
+        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateMergePatched(stateEventId);
+    }
+
+    protected FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(FacilityIdentificationEventId stateEventId) {
+        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateRemoved(stateEventId);
     }
 
 

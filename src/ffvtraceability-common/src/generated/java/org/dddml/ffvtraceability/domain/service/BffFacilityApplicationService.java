@@ -20,6 +20,8 @@ public interface BffFacilityApplicationService {
 
     void when(BffFacilityServiceCommands.ActivateFacility c);
 
+    Iterable<BffFacilityLocationDto> when(BffFacilityServiceCommands.GetFacilityLocations c);
+
     BffFacilityLocationDto when(BffFacilityServiceCommands.GetFacilityLocation c);
 
     void when(BffFacilityServiceCommands.CreateFacilityLocation c);

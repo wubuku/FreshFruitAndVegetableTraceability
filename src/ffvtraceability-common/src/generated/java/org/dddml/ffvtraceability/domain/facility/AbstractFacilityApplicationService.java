@@ -105,6 +105,14 @@ public abstract class AbstractFacilityApplicationService implements FacilityAppl
         return new AbstractFacilityState.SimpleFacilityState(eventStream.getEvents());
     }
 
+    public FacilityIdentificationState getFacilityIdentification(String facilityId, String facilityIdentificationTypeId) {
+        return getStateQueryRepository().getFacilityIdentification(facilityId, facilityIdentificationTypeId);
+    }
+
+    public Iterable<FacilityIdentificationState> getFacilityIdentifications(String facilityId, Criterion filter, List<String> orders) {
+        return getStateQueryRepository().getFacilityIdentifications(facilityId, filter, orders);
+    }
+
 
     public FacilityAggregate getFacilityAggregate(FacilityState state) {
         return new AbstractFacilityAggregate.SimpleFacilityAggregate(state);

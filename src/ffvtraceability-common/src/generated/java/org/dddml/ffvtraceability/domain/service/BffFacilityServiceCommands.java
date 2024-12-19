@@ -33,6 +33,19 @@ public class BffFacilityServiceCommands {
             this.size = size;
         }
 
+        /**
+         * Active
+         */
+        private String active;
+
+        public String getActive() {
+            return active;
+        }
+
+        public void setActive(String active) {
+            this.active = active;
+        }
+
     }
 
     public static class GetFacility extends org.dddml.ffvtraceability.domain.AbstractCommand {
@@ -126,6 +139,10 @@ public class BffFacilityServiceCommands {
         public void setActive(Boolean active) {
             this.active = active;
         }
+
+    }
+
+    public static class GetFacilityLocations extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
     }
 

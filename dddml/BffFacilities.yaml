@@ -5,6 +5,46 @@ valueObjects:
     properties:
       FacilityId:
         type: id
+
+      FacilityTypeId:
+        type: id
+      ParentFacilityId:
+        type: id
+      OwnerPartyId:
+        type: id-ne
+      FacilityName:
+        type: name
+      # PrimaryFacilityGroupId:
+      #   type: id
+      # OldSquareFootage:
+      #   type: numeric
+      FacilitySize:
+        type: fixed-point
+      FacilitySizeUomId:
+        type: id
+      # ProductStoreId:
+      #   type: id
+      # DefaultDaysToShip:
+      #   description: In the absence of a product specific days to ship in ProductFacility, this will be used
+      #   type: numeric
+      # OpenedDate:
+      #   type: date-time
+      # ClosedDate:
+      #   type: date-time
+      Description:
+        type: description
+      # DefaultDimensionUomId:
+      #   description: This field store the unit of measurement of dimension (length, width and height)
+      #   type: id
+      # DefaultWeightUomId:
+      #   type: id
+      GeoPointId:
+        type: id
+      GeoId:
+        type: id
+      Active:
+        type: indicator
+
       Gln:
         description: "GLN (Global Location Number)"
         type: id
@@ -46,6 +86,9 @@ services:
           IsPageable: true
           ReturnPageEnvelope: true
         isQuery: true
+        parameters:
+          Active:
+            type: indicator
         result:
           itemType: BffFacilityDto
 
@@ -93,6 +136,17 @@ services:
             type: id
           Active:
             type: boolean
+
+      GetFacilityLocations:
+        httpMethod: GET
+        restfulResourceName: "{FacilityId}/Locations"
+        metadata:
+          RestfulPathVariables:
+            - FacilityId
+        isQuery: true
+        result:
+          itemType: BffFacilityLocationDto
+
 
       GetFacilityLocation:
         restfulResourceName: "{FacilityId}/Locations/{LocationSeqId}"

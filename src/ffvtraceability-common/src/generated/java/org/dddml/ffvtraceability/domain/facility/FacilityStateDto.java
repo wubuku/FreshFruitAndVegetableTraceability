@@ -242,6 +242,18 @@ public class FacilityStateDto {
         this.geoId = geoId;
     }
 
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -302,10 +314,22 @@ public class FacilityStateDto {
         this.updatedAt = updatedAt;
     }
 
+    private FacilityIdentificationStateDto[] facilityIdentifications;
+
+    public FacilityIdentificationStateDto[] getFacilityIdentifications()
+    {
+        return this.facilityIdentifications;
+    }    
+
+    public void setFacilityIdentifications(FacilityIdentificationStateDto[] facilityIdentifications)
+    {
+        this.facilityIdentifications = facilityIdentifications;
+    }
+
 
     public static class DtoConverter extends AbstractStateDtoConverter
     {
-        public static Collection<String> collectionFieldNames = Arrays.asList(new String[]{});
+        public static Collection<String> collectionFieldNames = Arrays.asList(new String[]{"FacilityIdentifications"});
 
         @Override
         protected boolean isCollectionField(String fieldName) {
@@ -388,6 +412,9 @@ public class FacilityStateDto {
             if (returnedFieldsContains("GeoId")) {
                 dto.setGeoId(state.getGeoId());
             }
+            if (returnedFieldsContains("Active")) {
+                dto.setActive(state.getActive());
+            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }
@@ -402,6 +429,18 @@ public class FacilityStateDto {
             }
             if (returnedFieldsContains("UpdatedAt")) {
                 dto.setUpdatedAt(state.getUpdatedAt());
+            }
+            if (returnedFieldsContains("FacilityIdentifications")) {
+                ArrayList<FacilityIdentificationStateDto> arrayList = new ArrayList();
+                if (state.getFacilityIdentifications() != null) {
+                    FacilityIdentificationStateDto.DtoConverter conv = new FacilityIdentificationStateDto.DtoConverter();
+                    String returnFS = CollectionUtils.mapGetValueIgnoringCase(getReturnedFields(), "FacilityIdentifications");
+                    if(returnFS != null) { conv.setReturnedFieldsString(returnFS); } else { conv.setAllFieldsReturned(this.getAllFieldsReturned()); }
+                    for (FacilityIdentificationState s : state.getFacilityIdentifications()) {
+                        arrayList.add(conv.toFacilityIdentificationStateDto(s));
+                    }
+                }
+                dto.setFacilityIdentifications(arrayList.toArray(new FacilityIdentificationStateDto[0]));
             }
             return dto;
         }

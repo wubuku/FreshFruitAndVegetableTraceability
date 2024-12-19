@@ -280,6 +280,33 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         this.geoId = geoId;
     }
 
+    /**
+     * Active
+     */
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
+
+    private CreateOrMergePatchFacilityIdentificationDto[] facilityIdentifications = new CreateOrMergePatchFacilityIdentificationDto[0];
+
+    public CreateOrMergePatchFacilityIdentificationDto[] getFacilityIdentifications()
+    {
+        return this.facilityIdentifications;
+    }
+
+    public void setFacilityIdentifications(CreateOrMergePatchFacilityIdentificationDto[] facilityIdentifications)
+    {
+        this.facilityIdentifications = facilityIdentifications;
+    }
 
     private Boolean isPropertyFacilityTypeIdRemoved;
 
@@ -497,6 +524,18 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         this.isPropertyGeoIdRemoved = removed;
     }
 
+    private Boolean isPropertyActiveRemoved;
+
+    public Boolean getIsPropertyActiveRemoved()
+    {
+        return this.isPropertyActiveRemoved;
+    }
+
+    public void setIsPropertyActiveRemoved(Boolean removed)
+    {
+        this.isPropertyActiveRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchFacility command)
     {
         ((AbstractFacilityCommandDto) this).copyTo(command);
@@ -518,6 +557,7 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         command.setDefaultWeightUomId(this.getDefaultWeightUomId());
         command.setGeoPointId(this.getGeoPointId());
         command.setGeoId(this.getGeoId());
+        command.setActive(this.getActive());
     }
 
     public FacilityCommand toCommand()
@@ -528,10 +568,20 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         if (COMMAND_TYPE_CREATE.equals(getCommandType())) {
             AbstractFacilityCommand.SimpleCreateFacility command = new AbstractFacilityCommand.SimpleCreateFacility();
             copyTo((AbstractFacilityCommand.AbstractCreateFacility) command);
+            if (this.getFacilityIdentifications() != null) {
+                for (CreateOrMergePatchFacilityIdentificationDto cmd : this.getFacilityIdentifications()) {
+                    command.getFacilityIdentifications().add((FacilityIdentificationCommand.CreateFacilityIdentification) cmd.toCommand());
+                }
+            }
             return command;
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
             AbstractFacilityCommand.SimpleMergePatchFacility command = new AbstractFacilityCommand.SimpleMergePatchFacility();
             copyTo((AbstractFacilityCommand.SimpleMergePatchFacility) command);
+            if (this.getFacilityIdentifications() != null) {
+                for (CreateOrMergePatchFacilityIdentificationDto cmd : this.getFacilityIdentifications()) {
+                    command.getFacilityIdentificationCommands().add(cmd.toCommand());
+                }
+            }
             return command;
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
@@ -545,10 +595,21 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         if (COMMAND_TYPE_CREATE.equals(getCommandType()) || null == getCommandType()) {
             CreateFacilityDto command = new CreateFacilityDto();
             copyTo((CreateFacility) command);
+            if (this.getFacilityIdentifications() != null) {
+                for (CreateOrMergePatchFacilityIdentificationDto cmd : this.getFacilityIdentifications()) {
+                    if (cmd.getCommandType() == null) { cmd.setCommandType(COMMAND_TYPE_CREATE); }
+                    command.getCreateFacilityIdentificationCommands().add((FacilityIdentificationCommand.CreateFacilityIdentification) cmd.toSubclass());
+                }
+            }
             return command;
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
             MergePatchFacilityDto command = new MergePatchFacilityDto();
             copyTo((MergePatchFacility) command);
+            if (this.getFacilityIdentifications() != null) {
+                for (CreateOrMergePatchFacilityIdentificationDto cmd : this.getFacilityIdentifications()) {
+                    command.getFacilityIdentificationCommands().add(cmd.toSubclass());
+                }
+            }
             return command;
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
@@ -580,6 +641,7 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         command.setIsPropertyDefaultWeightUomIdRemoved(this.getIsPropertyDefaultWeightUomIdRemoved());
         command.setIsPropertyGeoPointIdRemoved(this.getIsPropertyGeoPointIdRemoved());
         command.setIsPropertyGeoIdRemoved(this.getIsPropertyGeoIdRemoved());
+        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 
     public static class CreateFacilityDto extends CreateOrMergePatchFacilityDto implements FacilityCommand.CreateFacility
@@ -597,6 +659,42 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
             return (FacilityCommand.CreateFacility) toCommand();
         }
 
+
+        @Override
+        public CreateFacilityIdentificationCommandCollection getCreateFacilityIdentificationCommands() {
+            return new CreateFacilityIdentificationCommandCollection() {
+                @Override
+                public void add(FacilityIdentificationCommand.CreateFacilityIdentification c) {
+                    java.util.List<CreateOrMergePatchFacilityIdentificationDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getFacilityIdentifications()));
+                    list.add((CreateOrMergePatchFacilityIdentificationDto) c);
+                    setFacilityIdentifications(list.toArray(new CreateOrMergePatchFacilityIdentificationDto[0]));
+                }
+
+                @Override
+                public void remove(FacilityIdentificationCommand.CreateFacilityIdentification c) {
+                    java.util.List<CreateOrMergePatchFacilityIdentificationDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getFacilityIdentifications()));
+                    list.remove((CreateOrMergePatchFacilityIdentificationDto) c);
+                    setFacilityIdentifications(list.toArray(new CreateOrMergePatchFacilityIdentificationDto[0]));
+                }
+
+                @Override
+                public void clear() {
+                    setFacilityIdentifications(new CreateOrMergePatchFacilityIdentificationDto[]{});
+                }
+
+                @Override
+                public java.util.Iterator<FacilityIdentificationCommand.CreateFacilityIdentification> iterator() {
+                    return java.util.Arrays.stream(getFacilityIdentifications())
+                            .map(e -> {if (e.getCommandType()==null) e.setCommandType(COMMAND_TYPE_CREATE);return (FacilityIdentificationCommand.CreateFacilityIdentification) e.toSubclass();}).iterator();
+                }
+            };
+        }
+
+        @Override
+        public FacilityIdentificationCommand.CreateFacilityIdentification newCreateFacilityIdentification() {
+            return new CreateOrMergePatchFacilityIdentificationDto.CreateFacilityIdentificationDto();
+        }
+
     }
 
     public static class MergePatchFacilityDto extends CreateOrMergePatchFacilityDto implements FacilityCommand.MergePatchFacility
@@ -612,6 +710,52 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         public FacilityCommand.MergePatchFacility toMergePatchFacility()
         {
             return (FacilityCommand.MergePatchFacility) toCommand();
+        }
+
+
+        @Override
+        public FacilityIdentificationCommandCollection getFacilityIdentificationCommands() {
+            return new FacilityIdentificationCommandCollection() {
+                @Override
+                public void add(FacilityIdentificationCommand c) {
+                    java.util.List<CreateOrMergePatchFacilityIdentificationDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getFacilityIdentifications()));
+                    list.add((CreateOrMergePatchFacilityIdentificationDto) c);
+                    setFacilityIdentifications(list.toArray(new CreateOrMergePatchFacilityIdentificationDto[0]));
+                }
+
+                @Override
+                public void remove(FacilityIdentificationCommand c) {
+                    java.util.List<CreateOrMergePatchFacilityIdentificationDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getFacilityIdentifications()));
+                    list.remove((CreateOrMergePatchFacilityIdentificationDto) c);
+                    setFacilityIdentifications(list.toArray(new CreateOrMergePatchFacilityIdentificationDto[0]));
+                }
+
+                @Override
+                public void clear() {
+                    setFacilityIdentifications(new CreateOrMergePatchFacilityIdentificationDto[]{});
+                }
+
+                @Override
+                public java.util.Iterator<FacilityIdentificationCommand> iterator() {
+                    return java.util.Arrays.stream(getFacilityIdentifications())
+                            .map(e -> (FacilityIdentificationCommand) e.toSubclass()).iterator();
+                }
+            };
+        }
+
+        @Override
+        public FacilityIdentificationCommand.CreateFacilityIdentification newCreateFacilityIdentification() {
+            return new CreateOrMergePatchFacilityIdentificationDto.CreateFacilityIdentificationDto();
+        }
+
+        @Override
+        public FacilityIdentificationCommand.MergePatchFacilityIdentification newMergePatchFacilityIdentification() {
+            return new CreateOrMergePatchFacilityIdentificationDto.MergePatchFacilityIdentificationDto();
+        }
+
+        @Override
+        public FacilityIdentificationCommand.RemoveFacilityIdentification newRemoveFacilityIdentification() {
+            return new RemoveFacilityIdentificationDto();
         }
 
     }

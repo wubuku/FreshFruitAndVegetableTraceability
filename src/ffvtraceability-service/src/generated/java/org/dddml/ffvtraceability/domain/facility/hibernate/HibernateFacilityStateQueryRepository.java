@@ -29,7 +29,7 @@ public class HibernateFacilityStateQueryRepository implements FacilityStateQuery
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityId", "FacilityTypeId", "ParentFacilityId", "OwnerPartyId", "DefaultInventoryItemTypeId", "FacilityName", "PrimaryFacilityGroupId", "OldSquareFootage", "FacilitySize", "FacilitySizeUomId", "ProductStoreId", "DefaultDaysToShip", "OpenedDate", "ClosedDate", "Description", "DefaultDimensionUomId", "DefaultWeightUomId", "GeoPointId", "GeoId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityId", "FacilityTypeId", "ParentFacilityId", "OwnerPartyId", "DefaultInventoryItemTypeId", "FacilityName", "PrimaryFacilityGroupId", "OldSquareFootage", "FacilitySize", "FacilitySizeUomId", "ProductStoreId", "DefaultDaysToShip", "OpenedDate", "ClosedDate", "Description", "DefaultDimensionUomId", "DefaultWeightUomId", "GeoPointId", "GeoId", "Active", "FacilityIdentifications", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -138,6 +138,32 @@ public class HibernateFacilityStateQueryRepository implements FacilityStateQuery
         }
         addNotDeletedRestriction(cb, cq, root);
         return em.createQuery(cq).getSingleResult();
+    }
+
+    @Transactional(readOnly = true)
+    public FacilityIdentificationState getFacilityIdentification(String facilityId, String facilityIdentificationTypeId) {
+        FacilityIdentificationId entityId = new FacilityIdentificationId(facilityId, facilityIdentificationTypeId);
+        return (FacilityIdentificationState) getEntityManager().find(AbstractFacilityIdentificationState.SimpleFacilityIdentificationState.class, entityId);
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable<FacilityIdentificationState> getFacilityIdentifications(String facilityId, org.dddml.support.criterion.Criterion filter, List<String> orders) {
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbstractFacilityIdentificationState.SimpleFacilityIdentificationState> cq = cb.createQuery(AbstractFacilityIdentificationState.SimpleFacilityIdentificationState.class);
+        Root<AbstractFacilityIdentificationState.SimpleFacilityIdentificationState> root = cq.from(AbstractFacilityIdentificationState.SimpleFacilityIdentificationState.class);
+        cq.select(root);
+
+        Predicate partIdCondition = cb.and(
+            cb.equal(root.get("facilityIdentificationId").get("facilityId"), facilityId)
+        );
+        cq.where(partIdCondition);
+
+        // Add filter and orders
+        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
+
+        TypedQuery<AbstractFacilityIdentificationState.SimpleFacilityIdentificationState> query = em.createQuery(cq);
+        return query.getResultList().stream().map(FacilityIdentificationState.class::cast).collect(Collectors.toList());
     }
 
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {

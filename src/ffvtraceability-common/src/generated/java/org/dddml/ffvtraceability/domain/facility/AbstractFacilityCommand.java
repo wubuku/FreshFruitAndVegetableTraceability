@@ -256,6 +256,42 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
             this.geoId = geoId;
         }
 
+        private String active;
+
+        public String getActive()
+        {
+            return this.active;
+        }
+
+        public void setActive(String active)
+        {
+            this.active = active;
+        }
+
+        public FacilityIdentificationCommand.CreateFacilityIdentification newCreateFacilityIdentification()
+        {
+            AbstractFacilityIdentificationCommand.SimpleCreateFacilityIdentification c = new AbstractFacilityIdentificationCommand.SimpleCreateFacilityIdentification();
+            c.setFacilityId(this.getFacilityId());
+
+            return c;
+        }
+
+        public FacilityIdentificationCommand.MergePatchFacilityIdentification newMergePatchFacilityIdentification()
+        {
+            AbstractFacilityIdentificationCommand.SimpleMergePatchFacilityIdentification c = new AbstractFacilityIdentificationCommand.SimpleMergePatchFacilityIdentification();
+            c.setFacilityId(this.getFacilityId());
+
+            return c;
+        }
+
+        public FacilityIdentificationCommand.RemoveFacilityIdentification newRemoveFacilityIdentification()
+        {
+            AbstractFacilityIdentificationCommand.SimpleRemoveFacilityIdentification c = new AbstractFacilityIdentificationCommand.SimpleRemoveFacilityIdentification();
+            c.setFacilityId(this.getFacilityId());
+
+            return c;
+        }
+
     }
 
     public static abstract class AbstractCreateFacility extends AbstractCreateOrMergePatchFacility implements CreateFacility
@@ -263,6 +299,16 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_CREATE;
+        }
+
+        private CreateFacilityIdentificationCommandCollection createFacilityIdentificationCommands = new SimpleCreateFacilityIdentificationCommandCollection();
+
+        public CreateFacilityIdentificationCommandCollection getCreateFacilityIdentificationCommands() {
+            return this.createFacilityIdentificationCommands;
+        }
+
+        public CreateFacilityIdentificationCommandCollection getFacilityIdentifications() {
+            return this.createFacilityIdentificationCommands; //facilityIdentifications;
         }
 
     }
@@ -490,6 +536,25 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
             this.isPropertyGeoIdRemoved = removed;
         }
 
+        private Boolean isPropertyActiveRemoved;
+
+        public Boolean getIsPropertyActiveRemoved()
+        {
+            return this.isPropertyActiveRemoved;
+        }
+
+        public void setIsPropertyActiveRemoved(Boolean removed)
+        {
+            this.isPropertyActiveRemoved = removed;
+        }
+
+
+        private FacilityIdentificationCommandCollection facilityIdentificationCommands = new SimpleFacilityIdentificationCommandCollection();
+
+        public FacilityIdentificationCommandCollection getFacilityIdentificationCommands()
+        {
+            return this.facilityIdentificationCommands;
+        }
 
     }
 
@@ -512,6 +577,48 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
     }
 
     
+    public static class SimpleCreateFacilityIdentificationCommandCollection implements CreateFacilityIdentificationCommandCollection {
+        private List<FacilityIdentificationCommand.CreateFacilityIdentification> innerCommands = new ArrayList<FacilityIdentificationCommand.CreateFacilityIdentification>();
+
+        public void add(FacilityIdentificationCommand.CreateFacilityIdentification c) {
+            innerCommands.add(c);
+        }
+
+        public void remove(FacilityIdentificationCommand.CreateFacilityIdentification c) {
+            innerCommands.remove(c);
+        }
+
+        public void clear() {
+            innerCommands.clear();
+        }
+
+        @Override
+        public Iterator<FacilityIdentificationCommand.CreateFacilityIdentification> iterator() {
+            return innerCommands.iterator();
+        }
+    }
+
+    public static class SimpleFacilityIdentificationCommandCollection implements FacilityIdentificationCommandCollection {
+        private List<FacilityIdentificationCommand> innerCommands = new ArrayList<FacilityIdentificationCommand>();
+
+        public void add(FacilityIdentificationCommand c) {
+            innerCommands.add(c);
+        }
+
+        public void remove(FacilityIdentificationCommand c) {
+            innerCommands.remove(c);
+        }
+
+        public void clear() {
+            innerCommands.clear();
+        }
+
+        @Override
+        public Iterator<FacilityIdentificationCommand> iterator() {
+            return innerCommands.iterator();
+        }
+    }
+
 
 }
 

@@ -7,9 +7,7 @@ import org.dddml.ffvtraceability.domain.repository.BffLotProjection;
 import org.springframework.stereotype.Component;
 
 @Generated(
-    value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-19T18:46:40+0800",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
+    value = "org.mapstruct.ap.MappingProcessor"
 )
 @Component
 public class BffLotMapperImpl implements BffLotMapper {

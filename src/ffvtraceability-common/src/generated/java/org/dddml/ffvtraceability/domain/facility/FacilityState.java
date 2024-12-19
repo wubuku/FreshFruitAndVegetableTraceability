@@ -55,6 +55,8 @@ public interface FacilityState
 
     String getGeoId();
 
+    String getActive();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -66,6 +68,8 @@ public interface FacilityState
     OffsetDateTime getUpdatedAt();
 
     Boolean getDeleted();
+
+    EntityStateCollection<String, FacilityIdentificationState> getFacilityIdentifications();
 
     interface MutableFacilityState extends FacilityState {
         void setFacilityId(String facilityId);
@@ -105,6 +109,8 @@ public interface FacilityState
         void setGeoPointId(String geoPointId);
 
         void setGeoId(String geoId);
+
+        void setActive(String active);
 
         void setVersion(Long version);
 
