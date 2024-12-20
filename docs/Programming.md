@@ -363,6 +363,41 @@ curl -X 'GET' \
   -H 'accept: application/json'
 ```
 
+#### Test "BffFacilities"
+
+创建设施：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffFacilities' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "facilityId": "FACILITY001",
+  "ownerPartyId": "SUPPLIER001",
+  "facilityName": "Fresh Produce Processing Center",
+  "facilitySize": 5000,
+  "facilitySizeUomId": "SQM",
+  "description": "Modern food processing facility with cold storage capabilities",
+  "active": "Y",
+  "gln": "1234567890123",
+  "ffrn": "12345678901" 
+}'
+
+# GLN (Global Location Number) 是 13 位数字标识符
+# FFRN (Food Facility Registration Number) 是 FDA 分配的 11 位数字标识符
+```
+
+查询设施：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffFacilities?page=0&size=20' \
+  -H 'accept: application/json'
+```
+
+
+
 
 #### Test "StatusItem"
 

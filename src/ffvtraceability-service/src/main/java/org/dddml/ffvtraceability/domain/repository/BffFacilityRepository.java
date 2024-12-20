@@ -20,8 +20,26 @@ public interface BffFacilityRepository extends JpaRepository<AbstractFacilitySta
                 f.facility_size_uom_id as facilitySizeUomId,
                 f.geo_point_id as geoPointId,
                 f.geo_id as geoId,
-                f.active as active
+                f.active as active,
+                ffrn.id_value as ffrn,
+                gln.id_value as gln
             FROM facility f
+            LEFT JOIN (
+                SELECT 
+                    fi.facility_id,
+                    fi.id_value
+                FROM facility_identification fi
+                WHERE fi.facility_identification_type_id = 'FFRN'
+                    AND (fi.deleted IS NULL OR fi.deleted = false)
+            ) ffrn ON ffrn.facility_id = f.facility_id
+            LEFT JOIN (
+                SELECT 
+                    fi.facility_id,
+                    fi.id_value
+                FROM facility_identification fi
+                WHERE fi.facility_identification_type_id = 'GLN'
+                    AND (fi.deleted IS NULL OR fi.deleted = false)
+            ) gln ON gln.facility_id = f.facility_id
             WHERE (:active IS NULL OR f.active = :active)
                 AND (f.deleted IS NULL OR f.deleted = false)
             ORDER BY f.created_at DESC
@@ -34,4 +52,5 @@ public interface BffFacilityRepository extends JpaRepository<AbstractFacilitySta
                     """,
             nativeQuery = true)
     Page<BffFacilityProjection> findAllFacilities(Pageable pageable, @Param("active") String active);
+
 }
