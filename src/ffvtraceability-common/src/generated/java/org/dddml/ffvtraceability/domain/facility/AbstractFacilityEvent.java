@@ -126,10 +126,6 @@ public abstract class AbstractFacilityEvent extends AbstractEvent implements Fac
         return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateMergePatched(newFacilityIdentificationEventId(facilityIdentificationTypeId));
     }
 
-    public FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(String facilityIdentificationTypeId) {
-        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateRemoved(newFacilityIdentificationEventId(facilityIdentificationTypeId));
-    }
-
 
     public abstract String getEventType();
 
@@ -711,70 +707,6 @@ public abstract class AbstractFacilityEvent extends AbstractEvent implements Fac
     }
 
 
-    public static abstract class AbstractFacilityStateDeleted extends AbstractFacilityStateEvent implements FacilityEvent.FacilityStateDeleted, Saveable
-    {
-        public AbstractFacilityStateDeleted() {
-            this(new FacilityEventId());
-        }
-
-        public AbstractFacilityStateDeleted(FacilityEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-        
-        private Map<FacilityIdentificationEventId, FacilityIdentificationEvent.FacilityIdentificationStateRemoved> facilityIdentificationEvents = new HashMap<FacilityIdentificationEventId, FacilityIdentificationEvent.FacilityIdentificationStateRemoved>();
-        
-        private Iterable<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> readOnlyFacilityIdentificationEvents;
-
-        public Iterable<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> getFacilityIdentificationEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.facilityIdentificationEvents.values();
-            }
-            else
-            {
-                if (readOnlyFacilityIdentificationEvents != null) { return readOnlyFacilityIdentificationEvents; }
-                FacilityIdentificationEventDao eventDao = getFacilityIdentificationEventDao();
-                List<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> eL = new ArrayList<FacilityIdentificationEvent.FacilityIdentificationStateRemoved>();
-                for (FacilityIdentificationEvent e : eventDao.findByFacilityEventId(this.getFacilityEventId()))
-                {
-                    ((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e).setEventReadOnly(true);
-                    eL.add((FacilityIdentificationEvent.FacilityIdentificationStateRemoved)e);
-                }
-                return (readOnlyFacilityIdentificationEvents = eL);
-            }
-        }
-
-        public void setFacilityIdentificationEvents(Iterable<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (FacilityIdentificationEvent.FacilityIdentificationStateRemoved e : es)
-                {
-                    addFacilityIdentificationEvent(e);
-                }
-            }
-            else { this.facilityIdentificationEvents.clear(); }
-        }
-        
-        public void addFacilityIdentificationEvent(FacilityIdentificationEvent.FacilityIdentificationStateRemoved e)
-        {
-            throwOnInconsistentEventIds((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e);
-            this.facilityIdentificationEvents.put(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)e).getFacilityIdentificationEventId(), e);
-        }
-
-        public void save()
-        {
-            for (FacilityIdentificationEvent.FacilityIdentificationStateRemoved e : this.getFacilityIdentificationEvents()) {
-                getFacilityIdentificationEventDao().save(e);
-            }
-        }
-    }
 
     public static class SimpleFacilityStateCreated extends AbstractFacilityStateCreated
     {
@@ -792,16 +724,6 @@ public abstract class AbstractFacilityEvent extends AbstractEvent implements Fac
         }
 
         public SimpleFacilityStateMergePatched(FacilityEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleFacilityStateDeleted extends AbstractFacilityStateDeleted
-    {
-        public SimpleFacilityStateDeleted() {
-        }
-
-        public SimpleFacilityStateDeleted(FacilityEventId eventId) {
             super(eventId);
         }
     }

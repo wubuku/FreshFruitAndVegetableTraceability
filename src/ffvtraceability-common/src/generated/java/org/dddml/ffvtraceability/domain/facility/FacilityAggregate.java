@@ -20,8 +20,6 @@ public interface FacilityAggregate {
 
     void mergePatch(FacilityCommand.MergePatchFacility c);
 
-    void delete(FacilityCommand.DeleteFacility c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

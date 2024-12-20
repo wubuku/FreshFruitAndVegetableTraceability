@@ -233,29 +233,6 @@ public class ReceivingEventResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    /**
-     * Delete.
-     * Delete ReceivingEvent
-     */
-    @DeleteMapping("{eventId}")
-    public void delete(@PathVariable("eventId") Long eventId,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            ReceivingEventCommand.DeleteReceivingEvent deleteCmd = new DeleteReceivingEventDto();//.toDeleteReceivingEvent();;
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            ReceivingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            receivingEventApplicationService.when(deleteCmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

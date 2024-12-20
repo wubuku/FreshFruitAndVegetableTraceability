@@ -38,11 +38,6 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         apply(e);
     }
 
-    public void delete(ArticleCommand.DeleteArticle c) {
-        ArticleEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         ArticleCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -97,15 +92,6 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         return e;
     }
 
-    protected ArticleEvent map(ArticleCommand.DeleteArticle c) {
-        ArticleEventId stateEventId = new ArticleEventId(c.getArticleId(), c.getVersion());
-        ArticleEvent.ArticleStateDeleted e = newArticleStateDeleted(stateEventId);
-        ((AbstractArticleEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     protected CommentEvent map(CommentCommand c, ArticleCommand outerCommand, Long version, ArticleState outerState) {
         CommentCommand.CreateComment create = (c.getCommandType().equals(CommandType.CREATE)) ? ((CommentCommand.CreateComment)c) : null;
@@ -118,10 +104,6 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        CommentCommand.RemoveComment remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((CommentCommand.RemoveComment)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -157,18 +139,6 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
-
-    protected CommentEvent.CommentStateRemoved mapRemove(CommentCommand.RemoveComment c, ArticleCommand outerCommand, Long version, ArticleState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        CommentEventId stateEventId = new CommentEventId(outerState.getArticleId(), c.getCommentSeqId(), version);
-        CommentEvent.CommentStateRemoved e = newCommentStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
 
     protected void throwOnInconsistentCommands(ArticleCommand command, CommentCommand innerCommand) {
         AbstractArticleCommand properties = command instanceof AbstractArticleCommand ? (AbstractArticleCommand) command : null;
@@ -208,15 +178,6 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         return e;
     }
 
-    protected ArticleEvent.ArticleStateDeleted newArticleStateDeleted(Long version, String commandId, String requesterId) {
-        ArticleEventId stateEventId = new ArticleEventId(this.state.getArticleId(), version);
-        ArticleEvent.ArticleStateDeleted e = newArticleStateDeleted(stateEventId);
-        ((AbstractArticleEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected ArticleEvent.ArticleStateCreated newArticleStateCreated(ArticleEventId stateEventId) {
         return new AbstractArticleEvent.SimpleArticleStateCreated(stateEventId);
     }
@@ -225,20 +186,12 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         return new AbstractArticleEvent.SimpleArticleStateMergePatched(stateEventId);
     }
 
-    protected ArticleEvent.ArticleStateDeleted newArticleStateDeleted(ArticleEventId stateEventId) {
-        return new AbstractArticleEvent.SimpleArticleStateDeleted(stateEventId);
-    }
-
     protected CommentEvent.CommentStateCreated newCommentStateCreated(CommentEventId stateEventId) {
         return new AbstractCommentEvent.SimpleCommentStateCreated(stateEventId);
     }
 
     protected CommentEvent.CommentStateMergePatched newCommentStateMergePatched(CommentEventId stateEventId) {
         return new AbstractCommentEvent.SimpleCommentStateMergePatched(stateEventId);
-    }
-
-    protected CommentEvent.CommentStateRemoved newCommentStateRemoved(CommentEventId stateEventId) {
-        return new AbstractCommentEvent.SimpleCommentStateRemoved(stateEventId);
     }
 
 

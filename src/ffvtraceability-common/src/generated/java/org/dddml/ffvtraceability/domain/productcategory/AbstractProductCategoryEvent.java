@@ -313,21 +313,6 @@ public abstract class AbstractProductCategoryEvent extends AbstractEvent impleme
     }
 
 
-    public static abstract class AbstractProductCategoryStateDeleted extends AbstractProductCategoryStateEvent implements ProductCategoryEvent.ProductCategoryStateDeleted
-    {
-        public AbstractProductCategoryStateDeleted() {
-            this(new ProductCategoryEventId());
-        }
-
-        public AbstractProductCategoryStateDeleted(ProductCategoryEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-    }
 
     public static class SimpleProductCategoryStateCreated extends AbstractProductCategoryStateCreated
     {
@@ -345,16 +330,6 @@ public abstract class AbstractProductCategoryEvent extends AbstractEvent impleme
         }
 
         public SimpleProductCategoryStateMergePatched(ProductCategoryEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleProductCategoryStateDeleted extends AbstractProductCategoryStateDeleted
-    {
-        public SimpleProductCategoryStateDeleted() {
-        }
-
-        public SimpleProductCategoryStateDeleted(ProductCategoryEventId eventId) {
             super(eventId);
         }
     }

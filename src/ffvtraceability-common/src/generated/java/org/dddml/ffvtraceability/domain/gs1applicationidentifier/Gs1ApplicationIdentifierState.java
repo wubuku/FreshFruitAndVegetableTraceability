@@ -57,8 +57,6 @@ public interface Gs1ApplicationIdentifierState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     List<Gs1AppIdComponent> getComponents();
 
     String getCommandId();
@@ -103,8 +101,6 @@ public interface Gs1ApplicationIdentifierState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setComponents(List<Gs1AppIdComponent> components);
 

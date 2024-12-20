@@ -57,10 +57,6 @@ public abstract class AbstractPartyRoleApplicationService implements PartyRoleAp
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(PartyRoleCommand.DeletePartyRole c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public PartyRoleState get(PartyRoleId id) {
         PartyRoleState state = getStateRepository().get(id, true);
         return state;

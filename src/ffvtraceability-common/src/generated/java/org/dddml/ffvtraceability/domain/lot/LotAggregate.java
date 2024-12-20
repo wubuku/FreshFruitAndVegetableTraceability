@@ -20,8 +20,6 @@ public interface LotAggregate {
 
     void mergePatch(LotCommand.MergePatchLot c);
 
-    void delete(LotCommand.DeleteLot c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

@@ -20,8 +20,6 @@ public interface ArticleApplicationService {
 
     void when(ArticleCommand.MergePatchArticle c);
 
-    void when(ArticleCommand.DeleteArticle c);
-
     void when(ArticleCommands.UpdateBody c);
 
     ArticleState get(Long id);

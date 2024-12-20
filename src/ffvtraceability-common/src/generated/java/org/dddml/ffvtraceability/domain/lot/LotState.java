@@ -35,8 +35,6 @@ public interface LotState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     EntityStateCollection<String, LotIdentificationState> getLotIdentifications();
 
     interface MutableLotState extends LotState {
@@ -58,8 +56,6 @@ public interface LotState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
 
         void mutate(Event e);
 
@@ -67,7 +63,6 @@ public interface LotState
 
         //void when(LotEvent.LotStateMergePatched e);
 
-        //void when(LotEvent.LotStateDeleted e);
     }
 
     interface SqlLotState extends MutableLotState {

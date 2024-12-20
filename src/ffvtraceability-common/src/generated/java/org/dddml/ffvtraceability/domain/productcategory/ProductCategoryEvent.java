@@ -111,10 +111,6 @@ public interface ProductCategoryEvent extends Event {
 
     }
 
-    interface ProductCategoryStateDeleted extends ProductCategoryStateEvent
-    {
-    }
-
 
 }
 

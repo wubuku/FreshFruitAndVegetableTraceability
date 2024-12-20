@@ -38,11 +38,6 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         apply(e);
     }
 
-    public void delete(FacilityCommand.DeleteFacility c) {
-        FacilityEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         FacilityCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -142,15 +137,6 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         return e;
     }
 
-    protected FacilityEvent map(FacilityCommand.DeleteFacility c) {
-        FacilityEventId stateEventId = new FacilityEventId(c.getFacilityId(), c.getVersion());
-        FacilityEvent.FacilityStateDeleted e = newFacilityStateDeleted(stateEventId);
-        ((AbstractFacilityEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     protected FacilityIdentificationEvent map(FacilityIdentificationCommand c, FacilityCommand outerCommand, Long version, FacilityState outerState) {
         FacilityIdentificationCommand.CreateFacilityIdentification create = (c.getCommandType().equals(CommandType.CREATE)) ? ((FacilityIdentificationCommand.CreateFacilityIdentification)c) : null;
@@ -163,10 +149,6 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        FacilityIdentificationCommand.RemoveFacilityIdentification remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((FacilityIdentificationCommand.RemoveFacilityIdentification)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -199,18 +181,6 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
-
-    protected FacilityIdentificationEvent.FacilityIdentificationStateRemoved mapRemove(FacilityIdentificationCommand.RemoveFacilityIdentification c, FacilityCommand outerCommand, Long version, FacilityState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        FacilityIdentificationEventId stateEventId = new FacilityIdentificationEventId(outerState.getFacilityId(), c.getFacilityIdentificationTypeId(), version);
-        FacilityIdentificationEvent.FacilityIdentificationStateRemoved e = newFacilityIdentificationStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
 
     protected void throwOnInconsistentCommands(FacilityCommand command, FacilityIdentificationCommand innerCommand) {
         AbstractFacilityCommand properties = command instanceof AbstractFacilityCommand ? (AbstractFacilityCommand) command : null;
@@ -250,15 +220,6 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         return e;
     }
 
-    protected FacilityEvent.FacilityStateDeleted newFacilityStateDeleted(Long version, String commandId, String requesterId) {
-        FacilityEventId stateEventId = new FacilityEventId(this.state.getFacilityId(), version);
-        FacilityEvent.FacilityStateDeleted e = newFacilityStateDeleted(stateEventId);
-        ((AbstractFacilityEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected FacilityEvent.FacilityStateCreated newFacilityStateCreated(FacilityEventId stateEventId) {
         return new AbstractFacilityEvent.SimpleFacilityStateCreated(stateEventId);
     }
@@ -267,20 +228,12 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         return new AbstractFacilityEvent.SimpleFacilityStateMergePatched(stateEventId);
     }
 
-    protected FacilityEvent.FacilityStateDeleted newFacilityStateDeleted(FacilityEventId stateEventId) {
-        return new AbstractFacilityEvent.SimpleFacilityStateDeleted(stateEventId);
-    }
-
     protected FacilityIdentificationEvent.FacilityIdentificationStateCreated newFacilityIdentificationStateCreated(FacilityIdentificationEventId stateEventId) {
         return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateCreated(stateEventId);
     }
 
     protected FacilityIdentificationEvent.FacilityIdentificationStateMergePatched newFacilityIdentificationStateMergePatched(FacilityIdentificationEventId stateEventId) {
         return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateMergePatched(stateEventId);
-    }
-
-    protected FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(FacilityIdentificationEventId stateEventId) {
-        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateRemoved(stateEventId);
     }
 
 

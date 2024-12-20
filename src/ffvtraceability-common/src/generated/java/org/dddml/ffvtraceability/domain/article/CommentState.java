@@ -33,8 +33,6 @@ public interface CommentState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     Long getArticleId();
 
     interface MutableCommentState extends CommentState {
@@ -54,8 +52,6 @@ public interface CommentState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setArticleId(Long articleId);
 
 
@@ -65,7 +61,6 @@ public interface CommentState
 
         //void when(CommentEvent.CommentStateMergePatched e);
 
-        //void when(CommentEvent.CommentStateRemoved e);
     }
 
     interface SqlCommentState extends MutableCommentState {

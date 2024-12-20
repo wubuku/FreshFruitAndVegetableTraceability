@@ -35,8 +35,6 @@ public interface GeoTypeState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getCommandId();
 
     interface MutableGeoTypeState extends GeoTypeState {
@@ -57,8 +55,6 @@ public interface GeoTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setCommandId(String commandId);
 

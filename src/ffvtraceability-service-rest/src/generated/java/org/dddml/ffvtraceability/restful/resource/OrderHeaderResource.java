@@ -234,29 +234,6 @@ public class OrderHeaderResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    /**
-     * Delete.
-     * Delete Order
-     */
-    @DeleteMapping("{orderId}")
-    public void delete(@PathVariable("orderId") String orderId,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            OrderCommand.DeleteOrder deleteCmd = new DeleteOrderDto();
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            OrderHeaderResourceUtils.setNullIdOrThrowOnInconsistentIds(orderId, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            orderApplicationService.when(deleteCmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

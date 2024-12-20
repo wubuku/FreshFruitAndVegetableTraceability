@@ -26,7 +26,6 @@
       <subclass name="AbstractOrderContactMechEvent$SimpleOrderContactMechStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyContactMechIdRemoved" column="is_property_contact_mech_id_removed" />
       </subclass>
-      <subclass name="AbstractOrderContactMechEvent$SimpleOrderContactMechStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

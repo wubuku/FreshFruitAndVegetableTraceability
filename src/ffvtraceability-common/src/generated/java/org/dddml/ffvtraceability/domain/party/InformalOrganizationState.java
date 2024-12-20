@@ -18,7 +18,6 @@ public interface InformalOrganizationState extends OrganizationState
 
         //void when(InformalOrganizationEvent.InformalOrganizationStateMergePatched e);
 
-        //void when(InformalOrganizationEvent.InformalOrganizationStateDeleted e);
     }
 
     interface SqlInformalOrganizationState extends MutableInformalOrganizationState, OrganizationState.SqlOrganizationState {

@@ -57,10 +57,6 @@ public abstract class AbstractFacilityApplicationService implements FacilityAppl
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(FacilityCommand.DeleteFacility c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public FacilityState get(String id) {
         FacilityState state = getStateRepository().get(id, true);
         return state;

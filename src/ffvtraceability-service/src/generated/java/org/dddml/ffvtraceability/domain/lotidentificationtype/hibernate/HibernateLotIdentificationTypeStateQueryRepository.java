@@ -29,7 +29,7 @@ public class HibernateLotIdentificationTypeStateQueryRepository implements LotId
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("LotIdentificationTypeId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("LotIdentificationTypeId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -141,10 +141,6 @@ public class HibernateLotIdentificationTypeStateQueryRepository implements LotId
     }
 
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
-        Predicate isNull = cb.isNull(root.get("deleted"));
-        Predicate isFalse = cb.equal(root.get("deleted"), false);
-        Predicate notDeleted = cb.or(isNull, isFalse);
-        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }

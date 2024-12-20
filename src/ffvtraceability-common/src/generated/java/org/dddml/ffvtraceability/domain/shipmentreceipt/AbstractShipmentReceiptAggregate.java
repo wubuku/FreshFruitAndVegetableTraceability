@@ -161,10 +161,6 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        ShipmentReceiptRoleCommand.RemoveShipmentReceiptRole remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((ShipmentReceiptRoleCommand.RemoveShipmentReceiptRole)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -194,18 +190,6 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
-
-    protected ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved mapRemove(ShipmentReceiptRoleCommand.RemoveShipmentReceiptRole c, ShipmentReceiptCommand outerCommand, Long version, ShipmentReceiptState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        ShipmentReceiptRoleEventId stateEventId = new ShipmentReceiptRoleEventId(outerState.getReceiptId(), c.getPartyRoleId(), version);
-        ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved e = newShipmentReceiptRoleStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
 
     protected void throwOnInconsistentCommands(ShipmentReceiptCommand command, ShipmentReceiptRoleCommand innerCommand) {
         AbstractShipmentReceiptCommand properties = command instanceof AbstractShipmentReceiptCommand ? (AbstractShipmentReceiptCommand) command : null;
@@ -272,10 +256,6 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
 
     protected ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateMergePatched newShipmentReceiptRoleStateMergePatched(ShipmentReceiptRoleEventId stateEventId) {
         return new AbstractShipmentReceiptRoleEvent.SimpleShipmentReceiptRoleStateMergePatched(stateEventId);
-    }
-
-    protected ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved newShipmentReceiptRoleStateRemoved(ShipmentReceiptRoleEventId stateEventId) {
-        return new AbstractShipmentReceiptRoleEvent.SimpleShipmentReceiptRoleStateRemoved(stateEventId);
     }
 
 

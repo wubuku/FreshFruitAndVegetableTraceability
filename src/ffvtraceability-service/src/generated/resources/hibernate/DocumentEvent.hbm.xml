@@ -43,7 +43,6 @@
         <property name="isPropertyDocumentLocationRemoved" column="is_property_document_location_removed" />
         <property name="isPropertyDocumentTextRemoved" column="is_property_document_text_removed" />
       </subclass>
-      <subclass name="AbstractDocumentEvent$SimpleDocumentStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

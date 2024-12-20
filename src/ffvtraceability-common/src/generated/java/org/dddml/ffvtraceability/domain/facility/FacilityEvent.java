@@ -218,18 +218,6 @@ public interface FacilityEvent extends Event {
 
         FacilityIdentificationEvent.FacilityIdentificationStateMergePatched newFacilityIdentificationStateMergePatched(String facilityIdentificationTypeId);
 
-        FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(String facilityIdentificationTypeId);
-
-
-    }
-
-    interface FacilityStateDeleted extends FacilityStateEvent
-    {
-        Iterable<FacilityIdentificationEvent.FacilityIdentificationStateRemoved> getFacilityIdentificationEvents();
-        
-        void addFacilityIdentificationEvent(FacilityIdentificationEvent.FacilityIdentificationStateRemoved e);
-        
-        FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(String facilityIdentificationTypeId);
 
     }
 

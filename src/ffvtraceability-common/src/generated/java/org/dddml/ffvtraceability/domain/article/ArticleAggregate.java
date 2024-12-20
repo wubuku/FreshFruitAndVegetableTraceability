@@ -20,8 +20,6 @@ public interface ArticleAggregate {
 
     void mergePatch(ArticleCommand.MergePatchArticle c);
 
-    void delete(ArticleCommand.DeleteArticle c);
-
     void updateBody(String body, Long version, String commandId, String requesterId, ArticleCommands.UpdateBody c);
 
     void throwOnInvalidStateTransition(Command c);

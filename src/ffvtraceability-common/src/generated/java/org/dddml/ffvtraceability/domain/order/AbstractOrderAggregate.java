@@ -39,11 +39,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         apply(e);
     }
 
-    public void delete(OrderCommand.DeleteOrder c) {
-        OrderEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         OrderCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -218,15 +213,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         return e;
     }
 
-    protected OrderEvent map(OrderCommand.DeleteOrder c) {
-        OrderEventId stateEventId = new OrderEventId(c.getOrderId(), c.getVersion());
-        OrderEvent.OrderStateDeleted e = newOrderStateDeleted(stateEventId);
-        ((AbstractOrderEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     protected OrderRoleEvent map(OrderRoleCommand c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
         OrderRoleCommand.CreateOrderRole create = (c.getCommandType().equals(CommandType.CREATE)) ? ((OrderRoleCommand.CreateOrderRole)c) : null;
@@ -239,10 +225,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        OrderRoleCommand.RemoveOrderRole remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((OrderRoleCommand.RemoveOrderRole)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -273,18 +255,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
     }// END map(IMergePatch... ////////////////////////////
 
-    protected OrderRoleEvent.OrderRoleStateRemoved mapRemove(OrderRoleCommand.RemoveOrderRole c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        OrderRoleEventId stateEventId = new OrderRoleEventId(outerState.getOrderId(), c.getPartyRoleId(), version);
-        OrderRoleEvent.OrderRoleStateRemoved e = newOrderRoleStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
-
 
     protected OrderContactMechEvent map(OrderContactMechCommand c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
         OrderContactMechCommand.CreateOrderContactMech create = (c.getCommandType().equals(CommandType.CREATE)) ? ((OrderContactMechCommand.CreateOrderContactMech)c) : null;
@@ -297,10 +267,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        OrderContactMechCommand.RemoveOrderContactMech remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((OrderContactMechCommand.RemoveOrderContactMech)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -334,18 +300,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
     }// END map(IMergePatch... ////////////////////////////
 
-    protected OrderContactMechEvent.OrderContactMechStateRemoved mapRemove(OrderContactMechCommand.RemoveOrderContactMech c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        OrderContactMechEventId stateEventId = new OrderContactMechEventId(outerState.getOrderId(), c.getContactMechPurposeTypeId(), version);
-        OrderContactMechEvent.OrderContactMechStateRemoved e = newOrderContactMechStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
-
 
     protected OrderItemEvent map(OrderItemCommand c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
         OrderItemCommand.CreateOrderItem create = (c.getCommandType().equals(CommandType.CREATE)) ? ((OrderItemCommand.CreateOrderItem)c) : null;
@@ -358,10 +312,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        OrderItemCommand.RemoveOrderItem remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((OrderItemCommand.RemoveOrderItem)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -515,18 +465,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
     }// END map(IMergePatch... ////////////////////////////
 
-    protected OrderItemEvent.OrderItemStateRemoved mapRemove(OrderItemCommand.RemoveOrderItem c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        OrderItemEventId stateEventId = new OrderItemEventId(outerState.getOrderId(), c.getOrderItemSeqId(), version);
-        OrderItemEvent.OrderItemStateRemoved e = newOrderItemStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
-
 
     protected OrderAdjustmentEvent map(OrderAdjustmentCommand c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
         OrderAdjustmentCommand.CreateOrderAdjustment create = (c.getCommandType().equals(CommandType.CREATE)) ? ((OrderAdjustmentCommand.CreateOrderAdjustment)c) : null;
@@ -539,10 +477,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        OrderAdjustmentCommand.RemoveOrderAdjustment remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((OrderAdjustmentCommand.RemoveOrderAdjustment)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -663,18 +597,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
     }// END map(IMergePatch... ////////////////////////////
 
-    protected OrderAdjustmentEvent.OrderAdjustmentStateRemoved mapRemove(OrderAdjustmentCommand.RemoveOrderAdjustment c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        OrderAdjustmentEventId stateEventId = new OrderAdjustmentEventId(outerState.getOrderId(), c.getOrderAdjustmentId(), version);
-        OrderAdjustmentEvent.OrderAdjustmentStateRemoved e = newOrderAdjustmentStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
-
 
     protected OrderShipGroupEvent map(OrderShipGroupCommand c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
         OrderShipGroupCommand.CreateOrderShipGroup create = (c.getCommandType().equals(CommandType.CREATE)) ? ((OrderShipGroupCommand.CreateOrderShipGroup)c) : null;
@@ -687,10 +609,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        OrderShipGroupCommand.RemoveOrderShipGroup remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((OrderShipGroupCommand.RemoveOrderShipGroup)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -803,18 +721,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
     }// END map(IMergePatch... ////////////////////////////
 
-    protected OrderShipGroupEvent.OrderShipGroupStateRemoved mapRemove(OrderShipGroupCommand.RemoveOrderShipGroup c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        OrderShipGroupEventId stateEventId = new OrderShipGroupEventId(outerState.getOrderId(), c.getShipGroupSeqId(), version);
-        OrderShipGroupEvent.OrderShipGroupStateRemoved e = newOrderShipGroupStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
-
 
     protected OrderItemShipGroupAssociationEvent map(OrderItemShipGroupAssociationCommand c, OrderShipGroupCommand outerCommand, Long version, OrderShipGroupState outerState) {
         OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation create = (c.getCommandType().equals(CommandType.CREATE)) ? ((OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation)c) : null;
@@ -827,10 +733,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        OrderItemShipGroupAssociationCommand.RemoveOrderItemShipGroupAssociation remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((OrderItemShipGroupAssociationCommand.RemoveOrderItemShipGroupAssociation)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -866,18 +768,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
-
-    protected OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved mapRemove(OrderItemShipGroupAssociationCommand.RemoveOrderItemShipGroupAssociation c, OrderShipGroupCommand outerCommand, Long version, OrderShipGroupState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        OrderItemShipGroupAssociationEventId stateEventId = new OrderItemShipGroupAssociationEventId(outerState.getOrderId(), outerState.getShipGroupSeqId(), c.getOrderItemSeqId(), version);
-        OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved e = newOrderItemShipGroupAssociationStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
 
     protected void throwOnInconsistentCommands(OrderCommand command, OrderRoleCommand innerCommand) {
         AbstractOrderCommand properties = command instanceof AbstractOrderCommand ? (AbstractOrderCommand) command : null;
@@ -1013,25 +903,12 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         return e;
     }
 
-    protected OrderEvent.OrderStateDeleted newOrderStateDeleted(Long version, String commandId, String requesterId) {
-        OrderEventId stateEventId = new OrderEventId(this.state.getOrderId(), version);
-        OrderEvent.OrderStateDeleted e = newOrderStateDeleted(stateEventId);
-        ((AbstractOrderEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected OrderEvent.OrderStateCreated newOrderStateCreated(OrderEventId stateEventId) {
         return new AbstractOrderEvent.SimpleOrderStateCreated(stateEventId);
     }
 
     protected OrderEvent.OrderStateMergePatched newOrderStateMergePatched(OrderEventId stateEventId) {
         return new AbstractOrderEvent.SimpleOrderStateMergePatched(stateEventId);
-    }
-
-    protected OrderEvent.OrderStateDeleted newOrderStateDeleted(OrderEventId stateEventId) {
-        return new AbstractOrderEvent.SimpleOrderStateDeleted(stateEventId);
     }
 
     protected OrderRoleEvent.OrderRoleStateCreated newOrderRoleStateCreated(OrderRoleEventId stateEventId) {
@@ -1042,20 +919,12 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         return new AbstractOrderRoleEvent.SimpleOrderRoleStateMergePatched(stateEventId);
     }
 
-    protected OrderRoleEvent.OrderRoleStateRemoved newOrderRoleStateRemoved(OrderRoleEventId stateEventId) {
-        return new AbstractOrderRoleEvent.SimpleOrderRoleStateRemoved(stateEventId);
-    }
-
     protected OrderContactMechEvent.OrderContactMechStateCreated newOrderContactMechStateCreated(OrderContactMechEventId stateEventId) {
         return new AbstractOrderContactMechEvent.SimpleOrderContactMechStateCreated(stateEventId);
     }
 
     protected OrderContactMechEvent.OrderContactMechStateMergePatched newOrderContactMechStateMergePatched(OrderContactMechEventId stateEventId) {
         return new AbstractOrderContactMechEvent.SimpleOrderContactMechStateMergePatched(stateEventId);
-    }
-
-    protected OrderContactMechEvent.OrderContactMechStateRemoved newOrderContactMechStateRemoved(OrderContactMechEventId stateEventId) {
-        return new AbstractOrderContactMechEvent.SimpleOrderContactMechStateRemoved(stateEventId);
     }
 
     protected OrderItemEvent.OrderItemStateCreated newOrderItemStateCreated(OrderItemEventId stateEventId) {
@@ -1066,20 +935,12 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         return new AbstractOrderItemEvent.SimpleOrderItemStateMergePatched(stateEventId);
     }
 
-    protected OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(OrderItemEventId stateEventId) {
-        return new AbstractOrderItemEvent.SimpleOrderItemStateRemoved(stateEventId);
-    }
-
     protected OrderAdjustmentEvent.OrderAdjustmentStateCreated newOrderAdjustmentStateCreated(OrderAdjustmentEventId stateEventId) {
         return new AbstractOrderAdjustmentEvent.SimpleOrderAdjustmentStateCreated(stateEventId);
     }
 
     protected OrderAdjustmentEvent.OrderAdjustmentStateMergePatched newOrderAdjustmentStateMergePatched(OrderAdjustmentEventId stateEventId) {
         return new AbstractOrderAdjustmentEvent.SimpleOrderAdjustmentStateMergePatched(stateEventId);
-    }
-
-    protected OrderAdjustmentEvent.OrderAdjustmentStateRemoved newOrderAdjustmentStateRemoved(OrderAdjustmentEventId stateEventId) {
-        return new AbstractOrderAdjustmentEvent.SimpleOrderAdjustmentStateRemoved(stateEventId);
     }
 
     protected OrderShipGroupEvent.OrderShipGroupStateCreated newOrderShipGroupStateCreated(OrderShipGroupEventId stateEventId) {
@@ -1090,20 +951,12 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         return new AbstractOrderShipGroupEvent.SimpleOrderShipGroupStateMergePatched(stateEventId);
     }
 
-    protected OrderShipGroupEvent.OrderShipGroupStateRemoved newOrderShipGroupStateRemoved(OrderShipGroupEventId stateEventId) {
-        return new AbstractOrderShipGroupEvent.SimpleOrderShipGroupStateRemoved(stateEventId);
-    }
-
     protected OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateCreated newOrderItemShipGroupAssociationStateCreated(OrderItemShipGroupAssociationEventId stateEventId) {
         return new AbstractOrderItemShipGroupAssociationEvent.SimpleOrderItemShipGroupAssociationStateCreated(stateEventId);
     }
 
     protected OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateMergePatched newOrderItemShipGroupAssociationStateMergePatched(OrderItemShipGroupAssociationEventId stateEventId) {
         return new AbstractOrderItemShipGroupAssociationEvent.SimpleOrderItemShipGroupAssociationStateMergePatched(stateEventId);
-    }
-
-    protected OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved newOrderItemShipGroupAssociationStateRemoved(OrderItemShipGroupAssociationEventId stateEventId) {
-        return new AbstractOrderItemShipGroupAssociationEvent.SimpleOrderItemShipGroupAssociationStateRemoved(stateEventId);
     }
 
 

@@ -56,10 +56,6 @@ public interface ShipmentReceiptRoleEvent extends Event {
 
     }
 
-    interface ShipmentReceiptRoleStateRemoved extends ShipmentReceiptRoleStateEvent
-    {
-    }
-
 
 }
 

@@ -25,7 +25,6 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                     pi.id_value
                 FROM party_identification pi
                 WHERE pi.party_identification_type_id = 'GGN'
-                    AND (pi.deleted IS NULL OR pi.deleted = false)
             ) ggn ON ggn.party_id = p.party_id
             LEFT JOIN (
                 SELECT 
@@ -33,12 +32,9 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                     pi.id_value
                 FROM party_identification pi
                 WHERE pi.party_identification_type_id = 'GLN'
-                    AND (pi.deleted IS NULL OR pi.deleted = false)
             ) gln ON gln.party_id = p.party_id
             WHERE pr.role_type_id = 'SUPPLIER'
                 AND (:statusId IS NULL OR p.status_id = :statusId)
-                AND (p.deleted IS NULL OR p.deleted = false)
-                AND (pr.deleted IS NULL OR pr.deleted = false)
             ORDER BY p.created_at DESC
             """,
             countQuery = """
@@ -47,8 +43,6 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                     JOIN party_role pr ON pr.party_id = p.party_id
                     WHERE pr.role_type_id = 'SUPPLIER'
                         AND (:statusId IS NULL OR p.status_id = :statusId)
-                        AND (p.deleted IS NULL OR p.deleted = false)
-                        AND (pr.deleted IS NULL OR pr.deleted = false)
                     """,
             nativeQuery = true)
     Page<BffSupplierProjection> findAllSuppliers(Pageable pageable, @Param("statusId") String statusId);

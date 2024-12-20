@@ -47,8 +47,6 @@ public interface TransformationEventState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getCommandId();
 
     interface MutableTransformationEventState extends TransformationEventState {
@@ -81,8 +79,6 @@ public interface TransformationEventState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setCommandId(String commandId);
 

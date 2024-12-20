@@ -175,21 +175,6 @@ public abstract class AbstractOrderItemShipGroupAssociationEvent extends Abstrac
     }
 
 
-    public static abstract class AbstractOrderItemShipGroupAssociationStateRemoved extends AbstractOrderItemShipGroupAssociationStateEvent implements OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved
-    {
-        public AbstractOrderItemShipGroupAssociationStateRemoved() {
-            this(new OrderItemShipGroupAssociationEventId());
-        }
-
-        public AbstractOrderItemShipGroupAssociationStateRemoved(OrderItemShipGroupAssociationEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleOrderItemShipGroupAssociationStateCreated extends AbstractOrderItemShipGroupAssociationStateCreated
     {
@@ -207,16 +192,6 @@ public abstract class AbstractOrderItemShipGroupAssociationEvent extends Abstrac
         }
 
         public SimpleOrderItemShipGroupAssociationStateMergePatched(OrderItemShipGroupAssociationEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleOrderItemShipGroupAssociationStateRemoved extends AbstractOrderItemShipGroupAssociationStateRemoved
-    {
-        public SimpleOrderItemShipGroupAssociationStateRemoved() {
-        }
-
-        public SimpleOrderItemShipGroupAssociationStateRemoved(OrderItemShipGroupAssociationEventId eventId) {
             super(eventId);
         }
     }

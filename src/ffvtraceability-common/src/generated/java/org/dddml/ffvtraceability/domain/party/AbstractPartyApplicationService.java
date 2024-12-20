@@ -57,10 +57,6 @@ public abstract class AbstractPartyApplicationService implements PartyApplicatio
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(PartyCommand.DeleteParty c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public PartyState get(String id) {
         PartyState state = getStateRepository().get(id, true);
         return state;

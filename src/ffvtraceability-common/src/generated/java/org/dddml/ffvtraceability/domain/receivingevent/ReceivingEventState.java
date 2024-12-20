@@ -45,8 +45,6 @@ public interface ReceivingEventState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getCommandId();
 
     interface MutableReceivingEventState extends ReceivingEventState {
@@ -77,8 +75,6 @@ public interface ReceivingEventState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setCommandId(String commandId);
 

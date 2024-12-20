@@ -20,14 +20,12 @@ public interface BffLotRepository extends JpaRepository<AbstractLotState.SimpleL
             LEFT JOIN lot_identification li ON l.lot_id = li.lot_id
                 AND li.lot_identification_type_id = 'GS1_BATCH'
             WHERE (:active IS NULL OR l.active = :active)
-                AND (l.deleted IS NULL OR l.deleted = false)
             ORDER BY l.lot_id
             """,
             countQuery = """
                     SELECT COUNT(*)
                     FROM lot l
                     WHERE (:active IS NULL OR l.active = :active)
-                        AND (l.deleted IS NULL OR l.deleted = false)
                     """,
             nativeQuery = true)
     Page<BffLotProjection> findAllLots(Pageable pageable, @Param("active") String active);

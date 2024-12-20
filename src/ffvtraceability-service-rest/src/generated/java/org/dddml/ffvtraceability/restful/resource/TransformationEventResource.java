@@ -233,29 +233,6 @@ public class TransformationEventResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    /**
-     * Delete.
-     * Delete TransformationEvent
-     */
-    @DeleteMapping("{eventId}")
-    public void delete(@PathVariable("eventId") Long eventId,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            TransformationEventCommand.DeleteTransformationEvent deleteCmd = new DeleteTransformationEventDto();//.toDeleteTransformationEvent();;
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            TransformationEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            transformationEventApplicationService.when(deleteCmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

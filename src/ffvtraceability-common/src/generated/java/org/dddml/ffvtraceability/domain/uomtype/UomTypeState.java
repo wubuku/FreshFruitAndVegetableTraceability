@@ -35,8 +35,6 @@ public interface UomTypeState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     interface MutableUomTypeState extends UomTypeState {
         void setUomTypeId(String uomTypeId);
 
@@ -56,8 +54,6 @@ public interface UomTypeState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
 
         void mutate(Event e);
 
@@ -65,7 +61,6 @@ public interface UomTypeState
 
         //void when(UomTypeEvent.UomTypeStateMergePatched e);
 
-        //void when(UomTypeEvent.UomTypeStateDeleted e);
     }
 
     interface SqlUomTypeState extends MutableUomTypeState {

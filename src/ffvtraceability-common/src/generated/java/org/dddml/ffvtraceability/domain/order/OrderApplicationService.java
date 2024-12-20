@@ -19,8 +19,6 @@ public interface OrderApplicationService {
 
     void when(OrderCommand.MergePatchOrder c);
 
-    void when(OrderCommand.DeleteOrder c);
-
     OrderHeaderState get(String id);
 
     Iterable<OrderHeaderState> getAll(Integer firstResult, Integer maxResults);

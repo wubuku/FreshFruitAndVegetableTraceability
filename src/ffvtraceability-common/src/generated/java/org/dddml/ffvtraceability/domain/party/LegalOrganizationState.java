@@ -22,7 +22,6 @@ public interface LegalOrganizationState extends OrganizationState
 
         //void when(LegalOrganizationEvent.LegalOrganizationStateMergePatched e);
 
-        //void when(LegalOrganizationEvent.LegalOrganizationStateDeleted e);
     }
 
     interface SqlLegalOrganizationState extends MutableLegalOrganizationState, OrganizationState.SqlOrganizationState {

@@ -29,7 +29,7 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -141,10 +141,6 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
     }
 
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
-        Predicate isNull = cb.isNull(root.get("deleted"));
-        Predicate isFalse = cb.equal(root.get("deleted"), false);
-        Predicate notDeleted = cb.or(isNull, isFalse);
-        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }

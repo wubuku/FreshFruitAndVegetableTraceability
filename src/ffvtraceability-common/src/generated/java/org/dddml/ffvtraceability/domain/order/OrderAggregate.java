@@ -21,8 +21,6 @@ public interface OrderAggregate {
 
     void mergePatch(OrderCommand.MergePatchOrder c);
 
-    void delete(OrderCommand.DeleteOrder c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

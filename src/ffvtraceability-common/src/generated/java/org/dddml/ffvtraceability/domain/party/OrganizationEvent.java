@@ -70,18 +70,6 @@ public interface OrganizationEvent extends PartyEvent {
 
         PartyIdentificationEvent.PartyIdentificationStateMergePatched newPartyIdentificationStateMergePatched(String partyIdentificationTypeId);
 
-        PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId);
-
-
-    }
-
-    interface OrganizationStateDeleted extends OrganizationStateEvent
-    {
-        Iterable<PartyIdentificationEvent.PartyIdentificationStateRemoved> getPartyIdentificationEvents();
-        
-        void addPartyIdentificationEvent(PartyIdentificationEvent.PartyIdentificationStateRemoved e);
-        
-        PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId);
 
     }
 

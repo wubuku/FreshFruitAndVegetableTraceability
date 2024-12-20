@@ -126,10 +126,6 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
         return new AbstractCommentEvent.SimpleCommentStateMergePatched(newCommentEventId(commentSeqId));
     }
 
-    public CommentEvent.CommentStateRemoved newCommentStateRemoved(Long commentSeqId) {
-        return new AbstractCommentEvent.SimpleCommentStateRemoved(newCommentEventId(commentSeqId));
-    }
-
 
     public abstract String getEventType();
 
@@ -402,70 +398,6 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
     }
 
 
-    public static abstract class AbstractArticleStateDeleted extends AbstractArticleStateEvent implements ArticleEvent.ArticleStateDeleted, Saveable
-    {
-        public AbstractArticleStateDeleted() {
-            this(new ArticleEventId());
-        }
-
-        public AbstractArticleStateDeleted(ArticleEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-        
-        private Map<CommentEventId, CommentEvent.CommentStateRemoved> commentEvents = new HashMap<CommentEventId, CommentEvent.CommentStateRemoved>();
-        
-        private Iterable<CommentEvent.CommentStateRemoved> readOnlyCommentEvents;
-
-        public Iterable<CommentEvent.CommentStateRemoved> getCommentEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.commentEvents.values();
-            }
-            else
-            {
-                if (readOnlyCommentEvents != null) { return readOnlyCommentEvents; }
-                CommentEventDao eventDao = getCommentEventDao();
-                List<CommentEvent.CommentStateRemoved> eL = new ArrayList<CommentEvent.CommentStateRemoved>();
-                for (CommentEvent e : eventDao.findByArticleEventId(this.getArticleEventId()))
-                {
-                    ((CommentEvent.SqlCommentEvent)e).setEventReadOnly(true);
-                    eL.add((CommentEvent.CommentStateRemoved)e);
-                }
-                return (readOnlyCommentEvents = eL);
-            }
-        }
-
-        public void setCommentEvents(Iterable<CommentEvent.CommentStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (CommentEvent.CommentStateRemoved e : es)
-                {
-                    addCommentEvent(e);
-                }
-            }
-            else { this.commentEvents.clear(); }
-        }
-        
-        public void addCommentEvent(CommentEvent.CommentStateRemoved e)
-        {
-            throwOnInconsistentEventIds((CommentEvent.SqlCommentEvent)e);
-            this.commentEvents.put(((CommentEvent.SqlCommentEvent)e).getCommentEventId(), e);
-        }
-
-        public void save()
-        {
-            for (CommentEvent.CommentStateRemoved e : this.getCommentEvents()) {
-                getCommentEventDao().save(e);
-            }
-        }
-    }
 
     public static class SimpleArticleStateCreated extends AbstractArticleStateCreated
     {
@@ -483,16 +415,6 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
         }
 
         public SimpleArticleStateMergePatched(ArticleEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleArticleStateDeleted extends AbstractArticleStateDeleted
-    {
-        public SimpleArticleStateDeleted() {
-        }
-
-        public SimpleArticleStateDeleted(ArticleEventId eventId) {
             super(eventId);
         }
     }

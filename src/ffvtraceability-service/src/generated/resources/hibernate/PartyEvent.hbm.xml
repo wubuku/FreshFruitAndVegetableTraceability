@@ -51,7 +51,6 @@
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
         <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
       </subclass>
-      <subclass name="AbstractPartyEvent$SimplePartyStateDeleted" discriminator-value="Deleted"></subclass>
       <subclass name="AbstractPersonEvent$AbstractPersonStateEvent" abstract="true">
         <property name="salutation">
           <column name="salutation" sql-type="VARCHAR(100)" />
@@ -114,7 +113,6 @@
           <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
           <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
         </subclass>
-        <subclass name="AbstractPersonEvent$SimplePersonStateDeleted" discriminator-value="PersonDeleted"></subclass>
       </subclass>
       <subclass name="AbstractOrganizationEvent$AbstractOrganizationStateEvent" abstract="true">
         <property name="organizationName">
@@ -130,7 +128,6 @@
           <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
           <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
         </subclass>
-        <subclass name="AbstractOrganizationEvent$SimpleOrganizationStateDeleted" discriminator-value="OrganizationDeleted"></subclass>
         <subclass name="AbstractLegalOrganizationEvent$AbstractLegalOrganizationStateEvent" abstract="true">
           <property name="taxIdNum">
             <column name="tax_id_num" />
@@ -146,7 +143,6 @@
             <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
             <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
           </subclass>
-          <subclass name="AbstractLegalOrganizationEvent$SimpleLegalOrganizationStateDeleted" discriminator-value="LegalOrganizationDeleted"></subclass>
           <subclass name="AbstractCompanyEvent$AbstractCompanyStateEvent" abstract="true">
             <subclass name="AbstractCompanyEvent$SimpleCompanyStateCreated" discriminator-value="CompanyCreated"></subclass>
             <subclass name="AbstractCompanyEvent$SimpleCompanyStateMergePatched" discriminator-value="CompanyMergePatched">
@@ -159,7 +155,6 @@
               <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
               <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
             </subclass>
-            <subclass name="AbstractCompanyEvent$SimpleCompanyStateDeleted" discriminator-value="CompanyDeleted"></subclass>
           </subclass>
         </subclass>
         <subclass name="AbstractDepartmentEvent$AbstractDepartmentStateEvent" abstract="true">
@@ -173,7 +168,6 @@
             <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
             <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
           </subclass>
-          <subclass name="AbstractDepartmentEvent$SimpleDepartmentStateDeleted" discriminator-value="DepartmentDeleted"></subclass>
         </subclass>
         <subclass name="AbstractInformalOrganizationEvent$AbstractInformalOrganizationStateEvent" abstract="true">
           <subclass name="AbstractFamilyEvent$AbstractFamilyStateEvent" abstract="true">
@@ -191,7 +185,6 @@
               <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
               <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
             </subclass>
-            <subclass name="AbstractFamilyEvent$SimpleFamilyStateDeleted" discriminator-value="FamilyDeleted"></subclass>
           </subclass>
         </subclass>
       </subclass>

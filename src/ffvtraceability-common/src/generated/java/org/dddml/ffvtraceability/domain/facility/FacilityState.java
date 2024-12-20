@@ -67,8 +67,6 @@ public interface FacilityState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     EntityStateCollection<String, FacilityIdentificationState> getFacilityIdentifications();
 
     interface MutableFacilityState extends FacilityState {
@@ -122,8 +120,6 @@ public interface FacilityState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
 
         void mutate(Event e);
 
@@ -131,7 +127,6 @@ public interface FacilityState
 
         //void when(FacilityEvent.FacilityStateMergePatched e);
 
-        //void when(FacilityEvent.FacilityStateDeleted e);
     }
 
     interface SqlFacilityState extends MutableFacilityState {

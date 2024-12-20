@@ -383,10 +383,6 @@ public interface OrderItemEvent extends Event {
 
     }
 
-    interface OrderItemStateRemoved extends OrderItemStateEvent
-    {
-    }
-
 
 }
 

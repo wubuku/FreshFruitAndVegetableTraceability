@@ -35,8 +35,6 @@ public interface FacilityTypeState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getCommandId();
 
     interface MutableFacilityTypeState extends FacilityTypeState {
@@ -57,8 +55,6 @@ public interface FacilityTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setCommandId(String commandId);
 

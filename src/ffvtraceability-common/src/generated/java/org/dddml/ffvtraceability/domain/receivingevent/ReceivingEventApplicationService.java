@@ -18,8 +18,6 @@ public interface ReceivingEventApplicationService {
 
     void when(ReceivingEventCommand.MergePatchReceivingEvent c);
 
-    void when(ReceivingEventCommand.DeleteReceivingEvent c);
-
     ReceivingEventState get(Long id);
 
     Iterable<ReceivingEventState> getAll(Integer firstResult, Integer maxResults);

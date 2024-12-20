@@ -30,8 +30,6 @@ public interface ShipmentReceiptRoleState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getShipmentReceiptReceiptId();
 
     interface MutableShipmentReceiptRoleState extends ShipmentReceiptRoleState {
@@ -47,8 +45,6 @@ public interface ShipmentReceiptRoleState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setShipmentReceiptReceiptId(String shipmentReceiptReceiptId);
 
 
@@ -58,7 +54,6 @@ public interface ShipmentReceiptRoleState
 
         //void when(ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateMergePatched e);
 
-        //void when(ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved e);
     }
 
     interface SqlShipmentReceiptRoleState extends MutableShipmentReceiptRoleState {

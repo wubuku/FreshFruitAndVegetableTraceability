@@ -104,16 +104,6 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -201,8 +191,6 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
             when((LotStateCreated) e);
         } else if (e instanceof LotStateMergePatched) {
             when((LotStateMergePatched) e);
-        } else if (e instanceof LotStateDeleted) {
-            when((LotStateDeleted) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -214,8 +202,6 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.setQuantity(e.getQuantity());
         this.setExpirationDate(e.getExpirationDate());
         this.setActive(e.getActive());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -302,28 +288,6 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         for (LotIdentificationEvent innerEvent : e.getLotIdentificationEvents()) {
             LotIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(((LotIdentificationEvent.SqlLotIdentificationEvent)innerEvent).getLotIdentificationEventId().getLotIdentificationTypeId());
             ((LotIdentificationState.SqlLotIdentificationState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof LotIdentificationEvent.LotIdentificationStateRemoved) {
-                //LotIdentificationEvent.LotIdentificationStateRemoved removed = (LotIdentificationEvent.LotIdentificationStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getLotIdentifications()).removeState(innerState);
-            }
-        }
-    }
-
-    public void when(LotStateDeleted e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        for (LotIdentificationState innerState : this.getLotIdentifications()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getLotIdentifications()).removeState(innerState);
-        
-            LotIdentificationEvent.LotIdentificationStateRemoved innerE = e.newLotIdentificationStateRemoved(innerState.getLotIdentificationTypeId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((LotIdentificationState.MutableLotIdentificationState)innerState).mutate(innerE);
-            //e.addLotIdentificationEvent(innerE);
         }
     }
 

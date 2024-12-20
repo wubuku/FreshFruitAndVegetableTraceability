@@ -18,8 +18,6 @@ public interface PartyIdentificationTypeApplicationService {
 
     void when(PartyIdentificationTypeCommand.MergePatchPartyIdentificationType c);
 
-    void when(PartyIdentificationTypeCommand.DeletePartyIdentificationType c);
-
     PartyIdentificationTypeState get(String id);
 
     Iterable<PartyIdentificationTypeState> getAll(Integer firstResult, Integer maxResults);

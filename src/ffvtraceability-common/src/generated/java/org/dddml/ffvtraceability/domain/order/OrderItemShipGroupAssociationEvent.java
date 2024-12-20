@@ -71,10 +71,6 @@ public interface OrderItemShipGroupAssociationEvent extends Event {
 
     }
 
-    interface OrderItemShipGroupAssociationStateRemoved extends OrderItemShipGroupAssociationStateEvent
-    {
-    }
-
 
 }
 

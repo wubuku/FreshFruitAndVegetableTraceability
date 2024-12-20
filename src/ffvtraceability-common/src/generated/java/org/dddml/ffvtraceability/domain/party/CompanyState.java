@@ -18,7 +18,6 @@ public interface CompanyState extends LegalOrganizationState
 
         //void when(CompanyEvent.CompanyStateMergePatched e);
 
-        //void when(CompanyEvent.CompanyStateDeleted e);
     }
 
     interface SqlCompanyState extends MutableCompanyState, LegalOrganizationState.SqlLegalOrganizationState {

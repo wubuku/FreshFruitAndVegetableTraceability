@@ -53,10 +53,6 @@ public abstract class AbstractCompanyEvent extends AbstractLegalOrganizationEven
         return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateMergePatched(newPartyIdentificationEventId(partyIdentificationTypeId));
     }
 
-    public PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId) {
-        return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateRemoved(newPartyIdentificationEventId(partyIdentificationTypeId));
-    }
-
     public static class PartyLobEvent extends AbstractPartyEvent {
 
         public Map<String, Object> getDynamicProperties() {
@@ -297,70 +293,6 @@ public abstract class AbstractCompanyEvent extends AbstractLegalOrganizationEven
     }
 
 
-    public static abstract class AbstractCompanyStateDeleted extends AbstractCompanyStateEvent implements CompanyEvent.CompanyStateDeleted, Saveable
-    {
-        public AbstractCompanyStateDeleted() {
-            this(new PartyEventId());
-        }
-
-        public AbstractCompanyStateDeleted(PartyEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-        
-        private Map<PartyIdentificationEventId, PartyIdentificationEvent.PartyIdentificationStateRemoved> partyIdentificationEvents = new HashMap<PartyIdentificationEventId, PartyIdentificationEvent.PartyIdentificationStateRemoved>();
-        
-        private Iterable<PartyIdentificationEvent.PartyIdentificationStateRemoved> readOnlyPartyIdentificationEvents;
-
-        public Iterable<PartyIdentificationEvent.PartyIdentificationStateRemoved> getPartyIdentificationEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.partyIdentificationEvents.values();
-            }
-            else
-            {
-                if (readOnlyPartyIdentificationEvents != null) { return readOnlyPartyIdentificationEvents; }
-                PartyIdentificationEventDao eventDao = getPartyIdentificationEventDao();
-                List<PartyIdentificationEvent.PartyIdentificationStateRemoved> eL = new ArrayList<PartyIdentificationEvent.PartyIdentificationStateRemoved>();
-                for (PartyIdentificationEvent e : eventDao.findByPartyEventId(this.getPartyEventId()))
-                {
-                    ((PartyIdentificationEvent.SqlPartyIdentificationEvent)e).setEventReadOnly(true);
-                    eL.add((PartyIdentificationEvent.PartyIdentificationStateRemoved)e);
-                }
-                return (readOnlyPartyIdentificationEvents = eL);
-            }
-        }
-
-        public void setPartyIdentificationEvents(Iterable<PartyIdentificationEvent.PartyIdentificationStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (PartyIdentificationEvent.PartyIdentificationStateRemoved e : es)
-                {
-                    addPartyIdentificationEvent(e);
-                }
-            }
-            else { this.partyIdentificationEvents.clear(); }
-        }
-        
-        public void addPartyIdentificationEvent(PartyIdentificationEvent.PartyIdentificationStateRemoved e)
-        {
-            throwOnInconsistentEventIds((PartyIdentificationEvent.SqlPartyIdentificationEvent)e);
-            this.partyIdentificationEvents.put(((PartyIdentificationEvent.SqlPartyIdentificationEvent)e).getPartyIdentificationEventId(), e);
-        }
-
-        public void save()
-        {
-            for (PartyIdentificationEvent.PartyIdentificationStateRemoved e : this.getPartyIdentificationEvents()) {
-                getPartyIdentificationEventDao().save(e);
-            }
-        }
-    }
 
     public static class SimpleCompanyStateCreated extends AbstractCompanyStateCreated
     {
@@ -378,16 +310,6 @@ public abstract class AbstractCompanyEvent extends AbstractLegalOrganizationEven
         }
 
         public SimpleCompanyStateMergePatched(PartyEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleCompanyStateDeleted extends AbstractCompanyStateDeleted
-    {
-        public SimpleCompanyStateDeleted() {
-        }
-
-        public SimpleCompanyStateDeleted(PartyEventId eventId) {
             super(eventId);
         }
     }

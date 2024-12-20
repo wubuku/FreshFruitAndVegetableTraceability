@@ -29,8 +29,6 @@ public interface PartyRoleState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     interface MutablePartyRoleState extends PartyRoleState {
         void setPartyRoleId(PartyRoleId partyRoleId);
 
@@ -44,8 +42,6 @@ public interface PartyRoleState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
 
         void mutate(Event e);
 
@@ -53,7 +49,6 @@ public interface PartyRoleState
 
         //void when(PartyRoleEvent.PartyRoleStateMergePatched e);
 
-        //void when(PartyRoleEvent.PartyRoleStateDeleted e);
     }
 
     interface SqlPartyRoleState extends MutablePartyRoleState {

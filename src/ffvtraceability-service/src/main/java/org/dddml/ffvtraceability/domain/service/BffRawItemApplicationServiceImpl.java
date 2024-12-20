@@ -2,9 +2,11 @@ package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
 import org.dddml.ffvtraceability.domain.mapper.BffRawItemMapper;
+import org.dddml.ffvtraceability.domain.mapper.SupplierProductAssocIdMapper;
 import org.dddml.ffvtraceability.domain.party.PartyApplicationService;
 import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
+import org.dddml.ffvtraceability.domain.repository.SupplierProductAssocIdProjection;
 import org.dddml.ffvtraceability.domain.supplierproduct.AbstractSupplierProductCommand;
 import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductApplicationService;
 import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId;
@@ -46,6 +48,10 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
 
     @Autowired
     private BffRawItemMapper bffRawItemMapper;
+
+    @Autowired
+    private SupplierProductAssocIdMapper supplierProductAssocIdMapper;
+
 
     @Override
     @Transactional(readOnly = true)
@@ -165,22 +171,34 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             }
         }
         if (c.getRawItem().getSupplierId() != null) {
-            SupplierProductAssocId supplierProductAssocId = new SupplierProductAssocId();
-            supplierProductAssocId.setProductId(productId);
-            supplierProductAssocId.setPartyId(c.getRawItem().getSupplierId());
-            supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
-            supplierProductAssocId.setAvailableFromDate(OffsetDateTime.now());
-            supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
-            //todo 不需要使用完整的 ID 进行查询，使用部分 Id 查询即可
-            if (supplierProductApplicationService.get(supplierProductAssocId) == null) {
-                AbstractSupplierProductCommand.SimpleCreateSupplierProduct createSupplierProduct
-                        = new AbstractSupplierProductCommand.SimpleCreateSupplierProduct();
-                createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
-                createSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
-                createSupplierProduct.setCommandId(UUID.randomUUID().toString());
-                createSupplierProduct.setRequesterId(c.getRequesterId());
-                supplierProductApplicationService.when(createSupplierProduct);
+            // 这里不需要使用完整的 ID 全等匹配查询
+            SupplierProductAssocIdProjection existingAssocId = bffRawItemRepository.findSupplierProductAssocId(
+                    productId,
+                    c.getRawItem().getSupplierId(),
+                    DEFAULT_CURRENCY_UOM_ID,
+                    BigDecimal.ZERO,
+                    OffsetDateTime.now()
+            );
+            SupplierProductAssocId supplierProductAssocId;
+            if (existingAssocId == null) {
+                supplierProductAssocId = new SupplierProductAssocId();
+                supplierProductAssocId.setProductId(productId);
+                supplierProductAssocId.setPartyId(c.getRawItem().getSupplierId());
+                supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
+                supplierProductAssocId.setAvailableFromDate(OffsetDateTime.now());
+                supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
             }
+            else {
+                supplierProductAssocId = supplierProductAssocIdMapper.toSupplierProductAssocId(existingAssocId);
+            }
+
+            AbstractSupplierProductCommand.SimpleCreateSupplierProduct createSupplierProduct
+                    = new AbstractSupplierProductCommand.SimpleCreateSupplierProduct();
+            createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
+            createSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
+            createSupplierProduct.setCommandId(UUID.randomUUID().toString());
+            createSupplierProduct.setRequesterId(c.getRequesterId());
+            supplierProductApplicationService.when(createSupplierProduct);
         }
     }
 

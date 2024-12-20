@@ -242,18 +242,6 @@ public interface OrderShipGroupEvent extends Event {
 
         OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateMergePatched newOrderItemShipGroupAssociationStateMergePatched(String orderItemSeqId);
 
-        OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved newOrderItemShipGroupAssociationStateRemoved(String orderItemSeqId);
-
-
-    }
-
-    interface OrderShipGroupStateRemoved extends OrderShipGroupStateEvent
-    {
-        Iterable<OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved> getOrderItemShipGroupAssociationEvents();
-        
-        void addOrderItemShipGroupAssociationEvent(OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved e);
-        
-        OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved newOrderItemShipGroupAssociationStateRemoved(String orderItemSeqId);
 
     }
 

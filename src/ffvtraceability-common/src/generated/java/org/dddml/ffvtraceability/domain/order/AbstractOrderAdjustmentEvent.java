@@ -791,21 +791,6 @@ public abstract class AbstractOrderAdjustmentEvent extends AbstractEvent impleme
     }
 
 
-    public static abstract class AbstractOrderAdjustmentStateRemoved extends AbstractOrderAdjustmentStateEvent implements OrderAdjustmentEvent.OrderAdjustmentStateRemoved
-    {
-        public AbstractOrderAdjustmentStateRemoved() {
-            this(new OrderAdjustmentEventId());
-        }
-
-        public AbstractOrderAdjustmentStateRemoved(OrderAdjustmentEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleOrderAdjustmentStateCreated extends AbstractOrderAdjustmentStateCreated
     {
@@ -823,16 +808,6 @@ public abstract class AbstractOrderAdjustmentEvent extends AbstractEvent impleme
         }
 
         public SimpleOrderAdjustmentStateMergePatched(OrderAdjustmentEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleOrderAdjustmentStateRemoved extends AbstractOrderAdjustmentStateRemoved
-    {
-        public SimpleOrderAdjustmentStateRemoved() {
-        }
-
-        public SimpleOrderAdjustmentStateRemoved(OrderAdjustmentEventId eventId) {
             super(eventId);
         }
     }

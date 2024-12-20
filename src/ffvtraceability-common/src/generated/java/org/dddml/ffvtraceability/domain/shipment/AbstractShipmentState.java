@@ -324,16 +324,6 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -442,8 +432,6 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
             when((ShipmentStateCreated) e);
         } else if (e instanceof ShipmentStateMergePatched) {
             when((ShipmentStateMergePatched) e);
-        } else if (e instanceof ShipmentStateDeleted) {
-            when((ShipmentStateDeleted) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -477,8 +465,6 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.setPartyIdFrom(e.getPartyIdFrom());
         this.setAdditionalShippingCharge(e.getAdditionalShippingCharge());
         this.setAddtlShippingChargeDesc(e.getAddtlShippingChargeDesc());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -781,45 +767,10 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         for (ShipmentItemEvent innerEvent : e.getShipmentItemEvents()) {
             ShipmentItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(((ShipmentItemEvent.SqlShipmentItemEvent)innerEvent).getShipmentItemEventId().getShipmentItemSeqId());
             ((ShipmentItemState.SqlShipmentItemState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof ShipmentItemEvent.ShipmentItemStateRemoved) {
-                //ShipmentItemEvent.ShipmentItemStateRemoved removed = (ShipmentItemEvent.ShipmentItemStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentItems()).removeState(innerState);
-            }
         }
         for (ShipmentPackageEvent innerEvent : e.getShipmentPackageEvents()) {
             ShipmentPackageState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(((ShipmentPackageEvent.SqlShipmentPackageEvent)innerEvent).getShipmentPackageEventId().getShipmentPackageSeqId());
             ((ShipmentPackageState.SqlShipmentPackageState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof ShipmentPackageEvent.ShipmentPackageStateRemoved) {
-                //ShipmentPackageEvent.ShipmentPackageStateRemoved removed = (ShipmentPackageEvent.ShipmentPackageStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentPackages()).removeState(innerState);
-            }
-        }
-    }
-
-    public void when(ShipmentStateDeleted e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        for (ShipmentItemState innerState : this.getShipmentItems()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentItems()).removeState(innerState);
-        
-            ShipmentItemEvent.ShipmentItemStateRemoved innerE = e.newShipmentItemStateRemoved(innerState.getShipmentItemSeqId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((ShipmentItemState.MutableShipmentItemState)innerState).mutate(innerE);
-            //e.addShipmentItemEvent(innerE);
-        }
-        for (ShipmentPackageState innerState : this.getShipmentPackages()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentPackages()).removeState(innerState);
-        
-            ShipmentPackageEvent.ShipmentPackageStateRemoved innerE = e.newShipmentPackageStateRemoved(innerState.getShipmentPackageSeqId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((ShipmentPackageState.MutableShipmentPackageState)innerState).mutate(innerE);
-            //e.addShipmentPackageEvent(innerE);
         }
     }
 

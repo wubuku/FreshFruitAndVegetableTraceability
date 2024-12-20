@@ -20,8 +20,6 @@ public interface UomTypeAggregate {
 
     void mergePatch(UomTypeCommand.MergePatchUomType c);
 
-    void delete(UomTypeCommand.DeleteUomType c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

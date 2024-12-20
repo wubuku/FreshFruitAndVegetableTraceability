@@ -132,21 +132,6 @@ public abstract class AbstractOrderRoleEvent extends AbstractEvent implements Or
     }
 
 
-    public static abstract class AbstractOrderRoleStateRemoved extends AbstractOrderRoleStateEvent implements OrderRoleEvent.OrderRoleStateRemoved
-    {
-        public AbstractOrderRoleStateRemoved() {
-            this(new OrderRoleEventId());
-        }
-
-        public AbstractOrderRoleStateRemoved(OrderRoleEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleOrderRoleStateCreated extends AbstractOrderRoleStateCreated
     {
@@ -164,16 +149,6 @@ public abstract class AbstractOrderRoleEvent extends AbstractEvent implements Or
         }
 
         public SimpleOrderRoleStateMergePatched(OrderRoleEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleOrderRoleStateRemoved extends AbstractOrderRoleStateRemoved
-    {
-        public SimpleOrderRoleStateRemoved() {
-        }
-
-        public SimpleOrderRoleStateRemoved(OrderRoleEventId eventId) {
             super(eventId);
         }
     }

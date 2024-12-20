@@ -18,8 +18,6 @@ public interface Gs1ApplicationIdentifierApplicationService {
 
     void when(Gs1ApplicationIdentifierCommand.MergePatchGs1ApplicationIdentifier c);
 
-    void when(Gs1ApplicationIdentifierCommand.DeleteGs1ApplicationIdentifier c);
-
     Gs1ApplicationIdentifierState get(String id);
 
     Iterable<Gs1ApplicationIdentifierState> getAll(Integer firstResult, Integer maxResults);

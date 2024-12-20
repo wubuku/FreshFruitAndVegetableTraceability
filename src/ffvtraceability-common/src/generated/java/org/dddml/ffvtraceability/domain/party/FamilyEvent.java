@@ -74,18 +74,6 @@ public interface FamilyEvent extends InformalOrganizationEvent {
 
         PartyIdentificationEvent.PartyIdentificationStateMergePatched newPartyIdentificationStateMergePatched(String partyIdentificationTypeId);
 
-        PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId);
-
-
-    }
-
-    interface FamilyStateDeleted extends FamilyStateEvent
-    {
-        Iterable<PartyIdentificationEvent.PartyIdentificationStateRemoved> getPartyIdentificationEvents();
-        
-        void addPartyIdentificationEvent(PartyIdentificationEvent.PartyIdentificationStateRemoved e);
-        
-        PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId);
 
     }
 

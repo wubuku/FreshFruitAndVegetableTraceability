@@ -18,8 +18,6 @@ public interface DocumentApplicationService {
 
     void when(DocumentCommand.MergePatchDocument c);
 
-    void when(DocumentCommand.DeleteDocument c);
-
     DocumentState get(String id);
 
     Iterable<DocumentState> getAll(Integer firstResult, Integer maxResults);

@@ -153,21 +153,6 @@ public abstract class AbstractGoodIdentificationEvent extends AbstractEvent impl
     }
 
 
-    public static abstract class AbstractGoodIdentificationStateRemoved extends AbstractGoodIdentificationStateEvent implements GoodIdentificationEvent.GoodIdentificationStateRemoved
-    {
-        public AbstractGoodIdentificationStateRemoved() {
-            this(new GoodIdentificationEventId());
-        }
-
-        public AbstractGoodIdentificationStateRemoved(GoodIdentificationEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleGoodIdentificationStateCreated extends AbstractGoodIdentificationStateCreated
     {
@@ -185,16 +170,6 @@ public abstract class AbstractGoodIdentificationEvent extends AbstractEvent impl
         }
 
         public SimpleGoodIdentificationStateMergePatched(GoodIdentificationEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleGoodIdentificationStateRemoved extends AbstractGoodIdentificationStateRemoved
-    {
-        public SimpleGoodIdentificationStateRemoved() {
-        }
-
-        public SimpleGoodIdentificationStateRemoved(GoodIdentificationEventId eventId) {
             super(eventId);
         }
     }

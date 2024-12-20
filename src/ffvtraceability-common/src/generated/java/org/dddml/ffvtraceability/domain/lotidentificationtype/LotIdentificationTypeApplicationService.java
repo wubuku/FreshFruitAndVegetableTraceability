@@ -18,8 +18,6 @@ public interface LotIdentificationTypeApplicationService {
 
     void when(LotIdentificationTypeCommand.MergePatchLotIdentificationType c);
 
-    void when(LotIdentificationTypeCommand.DeleteLotIdentificationType c);
-
     LotIdentificationTypeState get(String id);
 
     Iterable<LotIdentificationTypeState> getAll(Integer firstResult, Integer maxResults);

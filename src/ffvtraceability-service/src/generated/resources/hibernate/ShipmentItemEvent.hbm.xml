@@ -34,7 +34,6 @@
         <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed" />
         <property name="isPropertyShipmentContentDescriptionRemoved" column="is_property_shipment_content_description_removed" />
       </subclass>
-      <subclass name="AbstractShipmentItemEvent$SimpleShipmentItemStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

@@ -233,29 +233,6 @@ public class ProductCategoryTypeResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    /**
-     * Delete.
-     * Delete ProductCategoryType
-     */
-    @DeleteMapping("{productCategoryTypeId}")
-    public void delete(@PathVariable("productCategoryTypeId") String productCategoryTypeId,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            ProductCategoryTypeCommand.DeleteProductCategoryType deleteCmd = new DeleteProductCategoryTypeDto();//.toDeleteProductCategoryType();;
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            ProductCategoryTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(productCategoryTypeId, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            productCategoryTypeApplicationService.when(deleteCmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

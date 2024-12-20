@@ -19,14 +19,12 @@ public interface BffUomRepository extends JpaRepository<AbstractUomState.SimpleU
                 u.active as active
             FROM uom u
             WHERE (:active IS NULL OR u.active = :active)
-                AND (u.deleted IS NULL OR u.deleted = false)
             ORDER BY u.created_at DESC
             """,
             countQuery = """
                     SELECT COUNT(*)
                     FROM uom u
                     WHERE (:active IS NULL OR u.active = :active)
-                        AND (u.deleted IS NULL OR u.deleted = false)
                     """,
             nativeQuery = true)
     Page<BffUomProjection> findAllUnitsOfMeasure(Pageable pageable, @Param("active") String active);

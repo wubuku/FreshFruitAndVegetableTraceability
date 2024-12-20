@@ -153,21 +153,6 @@ public abstract class AbstractLotIdentificationEvent extends AbstractEvent imple
     }
 
 
-    public static abstract class AbstractLotIdentificationStateRemoved extends AbstractLotIdentificationStateEvent implements LotIdentificationEvent.LotIdentificationStateRemoved
-    {
-        public AbstractLotIdentificationStateRemoved() {
-            this(new LotIdentificationEventId());
-        }
-
-        public AbstractLotIdentificationStateRemoved(LotIdentificationEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleLotIdentificationStateCreated extends AbstractLotIdentificationStateCreated
     {
@@ -185,16 +170,6 @@ public abstract class AbstractLotIdentificationEvent extends AbstractEvent imple
         }
 
         public SimpleLotIdentificationStateMergePatched(LotIdentificationEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleLotIdentificationStateRemoved extends AbstractLotIdentificationStateRemoved
-    {
-        public SimpleLotIdentificationStateRemoved() {
-        }
-
-        public SimpleLotIdentificationStateRemoved(LotIdentificationEventId eventId) {
             super(eventId);
         }
     }

@@ -47,7 +47,6 @@
         <property name="isPropertyBodyRemoved" column="is_property_body_removed" />
         <property name="isPropertyAuthorRemoved" column="is_property_author_removed" />
       </subclass>
-      <subclass name="AbstractArticleEvent$SimpleArticleStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

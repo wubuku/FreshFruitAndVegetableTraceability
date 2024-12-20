@@ -38,11 +38,6 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         apply(e);
     }
 
-    public void delete(ShipmentCommand.DeleteShipment c) {
-        ShipmentEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         ShipmentCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -172,15 +167,6 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         return e;
     }
 
-    protected ShipmentEvent map(ShipmentCommand.DeleteShipment c) {
-        ShipmentEventId stateEventId = new ShipmentEventId(c.getShipmentId(), c.getVersion());
-        ShipmentEvent.ShipmentStateDeleted e = newShipmentStateDeleted(stateEventId);
-        ((AbstractShipmentEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     protected ShipmentItemEvent map(ShipmentItemCommand c, ShipmentCommand outerCommand, Long version, ShipmentState outerState) {
         ShipmentItemCommand.CreateShipmentItem create = (c.getCommandType().equals(CommandType.CREATE)) ? ((ShipmentItemCommand.CreateShipmentItem)c) : null;
@@ -193,10 +179,6 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        ShipmentItemCommand.RemoveShipmentItem remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((ShipmentItemCommand.RemoveShipmentItem)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -236,18 +218,6 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
 
     }// END map(IMergePatch... ////////////////////////////
 
-    protected ShipmentItemEvent.ShipmentItemStateRemoved mapRemove(ShipmentItemCommand.RemoveShipmentItem c, ShipmentCommand outerCommand, Long version, ShipmentState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        ShipmentItemEventId stateEventId = new ShipmentItemEventId(outerState.getShipmentId(), c.getShipmentItemSeqId(), version);
-        ShipmentItemEvent.ShipmentItemStateRemoved e = newShipmentItemStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
-
 
     protected ShipmentPackageEvent map(ShipmentPackageCommand c, ShipmentCommand outerCommand, Long version, ShipmentState outerState) {
         ShipmentPackageCommand.CreateShipmentPackage create = (c.getCommandType().equals(CommandType.CREATE)) ? ((ShipmentPackageCommand.CreateShipmentPackage)c) : null;
@@ -260,10 +230,6 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        ShipmentPackageCommand.RemoveShipmentPackage remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((ShipmentPackageCommand.RemoveShipmentPackage)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -337,18 +303,6 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
 
     }// END map(IMergePatch... ////////////////////////////
 
-    protected ShipmentPackageEvent.ShipmentPackageStateRemoved mapRemove(ShipmentPackageCommand.RemoveShipmentPackage c, ShipmentCommand outerCommand, Long version, ShipmentState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        ShipmentPackageEventId stateEventId = new ShipmentPackageEventId(outerState.getShipmentId(), c.getShipmentPackageSeqId(), version);
-        ShipmentPackageEvent.ShipmentPackageStateRemoved e = newShipmentPackageStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
-
 
     protected ShipmentPackageContentEvent map(ShipmentPackageContentCommand c, ShipmentPackageCommand outerCommand, Long version, ShipmentPackageState outerState) {
         ShipmentPackageContentCommand.CreateShipmentPackageContent create = (c.getCommandType().equals(CommandType.CREATE)) ? ((ShipmentPackageContentCommand.CreateShipmentPackageContent)c) : null;
@@ -361,10 +315,6 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        ShipmentPackageContentCommand.RemoveShipmentPackageContent remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((ShipmentPackageContentCommand.RemoveShipmentPackageContent)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -403,18 +353,6 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
-
-    protected ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved mapRemove(ShipmentPackageContentCommand.RemoveShipmentPackageContent c, ShipmentPackageCommand outerCommand, Long version, ShipmentPackageState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        ShipmentPackageContentEventId stateEventId = new ShipmentPackageContentEventId(outerState.getShipmentId(), outerState.getShipmentPackageSeqId(), c.getShipmentItemSeqId(), version);
-        ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved e = newShipmentPackageContentStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
 
     protected void throwOnInconsistentCommands(ShipmentCommand command, ShipmentItemCommand innerCommand) {
         AbstractShipmentCommand properties = command instanceof AbstractShipmentCommand ? (AbstractShipmentCommand) command : null;
@@ -499,25 +437,12 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         return e;
     }
 
-    protected ShipmentEvent.ShipmentStateDeleted newShipmentStateDeleted(Long version, String commandId, String requesterId) {
-        ShipmentEventId stateEventId = new ShipmentEventId(this.state.getShipmentId(), version);
-        ShipmentEvent.ShipmentStateDeleted e = newShipmentStateDeleted(stateEventId);
-        ((AbstractShipmentEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected ShipmentEvent.ShipmentStateCreated newShipmentStateCreated(ShipmentEventId stateEventId) {
         return new AbstractShipmentEvent.SimpleShipmentStateCreated(stateEventId);
     }
 
     protected ShipmentEvent.ShipmentStateMergePatched newShipmentStateMergePatched(ShipmentEventId stateEventId) {
         return new AbstractShipmentEvent.SimpleShipmentStateMergePatched(stateEventId);
-    }
-
-    protected ShipmentEvent.ShipmentStateDeleted newShipmentStateDeleted(ShipmentEventId stateEventId) {
-        return new AbstractShipmentEvent.SimpleShipmentStateDeleted(stateEventId);
     }
 
     protected ShipmentItemEvent.ShipmentItemStateCreated newShipmentItemStateCreated(ShipmentItemEventId stateEventId) {
@@ -528,10 +453,6 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         return new AbstractShipmentItemEvent.SimpleShipmentItemStateMergePatched(stateEventId);
     }
 
-    protected ShipmentItemEvent.ShipmentItemStateRemoved newShipmentItemStateRemoved(ShipmentItemEventId stateEventId) {
-        return new AbstractShipmentItemEvent.SimpleShipmentItemStateRemoved(stateEventId);
-    }
-
     protected ShipmentPackageEvent.ShipmentPackageStateCreated newShipmentPackageStateCreated(ShipmentPackageEventId stateEventId) {
         return new AbstractShipmentPackageEvent.SimpleShipmentPackageStateCreated(stateEventId);
     }
@@ -540,20 +461,12 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         return new AbstractShipmentPackageEvent.SimpleShipmentPackageStateMergePatched(stateEventId);
     }
 
-    protected ShipmentPackageEvent.ShipmentPackageStateRemoved newShipmentPackageStateRemoved(ShipmentPackageEventId stateEventId) {
-        return new AbstractShipmentPackageEvent.SimpleShipmentPackageStateRemoved(stateEventId);
-    }
-
     protected ShipmentPackageContentEvent.ShipmentPackageContentStateCreated newShipmentPackageContentStateCreated(ShipmentPackageContentEventId stateEventId) {
         return new AbstractShipmentPackageContentEvent.SimpleShipmentPackageContentStateCreated(stateEventId);
     }
 
     protected ShipmentPackageContentEvent.ShipmentPackageContentStateMergePatched newShipmentPackageContentStateMergePatched(ShipmentPackageContentEventId stateEventId) {
         return new AbstractShipmentPackageContentEvent.SimpleShipmentPackageContentStateMergePatched(stateEventId);
-    }
-
-    protected ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved newShipmentPackageContentStateRemoved(ShipmentPackageContentEventId stateEventId) {
-        return new AbstractShipmentPackageContentEvent.SimpleShipmentPackageContentStateRemoved(stateEventId);
     }
 
 

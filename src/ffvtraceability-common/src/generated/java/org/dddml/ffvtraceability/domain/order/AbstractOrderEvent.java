@@ -231,20 +231,12 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         return new AbstractOrderRoleEvent.SimpleOrderRoleStateMergePatched(newOrderRoleEventId(partyRoleId));
     }
 
-    public OrderRoleEvent.OrderRoleStateRemoved newOrderRoleStateRemoved(PartyRoleId partyRoleId) {
-        return new AbstractOrderRoleEvent.SimpleOrderRoleStateRemoved(newOrderRoleEventId(partyRoleId));
-    }
-
     public OrderContactMechEvent.OrderContactMechStateCreated newOrderContactMechStateCreated(String contactMechPurposeTypeId) {
         return new AbstractOrderContactMechEvent.SimpleOrderContactMechStateCreated(newOrderContactMechEventId(contactMechPurposeTypeId));
     }
 
     public OrderContactMechEvent.OrderContactMechStateMergePatched newOrderContactMechStateMergePatched(String contactMechPurposeTypeId) {
         return new AbstractOrderContactMechEvent.SimpleOrderContactMechStateMergePatched(newOrderContactMechEventId(contactMechPurposeTypeId));
-    }
-
-    public OrderContactMechEvent.OrderContactMechStateRemoved newOrderContactMechStateRemoved(String contactMechPurposeTypeId) {
-        return new AbstractOrderContactMechEvent.SimpleOrderContactMechStateRemoved(newOrderContactMechEventId(contactMechPurposeTypeId));
     }
 
     public OrderItemEvent.OrderItemStateCreated newOrderItemStateCreated(String orderItemSeqId) {
@@ -255,10 +247,6 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         return new AbstractOrderItemEvent.SimpleOrderItemStateMergePatched(newOrderItemEventId(orderItemSeqId));
     }
 
-    public OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(String orderItemSeqId) {
-        return new AbstractOrderItemEvent.SimpleOrderItemStateRemoved(newOrderItemEventId(orderItemSeqId));
-    }
-
     public OrderAdjustmentEvent.OrderAdjustmentStateCreated newOrderAdjustmentStateCreated(String orderAdjustmentId) {
         return new AbstractOrderAdjustmentEvent.SimpleOrderAdjustmentStateCreated(newOrderAdjustmentEventId(orderAdjustmentId));
     }
@@ -267,20 +255,12 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         return new AbstractOrderAdjustmentEvent.SimpleOrderAdjustmentStateMergePatched(newOrderAdjustmentEventId(orderAdjustmentId));
     }
 
-    public OrderAdjustmentEvent.OrderAdjustmentStateRemoved newOrderAdjustmentStateRemoved(String orderAdjustmentId) {
-        return new AbstractOrderAdjustmentEvent.SimpleOrderAdjustmentStateRemoved(newOrderAdjustmentEventId(orderAdjustmentId));
-    }
-
     public OrderShipGroupEvent.OrderShipGroupStateCreated newOrderShipGroupStateCreated(String shipGroupSeqId) {
         return new AbstractOrderShipGroupEvent.SimpleOrderShipGroupStateCreated(newOrderShipGroupEventId(shipGroupSeqId));
     }
 
     public OrderShipGroupEvent.OrderShipGroupStateMergePatched newOrderShipGroupStateMergePatched(String shipGroupSeqId) {
         return new AbstractOrderShipGroupEvent.SimpleOrderShipGroupStateMergePatched(newOrderShipGroupEventId(shipGroupSeqId));
-    }
-
-    public OrderShipGroupEvent.OrderShipGroupStateRemoved newOrderShipGroupStateRemoved(String shipGroupSeqId) {
-        return new AbstractOrderShipGroupEvent.SimpleOrderShipGroupStateRemoved(newOrderShipGroupEventId(shipGroupSeqId));
     }
 
 
@@ -1422,254 +1402,6 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
     }
 
 
-    public static abstract class AbstractOrderStateDeleted extends AbstractOrderStateEvent implements OrderEvent.OrderStateDeleted, Saveable
-    {
-        public AbstractOrderStateDeleted() {
-            this(new OrderEventId());
-        }
-
-        public AbstractOrderStateDeleted(OrderEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-        
-        private Map<OrderRoleEventId, OrderRoleEvent.OrderRoleStateRemoved> orderRoleEvents = new HashMap<OrderRoleEventId, OrderRoleEvent.OrderRoleStateRemoved>();
-        
-        private Iterable<OrderRoleEvent.OrderRoleStateRemoved> readOnlyOrderRoleEvents;
-
-        public Iterable<OrderRoleEvent.OrderRoleStateRemoved> getOrderRoleEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.orderRoleEvents.values();
-            }
-            else
-            {
-                if (readOnlyOrderRoleEvents != null) { return readOnlyOrderRoleEvents; }
-                OrderRoleEventDao eventDao = getOrderRoleEventDao();
-                List<OrderRoleEvent.OrderRoleStateRemoved> eL = new ArrayList<OrderRoleEvent.OrderRoleStateRemoved>();
-                for (OrderRoleEvent e : eventDao.findByOrderEventId(this.getOrderEventId()))
-                {
-                    ((OrderRoleEvent.SqlOrderRoleEvent)e).setEventReadOnly(true);
-                    eL.add((OrderRoleEvent.OrderRoleStateRemoved)e);
-                }
-                return (readOnlyOrderRoleEvents = eL);
-            }
-        }
-
-        public void setOrderRoleEvents(Iterable<OrderRoleEvent.OrderRoleStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (OrderRoleEvent.OrderRoleStateRemoved e : es)
-                {
-                    addOrderRoleEvent(e);
-                }
-            }
-            else { this.orderRoleEvents.clear(); }
-        }
-        
-        public void addOrderRoleEvent(OrderRoleEvent.OrderRoleStateRemoved e)
-        {
-            throwOnInconsistentEventIds((OrderRoleEvent.SqlOrderRoleEvent)e);
-            this.orderRoleEvents.put(((OrderRoleEvent.SqlOrderRoleEvent)e).getOrderRoleEventId(), e);
-        }
-
-        
-        private Map<OrderContactMechEventId, OrderContactMechEvent.OrderContactMechStateRemoved> orderContactMechEvents = new HashMap<OrderContactMechEventId, OrderContactMechEvent.OrderContactMechStateRemoved>();
-        
-        private Iterable<OrderContactMechEvent.OrderContactMechStateRemoved> readOnlyOrderContactMechEvents;
-
-        public Iterable<OrderContactMechEvent.OrderContactMechStateRemoved> getOrderContactMechEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.orderContactMechEvents.values();
-            }
-            else
-            {
-                if (readOnlyOrderContactMechEvents != null) { return readOnlyOrderContactMechEvents; }
-                OrderContactMechEventDao eventDao = getOrderContactMechEventDao();
-                List<OrderContactMechEvent.OrderContactMechStateRemoved> eL = new ArrayList<OrderContactMechEvent.OrderContactMechStateRemoved>();
-                for (OrderContactMechEvent e : eventDao.findByOrderEventId(this.getOrderEventId()))
-                {
-                    ((OrderContactMechEvent.SqlOrderContactMechEvent)e).setEventReadOnly(true);
-                    eL.add((OrderContactMechEvent.OrderContactMechStateRemoved)e);
-                }
-                return (readOnlyOrderContactMechEvents = eL);
-            }
-        }
-
-        public void setOrderContactMechEvents(Iterable<OrderContactMechEvent.OrderContactMechStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (OrderContactMechEvent.OrderContactMechStateRemoved e : es)
-                {
-                    addOrderContactMechEvent(e);
-                }
-            }
-            else { this.orderContactMechEvents.clear(); }
-        }
-        
-        public void addOrderContactMechEvent(OrderContactMechEvent.OrderContactMechStateRemoved e)
-        {
-            throwOnInconsistentEventIds((OrderContactMechEvent.SqlOrderContactMechEvent)e);
-            this.orderContactMechEvents.put(((OrderContactMechEvent.SqlOrderContactMechEvent)e).getOrderContactMechEventId(), e);
-        }
-
-        
-        private Map<OrderItemEventId, OrderItemEvent.OrderItemStateRemoved> orderItemEvents = new HashMap<OrderItemEventId, OrderItemEvent.OrderItemStateRemoved>();
-        
-        private Iterable<OrderItemEvent.OrderItemStateRemoved> readOnlyOrderItemEvents;
-
-        public Iterable<OrderItemEvent.OrderItemStateRemoved> getOrderItemEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.orderItemEvents.values();
-            }
-            else
-            {
-                if (readOnlyOrderItemEvents != null) { return readOnlyOrderItemEvents; }
-                OrderItemEventDao eventDao = getOrderItemEventDao();
-                List<OrderItemEvent.OrderItemStateRemoved> eL = new ArrayList<OrderItemEvent.OrderItemStateRemoved>();
-                for (OrderItemEvent e : eventDao.findByOrderEventId(this.getOrderEventId()))
-                {
-                    ((OrderItemEvent.SqlOrderItemEvent)e).setEventReadOnly(true);
-                    eL.add((OrderItemEvent.OrderItemStateRemoved)e);
-                }
-                return (readOnlyOrderItemEvents = eL);
-            }
-        }
-
-        public void setOrderItemEvents(Iterable<OrderItemEvent.OrderItemStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (OrderItemEvent.OrderItemStateRemoved e : es)
-                {
-                    addOrderItemEvent(e);
-                }
-            }
-            else { this.orderItemEvents.clear(); }
-        }
-        
-        public void addOrderItemEvent(OrderItemEvent.OrderItemStateRemoved e)
-        {
-            throwOnInconsistentEventIds((OrderItemEvent.SqlOrderItemEvent)e);
-            this.orderItemEvents.put(((OrderItemEvent.SqlOrderItemEvent)e).getOrderItemEventId(), e);
-        }
-
-        
-        private Map<OrderAdjustmentEventId, OrderAdjustmentEvent.OrderAdjustmentStateRemoved> orderAdjustmentEvents = new HashMap<OrderAdjustmentEventId, OrderAdjustmentEvent.OrderAdjustmentStateRemoved>();
-        
-        private Iterable<OrderAdjustmentEvent.OrderAdjustmentStateRemoved> readOnlyOrderAdjustmentEvents;
-
-        public Iterable<OrderAdjustmentEvent.OrderAdjustmentStateRemoved> getOrderAdjustmentEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.orderAdjustmentEvents.values();
-            }
-            else
-            {
-                if (readOnlyOrderAdjustmentEvents != null) { return readOnlyOrderAdjustmentEvents; }
-                OrderAdjustmentEventDao eventDao = getOrderAdjustmentEventDao();
-                List<OrderAdjustmentEvent.OrderAdjustmentStateRemoved> eL = new ArrayList<OrderAdjustmentEvent.OrderAdjustmentStateRemoved>();
-                for (OrderAdjustmentEvent e : eventDao.findByOrderEventId(this.getOrderEventId()))
-                {
-                    ((OrderAdjustmentEvent.SqlOrderAdjustmentEvent)e).setEventReadOnly(true);
-                    eL.add((OrderAdjustmentEvent.OrderAdjustmentStateRemoved)e);
-                }
-                return (readOnlyOrderAdjustmentEvents = eL);
-            }
-        }
-
-        public void setOrderAdjustmentEvents(Iterable<OrderAdjustmentEvent.OrderAdjustmentStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (OrderAdjustmentEvent.OrderAdjustmentStateRemoved e : es)
-                {
-                    addOrderAdjustmentEvent(e);
-                }
-            }
-            else { this.orderAdjustmentEvents.clear(); }
-        }
-        
-        public void addOrderAdjustmentEvent(OrderAdjustmentEvent.OrderAdjustmentStateRemoved e)
-        {
-            throwOnInconsistentEventIds((OrderAdjustmentEvent.SqlOrderAdjustmentEvent)e);
-            this.orderAdjustmentEvents.put(((OrderAdjustmentEvent.SqlOrderAdjustmentEvent)e).getOrderAdjustmentEventId(), e);
-        }
-
-        
-        private Map<OrderShipGroupEventId, OrderShipGroupEvent.OrderShipGroupStateRemoved> orderShipGroupEvents = new HashMap<OrderShipGroupEventId, OrderShipGroupEvent.OrderShipGroupStateRemoved>();
-        
-        private Iterable<OrderShipGroupEvent.OrderShipGroupStateRemoved> readOnlyOrderShipGroupEvents;
-
-        public Iterable<OrderShipGroupEvent.OrderShipGroupStateRemoved> getOrderShipGroupEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.orderShipGroupEvents.values();
-            }
-            else
-            {
-                if (readOnlyOrderShipGroupEvents != null) { return readOnlyOrderShipGroupEvents; }
-                OrderShipGroupEventDao eventDao = getOrderShipGroupEventDao();
-                List<OrderShipGroupEvent.OrderShipGroupStateRemoved> eL = new ArrayList<OrderShipGroupEvent.OrderShipGroupStateRemoved>();
-                for (OrderShipGroupEvent e : eventDao.findByOrderEventId(this.getOrderEventId()))
-                {
-                    ((OrderShipGroupEvent.SqlOrderShipGroupEvent)e).setEventReadOnly(true);
-                    eL.add((OrderShipGroupEvent.OrderShipGroupStateRemoved)e);
-                }
-                return (readOnlyOrderShipGroupEvents = eL);
-            }
-        }
-
-        public void setOrderShipGroupEvents(Iterable<OrderShipGroupEvent.OrderShipGroupStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (OrderShipGroupEvent.OrderShipGroupStateRemoved e : es)
-                {
-                    addOrderShipGroupEvent(e);
-                }
-            }
-            else { this.orderShipGroupEvents.clear(); }
-        }
-        
-        public void addOrderShipGroupEvent(OrderShipGroupEvent.OrderShipGroupStateRemoved e)
-        {
-            throwOnInconsistentEventIds((OrderShipGroupEvent.SqlOrderShipGroupEvent)e);
-            this.orderShipGroupEvents.put(((OrderShipGroupEvent.SqlOrderShipGroupEvent)e).getOrderShipGroupEventId(), e);
-        }
-
-        public void save()
-        {
-            for (OrderRoleEvent.OrderRoleStateRemoved e : this.getOrderRoleEvents()) {
-                getOrderRoleEventDao().save(e);
-            }
-            for (OrderContactMechEvent.OrderContactMechStateRemoved e : this.getOrderContactMechEvents()) {
-                getOrderContactMechEventDao().save(e);
-            }
-            for (OrderItemEvent.OrderItemStateRemoved e : this.getOrderItemEvents()) {
-                getOrderItemEventDao().save(e);
-            }
-            for (OrderAdjustmentEvent.OrderAdjustmentStateRemoved e : this.getOrderAdjustmentEvents()) {
-                getOrderAdjustmentEventDao().save(e);
-            }
-            for (OrderShipGroupEvent.OrderShipGroupStateRemoved e : this.getOrderShipGroupEvents()) {
-                getOrderShipGroupEventDao().save(e);
-            }
-        }
-    }
 
     public static class SimpleOrderStateCreated extends AbstractOrderStateCreated
     {
@@ -1687,16 +1419,6 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public SimpleOrderStateMergePatched(OrderEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleOrderStateDeleted extends AbstractOrderStateDeleted
-    {
-        public SimpleOrderStateDeleted() {
-        }
-
-        public SimpleOrderStateDeleted(OrderEventId eventId) {
             super(eventId);
         }
     }

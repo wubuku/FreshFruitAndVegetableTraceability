@@ -38,11 +38,6 @@ public abstract class AbstractUomTypeAggregate extends AbstractAggregate impleme
         apply(e);
     }
 
-    public void delete(UomTypeCommand.DeleteUomType c) {
-        UomTypeEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         UomTypeCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -80,15 +75,6 @@ public abstract class AbstractUomTypeAggregate extends AbstractAggregate impleme
         return e;
     }
 
-    protected UomTypeEvent map(UomTypeCommand.DeleteUomType c) {
-        UomTypeEventId stateEventId = new UomTypeEventId(c.getUomTypeId(), c.getVersion());
-        UomTypeEvent.UomTypeStateDeleted e = newUomTypeStateDeleted(stateEventId);
-        ((AbstractUomTypeEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     ////////////////////////
 
@@ -110,25 +96,12 @@ public abstract class AbstractUomTypeAggregate extends AbstractAggregate impleme
         return e;
     }
 
-    protected UomTypeEvent.UomTypeStateDeleted newUomTypeStateDeleted(Long version, String commandId, String requesterId) {
-        UomTypeEventId stateEventId = new UomTypeEventId(this.state.getUomTypeId(), version);
-        UomTypeEvent.UomTypeStateDeleted e = newUomTypeStateDeleted(stateEventId);
-        ((AbstractUomTypeEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected UomTypeEvent.UomTypeStateCreated newUomTypeStateCreated(UomTypeEventId stateEventId) {
         return new AbstractUomTypeEvent.SimpleUomTypeStateCreated(stateEventId);
     }
 
     protected UomTypeEvent.UomTypeStateMergePatched newUomTypeStateMergePatched(UomTypeEventId stateEventId) {
         return new AbstractUomTypeEvent.SimpleUomTypeStateMergePatched(stateEventId);
-    }
-
-    protected UomTypeEvent.UomTypeStateDeleted newUomTypeStateDeleted(UomTypeEventId stateEventId) {
-        return new AbstractUomTypeEvent.SimpleUomTypeStateDeleted(stateEventId);
     }
 
 

@@ -223,29 +223,6 @@ public class ArticleResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    /**
-     * Delete.
-     * Delete Article
-     */
-    @DeleteMapping("{articleId}")
-    public void delete(@PathVariable("articleId") Long articleId,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            ArticleCommand.DeleteArticle deleteCmd = new DeleteArticleDto();
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            ArticleResourceUtils.setNullIdOrThrowOnInconsistentIds(articleId, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            articleApplicationService.when(deleteCmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
 
     @PreAuthorize("hasAnyAuthority('ARTICLE_UPDATE-BODY')")
     @PutMapping("{articleId}/_commands/UpdateBody")

@@ -18,7 +18,6 @@ public interface DepartmentState extends OrganizationState
 
         //void when(DepartmentEvent.DepartmentStateMergePatched e);
 
-        //void when(DepartmentEvent.DepartmentStateDeleted e);
     }
 
     interface SqlDepartmentState extends MutableDepartmentState, OrganizationState.SqlOrganizationState {

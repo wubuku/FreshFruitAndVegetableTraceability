@@ -20,8 +20,6 @@ public interface FacilityIdentificationTypeAggregate {
 
     void mergePatch(FacilityIdentificationTypeCommand.MergePatchFacilityIdentificationType c);
 
-    void delete(FacilityIdentificationTypeCommand.DeleteFacilityIdentificationType c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

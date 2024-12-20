@@ -120,16 +120,6 @@ public abstract class AbstractLotIdentificationState implements LotIdentificatio
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -185,8 +175,6 @@ public abstract class AbstractLotIdentificationState implements LotIdentificatio
             when((LotIdentificationStateCreated) e);
         } else if (e instanceof LotIdentificationStateMergePatched) {
             when((LotIdentificationStateMergePatched) e);
-        } else if (e instanceof LotIdentificationStateRemoved) {
-            when((LotIdentificationStateRemoved) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -196,8 +184,6 @@ public abstract class AbstractLotIdentificationState implements LotIdentificatio
         throwOnWrongEvent(e);
 
         this.setIdValue(e.getIdValue());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -222,15 +208,6 @@ public abstract class AbstractLotIdentificationState implements LotIdentificatio
             this.setIdValue(e.getIdValue());
         }
 
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-    }
-
-    public void when(LotIdentificationStateRemoved e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 

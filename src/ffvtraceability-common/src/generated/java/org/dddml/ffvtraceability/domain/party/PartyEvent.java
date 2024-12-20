@@ -114,18 +114,6 @@ public interface PartyEvent extends Event {
 
         PartyIdentificationEvent.PartyIdentificationStateMergePatched newPartyIdentificationStateMergePatched(String partyIdentificationTypeId);
 
-        PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId);
-
-
-    }
-
-    interface PartyStateDeleted extends PartyStateEvent
-    {
-        Iterable<PartyIdentificationEvent.PartyIdentificationStateRemoved> getPartyIdentificationEvents();
-        
-        void addPartyIdentificationEvent(PartyIdentificationEvent.PartyIdentificationStateRemoved e);
-        
-        PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId);
 
     }
 

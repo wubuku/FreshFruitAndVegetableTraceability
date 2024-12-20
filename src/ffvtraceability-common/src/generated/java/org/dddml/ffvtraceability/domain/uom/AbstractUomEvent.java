@@ -291,21 +291,6 @@ public abstract class AbstractUomEvent extends AbstractEvent implements UomEvent
     }
 
 
-    public static abstract class AbstractUomStateDeleted extends AbstractUomStateEvent implements UomEvent.UomStateDeleted
-    {
-        public AbstractUomStateDeleted() {
-            this(new UomEventId());
-        }
-
-        public AbstractUomStateDeleted(UomEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-    }
 
     public static class SimpleUomStateCreated extends AbstractUomStateCreated
     {
@@ -323,16 +308,6 @@ public abstract class AbstractUomEvent extends AbstractEvent implements UomEvent
         }
 
         public SimpleUomStateMergePatched(UomEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleUomStateDeleted extends AbstractUomStateDeleted
-    {
-        public SimpleUomStateDeleted() {
-        }
-
-        public SimpleUomStateDeleted(UomEventId eventId) {
             super(eventId);
         }
     }

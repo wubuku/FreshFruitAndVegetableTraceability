@@ -38,7 +38,6 @@ public abstract class AbstractProductCategoryTypeApplicationService implements P
         ss.setParentTypeId(c.getParentTypeId());
         ss.setHasTable(c.getHasTable());
         ss.setDescription(c.getDescription());
-        ss.setDeleted(false);
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -76,15 +75,6 @@ public abstract class AbstractProductCategoryTypeApplicationService implements P
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
         // //////////////////////////////////
-        });
-    }
-
-    public void when(ProductCategoryTypeCommand.DeleteProductCategoryType c) {
-        update(c, s -> {
-        throwOnConcurrencyConflict(s, c);
-        // ///////////////////////////////////
-        //todo
-        // ///////////////////////////////////
         });
     }
 

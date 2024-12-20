@@ -18,8 +18,6 @@ public interface UomTypeApplicationService {
 
     void when(UomTypeCommand.MergePatchUomType c);
 
-    void when(UomTypeCommand.DeleteUomType c);
-
     UomTypeState get(String id);
 
     Iterable<UomTypeState> getAll(Integer firstResult, Integer maxResults);

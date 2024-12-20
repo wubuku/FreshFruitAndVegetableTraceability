@@ -86,8 +86,6 @@ public interface OrderHeaderState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     EntityStateCollection<PartyRoleId, OrderRoleState> getOrderRoles();
 
     EntityStateCollection<String, OrderContactMechState> getOrderContactMechanisms();
@@ -167,8 +165,6 @@ public interface OrderHeaderState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
 
         void mutate(Event e);
 
@@ -176,7 +172,6 @@ public interface OrderHeaderState
 
         //void when(OrderEvent.OrderStateMergePatched e);
 
-        //void when(OrderEvent.OrderStateDeleted e);
     }
 
     interface SqlOrderHeaderState extends MutableOrderHeaderState {

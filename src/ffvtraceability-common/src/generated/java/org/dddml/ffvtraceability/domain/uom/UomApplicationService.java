@@ -18,8 +18,6 @@ public interface UomApplicationService {
 
     void when(UomCommand.MergePatchUom c);
 
-    void when(UomCommand.DeleteUom c);
-
     UomState get(String id);
 
     Iterable<UomState> getAll(Integer firstResult, Integer maxResults);

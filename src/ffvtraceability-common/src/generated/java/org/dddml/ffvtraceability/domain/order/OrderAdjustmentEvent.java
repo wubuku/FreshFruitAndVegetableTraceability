@@ -295,10 +295,6 @@ public interface OrderAdjustmentEvent extends Event {
 
     }
 
-    interface OrderAdjustmentStateRemoved extends OrderAdjustmentStateEvent
-    {
-    }
-
 
 }
 

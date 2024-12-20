@@ -29,7 +29,7 @@ public class HibernateCompanyStateQueryRepository implements CompanyStateQueryRe
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("PartyId", "PartyTypeId", "PrimaryRoleTypeId", "ExternalId", "PreferredCurrencyUomId", "Description", "StatusId", "PartyIdentifications", "Salutation", "FirstName", "MiddleName", "LastName", "PersonalTitle", "Nickname", "Gender", "BirthDate", "DeceasedDate", "SocialSecurityNumber", "PassportNumber", "PassportExpireDate", "ExistingCustomer", "OrganizationName", "TaxIdNum", "FamilyName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("PartyId", "PartyTypeId", "PrimaryRoleTypeId", "ExternalId", "PreferredCurrencyUomId", "Description", "StatusId", "PartyIdentifications", "Salutation", "FirstName", "MiddleName", "LastName", "PersonalTitle", "Nickname", "Gender", "BirthDate", "DeceasedDate", "SocialSecurityNumber", "PassportNumber", "PassportExpireDate", "ExistingCustomer", "OrganizationName", "TaxIdNum", "FamilyName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -167,10 +167,6 @@ public class HibernateCompanyStateQueryRepository implements CompanyStateQueryRe
     }
 
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
-        Predicate isNull = cb.isNull(root.get("deleted"));
-        Predicate isFalse = cb.equal(root.get("deleted"), false);
-        Predicate notDeleted = cb.or(isNull, isFalse);
-        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }

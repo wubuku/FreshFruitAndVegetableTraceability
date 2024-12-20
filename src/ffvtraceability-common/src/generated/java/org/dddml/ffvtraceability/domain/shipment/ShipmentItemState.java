@@ -35,8 +35,6 @@ public interface ShipmentItemState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getShipmentId();
 
     interface MutableShipmentItemState extends ShipmentItemState {
@@ -58,8 +56,6 @@ public interface ShipmentItemState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setShipmentId(String shipmentId);
 
 
@@ -69,7 +65,6 @@ public interface ShipmentItemState
 
         //void when(ShipmentItemEvent.ShipmentItemStateMergePatched e);
 
-        //void when(ShipmentItemEvent.ShipmentItemStateRemoved e);
     }
 
     interface SqlShipmentItemState extends MutableShipmentItemState {

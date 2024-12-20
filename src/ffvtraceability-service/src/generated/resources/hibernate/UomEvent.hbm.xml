@@ -51,7 +51,6 @@
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
         <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
       </subclass>
-      <subclass name="AbstractUomEvent$SimpleUomStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

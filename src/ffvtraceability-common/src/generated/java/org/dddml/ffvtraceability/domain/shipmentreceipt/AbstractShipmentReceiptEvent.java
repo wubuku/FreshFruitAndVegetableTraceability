@@ -127,10 +127,6 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
         return new AbstractShipmentReceiptRoleEvent.SimpleShipmentReceiptRoleStateMergePatched(newShipmentReceiptRoleEventId(partyRoleId));
     }
 
-    public ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved newShipmentReceiptRoleStateRemoved(PartyRoleId partyRoleId) {
-        return new AbstractShipmentReceiptRoleEvent.SimpleShipmentReceiptRoleStateRemoved(newShipmentReceiptRoleEventId(partyRoleId));
-    }
-
 
     public abstract String getEventType();
 
@@ -704,54 +700,8 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             return StateEventType.DELETED;
         }
 
-        
-        private Map<ShipmentReceiptRoleEventId, ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved> shipmentReceiptRoleEvents = new HashMap<ShipmentReceiptRoleEventId, ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved>();
-        
-        private Iterable<ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved> readOnlyShipmentReceiptRoleEvents;
-
-        public Iterable<ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved> getShipmentReceiptRoleEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.shipmentReceiptRoleEvents.values();
-            }
-            else
-            {
-                if (readOnlyShipmentReceiptRoleEvents != null) { return readOnlyShipmentReceiptRoleEvents; }
-                ShipmentReceiptRoleEventDao eventDao = getShipmentReceiptRoleEventDao();
-                List<ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved> eL = new ArrayList<ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved>();
-                for (ShipmentReceiptRoleEvent e : eventDao.findByShipmentReceiptEventId(this.getShipmentReceiptEventId()))
-                {
-                    ((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)e).setEventReadOnly(true);
-                    eL.add((ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved)e);
-                }
-                return (readOnlyShipmentReceiptRoleEvents = eL);
-            }
-        }
-
-        public void setShipmentReceiptRoleEvents(Iterable<ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved e : es)
-                {
-                    addShipmentReceiptRoleEvent(e);
-                }
-            }
-            else { this.shipmentReceiptRoleEvents.clear(); }
-        }
-        
-        public void addShipmentReceiptRoleEvent(ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved e)
-        {
-            throwOnInconsistentEventIds((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)e);
-            this.shipmentReceiptRoleEvents.put(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)e).getShipmentReceiptRoleEventId(), e);
-        }
-
         public void save()
         {
-            for (ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved e : this.getShipmentReceiptRoleEvents()) {
-                getShipmentReceiptRoleEventDao().save(e);
-            }
         }
     }
 

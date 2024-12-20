@@ -1,5 +1,9 @@
 ﻿aggregates:
   ShipmentReceipt:
+    reservedPropertyMetadata:
+      noDeleted: false
+      deleted:
+        name: Deleted
     id:
       name: ReceiptId
       type: id-long

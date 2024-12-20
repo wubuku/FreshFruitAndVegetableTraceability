@@ -29,7 +29,6 @@
     <subclass name="AbstractPartyRoleEvent$AbstractPartyRoleStateEvent" abstract="true">
       <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateMergePatched" discriminator-value="MergePatched"></subclass>
-      <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

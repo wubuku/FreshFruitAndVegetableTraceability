@@ -38,11 +38,6 @@ public abstract class AbstractProductCategoryAggregate extends AbstractAggregate
         apply(e);
     }
 
-    public void delete(ProductCategoryCommand.DeleteProductCategory c) {
-        ProductCategoryEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         ProductCategoryCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -92,15 +87,6 @@ public abstract class AbstractProductCategoryAggregate extends AbstractAggregate
         return e;
     }
 
-    protected ProductCategoryEvent map(ProductCategoryCommand.DeleteProductCategory c) {
-        ProductCategoryEventId stateEventId = new ProductCategoryEventId(c.getProductCategoryId(), c.getVersion());
-        ProductCategoryEvent.ProductCategoryStateDeleted e = newProductCategoryStateDeleted(stateEventId);
-        ((AbstractProductCategoryEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     ////////////////////////
 
@@ -122,25 +108,12 @@ public abstract class AbstractProductCategoryAggregate extends AbstractAggregate
         return e;
     }
 
-    protected ProductCategoryEvent.ProductCategoryStateDeleted newProductCategoryStateDeleted(Long version, String commandId, String requesterId) {
-        ProductCategoryEventId stateEventId = new ProductCategoryEventId(this.state.getProductCategoryId(), version);
-        ProductCategoryEvent.ProductCategoryStateDeleted e = newProductCategoryStateDeleted(stateEventId);
-        ((AbstractProductCategoryEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected ProductCategoryEvent.ProductCategoryStateCreated newProductCategoryStateCreated(ProductCategoryEventId stateEventId) {
         return new AbstractProductCategoryEvent.SimpleProductCategoryStateCreated(stateEventId);
     }
 
     protected ProductCategoryEvent.ProductCategoryStateMergePatched newProductCategoryStateMergePatched(ProductCategoryEventId stateEventId) {
         return new AbstractProductCategoryEvent.SimpleProductCategoryStateMergePatched(stateEventId);
-    }
-
-    protected ProductCategoryEvent.ProductCategoryStateDeleted newProductCategoryStateDeleted(ProductCategoryEventId stateEventId) {
-        return new AbstractProductCategoryEvent.SimpleProductCategoryStateDeleted(stateEventId);
     }
 
 

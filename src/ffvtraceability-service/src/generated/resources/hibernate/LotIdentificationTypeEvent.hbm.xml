@@ -31,7 +31,6 @@
       <subclass name="AbstractLotIdentificationTypeEvent$SimpleLotIdentificationTypeStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
       </subclass>
-      <subclass name="AbstractLotIdentificationTypeEvent$SimpleLotIdentificationTypeStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

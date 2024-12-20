@@ -103,7 +103,6 @@
         <property name="isPropertyGeoIdRemoved" column="is_property_geo_id_removed" />
         <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
       </subclass>
-      <subclass name="AbstractFacilityEvent$SimpleFacilityStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

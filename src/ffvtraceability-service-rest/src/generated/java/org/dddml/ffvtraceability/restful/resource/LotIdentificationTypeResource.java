@@ -233,29 +233,6 @@ public class LotIdentificationTypeResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    /**
-     * Delete.
-     * Delete LotIdentificationType
-     */
-    @DeleteMapping("{lotIdentificationTypeId}")
-    public void delete(@PathVariable("lotIdentificationTypeId") String lotIdentificationTypeId,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            LotIdentificationTypeCommand.DeleteLotIdentificationType deleteCmd = new DeleteLotIdentificationTypeDto();
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            LotIdentificationTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(lotIdentificationTypeId, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            lotIdentificationTypeApplicationService.when(deleteCmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

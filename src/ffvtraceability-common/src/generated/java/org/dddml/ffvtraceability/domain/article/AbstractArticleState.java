@@ -104,16 +104,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     private Set<String> tags;
 
     public Set<String> getTags() {
@@ -211,8 +201,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
             when((ArticleStateCreated) e);
         } else if (e instanceof ArticleStateMergePatched) {
             when((ArticleStateMergePatched) e);
-        } else if (e instanceof ArticleStateDeleted) {
-            when((ArticleStateDeleted) e);
         } else if (e instanceof AbstractArticleEvent.ArticleBodyUpdated) {
             when((AbstractArticleEvent.ArticleBodyUpdated)e);
         } else {
@@ -227,8 +215,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setBody(e.getBody());
         this.setAuthor(e.getAuthor());
         this.setTags(e.getTags());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -323,28 +309,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         for (CommentEvent innerEvent : e.getCommentEvents()) {
             CommentState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(((CommentEvent.SqlCommentEvent)innerEvent).getCommentEventId().getCommentSeqId());
             ((CommentState.SqlCommentState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof CommentEvent.CommentStateRemoved) {
-                //CommentEvent.CommentStateRemoved removed = (CommentEvent.CommentStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getComments()).removeState(innerState);
-            }
-        }
-    }
-
-    public void when(ArticleStateDeleted e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        for (CommentState innerState : this.getComments()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getComments()).removeState(innerState);
-        
-            CommentEvent.CommentStateRemoved innerE = e.newCommentStateRemoved(innerState.getCommentSeqId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((CommentState.MutableCommentState)innerState).mutate(innerE);
-            //e.addCommentEvent(innerE);
         }
     }
 

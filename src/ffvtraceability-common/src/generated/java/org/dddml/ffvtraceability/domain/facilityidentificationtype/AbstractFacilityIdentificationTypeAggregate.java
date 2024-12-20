@@ -38,11 +38,6 @@ public abstract class AbstractFacilityIdentificationTypeAggregate extends Abstra
         apply(e);
     }
 
-    public void delete(FacilityIdentificationTypeCommand.DeleteFacilityIdentificationType c) {
-        FacilityIdentificationTypeEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         FacilityIdentificationTypeCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -74,15 +69,6 @@ public abstract class AbstractFacilityIdentificationTypeAggregate extends Abstra
         return e;
     }
 
-    protected FacilityIdentificationTypeEvent map(FacilityIdentificationTypeCommand.DeleteFacilityIdentificationType c) {
-        FacilityIdentificationTypeEventId stateEventId = new FacilityIdentificationTypeEventId(c.getFacilityIdentificationTypeId(), c.getVersion());
-        FacilityIdentificationTypeEvent.FacilityIdentificationTypeStateDeleted e = newFacilityIdentificationTypeStateDeleted(stateEventId);
-        ((AbstractFacilityIdentificationTypeEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     ////////////////////////
 
@@ -104,25 +90,12 @@ public abstract class AbstractFacilityIdentificationTypeAggregate extends Abstra
         return e;
     }
 
-    protected FacilityIdentificationTypeEvent.FacilityIdentificationTypeStateDeleted newFacilityIdentificationTypeStateDeleted(Long version, String commandId, String requesterId) {
-        FacilityIdentificationTypeEventId stateEventId = new FacilityIdentificationTypeEventId(this.state.getFacilityIdentificationTypeId(), version);
-        FacilityIdentificationTypeEvent.FacilityIdentificationTypeStateDeleted e = newFacilityIdentificationTypeStateDeleted(stateEventId);
-        ((AbstractFacilityIdentificationTypeEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected FacilityIdentificationTypeEvent.FacilityIdentificationTypeStateCreated newFacilityIdentificationTypeStateCreated(FacilityIdentificationTypeEventId stateEventId) {
         return new AbstractFacilityIdentificationTypeEvent.SimpleFacilityIdentificationTypeStateCreated(stateEventId);
     }
 
     protected FacilityIdentificationTypeEvent.FacilityIdentificationTypeStateMergePatched newFacilityIdentificationTypeStateMergePatched(FacilityIdentificationTypeEventId stateEventId) {
         return new AbstractFacilityIdentificationTypeEvent.SimpleFacilityIdentificationTypeStateMergePatched(stateEventId);
-    }
-
-    protected FacilityIdentificationTypeEvent.FacilityIdentificationTypeStateDeleted newFacilityIdentificationTypeStateDeleted(FacilityIdentificationTypeEventId stateEventId) {
-        return new AbstractFacilityIdentificationTypeEvent.SimpleFacilityIdentificationTypeStateDeleted(stateEventId);
     }
 
 

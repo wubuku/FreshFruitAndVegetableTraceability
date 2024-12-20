@@ -57,10 +57,6 @@ public abstract class AbstractLotApplicationService implements LotApplicationSer
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(LotCommand.DeleteLot c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public LotState get(String id) {
         LotState state = getStateRepository().get(id, true);
         return state;

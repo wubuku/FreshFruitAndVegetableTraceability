@@ -18,8 +18,6 @@ public interface FacilityIdentificationTypeApplicationService {
 
     void when(FacilityIdentificationTypeCommand.MergePatchFacilityIdentificationType c);
 
-    void when(FacilityIdentificationTypeCommand.DeleteFacilityIdentificationType c);
-
     FacilityIdentificationTypeState get(String id);
 
     Iterable<FacilityIdentificationTypeState> getAll(Integer firstResult, Integer maxResults);

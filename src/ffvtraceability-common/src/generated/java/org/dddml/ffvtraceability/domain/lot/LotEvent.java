@@ -90,18 +90,6 @@ public interface LotEvent extends Event {
 
         LotIdentificationEvent.LotIdentificationStateMergePatched newLotIdentificationStateMergePatched(String lotIdentificationTypeId);
 
-        LotIdentificationEvent.LotIdentificationStateRemoved newLotIdentificationStateRemoved(String lotIdentificationTypeId);
-
-
-    }
-
-    interface LotStateDeleted extends LotStateEvent
-    {
-        Iterable<LotIdentificationEvent.LotIdentificationStateRemoved> getLotIdentificationEvents();
-        
-        void addLotIdentificationEvent(LotIdentificationEvent.LotIdentificationStateRemoved e);
-        
-        LotIdentificationEvent.LotIdentificationStateRemoved newLotIdentificationStateRemoved(String lotIdentificationTypeId);
 
     }
 

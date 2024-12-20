@@ -37,8 +37,6 @@ public interface DocumentState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     interface MutableDocumentState extends DocumentState {
         void setDocumentId(String documentId);
 
@@ -60,8 +58,6 @@ public interface DocumentState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
 
         void mutate(Event e);
 
@@ -69,7 +65,6 @@ public interface DocumentState
 
         //void when(DocumentEvent.DocumentStateMergePatched e);
 
-        //void when(DocumentEvent.DocumentStateDeleted e);
     }
 
     interface SqlDocumentState extends MutableDocumentState {

@@ -126,10 +126,6 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
         return new AbstractLotIdentificationEvent.SimpleLotIdentificationStateMergePatched(newLotIdentificationEventId(lotIdentificationTypeId));
     }
 
-    public LotIdentificationEvent.LotIdentificationStateRemoved newLotIdentificationStateRemoved(String lotIdentificationTypeId) {
-        return new AbstractLotIdentificationEvent.SimpleLotIdentificationStateRemoved(newLotIdentificationEventId(lotIdentificationTypeId));
-    }
-
 
     public abstract String getEventType();
 
@@ -359,70 +355,6 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
     }
 
 
-    public static abstract class AbstractLotStateDeleted extends AbstractLotStateEvent implements LotEvent.LotStateDeleted, Saveable
-    {
-        public AbstractLotStateDeleted() {
-            this(new LotEventId());
-        }
-
-        public AbstractLotStateDeleted(LotEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-        
-        private Map<LotIdentificationEventId, LotIdentificationEvent.LotIdentificationStateRemoved> lotIdentificationEvents = new HashMap<LotIdentificationEventId, LotIdentificationEvent.LotIdentificationStateRemoved>();
-        
-        private Iterable<LotIdentificationEvent.LotIdentificationStateRemoved> readOnlyLotIdentificationEvents;
-
-        public Iterable<LotIdentificationEvent.LotIdentificationStateRemoved> getLotIdentificationEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.lotIdentificationEvents.values();
-            }
-            else
-            {
-                if (readOnlyLotIdentificationEvents != null) { return readOnlyLotIdentificationEvents; }
-                LotIdentificationEventDao eventDao = getLotIdentificationEventDao();
-                List<LotIdentificationEvent.LotIdentificationStateRemoved> eL = new ArrayList<LotIdentificationEvent.LotIdentificationStateRemoved>();
-                for (LotIdentificationEvent e : eventDao.findByLotEventId(this.getLotEventId()))
-                {
-                    ((LotIdentificationEvent.SqlLotIdentificationEvent)e).setEventReadOnly(true);
-                    eL.add((LotIdentificationEvent.LotIdentificationStateRemoved)e);
-                }
-                return (readOnlyLotIdentificationEvents = eL);
-            }
-        }
-
-        public void setLotIdentificationEvents(Iterable<LotIdentificationEvent.LotIdentificationStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (LotIdentificationEvent.LotIdentificationStateRemoved e : es)
-                {
-                    addLotIdentificationEvent(e);
-                }
-            }
-            else { this.lotIdentificationEvents.clear(); }
-        }
-        
-        public void addLotIdentificationEvent(LotIdentificationEvent.LotIdentificationStateRemoved e)
-        {
-            throwOnInconsistentEventIds((LotIdentificationEvent.SqlLotIdentificationEvent)e);
-            this.lotIdentificationEvents.put(((LotIdentificationEvent.SqlLotIdentificationEvent)e).getLotIdentificationEventId(), e);
-        }
-
-        public void save()
-        {
-            for (LotIdentificationEvent.LotIdentificationStateRemoved e : this.getLotIdentificationEvents()) {
-                getLotIdentificationEventDao().save(e);
-            }
-        }
-    }
 
     public static class SimpleLotStateCreated extends AbstractLotStateCreated
     {
@@ -440,16 +372,6 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
         }
 
         public SimpleLotStateMergePatched(LotEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleLotStateDeleted extends AbstractLotStateDeleted
-    {
-        public SimpleLotStateDeleted() {
-        }
-
-        public SimpleLotStateDeleted(LotEventId eventId) {
             super(eventId);
         }
     }

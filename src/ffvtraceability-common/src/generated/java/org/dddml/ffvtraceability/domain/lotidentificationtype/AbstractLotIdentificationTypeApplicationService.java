@@ -57,10 +57,6 @@ public abstract class AbstractLotIdentificationTypeApplicationService implements
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(LotIdentificationTypeCommand.DeleteLotIdentificationType c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public LotIdentificationTypeState get(String id) {
         LotIdentificationTypeState state = getStateRepository().get(id, true);
         return state;

@@ -153,21 +153,6 @@ public abstract class AbstractOrderContactMechEvent extends AbstractEvent implem
     }
 
 
-    public static abstract class AbstractOrderContactMechStateRemoved extends AbstractOrderContactMechStateEvent implements OrderContactMechEvent.OrderContactMechStateRemoved
-    {
-        public AbstractOrderContactMechStateRemoved() {
-            this(new OrderContactMechEventId());
-        }
-
-        public AbstractOrderContactMechStateRemoved(OrderContactMechEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleOrderContactMechStateCreated extends AbstractOrderContactMechStateCreated
     {
@@ -185,16 +170,6 @@ public abstract class AbstractOrderContactMechEvent extends AbstractEvent implem
         }
 
         public SimpleOrderContactMechStateMergePatched(OrderContactMechEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleOrderContactMechStateRemoved extends AbstractOrderContactMechStateRemoved
-    {
-        public SimpleOrderContactMechStateRemoved() {
-        }
-
-        public SimpleOrderContactMechStateRemoved(OrderContactMechEventId eventId) {
             super(eventId);
         }
     }

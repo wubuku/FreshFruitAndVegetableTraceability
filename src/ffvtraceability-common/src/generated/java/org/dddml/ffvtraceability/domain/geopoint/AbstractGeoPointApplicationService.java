@@ -42,7 +42,6 @@ public abstract class AbstractGeoPointApplicationService implements GeoPointAppl
         ss.setElevation(c.getElevation());
         ss.setElevationUomId(c.getElevationUomId());
         ss.setInformation(c.getInformation());
-        ss.setDeleted(false);
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -108,15 +107,6 @@ public abstract class AbstractGeoPointApplicationService implements GeoPointAppl
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
         // //////////////////////////////////
-        });
-    }
-
-    public void when(GeoPointCommand.DeleteGeoPoint c) {
-        update(c, s -> {
-        throwOnConcurrencyConflict(s, c);
-        // ///////////////////////////////////
-        //todo
-        // ///////////////////////////////////
         });
     }
 

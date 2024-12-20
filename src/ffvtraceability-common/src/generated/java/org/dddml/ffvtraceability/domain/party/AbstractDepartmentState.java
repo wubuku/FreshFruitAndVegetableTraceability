@@ -46,10 +46,6 @@ public abstract class AbstractDepartmentState extends AbstractOrganizationState 
             when((DepartmentStateCreated) e);
         } else if (e instanceof DepartmentStateMergePatched) {
             when((DepartmentStateMergePatched) e);
-        } else if (e instanceof DepartmentStateDeleted) {
-            when((DepartmentStateDeleted) e);
-        } else if (e instanceof PartyEvent.PartyStateDeleted) {
-            when((PartyEvent.PartyStateDeleted) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -65,8 +61,6 @@ public abstract class AbstractDepartmentState extends AbstractOrganizationState 
         this.setDescription(e.getDescription());
         this.setStatusId(e.getStatusId());
         this.setOrganizationName(e.getOrganizationName());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -190,28 +184,6 @@ public abstract class AbstractDepartmentState extends AbstractOrganizationState 
         for (PartyIdentificationEvent innerEvent : e.getPartyIdentificationEvents()) {
             PartyIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(((PartyIdentificationEvent.SqlPartyIdentificationEvent)innerEvent).getPartyIdentificationEventId().getPartyIdentificationTypeId());
             ((PartyIdentificationState.SqlPartyIdentificationState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof PartyIdentificationEvent.PartyIdentificationStateRemoved) {
-                //PartyIdentificationEvent.PartyIdentificationStateRemoved removed = (PartyIdentificationEvent.PartyIdentificationStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getPartyIdentifications()).removeState(innerState);
-            }
-        }
-    }
-
-    public void when(DepartmentStateDeleted e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        for (PartyIdentificationState innerState : this.getPartyIdentifications()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getPartyIdentifications()).removeState(innerState);
-        
-            PartyIdentificationEvent.PartyIdentificationStateRemoved innerE = e.newPartyIdentificationStateRemoved(innerState.getPartyIdentificationTypeId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((PartyIdentificationState.MutablePartyIdentificationState)innerState).mutate(innerE);
-            //e.addPartyIdentificationEvent(innerE);
         }
     }
 

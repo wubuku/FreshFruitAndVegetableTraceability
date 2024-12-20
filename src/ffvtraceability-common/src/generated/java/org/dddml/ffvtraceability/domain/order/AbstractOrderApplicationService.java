@@ -58,10 +58,6 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(OrderCommand.DeleteOrder c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public OrderHeaderState get(String id) {
         OrderHeaderState state = getStateRepository().get(id, true);
         return state;

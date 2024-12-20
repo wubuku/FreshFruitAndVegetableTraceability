@@ -38,11 +38,6 @@ public abstract class AbstractShipmentTypeAggregate extends AbstractAggregate im
         apply(e);
     }
 
-    public void delete(ShipmentTypeCommand.DeleteShipmentType c) {
-        ShipmentTypeEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         ShipmentTypeCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -80,15 +75,6 @@ public abstract class AbstractShipmentTypeAggregate extends AbstractAggregate im
         return e;
     }
 
-    protected ShipmentTypeEvent map(ShipmentTypeCommand.DeleteShipmentType c) {
-        ShipmentTypeEventId stateEventId = new ShipmentTypeEventId(c.getShipmentTypeId(), c.getVersion());
-        ShipmentTypeEvent.ShipmentTypeStateDeleted e = newShipmentTypeStateDeleted(stateEventId);
-        ((AbstractShipmentTypeEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     ////////////////////////
 
@@ -110,25 +96,12 @@ public abstract class AbstractShipmentTypeAggregate extends AbstractAggregate im
         return e;
     }
 
-    protected ShipmentTypeEvent.ShipmentTypeStateDeleted newShipmentTypeStateDeleted(Long version, String commandId, String requesterId) {
-        ShipmentTypeEventId stateEventId = new ShipmentTypeEventId(this.state.getShipmentTypeId(), version);
-        ShipmentTypeEvent.ShipmentTypeStateDeleted e = newShipmentTypeStateDeleted(stateEventId);
-        ((AbstractShipmentTypeEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected ShipmentTypeEvent.ShipmentTypeStateCreated newShipmentTypeStateCreated(ShipmentTypeEventId stateEventId) {
         return new AbstractShipmentTypeEvent.SimpleShipmentTypeStateCreated(stateEventId);
     }
 
     protected ShipmentTypeEvent.ShipmentTypeStateMergePatched newShipmentTypeStateMergePatched(ShipmentTypeEventId stateEventId) {
         return new AbstractShipmentTypeEvent.SimpleShipmentTypeStateMergePatched(stateEventId);
-    }
-
-    protected ShipmentTypeEvent.ShipmentTypeStateDeleted newShipmentTypeStateDeleted(ShipmentTypeEventId stateEventId) {
-        return new AbstractShipmentTypeEvent.SimpleShipmentTypeStateDeleted(stateEventId);
     }
 
 

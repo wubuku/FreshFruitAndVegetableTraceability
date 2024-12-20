@@ -113,10 +113,6 @@ public abstract class AbstractOrderShipGroupEvent extends AbstractEvent implemen
         return new AbstractOrderItemShipGroupAssociationEvent.SimpleOrderItemShipGroupAssociationStateMergePatched(newOrderItemShipGroupAssociationEventId(orderItemSeqId));
     }
 
-    public OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved newOrderItemShipGroupAssociationStateRemoved(String orderItemSeqId) {
-        return new AbstractOrderItemShipGroupAssociationEvent.SimpleOrderItemShipGroupAssociationStateRemoved(newOrderItemShipGroupAssociationEventId(orderItemSeqId));
-    }
-
 
     public abstract String getEventType();
 
@@ -754,70 +750,6 @@ public abstract class AbstractOrderShipGroupEvent extends AbstractEvent implemen
     }
 
 
-    public static abstract class AbstractOrderShipGroupStateRemoved extends AbstractOrderShipGroupStateEvent implements OrderShipGroupEvent.OrderShipGroupStateRemoved, Saveable
-    {
-        public AbstractOrderShipGroupStateRemoved() {
-            this(new OrderShipGroupEventId());
-        }
-
-        public AbstractOrderShipGroupStateRemoved(OrderShipGroupEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-        
-        private Map<OrderItemShipGroupAssociationEventId, OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved> orderItemShipGroupAssociationEvents = new HashMap<OrderItemShipGroupAssociationEventId, OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved>();
-        
-        private Iterable<OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved> readOnlyOrderItemShipGroupAssociationEvents;
-
-        public Iterable<OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved> getOrderItemShipGroupAssociationEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.orderItemShipGroupAssociationEvents.values();
-            }
-            else
-            {
-                if (readOnlyOrderItemShipGroupAssociationEvents != null) { return readOnlyOrderItemShipGroupAssociationEvents; }
-                OrderItemShipGroupAssociationEventDao eventDao = getOrderItemShipGroupAssociationEventDao();
-                List<OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved> eL = new ArrayList<OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved>();
-                for (OrderItemShipGroupAssociationEvent e : eventDao.findByOrderShipGroupEventId(this.getOrderShipGroupEventId()))
-                {
-                    ((OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent)e).setEventReadOnly(true);
-                    eL.add((OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved)e);
-                }
-                return (readOnlyOrderItemShipGroupAssociationEvents = eL);
-            }
-        }
-
-        public void setOrderItemShipGroupAssociationEvents(Iterable<OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved e : es)
-                {
-                    addOrderItemShipGroupAssociationEvent(e);
-                }
-            }
-            else { this.orderItemShipGroupAssociationEvents.clear(); }
-        }
-        
-        public void addOrderItemShipGroupAssociationEvent(OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved e)
-        {
-            throwOnInconsistentEventIds((OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent)e);
-            this.orderItemShipGroupAssociationEvents.put(((OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent)e).getOrderItemShipGroupAssociationEventId(), e);
-        }
-
-        public void save()
-        {
-            for (OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved e : this.getOrderItemShipGroupAssociationEvents()) {
-                getOrderItemShipGroupAssociationEventDao().save(e);
-            }
-        }
-    }
 
     public static class SimpleOrderShipGroupStateCreated extends AbstractOrderShipGroupStateCreated
     {
@@ -835,16 +767,6 @@ public abstract class AbstractOrderShipGroupEvent extends AbstractEvent implemen
         }
 
         public SimpleOrderShipGroupStateMergePatched(OrderShipGroupEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleOrderShipGroupStateRemoved extends AbstractOrderShipGroupStateRemoved
-    {
-        public SimpleOrderShipGroupStateRemoved() {
-        }
-
-        public SimpleOrderShipGroupStateRemoved(OrderShipGroupEventId eventId) {
             super(eventId);
         }
     }

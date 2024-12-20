@@ -272,8 +272,6 @@ public interface ShipmentEvent extends Event {
 
         ShipmentItemEvent.ShipmentItemStateMergePatched newShipmentItemStateMergePatched(String shipmentItemSeqId);
 
-        ShipmentItemEvent.ShipmentItemStateRemoved newShipmentItemStateRemoved(String shipmentItemSeqId);
-
         Iterable<ShipmentPackageEvent> getShipmentPackageEvents();
         
         void addShipmentPackageEvent(ShipmentPackageEvent e);
@@ -282,24 +280,6 @@ public interface ShipmentEvent extends Event {
 
         ShipmentPackageEvent.ShipmentPackageStateMergePatched newShipmentPackageStateMergePatched(String shipmentPackageSeqId);
 
-        ShipmentPackageEvent.ShipmentPackageStateRemoved newShipmentPackageStateRemoved(String shipmentPackageSeqId);
-
-
-    }
-
-    interface ShipmentStateDeleted extends ShipmentStateEvent
-    {
-        Iterable<ShipmentItemEvent.ShipmentItemStateRemoved> getShipmentItemEvents();
-        
-        void addShipmentItemEvent(ShipmentItemEvent.ShipmentItemStateRemoved e);
-        
-        ShipmentItemEvent.ShipmentItemStateRemoved newShipmentItemStateRemoved(String shipmentItemSeqId);
-
-        Iterable<ShipmentPackageEvent.ShipmentPackageStateRemoved> getShipmentPackageEvents();
-        
-        void addShipmentPackageEvent(ShipmentPackageEvent.ShipmentPackageStateRemoved e);
-        
-        ShipmentPackageEvent.ShipmentPackageStateRemoved newShipmentPackageStateRemoved(String shipmentPackageSeqId);
 
     }
 

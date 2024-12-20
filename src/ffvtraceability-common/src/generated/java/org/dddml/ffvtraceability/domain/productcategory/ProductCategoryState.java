@@ -43,8 +43,6 @@ public interface ProductCategoryState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     interface MutableProductCategoryState extends ProductCategoryState {
         void setProductCategoryId(String productCategoryId);
 
@@ -72,8 +70,6 @@ public interface ProductCategoryState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
 
         void mutate(Event e);
 
@@ -81,7 +77,6 @@ public interface ProductCategoryState
 
         //void when(ProductCategoryEvent.ProductCategoryStateMergePatched e);
 
-        //void when(ProductCategoryEvent.ProductCategoryStateDeleted e);
     }
 
     interface SqlProductCategoryState extends MutableProductCategoryState {

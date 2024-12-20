@@ -153,21 +153,6 @@ public abstract class AbstractFacilityIdentificationEvent extends AbstractEvent 
     }
 
 
-    public static abstract class AbstractFacilityIdentificationStateRemoved extends AbstractFacilityIdentificationStateEvent implements FacilityIdentificationEvent.FacilityIdentificationStateRemoved
-    {
-        public AbstractFacilityIdentificationStateRemoved() {
-            this(new FacilityIdentificationEventId());
-        }
-
-        public AbstractFacilityIdentificationStateRemoved(FacilityIdentificationEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleFacilityIdentificationStateCreated extends AbstractFacilityIdentificationStateCreated
     {
@@ -185,16 +170,6 @@ public abstract class AbstractFacilityIdentificationEvent extends AbstractEvent 
         }
 
         public SimpleFacilityIdentificationStateMergePatched(FacilityIdentificationEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleFacilityIdentificationStateRemoved extends AbstractFacilityIdentificationStateRemoved
-    {
-        public SimpleFacilityIdentificationStateRemoved() {
-        }
-
-        public SimpleFacilityIdentificationStateRemoved(FacilityIdentificationEventId eventId) {
             super(eventId);
         }
     }

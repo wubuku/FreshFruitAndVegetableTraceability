@@ -315,8 +315,6 @@ public interface OrderEvent extends Event {
 
         OrderRoleEvent.OrderRoleStateMergePatched newOrderRoleStateMergePatched(PartyRoleId partyRoleId);
 
-        OrderRoleEvent.OrderRoleStateRemoved newOrderRoleStateRemoved(PartyRoleId partyRoleId);
-
         Iterable<OrderContactMechEvent> getOrderContactMechEvents();
         
         void addOrderContactMechEvent(OrderContactMechEvent e);
@@ -324,8 +322,6 @@ public interface OrderEvent extends Event {
         OrderContactMechEvent.OrderContactMechStateCreated newOrderContactMechStateCreated(String contactMechPurposeTypeId);
 
         OrderContactMechEvent.OrderContactMechStateMergePatched newOrderContactMechStateMergePatched(String contactMechPurposeTypeId);
-
-        OrderContactMechEvent.OrderContactMechStateRemoved newOrderContactMechStateRemoved(String contactMechPurposeTypeId);
 
         Iterable<OrderItemEvent> getOrderItemEvents();
         
@@ -335,8 +331,6 @@ public interface OrderEvent extends Event {
 
         OrderItemEvent.OrderItemStateMergePatched newOrderItemStateMergePatched(String orderItemSeqId);
 
-        OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(String orderItemSeqId);
-
         Iterable<OrderAdjustmentEvent> getOrderAdjustmentEvents();
         
         void addOrderAdjustmentEvent(OrderAdjustmentEvent e);
@@ -344,8 +338,6 @@ public interface OrderEvent extends Event {
         OrderAdjustmentEvent.OrderAdjustmentStateCreated newOrderAdjustmentStateCreated(String orderAdjustmentId);
 
         OrderAdjustmentEvent.OrderAdjustmentStateMergePatched newOrderAdjustmentStateMergePatched(String orderAdjustmentId);
-
-        OrderAdjustmentEvent.OrderAdjustmentStateRemoved newOrderAdjustmentStateRemoved(String orderAdjustmentId);
 
         Iterable<OrderShipGroupEvent> getOrderShipGroupEvents();
         
@@ -355,42 +347,6 @@ public interface OrderEvent extends Event {
 
         OrderShipGroupEvent.OrderShipGroupStateMergePatched newOrderShipGroupStateMergePatched(String shipGroupSeqId);
 
-        OrderShipGroupEvent.OrderShipGroupStateRemoved newOrderShipGroupStateRemoved(String shipGroupSeqId);
-
-
-    }
-
-    interface OrderStateDeleted extends OrderStateEvent
-    {
-        Iterable<OrderRoleEvent.OrderRoleStateRemoved> getOrderRoleEvents();
-        
-        void addOrderRoleEvent(OrderRoleEvent.OrderRoleStateRemoved e);
-        
-        OrderRoleEvent.OrderRoleStateRemoved newOrderRoleStateRemoved(PartyRoleId partyRoleId);
-
-        Iterable<OrderContactMechEvent.OrderContactMechStateRemoved> getOrderContactMechEvents();
-        
-        void addOrderContactMechEvent(OrderContactMechEvent.OrderContactMechStateRemoved e);
-        
-        OrderContactMechEvent.OrderContactMechStateRemoved newOrderContactMechStateRemoved(String contactMechPurposeTypeId);
-
-        Iterable<OrderItemEvent.OrderItemStateRemoved> getOrderItemEvents();
-        
-        void addOrderItemEvent(OrderItemEvent.OrderItemStateRemoved e);
-        
-        OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(String orderItemSeqId);
-
-        Iterable<OrderAdjustmentEvent.OrderAdjustmentStateRemoved> getOrderAdjustmentEvents();
-        
-        void addOrderAdjustmentEvent(OrderAdjustmentEvent.OrderAdjustmentStateRemoved e);
-        
-        OrderAdjustmentEvent.OrderAdjustmentStateRemoved newOrderAdjustmentStateRemoved(String orderAdjustmentId);
-
-        Iterable<OrderShipGroupEvent.OrderShipGroupStateRemoved> getOrderShipGroupEvents();
-        
-        void addOrderShipGroupEvent(OrderShipGroupEvent.OrderShipGroupStateRemoved e);
-        
-        OrderShipGroupEvent.OrderShipGroupStateRemoved newOrderShipGroupStateRemoved(String shipGroupSeqId);
 
     }
 

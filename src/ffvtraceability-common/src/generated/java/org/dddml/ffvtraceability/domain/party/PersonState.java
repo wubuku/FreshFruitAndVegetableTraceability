@@ -70,7 +70,6 @@ public interface PersonState extends PartyState
 
         //void when(PersonEvent.PersonStateMergePatched e);
 
-        //void when(PersonEvent.PersonStateDeleted e);
     }
 
     interface SqlPersonState extends MutablePersonState, PartyState.SqlPartyState {

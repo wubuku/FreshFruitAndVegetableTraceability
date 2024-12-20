@@ -38,11 +38,6 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         apply(e);
     }
 
-    public void delete(PartyCommand.DeleteParty c) {
-        PartyEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         PartyCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -516,94 +511,6 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         return e;
     }
 
-    protected PartyEvent map(PartyCommand.DeleteParty c) {
-        if(c.getPartyTypeId().equals(PartyTypeId.PARTY)) {
-            return mapToPartyEvent(c);
-        }
-        if(c.getPartyTypeId().equals(PartyTypeId.PERSON)) {
-            return mapToPersonEvent(c);
-        }
-        if(c.getPartyTypeId().equals(PartyTypeId.ORGANIZATION)) {
-            return mapToOrganizationEvent(c);
-        }
-        if(c.getPartyTypeId().equals(PartyTypeId.LEGAL_ORGANIZATION)) {
-            return mapToLegalOrganizationEvent(c);
-        }
-        if(c.getPartyTypeId().equals(PartyTypeId.COMPANY)) {
-            return mapToCompanyEvent(c);
-        }
-        if(c.getPartyTypeId().equals(PartyTypeId.DEPARTMENT)) {
-            return mapToDepartmentEvent(c);
-        }
-        if(c.getPartyTypeId().equals(PartyTypeId.FAMILY)) {
-            return mapToFamilyEvent(c);
-        }
-        return mapToPartyEvent(c);
-    }
-
-    protected PartyEvent mapToPartyEvent(PartyCommand.DeleteParty c) {
-        PartyEventId stateEventId = new PartyEventId(c.getPartyId(), c.getVersion());
-        PartyEvent.PartyStateDeleted e = newPartyStateDeleted(stateEventId);
-        ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
-    protected PersonEvent mapToPersonEvent(PartyCommand.DeleteParty c) {
-        PartyEventId stateEventId = new PartyEventId(c.getPartyId(), c.getVersion());
-        PersonEvent.PersonStateDeleted e = newPersonStateDeleted(stateEventId);
-        ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
-    protected OrganizationEvent mapToOrganizationEvent(PartyCommand.DeleteParty c) {
-        PartyEventId stateEventId = new PartyEventId(c.getPartyId(), c.getVersion());
-        OrganizationEvent.OrganizationStateDeleted e = newOrganizationStateDeleted(stateEventId);
-        ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
-    protected LegalOrganizationEvent mapToLegalOrganizationEvent(PartyCommand.DeleteParty c) {
-        PartyEventId stateEventId = new PartyEventId(c.getPartyId(), c.getVersion());
-        LegalOrganizationEvent.LegalOrganizationStateDeleted e = newLegalOrganizationStateDeleted(stateEventId);
-        ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
-    protected CompanyEvent mapToCompanyEvent(PartyCommand.DeleteParty c) {
-        PartyEventId stateEventId = new PartyEventId(c.getPartyId(), c.getVersion());
-        CompanyEvent.CompanyStateDeleted e = newCompanyStateDeleted(stateEventId);
-        ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
-    protected DepartmentEvent mapToDepartmentEvent(PartyCommand.DeleteParty c) {
-        PartyEventId stateEventId = new PartyEventId(c.getPartyId(), c.getVersion());
-        DepartmentEvent.DepartmentStateDeleted e = newDepartmentStateDeleted(stateEventId);
-        ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
-    protected FamilyEvent mapToFamilyEvent(PartyCommand.DeleteParty c) {
-        PartyEventId stateEventId = new PartyEventId(c.getPartyId(), c.getVersion());
-        FamilyEvent.FamilyStateDeleted e = newFamilyStateDeleted(stateEventId);
-        ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     protected PartyIdentificationEvent map(PartyIdentificationCommand c, PartyCommand outerCommand, Long version, PartyState outerState) {
         PartyIdentificationCommand.CreatePartyIdentification create = (c.getCommandType().equals(CommandType.CREATE)) ? ((PartyIdentificationCommand.CreatePartyIdentification)c) : null;
@@ -616,10 +523,6 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        PartyIdentificationCommand.RemovePartyIdentification remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((PartyIdentificationCommand.RemovePartyIdentification)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -656,18 +559,6 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
 
     }// END map(IMergePatch... ////////////////////////////
 
-    protected PartyIdentificationEvent.PartyIdentificationStateRemoved mapRemove(PartyIdentificationCommand.RemovePartyIdentification c, PartyCommand outerCommand, Long version, PartyState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        PartyIdentificationEventId stateEventId = new PartyIdentificationEventId(outerState.getPartyId(), c.getPartyIdentificationTypeId(), version);
-        PartyIdentificationEvent.PartyIdentificationStateRemoved e = newPartyIdentificationStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
-
     protected void throwOnInconsistentCommands(PartyCommand command, PartyIdentificationCommand innerCommand) {
         AbstractPartyCommand properties = command instanceof AbstractPartyCommand ? (AbstractPartyCommand) command : null;
         AbstractPartyIdentificationCommand innerProperties = innerCommand instanceof AbstractPartyIdentificationCommand ? (AbstractPartyIdentificationCommand) innerCommand : null;
@@ -700,15 +591,6 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
     protected PartyEvent.PartyStateMergePatched newPartyStateMergePatched(Long version, String commandId, String requesterId) {
         PartyEventId stateEventId = new PartyEventId(this.state.getPartyId(), version);
         PartyEvent.PartyStateMergePatched e = newPartyStateMergePatched(stateEventId);
-        ((AbstractPartyEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
-    protected PartyEvent.PartyStateDeleted newPartyStateDeleted(Long version, String commandId, String requesterId) {
-        PartyEventId stateEventId = new PartyEventId(this.state.getPartyId(), version);
-        PartyEvent.PartyStateDeleted e = newPartyStateDeleted(stateEventId);
         ((AbstractPartyEvent)e).setCommandId(commandId);
         e.setCreatedBy(requesterId);
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -771,44 +653,12 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         return new AbstractFamilyEvent.SimpleFamilyStateMergePatched(stateEventId);
     }
 
-    protected PartyEvent.PartyStateDeleted newPartyStateDeleted(PartyEventId stateEventId) {
-        return new AbstractPartyEvent.SimplePartyStateDeleted(stateEventId);
-    }
-
-    protected PersonEvent.PersonStateDeleted newPersonStateDeleted(PartyEventId stateEventId) {
-        return new AbstractPersonEvent.SimplePersonStateDeleted(stateEventId);
-    }
-
-    protected OrganizationEvent.OrganizationStateDeleted newOrganizationStateDeleted(PartyEventId stateEventId) {
-        return new AbstractOrganizationEvent.SimpleOrganizationStateDeleted(stateEventId);
-    }
-
-    protected LegalOrganizationEvent.LegalOrganizationStateDeleted newLegalOrganizationStateDeleted(PartyEventId stateEventId) {
-        return new AbstractLegalOrganizationEvent.SimpleLegalOrganizationStateDeleted(stateEventId);
-    }
-
-    protected CompanyEvent.CompanyStateDeleted newCompanyStateDeleted(PartyEventId stateEventId) {
-        return new AbstractCompanyEvent.SimpleCompanyStateDeleted(stateEventId);
-    }
-
-    protected DepartmentEvent.DepartmentStateDeleted newDepartmentStateDeleted(PartyEventId stateEventId) {
-        return new AbstractDepartmentEvent.SimpleDepartmentStateDeleted(stateEventId);
-    }
-
-    protected FamilyEvent.FamilyStateDeleted newFamilyStateDeleted(PartyEventId stateEventId) {
-        return new AbstractFamilyEvent.SimpleFamilyStateDeleted(stateEventId);
-    }
-
     protected PartyIdentificationEvent.PartyIdentificationStateCreated newPartyIdentificationStateCreated(PartyIdentificationEventId stateEventId) {
         return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateCreated(stateEventId);
     }
 
     protected PartyIdentificationEvent.PartyIdentificationStateMergePatched newPartyIdentificationStateMergePatched(PartyIdentificationEventId stateEventId) {
         return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateMergePatched(stateEventId);
-    }
-
-    protected PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(PartyIdentificationEventId stateEventId) {
-        return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateRemoved(stateEventId);
     }
 
 

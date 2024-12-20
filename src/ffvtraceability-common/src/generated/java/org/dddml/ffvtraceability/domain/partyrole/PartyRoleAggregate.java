@@ -20,8 +20,6 @@ public interface PartyRoleAggregate {
 
     void mergePatch(PartyRoleCommand.MergePatchPartyRole c);
 
-    void delete(PartyRoleCommand.DeletePartyRole c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

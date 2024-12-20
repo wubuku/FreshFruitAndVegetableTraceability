@@ -41,7 +41,6 @@ public abstract class AbstractGeoApplicationService implements GeoApplicationSer
         ss.setGeoSecCode(c.getGeoSecCode());
         ss.setAbbreviation(c.getAbbreviation());
         ss.setWellKnownText(c.getWellKnownText());
-        ss.setDeleted(false);
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -100,15 +99,6 @@ public abstract class AbstractGeoApplicationService implements GeoApplicationSer
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
         // //////////////////////////////////
-        });
-    }
-
-    public void when(GeoCommand.DeleteGeo c) {
-        update(c, s -> {
-        throwOnConcurrencyConflict(s, c);
-        // ///////////////////////////////////
-        //todo
-        // ///////////////////////////////////
         });
     }
 

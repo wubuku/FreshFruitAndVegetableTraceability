@@ -289,10 +289,6 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        GoodIdentificationCommand.RemoveGoodIdentification remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((GoodIdentificationCommand.RemoveGoodIdentification)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
         throw new UnsupportedOperationException();
     }
 
@@ -325,18 +321,6 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
-
-    protected GoodIdentificationEvent.GoodIdentificationStateRemoved mapRemove(GoodIdentificationCommand.RemoveGoodIdentification c, ProductCommand outerCommand, Long version, ProductState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        GoodIdentificationEventId stateEventId = new GoodIdentificationEventId(outerState.getProductId(), c.getGoodIdentificationTypeId(), version);
-        GoodIdentificationEvent.GoodIdentificationStateRemoved e = newGoodIdentificationStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
 
     protected void throwOnInconsistentCommands(ProductCommand command, GoodIdentificationCommand innerCommand) {
         AbstractProductCommand properties = command instanceof AbstractProductCommand ? (AbstractProductCommand) command : null;
@@ -390,10 +374,6 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
 
     protected GoodIdentificationEvent.GoodIdentificationStateMergePatched newGoodIdentificationStateMergePatched(GoodIdentificationEventId stateEventId) {
         return new AbstractGoodIdentificationEvent.SimpleGoodIdentificationStateMergePatched(stateEventId);
-    }
-
-    protected GoodIdentificationEvent.GoodIdentificationStateRemoved newGoodIdentificationStateRemoved(GoodIdentificationEventId stateEventId) {
-        return new AbstractGoodIdentificationEvent.SimpleGoodIdentificationStateRemoved(stateEventId);
     }
 
 

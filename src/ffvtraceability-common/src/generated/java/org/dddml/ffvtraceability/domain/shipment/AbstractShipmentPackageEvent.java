@@ -113,10 +113,6 @@ public abstract class AbstractShipmentPackageEvent extends AbstractEvent impleme
         return new AbstractShipmentPackageContentEvent.SimpleShipmentPackageContentStateMergePatched(newShipmentPackageContentEventId(shipmentItemSeqId));
     }
 
-    public ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved newShipmentPackageContentStateRemoved(String shipmentItemSeqId) {
-        return new AbstractShipmentPackageContentEvent.SimpleShipmentPackageContentStateRemoved(newShipmentPackageContentEventId(shipmentItemSeqId));
-    }
-
 
     public abstract String getEventType();
 
@@ -468,70 +464,6 @@ public abstract class AbstractShipmentPackageEvent extends AbstractEvent impleme
     }
 
 
-    public static abstract class AbstractShipmentPackageStateRemoved extends AbstractShipmentPackageStateEvent implements ShipmentPackageEvent.ShipmentPackageStateRemoved, Saveable
-    {
-        public AbstractShipmentPackageStateRemoved() {
-            this(new ShipmentPackageEventId());
-        }
-
-        public AbstractShipmentPackageStateRemoved(ShipmentPackageEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-        
-        private Map<ShipmentPackageContentEventId, ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved> shipmentPackageContentEvents = new HashMap<ShipmentPackageContentEventId, ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved>();
-        
-        private Iterable<ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved> readOnlyShipmentPackageContentEvents;
-
-        public Iterable<ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved> getShipmentPackageContentEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.shipmentPackageContentEvents.values();
-            }
-            else
-            {
-                if (readOnlyShipmentPackageContentEvents != null) { return readOnlyShipmentPackageContentEvents; }
-                ShipmentPackageContentEventDao eventDao = getShipmentPackageContentEventDao();
-                List<ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved> eL = new ArrayList<ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved>();
-                for (ShipmentPackageContentEvent e : eventDao.findByShipmentPackageEventId(this.getShipmentPackageEventId()))
-                {
-                    ((ShipmentPackageContentEvent.SqlShipmentPackageContentEvent)e).setEventReadOnly(true);
-                    eL.add((ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved)e);
-                }
-                return (readOnlyShipmentPackageContentEvents = eL);
-            }
-        }
-
-        public void setShipmentPackageContentEvents(Iterable<ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved e : es)
-                {
-                    addShipmentPackageContentEvent(e);
-                }
-            }
-            else { this.shipmentPackageContentEvents.clear(); }
-        }
-        
-        public void addShipmentPackageContentEvent(ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved e)
-        {
-            throwOnInconsistentEventIds((ShipmentPackageContentEvent.SqlShipmentPackageContentEvent)e);
-            this.shipmentPackageContentEvents.put(((ShipmentPackageContentEvent.SqlShipmentPackageContentEvent)e).getShipmentPackageContentEventId(), e);
-        }
-
-        public void save()
-        {
-            for (ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved e : this.getShipmentPackageContentEvents()) {
-                getShipmentPackageContentEventDao().save(e);
-            }
-        }
-    }
 
     public static class SimpleShipmentPackageStateCreated extends AbstractShipmentPackageStateCreated
     {
@@ -549,16 +481,6 @@ public abstract class AbstractShipmentPackageEvent extends AbstractEvent impleme
         }
 
         public SimpleShipmentPackageStateMergePatched(ShipmentPackageEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleShipmentPackageStateRemoved extends AbstractShipmentPackageStateRemoved
-    {
-        public SimpleShipmentPackageStateRemoved() {
-        }
-
-        public SimpleShipmentPackageStateRemoved(ShipmentPackageEventId eventId) {
             super(eventId);
         }
     }

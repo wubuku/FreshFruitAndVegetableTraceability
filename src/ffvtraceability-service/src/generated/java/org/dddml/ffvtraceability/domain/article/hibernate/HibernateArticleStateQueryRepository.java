@@ -29,7 +29,7 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ArticleId", "Title", "Body", "Author", "Comments", "Tags", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ArticleId", "Title", "Body", "Author", "Comments", "Tags", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -167,10 +167,6 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
     }
 
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
-        Predicate isNull = cb.isNull(root.get("deleted"));
-        Predicate isFalse = cb.equal(root.get("deleted"), false);
-        Predicate notDeleted = cb.or(isNull, isFalse);
-        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }

@@ -200,16 +200,6 @@ public abstract class AbstractShipmentPackageState implements ShipmentPackageSta
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -286,8 +276,6 @@ public abstract class AbstractShipmentPackageState implements ShipmentPackageSta
             when((ShipmentPackageStateCreated) e);
         } else if (e instanceof ShipmentPackageStateMergePatched) {
             when((ShipmentPackageStateMergePatched) e);
-        } else if (e instanceof ShipmentPackageStateRemoved) {
-            when((ShipmentPackageStateRemoved) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -305,8 +293,6 @@ public abstract class AbstractShipmentPackageState implements ShipmentPackageSta
         this.setWeight(e.getWeight());
         this.setWeightUomId(e.getWeightUomId());
         this.setInsuredValue(e.getInsuredValue());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -441,28 +427,6 @@ public abstract class AbstractShipmentPackageState implements ShipmentPackageSta
         for (ShipmentPackageContentEvent innerEvent : e.getShipmentPackageContentEvents()) {
             ShipmentPackageContentState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageContentState>)this.getShipmentPackageContents()).getOrAddDefault(((ShipmentPackageContentEvent.SqlShipmentPackageContentEvent)innerEvent).getShipmentPackageContentEventId().getShipmentItemSeqId());
             ((ShipmentPackageContentState.SqlShipmentPackageContentState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved) {
-                //ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved removed = (ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentPackageContents()).removeState(innerState);
-            }
-        }
-    }
-
-    public void when(ShipmentPackageStateRemoved e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        for (ShipmentPackageContentState innerState : this.getShipmentPackageContents()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentPackageContents()).removeState(innerState);
-        
-            ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved innerE = e.newShipmentPackageContentStateRemoved(innerState.getShipmentItemSeqId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((ShipmentPackageContentState.MutableShipmentPackageContentState)innerState).mutate(innerE);
-            //e.addShipmentPackageContentEvent(innerE);
         }
     }
 

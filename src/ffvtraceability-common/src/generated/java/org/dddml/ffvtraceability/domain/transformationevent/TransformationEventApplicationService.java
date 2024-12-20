@@ -18,8 +18,6 @@ public interface TransformationEventApplicationService {
 
     void when(TransformationEventCommand.MergePatchTransformationEvent c);
 
-    void when(TransformationEventCommand.DeleteTransformationEvent c);
-
     TransformationEventState get(Long id);
 
     Iterable<TransformationEventState> getAll(Integer firstResult, Integer maxResults);

@@ -20,8 +20,6 @@ public interface LotIdentificationTypeAggregate {
 
     void mergePatch(LotIdentificationTypeCommand.MergePatchLotIdentificationType c);
 
-    void delete(LotIdentificationTypeCommand.DeleteLotIdentificationType c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

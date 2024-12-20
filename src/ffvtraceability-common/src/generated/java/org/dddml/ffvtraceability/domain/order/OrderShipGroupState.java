@@ -73,8 +73,6 @@ public interface OrderShipGroupState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getOrderId();
 
     EntityStateCollection<String, OrderItemShipGroupAssociationState> getOrderItemShipGroupAssociations();
@@ -136,8 +134,6 @@ public interface OrderShipGroupState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setOrderId(String orderId);
 
 
@@ -147,7 +143,6 @@ public interface OrderShipGroupState
 
         //void when(OrderShipGroupEvent.OrderShipGroupStateMergePatched e);
 
-        //void when(OrderShipGroupEvent.OrderShipGroupStateRemoved e);
     }
 
     interface SqlOrderShipGroupState extends MutableOrderShipGroupState {

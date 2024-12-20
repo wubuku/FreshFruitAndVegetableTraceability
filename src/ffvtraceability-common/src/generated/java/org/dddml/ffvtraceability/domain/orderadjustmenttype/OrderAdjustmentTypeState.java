@@ -35,8 +35,6 @@ public interface OrderAdjustmentTypeState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getCommandId();
 
     interface MutableOrderAdjustmentTypeState extends OrderAdjustmentTypeState {
@@ -57,8 +55,6 @@ public interface OrderAdjustmentTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setCommandId(String commandId);
 

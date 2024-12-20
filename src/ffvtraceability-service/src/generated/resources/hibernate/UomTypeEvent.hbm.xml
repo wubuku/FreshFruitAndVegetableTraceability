@@ -39,7 +39,6 @@
         <property name="isPropertyHasTableRemoved" column="is_property_has_table_removed" />
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
       </subclass>
-      <subclass name="AbstractUomTypeEvent$SimpleUomTypeStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

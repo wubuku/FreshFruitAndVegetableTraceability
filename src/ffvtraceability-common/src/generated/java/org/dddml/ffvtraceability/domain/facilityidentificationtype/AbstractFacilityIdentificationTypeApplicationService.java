@@ -57,10 +57,6 @@ public abstract class AbstractFacilityIdentificationTypeApplicationService imple
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(FacilityIdentificationTypeCommand.DeleteFacilityIdentificationType c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public FacilityIdentificationTypeState get(String id) {
         FacilityIdentificationTypeState state = getStateRepository().get(id, true);
         return state;

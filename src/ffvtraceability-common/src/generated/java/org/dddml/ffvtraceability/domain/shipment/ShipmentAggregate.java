@@ -20,8 +20,6 @@ public interface ShipmentAggregate {
 
     void mergePatch(ShipmentCommand.MergePatchShipment c);
 
-    void delete(ShipmentCommand.DeleteShipment c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

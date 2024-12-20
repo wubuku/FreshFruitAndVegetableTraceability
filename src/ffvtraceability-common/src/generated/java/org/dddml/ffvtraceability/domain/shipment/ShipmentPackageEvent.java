@@ -138,18 +138,6 @@ public interface ShipmentPackageEvent extends Event {
 
         ShipmentPackageContentEvent.ShipmentPackageContentStateMergePatched newShipmentPackageContentStateMergePatched(String shipmentItemSeqId);
 
-        ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved newShipmentPackageContentStateRemoved(String shipmentItemSeqId);
-
-
-    }
-
-    interface ShipmentPackageStateRemoved extends ShipmentPackageStateEvent
-    {
-        Iterable<ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved> getShipmentPackageContentEvents();
-        
-        void addShipmentPackageContentEvent(ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved e);
-        
-        ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved newShipmentPackageContentStateRemoved(String shipmentItemSeqId);
 
     }
 

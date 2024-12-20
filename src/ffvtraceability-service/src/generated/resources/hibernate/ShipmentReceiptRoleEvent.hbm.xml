@@ -24,7 +24,6 @@
       <property name="version" column="version" not-null="true" />
       <subclass name="AbstractShipmentReceiptRoleEvent$SimpleShipmentReceiptRoleStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractShipmentReceiptRoleEvent$SimpleShipmentReceiptRoleStateMergePatched" discriminator-value="MergePatched"></subclass>
-      <subclass name="AbstractShipmentReceiptRoleEvent$SimpleShipmentReceiptRoleStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

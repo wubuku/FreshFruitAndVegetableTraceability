@@ -233,29 +233,6 @@ public class OrderAdjustmentTypeResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    /**
-     * Delete.
-     * Delete OrderAdjustmentType
-     */
-    @DeleteMapping("{orderAdjustmentTypeId}")
-    public void delete(@PathVariable("orderAdjustmentTypeId") String orderAdjustmentTypeId,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            OrderAdjustmentTypeCommand.DeleteOrderAdjustmentType deleteCmd = new DeleteOrderAdjustmentTypeDto();//.toDeleteOrderAdjustmentType();;
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            OrderAdjustmentTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(orderAdjustmentTypeId, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            orderAdjustmentTypeApplicationService.when(deleteCmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

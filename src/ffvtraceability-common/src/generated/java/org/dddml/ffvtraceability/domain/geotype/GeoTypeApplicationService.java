@@ -18,8 +18,6 @@ public interface GeoTypeApplicationService {
 
     void when(GeoTypeCommand.MergePatchGeoType c);
 
-    void when(GeoTypeCommand.DeleteGeoType c);
-
     GeoTypeState get(String id);
 
     Iterable<GeoTypeState> getAll(Integer firstResult, Integer maxResults);

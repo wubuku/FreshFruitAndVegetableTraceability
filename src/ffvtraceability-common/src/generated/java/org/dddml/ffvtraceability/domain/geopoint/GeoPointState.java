@@ -43,8 +43,6 @@ public interface GeoPointState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getCommandId();
 
     interface MutableGeoPointState extends GeoPointState {
@@ -73,8 +71,6 @@ public interface GeoPointState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setCommandId(String commandId);
 

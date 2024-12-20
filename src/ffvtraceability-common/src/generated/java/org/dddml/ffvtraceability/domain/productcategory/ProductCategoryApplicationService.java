@@ -18,8 +18,6 @@ public interface ProductCategoryApplicationService {
 
     void when(ProductCategoryCommand.MergePatchProductCategory c);
 
-    void when(ProductCategoryCommand.DeleteProductCategory c);
-
     ProductCategoryState get(String id);
 
     Iterable<ProductCategoryState> getAll(Integer firstResult, Integer maxResults);

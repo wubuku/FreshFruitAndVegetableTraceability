@@ -33,8 +33,6 @@ public interface OrderItemShipGroupAssociationState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getOrderId();
 
     String getOrderShipGroupShipGroupSeqId();
@@ -56,8 +54,6 @@ public interface OrderItemShipGroupAssociationState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setOrderId(String orderId);
 
         void setOrderShipGroupShipGroupSeqId(String orderShipGroupShipGroupSeqId);
@@ -69,7 +65,6 @@ public interface OrderItemShipGroupAssociationState
 
         //void when(OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateMergePatched e);
 
-        //void when(OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved e);
     }
 
     interface SqlOrderItemShipGroupAssociationState extends MutableOrderItemShipGroupAssociationState {

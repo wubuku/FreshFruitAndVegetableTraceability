@@ -38,11 +38,6 @@ public abstract class AbstractLotIdentificationTypeAggregate extends AbstractAgg
         apply(e);
     }
 
-    public void delete(LotIdentificationTypeCommand.DeleteLotIdentificationType c) {
-        LotIdentificationTypeEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         LotIdentificationTypeCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -74,15 +69,6 @@ public abstract class AbstractLotIdentificationTypeAggregate extends AbstractAgg
         return e;
     }
 
-    protected LotIdentificationTypeEvent map(LotIdentificationTypeCommand.DeleteLotIdentificationType c) {
-        LotIdentificationTypeEventId stateEventId = new LotIdentificationTypeEventId(c.getLotIdentificationTypeId(), c.getVersion());
-        LotIdentificationTypeEvent.LotIdentificationTypeStateDeleted e = newLotIdentificationTypeStateDeleted(stateEventId);
-        ((AbstractLotIdentificationTypeEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     ////////////////////////
 
@@ -104,25 +90,12 @@ public abstract class AbstractLotIdentificationTypeAggregate extends AbstractAgg
         return e;
     }
 
-    protected LotIdentificationTypeEvent.LotIdentificationTypeStateDeleted newLotIdentificationTypeStateDeleted(Long version, String commandId, String requesterId) {
-        LotIdentificationTypeEventId stateEventId = new LotIdentificationTypeEventId(this.state.getLotIdentificationTypeId(), version);
-        LotIdentificationTypeEvent.LotIdentificationTypeStateDeleted e = newLotIdentificationTypeStateDeleted(stateEventId);
-        ((AbstractLotIdentificationTypeEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected LotIdentificationTypeEvent.LotIdentificationTypeStateCreated newLotIdentificationTypeStateCreated(LotIdentificationTypeEventId stateEventId) {
         return new AbstractLotIdentificationTypeEvent.SimpleLotIdentificationTypeStateCreated(stateEventId);
     }
 
     protected LotIdentificationTypeEvent.LotIdentificationTypeStateMergePatched newLotIdentificationTypeStateMergePatched(LotIdentificationTypeEventId stateEventId) {
         return new AbstractLotIdentificationTypeEvent.SimpleLotIdentificationTypeStateMergePatched(stateEventId);
-    }
-
-    protected LotIdentificationTypeEvent.LotIdentificationTypeStateDeleted newLotIdentificationTypeStateDeleted(LotIdentificationTypeEventId stateEventId) {
-        return new AbstractLotIdentificationTypeEvent.SimpleLotIdentificationTypeStateDeleted(stateEventId);
     }
 
 

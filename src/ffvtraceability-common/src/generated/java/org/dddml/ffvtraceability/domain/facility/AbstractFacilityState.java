@@ -264,16 +264,6 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -361,8 +351,6 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
             when((FacilityStateCreated) e);
         } else if (e instanceof FacilityStateMergePatched) {
             when((FacilityStateMergePatched) e);
-        } else if (e instanceof FacilityStateDeleted) {
-            when((FacilityStateDeleted) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -390,8 +378,6 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         this.setGeoPointId(e.getGeoPointId());
         this.setGeoId(e.getGeoId());
         this.setActive(e.getActive());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -606,28 +592,6 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         for (FacilityIdentificationEvent innerEvent : e.getFacilityIdentificationEvents()) {
             FacilityIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)innerEvent).getFacilityIdentificationEventId().getFacilityIdentificationTypeId());
             ((FacilityIdentificationState.SqlFacilityIdentificationState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof FacilityIdentificationEvent.FacilityIdentificationStateRemoved) {
-                //FacilityIdentificationEvent.FacilityIdentificationStateRemoved removed = (FacilityIdentificationEvent.FacilityIdentificationStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getFacilityIdentifications()).removeState(innerState);
-            }
-        }
-    }
-
-    public void when(FacilityStateDeleted e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        for (FacilityIdentificationState innerState : this.getFacilityIdentifications()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getFacilityIdentifications()).removeState(innerState);
-        
-            FacilityIdentificationEvent.FacilityIdentificationStateRemoved innerE = e.newFacilityIdentificationStateRemoved(innerState.getFacilityIdentificationTypeId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((FacilityIdentificationState.MutableFacilityIdentificationState)innerState).mutate(innerE);
-            //e.addFacilityIdentificationEvent(innerE);
         }
     }
 

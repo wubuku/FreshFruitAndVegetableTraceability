@@ -44,7 +44,6 @@ public abstract class AbstractTransformationEventApplicationService implements T
         ss.setTransformationLocation(c.getTransformationLocation());
         ss.setDateTransformed(c.getDateTransformed());
         ss.setReferenceDocument(c.getReferenceDocument());
-        ss.setDeleted(false);
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -124,15 +123,6 @@ public abstract class AbstractTransformationEventApplicationService implements T
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
         // //////////////////////////////////
-        });
-    }
-
-    public void when(TransformationEventCommand.DeleteTransformationEvent c) {
-        update(c, s -> {
-        throwOnConcurrencyConflict(s, c);
-        // ///////////////////////////////////
-        //todo
-        // ///////////////////////////////////
         });
     }
 

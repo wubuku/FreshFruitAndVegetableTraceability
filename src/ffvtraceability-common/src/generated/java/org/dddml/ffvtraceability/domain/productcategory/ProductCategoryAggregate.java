@@ -20,8 +20,6 @@ public interface ProductCategoryAggregate {
 
     void mergePatch(ProductCategoryCommand.MergePatchProductCategory c);
 
-    void delete(ProductCategoryCommand.DeleteProductCategory c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

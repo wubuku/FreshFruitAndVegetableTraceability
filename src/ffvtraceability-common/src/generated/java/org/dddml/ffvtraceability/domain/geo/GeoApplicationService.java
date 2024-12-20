@@ -18,8 +18,6 @@ public interface GeoApplicationService {
 
     void when(GeoCommand.MergePatchGeo c);
 
-    void when(GeoCommand.DeleteGeo c);
-
     GeoState get(String id);
 
     Iterable<GeoState> getAll(Integer firstResult, Integer maxResults);

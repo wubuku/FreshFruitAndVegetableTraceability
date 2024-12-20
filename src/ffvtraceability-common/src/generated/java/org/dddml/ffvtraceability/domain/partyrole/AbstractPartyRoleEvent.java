@@ -159,21 +159,6 @@ public abstract class AbstractPartyRoleEvent extends AbstractEvent implements Pa
     }
 
 
-    public static abstract class AbstractPartyRoleStateDeleted extends AbstractPartyRoleStateEvent implements PartyRoleEvent.PartyRoleStateDeleted
-    {
-        public AbstractPartyRoleStateDeleted() {
-            this(new PartyRoleEventId());
-        }
-
-        public AbstractPartyRoleStateDeleted(PartyRoleEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-    }
 
     public static class SimplePartyRoleStateCreated extends AbstractPartyRoleStateCreated
     {
@@ -191,16 +176,6 @@ public abstract class AbstractPartyRoleEvent extends AbstractEvent implements Pa
         }
 
         public SimplePartyRoleStateMergePatched(PartyRoleEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimplePartyRoleStateDeleted extends AbstractPartyRoleStateDeleted
-    {
-        public SimplePartyRoleStateDeleted() {
-        }
-
-        public SimplePartyRoleStateDeleted(PartyRoleEventId eventId) {
             super(eventId);
         }
     }

@@ -79,10 +79,6 @@ public interface UomTypeEvent extends Event {
 
     }
 
-    interface UomTypeStateDeleted extends UomTypeStateEvent
-    {
-    }
-
 
 }
 

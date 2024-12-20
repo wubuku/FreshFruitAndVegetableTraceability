@@ -34,7 +34,10 @@ configuration:
 
   defaultTimestampType: OffsetDateTime
   defaultReservedPropertyMetadata:
+    noDeleted: true
     noActive: true
+    deleted:
+      name: "__Deleted__" # A placeholder that should not be used.
     active:
       name: "__Active__" # A placeholder that should not be used.
 

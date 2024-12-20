@@ -213,16 +213,6 @@ public abstract class AbstractGs1ApplicationIdentifierState implements Gs1Applic
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     private List<Gs1AppIdComponent> components;
 
     public List<Gs1AppIdComponent> getComponents() {

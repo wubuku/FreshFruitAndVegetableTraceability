@@ -247,21 +247,6 @@ public abstract class AbstractDocumentEvent extends AbstractEvent implements Doc
     }
 
 
-    public static abstract class AbstractDocumentStateDeleted extends AbstractDocumentStateEvent implements DocumentEvent.DocumentStateDeleted
-    {
-        public AbstractDocumentStateDeleted() {
-            this(new DocumentEventId());
-        }
-
-        public AbstractDocumentStateDeleted(DocumentEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-    }
 
     public static class SimpleDocumentStateCreated extends AbstractDocumentStateCreated
     {
@@ -279,16 +264,6 @@ public abstract class AbstractDocumentEvent extends AbstractEvent implements Doc
         }
 
         public SimpleDocumentStateMergePatched(DocumentEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleDocumentStateDeleted extends AbstractDocumentStateDeleted
-    {
-        public SimpleDocumentStateDeleted() {
-        }
-
-        public SimpleDocumentStateDeleted(DocumentEventId eventId) {
             super(eventId);
         }
     }

@@ -35,8 +35,6 @@ public interface ProductCategoryTypeState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getCommandId();
 
     interface MutableProductCategoryTypeState extends ProductCategoryTypeState {
@@ -57,8 +55,6 @@ public interface ProductCategoryTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setCommandId(String commandId);
 

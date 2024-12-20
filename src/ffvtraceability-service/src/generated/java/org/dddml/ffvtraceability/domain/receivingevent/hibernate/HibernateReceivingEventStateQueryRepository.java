@@ -29,7 +29,7 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ReceiveDate", "TlcSourceOrTlcSourceReference", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ReceiveDate", "TlcSourceOrTlcSourceReference", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -141,10 +141,6 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
     }
 
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
-        Predicate isNull = cb.isNull(root.get("deleted"));
-        Predicate isFalse = cb.equal(root.get("deleted"), false);
-        Predicate notDeleted = cb.or(isNull, isFalse);
-        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }

@@ -197,21 +197,6 @@ public abstract class AbstractShipmentPackageContentEvent extends AbstractEvent 
     }
 
 
-    public static abstract class AbstractShipmentPackageContentStateRemoved extends AbstractShipmentPackageContentStateEvent implements ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved
-    {
-        public AbstractShipmentPackageContentStateRemoved() {
-            this(new ShipmentPackageContentEventId());
-        }
-
-        public AbstractShipmentPackageContentStateRemoved(ShipmentPackageContentEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleShipmentPackageContentStateCreated extends AbstractShipmentPackageContentStateCreated
     {
@@ -229,16 +214,6 @@ public abstract class AbstractShipmentPackageContentEvent extends AbstractEvent 
         }
 
         public SimpleShipmentPackageContentStateMergePatched(ShipmentPackageContentEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleShipmentPackageContentStateRemoved extends AbstractShipmentPackageContentStateRemoved
-    {
-        public SimpleShipmentPackageContentStateRemoved() {
-        }
-
-        public SimpleShipmentPackageContentStateRemoved(ShipmentPackageContentEventId eventId) {
             super(eventId);
         }
     }

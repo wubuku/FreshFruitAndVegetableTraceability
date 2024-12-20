@@ -29,9 +29,6 @@ public interface OrderCommand extends Command {
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
         }
-        if (state.getDeleted() != null && state.getDeleted()) {
-            throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
-        }
         if (isCreationCommand((OrderCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
@@ -41,8 +38,6 @@ public interface OrderCommand extends Command {
             && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(OrderHeaderState.VERSION_NULL)))
             return true;
         if ((c instanceof OrderCommand.MergePatchOrder))
-            return false;
-        if ((c instanceof OrderCommand.DeleteOrder))
             return false;
         if (c.getCommandType() != null) {
             String commandType = c.getCommandType();

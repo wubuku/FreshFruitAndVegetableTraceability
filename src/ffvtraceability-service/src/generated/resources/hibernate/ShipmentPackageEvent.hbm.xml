@@ -58,7 +58,6 @@
         <property name="isPropertyWeightUomIdRemoved" column="is_property_weight_uom_id_removed" />
         <property name="isPropertyInsuredValueRemoved" column="is_property_insured_value_removed" />
       </subclass>
-      <subclass name="AbstractShipmentPackageEvent$SimpleShipmentPackageStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

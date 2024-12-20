@@ -18,8 +18,6 @@ public interface RoleTypeApplicationService {
 
     void when(RoleTypeCommand.MergePatchRoleType c);
 
-    void when(RoleTypeCommand.DeleteRoleType c);
-
     RoleTypeState get(String id);
 
     Iterable<RoleTypeState> getAll(Integer firstResult, Integer maxResults);

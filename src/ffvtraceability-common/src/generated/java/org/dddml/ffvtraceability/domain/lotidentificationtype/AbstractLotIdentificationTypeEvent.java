@@ -181,21 +181,6 @@ public abstract class AbstractLotIdentificationTypeEvent extends AbstractEvent i
     }
 
 
-    public static abstract class AbstractLotIdentificationTypeStateDeleted extends AbstractLotIdentificationTypeStateEvent implements LotIdentificationTypeEvent.LotIdentificationTypeStateDeleted
-    {
-        public AbstractLotIdentificationTypeStateDeleted() {
-            this(new LotIdentificationTypeEventId());
-        }
-
-        public AbstractLotIdentificationTypeStateDeleted(LotIdentificationTypeEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-    }
 
     public static class SimpleLotIdentificationTypeStateCreated extends AbstractLotIdentificationTypeStateCreated
     {
@@ -213,16 +198,6 @@ public abstract class AbstractLotIdentificationTypeEvent extends AbstractEvent i
         }
 
         public SimpleLotIdentificationTypeStateMergePatched(LotIdentificationTypeEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleLotIdentificationTypeStateDeleted extends AbstractLotIdentificationTypeStateDeleted
-    {
-        public SimpleLotIdentificationTypeStateDeleted() {
-        }
-
-        public SimpleLotIdentificationTypeStateDeleted(LotIdentificationTypeEventId eventId) {
             super(eventId);
         }
     }

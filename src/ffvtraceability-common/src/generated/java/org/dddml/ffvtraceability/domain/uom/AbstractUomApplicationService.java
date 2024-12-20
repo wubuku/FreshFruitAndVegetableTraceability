@@ -57,10 +57,6 @@ public abstract class AbstractUomApplicationService implements UomApplicationSer
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(UomCommand.DeleteUom c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public UomState get(String id) {
         UomState state = getStateRepository().get(id, true);
         return state;

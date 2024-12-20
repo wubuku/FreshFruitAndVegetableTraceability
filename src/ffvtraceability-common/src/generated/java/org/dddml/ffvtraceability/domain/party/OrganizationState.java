@@ -22,7 +22,6 @@ public interface OrganizationState extends PartyState
 
         //void when(OrganizationEvent.OrganizationStateMergePatched e);
 
-        //void when(OrganizationEvent.OrganizationStateDeleted e);
     }
 
     interface SqlOrganizationState extends MutableOrganizationState, PartyState.SqlPartyState {

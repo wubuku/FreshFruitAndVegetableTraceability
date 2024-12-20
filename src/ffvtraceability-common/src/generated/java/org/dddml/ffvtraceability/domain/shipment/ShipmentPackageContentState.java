@@ -35,8 +35,6 @@ public interface ShipmentPackageContentState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getShipmentId();
 
     String getShipmentPackageSeqId();
@@ -60,8 +58,6 @@ public interface ShipmentPackageContentState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setShipmentId(String shipmentId);
 
         void setShipmentPackageSeqId(String shipmentPackageSeqId);
@@ -73,7 +69,6 @@ public interface ShipmentPackageContentState
 
         //void when(ShipmentPackageContentEvent.ShipmentPackageContentStateMergePatched e);
 
-        //void when(ShipmentPackageContentEvent.ShipmentPackageContentStateRemoved e);
     }
 
     interface SqlShipmentPackageContentState extends MutableShipmentPackageContentState {

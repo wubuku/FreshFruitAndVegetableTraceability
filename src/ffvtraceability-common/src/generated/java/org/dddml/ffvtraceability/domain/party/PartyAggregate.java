@@ -20,8 +20,6 @@ public interface PartyAggregate {
 
     void mergePatch(PartyCommand.MergePatchParty c);
 
-    void delete(PartyCommand.DeleteParty c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

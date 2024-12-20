@@ -18,8 +18,6 @@ public interface PartyRoleApplicationService {
 
     void when(PartyRoleCommand.MergePatchPartyRole c);
 
-    void when(PartyRoleCommand.DeletePartyRole c);
-
     PartyRoleState get(PartyRoleId id);
 
     Iterable<PartyRoleState> getAll(Integer firstResult, Integer maxResults);

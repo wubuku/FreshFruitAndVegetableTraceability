@@ -31,9 +31,6 @@
     <property name="updatedBy">
       <column name="updated_by" />
     </property>
-    <property name="deleted">
-      <column name="deleted" />
-    </property>
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
     <property name="commandId" column="command_id" />

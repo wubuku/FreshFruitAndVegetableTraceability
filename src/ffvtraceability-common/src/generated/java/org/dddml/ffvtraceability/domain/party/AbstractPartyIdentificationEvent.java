@@ -175,21 +175,6 @@ public abstract class AbstractPartyIdentificationEvent extends AbstractEvent imp
     }
 
 
-    public static abstract class AbstractPartyIdentificationStateRemoved extends AbstractPartyIdentificationStateEvent implements PartyIdentificationEvent.PartyIdentificationStateRemoved
-    {
-        public AbstractPartyIdentificationStateRemoved() {
-            this(new PartyIdentificationEventId());
-        }
-
-        public AbstractPartyIdentificationStateRemoved(PartyIdentificationEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimplePartyIdentificationStateCreated extends AbstractPartyIdentificationStateCreated
     {
@@ -207,16 +192,6 @@ public abstract class AbstractPartyIdentificationEvent extends AbstractEvent imp
         }
 
         public SimplePartyIdentificationStateMergePatched(PartyIdentificationEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimplePartyIdentificationStateRemoved extends AbstractPartyIdentificationStateRemoved
-    {
-        public SimplePartyIdentificationStateRemoved() {
-        }
-
-        public SimplePartyIdentificationStateRemoved(PartyIdentificationEventId eventId) {
             super(eventId);
         }
     }

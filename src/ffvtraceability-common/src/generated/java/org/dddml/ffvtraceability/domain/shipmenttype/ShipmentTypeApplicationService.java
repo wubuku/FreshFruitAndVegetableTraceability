@@ -18,8 +18,6 @@ public interface ShipmentTypeApplicationService {
 
     void when(ShipmentTypeCommand.MergePatchShipmentType c);
 
-    void when(ShipmentTypeCommand.DeleteShipmentType c);
-
     ShipmentTypeState get(String id);
 
     Iterable<ShipmentTypeState> getAll(Integer firstResult, Integer maxResults);

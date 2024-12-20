@@ -152,20 +152,12 @@ public abstract class AbstractShipmentEvent extends AbstractEvent implements Shi
         return new AbstractShipmentItemEvent.SimpleShipmentItemStateMergePatched(newShipmentItemEventId(shipmentItemSeqId));
     }
 
-    public ShipmentItemEvent.ShipmentItemStateRemoved newShipmentItemStateRemoved(String shipmentItemSeqId) {
-        return new AbstractShipmentItemEvent.SimpleShipmentItemStateRemoved(newShipmentItemEventId(shipmentItemSeqId));
-    }
-
     public ShipmentPackageEvent.ShipmentPackageStateCreated newShipmentPackageStateCreated(String shipmentPackageSeqId) {
         return new AbstractShipmentPackageEvent.SimpleShipmentPackageStateCreated(newShipmentPackageEventId(shipmentPackageSeqId));
     }
 
     public ShipmentPackageEvent.ShipmentPackageStateMergePatched newShipmentPackageStateMergePatched(String shipmentPackageSeqId) {
         return new AbstractShipmentPackageEvent.SimpleShipmentPackageStateMergePatched(newShipmentPackageEventId(shipmentPackageSeqId));
-    }
-
-    public ShipmentPackageEvent.ShipmentPackageStateRemoved newShipmentPackageStateRemoved(String shipmentPackageSeqId) {
-        return new AbstractShipmentPackageEvent.SimpleShipmentPackageStateRemoved(newShipmentPackageEventId(shipmentPackageSeqId));
     }
 
 
@@ -971,116 +963,6 @@ public abstract class AbstractShipmentEvent extends AbstractEvent implements Shi
     }
 
 
-    public static abstract class AbstractShipmentStateDeleted extends AbstractShipmentStateEvent implements ShipmentEvent.ShipmentStateDeleted, Saveable
-    {
-        public AbstractShipmentStateDeleted() {
-            this(new ShipmentEventId());
-        }
-
-        public AbstractShipmentStateDeleted(ShipmentEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-        
-        private Map<ShipmentItemEventId, ShipmentItemEvent.ShipmentItemStateRemoved> shipmentItemEvents = new HashMap<ShipmentItemEventId, ShipmentItemEvent.ShipmentItemStateRemoved>();
-        
-        private Iterable<ShipmentItemEvent.ShipmentItemStateRemoved> readOnlyShipmentItemEvents;
-
-        public Iterable<ShipmentItemEvent.ShipmentItemStateRemoved> getShipmentItemEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.shipmentItemEvents.values();
-            }
-            else
-            {
-                if (readOnlyShipmentItemEvents != null) { return readOnlyShipmentItemEvents; }
-                ShipmentItemEventDao eventDao = getShipmentItemEventDao();
-                List<ShipmentItemEvent.ShipmentItemStateRemoved> eL = new ArrayList<ShipmentItemEvent.ShipmentItemStateRemoved>();
-                for (ShipmentItemEvent e : eventDao.findByShipmentEventId(this.getShipmentEventId()))
-                {
-                    ((ShipmentItemEvent.SqlShipmentItemEvent)e).setEventReadOnly(true);
-                    eL.add((ShipmentItemEvent.ShipmentItemStateRemoved)e);
-                }
-                return (readOnlyShipmentItemEvents = eL);
-            }
-        }
-
-        public void setShipmentItemEvents(Iterable<ShipmentItemEvent.ShipmentItemStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (ShipmentItemEvent.ShipmentItemStateRemoved e : es)
-                {
-                    addShipmentItemEvent(e);
-                }
-            }
-            else { this.shipmentItemEvents.clear(); }
-        }
-        
-        public void addShipmentItemEvent(ShipmentItemEvent.ShipmentItemStateRemoved e)
-        {
-            throwOnInconsistentEventIds((ShipmentItemEvent.SqlShipmentItemEvent)e);
-            this.shipmentItemEvents.put(((ShipmentItemEvent.SqlShipmentItemEvent)e).getShipmentItemEventId(), e);
-        }
-
-        
-        private Map<ShipmentPackageEventId, ShipmentPackageEvent.ShipmentPackageStateRemoved> shipmentPackageEvents = new HashMap<ShipmentPackageEventId, ShipmentPackageEvent.ShipmentPackageStateRemoved>();
-        
-        private Iterable<ShipmentPackageEvent.ShipmentPackageStateRemoved> readOnlyShipmentPackageEvents;
-
-        public Iterable<ShipmentPackageEvent.ShipmentPackageStateRemoved> getShipmentPackageEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.shipmentPackageEvents.values();
-            }
-            else
-            {
-                if (readOnlyShipmentPackageEvents != null) { return readOnlyShipmentPackageEvents; }
-                ShipmentPackageEventDao eventDao = getShipmentPackageEventDao();
-                List<ShipmentPackageEvent.ShipmentPackageStateRemoved> eL = new ArrayList<ShipmentPackageEvent.ShipmentPackageStateRemoved>();
-                for (ShipmentPackageEvent e : eventDao.findByShipmentEventId(this.getShipmentEventId()))
-                {
-                    ((ShipmentPackageEvent.SqlShipmentPackageEvent)e).setEventReadOnly(true);
-                    eL.add((ShipmentPackageEvent.ShipmentPackageStateRemoved)e);
-                }
-                return (readOnlyShipmentPackageEvents = eL);
-            }
-        }
-
-        public void setShipmentPackageEvents(Iterable<ShipmentPackageEvent.ShipmentPackageStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (ShipmentPackageEvent.ShipmentPackageStateRemoved e : es)
-                {
-                    addShipmentPackageEvent(e);
-                }
-            }
-            else { this.shipmentPackageEvents.clear(); }
-        }
-        
-        public void addShipmentPackageEvent(ShipmentPackageEvent.ShipmentPackageStateRemoved e)
-        {
-            throwOnInconsistentEventIds((ShipmentPackageEvent.SqlShipmentPackageEvent)e);
-            this.shipmentPackageEvents.put(((ShipmentPackageEvent.SqlShipmentPackageEvent)e).getShipmentPackageEventId(), e);
-        }
-
-        public void save()
-        {
-            for (ShipmentItemEvent.ShipmentItemStateRemoved e : this.getShipmentItemEvents()) {
-                getShipmentItemEventDao().save(e);
-            }
-            for (ShipmentPackageEvent.ShipmentPackageStateRemoved e : this.getShipmentPackageEvents()) {
-                getShipmentPackageEventDao().save(e);
-            }
-        }
-    }
 
     public static class SimpleShipmentStateCreated extends AbstractShipmentStateCreated
     {
@@ -1098,16 +980,6 @@ public abstract class AbstractShipmentEvent extends AbstractEvent implements Shi
         }
 
         public SimpleShipmentStateMergePatched(ShipmentEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleShipmentStateDeleted extends AbstractShipmentStateDeleted
-    {
-        public SimpleShipmentStateDeleted() {
-        }
-
-        public SimpleShipmentStateDeleted(ShipmentEventId eventId) {
             super(eventId);
         }
     }

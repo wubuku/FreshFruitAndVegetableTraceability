@@ -588,10 +588,6 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         for (ShipmentReceiptRoleEvent innerEvent : e.getShipmentReceiptRoleEvents()) {
             ShipmentReceiptRoleState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)innerEvent).getShipmentReceiptRoleEventId().getPartyRoleId());
             ((ShipmentReceiptRoleState.SqlShipmentReceiptRoleState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved) {
-                //ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved removed = (ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(innerState);
-            }
         }
     }
 
@@ -604,12 +600,6 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
 
         for (ShipmentReceiptRoleState innerState : this.getShipmentReceiptRoles()) {
             ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(innerState);
-        
-            ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved innerE = e.newShipmentReceiptRoleStateRemoved(innerState.getPartyRoleId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((ShipmentReceiptRoleState.MutableShipmentReceiptRoleState)innerState).mutate(innerE);
-            //e.addShipmentReceiptRoleEvent(innerE);
         }
     }
 

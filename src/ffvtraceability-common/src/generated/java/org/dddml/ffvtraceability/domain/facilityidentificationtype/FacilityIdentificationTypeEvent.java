@@ -63,10 +63,6 @@ public interface FacilityIdentificationTypeEvent extends Event {
 
     }
 
-    interface FacilityIdentificationTypeStateDeleted extends FacilityIdentificationTypeStateEvent
-    {
-    }
-
 
 }
 

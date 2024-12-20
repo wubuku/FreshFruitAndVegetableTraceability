@@ -110,7 +110,6 @@
         <property name="isPropertySupplierSyncCodeRemoved" column="is_property_supplier_sync_code_removed" />
         <property name="isPropertySupplierSyncMessageRemoved" column="is_property_supplier_sync_message_removed" />
       </subclass>
-      <subclass name="AbstractOrderShipGroupEvent$SimpleOrderShipGroupStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

@@ -1,5 +1,9 @@
 aggregates:
   ShippingDocument:
+    reservedPropertyMetadata:
+      noDeleted: false
+      deleted:
+        name: Deleted
     id:
       name: DocumentId
       type: id
@@ -12,5 +16,4 @@ aggregates:
         type: id
       Description:
         type: description
-
 

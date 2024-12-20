@@ -71,10 +71,6 @@ public interface CommentEvent extends Event {
 
     }
 
-    interface CommentStateRemoved extends CommentStateEvent
-    {
-    }
-
 
 }
 

@@ -290,10 +290,10 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         existingDocumentIds.stream()
                 .filter(id -> !newDocumentIds.contains(id))
                 .forEach(documentId -> {
-                    AbstractShippingDocumentCommand.SimpleDeleteShippingDocument removeCommand =
+                    AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
                             new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
-                    removeCommand.setDocumentId(documentId);
-                    shippingDocumentApplicationService.when(removeCommand);
+                    deleteCommand.setDocumentId(documentId);
+                    shippingDocumentApplicationService.when(deleteCommand);
                 });
 
         // 处理新的文档列表

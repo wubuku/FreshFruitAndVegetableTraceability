@@ -89,8 +89,6 @@ public interface OrderAdjustmentState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getOrderId();
 
     interface MutableOrderAdjustmentState extends OrderAdjustmentState {
@@ -166,8 +164,6 @@ public interface OrderAdjustmentState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setOrderId(String orderId);
 
 
@@ -177,7 +173,6 @@ public interface OrderAdjustmentState
 
         //void when(OrderAdjustmentEvent.OrderAdjustmentStateMergePatched e);
 
-        //void when(OrderAdjustmentEvent.OrderAdjustmentStateRemoved e);
     }
 
     interface SqlOrderAdjustmentState extends MutableOrderAdjustmentState {

@@ -30,7 +30,6 @@
         <property name="isPropertyCommenterRemoved" column="is_property_commenter_removed" />
         <property name="isPropertyBodyRemoved" column="is_property_body_removed" />
       </subclass>
-      <subclass name="AbstractCommentEvent$SimpleCommentStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

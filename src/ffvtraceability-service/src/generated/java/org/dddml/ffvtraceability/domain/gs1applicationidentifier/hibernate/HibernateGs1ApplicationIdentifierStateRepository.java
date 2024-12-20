@@ -25,7 +25,7 @@ public class HibernateGs1ApplicationIdentifierStateRepository implements Gs1Appl
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ApplicationIdentifier", "FormatString", "Label", "Description", "Fnc1required", "Regex", "Note", "Title", "SeparatorRequired", "Components", "Gs1DigitalLinkPrimaryKey", "Gs1DigitalLinkQualifiers", "Excludes", "Requires", "Start", "End", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ApplicationIdentifier", "FormatString", "Label", "Description", "Fnc1required", "Regex", "Note", "Title", "SeparatorRequired", "Components", "Gs1DigitalLinkPrimaryKey", "Gs1DigitalLinkQualifiers", "Excludes", "Requires", "Start", "End", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

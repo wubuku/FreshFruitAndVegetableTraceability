@@ -38,11 +38,6 @@ public abstract class AbstractDocumentAggregate extends AbstractAggregate implem
         apply(e);
     }
 
-    public void delete(DocumentCommand.DeleteDocument c) {
-        DocumentEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         DocumentCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -97,22 +92,6 @@ public abstract class AbstractDocumentAggregate extends AbstractAggregate implem
         return e;
     }
 
-    protected DocumentEvent map(DocumentCommand.DeleteDocument c) {
-        if(c.getDocumentTypeId().equals(DocumentTypeId.DOCUMENT)) {
-            return mapToDocumentEvent(c);
-        }
-        return mapToDocumentEvent(c);
-    }
-
-    protected DocumentEvent mapToDocumentEvent(DocumentCommand.DeleteDocument c) {
-        DocumentEventId stateEventId = new DocumentEventId(c.getDocumentId(), c.getVersion());
-        DocumentEvent.DocumentStateDeleted e = newDocumentStateDeleted(stateEventId);
-        ((AbstractDocumentEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     ////////////////////////
 
@@ -134,25 +113,12 @@ public abstract class AbstractDocumentAggregate extends AbstractAggregate implem
         return e;
     }
 
-    protected DocumentEvent.DocumentStateDeleted newDocumentStateDeleted(Long version, String commandId, String requesterId) {
-        DocumentEventId stateEventId = new DocumentEventId(this.state.getDocumentId(), version);
-        DocumentEvent.DocumentStateDeleted e = newDocumentStateDeleted(stateEventId);
-        ((AbstractDocumentEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected DocumentEvent.DocumentStateCreated newDocumentStateCreated(DocumentEventId stateEventId) {
         return new AbstractDocumentEvent.SimpleDocumentStateCreated(stateEventId);
     }
 
     protected DocumentEvent.DocumentStateMergePatched newDocumentStateMergePatched(DocumentEventId stateEventId) {
         return new AbstractDocumentEvent.SimpleDocumentStateMergePatched(stateEventId);
-    }
-
-    protected DocumentEvent.DocumentStateDeleted newDocumentStateDeleted(DocumentEventId stateEventId) {
-        return new AbstractDocumentEvent.SimpleDocumentStateDeleted(stateEventId);
     }
 
 

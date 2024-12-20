@@ -56,10 +56,6 @@ public interface OrderRoleEvent extends Event {
 
     }
 
-    interface OrderRoleStateRemoved extends OrderRoleStateEvent
-    {
-    }
-
 
 }
 

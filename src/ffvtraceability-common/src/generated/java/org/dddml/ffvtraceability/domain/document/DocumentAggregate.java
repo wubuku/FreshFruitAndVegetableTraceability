@@ -20,8 +20,6 @@ public interface DocumentAggregate {
 
     void mergePatch(DocumentCommand.MergePatchDocument c);
 
-    void delete(DocumentCommand.DeleteDocument c);
-
     void throwOnInvalidStateTransition(Command c);
 }
 

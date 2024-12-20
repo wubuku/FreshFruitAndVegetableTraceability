@@ -132,21 +132,6 @@ public abstract class AbstractShipmentReceiptRoleEvent extends AbstractEvent imp
     }
 
 
-    public static abstract class AbstractShipmentReceiptRoleStateRemoved extends AbstractShipmentReceiptRoleStateEvent implements ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved
-    {
-        public AbstractShipmentReceiptRoleStateRemoved() {
-            this(new ShipmentReceiptRoleEventId());
-        }
-
-        public AbstractShipmentReceiptRoleStateRemoved(ShipmentReceiptRoleEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleShipmentReceiptRoleStateCreated extends AbstractShipmentReceiptRoleStateCreated
     {
@@ -164,16 +149,6 @@ public abstract class AbstractShipmentReceiptRoleEvent extends AbstractEvent imp
         }
 
         public SimpleShipmentReceiptRoleStateMergePatched(ShipmentReceiptRoleEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleShipmentReceiptRoleStateRemoved extends AbstractShipmentReceiptRoleStateRemoved
-    {
-        public SimpleShipmentReceiptRoleStateRemoved() {
-        }
-
-        public SimpleShipmentReceiptRoleStateRemoved(ShipmentReceiptRoleEventId eventId) {
             super(eventId);
         }
     }

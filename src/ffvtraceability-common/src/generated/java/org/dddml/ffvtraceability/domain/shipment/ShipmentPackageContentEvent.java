@@ -79,10 +79,6 @@ public interface ShipmentPackageContentEvent extends Event {
 
     }
 
-    interface ShipmentPackageContentStateRemoved extends ShipmentPackageContentStateEvent
-    {
-    }
-
 
 }
 

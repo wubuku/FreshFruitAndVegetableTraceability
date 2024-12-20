@@ -233,29 +233,6 @@ public class Gs1ApplicationIdentifierResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    /**
-     * Delete.
-     * Delete Gs1ApplicationIdentifier
-     */
-    @DeleteMapping("{applicationIdentifier}")
-    public void delete(@PathVariable("applicationIdentifier") String applicationIdentifier,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            Gs1ApplicationIdentifierCommand.DeleteGs1ApplicationIdentifier deleteCmd = new DeleteGs1ApplicationIdentifierDto();//.toDeleteGs1ApplicationIdentifier();;
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            Gs1ApplicationIdentifierResourceUtils.setNullIdOrThrowOnInconsistentIds(applicationIdentifier, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            gs1ApplicationIdentifierApplicationService.when(deleteCmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

@@ -57,10 +57,6 @@ public abstract class AbstractDocumentApplicationService implements DocumentAppl
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(DocumentCommand.DeleteDocument c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public DocumentState get(String id) {
         DocumentState state = getStateRepository().get(id, true);
         return state;

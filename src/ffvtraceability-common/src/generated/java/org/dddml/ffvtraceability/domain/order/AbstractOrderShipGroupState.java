@@ -330,16 +330,6 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -416,8 +406,6 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
             when((OrderShipGroupStateCreated) e);
         } else if (e instanceof OrderShipGroupStateMergePatched) {
             when((OrderShipGroupStateMergePatched) e);
-        } else if (e instanceof OrderShipGroupStateRemoved) {
-            when((OrderShipGroupStateRemoved) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -448,8 +436,6 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
         this.setSupplierSyncStatusId(e.getSupplierSyncStatusId());
         this.setSupplierSyncCode(e.getSupplierSyncCode());
         this.setSupplierSyncMessage(e.getSupplierSyncMessage());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -688,28 +674,6 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
         for (OrderItemShipGroupAssociationEvent innerEvent : e.getOrderItemShipGroupAssociationEvents()) {
             OrderItemShipGroupAssociationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)this.getOrderItemShipGroupAssociations()).getOrAddDefault(((OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent)innerEvent).getOrderItemShipGroupAssociationEventId().getOrderItemSeqId());
             ((OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved) {
-                //OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved removed = (OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItemShipGroupAssociations()).removeState(innerState);
-            }
-        }
-    }
-
-    public void when(OrderShipGroupStateRemoved e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        for (OrderItemShipGroupAssociationState innerState : this.getOrderItemShipGroupAssociations()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItemShipGroupAssociations()).removeState(innerState);
-        
-            OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved innerE = e.newOrderItemShipGroupAssociationStateRemoved(innerState.getOrderItemSeqId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState)innerState).mutate(innerE);
-            //e.addOrderItemShipGroupAssociationEvent(innerE);
         }
     }
 

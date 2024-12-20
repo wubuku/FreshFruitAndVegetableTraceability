@@ -40,7 +40,6 @@ public abstract class AbstractProductTypeApplicationService implements ProductTy
         ss.setIsDigital(c.getIsDigital());
         ss.setHasTable(c.getHasTable());
         ss.setDescription(c.getDescription());
-        ss.setDeleted(false);
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -92,15 +91,6 @@ public abstract class AbstractProductTypeApplicationService implements ProductTy
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
         // //////////////////////////////////
-        });
-    }
-
-    public void when(ProductTypeCommand.DeleteProductType c) {
-        update(c, s -> {
-        throwOnConcurrencyConflict(s, c);
-        // ///////////////////////////////////
-        //todo
-        // ///////////////////////////////////
         });
     }
 

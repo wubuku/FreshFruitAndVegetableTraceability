@@ -33,7 +33,6 @@
         <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed" />
         <property name="isPropertyCancelQuantityRemoved" column="is_property_cancel_quantity_removed" />
       </subclass>
-      <subclass name="AbstractOrderItemShipGroupAssociationEvent$SimpleOrderItemShipGroupAssociationStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

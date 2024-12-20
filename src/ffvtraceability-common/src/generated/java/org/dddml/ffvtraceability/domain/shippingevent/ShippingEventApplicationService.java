@@ -18,8 +18,6 @@ public interface ShippingEventApplicationService {
 
     void when(ShippingEventCommand.MergePatchShippingEvent c);
 
-    void when(ShippingEventCommand.DeleteShippingEvent c);
-
     ShippingEventState get(Long id);
 
     Iterable<ShippingEventState> getAll(Integer firstResult, Integer maxResults);

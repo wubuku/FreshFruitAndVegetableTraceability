@@ -18,8 +18,6 @@ public interface FacilityApplicationService {
 
     void when(FacilityCommand.MergePatchFacility c);
 
-    void when(FacilityCommand.DeleteFacility c);
-
     FacilityState get(String id);
 
     Iterable<FacilityState> getAll(Integer firstResult, Integer maxResults);

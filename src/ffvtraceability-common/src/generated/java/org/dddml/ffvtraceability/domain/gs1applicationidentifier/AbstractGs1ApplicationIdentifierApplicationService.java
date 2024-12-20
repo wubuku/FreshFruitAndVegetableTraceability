@@ -50,7 +50,6 @@ public abstract class AbstractGs1ApplicationIdentifierApplicationService impleme
         ss.setRequires(c.getRequires());
         ss.setStart(c.getStart());
         ss.setEnd(c.getEnd());
-        ss.setDeleted(false);
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -172,15 +171,6 @@ public abstract class AbstractGs1ApplicationIdentifierApplicationService impleme
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
         // //////////////////////////////////
-        });
-    }
-
-    public void when(Gs1ApplicationIdentifierCommand.DeleteGs1ApplicationIdentifier c) {
-        update(c, s -> {
-        throwOnConcurrencyConflict(s, c);
-        // ///////////////////////////////////
-        //todo
-        // ///////////////////////////////////
         });
     }
 

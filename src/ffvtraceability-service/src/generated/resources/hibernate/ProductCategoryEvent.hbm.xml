@@ -55,7 +55,6 @@
         <property name="isPropertyDetailScreenRemoved" column="is_property_detail_screen_removed" />
         <property name="isPropertyShowInSelectRemoved" column="is_property_show_in_select_removed" />
       </subclass>
-      <subclass name="AbstractProductCategoryEvent$SimpleProductCategoryStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

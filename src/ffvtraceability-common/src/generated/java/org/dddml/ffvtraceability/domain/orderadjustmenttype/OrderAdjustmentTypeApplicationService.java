@@ -18,8 +18,6 @@ public interface OrderAdjustmentTypeApplicationService {
 
     void when(OrderAdjustmentTypeCommand.MergePatchOrderAdjustmentType c);
 
-    void when(OrderAdjustmentTypeCommand.DeleteOrderAdjustmentType c);
-
     OrderAdjustmentTypeState get(String id);
 
     Iterable<OrderAdjustmentTypeState> getAll(Integer firstResult, Integer maxResults);

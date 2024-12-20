@@ -233,29 +233,6 @@ public class FacilityIdentificationTypeResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    /**
-     * Delete.
-     * Delete FacilityIdentificationType
-     */
-    @DeleteMapping("{facilityIdentificationTypeId}")
-    public void delete(@PathVariable("facilityIdentificationTypeId") String facilityIdentificationTypeId,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            FacilityIdentificationTypeCommand.DeleteFacilityIdentificationType deleteCmd = new DeleteFacilityIdentificationTypeDto();
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            FacilityIdentificationTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(facilityIdentificationTypeId, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            facilityIdentificationTypeApplicationService.when(deleteCmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

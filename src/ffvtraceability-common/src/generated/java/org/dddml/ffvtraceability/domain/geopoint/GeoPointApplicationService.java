@@ -18,8 +18,6 @@ public interface GeoPointApplicationService {
 
     void when(GeoPointCommand.MergePatchGeoPoint c);
 
-    void when(GeoPointCommand.DeleteGeoPoint c);
-
     GeoPointState get(String id);
 
     Iterable<GeoPointState> getAll(Integer firstResult, Integer maxResults);

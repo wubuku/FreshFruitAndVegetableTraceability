@@ -103,10 +103,6 @@ public interface UomEvent extends Event {
 
     }
 
-    interface UomStateDeleted extends UomStateEvent
-    {
-    }
-
 
 }
 

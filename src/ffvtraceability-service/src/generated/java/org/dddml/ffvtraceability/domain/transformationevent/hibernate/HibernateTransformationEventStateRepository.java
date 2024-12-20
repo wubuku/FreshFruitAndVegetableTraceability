@@ -25,7 +25,7 @@ public class HibernateTransformationEventStateRepository implements Transformati
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

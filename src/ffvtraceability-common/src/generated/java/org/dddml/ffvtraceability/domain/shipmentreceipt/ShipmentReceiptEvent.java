@@ -211,19 +211,11 @@ public interface ShipmentReceiptEvent extends Event {
 
         ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateMergePatched newShipmentReceiptRoleStateMergePatched(PartyRoleId partyRoleId);
 
-        ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved newShipmentReceiptRoleStateRemoved(PartyRoleId partyRoleId);
-
 
     }
 
     interface ShipmentReceiptStateDeleted extends ShipmentReceiptStateEvent
     {
-        Iterable<ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved> getShipmentReceiptRoleEvents();
-        
-        void addShipmentReceiptRoleEvent(ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved e);
-        
-        ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateRemoved newShipmentReceiptRoleStateRemoved(PartyRoleId partyRoleId);
-
     }
 
 

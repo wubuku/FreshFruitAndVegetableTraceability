@@ -35,8 +35,6 @@ public interface ArticleState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     Set<String> getTags();
 
     EntityStateCollection<Long, CommentState> getComments();
@@ -60,8 +58,6 @@ public interface ArticleState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setTags(Set<String> tags);
 
 
@@ -71,7 +67,6 @@ public interface ArticleState
 
         //void when(ArticleEvent.ArticleStateMergePatched e);
 
-        //void when(ArticleEvent.ArticleStateDeleted e);
     }
 
     interface SqlArticleState extends MutableArticleState {

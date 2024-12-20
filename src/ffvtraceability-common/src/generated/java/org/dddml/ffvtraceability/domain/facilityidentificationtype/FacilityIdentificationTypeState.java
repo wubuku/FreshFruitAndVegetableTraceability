@@ -31,8 +31,6 @@ public interface FacilityIdentificationTypeState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     interface MutableFacilityIdentificationTypeState extends FacilityIdentificationTypeState {
         void setFacilityIdentificationTypeId(String facilityIdentificationTypeId);
 
@@ -48,8 +46,6 @@ public interface FacilityIdentificationTypeState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
 
         void mutate(Event e);
 
@@ -57,7 +53,6 @@ public interface FacilityIdentificationTypeState
 
         //void when(FacilityIdentificationTypeEvent.FacilityIdentificationTypeStateMergePatched e);
 
-        //void when(FacilityIdentificationTypeEvent.FacilityIdentificationTypeStateDeleted e);
     }
 
     interface SqlFacilityIdentificationTypeState extends MutableFacilityIdentificationTypeState {

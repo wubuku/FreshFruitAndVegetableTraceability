@@ -63,10 +63,6 @@ public interface LotIdentificationEvent extends Event {
 
     }
 
-    interface LotIdentificationStateRemoved extends LotIdentificationStateEvent
-    {
-    }
-
 
 }
 

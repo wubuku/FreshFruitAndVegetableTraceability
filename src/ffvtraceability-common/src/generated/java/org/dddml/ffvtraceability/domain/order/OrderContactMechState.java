@@ -31,8 +31,6 @@ public interface OrderContactMechState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getOrderId();
 
     interface MutableOrderContactMechState extends OrderContactMechState {
@@ -50,8 +48,6 @@ public interface OrderContactMechState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setOrderId(String orderId);
 
 
@@ -61,7 +57,6 @@ public interface OrderContactMechState
 
         //void when(OrderContactMechEvent.OrderContactMechStateMergePatched e);
 
-        //void when(OrderContactMechEvent.OrderContactMechStateRemoved e);
     }
 
     interface SqlOrderContactMechState extends MutableOrderContactMechState {

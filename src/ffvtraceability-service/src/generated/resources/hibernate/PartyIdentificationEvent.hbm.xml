@@ -30,7 +30,6 @@
         <property name="isPropertyIdValueRemoved" column="is_property_id_value_removed" />
         <property name="isPropertyVerifiedRemoved" column="is_property_verified_removed" />
       </subclass>
-      <subclass name="AbstractPartyIdentificationEvent$SimplePartyIdentificationStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

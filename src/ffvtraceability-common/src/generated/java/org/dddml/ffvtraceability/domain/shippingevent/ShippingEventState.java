@@ -45,8 +45,6 @@ public interface ShippingEventState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getCommandId();
 
     interface MutableShippingEventState extends ShippingEventState {
@@ -77,8 +75,6 @@ public interface ShippingEventState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setCommandId(String commandId);
 

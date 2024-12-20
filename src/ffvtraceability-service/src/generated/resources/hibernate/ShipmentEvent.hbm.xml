@@ -127,7 +127,6 @@
         <property name="isPropertyAdditionalShippingChargeRemoved" column="is_property_additional_shipping_charge_removed" />
         <property name="isPropertyAddtlShippingChargeDescRemoved" column="is_property_addtl_shipping_charge_desc_removed" />
       </subclass>
-      <subclass name="AbstractShipmentEvent$SimpleShipmentStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

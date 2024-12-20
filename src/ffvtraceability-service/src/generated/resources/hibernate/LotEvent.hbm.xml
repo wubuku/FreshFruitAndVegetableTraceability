@@ -39,7 +39,6 @@
         <property name="isPropertyExpirationDateRemoved" column="is_property_expiration_date_removed" />
         <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
       </subclass>
-      <subclass name="AbstractLotEvent$SimpleLotStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

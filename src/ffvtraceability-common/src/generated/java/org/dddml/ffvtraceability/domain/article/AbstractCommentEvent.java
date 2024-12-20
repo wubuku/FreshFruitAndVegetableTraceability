@@ -175,21 +175,6 @@ public abstract class AbstractCommentEvent extends AbstractEvent implements Comm
     }
 
 
-    public static abstract class AbstractCommentStateRemoved extends AbstractCommentStateEvent implements CommentEvent.CommentStateRemoved
-    {
-        public AbstractCommentStateRemoved() {
-            this(new CommentEventId());
-        }
-
-        public AbstractCommentStateRemoved(CommentEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleCommentStateCreated extends AbstractCommentStateCreated
     {
@@ -207,16 +192,6 @@ public abstract class AbstractCommentEvent extends AbstractEvent implements Comm
         }
 
         public SimpleCommentStateMergePatched(CommentEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleCommentStateRemoved extends AbstractCommentStateRemoved
-    {
-        public SimpleCommentStateRemoved() {
-        }
-
-        public SimpleCommentStateRemoved(CommentEventId eventId) {
             super(eventId);
         }
     }

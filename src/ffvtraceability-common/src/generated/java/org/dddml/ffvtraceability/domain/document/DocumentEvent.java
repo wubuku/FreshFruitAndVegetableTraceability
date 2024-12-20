@@ -87,10 +87,6 @@ public interface DocumentEvent extends Event {
 
     }
 
-    interface DocumentStateDeleted extends DocumentStateEvent
-    {
-    }
-
 
 }
 

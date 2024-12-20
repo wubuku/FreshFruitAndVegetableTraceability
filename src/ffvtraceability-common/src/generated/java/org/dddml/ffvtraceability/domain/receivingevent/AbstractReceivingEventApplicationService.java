@@ -43,7 +43,6 @@ public abstract class AbstractReceivingEventApplicationService implements Receiv
         ss.setReceiveDate(c.getReceiveDate());
         ss.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
         ss.setReferenceDocument(c.getReferenceDocument());
-        ss.setDeleted(false);
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -116,15 +115,6 @@ public abstract class AbstractReceivingEventApplicationService implements Receiv
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
         // //////////////////////////////////
-        });
-    }
-
-    public void when(ReceivingEventCommand.DeleteReceivingEvent c) {
-        update(c, s -> {
-        throwOnConcurrencyConflict(s, c);
-        // ///////////////////////////////////
-        //todo
-        // ///////////////////////////////////
         });
     }
 

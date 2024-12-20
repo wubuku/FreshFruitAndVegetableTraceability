@@ -134,16 +134,6 @@ public abstract class AbstractUomState implements UomState.SqlUomState {
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -210,8 +200,6 @@ public abstract class AbstractUomState implements UomState.SqlUomState {
             when((UomStateCreated) e);
         } else if (e instanceof UomStateMergePatched) {
             when((UomStateMergePatched) e);
-        } else if (e instanceof UomStateDeleted) {
-            when((UomStateDeleted) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -226,8 +214,6 @@ public abstract class AbstractUomState implements UomState.SqlUomState {
         this.setGs1AI(e.getGs1AI());
         this.setDescription(e.getDescription());
         this.setActive(e.getActive());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -292,15 +278,6 @@ public abstract class AbstractUomState implements UomState.SqlUomState {
             this.setActive(e.getActive());
         }
 
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-    }
-
-    public void when(UomStateDeleted e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 

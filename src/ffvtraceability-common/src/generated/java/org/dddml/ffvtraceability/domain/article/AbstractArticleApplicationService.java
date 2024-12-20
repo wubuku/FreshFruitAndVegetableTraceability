@@ -56,7 +56,6 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         s.setBody(c.getBody());
         s.setAuthor(c.getAuthor());
         s.setTags(new HashSet<>(Arrays.asList(c.getTags())));
-        s.setDeleted(false);
         s.setCreatedBy(c.getRequesterId());
         s.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         // //////////////////////////
@@ -70,10 +69,6 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
 
     public void when(ArticleCommand.MergePatchArticle c) {
         update(c, ar -> ar.mergePatch(c));
-    }
-
-    public void when(ArticleCommand.DeleteArticle c) {
-        update(c, ar -> ar.delete(c));
     }
 
     public void when(ArticleCommands.UpdateBody c) {

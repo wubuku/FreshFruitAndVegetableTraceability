@@ -30,8 +30,6 @@ public interface OrderRoleState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getOrderId();
 
     interface MutableOrderRoleState extends OrderRoleState {
@@ -47,8 +45,6 @@ public interface OrderRoleState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
         void setOrderId(String orderId);
 
 
@@ -58,7 +54,6 @@ public interface OrderRoleState
 
         //void when(OrderRoleEvent.OrderRoleStateMergePatched e);
 
-        //void when(OrderRoleEvent.OrderRoleStateRemoved e);
     }
 
     interface SqlOrderRoleState extends MutableOrderRoleState {

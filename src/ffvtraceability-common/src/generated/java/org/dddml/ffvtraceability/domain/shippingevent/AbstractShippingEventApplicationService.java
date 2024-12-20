@@ -41,7 +41,6 @@ public abstract class AbstractShippingEventApplicationService implements Shippin
         s.setShipDate(c.getShipDate());
         s.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
         s.setReferenceDocument(c.getReferenceDocument());
-        s.setDeleted(false);
         s.setCreatedBy(c.getRequesterId());
         s.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         s.setCommandId(c.getCommandId());
@@ -115,15 +114,6 @@ public abstract class AbstractShippingEventApplicationService implements Shippin
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
         // //////////////////////////////////
-        });
-    }
-
-    public void when(ShippingEventCommand.DeleteShippingEvent c) {
-        update(c, s -> {
-        throwOnConcurrencyConflict(s, c);
-        // ///////////////////////////////////
-        //todo
-        // ///////////////////////////////////
         });
     }
 

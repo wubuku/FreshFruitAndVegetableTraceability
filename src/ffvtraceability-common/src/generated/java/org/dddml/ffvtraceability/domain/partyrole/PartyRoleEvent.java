@@ -55,10 +55,6 @@ public interface PartyRoleEvent extends Event {
 
     }
 
-    interface PartyRoleStateDeleted extends PartyRoleStateEvent
-    {
-    }
-
 
 }
 

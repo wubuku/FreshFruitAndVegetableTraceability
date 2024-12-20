@@ -31,7 +31,6 @@
       <subclass name="AbstractFacilityIdentificationTypeEvent$SimpleFacilityIdentificationTypeStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
       </subclass>
-      <subclass name="AbstractFacilityIdentificationTypeEvent$SimpleFacilityIdentificationTypeStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

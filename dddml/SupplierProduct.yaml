@@ -97,6 +97,13 @@
 
     valueObjects:
       SupplierProductAssocId:
+        metadata:
+          JpaProjectionInterfaceName: SupplierProductAssocIdProjection
+          JpaProjectionPropertyAliases:
+            AvailableFromDate: AvailableFromDateInstant
+          JpaProjectionPropertyTypes:
+            AvailableFromDate: java.time.Instant
+
         properties:
           ProductId:
             columnName: PRODUCT_ID

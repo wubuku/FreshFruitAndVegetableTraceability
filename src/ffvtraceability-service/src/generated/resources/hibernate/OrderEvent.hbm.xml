@@ -139,7 +139,6 @@
         <property name="isPropertyInvoicePerShipmentRemoved" column="is_property_invoice_per_shipment_removed" />
         <property name="isPropertyMemoRemoved" column="is_property_memo_removed" />
       </subclass>
-      <subclass name="AbstractOrderEvent$SimpleOrderStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

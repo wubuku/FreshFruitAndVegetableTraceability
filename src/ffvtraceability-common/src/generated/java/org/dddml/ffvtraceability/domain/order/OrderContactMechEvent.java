@@ -63,10 +63,6 @@ public interface OrderContactMechEvent extends Event {
 
     }
 
-    interface OrderContactMechStateRemoved extends OrderContactMechStateEvent
-    {
-    }
-
 
 }
 

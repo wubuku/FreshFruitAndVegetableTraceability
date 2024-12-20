@@ -142,7 +142,6 @@
         <property name="isPropertyOldAmountPerQuantityRemoved" column="is_property_old_amount_per_quantity_removed" />
         <property name="isPropertyOldPercentageRemoved" column="is_property_old_percentage_removed" />
       </subclass>
-      <subclass name="AbstractOrderAdjustmentEvent$SimpleOrderAdjustmentStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

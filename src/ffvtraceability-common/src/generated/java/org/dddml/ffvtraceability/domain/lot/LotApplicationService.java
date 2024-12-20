@@ -18,8 +18,6 @@ public interface LotApplicationService {
 
     void when(LotCommand.MergePatchLot c);
 
-    void when(LotCommand.DeleteLot c);
-
     LotState get(String id);
 
     Iterable<LotState> getAll(Integer firstResult, Integer maxResults);

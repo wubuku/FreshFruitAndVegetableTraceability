@@ -22,7 +22,6 @@ public interface FamilyState extends InformalOrganizationState
 
         //void when(FamilyEvent.FamilyStateMergePatched e);
 
-        //void when(FamilyEvent.FamilyStateDeleted e);
     }
 
     interface SqlFamilyState extends MutableFamilyState, InformalOrganizationState.SqlInformalOrganizationState {

@@ -355,16 +355,6 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -536,8 +526,6 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             when((OrderStateCreated) e);
         } else if (e instanceof OrderStateMergePatched) {
             when((OrderStateMergePatched) e);
-        } else if (e instanceof OrderStateDeleted) {
-            when((OrderStateDeleted) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -574,8 +562,6 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setIsViewed(e.getIsViewed());
         this.setInvoicePerShipment(e.getInvoicePerShipment());
         this.setMemo(e.getMemo());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -1022,96 +1008,22 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         for (OrderRoleEvent innerEvent : e.getOrderRoleEvents()) {
             OrderRoleState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(((OrderRoleEvent.SqlOrderRoleEvent)innerEvent).getOrderRoleEventId().getPartyRoleId());
             ((OrderRoleState.SqlOrderRoleState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof OrderRoleEvent.OrderRoleStateRemoved) {
-                //OrderRoleEvent.OrderRoleStateRemoved removed = (OrderRoleEvent.OrderRoleStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderRoles()).removeState(innerState);
-            }
         }
         for (OrderContactMechEvent innerEvent : e.getOrderContactMechEvents()) {
             OrderContactMechState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(((OrderContactMechEvent.SqlOrderContactMechEvent)innerEvent).getOrderContactMechEventId().getContactMechPurposeTypeId());
             ((OrderContactMechState.SqlOrderContactMechState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof OrderContactMechEvent.OrderContactMechStateRemoved) {
-                //OrderContactMechEvent.OrderContactMechStateRemoved removed = (OrderContactMechEvent.OrderContactMechStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderContactMechanisms()).removeState(innerState);
-            }
         }
         for (OrderItemEvent innerEvent : e.getOrderItemEvents()) {
             OrderItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(((OrderItemEvent.SqlOrderItemEvent)innerEvent).getOrderItemEventId().getOrderItemSeqId());
             ((OrderItemState.SqlOrderItemState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof OrderItemEvent.OrderItemStateRemoved) {
-                //OrderItemEvent.OrderItemStateRemoved removed = (OrderItemEvent.OrderItemStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItems()).removeState(innerState);
-            }
         }
         for (OrderAdjustmentEvent innerEvent : e.getOrderAdjustmentEvents()) {
             OrderAdjustmentState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(((OrderAdjustmentEvent.SqlOrderAdjustmentEvent)innerEvent).getOrderAdjustmentEventId().getOrderAdjustmentId());
             ((OrderAdjustmentState.SqlOrderAdjustmentState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof OrderAdjustmentEvent.OrderAdjustmentStateRemoved) {
-                //OrderAdjustmentEvent.OrderAdjustmentStateRemoved removed = (OrderAdjustmentEvent.OrderAdjustmentStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAdjustments()).removeState(innerState);
-            }
         }
         for (OrderShipGroupEvent innerEvent : e.getOrderShipGroupEvents()) {
             OrderShipGroupState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(((OrderShipGroupEvent.SqlOrderShipGroupEvent)innerEvent).getOrderShipGroupEventId().getShipGroupSeqId());
             ((OrderShipGroupState.SqlOrderShipGroupState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof OrderShipGroupEvent.OrderShipGroupStateRemoved) {
-                //OrderShipGroupEvent.OrderShipGroupStateRemoved removed = (OrderShipGroupEvent.OrderShipGroupStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderShipGroups()).removeState(innerState);
-            }
-        }
-    }
-
-    public void when(OrderStateDeleted e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        for (OrderRoleState innerState : this.getOrderRoles()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderRoles()).removeState(innerState);
-        
-            OrderRoleEvent.OrderRoleStateRemoved innerE = e.newOrderRoleStateRemoved(innerState.getPartyRoleId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((OrderRoleState.MutableOrderRoleState)innerState).mutate(innerE);
-            //e.addOrderRoleEvent(innerE);
-        }
-        for (OrderContactMechState innerState : this.getOrderContactMechanisms()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderContactMechanisms()).removeState(innerState);
-        
-            OrderContactMechEvent.OrderContactMechStateRemoved innerE = e.newOrderContactMechStateRemoved(innerState.getContactMechPurposeTypeId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((OrderContactMechState.MutableOrderContactMechState)innerState).mutate(innerE);
-            //e.addOrderContactMechEvent(innerE);
-        }
-        for (OrderItemState innerState : this.getOrderItems()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItems()).removeState(innerState);
-        
-            OrderItemEvent.OrderItemStateRemoved innerE = e.newOrderItemStateRemoved(innerState.getOrderItemSeqId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((OrderItemState.MutableOrderItemState)innerState).mutate(innerE);
-            //e.addOrderItemEvent(innerE);
-        }
-        for (OrderAdjustmentState innerState : this.getOrderAdjustments()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAdjustments()).removeState(innerState);
-        
-            OrderAdjustmentEvent.OrderAdjustmentStateRemoved innerE = e.newOrderAdjustmentStateRemoved(innerState.getOrderAdjustmentId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((OrderAdjustmentState.MutableOrderAdjustmentState)innerState).mutate(innerE);
-            //e.addOrderAdjustmentEvent(innerE);
-        }
-        for (OrderShipGroupState innerState : this.getOrderShipGroups()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderShipGroups()).removeState(innerState);
-        
-            OrderShipGroupEvent.OrderShipGroupStateRemoved innerE = e.newOrderShipGroupStateRemoved(innerState.getShipGroupSeqId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((OrderShipGroupState.MutableOrderShipGroupState)innerState).mutate(innerE);
-            //e.addOrderShipGroupEvent(innerE);
         }
     }
 

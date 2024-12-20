@@ -57,10 +57,6 @@ public abstract class AbstractShipmentApplicationService implements ShipmentAppl
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(ShipmentCommand.DeleteShipment c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public ShipmentState get(String id) {
         ShipmentState state = getStateRepository().get(id, true);
         return state;

@@ -1033,21 +1033,6 @@ public abstract class AbstractOrderItemEvent extends AbstractEvent implements Or
     }
 
 
-    public static abstract class AbstractOrderItemStateRemoved extends AbstractOrderItemStateEvent implements OrderItemEvent.OrderItemStateRemoved
-    {
-        public AbstractOrderItemStateRemoved() {
-            this(new OrderItemEventId());
-        }
-
-        public AbstractOrderItemStateRemoved(OrderItemEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.REMOVED;
-        }
-
-    }
 
     public static class SimpleOrderItemStateCreated extends AbstractOrderItemStateCreated
     {
@@ -1065,16 +1050,6 @@ public abstract class AbstractOrderItemEvent extends AbstractEvent implements Or
         }
 
         public SimpleOrderItemStateMergePatched(OrderItemEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleOrderItemStateRemoved extends AbstractOrderItemStateRemoved
-    {
-        public SimpleOrderItemStateRemoved() {
-        }
-
-        public SimpleOrderItemStateRemoved(OrderItemEventId eventId) {
             super(eventId);
         }
     }

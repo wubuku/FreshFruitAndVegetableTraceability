@@ -18,8 +18,6 @@ public interface PartyApplicationService {
 
     void when(PartyCommand.MergePatchParty c);
 
-    void when(PartyCommand.DeleteParty c);
-
     PartyState get(String id);
 
     Iterable<PartyState> getAll(Integer firstResult, Integer maxResults);

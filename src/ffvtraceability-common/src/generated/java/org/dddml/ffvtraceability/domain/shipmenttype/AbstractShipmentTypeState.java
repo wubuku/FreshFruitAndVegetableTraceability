@@ -104,16 +104,6 @@ public abstract class AbstractShipmentTypeState implements ShipmentTypeState.Sql
         this.updatedAt = updatedAt;
     }
 
-    private Boolean deleted;
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -180,8 +170,6 @@ public abstract class AbstractShipmentTypeState implements ShipmentTypeState.Sql
             when((ShipmentTypeStateCreated) e);
         } else if (e instanceof ShipmentTypeStateMergePatched) {
             when((ShipmentTypeStateMergePatched) e);
-        } else if (e instanceof ShipmentTypeStateDeleted) {
-            when((ShipmentTypeStateDeleted) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -193,8 +181,6 @@ public abstract class AbstractShipmentTypeState implements ShipmentTypeState.Sql
         this.setParentTypeId(e.getParentTypeId());
         this.setHasTable(e.getHasTable());
         this.setDescription(e.getDescription());
-
-        this.setDeleted(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -235,15 +221,6 @@ public abstract class AbstractShipmentTypeState implements ShipmentTypeState.Sql
             this.setDescription(e.getDescription());
         }
 
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-    }
-
-    public void when(ShipmentTypeStateDeleted e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 

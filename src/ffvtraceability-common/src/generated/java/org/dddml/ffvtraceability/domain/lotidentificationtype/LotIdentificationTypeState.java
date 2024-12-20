@@ -31,8 +31,6 @@ public interface LotIdentificationTypeState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     interface MutableLotIdentificationTypeState extends LotIdentificationTypeState {
         void setLotIdentificationTypeId(String lotIdentificationTypeId);
 
@@ -48,8 +46,6 @@ public interface LotIdentificationTypeState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setDeleted(Boolean deleted);
-
 
         void mutate(Event e);
 
@@ -57,7 +53,6 @@ public interface LotIdentificationTypeState
 
         //void when(LotIdentificationTypeEvent.LotIdentificationTypeStateMergePatched e);
 
-        //void when(LotIdentificationTypeEvent.LotIdentificationTypeStateDeleted e);
     }
 
     interface SqlLotIdentificationTypeState extends MutableLotIdentificationTypeState {

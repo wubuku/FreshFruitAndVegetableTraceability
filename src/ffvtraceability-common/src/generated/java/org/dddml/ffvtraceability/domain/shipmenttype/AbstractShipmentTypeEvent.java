@@ -225,21 +225,6 @@ public abstract class AbstractShipmentTypeEvent extends AbstractEvent implements
     }
 
 
-    public static abstract class AbstractShipmentTypeStateDeleted extends AbstractShipmentTypeStateEvent implements ShipmentTypeEvent.ShipmentTypeStateDeleted
-    {
-        public AbstractShipmentTypeStateDeleted() {
-            this(new ShipmentTypeEventId());
-        }
-
-        public AbstractShipmentTypeStateDeleted(ShipmentTypeEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
-        }
-
-    }
 
     public static class SimpleShipmentTypeStateCreated extends AbstractShipmentTypeStateCreated
     {
@@ -257,16 +242,6 @@ public abstract class AbstractShipmentTypeEvent extends AbstractEvent implements
         }
 
         public SimpleShipmentTypeStateMergePatched(ShipmentTypeEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleShipmentTypeStateDeleted extends AbstractShipmentTypeStateDeleted
-    {
-        public SimpleShipmentTypeStateDeleted() {
-        }
-
-        public SimpleShipmentTypeStateDeleted(ShipmentTypeEventId eventId) {
             super(eventId);
         }
     }

@@ -105,18 +105,6 @@ public interface ArticleEvent extends Event {
 
         CommentEvent.CommentStateMergePatched newCommentStateMergePatched(Long commentSeqId);
 
-        CommentEvent.CommentStateRemoved newCommentStateRemoved(Long commentSeqId);
-
-
-    }
-
-    interface ArticleStateDeleted extends ArticleStateEvent
-    {
-        Iterable<CommentEvent.CommentStateRemoved> getCommentEvents();
-        
-        void addCommentEvent(CommentEvent.CommentStateRemoved e);
-        
-        CommentEvent.CommentStateRemoved newCommentStateRemoved(Long commentSeqId);
 
     }
 

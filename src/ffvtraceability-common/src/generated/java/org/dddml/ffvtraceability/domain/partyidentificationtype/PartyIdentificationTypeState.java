@@ -35,8 +35,6 @@ public interface PartyIdentificationTypeState
 
     OffsetDateTime getUpdatedAt();
 
-    Boolean getDeleted();
-
     String getCommandId();
 
     interface MutablePartyIdentificationTypeState extends PartyIdentificationTypeState {
@@ -57,8 +55,6 @@ public interface PartyIdentificationTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
-
-        void setDeleted(Boolean deleted);
 
         void setCommandId(String commandId);
 

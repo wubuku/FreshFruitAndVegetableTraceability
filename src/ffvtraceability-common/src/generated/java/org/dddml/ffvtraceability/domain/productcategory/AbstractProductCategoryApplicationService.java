@@ -57,10 +57,6 @@ public abstract class AbstractProductCategoryApplicationService implements Produ
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public void when(ProductCategoryCommand.DeleteProductCategory c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public ProductCategoryState get(String id) {
         ProductCategoryState state = getStateRepository().get(id, true);
         return state;
