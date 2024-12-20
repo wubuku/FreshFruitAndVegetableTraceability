@@ -129,7 +129,7 @@ services:
           DocumentId:
             type: id
           ReceiptId:
-            type: id
+            type: id-long
 
       CreateReceivingDocument:
         # 创建收货单
@@ -203,8 +203,8 @@ services:
         parameters:
           DocumentId:
             type: id
-          ReceivingItem:
-            type: BffReceivingItemDto
+          ReceiptId:
+            type: id-long
 
       UpdateReceivingItem:
         # 更新行项的方法
@@ -218,7 +218,7 @@ services:
           DocumentId:
             type: id
           ReceiptId:
-            type: id
+            type: id-long
           DestinationFacilityId:
             # 只有当收货单的只存在一个行项（当前行项）时，才允许修改 DestinationFacilityId？
             # 如果收货单存在多个行项，如果试图修改 DestinationFacilityId，则报错（or 忽略？）。

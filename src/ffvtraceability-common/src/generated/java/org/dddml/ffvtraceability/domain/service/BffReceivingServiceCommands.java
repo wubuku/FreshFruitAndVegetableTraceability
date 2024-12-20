@@ -218,16 +218,16 @@ public class BffReceivingServiceCommands {
         }
 
         /**
-         * Receiving Item
+         * Receipt Id
          */
-        private BffReceivingItemDto receivingItem;
+        private String receiptId;
 
-        public BffReceivingItemDto getReceivingItem() {
-            return receivingItem;
+        public String getReceiptId() {
+            return receiptId;
         }
 
-        public void setReceivingItem(BffReceivingItemDto receivingItem) {
-            this.receivingItem = receivingItem;
+        public void setReceiptId(String receiptId) {
+            this.receiptId = receiptId;
         }
 
     }

@@ -129,11 +129,11 @@ public class BffReceivingServiceResource {
     @DeleteMapping("{documentId}/Items/{receiptId}")
     public void deleteReceivingItem(
         @PathVariable("documentId") String documentId,
-        @RequestParam(value = "receivingItem", required = false) BffReceivingItemDto receivingItem
+        @PathVariable("receiptId") String receiptId
     ) {
         BffReceivingServiceCommands.DeleteReceivingItem deleteReceivingItem = new BffReceivingServiceCommands.DeleteReceivingItem();
         deleteReceivingItem.setDocumentId(documentId);
-        deleteReceivingItem.setReceivingItem(receivingItem);
+        deleteReceivingItem.setReceiptId(receiptId);
         try {
         deleteReceivingItem.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(deleteReceivingItem);
