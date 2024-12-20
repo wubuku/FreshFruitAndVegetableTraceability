@@ -105,11 +105,23 @@ public class BffFacilityLocationDto implements Serializable {
         this.geoPointId = geoPointId;
     }
 
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
     public BffFacilityLocationDto()
     {
     }
 
-    public BffFacilityLocationDto(String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId)
+    public BffFacilityLocationDto(String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId, String active)
     {
         this.locationSeqId = locationSeqId;
         this.locationTypeEnumId = locationTypeEnumId;
@@ -119,6 +131,7 @@ public class BffFacilityLocationDto implements Serializable {
         this.levelId = levelId;
         this.positionId = positionId;
         this.geoPointId = geoPointId;
+        this.active = active;
     }
 
     @Override
@@ -141,6 +154,7 @@ public class BffFacilityLocationDto implements Serializable {
             && (levelId == other.levelId || (levelId != null && levelId.equals(other.levelId)))
             && (positionId == other.positionId || (positionId != null && positionId.equals(other.positionId)))
             && (geoPointId == other.geoPointId || (geoPointId != null && geoPointId.equals(other.geoPointId)))
+            && (active == other.active || (active != null && active.equals(other.active)))
             ;
     }
 
@@ -172,6 +186,9 @@ public class BffFacilityLocationDto implements Serializable {
         if (this.geoPointId != null) {
             hash += 13 * this.geoPointId.hashCode();
         }
+        if (this.active != null) {
+            hash += 13 * this.active.hashCode();
+        }
         return hash;
     }
 
@@ -186,6 +203,7 @@ public class BffFacilityLocationDto implements Serializable {
                 ", levelId=" + '\'' + levelId + '\'' +
                 ", positionId=" + '\'' + positionId + '\'' +
                 ", geoPointId=" + '\'' + geoPointId + '\'' +
+                ", active=" + '\'' + active + '\'' +
                 '}';
     }
 

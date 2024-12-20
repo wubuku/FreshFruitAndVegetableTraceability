@@ -78,6 +78,10 @@ public interface FacilityLocationCommand extends Command {
 
         void setGeoPointId(String geoPointId);
 
+        String getActive();
+
+        void setActive(String active);
+
     }
 
     interface CreateFacilityLocation extends CreateOrMergePatchFacilityLocation
@@ -113,6 +117,10 @@ public interface FacilityLocationCommand extends Command {
         Boolean getIsPropertyGeoPointIdRemoved();
 
         void setIsPropertyGeoPointIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyActiveRemoved();
+
+        void setIsPropertyActiveRemoved(Boolean removed);
 
 
     }

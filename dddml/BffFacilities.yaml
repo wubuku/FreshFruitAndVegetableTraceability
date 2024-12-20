@@ -75,6 +75,8 @@ valueObjects:
         type: id
       GeoPointId:
         type: id
+      Active:
+        type: indicator
 
 services:
   BffFacilityService:
@@ -144,6 +146,11 @@ services:
           RestfulPathVariables:
             - FacilityId
         isQuery: true
+        parameters:
+          FacilityId:
+            type: id
+          Active:
+            type: indicator
         result:
           itemType: BffFacilityLocationDto
 

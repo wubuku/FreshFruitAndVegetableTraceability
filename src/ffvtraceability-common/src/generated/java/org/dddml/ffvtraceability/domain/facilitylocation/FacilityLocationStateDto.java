@@ -110,6 +110,18 @@ public class FacilityLocationStateDto {
         this.geoPointId = geoPointId;
     }
 
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -222,6 +234,9 @@ public class FacilityLocationStateDto {
             }
             if (returnedFieldsContains("GeoPointId")) {
                 dto.setGeoPointId(state.getGeoPointId());
+            }
+            if (returnedFieldsContains("Active")) {
+                dto.setActive(state.getActive());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

@@ -2034,6 +2034,7 @@ public class M {
             "levelId",
             "positionId",
             "geoPointId",
+            "active",
             "version",
             "createdBy",
             "createdAt",
@@ -2046,6 +2047,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
             "String",
             "String",
             "String",
@@ -2090,6 +2092,8 @@ public class M {
         aliasMap.put("PositionId", "positionId");
         aliasMap.put("geoPointId", "geoPointId");
         aliasMap.put("GeoPointId", "geoPointId");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

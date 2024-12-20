@@ -33,6 +33,8 @@ public interface FacilityLocationState
 
     String getGeoPointId();
 
+    String getActive();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -61,6 +63,8 @@ public interface FacilityLocationState
         void setPositionId(String positionId);
 
         void setGeoPointId(String geoPointId);
+
+        void setActive(String active);
 
         void setVersion(Long version);
 

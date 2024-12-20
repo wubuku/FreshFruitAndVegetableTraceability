@@ -115,6 +115,21 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
         this.geoPointId = geoPointId;
     }
 
+    /**
+     * Active
+     */
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
 
     private Boolean isPropertyLocationTypeEnumIdRemoved;
 
@@ -198,6 +213,18 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
     public void setIsPropertyGeoPointIdRemoved(Boolean removed)
     {
         this.isPropertyGeoPointIdRemoved = removed;
+    }
+
+    private Boolean isPropertyActiveRemoved;
+
+    public Boolean getIsPropertyActiveRemoved()
+    {
+        return this.isPropertyActiveRemoved;
+    }
+
+    public void setIsPropertyActiveRemoved(Boolean removed)
+    {
+        this.isPropertyActiveRemoved = removed;
     }
 
     public FacilityLocationCommand toCommand()
@@ -353,6 +380,16 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
                 CreateOrMergePatchFacilityLocationDto.this.setGeoPointId(p);
             }
 
+            @Override
+            public String getActive() {
+                return CreateOrMergePatchFacilityLocationDto.this.getActive();
+            }
+
+            @Override
+            public void setActive(String p) {
+                CreateOrMergePatchFacilityLocationDto.this.setActive(p);
+            }
+
 
         };
     }
@@ -485,6 +522,16 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
             }
 
             @Override
+            public String getActive() {
+                return CreateOrMergePatchFacilityLocationDto.this.getActive();
+            }
+
+            @Override
+            public void setActive(String p) {
+                CreateOrMergePatchFacilityLocationDto.this.setActive(p);
+            }
+
+            @Override
             public Boolean getIsPropertyLocationTypeEnumIdRemoved() {
                 return CreateOrMergePatchFacilityLocationDto.this.getIsPropertyLocationTypeEnumIdRemoved();
             }
@@ -552,6 +599,16 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
             @Override
             public void setIsPropertyGeoPointIdRemoved(Boolean removed) {
                 CreateOrMergePatchFacilityLocationDto.this.setIsPropertyGeoPointIdRemoved(removed);
+            }
+
+            @Override
+            public Boolean getIsPropertyActiveRemoved() {
+                return CreateOrMergePatchFacilityLocationDto.this.getIsPropertyActiveRemoved();
+            }
+
+            @Override
+            public void setIsPropertyActiveRemoved(Boolean removed) {
+                CreateOrMergePatchFacilityLocationDto.this.setIsPropertyActiveRemoved(removed);
             }
 
 

@@ -100,8 +100,12 @@ public class BffFacilityServiceResource {
 
     @GetMapping("{facilityId}/Locations")
     public BffFacilityLocationDto[] getFacilityLocations(
+        @PathVariable("facilityId") String facilityId,
+        @RequestParam(value = "active", required = false) String active
     ) {
         BffFacilityServiceCommands.GetFacilityLocations getFacilityLocations = new BffFacilityServiceCommands.GetFacilityLocations();
+        getFacilityLocations.setFacilityId(facilityId);
+        getFacilityLocations.setActive(active);
         try {
         getFacilityLocations.setRequesterId(SecurityContextUtil.getRequesterId());
         return java.util.stream.StreamSupport.stream((bffFacilityApplicationService.when(getFacilityLocations)).spliterator(), false).collect(java.util.stream.Collectors.toList()).toArray(new BffFacilityLocationDto[0]);

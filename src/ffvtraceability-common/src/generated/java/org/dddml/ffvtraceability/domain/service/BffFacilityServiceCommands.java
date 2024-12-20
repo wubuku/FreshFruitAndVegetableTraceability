@@ -144,6 +144,32 @@ public class BffFacilityServiceCommands {
 
     public static class GetFacilityLocations extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Active
+         */
+        private String active;
+
+        public String getActive() {
+            return active;
+        }
+
+        public void setActive(String active) {
+            this.active = active;
+        }
+
     }
 
     public static class GetFacilityLocation extends org.dddml.ffvtraceability.domain.AbstractCommand {

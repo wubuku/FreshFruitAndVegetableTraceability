@@ -32,6 +32,9 @@
     <property name="geoPointId">
       <column name="geo_point_id" sql-type="VARCHAR(20)" />
     </property>
+    <property name="active">
+      <column name="active" sql-type="CHAR(1)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

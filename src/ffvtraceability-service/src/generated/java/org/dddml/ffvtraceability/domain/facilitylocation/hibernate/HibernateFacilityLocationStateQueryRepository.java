@@ -29,7 +29,7 @@ public class HibernateFacilityLocationStateQueryRepository implements FacilityLo
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityLocationId", "LocationTypeEnumId", "AreaId", "AisleId", "SectionId", "LevelId", "PositionId", "GeoPointId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityLocationId", "LocationTypeEnumId", "AreaId", "AisleId", "SectionId", "LevelId", "PositionId", "GeoPointId", "Active", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

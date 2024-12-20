@@ -28,6 +28,8 @@
         type: id
       GeoPointId:
         type: id
+      Active:
+        type: indicator
 
     valueObjects:
       FacilityLocationId:
