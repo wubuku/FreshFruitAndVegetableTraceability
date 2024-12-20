@@ -39,7 +39,8 @@ public interface BffReceiptRepository extends JpaRepository<AbstractShipmentRece
 
     String COMMON_SHIPMENT_RECEIPT_JOINS = """
             FROM shipment s
-            LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id
+            LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id 
+                AND (sr.deleted IS NULL OR sr.deleted = false)
             LEFT JOIN party p ON s.party_id_from = p.party_id
             LEFT JOIN facility f ON s.origin_facility_id = f.facility_id
             LEFT JOIN product prod ON sr.product_id = prod.product_id
@@ -118,7 +119,8 @@ public interface BffReceiptRepository extends JpaRepository<AbstractShipmentRece
             "   d.document_text as referenceDocumentText " +
             "FROM shipping_document sd " +
             "JOIN document d ON sd.document_id = d.document_id " +
-            "WHERE sd.shipment_id IN :shipmentIds",
+            "WHERE sd.shipment_id IN :shipmentIds " +
+            "   AND (sd.deleted IS NULL OR sd.deleted = false)",
             nativeQuery = true)
     List<BffReceivingDocumentItemProjection> findReferenceDocumentsByShipmentIds(@Param("shipmentIds") List<String> shipmentIds);
 }
