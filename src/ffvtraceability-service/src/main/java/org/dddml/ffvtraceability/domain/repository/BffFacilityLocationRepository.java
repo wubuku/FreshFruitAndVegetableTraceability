@@ -25,7 +25,6 @@ public interface BffFacilityLocationRepository extends JpaRepository<
             FROM facility_location fl
             WHERE fl.facility_id = :facilityId
                 AND (:active IS NULL OR fl.active = :active)
-                AND (fl.deleted IS NULL OR fl.deleted = false)
             ORDER BY fl.location_seq_id
             """,
             nativeQuery = true)

@@ -373,7 +373,7 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "facilityId": "FACILITY001",
+  "facilityId": "F001",
   "ownerPartyId": "SUPPLIER001",
   "facilityName": "Fresh Produce Processing Center",
   "facilitySize": 5000,
@@ -396,6 +396,41 @@ curl -X 'GET' \
   -H 'accept: application/json'
 ```
 
+创建“货位”：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffFacilities/F001/Locations' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "locationSeqId": "F001-WH01-A01-01",
+  "locationTypeEnumId": "STORAGE",
+  "areaId": "WH01",
+  "aisleId": "A01",
+  "sectionId": "01",
+  "levelId": "01",
+  "positionId": "01",
+  "geoPointId": "GP001",
+  "active": "Y"
+}'
+```
+
+查询“货位”：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffFacilities/F001/Locations' \
+  -H 'accept: application/json'
+```
+
+查询单个“货位”：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffFacilities/F001/Locations/F001-WH01-A01-01' \
+  -H 'accept: application/json'
+```
 
 
 

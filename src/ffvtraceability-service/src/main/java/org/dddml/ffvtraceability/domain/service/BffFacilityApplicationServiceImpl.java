@@ -3,6 +3,7 @@ package org.dddml.ffvtraceability.domain.service;
 import org.dddml.ffvtraceability.domain.BffFacilityDto;
 import org.dddml.ffvtraceability.domain.BffFacilityLocationDto;
 import org.dddml.ffvtraceability.domain.facility.*;
+import org.dddml.ffvtraceability.domain.facilitylocation.AbstractFacilityLocationCommand;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationState;
@@ -220,7 +221,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 new FacilityLocationId(c.getFacilityId(), c.getLocationSeqId())
         );
         if (locationState != null) {
-            //todo return bffFacilityLocationMapper.toBffFacilityLocationDto(locationState);
+            return bffFacilityLocationMapper.toBffFacilityLocationDto(locationState);
         }
         return null;
     }
@@ -228,74 +229,77 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Override
     @Transactional
     public void when(BffFacilityServiceCommands.CreateFacilityLocation c) {
-//        SimpleCreateFacilityLocation createLocation =
-//                new AbstractFacilityLocationCommand.SimpleCreateFacilityLocation();
-//
-//        FacilityLocationId locationId = new FacilityLocationId(
-//                c.getFacilityId(),
-//                c.getLocation().getLocationSeqId() != null ?
-//                        c.getLocation().getLocationSeqId() :
-//                        IdUtils.randomId()
-//        );
-//        createLocation.setFacilityLocationId(locationId);
-//        createLocation.setLocationTypeEnumId(c.getLocation().getLocationTypeEnumId());
-//        createLocation.setAreaId(c.getLocation().getAreaId());
-//        createLocation.setAisleId(c.getLocation().getAisleId());
-//        createLocation.setSectionId(c.getLocation().getSectionId());
-//        createLocation.setLevelId(c.getLocation().getLevelId());
-//        createLocation.setPositionId(c.getLocation().getPositionId());
-//        createLocation.setGeoPointId(c.getLocation().getGeoPointId());
-//        createLocation.setActive(INDICATOR_YES); // 默认激活
-//        createLocation.setCommandId(UUID.randomUUID().toString());
-//        createLocation.setRequesterId(c.getRequesterId());
-//
-//        facilityLocationApplicationService.when(createLocation);
+        if (c.getFacilityId() == null) {
+            throw new IllegalArgumentException("FacilityId is required.");
+        }
+        if (c.getFacilityLocation().getLocationSeqId() == null) {
+            throw new IllegalArgumentException("LocationSeqId is required.");
+        }
+        if (!c.getFacilityLocation().getLocationSeqId().startsWith(c.getFacilityId())) {
+            throw new IllegalArgumentException("LocationSeqId must start with FacilityId.");// NOTE: 这个要求合理？
+        }
+
+        AbstractFacilityLocationCommand.SimpleCreateFacilityLocation createLocation = new AbstractFacilityLocationCommand.SimpleCreateFacilityLocation();
+        FacilityLocationId locationId = new FacilityLocationId(c.getFacilityId(), c.getFacilityLocation().getLocationSeqId());
+        createLocation.setFacilityLocationId(locationId);
+        createLocation.setLocationTypeEnumId(c.getFacilityLocation().getLocationTypeEnumId());
+        createLocation.setAreaId(c.getFacilityLocation().getAreaId());
+        createLocation.setAisleId(c.getFacilityLocation().getAisleId());
+        createLocation.setSectionId(c.getFacilityLocation().getSectionId());
+        createLocation.setLevelId(c.getFacilityLocation().getLevelId());
+        createLocation.setPositionId(c.getFacilityLocation().getPositionId());
+        createLocation.setGeoPointId(c.getFacilityLocation().getGeoPointId());
+        createLocation.setActive(INDICATOR_YES); // 默认激活
+        createLocation.setCommandId(UUID.randomUUID().toString());
+        createLocation.setRequesterId(c.getRequesterId());
+
+        facilityLocationApplicationService.when(createLocation);
     }
 
     @Override
     @Transactional
     public void when(BffFacilityServiceCommands.UpdateFacilityLocation c) {
-//        FacilityLocationId locationId = new FacilityLocationId(c.getFacilityId(), c.getLocationSeqId());
-//        FacilityLocationState locationState = facilityLocationApplicationService.get(locationId);
-//        if (locationState == null) {
-//            throw new IllegalArgumentException("Facility location not found: " + locationId);
-//        }
-//
-//        AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation mergePatchLocation =
-//                new AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation();
-//        mergePatchLocation.setFacilityLocationId(locationId);
-//        mergePatchLocation.setVersion(locationState.getVersion());
-//        mergePatchLocation.setLocationTypeEnumId(c.getLocation().getLocationTypeEnumId());
-//        mergePatchLocation.setAreaId(c.getLocation().getAreaId());
-//        mergePatchLocation.setAisleId(c.getLocation().getAisleId());
-//        mergePatchLocation.setSectionId(c.getLocation().getSectionId());
-//        mergePatchLocation.setLevelId(c.getLocation().getLevelId());
-//        mergePatchLocation.setPositionId(c.getLocation().getPositionId());
-//        mergePatchLocation.setGeoPointId(c.getLocation().getGeoPointId());
-//        mergePatchLocation.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
-//        mergePatchLocation.setRequesterId(c.getRequesterId());
-//
-//        facilityLocationApplicationService.when(mergePatchLocation);
+        FacilityLocationId locationId = new FacilityLocationId(c.getFacilityId(), c.getLocationSeqId());
+        FacilityLocationState locationState = facilityLocationApplicationService.get(locationId);
+        if (locationState == null) {
+            throw new IllegalArgumentException("Facility location not found: " + locationId);
+        }
+
+        AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation mergePatchLocation =
+                new AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation();
+        mergePatchLocation.setFacilityLocationId(locationId);
+        mergePatchLocation.setVersion(locationState.getVersion());
+        mergePatchLocation.setLocationTypeEnumId(c.getFacilityLocation().getLocationTypeEnumId());
+        mergePatchLocation.setAreaId(c.getFacilityLocation().getAreaId());
+        mergePatchLocation.setAisleId(c.getFacilityLocation().getAisleId());
+        mergePatchLocation.setSectionId(c.getFacilityLocation().getSectionId());
+        mergePatchLocation.setLevelId(c.getFacilityLocation().getLevelId());
+        mergePatchLocation.setPositionId(c.getFacilityLocation().getPositionId());
+        mergePatchLocation.setGeoPointId(c.getFacilityLocation().getGeoPointId());
+        mergePatchLocation.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchLocation.setRequesterId(c.getRequesterId());
+
+        facilityLocationApplicationService.when(mergePatchLocation);
     }
 
     @Override
     @Transactional
     public void when(BffFacilityServiceCommands.ActivateFacilityLocation c) {
-//        FacilityLocationId locationId = new FacilityLocationId(c.getFacilityId(), c.getLocationSeqId());
-//        FacilityLocationState locationState = facilityLocationApplicationService.get(locationId);
-//        if (locationState == null) {
-//            throw new IllegalArgumentException("Facility location not found: " + locationId);
-//        }
-//
-//        AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation mergePatchLocation =
-//                new AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation();
-//        mergePatchLocation.setFacilityLocationId(locationId);
-//        mergePatchLocation.setVersion(locationState.getVersion());
-//        mergePatchLocation.setActive(c.getActive() ? INDICATOR_YES : INDICATOR_NO);
-//        mergePatchLocation.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
-//        mergePatchLocation.setRequesterId(c.getRequesterId());
-//
-//        facilityLocationApplicationService.when(mergePatchLocation);
+        FacilityLocationId locationId = new FacilityLocationId(c.getFacilityId(), c.getLocationSeqId());
+        FacilityLocationState locationState = facilityLocationApplicationService.get(locationId);
+        if (locationState == null) {
+            throw new IllegalArgumentException("Facility location not found: " + locationId);
+        }
+
+        AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation mergePatchLocation =
+                new AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation();
+        mergePatchLocation.setFacilityLocationId(locationId);
+        mergePatchLocation.setVersion(locationState.getVersion());
+        mergePatchLocation.setActive(c.getActive() ? INDICATOR_YES : INDICATOR_NO);
+        mergePatchLocation.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchLocation.setRequesterId(c.getRequesterId());
+
+        facilityLocationApplicationService.when(mergePatchLocation);
     }
 
 }
