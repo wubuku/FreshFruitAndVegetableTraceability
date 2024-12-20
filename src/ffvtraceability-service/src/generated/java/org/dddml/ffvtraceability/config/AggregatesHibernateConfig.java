@@ -41,6 +41,9 @@ import org.dddml.ffvtraceability.domain.facilityidentificationtype.hibernate.*;
 import org.dddml.ffvtraceability.domain.facilitytype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.facilitytype.hibernate.*;
+import org.dddml.ffvtraceability.domain.facilitylocation.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.facilitylocation.hibernate.*;
 import org.dddml.ffvtraceability.domain.geo.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.geo.hibernate.*;
@@ -293,6 +296,20 @@ public class AggregatesHibernateConfig {
         AbstractFacilityTypeApplicationService.SimpleFacilityTypeApplicationService applicationService = new AbstractFacilityTypeApplicationService.SimpleFacilityTypeApplicationService(
                 facilityTypeStateRepository,
                 facilityTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractFacilityLocationApplicationService.SimpleFacilityLocationApplicationService facilityLocationApplicationService(
+            FacilityLocationStateRepository facilityLocationStateRepository,
+            FacilityLocationStateQueryRepository facilityLocationStateQueryRepository
+    ) {
+        AbstractFacilityLocationApplicationService.SimpleFacilityLocationApplicationService applicationService = new AbstractFacilityLocationApplicationService.SimpleFacilityLocationApplicationService(
+                facilityLocationStateRepository,
+                facilityLocationStateQueryRepository
         );
         return applicationService;
     }

@@ -47,6 +47,7 @@ public class M {
         typeToAggMap.put("FacilityIdentification", "Facility");
         typeToAggMap.put("FacilityIdentificationType", "FacilityIdentificationType");
         typeToAggMap.put("FacilityType", "FacilityType");
+        typeToAggMap.put("FacilityLocation", "FacilityLocation");
         typeToAggMap.put("Geo", "Geo");
         typeToAggMap.put("GeoType", "GeoType");
         typeToAggMap.put("Lot", "Lot");
@@ -1988,6 +1989,125 @@ public class M {
         aliasMap.put("__Active__", "__Active__");
         aliasMap.put("deleted", "deleted");
         aliasMap.put("Deleted", "deleted");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class FacilityLocationMetadata {
+
+    private FacilityLocationMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String URL_ID_FIELD_SEPARATOR = ",";
+
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId>(org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId.class, URL_ID_FIELD_SEPARATOR) {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    };
+
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId.class;
+
+    public static final String[] propertyNames = new String[] {
+            "locationTypeEnumId",
+            "areaId",
+            "aisleId",
+            "sectionId",
+            "levelId",
+            "positionId",
+            "geoPointId",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "deleted",
+            "facilityLocationId.facilityId",
+            "facilityLocationId.locationSeqId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("locationTypeEnumId", "locationTypeEnumId");
+        aliasMap.put("LocationTypeEnumId", "locationTypeEnumId");
+        aliasMap.put("areaId", "areaId");
+        aliasMap.put("AreaId", "areaId");
+        aliasMap.put("aisleId", "aisleId");
+        aliasMap.put("AisleId", "aisleId");
+        aliasMap.put("sectionId", "sectionId");
+        aliasMap.put("SectionId", "sectionId");
+        aliasMap.put("levelId", "levelId");
+        aliasMap.put("LevelId", "levelId");
+        aliasMap.put("positionId", "positionId");
+        aliasMap.put("PositionId", "positionId");
+        aliasMap.put("geoPointId", "geoPointId");
+        aliasMap.put("GeoPointId", "geoPointId");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+        aliasMap.put("facilityLocationId.facilityId", "facilityLocationId.facilityId");
+        aliasMap.put("FacilityLocationId.FacilityId", "facilityLocationId.facilityId");
+        aliasMap.put("facilityLocationId.locationSeqId", "facilityLocationId.locationSeqId");
+        aliasMap.put("FacilityLocationId.LocationSeqId", "facilityLocationId.locationSeqId");
     }
 
     private static void initPropertyTypeMap() {

@@ -1,0 +1,38 @@
+﻿aggregates:
+  FacilityLocation:
+    #multiTenancy:
+    #  discriminatorBasedMultiTenancyEnabled: true
+    #  idStartsWithOrEndsWithTenantId: true
+    metadata:
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    id:
+      name: FacilityLocationId
+      type: FacilityLocationId
+      columnNames:
+        - FACILITY_ID
+        - LOCATION_SEQ_ID
+    properties:
+      LocationTypeEnumId:
+        type: id
+      AreaId:
+        type: id
+      AisleId:
+        type: id
+      SectionId:
+        type: id
+      LevelId:
+        type: id
+      PositionId:
+        type: id
+      GeoPointId:
+        type: id
+
+    valueObjects:
+      FacilityLocationId:
+        properties:
+          FacilityId:
+            type: id
+          LocationSeqId:
+            type: id

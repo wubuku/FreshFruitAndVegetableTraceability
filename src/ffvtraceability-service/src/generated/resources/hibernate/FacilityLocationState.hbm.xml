@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.facilitylocation">
+  <class name="org.dddml.ffvtraceability.domain.facilitylocation.AbstractFacilityLocationState$SimpleFacilityLocationState" table="facility_location">
+    <composite-id name="facilityLocationId" class="org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId">
+      <key-property name="facilityId">
+        <column name="FACILITY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="locationSeqId">
+        <column name="LOCATION_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <property name="locationTypeEnumId">
+      <column name="location_type_enum_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="areaId">
+      <column name="area_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="aisleId">
+      <column name="aisle_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="sectionId">
+      <column name="section_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="levelId">
+      <column name="level_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="positionId">
+      <column name="position_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="geoPointId">
+      <column name="geo_point_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="commandId" column="command_id" />
+  </class>
+</hibernate-mapping>
