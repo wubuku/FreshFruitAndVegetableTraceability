@@ -156,6 +156,121 @@ Hibernate 其实并[没有对基于鉴别器的多租户策略提供“原生支
 
 ### Test application
 
+#### 测试“度量单位”
+
+创建单位：
+
+
+```shell
+# 1. 创建千克(KGM)
+curl -X 'POST' \
+  'http://localhost:1023/api/BffUnitsOfMeasure' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "uomId": "KGM",
+  "uomTypeId": "WEIGHT_MEASURE",
+  "abbreviation": "kg",
+  "description": "Kilogram - The base unit of mass in the International System of Units (SI)",
+  "gs1AI": "3102"
+}'
+
+# 2. 创建克(GRM)
+curl -X 'POST' \
+  'http://localhost:1023/api/BffUnitsOfMeasure' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "uomId": "GRM",
+  "uomTypeId": "WEIGHT_MEASURE",
+  "abbreviation": "g",
+  "description": "Gram - 1/1000 of a kilogram",
+  "gs1AI": "3103"
+}'
+
+# 3. 创建箱(CS)
+curl -X 'POST' \
+  'http://localhost:1023/api/BffUnitsOfMeasure' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "uomId": "CS",
+  "uomTypeId": "UNIT_MEASURE",
+  "abbreviation": "cs",
+  "description": "Case - A unit of packaging",
+  "gs1AI": "30"
+}'
+
+# 4. 创建个(EA)
+curl -X 'POST' \
+  'http://localhost:1023/api/BffUnitsOfMeasure' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "uomId": "EA",
+  "uomTypeId": "UNIT_MEASURE",
+  "abbreviation": "ea",
+  "description": "Each - A single unit",
+  "gs1AI": "30"
+}'
+
+
+# 5. 创建平方米(SQM)
+curl -X 'POST' \
+  'http://localhost:1023/api/BffUnitsOfMeasure' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "uomId": "SQM",
+  "uomTypeId": "AREA_MEASURE",
+  "abbreviation": "m²",
+  "description": "Square Meter - The measurement of area in the International System of Units (SI)",
+  "gs1AI": "3340"
+}'
+
+# 6. 创建美元(USD)
+curl -X 'POST' \
+  'http://localhost:1023/api/BffUnitsOfMeasure' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "uomId": "USD",
+  "uomTypeId": "CURRENCY_MEASURE",
+  "abbreviation": "$",
+  "numericCode": 840,
+  "description": "United States Dollar - The official currency of the United States",
+  "gs1AI": "3920"
+}'
+```
+
+
+关于 GS1 AI 的说明：
+
+* 对于千克(KGM)：AI "310n" 表示净重(千克)，其中 n 表示小数点位置。
+    我们使用 "3102" 表示精确到两位小数的千克
+* 对于克(GRM)：
+    没有直接的克单位 AI，应该使用千克单位 "3103" (精确到三位小数的千克)。
+* 对于箱(CS)：  
+    使用 "30" 表示变量计数项目。
+* 对于个(EA)：  
+    使用 "30" 表示变量计数项目。
+* 对于平方米(SQM)：
+    "3340" 是面积测量 AI。
+    334: 面积测量（平方米）；
+    0: 小数点位置（适合整数面积值）。
+    这更适合设施面积的记录，因为设施面积通常是整数值。
+
+
+
+查询单位：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffUnitsOfMeasure?page=0&size=20' \
+  -H 'accept: application/json'
+```
+
+
 #### 测试“文档”
 
 创建：
@@ -295,7 +410,7 @@ curl -X 'PUT' \
   "quantityIncluded": 1.0,
   "piecesIncluded": 1,
   "statusId": "ACTIVE",
-  "supplierId": "SUPPLIER001"
+  "supplierId": "SUPPLIER_001"
 }'
 ```
 
@@ -411,7 +526,10 @@ curl -X 'POST' \
   ],
   "referenceDocuments": [
     {
-      "documentId": "ASN2024031502"
+      "documentLocation": "https://example.com/docs/asn/ASN2024031502.pdf"
+    },
+    {
+      "documentLocation": "https://example.com/docs/asn/ASN2024031503.pdf"
     }
   ]
 }'
@@ -539,7 +657,7 @@ curl -X GET "http://localhost:1023/api/StatusItems" -H "accept: application/json
 
 我们对这个实体实现了 "Tenantized Id" 策略，将模型中定义的实体的 Id 在生成的代码中，自动转换为“包含租户 ID”的形式。
 
-Create:
+创建供应商产品关联：
 
 ```shell
 curl -X 'POST' \
@@ -547,53 +665,82 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID:X" \
-  -d '{"commandId":"string","requesterId":"string","supplierProductAssocId":{"productId":"string","partyId":"string","currencyUomId":"string","minimumOrderQuantity":0,"availableFromDate":"2024-11-29T08:53:18.748Z"},"availableThruDate":"2024-11-29T08:53:18.748Z","supplierPrefOrderId":"string","supplierRatingTypeId":"string","active":true}'
+  -d '{
+    "commandId": "CREATE_SUPPLIER_PRODUCT_001",
+    "requesterId": "ADMIN_USER",
+    "supplierProductAssocId": {
+      "productId": "PROD001",
+      "partyId": "SUPPLIER001",
+      "currencyUomId": "USD",
+      "minimumOrderQuantity": 100,
+      "availableFromDate": "2024-01-01T00:00:00Z"
+    },
+    "availableThruDate": "2024-12-31T23:59:59Z",
+    "supplierPrefOrderId": "PO_PREF_001",
+    "supplierRatingTypeId": "PREFERRED",
+    "active": true
+  }'
 ```
 
-Get all:
+获取所有供应商产品：
 
 ```shell
 curl -X 'GET' \
   'http://localhost:1023/api/SupplierProducts' \
-  -H 'accept: application/json' -H "X-TenantID:X"
+  -H 'accept: application/json' \
+  -H "X-TenantID:X"
 ```
 
-Get:
+获取特定供应商产品：
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:1023/api/SupplierProducts/%7B%22productId%22%3A%22string%22%2C%22partyId%22%3A%22string%22%2C%22currencyUomId%22%3A%22string%22%2C%22minimumOrderQuantity%22%3A0%2C%22availableFromDate%22%3A%222024-11-29T08%3A53%3A18.748Z%22%7D' \
-  -H 'accept: application/json' -H "X-TenantID:X"
+  'http://localhost:1023/api/SupplierProducts/%7B%22productId%22%3A%22PROD001%22%2C%22partyId%22%3A%22SUPPLIER001%22%2C%22currencyUomId%22%3A%22USD%22%2C%22minimumOrderQuantity%22%3A100%2C%22availableFromDate%22%3A%222024-01-01T00%3A00%3A00Z%22%7D' \
+  -H 'accept: application/json' \
+  -H "X-TenantID:X"
 ```
 
-Get with filter:
+按产品ID筛选供应商产品：
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:1023/api/SupplierProducts?supplierProductAssocId.productId=string&firstResult=0&maxResults=2147483647' \
-  -H 'accept: application/json'  -H "X-TenantID:X"
+  'http://localhost:1023/api/SupplierProducts?supplierProductAssocId.productId=PROD001&firstResult=0&maxResults=100' \
+  -H 'accept: application/json' \
+  -H "X-TenantID:X"
 ```
 
-Update AvailableThruDate:
+更新供应有效期：
 
 ```shell
 curl -X 'PUT' \
-  'http://localhost:1023/api/SupplierProducts/%7B%22productId%22%3A%22string%22%2C%22partyId%22%3A%22string%22%2C%22currencyUomId%22%3A%22string%22%2C%22minimumOrderQuantity%22%3A0%2C%22availableFromDate%22%3A%222024-11-29T08%3A53%3A18.748Z%22%7D/_commands/UpdateAvailableThruDate' \
+  'http://localhost:1023/api/SupplierProducts/%7B%22productId%22%3A%22PROD001%22%2C%22partyId%22%3A%22SUPPLIER001%22%2C%22currencyUomId%22%3A%22USD%22%2C%22minimumOrderQuantity%22%3A100%2C%22availableFromDate%22%3A%222024-01-01T00%3A00%3A00Z%22%7D/_commands/UpdateAvailableThruDate' \
   -H 'Content-Type: application/json' \
-  -H 'accept: application/json' -H "X-TenantID:X" \
-  -d '{"commandId":"UPDATE_AVAILABLE_THRU_DATE","requesterId":"REQUESTER_ID_11111","availableThruDate":"2024-11-29T08:53:18.748Z","version":0}'
+  -H 'accept: application/json' \
+  -H "X-TenantID:X" \
+  -d '{
+    "commandId": "UPDATE_THRU_DATE_001",
+    "requesterId": "ADMIN_USER",
+    "availableThruDate": "2025-12-31T23:59:59Z",
+    "version": 0
+  }'
 ```
 
-
-Disable:
+禁用供应商产品：
 
 ```shell
 curl -X 'PUT' \
-  'http://localhost:1023/api/SupplierProducts/%7B%22productId%22%3A%22string%22%2C%22partyId%22%3A%22string%22%2C%22currencyUomId%22%3A%22string%22%2C%22minimumOrderQuantity%22%3A0%2C%22availableFromDate%22%3A%222024-11-29T08%3A53%3A18.748Z%22%7D/_commands/Disable' \
+  'http://localhost:1023/api/SupplierProducts/%7B%22productId%22%3A%22PROD001%22%2C%22partyId%22%3A%22SUPPLIER001%22%2C%22currencyUomId%22%3A%22USD%22%2C%22minimumOrderQuantity%22%3A100%2C%22availableFromDate%22%3A%222024-01-01T00%3A00%3A00Z%22%7D/_commands/Disable' \
   -H 'Content-Type: application/json' \
-  -H 'accept: application/json' -H "X-TenantID:X" \
-  -d '{"commandId":"DISABLE","requesterId":"REQUESTER_ID_22222","version":1}'
+  -H 'accept: application/json' \
+  -H "X-TenantID:X" \
+  -d '{
+    "commandId": "DISABLE_SUPPLIER_PRODUCT_001",
+    "requesterId": "ADMIN_USER",
+    "version": 1
+  }'
 ```
+
+
 
 #### Test "Blog"
 

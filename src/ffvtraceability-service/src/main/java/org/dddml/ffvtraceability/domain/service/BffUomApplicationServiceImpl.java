@@ -54,7 +54,7 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
     public String when(BffUomServiceCommands.CreateUnitOfMeasure c) {
         AbstractUomCommand.SimpleCreateUom createUom = new AbstractUomCommand.SimpleCreateUom();
         createUom.setUomId(c.getUom().getUomId() != null ? c.getUom().getUomId() : IdUtils.randomId());
-        createUom.setUomTypeId("UOM"); //todo hardcoded?
+        createUom.setUomTypeId(c.getUom().getUomTypeId());
         createUom.setAbbreviation(c.getUom().getAbbreviation());
         createUom.setDescription(c.getUom().getDescription());
         createUom.setNumericCode(c.getUom().getNumericCode());
@@ -75,6 +75,7 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
         }
         AbstractUomCommand.SimpleMergePatchUom mergePatchUom = new AbstractUomCommand.SimpleMergePatchUom();
         mergePatchUom.setUomId(uomId);
+        mergePatchUom.setUomTypeId(c.getUom().getUomTypeId());
         mergePatchUom.setVersion(uomState.getVersion());
         mergePatchUom.setAbbreviation(c.getUom().getAbbreviation());
         mergePatchUom.setDescription(c.getUom().getDescription());

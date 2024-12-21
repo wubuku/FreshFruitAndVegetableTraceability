@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface BffReceivingRepository extends JpaRepository<AbstractShipmentReceiptState.SimpleShipmentReceiptState, String> {
 
-    String COMMON_SHIPMENT_RECEIPT_SELECT = """
+    String COMMON_SELECT = """
             SELECT 
                 s.shipment_id as documentId,
                 s.status_id as statusId,
@@ -37,10 +37,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 sr.datetime_received as datetimeReceived
             """;
 
-    String COMMON_SHIPMENT_RECEIPT_JOINS = """
-            FROM shipment s
-            LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id 
-                AND (sr.deleted IS NULL OR sr.deleted = false)
+    String COMMON_JOINS = """
             LEFT JOIN party p ON s.party_id_from = p.party_id
             LEFT JOIN facility f ON s.origin_facility_id = f.facility_id
             LEFT JOIN product prod ON sr.product_id = prod.product_id
@@ -48,11 +45,16 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 AND gi.good_identification_type_id = 'GTIN'
             """;
 
+    String RECEIPT_JOIN = """
+            LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id 
+                AND (sr.deleted IS NULL OR sr.deleted = false)
+            """;
+
     @Query(value = """
             WITH filtered_shipments AS (
                 SELECT DISTINCT s.shipment_id, s.created_at
                 FROM shipment s
-                LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id
+                """ + RECEIPT_JOIN + """
                 LEFT JOIN product prod ON sr.product_id = prod.product_id
                 LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
                     AND gi.good_identification_type_id = 'GTIN'
@@ -63,8 +65,10 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 ORDER BY s.created_at DESC
                 LIMIT :pageSize OFFSET :offset
             )
-            """ + COMMON_SHIPMENT_RECEIPT_SELECT + COMMON_SHIPMENT_RECEIPT_JOINS + """
-            WHERE fs.shipment_id = s.shipment_id
+            """ + COMMON_SELECT + """
+            FROM filtered_shipments fs
+            JOIN shipment s ON fs.shipment_id = s.shipment_id
+            """ + RECEIPT_JOIN + COMMON_JOINS + """
             ORDER BY s.created_at DESC
             """, nativeQuery = true)
     List<BffReceivingDocumentItemProjection> findAllReceivingDocumentsWithItems(
@@ -72,7 +76,9 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             @Param("pageSize") int pageSize,
             @Param("documentIdOrItem") String documentIdOrItem);
 
-    @Query(value = COMMON_SHIPMENT_RECEIPT_SELECT + COMMON_SHIPMENT_RECEIPT_JOINS + """
+    @Query(value = COMMON_SELECT + """
+            FROM shipment s
+            """ + RECEIPT_JOIN + COMMON_JOINS + """
             WHERE s.shipment_id = :documentId
             """, nativeQuery = true)
     List<BffReceivingDocumentItemProjection> findReceivingDocumentWithItems(@Param("documentId") String documentId);
@@ -92,8 +98,10 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 sr.cases_accepted as casesAccepted,
                 sr.cases_rejected as casesRejected,
                 sr.datetime_received as datetimeReceived
-            """ + COMMON_SHIPMENT_RECEIPT_JOINS + """
-            WHERE sr.shipment_id = :documentId AND sr.receipt_id = :receiptId
+            FROM shipment s
+            """ + RECEIPT_JOIN + COMMON_JOINS + """
+            WHERE sr.shipment_id = :documentId 
+                AND sr.receipt_id = :receiptId
             """, nativeQuery = true)
     BffReceivingDocumentItemProjection findReceivingItem(
             @Param("documentId") String documentId,
