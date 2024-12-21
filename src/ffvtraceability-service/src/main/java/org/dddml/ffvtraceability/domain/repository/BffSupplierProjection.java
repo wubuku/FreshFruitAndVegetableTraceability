@@ -10,6 +10,8 @@ import org.dddml.ffvtraceability.domain.*;
 public interface BffSupplierProjection {
     String getSupplierId();
 
+    String getSupplierName();
+
     String getGgn();
 
     String getGln();

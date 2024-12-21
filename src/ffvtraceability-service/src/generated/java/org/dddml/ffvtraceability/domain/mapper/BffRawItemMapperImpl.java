@@ -32,6 +32,7 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setPiecesIncluded( bffRawItem.getPiecesIncluded() );
         bffRawItemDto.setStatusId( bffRawItem.getStatusId() );
         bffRawItemDto.setSupplierId( bffRawItem.getSupplierId() );
+        bffRawItemDto.setSupplierName( bffRawItem.getSupplierName() );
 
         return bffRawItemDto;
     }

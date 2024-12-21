@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
     value = "org.mapstruct.ap.MappingProcessor"
 )
 @Component
-public class BffReceiptMapperImpl implements BffReceiptMapper {
+public class BffReceivingMapperImpl implements BffReceivingMapper {
 
     @Override
     public BffReceivingDocumentDto toBffReceivingDocumentDto(BffReceivingDocumentItemProjection documentItemProjection) {
@@ -21,7 +21,6 @@ public class BffReceiptMapperImpl implements BffReceiptMapper {
 
         BffReceivingDocumentDto bffReceivingDocumentDto = new BffReceivingDocumentDto();
 
-        bffReceivingDocumentDto.setCreatedAt( instantToOffsetDateTime( documentItemProjection.getCreatedAtInstant() ) );
         bffReceivingDocumentDto.setDocumentId( documentItemProjection.getDocumentId() );
         bffReceivingDocumentDto.setStatusId( documentItemProjection.getStatusId() );
         bffReceivingDocumentDto.setPartyIdTo( documentItemProjection.getPartyIdTo() );
@@ -33,6 +32,7 @@ public class BffReceiptMapperImpl implements BffReceiptMapper {
         bffReceivingDocumentDto.setPrimaryOrderId( documentItemProjection.getPrimaryOrderId() );
         bffReceivingDocumentDto.setPrimaryReturnId( documentItemProjection.getPrimaryReturnId() );
         bffReceivingDocumentDto.setPrimaryShipGroupSeqId( documentItemProjection.getPrimaryShipGroupSeqId() );
+        bffReceivingDocumentDto.setCreatedAt( instantToOffsetDateTime( documentItemProjection.getCreatedAt() ) );
 
         return bffReceivingDocumentDto;
     }

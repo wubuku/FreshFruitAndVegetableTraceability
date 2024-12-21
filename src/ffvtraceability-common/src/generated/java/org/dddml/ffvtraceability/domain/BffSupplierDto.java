@@ -21,6 +21,18 @@ public class BffSupplierDto implements Serializable {
         this.supplierId = supplierId;
     }
 
+    private String supplierName;
+
+    public String getSupplierName()
+    {
+        return this.supplierName;
+    }
+
+    public void setSupplierName(String supplierName)
+    {
+        this.supplierName = supplierName;
+    }
+
     private String ggn;
 
     public String getGgn()
@@ -97,9 +109,10 @@ public class BffSupplierDto implements Serializable {
     {
     }
 
-    public BffSupplierDto(String supplierId, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId)
+    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId)
     {
         this.supplierId = supplierId;
+        this.supplierName = supplierName;
         this.ggn = ggn;
         this.gln = gln;
         this.externalId = externalId;
@@ -121,6 +134,7 @@ public class BffSupplierDto implements Serializable {
         BffSupplierDto other = (BffSupplierDto)obj;
         return true 
             && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
+            && (supplierName == other.supplierName || (supplierName != null && supplierName.equals(other.supplierName)))
             && (ggn == other.ggn || (ggn != null && ggn.equals(other.ggn)))
             && (gln == other.gln || (gln != null && gln.equals(other.gln)))
             && (externalId == other.externalId || (externalId != null && externalId.equals(other.externalId)))
@@ -136,6 +150,9 @@ public class BffSupplierDto implements Serializable {
         int hash = 0;
         if (this.supplierId != null) {
             hash += 13 * this.supplierId.hashCode();
+        }
+        if (this.supplierName != null) {
+            hash += 13 * this.supplierName.hashCode();
         }
         if (this.ggn != null) {
             hash += 13 * this.ggn.hashCode();
@@ -162,6 +179,7 @@ public class BffSupplierDto implements Serializable {
     public String toString() {
         return "BffSupplierDto{" +
                 "supplierId=" + '\'' + supplierId + '\'' +
+                ", supplierName=" + '\'' + supplierName + '\'' +
                 ", ggn=" + '\'' + ggn + '\'' +
                 ", gln=" + '\'' + gln + '\'' +
                 ", externalId=" + '\'' + externalId + '\'' +

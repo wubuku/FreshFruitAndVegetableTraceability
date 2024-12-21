@@ -30,6 +30,8 @@ valueObjects:
         type: id
       SupplierId: #Vendor
         type: id
+      SupplierName:
+        type: name
 
 services:
   BffRawItemService:

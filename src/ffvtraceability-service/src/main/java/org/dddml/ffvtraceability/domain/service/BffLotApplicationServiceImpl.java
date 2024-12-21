@@ -95,6 +95,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     }
 
     @Override
+    @Transactional
     public void when(BffLotServiceCommands.ActivateLot c) {
         String lotId = c.getLotId();
         LotState lotState = lotApplicationService.get(lotId);

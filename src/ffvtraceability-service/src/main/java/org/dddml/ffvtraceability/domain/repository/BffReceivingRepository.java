@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BffReceiptRepository extends JpaRepository<AbstractShipmentReceiptState.SimpleShipmentReceiptState, String> {
+public interface BffReceivingRepository extends JpaRepository<AbstractShipmentReceiptState.SimpleShipmentReceiptState, String> {
 
     String COMMON_SHIPMENT_RECEIPT_SELECT = """
             SELECT 
@@ -22,7 +22,7 @@ public interface BffReceiptRepository extends JpaRepository<AbstractShipmentRece
                 f.facility_name as originFacilityName,
                 s.destination_facility_id as destinationFacilityId,
                 s.primary_order_id as primaryOrderId,
-                s.created_at as createdAtInstant,
+                s.created_at as createdAt,
                 sr.receipt_id as receiptId,
                 sr.product_id as productId,
                 prod.product_name as productName,

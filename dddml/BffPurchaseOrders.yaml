@@ -13,6 +13,9 @@ valueObjects:
   BffPurchaseOrderItemDto:
     metadata:
       JpaProjectionInterfaceName: BffPurchaseOrderItemProjection
+      JpaProjectionPropertyTypes:
+        EstimatedShipDate: java.time.Instant
+        EstimatedDeliveryDate: java.time.Instant
     properties:
       OrderItemSeqId:
         type: id

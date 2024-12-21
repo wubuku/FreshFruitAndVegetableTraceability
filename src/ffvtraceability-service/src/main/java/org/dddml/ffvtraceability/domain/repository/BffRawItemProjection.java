@@ -32,5 +32,7 @@ public interface BffRawItemProjection {
 
     String getSupplierId();
 
+    String getSupplierName();
+
 }
 

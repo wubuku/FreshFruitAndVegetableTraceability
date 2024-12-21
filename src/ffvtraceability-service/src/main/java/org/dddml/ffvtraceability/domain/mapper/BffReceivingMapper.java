@@ -11,12 +11,12 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 @Mapper(componentModel = "spring")
-public interface BffReceiptMapper {
+public interface BffReceivingMapper {
     default OffsetDateTime instantToOffsetDateTime(Instant instant) {
         return instant != null ? instant.atOffset(ZoneOffset.UTC) : null;
     }
 
-    @Mapping(source = "createdAtInstant", target = "createdAt")
+    //@Mapping(source = "createdAtInstant", target = "createdAt")
     BffReceivingDocumentDto toBffReceivingDocumentDto(BffReceivingDocumentItemProjection documentItemProjection);
 
     BffReceivingItemDto toBffReceivingItemDto(BffReceivingDocumentItemProjection documentItemProjection);

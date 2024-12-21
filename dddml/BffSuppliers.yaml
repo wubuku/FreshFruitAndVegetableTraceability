@@ -6,6 +6,8 @@ valueObjects:
     properties:
       SupplierId:
         type: id
+      SupplierName:
+        type: name
       Ggn:
         description: "GGN (GLOBALG.A.P. Number)"
         type: id

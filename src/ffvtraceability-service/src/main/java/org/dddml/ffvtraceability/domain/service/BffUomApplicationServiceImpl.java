@@ -31,6 +31,7 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
     private BffUomMapper bffUomMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<BffUomDto> when(BffUomServiceCommands.GetUnitsOfMeasure c) {
         return PageUtils.toPage(
                 bffUomRepository.findAllUnitsOfMeasure(PageRequest.of(c.getPage(), c.getSize()), c.getActive()),

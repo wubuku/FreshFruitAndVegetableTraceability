@@ -37,6 +37,7 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         BffSupplierDto bffSupplierDto = new BffSupplierDto();
 
         bffSupplierDto.setSupplierId( bffSupplierProjection.getSupplierId() );
+        bffSupplierDto.setSupplierName( bffSupplierProjection.getSupplierName() );
         bffSupplierDto.setGgn( bffSupplierProjection.getGgn() );
         bffSupplierDto.setGln( bffSupplierProjection.getGln() );
         bffSupplierDto.setExternalId( bffSupplierProjection.getExternalId() );

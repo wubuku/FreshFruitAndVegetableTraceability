@@ -196,10 +196,111 @@ curl -X 'PUT' \
 ```
 
 
+#### 测试 "BffSuppliers"
+
+添加供应商：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffSuppliers' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -d '{
+  "supplierId": "SUPPLIER_001",
+  "supplierName": "Vegetables Farm",
+  "ggn": "4049929999999",         
+  "gln": "5420000000008",         
+  "externalId": "ORGANIC_FARM_01",
+  "preferredCurrencyUomId": "USD",
+  "description": "Organic Vegetables Farm - specializing in greenhouse vegetables with GLOBALG.A.P. certification"
+}'
+
+# GLOBALG.A.P. Number - 13位数字
+# Global Location Number - 13位数字
+```
+
+更新供应商：
+
+```shell
+curl -X 'PUT' \
+  'http://localhost:1023/api/BffSuppliers/SUPPLIER_001' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "supplierName": "Organic Vegetables Farm",
+  "ggn": "4049929999999",         
+  "gln": "5420000000008",         
+  "externalId": "ORGANIC_FARM_01",
+  "preferredCurrencyUomId": "USD",
+  "description": "Organic Vegetables Farm - specializing in greenhouse vegetables with GLOBALG.A.P. certification"
+}'
+```
+
+查询供应商：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffSuppliers?page=0&size=20' \
+  -H 'accept: application/json'
+```
+
+查询单个供应商（注意将下面示例 URL 路径中的 `SUPPLIER_001` 替换为实际的供应商 ID）：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffSuppliers/SUPPLIER_001' \
+  -H 'accept: application/json'
+```
+
 
 #### 测试 "BffRawItem"
 
-测试创建新的 BffRawItem：
+创建并修改 BffRawItem：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffRawItems' \
+  -H 'accept: */*' \
+  -H "X-TenantID:X" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "productId": "PROD001",
+  "productName": "Organic Red Apple",
+  "description": "Fresh organic apples from certified orchards",
+  "gtin": "0614141123452",
+  "smallImageUrl": "https://example.com/images/apple-small.jpg",
+  "mediumImageUrl": "https://example.com/images/apple-medium.jpg",
+  "largeImageUrl": "https://example.com/images/apple-large.jpg",
+  "quantityUomId": "KGM",
+  "quantityIncluded": 1.0,
+  "piecesIncluded": 1,
+  "statusId": "ACTIVE",
+  "supplierId": "SUPPLIER001"
+}'
+
+curl -X 'PUT' \
+  'http://localhost:1023/api/BffRawItems/PROD001' \
+  -H 'accept: */*' \
+  -H "X-TenantID:X" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "productName": "Organic Red Apple",
+  "description": "Fresh organic red apples from certified orchards",
+  "gtin": "0614141123452",
+  "smallImageUrl": "https://example.com/images/apple-small-2.jpg",
+  "mediumImageUrl": "https://example.com/images/apple-medium-2.jpg",
+  "largeImageUrl": "https://example.com/images/apple-large-2.jpg",
+  "quantityUomId": "KGM",
+  "quantityIncluded": 1.0,
+  "piecesIncluded": 1,
+  "statusId": "ACTIVE",
+  "supplierId": "SUPPLIER001"
+}'
+```
+
+
+测试创建新的 BffRawItem（这里没有给出 `productId`）：
 
 ```shell
 curl -X 'POST' \
@@ -321,45 +422,6 @@ curl -X 'POST' \
 ```shell
 curl -X 'GET' \
   'http://localhost:1023/api/BffReceipts?page=0&size=20&documentIdOrItem=ORGANIC_TOMATO_02' \
-  -H 'accept: application/json'
-```
-
-#### 测试 "BffSuppliers"
-
-添加供应商：
-
-```shell
-curl -X 'POST' \
-  'http://localhost:1023/api/BffSuppliers' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -H "X-TenantID: X" \
-  -d '{
-  "supplierId": "SUP20240116001",
-  "ggn": "4049929999999",         
-  "gln": "5420000000008",         
-  "externalId": "ORGANIC_FARM_01",
-  "preferredCurrencyUomId": "USD",
-  "description": "Organic Vegetables Farm - specializing in greenhouse vegetables with GLOBALG.A.P. certification"
-}'
-
-# GLOBALG.A.P. Number - 13位数字
-# Global Location Number - 13位数字
-```
-
-查询供应商：
-
-```shell
-curl -X 'GET' \
-  'http://localhost:1023/api/BffSuppliers?page=0&size=20' \
-  -H 'accept: application/json'
-```
-
-查询单个供应商（注意将下面示例 URL 路径中的 `SUP20240116001` 替换为实际的供应商 ID）：
-
-```shell
-curl -X 'GET' \
-  'http://localhost:1023/api/BffSuppliers/SUP20240116001' \
   -H 'accept: application/json'
 ```
 

@@ -153,11 +153,23 @@ public class BffRawItemDto implements Serializable {
         this.supplierId = supplierId;
     }
 
+    private String supplierName;
+
+    public String getSupplierName()
+    {
+        return this.supplierName;
+    }
+
+    public void setSupplierName(String supplierName)
+    {
+        this.supplierName = supplierName;
+    }
+
     public BffRawItemDto()
     {
     }
 
-    public BffRawItemDto(String productId, String productName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId)
+    public BffRawItemDto(String productId, String productName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName)
     {
         this.productId = productId;
         this.productName = productName;
@@ -171,6 +183,7 @@ public class BffRawItemDto implements Serializable {
         this.piecesIncluded = piecesIncluded;
         this.statusId = statusId;
         this.supplierId = supplierId;
+        this.supplierName = supplierName;
     }
 
     @Override
@@ -197,6 +210,7 @@ public class BffRawItemDto implements Serializable {
             && (piecesIncluded == other.piecesIncluded || (piecesIncluded != null && piecesIncluded.equals(other.piecesIncluded)))
             && (statusId == other.statusId || (statusId != null && statusId.equals(other.statusId)))
             && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
+            && (supplierName == other.supplierName || (supplierName != null && supplierName.equals(other.supplierName)))
             ;
     }
 
@@ -240,6 +254,9 @@ public class BffRawItemDto implements Serializable {
         if (this.supplierId != null) {
             hash += 13 * this.supplierId.hashCode();
         }
+        if (this.supplierName != null) {
+            hash += 13 * this.supplierName.hashCode();
+        }
         return hash;
     }
 
@@ -258,6 +275,7 @@ public class BffRawItemDto implements Serializable {
                 ", piecesIncluded=" + piecesIncluded +
                 ", statusId=" + '\'' + statusId + '\'' +
                 ", supplierId=" + '\'' + supplierId + '\'' +
+                ", supplierName=" + '\'' + supplierName + '\'' +
                 '}';
     }
 

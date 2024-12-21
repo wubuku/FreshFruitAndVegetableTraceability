@@ -25,7 +25,9 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 p.pieces_included as piecesIncluded,
                 p.active as active,
                 gi.id_value as gtin,
-                party.party_id as supplierId
+                party.party_id as supplierId,
+                party.supplier_name as supplierName
+                
             FROM product p
             LEFT JOIN (
                 SELECT
@@ -38,11 +40,10 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 SELECT DISTINCT ON (sp.product_id)
                     sp.product_id,
                     sp.party_id,
-                    o.organization_name
+                    COALESCE(o.organization_name, o.last_name) as supplier_name
                 FROM supplier_product sp
                 JOIN party o ON o.party_id = sp.party_id
-                WHERE o.party_type_id = 'ORGANIZATION'
-                    AND sp.available_from_date <= CURRENT_TIMESTAMP
+                WHERE sp.available_from_date <= CURRENT_TIMESTAMP
                     AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
                 ORDER BY sp.product_id, sp.available_from_date DESC
             ) party ON party.product_id = p.product_id
@@ -74,7 +75,8 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 sp.party_id as partyId,
                 sp.currency_uom_id as currencyUomId,
                 sp.minimum_order_quantity as minimumOrderQuantity,
-                sp.available_from_date as availableFromDateInstant
+                sp.available_from_date as availableFromDateInstant,
+                sp.version as version
             FROM supplier_product sp
             WHERE sp.product_id = :productId
                 AND sp.party_id = :partyId
@@ -84,7 +86,7 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             ORDER BY sp.available_from_date DESC
             LIMIT 1
             """, nativeQuery = true)
-    SupplierProductAssocIdProjection findSupplierProductAssocId(
+    BffSupplierProductAssocProjection findSupplierProductAssociation(
             @Param("productId") String productId,
             @Param("partyId") String partyId,
             @Param("currencyUomId") String currencyUomId,

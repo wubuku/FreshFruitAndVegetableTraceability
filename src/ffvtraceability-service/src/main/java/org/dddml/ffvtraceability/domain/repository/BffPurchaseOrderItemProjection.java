@@ -33,9 +33,7 @@ public interface BffPurchaseOrderItemProjection {
 
     String getSyncStatusId();
 
-    OffsetDateTime getEstimatedShipDate();
-
-    OffsetDateTime getEstimatedDeliveryDate();
-
+    java.time.Instant getEstimatedShipDate();
+    java.time.Instant getEstimatedDeliveryDate();
 }
 

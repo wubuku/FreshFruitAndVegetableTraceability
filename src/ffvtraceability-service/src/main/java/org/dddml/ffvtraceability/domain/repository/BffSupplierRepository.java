@@ -15,6 +15,7 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                 p.preferred_currency_uom_id as preferredCurrencyUomId,
                 p.description as description,
                 p.status_id as statusId,
+                COALESCE(p.organization_name, p.last_name) as supplierName,
                 ggn.id_value as ggn,
                 gln.id_value as gln
             FROM party p

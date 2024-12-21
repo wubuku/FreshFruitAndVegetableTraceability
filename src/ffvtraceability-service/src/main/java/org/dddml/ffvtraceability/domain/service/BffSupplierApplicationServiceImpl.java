@@ -85,8 +85,9 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Override
     @Transactional
     public String when(BffSupplierServiceCommands.CreateSupplier c) {
-        AbstractPartyCommand.SimpleCreateParty createParty = new AbstractPartyCommand.SimpleCreateParty();
+        AbstractPartyCommand.SimpleCreateOrganization createParty = new AbstractPartyCommand.SimpleCreateOrganization();
         createParty.setPartyId(c.getSupplier().getSupplierId() != null ? c.getSupplier().getSupplierId() : IdUtils.randomId());
+        createParty.setOrganizationName(c.getSupplier().getSupplierName());
         createParty.setExternalId(c.getSupplier().getExternalId());
         createParty.setDescription(c.getSupplier().getDescription());
         createParty.setPreferredCurrencyUomId(c.getSupplier().getPreferredCurrencyUomId() != null ? c.getSupplier().getPreferredCurrencyUomId() : DEFAULT_PREFERRED_CURRENCY_UOM_ID);
@@ -126,6 +127,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     }
 
     @Override
+    @Transactional
     public void when(BffSupplierServiceCommands.UpdateSupplier c) {
         String supplierId = c.getSupplierId();
         PartyState partyState = partyApplicationService.get(supplierId);
@@ -133,8 +135,9 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             throw new IllegalArgumentException("Supplier not found:" + c.getSupplierId());
         }
         BffSupplierDto bffSupplier = c.getSupplier();
-        AbstractPartyCommand.SimpleMergePatchParty mergePatchParty = new AbstractPartyCommand.SimpleMergePatchCompany();
+        AbstractPartyCommand.SimpleMergePatchOrganization mergePatchParty = new AbstractPartyCommand.SimpleMergePatchOrganization();
         mergePatchParty.setPartyId(supplierId);
+        mergePatchParty.setOrganizationName(c.getSupplier().getSupplierName());
         mergePatchParty.setVersion(partyState.getVersion());//乐观锁
         mergePatchParty.setRequesterId(c.getRequesterId());
         mergePatchParty.setExternalId(bffSupplier.getExternalId());
@@ -188,6 +191,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     }
 
     @Override
+    @Transactional
     public void when(BffSupplierServiceCommands.ActivateSupplier c) {
         String supplierId = c.getSupplierId();
         PartyState partyState = partyApplicationService.get(supplierId);

@@ -3,6 +3,8 @@ valueObjects:
   BffReceivingDocumentDto:
     metadata:
       JpaProjectionInterfaceName: BffReceivingDocumentProjection
+      JpaProjectionPropertyTypes:
+        CreatedAt: java.time.Instant
     properties:
       DocumentId:
         type: id

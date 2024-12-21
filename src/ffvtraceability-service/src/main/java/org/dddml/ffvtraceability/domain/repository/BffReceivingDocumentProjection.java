@@ -31,7 +31,6 @@ public interface BffReceivingDocumentProjection {
 
     String getPrimaryShipGroupSeqId();
 
-    OffsetDateTime getCreatedAt();
-
+    java.time.Instant getCreatedAt();
 }
 

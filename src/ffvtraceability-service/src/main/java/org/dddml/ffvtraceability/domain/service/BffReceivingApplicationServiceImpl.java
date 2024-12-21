@@ -7,9 +7,9 @@ import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
-import org.dddml.ffvtraceability.domain.mapper.BffReceiptMapper;
-import org.dddml.ffvtraceability.domain.repository.BffReceiptRepository;
+import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProjection;
+import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
 import org.dddml.ffvtraceability.domain.shipment.AbstractShipmentCommand;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentState;
@@ -33,26 +33,31 @@ import java.util.stream.StreamSupport;
 @Service
 public class BffReceivingApplicationServiceImpl implements BffReceivingApplicationService {
     @Autowired
-    private BffReceiptMapper bffReceiptMapper;
-    @Autowired
     private ShipmentReceiptApplicationService shipmentReceiptApplicationService;
+
     @Autowired
     private ShipmentApplicationService shipmentApplicationService;
+
     @Autowired
     private ShippingDocumentApplicationService shippingDocumentApplicationService;
+
     @Autowired
     private DocumentApplicationService documentApplicationService;
+
     @Autowired
-    private BffReceiptRepository bffReceiptRepository;
+    private BffReceivingMapper bffReceivingMapper;
+
+    @Autowired
+    private BffReceivingRepository bffReceivingRepository;
 
     @Override
     @Transactional(readOnly = true)
     public Page<BffReceivingDocumentDto> when(BffReceivingServiceCommands.GetReceivingDocuments c) {
         int offset = c.getPage() * c.getSize();
-        long totalElements = bffReceiptRepository.countTotalShipments(c.getDocumentIdOrItem());
+        long totalElements = bffReceivingRepository.countTotalShipments(c.getDocumentIdOrItem());
 
         List<BffReceivingDocumentItemProjection> projections =
-                bffReceiptRepository.findAllReceivingDocumentsWithItems(
+                bffReceivingRepository.findAllReceivingDocumentsWithItems(
                         offset,
                         c.getSize(),
                         c.getDocumentIdOrItem());
@@ -65,24 +70,24 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
         // 查询关联文档
         List<BffReceivingDocumentItemProjection> referenceDocuments = shipmentIds.isEmpty() ? Collections.emptyList()
-                : bffReceiptRepository.findReferenceDocumentsByShipmentIds(shipmentIds);
+                : bffReceivingRepository.findReferenceDocumentsByShipmentIds(shipmentIds);
 
         // 构建文档ID到引用文档列表的映射
         Map<String, List<BffDocumentDto>> documentReferenceMap = referenceDocuments.stream()
                 .collect(Collectors.groupingBy(
                         BffReceivingDocumentItemProjection::getDocumentId,
                         Collectors.mapping(
-                                bffReceiptMapper::toReferenceDocument,
+                                bffReceivingMapper::toReferenceDocument,
                                 Collectors.toList()
                         )
                 ));
 
         List<BffReceivingDocumentDto> receivingDocuments = projections.stream()
                 .collect(Collectors.groupingBy(
-                        proj -> bffReceiptMapper.toBffReceivingDocumentDto(proj),
+                        proj -> bffReceivingMapper.toBffReceivingDocumentDto(proj),
                         Collectors.mapping(
                                 proj -> proj.getReceiptId() != null
-                                        ? bffReceiptMapper.toBffReceivingItemDto(proj)
+                                        ? bffReceivingMapper.toBffReceivingItemDto(proj)
                                         : null,
                                 Collectors.collectingAndThen(
                                         Collectors.toList(),
@@ -115,30 +120,30 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Transactional(readOnly = true)
     public BffReceivingDocumentDto when(BffReceivingServiceCommands.GetReceivingDocument c) {
         List<BffReceivingDocumentItemProjection> projections =
-                bffReceiptRepository.findReceivingDocumentWithItems(c.getDocumentId());
+                bffReceivingRepository.findReceivingDocumentWithItems(c.getDocumentId());
         if (projections.isEmpty()) {
             return null;
         }
 
         // 查询关联文档
         List<BffReceivingDocumentItemProjection> referenceDocuments =
-                bffReceiptRepository.findReferenceDocumentsByShipmentIds(Collections.singletonList(c.getDocumentId()));
+                bffReceivingRepository.findReferenceDocumentsByShipmentIds(Collections.singletonList(c.getDocumentId()));
 
         // 构建收货单DTO
-        BffReceivingDocumentDto document = bffReceiptMapper.toBffReceivingDocumentDto(projections.get(0));
+        BffReceivingDocumentDto document = bffReceivingMapper.toBffReceivingDocumentDto(projections.get(0));
 
         // 添加行项
         document.setReceivingItems(
                 projections.stream()
                         .filter(p -> p.getReceiptId() != null)
-                        .map(bffReceiptMapper::toBffReceivingItemDto)
+                        .map(bffReceivingMapper::toBffReceivingItemDto)
                         .collect(Collectors.toList())
         );
 
         // 添加关联文档
         document.setReferenceDocuments(
                 referenceDocuments.stream()
-                        .map(bffReceiptMapper::toReferenceDocument)
+                        .map(bffReceivingMapper::toReferenceDocument)
                         .collect(Collectors.toList())
         );
 
@@ -149,11 +154,11 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Transactional(readOnly = true)
     public BffReceivingItemDto when(BffReceivingServiceCommands.GetReceivingItem c) {
         BffReceivingDocumentItemProjection projection =
-                bffReceiptRepository.findReceivingItem(c.getDocumentId(), c.getReceiptId());
+                bffReceivingRepository.findReceivingItem(c.getDocumentId(), c.getReceiptId());
         if (projection == null) {
             return null;
         }
-        return bffReceiptMapper.toBffReceivingItemDto(projection);
+        return bffReceivingMapper.toBffReceivingItemDto(projection);
     }
 
     @Override
@@ -264,6 +269,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     }
 
     @Override
+    @Transactional
     public void when(BffReceivingServiceCommands.UpdateReceivingReferenceDocuments c) {
         String shipmentId = c.getDocumentId();
         ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
