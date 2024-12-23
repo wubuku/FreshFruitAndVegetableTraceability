@@ -22,6 +22,10 @@ import java.util.UUID;
 
 @Service
 public class BffSupplierApplicationServiceImpl implements BffSupplierApplicationService {
+    public static final String DEFAULT_PREFERRED_CURRENCY_UOM_ID = "USD"; //todo get from config?
+
+    public static final String PARTY_ROLE_SUPPLIER = "SUPPLIER";
+
     public static final String PARTY_STATUS_ACTIVE = "ACTIVE";
     public static final String PARTY_STATUS_INACTIVE = "INACTIVE";
 
@@ -34,10 +38,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
      * GLN (Global Location Number)
      */
     public static final String PARTY_IDENTIFICATION_TYPE_GLN = "GLN";
-
-    public static final String DEFAULT_PREFERRED_CURRENCY_UOM_ID = "USD"; //todo get from config?
-
-    public static final String PARTY_ROLE_SUPPLIER = "SUPPLIER";
 
     @Autowired
     private PartyApplicationService partyApplicationService;

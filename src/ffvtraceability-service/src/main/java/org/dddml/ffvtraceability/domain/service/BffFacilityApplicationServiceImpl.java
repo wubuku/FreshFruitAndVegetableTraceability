@@ -250,7 +250,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         createLocation.setPositionId(c.getFacilityLocation().getPositionId());
         createLocation.setGeoPointId(c.getFacilityLocation().getGeoPointId());
         createLocation.setActive(INDICATOR_YES); // 默认激活
-        createLocation.setCommandId(UUID.randomUUID().toString());
+        createLocation.setCommandId(c.getCommandId() != null ? c.getCommandId() : locationId.getLocationSeqId());
         createLocation.setRequesterId(c.getRequesterId());
 
         facilityLocationApplicationService.when(createLocation);

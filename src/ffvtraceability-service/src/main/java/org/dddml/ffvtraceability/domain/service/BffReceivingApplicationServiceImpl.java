@@ -211,7 +211,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                     refDocumentId = referenceDocument.getDocumentId();
                     DocumentState d = documentApplicationService.get(refDocumentId);
                     if (d == null) {
-                        //todo throw new IllegalArgumentException("Document not found: " + documentId);
+                        throw new IllegalArgumentException("Document not found: " + refDocumentId);
                     }
                     // 这里每个"文档 Id"都只能与一个 Shipment 关联。判断"关联"是否已经存在，如果存在则报错。
                     ShippingDocumentState sd = shippingDocumentApplicationService.get(refDocumentId);

@@ -271,6 +271,77 @@ curl -X 'GET' \
 ```
 
 
+#### Test "BffFacilities"
+
+创建设施：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffFacilities' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "facilityId": "F001",
+  "ownerPartyId": "SUPPLIER001",
+  "facilityName": "Fresh Produce Processing Center",
+  "facilitySize": 5000,
+  "facilitySizeUomId": "SQM",
+  "description": "Modern food processing facility with cold storage capabilities",
+  "active": "Y",
+  "gln": "1234567890123",
+  "ffrn": "12345678901" 
+}'
+
+# GLN (Global Location Number) 是 13 位数字标识符
+# FFRN (Food Facility Registration Number) 是 FDA 分配的 11 位数字标识符
+```
+
+查询设施：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffFacilities?page=0&size=20' \
+  -H 'accept: application/json'
+```
+
+创建“货位”：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/BffFacilities/F001/Locations' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "locationSeqId": "F001-WH01-A01-01",
+  "locationTypeEnumId": "STORAGE",
+  "areaId": "WH01",
+  "aisleId": "A01",
+  "sectionId": "01",
+  "levelId": "01",
+  "positionId": "01",
+  "geoPointId": "GP001",
+  "active": "Y"
+}'
+```
+
+查询“货位”：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffFacilities/F001/Locations' \
+  -H 'accept: application/json'
+```
+
+查询单个“货位”：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:1023/api/BffFacilities/F001/Locations/F001-WH01-A01-01' \
+  -H 'accept: application/json'
+```
+
+
+
 #### 测试“文档”
 
 创建：
@@ -542,76 +613,6 @@ curl -X 'GET' \
   'http://localhost:1023/api/BffReceipts?page=0&size=20&documentIdOrItem=ORGANIC_TOMATO_02' \
   -H 'accept: application/json'
 ```
-
-#### Test "BffFacilities"
-
-创建设施：
-
-```shell
-curl -X 'POST' \
-  'http://localhost:1023/api/BffFacilities' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "facilityId": "F001",
-  "ownerPartyId": "SUPPLIER001",
-  "facilityName": "Fresh Produce Processing Center",
-  "facilitySize": 5000,
-  "facilitySizeUomId": "SQM",
-  "description": "Modern food processing facility with cold storage capabilities",
-  "active": "Y",
-  "gln": "1234567890123",
-  "ffrn": "12345678901" 
-}'
-
-# GLN (Global Location Number) 是 13 位数字标识符
-# FFRN (Food Facility Registration Number) 是 FDA 分配的 11 位数字标识符
-```
-
-查询设施：
-
-```shell
-curl -X 'GET' \
-  'http://localhost:1023/api/BffFacilities?page=0&size=20' \
-  -H 'accept: application/json'
-```
-
-创建“货位”：
-
-```shell
-curl -X 'POST' \
-  'http://localhost:1023/api/BffFacilities/F001/Locations' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "locationSeqId": "F001-WH01-A01-01",
-  "locationTypeEnumId": "STORAGE",
-  "areaId": "WH01",
-  "aisleId": "A01",
-  "sectionId": "01",
-  "levelId": "01",
-  "positionId": "01",
-  "geoPointId": "GP001",
-  "active": "Y"
-}'
-```
-
-查询“货位”：
-
-```shell
-curl -X 'GET' \
-  'http://localhost:1023/api/BffFacilities/F001/Locations' \
-  -H 'accept: application/json'
-```
-
-查询单个“货位”：
-
-```shell
-curl -X 'GET' \
-  'http://localhost:1023/api/BffFacilities/F001/Locations/F001-WH01-A01-01' \
-  -H 'accept: application/json'
-```
-
 
 
 #### Test "StatusItem"
