@@ -167,6 +167,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffUnitsOfMeasure' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "uomId": "KGM",
   "uomTypeId": "WEIGHT_MEASURE",
@@ -180,6 +181,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffUnitsOfMeasure' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "uomId": "GRM",
   "uomTypeId": "WEIGHT_MEASURE",
@@ -193,6 +195,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffUnitsOfMeasure' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "uomId": "CS",
   "uomTypeId": "UNIT_MEASURE",
@@ -206,6 +209,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffUnitsOfMeasure' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "uomId": "EA",
   "uomTypeId": "UNIT_MEASURE",
@@ -220,6 +224,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffUnitsOfMeasure' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "uomId": "SQM",
   "uomTypeId": "AREA_MEASURE",
@@ -233,6 +238,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffUnitsOfMeasure' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "uomId": "USD",
   "uomTypeId": "CURRENCY_MEASURE",
@@ -267,7 +273,8 @@ curl -X 'POST' \
 ```shell
 curl -X 'GET' \
   'http://localhost:1023/api/BffUnitsOfMeasure?page=0&size=20' \
-  -H 'accept: application/json'
+  -H 'accept: application/json' \
+  -H "X-TenantID: X"
 ```
 
 
@@ -280,6 +287,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffFacilities' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "facilityId": "F001",
   "ownerPartyId": "SUPPLIER001",
@@ -311,6 +319,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffFacilities/F001/Locations' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "locationSeqId": "F001-WH01-A01-01",
   "locationTypeEnumId": "STORAGE",
@@ -351,6 +360,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffDocuments' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "comments": "Quality certification document for organic vegetables batch #2024001", 
   "documentLocation": "https://example.com/docs/cert/2024001.pdf",
@@ -448,7 +458,7 @@ curl -X 'GET' \
 curl -X 'POST' \
   'http://localhost:1023/api/BffRawItems' \
   -H 'accept: */*' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -H 'Content-Type: application/json' \
   -d '{
   "productId": "PROD001",
@@ -468,7 +478,7 @@ curl -X 'POST' \
 curl -X 'PUT' \
   'http://localhost:1023/api/BffRawItems/PROD001' \
   -H 'accept: */*' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -H 'Content-Type: application/json' \
   -d '{
   "productName": "Organic Red Apple",
@@ -492,7 +502,7 @@ curl -X 'PUT' \
 curl -X 'POST' \
   'http://localhost:1023/api/BffRawItems' \
   -H 'accept: */*' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -H 'Content-Type: application/json' \
   -d '{
   "productName": "Organic Green Tea",
@@ -515,7 +525,7 @@ curl -X 'POST' \
 curl -X 'GET' \
   'http://localhost:1023/api/BffRawItems?page=0&size=20' \
   -H 'accept: application/json' \
-  -H "X-TenantID:X"
+  -H "X-TenantID: X"
 ```
 
 #### 测试 BATCH/Lot
@@ -527,6 +537,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffLots' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "lotId": "LOT-2023.001",
   "gs1Batch": "LOT-2023.001",
@@ -567,6 +578,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/BffReceipts' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -d '{
   "partyIdTo": "FRESH_MART_DC",
   "partyIdFrom": "ORGANIC_FARM_01",
@@ -633,7 +645,7 @@ curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/jso
 
 ```shell
 curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" \
--H "X-TenantID:X" \
+-H "X-TenantID: X" \
 -d "{\"commandId\":\"CMD_21\",\"requesterId\":\"REQUESTER_ID_21\",\"sequenceId\":\"21\",\"statusCode\":\"TEST_STATUS_CODE_21\",\"statusId\":\"TEST_STATUS_21\",\"tenantId\":\"X\"}"
 ```
 
@@ -641,7 +653,7 @@ curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/jso
 
 ```shell
 curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "Content-Type: application/json" \
--H "X-TenantID:X" \
+-H "X-TenantID: X" \
 -d "{\"commandId\":\"CMD_21\",\"requesterId\":\"REQUESTER_ID_21\",\"sequenceId\":\"21\",\"statusCode\":\"TEST_STATUS_CODE_21\",\"statusId\":\"X-TEST_STATUS_21\",\"tenantId\":\"X\"}"
 ```
 
@@ -650,7 +662,7 @@ curl -X POST "http://localhost:1023/api/StatusItems" -H "accept: application/jso
 执行下面的命令查看特定租户（`X`）的数据：
 
 ```shell
-curl -X GET "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "X-TenantID:X"
+curl -X GET "http://localhost:1023/api/StatusItems" -H "accept: application/json" -H "X-TenantID: X"
 ```
 
 
@@ -665,7 +677,7 @@ curl -X 'POST' \
   'http://localhost:1023/api/SupplierProducts' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -d '{
     "commandId": "CREATE_SUPPLIER_PRODUCT_001",
     "requesterId": "ADMIN_USER",
@@ -689,7 +701,7 @@ curl -X 'POST' \
 curl -X 'GET' \
   'http://localhost:1023/api/SupplierProducts' \
   -H 'accept: application/json' \
-  -H "X-TenantID:X"
+  -H "X-TenantID: X"
 ```
 
 获取特定供应商产品：
@@ -698,7 +710,7 @@ curl -X 'GET' \
 curl -X 'GET' \
   'http://localhost:1023/api/SupplierProducts/%7B%22productId%22%3A%22PROD001%22%2C%22partyId%22%3A%22SUPPLIER001%22%2C%22currencyUomId%22%3A%22USD%22%2C%22minimumOrderQuantity%22%3A100%2C%22availableFromDate%22%3A%222024-01-01T00%3A00%3A00Z%22%7D' \
   -H 'accept: application/json' \
-  -H "X-TenantID:X"
+  -H "X-TenantID: X"
 ```
 
 按产品ID筛选供应商产品：
@@ -707,7 +719,7 @@ curl -X 'GET' \
 curl -X 'GET' \
   'http://localhost:1023/api/SupplierProducts?supplierProductAssocId.productId=PROD001&firstResult=0&maxResults=100' \
   -H 'accept: application/json' \
-  -H "X-TenantID:X"
+  -H "X-TenantID: X"
 ```
 
 更新供应有效期：
@@ -717,7 +729,7 @@ curl -X 'PUT' \
   'http://localhost:1023/api/SupplierProducts/%7B%22productId%22%3A%22PROD001%22%2C%22partyId%22%3A%22SUPPLIER001%22%2C%22currencyUomId%22%3A%22USD%22%2C%22minimumOrderQuantity%22%3A100%2C%22availableFromDate%22%3A%222024-01-01T00%3A00%3A00Z%22%7D/_commands/UpdateAvailableThruDate' \
   -H 'Content-Type: application/json' \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -d '{
     "commandId": "UPDATE_THRU_DATE_001",
     "requesterId": "ADMIN_USER",
@@ -733,7 +745,7 @@ curl -X 'PUT' \
   'http://localhost:1023/api/SupplierProducts/%7B%22productId%22%3A%22PROD001%22%2C%22partyId%22%3A%22SUPPLIER001%22%2C%22currencyUomId%22%3A%22USD%22%2C%22minimumOrderQuantity%22%3A100%2C%22availableFromDate%22%3A%222024-01-01T00%3A00%3A00Z%22%7D/_commands/Disable' \
   -H 'Content-Type: application/json' \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -d '{
     "commandId": "DISABLE_SUPPLIER_PRODUCT_001",
     "requesterId": "ADMIN_USER",

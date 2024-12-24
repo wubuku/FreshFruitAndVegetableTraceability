@@ -40,6 +40,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -56,10 +57,12 @@ echo "Querying Units of Measure..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffUnitsOfMeasure?page=0&size=20" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffUnitsOfMeasure?page=0&size=20" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -72,6 +75,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -88,6 +92,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -105,6 +110,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -124,6 +130,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffDocuments" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -138,10 +145,12 @@ echo "Querying Documents..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffDocuments?page=0&size=20" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffDocuments?page=0&size=20" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -176,12 +185,12 @@ echo "Querying Suppliers..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffSuppliers?page=0&size=20" \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffSuppliers?page=0&size=20" \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -194,12 +203,12 @@ echo "Querying specific supplier..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffSuppliers/SUPPLIER_001" \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffSuppliers/SUPPLIER_001" \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -234,6 +243,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -254,10 +264,12 @@ echo "Querying Facilities..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities?page=0&size=20" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities?page=0&size=20" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -270,10 +282,12 @@ echo "Querying specific facility..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities/F001" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities/F001" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -286,6 +300,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -306,6 +321,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities/F001/Locations" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -326,10 +342,12 @@ echo "Querying Locations for F001..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities/F001/Locations" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities/F001/Locations" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -342,10 +360,12 @@ echo "Querying specific location..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities/F001/Locations/F001-WH01-A01-01" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities/F001/Locations/F001-WH01-A01-01" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -358,6 +378,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities/DC_FRESH/Locations" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -375,10 +396,12 @@ echo "Querying Locations for DC_FRESH..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities/DC_FRESH/Locations" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffFacilities/DC_FRESH/Locations" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -393,8 +416,8 @@ echo -e "\n=== Testing Raw Items ===\n"
 curl -X 'POST' \
   "${API_BASE_URL}/BffRawItems" \
   -H 'accept: */*' \
-  -H "X-TenantID:X" \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -418,12 +441,12 @@ echo "Querying Raw Items..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffRawItems?page=0&size=20" \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffRawItems?page=0&size=20" \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -436,12 +459,12 @@ echo "Querying raw items by product ID..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffRawItems?productId=PROD001&firstResult=0&maxResults=100" \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffRawItems?productId=PROD001&firstResult=0&maxResults=100" \
   -H 'accept: application/json' \
-  -H "X-TenantID:X" \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -453,8 +476,8 @@ check_response $? "$http_code" "Query raw items by product ID"
 curl -X 'POST' \
   "${API_BASE_URL}/BffRawItems" \
   -H 'accept: */*' \
-  -H "X-TenantID:X" \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -478,6 +501,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffLots" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -493,10 +517,12 @@ echo "Querying Lots..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffLots?page=0&size=20" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffLots?page=0&size=20" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
@@ -512,6 +538,7 @@ curl -X 'POST' \
   "${API_BASE_URL}/BffReceipts" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
@@ -545,10 +572,12 @@ echo "Querying Receipts..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffReceipts?page=0&size=20&documentIdOrItem=ORGANIC_TOMATO_01" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffReceipts?page=0&size=20&documentIdOrItem=ORGANIC_TOMATO_01" \
   -H 'accept: application/json' \
+  -H "X-TenantID: X" \
   -s \
   -w '%{http_code}' \
   -o /dev/null)
