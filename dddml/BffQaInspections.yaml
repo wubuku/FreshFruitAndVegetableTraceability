@@ -1,0 +1,59 @@
+valueObjects:
+  BffQaInspectionDto:
+    metadata:
+      JpaProjectionInterfaceName: BffQaInspectionProjection
+      JpaProjectionPropertyTypes:
+        InspectedAt: java.time.Instant
+        CreatedAt: java.time.Instant
+        UpdatedAt: java.time.Instant
+    properties:
+      QaInspectionId:
+        type: id
+      ReceiptId:
+        type: id-long
+        # 关联的收货记录 Id
+      StatusId:
+        type: id
+        # Approved/Rejected/On-hold ?
+        # `resultId`: 检验结果（合格/不合格/部分合格）?
+      InspectionTypeId:
+        type: id
+      ProductId:
+        type: id
+      LotId:
+        type: id
+      SupplierId:
+        type: id
+      Comments:
+        type: comment
+      InspectionFacilityId:
+        type: id
+      # SampleUomId:
+      #   type: id
+      # SampleSize:
+      #   type: fixed-point
+      # QualityLevelId:
+      #   # 质量等级 Id
+      #   type: id
+      #
+      # - `referenceDocs`: 相关单据号。
+      # **也许暂时不需要。如果需要，可以考虑使用一个（聚合内）实体来记录关联的单据。**
+      #
+      InspectedBy: 
+        # 检验员ID
+        type: id-vlong
+         # inspectedBy 和 createdBy 是一回事？
+      CreatedBy:
+        type: id-long
+      InspectedAt: 
+        # 检验日期时间
+        type: date-time
+        # inspectedAt 和 createdAt 是一回事？
+      CreatedAt:
+        # 创建时间
+        type: date-time
+      UpdatedAt:
+        # 更新时间
+        type: date-time
+
+
