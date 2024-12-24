@@ -1,0 +1,51 @@
+aggregates:
+  QaInspection:
+    # metadata:
+    #   NoEventSourcing: true
+    id:
+      name: QaInspectionId
+      type: id-long
+    uniqueConstraints:
+      UniqueInspectionIdReceiptId:
+        - QaInspectionId
+        - ReceiptId
+    properties:
+      ReceiptId:
+        type: id-long
+        # 关联的收货记录 Id
+      StatusId:
+        type: id
+        # Approved / Rejected / On-hold ?
+        # `resultId`: 检验结果（合格/不合格/部分合格）?
+      InspectionTypeId:
+        type: id
+      Comments:
+        type: comment
+      InspectionFacilityId:
+        type: id
+      # SampleUomId:
+      #   type: id
+      # SampleSize:
+      #   type: fixed-point
+      # QualityLevelId:
+      #   # 质量等级 Id
+      #   type: id
+      InspectedBy:
+        # 检验员ID
+        type:
+          id-vlong
+          # inspectedBy 和 createdBy 是一回事？
+      InspectedAt:
+        # 检验日期时间
+        type: date-time
+        # inspectedAt 和 createdAt 是一回事？
+      # - `referenceDocs`: 相关单据号。
+      # **也许暂时不需要。如果需要，可以考虑使用一个（聚合内）实体来记录关联的单据。**
+
+  # QaInspectionTypeId:
+  #   id:
+  #     name: QaInspectionTypeId
+  #     type: id
+  #   properties:
+  #     Description:
+  #       type: description

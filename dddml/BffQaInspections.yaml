@@ -8,13 +8,13 @@ valueObjects:
         UpdatedAt: java.time.Instant
     properties:
       QaInspectionId:
-        type: id
+        type: id-long
       ReceiptId:
         type: id-long
         # 关联的收货记录 Id
       StatusId:
         type: id
-        # Approved/Rejected/On-hold ?
+        # Approved / Rejected / On-hold ?
         # `resultId`: 检验结果（合格/不合格/部分合格）?
       InspectionTypeId:
         type: id
@@ -56,4 +56,57 @@ valueObjects:
         # 更新时间
         type: date-time
 
+
+services:
+  BffQaInspectionService:
+    restfulResourceName: BffQaInspections
+    methods:
+      GetQaInspections:
+        # metadata:
+        #   IsPageable: true
+        #   ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        parameters:
+          ReceivingDocumentId:
+            type: id
+            optional: false # is required
+          ReceiptId:
+            type: id-long
+        result:
+          itemType: BffQaInspectionDto
+
+      GetQaInspection:
+        #根据 Id 查询产品的详细信息
+        metadata:
+          RestfulPathVariable: QaInspectionId
+        isQuery: true
+        result:
+          type: BffQaInspectionDto
+        parameters:
+          QaInspectionId:
+            type: id-long
+
+      CreateQaInspection:
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: BffQaInspectionDto
+        parameters:
+          BffQaInspectionDto:
+            type: BffQaInspectionDto
+        result:
+          type: id-long # QaInspectionId
+
+      UpdateQaInspection:
+        #更新指定的 Item 的信息
+        metadata:
+          RestfulPathVariable: QaInspectionId
+          HttpRequestBody: BffQaInspectionDto
+        httpMethod: PUT
+        parameters:
+          QaInspectionId:
+            type: id-long
+            optional: false # is required
+          BffQaInspectionDto:
+            type: BffQaInspectionDto
 

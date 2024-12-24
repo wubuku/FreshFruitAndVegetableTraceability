@@ -107,6 +107,9 @@ import org.dddml.ffvtraceability.domain.shippingdocument.hibernate.*;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.hibernate.*;
+import org.dddml.ffvtraceability.domain.qainspection.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.qainspection.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -630,6 +633,22 @@ public class AggregatesHibernateConfig {
                 shipmentReceiptEventStore,
                 shipmentReceiptStateRepository,
                 shipmentReceiptStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractQaInspectionApplicationService.SimpleQaInspectionApplicationService qaInspectionApplicationService(
+            @Qualifier("qaInspectionEventStore") EventStore qaInspectionEventStore,
+            QaInspectionStateRepository qaInspectionStateRepository,
+            QaInspectionStateQueryRepository qaInspectionStateQueryRepository
+    ) {
+        AbstractQaInspectionApplicationService.SimpleQaInspectionApplicationService applicationService = new AbstractQaInspectionApplicationService.SimpleQaInspectionApplicationService(
+                qaInspectionEventStore,
+                qaInspectionStateRepository,
+                qaInspectionStateQueryRepository
         );
         return applicationService;
     }

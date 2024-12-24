@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.qainspection">
+  <class name="AbstractQaInspectionEvent" table="qa_inspection_event" abstract="true">
+    <composite-id name="qaInspectionEventId" class="org.dddml.ffvtraceability.domain.qainspection.QaInspectionEventId">
+      <key-property name="qaInspectionId">
+        <column name="qa_inspection_id" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractQaInspectionEvent$QaInspectionLobEvent" discriminator-value="QaInspectionLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractQaInspectionEvent$AbstractQaInspectionStateEvent" abstract="true">
+      <property name="receiptId">
+        <column name="receipt_id" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="statusId">
+        <column name="status_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="inspectionTypeId">
+        <column name="inspection_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="comments">
+        <column name="comments" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="inspectionFacilityId">
+        <column name="inspection_facility_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="inspectedBy">
+        <column name="inspected_by" sql-type="VARCHAR(250)" />
+      </property>
+      <property name="inspectedAt">
+        <column name="inspected_at" sql-type="timestamptz" />
+      </property>
+      <subclass name="AbstractQaInspectionEvent$SimpleQaInspectionStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractQaInspectionEvent$SimpleQaInspectionStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyReceiptIdRemoved" column="is_property_receipt_id_removed" />
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyInspectionTypeIdRemoved" column="is_property_inspection_type_id_removed" />
+        <property name="isPropertyCommentsRemoved" column="is_property_comments_removed" />
+        <property name="isPropertyInspectionFacilityIdRemoved" column="is_property_inspection_facility_id_removed" />
+        <property name="isPropertyInspectedByRemoved" column="is_property_inspected_by_removed" />
+        <property name="isPropertyInspectedAtRemoved" column="is_property_inspected_at_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>
