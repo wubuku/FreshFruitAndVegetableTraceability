@@ -5440,6 +5440,7 @@ public class M {
             "shipmentId",
             "shipmentTypeId",
             "statusId",
+            "qaStatusId",
             "primaryOrderId",
             "primaryReturnId",
             "primaryShipGroupSeqId",
@@ -5473,6 +5474,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
             "String",
             "String",
             "String",
@@ -5526,6 +5528,8 @@ public class M {
         aliasMap.put("ShipmentTypeId", "shipmentTypeId");
         aliasMap.put("statusId", "statusId");
         aliasMap.put("StatusId", "statusId");
+        aliasMap.put("qaStatusId", "qaStatusId");
+        aliasMap.put("QaStatusId", "qaStatusId");
         aliasMap.put("primaryOrderId", "primaryOrderId");
         aliasMap.put("PrimaryOrderId", "primaryOrderId");
         aliasMap.put("primaryReturnId", "primaryReturnId");

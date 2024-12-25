@@ -44,6 +44,16 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.statusId = statusId;
     }
 
+    private String qaStatusId;
+
+    public String getQaStatusId() {
+        return this.qaStatusId;
+    }
+
+    public void setQaStatusId(String qaStatusId) {
+        this.qaStatusId = qaStatusId;
+    }
+
     private String primaryOrderId;
 
     public String getPrimaryOrderId() {
@@ -442,6 +452,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
 
         this.setShipmentTypeId(e.getShipmentTypeId());
         this.setStatusId(e.getStatusId());
+        this.setQaStatusId(e.getQaStatusId());
         this.setPrimaryOrderId(e.getPrimaryOrderId());
         this.setPrimaryReturnId(e.getPrimaryReturnId());
         this.setPrimaryShipGroupSeqId(e.getPrimaryShipGroupSeqId());
@@ -485,6 +496,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         }
         this.setShipmentTypeId(s.getShipmentTypeId());
         this.setStatusId(s.getStatusId());
+        this.setQaStatusId(s.getQaStatusId());
         this.setPrimaryOrderId(s.getPrimaryOrderId());
         this.setPrimaryReturnId(s.getPrimaryReturnId());
         this.setPrimaryShipGroupSeqId(s.getPrimaryShipGroupSeqId());
@@ -598,6 +610,13 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
             }
         } else {
             this.setStatusId(e.getStatusId());
+        }
+        if (e.getQaStatusId() == null) {
+            if (e.getIsPropertyQaStatusIdRemoved() != null && e.getIsPropertyQaStatusIdRemoved()) {
+                this.setQaStatusId(null);
+            }
+        } else {
+            this.setQaStatusId(e.getQaStatusId());
         }
         if (e.getPrimaryOrderId() == null) {
             if (e.getIsPropertyPrimaryOrderIdRemoved() != null && e.getIsPropertyPrimaryOrderIdRemoved()) {

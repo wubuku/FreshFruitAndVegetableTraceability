@@ -110,3 +110,12 @@ services:
           QaInspection:
             type: BffQaInspectionDto
 
+      BatchAddQaInspections:
+        # 批量添加 QA Inspection
+        httpMethod: POST
+        restfulResourceName: "batchAddQaInspections"
+        metadata:
+          HttpRequestBody: QaInspections
+        parameters:
+          QaInspections:
+            itemType: BffQaInspectionDto

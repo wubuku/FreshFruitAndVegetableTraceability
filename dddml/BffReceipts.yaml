@@ -29,6 +29,8 @@ valueObjects:
         type: id
       PrimaryShipGroupSeqId:
         type: id
+      QaStatusId:
+        type: id
       CreatedAt:
         type: date-time
       ReceivingItems:

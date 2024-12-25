@@ -23,6 +23,8 @@ public interface ShipmentState
 
     String getStatusId();
 
+    String getQaStatusId();
+
     String getPrimaryOrderId();
 
     String getPrimaryReturnId();
@@ -89,6 +91,8 @@ public interface ShipmentState
         void setShipmentTypeId(String shipmentTypeId);
 
         void setStatusId(String statusId);
+
+        void setQaStatusId(String qaStatusId);
 
         void setPrimaryOrderId(String primaryOrderId);
 

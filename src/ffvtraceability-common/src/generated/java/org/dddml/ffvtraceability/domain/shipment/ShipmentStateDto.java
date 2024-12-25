@@ -50,6 +50,18 @@ public class ShipmentStateDto {
         this.statusId = statusId;
     }
 
+    private String qaStatusId;
+
+    public String getQaStatusId()
+    {
+        return this.qaStatusId;
+    }
+
+    public void setQaStatusId(String qaStatusId)
+    {
+        this.qaStatusId = qaStatusId;
+    }
+
     private String primaryOrderId;
 
     public String getPrimaryOrderId()
@@ -447,6 +459,9 @@ public class ShipmentStateDto {
             }
             if (returnedFieldsContains("StatusId")) {
                 dto.setStatusId(state.getStatusId());
+            }
+            if (returnedFieldsContains("QaStatusId")) {
+                dto.setQaStatusId(state.getQaStatusId());
             }
             if (returnedFieldsContains("PrimaryOrderId")) {
                 dto.setPrimaryOrderId(state.getPrimaryOrderId());

@@ -32,6 +32,7 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
         bffReceivingDocumentDto.setPrimaryOrderId( documentItemProjection.getPrimaryOrderId() );
         bffReceivingDocumentDto.setPrimaryReturnId( documentItemProjection.getPrimaryReturnId() );
         bffReceivingDocumentDto.setPrimaryShipGroupSeqId( documentItemProjection.getPrimaryShipGroupSeqId() );
+        bffReceivingDocumentDto.setQaStatusId( documentItemProjection.getQaStatusId() );
         bffReceivingDocumentDto.setCreatedAt( instantToOffsetDateTime( documentItemProjection.getCreatedAt() ) );
 
         return bffReceivingDocumentDto;

@@ -17,6 +17,9 @@
       StatusId:
         type: id
         columnName: STATUS_ID
+      QaStatusId:
+        type: id
+        columnName: QA_STATUS_ID
       PrimaryOrderId:
         type: id
         columnName: PRIMARY_ORDER_ID

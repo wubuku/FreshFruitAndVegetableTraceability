@@ -30,6 +30,9 @@
       <property name="statusId">
         <column name="STATUS_ID" sql-type="VARCHAR(20)" />
       </property>
+      <property name="qaStatusId">
+        <column name="QA_STATUS_ID" sql-type="VARCHAR(20)" />
+      </property>
       <property name="primaryOrderId">
         <column name="PRIMARY_ORDER_ID" sql-type="VARCHAR(20)" />
       </property>
@@ -103,6 +106,7 @@
       <subclass name="AbstractShipmentEvent$SimpleShipmentStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyShipmentTypeIdRemoved" column="is_property_shipment_type_id_removed" />
         <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyQaStatusIdRemoved" column="is_property_qa_status_id_removed" />
         <property name="isPropertyPrimaryOrderIdRemoved" column="is_property_primary_order_id_removed" />
         <property name="isPropertyPrimaryReturnIdRemoved" column="is_property_primary_return_id_removed" />
         <property name="isPropertyPrimaryShipGroupSeqIdRemoved" column="is_property_primary_ship_group_seq_id_removed" />

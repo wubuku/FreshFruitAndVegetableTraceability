@@ -41,6 +41,21 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
     }
 
     /**
+     * Qa Status Id
+     */
+    private String qaStatusId;
+
+    public String getQaStatusId()
+    {
+        return this.qaStatusId;
+    }
+
+    public void setQaStatusId(String qaStatusId)
+    {
+        this.qaStatusId = qaStatusId;
+    }
+
+    /**
      * Primary Order Id
      */
     private String primaryOrderId;
@@ -434,6 +449,18 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         this.isPropertyStatusIdRemoved = removed;
     }
 
+    private Boolean isPropertyQaStatusIdRemoved;
+
+    public Boolean getIsPropertyQaStatusIdRemoved()
+    {
+        return this.isPropertyQaStatusIdRemoved;
+    }
+
+    public void setIsPropertyQaStatusIdRemoved(Boolean removed)
+    {
+        this.isPropertyQaStatusIdRemoved = removed;
+    }
+
     private Boolean isPropertyPrimaryOrderIdRemoved;
 
     public Boolean getIsPropertyPrimaryOrderIdRemoved()
@@ -715,6 +742,7 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         ((AbstractShipmentCommandDto) this).copyTo(command);
         command.setShipmentTypeId(this.getShipmentTypeId());
         command.setStatusId(this.getStatusId());
+        command.setQaStatusId(this.getQaStatusId());
         command.setPrimaryOrderId(this.getPrimaryOrderId());
         command.setPrimaryReturnId(this.getPrimaryReturnId());
         command.setPrimaryShipGroupSeqId(this.getPrimaryShipGroupSeqId());
@@ -826,6 +854,7 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         copyTo((CreateOrMergePatchShipment) command);
         command.setIsPropertyShipmentTypeIdRemoved(this.getIsPropertyShipmentTypeIdRemoved());
         command.setIsPropertyStatusIdRemoved(this.getIsPropertyStatusIdRemoved());
+        command.setIsPropertyQaStatusIdRemoved(this.getIsPropertyQaStatusIdRemoved());
         command.setIsPropertyPrimaryOrderIdRemoved(this.getIsPropertyPrimaryOrderIdRemoved());
         command.setIsPropertyPrimaryReturnIdRemoved(this.getIsPropertyPrimaryReturnIdRemoved());
         command.setIsPropertyPrimaryShipGroupSeqIdRemoved(this.getIsPropertyPrimaryShipGroupSeqIdRemoved());

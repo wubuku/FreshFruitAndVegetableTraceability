@@ -49,6 +49,10 @@ public interface ShipmentEvent extends Event {
 
         void setStatusId(String statusId);
 
+        String getQaStatusId();
+
+        void setQaStatusId(String qaStatusId);
+
         String getPrimaryOrderId();
 
         void setPrimaryOrderId(String primaryOrderId);
@@ -170,6 +174,10 @@ public interface ShipmentEvent extends Event {
         Boolean getIsPropertyStatusIdRemoved();
 
         void setIsPropertyStatusIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyQaStatusIdRemoved();
+
+        void setIsPropertyQaStatusIdRemoved(Boolean removed);
 
         Boolean getIsPropertyPrimaryOrderIdRemoved();
 

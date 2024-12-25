@@ -109,4 +109,26 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
 
         qaInspectionApplicationService.when(mergePatchQaInspection);
     }
+
+    @Override
+    @Transactional
+    public void when(BffQaInspectionServiceCommands.BatchAddQaInspections c) {
+        if (c.getQaInspections() == null) {
+            return;
+        }
+
+        for (BffQaInspectionDto qaInspection : c.getQaInspections()) {
+            // 创建 CreateQaInspection 命令
+            BffQaInspectionServiceCommands.CreateQaInspection createCommand = 
+                new BffQaInspectionServiceCommands.CreateQaInspection();
+            
+            // 设置质检信息
+            createCommand.setQaInspection(qaInspection);
+            createCommand.setRequesterId(c.getRequesterId());
+            createCommand.setCommandId(UUID.randomUUID().toString());
+
+            // 调用已有的创建方法
+            when(createCommand);
+        }
+    }
 }

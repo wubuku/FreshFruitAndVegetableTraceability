@@ -211,6 +211,18 @@ public abstract class AbstractShipmentEvent extends AbstractEvent implements Shi
             this.statusId = statusId;
         }
 
+        private String qaStatusId;
+
+        public String getQaStatusId()
+        {
+            return this.qaStatusId;
+        }
+
+        public void setQaStatusId(String qaStatusId)
+        {
+            this.qaStatusId = qaStatusId;
+        }
+
         private String primaryOrderId;
 
         public String getPrimaryOrderId()
@@ -634,6 +646,16 @@ public abstract class AbstractShipmentEvent extends AbstractEvent implements Shi
 
         public void setIsPropertyStatusIdRemoved(Boolean removed) {
             this.isPropertyStatusIdRemoved = removed;
+        }
+
+        private Boolean isPropertyQaStatusIdRemoved;
+
+        public Boolean getIsPropertyQaStatusIdRemoved() {
+            return this.isPropertyQaStatusIdRemoved;
+        }
+
+        public void setIsPropertyQaStatusIdRemoved(Boolean removed) {
+            this.isPropertyQaStatusIdRemoved = removed;
         }
 
         private Boolean isPropertyPrimaryOrderIdRemoved;

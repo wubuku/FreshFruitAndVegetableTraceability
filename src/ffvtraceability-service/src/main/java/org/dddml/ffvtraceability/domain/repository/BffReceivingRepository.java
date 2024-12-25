@@ -15,6 +15,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             SELECT 
                 s.shipment_id as documentId,
                 s.status_id as statusId,
+                s.qa_status_id as qaStatusId,
                 s.party_id_to as partyIdTo,
                 s.party_id_from as partyIdFrom,
                 COALESCE(p.organization_name, p.last_name) as partyNameFrom,

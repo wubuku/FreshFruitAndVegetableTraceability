@@ -142,6 +142,18 @@ public class BffReceivingDocumentDto implements Serializable {
         this.primaryShipGroupSeqId = primaryShipGroupSeqId;
     }
 
+    private String qaStatusId;
+
+    public String getQaStatusId()
+    {
+        return this.qaStatusId;
+    }
+
+    public void setQaStatusId(String qaStatusId)
+    {
+        this.qaStatusId = qaStatusId;
+    }
+
     private OffsetDateTime createdAt;
 
     public OffsetDateTime getCreatedAt()
@@ -178,7 +190,7 @@ public class BffReceivingDocumentDto implements Serializable {
     {
     }
 
-    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String partyNameFrom, String originFacilityId, String originFacilityName, String destinationFacilityId, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, OffsetDateTime createdAt, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<BffDocumentDto> referenceDocuments)
+    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String partyNameFrom, String originFacilityId, String originFacilityName, String destinationFacilityId, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, String qaStatusId, OffsetDateTime createdAt, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<BffDocumentDto> referenceDocuments)
     {
         this.documentId = documentId;
         this.statusId = statusId;
@@ -191,6 +203,7 @@ public class BffReceivingDocumentDto implements Serializable {
         this.primaryOrderId = primaryOrderId;
         this.primaryReturnId = primaryReturnId;
         this.primaryShipGroupSeqId = primaryShipGroupSeqId;
+        this.qaStatusId = qaStatusId;
         this.createdAt = createdAt;
         this.receivingItems = receivingItems;
         this.referenceDocuments = referenceDocuments;
@@ -219,6 +232,7 @@ public class BffReceivingDocumentDto implements Serializable {
             && (primaryOrderId == other.primaryOrderId || (primaryOrderId != null && primaryOrderId.equals(other.primaryOrderId)))
             && (primaryReturnId == other.primaryReturnId || (primaryReturnId != null && primaryReturnId.equals(other.primaryReturnId)))
             && (primaryShipGroupSeqId == other.primaryShipGroupSeqId || (primaryShipGroupSeqId != null && primaryShipGroupSeqId.equals(other.primaryShipGroupSeqId)))
+            && (qaStatusId == other.qaStatusId || (qaStatusId != null && qaStatusId.equals(other.qaStatusId)))
             && (createdAt == other.createdAt || (createdAt != null && createdAt.equals(other.createdAt)))
             && (receivingItems == other.receivingItems || (receivingItems != null && receivingItems.equals(other.receivingItems)))
             && (referenceDocuments == other.referenceDocuments || (referenceDocuments != null && referenceDocuments.equals(other.referenceDocuments)))
@@ -262,6 +276,9 @@ public class BffReceivingDocumentDto implements Serializable {
         if (this.primaryShipGroupSeqId != null) {
             hash += 13 * this.primaryShipGroupSeqId.hashCode();
         }
+        if (this.qaStatusId != null) {
+            hash += 13 * this.qaStatusId.hashCode();
+        }
         if (this.createdAt != null) {
             hash += 13 * this.createdAt.hashCode();
         }
@@ -288,6 +305,7 @@ public class BffReceivingDocumentDto implements Serializable {
                 ", primaryOrderId=" + '\'' + primaryOrderId + '\'' +
                 ", primaryReturnId=" + '\'' + primaryReturnId + '\'' +
                 ", primaryShipGroupSeqId=" + '\'' + primaryShipGroupSeqId + '\'' +
+                ", qaStatusId=" + '\'' + qaStatusId + '\'' +
                 ", createdAt=" + createdAt +
                 ", receivingItems=" + receivingItems +
                 ", referenceDocuments=" + referenceDocuments +

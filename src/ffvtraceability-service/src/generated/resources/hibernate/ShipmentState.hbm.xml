@@ -25,6 +25,9 @@
     <property name="statusId">
       <column name="STATUS_ID" sql-type="VARCHAR(20)" />
     </property>
+    <property name="qaStatusId">
+      <column name="QA_STATUS_ID" sql-type="VARCHAR(20)" />
+    </property>
     <property name="primaryOrderId">
       <column name="PRIMARY_ORDER_ID" sql-type="VARCHAR(20)" />
     </property>

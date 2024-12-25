@@ -53,6 +53,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         ShipmentEvent.ShipmentStateCreated e = newShipmentStateCreated(stateEventId);
         e.setShipmentTypeId(c.getShipmentTypeId());
         e.setStatusId(c.getStatusId());
+        e.setQaStatusId(c.getQaStatusId());
         e.setPrimaryOrderId(c.getPrimaryOrderId());
         e.setPrimaryReturnId(c.getPrimaryReturnId());
         e.setPrimaryShipGroupSeqId(c.getPrimaryShipGroupSeqId());
@@ -100,6 +101,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         ShipmentEvent.ShipmentStateMergePatched e = newShipmentStateMergePatched(stateEventId);
         e.setShipmentTypeId(c.getShipmentTypeId());
         e.setStatusId(c.getStatusId());
+        e.setQaStatusId(c.getQaStatusId());
         e.setPrimaryOrderId(c.getPrimaryOrderId());
         e.setPrimaryReturnId(c.getPrimaryReturnId());
         e.setPrimaryShipGroupSeqId(c.getPrimaryShipGroupSeqId());
@@ -125,6 +127,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         e.setAddtlShippingChargeDesc(c.getAddtlShippingChargeDesc());
         e.setIsPropertyShipmentTypeIdRemoved(c.getIsPropertyShipmentTypeIdRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyQaStatusIdRemoved(c.getIsPropertyQaStatusIdRemoved());
         e.setIsPropertyPrimaryOrderIdRemoved(c.getIsPropertyPrimaryOrderIdRemoved());
         e.setIsPropertyPrimaryReturnIdRemoved(c.getIsPropertyPrimaryReturnIdRemoved());
         e.setIsPropertyPrimaryShipGroupSeqIdRemoved(c.getIsPropertyPrimaryShipGroupSeqIdRemoved());
