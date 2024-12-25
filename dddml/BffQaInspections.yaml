@@ -90,9 +90,9 @@ services:
       CreateQaInspection:
         httpMethod: POST
         metadata:
-          HttpRequestBody: BffQaInspectionDto
+          HttpRequestBody: QaInspection
         parameters:
-          BffQaInspectionDto:
+          QaInspection:
             type: BffQaInspectionDto
         result:
           type: id-long # QaInspectionId
@@ -101,12 +101,12 @@ services:
         #更新指定的 Item 的信息
         metadata:
           RestfulPathVariable: QaInspectionId
-          HttpRequestBody: BffQaInspectionDto
+          HttpRequestBody: QaInspection
         httpMethod: PUT
         parameters:
           QaInspectionId:
             type: id-long
             optional: false # is required
-          BffQaInspectionDto:
+          QaInspection:
             type: BffQaInspectionDto
 

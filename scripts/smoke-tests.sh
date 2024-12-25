@@ -586,3 +586,62 @@ echo "$response"
 check_response $? "$http_code" "Query receipts"
 
 echo -e "\n${GREEN}All smoke tests completed successfully!${NC}"
+
+# Test QA Inspections
+echo -e "\n=== Testing QA Inspections ===\n"
+
+# 从上一个查询结果中提取 receivingDocumentId 和 receiptId
+RECEIVING_DOC_ID=$(echo "$response" | jq -r '.content[0].documentId')
+RECEIPT_ID=$(echo "$response" | jq -r '.content[0].receivingItems[0].receiptId')
+echo "Using Receiving Document ID: ${RECEIVING_DOC_ID}"
+echo "Using Receipt ID: ${RECEIPT_ID}"
+
+# Create QA Inspection
+echo "Creating QA Inspection..."
+QA_INSPECTION_ID=$(curl -X 'POST' \
+  "${API_BASE_URL}/BffQaInspections" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -d "{
+  \"receiptId\": \"${RECEIPT_ID}\",
+  \"statusId\": \"APPROVED\",
+  \"comments\": \"Initial quality inspection passed. All parameters within acceptable range.\"
+}" | tr -d '"')
+
+echo "Created QA Inspection ID: ${QA_INSPECTION_ID}"
+check_response $? "$http_code" "Create QA inspection"
+
+# Query QA Inspections by receiving document
+echo "Querying QA Inspections..."
+response=$(curl -X 'GET' \
+  "${API_BASE_URL}/BffQaInspections?receivingDocumentId=${RECEIVING_DOC_ID}" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X" \
+  -s)
+http_code=$(curl -X 'GET' \
+  "${API_BASE_URL}/BffQaInspections?receivingDocumentId=${RECEIVING_DOC_ID}" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}' \
+  -o /dev/null)
+
+echo "$response"
+check_response $? "$http_code" "Query QA inspections"
+
+# Update QA Inspection status to ON_HOLD
+echo "Updating QA Inspection..."
+curl -X 'PUT' \
+  "${API_BASE_URL}/BffQaInspections/${QA_INSPECTION_ID}" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d "{
+  \"statusId\": \"ON_HOLD\",
+  \"comments\": \"Additional verification required for temperature logs.\"
+}" | { read http_status; check_response $? "$http_status" "Update QA inspection"; }

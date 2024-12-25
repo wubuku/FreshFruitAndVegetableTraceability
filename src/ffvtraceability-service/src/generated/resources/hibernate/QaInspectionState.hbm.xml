@@ -3,12 +3,12 @@
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.qainspection">
   <class name="org.dddml.ffvtraceability.domain.qainspection.AbstractQaInspectionState$SimpleQaInspectionState" table="qa_inspection">
     <id name="qaInspectionId" length="60">
-      <column name="qa_inspection_id" unique-key="UniqInspReceiptId" sql-type="VARCHAR(60)" />
+      <column name="qa_inspection_id" sql-type="VARCHAR(60)" />
       <generator class="assigned" />
     </id>
     <version name="version" column="version" type="long" />
     <property name="receiptId">
-      <column name="receipt_id" unique-key="UniqInspReceiptId" sql-type="VARCHAR(60)" />
+      <column name="receipt_id" unique-key="UniqueReceiptId" sql-type="VARCHAR(60)" />
     </property>
     <property name="statusId">
       <column name="status_id" sql-type="VARCHAR(20)" />

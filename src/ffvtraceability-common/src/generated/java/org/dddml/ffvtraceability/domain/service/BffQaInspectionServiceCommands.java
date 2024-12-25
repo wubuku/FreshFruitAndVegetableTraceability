@@ -63,16 +63,16 @@ public class BffQaInspectionServiceCommands {
     public static class CreateQaInspection extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
-         * Bff Qa Inspection Dto
+         * Qa Inspection
          */
-        private BffQaInspectionDto bffQaInspectionDto;
+        private BffQaInspectionDto qaInspection;
 
-        public BffQaInspectionDto getBffQaInspectionDto() {
-            return bffQaInspectionDto;
+        public BffQaInspectionDto getQaInspection() {
+            return qaInspection;
         }
 
-        public void setBffQaInspectionDto(BffQaInspectionDto bffQaInspectionDto) {
-            this.bffQaInspectionDto = bffQaInspectionDto;
+        public void setQaInspection(BffQaInspectionDto qaInspection) {
+            this.qaInspection = qaInspection;
         }
 
     }
@@ -93,16 +93,16 @@ public class BffQaInspectionServiceCommands {
         }
 
         /**
-         * Bff Qa Inspection Dto
+         * Qa Inspection
          */
-        private BffQaInspectionDto bffQaInspectionDto;
+        private BffQaInspectionDto qaInspection;
 
-        public BffQaInspectionDto getBffQaInspectionDto() {
-            return bffQaInspectionDto;
+        public BffQaInspectionDto getQaInspection() {
+            return qaInspection;
         }
 
-        public void setBffQaInspectionDto(BffQaInspectionDto bffQaInspectionDto) {
-            this.bffQaInspectionDto = bffQaInspectionDto;
+        public void setQaInspection(BffQaInspectionDto qaInspection) {
+            this.qaInspection = qaInspection;
         }
 
     }

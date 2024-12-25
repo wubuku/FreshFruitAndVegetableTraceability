@@ -58,10 +58,10 @@ public class BffQaInspectionServiceResource {
 
     @PostMapping
     public String createQaInspection(
-        @RequestBody BffQaInspectionDto bffQaInspectionDto
+        @RequestBody BffQaInspectionDto qaInspection
     ) {
         BffQaInspectionServiceCommands.CreateQaInspection createQaInspection = new BffQaInspectionServiceCommands.CreateQaInspection();
-        createQaInspection.setBffQaInspectionDto(bffQaInspectionDto);
+        createQaInspection.setQaInspection(qaInspection);
         try {
         createQaInspection.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffQaInspectionApplicationService.when(createQaInspection);
@@ -71,11 +71,11 @@ public class BffQaInspectionServiceResource {
     @PutMapping("{qaInspectionId}")
     public void updateQaInspection(
         @PathVariable("qaInspectionId") String qaInspectionId,
-        @RequestBody BffQaInspectionDto bffQaInspectionDto
+        @RequestBody BffQaInspectionDto qaInspection
     ) {
         BffQaInspectionServiceCommands.UpdateQaInspection updateQaInspection = new BffQaInspectionServiceCommands.UpdateQaInspection();
         updateQaInspection.setQaInspectionId(qaInspectionId);
-        updateQaInspection.setBffQaInspectionDto(bffQaInspectionDto);
+        updateQaInspection.setQaInspection(qaInspection);
         try {
         updateQaInspection.setRequesterId(SecurityContextUtil.getRequesterId());
         bffQaInspectionApplicationService.when(updateQaInspection);

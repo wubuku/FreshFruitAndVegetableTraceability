@@ -6,9 +6,9 @@ aggregates:
       name: QaInspectionId
       type: id-long
     uniqueConstraints:
-      UniqueInspectionIdReceiptId:
-        - QaInspectionId
+      UniqueReceiptId:
         - ReceiptId
+        # Is this unique constraint OK?
     properties:
       ReceiptId:
         type: id-long
