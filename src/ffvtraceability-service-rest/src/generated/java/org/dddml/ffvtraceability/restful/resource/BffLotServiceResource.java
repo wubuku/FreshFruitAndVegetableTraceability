@@ -7,6 +7,7 @@ package org.dddml.ffvtraceability.restful.resource;
 
 import java.util.*;
 import jakarta.servlet.http.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -60,8 +61,10 @@ public class BffLotServiceResource {
 
     @PostMapping
     public String createLot(
-        @RequestBody BffLotDto lot
+        @Valid @RequestBody BffLotDto lot
     ) {
+        logger.info("Validating lot with gs1Batch: {}", lot.getGs1Batch());
+        System.out.println("Received lot with gs1Batch: " + lot.getGs1Batch());
         BffLotServiceCommands.CreateLot createLot = new BffLotServiceCommands.CreateLot();
         createLot.setLot(lot);
         try {

@@ -7,7 +7,8 @@ package org.dddml.ffvtraceability.domain;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import org.dddml.ffvtraceability.domain.*;
+
+import org.dddml.ffvtraceability.domain.validation.Gs1Batch;
 
 public class BffLotDto implements Serializable {
     private String lotId;
@@ -22,6 +23,7 @@ public class BffLotDto implements Serializable {
         this.lotId = lotId;
     }
 
+    @Gs1Batch
     private String gs1Batch;
 
     public String getGs1Batch()
