@@ -203,6 +203,236 @@ public class BffLotDto {
 
 
 
+## 7. @Valid vs 直接验证注解
+
+### 7.1 @Valid 注解的使用场景
+
+对于复杂对象（特别是 @RequestBody），必须使用 @Valid 注解才能触发验证：
+
+```java
+@PostMapping
+public String createLot(
+    @Valid @RequestBody BffLotDto lot  // @Valid 是必需的
+) {
+    // ...
+}
+```
+
+### 7.2 简单参数的验证
+
+对于简单参数（如 @RequestParam、@PathVariable、@ModelAttribute），验证注解可以直接使用，不需要 @Valid：
+
+```java
+@GetMapping
+public Page<BffLotDto> getLots(
+    @Min(0) @RequestParam(value = "page", defaultValue = "0") Integer page,
+    @Min(1) @Max(100) @RequestParam(value = "size", defaultValue = "20") Integer size
+) {
+    // ...
+}
+
+@GetMapping("{lotId}")
+public BffLotDto getLot(
+    @NotBlank @Size(max=50) @PathVariable("lotId") String lotId
+) {
+    // ...
+}
+
+@PostMapping("/form")
+public void handleForm(
+    @NotNull @ModelAttribute FormData formData  // 对于 @ModelAttribute，也不需要 @Valid
+) {
+    // ...
+}
+```
+
+### 7.3 区别说明
+
+- @Valid：用于触发复杂对象的递归验证
+- 直接验证注解：用于简单参数的验证，由 Spring MVC 的参数解析器直接处理
+
+
+
+
+## 8. 接口方法的验证约束
+
+验证注解不仅可以用在类的字段上，还可以用在接口的 getter 方法上。这种方式在定义 DTO 接口时特别有用。
+
+### 8.1 验证注解的 @Target 设置
+
+当验证注解需要支持方法级别的验证时，需要在 `@Target` 中包含 `ElementType.METHOD`：
+
+```java
+@Target({ElementType.FIELD, ElementType.METHOD})  // 同时支持字段和方法
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = Gs1BatchValidator.class)
+@Documented
+public @interface Gs1Batch {
+    String message() default "Invalid GS1 batch format";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+```
+
+需要注意的是：
+- `ElementType.METHOD` 使注解可以用在任何方法上
+- 但在 Bean Validation 中，主要用于以下场景：
+  1. 验证接口或类中的 getter 方法返回值
+  2. 验证方法的参数（通过 `@Valid` 或其他约束注解）
+  3. 验证方法的执行结果（通过 `@ValidateOnExecution`）
+- 虽然技术上可以放在任何方法上，但验证框架主要关注这些特定场景
+- 这样的设计遵循了 Bean Validation 规范，使验证行为更可预测
+
+### 8.2 在接口上声明验证约束
+
+```java
+public interface BffLotInfo {
+    @NotNull
+    @Size(min = 5, max = 50)
+    String getLotId();
+    
+    @NotNull
+    @Gs1Batch
+    String getGs1Batch();
+}
+```
+
+### 8.3 验证的触发方式
+
+1. 通过 @Valid 注解验证实现类：
+```java
+@PostMapping
+public void process(@Valid @RequestBody BffLotInfoImpl lotInfo) {
+    // 验证会生效
+}
+```
+
+2. 直接验证接口类型：
+```java
+@PostMapping
+public void process(@Valid @RequestBody BffLotInfo lotInfo) {
+    // 验证会生效
+}
+```
+
+3. 使用 Validator 手动验证：
+```java
+@Autowired
+private Validator validator;
+
+public void validateLot(BffLotInfo lotInfo) {
+    Set<ConstraintViolation<BffLotInfo>> violations = validator.validate(lotInfo);
+    if (!violations.isEmpty()) {
+        throw new ConstraintViolationException(violations);
+    }
+}
+```
+
+### 8.4 优点
+
+1. 可以在接口层面定义验证规则
+2. 实现类自动继承这些验证约束
+3. 支持多个实现类共享相同的验证规则
+4. 有助于代码复用和维护
+
+### 8.5 方法级验证的注意事项
+
+#### 8.5.1 验证注解的继承行为
+
+当接口中的方法被实现类重写时，验证注解会被继承：
+
+```java
+public interface BffLotInfo {
+    @NotNull
+    String getLotId();
+}
+
+public class BffLotInfoImpl implements BffLotInfo {
+    @Override  // 这里会继承 @NotNull 约束
+    public String getLotId() {
+        return lotId;
+    }
+}
+```
+
+#### 8.5.2 常见陷阱
+
+1. 重写方法时的验证约束：
+```java
+public interface BffLotInfo {
+    @Size(max = 50)
+    String getLotId();
+}
+
+public class BffLotInfoImpl implements BffLotInfo {
+    @Size(max = 100)  // 错误：不应该在重写方法上重新定义约束
+    @Override
+    public String getLotId() {
+        return lotId;
+    }
+}
+```
+
+2. 私有方法的验证：
+```java
+public class BffLotService {
+    @NotNull  // 无效：私有方法上的验证注解不会被处理
+    private String validateLotId(String lotId) {
+        return lotId;
+    }
+}
+```
+
+#### 8.5.3 最佳实践
+
+1. 保持验证约束在接口层面的一致性：
+   - 在接口中定义基本的验证约束
+   - 避免在实现类中重新定义或覆盖这些约束
+   - 如需添加额外验证，考虑使用组合而不是继承
+
+2. 明确验证的作用范围：
+   - 接口方法验证主要用于契约定义
+   - 实现类的字段验证用于内部状态校验
+   - 避免在同一属性的不同层面重复定义相同的验证规则
+
+3. 合理使用方法级验证：
+```java
+@Validated
+@Service
+public class BffLotServiceImpl implements BffLotService {
+    @Autowired
+    private Validator validator;
+
+    // 基本验证
+    @Override
+    public BffLotInfo getLot(@NotBlank String lotId) {
+        // ...
+    }
+
+    // 扩展验证
+    public BffLotInfo getLotWithBusinessValidation(String lotId) {
+        // 1. 基本验证
+        if (lotId == null || lotId.trim().isEmpty()) {
+            throw new ValidationException("Lot ID cannot be blank");
+        }
+        
+        // 2. 获取数据
+        BffLotInfo lot = getLot(lotId);
+        
+        // 3. 额外的业务验证
+        validateBusinessRules(lot);
+        
+        return lot;
+    }
+}
+```
+
+4. 文档化验证规则：
+   - 在接口文档中清晰说明验证约束
+   - 使用明确的错误消息
+   - 考虑使用自定义验证组进行场景区分
+
+
 ## 附：正则表达式的反向否定预查的解析
 
 ### 需求
