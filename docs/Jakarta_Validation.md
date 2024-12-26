@@ -68,8 +68,7 @@ Jakarta Validation 提供了许多常用的内置验证注解：
 ## 3. 分组验证
 
 分组验证允许根据不同场景使用不同的验证规则。
-
-> 提示：分组接口本质上就是一个空的标记接口（Marker Interface）。
+分组接口本质上是一个空的标记接口（Marker Interface）。
 
 ### 3.1 定义分组
 ```java
@@ -106,12 +105,38 @@ public class BffLotController {
 
 ## 4. Payload 机制
 
+Payload 在 Jakarta Validation 中本质上是一个标记接口（Marker Interface）体系：
 
-> Payload 的用途举例：
-> 1. **错误级别分类**：区分验证失败的严重程度
-> 2. **业务分类**：标记不同类型的业务验证
-> 3. **自定义处理逻辑**：根据 Payload 类型执行不同的处理流程
-> 4. **文档和元数据**：为验证约束提供额外的描述信息
+```java
+// Jakarta Validation 中的基础 Payload 接口定义
+package jakarta.validation.payload;
+
+public interface Payload {
+    // 空接口，仅用作标记
+}
+```
+
+Payload 机制的特点：
+1. **类型安全**：只能使用 Payload 的子类型
+2. **轻量级**：不需要实例化，只使用类引用
+3. **可扩展**：可以根据需要定义新的 Payload 类型
+4. **编译时检查**：错误的 Payload 类型会在编译时被发现
+
+在验证注解中，payload 属性总是以 Class 数组的形式定义：
+```java
+@NotNull(
+    message = "Field cannot be null",
+    payload = {Severity.Error.class, BusinessValidation.Critical.class}
+)
+private String field;
+```
+
+
+Payload 的用途举例：
+1. **错误级别分类**：区分验证失败的严重程度
+2. **业务分类**：标记不同类型的业务验证
+3. **自定义处理逻辑**：根据 Payload 类型执行不同的处理流程
+4. **文档和元数据**：为验证约束提供额外的描述信息
 
 
 ### 4.1 定义 Payload
@@ -433,7 +458,7 @@ public class BffLotServiceImpl implements BffLotService {
    - 考虑使用自定义验证组进行场景区分
 
 
-## 附：正则表达式的反向否定预查的解析
+## 附一：正则表达式的反向否定预查的解析
 
 ### 需求
 找出文本中前面没有双引号的 "StatusId" 字符串。
@@ -473,4 +498,56 @@ textStatusId     // 匹配，因为 StatusId 前面没有双引号
 ### 在 VS Code 中使用
 
 在 VS Code 的搜索框中使用此正则表达式时，需要勾选"使用正则表达式"选项（通常显示为 `.*` 图标）。
+
+
+## 附二：Java 泛型中的通配符
+
+在 Java 泛型中，问号 `?` 表示通配符（Wildcard），是泛型编程中的一个重要概念。
+
+### 1. 无界通配符
+```java
+List<?> list;  // 可以接受任何类型的List
+```
+- 表示可以是任何类型
+- 常用于只读操作
+- 不能向其中添加元素（除了 null）
+
+### 2. 上界通配符
+```java
+List<? extends Number> numbers;  // 可以接受 Number 或其子类的List
+```
+- 使用 `extends` 关键字
+- 表示类型必须是指定类或其子类
+- 常用于从集合中读取元素
+
+### 3. 下界通配符
+```java
+List<? super Integer> integers;  // 可以接受 Integer 或其父类的List
+```
+- 使用 `super` 关键字
+- 表示类型必须是指定类或其父类
+- 常用于向集合中写入元素
+
+### 4. PECS 原则
+Producer Extends, Consumer Super 原则的实际应用：
+
+```java
+// 生产者 - 使用 extends（读取）
+public void readNumbers(List<? extends Number> numbers) {
+    Number n = numbers.get(0);  // 安全，因为一定是 Number 或其子类
+    // numbers.add(1);  // 编译错误，不能添加元素
+}
+
+// 消费者 - 使用 super（写入）
+public void addIntegers(List<? super Integer> integers) {
+    integers.add(1);  // 安全，因为容器一定可以接受 Integer
+    // Integer n = integers.get(0);  // 编译错误，不能保证类型
+}
+```
+
+这个原则帮助我们：
+- 使用 `extends` 来从泛型中读取数据
+- 使用 `super` 来向泛型中写入数据
+- 提高代码的类型安全性
+- 使泛型代码更加灵活
 

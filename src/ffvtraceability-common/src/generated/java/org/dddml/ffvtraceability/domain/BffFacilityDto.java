@@ -7,6 +7,7 @@ package org.dddml.ffvtraceability.domain;
 
 import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
+import jakarta.validation.constraints.Pattern;
 
 public class BffFacilityDto implements Serializable {
     private String facilityId;
@@ -141,7 +142,15 @@ public class BffFacilityDto implements Serializable {
         this.active = active;
     }
 
-    private String gln;
+    /**
+     * GLN (Global Location Number)
+     */
+    @Pattern(
+        regexp = "^\\d{12}\\d$",
+        message = "GLN must be a 13-digit number"
+    )
+    private String gln;  // Global Location Number
+    // 13位数字，理想情况下应该验证校验位
 
     public String getGln()
     {
@@ -153,7 +162,14 @@ public class BffFacilityDto implements Serializable {
         this.gln = gln;
     }
 
-    private String ffrn;
+    /**
+     * FFRN (FDA Food Facility Registration Number)
+     */
+    @Pattern(
+        regexp = "^\\d{11}$",
+        message = "FFRN must be an 11-digit FDA facility registration number"
+    )
+    private String ffrn;  // FDA Food Facility Registration Number
 
     public String getFfrn()
     {
