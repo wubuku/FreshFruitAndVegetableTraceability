@@ -2,6 +2,7 @@ valueObjects:
   BffFacilityDto:
     metadata:
       JpaProjectionInterfaceName: BffFacilityProjection
+      JakartaValidationEnabled: true
     properties:
       FacilityId:
         type: id
@@ -44,13 +45,16 @@ valueObjects:
         type: id
       Active:
         type: indicator
-
       Gln:
         description: "GLN (Global Location Number)"
         type: id
+        constraints:
+          - GLN
       Ffrn:
         description: "FFRN (FDA Food Facility Registration Number)"
         type: id
+        constraints:
+          - FFRN
       Locations:
         itemType: BffFacilityLocationDto
         isList: true

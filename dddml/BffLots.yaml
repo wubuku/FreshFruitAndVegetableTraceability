@@ -7,12 +7,15 @@ valueObjects:
         ExpirationDate: ExpirationDateInstant
       JpaProjectionPropertyTypes:
         ExpirationDate: java.time.Instant
+      JakartaValidationEnabled: true
     properties:
       LotId:
         type: id
       Gs1Batch:
         description: "GS1 BATCH (AI=10)"
         type: id
+        constraints:
+          - Gs1Batch
       Quantity:
         type: fixed-point
       ExpirationDate:

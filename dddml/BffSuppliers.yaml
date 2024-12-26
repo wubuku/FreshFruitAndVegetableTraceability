@@ -3,6 +3,7 @@ valueObjects:
   BffSupplierDto:
     metadata:
       JpaProjectionInterfaceName: BffSupplierProjection
+      JakartaValidationEnabled: true
     properties:
       SupplierId:
         type: id
@@ -11,9 +12,13 @@ valueObjects:
       Ggn:
         description: "GGN (GLOBALG.A.P. Number)"
         type: id
+        constraints:
+          - GGN
       Gln:
         description: "GLN (Global Location Number)"
         type: id
+        constraints:
+          - GLN
       ExternalId:
         type: id
       PreferredCurrencyUomId:
