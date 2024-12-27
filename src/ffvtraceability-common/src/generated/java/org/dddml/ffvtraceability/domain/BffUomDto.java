@@ -69,6 +69,9 @@ public class BffUomDto implements Serializable {
         this.description = description;
     }
 
+    /**
+     * GS1 Application Identifiers
+     */
     private String gs1AI;
 
     public String getGs1AI()

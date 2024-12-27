@@ -45,6 +45,9 @@ public class BffReceivingItemDto implements Serializable {
         this.productName = productName;
     }
 
+    /**
+     * GTIN (Global Trade Item Number)
+     */
     private String gtin;
 
     public String getGtin()
@@ -117,6 +120,9 @@ public class BffReceivingItemDto implements Serializable {
         this.quantityRejected = quantityRejected;
     }
 
+    /**
+     * The number of cases accepted
+     */
     private Long casesAccepted;
 
     public Long getCasesAccepted()
@@ -129,6 +135,9 @@ public class BffReceivingItemDto implements Serializable {
         this.casesAccepted = casesAccepted;
     }
 
+    /**
+     * The number of cases rejected
+     */
     private Long casesRejected;
 
     public Long getCasesRejected()

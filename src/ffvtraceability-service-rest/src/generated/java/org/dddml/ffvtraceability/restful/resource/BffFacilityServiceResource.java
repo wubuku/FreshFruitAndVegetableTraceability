@@ -7,7 +7,7 @@ package org.dddml.ffvtraceability.restful.resource;
 
 import java.util.*;
 import jakarta.servlet.http.*;
-import jakarta.validation.Valid;
+import jakarta.validation.*;
 import jakarta.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +61,7 @@ public class BffFacilityServiceResource {
 
     @PostMapping
     public String createFacility(
-        @Valid @RequestBody BffFacilityDto facility
+        @RequestBody @Valid BffFacilityDto facility
     ) {
         BffFacilityServiceCommands.CreateFacility createFacility = new BffFacilityServiceCommands.CreateFacility();
         createFacility.setFacility(facility);
@@ -74,7 +74,7 @@ public class BffFacilityServiceResource {
     @PutMapping("{facilityId}")
     public void updateFacility(
         @PathVariable("facilityId") String facilityId,
-        @Valid @RequestBody BffFacilityDto facility
+        @RequestBody @Valid BffFacilityDto facility
     ) {
         BffFacilityServiceCommands.UpdateFacility updateFacility = new BffFacilityServiceCommands.UpdateFacility();
         updateFacility.setFacilityId(facilityId);

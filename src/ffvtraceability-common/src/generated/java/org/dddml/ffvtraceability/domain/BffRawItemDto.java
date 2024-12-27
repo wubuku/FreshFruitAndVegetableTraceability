@@ -45,6 +45,9 @@ public class BffRawItemDto implements Serializable {
         this.description = description;
     }
 
+    /**
+     * GTIN (Global Trade Item Number)
+     */
     private String gtin;
 
     public String getGtin()
@@ -105,6 +108,9 @@ public class BffRawItemDto implements Serializable {
         this.quantityUomId = quantityUomId;
     }
 
+    /**
+     * If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+     */
     private java.math.BigDecimal quantityIncluded;
 
     public java.math.BigDecimal getQuantityIncluded()

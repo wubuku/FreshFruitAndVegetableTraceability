@@ -9,6 +9,9 @@ import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
 
 public class KdeTlcSourceOrTlcSourceReference implements Serializable {
+    /**
+     * TLC Source is the actual physical location where TLC was assigned during initial packing or transformation
+     */
     private KdeLocationDescription tlcSource = new KdeLocationDescription();
 
     public KdeLocationDescription getTlcSource()
@@ -21,6 +24,9 @@ public class KdeTlcSourceOrTlcSourceReference implements Serializable {
         this.tlcSource = tlcSource;
     }
 
+    /**
+     * Suppliers may provide a TLC Source Reference instead of a TLC Source
+     */
     private KdeTlcSourceReference tlcSourceReference = new KdeTlcSourceReference();
 
     public KdeTlcSourceReference getTlcSourceReference()

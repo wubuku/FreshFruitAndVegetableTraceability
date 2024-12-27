@@ -147,10 +147,9 @@ public class BffFacilityDto implements Serializable {
      */
     @Pattern(
         regexp = "^\\d{12}\\d$",
-        message = "GLN must be a 13-digit number"
+        message = "Must match GLN"
     )
-    private String gln;  // Global Location Number
-    // 13位数字，理想情况下应该验证校验位
+    private String gln;
 
     public String getGln()
     {
@@ -167,9 +166,9 @@ public class BffFacilityDto implements Serializable {
      */
     @Pattern(
         regexp = "^\\d{11}$",
-        message = "FFRN must be an 11-digit FDA facility registration number"
+        message = "Must match FFRN"
     )
-    private String ffrn;  // FDA Food Facility Registration Number
+    private String ffrn;
 
     public String getFfrn()
     {

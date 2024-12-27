@@ -243,6 +243,24 @@ public String createLot(
 }
 ```
 
+对于数组或集合类型的参数，@Valid 同样会递归验证每个元素：
+
+```java
+@PostMapping("/batch")
+public void createLots(
+    @Valid @RequestBody BffLotDto[] lots  // 数组中的每个 BffLotDto 都会被验证
+) {
+    // ...
+}
+
+@PostMapping("/batch-list")
+public void createLots(
+    @Valid @RequestBody List<BffLotDto> lots  // List 中的每个 BffLotDto 都会被验证
+) {
+    // ...
+}
+```
+
 ### 7.2 简单参数的验证
 
 对于简单参数（如 @RequestParam、@PathVariable、@ModelAttribute），验证注解可以直接使用，不需要 @Valid：

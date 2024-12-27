@@ -9,6 +9,9 @@ import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
 
 public class KdeTraceabilityLotCode implements Serializable {
+    /**
+     * AI (01) Case GTIN
+     */
     private String caseGtin;
 
     public String getCaseGtin()
@@ -21,6 +24,9 @@ public class KdeTraceabilityLotCode implements Serializable {
         this.caseGtin = caseGtin;
     }
 
+    /**
+     * AI (10) Case Batch/Lot
+     */
     private String caseBatch;
 
     public String getCaseBatch()
@@ -33,6 +39,9 @@ public class KdeTraceabilityLotCode implements Serializable {
         this.caseBatch = caseBatch;
     }
 
+    /**
+     * AI (00) Pallet SSCC
+     */
     private String palletSscc;
 
     public String getPalletSscc()
@@ -45,6 +54,9 @@ public class KdeTraceabilityLotCode implements Serializable {
         this.palletSscc = palletSscc;
     }
 
+    /**
+     * AI (13) Pack Date
+     */
     private String packDate;
 
     public String getPackDate()
@@ -57,6 +69,9 @@ public class KdeTraceabilityLotCode implements Serializable {
         this.packDate = packDate;
     }
 
+    /**
+     * AI (13) Harvest Date
+     */
     private String harvestDate;
 
     public String getHarvestDate()
@@ -69,6 +84,9 @@ public class KdeTraceabilityLotCode implements Serializable {
         this.harvestDate = harvestDate;
     }
 
+    /**
+     * AI (15) Best if Used by Date
+     */
     private String bestIfUsedByDate;
 
     public String getBestIfUsedByDate()
@@ -81,6 +99,9 @@ public class KdeTraceabilityLotCode implements Serializable {
         this.bestIfUsedByDate = bestIfUsedByDate;
     }
 
+    /**
+     * AI (21) Serial Number
+     */
     private String serialNumber;
 
     public String getSerialNumber()

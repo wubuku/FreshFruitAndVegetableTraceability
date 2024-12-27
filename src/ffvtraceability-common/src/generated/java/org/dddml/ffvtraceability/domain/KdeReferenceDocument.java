@@ -9,6 +9,9 @@ import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
 
 public class KdeReferenceDocument implements Serializable {
+    /**
+     * Document Type
+     */
     private String documentType;
 
     public String getDocumentType()
@@ -21,6 +24,9 @@ public class KdeReferenceDocument implements Serializable {
         this.documentType = documentType;
     }
 
+    /**
+     * Document Number
+     */
     private String documentNumber;
 
     public String getDocumentNumber()

@@ -7,7 +7,7 @@ package org.dddml.ffvtraceability.domain;
 
 import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 
 public class BffSupplierDto implements Serializable {
     private String supplierId;
@@ -36,11 +36,10 @@ public class BffSupplierDto implements Serializable {
 
     /**
      * GGN (GLOBALG.A.P. Number)
-     * 13位唯一标识符，用于识别通过 GLOBALG.A.P. 认证的生产者或公司
      */
     @Pattern(
         regexp = "^\\d{13}$",
-        message = "GGN must be a 13-digit GLOBALG.A.P. number"
+        message = "Must match GGN"
     )
     private String ggn;
 
@@ -56,11 +55,10 @@ public class BffSupplierDto implements Serializable {
 
     /**
      * GLN (Global Location Number)
-     * 13位数字，理想情况下应该验证校验位
      */
     @Pattern(
         regexp = "^\\d{12}\\d$",
-        message = "GLN must be a 13-digit number"
+        message = "Must match GLN"
     )
     private String gln;
 

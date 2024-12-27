@@ -9,6 +9,9 @@ import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
 
 public class KdeProductDescription implements Serializable {
+    /**
+     * product name (including, if applicable, the brand name, commodity, and variety)
+     */
     private String productName;
 
     public String getProductName()
@@ -21,6 +24,9 @@ public class KdeProductDescription implements Serializable {
         this.productName = productName;
     }
 
+    /**
+     * packaging size
+     */
     private String packagingSize;
 
     public String getPackagingSize()
@@ -33,6 +39,9 @@ public class KdeProductDescription implements Serializable {
         this.packagingSize = packagingSize;
     }
 
+    /**
+     * packaging style
+     */
     private String packagingStyle;
 
     public String getPackagingStyle()

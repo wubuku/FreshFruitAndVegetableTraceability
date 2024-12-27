@@ -9,6 +9,9 @@ import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
 
 public class KdeTlcSourceReference implements Serializable {
+    /**
+     * Web site
+     */
     private String webSite;
 
     public String getWebSite()
@@ -21,6 +24,9 @@ public class KdeTlcSourceReference implements Serializable {
         this.webSite = webSite;
     }
 
+    /**
+     * FDA FFRN
+     */
     private String fdaFfrn;
 
     public String getFdaFfrn()
@@ -33,6 +39,9 @@ public class KdeTlcSourceReference implements Serializable {
         this.fdaFfrn = fdaFfrn;
     }
 
+    /**
+     * GLN from a registry available to FDA
+     */
     private String gln;
 
     public String getGln()
@@ -45,6 +54,9 @@ public class KdeTlcSourceReference implements Serializable {
         this.gln = gln;
     }
 
+    /**
+     * GLOBALG.A.P. Number
+     */
     private String ggn;
 
     public String getGgn()

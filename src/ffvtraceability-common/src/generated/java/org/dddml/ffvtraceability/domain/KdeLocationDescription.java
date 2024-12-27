@@ -9,6 +9,9 @@ import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
 
 public class KdeLocationDescription implements Serializable {
+    /**
+     * business name
+     */
     private String businessName;
 
     public String getBusinessName()
@@ -21,6 +24,9 @@ public class KdeLocationDescription implements Serializable {
         this.businessName = businessName;
     }
 
+    /**
+     * phone number
+     */
     private String phoneNumber;
 
     public String getPhoneNumber()
@@ -33,6 +39,9 @@ public class KdeLocationDescription implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * physical location address (or geographic coordinates)
+     */
     private String physicalLocationAddress;
 
     public String getPhysicalLocationAddress()
@@ -45,6 +54,9 @@ public class KdeLocationDescription implements Serializable {
         this.physicalLocationAddress = physicalLocationAddress;
     }
 
+    /**
+     * city
+     */
     private String city;
 
     public String getCity()
@@ -57,6 +69,9 @@ public class KdeLocationDescription implements Serializable {
         this.city = city;
     }
 
+    /**
+     * State
+     */
     private String state;
 
     public String getState()
@@ -69,6 +84,9 @@ public class KdeLocationDescription implements Serializable {
         this.state = state;
     }
 
+    /**
+     * Zip code for domestic locations and comparable information for foreign locations, including country
+     */
     private String zipCode;
 
     public String getZipCode()
