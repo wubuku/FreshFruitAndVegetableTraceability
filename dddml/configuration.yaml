@@ -8,6 +8,7 @@ configuration:
     JsonUriPathVariableEnabled: true
     SpringSecurityEnabled: true
     JpaProjectionInterfaceSubPackageName: "repository"
+    JakartaValidationEnabled: true
   multiTenancy:
     discriminatorBasedMultiTenancyEnabled: false
 
