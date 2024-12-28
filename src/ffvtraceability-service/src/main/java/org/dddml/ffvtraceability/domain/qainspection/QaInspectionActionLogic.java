@@ -7,6 +7,9 @@ package org.dddml.ffvtraceability.domain.qainspection;
 
 import java.math.*;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.springframework.stereotype.Component;
@@ -45,7 +48,33 @@ public class QaInspectionActionLogic implements IQaInspectionActionLogic {
      */
     public QaInspectionState mutate(QaInspectionState qaInspectionState, String value, MutationContext<QaInspectionState, QaInspectionState.MutableQaInspectionState> mutationContext) {
         QaInspectionState.MutableQaInspectionState s = mutationContext.createMutableState(qaInspectionState);
-        // TODO: implement
+        AbstractQaInspectionAggregate.SimpleQaInspectionQaInspectionActionCommandHandler cmdHandler = new AbstractQaInspectionAggregate.SimpleQaInspectionQaInspectionActionCommandHandler();
+        cmdHandler.execute(new PropertyCommandContext<>() {
+            @Override
+            public String getContent() {
+                return value;
+            }
+
+            @Override
+            public Supplier<String> getStateGetter() {
+                return qaInspectionState::getStatusId;
+            }
+
+            @Override
+            public Consumer<String> getStateSetter() {
+                return s::setStatusId;
+            }
+
+            @Override
+            public String getOuterCommandType() {
+                return "QaInspectionAction";
+            }
+
+            @Override
+            public Object getExecutionEnvironment() {
+                return null;
+            }
+        });
         return s; // Return the updated state
     }
 }

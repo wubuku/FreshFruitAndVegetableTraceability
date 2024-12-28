@@ -631,7 +631,22 @@ http_code=$(curl -X 'GET' \
 echo "$response"
 check_response $? "$http_code" "Query QA inspections"
 
-# Update QA Inspection status to ON_HOLD
+# curl -X 'PUT' \
+#   "${API_BASE_URL}/QaInspections/${QA_INSPECTION_ID}/_commands/QaInspectionAction" \
+#   -H 'accept: */*' \
+#   -H "X-TenantID: X" \
+#   -H 'Content-Type: application/json' \
+#   -s \
+#   -w '%{http_code}\n' \
+#   -o /dev/null \
+#   -d '{
+#   "commandId": "RANDOM197972935792396296493",
+#   "value": "Approve",
+#   "version": 0
+# }' | { read http_status; check_response $? "$http_status" "Update QA inspection"; }
+
+
+# Update QA Inspection status
 echo "Updating QA Inspection..."
 curl -X 'PUT' \
   "${API_BASE_URL}/BffQaInspections/${QA_INSPECTION_ID}" \
@@ -645,3 +660,4 @@ curl -X 'PUT' \
   \"statusId\": \"APPROVED\",
   \"comments\": \"Additional verification required for temperature logs.\"
 }" | { read http_status; check_response $? "$http_status" "Update QA inspection"; }
+
