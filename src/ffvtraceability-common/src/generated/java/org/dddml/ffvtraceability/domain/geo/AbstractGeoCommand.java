@@ -39,7 +39,6 @@ public abstract class AbstractGeoCommand extends AbstractCommand implements GeoC
 
     public static abstract class AbstractCreateOrMergePatchGeo extends AbstractGeoCommand implements CreateOrMergePatchGeo
     {
-
         private String geoTypeId;
 
         public String getGeoTypeId()

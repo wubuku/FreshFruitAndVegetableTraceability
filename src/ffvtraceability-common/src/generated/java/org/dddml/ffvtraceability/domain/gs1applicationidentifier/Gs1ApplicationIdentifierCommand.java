@@ -47,9 +47,7 @@ public interface Gs1ApplicationIdentifierCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchGs1ApplicationIdentifier extends Gs1ApplicationIdentifierCommand
-    {
-
+    interface CreateOrMergePatchGs1ApplicationIdentifier extends Gs1ApplicationIdentifierCommand {
         String getFormatString();
 
         void setFormatString(String formatString);
@@ -112,12 +110,10 @@ public interface Gs1ApplicationIdentifierCommand extends Command {
 
     }
 
-    interface CreateGs1ApplicationIdentifier extends CreateOrMergePatchGs1ApplicationIdentifier
-    {
+    interface CreateGs1ApplicationIdentifier extends CreateOrMergePatchGs1ApplicationIdentifier {
     }
 
-    interface MergePatchGs1ApplicationIdentifier extends CreateOrMergePatchGs1ApplicationIdentifier
-    {
+    interface MergePatchGs1ApplicationIdentifier extends CreateOrMergePatchGs1ApplicationIdentifier {
         Boolean getIsPropertyFormatStringRemoved();
 
         void setIsPropertyFormatStringRemoved(Boolean removed);
@@ -181,8 +177,7 @@ public interface Gs1ApplicationIdentifierCommand extends Command {
 
     }
 
-    interface DeleteGs1ApplicationIdentifier extends Gs1ApplicationIdentifierCommand
-    {
+    interface DeleteGs1ApplicationIdentifier extends Gs1ApplicationIdentifierCommand {
     }
 
 }

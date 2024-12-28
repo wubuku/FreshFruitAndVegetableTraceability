@@ -17,9 +17,7 @@ public interface ShipmentPackageCommand extends Command {
 
     void setShipmentPackageSeqId(String shipmentPackageSeqId);
 
-    interface CreateOrMergePatchShipmentPackage extends ShipmentPackageCommand
-    {
-
+    interface CreateOrMergePatchShipmentPackage extends ShipmentPackageCommand {
         String getShipmentBoxTypeId();
 
         void setShipmentBoxTypeId(String shipmentBoxTypeId);
@@ -58,16 +56,14 @@ public interface ShipmentPackageCommand extends Command {
 
     }
 
-    interface CreateShipmentPackage extends CreateOrMergePatchShipmentPackage
-    {
+    interface CreateShipmentPackage extends CreateOrMergePatchShipmentPackage {
         CreateShipmentPackageContentCommandCollection getCreateShipmentPackageContentCommands();
 
         ShipmentPackageContentCommand.CreateShipmentPackageContent newCreateShipmentPackageContent();
 
     }
 
-    interface MergePatchShipmentPackage extends CreateOrMergePatchShipmentPackage
-    {
+    interface MergePatchShipmentPackage extends CreateOrMergePatchShipmentPackage {
         Boolean getIsPropertyShipmentBoxTypeIdRemoved();
 
         void setIsPropertyShipmentBoxTypeIdRemoved(Boolean removed);
@@ -115,12 +111,10 @@ public interface ShipmentPackageCommand extends Command {
 
     }
 
-    interface RemoveShipmentPackage extends ShipmentPackageCommand
-    {
+    interface RemoveShipmentPackage extends ShipmentPackageCommand {
     }
 
-    interface CreateShipmentPackageContentCommandCollection extends Iterable<ShipmentPackageContentCommand.CreateShipmentPackageContent>
-    {
+    interface CreateShipmentPackageContentCommandCollection extends Iterable<ShipmentPackageContentCommand.CreateShipmentPackageContent> {
         void add(ShipmentPackageContentCommand.CreateShipmentPackageContent c);
 
         void remove(ShipmentPackageContentCommand.CreateShipmentPackageContent c);
@@ -128,8 +122,7 @@ public interface ShipmentPackageCommand extends Command {
         void clear();
     }
 
-    interface ShipmentPackageContentCommandCollection extends Iterable<ShipmentPackageContentCommand>
-    {
+    interface ShipmentPackageContentCommandCollection extends Iterable<ShipmentPackageContentCommand> {
         void add(ShipmentPackageContentCommand c);
 
         void remove(ShipmentPackageContentCommand c);

@@ -39,7 +39,6 @@ public abstract class AbstractShipmentItemCommand extends AbstractCommand implem
 
     public static abstract class AbstractCreateOrMergePatchShipmentItem extends AbstractShipmentItemCommand implements CreateOrMergePatchShipmentItem
     {
-
         private String productId;
 
         public String getProductId()

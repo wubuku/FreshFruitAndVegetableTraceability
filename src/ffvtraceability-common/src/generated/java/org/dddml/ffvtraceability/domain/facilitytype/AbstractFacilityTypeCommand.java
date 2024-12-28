@@ -39,7 +39,6 @@ public abstract class AbstractFacilityTypeCommand extends AbstractCommand implem
 
     public static abstract class AbstractCreateOrMergePatchFacilityType extends AbstractFacilityTypeCommand implements CreateOrMergePatchFacilityType
     {
-
         private String parentTypeId;
 
         public String getParentTypeId()

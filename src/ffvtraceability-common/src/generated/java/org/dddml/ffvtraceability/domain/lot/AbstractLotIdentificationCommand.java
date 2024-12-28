@@ -39,7 +39,6 @@ public abstract class AbstractLotIdentificationCommand extends AbstractCommand i
 
     public static abstract class AbstractCreateOrMergePatchLotIdentification extends AbstractLotIdentificationCommand implements CreateOrMergePatchLotIdentification
     {
-
         private String idValue;
 
         public String getIdValue()

@@ -40,6 +40,8 @@ public interface QaInspectionCommand extends Command {
             return false;
         if (c.getCommandType() != null) {
             String commandType = c.getCommandType();
+            if (commandType.equals("QaInspectionAction"))
+                return false;
         }
 
         if (c.getVersion().equals(QaInspectionState.VERSION_NULL))
@@ -47,16 +49,14 @@ public interface QaInspectionCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchQaInspection extends QaInspectionCommand
-    {
+    interface CreateOrMergePatchQaInspection extends QaInspectionCommand {
+        String getQaInspectionAction();
 
+        void setQaInspectionAction(String qaInspectionAction);
+                
         String getReceiptId();
 
         void setReceiptId(String receiptId);
-
-        String getStatusId();
-
-        void setStatusId(String statusId);
 
         String getInspectionTypeId();
 
@@ -80,19 +80,13 @@ public interface QaInspectionCommand extends Command {
 
     }
 
-    interface CreateQaInspection extends CreateOrMergePatchQaInspection
-    {
+    interface CreateQaInspection extends CreateOrMergePatchQaInspection {
     }
 
-    interface MergePatchQaInspection extends CreateOrMergePatchQaInspection
-    {
+    interface MergePatchQaInspection extends CreateOrMergePatchQaInspection {
         Boolean getIsPropertyReceiptIdRemoved();
 
         void setIsPropertyReceiptIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyStatusIdRemoved();
-
-        void setIsPropertyStatusIdRemoved(Boolean removed);
 
         Boolean getIsPropertyInspectionTypeIdRemoved();
 
@@ -117,8 +111,7 @@ public interface QaInspectionCommand extends Command {
 
     }
 
-    interface DeleteQaInspection extends QaInspectionCommand
-    {
+    interface DeleteQaInspection extends QaInspectionCommand {
     }
 
 }

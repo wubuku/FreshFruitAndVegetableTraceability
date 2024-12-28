@@ -47,21 +47,17 @@ public interface FacilityIdentificationTypeCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchFacilityIdentificationType extends FacilityIdentificationTypeCommand
-    {
-
+    interface CreateOrMergePatchFacilityIdentificationType extends FacilityIdentificationTypeCommand {
         String getDescription();
 
         void setDescription(String description);
 
     }
 
-    interface CreateFacilityIdentificationType extends CreateOrMergePatchFacilityIdentificationType
-    {
+    interface CreateFacilityIdentificationType extends CreateOrMergePatchFacilityIdentificationType {
     }
 
-    interface MergePatchFacilityIdentificationType extends CreateOrMergePatchFacilityIdentificationType
-    {
+    interface MergePatchFacilityIdentificationType extends CreateOrMergePatchFacilityIdentificationType {
         Boolean getIsPropertyDescriptionRemoved();
 
         void setIsPropertyDescriptionRemoved(Boolean removed);
@@ -69,8 +65,7 @@ public interface FacilityIdentificationTypeCommand extends Command {
 
     }
 
-    interface DeleteFacilityIdentificationType extends FacilityIdentificationTypeCommand
-    {
+    interface DeleteFacilityIdentificationType extends FacilityIdentificationTypeCommand {
     }
 
 }

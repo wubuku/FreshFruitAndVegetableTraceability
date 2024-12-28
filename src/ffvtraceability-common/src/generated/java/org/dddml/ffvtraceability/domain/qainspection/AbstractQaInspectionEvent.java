@@ -117,6 +117,27 @@ public abstract class AbstractQaInspectionEvent extends AbstractEvent implements
 
     }
 
+    public static class QaInspectionActionEvent extends QaInspectionLobEvent implements QaInspectionEvent.QaInspectionActionEvent {
+
+        @Override
+        public String getEventType() {
+            return "QaInspectionActionEvent";
+        }
+
+        public String getValue() {
+            Object val = getDynamicProperties().get("value");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setValue(String value) {
+            getDynamicProperties().put("value", value);
+        }
+
+    }
+
 
     public static abstract class AbstractQaInspectionStateEvent extends AbstractQaInspectionEvent implements QaInspectionEvent.QaInspectionStateEvent {
         private String receiptId;

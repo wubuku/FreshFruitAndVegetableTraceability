@@ -39,7 +39,6 @@ public abstract class AbstractUomTypeCommand extends AbstractCommand implements 
 
     public static abstract class AbstractCreateOrMergePatchUomType extends AbstractUomTypeCommand implements CreateOrMergePatchUomType
     {
-
         private String parentTypeId;
 
         public String getParentTypeId()

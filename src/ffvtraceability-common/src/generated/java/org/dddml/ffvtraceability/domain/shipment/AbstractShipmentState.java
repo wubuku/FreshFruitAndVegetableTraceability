@@ -442,6 +442,10 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
             when((ShipmentStateCreated) e);
         } else if (e instanceof ShipmentStateMergePatched) {
             when((ShipmentStateMergePatched) e);
+        } else if (e instanceof AbstractShipmentEvent.ShipmentActionEvent) {
+            when((AbstractShipmentEvent.ShipmentActionEvent)e);
+        } else if (e instanceof AbstractShipmentEvent.ShipmentQaActionEvent) {
+            when((AbstractShipmentEvent.ShipmentQaActionEvent)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -791,6 +795,52 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
             ShipmentPackageState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(((ShipmentPackageEvent.SqlShipmentPackageEvent)innerEvent).getShipmentPackageEventId().getShipmentPackageSeqId());
             ((ShipmentPackageState.SqlShipmentPackageState)innerState).mutate(innerEvent);
         }
+    }
+
+    public void when(AbstractShipmentEvent.ShipmentActionEvent e) {
+        throwOnWrongEvent(e);
+
+        String value = e.getValue();
+        String Value = value;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        ShipmentState updatedShipmentState = ApplicationContext.current.get(IShipmentActionLogic.class).mutate(
+                this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+
+
+        if (this != updatedShipmentState) { merge(updatedShipmentState); } //else do nothing
+
+    }
+
+    public void when(AbstractShipmentEvent.ShipmentQaActionEvent e) {
+        throwOnWrongEvent(e);
+
+        String value = e.getValue();
+        String Value = value;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        ShipmentState updatedShipmentState = ApplicationContext.current.get(IShipmentQaActionLogic.class).mutate(
+                this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+
+
+        if (this != updatedShipmentState) { merge(updatedShipmentState); } //else do nothing
+
     }
 
     public void save() {

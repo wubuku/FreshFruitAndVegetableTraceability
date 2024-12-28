@@ -40,7 +40,6 @@ public abstract class AbstractOrderCommand extends AbstractCommand implements Or
 
     public static abstract class AbstractCreateOrMergePatchOrder extends AbstractOrderCommand implements CreateOrMergePatchOrder
     {
-
         private String orderTypeId;
 
         public String getOrderTypeId()

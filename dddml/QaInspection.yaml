@@ -15,8 +15,26 @@ aggregates:
         # 关联的收货记录 Id
       StatusId:
         type: id
-        # Approved / Rejected / On-hold ?
-        # `resultId`: 检验结果（合格/不合格/部分合格）?
+        commandType: QaInspectionAction
+        commandName: QaInspectionAction
+        stateMachine:
+          transitions:
+            - targetState: "APPROVED"
+              trigger: Approve
+              # sourceState: null
+            - targetState: "REJECTED"
+              trigger: Reject
+              # sourceState: null
+            - targetState: "ON_HOLD"
+              trigger: Hold
+              # sourceState: null
+            - sourceState: "ON_HOLD"
+              trigger: Reject
+              targetState: "REJECTED"
+            - sourceState: "ON_HOLD"
+              trigger: Approve
+              targetState: "APPROVED"
+
       InspectionTypeId:
         type: id
       Comments:
@@ -31,14 +49,13 @@ aggregates:
       #   # 质量等级 Id
       #   type: id
       InspectedBy:
-        # 检验员ID
+        # 检验员ID。InspectedBy 和 createdBy 可以不是一回事？
         type:
           id-vlong
-          # inspectedBy 和 createdBy 是一回事？
       InspectedAt:
-        # 检验日期时间
+        # 检验日期时间。InspectedAt 和 createdAt 可以不是一回事？
         type: date-time
-        # inspectedAt 和 createdAt 是一回事？
+      # - `resultId`: 检验结果（合格/不合格/部分合格）?
       # - `referenceDocs`: 相关单据号。
       # **也许暂时不需要。如果需要，可以考虑使用一个（聚合内）实体来记录关联的单据。**
 
@@ -49,3 +66,14 @@ aggregates:
   #   properties:
   #     Description:
   #       type: description
+
+enumObjects:
+  QaInspectionAction:
+    baseType: string
+    values:
+      Approve:
+        description: Approve
+      Reject:
+        description: Reject
+      Hold:
+        description: Hold

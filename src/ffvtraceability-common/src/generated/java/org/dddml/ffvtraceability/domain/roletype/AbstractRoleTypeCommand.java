@@ -39,7 +39,6 @@ public abstract class AbstractRoleTypeCommand extends AbstractCommand implements
 
     public static abstract class AbstractCreateOrMergePatchRoleType extends AbstractRoleTypeCommand implements CreateOrMergePatchRoleType
     {
-
         private String parentTypeId;
 
         public String getParentTypeId()

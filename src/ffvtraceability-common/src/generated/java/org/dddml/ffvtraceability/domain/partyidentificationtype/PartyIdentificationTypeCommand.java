@@ -47,9 +47,7 @@ public interface PartyIdentificationTypeCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchPartyIdentificationType extends PartyIdentificationTypeCommand
-    {
-
+    interface CreateOrMergePatchPartyIdentificationType extends PartyIdentificationTypeCommand {
         String getParentTypeId();
 
         void setParentTypeId(String parentTypeId);
@@ -64,12 +62,10 @@ public interface PartyIdentificationTypeCommand extends Command {
 
     }
 
-    interface CreatePartyIdentificationType extends CreateOrMergePatchPartyIdentificationType
-    {
+    interface CreatePartyIdentificationType extends CreateOrMergePatchPartyIdentificationType {
     }
 
-    interface MergePatchPartyIdentificationType extends CreateOrMergePatchPartyIdentificationType
-    {
+    interface MergePatchPartyIdentificationType extends CreateOrMergePatchPartyIdentificationType {
         Boolean getIsPropertyParentTypeIdRemoved();
 
         void setIsPropertyParentTypeIdRemoved(Boolean removed);
@@ -85,8 +81,7 @@ public interface PartyIdentificationTypeCommand extends Command {
 
     }
 
-    interface DeletePartyIdentificationType extends PartyIdentificationTypeCommand
-    {
+    interface DeletePartyIdentificationType extends PartyIdentificationTypeCommand {
     }
 
 }

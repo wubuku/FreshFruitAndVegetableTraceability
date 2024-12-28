@@ -27,8 +27,14 @@ public class SpringApplicationContext extends ApplicationContext {
     @Override
     public Object get(String name) {
         int len = 1;
-        if (name.startsWith("_")) {
-            len = 2;
+        int i = 0;
+        while (i < name.length()) {
+            if (name.charAt(i) == '_') {
+                len++;
+            } else {
+                break;
+            }
+            i++;
         }
         String camelName = name.substring(0, len).toLowerCase() + name.substring(len);
         if (innerApplicationContext.containsBean(camelName)) {

@@ -39,7 +39,6 @@ public abstract class AbstractGoodIdentificationCommand extends AbstractCommand 
 
     public static abstract class AbstractCreateOrMergePatchGoodIdentification extends AbstractGoodIdentificationCommand implements CreateOrMergePatchGoodIdentification
     {
-
         private String idValue;
 
         public String getIdValue()

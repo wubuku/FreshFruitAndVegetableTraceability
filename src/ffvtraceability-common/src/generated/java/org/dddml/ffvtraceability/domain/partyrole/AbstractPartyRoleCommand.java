@@ -39,7 +39,6 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
 
     public static abstract class AbstractCreateOrMergePatchPartyRole extends AbstractPartyRoleCommand implements CreateOrMergePatchPartyRole
     {
-
     }
 
     public static abstract class AbstractCreatePartyRole extends AbstractCreateOrMergePatchPartyRole implements CreatePartyRole

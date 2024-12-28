@@ -185,6 +185,48 @@ public abstract class AbstractShipmentEvent extends AbstractEvent implements Shi
 
     }
 
+    public static class ShipmentActionEvent extends ShipmentLobEvent implements ShipmentEvent.ShipmentActionEvent {
+
+        @Override
+        public String getEventType() {
+            return "ShipmentActionEvent";
+        }
+
+        public String getValue() {
+            Object val = getDynamicProperties().get("value");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setValue(String value) {
+            getDynamicProperties().put("value", value);
+        }
+
+    }
+
+    public static class ShipmentQaActionEvent extends ShipmentLobEvent implements ShipmentEvent.ShipmentQaActionEvent {
+
+        @Override
+        public String getEventType() {
+            return "ShipmentQaActionEvent";
+        }
+
+        public String getValue() {
+            Object val = getDynamicProperties().get("value");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setValue(String value) {
+            getDynamicProperties().put("value", value);
+        }
+
+    }
+
 
     public static abstract class AbstractShipmentStateEvent extends AbstractShipmentEvent implements ShipmentEvent.ShipmentStateEvent {
         private String shipmentTypeId;

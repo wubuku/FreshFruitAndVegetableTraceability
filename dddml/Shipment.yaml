@@ -17,9 +17,40 @@
       StatusId:
         type: id
         columnName: STATUS_ID
+        commandType: ShipmentAction
+        commandName: ShipmentAction
+        stateMachine:
+          transitions:
+            - targetState: "DRAFTED"
+              # sourceState: null
+              # trigger: null
+            - sourceState: "DRAFTED"
+              trigger: "Submit"
+              targetState: "SUBMITTED"
+            # - sourceState: "Submitted"
+            #   trigger: "Void"
+            #   targetState: "Voided"
+            # - sourceState: "Completed"
+            #   trigger: "Close"
+            #   targetState: "Closed"
+            # - sourceState: "Completed"
+            #   trigger: "Reverse"
+            #   targetState: "Reversed"
+
       QaStatusId:
         type: id
         columnName: QA_STATUS_ID
+        commandType: ShipmentQaAction
+        commandName: ShipmentQaAction
+        stateMachine:
+          transitions:
+            - targetState: "DRAFTED"
+              # sourceState: null
+              # trigger: null
+            - sourceState: "DRAFTED"
+              trigger: "Confirm"
+              targetState: "CONFIRMED"
+
       PrimaryOrderId:
         type: id
         columnName: PRIMARY_ORDER_ID
@@ -194,4 +225,29 @@
         type: indicator
       Description:
         type: description
+
+enumObjects:
+  ShipmentAction:
+    baseType: string
+    values:
+      Draft:
+        description: Draft
+      Submit:
+        description: Submit
+      # Void:
+      #   description: Void
+      # Close:
+      #   description: Close
+      # Reverse:
+      #   description: Reverse
+      # Confirm:
+      #   description: Confirm
+
+  ShipmentQaAction:
+    baseType: string
+    values:
+      Draft:
+        description: Draft
+      Confirm:
+        description: Confirm
 

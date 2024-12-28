@@ -23,17 +23,26 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
     public static final String STATUS_ID_APPROVED = "APPROVED";
     public static final String STATUS_ID_REJECTED = "REJECTED";
     public static final String STATUS_ID_ON_HOLD = "ON_HOLD";
-
     public static final List<String> AVAILABLE_STATUS_IDS = List.of(STATUS_ID_APPROVED, STATUS_ID_REJECTED, STATUS_ID_ON_HOLD);
-
     @Autowired
     private QaInspectionApplicationService qaInspectionApplicationService;
-
     @Autowired
     private BffQaInspectionRepository bffQaInspectionRepository;
-
     @Autowired
     private BffQaInspectionMapper bffQaInspectionMapper;
+
+    public static String getQaInspectionActionByStatusId(String statusId) {
+        switch (statusId) {
+            case STATUS_ID_APPROVED:
+                return "Approve";
+            case STATUS_ID_REJECTED:
+                return "Reject";
+            case STATUS_ID_ON_HOLD:
+                return "Hold";
+            default:
+                throw new IllegalArgumentException("Invalid statusId: " + statusId);
+        }
+    }
 
     @Transactional(readOnly = true)
     @Override
@@ -70,7 +79,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
                 )
         );
         createQaInspection.setComments(c.getQaInspection().getComments());
-        createQaInspection.setStatusId(c.getQaInspection().getStatusId());
+        createQaInspection.setQaInspectionAction(getQaInspectionActionByStatusId(c.getQaInspection().getStatusId()));
         createQaInspection.setInspectedBy(c.getRequesterId());
         createQaInspection.setInspectedAt(OffsetDateTime.now());
         createQaInspection.setReceiptId(c.getQaInspection().getReceiptId());
@@ -100,7 +109,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
         mergePatchQaInspection.setQaInspectionId(c.getQaInspectionId());
         mergePatchQaInspection.setVersion(qaInspectionState.getVersion());
         mergePatchQaInspection.setComments(c.getQaInspection().getComments());
-        mergePatchQaInspection.setStatusId(c.getQaInspection().getStatusId());
+        mergePatchQaInspection.setQaInspectionAction(getQaInspectionActionByStatusId(c.getQaInspection().getStatusId()));
         mergePatchQaInspection.setInspectedBy(c.getRequesterId());
         mergePatchQaInspection.setInspectedAt(OffsetDateTime.now());
 
@@ -119,9 +128,9 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
 
         for (BffQaInspectionDto qaInspection : c.getQaInspections()) {
             // 创建 CreateQaInspection 命令
-            BffQaInspectionServiceCommands.CreateQaInspection createCommand = 
-                new BffQaInspectionServiceCommands.CreateQaInspection();
-            
+            BffQaInspectionServiceCommands.CreateQaInspection createCommand =
+                    new BffQaInspectionServiceCommands.CreateQaInspection();
+
             // 设置质检信息
             createCommand.setQaInspection(qaInspection);
             createCommand.setRequesterId(c.getRequesterId());

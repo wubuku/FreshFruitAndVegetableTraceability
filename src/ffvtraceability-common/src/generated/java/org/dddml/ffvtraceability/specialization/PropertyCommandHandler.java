@@ -1,10 +1,18 @@
 package org.dddml.ffvtraceability.specialization;
 
 /**
- * Created by Yang on 2016/7/25.
+ * Defines a handler interface for processing property-specific commands.
+ * 
+ * @param <TContent> The type of command content this handler processes
+ * @param <TState> The type of property state this handler manages
  */
 public interface PropertyCommandHandler<TContent, TState> {
 
-    void execute(PropertyCommand<TContent, TState> command);
+    /**
+     * Executes the given property command.
+     * 
+     * @param c The property command context to execute
+     */
+    void execute(PropertyCommandContext<TContent, TState> c);
 
 }

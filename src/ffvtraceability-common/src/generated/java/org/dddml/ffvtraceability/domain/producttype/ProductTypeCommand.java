@@ -47,9 +47,7 @@ public interface ProductTypeCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchProductType extends ProductTypeCommand
-    {
-
+    interface CreateOrMergePatchProductType extends ProductTypeCommand {
         String getParentTypeId();
 
         void setParentTypeId(String parentTypeId);
@@ -72,12 +70,10 @@ public interface ProductTypeCommand extends Command {
 
     }
 
-    interface CreateProductType extends CreateOrMergePatchProductType
-    {
+    interface CreateProductType extends CreateOrMergePatchProductType {
     }
 
-    interface MergePatchProductType extends CreateOrMergePatchProductType
-    {
+    interface MergePatchProductType extends CreateOrMergePatchProductType {
         Boolean getIsPropertyParentTypeIdRemoved();
 
         void setIsPropertyParentTypeIdRemoved(Boolean removed);
@@ -101,8 +97,7 @@ public interface ProductTypeCommand extends Command {
 
     }
 
-    interface DeleteProductType extends ProductTypeCommand
-    {
+    interface DeleteProductType extends ProductTypeCommand {
     }
 
 }

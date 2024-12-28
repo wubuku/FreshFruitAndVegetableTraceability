@@ -17,9 +17,7 @@ public interface ShipmentPackageContentCommand extends Command {
 
     void setShipmentItemSeqId(String shipmentItemSeqId);
 
-    interface CreateOrMergePatchShipmentPackageContent extends ShipmentPackageContentCommand
-    {
-
+    interface CreateOrMergePatchShipmentPackageContent extends ShipmentPackageContentCommand {
         java.math.BigDecimal getQuantity();
 
         void setQuantity(java.math.BigDecimal quantity);
@@ -34,12 +32,10 @@ public interface ShipmentPackageContentCommand extends Command {
 
     }
 
-    interface CreateShipmentPackageContent extends CreateOrMergePatchShipmentPackageContent
-    {
+    interface CreateShipmentPackageContent extends CreateOrMergePatchShipmentPackageContent {
     }
 
-    interface MergePatchShipmentPackageContent extends CreateOrMergePatchShipmentPackageContent
-    {
+    interface MergePatchShipmentPackageContent extends CreateOrMergePatchShipmentPackageContent {
         Boolean getIsPropertyQuantityRemoved();
 
         void setIsPropertyQuantityRemoved(Boolean removed);
@@ -55,8 +51,7 @@ public interface ShipmentPackageContentCommand extends Command {
 
     }
 
-    interface RemoveShipmentPackageContent extends ShipmentPackageContentCommand
-    {
+    interface RemoveShipmentPackageContent extends ShipmentPackageContentCommand {
     }
 
 }

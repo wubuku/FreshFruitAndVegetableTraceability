@@ -40,7 +40,6 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
 
     public static abstract class AbstractCreateOrMergePatchShipmentReceipt extends AbstractShipmentReceiptCommand implements CreateOrMergePatchShipmentReceipt
     {
-
         private String productId;
 
         public String getProductId()

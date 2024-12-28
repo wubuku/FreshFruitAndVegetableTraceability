@@ -39,7 +39,6 @@ public abstract class AbstractGs1ApplicationIdentifierCommand extends AbstractCo
 
     public static abstract class AbstractCreateOrMergePatchGs1ApplicationIdentifier extends AbstractGs1ApplicationIdentifierCommand implements CreateOrMergePatchGs1ApplicationIdentifier
     {
-
         private String formatString;
 
         public String getFormatString()

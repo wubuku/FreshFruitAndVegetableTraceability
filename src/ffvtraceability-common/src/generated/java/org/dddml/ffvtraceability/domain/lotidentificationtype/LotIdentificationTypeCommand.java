@@ -47,21 +47,17 @@ public interface LotIdentificationTypeCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchLotIdentificationType extends LotIdentificationTypeCommand
-    {
-
+    interface CreateOrMergePatchLotIdentificationType extends LotIdentificationTypeCommand {
         String getDescription();
 
         void setDescription(String description);
 
     }
 
-    interface CreateLotIdentificationType extends CreateOrMergePatchLotIdentificationType
-    {
+    interface CreateLotIdentificationType extends CreateOrMergePatchLotIdentificationType {
     }
 
-    interface MergePatchLotIdentificationType extends CreateOrMergePatchLotIdentificationType
-    {
+    interface MergePatchLotIdentificationType extends CreateOrMergePatchLotIdentificationType {
         Boolean getIsPropertyDescriptionRemoved();
 
         void setIsPropertyDescriptionRemoved(Boolean removed);
@@ -69,8 +65,7 @@ public interface LotIdentificationTypeCommand extends Command {
 
     }
 
-    interface DeleteLotIdentificationType extends LotIdentificationTypeCommand
-    {
+    interface DeleteLotIdentificationType extends LotIdentificationTypeCommand {
     }
 
 }

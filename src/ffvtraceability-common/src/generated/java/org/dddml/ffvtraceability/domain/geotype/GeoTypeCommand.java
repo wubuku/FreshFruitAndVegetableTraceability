@@ -47,9 +47,7 @@ public interface GeoTypeCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchGeoType extends GeoTypeCommand
-    {
-
+    interface CreateOrMergePatchGeoType extends GeoTypeCommand {
         String getParentTypeId();
 
         void setParentTypeId(String parentTypeId);
@@ -64,12 +62,10 @@ public interface GeoTypeCommand extends Command {
 
     }
 
-    interface CreateGeoType extends CreateOrMergePatchGeoType
-    {
+    interface CreateGeoType extends CreateOrMergePatchGeoType {
     }
 
-    interface MergePatchGeoType extends CreateOrMergePatchGeoType
-    {
+    interface MergePatchGeoType extends CreateOrMergePatchGeoType {
         Boolean getIsPropertyParentTypeIdRemoved();
 
         void setIsPropertyParentTypeIdRemoved(Boolean removed);
@@ -85,8 +81,7 @@ public interface GeoTypeCommand extends Command {
 
     }
 
-    interface DeleteGeoType extends GeoTypeCommand
-    {
+    interface DeleteGeoType extends GeoTypeCommand {
     }
 
 }

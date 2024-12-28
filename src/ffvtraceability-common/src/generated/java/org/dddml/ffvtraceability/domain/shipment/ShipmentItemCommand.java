@@ -17,9 +17,7 @@ public interface ShipmentItemCommand extends Command {
 
     void setShipmentItemSeqId(String shipmentItemSeqId);
 
-    interface CreateOrMergePatchShipmentItem extends ShipmentItemCommand
-    {
-
+    interface CreateOrMergePatchShipmentItem extends ShipmentItemCommand {
         String getProductId();
 
         void setProductId(String productId);
@@ -34,12 +32,10 @@ public interface ShipmentItemCommand extends Command {
 
     }
 
-    interface CreateShipmentItem extends CreateOrMergePatchShipmentItem
-    {
+    interface CreateShipmentItem extends CreateOrMergePatchShipmentItem {
     }
 
-    interface MergePatchShipmentItem extends CreateOrMergePatchShipmentItem
-    {
+    interface MergePatchShipmentItem extends CreateOrMergePatchShipmentItem {
         Boolean getIsPropertyProductIdRemoved();
 
         void setIsPropertyProductIdRemoved(Boolean removed);
@@ -55,8 +51,7 @@ public interface ShipmentItemCommand extends Command {
 
     }
 
-    interface RemoveShipmentItem extends ShipmentItemCommand
-    {
+    interface RemoveShipmentItem extends ShipmentItemCommand {
     }
 
 }

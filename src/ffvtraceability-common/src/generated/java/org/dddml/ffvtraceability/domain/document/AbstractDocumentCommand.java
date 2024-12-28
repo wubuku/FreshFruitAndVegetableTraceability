@@ -39,7 +39,6 @@ public abstract class AbstractDocumentCommand extends AbstractCommand implements
 
     public static abstract class AbstractCreateOrMergePatchDocument extends AbstractDocumentCommand implements CreateOrMergePatchDocument
     {
-
         private String documentTypeId;
 
         public String getDocumentTypeId()

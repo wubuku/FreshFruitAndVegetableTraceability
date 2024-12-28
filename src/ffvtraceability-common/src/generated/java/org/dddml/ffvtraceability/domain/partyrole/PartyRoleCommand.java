@@ -47,22 +47,17 @@ public interface PartyRoleCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchPartyRole extends PartyRoleCommand
-    {
+    interface CreateOrMergePatchPartyRole extends PartyRoleCommand {
+    }
+
+    interface CreatePartyRole extends CreateOrMergePatchPartyRole {
+    }
+
+    interface MergePatchPartyRole extends CreateOrMergePatchPartyRole {
 
     }
 
-    interface CreatePartyRole extends CreateOrMergePatchPartyRole
-    {
-    }
-
-    interface MergePatchPartyRole extends CreateOrMergePatchPartyRole
-    {
-
-    }
-
-    interface DeletePartyRole extends PartyRoleCommand
-    {
+    interface DeletePartyRole extends PartyRoleCommand {
     }
 
 }

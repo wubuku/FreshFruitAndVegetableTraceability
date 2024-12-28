@@ -39,7 +39,6 @@ public abstract class AbstractGeoTypeCommand extends AbstractCommand implements 
 
     public static abstract class AbstractCreateOrMergePatchGeoType extends AbstractGeoTypeCommand implements CreateOrMergePatchGeoType
     {
-
         private String parentTypeId;
 
         public String getParentTypeId()

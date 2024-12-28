@@ -39,7 +39,6 @@ public abstract class AbstractAttributeSetInstanceCommand extends AbstractComman
 
     public static abstract class AbstractCreateOrMergePatchAttributeSetInstance extends AbstractAttributeSetInstanceCommand implements CreateOrMergePatchAttributeSetInstance
     {
-
         private org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties;
 
         public org.dddml.ffvtraceability.domain.ConsistentEqualityMap getProperties()

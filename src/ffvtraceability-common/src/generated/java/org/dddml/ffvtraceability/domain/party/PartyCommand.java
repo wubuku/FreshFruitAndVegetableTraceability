@@ -47,9 +47,7 @@ public interface PartyCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchParty extends PartyCommand
-    {
-
+    interface CreateOrMergePatchParty extends PartyCommand {
         String getPartyTypeId();
 
         void setPartyTypeId(String partyTypeId);
@@ -140,16 +138,14 @@ public interface PartyCommand extends Command {
 
     }
 
-    interface CreateParty extends CreateOrMergePatchParty
-    {
+    interface CreateParty extends CreateOrMergePatchParty {
         CreatePartyIdentificationCommandCollection getCreatePartyIdentificationCommands();
 
         PartyIdentificationCommand.CreatePartyIdentification newCreatePartyIdentification();
 
     }
 
-    interface MergePatchParty extends CreateOrMergePatchParty
-    {
+    interface MergePatchParty extends CreateOrMergePatchParty {
         Boolean getIsPropertyPartyTypeIdRemoved();
 
         void setIsPropertyPartyTypeIdRemoved(Boolean removed);
@@ -249,16 +245,14 @@ public interface PartyCommand extends Command {
 
     }
 
-    interface DeleteParty extends PartyCommand
-    {
+    interface DeleteParty extends PartyCommand {
 
         String getPartyTypeId();
 
         void setPartyTypeId(String partyTypeId);
     }
 
-    interface CreatePartyIdentificationCommandCollection extends Iterable<PartyIdentificationCommand.CreatePartyIdentification>
-    {
+    interface CreatePartyIdentificationCommandCollection extends Iterable<PartyIdentificationCommand.CreatePartyIdentification> {
         void add(PartyIdentificationCommand.CreatePartyIdentification c);
 
         void remove(PartyIdentificationCommand.CreatePartyIdentification c);
@@ -266,8 +260,7 @@ public interface PartyCommand extends Command {
         void clear();
     }
 
-    interface PartyIdentificationCommandCollection extends Iterable<PartyIdentificationCommand>
-    {
+    interface PartyIdentificationCommandCollection extends Iterable<PartyIdentificationCommand> {
         void add(PartyIdentificationCommand c);
 
         void remove(PartyIdentificationCommand c);

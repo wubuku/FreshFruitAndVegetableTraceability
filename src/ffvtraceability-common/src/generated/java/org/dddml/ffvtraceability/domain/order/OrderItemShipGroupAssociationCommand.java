@@ -17,9 +17,7 @@ public interface OrderItemShipGroupAssociationCommand extends Command {
 
     void setOrderItemSeqId(String orderItemSeqId);
 
-    interface CreateOrMergePatchOrderItemShipGroupAssociation extends OrderItemShipGroupAssociationCommand
-    {
-
+    interface CreateOrMergePatchOrderItemShipGroupAssociation extends OrderItemShipGroupAssociationCommand {
         java.math.BigDecimal getQuantity();
 
         void setQuantity(java.math.BigDecimal quantity);
@@ -30,12 +28,10 @@ public interface OrderItemShipGroupAssociationCommand extends Command {
 
     }
 
-    interface CreateOrderItemShipGroupAssociation extends CreateOrMergePatchOrderItemShipGroupAssociation
-    {
+    interface CreateOrderItemShipGroupAssociation extends CreateOrMergePatchOrderItemShipGroupAssociation {
     }
 
-    interface MergePatchOrderItemShipGroupAssociation extends CreateOrMergePatchOrderItemShipGroupAssociation
-    {
+    interface MergePatchOrderItemShipGroupAssociation extends CreateOrMergePatchOrderItemShipGroupAssociation {
         Boolean getIsPropertyQuantityRemoved();
 
         void setIsPropertyQuantityRemoved(Boolean removed);
@@ -47,8 +43,7 @@ public interface OrderItemShipGroupAssociationCommand extends Command {
 
     }
 
-    interface RemoveOrderItemShipGroupAssociation extends OrderItemShipGroupAssociationCommand
-    {
+    interface RemoveOrderItemShipGroupAssociation extends OrderItemShipGroupAssociationCommand {
     }
 
 }

@@ -39,7 +39,6 @@ public abstract class AbstractFacilityLocationCommand extends AbstractCommand im
 
     public static abstract class AbstractCreateOrMergePatchFacilityLocation extends AbstractFacilityLocationCommand implements CreateOrMergePatchFacilityLocation
     {
-
         private String locationTypeEnumId;
 
         public String getLocationTypeEnumId()

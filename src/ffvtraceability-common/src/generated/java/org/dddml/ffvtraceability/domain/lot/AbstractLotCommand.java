@@ -39,7 +39,6 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
 
     public static abstract class AbstractCreateOrMergePatchLot extends AbstractLotCommand implements CreateOrMergePatchLot
     {
-
         private java.math.BigDecimal quantity;
 
         public java.math.BigDecimal getQuantity()

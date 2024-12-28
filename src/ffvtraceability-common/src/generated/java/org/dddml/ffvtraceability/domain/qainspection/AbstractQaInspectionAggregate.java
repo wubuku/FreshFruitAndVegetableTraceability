@@ -52,7 +52,7 @@ public abstract class AbstractQaInspectionAggregate extends AbstractAggregate im
         QaInspectionEventId stateEventId = new QaInspectionEventId(c.getQaInspectionId(), c.getVersion());
         QaInspectionEvent.QaInspectionStateCreated e = newQaInspectionStateCreated(stateEventId);
         e.setReceiptId(c.getReceiptId());
-        e.setStatusId(c.getStatusId());
+        newQaInspectionQaInspectionActionCommandThenExecute(c, state, e);
         e.setInspectionTypeId(c.getInspectionTypeId());
         e.setComments(c.getComments());
         e.setInspectionFacilityId(c.getInspectionFacilityId());
@@ -68,14 +68,14 @@ public abstract class AbstractQaInspectionAggregate extends AbstractAggregate im
         QaInspectionEventId stateEventId = new QaInspectionEventId(c.getQaInspectionId(), c.getVersion());
         QaInspectionEvent.QaInspectionStateMergePatched e = newQaInspectionStateMergePatched(stateEventId);
         e.setReceiptId(c.getReceiptId());
-        e.setStatusId(c.getStatusId());
+        if (c.getQaInspectionAction() != null)
+        newQaInspectionQaInspectionActionCommandThenExecute(c, state, e);
         e.setInspectionTypeId(c.getInspectionTypeId());
         e.setComments(c.getComments());
         e.setInspectionFacilityId(c.getInspectionFacilityId());
         e.setInspectedBy(c.getInspectedBy());
         e.setInspectedAt(c.getInspectedAt());
         e.setIsPropertyReceiptIdRemoved(c.getIsPropertyReceiptIdRemoved());
-        e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
         e.setIsPropertyInspectionTypeIdRemoved(c.getIsPropertyInspectionTypeIdRemoved());
         e.setIsPropertyCommentsRemoved(c.getIsPropertyCommentsRemoved());
         e.setIsPropertyInspectionFacilityIdRemoved(c.getIsPropertyInspectionFacilityIdRemoved());
@@ -117,9 +117,137 @@ public abstract class AbstractQaInspectionAggregate extends AbstractAggregate im
     }
 
 
+    protected void newQaInspectionQaInspectionActionCommandThenExecute(QaInspectionCommand.MergePatchQaInspection c, QaInspectionState s, QaInspectionEvent.QaInspectionStateMergePatched e) {
+        PropertyCommandHandler<String, String> pCommandHandler = this.getQaInspectionQaInspectionActionCommandHandler();
+        String pCmdContent = c.getQaInspectionAction();
+        AbstractPropertyCommandContext.SimplePropertyCommandContext<String, String> pCmd = new AbstractPropertyCommandContext.SimplePropertyCommandContext<String, String>();
+        pCmd.setContent(pCmdContent);
+        pCmd.setStateGetter(() -> s.getStatusId());
+        pCmd.setStateSetter(p -> e.setStatusId(p));
+        pCmd.setOuterCommandType(CommandType.MERGE_PATCH);
+        pCmd.setExecutionEnvironment(getState());
+        pCommandHandler.execute(pCmd);
+    }
+
+    protected void newQaInspectionQaInspectionActionCommandThenExecute(QaInspectionCommand.CreateQaInspection c, QaInspectionState s, QaInspectionEvent.QaInspectionStateCreated e) {
+        PropertyCommandHandler<String, String> pCommandHandler = this.getQaInspectionQaInspectionActionCommandHandler();
+        String pCmdContent = c.getQaInspectionAction();
+        AbstractPropertyCommandContext.SimplePropertyCommandContext<String, String> pCmd = new AbstractPropertyCommandContext.SimplePropertyCommandContext<String, String>();
+        pCmd.setContent(pCmdContent);
+        pCmd.setStateGetter(() -> s.getStatusId());
+        pCmd.setStateSetter(p -> e.setStatusId(p));
+        pCmd.setOuterCommandType(CommandType.CREATE);
+        pCmd.setExecutionEnvironment(getState());
+        pCommandHandler.execute(pCmd);
+    }
+
+    public static class SimpleQaInspectionQaInspectionActionCommandHandler implements PropertyCommandHandler<String, String> {
+
+        public void execute(PropertyCommandContext<String, String> command) {
+            String trigger = command.getContent();
+            if (Objects.equals(null, command.getStateGetter().get()) && Objects.equals("Approve", trigger)) {
+                command.getStateSetter().accept("APPROVED");
+                return;
+            }
+            if (Objects.equals(null, command.getStateGetter().get()) && Objects.equals("Reject", trigger)) {
+                command.getStateSetter().accept("REJECTED");
+                return;
+            }
+            if (Objects.equals(null, command.getStateGetter().get()) && Objects.equals("Hold", trigger)) {
+                command.getStateSetter().accept("ON_HOLD");
+                return;
+            }
+            if (Objects.equals("ON_HOLD", command.getStateGetter().get()) && Objects.equals("Reject", trigger)) {
+                command.getStateSetter().accept("REJECTED");
+                return;
+            }
+            if (Objects.equals("ON_HOLD", command.getStateGetter().get()) && Objects.equals("Approve", trigger)) {
+                command.getStateSetter().accept("APPROVED");
+                return;
+            }
+            throw new IllegalArgumentException(String.format("State: %1$s, command: %2$s", command.getStateGetter().get(), trigger));
+        }
+    }
+
+    private PropertyCommandHandler<String, String> qaInspectionQaInspectionActionCommandHandler = new SimpleQaInspectionQaInspectionActionCommandHandler();
+
+    public void setQaInspectionQaInspectionActionCommandHandler(PropertyCommandHandler<String, String> h) {
+        this.qaInspectionQaInspectionActionCommandHandler = h;
+    }
+
+    protected PropertyCommandHandler<String, String> getQaInspectionQaInspectionActionCommandHandler() {
+        Object h = ApplicationContext.current.get("QaInspectionQaInspectionActionCommandHandler");
+        if (h instanceof PropertyCommandHandler) {
+            return (PropertyCommandHandler<String, String>) h;
+        }
+        if (this.qaInspectionQaInspectionActionCommandHandler != null) {
+            return this.qaInspectionQaInspectionActionCommandHandler;
+        }
+        return null;
+    }
+
     public static class SimpleQaInspectionAggregate extends AbstractQaInspectionAggregate {
         public SimpleQaInspectionAggregate(QaInspectionState state) {
             super(state);
+        }
+
+        @Override
+        public void qaInspectionAction(String value, Long version, String commandId, String requesterId, QaInspectionCommands.QaInspectionAction c) {
+            /*
+            QaInspectionEvent.QaInspectionStateMergePatched e = newQaInspectionStateMergePatched(version, commandId, requesterId);
+            qaInspectionAction(e, value);
+            apply(e);
+            */
+            java.util.function.Supplier<QaInspectionEvent.QaInspectionActionEvent> eventFactory = () -> newQaInspectionActionEvent(value, version, commandId, requesterId);
+            QaInspectionEvent.QaInspectionActionEvent e;
+            try {
+                e = verifyQaInspectionAction(eventFactory, value, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        /*
+        protected void qaInspectionAction(QaInspectionEvent.QaInspectionStateMergePatched e, String value) {
+            doQaInspectionAction(value, s -> e.setStatusId(s));
+        }
+
+        protected void doQaInspectionAction(String value, java.util.function.Consumer<String> setStatusId) {
+            PropertyCommandHandler<String, String> pCommandHandler = this.getQaInspectionQaInspectionActionCommandHandler();
+            AbstractPropertyCommandContext.SimplePropertyCommandContext<String, String> pCmd = new AbstractPropertyCommandContext.SimplePropertyCommandContext<>();
+            pCmd.setContent(value);
+            pCmd.setStateGetter(() -> this.getState().getStatusId());
+            pCmd.setStateSetter(setStatusId);
+            pCmd.setOuterCommandType("QaInspectionAction");
+            pCmd.setExecutionEnvironment(getState());
+            pCommandHandler.execute(pCmd);
+        }
+
+        */
+
+        protected QaInspectionEvent.QaInspectionActionEvent verifyQaInspectionAction(java.util.function.Supplier<QaInspectionEvent.QaInspectionActionEvent> eventFactory, String value, QaInspectionCommands.QaInspectionAction c) {
+            String Value = value;
+
+            QaInspectionEvent.QaInspectionActionEvent e = (QaInspectionEvent.QaInspectionActionEvent) ApplicationContext.current.get(IQaInspectionActionLogic.class).verify(
+                    eventFactory, getState(), value, VerificationContext.of(c));
+
+            return e;
+        }
+
+        protected AbstractQaInspectionEvent.QaInspectionActionEvent newQaInspectionActionEvent(String value, Long version, String commandId, String requesterId) {
+            QaInspectionEventId eventId = new QaInspectionEventId(getState().getQaInspectionId(), version);
+            AbstractQaInspectionEvent.QaInspectionActionEvent e = new AbstractQaInspectionEvent.QaInspectionActionEvent();
+
+            e.getDynamicProperties().put("value", value);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+            e.setQaInspectionEventId(eventId);
+            return e;
         }
 
     }

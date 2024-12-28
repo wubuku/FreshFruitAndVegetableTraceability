@@ -39,7 +39,6 @@ public abstract class AbstractShippingDocumentCommand extends AbstractCommand im
 
     public static abstract class AbstractCreateOrMergePatchShippingDocument extends AbstractShippingDocumentCommand implements CreateOrMergePatchShippingDocument
     {
-
         private String shipmentId;
 
         public String getShipmentId()

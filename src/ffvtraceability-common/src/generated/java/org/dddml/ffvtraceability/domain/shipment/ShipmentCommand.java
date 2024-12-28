@@ -40,6 +40,10 @@ public interface ShipmentCommand extends Command {
             return false;
         if (c.getCommandType() != null) {
             String commandType = c.getCommandType();
+            if (commandType.equals("ShipmentAction"))
+                return false;
+            if (commandType.equals("ShipmentQaAction"))
+                return false;
         }
 
         if (c.getVersion().equals(ShipmentState.VERSION_NULL))
@@ -47,20 +51,18 @@ public interface ShipmentCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchShipment extends ShipmentCommand
-    {
+    interface CreateOrMergePatchShipment extends ShipmentCommand {
+        String getShipmentAction();
 
+        void setShipmentAction(String shipmentAction);
+                
+        String getShipmentQaAction();
+
+        void setShipmentQaAction(String shipmentQaAction);
+                
         String getShipmentTypeId();
 
         void setShipmentTypeId(String shipmentTypeId);
-
-        String getStatusId();
-
-        void setStatusId(String statusId);
-
-        String getQaStatusId();
-
-        void setQaStatusId(String qaStatusId);
 
         String getPrimaryOrderId();
 
@@ -156,8 +158,7 @@ public interface ShipmentCommand extends Command {
 
     }
 
-    interface CreateShipment extends CreateOrMergePatchShipment
-    {
+    interface CreateShipment extends CreateOrMergePatchShipment {
         CreateShipmentItemCommandCollection getCreateShipmentItemCommands();
 
         ShipmentItemCommand.CreateShipmentItem newCreateShipmentItem();
@@ -168,19 +169,10 @@ public interface ShipmentCommand extends Command {
 
     }
 
-    interface MergePatchShipment extends CreateOrMergePatchShipment
-    {
+    interface MergePatchShipment extends CreateOrMergePatchShipment {
         Boolean getIsPropertyShipmentTypeIdRemoved();
 
         void setIsPropertyShipmentTypeIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyStatusIdRemoved();
-
-        void setIsPropertyStatusIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyQaStatusIdRemoved();
-
-        void setIsPropertyQaStatusIdRemoved(Boolean removed);
 
         Boolean getIsPropertyPrimaryOrderIdRemoved();
 
@@ -293,12 +285,10 @@ public interface ShipmentCommand extends Command {
 
     }
 
-    interface DeleteShipment extends ShipmentCommand
-    {
+    interface DeleteShipment extends ShipmentCommand {
     }
 
-    interface CreateShipmentItemCommandCollection extends Iterable<ShipmentItemCommand.CreateShipmentItem>
-    {
+    interface CreateShipmentItemCommandCollection extends Iterable<ShipmentItemCommand.CreateShipmentItem> {
         void add(ShipmentItemCommand.CreateShipmentItem c);
 
         void remove(ShipmentItemCommand.CreateShipmentItem c);
@@ -306,8 +296,7 @@ public interface ShipmentCommand extends Command {
         void clear();
     }
 
-    interface ShipmentItemCommandCollection extends Iterable<ShipmentItemCommand>
-    {
+    interface ShipmentItemCommandCollection extends Iterable<ShipmentItemCommand> {
         void add(ShipmentItemCommand c);
 
         void remove(ShipmentItemCommand c);
@@ -315,8 +304,7 @@ public interface ShipmentCommand extends Command {
         void clear();
     }
 
-    interface CreateShipmentPackageCommandCollection extends Iterable<ShipmentPackageCommand.CreateShipmentPackage>
-    {
+    interface CreateShipmentPackageCommandCollection extends Iterable<ShipmentPackageCommand.CreateShipmentPackage> {
         void add(ShipmentPackageCommand.CreateShipmentPackage c);
 
         void remove(ShipmentPackageCommand.CreateShipmentPackage c);
@@ -324,8 +312,7 @@ public interface ShipmentCommand extends Command {
         void clear();
     }
 
-    interface ShipmentPackageCommandCollection extends Iterable<ShipmentPackageCommand>
-    {
+    interface ShipmentPackageCommandCollection extends Iterable<ShipmentPackageCommand> {
         void add(ShipmentPackageCommand c);
 
         void remove(ShipmentPackageCommand c);

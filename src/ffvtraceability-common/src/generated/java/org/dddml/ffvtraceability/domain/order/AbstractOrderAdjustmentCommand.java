@@ -39,7 +39,6 @@ public abstract class AbstractOrderAdjustmentCommand extends AbstractCommand imp
 
     public static abstract class AbstractCreateOrMergePatchOrderAdjustment extends AbstractOrderAdjustmentCommand implements CreateOrMergePatchOrderAdjustment
     {
-
         private String orderAdjustmentTypeId;
 
         public String getOrderAdjustmentTypeId()

@@ -39,7 +39,6 @@ public abstract class AbstractTransformationEventCommand extends AbstractCommand
 
     public static abstract class AbstractCreateOrMergePatchTransformationEvent extends AbstractTransformationEventCommand implements CreateOrMergePatchTransformationEvent
     {
-
         private KdeTraceabilityLotCode foodUsedTlc;
 
         public KdeTraceabilityLotCode getFoodUsedTlc()

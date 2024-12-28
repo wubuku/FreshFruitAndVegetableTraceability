@@ -47,9 +47,7 @@ public interface ReceivingEventCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchReceivingEvent extends ReceivingEventCommand
-    {
-
+    interface CreateOrMergePatchReceivingEvent extends ReceivingEventCommand {
         KdeTraceabilityLotCode getTraceabilityLotCode();
 
         void setTraceabilityLotCode(KdeTraceabilityLotCode traceabilityLotCode);
@@ -84,12 +82,10 @@ public interface ReceivingEventCommand extends Command {
 
     }
 
-    interface CreateReceivingEvent extends CreateOrMergePatchReceivingEvent
-    {
+    interface CreateReceivingEvent extends CreateOrMergePatchReceivingEvent {
     }
 
-    interface MergePatchReceivingEvent extends CreateOrMergePatchReceivingEvent
-    {
+    interface MergePatchReceivingEvent extends CreateOrMergePatchReceivingEvent {
         Boolean getIsPropertyTraceabilityLotCodeRemoved();
 
         void setIsPropertyTraceabilityLotCodeRemoved(Boolean removed);
@@ -125,8 +121,7 @@ public interface ReceivingEventCommand extends Command {
 
     }
 
-    interface DeleteReceivingEvent extends ReceivingEventCommand
-    {
+    interface DeleteReceivingEvent extends ReceivingEventCommand {
     }
 
 }

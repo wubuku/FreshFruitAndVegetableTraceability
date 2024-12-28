@@ -39,7 +39,6 @@ public abstract class AbstractLotIdentificationTypeCommand extends AbstractComma
 
     public static abstract class AbstractCreateOrMergePatchLotIdentificationType extends AbstractLotIdentificationTypeCommand implements CreateOrMergePatchLotIdentificationType
     {
-
         private String description;
 
         public String getDescription()

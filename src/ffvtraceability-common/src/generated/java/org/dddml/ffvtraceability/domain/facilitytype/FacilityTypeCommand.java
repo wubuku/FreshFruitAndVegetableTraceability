@@ -47,9 +47,7 @@ public interface FacilityTypeCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchFacilityType extends FacilityTypeCommand
-    {
-
+    interface CreateOrMergePatchFacilityType extends FacilityTypeCommand {
         String getParentTypeId();
 
         void setParentTypeId(String parentTypeId);
@@ -64,12 +62,10 @@ public interface FacilityTypeCommand extends Command {
 
     }
 
-    interface CreateFacilityType extends CreateOrMergePatchFacilityType
-    {
+    interface CreateFacilityType extends CreateOrMergePatchFacilityType {
     }
 
-    interface MergePatchFacilityType extends CreateOrMergePatchFacilityType
-    {
+    interface MergePatchFacilityType extends CreateOrMergePatchFacilityType {
         Boolean getIsPropertyParentTypeIdRemoved();
 
         void setIsPropertyParentTypeIdRemoved(Boolean removed);
@@ -85,8 +81,7 @@ public interface FacilityTypeCommand extends Command {
 
     }
 
-    interface DeleteFacilityType extends FacilityTypeCommand
-    {
+    interface DeleteFacilityType extends FacilityTypeCommand {
     }
 
 }

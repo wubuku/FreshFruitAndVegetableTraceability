@@ -39,7 +39,6 @@ public abstract class AbstractFacilityIdentificationCommand extends AbstractComm
 
     public static abstract class AbstractCreateOrMergePatchFacilityIdentification extends AbstractFacilityIdentificationCommand implements CreateOrMergePatchFacilityIdentification
     {
-
         private String idValue;
 
         public String getIdValue()

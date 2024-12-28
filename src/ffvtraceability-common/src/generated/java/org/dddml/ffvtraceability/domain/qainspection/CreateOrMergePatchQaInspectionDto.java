@@ -26,21 +26,6 @@ public class CreateOrMergePatchQaInspectionDto extends AbstractQaInspectionComma
     }
 
     /**
-     * Status Id
-     */
-    private String statusId;
-
-    public String getStatusId()
-    {
-        return this.statusId;
-    }
-
-    public void setStatusId(String statusId)
-    {
-        this.statusId = statusId;
-    }
-
-    /**
      * Inspection Type Id
      */
     private String inspectionTypeId;
@@ -115,6 +100,16 @@ public class CreateOrMergePatchQaInspectionDto extends AbstractQaInspectionComma
         this.inspectedAt = inspectedAt;
     }
 
+    private String qaInspectionAction;
+
+    public String getQaInspectionAction() {
+        return this.qaInspectionAction;
+    }
+
+    public void setQaInspectionAction(String qaInspectionAction) {
+        this.qaInspectionAction = qaInspectionAction;
+    }
+
 
     private Boolean isPropertyReceiptIdRemoved;
 
@@ -126,18 +121,6 @@ public class CreateOrMergePatchQaInspectionDto extends AbstractQaInspectionComma
     public void setIsPropertyReceiptIdRemoved(Boolean removed)
     {
         this.isPropertyReceiptIdRemoved = removed;
-    }
-
-    private Boolean isPropertyStatusIdRemoved;
-
-    public Boolean getIsPropertyStatusIdRemoved()
-    {
-        return this.isPropertyStatusIdRemoved;
-    }
-
-    public void setIsPropertyStatusIdRemoved(Boolean removed)
-    {
-        this.isPropertyStatusIdRemoved = removed;
     }
 
     private Boolean isPropertyInspectionTypeIdRemoved;
@@ -204,7 +187,6 @@ public class CreateOrMergePatchQaInspectionDto extends AbstractQaInspectionComma
     {
         ((AbstractQaInspectionCommandDto) this).copyTo(command);
         command.setReceiptId(this.getReceiptId());
-        command.setStatusId(this.getStatusId());
         command.setInspectionTypeId(this.getInspectionTypeId());
         command.setComments(this.getComments());
         command.setInspectionFacilityId(this.getInspectionFacilityId());
@@ -255,7 +237,6 @@ public class CreateOrMergePatchQaInspectionDto extends AbstractQaInspectionComma
     {
         copyTo((CreateOrMergePatchQaInspection) command);
         command.setIsPropertyReceiptIdRemoved(this.getIsPropertyReceiptIdRemoved());
-        command.setIsPropertyStatusIdRemoved(this.getIsPropertyStatusIdRemoved());
         command.setIsPropertyInspectionTypeIdRemoved(this.getIsPropertyInspectionTypeIdRemoved());
         command.setIsPropertyCommentsRemoved(this.getIsPropertyCommentsRemoved());
         command.setIsPropertyInspectionFacilityIdRemoved(this.getIsPropertyInspectionFacilityIdRemoved());

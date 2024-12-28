@@ -39,7 +39,6 @@ public abstract class AbstractOrderItemCommand extends AbstractCommand implement
 
     public static abstract class AbstractCreateOrMergePatchOrderItem extends AbstractOrderItemCommand implements CreateOrMergePatchOrderItem
     {
-
         private String externalId;
 
         public String getExternalId()

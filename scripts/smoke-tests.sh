@@ -606,7 +606,7 @@ QA_INSPECTION_ID=$(curl -X 'POST' \
   -s \
   -d "{
   \"receiptId\": \"${RECEIPT_ID}\",
-  \"statusId\": \"APPROVED\",
+  \"statusId\": \"ON_HOLD\",
   \"comments\": \"Initial quality inspection passed. All parameters within acceptable range.\"
 }" | tr -d '"')
 
@@ -642,6 +642,6 @@ curl -X 'PUT' \
   -w '%{http_code}\n' \
   -o /dev/null \
   -d "{
-  \"statusId\": \"ON_HOLD\",
+  \"statusId\": \"APPROVED\",
   \"comments\": \"Additional verification required for temperature logs.\"
 }" | { read http_status; check_response $? "$http_status" "Update QA inspection"; }

@@ -39,7 +39,6 @@ public abstract class AbstractCommentCommand extends AbstractCommand implements 
 
     public static abstract class AbstractCreateOrMergePatchComment extends AbstractCommentCommand implements CreateOrMergePatchComment
     {
-
         private String commenter;
 
         public String getCommenter()

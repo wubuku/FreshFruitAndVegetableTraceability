@@ -39,7 +39,6 @@ public abstract class AbstractGeoPointCommand extends AbstractCommand implements
 
     public static abstract class AbstractCreateOrMergePatchGeoPoint extends AbstractGeoPointCommand implements CreateOrMergePatchGeoPoint
     {
-
         private String geoPointTypeEnumId;
 
         public String getGeoPointTypeEnumId()

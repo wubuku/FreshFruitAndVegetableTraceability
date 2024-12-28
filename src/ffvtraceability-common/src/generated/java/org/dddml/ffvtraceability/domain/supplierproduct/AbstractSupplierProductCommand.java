@@ -39,7 +39,6 @@ public abstract class AbstractSupplierProductCommand extends AbstractCommand imp
 
     public static abstract class AbstractCreateOrMergePatchSupplierProduct extends AbstractSupplierProductCommand implements CreateOrMergePatchSupplierProduct
     {
-
         private OffsetDateTime availableThruDate;
 
         public OffsetDateTime getAvailableThruDate()

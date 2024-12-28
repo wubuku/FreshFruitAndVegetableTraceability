@@ -49,9 +49,7 @@ public interface ArticleCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchArticle extends ArticleCommand
-    {
-
+    interface CreateOrMergePatchArticle extends ArticleCommand {
         String getTitle();
 
         void setTitle(String title);
@@ -70,16 +68,14 @@ public interface ArticleCommand extends Command {
 
     }
 
-    interface CreateArticle extends CreateOrMergePatchArticle
-    {
+    interface CreateArticle extends CreateOrMergePatchArticle {
         CreateCommentCommandCollection getCreateCommentCommands();
 
         CommentCommand.CreateComment newCreateComment();
 
     }
 
-    interface MergePatchArticle extends CreateOrMergePatchArticle
-    {
+    interface MergePatchArticle extends CreateOrMergePatchArticle {
         Boolean getIsPropertyTitleRemoved();
 
         void setIsPropertyTitleRemoved(Boolean removed);
@@ -107,12 +103,10 @@ public interface ArticleCommand extends Command {
 
     }
 
-    interface DeleteArticle extends ArticleCommand
-    {
+    interface DeleteArticle extends ArticleCommand {
     }
 
-    interface CreateCommentCommandCollection extends Iterable<CommentCommand.CreateComment>
-    {
+    interface CreateCommentCommandCollection extends Iterable<CommentCommand.CreateComment> {
         void add(CommentCommand.CreateComment c);
 
         void remove(CommentCommand.CreateComment c);
@@ -120,8 +114,7 @@ public interface ArticleCommand extends Command {
         void clear();
     }
 
-    interface CommentCommandCollection extends Iterable<CommentCommand>
-    {
+    interface CommentCommandCollection extends Iterable<CommentCommand> {
         void add(CommentCommand c);
 
         void remove(CommentCommand c);

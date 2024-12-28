@@ -47,9 +47,7 @@ public interface ProductCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchProduct extends ProductCommand
-    {
-
+    interface CreateOrMergePatchProduct extends ProductCommand {
         String getProductTypeId();
 
         void setProductTypeId(String productTypeId);
@@ -296,16 +294,14 @@ public interface ProductCommand extends Command {
 
     }
 
-    interface CreateProduct extends CreateOrMergePatchProduct
-    {
+    interface CreateProduct extends CreateOrMergePatchProduct {
         CreateGoodIdentificationCommandCollection getCreateGoodIdentificationCommands();
 
         GoodIdentificationCommand.CreateGoodIdentification newCreateGoodIdentification();
 
     }
 
-    interface MergePatchProduct extends CreateOrMergePatchProduct
-    {
+    interface MergePatchProduct extends CreateOrMergePatchProduct {
         Boolean getIsPropertyProductTypeIdRemoved();
 
         void setIsPropertyProductTypeIdRemoved(Boolean removed);
@@ -561,16 +557,14 @@ public interface ProductCommand extends Command {
 
     }
 
-    interface DeleteProduct extends ProductCommand
-    {
+    interface DeleteProduct extends ProductCommand {
 
         String getProductTypeId();
 
         void setProductTypeId(String productTypeId);
     }
 
-    interface CreateGoodIdentificationCommandCollection extends Iterable<GoodIdentificationCommand.CreateGoodIdentification>
-    {
+    interface CreateGoodIdentificationCommandCollection extends Iterable<GoodIdentificationCommand.CreateGoodIdentification> {
         void add(GoodIdentificationCommand.CreateGoodIdentification c);
 
         void remove(GoodIdentificationCommand.CreateGoodIdentification c);
@@ -578,8 +572,7 @@ public interface ProductCommand extends Command {
         void clear();
     }
 
-    interface GoodIdentificationCommandCollection extends Iterable<GoodIdentificationCommand>
-    {
+    interface GoodIdentificationCommandCollection extends Iterable<GoodIdentificationCommand> {
         void add(GoodIdentificationCommand c);
 
         void remove(GoodIdentificationCommand c);

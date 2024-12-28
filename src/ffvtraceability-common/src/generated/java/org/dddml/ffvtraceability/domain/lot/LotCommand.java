@@ -47,9 +47,7 @@ public interface LotCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchLot extends LotCommand
-    {
-
+    interface CreateOrMergePatchLot extends LotCommand {
         java.math.BigDecimal getQuantity();
 
         void setQuantity(java.math.BigDecimal quantity);
@@ -64,16 +62,14 @@ public interface LotCommand extends Command {
 
     }
 
-    interface CreateLot extends CreateOrMergePatchLot
-    {
+    interface CreateLot extends CreateOrMergePatchLot {
         CreateLotIdentificationCommandCollection getCreateLotIdentificationCommands();
 
         LotIdentificationCommand.CreateLotIdentification newCreateLotIdentification();
 
     }
 
-    interface MergePatchLot extends CreateOrMergePatchLot
-    {
+    interface MergePatchLot extends CreateOrMergePatchLot {
         Boolean getIsPropertyQuantityRemoved();
 
         void setIsPropertyQuantityRemoved(Boolean removed);
@@ -97,12 +93,10 @@ public interface LotCommand extends Command {
 
     }
 
-    interface DeleteLot extends LotCommand
-    {
+    interface DeleteLot extends LotCommand {
     }
 
-    interface CreateLotIdentificationCommandCollection extends Iterable<LotIdentificationCommand.CreateLotIdentification>
-    {
+    interface CreateLotIdentificationCommandCollection extends Iterable<LotIdentificationCommand.CreateLotIdentification> {
         void add(LotIdentificationCommand.CreateLotIdentification c);
 
         void remove(LotIdentificationCommand.CreateLotIdentification c);
@@ -110,8 +104,7 @@ public interface LotCommand extends Command {
         void clear();
     }
 
-    interface LotIdentificationCommandCollection extends Iterable<LotIdentificationCommand>
-    {
+    interface LotIdentificationCommandCollection extends Iterable<LotIdentificationCommand> {
         void add(LotIdentificationCommand c);
 
         void remove(LotIdentificationCommand c);

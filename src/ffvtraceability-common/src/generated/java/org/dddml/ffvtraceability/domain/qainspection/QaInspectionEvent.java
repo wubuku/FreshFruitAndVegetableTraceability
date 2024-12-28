@@ -20,6 +20,13 @@ public interface QaInspectionEvent extends Event {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface QaInspectionActionEvent extends QaInspectionEvent {
+        String getValue();
+
+        void setValue(String value);
+
+    }
+
     String getQaInspectionId();
 
     //void setQaInspectionId(String qaInspectionId);

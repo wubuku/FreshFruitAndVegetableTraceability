@@ -39,7 +39,6 @@ public abstract class AbstractReceivingEventCommand extends AbstractCommand impl
 
     public static abstract class AbstractCreateOrMergePatchReceivingEvent extends AbstractReceivingEventCommand implements CreateOrMergePatchReceivingEvent
     {
-
         private KdeTraceabilityLotCode traceabilityLotCode;
 
         public KdeTraceabilityLotCode getTraceabilityLotCode()

@@ -39,7 +39,6 @@ public abstract class AbstractOrderContactMechCommand extends AbstractCommand im
 
     public static abstract class AbstractCreateOrMergePatchOrderContactMech extends AbstractOrderContactMechCommand implements CreateOrMergePatchOrderContactMech
     {
-
         private String contactMechId;
 
         public String getContactMechId()

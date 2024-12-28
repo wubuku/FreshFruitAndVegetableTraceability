@@ -45,17 +45,14 @@ public interface AttributeSetInstanceCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchAttributeSetInstance extends AttributeSetInstanceCommand
-    {
-
+    interface CreateOrMergePatchAttributeSetInstance extends AttributeSetInstanceCommand {
         org.dddml.ffvtraceability.domain.ConsistentEqualityMap getProperties();
 
         void setProperties(org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties);
 
     }
 
-    interface CreateAttributeSetInstance extends CreateOrMergePatchAttributeSetInstance
-    {
+    interface CreateAttributeSetInstance extends CreateOrMergePatchAttributeSetInstance {
     }
 
 }

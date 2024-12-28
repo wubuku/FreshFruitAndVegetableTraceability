@@ -17,21 +17,17 @@ public interface GoodIdentificationCommand extends Command {
 
     void setGoodIdentificationTypeId(String goodIdentificationTypeId);
 
-    interface CreateOrMergePatchGoodIdentification extends GoodIdentificationCommand
-    {
-
+    interface CreateOrMergePatchGoodIdentification extends GoodIdentificationCommand {
         String getIdValue();
 
         void setIdValue(String idValue);
 
     }
 
-    interface CreateGoodIdentification extends CreateOrMergePatchGoodIdentification
-    {
+    interface CreateGoodIdentification extends CreateOrMergePatchGoodIdentification {
     }
 
-    interface MergePatchGoodIdentification extends CreateOrMergePatchGoodIdentification
-    {
+    interface MergePatchGoodIdentification extends CreateOrMergePatchGoodIdentification {
         Boolean getIsPropertyIdValueRemoved();
 
         void setIsPropertyIdValueRemoved(Boolean removed);
@@ -39,8 +35,7 @@ public interface GoodIdentificationCommand extends Command {
 
     }
 
-    interface RemoveGoodIdentification extends GoodIdentificationCommand
-    {
+    interface RemoveGoodIdentification extends GoodIdentificationCommand {
     }
 
 }

@@ -47,9 +47,7 @@ public interface StatusItemCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchStatusItem extends StatusItemCommand
-    {
-
+    interface CreateOrMergePatchStatusItem extends StatusItemCommand {
         String getStatusTypeId();
 
         void setStatusTypeId(String statusTypeId);
@@ -68,12 +66,10 @@ public interface StatusItemCommand extends Command {
 
     }
 
-    interface CreateStatusItem extends CreateOrMergePatchStatusItem
-    {
+    interface CreateStatusItem extends CreateOrMergePatchStatusItem {
     }
 
-    interface MergePatchStatusItem extends CreateOrMergePatchStatusItem
-    {
+    interface MergePatchStatusItem extends CreateOrMergePatchStatusItem {
         Boolean getIsPropertyStatusTypeIdRemoved();
 
         void setIsPropertyStatusTypeIdRemoved(Boolean removed);
@@ -93,8 +89,7 @@ public interface StatusItemCommand extends Command {
 
     }
 
-    interface DeleteStatusItem extends StatusItemCommand
-    {
+    interface DeleteStatusItem extends StatusItemCommand {
     }
 
 }

@@ -40,7 +40,6 @@ public abstract class AbstractShipmentReceiptRoleCommand extends AbstractCommand
 
     public static abstract class AbstractCreateOrMergePatchShipmentReceiptRole extends AbstractShipmentReceiptRoleCommand implements CreateOrMergePatchShipmentReceiptRole
     {
-
     }
 
     public static abstract class AbstractCreateShipmentReceiptRole extends AbstractCreateOrMergePatchShipmentReceiptRole implements CreateShipmentReceiptRole

@@ -51,7 +51,6 @@ public abstract class AbstractShipmentPackageContentCommand extends AbstractComm
 
     public static abstract class AbstractCreateOrMergePatchShipmentPackageContent extends AbstractShipmentPackageContentCommand implements CreateOrMergePatchShipmentPackageContent
     {
-
         private java.math.BigDecimal quantity;
 
         public java.math.BigDecimal getQuantity()

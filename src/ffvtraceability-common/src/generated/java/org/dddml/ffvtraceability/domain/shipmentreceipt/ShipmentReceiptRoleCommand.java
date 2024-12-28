@@ -18,22 +18,17 @@ public interface ShipmentReceiptRoleCommand extends Command {
 
     void setPartyRoleId(PartyRoleId partyRoleId);
 
-    interface CreateOrMergePatchShipmentReceiptRole extends ShipmentReceiptRoleCommand
-    {
+    interface CreateOrMergePatchShipmentReceiptRole extends ShipmentReceiptRoleCommand {
+    }
+
+    interface CreateShipmentReceiptRole extends CreateOrMergePatchShipmentReceiptRole {
+    }
+
+    interface MergePatchShipmentReceiptRole extends CreateOrMergePatchShipmentReceiptRole {
 
     }
 
-    interface CreateShipmentReceiptRole extends CreateOrMergePatchShipmentReceiptRole
-    {
-    }
-
-    interface MergePatchShipmentReceiptRole extends CreateOrMergePatchShipmentReceiptRole
-    {
-
-    }
-
-    interface RemoveShipmentReceiptRole extends ShipmentReceiptRoleCommand
-    {
+    interface RemoveShipmentReceiptRole extends ShipmentReceiptRoleCommand {
     }
 
 }

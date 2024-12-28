@@ -47,9 +47,7 @@ public interface FacilityLocationCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchFacilityLocation extends FacilityLocationCommand
-    {
-
+    interface CreateOrMergePatchFacilityLocation extends FacilityLocationCommand {
         String getLocationTypeEnumId();
 
         void setLocationTypeEnumId(String locationTypeEnumId);
@@ -84,12 +82,10 @@ public interface FacilityLocationCommand extends Command {
 
     }
 
-    interface CreateFacilityLocation extends CreateOrMergePatchFacilityLocation
-    {
+    interface CreateFacilityLocation extends CreateOrMergePatchFacilityLocation {
     }
 
-    interface MergePatchFacilityLocation extends CreateOrMergePatchFacilityLocation
-    {
+    interface MergePatchFacilityLocation extends CreateOrMergePatchFacilityLocation {
         Boolean getIsPropertyLocationTypeEnumIdRemoved();
 
         void setIsPropertyLocationTypeEnumIdRemoved(Boolean removed);
@@ -125,8 +121,7 @@ public interface FacilityLocationCommand extends Command {
 
     }
 
-    interface DeleteFacilityLocation extends FacilityLocationCommand
-    {
+    interface DeleteFacilityLocation extends FacilityLocationCommand {
     }
 
 }

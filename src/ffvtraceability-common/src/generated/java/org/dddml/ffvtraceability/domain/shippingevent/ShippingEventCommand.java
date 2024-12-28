@@ -47,9 +47,7 @@ public interface ShippingEventCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchShippingEvent extends ShippingEventCommand
-    {
-
+    interface CreateOrMergePatchShippingEvent extends ShippingEventCommand {
         KdeTraceabilityLotCode getTraceabilityLotCode();
 
         void setTraceabilityLotCode(KdeTraceabilityLotCode traceabilityLotCode);
@@ -84,12 +82,10 @@ public interface ShippingEventCommand extends Command {
 
     }
 
-    interface CreateShippingEvent extends CreateOrMergePatchShippingEvent
-    {
+    interface CreateShippingEvent extends CreateOrMergePatchShippingEvent {
     }
 
-    interface MergePatchShippingEvent extends CreateOrMergePatchShippingEvent
-    {
+    interface MergePatchShippingEvent extends CreateOrMergePatchShippingEvent {
         Boolean getIsPropertyTraceabilityLotCodeRemoved();
 
         void setIsPropertyTraceabilityLotCodeRemoved(Boolean removed);
@@ -125,8 +121,7 @@ public interface ShippingEventCommand extends Command {
 
     }
 
-    interface DeleteShippingEvent extends ShippingEventCommand
-    {
+    interface DeleteShippingEvent extends ShippingEventCommand {
     }
 
 }

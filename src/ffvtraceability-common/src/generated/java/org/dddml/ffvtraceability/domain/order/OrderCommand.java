@@ -48,9 +48,7 @@ public interface OrderCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchOrder extends OrderCommand
-    {
-
+    interface CreateOrMergePatchOrder extends OrderCommand {
         String getOrderTypeId();
 
         void setOrderTypeId(String orderTypeId);
@@ -165,8 +163,7 @@ public interface OrderCommand extends Command {
 
     }
 
-    interface CreateOrder extends CreateOrMergePatchOrder
-    {
+    interface CreateOrder extends CreateOrMergePatchOrder {
         CreateOrderRoleCommandCollection getCreateOrderRoleCommands();
 
         OrderRoleCommand.CreateOrderRole newCreateOrderRole();
@@ -189,8 +186,7 @@ public interface OrderCommand extends Command {
 
     }
 
-    interface MergePatchOrder extends CreateOrMergePatchOrder
-    {
+    interface MergePatchOrder extends CreateOrMergePatchOrder {
         Boolean getIsPropertyOrderTypeIdRemoved();
 
         void setIsPropertyOrderTypeIdRemoved(Boolean removed);
@@ -346,12 +342,10 @@ public interface OrderCommand extends Command {
 
     }
 
-    interface DeleteOrder extends OrderCommand
-    {
+    interface DeleteOrder extends OrderCommand {
     }
 
-    interface CreateOrderRoleCommandCollection extends Iterable<OrderRoleCommand.CreateOrderRole>
-    {
+    interface CreateOrderRoleCommandCollection extends Iterable<OrderRoleCommand.CreateOrderRole> {
         void add(OrderRoleCommand.CreateOrderRole c);
 
         void remove(OrderRoleCommand.CreateOrderRole c);
@@ -359,8 +353,7 @@ public interface OrderCommand extends Command {
         void clear();
     }
 
-    interface OrderRoleCommandCollection extends Iterable<OrderRoleCommand>
-    {
+    interface OrderRoleCommandCollection extends Iterable<OrderRoleCommand> {
         void add(OrderRoleCommand c);
 
         void remove(OrderRoleCommand c);
@@ -368,8 +361,7 @@ public interface OrderCommand extends Command {
         void clear();
     }
 
-    interface CreateOrderContactMechCommandCollection extends Iterable<OrderContactMechCommand.CreateOrderContactMech>
-    {
+    interface CreateOrderContactMechCommandCollection extends Iterable<OrderContactMechCommand.CreateOrderContactMech> {
         void add(OrderContactMechCommand.CreateOrderContactMech c);
 
         void remove(OrderContactMechCommand.CreateOrderContactMech c);
@@ -377,8 +369,7 @@ public interface OrderCommand extends Command {
         void clear();
     }
 
-    interface OrderContactMechCommandCollection extends Iterable<OrderContactMechCommand>
-    {
+    interface OrderContactMechCommandCollection extends Iterable<OrderContactMechCommand> {
         void add(OrderContactMechCommand c);
 
         void remove(OrderContactMechCommand c);
@@ -386,8 +377,7 @@ public interface OrderCommand extends Command {
         void clear();
     }
 
-    interface CreateOrderItemCommandCollection extends Iterable<OrderItemCommand.CreateOrderItem>
-    {
+    interface CreateOrderItemCommandCollection extends Iterable<OrderItemCommand.CreateOrderItem> {
         void add(OrderItemCommand.CreateOrderItem c);
 
         void remove(OrderItemCommand.CreateOrderItem c);
@@ -395,8 +385,7 @@ public interface OrderCommand extends Command {
         void clear();
     }
 
-    interface OrderItemCommandCollection extends Iterable<OrderItemCommand>
-    {
+    interface OrderItemCommandCollection extends Iterable<OrderItemCommand> {
         void add(OrderItemCommand c);
 
         void remove(OrderItemCommand c);
@@ -404,8 +393,7 @@ public interface OrderCommand extends Command {
         void clear();
     }
 
-    interface CreateOrderAdjustmentCommandCollection extends Iterable<OrderAdjustmentCommand.CreateOrderAdjustment>
-    {
+    interface CreateOrderAdjustmentCommandCollection extends Iterable<OrderAdjustmentCommand.CreateOrderAdjustment> {
         void add(OrderAdjustmentCommand.CreateOrderAdjustment c);
 
         void remove(OrderAdjustmentCommand.CreateOrderAdjustment c);
@@ -413,8 +401,7 @@ public interface OrderCommand extends Command {
         void clear();
     }
 
-    interface OrderAdjustmentCommandCollection extends Iterable<OrderAdjustmentCommand>
-    {
+    interface OrderAdjustmentCommandCollection extends Iterable<OrderAdjustmentCommand> {
         void add(OrderAdjustmentCommand c);
 
         void remove(OrderAdjustmentCommand c);
@@ -422,8 +409,7 @@ public interface OrderCommand extends Command {
         void clear();
     }
 
-    interface CreateOrderShipGroupCommandCollection extends Iterable<OrderShipGroupCommand.CreateOrderShipGroup>
-    {
+    interface CreateOrderShipGroupCommandCollection extends Iterable<OrderShipGroupCommand.CreateOrderShipGroup> {
         void add(OrderShipGroupCommand.CreateOrderShipGroup c);
 
         void remove(OrderShipGroupCommand.CreateOrderShipGroup c);
@@ -431,8 +417,7 @@ public interface OrderCommand extends Command {
         void clear();
     }
 
-    interface OrderShipGroupCommandCollection extends Iterable<OrderShipGroupCommand>
-    {
+    interface OrderShipGroupCommandCollection extends Iterable<OrderShipGroupCommand> {
         void add(OrderShipGroupCommand c);
 
         void remove(OrderShipGroupCommand c);

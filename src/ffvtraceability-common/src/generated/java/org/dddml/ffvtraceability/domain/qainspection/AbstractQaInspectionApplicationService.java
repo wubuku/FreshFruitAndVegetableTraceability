@@ -57,6 +57,10 @@ public abstract class AbstractQaInspectionApplicationService implements QaInspec
         update(c, ar -> ar.mergePatch(c));
     }
 
+    public void when(QaInspectionCommands.QaInspectionAction c) {
+        update(c, ar -> ar.qaInspectionAction(c.getValue(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public QaInspectionState get(String id) {
         QaInspectionState state = getStateRepository().get(id, true);
         return state;

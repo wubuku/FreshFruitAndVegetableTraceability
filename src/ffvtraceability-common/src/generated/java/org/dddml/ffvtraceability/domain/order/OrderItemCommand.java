@@ -17,9 +17,7 @@ public interface OrderItemCommand extends Command {
 
     void setOrderItemSeqId(String orderItemSeqId);
 
-    interface CreateOrMergePatchOrderItem extends OrderItemCommand
-    {
-
+    interface CreateOrMergePatchOrderItem extends OrderItemCommand {
         String getExternalId();
 
         void setExternalId(String externalId);
@@ -186,12 +184,10 @@ public interface OrderItemCommand extends Command {
 
     }
 
-    interface CreateOrderItem extends CreateOrMergePatchOrderItem
-    {
+    interface CreateOrderItem extends CreateOrMergePatchOrderItem {
     }
 
-    interface MergePatchOrderItem extends CreateOrMergePatchOrderItem
-    {
+    interface MergePatchOrderItem extends CreateOrMergePatchOrderItem {
         Boolean getIsPropertyExternalIdRemoved();
 
         void setIsPropertyExternalIdRemoved(Boolean removed);
@@ -359,8 +355,7 @@ public interface OrderItemCommand extends Command {
 
     }
 
-    interface RemoveOrderItem extends OrderItemCommand
-    {
+    interface RemoveOrderItem extends OrderItemCommand {
     }
 
 }

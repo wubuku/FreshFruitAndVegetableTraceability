@@ -47,9 +47,7 @@ public interface RoleTypeCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchRoleType extends RoleTypeCommand
-    {
-
+    interface CreateOrMergePatchRoleType extends RoleTypeCommand {
         String getParentTypeId();
 
         void setParentTypeId(String parentTypeId);
@@ -64,12 +62,10 @@ public interface RoleTypeCommand extends Command {
 
     }
 
-    interface CreateRoleType extends CreateOrMergePatchRoleType
-    {
+    interface CreateRoleType extends CreateOrMergePatchRoleType {
     }
 
-    interface MergePatchRoleType extends CreateOrMergePatchRoleType
-    {
+    interface MergePatchRoleType extends CreateOrMergePatchRoleType {
         Boolean getIsPropertyParentTypeIdRemoved();
 
         void setIsPropertyParentTypeIdRemoved(Boolean removed);
@@ -85,8 +81,7 @@ public interface RoleTypeCommand extends Command {
 
     }
 
-    interface DeleteRoleType extends RoleTypeCommand
-    {
+    interface DeleteRoleType extends RoleTypeCommand {
     }
 
 }

@@ -18,6 +18,10 @@ public interface ShipmentApplicationService {
 
     void when(ShipmentCommand.MergePatchShipment c);
 
+    void when(ShipmentCommands.ShipmentAction c);
+
+    void when(ShipmentCommands.ShipmentQaAction c);
+
     ShipmentState get(String id);
 
     Iterable<ShipmentState> getAll(Integer firstResult, Integer maxResults);

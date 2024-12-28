@@ -18,6 +18,8 @@ public interface QaInspectionApplicationService {
 
     void when(QaInspectionCommand.MergePatchQaInspection c);
 
+    void when(QaInspectionCommands.QaInspectionAction c);
+
     QaInspectionState get(String id);
 
     Iterable<QaInspectionState> getAll(Integer firstResult, Integer maxResults);

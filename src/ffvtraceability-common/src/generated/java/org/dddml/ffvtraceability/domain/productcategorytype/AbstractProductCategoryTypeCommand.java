@@ -39,7 +39,6 @@ public abstract class AbstractProductCategoryTypeCommand extends AbstractCommand
 
     public static abstract class AbstractCreateOrMergePatchProductCategoryType extends AbstractProductCategoryTypeCommand implements CreateOrMergePatchProductCategoryType
     {
-
         private String parentTypeId;
 
         public String getParentTypeId()

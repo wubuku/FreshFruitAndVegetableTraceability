@@ -52,9 +52,7 @@ public interface ShippingDocumentCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchShippingDocument extends ShippingDocumentCommand
-    {
-
+    interface CreateOrMergePatchShippingDocument extends ShippingDocumentCommand {
         String getShipmentId();
 
         void setShipmentId(String shipmentId);
@@ -73,12 +71,10 @@ public interface ShippingDocumentCommand extends Command {
 
     }
 
-    interface CreateShippingDocument extends CreateOrMergePatchShippingDocument
-    {
+    interface CreateShippingDocument extends CreateOrMergePatchShippingDocument {
     }
 
-    interface MergePatchShippingDocument extends CreateOrMergePatchShippingDocument
-    {
+    interface MergePatchShippingDocument extends CreateOrMergePatchShippingDocument {
         Boolean getIsPropertyShipmentIdRemoved();
 
         void setIsPropertyShipmentIdRemoved(Boolean removed);
@@ -98,8 +94,7 @@ public interface ShippingDocumentCommand extends Command {
 
     }
 
-    interface DeleteShippingDocument extends ShippingDocumentCommand
-    {
+    interface DeleteShippingDocument extends ShippingDocumentCommand {
     }
 
 }

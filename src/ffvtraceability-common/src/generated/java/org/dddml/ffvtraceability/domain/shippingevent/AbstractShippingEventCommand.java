@@ -39,7 +39,6 @@ public abstract class AbstractShippingEventCommand extends AbstractCommand imple
 
     public static abstract class AbstractCreateOrMergePatchShippingEvent extends AbstractShippingEventCommand implements CreateOrMergePatchShippingEvent
     {
-
         private KdeTraceabilityLotCode traceabilityLotCode;
 
         public KdeTraceabilityLotCode getTraceabilityLotCode()

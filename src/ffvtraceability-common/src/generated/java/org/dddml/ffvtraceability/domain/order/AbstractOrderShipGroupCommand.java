@@ -39,7 +39,6 @@ public abstract class AbstractOrderShipGroupCommand extends AbstractCommand impl
 
     public static abstract class AbstractCreateOrMergePatchOrderShipGroup extends AbstractOrderShipGroupCommand implements CreateOrMergePatchOrderShipGroup
     {
-
         private String shipmentMethodTypeId;
 
         public String getShipmentMethodTypeId()

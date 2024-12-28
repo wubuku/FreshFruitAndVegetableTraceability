@@ -47,9 +47,7 @@ public interface GeoCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchGeo extends GeoCommand
-    {
-
+    interface CreateOrMergePatchGeo extends GeoCommand {
         String getGeoTypeId();
 
         void setGeoTypeId(String geoTypeId);
@@ -76,12 +74,10 @@ public interface GeoCommand extends Command {
 
     }
 
-    interface CreateGeo extends CreateOrMergePatchGeo
-    {
+    interface CreateGeo extends CreateOrMergePatchGeo {
     }
 
-    interface MergePatchGeo extends CreateOrMergePatchGeo
-    {
+    interface MergePatchGeo extends CreateOrMergePatchGeo {
         Boolean getIsPropertyGeoTypeIdRemoved();
 
         void setIsPropertyGeoTypeIdRemoved(Boolean removed);
@@ -109,8 +105,7 @@ public interface GeoCommand extends Command {
 
     }
 
-    interface DeleteGeo extends GeoCommand
-    {
+    interface DeleteGeo extends GeoCommand {
     }
 
 }

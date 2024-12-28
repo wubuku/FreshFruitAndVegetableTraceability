@@ -17,9 +17,7 @@ public interface OrderAdjustmentCommand extends Command {
 
     void setOrderAdjustmentId(String orderAdjustmentId);
 
-    interface CreateOrMergePatchOrderAdjustment extends OrderAdjustmentCommand
-    {
-
+    interface CreateOrMergePatchOrderAdjustment extends OrderAdjustmentCommand {
         String getOrderAdjustmentTypeId();
 
         void setOrderAdjustmentTypeId(String orderAdjustmentTypeId);
@@ -142,12 +140,10 @@ public interface OrderAdjustmentCommand extends Command {
 
     }
 
-    interface CreateOrderAdjustment extends CreateOrMergePatchOrderAdjustment
-    {
+    interface CreateOrderAdjustment extends CreateOrMergePatchOrderAdjustment {
     }
 
-    interface MergePatchOrderAdjustment extends CreateOrMergePatchOrderAdjustment
-    {
+    interface MergePatchOrderAdjustment extends CreateOrMergePatchOrderAdjustment {
         Boolean getIsPropertyOrderAdjustmentTypeIdRemoved();
 
         void setIsPropertyOrderAdjustmentTypeIdRemoved(Boolean removed);
@@ -271,8 +267,7 @@ public interface OrderAdjustmentCommand extends Command {
 
     }
 
-    interface RemoveOrderAdjustment extends OrderAdjustmentCommand
-    {
+    interface RemoveOrderAdjustment extends OrderAdjustmentCommand {
     }
 
 }

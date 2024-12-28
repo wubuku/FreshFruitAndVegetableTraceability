@@ -47,9 +47,7 @@ public interface TransformationEventCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchTransformationEvent extends TransformationEventCommand
-    {
-
+    interface CreateOrMergePatchTransformationEvent extends TransformationEventCommand {
         KdeTraceabilityLotCode getFoodUsedTlc();
 
         void setFoodUsedTlc(KdeTraceabilityLotCode foodUsedTlc);
@@ -88,12 +86,10 @@ public interface TransformationEventCommand extends Command {
 
     }
 
-    interface CreateTransformationEvent extends CreateOrMergePatchTransformationEvent
-    {
+    interface CreateTransformationEvent extends CreateOrMergePatchTransformationEvent {
     }
 
-    interface MergePatchTransformationEvent extends CreateOrMergePatchTransformationEvent
-    {
+    interface MergePatchTransformationEvent extends CreateOrMergePatchTransformationEvent {
         Boolean getIsPropertyFoodUsedTlcRemoved();
 
         void setIsPropertyFoodUsedTlcRemoved(Boolean removed);
@@ -133,8 +129,7 @@ public interface TransformationEventCommand extends Command {
 
     }
 
-    interface DeleteTransformationEvent extends TransformationEventCommand
-    {
+    interface DeleteTransformationEvent extends TransformationEventCommand {
     }
 
 }

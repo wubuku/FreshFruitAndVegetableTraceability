@@ -47,9 +47,7 @@ public interface ProductCategoryCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchProductCategory extends ProductCategoryCommand
-    {
-
+    interface CreateOrMergePatchProductCategory extends ProductCategoryCommand {
         String getProductCategoryTypeId();
 
         void setProductCategoryTypeId(String productCategoryTypeId);
@@ -80,12 +78,10 @@ public interface ProductCategoryCommand extends Command {
 
     }
 
-    interface CreateProductCategory extends CreateOrMergePatchProductCategory
-    {
+    interface CreateProductCategory extends CreateOrMergePatchProductCategory {
     }
 
-    interface MergePatchProductCategory extends CreateOrMergePatchProductCategory
-    {
+    interface MergePatchProductCategory extends CreateOrMergePatchProductCategory {
         Boolean getIsPropertyProductCategoryTypeIdRemoved();
 
         void setIsPropertyProductCategoryTypeIdRemoved(Boolean removed);
@@ -117,8 +113,7 @@ public interface ProductCategoryCommand extends Command {
 
     }
 
-    interface DeleteProductCategory extends ProductCategoryCommand
-    {
+    interface DeleteProductCategory extends ProductCategoryCommand {
     }
 
 }

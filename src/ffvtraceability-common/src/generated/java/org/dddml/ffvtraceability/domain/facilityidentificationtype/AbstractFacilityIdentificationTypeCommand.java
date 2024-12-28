@@ -39,7 +39,6 @@ public abstract class AbstractFacilityIdentificationTypeCommand extends Abstract
 
     public static abstract class AbstractCreateOrMergePatchFacilityIdentificationType extends AbstractFacilityIdentificationTypeCommand implements CreateOrMergePatchFacilityIdentificationType
     {
-
         private String description;
 
         public String getDescription()

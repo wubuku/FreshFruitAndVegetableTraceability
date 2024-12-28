@@ -51,7 +51,6 @@ public abstract class AbstractOrderItemShipGroupAssociationCommand extends Abstr
 
     public static abstract class AbstractCreateOrMergePatchOrderItemShipGroupAssociation extends AbstractOrderItemShipGroupAssociationCommand implements CreateOrMergePatchOrderItemShipGroupAssociation
     {
-
         private java.math.BigDecimal quantity;
 
         public java.math.BigDecimal getQuantity()

@@ -20,6 +20,10 @@ public interface ShipmentAggregate {
 
     void mergePatch(ShipmentCommand.MergePatchShipment c);
 
+    void shipmentAction(String value, Long version, String commandId, String requesterId, ShipmentCommands.ShipmentAction c);
+
+    void shipmentQaAction(String value, Long version, String commandId, String requesterId, ShipmentCommands.ShipmentQaAction c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

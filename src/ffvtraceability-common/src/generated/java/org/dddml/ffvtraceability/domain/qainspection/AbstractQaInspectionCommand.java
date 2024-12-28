@@ -39,7 +39,16 @@ public abstract class AbstractQaInspectionCommand extends AbstractCommand implem
 
     public static abstract class AbstractCreateOrMergePatchQaInspection extends AbstractQaInspectionCommand implements CreateOrMergePatchQaInspection
     {
+        private String qaInspectionAction;
+ 
+        public String getQaInspectionAction() {
+            return this.qaInspectionAction;
+        }
 
+        public void setQaInspectionAction(String qaInspectionAction) {
+            this.qaInspectionAction = qaInspectionAction;
+        }
+                
         private String receiptId;
 
         public String getReceiptId()
@@ -50,18 +59,6 @@ public abstract class AbstractQaInspectionCommand extends AbstractCommand implem
         public void setReceiptId(String receiptId)
         {
             this.receiptId = receiptId;
-        }
-
-        private String statusId;
-
-        public String getStatusId()
-        {
-            return this.statusId;
-        }
-
-        public void setStatusId(String statusId)
-        {
-            this.statusId = statusId;
         }
 
         private String inspectionTypeId;
@@ -152,18 +149,6 @@ public abstract class AbstractQaInspectionCommand extends AbstractCommand implem
         public void setIsPropertyReceiptIdRemoved(Boolean removed)
         {
             this.isPropertyReceiptIdRemoved = removed;
-        }
-
-        private Boolean isPropertyStatusIdRemoved;
-
-        public Boolean getIsPropertyStatusIdRemoved()
-        {
-            return this.isPropertyStatusIdRemoved;
-        }
-
-        public void setIsPropertyStatusIdRemoved(Boolean removed)
-        {
-            this.isPropertyStatusIdRemoved = removed;
         }
 
         private Boolean isPropertyInspectionTypeIdRemoved;

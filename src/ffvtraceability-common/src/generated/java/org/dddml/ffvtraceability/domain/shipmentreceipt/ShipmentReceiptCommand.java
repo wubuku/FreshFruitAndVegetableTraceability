@@ -53,9 +53,7 @@ public interface ShipmentReceiptCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchShipmentReceipt extends ShipmentReceiptCommand
-    {
-
+    interface CreateOrMergePatchShipmentReceipt extends ShipmentReceiptCommand {
         String getProductId();
 
         void setProductId(String productId);
@@ -130,16 +128,14 @@ public interface ShipmentReceiptCommand extends Command {
 
     }
 
-    interface CreateShipmentReceipt extends CreateOrMergePatchShipmentReceipt
-    {
+    interface CreateShipmentReceipt extends CreateOrMergePatchShipmentReceipt {
         CreateShipmentReceiptRoleCommandCollection getCreateShipmentReceiptRoleCommands();
 
         ShipmentReceiptRoleCommand.CreateShipmentReceiptRole newCreateShipmentReceiptRole();
 
     }
 
-    interface MergePatchShipmentReceipt extends CreateOrMergePatchShipmentReceipt
-    {
+    interface MergePatchShipmentReceipt extends CreateOrMergePatchShipmentReceipt {
         Boolean getIsPropertyProductIdRemoved();
 
         void setIsPropertyProductIdRemoved(Boolean removed);
@@ -223,12 +219,10 @@ public interface ShipmentReceiptCommand extends Command {
 
     }
 
-    interface DeleteShipmentReceipt extends ShipmentReceiptCommand
-    {
+    interface DeleteShipmentReceipt extends ShipmentReceiptCommand {
     }
 
-    interface CreateShipmentReceiptRoleCommandCollection extends Iterable<ShipmentReceiptRoleCommand.CreateShipmentReceiptRole>
-    {
+    interface CreateShipmentReceiptRoleCommandCollection extends Iterable<ShipmentReceiptRoleCommand.CreateShipmentReceiptRole> {
         void add(ShipmentReceiptRoleCommand.CreateShipmentReceiptRole c);
 
         void remove(ShipmentReceiptRoleCommand.CreateShipmentReceiptRole c);
@@ -236,8 +230,7 @@ public interface ShipmentReceiptCommand extends Command {
         void clear();
     }
 
-    interface ShipmentReceiptRoleCommandCollection extends Iterable<ShipmentReceiptRoleCommand>
-    {
+    interface ShipmentReceiptRoleCommandCollection extends Iterable<ShipmentReceiptRoleCommand> {
         void add(ShipmentReceiptRoleCommand c);
 
         void remove(ShipmentReceiptRoleCommand c);

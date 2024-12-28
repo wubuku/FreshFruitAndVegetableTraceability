@@ -210,6 +210,8 @@ public abstract class AbstractQaInspectionState implements QaInspectionState.Sql
             when((QaInspectionStateCreated) e);
         } else if (e instanceof QaInspectionStateMergePatched) {
             when((QaInspectionStateMergePatched) e);
+        } else if (e instanceof AbstractQaInspectionEvent.QaInspectionActionEvent) {
+            when((AbstractQaInspectionEvent.QaInspectionActionEvent)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -299,6 +301,29 @@ public abstract class AbstractQaInspectionState implements QaInspectionState.Sql
 
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
+
+    }
+
+    public void when(AbstractQaInspectionEvent.QaInspectionActionEvent e) {
+        throwOnWrongEvent(e);
+
+        String value = e.getValue();
+        String Value = value;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        QaInspectionState updatedQaInspectionState = ApplicationContext.current.get(IQaInspectionActionLogic.class).mutate(
+                this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+
+
+        if (this != updatedQaInspectionState) { merge(updatedQaInspectionState); } //else do nothing
 
     }
 

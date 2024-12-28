@@ -39,7 +39,6 @@ public abstract class AbstractShipmentTypeCommand extends AbstractCommand implem
 
     public static abstract class AbstractCreateOrMergePatchShipmentType extends AbstractShipmentTypeCommand implements CreateOrMergePatchShipmentType
     {
-
         private String parentTypeId;
 
         public String getParentTypeId()

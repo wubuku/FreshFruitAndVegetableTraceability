@@ -40,7 +40,6 @@ public abstract class AbstractOrderRoleCommand extends AbstractCommand implement
 
     public static abstract class AbstractCreateOrMergePatchOrderRole extends AbstractOrderRoleCommand implements CreateOrMergePatchOrderRole
     {
-
     }
 
     public static abstract class AbstractCreateOrderRole extends AbstractCreateOrMergePatchOrderRole implements CreateOrderRole

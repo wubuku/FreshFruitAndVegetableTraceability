@@ -20,6 +20,20 @@ public interface ShipmentEvent extends Event {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface ShipmentActionEvent extends ShipmentEvent {
+        String getValue();
+
+        void setValue(String value);
+
+    }
+
+    interface ShipmentQaActionEvent extends ShipmentEvent {
+        String getValue();
+
+        void setValue(String value);
+
+    }
+
     String getShipmentId();
 
     //void setShipmentId(String shipmentId);

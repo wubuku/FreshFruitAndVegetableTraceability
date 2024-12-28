@@ -39,7 +39,6 @@ public abstract class AbstractStatusItemCommand extends AbstractCommand implemen
 
     public static abstract class AbstractCreateOrMergePatchStatusItem extends AbstractStatusItemCommand implements CreateOrMergePatchStatusItem
     {
-
         private String statusTypeId;
 
         public String getStatusTypeId()

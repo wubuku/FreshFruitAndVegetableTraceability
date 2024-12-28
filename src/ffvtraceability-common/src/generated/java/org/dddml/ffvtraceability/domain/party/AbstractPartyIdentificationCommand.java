@@ -39,7 +39,6 @@ public abstract class AbstractPartyIdentificationCommand extends AbstractCommand
 
     public static abstract class AbstractCreateOrMergePatchPartyIdentification extends AbstractPartyIdentificationCommand implements CreateOrMergePatchPartyIdentification
     {
-
         private String idValue;
 
         public String getIdValue()

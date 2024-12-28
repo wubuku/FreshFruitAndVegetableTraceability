@@ -6,32 +6,30 @@ import java.util.function.Supplier;
 /**
  * Created by Yang on 2016/7/25.
  */
-public abstract class AbstractPropertyCommand<TContent, TState> implements PropertyCommand<TContent, TState> {
+public abstract class AbstractPropertyCommandContext<TContent, TState> implements PropertyCommandContext<TContent, TState> {
     private TContent content;
+    private Supplier<TState> stateGetter;
+    private Consumer<TState> stateSetter;
+    private String outerCommandType;
+    private Object executionEnvironment;
 
     @Override
     public TContent getContent() {
         return this.content;
     }
 
-    @Override
     public void setContent(TContent content) {
         this.content = content;
     }
-
-    private Supplier<TState> stateGetter;
 
     @Override
     public Supplier<TState> getStateGetter() {
         return this.stateGetter;
     }
 
-    @Override
     public void setStateGetter(Supplier<TState> stateGetter) {
         this.stateGetter = stateGetter;
     }
-
-    private Consumer<TState> stateSetter;
 
     @Override
     public Consumer<TState> getStateSetter() {
@@ -42,8 +40,7 @@ public abstract class AbstractPropertyCommand<TContent, TState> implements Prope
         this.stateSetter = stateSetter;
     }
 
-    private String outerCommandType;
-
+    @Override
     public String getOuterCommandType() {
         return this.outerCommandType;
     }
@@ -52,18 +49,16 @@ public abstract class AbstractPropertyCommand<TContent, TState> implements Prope
         this.outerCommandType = type;
     }
 
-    private Object context;
-
     @Override
-    public Object getContext() {
-        return context;
+    public Object getExecutionEnvironment() {
+        return executionEnvironment;
     }
 
-    public void setContext(Object context) {
-        this.context = context;
+    public void setExecutionEnvironment(Object e) {
+        this.executionEnvironment = e;
     }
 
-    public static class SimplePropertyCommand<TContent, TState> extends AbstractPropertyCommand<TContent, TState> {
+    public static class SimplePropertyCommandContext<TContent, TState> extends AbstractPropertyCommandContext<TContent, TState> {
     }
 
 }

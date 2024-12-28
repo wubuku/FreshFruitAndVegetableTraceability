@@ -22,6 +22,8 @@
           <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
         </type>
       </property>
+      <subclass name="AbstractShipmentEvent$ShipmentActionEvent" discriminator-value="ShipmentActionEvent" />
+      <subclass name="AbstractShipmentEvent$ShipmentQaActionEvent" discriminator-value="ShipmentQaActionEvent" />
     </subclass>
     <subclass name="AbstractShipmentEvent$AbstractShipmentStateEvent" abstract="true">
       <property name="shipmentTypeId">

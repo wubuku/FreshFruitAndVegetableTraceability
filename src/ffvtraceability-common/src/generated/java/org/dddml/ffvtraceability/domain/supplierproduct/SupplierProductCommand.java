@@ -51,9 +51,7 @@ public interface SupplierProductCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchSupplierProduct extends SupplierProductCommand
-    {
-
+    interface CreateOrMergePatchSupplierProduct extends SupplierProductCommand {
         OffsetDateTime getAvailableThruDate();
 
         void setAvailableThruDate(OffsetDateTime availableThruDate);
@@ -144,12 +142,10 @@ public interface SupplierProductCommand extends Command {
 
     }
 
-    interface CreateSupplierProduct extends CreateOrMergePatchSupplierProduct
-    {
+    interface CreateSupplierProduct extends CreateOrMergePatchSupplierProduct {
     }
 
-    interface MergePatchSupplierProduct extends CreateOrMergePatchSupplierProduct
-    {
+    interface MergePatchSupplierProduct extends CreateOrMergePatchSupplierProduct {
         Boolean getIsPropertyAvailableThruDateRemoved();
 
         void setIsPropertyAvailableThruDateRemoved(Boolean removed);
@@ -241,8 +237,7 @@ public interface SupplierProductCommand extends Command {
 
     }
 
-    interface DeleteSupplierProduct extends SupplierProductCommand
-    {
+    interface DeleteSupplierProduct extends SupplierProductCommand {
     }
 
 }

@@ -47,9 +47,7 @@ public interface DocumentCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchDocument extends DocumentCommand
-    {
-
+    interface CreateOrMergePatchDocument extends DocumentCommand {
         String getDocumentTypeId();
 
         void setDocumentTypeId(String documentTypeId);
@@ -68,12 +66,10 @@ public interface DocumentCommand extends Command {
 
     }
 
-    interface CreateDocument extends CreateOrMergePatchDocument
-    {
+    interface CreateDocument extends CreateOrMergePatchDocument {
     }
 
-    interface MergePatchDocument extends CreateOrMergePatchDocument
-    {
+    interface MergePatchDocument extends CreateOrMergePatchDocument {
         Boolean getIsPropertyDocumentTypeIdRemoved();
 
         void setIsPropertyDocumentTypeIdRemoved(Boolean removed);
@@ -93,8 +89,7 @@ public interface DocumentCommand extends Command {
 
     }
 
-    interface DeleteDocument extends DocumentCommand
-    {
+    interface DeleteDocument extends DocumentCommand {
 
         String getDocumentTypeId();
 

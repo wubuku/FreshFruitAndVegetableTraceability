@@ -20,6 +20,8 @@ public interface QaInspectionAggregate {
 
     void mergePatch(QaInspectionCommand.MergePatchQaInspection c);
 
+    void qaInspectionAction(String value, Long version, String commandId, String requesterId, QaInspectionCommands.QaInspectionAction c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

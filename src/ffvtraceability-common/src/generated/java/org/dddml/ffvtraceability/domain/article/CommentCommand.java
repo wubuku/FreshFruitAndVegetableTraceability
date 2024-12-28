@@ -17,9 +17,7 @@ public interface CommentCommand extends Command {
 
     void setCommentSeqId(Long commentSeqId);
 
-    interface CreateOrMergePatchComment extends CommentCommand
-    {
-
+    interface CreateOrMergePatchComment extends CommentCommand {
         String getCommenter();
 
         void setCommenter(String commenter);
@@ -30,12 +28,10 @@ public interface CommentCommand extends Command {
 
     }
 
-    interface CreateComment extends CreateOrMergePatchComment
-    {
+    interface CreateComment extends CreateOrMergePatchComment {
     }
 
-    interface MergePatchComment extends CreateOrMergePatchComment
-    {
+    interface MergePatchComment extends CreateOrMergePatchComment {
         Boolean getIsPropertyCommenterRemoved();
 
         void setIsPropertyCommenterRemoved(Boolean removed);
@@ -47,8 +43,7 @@ public interface CommentCommand extends Command {
 
     }
 
-    interface RemoveComment extends CommentCommand
-    {
+    interface RemoveComment extends CommentCommand {
     }
 
 }

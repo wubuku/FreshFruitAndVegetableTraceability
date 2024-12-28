@@ -47,9 +47,7 @@ public interface ShipmentTypeCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchShipmentType extends ShipmentTypeCommand
-    {
-
+    interface CreateOrMergePatchShipmentType extends ShipmentTypeCommand {
         String getParentTypeId();
 
         void setParentTypeId(String parentTypeId);
@@ -64,12 +62,10 @@ public interface ShipmentTypeCommand extends Command {
 
     }
 
-    interface CreateShipmentType extends CreateOrMergePatchShipmentType
-    {
+    interface CreateShipmentType extends CreateOrMergePatchShipmentType {
     }
 
-    interface MergePatchShipmentType extends CreateOrMergePatchShipmentType
-    {
+    interface MergePatchShipmentType extends CreateOrMergePatchShipmentType {
         Boolean getIsPropertyParentTypeIdRemoved();
 
         void setIsPropertyParentTypeIdRemoved(Boolean removed);
@@ -85,8 +81,7 @@ public interface ShipmentTypeCommand extends Command {
 
     }
 
-    interface DeleteShipmentType extends ShipmentTypeCommand
-    {
+    interface DeleteShipmentType extends ShipmentTypeCommand {
     }
 
 }

@@ -17,21 +17,17 @@ public interface OrderContactMechCommand extends Command {
 
     void setContactMechPurposeTypeId(String contactMechPurposeTypeId);
 
-    interface CreateOrMergePatchOrderContactMech extends OrderContactMechCommand
-    {
-
+    interface CreateOrMergePatchOrderContactMech extends OrderContactMechCommand {
         String getContactMechId();
 
         void setContactMechId(String contactMechId);
 
     }
 
-    interface CreateOrderContactMech extends CreateOrMergePatchOrderContactMech
-    {
+    interface CreateOrderContactMech extends CreateOrMergePatchOrderContactMech {
     }
 
-    interface MergePatchOrderContactMech extends CreateOrMergePatchOrderContactMech
-    {
+    interface MergePatchOrderContactMech extends CreateOrMergePatchOrderContactMech {
         Boolean getIsPropertyContactMechIdRemoved();
 
         void setIsPropertyContactMechIdRemoved(Boolean removed);
@@ -39,8 +35,7 @@ public interface OrderContactMechCommand extends Command {
 
     }
 
-    interface RemoveOrderContactMech extends OrderContactMechCommand
-    {
+    interface RemoveOrderContactMech extends OrderContactMechCommand {
     }
 
 }

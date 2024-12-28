@@ -47,9 +47,7 @@ public interface UomTypeCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchUomType extends UomTypeCommand
-    {
-
+    interface CreateOrMergePatchUomType extends UomTypeCommand {
         String getParentTypeId();
 
         void setParentTypeId(String parentTypeId);
@@ -64,12 +62,10 @@ public interface UomTypeCommand extends Command {
 
     }
 
-    interface CreateUomType extends CreateOrMergePatchUomType
-    {
+    interface CreateUomType extends CreateOrMergePatchUomType {
     }
 
-    interface MergePatchUomType extends CreateOrMergePatchUomType
-    {
+    interface MergePatchUomType extends CreateOrMergePatchUomType {
         Boolean getIsPropertyParentTypeIdRemoved();
 
         void setIsPropertyParentTypeIdRemoved(Boolean removed);
@@ -85,8 +81,7 @@ public interface UomTypeCommand extends Command {
 
     }
 
-    interface DeleteUomType extends UomTypeCommand
-    {
+    interface DeleteUomType extends UomTypeCommand {
     }
 
 }

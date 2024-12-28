@@ -17,21 +17,17 @@ public interface FacilityIdentificationCommand extends Command {
 
     void setFacilityIdentificationTypeId(String facilityIdentificationTypeId);
 
-    interface CreateOrMergePatchFacilityIdentification extends FacilityIdentificationCommand
-    {
-
+    interface CreateOrMergePatchFacilityIdentification extends FacilityIdentificationCommand {
         String getIdValue();
 
         void setIdValue(String idValue);
 
     }
 
-    interface CreateFacilityIdentification extends CreateOrMergePatchFacilityIdentification
-    {
+    interface CreateFacilityIdentification extends CreateOrMergePatchFacilityIdentification {
     }
 
-    interface MergePatchFacilityIdentification extends CreateOrMergePatchFacilityIdentification
-    {
+    interface MergePatchFacilityIdentification extends CreateOrMergePatchFacilityIdentification {
         Boolean getIsPropertyIdValueRemoved();
 
         void setIsPropertyIdValueRemoved(Boolean removed);
@@ -39,8 +35,7 @@ public interface FacilityIdentificationCommand extends Command {
 
     }
 
-    interface RemoveFacilityIdentification extends FacilityIdentificationCommand
-    {
+    interface RemoveFacilityIdentification extends FacilityIdentificationCommand {
     }
 
 }

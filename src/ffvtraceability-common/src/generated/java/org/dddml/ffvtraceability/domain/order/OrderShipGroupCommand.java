@@ -17,9 +17,7 @@ public interface OrderShipGroupCommand extends Command {
 
     void setShipGroupSeqId(String shipGroupSeqId);
 
-    interface CreateOrMergePatchOrderShipGroup extends OrderShipGroupCommand
-    {
-
+    interface CreateOrMergePatchOrderShipGroup extends OrderShipGroupCommand {
         String getShipmentMethodTypeId();
 
         void setShipmentMethodTypeId(String shipmentMethodTypeId);
@@ -110,16 +108,14 @@ public interface OrderShipGroupCommand extends Command {
 
     }
 
-    interface CreateOrderShipGroup extends CreateOrMergePatchOrderShipGroup
-    {
+    interface CreateOrderShipGroup extends CreateOrMergePatchOrderShipGroup {
         CreateOrderItemShipGroupAssociationCommandCollection getCreateOrderItemShipGroupAssociationCommands();
 
         OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation newCreateOrderItemShipGroupAssociation();
 
     }
 
-    interface MergePatchOrderShipGroup extends CreateOrMergePatchOrderShipGroup
-    {
+    interface MergePatchOrderShipGroup extends CreateOrMergePatchOrderShipGroup {
         Boolean getIsPropertyShipmentMethodTypeIdRemoved();
 
         void setIsPropertyShipmentMethodTypeIdRemoved(Boolean removed);
@@ -219,12 +215,10 @@ public interface OrderShipGroupCommand extends Command {
 
     }
 
-    interface RemoveOrderShipGroup extends OrderShipGroupCommand
-    {
+    interface RemoveOrderShipGroup extends OrderShipGroupCommand {
     }
 
-    interface CreateOrderItemShipGroupAssociationCommandCollection extends Iterable<OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation>
-    {
+    interface CreateOrderItemShipGroupAssociationCommandCollection extends Iterable<OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation> {
         void add(OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation c);
 
         void remove(OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation c);
@@ -232,8 +226,7 @@ public interface OrderShipGroupCommand extends Command {
         void clear();
     }
 
-    interface OrderItemShipGroupAssociationCommandCollection extends Iterable<OrderItemShipGroupAssociationCommand>
-    {
+    interface OrderItemShipGroupAssociationCommandCollection extends Iterable<OrderItemShipGroupAssociationCommand> {
         void add(OrderItemShipGroupAssociationCommand c);
 
         void remove(OrderItemShipGroupAssociationCommand c);

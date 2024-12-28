@@ -22,6 +22,7 @@
           <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
         </type>
       </property>
+      <subclass name="AbstractQaInspectionEvent$QaInspectionActionEvent" discriminator-value="QaInspectionActionEvent" />
     </subclass>
     <subclass name="AbstractQaInspectionEvent$AbstractQaInspectionStateEvent" abstract="true">
       <property name="receiptId">

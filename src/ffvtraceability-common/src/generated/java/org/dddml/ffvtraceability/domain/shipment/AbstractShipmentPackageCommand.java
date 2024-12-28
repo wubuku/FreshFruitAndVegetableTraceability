@@ -39,7 +39,6 @@ public abstract class AbstractShipmentPackageCommand extends AbstractCommand imp
 
     public static abstract class AbstractCreateOrMergePatchShipmentPackage extends AbstractShipmentPackageCommand implements CreateOrMergePatchShipmentPackage
     {
-
         private String shipmentBoxTypeId;
 
         public String getShipmentBoxTypeId()

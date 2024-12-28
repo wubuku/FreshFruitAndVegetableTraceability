@@ -39,7 +39,6 @@ public abstract class AbstractPartyIdentificationTypeCommand extends AbstractCom
 
     public static abstract class AbstractCreateOrMergePatchPartyIdentificationType extends AbstractPartyIdentificationTypeCommand implements CreateOrMergePatchPartyIdentificationType
     {
-
         private String parentTypeId;
 
         public String getParentTypeId()

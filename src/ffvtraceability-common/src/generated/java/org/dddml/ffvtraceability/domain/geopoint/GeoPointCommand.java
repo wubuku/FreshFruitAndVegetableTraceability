@@ -47,9 +47,7 @@ public interface GeoPointCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchGeoPoint extends GeoPointCommand
-    {
-
+    interface CreateOrMergePatchGeoPoint extends GeoPointCommand {
         String getGeoPointTypeEnumId();
 
         void setGeoPointTypeEnumId(String geoPointTypeEnumId);
@@ -80,12 +78,10 @@ public interface GeoPointCommand extends Command {
 
     }
 
-    interface CreateGeoPoint extends CreateOrMergePatchGeoPoint
-    {
+    interface CreateGeoPoint extends CreateOrMergePatchGeoPoint {
     }
 
-    interface MergePatchGeoPoint extends CreateOrMergePatchGeoPoint
-    {
+    interface MergePatchGeoPoint extends CreateOrMergePatchGeoPoint {
         Boolean getIsPropertyGeoPointTypeEnumIdRemoved();
 
         void setIsPropertyGeoPointTypeEnumIdRemoved(Boolean removed);
@@ -117,8 +113,7 @@ public interface GeoPointCommand extends Command {
 
     }
 
-    interface DeleteGeoPoint extends GeoPointCommand
-    {
+    interface DeleteGeoPoint extends GeoPointCommand {
     }
 
 }

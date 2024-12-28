@@ -39,7 +39,26 @@ public abstract class AbstractShipmentCommand extends AbstractCommand implements
 
     public static abstract class AbstractCreateOrMergePatchShipment extends AbstractShipmentCommand implements CreateOrMergePatchShipment
     {
+        private String shipmentAction;
+ 
+        public String getShipmentAction() {
+            return this.shipmentAction;
+        }
 
+        public void setShipmentAction(String shipmentAction) {
+            this.shipmentAction = shipmentAction;
+        }
+                
+        private String shipmentQaAction;
+ 
+        public String getShipmentQaAction() {
+            return this.shipmentQaAction;
+        }
+
+        public void setShipmentQaAction(String shipmentQaAction) {
+            this.shipmentQaAction = shipmentQaAction;
+        }
+                
         private String shipmentTypeId;
 
         public String getShipmentTypeId()
@@ -50,30 +69,6 @@ public abstract class AbstractShipmentCommand extends AbstractCommand implements
         public void setShipmentTypeId(String shipmentTypeId)
         {
             this.shipmentTypeId = shipmentTypeId;
-        }
-
-        private String statusId;
-
-        public String getStatusId()
-        {
-            return this.statusId;
-        }
-
-        public void setStatusId(String statusId)
-        {
-            this.statusId = statusId;
-        }
-
-        private String qaStatusId;
-
-        public String getQaStatusId()
-        {
-            return this.qaStatusId;
-        }
-
-        public void setQaStatusId(String qaStatusId)
-        {
-            this.qaStatusId = qaStatusId;
         }
 
         private String primaryOrderId;
@@ -448,30 +443,6 @@ public abstract class AbstractShipmentCommand extends AbstractCommand implements
         public void setIsPropertyShipmentTypeIdRemoved(Boolean removed)
         {
             this.isPropertyShipmentTypeIdRemoved = removed;
-        }
-
-        private Boolean isPropertyStatusIdRemoved;
-
-        public Boolean getIsPropertyStatusIdRemoved()
-        {
-            return this.isPropertyStatusIdRemoved;
-        }
-
-        public void setIsPropertyStatusIdRemoved(Boolean removed)
-        {
-            this.isPropertyStatusIdRemoved = removed;
-        }
-
-        private Boolean isPropertyQaStatusIdRemoved;
-
-        public Boolean getIsPropertyQaStatusIdRemoved()
-        {
-            return this.isPropertyQaStatusIdRemoved;
-        }
-
-        public void setIsPropertyQaStatusIdRemoved(Boolean removed)
-        {
-            this.isPropertyQaStatusIdRemoved = removed;
         }
 
         private Boolean isPropertyPrimaryOrderIdRemoved;

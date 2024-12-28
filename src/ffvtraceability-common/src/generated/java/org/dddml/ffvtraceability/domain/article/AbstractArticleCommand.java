@@ -39,7 +39,6 @@ public abstract class AbstractArticleCommand extends AbstractCommand implements 
 
     public static abstract class AbstractCreateOrMergePatchArticle extends AbstractArticleCommand implements CreateOrMergePatchArticle
     {
-
         private String title;
 
         public String getTitle()

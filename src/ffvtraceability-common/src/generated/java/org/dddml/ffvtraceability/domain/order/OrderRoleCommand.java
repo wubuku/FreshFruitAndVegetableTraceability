@@ -18,22 +18,17 @@ public interface OrderRoleCommand extends Command {
 
     void setPartyRoleId(PartyRoleId partyRoleId);
 
-    interface CreateOrMergePatchOrderRole extends OrderRoleCommand
-    {
+    interface CreateOrMergePatchOrderRole extends OrderRoleCommand {
+    }
+
+    interface CreateOrderRole extends CreateOrMergePatchOrderRole {
+    }
+
+    interface MergePatchOrderRole extends CreateOrMergePatchOrderRole {
 
     }
 
-    interface CreateOrderRole extends CreateOrMergePatchOrderRole
-    {
-    }
-
-    interface MergePatchOrderRole extends CreateOrMergePatchOrderRole
-    {
-
-    }
-
-    interface RemoveOrderRole extends OrderRoleCommand
-    {
+    interface RemoveOrderRole extends OrderRoleCommand {
     }
 
 }

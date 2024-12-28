@@ -47,9 +47,7 @@ public interface FacilityCommand extends Command {
         return false;
     }
 
-    interface CreateOrMergePatchFacility extends FacilityCommand
-    {
-
+    interface CreateOrMergePatchFacility extends FacilityCommand {
         String getFacilityTypeId();
 
         void setFacilityTypeId(String facilityTypeId);
@@ -128,16 +126,14 @@ public interface FacilityCommand extends Command {
 
     }
 
-    interface CreateFacility extends CreateOrMergePatchFacility
-    {
+    interface CreateFacility extends CreateOrMergePatchFacility {
         CreateFacilityIdentificationCommandCollection getCreateFacilityIdentificationCommands();
 
         FacilityIdentificationCommand.CreateFacilityIdentification newCreateFacilityIdentification();
 
     }
 
-    interface MergePatchFacility extends CreateOrMergePatchFacility
-    {
+    interface MergePatchFacility extends CreateOrMergePatchFacility {
         Boolean getIsPropertyFacilityTypeIdRemoved();
 
         void setIsPropertyFacilityTypeIdRemoved(Boolean removed);
@@ -225,12 +221,10 @@ public interface FacilityCommand extends Command {
 
     }
 
-    interface DeleteFacility extends FacilityCommand
-    {
+    interface DeleteFacility extends FacilityCommand {
     }
 
-    interface CreateFacilityIdentificationCommandCollection extends Iterable<FacilityIdentificationCommand.CreateFacilityIdentification>
-    {
+    interface CreateFacilityIdentificationCommandCollection extends Iterable<FacilityIdentificationCommand.CreateFacilityIdentification> {
         void add(FacilityIdentificationCommand.CreateFacilityIdentification c);
 
         void remove(FacilityIdentificationCommand.CreateFacilityIdentification c);
@@ -238,8 +232,7 @@ public interface FacilityCommand extends Command {
         void clear();
     }
 
-    interface FacilityIdentificationCommandCollection extends Iterable<FacilityIdentificationCommand>
-    {
+    interface FacilityIdentificationCommandCollection extends Iterable<FacilityIdentificationCommand> {
         void add(FacilityIdentificationCommand c);
 
         void remove(FacilityIdentificationCommand c);

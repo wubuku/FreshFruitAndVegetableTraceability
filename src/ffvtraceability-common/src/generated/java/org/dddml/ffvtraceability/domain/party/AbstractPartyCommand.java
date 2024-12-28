@@ -39,7 +39,6 @@ public abstract class AbstractPartyCommand extends AbstractCommand implements Pa
 
     public static abstract class AbstractCreateOrMergePatchParty extends AbstractPartyCommand implements CreateOrMergePatchParty
     {
-
         private String partyTypeId;
 
         public String getPartyTypeId()

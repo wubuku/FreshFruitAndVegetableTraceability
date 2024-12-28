@@ -26,36 +26,6 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
     }
 
     /**
-     * Status Id
-     */
-    private String statusId;
-
-    public String getStatusId()
-    {
-        return this.statusId;
-    }
-
-    public void setStatusId(String statusId)
-    {
-        this.statusId = statusId;
-    }
-
-    /**
-     * Qa Status Id
-     */
-    private String qaStatusId;
-
-    public String getQaStatusId()
-    {
-        return this.qaStatusId;
-    }
-
-    public void setQaStatusId(String qaStatusId)
-    {
-        this.qaStatusId = qaStatusId;
-    }
-
-    /**
      * Primary Order Id
      */
     private String primaryOrderId;
@@ -400,6 +370,26 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         this.addtlShippingChargeDesc = addtlShippingChargeDesc;
     }
 
+    private String shipmentAction;
+
+    public String getShipmentAction() {
+        return this.shipmentAction;
+    }
+
+    public void setShipmentAction(String shipmentAction) {
+        this.shipmentAction = shipmentAction;
+    }
+
+    private String shipmentQaAction;
+
+    public String getShipmentQaAction() {
+        return this.shipmentQaAction;
+    }
+
+    public void setShipmentQaAction(String shipmentQaAction) {
+        this.shipmentQaAction = shipmentQaAction;
+    }
+
 
     private CreateOrMergePatchShipmentItemDto[] shipmentItems = new CreateOrMergePatchShipmentItemDto[0];
 
@@ -435,30 +425,6 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
     public void setIsPropertyShipmentTypeIdRemoved(Boolean removed)
     {
         this.isPropertyShipmentTypeIdRemoved = removed;
-    }
-
-    private Boolean isPropertyStatusIdRemoved;
-
-    public Boolean getIsPropertyStatusIdRemoved()
-    {
-        return this.isPropertyStatusIdRemoved;
-    }
-
-    public void setIsPropertyStatusIdRemoved(Boolean removed)
-    {
-        this.isPropertyStatusIdRemoved = removed;
-    }
-
-    private Boolean isPropertyQaStatusIdRemoved;
-
-    public Boolean getIsPropertyQaStatusIdRemoved()
-    {
-        return this.isPropertyQaStatusIdRemoved;
-    }
-
-    public void setIsPropertyQaStatusIdRemoved(Boolean removed)
-    {
-        this.isPropertyQaStatusIdRemoved = removed;
     }
 
     private Boolean isPropertyPrimaryOrderIdRemoved;
@@ -741,8 +707,6 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
     {
         ((AbstractShipmentCommandDto) this).copyTo(command);
         command.setShipmentTypeId(this.getShipmentTypeId());
-        command.setStatusId(this.getStatusId());
-        command.setQaStatusId(this.getQaStatusId());
         command.setPrimaryOrderId(this.getPrimaryOrderId());
         command.setPrimaryReturnId(this.getPrimaryReturnId());
         command.setPrimaryShipGroupSeqId(this.getPrimaryShipGroupSeqId());
@@ -853,8 +817,6 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
     {
         copyTo((CreateOrMergePatchShipment) command);
         command.setIsPropertyShipmentTypeIdRemoved(this.getIsPropertyShipmentTypeIdRemoved());
-        command.setIsPropertyStatusIdRemoved(this.getIsPropertyStatusIdRemoved());
-        command.setIsPropertyQaStatusIdRemoved(this.getIsPropertyQaStatusIdRemoved());
         command.setIsPropertyPrimaryOrderIdRemoved(this.getIsPropertyPrimaryOrderIdRemoved());
         command.setIsPropertyPrimaryReturnIdRemoved(this.getIsPropertyPrimaryReturnIdRemoved());
         command.setIsPropertyPrimaryShipGroupSeqIdRemoved(this.getIsPropertyPrimaryShipGroupSeqIdRemoved());
