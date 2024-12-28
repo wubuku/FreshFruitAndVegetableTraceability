@@ -17,8 +17,9 @@
       StatusId:
         type: id
         columnName: STATUS_ID
-        commandType: ShipmentAction
-        commandName: ShipmentAction
+        command:
+          type: ShipmentAction
+          name: ShipmentAction
         stateMachine:
           transitions:
             - targetState: "DRAFTED"
@@ -40,8 +41,10 @@
       QaStatusId:
         type: id
         columnName: QA_STATUS_ID
-        commandType: ShipmentQaAction
-        commandName: ShipmentQaAction
+        command:
+          type: ShipmentQaAction
+          name: ShipmentQaAction
+          # isInternal: true
         stateMachine:
           transitions:
             - targetState: "DRAFTED"
@@ -250,4 +253,3 @@ enumObjects:
         description: Draft
       Confirm:
         description: Confirm
-

@@ -15,8 +15,9 @@ aggregates:
         # 关联的收货记录 Id
       StatusId:
         type: id
-        commandType: QaInspectionAction
-        commandName: QaInspectionAction
+        command:
+          type: QaInspectionAction
+          name: QaInspectionAction
         stateMachine:
           transitions:
             - targetState: "APPROVED"
@@ -50,8 +51,7 @@ aggregates:
       #   type: id
       InspectedBy:
         # 检验员ID。InspectedBy 和 createdBy 可以不是一回事？
-        type:
-          id-vlong
+        type: id-vlong
       InspectedAt:
         # 检验日期时间。InspectedAt 和 createdAt 可以不是一回事？
         type: date-time
