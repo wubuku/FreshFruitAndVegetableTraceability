@@ -7,13 +7,13 @@ package org.dddml.ffvtraceability.domain.qainspection;
 
 import java.math.*;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.springframework.stereotype.Component;
 
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Implementation of the QaInspection.QaInspectionAction command logic.

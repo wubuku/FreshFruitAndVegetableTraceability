@@ -12,6 +12,9 @@ import org.dddml.ffvtraceability.specialization.*;
 import org.springframework.stereotype.Component;
 
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 /**
  * Implementation of the Shipment.ShipmentQaAction command logic.
  */
@@ -45,7 +48,33 @@ public class ShipmentQaActionLogic implements IShipmentQaActionLogic {
      */
     public ShipmentState mutate(ShipmentState shipmentState, String value, MutationContext<ShipmentState, ShipmentState.MutableShipmentState> mutationContext) {
         ShipmentState.MutableShipmentState s = mutationContext.createMutableState(shipmentState);
-        // TODO: implement
+        AbstractShipmentAggregate.SimpleShipmentShipmentQaActionCommandHandler cmdHandler = new AbstractShipmentAggregate.SimpleShipmentShipmentQaActionCommandHandler();
+        cmdHandler.execute(new PropertyCommandContext<>() {
+            @Override
+            public String getContent() {
+                return value;
+            }
+
+            @Override
+            public Supplier<String> getStateGetter() {
+                return shipmentState::getQaStatusId;
+            }
+
+            @Override
+            public Consumer<String> getStateSetter() {
+                return s::setQaStatusId;
+            }
+
+            @Override
+            public String getOuterCommandType() {
+                return "ShipmentQaAction";
+            }
+
+            @Override
+            public Object getExecutionEnvironment() {
+                return null;
+            }
+        });
         return s; // Return the updated state
     }
 }
