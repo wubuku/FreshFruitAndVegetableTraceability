@@ -233,42 +233,6 @@ public class ShipmentResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-
-    @PutMapping("{shipmentId}/_commands/ShipmentAction")
-    public void shipmentAction(@PathVariable("shipmentId") String shipmentId, @RequestBody ShipmentCommands.ShipmentAction content) {
-        try {
-
-            ShipmentCommands.ShipmentAction cmd = content;//.toShipmentAction();
-            String idObj = shipmentId;
-            if (cmd.getShipmentId() == null) {
-                cmd.setShipmentId(idObj);
-            } else if (!cmd.getShipmentId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", shipmentId, cmd.getShipmentId());
-            }
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            shipmentApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    @PutMapping("{shipmentId}/_commands/ShipmentQaAction")
-    public void shipmentQaAction(@PathVariable("shipmentId") String shipmentId, @RequestBody ShipmentCommands.ShipmentQaAction content) {
-        try {
-
-            ShipmentCommands.ShipmentQaAction cmd = content;//.toShipmentQaAction();
-            String idObj = shipmentId;
-            if (cmd.getShipmentId() == null) {
-                cmd.setShipmentId(idObj);
-            } else if (!cmd.getShipmentId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", shipmentId, cmd.getShipmentId());
-            }
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            shipmentApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

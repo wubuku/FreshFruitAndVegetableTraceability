@@ -20,6 +20,7 @@
         command:
           type: ShipmentAction
           name: ShipmentAction
+          isInternal: true
         stateMachine:
           transitions:
             - targetState: "DRAFTED"
@@ -44,7 +45,7 @@
         command:
           type: ShipmentQaAction
           name: ShipmentQaAction
-          # isInternal: true
+          isInternal: true
         stateMachine:
           transitions:
             - targetState: "DRAFTED"

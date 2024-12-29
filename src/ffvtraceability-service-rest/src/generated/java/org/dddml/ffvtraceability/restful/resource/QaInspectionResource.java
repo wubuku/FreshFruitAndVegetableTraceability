@@ -233,24 +233,6 @@ public class QaInspectionResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-
-    @PutMapping("{qaInspectionId}/_commands/QaInspectionAction")
-    public void qaInspectionAction(@PathVariable("qaInspectionId") String qaInspectionId, @RequestBody QaInspectionCommands.QaInspectionAction content) {
-        try {
-
-            QaInspectionCommands.QaInspectionAction cmd = content;//.toQaInspectionAction();
-            String idObj = qaInspectionId;
-            if (cmd.getQaInspectionId() == null) {
-                cmd.setQaInspectionId(idObj);
-            } else if (!cmd.getQaInspectionId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", qaInspectionId, cmd.getQaInspectionId());
-            }
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            qaInspectionApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

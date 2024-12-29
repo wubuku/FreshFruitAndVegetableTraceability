@@ -18,6 +18,7 @@ aggregates:
         command:
           type: QaInspectionAction
           name: QaInspectionAction
+          isInternal: true
         stateMachine:
           transitions:
             - targetState: "APPROVED"
