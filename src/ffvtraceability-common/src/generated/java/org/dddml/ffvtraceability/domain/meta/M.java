@@ -1241,7 +1241,7 @@ public class M {
 
     public static final String[] propertyNames = new String[] {
             "attributeSetInstanceId",
-            "properties",
+            "attributes",
             "version",
             "createdBy",
             "createdAt",
@@ -1277,8 +1277,8 @@ public class M {
     private static void initAliasMap() {
         aliasMap.put("attributeSetInstanceId", "attributeSetInstanceId");
         aliasMap.put("AttributeSetInstanceId", "attributeSetInstanceId");
-        aliasMap.put("properties", "properties");
-        aliasMap.put("Properties", "properties");
+        aliasMap.put("attributes", "attributes");
+        aliasMap.put("Attributes", "attributes");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

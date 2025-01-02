@@ -23,7 +23,7 @@ public class AttributeSetInstanceIdGenerator implements
     public String generateId(CreateAttributeSetInstance command) {
         String json;
         try {
-            json = objectMapper.writeValueAsString(command.getProperties());
+            json = objectMapper.writeValueAsString(command.getAttributes());
             JsonCanonicalizer jc = new JsonCanonicalizer(json);
             String encoded = jc.getEncodedString();
             // MessageDigest md = MessageDigest.getInstance("SHA-1");
@@ -42,7 +42,7 @@ public class AttributeSetInstanceIdGenerator implements
 
     @Override
     public boolean equals(CreateAttributeSetInstance command, AttributeSetInstanceState state) {
-        return command.getProperties().equals(state.getProperties());
+        return command.getAttributes().equals(state.getAttributes());
     }
 
     // private String bytesToHex(byte[] bytes) {

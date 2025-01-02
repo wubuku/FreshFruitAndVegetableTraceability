@@ -41,9 +41,9 @@ public interface AttributeSetInstanceEvent extends Event {
     void setCommandId(String commandId);
 
     interface AttributeSetInstanceStateEvent extends AttributeSetInstanceEvent {
-        org.dddml.ffvtraceability.domain.ConsistentEqualityMap getProperties();
+        org.dddml.ffvtraceability.domain.ConsistentEqualityMap getAttributes();
 
-        void setProperties(org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties);
+        void setAttributes(org.dddml.ffvtraceability.domain.ConsistentEqualityMap attributes);
 
     }
 

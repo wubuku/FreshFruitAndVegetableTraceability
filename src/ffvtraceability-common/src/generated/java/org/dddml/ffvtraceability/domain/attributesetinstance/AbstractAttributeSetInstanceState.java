@@ -24,14 +24,14 @@ public abstract class AbstractAttributeSetInstanceState implements AttributeSetI
         this.attributeSetInstanceId = attributeSetInstanceId;
     }
 
-    private org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties;
+    private org.dddml.ffvtraceability.domain.ConsistentEqualityMap attributes;
 
-    public org.dddml.ffvtraceability.domain.ConsistentEqualityMap getProperties() {
-        return this.properties;
+    public org.dddml.ffvtraceability.domain.ConsistentEqualityMap getAttributes() {
+        return this.attributes;
     }
 
-    public void setProperties(org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties) {
-        this.properties = properties;
+    public void setAttributes(org.dddml.ffvtraceability.domain.ConsistentEqualityMap attributes) {
+        this.attributes = attributes;
     }
 
     private Long version;
@@ -166,7 +166,7 @@ public abstract class AbstractAttributeSetInstanceState implements AttributeSetI
     public void when(AttributeSetInstanceStateCreated e) {
         throwOnWrongEvent(e);
 
-        this.setProperties(e.getProperties());
+        this.setAttributes(e.getAttributes());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -177,7 +177,7 @@ public abstract class AbstractAttributeSetInstanceState implements AttributeSetI
         if (s == this) {
             return;
         }
-        this.setProperties(s.getProperties());
+        this.setAttributes(s.getAttributes());
     }
 
     public void save() {

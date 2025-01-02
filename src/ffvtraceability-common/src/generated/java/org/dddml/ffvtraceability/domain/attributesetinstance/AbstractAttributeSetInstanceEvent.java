@@ -115,14 +115,14 @@ public abstract class AbstractAttributeSetInstanceEvent extends AbstractEvent im
 
 
     public static abstract class AbstractAttributeSetInstanceStateEvent extends AbstractAttributeSetInstanceEvent implements AttributeSetInstanceEvent.AttributeSetInstanceStateEvent {
-        public org.dddml.ffvtraceability.domain.ConsistentEqualityMap getProperties()
+        public org.dddml.ffvtraceability.domain.ConsistentEqualityMap getAttributes()
         {
-            return this.getAttributeSetInstanceState().getProperties();
+            return this.getAttributeSetInstanceState().getAttributes();
         }
 
-        public void setProperties(org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties)
+        public void setAttributes(org.dddml.ffvtraceability.domain.ConsistentEqualityMap attributes)
         {
-            this.getAttributeSetInstanceState().setProperties(properties);
+            this.getAttributeSetInstanceState().setAttributes(attributes);
         }
 
         protected AbstractAttributeSetInstanceStateEvent(AttributeSetInstanceEventId eventId) {

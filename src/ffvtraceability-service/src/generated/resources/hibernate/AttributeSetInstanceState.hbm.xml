@@ -8,8 +8,8 @@
       <generator class="assigned" />
     </id>
     <version name="version" column="version" type="long" />
-    <property name="properties">
-      <column name="properties" sql-type="json" />
+    <property name="attributes">
+      <column name="attributes" sql-type="json" />
       <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
         <param name="org.hibernate.type.ParameterType">org.dddml.ffvtraceability.domain.ConsistentEqualityMap</param>
       </type>

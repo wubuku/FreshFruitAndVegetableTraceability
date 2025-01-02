@@ -11,37 +11,37 @@ import org.dddml.ffvtraceability.domain.*;
 public class CreateOrMergePatchAttributeSetInstanceDto extends AbstractAttributeSetInstanceCommandDto implements AttributeSetInstanceCommand.CreateOrMergePatchAttributeSetInstance {
 
     /**
-     * Properties
+     * Attributes
      */
-    private org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties;
+    private org.dddml.ffvtraceability.domain.ConsistentEqualityMap attributes;
 
-    public org.dddml.ffvtraceability.domain.ConsistentEqualityMap getProperties()
+    public org.dddml.ffvtraceability.domain.ConsistentEqualityMap getAttributes()
     {
-        return this.properties;
+        return this.attributes;
     }
 
-    public void setProperties(org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties)
+    public void setAttributes(org.dddml.ffvtraceability.domain.ConsistentEqualityMap attributes)
     {
-        this.properties = properties;
+        this.attributes = attributes;
     }
 
 
-    private Boolean isPropertyPropertiesRemoved;
+    private Boolean isPropertyAttributesRemoved;
 
-    public Boolean getIsPropertyPropertiesRemoved()
+    public Boolean getIsPropertyAttributesRemoved()
     {
-        return this.isPropertyPropertiesRemoved;
+        return this.isPropertyAttributesRemoved;
     }
 
-    public void setIsPropertyPropertiesRemoved(Boolean removed)
+    public void setIsPropertyAttributesRemoved(Boolean removed)
     {
-        this.isPropertyPropertiesRemoved = removed;
+        this.isPropertyAttributesRemoved = removed;
     }
 
     public void copyTo(CreateOrMergePatchAttributeSetInstance command)
     {
         ((AbstractAttributeSetInstanceCommandDto) this).copyTo(command);
-        command.setProperties(this.getProperties());
+        command.setAttributes(this.getAttributes());
     }
 
     public AttributeSetInstanceCommand toCommand()

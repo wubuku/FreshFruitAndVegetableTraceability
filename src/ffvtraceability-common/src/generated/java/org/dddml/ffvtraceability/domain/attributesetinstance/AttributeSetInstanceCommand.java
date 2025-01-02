@@ -46,9 +46,9 @@ public interface AttributeSetInstanceCommand extends Command {
     }
 
     interface CreateOrMergePatchAttributeSetInstance extends AttributeSetInstanceCommand {
-        org.dddml.ffvtraceability.domain.ConsistentEqualityMap getProperties();
+        org.dddml.ffvtraceability.domain.ConsistentEqualityMap getAttributes();
 
-        void setProperties(org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties);
+        void setAttributes(org.dddml.ffvtraceability.domain.ConsistentEqualityMap attributes);
 
     }
 

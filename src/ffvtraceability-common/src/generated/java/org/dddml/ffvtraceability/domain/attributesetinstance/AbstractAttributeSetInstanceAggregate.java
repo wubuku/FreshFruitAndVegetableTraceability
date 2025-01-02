@@ -46,7 +46,7 @@ public abstract class AbstractAttributeSetInstanceAggregate extends AbstractAggr
     protected AttributeSetInstanceEvent map(AttributeSetInstanceCommand.CreateAttributeSetInstance c) {
         AttributeSetInstanceEventId stateEventId = new AttributeSetInstanceEventId(c.getAttributeSetInstanceId(), c.getVersion());
         AttributeSetInstanceEvent.AttributeSetInstanceStateCreated e = newAttributeSetInstanceStateCreated(stateEventId);
-        e.setProperties(c.getProperties());
+        e.setAttributes(c.getAttributes());
         ((AbstractAttributeSetInstanceEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

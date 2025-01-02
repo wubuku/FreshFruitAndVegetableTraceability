@@ -19,7 +19,7 @@ public interface AttributeSetInstanceState
 
     String getAttributeSetInstanceId();
 
-    org.dddml.ffvtraceability.domain.ConsistentEqualityMap getProperties();
+    org.dddml.ffvtraceability.domain.ConsistentEqualityMap getAttributes();
 
     Long getVersion();
 
@@ -36,7 +36,7 @@ public interface AttributeSetInstanceState
     interface MutableAttributeSetInstanceState extends AttributeSetInstanceState {
         void setAttributeSetInstanceId(String attributeSetInstanceId);
 
-        void setProperties(org.dddml.ffvtraceability.domain.ConsistentEqualityMap properties);
+        void setAttributes(org.dddml.ffvtraceability.domain.ConsistentEqualityMap attributes);
 
         void setVersion(Long version);
 

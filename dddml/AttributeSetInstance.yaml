@@ -8,5 +8,5 @@ aggregates:
       name: AttributeSetInstanceId
       type: HashHex
     properties:
-      Properties:
+      Attributes:
         type: ConsistentEqualityMap
