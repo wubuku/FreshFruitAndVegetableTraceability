@@ -99,6 +99,30 @@ public class BffReceivingServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping("{documentId}/SubmitReceivingDocument")
+    public void submitReceivingDocument(
+        @PathVariable("documentId") String documentId,
+        @RequestBody BffReceivingServiceCommands.SubmitReceivingDocument requestBody
+    ) {
+        requestBody.setDocumentId(documentId);
+        try {
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(requestBody);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PostMapping("{documentId}/ConfirmQaInspections")
+    public void confirmQaInspections(
+        @PathVariable("documentId") String documentId,
+        @RequestBody BffReceivingServiceCommands.ConfirmQaInspections requestBody
+    ) {
+        requestBody.setDocumentId(documentId);
+        try {
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(requestBody);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @PutMapping("{documentId}/ReferenceDocuments")
     public void updateReceivingReferenceDocuments(
         @PathVariable("documentId") String documentId,

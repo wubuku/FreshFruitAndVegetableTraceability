@@ -20,6 +20,10 @@ public interface BffReceivingApplicationService {
 
     void when(BffReceivingServiceCommands.UpdateReceivingPrimaryOrderId c);
 
+    void when(BffReceivingServiceCommands.SubmitReceivingDocument c);
+
+    void when(BffReceivingServiceCommands.ConfirmQaInspections c);
+
     void when(BffReceivingServiceCommands.UpdateReceivingReferenceDocuments c);
 
     String when(BffReceivingServiceCommands.CreateReceivingItem c);

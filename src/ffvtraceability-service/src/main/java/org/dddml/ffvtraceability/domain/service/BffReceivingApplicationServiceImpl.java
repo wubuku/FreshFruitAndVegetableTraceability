@@ -1,9 +1,6 @@
 package org.dddml.ffvtraceability.domain.service;
 
-import org.dddml.ffvtraceability.domain.BffDocumentDto;
-import org.dddml.ffvtraceability.domain.BffReceivingDocumentDto;
-import org.dddml.ffvtraceability.domain.BffReceivingItemDto;
-import org.dddml.ffvtraceability.domain.Command;
+import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
@@ -12,6 +9,7 @@ import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProje
 import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
 import org.dddml.ffvtraceability.domain.shipment.AbstractShipmentCommand;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
+import org.dddml.ffvtraceability.domain.shipment.ShipmentCommands;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentState;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptCommand;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
@@ -267,6 +265,65 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
         shipmentApplicationService.when(mergePatchShipment);
     }
+
+    @Override
+    @Transactional
+    public void when(BffReceivingServiceCommands.SubmitReceivingDocument c) {
+        String shipmentId = c.getDocumentId();
+        ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
+        if (shipmentState == null) {
+            throw new IllegalArgumentException("Shipment (receiving document) not found: " + shipmentId);
+        }
+
+        ShipmentCommands.ShipmentAction shipmentAction = new ShipmentCommands.ShipmentAction();
+        shipmentAction.setShipmentId(shipmentId);
+        shipmentAction.setValue(ShipmentAction.SUBMIT);
+        // Add version check
+        shipmentAction.setVersion(shipmentState.getVersion());
+        // Add command tracking
+        shipmentAction.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        shipmentAction.setRequesterId(c.getRequesterId());
+
+        try {
+            shipmentApplicationService.when(shipmentAction);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to submit receiving document: " + shipmentId, e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void when(BffReceivingServiceCommands.ConfirmQaInspections c) {
+        String shipmentId = c.getDocumentId();
+        ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
+        if (shipmentState == null) {
+            throw new IllegalArgumentException("Shipment (receiving document) not found: " + shipmentId);
+        }
+
+//        // Validate state before confirmation
+//        if (!isValidStateForQaConfirmation(shipmentState)) {
+//            throw new IllegalStateException("Invalid state for QA confirmation: " + shipmentId);
+//        }
+
+        ShipmentCommands.ShipmentQaAction qaAction = new ShipmentCommands.ShipmentQaAction();
+        qaAction.setShipmentId(shipmentId);
+        qaAction.setValue(ShipmentQaAction.CONFIRM);
+        qaAction.setVersion(shipmentState.getVersion());
+        qaAction.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        qaAction.setRequesterId(c.getRequesterId());
+
+        try {
+            shipmentApplicationService.when(qaAction);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to confirm QA inspections for shipment: " + shipmentId, e);
+        }
+    }
+
+//    // Helper method to validate state
+//    private boolean isValidStateForQaConfirmation(ShipmentState state) {
+//        // Add your state validation logic here
+//        return state != null && state.getStatus() != null;
+//    }
 
     @Override
     @Transactional

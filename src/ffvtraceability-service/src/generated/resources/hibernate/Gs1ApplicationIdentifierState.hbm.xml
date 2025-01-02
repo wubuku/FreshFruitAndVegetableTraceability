@@ -67,7 +67,7 @@
     <property name="updatedAt" column="updated_at" />
     <property name="commandId" column="command_id" />
     <list name="components" table="gs1_application_identifier_component" lazy="false">
-      <key column="ApplicationIdentifier" />
+      <key column="application_identifier" />
       <index column="component_index" />
       <composite-element class="org.dddml.ffvtraceability.domain.Gs1AppIdComponent">
         <property name="optional">

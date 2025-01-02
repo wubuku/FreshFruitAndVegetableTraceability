@@ -164,6 +164,26 @@ services:
           PrimaryOrderId:
             type: id
 
+
+      SubmitReceivingDocument:
+        httpMethod: Post
+        restfulResourceName: "{DocumentId}/SubmitReceivingDocument"
+        metadata:
+          RestfulPathVariable: DocumentId
+        parameters:
+          DocumentId:
+            type: id
+
+      ConfirmQaInspections:
+        httpMethod: Post
+        restfulResourceName: "{DocumentId}/ConfirmQaInspections"
+        metadata:
+          RestfulPathVariable: DocumentId
+        parameters:
+          DocumentId:
+            type: id
+
+
       UpdateReceivingReferenceDocuments:
         # 更新收货单的关联文档
         # 这个方法采用整体替换的方式？即如果之前“已关联”的文档的 Id 不在传入的文档列表中，则移除收货单和这些文档的关联关系。

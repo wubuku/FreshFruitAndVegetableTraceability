@@ -142,6 +142,40 @@ public class BffReceivingServiceCommands {
 
     }
 
+    public static class SubmitReceivingDocument extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+    }
+
+    public static class ConfirmQaInspections extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+    }
+
     public static class UpdateReceivingReferenceDocuments extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
