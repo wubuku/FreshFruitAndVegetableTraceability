@@ -237,21 +237,6 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
     }
 
     /**
-     * Web Site Id
-     */
-    private String webSiteId;
-
-    public String getWebSiteId()
-    {
-        return this.webSiteId;
-    }
-
-    public void setWebSiteId(String webSiteId)
-    {
-        this.webSiteId = webSiteId;
-    }
-
-    /**
      * Product Store Id
      */
     private String productStoreId;
@@ -672,18 +657,6 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         this.isPropertyOriginFacilityIdRemoved = removed;
     }
 
-    private Boolean isPropertyWebSiteIdRemoved;
-
-    public Boolean getIsPropertyWebSiteIdRemoved()
-    {
-        return this.isPropertyWebSiteIdRemoved;
-    }
-
-    public void setIsPropertyWebSiteIdRemoved(Boolean removed)
-    {
-        this.isPropertyWebSiteIdRemoved = removed;
-    }
-
     private Boolean isPropertyProductStoreIdRemoved;
 
     public Boolean getIsPropertyProductStoreIdRemoved()
@@ -846,7 +819,6 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         command.setSyncStatusId(this.getSyncStatusId());
         command.setBillingAccountId(this.getBillingAccountId());
         command.setOriginFacilityId(this.getOriginFacilityId());
-        command.setWebSiteId(this.getWebSiteId());
         command.setProductStoreId(this.getProductStoreId());
         command.setTerminalId(this.getTerminalId());
         command.setTransactionId(this.getTransactionId());
@@ -1023,7 +995,6 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         command.setIsPropertySyncStatusIdRemoved(this.getIsPropertySyncStatusIdRemoved());
         command.setIsPropertyBillingAccountIdRemoved(this.getIsPropertyBillingAccountIdRemoved());
         command.setIsPropertyOriginFacilityIdRemoved(this.getIsPropertyOriginFacilityIdRemoved());
-        command.setIsPropertyWebSiteIdRemoved(this.getIsPropertyWebSiteIdRemoved());
         command.setIsPropertyProductStoreIdRemoved(this.getIsPropertyProductStoreIdRemoved());
         command.setIsPropertyTerminalIdRemoved(this.getIsPropertyTerminalIdRemoved());
         command.setIsPropertyTransactionIdRemoved(this.getIsPropertyTransactionIdRemoved());

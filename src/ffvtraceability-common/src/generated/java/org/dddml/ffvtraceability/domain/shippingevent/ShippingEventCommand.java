@@ -13,9 +13,9 @@ import org.dddml.ffvtraceability.specialization.DomainError;
 
 public interface ShippingEventCommand extends Command {
 
-    Long getEventId();
+    String getEventId();
 
-    void setEventId(Long eventId);
+    void setEventId(String eventId);
 
     Long getVersion();
 
@@ -76,9 +76,9 @@ public interface ShippingEventCommand extends Command {
 
         void setTlcSourceOrTlcSourceReference(KdeTlcSourceOrTlcSourceReference tlcSourceOrTlcSourceReference);
 
-        KdeReferenceDocument getReferenceDocument();
+        KdeReferenceDocument[] getReferenceDocuments();
 
-        void setReferenceDocument(KdeReferenceDocument referenceDocument);
+        void setReferenceDocuments(KdeReferenceDocument[] referenceDocuments);
 
     }
 
@@ -114,9 +114,9 @@ public interface ShippingEventCommand extends Command {
 
         void setIsPropertyTlcSourceOrTlcSourceReferenceRemoved(Boolean removed);
 
-        Boolean getIsPropertyReferenceDocumentRemoved();
+        Boolean getIsPropertyReferenceDocumentsRemoved();
 
-        void setIsPropertyReferenceDocumentRemoved(Boolean removed);
+        void setIsPropertyReferenceDocumentsRemoved(Boolean removed);
 
 
     }

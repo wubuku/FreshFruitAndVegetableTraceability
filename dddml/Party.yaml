@@ -41,7 +41,7 @@
       Person:
         discriminatorValue: "PERSON"
         # ---------------------------------
-        #inheritedFrom: Party
+        #inheritsFrom: Party
         # ---------------------------------
         # id:
         # name: PartyId

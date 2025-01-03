@@ -2,8 +2,8 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.receivingevent">
   <class name="org.dddml.ffvtraceability.domain.receivingevent.AbstractReceivingEventState$SimpleReceivingEventState" table="receiving_event">
-    <id name="eventId">
-      <column name="event_id" sql-type="BIGINT" />
+    <id name="eventId" length="66">
+      <column name="event_id" sql-type="VARCHAR(66)" />
       <generator class="assigned" />
     </id>
     <version name="version" column="version" type="long" />
@@ -124,14 +124,6 @@
         <column name="tlc_source_reference_ggn" sql-type="VARCHAR(13)" />
       </property>
     </component>
-    <component name="referenceDocument" class="org.dddml.ffvtraceability.domain.KdeReferenceDocument">
-      <property name="documentType">
-        <column name="reference_document_document_type" sql-type="VARCHAR(50)" />
-      </property>
-      <property name="documentNumber">
-        <column name="reference_document_document_number" sql-type="VARCHAR(50)" />
-      </property>
-    </component>
     <property name="createdBy">
       <column name="created_by" />
     </property>
@@ -141,5 +133,16 @@
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
     <property name="commandId" column="command_id" />
+    <set name="referenceDocuments" table="receiving_event_reference_documents" lazy="false">
+      <key column="event_id" />
+      <composite-element class="org.dddml.ffvtraceability.domain.KdeReferenceDocument">
+        <property name="documentType">
+          <column name="document_type" not-null="true" sql-type="VARCHAR(50)" />
+        </property>
+        <property name="documentNumber">
+          <column name="document_number" not-null="true" sql-type="VARCHAR(50)" />
+        </property>
+      </composite-element>
+    </set>
   </class>
 </hibernate-mapping>

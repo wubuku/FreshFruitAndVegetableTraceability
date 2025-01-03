@@ -11,7 +11,7 @@ import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
 
 public interface TransformationEventStateRepository {
-    TransformationEventState get(Long id, boolean nullAllowed);
+    TransformationEventState get(String id, boolean nullAllowed);
 
     void save(TransformationEventState state);
 

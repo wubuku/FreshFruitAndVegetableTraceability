@@ -67,7 +67,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         e.setSyncStatusId(c.getSyncStatusId());
         e.setBillingAccountId(c.getBillingAccountId());
         e.setOriginFacilityId(c.getOriginFacilityId());
-        e.setWebSiteId(c.getWebSiteId());
         e.setProductStoreId(c.getProductStoreId());
         e.setTerminalId(c.getTerminalId());
         e.setTransactionId(c.getTransactionId());
@@ -135,7 +134,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         e.setSyncStatusId(c.getSyncStatusId());
         e.setBillingAccountId(c.getBillingAccountId());
         e.setOriginFacilityId(c.getOriginFacilityId());
-        e.setWebSiteId(c.getWebSiteId());
         e.setProductStoreId(c.getProductStoreId());
         e.setTerminalId(c.getTerminalId());
         e.setTransactionId(c.getTransactionId());
@@ -163,7 +161,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         e.setIsPropertySyncStatusIdRemoved(c.getIsPropertySyncStatusIdRemoved());
         e.setIsPropertyBillingAccountIdRemoved(c.getIsPropertyBillingAccountIdRemoved());
         e.setIsPropertyOriginFacilityIdRemoved(c.getIsPropertyOriginFacilityIdRemoved());
-        e.setIsPropertyWebSiteIdRemoved(c.getIsPropertyWebSiteIdRemoved());
         e.setIsPropertyProductStoreIdRemoved(c.getIsPropertyProductStoreIdRemoved());
         e.setIsPropertyTerminalIdRemoved(c.getIsPropertyTerminalIdRemoved());
         e.setIsPropertyTransactionIdRemoved(c.getIsPropertyTransactionIdRemoved());

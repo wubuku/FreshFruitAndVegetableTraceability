@@ -62,9 +62,9 @@
       OriginFacilityId:
         columnName: ORIGIN_FACILITY_ID
         type: id
-      WebSiteId:
-        columnName: WEB_SITE_ID
-        type: id
+      # WebSiteId:
+      #   columnName: WEB_SITE_ID
+      #   type: id
       ProductStoreId:
         columnName: PRODUCT_STORE_ID
         type: id

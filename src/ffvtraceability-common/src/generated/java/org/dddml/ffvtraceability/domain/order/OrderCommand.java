@@ -109,10 +109,6 @@ public interface OrderCommand extends Command {
 
         void setOriginFacilityId(String originFacilityId);
 
-        String getWebSiteId();
-
-        void setWebSiteId(String webSiteId);
-
         String getProductStoreId();
 
         void setProductStoreId(String productStoreId);
@@ -246,10 +242,6 @@ public interface OrderCommand extends Command {
         Boolean getIsPropertyOriginFacilityIdRemoved();
 
         void setIsPropertyOriginFacilityIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyWebSiteIdRemoved();
-
-        void setIsPropertyWebSiteIdRemoved(Boolean removed);
 
         Boolean getIsPropertyProductStoreIdRemoved();
 

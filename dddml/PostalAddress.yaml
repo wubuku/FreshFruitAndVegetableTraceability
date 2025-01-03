@@ -1,0 +1,54 @@
+﻿aggregates:
+
+  PostalAddress:
+    inheritsFrom: ContactMech
+    discriminatorValue: "POSTAL_ADDRESS"
+    # ---------------------------------
+    id:
+      name: ContactMechId
+      type: id
+    properties:
+      ToName:
+        type: name
+      AttnName:
+        type: name
+      Address1:
+        type: long-varchar
+      Address2:
+        type: long-varchar
+      Directions:
+        type: long-varchar
+
+      City:
+        type: name
+      PostalCode:
+        type: short-varchar
+      PostalCodeExt:
+        type: short-varchar
+
+      CountryGeoId:
+        type: id
+        
+      # ---------------------------------
+      # 省/州 Id
+      StateProvinceGeoId:
+        type: id
+      # 地级市/地区 Id
+      PrefectureGeoId:
+        type: id
+      # 区/县 Id
+      CountyGeoId:
+        type: id
+      # 乡镇/街道
+      TownGeoId:
+        type: id
+      # 关联的电话号码 Id
+      AssocTelecomContactMechId:
+        type: id
+      # ---------------------------------
+      
+      PostalCodeGeoId:
+        type: id
+        
+      GeoPointId:
+        type: id

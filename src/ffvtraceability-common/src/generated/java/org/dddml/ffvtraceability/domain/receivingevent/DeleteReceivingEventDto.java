@@ -21,12 +21,12 @@ public class DeleteReceivingEventDto extends AbstractReceivingEventCommandDto im
     {
         return new ReceivingEventCommand.DeleteReceivingEvent() {
             @Override
-            public Long getEventId() {
+            public String getEventId() {
                 return DeleteReceivingEventDto.this.getEventId();
             }
 
             @Override
-            public void setEventId(Long p) {
+            public void setEventId(String p) {
                 DeleteReceivingEventDto.this.setEventId(p);
             }
 

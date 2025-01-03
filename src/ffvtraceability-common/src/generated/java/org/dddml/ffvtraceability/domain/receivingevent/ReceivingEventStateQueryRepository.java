@@ -12,7 +12,7 @@ import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
 
 public interface ReceivingEventStateQueryRepository {
-    ReceivingEventState get(Long id);
+    ReceivingEventState get(String id);
 
     Iterable<ReceivingEventState> getAll(Integer firstResult, Integer maxResults);
     

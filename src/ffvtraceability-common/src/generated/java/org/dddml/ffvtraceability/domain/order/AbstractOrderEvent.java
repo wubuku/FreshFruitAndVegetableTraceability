@@ -470,18 +470,6 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
             this.originFacilityId = originFacilityId;
         }
 
-        private String webSiteId;
-
-        public String getWebSiteId()
-        {
-            return this.webSiteId;
-        }
-
-        public void setWebSiteId(String webSiteId)
-        {
-            this.webSiteId = webSiteId;
-        }
-
         private String productStoreId;
 
         public String getProductStoreId()
@@ -1038,16 +1026,6 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
         public void setIsPropertyOriginFacilityIdRemoved(Boolean removed) {
             this.isPropertyOriginFacilityIdRemoved = removed;
-        }
-
-        private Boolean isPropertyWebSiteIdRemoved;
-
-        public Boolean getIsPropertyWebSiteIdRemoved() {
-            return this.isPropertyWebSiteIdRemoved;
-        }
-
-        public void setIsPropertyWebSiteIdRemoved(Boolean removed) {
-            this.isPropertyWebSiteIdRemoved = removed;
         }
 
         private Boolean isPropertyProductStoreIdRemoved;

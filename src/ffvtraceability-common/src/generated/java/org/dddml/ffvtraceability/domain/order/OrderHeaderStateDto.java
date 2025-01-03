@@ -207,18 +207,6 @@ public class OrderHeaderStateDto {
         this.originFacilityId = originFacilityId;
     }
 
-    private String webSiteId;
-
-    public String getWebSiteId()
-    {
-        return this.webSiteId;
-    }
-
-    public void setWebSiteId(String webSiteId)
-    {
-        this.webSiteId = webSiteId;
-    }
-
     private String productStoreId;
 
     public String getProductStoreId()
@@ -559,9 +547,6 @@ public class OrderHeaderStateDto {
             }
             if (returnedFieldsContains("OriginFacilityId")) {
                 dto.setOriginFacilityId(state.getOriginFacilityId());
-            }
-            if (returnedFieldsContains("WebSiteId")) {
-                dto.setWebSiteId(state.getWebSiteId());
             }
             if (returnedFieldsContains("ProductStoreId")) {
                 dto.setProductStoreId(state.getProductStoreId());

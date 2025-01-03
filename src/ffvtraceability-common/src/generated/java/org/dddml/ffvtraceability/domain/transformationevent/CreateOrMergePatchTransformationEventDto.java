@@ -133,16 +133,14 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
     /**
      * The reference document type and reference document number
      */
-    private KdeReferenceDocument referenceDocument;
+    private KdeReferenceDocument[] referenceDocuments;
 
-    public KdeReferenceDocument getReferenceDocument()
-    {
-        return this.referenceDocument;
+    public KdeReferenceDocument[] getReferenceDocuments() {
+        return this.referenceDocuments;
     }
 
-    public void setReferenceDocument(KdeReferenceDocument referenceDocument)
-    {
-        this.referenceDocument = referenceDocument;
+    public void setReferenceDocuments(KdeReferenceDocument[] referenceDocuments) {
+        this.referenceDocuments = referenceDocuments;
     }
 
 
@@ -242,16 +240,16 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
         this.isPropertyDateTransformedRemoved = removed;
     }
 
-    private Boolean isPropertyReferenceDocumentRemoved;
+    private Boolean isPropertyReferenceDocumentsRemoved;
 
-    public Boolean getIsPropertyReferenceDocumentRemoved()
+    public Boolean getIsPropertyReferenceDocumentsRemoved()
     {
-        return this.isPropertyReferenceDocumentRemoved;
+        return this.isPropertyReferenceDocumentsRemoved;
     }
 
-    public void setIsPropertyReferenceDocumentRemoved(Boolean removed)
+    public void setIsPropertyReferenceDocumentsRemoved(Boolean removed)
     {
-        this.isPropertyReferenceDocumentRemoved = removed;
+        this.isPropertyReferenceDocumentsRemoved = removed;
     }
 
     public TransformationEventCommand toCommand()
@@ -283,12 +281,12 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
     protected TransformationEventCommand.CreateTransformationEvent toCreateTransformationEvent() {
         return new TransformationEventCommand.CreateTransformationEvent() {
             @Override
-            public Long getEventId() {
+            public String getEventId() {
                 return CreateOrMergePatchTransformationEventDto.this.getEventId();
             }
 
             @Override
-            public void setEventId(Long p) {
+            public void setEventId(String p) {
                 CreateOrMergePatchTransformationEventDto.this.setEventId(p);
             }
 
@@ -418,13 +416,13 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
             }
 
             @Override
-            public KdeReferenceDocument getReferenceDocument() {
-                return CreateOrMergePatchTransformationEventDto.this.getReferenceDocument();
+            public KdeReferenceDocument[] getReferenceDocuments() {
+                return CreateOrMergePatchTransformationEventDto.this.getReferenceDocuments();
             }
 
             @Override
-            public void setReferenceDocument(KdeReferenceDocument p) {
-                CreateOrMergePatchTransformationEventDto.this.setReferenceDocument(p);
+            public void setReferenceDocuments(KdeReferenceDocument[] p) {
+                CreateOrMergePatchTransformationEventDto.this.setReferenceDocuments(p);
             }
 
 
@@ -434,12 +432,12 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
     protected TransformationEventCommand.MergePatchTransformationEvent toMergePatchTransformationEvent() {
         return new TransformationEventCommand.MergePatchTransformationEvent() {
             @Override
-            public Long getEventId() {
+            public String getEventId() {
                 return CreateOrMergePatchTransformationEventDto.this.getEventId();
             }
 
             @Override
-            public void setEventId(Long p) {
+            public void setEventId(String p) {
                 CreateOrMergePatchTransformationEventDto.this.setEventId(p);
             }
 
@@ -569,13 +567,13 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
             }
 
             @Override
-            public KdeReferenceDocument getReferenceDocument() {
-                return CreateOrMergePatchTransformationEventDto.this.getReferenceDocument();
+            public KdeReferenceDocument[] getReferenceDocuments() {
+                return CreateOrMergePatchTransformationEventDto.this.getReferenceDocuments();
             }
 
             @Override
-            public void setReferenceDocument(KdeReferenceDocument p) {
-                CreateOrMergePatchTransformationEventDto.this.setReferenceDocument(p);
+            public void setReferenceDocuments(KdeReferenceDocument[] p) {
+                CreateOrMergePatchTransformationEventDto.this.setReferenceDocuments(p);
             }
 
             @Override
@@ -659,13 +657,13 @@ public class CreateOrMergePatchTransformationEventDto extends AbstractTransforma
             }
 
             @Override
-            public Boolean getIsPropertyReferenceDocumentRemoved() {
-                return CreateOrMergePatchTransformationEventDto.this.getIsPropertyReferenceDocumentRemoved();
+            public Boolean getIsPropertyReferenceDocumentsRemoved() {
+                return CreateOrMergePatchTransformationEventDto.this.getIsPropertyReferenceDocumentsRemoved();
             }
 
             @Override
-            public void setIsPropertyReferenceDocumentRemoved(Boolean removed) {
-                CreateOrMergePatchTransformationEventDto.this.setIsPropertyReferenceDocumentRemoved(removed);
+            public void setIsPropertyReferenceDocumentsRemoved(Boolean removed) {
+                CreateOrMergePatchTransformationEventDto.this.setIsPropertyReferenceDocumentsRemoved(removed);
             }
 
 

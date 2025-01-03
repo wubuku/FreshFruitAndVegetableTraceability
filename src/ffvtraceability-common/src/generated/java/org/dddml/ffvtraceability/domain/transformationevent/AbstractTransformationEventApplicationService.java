@@ -43,7 +43,7 @@ public abstract class AbstractTransformationEventApplicationService implements T
         ss.setFoodProducedQuantityAndUom(c.getFoodProducedQuantityAndUom());
         ss.setTransformationLocation(c.getTransformationLocation());
         ss.setDateTransformed(c.getDateTransformed());
-        ss.setReferenceDocument(c.getReferenceDocument());
+        ss.setReferenceDocuments(new HashSet<>(Arrays.asList(c.getReferenceDocuments())));
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -112,12 +112,12 @@ public abstract class AbstractTransformationEventApplicationService implements T
         } else {
             ss.setDateTransformed(c.getDateTransformed());
         }
-        if (c.getReferenceDocument() == null) {
-            if (c.getIsPropertyReferenceDocumentRemoved() != null && c.getIsPropertyReferenceDocumentRemoved()) {
-                ss.setReferenceDocument(null);
+        if (c.getReferenceDocuments() == null) {
+            if (c.getIsPropertyReferenceDocumentsRemoved() != null && c.getIsPropertyReferenceDocumentsRemoved()) {
+                ss.setReferenceDocuments(null);
             }
         } else {
-            ss.setReferenceDocument(c.getReferenceDocument());
+            ss.setReferenceDocuments(new HashSet<>(Arrays.asList(c.getReferenceDocuments())));
         }
         ss.setUpdatedBy(c.getRequesterId());
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -126,7 +126,7 @@ public abstract class AbstractTransformationEventApplicationService implements T
         });
     }
 
-    public TransformationEventState get(Long id) {
+    public TransformationEventState get(String id) {
         TransformationEventState state = getStateRepository().get(id, true);
         return state;
     }
@@ -155,12 +155,12 @@ public abstract class AbstractTransformationEventApplicationService implements T
         return getStateQueryRepository().getCount(filter);
     }
 
-    public EventStoreAggregateId toEventStoreAggregateId(Long aggregateId) {
+    public EventStoreAggregateId toEventStoreAggregateId(String aggregateId) {
         return new EventStoreAggregateId.SimpleEventStoreAggregateId(aggregateId);
     }
 
     protected void update(TransformationEventCommand c, Consumer<TransformationEventState> action) {
-        Long aggregateId = c.getEventId();
+        String aggregateId = c.getEventId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
         TransformationEventState state = getStateRepository().get(aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);

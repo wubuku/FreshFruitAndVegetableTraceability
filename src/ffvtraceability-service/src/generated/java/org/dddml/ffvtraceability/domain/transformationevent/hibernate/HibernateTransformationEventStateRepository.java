@@ -25,7 +25,7 @@ public class HibernateTransformationEventStateRepository implements Transformati
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocuments", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -38,7 +38,7 @@ public class HibernateTransformationEventStateRepository implements Transformati
     }
 
     @Transactional(readOnly = true)
-    public TransformationEventState get(Long id, boolean nullAllowed) {
+    public TransformationEventState get(String id, boolean nullAllowed) {
         TransformationEventState.SqlTransformationEventState state = (TransformationEventState.SqlTransformationEventState)getEntityManager().find(AbstractTransformationEventState.SimpleTransformationEventState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractTransformationEventState.SimpleTransformationEventState();

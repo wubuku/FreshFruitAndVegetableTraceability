@@ -12,14 +12,14 @@ import org.dddml.ffvtraceability.domain.AbstractCommand;
 
 public abstract class AbstractReceivingEventCommand extends AbstractCommand implements ReceivingEventCommand {
 
-    private Long eventId;
+    private String eventId;
 
-    public Long getEventId()
+    public String getEventId()
     {
         return this.eventId;
     }
 
-    public void setEventId(Long eventId)
+    public void setEventId(String eventId)
     {
         this.eventId = eventId;
     }
@@ -123,16 +123,14 @@ public abstract class AbstractReceivingEventCommand extends AbstractCommand impl
             this.tlcSourceOrTlcSourceReference = tlcSourceOrTlcSourceReference;
         }
 
-        private KdeReferenceDocument referenceDocument;
+        private KdeReferenceDocument[] referenceDocuments;
 
-        public KdeReferenceDocument getReferenceDocument()
-        {
-            return this.referenceDocument;
+        public KdeReferenceDocument[] getReferenceDocuments() {
+            return this.referenceDocuments;
         }
 
-        public void setReferenceDocument(KdeReferenceDocument referenceDocument)
-        {
-            this.referenceDocument = referenceDocument;
+        public void setReferenceDocuments(KdeReferenceDocument[] referenceDocuments) {
+            this.referenceDocuments = referenceDocuments;
         }
 
     }
@@ -237,16 +235,16 @@ public abstract class AbstractReceivingEventCommand extends AbstractCommand impl
             this.isPropertyTlcSourceOrTlcSourceReferenceRemoved = removed;
         }
 
-        private Boolean isPropertyReferenceDocumentRemoved;
+        private Boolean isPropertyReferenceDocumentsRemoved;
 
-        public Boolean getIsPropertyReferenceDocumentRemoved()
+        public Boolean getIsPropertyReferenceDocumentsRemoved()
         {
-            return this.isPropertyReferenceDocumentRemoved;
+            return this.isPropertyReferenceDocumentsRemoved;
         }
 
-        public void setIsPropertyReferenceDocumentRemoved(Boolean removed)
+        public void setIsPropertyReferenceDocumentsRemoved(Boolean removed)
         {
-            this.isPropertyReferenceDocumentRemoved = removed;
+            this.isPropertyReferenceDocumentsRemoved = removed;
         }
 
 

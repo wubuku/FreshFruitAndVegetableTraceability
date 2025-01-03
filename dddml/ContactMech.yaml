@@ -1,0 +1,21 @@
+﻿aggregates:
+
+  ContactMech:
+    abstract: true
+    displayName: Contact Mechanism
+    discriminator: ContactMechTypeId
+    discriminatorValue: "CONTACT_MECH"
+    inheritanceMappingStrategy: tpch
+    # ---------------------
+    id:
+      name: ContactMechId
+      type: id
+      
+    properties:
+      ContactMechTypeId:
+        type: id
+      InfoString:
+        type: long-varchar
+        
+    
+    

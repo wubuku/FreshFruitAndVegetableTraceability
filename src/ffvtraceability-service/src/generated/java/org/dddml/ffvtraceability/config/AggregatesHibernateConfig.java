@@ -110,6 +110,9 @@ import org.dddml.ffvtraceability.domain.shipmentreceipt.hibernate.*;
 import org.dddml.ffvtraceability.domain.qainspection.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.qainspection.hibernate.*;
+import org.dddml.ffvtraceability.domain.contactmech.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.contactmech.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -649,6 +652,22 @@ public class AggregatesHibernateConfig {
                 qaInspectionEventStore,
                 qaInspectionStateRepository,
                 qaInspectionStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractContactMechApplicationService.SimpleContactMechApplicationService contactMechApplicationService(
+            @Qualifier("contactMechEventStore") EventStore contactMechEventStore,
+            ContactMechStateRepository contactMechStateRepository,
+            ContactMechStateQueryRepository contactMechStateQueryRepository
+    ) {
+        AbstractContactMechApplicationService.SimpleContactMechApplicationService applicationService = new AbstractContactMechApplicationService.SimpleContactMechApplicationService(
+                contactMechEventStore,
+                contactMechStateRepository,
+                contactMechStateQueryRepository
         );
         return applicationService;
     }

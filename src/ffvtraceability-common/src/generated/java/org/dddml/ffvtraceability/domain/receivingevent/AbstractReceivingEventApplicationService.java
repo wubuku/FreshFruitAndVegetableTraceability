@@ -42,7 +42,7 @@ public abstract class AbstractReceivingEventApplicationService implements Receiv
         ss.setShipFromLocation(c.getShipFromLocation());
         ss.setReceiveDate(c.getReceiveDate());
         ss.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
-        ss.setReferenceDocument(c.getReferenceDocument());
+        ss.setReferenceDocuments(new HashSet<>(Arrays.asList(c.getReferenceDocuments())));
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -104,12 +104,12 @@ public abstract class AbstractReceivingEventApplicationService implements Receiv
         } else {
             ss.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
         }
-        if (c.getReferenceDocument() == null) {
-            if (c.getIsPropertyReferenceDocumentRemoved() != null && c.getIsPropertyReferenceDocumentRemoved()) {
-                ss.setReferenceDocument(null);
+        if (c.getReferenceDocuments() == null) {
+            if (c.getIsPropertyReferenceDocumentsRemoved() != null && c.getIsPropertyReferenceDocumentsRemoved()) {
+                ss.setReferenceDocuments(null);
             }
         } else {
-            ss.setReferenceDocument(c.getReferenceDocument());
+            ss.setReferenceDocuments(new HashSet<>(Arrays.asList(c.getReferenceDocuments())));
         }
         ss.setUpdatedBy(c.getRequesterId());
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -118,7 +118,7 @@ public abstract class AbstractReceivingEventApplicationService implements Receiv
         });
     }
 
-    public ReceivingEventState get(Long id) {
+    public ReceivingEventState get(String id) {
         ReceivingEventState state = getStateRepository().get(id, true);
         return state;
     }
@@ -147,12 +147,12 @@ public abstract class AbstractReceivingEventApplicationService implements Receiv
         return getStateQueryRepository().getCount(filter);
     }
 
-    public EventStoreAggregateId toEventStoreAggregateId(Long aggregateId) {
+    public EventStoreAggregateId toEventStoreAggregateId(String aggregateId) {
         return new EventStoreAggregateId.SimpleEventStoreAggregateId(aggregateId);
     }
 
     protected void update(ReceivingEventCommand c, Consumer<ReceivingEventState> action) {
-        Long aggregateId = c.getEventId();
+        String aggregateId = c.getEventId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
         ReceivingEventState state = getStateRepository().get(aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);

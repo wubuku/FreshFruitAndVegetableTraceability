@@ -1,0 +1,19 @@
+﻿aggregates:
+  TelecomNumber:
+    inheritsFrom: ContactMech
+    discriminatorValue: "TELECOM_NUMBER"
+    # ---------------------------------
+    id:
+      name: ContactMechId
+      columnName: CONTACT_MECH_ID
+      type: id-ne
+      
+    properties:
+      CountryCode:
+        type: very-short
+      AreaCode:
+        type: very-short
+      ContactNumber:
+        type: short-varchar
+      AskForName:
+        type: name

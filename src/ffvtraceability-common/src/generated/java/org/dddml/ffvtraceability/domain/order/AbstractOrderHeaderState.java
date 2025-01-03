@@ -175,16 +175,6 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.originFacilityId = originFacilityId;
     }
 
-    private String webSiteId;
-
-    public String getWebSiteId() {
-        return this.webSiteId;
-    }
-
-    public void setWebSiteId(String webSiteId) {
-        this.webSiteId = webSiteId;
-    }
-
     private String productStoreId;
 
     public String getProductStoreId() {
@@ -549,7 +539,6 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setSyncStatusId(e.getSyncStatusId());
         this.setBillingAccountId(e.getBillingAccountId());
         this.setOriginFacilityId(e.getOriginFacilityId());
-        this.setWebSiteId(e.getWebSiteId());
         this.setProductStoreId(e.getProductStoreId());
         this.setTerminalId(e.getTerminalId());
         this.setTransactionId(e.getTransactionId());
@@ -607,7 +596,6 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setSyncStatusId(s.getSyncStatusId());
         this.setBillingAccountId(s.getBillingAccountId());
         this.setOriginFacilityId(s.getOriginFacilityId());
-        this.setWebSiteId(s.getWebSiteId());
         this.setProductStoreId(s.getProductStoreId());
         this.setTerminalId(s.getTerminalId());
         this.setTransactionId(s.getTransactionId());
@@ -909,13 +897,6 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             }
         } else {
             this.setOriginFacilityId(e.getOriginFacilityId());
-        }
-        if (e.getWebSiteId() == null) {
-            if (e.getIsPropertyWebSiteIdRemoved() != null && e.getIsPropertyWebSiteIdRemoved()) {
-                this.setWebSiteId(null);
-            }
-        } else {
-            this.setWebSiteId(e.getWebSiteId());
         }
         if (e.getProductStoreId() == null) {
             if (e.getIsPropertyProductStoreIdRemoved() != null && e.getIsPropertyProductStoreIdRemoved()) {

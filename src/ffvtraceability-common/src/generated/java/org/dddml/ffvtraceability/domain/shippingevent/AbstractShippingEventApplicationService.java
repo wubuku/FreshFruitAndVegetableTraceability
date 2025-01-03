@@ -30,23 +30,24 @@ public abstract class AbstractShippingEventApplicationService implements Shippin
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public Long createWithoutId(ShippingEventCommand.CreateShippingEvent c) {
-        ShippingEventState.SqlShippingEventState s = new AbstractShippingEventState.SimpleShippingEventState();
+    public void when(ShippingEventCommand.CreateShippingEvent c) {
+        update(c, s -> {
         // //////////////////////////
-        s.setTraceabilityLotCode(c.getTraceabilityLotCode());
-        s.setQuantityAndUom(c.getQuantityAndUom());
-        s.setProductDescription(c.getProductDescription());
-        s.setShipToLocation(c.getShipToLocation());
-        s.setShipFromLocation(c.getShipFromLocation());
-        s.setShipDate(c.getShipDate());
-        s.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
-        s.setReferenceDocument(c.getReferenceDocument());
-        s.setCreatedBy(c.getRequesterId());
-        s.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        s.setCommandId(c.getCommandId());
+        throwOnConcurrencyConflict(s, c);
+        ShippingEventState.SqlShippingEventState ss = ((ShippingEventState.SqlShippingEventState)s);
+        ss.setTraceabilityLotCode(c.getTraceabilityLotCode());
+        ss.setQuantityAndUom(c.getQuantityAndUom());
+        ss.setProductDescription(c.getProductDescription());
+        ss.setShipToLocation(c.getShipToLocation());
+        ss.setShipFromLocation(c.getShipFromLocation());
+        ss.setShipDate(c.getShipDate());
+        ss.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
+        ss.setReferenceDocuments(new HashSet<>(Arrays.asList(c.getReferenceDocuments())));
+        ss.setCreatedBy(c.getRequesterId());
+        ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        ss.setCommandId(c.getCommandId());
         // //////////////////////////
-        getStateRepository().save(s);
-        return s.getEventId();
+        });
     }
 
     public void when(ShippingEventCommand.MergePatchShippingEvent c) {
@@ -103,12 +104,12 @@ public abstract class AbstractShippingEventApplicationService implements Shippin
         } else {
             ss.setTlcSourceOrTlcSourceReference(c.getTlcSourceOrTlcSourceReference());
         }
-        if (c.getReferenceDocument() == null) {
-            if (c.getIsPropertyReferenceDocumentRemoved() != null && c.getIsPropertyReferenceDocumentRemoved()) {
-                ss.setReferenceDocument(null);
+        if (c.getReferenceDocuments() == null) {
+            if (c.getIsPropertyReferenceDocumentsRemoved() != null && c.getIsPropertyReferenceDocumentsRemoved()) {
+                ss.setReferenceDocuments(null);
             }
         } else {
-            ss.setReferenceDocument(c.getReferenceDocument());
+            ss.setReferenceDocuments(new HashSet<>(Arrays.asList(c.getReferenceDocuments())));
         }
         ss.setUpdatedBy(c.getRequesterId());
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -117,7 +118,7 @@ public abstract class AbstractShippingEventApplicationService implements Shippin
         });
     }
 
-    public ShippingEventState get(Long id) {
+    public ShippingEventState get(String id) {
         ShippingEventState state = getStateRepository().get(id, true);
         return state;
     }
@@ -146,12 +147,12 @@ public abstract class AbstractShippingEventApplicationService implements Shippin
         return getStateQueryRepository().getCount(filter);
     }
 
-    public EventStoreAggregateId toEventStoreAggregateId(Long aggregateId) {
+    public EventStoreAggregateId toEventStoreAggregateId(String aggregateId) {
         return new EventStoreAggregateId.SimpleEventStoreAggregateId(aggregateId);
     }
 
     protected void update(ShippingEventCommand c, Consumer<ShippingEventState> action) {
-        Long aggregateId = c.getEventId();
+        String aggregateId = c.getEventId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
         ShippingEventState state = getStateRepository().get(aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);

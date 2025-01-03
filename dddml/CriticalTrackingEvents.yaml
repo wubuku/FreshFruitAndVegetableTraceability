@@ -1,18 +1,29 @@
 # CRITICAL TRACKING EVENTS
 typeDefinitions:
   CteEventId:
-    sqlType: BIGINT
-    javaType: Long
+    sqlType: VARCHAR(66)
+    javaType: String
+
+
+superObjects:
+  CriticalTrackingEvent:
+    properties:
+      ReferenceDocuments:
+        itemType: KdeReferenceDocument
+        description: "The reference document type and reference document number"
+
 
 aggregates:
   ShippingEvent:
+    implements:
+      - CriticalTrackingEvent
     metadata:
       NoEventSourcing: true
     id:
       name: EventId
       type: CteEventId
-      generator:
-        class: sequence
+      # generator:
+      #   class: sequence
     properties:
       TraceabilityLotCode:
         type: KdeTraceabilityLotCode
@@ -47,11 +58,10 @@ aggregates:
           - tlc_source_reference_gln
           - tlc_source_reference_ggn
 
-      ReferenceDocument:
-        type: KdeReferenceDocument
-        description: "Reference Document"
 
   ReceivingEvent:
+    implements:
+      - CriticalTrackingEvent
     metadata:
       NoEventSourcing: true
     id:
@@ -92,11 +102,11 @@ aggregates:
           - tlc_source_reference_fda_ffrn
           - tlc_source_reference_gln
           - tlc_source_reference_ggn
-      ReferenceDocument:
-        type: KdeReferenceDocument
-        description: "Reference Document"
+
 
   TransformationEvent:
+    implements:
+      - CriticalTrackingEvent
     metadata:
       NoEventSourcing: true
     id:
@@ -144,6 +154,4 @@ aggregates:
       DateTransformed:
         type: KdeDate
         description: "Date Transformed"
-      ReferenceDocument:
-        type: KdeReferenceDocument
-        description: "The reference document type and reference document number"
+

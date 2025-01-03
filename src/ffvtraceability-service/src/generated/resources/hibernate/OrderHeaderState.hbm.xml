@@ -82,9 +82,6 @@
     <property name="originFacilityId">
       <column name="ORIGIN_FACILITY_ID" sql-type="VARCHAR(20)" />
     </property>
-    <property name="webSiteId">
-      <column name="WEB_SITE_ID" sql-type="VARCHAR(20)" />
-    </property>
     <property name="productStoreId">
       <column name="PRODUCT_STORE_ID" sql-type="VARCHAR(20)" />
     </property>

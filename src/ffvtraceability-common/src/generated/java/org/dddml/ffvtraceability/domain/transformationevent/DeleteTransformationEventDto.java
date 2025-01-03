@@ -21,12 +21,12 @@ public class DeleteTransformationEventDto extends AbstractTransformationEventCom
     {
         return new TransformationEventCommand.DeleteTransformationEvent() {
             @Override
-            public Long getEventId() {
+            public String getEventId() {
                 return DeleteTransformationEventDto.this.getEventId();
             }
 
             @Override
-            public void setEventId(Long p) {
+            public void setEventId(String p) {
                 DeleteTransformationEventDto.this.setEventId(p);
             }
 

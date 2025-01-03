@@ -50,8 +50,6 @@ public interface OrderHeaderState
 
     String getOriginFacilityId();
 
-    String getWebSiteId();
-
     String getProductStoreId();
 
     String getTerminalId();
@@ -128,8 +126,6 @@ public interface OrderHeaderState
         void setBillingAccountId(String billingAccountId);
 
         void setOriginFacilityId(String originFacilityId);
-
-        void setWebSiteId(String webSiteId);
 
         void setProductStoreId(String productStoreId);
 

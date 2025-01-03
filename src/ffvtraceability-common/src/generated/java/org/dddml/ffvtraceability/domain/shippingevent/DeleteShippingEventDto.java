@@ -21,12 +21,12 @@ public class DeleteShippingEventDto extends AbstractShippingEventCommandDto impl
     {
         return new ShippingEventCommand.DeleteShippingEvent() {
             @Override
-            public Long getEventId() {
+            public String getEventId() {
                 return DeleteShippingEventDto.this.getEventId();
             }
 
             @Override
-            public void setEventId(Long p) {
+            public void setEventId(String p) {
                 DeleteShippingEventDto.this.setEventId(p);
             }
 

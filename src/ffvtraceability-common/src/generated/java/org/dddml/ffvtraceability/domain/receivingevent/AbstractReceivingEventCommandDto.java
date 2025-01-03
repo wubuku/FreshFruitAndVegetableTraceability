@@ -14,14 +14,14 @@ public abstract class AbstractReceivingEventCommandDto extends AbstractCommand {
     /**
      * Event Id
      */
-    private Long eventId;
+    private String eventId;
 
-    public Long getEventId()
+    public String getEventId()
     {
         return this.eventId;
     }
 
-    public void setEventId(Long eventId)
+    public void setEventId(String eventId)
     {
         this.eventId = eventId;
     }

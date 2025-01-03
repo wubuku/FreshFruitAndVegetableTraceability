@@ -26,7 +26,7 @@ public class HibernateOrderHeaderStateRepository implements OrderHeaderStateRepo
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderId", "OrderTypeId", "OrderName", "ExternalId", "SalesChannelEnumId", "OrderDate", "Priority", "EntryDate", "PickSheetPrintedDate", "VisitId", "StatusId", "FirstAttemptOrderId", "CurrencyUomId", "SyncStatusId", "BillingAccountId", "OriginFacilityId", "WebSiteId", "ProductStoreId", "TerminalId", "TransactionId", "AutoOrderShoppingListId", "NeedsInventoryIssuance", "IsRushOrder", "InternalCode", "RemainingSubTotal", "GrandTotal", "IsViewed", "InvoicePerShipment", "Memo", "OrderItems", "OrderRoles", "OrderAdjustments", "OrderContactMechanisms", "OrderShipGroups", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderId", "OrderTypeId", "OrderName", "ExternalId", "SalesChannelEnumId", "OrderDate", "Priority", "EntryDate", "PickSheetPrintedDate", "VisitId", "StatusId", "FirstAttemptOrderId", "CurrencyUomId", "SyncStatusId", "BillingAccountId", "OriginFacilityId", "ProductStoreId", "TerminalId", "TransactionId", "AutoOrderShoppingListId", "NeedsInventoryIssuance", "IsRushOrder", "InternalCode", "RemainingSubTotal", "GrandTotal", "IsViewed", "InvoicePerShipment", "Memo", "OrderItems", "OrderRoles", "OrderAdjustments", "OrderContactMechanisms", "OrderShipGroups", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

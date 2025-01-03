@@ -11,7 +11,7 @@ import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
 
 public interface ReceivingEventStateRepository {
-    ReceivingEventState get(Long id, boolean nullAllowed);
+    ReceivingEventState get(String id, boolean nullAllowed);
 
     void save(ReceivingEventState state);
 

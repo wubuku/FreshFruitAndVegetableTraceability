@@ -116,18 +116,16 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
     }
 
     /**
-     * Reference Document
+     * The reference document type and reference document number
      */
-    private KdeReferenceDocument referenceDocument;
+    private KdeReferenceDocument[] referenceDocuments;
 
-    public KdeReferenceDocument getReferenceDocument()
-    {
-        return this.referenceDocument;
+    public KdeReferenceDocument[] getReferenceDocuments() {
+        return this.referenceDocuments;
     }
 
-    public void setReferenceDocument(KdeReferenceDocument referenceDocument)
-    {
-        this.referenceDocument = referenceDocument;
+    public void setReferenceDocuments(KdeReferenceDocument[] referenceDocuments) {
+        this.referenceDocuments = referenceDocuments;
     }
 
 
@@ -215,16 +213,16 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
         this.isPropertyTlcSourceOrTlcSourceReferenceRemoved = removed;
     }
 
-    private Boolean isPropertyReferenceDocumentRemoved;
+    private Boolean isPropertyReferenceDocumentsRemoved;
 
-    public Boolean getIsPropertyReferenceDocumentRemoved()
+    public Boolean getIsPropertyReferenceDocumentsRemoved()
     {
-        return this.isPropertyReferenceDocumentRemoved;
+        return this.isPropertyReferenceDocumentsRemoved;
     }
 
-    public void setIsPropertyReferenceDocumentRemoved(Boolean removed)
+    public void setIsPropertyReferenceDocumentsRemoved(Boolean removed)
     {
-        this.isPropertyReferenceDocumentRemoved = removed;
+        this.isPropertyReferenceDocumentsRemoved = removed;
     }
 
     public ShippingEventCommand toCommand()
@@ -256,12 +254,12 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
     protected ShippingEventCommand.CreateShippingEvent toCreateShippingEvent() {
         return new ShippingEventCommand.CreateShippingEvent() {
             @Override
-            public Long getEventId() {
+            public String getEventId() {
                 return CreateOrMergePatchShippingEventDto.this.getEventId();
             }
 
             @Override
-            public void setEventId(Long p) {
+            public void setEventId(String p) {
                 CreateOrMergePatchShippingEventDto.this.setEventId(p);
             }
 
@@ -381,13 +379,13 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
             }
 
             @Override
-            public KdeReferenceDocument getReferenceDocument() {
-                return CreateOrMergePatchShippingEventDto.this.getReferenceDocument();
+            public KdeReferenceDocument[] getReferenceDocuments() {
+                return CreateOrMergePatchShippingEventDto.this.getReferenceDocuments();
             }
 
             @Override
-            public void setReferenceDocument(KdeReferenceDocument p) {
-                CreateOrMergePatchShippingEventDto.this.setReferenceDocument(p);
+            public void setReferenceDocuments(KdeReferenceDocument[] p) {
+                CreateOrMergePatchShippingEventDto.this.setReferenceDocuments(p);
             }
 
 
@@ -397,12 +395,12 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
     protected ShippingEventCommand.MergePatchShippingEvent toMergePatchShippingEvent() {
         return new ShippingEventCommand.MergePatchShippingEvent() {
             @Override
-            public Long getEventId() {
+            public String getEventId() {
                 return CreateOrMergePatchShippingEventDto.this.getEventId();
             }
 
             @Override
-            public void setEventId(Long p) {
+            public void setEventId(String p) {
                 CreateOrMergePatchShippingEventDto.this.setEventId(p);
             }
 
@@ -522,13 +520,13 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
             }
 
             @Override
-            public KdeReferenceDocument getReferenceDocument() {
-                return CreateOrMergePatchShippingEventDto.this.getReferenceDocument();
+            public KdeReferenceDocument[] getReferenceDocuments() {
+                return CreateOrMergePatchShippingEventDto.this.getReferenceDocuments();
             }
 
             @Override
-            public void setReferenceDocument(KdeReferenceDocument p) {
-                CreateOrMergePatchShippingEventDto.this.setReferenceDocument(p);
+            public void setReferenceDocuments(KdeReferenceDocument[] p) {
+                CreateOrMergePatchShippingEventDto.this.setReferenceDocuments(p);
             }
 
             @Override
@@ -602,13 +600,13 @@ public class CreateOrMergePatchShippingEventDto extends AbstractShippingEventCom
             }
 
             @Override
-            public Boolean getIsPropertyReferenceDocumentRemoved() {
-                return CreateOrMergePatchShippingEventDto.this.getIsPropertyReferenceDocumentRemoved();
+            public Boolean getIsPropertyReferenceDocumentsRemoved() {
+                return CreateOrMergePatchShippingEventDto.this.getIsPropertyReferenceDocumentsRemoved();
             }
 
             @Override
-            public void setIsPropertyReferenceDocumentRemoved(Boolean removed) {
-                CreateOrMergePatchShippingEventDto.this.setIsPropertyReferenceDocumentRemoved(removed);
+            public void setIsPropertyReferenceDocumentsRemoved(Boolean removed) {
+                CreateOrMergePatchShippingEventDto.this.setIsPropertyReferenceDocumentsRemoved(removed);
             }
 
 

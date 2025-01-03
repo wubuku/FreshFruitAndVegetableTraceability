@@ -45,6 +45,7 @@ import org.dddml.ffvtraceability.domain.shipmenttype.*;
 import org.dddml.ffvtraceability.domain.shippingdocument.*;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
 import org.dddml.ffvtraceability.domain.qainspection.*;
+import org.dddml.ffvtraceability.domain.contactmech.*;
 
 public class StaticMethodConstraints {
 

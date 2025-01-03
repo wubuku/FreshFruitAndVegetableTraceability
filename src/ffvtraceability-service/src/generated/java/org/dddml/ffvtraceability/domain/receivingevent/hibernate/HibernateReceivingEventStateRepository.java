@@ -25,7 +25,7 @@ public class HibernateReceivingEventStateRepository implements ReceivingEventSta
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ReceiveDate", "TlcSourceOrTlcSourceReference", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ReceiveDate", "TlcSourceOrTlcSourceReference", "ReferenceDocuments", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -38,7 +38,7 @@ public class HibernateReceivingEventStateRepository implements ReceivingEventSta
     }
 
     @Transactional(readOnly = true)
-    public ReceivingEventState get(Long id, boolean nullAllowed) {
+    public ReceivingEventState get(String id, boolean nullAllowed) {
         ReceivingEventState.SqlReceivingEventState state = (ReceivingEventState.SqlReceivingEventState)getEntityManager().find(AbstractReceivingEventState.SimpleReceivingEventState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractReceivingEventState.SimpleReceivingEventState();

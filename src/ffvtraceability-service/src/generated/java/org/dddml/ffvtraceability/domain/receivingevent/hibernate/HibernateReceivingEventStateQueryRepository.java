@@ -29,7 +29,7 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ReceiveDate", "TlcSourceOrTlcSourceReference", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "TraceabilityLotCode", "QuantityAndUom", "ProductDescription", "ShipToLocation", "ShipFromLocation", "ReceiveDate", "TlcSourceOrTlcSourceReference", "ReferenceDocuments", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -42,7 +42,7 @@ public class HibernateReceivingEventStateQueryRepository implements ReceivingEve
     }
 
     @Transactional(readOnly = true)
-    public ReceivingEventState get(Long id) {
+    public ReceivingEventState get(String id) {
         ReceivingEventState state = (ReceivingEventState)getEntityManager().find(AbstractReceivingEventState.SimpleReceivingEventState.class, id);
         return state;
     }

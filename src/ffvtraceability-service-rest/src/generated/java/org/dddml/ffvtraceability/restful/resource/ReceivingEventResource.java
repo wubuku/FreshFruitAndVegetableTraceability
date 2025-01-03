@@ -131,9 +131,9 @@ public class ReceivingEventResource {
      */
     @GetMapping("{eventId}")
     @Transactional(readOnly = true)
-    public ReceivingEventStateDto get(@PathVariable("eventId") Long eventId, @RequestParam(value = "fields", required = false) String fields) {
+    public ReceivingEventStateDto get(@PathVariable("eventId") String eventId, @RequestParam(value = "fields", required = false) String fields) {
         try {
-            Long idObj = eventId;
+            String idObj = eventId;
             ReceivingEventState state = receivingEventApplicationService.get(idObj);
             if (state == null) { return null; }
 
@@ -175,14 +175,14 @@ public class ReceivingEventResource {
      * Create.
      * Create ReceivingEvent
      */
-    @PostMapping @ResponseStatus(HttpStatus.CREATED)
-    public Long post(@RequestBody CreateOrMergePatchReceivingEventDto.CreateReceivingEventDto value,  HttpServletResponse response) {
+    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
+    public String post(@RequestBody CreateOrMergePatchReceivingEventDto.CreateReceivingEventDto value,  HttpServletResponse response) {
         try {
             ReceivingEventCommand.CreateReceivingEvent cmd = value;//.toCreateReceivingEvent();
             if (cmd.getEventId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ReceivingEvent");
             }
-            Long idObj = cmd.getEventId();
+            String idObj = cmd.getEventId();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             receivingEventApplicationService.when(cmd);
 
@@ -196,7 +196,7 @@ public class ReceivingEventResource {
      * Create or update ReceivingEvent
      */
     @PutMapping("{eventId}")
-    public void put(@PathVariable("eventId") Long eventId, @RequestBody CreateOrMergePatchReceivingEventDto value) {
+    public void put(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchReceivingEventDto value) {
         try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
@@ -222,7 +222,7 @@ public class ReceivingEventResource {
      * Patch ReceivingEvent
      */
     @PatchMapping("{eventId}")
-    public void patch(@PathVariable("eventId") Long eventId, @RequestBody CreateOrMergePatchReceivingEventDto.MergePatchReceivingEventDto value) {
+    public void patch(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchReceivingEventDto.MergePatchReceivingEventDto value) {
         try {
 
             ReceivingEventCommand.MergePatchReceivingEvent cmd = value;//.toMergePatchReceivingEvent();
@@ -263,8 +263,8 @@ public class ReceivingEventResource {
  
     public static class ReceivingEventResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(Long eventId, org.dddml.ffvtraceability.domain.receivingevent.ReceivingEventCommand value) {
-            Long idObj = eventId;
+        public static void setNullIdOrThrowOnInconsistentIds(String eventId, org.dddml.ffvtraceability.domain.receivingevent.ReceivingEventCommand value) {
+            String idObj = eventId;
             if (value.getEventId() == null) {
                 value.setEventId(idObj);
             } else if (!value.getEventId().equals(idObj)) {
@@ -320,7 +320,7 @@ public class ReceivingEventResource {
             return filter.entrySet();
         }
 
-        public static ReceivingEventStateDto[] toReceivingEventStateDtoArray(Iterable<Long> ids) {
+        public static ReceivingEventStateDto[] toReceivingEventStateDtoArray(Iterable<String> ids) {
             List<ReceivingEventStateDto> states = new ArrayList<>();
             ids.forEach(i -> {
                 ReceivingEventStateDto dto = new ReceivingEventStateDto();

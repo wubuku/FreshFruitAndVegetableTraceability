@@ -90,6 +90,9 @@ public class M {
         typeToAggMap.put("ShipmentReceipt", "ShipmentReceipt");
         typeToAggMap.put("ShipmentReceiptRole", "ShipmentReceipt");
         typeToAggMap.put("QaInspection", "QaInspection");
+        typeToAggMap.put("ContactMech", "ContactMech");
+        typeToAggMap.put("PostalAddress", "ContactMech");
+        typeToAggMap.put("TelecomNumber", "ContactMech");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -187,7 +190,7 @@ public class M {
         clsMap.put("KdeUrl", String.class);
         clsMap.put("KdeDocumentType", String.class);
         clsMap.put("KdeDocumentNumber", String.class);
-        clsMap.put("CteEventId", Long.class);
+        clsMap.put("CteEventId", String.class);
         clsMap.put("StringList", java.util.List.class);
         clsMap.put("java.util.List<String>", java.util.List.class);
         clsMap.put("java.util.List", java.util.List.class);
@@ -405,7 +408,7 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
-    public static final Class ID_CLASS = Long.class;
+    public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
             "eventId",
@@ -451,12 +454,10 @@ public class M {
             "tlcSourceOrTlcSourceReference.tlcSourceReferenceFdaFfrn",
             "tlcSourceOrTlcSourceReference.tlcSourceReferenceGln",
             "tlcSourceOrTlcSourceReference.tlcSourceReferenceGgn",
-            "referenceDocument.documentType",
-            "referenceDocument.documentNumber",
     };
 
     public static final String[] propertyTypes = new String[] {
-            "Long",
+            "String",
             "String",
             "Long",
             "String",
@@ -473,8 +474,6 @@ public class M {
             "String",
             "String",
             "BigDecimal",
-            "String",
-            "String",
             "String",
             "String",
             "String",
@@ -621,10 +620,6 @@ public class M {
         aliasMap.put("TlcSourceOrTlcSourceReference.TlcSourceReferenceGgn", "tlcSourceOrTlcSourceReference.tlcSourceReferenceGgn");
         aliasMap.put("tlcSourceOrTlcSourceReference.tlcSourceReference.ggn", "tlcSourceOrTlcSourceReference.tlcSourceReferenceGgn");
         aliasMap.put("TlcSourceOrTlcSourceReference.TlcSourceReference.Ggn", "tlcSourceOrTlcSourceReference.tlcSourceReferenceGgn");
-        aliasMap.put("referenceDocument.documentType", "referenceDocument.documentType");
-        aliasMap.put("ReferenceDocument.DocumentType", "referenceDocument.documentType");
-        aliasMap.put("referenceDocument.documentNumber", "referenceDocument.documentNumber");
-        aliasMap.put("ReferenceDocument.DocumentNumber", "referenceDocument.documentNumber");
     }
 
     private static void initPropertyTypeMap() {
@@ -650,7 +645,7 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
-    public static final Class ID_CLASS = Long.class;
+    public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
             "eventId",
@@ -696,12 +691,10 @@ public class M {
             "tlcSourceOrTlcSourceReference.tlcSourceReferenceFdaFfrn",
             "tlcSourceOrTlcSourceReference.tlcSourceReferenceGln",
             "tlcSourceOrTlcSourceReference.tlcSourceReferenceGgn",
-            "referenceDocument.documentType",
-            "referenceDocument.documentNumber",
     };
 
     public static final String[] propertyTypes = new String[] {
-            "Long",
+            "String",
             "String",
             "Long",
             "String",
@@ -718,8 +711,6 @@ public class M {
             "String",
             "String",
             "BigDecimal",
-            "String",
-            "String",
             "String",
             "String",
             "String",
@@ -866,10 +857,6 @@ public class M {
         aliasMap.put("TlcSourceOrTlcSourceReference.TlcSourceReferenceGgn", "tlcSourceOrTlcSourceReference.tlcSourceReferenceGgn");
         aliasMap.put("tlcSourceOrTlcSourceReference.tlcSourceReference.ggn", "tlcSourceOrTlcSourceReference.tlcSourceReferenceGgn");
         aliasMap.put("TlcSourceOrTlcSourceReference.TlcSourceReference.Ggn", "tlcSourceOrTlcSourceReference.tlcSourceReferenceGgn");
-        aliasMap.put("referenceDocument.documentType", "referenceDocument.documentType");
-        aliasMap.put("ReferenceDocument.DocumentType", "referenceDocument.documentType");
-        aliasMap.put("referenceDocument.documentNumber", "referenceDocument.documentNumber");
-        aliasMap.put("ReferenceDocument.DocumentNumber", "referenceDocument.documentNumber");
     }
 
     private static void initPropertyTypeMap() {
@@ -895,7 +882,7 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
-    public static final Class ID_CLASS = Long.class;
+    public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
             "eventId",
@@ -937,12 +924,10 @@ public class M {
             "transformationLocation.city",
             "transformationLocation.state",
             "transformationLocation.zipCode",
-            "referenceDocument.documentType",
-            "referenceDocument.documentNumber",
     };
 
     public static final String[] propertyTypes = new String[] {
-            "Long",
+            "String",
             "String",
             "Long",
             "String",
@@ -974,8 +959,6 @@ public class M {
             "String",
             "String",
             "BigDecimal",
-            "String",
-            "String",
             "String",
             "String",
             "String",
@@ -1075,10 +1058,6 @@ public class M {
         aliasMap.put("TransformationLocation.State", "transformationLocation.state");
         aliasMap.put("transformationLocation.zipCode", "transformationLocation.zipCode");
         aliasMap.put("TransformationLocation.ZipCode", "transformationLocation.zipCode");
-        aliasMap.put("referenceDocument.documentType", "referenceDocument.documentType");
-        aliasMap.put("ReferenceDocument.DocumentType", "referenceDocument.documentType");
-        aliasMap.put("referenceDocument.documentNumber", "referenceDocument.documentNumber");
-        aliasMap.put("ReferenceDocument.DocumentNumber", "referenceDocument.documentNumber");
     }
 
     private static void initPropertyTypeMap() {
@@ -4245,7 +4224,6 @@ public class M {
             "syncStatusId",
             "billingAccountId",
             "originFacilityId",
-            "webSiteId",
             "productStoreId",
             "terminalId",
             "transactionId",
@@ -4277,7 +4255,6 @@ public class M {
             "String",
             "OffsetDateTime",
             "OffsetDateTime",
-            "String",
             "String",
             "String",
             "String",
@@ -4350,8 +4327,6 @@ public class M {
         aliasMap.put("BillingAccountId", "billingAccountId");
         aliasMap.put("originFacilityId", "originFacilityId");
         aliasMap.put("OriginFacilityId", "originFacilityId");
-        aliasMap.put("webSiteId", "webSiteId");
-        aliasMap.put("WebSiteId", "webSiteId");
         aliasMap.put("productStoreId", "productStoreId");
         aliasMap.put("ProductStoreId", "productStoreId");
         aliasMap.put("terminalId", "terminalId");
@@ -6444,6 +6419,171 @@ public class M {
         aliasMap.put("InspectedBy", "inspectedBy");
         aliasMap.put("inspectedAt", "inspectedAt");
         aliasMap.put("InspectedAt", "inspectedAt");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ContactMechMetadata {
+
+    private ContactMechMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "contactMechId",
+            "contactMechTypeId",
+            "infoString",
+            "toName",
+            "attnName",
+            "address1",
+            "address2",
+            "directions",
+            "city",
+            "postalCode",
+            "postalCodeExt",
+            "countryGeoId",
+            "stateProvinceGeoId",
+            "prefectureGeoId",
+            "countyGeoId",
+            "townGeoId",
+            "assocTelecomContactMechId",
+            "postalCodeGeoId",
+            "geoPointId",
+            "countryCode",
+            "areaCode",
+            "contactNumber",
+            "askForName",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("contactMechId", "contactMechId");
+        aliasMap.put("ContactMechId", "contactMechId");
+        aliasMap.put("contactMechTypeId", "contactMechTypeId");
+        aliasMap.put("ContactMechTypeId", "contactMechTypeId");
+        aliasMap.put("infoString", "infoString");
+        aliasMap.put("InfoString", "infoString");
+        aliasMap.put("toName", "toName");
+        aliasMap.put("ToName", "toName");
+        aliasMap.put("attnName", "attnName");
+        aliasMap.put("AttnName", "attnName");
+        aliasMap.put("address1", "address1");
+        aliasMap.put("Address1", "address1");
+        aliasMap.put("address2", "address2");
+        aliasMap.put("Address2", "address2");
+        aliasMap.put("directions", "directions");
+        aliasMap.put("Directions", "directions");
+        aliasMap.put("city", "city");
+        aliasMap.put("City", "city");
+        aliasMap.put("postalCode", "postalCode");
+        aliasMap.put("PostalCode", "postalCode");
+        aliasMap.put("postalCodeExt", "postalCodeExt");
+        aliasMap.put("PostalCodeExt", "postalCodeExt");
+        aliasMap.put("countryGeoId", "countryGeoId");
+        aliasMap.put("CountryGeoId", "countryGeoId");
+        aliasMap.put("stateProvinceGeoId", "stateProvinceGeoId");
+        aliasMap.put("StateProvinceGeoId", "stateProvinceGeoId");
+        aliasMap.put("prefectureGeoId", "prefectureGeoId");
+        aliasMap.put("PrefectureGeoId", "prefectureGeoId");
+        aliasMap.put("countyGeoId", "countyGeoId");
+        aliasMap.put("CountyGeoId", "countyGeoId");
+        aliasMap.put("townGeoId", "townGeoId");
+        aliasMap.put("TownGeoId", "townGeoId");
+        aliasMap.put("assocTelecomContactMechId", "assocTelecomContactMechId");
+        aliasMap.put("AssocTelecomContactMechId", "assocTelecomContactMechId");
+        aliasMap.put("postalCodeGeoId", "postalCodeGeoId");
+        aliasMap.put("PostalCodeGeoId", "postalCodeGeoId");
+        aliasMap.put("geoPointId", "geoPointId");
+        aliasMap.put("GeoPointId", "geoPointId");
+        aliasMap.put("countryCode", "countryCode");
+        aliasMap.put("CountryCode", "countryCode");
+        aliasMap.put("areaCode", "areaCode");
+        aliasMap.put("AreaCode", "areaCode");
+        aliasMap.put("contactNumber", "contactNumber");
+        aliasMap.put("ContactNumber", "contactNumber");
+        aliasMap.put("askForName", "askForName");
+        aliasMap.put("AskForName", "askForName");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

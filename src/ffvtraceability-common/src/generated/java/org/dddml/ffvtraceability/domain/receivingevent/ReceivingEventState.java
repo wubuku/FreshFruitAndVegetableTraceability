@@ -11,13 +11,13 @@ import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.specialization.Event;
 
-public interface ReceivingEventState
+public interface ReceivingEventState extends CriticalTrackingEvent
 {
     Long VERSION_ZERO = 0L;
 
     Long VERSION_NULL = VERSION_ZERO - 1;
 
-    Long getEventId();
+    String getEventId();
 
     KdeTraceabilityLotCode getTraceabilityLotCode();
 
@@ -33,8 +33,6 @@ public interface ReceivingEventState
 
     KdeTlcSourceOrTlcSourceReference getTlcSourceOrTlcSourceReference();
 
-    KdeReferenceDocument getReferenceDocument();
-
     Long getVersion();
 
     String getCreatedBy();
@@ -45,10 +43,12 @@ public interface ReceivingEventState
 
     OffsetDateTime getUpdatedAt();
 
+    Set<KdeReferenceDocument> getReferenceDocuments();
+
     String getCommandId();
 
-    interface MutableReceivingEventState extends ReceivingEventState {
-        void setEventId(Long eventId);
+    interface MutableReceivingEventState extends ReceivingEventState, CriticalTrackingEvent.MutableCriticalTrackingEvent {
+        void setEventId(String eventId);
 
         void setTraceabilityLotCode(KdeTraceabilityLotCode traceabilityLotCode);
 
@@ -64,8 +64,6 @@ public interface ReceivingEventState
 
         void setTlcSourceOrTlcSourceReference(KdeTlcSourceOrTlcSourceReference tlcSourceOrTlcSourceReference);
 
-        void setReferenceDocument(KdeReferenceDocument referenceDocument);
-
         void setVersion(Long version);
 
         void setCreatedBy(String createdBy);
@@ -75,6 +73,8 @@ public interface ReceivingEventState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setReferenceDocuments(Set<KdeReferenceDocument> referenceDocuments);
 
         void setCommandId(String commandId);
 

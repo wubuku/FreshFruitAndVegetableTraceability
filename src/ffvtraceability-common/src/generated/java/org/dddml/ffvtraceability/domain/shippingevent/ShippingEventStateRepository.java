@@ -11,7 +11,7 @@ import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
 
 public interface ShippingEventStateRepository {
-    ShippingEventState get(Long id, boolean nullAllowed);
+    ShippingEventState get(String id, boolean nullAllowed);
 
     void save(ShippingEventState state);
 

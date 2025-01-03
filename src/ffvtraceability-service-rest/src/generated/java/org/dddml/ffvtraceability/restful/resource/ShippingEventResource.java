@@ -131,9 +131,9 @@ public class ShippingEventResource {
      */
     @GetMapping("{eventId}")
     @Transactional(readOnly = true)
-    public ShippingEventStateDto get(@PathVariable("eventId") Long eventId, @RequestParam(value = "fields", required = false) String fields) {
+    public ShippingEventStateDto get(@PathVariable("eventId") String eventId, @RequestParam(value = "fields", required = false) String fields) {
         try {
-            Long idObj = eventId;
+            String idObj = eventId;
             ShippingEventState state = shippingEventApplicationService.get(idObj);
             if (state == null) { return null; }
 
@@ -175,12 +175,16 @@ public class ShippingEventResource {
      * Create.
      * Create ShippingEvent
      */
-    @PostMapping @ResponseStatus(HttpStatus.CREATED)
-    public Long post(@RequestBody CreateOrMergePatchShippingEventDto.CreateShippingEventDto value,  HttpServletResponse response) {
+    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
+    public String post(@RequestBody CreateOrMergePatchShippingEventDto.CreateShippingEventDto value,  HttpServletResponse response) {
         try {
             ShippingEventCommand.CreateShippingEvent cmd = value;//.toCreateShippingEvent();
+            if (cmd.getEventId() == null) {
+                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ShippingEvent");
+            }
+            String idObj = cmd.getEventId();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            Long idObj = shippingEventApplicationService.createWithoutId(cmd);
+            shippingEventApplicationService.when(cmd);
 
             return idObj;
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
@@ -192,7 +196,7 @@ public class ShippingEventResource {
      * Create or update ShippingEvent
      */
     @PutMapping("{eventId}")
-    public void put(@PathVariable("eventId") Long eventId, @RequestBody CreateOrMergePatchShippingEventDto value) {
+    public void put(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchShippingEventDto value) {
         try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
@@ -202,7 +206,13 @@ public class ShippingEventResource {
                 shippingEventApplicationService.when(cmd);
                 return;
             }
-            throw DomainError.named("unsupportedOperation", "Unsupported HTTP PUT to create, aggregate Id %1$s", eventId);
+
+            value.setCommandType(Command.COMMAND_TYPE_CREATE);
+            ShippingEventCommand.CreateShippingEvent cmd = (ShippingEventCommand.CreateShippingEvent) value.toSubclass();
+            ShippingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            shippingEventApplicationService.when(cmd);
+
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
@@ -212,7 +222,7 @@ public class ShippingEventResource {
      * Patch ShippingEvent
      */
     @PatchMapping("{eventId}")
-    public void patch(@PathVariable("eventId") Long eventId, @RequestBody CreateOrMergePatchShippingEventDto.MergePatchShippingEventDto value) {
+    public void patch(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchShippingEventDto.MergePatchShippingEventDto value) {
         try {
 
             ShippingEventCommand.MergePatchShippingEvent cmd = value;//.toMergePatchShippingEvent();
@@ -253,8 +263,8 @@ public class ShippingEventResource {
  
     public static class ShippingEventResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(Long eventId, org.dddml.ffvtraceability.domain.shippingevent.ShippingEventCommand value) {
-            Long idObj = eventId;
+        public static void setNullIdOrThrowOnInconsistentIds(String eventId, org.dddml.ffvtraceability.domain.shippingevent.ShippingEventCommand value) {
+            String idObj = eventId;
             if (value.getEventId() == null) {
                 value.setEventId(idObj);
             } else if (!value.getEventId().equals(idObj)) {
@@ -310,7 +320,7 @@ public class ShippingEventResource {
             return filter.entrySet();
         }
 
-        public static ShippingEventStateDto[] toShippingEventStateDtoArray(Iterable<Long> ids) {
+        public static ShippingEventStateDto[] toShippingEventStateDtoArray(Iterable<String> ids) {
             List<ShippingEventStateDto> states = new ArrayList<>();
             ids.forEach(i -> {
                 ShippingEventStateDto dto = new ShippingEventStateDto();

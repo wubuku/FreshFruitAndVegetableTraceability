@@ -14,14 +14,14 @@ import org.dddml.ffvtraceability.specialization.*;
 
 public class ShippingEventStateDto {
 
-    private Long eventId;
+    private String eventId;
 
-    public Long getEventId()
+    public String getEventId()
     {
         return this.eventId;
     }
 
-    public void setEventId(Long eventId)
+    public void setEventId(String eventId)
     {
         this.eventId = eventId;
     }
@@ -110,18 +110,6 @@ public class ShippingEventStateDto {
         this.tlcSourceOrTlcSourceReference = tlcSourceOrTlcSourceReference;
     }
 
-    private KdeReferenceDocument referenceDocument;
-
-    public KdeReferenceDocument getReferenceDocument()
-    {
-        return this.referenceDocument;
-    }
-
-    public void setReferenceDocument(KdeReferenceDocument referenceDocument)
-    {
-        this.referenceDocument = referenceDocument;
-    }
-
     private Long version;
 
     public Long getVersion()
@@ -182,6 +170,16 @@ public class ShippingEventStateDto {
         this.updatedAt = updatedAt;
     }
 
+    private KdeReferenceDocument[] referenceDocuments;
+
+    public KdeReferenceDocument[] getReferenceDocuments() {
+        return this.referenceDocuments;
+    }
+
+    public void setReferenceDocuments(KdeReferenceDocument[] referenceDocuments) {
+        this.referenceDocuments = referenceDocuments;
+    }
+
 
     public static class DtoConverter extends AbstractStateDtoConverter
     {
@@ -235,9 +233,6 @@ public class ShippingEventStateDto {
             if (returnedFieldsContains("TlcSourceOrTlcSourceReference")) {
                 dto.setTlcSourceOrTlcSourceReference(state.getTlcSourceOrTlcSourceReference());
             }
-            if (returnedFieldsContains("ReferenceDocument")) {
-                dto.setReferenceDocument(state.getReferenceDocument());
-            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }
@@ -252,6 +247,15 @@ public class ShippingEventStateDto {
             }
             if (returnedFieldsContains("UpdatedAt")) {
                 dto.setUpdatedAt(state.getUpdatedAt());
+            }
+            if (returnedFieldsContains("ReferenceDocuments")) {
+                ArrayList<KdeReferenceDocument> arrayList = new ArrayList();
+                if (state.getReferenceDocuments() != null) {
+                    for (KdeReferenceDocument s : state.getReferenceDocuments()) {
+                        arrayList.add(s);
+                    }
+                }
+                dto.setReferenceDocuments(arrayList.toArray(new KdeReferenceDocument[0]));
             }
             return dto;
         }

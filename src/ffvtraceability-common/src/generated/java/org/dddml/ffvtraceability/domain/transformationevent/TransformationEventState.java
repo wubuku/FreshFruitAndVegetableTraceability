@@ -11,13 +11,13 @@ import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.specialization.Event;
 
-public interface TransformationEventState
+public interface TransformationEventState extends CriticalTrackingEvent
 {
     Long VERSION_ZERO = 0L;
 
     Long VERSION_NULL = VERSION_ZERO - 1;
 
-    Long getEventId();
+    String getEventId();
 
     KdeTraceabilityLotCode getFoodUsedTlc();
 
@@ -35,8 +35,6 @@ public interface TransformationEventState
 
     String getDateTransformed();
 
-    KdeReferenceDocument getReferenceDocument();
-
     Long getVersion();
 
     String getCreatedBy();
@@ -47,10 +45,12 @@ public interface TransformationEventState
 
     OffsetDateTime getUpdatedAt();
 
+    Set<KdeReferenceDocument> getReferenceDocuments();
+
     String getCommandId();
 
-    interface MutableTransformationEventState extends TransformationEventState {
-        void setEventId(Long eventId);
+    interface MutableTransformationEventState extends TransformationEventState, CriticalTrackingEvent.MutableCriticalTrackingEvent {
+        void setEventId(String eventId);
 
         void setFoodUsedTlc(KdeTraceabilityLotCode foodUsedTlc);
 
@@ -68,8 +68,6 @@ public interface TransformationEventState
 
         void setDateTransformed(String dateTransformed);
 
-        void setReferenceDocument(KdeReferenceDocument referenceDocument);
-
         void setVersion(Long version);
 
         void setCreatedBy(String createdBy);
@@ -79,6 +77,8 @@ public interface TransformationEventState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setReferenceDocuments(Set<KdeReferenceDocument> referenceDocuments);
 
         void setCommandId(String commandId);
 

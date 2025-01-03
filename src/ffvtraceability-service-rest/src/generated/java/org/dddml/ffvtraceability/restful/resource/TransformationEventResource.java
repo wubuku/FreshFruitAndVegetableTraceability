@@ -131,9 +131,9 @@ public class TransformationEventResource {
      */
     @GetMapping("{eventId}")
     @Transactional(readOnly = true)
-    public TransformationEventStateDto get(@PathVariable("eventId") Long eventId, @RequestParam(value = "fields", required = false) String fields) {
+    public TransformationEventStateDto get(@PathVariable("eventId") String eventId, @RequestParam(value = "fields", required = false) String fields) {
         try {
-            Long idObj = eventId;
+            String idObj = eventId;
             TransformationEventState state = transformationEventApplicationService.get(idObj);
             if (state == null) { return null; }
 
@@ -175,14 +175,14 @@ public class TransformationEventResource {
      * Create.
      * Create TransformationEvent
      */
-    @PostMapping @ResponseStatus(HttpStatus.CREATED)
-    public Long post(@RequestBody CreateOrMergePatchTransformationEventDto.CreateTransformationEventDto value,  HttpServletResponse response) {
+    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
+    public String post(@RequestBody CreateOrMergePatchTransformationEventDto.CreateTransformationEventDto value,  HttpServletResponse response) {
         try {
             TransformationEventCommand.CreateTransformationEvent cmd = value;//.toCreateTransformationEvent();
             if (cmd.getEventId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "TransformationEvent");
             }
-            Long idObj = cmd.getEventId();
+            String idObj = cmd.getEventId();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             transformationEventApplicationService.when(cmd);
 
@@ -196,7 +196,7 @@ public class TransformationEventResource {
      * Create or update TransformationEvent
      */
     @PutMapping("{eventId}")
-    public void put(@PathVariable("eventId") Long eventId, @RequestBody CreateOrMergePatchTransformationEventDto value) {
+    public void put(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchTransformationEventDto value) {
         try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
@@ -222,7 +222,7 @@ public class TransformationEventResource {
      * Patch TransformationEvent
      */
     @PatchMapping("{eventId}")
-    public void patch(@PathVariable("eventId") Long eventId, @RequestBody CreateOrMergePatchTransformationEventDto.MergePatchTransformationEventDto value) {
+    public void patch(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchTransformationEventDto.MergePatchTransformationEventDto value) {
         try {
 
             TransformationEventCommand.MergePatchTransformationEvent cmd = value;//.toMergePatchTransformationEvent();
@@ -263,8 +263,8 @@ public class TransformationEventResource {
  
     public static class TransformationEventResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(Long eventId, org.dddml.ffvtraceability.domain.transformationevent.TransformationEventCommand value) {
-            Long idObj = eventId;
+        public static void setNullIdOrThrowOnInconsistentIds(String eventId, org.dddml.ffvtraceability.domain.transformationevent.TransformationEventCommand value) {
+            String idObj = eventId;
             if (value.getEventId() == null) {
                 value.setEventId(idObj);
             } else if (!value.getEventId().equals(idObj)) {
@@ -320,7 +320,7 @@ public class TransformationEventResource {
             return filter.entrySet();
         }
 
-        public static TransformationEventStateDto[] toTransformationEventStateDtoArray(Iterable<Long> ids) {
+        public static TransformationEventStateDto[] toTransformationEventStateDtoArray(Iterable<String> ids) {
             List<TransformationEventStateDto> states = new ArrayList<>();
             ids.forEach(i -> {
                 TransformationEventStateDto dto = new TransformationEventStateDto();

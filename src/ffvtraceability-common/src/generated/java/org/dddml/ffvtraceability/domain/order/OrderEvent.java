@@ -102,10 +102,6 @@ public interface OrderEvent extends Event {
 
         void setOriginFacilityId(String originFacilityId);
 
-        String getWebSiteId();
-
-        void setWebSiteId(String webSiteId);
-
         String getProductStoreId();
 
         void setProductStoreId(String productStoreId);
@@ -253,10 +249,6 @@ public interface OrderEvent extends Event {
         Boolean getIsPropertyOriginFacilityIdRemoved();
 
         void setIsPropertyOriginFacilityIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyWebSiteIdRemoved();
-
-        void setIsPropertyWebSiteIdRemoved(Boolean removed);
 
         Boolean getIsPropertyProductStoreIdRemoved();
 

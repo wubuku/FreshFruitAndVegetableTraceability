@@ -116,18 +116,16 @@ public class CreateOrMergePatchReceivingEventDto extends AbstractReceivingEventC
     }
 
     /**
-     * Reference Document
+     * The reference document type and reference document number
      */
-    private KdeReferenceDocument referenceDocument;
+    private KdeReferenceDocument[] referenceDocuments;
 
-    public KdeReferenceDocument getReferenceDocument()
-    {
-        return this.referenceDocument;
+    public KdeReferenceDocument[] getReferenceDocuments() {
+        return this.referenceDocuments;
     }
 
-    public void setReferenceDocument(KdeReferenceDocument referenceDocument)
-    {
-        this.referenceDocument = referenceDocument;
+    public void setReferenceDocuments(KdeReferenceDocument[] referenceDocuments) {
+        this.referenceDocuments = referenceDocuments;
     }
 
 
@@ -215,16 +213,16 @@ public class CreateOrMergePatchReceivingEventDto extends AbstractReceivingEventC
         this.isPropertyTlcSourceOrTlcSourceReferenceRemoved = removed;
     }
 
-    private Boolean isPropertyReferenceDocumentRemoved;
+    private Boolean isPropertyReferenceDocumentsRemoved;
 
-    public Boolean getIsPropertyReferenceDocumentRemoved()
+    public Boolean getIsPropertyReferenceDocumentsRemoved()
     {
-        return this.isPropertyReferenceDocumentRemoved;
+        return this.isPropertyReferenceDocumentsRemoved;
     }
 
-    public void setIsPropertyReferenceDocumentRemoved(Boolean removed)
+    public void setIsPropertyReferenceDocumentsRemoved(Boolean removed)
     {
-        this.isPropertyReferenceDocumentRemoved = removed;
+        this.isPropertyReferenceDocumentsRemoved = removed;
     }
 
     public ReceivingEventCommand toCommand()
@@ -256,12 +254,12 @@ public class CreateOrMergePatchReceivingEventDto extends AbstractReceivingEventC
     protected ReceivingEventCommand.CreateReceivingEvent toCreateReceivingEvent() {
         return new ReceivingEventCommand.CreateReceivingEvent() {
             @Override
-            public Long getEventId() {
+            public String getEventId() {
                 return CreateOrMergePatchReceivingEventDto.this.getEventId();
             }
 
             @Override
-            public void setEventId(Long p) {
+            public void setEventId(String p) {
                 CreateOrMergePatchReceivingEventDto.this.setEventId(p);
             }
 
@@ -381,13 +379,13 @@ public class CreateOrMergePatchReceivingEventDto extends AbstractReceivingEventC
             }
 
             @Override
-            public KdeReferenceDocument getReferenceDocument() {
-                return CreateOrMergePatchReceivingEventDto.this.getReferenceDocument();
+            public KdeReferenceDocument[] getReferenceDocuments() {
+                return CreateOrMergePatchReceivingEventDto.this.getReferenceDocuments();
             }
 
             @Override
-            public void setReferenceDocument(KdeReferenceDocument p) {
-                CreateOrMergePatchReceivingEventDto.this.setReferenceDocument(p);
+            public void setReferenceDocuments(KdeReferenceDocument[] p) {
+                CreateOrMergePatchReceivingEventDto.this.setReferenceDocuments(p);
             }
 
 
@@ -397,12 +395,12 @@ public class CreateOrMergePatchReceivingEventDto extends AbstractReceivingEventC
     protected ReceivingEventCommand.MergePatchReceivingEvent toMergePatchReceivingEvent() {
         return new ReceivingEventCommand.MergePatchReceivingEvent() {
             @Override
-            public Long getEventId() {
+            public String getEventId() {
                 return CreateOrMergePatchReceivingEventDto.this.getEventId();
             }
 
             @Override
-            public void setEventId(Long p) {
+            public void setEventId(String p) {
                 CreateOrMergePatchReceivingEventDto.this.setEventId(p);
             }
 
@@ -522,13 +520,13 @@ public class CreateOrMergePatchReceivingEventDto extends AbstractReceivingEventC
             }
 
             @Override
-            public KdeReferenceDocument getReferenceDocument() {
-                return CreateOrMergePatchReceivingEventDto.this.getReferenceDocument();
+            public KdeReferenceDocument[] getReferenceDocuments() {
+                return CreateOrMergePatchReceivingEventDto.this.getReferenceDocuments();
             }
 
             @Override
-            public void setReferenceDocument(KdeReferenceDocument p) {
-                CreateOrMergePatchReceivingEventDto.this.setReferenceDocument(p);
+            public void setReferenceDocuments(KdeReferenceDocument[] p) {
+                CreateOrMergePatchReceivingEventDto.this.setReferenceDocuments(p);
             }
 
             @Override
@@ -602,13 +600,13 @@ public class CreateOrMergePatchReceivingEventDto extends AbstractReceivingEventC
             }
 
             @Override
-            public Boolean getIsPropertyReferenceDocumentRemoved() {
-                return CreateOrMergePatchReceivingEventDto.this.getIsPropertyReferenceDocumentRemoved();
+            public Boolean getIsPropertyReferenceDocumentsRemoved() {
+                return CreateOrMergePatchReceivingEventDto.this.getIsPropertyReferenceDocumentsRemoved();
             }
 
             @Override
-            public void setIsPropertyReferenceDocumentRemoved(Boolean removed) {
-                CreateOrMergePatchReceivingEventDto.this.setIsPropertyReferenceDocumentRemoved(removed);
+            public void setIsPropertyReferenceDocumentsRemoved(Boolean removed) {
+                CreateOrMergePatchReceivingEventDto.this.setIsPropertyReferenceDocumentsRemoved(removed);
             }
 
 

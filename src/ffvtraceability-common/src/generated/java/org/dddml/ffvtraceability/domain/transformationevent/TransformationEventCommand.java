@@ -13,9 +13,9 @@ import org.dddml.ffvtraceability.specialization.DomainError;
 
 public interface TransformationEventCommand extends Command {
 
-    Long getEventId();
+    String getEventId();
 
-    void setEventId(Long eventId);
+    void setEventId(String eventId);
 
     Long getVersion();
 
@@ -80,9 +80,9 @@ public interface TransformationEventCommand extends Command {
 
         void setDateTransformed(String dateTransformed);
 
-        KdeReferenceDocument getReferenceDocument();
+        KdeReferenceDocument[] getReferenceDocuments();
 
-        void setReferenceDocument(KdeReferenceDocument referenceDocument);
+        void setReferenceDocuments(KdeReferenceDocument[] referenceDocuments);
 
     }
 
@@ -122,9 +122,9 @@ public interface TransformationEventCommand extends Command {
 
         void setIsPropertyDateTransformedRemoved(Boolean removed);
 
-        Boolean getIsPropertyReferenceDocumentRemoved();
+        Boolean getIsPropertyReferenceDocumentsRemoved();
 
-        void setIsPropertyReferenceDocumentRemoved(Boolean removed);
+        void setIsPropertyReferenceDocumentsRemoved(Boolean removed);
 
 
     }

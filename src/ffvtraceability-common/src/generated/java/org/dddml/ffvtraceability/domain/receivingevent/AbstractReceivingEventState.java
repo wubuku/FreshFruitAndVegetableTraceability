@@ -13,13 +13,13 @@ import org.dddml.ffvtraceability.specialization.*;
 
 public abstract class AbstractReceivingEventState implements ReceivingEventState.SqlReceivingEventState {
 
-    private Long eventId;
+    private String eventId;
 
-    public Long getEventId() {
+    public String getEventId() {
         return this.eventId;
     }
 
-    public void setEventId(Long eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 
@@ -93,16 +93,6 @@ public abstract class AbstractReceivingEventState implements ReceivingEventState
         this.tlcSourceOrTlcSourceReference = tlcSourceOrTlcSourceReference;
     }
 
-    private KdeReferenceDocument referenceDocument;
-
-    public KdeReferenceDocument getReferenceDocument() {
-        return this.referenceDocument;
-    }
-
-    public void setReferenceDocument(KdeReferenceDocument referenceDocument) {
-        this.referenceDocument = referenceDocument;
-    }
-
     private Long version;
 
     public Long getVersion() {
@@ -151,6 +141,16 @@ public abstract class AbstractReceivingEventState implements ReceivingEventState
 
     public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    private Set<KdeReferenceDocument> referenceDocuments;
+
+    public Set<KdeReferenceDocument> getReferenceDocuments() {
+        return this.referenceDocuments;
+    }
+
+    public void setReferenceDocuments(Set<KdeReferenceDocument> referenceDocuments) {
+        this.referenceDocuments = referenceDocuments;
     }
 
     public boolean isStateUnsaved() {
@@ -222,7 +222,7 @@ public abstract class AbstractReceivingEventState implements ReceivingEventState
         this.setShipFromLocation(s.getShipFromLocation());
         this.setReceiveDate(s.getReceiveDate());
         this.setTlcSourceOrTlcSourceReference(s.getTlcSourceOrTlcSourceReference());
-        this.setReferenceDocument(s.getReferenceDocument());
+        this.setReferenceDocuments(s.getReferenceDocuments());
     }
 
     public void save() {

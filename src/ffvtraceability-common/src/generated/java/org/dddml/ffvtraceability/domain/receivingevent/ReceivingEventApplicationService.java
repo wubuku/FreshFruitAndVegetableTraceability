@@ -18,7 +18,7 @@ public interface ReceivingEventApplicationService {
 
     void when(ReceivingEventCommand.MergePatchReceivingEvent c);
 
-    ReceivingEventState get(Long id);
+    ReceivingEventState get(String id);
 
     Iterable<ReceivingEventState> getAll(Integer firstResult, Integer maxResults);
 

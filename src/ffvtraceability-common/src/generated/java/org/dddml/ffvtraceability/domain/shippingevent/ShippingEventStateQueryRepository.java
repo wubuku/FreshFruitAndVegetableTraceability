@@ -12,7 +12,7 @@ import org.dddml.ffvtraceability.domain.*;
 import java.time.OffsetDateTime;
 
 public interface ShippingEventStateQueryRepository {
-    ShippingEventState get(Long id);
+    ShippingEventState get(String id);
 
     Iterable<ShippingEventState> getAll(Integer firstResult, Integer maxResults);
     

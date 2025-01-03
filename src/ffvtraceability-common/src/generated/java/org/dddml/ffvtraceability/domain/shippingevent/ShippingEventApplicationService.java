@@ -14,11 +14,11 @@ import org.dddml.ffvtraceability.specialization.Event;
 import org.dddml.ffvtraceability.domain.Command;
 
 public interface ShippingEventApplicationService {
-    Long createWithoutId(ShippingEventCommand.CreateShippingEvent c);
+    void when(ShippingEventCommand.CreateShippingEvent c);
 
     void when(ShippingEventCommand.MergePatchShippingEvent c);
 
-    ShippingEventState get(Long id);
+    ShippingEventState get(String id);
 
     Iterable<ShippingEventState> getAll(Integer firstResult, Integer maxResults);
 

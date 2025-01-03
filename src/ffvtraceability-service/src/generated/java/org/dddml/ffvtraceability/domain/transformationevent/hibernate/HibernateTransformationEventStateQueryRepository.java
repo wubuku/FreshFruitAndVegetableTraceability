@@ -29,7 +29,7 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocument", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EventId", "FoodUsedTlc", "FoodUsedProductDescription", "FoodUsedQuantityAndUom", "FoodProducedNewTlc", "FoodProducedProductDescription", "FoodProducedQuantityAndUom", "TransformationLocation", "DateTransformed", "ReferenceDocuments", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -42,7 +42,7 @@ public class HibernateTransformationEventStateQueryRepository implements Transfo
     }
 
     @Transactional(readOnly = true)
-    public TransformationEventState get(Long id) {
+    public TransformationEventState get(String id) {
         TransformationEventState state = (TransformationEventState)getEntityManager().find(AbstractTransformationEventState.SimpleTransformationEventState.class, id);
         return state;
     }
