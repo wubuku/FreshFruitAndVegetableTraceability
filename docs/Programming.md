@@ -776,3 +776,74 @@ curl -X 'PUT' \
   -H 'accept: application/json' \
   -d '{"commandId":"UPDATE_BODY_21","requesterId":"REQUESTER_ID_11111","body":"new_world","version":0}'
 ```
+
+
+
+## Customize Query Repositories
+
+我们的链下服务（indexer）的大部分代码是自动生成的，但也有一些查询功能需要定制化开发。
+在编写这些查询功能相关的 Repository 时，我们打算使用 Java 的文本块特性来在注解中定义查询语句。
+为此我们将相关 POM 模块的 Maven Compiler Plugin 的 source 和 target 都设置为 15 或以上。
+
+### Maven Compiler Plugin 的 Source 和 Target 的含义
+
+##### source
+- 指定源代码的 Java 版本
+- 控制编译器接受的 Java 语言特性版本
+- 例如：设置为 11 时，可以使用 Java 11 的语法特性（如 `var` 关键字）
+
+##### target
+- 指定生成的字节码的版本
+- 控制编译后的 class 文件与 JVM 的兼容性
+- 例如：设置为 11 时，生成的字节码需要 Java 11 或更高版本的 JVM 才能运行
+
+#### 默认值规则
+
+1. **使用 Spring Boot 父 POM 时**
+   - Spring Boot 2.7.0：默认使用 Java 8（source=1.8, target=1.8）
+
+2. **未使用 Spring Boot 父 POM 时**
+   - Maven Compiler Plugin 3.1+：默认使用 Java 1.5
+   - Maven Compiler Plugin 3.9+：默认使用 Java 1.7
+
+#### 配置示例
+
+##### 在父 POM 中配置
+```xml
+<properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+</properties>
+```
+
+##### 在子模块中覆盖配置
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.2</version>
+            <configuration>
+                <source>11</source>
+                <target>11</target>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
+
+#### 查看当前配置
+
+可以使用以下 Maven 命令查看实际使用的编译器版本：
+```bash
+mvn help:evaluate -Dexpression=maven.compiler.target -q -DforceStdout
+```
+
+#### 最佳实践
+
+1. 建议显式配置 source 和 target，不要依赖默认值
+2. source 和 target 版本通常设置为相同值
+3. 确保设置的版本与项目的 JDK 版本兼容
+4. 在多模块项目中，推荐在父 POM 中统一配置，特殊需求的模块再单独覆盖
+
