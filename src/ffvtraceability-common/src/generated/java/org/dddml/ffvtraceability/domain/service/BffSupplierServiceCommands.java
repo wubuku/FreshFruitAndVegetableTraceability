@@ -142,6 +142,36 @@ public class BffSupplierServiceCommands {
 
     }
 
+    public static class UpdateBusinessContact extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Supplier Id
+         */
+        private String supplierId;
+
+        public String getSupplierId() {
+            return supplierId;
+        }
+
+        public void setSupplierId(String supplierId) {
+            this.supplierId = supplierId;
+        }
+
+        /**
+         * Business Contact
+         */
+        private BffBusinessContactDto businessContact;
+
+        public BffBusinessContactDto getBusinessContact() {
+            return businessContact;
+        }
+
+        public void setBusinessContact(BffBusinessContactDto businessContact) {
+            this.businessContact = businessContact;
+        }
+
+    }
+
 
 }
 

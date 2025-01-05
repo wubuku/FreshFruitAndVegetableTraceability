@@ -92,3 +92,16 @@ services:
           Active:
             # 禁用传入 false；激活传入 true。
             type: boolean
+
+
+      UpdateBusinessContact:
+        httpMethod: PUT
+        restfulResourceName: "{SupplierId}/BusinessContact"
+        metadata:
+          RestfulPathVariable: SupplierId
+          HttpRequestBody: BusinessContact
+        parameters:
+          SupplierId:
+            type: id
+          BusinessContact:
+            type: BffBusinessContactDto

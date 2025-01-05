@@ -210,4 +210,9 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         mergePatchParty.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         partyApplicationService.when(mergePatchParty);
     }
+
+    @Override
+    public void when(BffSupplierServiceCommands.UpdateBusinessContact c) {
+        //todo
+    }
 }

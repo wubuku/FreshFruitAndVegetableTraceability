@@ -1,0 +1,21 @@
+valueObjects:
+  BffBusinessContactDto:
+    metadata:
+      JpaProjectionInterfaceName: BffBusinessContactProjection
+      JakartaValidationEnabled: true
+    properties:
+      BusinessName:
+        type: name
+      PhoneNumber:
+        type: short-varchar
+      PhysicalLocationAddress:
+        type: long-varchar
+      City:
+        type: name
+      State:
+        type: name
+      ZipCode:
+        type: short-varchar
+
+
+

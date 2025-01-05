@@ -20,6 +20,8 @@ public interface BffSupplierApplicationService {
 
     void when(BffSupplierServiceCommands.ActivateSupplier c);
 
+    void when(BffSupplierServiceCommands.UpdateBusinessContact c);
+
 
 }
 

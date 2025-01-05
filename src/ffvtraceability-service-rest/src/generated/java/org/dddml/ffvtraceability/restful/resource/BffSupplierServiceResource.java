@@ -99,5 +99,19 @@ public class BffSupplierServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PutMapping("{supplierId}/BusinessContact")
+    public void updateBusinessContact(
+        @PathVariable("supplierId") String supplierId,
+        @RequestBody @Valid BffBusinessContactDto businessContact
+    ) {
+        BffSupplierServiceCommands.UpdateBusinessContact updateBusinessContact = new BffSupplierServiceCommands.UpdateBusinessContact();
+        updateBusinessContact.setSupplierId(supplierId);
+        updateBusinessContact.setBusinessContact(businessContact);
+        try {
+        updateBusinessContact.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffSupplierApplicationService.when(updateBusinessContact);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 }
 
