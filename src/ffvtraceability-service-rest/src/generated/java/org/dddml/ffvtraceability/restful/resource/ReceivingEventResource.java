@@ -170,69 +170,6 @@ public class ReceivingEventResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-
-    /**
-     * Create.
-     * Create ReceivingEvent
-     */
-    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody CreateOrMergePatchReceivingEventDto.CreateReceivingEventDto value,  HttpServletResponse response) {
-        try {
-            ReceivingEventCommand.CreateReceivingEvent cmd = value;//.toCreateReceivingEvent();
-            if (cmd.getEventId() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ReceivingEvent");
-            }
-            String idObj = cmd.getEventId();
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            receivingEventApplicationService.when(cmd);
-
-            return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * Create or update.
-     * Create or update ReceivingEvent
-     */
-    @PutMapping("{eventId}")
-    public void put(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchReceivingEventDto value) {
-        try {
-            if (value.getVersion() != null) {
-                value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
-                ReceivingEventCommand.MergePatchReceivingEvent cmd = (ReceivingEventCommand.MergePatchReceivingEvent) value.toSubclass();
-                ReceivingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-                cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-                receivingEventApplicationService.when(cmd);
-                return;
-            }
-
-            value.setCommandType(Command.COMMAND_TYPE_CREATE);
-            ReceivingEventCommand.CreateReceivingEvent cmd = (ReceivingEventCommand.CreateReceivingEvent) value.toSubclass();
-            ReceivingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            receivingEventApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * Patch.
-     * Patch ReceivingEvent
-     */
-    @PatchMapping("{eventId}")
-    public void patch(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchReceivingEventDto.MergePatchReceivingEventDto value) {
-        try {
-
-            ReceivingEventCommand.MergePatchReceivingEvent cmd = value;//.toMergePatchReceivingEvent();
-            ReceivingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            receivingEventApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

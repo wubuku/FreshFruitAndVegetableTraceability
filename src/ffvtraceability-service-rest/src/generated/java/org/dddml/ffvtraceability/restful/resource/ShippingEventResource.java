@@ -170,69 +170,6 @@ public class ShippingEventResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-
-    /**
-     * Create.
-     * Create ShippingEvent
-     */
-    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody CreateOrMergePatchShippingEventDto.CreateShippingEventDto value,  HttpServletResponse response) {
-        try {
-            ShippingEventCommand.CreateShippingEvent cmd = value;//.toCreateShippingEvent();
-            if (cmd.getEventId() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ShippingEvent");
-            }
-            String idObj = cmd.getEventId();
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            shippingEventApplicationService.when(cmd);
-
-            return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * Create or update.
-     * Create or update ShippingEvent
-     */
-    @PutMapping("{eventId}")
-    public void put(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchShippingEventDto value) {
-        try {
-            if (value.getVersion() != null) {
-                value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
-                ShippingEventCommand.MergePatchShippingEvent cmd = (ShippingEventCommand.MergePatchShippingEvent) value.toSubclass();
-                ShippingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-                cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-                shippingEventApplicationService.when(cmd);
-                return;
-            }
-
-            value.setCommandType(Command.COMMAND_TYPE_CREATE);
-            ShippingEventCommand.CreateShippingEvent cmd = (ShippingEventCommand.CreateShippingEvent) value.toSubclass();
-            ShippingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            shippingEventApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * Patch.
-     * Patch ShippingEvent
-     */
-    @PatchMapping("{eventId}")
-    public void patch(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchShippingEventDto.MergePatchShippingEventDto value) {
-        try {
-
-            ShippingEventCommand.MergePatchShippingEvent cmd = value;//.toMergePatchShippingEvent();
-            ShippingEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            shippingEventApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

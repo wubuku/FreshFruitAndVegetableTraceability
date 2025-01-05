@@ -57,6 +57,11 @@ aggregates:
           - tlc_source_reference_fda_ffrn
           - tlc_source_reference_gln
           - tlc_source_reference_ggn
+    methods:
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
 
 
   ReceivingEvent:
@@ -102,6 +107,11 @@ aggregates:
           - tlc_source_reference_fda_ffrn
           - tlc_source_reference_gln
           - tlc_source_reference_ggn
+    methods:
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
 
 
   TransformationEvent:
@@ -154,4 +164,11 @@ aggregates:
       DateTransformed:
         type: KdeDate
         description: "Date Transformed"
+    methods:
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
+
+
 

@@ -170,69 +170,6 @@ public class TransformationEventResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-
-    /**
-     * Create.
-     * Create TransformationEvent
-     */
-    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody CreateOrMergePatchTransformationEventDto.CreateTransformationEventDto value,  HttpServletResponse response) {
-        try {
-            TransformationEventCommand.CreateTransformationEvent cmd = value;//.toCreateTransformationEvent();
-            if (cmd.getEventId() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "TransformationEvent");
-            }
-            String idObj = cmd.getEventId();
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            transformationEventApplicationService.when(cmd);
-
-            return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * Create or update.
-     * Create or update TransformationEvent
-     */
-    @PutMapping("{eventId}")
-    public void put(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchTransformationEventDto value) {
-        try {
-            if (value.getVersion() != null) {
-                value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
-                TransformationEventCommand.MergePatchTransformationEvent cmd = (TransformationEventCommand.MergePatchTransformationEvent) value.toSubclass();
-                TransformationEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-                cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-                transformationEventApplicationService.when(cmd);
-                return;
-            }
-
-            value.setCommandType(Command.COMMAND_TYPE_CREATE);
-            TransformationEventCommand.CreateTransformationEvent cmd = (TransformationEventCommand.CreateTransformationEvent) value.toSubclass();
-            TransformationEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            transformationEventApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * Patch.
-     * Patch TransformationEvent
-     */
-    @PatchMapping("{eventId}")
-    public void patch(@PathVariable("eventId") String eventId, @RequestBody CreateOrMergePatchTransformationEventDto.MergePatchTransformationEventDto value) {
-        try {
-
-            TransformationEventCommand.MergePatchTransformationEvent cmd = value;//.toMergePatchTransformationEvent();
-            TransformationEventResourceUtils.setNullIdOrThrowOnInconsistentIds(eventId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            transformationEventApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {
