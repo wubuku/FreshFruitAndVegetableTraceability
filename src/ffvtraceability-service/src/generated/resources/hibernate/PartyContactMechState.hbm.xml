@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.partycontactmech">
+  <class name="org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechState$SimplePartyContactMechState" table="party_contact_mech">
+    <composite-id name="partyContactMechId" class="org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId">
+      <key-property name="partyContactMechBaseIdPartyId">
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyContactMechBaseIdContactMechId">
+        <column name="CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="fromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <set name="protectedPartyContactMechPurposes" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="PARTY_ID" />
+        <column name="CONTACT_MECH_ID" />
+        <column name="FROM_DATE" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechPurposeState$SimplePartyContactMechPurposeState" />
+    </set>
+    <many-to-one name="protectedPartyContactMechBaseState" class="org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechBaseState$SimplePartyContactMechBaseState" insert="false" update="false">
+      <column name="PARTY_ID" />
+      <column name="CONTACT_MECH_ID" />
+    </many-to-one>
+    <property name="thruDate">
+      <column name="THRU_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="roleTypeId">
+      <column name="role_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="allowSolicitation">
+      <column name="ALLOW_SOLICITATION" sql-type="CHAR(1)" />
+    </property>
+    <property name="extension">
+      <column name="EXTENSION" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="verified">
+      <column name="VERIFIED" sql-type="CHAR(1)" />
+    </property>
+    <property name="comments">
+      <column name="comments" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="yearsWithContactMech">
+      <column name="YEARS_WITH_CONTACT_MECH" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="monthsWithContactMech">
+      <column name="MONTHS_WITH_CONTACT_MECH" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

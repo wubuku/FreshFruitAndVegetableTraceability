@@ -214,5 +214,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Override
     public void when(BffSupplierServiceCommands.UpdateBusinessContact c) {
         //todo
+
     }
 }

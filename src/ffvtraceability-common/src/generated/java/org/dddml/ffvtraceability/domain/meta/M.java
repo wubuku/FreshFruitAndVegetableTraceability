@@ -93,6 +93,9 @@ public class M {
         typeToAggMap.put("ContactMech", "ContactMech");
         typeToAggMap.put("PostalAddress", "ContactMech");
         typeToAggMap.put("TelecomNumber", "ContactMech");
+        typeToAggMap.put("PartyContactMechBase", "PartyContactMech");
+        typeToAggMap.put("PartyContactMech", "PartyContactMech");
+        typeToAggMap.put("PartyContactMechPurpose", "PartyContactMech");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -6598,6 +6601,351 @@ public class M {
         aliasMap.put("__Active__", "__Active__");
         aliasMap.put("__Deleted__", "__Deleted__");
         aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class PartyContactMechBaseMetadata {
+
+    private PartyContactMechBaseMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String URL_ID_FIELD_SEPARATOR = ",";
+
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechBaseId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechBaseId>(org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechBaseId.class, URL_ID_FIELD_SEPARATOR) {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    };
+
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechBaseId.class;
+
+    public static final String[] propertyNames = new String[] {
+            "activeFromDate",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "partyContactMechBaseId.partyId",
+            "partyContactMechBaseId.contactMechId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "OffsetDateTime",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("activeFromDate", "activeFromDate");
+        aliasMap.put("ActiveFromDate", "activeFromDate");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("partyContactMechBaseId.partyId", "partyContactMechBaseId.partyId");
+        aliasMap.put("PartyContactMechBaseId.PartyId", "partyContactMechBaseId.partyId");
+        aliasMap.put("partyContactMechBaseId.contactMechId", "partyContactMechBaseId.contactMechId");
+        aliasMap.put("PartyContactMechBaseId.ContactMechId", "partyContactMechBaseId.contactMechId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class PartyContactMechMetadata {
+
+    private PartyContactMechMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "fromDate",
+            "thruDate",
+            "roleTypeId",
+            "allowSolicitation",
+            "extension",
+            "verified",
+            "comments",
+            "yearsWithContactMech",
+            "monthsWithContactMech",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "partyContactMechId.partyContactMechBaseIdPartyId",
+            "partyContactMechId.partyContactMechBaseIdContactMechId",
+            "partyContactMechId.fromDate",
+            "partyContactMechBaseId.partyId",
+            "partyContactMechBaseId.contactMechId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "OffsetDateTime",
+            "OffsetDateTime",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "Long",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("fromDate", "partyContactMechId.fromDate");
+        aliasMap.put("FromDate", "partyContactMechId.fromDate");
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("roleTypeId", "roleTypeId");
+        aliasMap.put("RoleTypeId", "roleTypeId");
+        aliasMap.put("allowSolicitation", "allowSolicitation");
+        aliasMap.put("AllowSolicitation", "allowSolicitation");
+        aliasMap.put("extension", "extension");
+        aliasMap.put("Extension", "extension");
+        aliasMap.put("verified", "verified");
+        aliasMap.put("Verified", "verified");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("yearsWithContactMech", "yearsWithContactMech");
+        aliasMap.put("YearsWithContactMech", "yearsWithContactMech");
+        aliasMap.put("monthsWithContactMech", "monthsWithContactMech");
+        aliasMap.put("MonthsWithContactMech", "monthsWithContactMech");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("partyContactMechId.partyContactMechBaseIdPartyId", "partyContactMechId.partyContactMechBaseIdPartyId");
+        aliasMap.put("PartyContactMechId.PartyContactMechBaseIdPartyId", "partyContactMechId.partyContactMechBaseIdPartyId");
+        aliasMap.put("partyContactMechId.partyContactMechBaseId.partyId", "partyContactMechId.partyContactMechBaseIdPartyId");
+        aliasMap.put("PartyContactMechId.PartyContactMechBaseId.PartyId", "partyContactMechId.partyContactMechBaseIdPartyId");
+        aliasMap.put("partyContactMechId.partyContactMechBaseIdContactMechId", "partyContactMechId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("PartyContactMechId.PartyContactMechBaseIdContactMechId", "partyContactMechId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("partyContactMechId.partyContactMechBaseId.contactMechId", "partyContactMechId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("PartyContactMechId.PartyContactMechBaseId.ContactMechId", "partyContactMechId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("partyContactMechId.fromDate", "partyContactMechId.fromDate");
+        aliasMap.put("PartyContactMechId.FromDate", "partyContactMechId.fromDate");
+        aliasMap.put("partyContactMechBaseId.partyId", "partyContactMechId.partyContactMechBaseIdPartyId");
+        aliasMap.put("PartyContactMechBaseId.PartyId", "partyContactMechId.partyContactMechBaseIdPartyId");
+        aliasMap.put("partyContactMechBaseId.partyId", "partyContactMechId.partyContactMechBaseIdPartyId");
+        aliasMap.put("PartyContactMechBaseId.PartyId", "partyContactMechId.partyContactMechBaseIdPartyId");
+        aliasMap.put("partyContactMechBaseId.contactMechId", "partyContactMechId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("PartyContactMechBaseId.ContactMechId", "partyContactMechId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("partyContactMechBaseId.contactMechId", "partyContactMechId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("PartyContactMechBaseId.ContactMechId", "partyContactMechId.partyContactMechBaseIdContactMechId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class PartyContactMechPurposeMetadata {
+
+    private PartyContactMechPurposeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "contactMechPurposeTypeId",
+            "thruDate",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "partyContactMechFromDate",
+            "partyContactMechPurposeId.partyContactMechBaseIdPartyId",
+            "partyContactMechPurposeId.partyContactMechBaseIdContactMechId",
+            "partyContactMechPurposeId.partyContactMechFromDate",
+            "partyContactMechPurposeId.contactMechPurposeTypeId",
+            "partyContactMechBaseId.partyId",
+            "partyContactMechBaseId.contactMechId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "OffsetDateTime",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "OffsetDateTime",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "String",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("contactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("ContactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("partyContactMechFromDate", "partyContactMechPurposeId.partyContactMechFromDate");
+        aliasMap.put("PartyContactMechFromDate", "partyContactMechPurposeId.partyContactMechFromDate");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechBaseIdPartyId", "partyContactMechPurposeId.partyContactMechBaseIdPartyId");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechBaseIdPartyId", "partyContactMechPurposeId.partyContactMechBaseIdPartyId");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechBaseId.partyId", "partyContactMechPurposeId.partyContactMechBaseIdPartyId");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechBaseId.PartyId", "partyContactMechPurposeId.partyContactMechBaseIdPartyId");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechBaseIdContactMechId", "partyContactMechPurposeId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechBaseIdContactMechId", "partyContactMechPurposeId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechBaseId.contactMechId", "partyContactMechPurposeId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechBaseId.ContactMechId", "partyContactMechPurposeId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechFromDate", "partyContactMechPurposeId.partyContactMechFromDate");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechFromDate", "partyContactMechPurposeId.partyContactMechFromDate");
+        aliasMap.put("partyContactMechPurposeId.contactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("PartyContactMechPurposeId.ContactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("partyContactMechBaseId.partyId", "partyContactMechPurposeId.partyContactMechBaseIdPartyId");
+        aliasMap.put("PartyContactMechBaseId.PartyId", "partyContactMechPurposeId.partyContactMechBaseIdPartyId");
+        aliasMap.put("partyContactMechBaseId.partyId", "partyContactMechPurposeId.partyContactMechBaseIdPartyId");
+        aliasMap.put("PartyContactMechBaseId.PartyId", "partyContactMechPurposeId.partyContactMechBaseIdPartyId");
+        aliasMap.put("partyContactMechBaseId.contactMechId", "partyContactMechPurposeId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("PartyContactMechBaseId.ContactMechId", "partyContactMechPurposeId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("partyContactMechBaseId.contactMechId", "partyContactMechPurposeId.partyContactMechBaseIdContactMechId");
+        aliasMap.put("PartyContactMechBaseId.ContactMechId", "partyContactMechPurposeId.partyContactMechBaseIdContactMechId");
     }
 
     private static void initPropertyTypeMap() {

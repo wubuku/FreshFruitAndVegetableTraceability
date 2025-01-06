@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.partycontactmech">
+  <class name="AbstractPartyContactMechPurposeEvent" table="party_contact_mech_purpose_event" abstract="true">
+    <composite-id name="partyContactMechPurposeEventId" class="org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechPurposeEventId">
+      <key-property name="partyContactMechBaseIdPartyId">
+        <column name="PARTY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyContactMechBaseIdContactMechId">
+        <column name="CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyContactMechFromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+      <key-property name="contactMechPurposeTypeId">
+        <column name="CONTACT_MECH_PURPOSE_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="partyContactMechBaseVersion">
+        <column name="party_contact_mech_base_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractPartyContactMechPurposeEvent$AbstractPartyContactMechPurposeStateEvent" abstract="true">
+      <property name="thruDate">
+        <column name="THRU_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractPartyContactMechPurposeEvent$SimplePartyContactMechPurposeStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractPartyContactMechPurposeEvent$SimplePartyContactMechPurposeStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyThruDateRemoved" column="is_property_thru_date_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>
