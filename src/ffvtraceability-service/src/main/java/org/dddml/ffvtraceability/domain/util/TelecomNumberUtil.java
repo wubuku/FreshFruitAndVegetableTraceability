@@ -255,6 +255,7 @@ public class TelecomNumberUtil {
             this.contactNumber = contactNumber;
         }
 
+
         public String getCountryCode() {
             return countryCode;
         }
@@ -278,25 +279,26 @@ public class TelecomNumberUtil {
             StringBuilder sb = new StringBuilder();
 
             // 添加国家代码（如果存在）
-            if (countryCode != null && !countryCode.isEmpty()) {
-                sb.append("+").append(countryCode).append(" ");
+            if (getCountryCode() != null && !getCountryCode().isEmpty()) {
+                sb.append("+").append(getCountryCode()).append(" ");
             }
 
             // 添加区号（如果存在）
-            if (areaCode != null && !areaCode.isEmpty()) {
-                sb.append(areaCode);
+            if (getAreaCode() != null && !getAreaCode().isEmpty()) {
+                sb.append(getAreaCode());
                 // 只有在后面还有号码的情况下才添加空格
-                if (contactNumber != null && !contactNumber.isEmpty()) {
+                if (getContactNumber() != null && !getContactNumber().isEmpty()) {
                     sb.append(" ");
                 }
             }
 
             // 添加电话号码（如果存在）
-            if (contactNumber != null && !contactNumber.isEmpty()) {
-                sb.append(contactNumber);
+            if (getContactNumber() != null && !getContactNumber().isEmpty()) {
+                sb.append(getContactNumber());
             }
 
             return sb.toString().trim();
         }
+
     }
 }
