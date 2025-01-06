@@ -284,12 +284,7 @@ public class PartyContactMechBaseResource {
     public PartyContactMechStateDto getPartyContactMech(@PathVariable("partyContactMechBaseId") String partyContactMechBaseId, @PathVariable("fromDate") OffsetDateTime fromDate) {
         try {
 
-            PartyContactMechState state = partyContactMechApplicationService.getPartyContactMech((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)), fromDate);
+            PartyContactMechState state = partyContactMechApplicationService.getPartyContactMech(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class), fromDate);
             if (state == null) { return null; }
             PartyContactMechStateDto.DtoConverter dtoConverter = new PartyContactMechStateDto.DtoConverter();
             PartyContactMechStateDto stateDto = dtoConverter.toPartyContactMechStateDto(state);
@@ -311,19 +306,14 @@ public class PartyContactMechBaseResource {
                        @RequestBody CreateOrMergePatchPartyContactMechDto.MergePatchPartyContactMechDto body) {
         try {
             PartyContactMechBaseCommand.MergePatchPartyContactMechBase mergePatchPartyContactMechBase = new CreateOrMergePatchPartyContactMechBaseDto.MergePatchPartyContactMechBaseDto();
-            mergePatchPartyContactMechBase.setPartyContactMechBaseId((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)));
+            mergePatchPartyContactMechBase.setPartyContactMechBaseId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class));
             mergePatchPartyContactMechBase.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { mergePatchPartyContactMechBase.setVersion(version); }
             mergePatchPartyContactMechBase.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             PartyContactMechCommand.MergePatchPartyContactMech mergePatchPartyContactMech = body;//.toMergePatchPartyContactMech();
             mergePatchPartyContactMech.setFromDate(fromDate);
             mergePatchPartyContactMechBase.getPartyContactMechCommands().add(mergePatchPartyContactMech);
-            mergePatchPartyContactMech.setRequesterId(SecurityContextUtil.getRequesterId());
+            mergePatchPartyContactMechBase.setRequesterId(SecurityContextUtil.getRequesterId());
             partyContactMechApplicationService.when(mergePatchPartyContactMechBase);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
@@ -339,22 +329,12 @@ public class PartyContactMechBaseResource {
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
         try {
             PartyContactMechBaseCommand.MergePatchPartyContactMechBase mergePatchPartyContactMechBase = new CreateOrMergePatchPartyContactMechBaseDto.MergePatchPartyContactMechBaseDto();
-            mergePatchPartyContactMechBase.setPartyContactMechBaseId((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)));
+            mergePatchPartyContactMechBase.setPartyContactMechBaseId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class));
             mergePatchPartyContactMechBase.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { 
                 mergePatchPartyContactMechBase.setVersion(version); 
             } else {
-                mergePatchPartyContactMechBase.setVersion(partyContactMechApplicationService.get((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId))).getVersion());
+                mergePatchPartyContactMechBase.setVersion(partyContactMechApplicationService.get(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class)).getVersion());
             }
             mergePatchPartyContactMechBase.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             PartyContactMechCommand.RemovePartyContactMech removePartyContactMech = new RemovePartyContactMechDto();
@@ -386,12 +366,7 @@ public class PartyContactMechBaseResource {
             }
             Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
                 n -> (PartyContactMechMetadata.aliasMap.containsKey(n) ? PartyContactMechMetadata.aliasMap.get(n) : n));
-            Iterable<PartyContactMechState> states = partyContactMechApplicationService.getPartyContactMeches((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)), c,
+            Iterable<PartyContactMechState> states = partyContactMechApplicationService.getPartyContactMeches(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class), c,
                     PartyContactMechBaseResourceUtils.getPartyContactMechQuerySorts(request.getParameterMap()));
             if (states == null) { return null; }
             PartyContactMechStateDto.DtoConverter dtoConverter = new PartyContactMechStateDto.DtoConverter();
@@ -409,26 +384,21 @@ public class PartyContactMechBaseResource {
      * Create PartyContactMech
      */
     @PostMapping(path = "{partyContactMechBaseId}/PartyContactMeches", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postPartyContactMeches(@PathVariable("partyContactMechBaseId") String partyContactMechBaseId,
+    public void postPartyContactMech(@PathVariable("partyContactMechBaseId") String partyContactMechBaseId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchPartyContactMechDto.CreatePartyContactMechDto body) {
         try {
-            PartyContactMechBaseCommand.MergePatchPartyContactMechBase mergePatchPartyContactMech = new AbstractPartyContactMechBaseCommand.SimpleMergePatchPartyContactMechBase();
-            mergePatchPartyContactMech.setPartyContactMechBaseId((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)));
-            mergePatchPartyContactMech.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
-            if (version != null) { mergePatchPartyContactMech.setVersion(version); }
-            mergePatchPartyContactMech.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
+            PartyContactMechBaseCommand.MergePatchPartyContactMechBase mergePatchPartyContactMechBase = new AbstractPartyContactMechBaseCommand.SimpleMergePatchPartyContactMechBase();
+            mergePatchPartyContactMechBase.setPartyContactMechBaseId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class));
+            mergePatchPartyContactMechBase.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
+            if (version != null) { mergePatchPartyContactMechBase.setVersion(version); }
+            mergePatchPartyContactMechBase.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             PartyContactMechCommand.CreatePartyContactMech createPartyContactMech = body.toCreatePartyContactMech();
-            mergePatchPartyContactMech.getPartyContactMechCommands().add(createPartyContactMech);
-            mergePatchPartyContactMech.setRequesterId(SecurityContextUtil.getRequesterId());
-            partyContactMechApplicationService.when(mergePatchPartyContactMech);
+            mergePatchPartyContactMechBase.getPartyContactMechCommands().add(createPartyContactMech);
+            mergePatchPartyContactMechBase.setRequesterId(SecurityContextUtil.getRequesterId());
+            partyContactMechApplicationService.when(mergePatchPartyContactMechBase);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
@@ -441,12 +411,7 @@ public class PartyContactMechBaseResource {
     public PartyContactMechPurposeStateDto getPartyContactMechPurpose(@PathVariable("partyContactMechBaseId") String partyContactMechBaseId, @PathVariable("partyContactMechFromDate") OffsetDateTime partyContactMechFromDate, @PathVariable("contactMechPurposeTypeId") String contactMechPurposeTypeId) {
         try {
 
-            PartyContactMechPurposeState state = partyContactMechApplicationService.getPartyContactMechPurpose((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)), partyContactMechFromDate, contactMechPurposeTypeId);
+            PartyContactMechPurposeState state = partyContactMechApplicationService.getPartyContactMechPurpose(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class), partyContactMechFromDate, contactMechPurposeTypeId);
             if (state == null) { return null; }
             PartyContactMechPurposeStateDto.DtoConverter dtoConverter = new PartyContactMechPurposeStateDto.DtoConverter();
             PartyContactMechPurposeStateDto stateDto = dtoConverter.toPartyContactMechPurposeStateDto(state);
@@ -468,12 +433,7 @@ public class PartyContactMechBaseResource {
                        @RequestBody CreateOrMergePatchPartyContactMechPurposeDto.MergePatchPartyContactMechPurposeDto body) {
         try {
             PartyContactMechBaseCommand.MergePatchPartyContactMechBase mergePatchPartyContactMechBase = new CreateOrMergePatchPartyContactMechBaseDto.MergePatchPartyContactMechBaseDto();
-            mergePatchPartyContactMechBase.setPartyContactMechBaseId((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)));
+            mergePatchPartyContactMechBase.setPartyContactMechBaseId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class));
             mergePatchPartyContactMechBase.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { mergePatchPartyContactMechBase.setVersion(version); }
             mergePatchPartyContactMechBase.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
@@ -483,7 +443,7 @@ public class PartyContactMechBaseResource {
             PartyContactMechPurposeCommand.MergePatchPartyContactMechPurpose mergePatchPartyContactMechPurpose = body;//.toMergePatchPartyContactMechPurpose();
             mergePatchPartyContactMechPurpose.setContactMechPurposeTypeId(contactMechPurposeTypeId);
             mergePatchPartyContactMech.getPartyContactMechPurposeCommands().add(mergePatchPartyContactMechPurpose);
-            mergePatchPartyContactMech.setRequesterId(SecurityContextUtil.getRequesterId());
+            mergePatchPartyContactMechBase.setRequesterId(SecurityContextUtil.getRequesterId());
             partyContactMechApplicationService.when(mergePatchPartyContactMechBase);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
@@ -499,22 +459,12 @@ public class PartyContactMechBaseResource {
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
         try {
             PartyContactMechBaseCommand.MergePatchPartyContactMechBase mergePatchPartyContactMechBase = new CreateOrMergePatchPartyContactMechBaseDto.MergePatchPartyContactMechBaseDto();
-            mergePatchPartyContactMechBase.setPartyContactMechBaseId((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)));
+            mergePatchPartyContactMechBase.setPartyContactMechBaseId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class));
             mergePatchPartyContactMechBase.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { 
                 mergePatchPartyContactMechBase.setVersion(version); 
             } else {
-                mergePatchPartyContactMechBase.setVersion(partyContactMechApplicationService.get((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId))).getVersion());
+                mergePatchPartyContactMechBase.setVersion(partyContactMechApplicationService.get(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class)).getVersion());
             }
             mergePatchPartyContactMechBase.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             PartyContactMechCommand.MergePatchPartyContactMech mergePatchPartyContactMech = new CreateOrMergePatchPartyContactMechDto.MergePatchPartyContactMechDto();
@@ -549,12 +499,7 @@ public class PartyContactMechBaseResource {
             }
             Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
                 n -> (PartyContactMechPurposeMetadata.aliasMap.containsKey(n) ? PartyContactMechPurposeMetadata.aliasMap.get(n) : n));
-            Iterable<PartyContactMechPurposeState> states = partyContactMechApplicationService.getPartyContactMechPurposes((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)), partyContactMechFromDate, c,
+            Iterable<PartyContactMechPurposeState> states = partyContactMechApplicationService.getPartyContactMechPurposes(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class), partyContactMechFromDate, c,
                     PartyContactMechBaseResourceUtils.getPartyContactMechPurposeQuerySorts(request.getParameterMap()));
             if (states == null) { return null; }
             PartyContactMechPurposeStateDto.DtoConverter dtoConverter = new PartyContactMechPurposeStateDto.DtoConverter();
@@ -572,19 +517,14 @@ public class PartyContactMechBaseResource {
      * Create PartyContactMechPurpose
      */
     @PostMapping(path = "{partyContactMechBaseId}/PartyContactMeches/{partyContactMechFromDate}/PartyContactMechPurposes", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postPartyContactMechPurposes(@PathVariable("partyContactMechBaseId") String partyContactMechBaseId, @PathVariable("partyContactMechFromDate") OffsetDateTime partyContactMechFromDate,
+    public void postPartyContactMechPurpose(@PathVariable("partyContactMechBaseId") String partyContactMechBaseId, @PathVariable("partyContactMechFromDate") OffsetDateTime partyContactMechFromDate,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchPartyContactMechPurposeDto.CreatePartyContactMechPurposeDto body) {
         try {
             PartyContactMechBaseCommand.MergePatchPartyContactMechBase mergePatchPartyContactMechBase = new AbstractPartyContactMechBaseCommand.SimpleMergePatchPartyContactMechBase();
-            mergePatchPartyContactMechBase.setPartyContactMechBaseId((new AbstractValueObjectTextFormatter<PartyContactMechBaseId>(PartyContactMechBaseId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyContactMechBaseId)));
+            mergePatchPartyContactMechBase.setPartyContactMechBaseId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyContactMechBaseId, PartyContactMechBaseId.class));
             mergePatchPartyContactMechBase.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { mergePatchPartyContactMechBase.setVersion(version); }
             mergePatchPartyContactMechBase.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
@@ -593,7 +533,7 @@ public class PartyContactMechBaseResource {
             mergePatchPartyContactMechBase.getPartyContactMechCommands().add(mergePatchPartyContactMech);
             PartyContactMechPurposeCommand.CreatePartyContactMechPurpose createPartyContactMechPurpose = body.toCreatePartyContactMechPurpose();
             mergePatchPartyContactMech.getPartyContactMechPurposeCommands().add(createPartyContactMechPurpose);
-            mergePatchPartyContactMech.setRequesterId(SecurityContextUtil.getRequesterId());
+            mergePatchPartyContactMechBase.setRequesterId(SecurityContextUtil.getRequesterId());
             partyContactMechApplicationService.when(mergePatchPartyContactMechBase);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }

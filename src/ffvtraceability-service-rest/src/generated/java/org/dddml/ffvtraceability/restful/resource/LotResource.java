@@ -384,7 +384,7 @@ public class LotResource {
      * Create LotIdentification
      */
     @PostMapping(path = "{lotId}/LotIdentifications", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postLotIdentifications(@PathVariable("lotId") String lotId,
+    public void postLotIdentification(@PathVariable("lotId") String lotId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,

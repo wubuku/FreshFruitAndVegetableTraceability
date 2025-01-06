@@ -384,7 +384,7 @@ public class ShipmentResource {
      * Create ShipmentItem
      */
     @PostMapping(path = "{shipmentId}/ShipmentItems", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postShipmentItems(@PathVariable("shipmentId") String shipmentId,
+    public void postShipmentItem(@PathVariable("shipmentId") String shipmentId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
@@ -511,7 +511,7 @@ public class ShipmentResource {
      * Create ShipmentPackage
      */
     @PostMapping(path = "{shipmentId}/ShipmentPackages", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postShipmentPackages(@PathVariable("shipmentId") String shipmentId,
+    public void postShipmentPackage(@PathVariable("shipmentId") String shipmentId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
@@ -644,7 +644,7 @@ public class ShipmentResource {
      * Create ShipmentPackageContent
      */
     @PostMapping(path = "{shipmentId}/ShipmentPackages/{shipmentPackageSeqId}/ShipmentPackageContents", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postShipmentPackageContents(@PathVariable("shipmentId") String shipmentId, @PathVariable("shipmentPackageSeqId") String shipmentPackageSeqId,
+    public void postShipmentPackageContent(@PathVariable("shipmentId") String shipmentId, @PathVariable("shipmentPackageSeqId") String shipmentPackageSeqId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,

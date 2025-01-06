@@ -384,7 +384,7 @@ public class FacilityResource {
      * Create FacilityIdentification
      */
     @PostMapping(path = "{facilityId}/FacilityIdentifications", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postFacilityIdentifications(@PathVariable("facilityId") String facilityId,
+    public void postFacilityIdentification(@PathVariable("facilityId") String facilityId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,

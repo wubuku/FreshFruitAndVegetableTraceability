@@ -384,7 +384,7 @@ public class ProductResource {
      * Create GoodIdentification
      */
     @PostMapping(path = "{productId}/GoodIdentifications", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postGoodIdentifications(@PathVariable("productId") String productId,
+    public void postGoodIdentification(@PathVariable("productId") String productId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,

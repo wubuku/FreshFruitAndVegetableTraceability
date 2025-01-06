@@ -308,12 +308,7 @@ public class ShipmentReceiptResource {
     public ShipmentReceiptRoleStateDto getShipmentReceiptRole(@PathVariable("receiptId") String receiptId, @PathVariable("partyRoleId") String partyRoleId) {
         try {
 
-            ShipmentReceiptRoleState state = shipmentReceiptApplicationService.getShipmentReceiptRole(receiptId, (new AbstractValueObjectTextFormatter<PartyRoleId>(PartyRoleId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyRoleId)));
+            ShipmentReceiptRoleState state = shipmentReceiptApplicationService.getShipmentReceiptRole(receiptId, new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             if (state == null) { return null; }
             ShipmentReceiptRoleStateDto.DtoConverter dtoConverter = new ShipmentReceiptRoleStateDto.DtoConverter();
             ShipmentReceiptRoleStateDto stateDto = dtoConverter.toShipmentReceiptRoleStateDto(state);
@@ -340,12 +335,7 @@ public class ShipmentReceiptResource {
             if (version != null) { mergePatchShipmentReceipt.setVersion(version); }
             mergePatchShipmentReceipt.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             ShipmentReceiptRoleCommand.MergePatchShipmentReceiptRole mergePatchShipmentReceiptRole = body;//.toMergePatchShipmentReceiptRole();
-            mergePatchShipmentReceiptRole.setPartyRoleId((new AbstractValueObjectTextFormatter<PartyRoleId>(PartyRoleId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyRoleId)));
+            mergePatchShipmentReceiptRole.setPartyRoleId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             mergePatchShipmentReceipt.getShipmentReceiptRoleCommands().add(mergePatchShipmentReceiptRole);
             mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
@@ -372,12 +362,7 @@ public class ShipmentReceiptResource {
             }
             mergePatchShipmentReceipt.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             ShipmentReceiptRoleCommand.RemoveShipmentReceiptRole removeShipmentReceiptRole = new RemoveShipmentReceiptRoleDto();
-            removeShipmentReceiptRole.setPartyRoleId((new AbstractValueObjectTextFormatter<PartyRoleId>(PartyRoleId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyRoleId)));
+            removeShipmentReceiptRole.setPartyRoleId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             mergePatchShipmentReceipt.getShipmentReceiptRoleCommands().add(removeShipmentReceiptRole);
             mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
@@ -423,7 +408,7 @@ public class ShipmentReceiptResource {
      * Create ShipmentReceiptRole
      */
     @PostMapping(path = "{receiptId}/ShipmentReceiptRoles", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postShipmentReceiptRoles(@PathVariable("receiptId") String receiptId,
+    public void postShipmentReceiptRole(@PathVariable("receiptId") String receiptId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,

@@ -393,7 +393,7 @@ public class ArticleResource {
      * Create Comment
      */
     @PostMapping(path = "{articleId}/Comments", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postComments(@PathVariable("articleId") Long articleId,
+    public void postComment(@PathVariable("articleId") Long articleId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,

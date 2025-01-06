@@ -285,12 +285,7 @@ public class OrderHeaderResource {
     public OrderRoleStateDto getOrderRole(@PathVariable("orderId") String orderId, @PathVariable("partyRoleId") String partyRoleId) {
         try {
 
-            OrderRoleState state = orderApplicationService.getOrderRole(orderId, (new AbstractValueObjectTextFormatter<PartyRoleId>(PartyRoleId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyRoleId)));
+            OrderRoleState state = orderApplicationService.getOrderRole(orderId, new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             if (state == null) { return null; }
             OrderRoleStateDto.DtoConverter dtoConverter = new OrderRoleStateDto.DtoConverter();
             OrderRoleStateDto stateDto = dtoConverter.toOrderRoleStateDto(state);
@@ -317,12 +312,7 @@ public class OrderHeaderResource {
             if (version != null) { mergePatchOrder.setVersion(version); }
             mergePatchOrder.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             OrderRoleCommand.MergePatchOrderRole mergePatchOrderRole = body;//.toMergePatchOrderRole();
-            mergePatchOrderRole.setPartyRoleId((new AbstractValueObjectTextFormatter<PartyRoleId>(PartyRoleId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyRoleId)));
+            mergePatchOrderRole.setPartyRoleId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             mergePatchOrder.getOrderRoleCommands().add(mergePatchOrderRole);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
@@ -349,12 +339,7 @@ public class OrderHeaderResource {
             }
             mergePatchOrder.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             OrderRoleCommand.RemoveOrderRole removeOrderRole = new RemoveOrderRoleDto();
-            removeOrderRole.setPartyRoleId((new AbstractValueObjectTextFormatter<PartyRoleId>(PartyRoleId.class, ",") {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    }.parse(partyRoleId)));
+            removeOrderRole.setPartyRoleId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             mergePatchOrder.getOrderRoleCommands().add(removeOrderRole);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
@@ -400,7 +385,7 @@ public class OrderHeaderResource {
      * Create OrderRole
      */
     @PostMapping(path = "{orderId}/OrderRoles", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postOrderRoles(@PathVariable("orderId") String orderId,
+    public void postOrderRole(@PathVariable("orderId") String orderId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
@@ -527,7 +512,7 @@ public class OrderHeaderResource {
      * Create OrderContactMech
      */
     @PostMapping(path = "{orderId}/OrderContactMeches", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postOrderContactMeches(@PathVariable("orderId") String orderId,
+    public void postOrderContactMech(@PathVariable("orderId") String orderId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
@@ -654,7 +639,7 @@ public class OrderHeaderResource {
      * Create OrderItem
      */
     @PostMapping(path = "{orderId}/OrderItems", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postOrderItems(@PathVariable("orderId") String orderId,
+    public void postOrderItem(@PathVariable("orderId") String orderId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
@@ -781,7 +766,7 @@ public class OrderHeaderResource {
      * Create OrderAdjustment
      */
     @PostMapping(path = "{orderId}/OrderAdjustments", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postOrderAdjustments(@PathVariable("orderId") String orderId,
+    public void postOrderAdjustment(@PathVariable("orderId") String orderId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
@@ -908,7 +893,7 @@ public class OrderHeaderResource {
      * Create OrderShipGroup
      */
     @PostMapping(path = "{orderId}/OrderShipGroups", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postOrderShipGroups(@PathVariable("orderId") String orderId,
+    public void postOrderShipGroup(@PathVariable("orderId") String orderId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
@@ -1041,7 +1026,7 @@ public class OrderHeaderResource {
      * Create OrderItemShipGroupAssociation
      */
     @PostMapping(path = "{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postOrderItemShipGroupAssociations(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") String orderShipGroupShipGroupSeqId,
+    public void postOrderItemShipGroupAssociation(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") String orderShipGroupShipGroupSeqId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,

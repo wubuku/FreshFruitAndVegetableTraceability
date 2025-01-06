@@ -384,7 +384,7 @@ public class PartyResource {
      * Create PartyIdentification
      */
     @PostMapping(path = "{partyId}/PartyIdentifications", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postPartyIdentifications(@PathVariable("partyId") String partyId,
+    public void postPartyIdentification(@PathVariable("partyId") String partyId,
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
