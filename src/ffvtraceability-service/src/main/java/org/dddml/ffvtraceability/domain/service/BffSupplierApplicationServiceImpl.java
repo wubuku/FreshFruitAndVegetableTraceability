@@ -13,6 +13,7 @@ import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechCommand
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
+import org.dddml.ffvtraceability.domain.repository.BffGeoRepository;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
@@ -65,6 +66,9 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Autowired
     private PartyContactMechApplicationService partyContactMechApplicationService;
+
+    @Autowired
+    private BffGeoRepository bffGeoRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -232,22 +236,29 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         String partyId = c.getSupplierId();
         BffBusinessContactDto bizContact = c.getBusinessContact();
 
-        AbstractContactMechCommand.SimpleCreatePostalAddress createPostalAddress = new AbstractContactMechCommand.SimpleCreatePostalAddress();
-        createPostalAddress.setContactMechId(IdUtils.randomId());
-        createPostalAddress.setToName(bizContact.getBusinessName());
-        createPostalAddress.setPostalCode(bizContact.getZipCode());
-        createPostalAddress.setStateProvinceGeoId(bizContact.getState()); // NOTE: Is this OK?
-        createPostalAddress.setCity(bizContact.getCity());
-        createPostalAddress.setAddress1(bizContact.getPhysicalLocationAddress());
-        createPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-P" : UUID.randomUUID().toString());
-        createPostalAddress.setRequesterId(c.getRequesterId());
-        contactMechApplicationService.when(createPostalAddress);
+        if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
+            Optional<BffGeoRepository.StateProvinceProjection> stateProvince
+                    = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
+            if (stateProvince.isEmpty()) {
+                throw new IllegalArgumentException("State not found:" + bizContact.getState()); // NOTE: Is this OK?
+            }
+            AbstractContactMechCommand.SimpleCreatePostalAddress createPostalAddress = new AbstractContactMechCommand.SimpleCreatePostalAddress();
+            createPostalAddress.setContactMechId(IdUtils.randomId());
+            createPostalAddress.setToName(bizContact.getBusinessName());
+            createPostalAddress.setPostalCode(bizContact.getZipCode());
+            createPostalAddress.setStateProvinceGeoId(stateProvince.get().getGeoId());
+            createPostalAddress.setCity(bizContact.getCity());
+            createPostalAddress.setAddress1(bizContact.getPhysicalLocationAddress());
+            createPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-P" : UUID.randomUUID().toString());
+            createPostalAddress.setRequesterId(c.getRequesterId());
+            contactMechApplicationService.when(createPostalAddress);
 
-        AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase createPartyPostalAddress
-                = newCreatePartyContactMechBase(partyId, createPostalAddress.getContactMechId());
-        createPartyPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-PP" : UUID.randomUUID().toString());
-        createPartyPostalAddress.setRequesterId(c.getRequesterId());
-        partyContactMechApplicationService.when(createPartyPostalAddress);
+            AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase createPartyPostalAddress
+                    = newCreatePartyContactMechBase(partyId, createPostalAddress.getContactMechId());
+            createPartyPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-PP" : UUID.randomUUID().toString());
+            createPartyPostalAddress.setRequesterId(c.getRequesterId());
+            partyContactMechApplicationService.when(createPartyPostalAddress);
+        }
 
         if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
             TelecomNumberUtil.TelecomNumberDto telecomNumberDto = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
