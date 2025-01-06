@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.geoassoc">
+  <class name="org.dddml.ffvtraceability.domain.geoassoc.AbstractGeoAssocState$SimpleGeoAssocState" table="geo_assoc">
+    <composite-id name="geoAssocId" class="org.dddml.ffvtraceability.domain.geoassoc.GeoAssocId">
+      <key-property name="geoId">
+        <column name="GEO_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="geoIdTo">
+        <column name="GEO_ID_TO" sql-type="VARCHAR(20)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <property name="geoAssocTypeId">
+      <column name="geo_assoc_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="commandId" column="command_id" />
+  </class>
+</hibernate-mapping>

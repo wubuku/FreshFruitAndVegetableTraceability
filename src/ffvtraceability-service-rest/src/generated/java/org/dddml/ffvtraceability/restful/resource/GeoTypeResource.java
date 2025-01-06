@@ -170,69 +170,6 @@ public class GeoTypeResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-
-    /**
-     * Create.
-     * Create GeoType
-     */
-    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody CreateOrMergePatchGeoTypeDto.CreateGeoTypeDto value,  HttpServletResponse response) {
-        try {
-            GeoTypeCommand.CreateGeoType cmd = value;//.toCreateGeoType();
-            if (cmd.getGeoTypeId() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "GeoType");
-            }
-            String idObj = cmd.getGeoTypeId();
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            geoTypeApplicationService.when(cmd);
-
-            return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * Create or update.
-     * Create or update GeoType
-     */
-    @PutMapping("{geoTypeId}")
-    public void put(@PathVariable("geoTypeId") String geoTypeId, @RequestBody CreateOrMergePatchGeoTypeDto value) {
-        try {
-            if (value.getVersion() != null) {
-                value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
-                GeoTypeCommand.MergePatchGeoType cmd = (GeoTypeCommand.MergePatchGeoType) value.toSubclass();
-                GeoTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(geoTypeId, cmd);
-                cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-                geoTypeApplicationService.when(cmd);
-                return;
-            }
-
-            value.setCommandType(Command.COMMAND_TYPE_CREATE);
-            GeoTypeCommand.CreateGeoType cmd = (GeoTypeCommand.CreateGeoType) value.toSubclass();
-            GeoTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(geoTypeId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            geoTypeApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * Patch.
-     * Patch GeoType
-     */
-    @PatchMapping("{geoTypeId}")
-    public void patch(@PathVariable("geoTypeId") String geoTypeId, @RequestBody CreateOrMergePatchGeoTypeDto.MergePatchGeoTypeDto value) {
-        try {
-
-            GeoTypeCommand.MergePatchGeoType cmd = value;//.toMergePatchGeoType();
-            GeoTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(geoTypeId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            geoTypeApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

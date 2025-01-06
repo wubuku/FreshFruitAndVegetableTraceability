@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+
+    <GeoType description="City" geoTypeId="CITY" hasTable="N" parentTypeId="" />
+    <GeoType description="Group" geoTypeId="GROUP" hasTable="N" parentTypeId="" />
+    <GeoType description="State" geoTypeId="STATE" hasTable="N" parentTypeId="" />
+    <GeoType description="Postal Code" geoTypeId="POSTAL_CODE" hasTable="N" parentTypeId="" />
+    <GeoType description="Country" geoTypeId="COUNTRY" hasTable="N" parentTypeId="" />
+    <GeoType description="County" geoTypeId="COUNTY" hasTable="N" parentTypeId="" />
+    <GeoType description="County-City" geoTypeId="COUNTY_CITY" hasTable="N" parentTypeId="" />
+    <GeoType description="Municipality" geoTypeId="MUNICIPALITY" hasTable="N" parentTypeId="" />
+    <GeoType description="Province" geoTypeId="PROVINCE" hasTable="N" parentTypeId="" />
+    <GeoType description="Region" geoTypeId="REGION" hasTable="N" parentTypeId="" />
+    <GeoType description="Territory" geoTypeId="TERRITORY" hasTable="N" parentTypeId="" />
+    <GeoType description="Sales Territory" geoTypeId="SALES_TERRITORY" hasTable="N" parentTypeId="TERRITORY" />
+    <GeoType description="Service Territory" geoTypeId="SERVICE_TERRITORY" hasTable="N" parentTypeId="TERRITORY" />
+	
+	<!-- In China,  It is Province-prefecture-county-town four level administrative division -->
+    <!-- <GeoType description="Province" geoTypeId="PROVINCE" hasTable="N" parentTypeId="" /> -->
+    <GeoType description="Prefecture or Prefecture-level City" geoTypeId="PREFECTURE" hasTable="N" parentTypeId="" />
+    <!-- <GeoType description="County" geoTypeId="COUNTY" hasTable="N" parentTypeId="" /> -->
+    <GeoType description="Town" geoTypeId="TOWN" hasTable="N" parentTypeId="" />
+
+</entity-engine-xml>

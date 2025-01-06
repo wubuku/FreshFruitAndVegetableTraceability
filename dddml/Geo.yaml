@@ -2,8 +2,9 @@
   Geo:
     metadata:
       NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
     discriminator: GeoTypeId
-    # reservedPropertyMetadata: {}
     id:
       name: GeoId
       type: id
@@ -20,10 +21,10 @@
         type: short-varchar
       WellKnownText:
         type: very-long
-      # # -----------------------------------
-      # # 序号
-      # SequenceNum:
-      #   type: numeric
+      # -----------------------------------
+      SequenceNumber:
+        # 序号
+        type: numeric
 
     references:
       GeoType:
@@ -33,12 +34,21 @@
           - GeoTypeId
         foreignKeyName: GEO_TO_TYPE
 
+    methods:
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
+
+
   GeoType:
     id:
       name: GeoTypeId
       type: id
     metadata:
       NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
     properties:
       ParentTypeId:
         type: id-ne
@@ -54,3 +64,80 @@
         properties:
           - ParentTypeId
         foreignKeyName: GEO_TYPE_PARENT
+    methods:
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
+
+
+  GeoAssoc:
+    metadata: 
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    discriminator: GeoAssocTypeId
+    id:
+      name: GeoAssocId
+      type: GeoAssocId
+      columnNames:
+        - GEO_ID
+        - GEO_ID_TO
+    properties:
+      GeoAssocTypeId:
+        type: id
+    references:
+      GeoId:
+        displayName: GEO-ID
+        description: Main
+        type: Geo
+        properties:
+          - GeoAssocId.GeoId
+        foreignKeyName: GEO_ASSC_TO_MAIN
+      GeoIdTo:
+        displayName: GEO-ID-TO
+        description: Assoc
+        type: Geo
+        properties:
+          - GeoAssocId.GeoIdTo
+        foreignKeyName: GEO_ASSC_TO_ASSC
+      GeoAssocType:
+        displayName: GeoAssocType
+        type: GeoAssocType
+        properties:
+          - GeoAssocTypeId
+        foreignKeyName: GEO_ASSC_TO_TYPE
+    methods:
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
+
+    valueObjects:
+      GeoAssocId:
+        properties:
+          GeoId:
+            description: The enclosed geo
+            columnName: GEO_ID
+            type: id
+          GeoIdTo:
+            description: The enclosing geo
+            columnName: GEO_ID_TO
+            type: id
+
+
+  GeoAssocType:
+    metadata: 
+      NoEventSourcing: true
+    id:
+      name: GeoAssocTypeId
+      type: id
+    properties:
+      Description:
+        type: description
+    methods:
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
+

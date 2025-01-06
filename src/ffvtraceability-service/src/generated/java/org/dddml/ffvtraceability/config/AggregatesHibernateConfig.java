@@ -50,6 +50,12 @@ import org.dddml.ffvtraceability.domain.geo.hibernate.*;
 import org.dddml.ffvtraceability.domain.geotype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.geotype.hibernate.*;
+import org.dddml.ffvtraceability.domain.geoassoc.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.geoassoc.hibernate.*;
+import org.dddml.ffvtraceability.domain.geoassoctype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.geoassoctype.hibernate.*;
 import org.dddml.ffvtraceability.domain.lot.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.lot.hibernate.*;
@@ -347,6 +353,34 @@ public class AggregatesHibernateConfig {
         AbstractGeoTypeApplicationService.SimpleGeoTypeApplicationService applicationService = new AbstractGeoTypeApplicationService.SimpleGeoTypeApplicationService(
                 geoTypeStateRepository,
                 geoTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractGeoAssocApplicationService.SimpleGeoAssocApplicationService geoAssocApplicationService(
+            GeoAssocStateRepository geoAssocStateRepository,
+            GeoAssocStateQueryRepository geoAssocStateQueryRepository
+    ) {
+        AbstractGeoAssocApplicationService.SimpleGeoAssocApplicationService applicationService = new AbstractGeoAssocApplicationService.SimpleGeoAssocApplicationService(
+                geoAssocStateRepository,
+                geoAssocStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractGeoAssocTypeApplicationService.SimpleGeoAssocTypeApplicationService geoAssocTypeApplicationService(
+            GeoAssocTypeStateRepository geoAssocTypeStateRepository,
+            GeoAssocTypeStateQueryRepository geoAssocTypeStateQueryRepository
+    ) {
+        AbstractGeoAssocTypeApplicationService.SimpleGeoAssocTypeApplicationService applicationService = new AbstractGeoAssocTypeApplicationService.SimpleGeoAssocTypeApplicationService(
+                geoAssocTypeStateRepository,
+                geoAssocTypeStateQueryRepository
         );
         return applicationService;
     }

@@ -98,6 +98,18 @@ public class GeoStateDto {
         this.wellKnownText = wellKnownText;
     }
 
+    private Long sequenceNumber;
+
+    public Long getSequenceNumber()
+    {
+        return this.sequenceNumber;
+    }
+
+    public void setSequenceNumber(Long sequenceNumber)
+    {
+        this.sequenceNumber = sequenceNumber;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -207,6 +219,9 @@ public class GeoStateDto {
             }
             if (returnedFieldsContains("WellKnownText")) {
                 dto.setWellKnownText(state.getWellKnownText());
+            }
+            if (returnedFieldsContains("SequenceNumber")) {
+                dto.setSequenceNumber(state.getSequenceNumber());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

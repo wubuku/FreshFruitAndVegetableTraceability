@@ -41,6 +41,7 @@ public abstract class AbstractGeoApplicationService implements GeoApplicationSer
         ss.setGeoSecCode(c.getGeoSecCode());
         ss.setAbbreviation(c.getAbbreviation());
         ss.setWellKnownText(c.getWellKnownText());
+        ss.setSequenceNumber(c.getSequenceNumber());
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -94,6 +95,13 @@ public abstract class AbstractGeoApplicationService implements GeoApplicationSer
             }
         } else {
             ss.setWellKnownText(c.getWellKnownText());
+        }
+        if (c.getSequenceNumber() == null) {
+            if (c.getIsPropertySequenceNumberRemoved() != null && c.getIsPropertySequenceNumberRemoved()) {
+                ss.setSequenceNumber(null);
+            }
+        } else {
+            ss.setSequenceNumber(c.getSequenceNumber());
         }
         ss.setUpdatedBy(c.getRequesterId());
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

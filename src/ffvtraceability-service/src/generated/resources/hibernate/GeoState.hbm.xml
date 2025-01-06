@@ -25,6 +25,9 @@
     <property name="wellKnownText">
       <column name="well_known_text" sql-type="TEXT" />
     </property>
+    <property name="sequenceNumber">
+      <column name="sequence_number" sql-type="DECIMAL(20,0)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

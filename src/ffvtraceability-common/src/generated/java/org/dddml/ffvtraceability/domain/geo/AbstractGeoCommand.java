@@ -111,6 +111,18 @@ public abstract class AbstractGeoCommand extends AbstractCommand implements GeoC
             this.wellKnownText = wellKnownText;
         }
 
+        private Long sequenceNumber;
+
+        public Long getSequenceNumber()
+        {
+            return this.sequenceNumber;
+        }
+
+        public void setSequenceNumber(Long sequenceNumber)
+        {
+            this.sequenceNumber = sequenceNumber;
+        }
+
     }
 
     public static abstract class AbstractCreateGeo extends AbstractCreateOrMergePatchGeo implements CreateGeo
@@ -199,6 +211,18 @@ public abstract class AbstractGeoCommand extends AbstractCommand implements GeoC
         public void setIsPropertyWellKnownTextRemoved(Boolean removed)
         {
             this.isPropertyWellKnownTextRemoved = removed;
+        }
+
+        private Boolean isPropertySequenceNumberRemoved;
+
+        public Boolean getIsPropertySequenceNumberRemoved()
+        {
+            return this.isPropertySequenceNumberRemoved;
+        }
+
+        public void setIsPropertySequenceNumberRemoved(Boolean removed)
+        {
+            this.isPropertySequenceNumberRemoved = removed;
         }
 
 

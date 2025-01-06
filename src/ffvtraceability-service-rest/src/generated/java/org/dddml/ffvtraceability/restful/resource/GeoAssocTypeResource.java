@@ -17,7 +17,7 @@ import org.dddml.support.criterion.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
-import org.dddml.ffvtraceability.domain.geo.*;
+import org.dddml.ffvtraceability.domain.geoassoctype.*;
 import static org.dddml.ffvtraceability.domain.meta.M.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,23 +27,23 @@ import org.dddml.support.criterion.TypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@RequestMapping(path = "Geos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "GeoAssocTypes", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
-public class GeoResource {
+public class GeoAssocTypeResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @Autowired
-    private GeoApplicationService geoApplicationService;
+    private GeoAssocTypeApplicationService geoAssocTypeApplicationService;
 
 
     /**
      * Retrieve.
-     * Retrieve Geos
+     * Retrieve GeoAssocTypes
      */
     @GetMapping
     @Transactional(readOnly = true)
-    public GeoStateDto[] getAll( HttpServletRequest request,
+    public GeoAssocTypeStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
@@ -53,40 +53,40 @@ public class GeoResource {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
-            Iterable<GeoState> states = null; 
+            Iterable<GeoAssocTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
                 criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
-                    .filter(kv -> GeoResourceUtils.getFilterPropertyName(kv.getKey()) != null)
+                    .filter(kv -> GeoAssocTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
                     .collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue())));
             }
             Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
-                n -> (GeoMetadata.aliasMap.containsKey(n) ? GeoMetadata.aliasMap.get(n) : n));
-            states = geoApplicationService.get(
+                n -> (GeoAssocTypeMetadata.aliasMap.containsKey(n) ? GeoAssocTypeMetadata.aliasMap.get(n) : n));
+            states = geoAssocTypeApplicationService.get(
                 c,
-                GeoResourceUtils.getQuerySorts(request.getParameterMap()),
+                GeoAssocTypeResourceUtils.getQuerySorts(request.getParameterMap()),
                 firstResult, maxResults);
 
-            GeoStateDto.DtoConverter dtoConverter = new GeoStateDto.DtoConverter();
+            GeoAssocTypeStateDto.DtoConverter dtoConverter = new GeoAssocTypeStateDto.DtoConverter();
             if (StringHelper.isNullOrEmpty(fields)) {
                 dtoConverter.setAllFieldsReturned(true);
             } else {
                 dtoConverter.setReturnedFieldsString(fields);
             }
-            return dtoConverter.toGeoStateDtoArray(states);
+            return dtoConverter.toGeoAssocTypeStateDtoArray(states);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
      * Retrieve in pages.
-     * Retrieve Geos in pages.
+     * Retrieve GeoAssocTypes in pages.
      */
     @GetMapping("_page")
     @Transactional(readOnly = true)
-    public Page<GeoStateDto> getPage( HttpServletRequest request,
+    public Page<GeoAssocTypeStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
@@ -94,30 +94,30 @@ public class GeoResource {
         try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
-            Iterable<GeoState> states = null; 
+            Iterable<GeoAssocTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
                 criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
-                    .filter(kv -> GeoResourceUtils.getFilterPropertyName(kv.getKey()) != null)
+                    .filter(kv -> GeoAssocTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
                     .collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue())));
             }
             Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
-                n -> (GeoMetadata.aliasMap.containsKey(n) ? GeoMetadata.aliasMap.get(n) : n));
-            states = geoApplicationService.get(
+                n -> (GeoAssocTypeMetadata.aliasMap.containsKey(n) ? GeoAssocTypeMetadata.aliasMap.get(n) : n));
+            states = geoAssocTypeApplicationService.get(
                 c,
-                GeoResourceUtils.getQuerySorts(request.getParameterMap()),
+                GeoAssocTypeResourceUtils.getQuerySorts(request.getParameterMap()),
                 firstResult, maxResults);
-            long count = geoApplicationService.getCount(c);
+            long count = geoAssocTypeApplicationService.getCount(c);
 
-            GeoStateDto.DtoConverter dtoConverter = new GeoStateDto.DtoConverter();
+            GeoAssocTypeStateDto.DtoConverter dtoConverter = new GeoAssocTypeStateDto.DtoConverter();
             if (StringHelper.isNullOrEmpty(fields)) {
                 dtoConverter.setAllFieldsReturned(true);
             } else {
                 dtoConverter.setReturnedFieldsString(fields);
             }
-            Page.PageImpl<GeoStateDto> statePage =  new Page.PageImpl<>(dtoConverter.toGeoStateDtoList(states), count);
+            Page.PageImpl<GeoAssocTypeStateDto> statePage =  new Page.PageImpl<>(dtoConverter.toGeoAssocTypeStateDtoList(states), count);
             statePage.setSize(size);
             statePage.setNumber(page);
             return statePage;
@@ -127,23 +127,23 @@ public class GeoResource {
 
     /**
      * Retrieve.
-     * Retrieves Geo with the specified ID.
+     * Retrieves GeoAssocType with the specified ID.
      */
-    @GetMapping("{geoId}")
+    @GetMapping("{geoAssocTypeId}")
     @Transactional(readOnly = true)
-    public GeoStateDto get(@PathVariable("geoId") String geoId, @RequestParam(value = "fields", required = false) String fields) {
+    public GeoAssocTypeStateDto get(@PathVariable("geoAssocTypeId") String geoAssocTypeId, @RequestParam(value = "fields", required = false) String fields) {
         try {
-            String idObj = geoId;
-            GeoState state = geoApplicationService.get(idObj);
+            String idObj = geoAssocTypeId;
+            GeoAssocTypeState state = geoAssocTypeApplicationService.get(idObj);
             if (state == null) { return null; }
 
-            GeoStateDto.DtoConverter dtoConverter = new GeoStateDto.DtoConverter();
+            GeoAssocTypeStateDto.DtoConverter dtoConverter = new GeoAssocTypeStateDto.DtoConverter();
             if (StringHelper.isNullOrEmpty(fields)) {
                 dtoConverter.setAllFieldsReturned(true);
             } else {
                 dtoConverter.setReturnedFieldsString(fields);
             }
-            return dtoConverter.toGeoStateDto(state);
+            return dtoConverter.toGeoAssocTypeStateDto(state);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
@@ -163,8 +163,8 @@ public class GeoResource {
             Criterion c = CriterionDto.toSubclass(criterion,
                 getCriterionTypeConverter(), 
                 getPropertyTypeResolver(), 
-                n -> (GeoMetadata.aliasMap.containsKey(n) ? GeoMetadata.aliasMap.get(n) : n));
-            count = geoApplicationService.getCount(c);
+                n -> (GeoAssocTypeMetadata.aliasMap.containsKey(n) ? GeoAssocTypeMetadata.aliasMap.get(n) : n));
+            count = geoAssocTypeApplicationService.getCount(c);
             return count;
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
@@ -175,7 +175,7 @@ public class GeoResource {
         try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
-            GeoMetadata.propertyTypeMap.forEach((key, value) -> {
+            GeoAssocTypeMetadata.propertyTypeMap.forEach((key, value) -> {
                 filtering.add(new PropertyMetadataDto(key, value, true));
             });
             return filtering;
@@ -192,30 +192,30 @@ public class GeoResource {
         return new PropertyTypeResolver() {
             @Override
             public Class resolveTypeByPropertyName(String propertyName) {
-                return GeoResourceUtils.getFilterPropertyType(propertyName);
+                return GeoAssocTypeResourceUtils.getFilterPropertyType(propertyName);
             }
         };
     }
 
  
-    public static class GeoResourceUtils {
+    public static class GeoAssocTypeResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(String geoId, org.dddml.ffvtraceability.domain.geo.GeoCommand value) {
-            String idObj = geoId;
-            if (value.getGeoId() == null) {
-                value.setGeoId(idObj);
-            } else if (!value.getGeoId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", geoId, value.getGeoId());
+        public static void setNullIdOrThrowOnInconsistentIds(String geoAssocTypeId, org.dddml.ffvtraceability.domain.geoassoctype.GeoAssocTypeCommand value) {
+            String idObj = geoAssocTypeId;
+            if (value.getGeoAssocTypeId() == null) {
+                value.setGeoAssocTypeId(idObj);
+            } else if (!value.getGeoAssocTypeId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", geoAssocTypeId, value.getGeoAssocTypeId());
             }
         }
     
         public static List<String> getQueryOrders(String str, String separator) {
-            return QueryParamUtils.getQueryOrders(str, separator, GeoMetadata.aliasMap);
+            return QueryParamUtils.getQueryOrders(str, separator, GeoAssocTypeMetadata.aliasMap);
         }
 
         public static List<String> getQuerySorts(Map<String, String[]> queryNameValuePairs) {
             String[] values = queryNameValuePairs.get("sort");
-            return QueryParamUtils.getQuerySorts(values, GeoMetadata.aliasMap);
+            return QueryParamUtils.getQuerySorts(values, GeoAssocTypeMetadata.aliasMap);
         }
 
         public static String getFilterPropertyName(String fieldName) {
@@ -225,15 +225,15 @@ public class GeoResource {
                     || "fields".equalsIgnoreCase(fieldName)) {
                 return null;
             }
-            if (GeoMetadata.aliasMap.containsKey(fieldName)) {
-                return GeoMetadata.aliasMap.get(fieldName);
+            if (GeoAssocTypeMetadata.aliasMap.containsKey(fieldName)) {
+                return GeoAssocTypeMetadata.aliasMap.get(fieldName);
             }
             return null;
         }
 
         public static Class getFilterPropertyType(String propertyName) {
-            if (GeoMetadata.propertyTypeMap.containsKey(propertyName)) {
-                String propertyType = GeoMetadata.propertyTypeMap.get(propertyName);
+            if (GeoAssocTypeMetadata.propertyTypeMap.containsKey(propertyName)) {
+                String propertyType = GeoAssocTypeMetadata.propertyTypeMap.get(propertyName);
                 if (!StringHelper.isNullOrEmpty(propertyType)) {
                     if (BoundedContextMetadata.CLASS_MAP.containsKey(propertyType)) {
                         return BoundedContextMetadata.CLASS_MAP.get(propertyType);
@@ -257,14 +257,14 @@ public class GeoResource {
             return filter.entrySet();
         }
 
-        public static GeoStateDto[] toGeoStateDtoArray(Iterable<String> ids) {
-            List<GeoStateDto> states = new ArrayList<>();
+        public static GeoAssocTypeStateDto[] toGeoAssocTypeStateDtoArray(Iterable<String> ids) {
+            List<GeoAssocTypeStateDto> states = new ArrayList<>();
             ids.forEach(i -> {
-                GeoStateDto dto = new GeoStateDto();
-                dto.setGeoId(i);
+                GeoAssocTypeStateDto dto = new GeoAssocTypeStateDto();
+                dto.setGeoAssocTypeId(i);
                 states.add(dto);
             });
-            return states.toArray(new GeoStateDto[0]);
+            return states.toArray(new GeoAssocTypeStateDto[0]);
         }
 
     }

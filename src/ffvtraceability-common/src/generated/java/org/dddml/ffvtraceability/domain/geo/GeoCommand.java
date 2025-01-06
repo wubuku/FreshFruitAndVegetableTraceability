@@ -72,6 +72,10 @@ public interface GeoCommand extends Command {
 
         void setWellKnownText(String wellKnownText);
 
+        Long getSequenceNumber();
+
+        void setSequenceNumber(Long sequenceNumber);
+
     }
 
     interface CreateGeo extends CreateOrMergePatchGeo {
@@ -101,6 +105,10 @@ public interface GeoCommand extends Command {
         Boolean getIsPropertyWellKnownTextRemoved();
 
         void setIsPropertyWellKnownTextRemoved(Boolean removed);
+
+        Boolean getIsPropertySequenceNumberRemoved();
+
+        void setIsPropertySequenceNumberRemoved(Boolean removed);
 
 
     }

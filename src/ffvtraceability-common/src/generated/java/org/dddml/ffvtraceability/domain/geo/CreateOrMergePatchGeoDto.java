@@ -100,6 +100,21 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
         this.wellKnownText = wellKnownText;
     }
 
+    /**
+     * Sequence Number
+     */
+    private Long sequenceNumber;
+
+    public Long getSequenceNumber()
+    {
+        return this.sequenceNumber;
+    }
+
+    public void setSequenceNumber(Long sequenceNumber)
+    {
+        this.sequenceNumber = sequenceNumber;
+    }
+
 
     private Boolean isPropertyGeoTypeIdRemoved;
 
@@ -171,6 +186,18 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
     public void setIsPropertyWellKnownTextRemoved(Boolean removed)
     {
         this.isPropertyWellKnownTextRemoved = removed;
+    }
+
+    private Boolean isPropertySequenceNumberRemoved;
+
+    public Boolean getIsPropertySequenceNumberRemoved()
+    {
+        return this.isPropertySequenceNumberRemoved;
+    }
+
+    public void setIsPropertySequenceNumberRemoved(Boolean removed)
+    {
+        this.isPropertySequenceNumberRemoved = removed;
     }
 
     public GeoCommand toCommand()
@@ -316,6 +343,16 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
                 CreateOrMergePatchGeoDto.this.setWellKnownText(p);
             }
 
+            @Override
+            public Long getSequenceNumber() {
+                return CreateOrMergePatchGeoDto.this.getSequenceNumber();
+            }
+
+            @Override
+            public void setSequenceNumber(Long p) {
+                CreateOrMergePatchGeoDto.this.setSequenceNumber(p);
+            }
+
 
         };
     }
@@ -438,6 +475,16 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
             }
 
             @Override
+            public Long getSequenceNumber() {
+                return CreateOrMergePatchGeoDto.this.getSequenceNumber();
+            }
+
+            @Override
+            public void setSequenceNumber(Long p) {
+                CreateOrMergePatchGeoDto.this.setSequenceNumber(p);
+            }
+
+            @Override
             public Boolean getIsPropertyGeoTypeIdRemoved() {
                 return CreateOrMergePatchGeoDto.this.getIsPropertyGeoTypeIdRemoved();
             }
@@ -495,6 +542,16 @@ public class CreateOrMergePatchGeoDto extends AbstractGeoCommandDto implements G
             @Override
             public void setIsPropertyWellKnownTextRemoved(Boolean removed) {
                 CreateOrMergePatchGeoDto.this.setIsPropertyWellKnownTextRemoved(removed);
+            }
+
+            @Override
+            public Boolean getIsPropertySequenceNumberRemoved() {
+                return CreateOrMergePatchGeoDto.this.getIsPropertySequenceNumberRemoved();
+            }
+
+            @Override
+            public void setIsPropertySequenceNumberRemoved(Boolean removed) {
+                CreateOrMergePatchGeoDto.this.setIsPropertySequenceNumberRemoved(removed);
             }
 
 

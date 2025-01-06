@@ -25,6 +25,8 @@ import org.dddml.ffvtraceability.domain.facilitytype.*;
 import org.dddml.ffvtraceability.domain.facilitylocation.*;
 import org.dddml.ffvtraceability.domain.geo.*;
 import org.dddml.ffvtraceability.domain.geotype.*;
+import org.dddml.ffvtraceability.domain.geoassoc.*;
+import org.dddml.ffvtraceability.domain.geoassoctype.*;
 import org.dddml.ffvtraceability.domain.lot.*;
 import org.dddml.ffvtraceability.domain.lotidentificationtype.*;
 import org.dddml.ffvtraceability.domain.party.*;
