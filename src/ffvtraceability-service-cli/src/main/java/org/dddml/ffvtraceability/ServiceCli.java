@@ -3,6 +3,7 @@ package org.dddml.ffvtraceability;
 import org.dddml.ffvtraceability.specialization.DomainError;
 import org.dddml.ffvtraceability.tool.ApplicationServiceReflectUtils;
 import org.dddml.ffvtraceability.tool.JsonEntityDataTool;
+import org.dddml.ffvtraceability.tool.XmlEntityDataTool;
 import org.dddml.ffvtraceability.tool.hibernate.SchemaTool;
 import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,11 +12,12 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.StandardEnvironment;
-
 import picocli.CommandLine;
 import picocli.CommandLine.Mixin;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
 public class ServiceCli {
@@ -110,11 +112,20 @@ public class ServiceCli {
 
     public static void initData(InitDataSubcommand initDataSubcommand) {
         if (initDataSubcommand.xml) {
-            // TODO: createEntitiesFromXmlData(initDataSubcommand.dataLocationPattern);
+            createEntitiesFromXmlData(initDataSubcommand.dataLocationPattern);
         }
         if (initDataSubcommand.json) {
             createEntitiesFromJsonData(initDataSubcommand.dataLocationPattern);
         }
+    }
+
+    public static void createEntitiesFromXmlData(String dataLocationPattern) {
+        String pathPattern = XmlEntityDataTool.DEFAULT_XML_DATA_LOCATION_PATTERN;
+        if (dataLocationPattern != null) {
+            pathPattern = dataLocationPattern;
+        }
+        Map<String, List<Object>> allData = XmlEntityDataTool.deserializeAllGroupByEntityName(pathPattern);
+        initializeEntities(allData);
     }
 
     public static void createEntitiesFromJsonData(String jsonDataLocationPattern) {
@@ -123,6 +134,10 @@ public class ServiceCli {
             pathPattern = jsonDataLocationPattern;
         }
         Map<String, List<Object>> allData = JsonEntityDataTool.deserializeAllGroupByEntityName(pathPattern);
+        initializeEntities(allData);
+    }
+
+    private static void initializeEntities(Map<String, List<Object>> allData) {
         for (Map.Entry<String, List<Object>> kv : allData.entrySet()) {
             for (Object e : kv.getValue()) {
                 try {
@@ -140,82 +155,6 @@ public class ServiceCli {
                 }
             }
         }
-    }
-
-    // Create a top-level command with subcommands 'ddl' and 'initData'
-    @CommandLine.Command(subcommands = {
-            DdlSubcommand.class,
-            InitDataSubcommand.class
-    })
-    static class TopLevelCommand {
-    }
-
-    // DdlSubcommand class definition
-    @CommandLine.Command(name = "ddl", mixinStandardHelpOptions = true, description = "Generate and execute DDL (Data Definition Language) scripts for database schema management.")
-    static class DdlSubcommand implements DatabaseOptionsAware {
-        @Mixin
-        private DatabaseOptions databaseOptions = new DatabaseOptions();
-
-        @CommandLine.Option(names = { "-d",
-                "--sqlDirectory" }, required = true, description = "Directory path for input and output of SQL scripts. "
-                        +
-                        "Generated DDL scripts will be saved here, and existing scripts may be read from this location.")
-        String sqlDirectory;
-
-        @CommandLine.Option(names = {
-                "--only-output" }, description = "Only output the DDL scripts, do not drop-create database and seed.")
-        boolean onlyOutputDdl;
-
-        @Override
-        public DatabaseOptions getDatabaseOptions() {
-            return databaseOptions;
-        }
-    }
-
-    @CommandLine.Command(name = "initData", mixinStandardHelpOptions = true, description = "Initialize the database with seed data from XML or JSON files.")
-    static class InitDataSubcommand implements DatabaseOptionsAware {
-        @Mixin
-        private DatabaseOptions databaseOptions = new DatabaseOptions();
-
-        @CommandLine.Option(names = { "-d",
-                "--dataLocationPattern" }, required = true, description = "File path pattern to locate data files. " +
-                        "Use Spring Resource Patterns like 'file:{PATH_TO}/*.json' or 'classpath*:/data/*.json' to specify multiple files.")
-        String dataLocationPattern;
-
-        @CommandLine.Option(names = { "-x",
-                "--xml" }, required = false, description = "Use XML files for data initialization. " +
-                        "If specified, the tool will look for XML files matching the data location pattern.")
-        boolean xml;
-
-        @CommandLine.Option(names = { "-j",
-                "--json" }, required = false, description = "Use JSON files for data initialization. " +
-                        "If specified, the tool will look for JSON files matching the data location pattern. " +
-                        "The JSON file name must match '{EntityName}Data.json'.")
-        boolean json;
-
-        @Override
-        public DatabaseOptions getDatabaseOptions() {
-            return databaseOptions;
-        }
-    }
-
-    // DatabaseOptions mixin class
-    static class DatabaseOptions {
-        @CommandLine.Option(names = { "-c", "--connectionUrl" }, description = "JDBC connection URL for the database. "
-                +
-                "Example: jdbc:mysql://localhost:3306/mydatabase")
-        String connectionUrl;
-
-        @CommandLine.Option(names = { "-u", "--username" }, description = "Username for database authentication.")
-        String username;
-
-        @CommandLine.Option(names = { "-p", "--password" }, description = "Password for database authentication.")
-        String password;
-    }
-
-    // Interface for commands that use DatabaseOptions
-    interface DatabaseOptionsAware {
-        DatabaseOptions getDatabaseOptions();
     }
 
     private static boolean isCausedByConstraintViolation(Exception ex) {
@@ -244,6 +183,77 @@ public class ServiceCli {
             c = c.getCause();
         }
         return b;
+    }
+
+    // Interface for commands that use DatabaseOptions
+    interface DatabaseOptionsAware {
+        DatabaseOptions getDatabaseOptions();
+    }
+
+    // Create a top-level command with subcommands 'ddl' and 'initData'
+    @CommandLine.Command(subcommands = {
+            DdlSubcommand.class,
+            InitDataSubcommand.class
+    })
+    static class TopLevelCommand {
+    }
+
+    // DdlSubcommand class definition
+    @CommandLine.Command(name = "ddl", mixinStandardHelpOptions = true, description = "Generate and execute DDL (Data Definition Language) scripts for database schema management.")
+    static class DdlSubcommand implements DatabaseOptionsAware {
+        @CommandLine.Option(names = {"-d",
+                "--sqlDirectory"}, required = true, description = "Directory path for input and output of SQL scripts. "
+                +
+                "Generated DDL scripts will be saved here, and existing scripts may be read from this location.")
+        String sqlDirectory;
+        @CommandLine.Option(names = {
+                "--only-output"}, description = "Only output the DDL scripts, do not drop-create database and seed.")
+        boolean onlyOutputDdl;
+        @Mixin
+        private DatabaseOptions databaseOptions = new DatabaseOptions();
+
+        @Override
+        public DatabaseOptions getDatabaseOptions() {
+            return databaseOptions;
+        }
+    }
+
+    @CommandLine.Command(name = "initData", mixinStandardHelpOptions = true, description = "Initialize the database with seed data from XML or JSON files.")
+    static class InitDataSubcommand implements DatabaseOptionsAware {
+        @CommandLine.Option(names = {"-d",
+                "--dataLocationPattern"}, required = true, description = "File path pattern to locate data files. " +
+                "Use Spring Resource Patterns like 'file:{PATH_TO}/*.json' or 'classpath*:/data/*.json' to specify multiple files.")
+        String dataLocationPattern;
+        @CommandLine.Option(names = {"-x",
+                "--xml"}, required = false, description = "Use XML files for data initialization. " +
+                "If specified, the tool will look for XML files matching the data location pattern.")
+        boolean xml;
+        @CommandLine.Option(names = {"-j",
+                "--json"}, required = false, description = "Use JSON files for data initialization. " +
+                "If specified, the tool will look for JSON files matching the data location pattern. " +
+                "The JSON file name must match '{EntityName}Data.json'.")
+        boolean json;
+        @Mixin
+        private DatabaseOptions databaseOptions = new DatabaseOptions();
+
+        @Override
+        public DatabaseOptions getDatabaseOptions() {
+            return databaseOptions;
+        }
+    }
+
+    // DatabaseOptions mixin class
+    static class DatabaseOptions {
+        @CommandLine.Option(names = {"-c", "--connectionUrl"}, description = "JDBC connection URL for the database. "
+                +
+                "Example: jdbc:mysql://localhost:3306/mydatabase")
+        String connectionUrl;
+
+        @CommandLine.Option(names = {"-u", "--username"}, description = "Username for database authentication.")
+        String username;
+
+        @CommandLine.Option(names = {"-p", "--password"}, description = "Password for database authentication.")
+        String password;
     }
 
 }

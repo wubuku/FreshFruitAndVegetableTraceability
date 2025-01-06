@@ -76,6 +76,8 @@ java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1
 
 ```shell
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*.json" --json
+
+java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*.xml" --xml
 ```
 
 ### Run service
