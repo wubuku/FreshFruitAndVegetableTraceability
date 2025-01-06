@@ -646,18 +646,37 @@ check_response $? "$http_code" "Query QA inspections"
 # }' | { read http_status; check_response $? "$http_status" "Update QA inspection"; }
 
 
-# Update QA Inspection status
-echo "Updating QA Inspection..."
+# # Update QA Inspection status
+# echo "Updating QA Inspection..."
+# curl -X 'PUT' \
+#   "${API_BASE_URL}/BffQaInspections/${QA_INSPECTION_ID}" \
+#   -H 'accept: application/json' \
+#   -H 'Content-Type: application/json' \
+#   -H "X-TenantID: X" \
+#   -s \
+#   -w '%{http_code}\n' \
+#   -o /dev/null \
+#   -d "{
+#   \"statusId\": \"APPROVED\",
+#   \"comments\": \"Additional verification required for temperature logs.\"
+# }" | { read http_status; check_response $? "$http_status" "Update QA inspection"; }
+
+# Update supplier business contact information
+echo "Updating supplier business contact..."
 curl -X 'PUT' \
-  "${API_BASE_URL}/BffQaInspections/${QA_INSPECTION_ID}" \
-  -H 'accept: application/json' \
+  "${API_BASE_URL}/BffSuppliers/SUPPLIER_001/BusinessContact" \
+  -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
   -w '%{http_code}\n' \
   -o /dev/null \
-  -d "{
-  \"statusId\": \"APPROVED\",
-  \"comments\": \"Additional verification required for temperature logs.\"
-}" | { read http_status; check_response $? "$http_status" "Update QA inspection"; }
+  -d '{
+  "businessName": "Fresh Organic Farms Office",
+  "phoneNumber": "+1 415 555 0123",
+  "physicalLocationAddress": "2500 Sand Hill Road",
+  "city": "Menlo Park",
+  "state": "CA",
+  "zipCode": "94025"
+}' | { read http_status; check_response $? "$http_status" "Update supplier business contact"; }
 

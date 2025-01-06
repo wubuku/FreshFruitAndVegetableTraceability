@@ -1,8 +1,15 @@
 package org.dddml.ffvtraceability.domain.service;
 
+import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
+import org.dddml.ffvtraceability.domain.contactmech.AbstractContactMechCommand;
+import org.dddml.ffvtraceability.domain.contactmech.ContactMechApplicationService;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
 import org.dddml.ffvtraceability.domain.party.*;
+import org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechBaseCommand;
+import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechApplicationService;
+import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechBaseId;
+import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechCommand;
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
@@ -10,6 +17,7 @@ import org.dddml.ffvtraceability.domain.repository.BffSupplierRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
+import org.dddml.ffvtraceability.domain.util.TelecomNumberUtil;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,6 +59,12 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Autowired
     private BffSupplierRepository bffSupplierRepository;
+
+    @Autowired
+    private ContactMechApplicationService contactMechApplicationService;
+
+    @Autowired
+    private PartyContactMechApplicationService partyContactMechApplicationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -212,8 +227,58 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     }
 
     @Override
+    @Transactional
     public void when(BffSupplierServiceCommands.UpdateBusinessContact c) {
-        //todo
+        String partyId = c.getSupplierId();
+        BffBusinessContactDto bizContact = c.getBusinessContact();
 
+        AbstractContactMechCommand.SimpleCreatePostalAddress createPostalAddress = new AbstractContactMechCommand.SimpleCreatePostalAddress();
+        createPostalAddress.setContactMechId(IdUtils.randomId());
+        createPostalAddress.setToName(bizContact.getBusinessName());
+        createPostalAddress.setPostalCode(bizContact.getZipCode());
+        createPostalAddress.setStateProvinceGeoId(bizContact.getState()); // NOTE: Is this OK?
+        createPostalAddress.setCity(bizContact.getCity());
+        createPostalAddress.setAddress1(bizContact.getPhysicalLocationAddress());
+        createPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-P" : UUID.randomUUID().toString());
+        createPostalAddress.setRequesterId(c.getRequesterId());
+        contactMechApplicationService.when(createPostalAddress);
+
+        AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase createPartyPostalAddress
+                = newCreatePartyContactMechBase(partyId, createPostalAddress.getContactMechId());
+        createPartyPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-PP" : UUID.randomUUID().toString());
+        createPartyPostalAddress.setRequesterId(c.getRequesterId());
+        partyContactMechApplicationService.when(createPartyPostalAddress);
+
+        if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
+            TelecomNumberUtil.TelecomNumberDto telecomNumberDto = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
+            AbstractContactMechCommand.SimpleCreateTelecomNumber createTelecomNumber = new AbstractContactMechCommand.SimpleCreateTelecomNumber();
+            createTelecomNumber.setContactMechId(IdUtils.randomId());
+            createTelecomNumber.setCountryCode(telecomNumberDto.getCountryCode());
+            createTelecomNumber.setAreaCode(telecomNumberDto.getAreaCode());
+            createTelecomNumber.setContactNumber(telecomNumberDto.getContactNumber());
+            createTelecomNumber.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-T" : UUID.randomUUID().toString());
+            createTelecomNumber.setRequesterId(c.getRequesterId());
+            contactMechApplicationService.when(createTelecomNumber);
+
+            AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase createPartyTelecomNumber
+                    = newCreatePartyContactMechBase(partyId, createTelecomNumber.getContactMechId());
+            createPartyTelecomNumber.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-PT" : UUID.randomUUID().toString());
+            createPartyTelecomNumber.setRequesterId(c.getRequesterId());
+            partyContactMechApplicationService.when(createPartyTelecomNumber);
+        }
+
+    }
+
+    private AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase newCreatePartyContactMechBase(
+            String partyId,
+            String contactMechId
+    ) {
+        AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase createPartyContactMechBase = new AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase();
+        createPartyContactMechBase.setPartyContactMechBaseId(new PartyContactMechBaseId(partyId, contactMechId));
+        PartyContactMechCommand.CreatePartyContactMech createPartyContactMech = createPartyContactMechBase.newCreatePartyContactMech();
+        createPartyContactMech.setFromDate(OffsetDateTime.now());
+        createPartyContactMech.setThruDate(OffsetDateTime.now().plusYears(100));
+        createPartyContactMechBase.getCreatePartyContactMechCommands().add(createPartyContactMech);
+        return createPartyContactMechBase;
     }
 }
