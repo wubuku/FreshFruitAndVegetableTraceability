@@ -51,6 +51,48 @@ public interface BffBusinessContactRepository extends JpaRepository<AbstractCont
             @Param("contactNumber") String contactNumber
     );
 
+    @Query(value = """
+            SELECT DISTINCT ON (pcm.party_id)
+                cm.contact_mech_id as contactMechId,
+                pa.to_name as toName,
+                pa.address1 as address1,
+                pa.city as city,
+                pa.postal_code as postalCode,
+                pa.state_province_geo_id as stateProvinceGeoId
+            FROM party_contact_mech pcm
+            JOIN contact_mech cm ON cm.contact_mech_id = pcm.contact_mech_id
+            JOIN postal_address pa ON pa.contact_mech_id = cm.contact_mech_id
+            WHERE pcm.party_id = :partyId
+            AND cm.contact_mech_type_id = 'POSTAL_ADDRESS'
+            AND pcm.from_date <= CURRENT_TIMESTAMP
+            AND (pcm.thru_date IS NULL OR pcm.thru_date > CURRENT_TIMESTAMP)
+            ORDER BY pcm.party_id, pcm.from_date DESC
+            LIMIT 1
+            """, nativeQuery = true)
+    Optional<PostalAddressProjection> findPartyCurrentPostalAddressByPartyId(
+            @Param("partyId") String partyId
+    );
+
+    @Query(value = """
+            SELECT DISTINCT ON (pcm.party_id)
+                cm.contact_mech_id as contactMechId,
+                tn.country_code as countryCode,
+                tn.area_code as areaCode,
+                tn.contact_number as contactNumber
+            FROM party_contact_mech pcm
+            JOIN contact_mech cm ON cm.contact_mech_id = pcm.contact_mech_id
+            JOIN telecom_number tn ON tn.contact_mech_id = cm.contact_mech_id
+            WHERE pcm.party_id = :partyId
+            AND cm.contact_mech_type_id = 'TELECOM_NUMBER'
+            AND pcm.from_date <= CURRENT_TIMESTAMP
+            AND (pcm.thru_date IS NULL OR pcm.thru_date > CURRENT_TIMESTAMP)
+            ORDER BY pcm.party_id, pcm.from_date DESC
+            LIMIT 1
+            """, nativeQuery = true)
+    Optional<TelecomNumber> findPartyCurrentTelecomNumberByPartyId(
+            @Param("partyId") String partyId
+    );
+
     interface PostalAddressProjection {
         String getContactMechId();
 
