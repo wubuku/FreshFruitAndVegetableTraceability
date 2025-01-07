@@ -1,6 +1,6 @@
 aggregates:
   PartyContactMech:
-    # 业务实体-联系方式
+    # 业务实体 - 联系方式
     aggregateRootName: PartyContactMechBase
     id:
       name: PartyContactMechBaseId
