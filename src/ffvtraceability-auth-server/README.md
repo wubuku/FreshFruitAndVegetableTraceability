@@ -1,6 +1,6 @@
 # Authorization Server
 
-## 1. 启动服务器
+## 启动服务器
 
 ```bash
 cd ffvtraceability-auth-server
@@ -10,13 +10,13 @@ mvn clean spring-boot:run
 服务器将在 9000 端口启动。
 
 
-## 2. 在 Auth Server 测试页面上测试 OAuth 2.0 授权码流程
+## 在 Auth Server 测试页面上测试 OAuth 2.0 授权码流程
 
-### 2.1 浏览器访问测试页面
+### 浏览器访问测试页面
 
 访问 http://localhost:9000/oauth2-test 开始测试流程。
 
-### 2.2 详细流程说明
+### 详细流程说明
 
 1. **初始化 PKCE 参数**
 ```javascript
@@ -101,7 +101,7 @@ function decodeJWT(token) {
 }
 ```
 
-### 2.3 令牌内容示例
+### 令牌内容示例
 
 **Access Token Claims:**
 ```json
@@ -141,7 +141,7 @@ function decodeJWT(token) {
 }
 ```
 
-### 2.4 安全考虑
+### 安全考虑
 
 1. **PKCE (Proof Key for Code Exchange)**
    - 防止授权码拦截攻击
@@ -159,7 +159,7 @@ function decodeJWT(token) {
    - 刷新令牌用于获取新的访问令牌
    - ID 令牌用于身份验证
 
-### 2.5 调试信息
+### 调试信息
 
 测试页面 (/oauth2-test) 显示：
 - 授权码
@@ -174,27 +174,23 @@ function decodeJWT(token) {
 
 见：`src/ffvtraceability-auth-server/scripts/test.sh`
 
-## 测试资源服务器的端到端测试（授权码流程测试）
+## “测试资源服务器”的端到端测试（授权码流程测试）
 
-见：`src/ffvtraceability-resource-server/README.md`
+我们创建了一个供测试用的资源服务器项目，包含了授权码流程的测试。
+相关描述见：`src/ffvtraceability-resource-server/README.md`
 
 
 ## 测试 Web 前端 OAuth2 授权码流程
 
+
+在追溯系统 API 服务中，包含了测试 OAuth2 授权码流程的前端页面。
 见这里的描述：`src/ffvtraceability-service-rest/README.md`
 
-
-## 更多参考信息
-
-见：`docs/OAuth2_授权码流程与安全实践详解.md`
-
----
 
 
 ## 关于 Spring Security OAuth2 Authorization Server 的扩展
 
 下面讨论的是我们对 Spring Security OAuth2 Authorization Server 所做的扩展。
-
 
 ### 支持有层级的权限
 
@@ -274,4 +270,9 @@ INSERT INTO permissions (permission_id, description) VALUES
 
 所有这些操作，后端最终操作的都是 `authorities` 表，插入或者删除的记录的 `authority` 列的值都是“叶子节点权限”。
 
+
+
+## 更多参考信息
+
+见：`docs/OAuth2_授权码流程与安全实践详解.md`
 
