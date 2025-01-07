@@ -26,11 +26,10 @@ import java.util.stream.Collectors;
 
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
+import static org.dddml.ffvtraceability.domain.constants.BffFacilityConstants.*;
 
 @Service
 public class BffFacilityApplicationServiceImpl implements BffFacilityApplicationService {
-    public static final String FACILITY_IDENTIFICATION_TYPE_FFRN = "FFRN";
-    public static final String FACILITY_IDENTIFICATION_TYPE_GLN = "GLN";
 
     @Autowired
     private BffFacilityRepository bffFacilityRepository;

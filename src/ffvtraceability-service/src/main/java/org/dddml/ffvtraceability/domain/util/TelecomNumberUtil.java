@@ -244,6 +244,10 @@ public class TelecomNumberUtil {
         return valid2DigitCodes.contains(code);
     }
 
+    public static String format(String countryCode, String areaCode, String contactNumber) {
+        return new TelecomNumberDto(countryCode, areaCode, contactNumber).format();
+    }
+
     public static class TelecomNumberDto {
         private final String countryCode;
         private final String areaCode;

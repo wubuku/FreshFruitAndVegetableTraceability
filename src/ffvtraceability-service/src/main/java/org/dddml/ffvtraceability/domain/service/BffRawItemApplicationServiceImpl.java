@@ -24,13 +24,13 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.DEFAULT_CURRENCY_UOM_ID;
+import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.GOOD_IDENTIFICATION_TYPE_GTIN;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
 
 @Service
 public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationService {
-    public static final String GOOD_IDENTIFICATION_TYPE_GTIN = "GTIN";
-    public static final String DEFAULT_CURRENCY_UOM_ID = "USD";
 
     @Autowired
     private ProductApplicationService productApplicationService;

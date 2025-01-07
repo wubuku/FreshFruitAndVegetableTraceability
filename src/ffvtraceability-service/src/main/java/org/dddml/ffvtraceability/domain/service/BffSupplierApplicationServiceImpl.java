@@ -2,17 +2,16 @@ package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
+import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.contactmech.AbstractContactMechCommand;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechApplicationService;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
 import org.dddml.ffvtraceability.domain.party.*;
-import org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechBaseCommand;
-import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechApplicationService;
-import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechBaseId;
-import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechCommand;
+import org.dddml.ffvtraceability.domain.partycontactmech.*;
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
+import org.dddml.ffvtraceability.domain.repository.BffBusinessContactRepository;
 import org.dddml.ffvtraceability.domain.repository.BffGeoRepository;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
@@ -25,29 +24,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import static org.dddml.ffvtraceability.domain.constants.BffSupplierConstants.*;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class BffSupplierApplicationServiceImpl implements BffSupplierApplicationService {
-    public static final String DEFAULT_PREFERRED_CURRENCY_UOM_ID = "USD"; //todo get from config?
-
-    public static final String PARTY_ROLE_SUPPLIER = "SUPPLIER";
-
-    public static final String PARTY_STATUS_ACTIVE = "ACTIVE";
-    public static final String PARTY_STATUS_INACTIVE = "INACTIVE";
-
-    /**
-     * GGN (GLOBALG.A.P. Number)
-     */
-    public static final String PARTY_IDENTIFICATION_TYPE_GGN = "GGN";
-
-    /**
-     * GLN (Global Location Number)
-     */
-    public static final String PARTY_IDENTIFICATION_TYPE_GLN = "GLN";
 
     @Autowired
     private PartyApplicationService partyApplicationService;
@@ -69,6 +54,9 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Autowired
     private BffGeoRepository bffGeoRepository;
+
+    @Autowired
+    private BffBusinessContactRepository bffBusinessContactRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -98,6 +86,23 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
                 dto.setGgn(x.getIdValue());
             }
         });
+        bffBusinessContactRepository.findPartyCurrentPostalAddressByPartyId(c.getSupplierId()).ifPresent(x -> {
+            BffBusinessContactDto bc = new BffBusinessContactDto();
+            bc.setBusinessName(x.getToName());
+            bc.setPhysicalLocationAddress(x.getAddress1());
+            bc.setCity(x.getCity());
+            bc.setState(x.getStateProvinceGeoId());// Is this OK?
+            bc.setZipCode(x.getPostalCode());
+            dto.setBusinessContacts(List.of(bc));
+        });
+        bffBusinessContactRepository.findPartyCurrentTelecomNumberByPartyId(c.getSupplierId()).ifPresent(x -> {
+            if (dto.getBusinessContacts() == null) {
+                dto.setBusinessContacts(List.of(new BffBusinessContactDto()));
+            }
+            dto.getBusinessContacts().get(0).setPhoneNumber(
+                    TelecomNumberUtil.format(x.getCountryCode(), x.getAreaCode(), x.getContactNumber())
+            );
+        });
         return dto;
     }
 
@@ -117,7 +122,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GLN, c.getSupplier().getGln());
         }
         createParty.setStatusId(PARTY_STATUS_ACTIVE); // default status
-        createParty.setCommandId(createParty.getPartyId()); //c.getCommandId());
+        createParty.setCommandId(c.getCommandId() != null ? c.getCommandId() : createParty.getPartyId());
         createParty.setRequesterId(c.getRequesterId());
         partyApplicationService.when(createParty);
 
@@ -126,10 +131,13 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         partyRoleId.setPartyId(createParty.getPartyId());
         partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
         createPartyRole.setPartyRoleId(partyRoleId);
-        createPartyRole.setCommandId(createParty.getPartyId() + "-SUPPLIER"); //c.getCommandId());
+        createPartyRole.setCommandId(createParty.getCommandId() + "-SPP");
         createPartyRole.setRequesterId(c.getRequesterId());
         partyRoleApplicationService.when(createPartyRole);
 
+        if (c.getSupplier().getBusinessContacts() != null && !c.getSupplier().getBusinessContacts().isEmpty()) {
+            createPartyBusinessContact(createParty.getPartyId(), c.getSupplier().getBusinessContacts().get(0), c);
+        }
         return createParty.getPartyId();
     }
 
@@ -170,6 +178,10 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             mergePatchParty.setStatusId(c.getSupplier().getStatusId());
         }
         partyApplicationService.when(mergePatchParty);
+
+        if (c.getSupplier().getBusinessContacts() != null && !c.getSupplier().getBusinessContacts().isEmpty()) {
+            updatePartyBusinessContact(supplierId, c.getSupplier().getBusinessContacts().get(0), c);
+        }
     }
 
     private void updatePartyIdentification(
@@ -234,50 +246,82 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Transactional
     public void when(BffSupplierServiceCommands.UpdateBusinessContact c) {
         String partyId = c.getSupplierId();
+        PartyState p = partyApplicationService.get(partyId);
+        if (p == null) {
+            throw new IllegalArgumentException("Supplier not found:" + c.getSupplierId());
+        }
         BffBusinessContactDto bizContact = c.getBusinessContact();
+        updatePartyBusinessContact(partyId, bizContact, c);
+    }
 
-        if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
+    private void updatePartyBusinessContact(String partyId, BffBusinessContactDto bizContact, Command c) {
+        // 处理邮政地址
+        Optional<BffBusinessContactRepository.PostalAddressProjection> pa = bffBusinessContactRepository.findOnePostalAddressByBusinessInfo(
+                bizContact.getBusinessName(), bizContact.getZipCode(),
+                bizContact.getState(), bizContact.getCity(), bizContact.getPhysicalLocationAddress()
+        );
+        if (pa.isPresent()) {
+            handlePartyContactMechAssociation(partyId, pa.get().getContactMechId(), "-PP", c);
+        } else {
+            // 创建新的邮政地址
             Optional<BffGeoRepository.StateProvinceProjection> stateProvince
                     = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
-            if (stateProvince.isEmpty()) {
-                throw new IllegalArgumentException("State not found:" + bizContact.getState()); // NOTE: Is this OK?
+            if (!stateProvince.isPresent()) {
+                throw new IllegalArgumentException("State not found:" + bizContact.getState());
             }
-            AbstractContactMechCommand.SimpleCreatePostalAddress createPostalAddress = new AbstractContactMechCommand.SimpleCreatePostalAddress();
-            createPostalAddress.setContactMechId(IdUtils.randomId());
-            createPostalAddress.setToName(bizContact.getBusinessName());
-            createPostalAddress.setPostalCode(bizContact.getZipCode());
-            createPostalAddress.setStateProvinceGeoId(stateProvince.get().getGeoId());
-            createPostalAddress.setCity(bizContact.getCity());
-            createPostalAddress.setAddress1(bizContact.getPhysicalLocationAddress());
+            AbstractContactMechCommand.SimpleCreatePostalAddress createPostalAddress = newCreatePostalAddress(bizContact, stateProvince.get());
             createPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-P" : UUID.randomUUID().toString());
             createPostalAddress.setRequesterId(c.getRequesterId());
             contactMechApplicationService.when(createPostalAddress);
 
-            AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase createPartyPostalAddress
-                    = newCreatePartyContactMechBase(partyId, createPostalAddress.getContactMechId());
-            createPartyPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-PP" : UUID.randomUUID().toString());
-            createPartyPostalAddress.setRequesterId(c.getRequesterId());
-            partyContactMechApplicationService.when(createPartyPostalAddress);
+            handlePartyContactMechAssociation(partyId, createPostalAddress.getContactMechId(), "-PP", c);
         }
 
-        if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
-            TelecomNumberUtil.TelecomNumberDto telecomNumberDto = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
-            AbstractContactMechCommand.SimpleCreateTelecomNumber createTelecomNumber = new AbstractContactMechCommand.SimpleCreateTelecomNumber();
-            createTelecomNumber.setContactMechId(IdUtils.randomId());
-            createTelecomNumber.setCountryCode(telecomNumberDto.getCountryCode());
-            createTelecomNumber.setAreaCode(telecomNumberDto.getAreaCode());
-            createTelecomNumber.setContactNumber(telecomNumberDto.getContactNumber());
+        // 处理电话号码
+        TelecomNumberUtil.TelecomNumberDto tn = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
+        Optional<BffBusinessContactRepository.TelecomNumber> telecomNumber = bffBusinessContactRepository.findOneTelecomNumberByPhoneInfo(
+                tn.getCountryCode(), tn.getAreaCode(), tn.getContactNumber());
+
+        String tnContactMechId;
+        if (telecomNumber.isPresent()) {
+            tnContactMechId = telecomNumber.get().getContactMechId();
+            handlePartyContactMechAssociation(partyId, tnContactMechId, "-PT", c);
+        } else {
+            // 创建新的电话号码
+            AbstractContactMechCommand.SimpleCreateTelecomNumber createTelecomNumber = newCreateTelecomNumber(bizContact);
             createTelecomNumber.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-T" : UUID.randomUUID().toString());
             createTelecomNumber.setRequesterId(c.getRequesterId());
             contactMechApplicationService.when(createTelecomNumber);
 
-            AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase createPartyTelecomNumber
-                    = newCreatePartyContactMechBase(partyId, createTelecomNumber.getContactMechId());
-            createPartyTelecomNumber.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-PT" : UUID.randomUUID().toString());
-            createPartyTelecomNumber.setRequesterId(c.getRequesterId());
-            partyContactMechApplicationService.when(createPartyTelecomNumber);
+            handlePartyContactMechAssociation(partyId, createTelecomNumber.getContactMechId(), "-PT", c);
+        }
+    }
+
+    private void createPartyBusinessContact(
+            String partyId, BffBusinessContactDto bizContact, Command c
+    ) {
+        if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
+            Optional<BffGeoRepository.StateProvinceProjection> stateProvince
+                    = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
+            if (stateProvince.isEmpty()) {
+                throw new IllegalArgumentException("State not found:" + bizContact.getState());
+            }
+            AbstractContactMechCommand.SimpleCreatePostalAddress createPostalAddress = newCreatePostalAddress(bizContact, stateProvince.get());
+            createPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-P" : UUID.randomUUID().toString());
+            createPostalAddress.setRequesterId(c.getRequesterId());
+            contactMechApplicationService.when(createPostalAddress);
+
+            createPartyContactMechAssociation(partyId, createPostalAddress.getContactMechId(), "-PP", c);
         }
 
+        if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
+            AbstractContactMechCommand.SimpleCreateTelecomNumber createTelecomNumber = newCreateTelecomNumber(bizContact);
+            createTelecomNumber.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-T" : UUID.randomUUID().toString());
+            createTelecomNumber.setRequesterId(c.getRequesterId());
+            contactMechApplicationService.when(createTelecomNumber);
+
+            createPartyContactMechAssociation(partyId, createTelecomNumber.getContactMechId(), "-PT", c);
+        }
     }
 
     private AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase newCreatePartyContactMechBase(
@@ -292,4 +336,82 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         createPartyContactMechBase.getCreatePartyContactMechCommands().add(createPartyContactMech);
         return createPartyContactMechBase;
     }
+
+    private AbstractContactMechCommand.SimpleCreateTelecomNumber newCreateTelecomNumber(BffBusinessContactDto bizContact) {
+        TelecomNumberUtil.TelecomNumberDto telecomNumberDto = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
+        AbstractContactMechCommand.SimpleCreateTelecomNumber createTelecomNumber = new AbstractContactMechCommand.SimpleCreateTelecomNumber();
+        createTelecomNumber.setContactMechId(IdUtils.randomId());
+        createTelecomNumber.setCountryCode(telecomNumberDto.getCountryCode());
+        createTelecomNumber.setAreaCode(telecomNumberDto.getAreaCode());
+        createTelecomNumber.setContactNumber(telecomNumberDto.getContactNumber());
+        return createTelecomNumber;
+    }
+
+    private AbstractContactMechCommand.SimpleCreatePostalAddress newCreatePostalAddress(
+            BffBusinessContactDto bizContact, BffGeoRepository.StateProvinceProjection stateProvince
+    ) {
+        AbstractContactMechCommand.SimpleCreatePostalAddress createPostalAddress = new AbstractContactMechCommand.SimpleCreatePostalAddress();
+        createPostalAddress.setContactMechId(IdUtils.randomId());
+        createPostalAddress.setToName(bizContact.getBusinessName());
+        createPostalAddress.setPostalCode(bizContact.getZipCode());
+        createPostalAddress.setStateProvinceGeoId(stateProvince.getGeoId());
+        createPostalAddress.setCity(bizContact.getCity());
+        createPostalAddress.setAddress1(bizContact.getPhysicalLocationAddress());
+        return createPostalAddress;
+    }
+
+    private void handlePartyContactMechAssociation(
+            String partyId,
+            String contactMechId,
+            String commandIdSuffix,
+            Command c
+    ) {
+        PartyContactMechBaseState pcmb = partyContactMechApplicationService.get(new PartyContactMechBaseId(partyId, contactMechId));
+        if (pcmb == null) {
+            AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase createPartyContactMechBase
+                    = newCreatePartyContactMechBase(partyId, contactMechId);
+            createPartyContactMechBase.setCommandId(c.getCommandId() != null ? c.getCommandId() + commandIdSuffix : UUID.randomUUID().toString());
+            createPartyContactMechBase.setRequesterId(c.getRequesterId());
+            partyContactMechApplicationService.when(createPartyContactMechBase);
+        } else {
+            AbstractPartyContactMechBaseCommand.SimpleMergePatchPartyContactMechBase mergePatchPartyContactMechBase
+                    = new AbstractPartyContactMechBaseCommand.SimpleMergePatchPartyContactMechBase();
+            mergePatchPartyContactMechBase.setPartyContactMechBaseId(pcmb.getPartyContactMechBaseId());
+            mergePatchPartyContactMechBase.setVersion(pcmb.getVersion());
+
+            Optional<PartyContactMechState> pcm = pcmb.getContactMechanisms().stream().filter(x ->
+                    x.getPartyContactMechBaseId().getContactMechId().equals(contactMechId)
+                            && x.getFromDate().isBefore(OffsetDateTime.now())
+                            && x.getThruDate().isAfter(OffsetDateTime.now())
+            ).findFirst();
+            if (pcm.isPresent()) {
+                PartyContactMechCommand.MergePatchPartyContactMech mergePatchPartyContactMech = mergePatchPartyContactMechBase.newMergePatchPartyContactMech();
+                mergePatchPartyContactMech.setFromDate(OffsetDateTime.now());
+                mergePatchPartyContactMech.setThruDate(OffsetDateTime.now().plusYears(100));
+                mergePatchPartyContactMechBase.getPartyContactMechCommands().add(mergePatchPartyContactMech);
+            } else {
+                PartyContactMechCommand.CreatePartyContactMech createPartyContactMech = mergePatchPartyContactMechBase.newCreatePartyContactMech();
+                createPartyContactMech.setFromDate(OffsetDateTime.now());
+                createPartyContactMech.setThruDate(OffsetDateTime.now().plusYears(100));
+                mergePatchPartyContactMechBase.getPartyContactMechCommands().add(createPartyContactMech);
+            }
+            mergePatchPartyContactMechBase.setCommandId(c.getCommandId() != null ? c.getCommandId() + commandIdSuffix : UUID.randomUUID().toString());
+            mergePatchPartyContactMechBase.setRequesterId(c.getRequesterId());
+            partyContactMechApplicationService.when(mergePatchPartyContactMechBase);
+        }
+    }
+
+    private void createPartyContactMechAssociation(
+            String partyId,
+            String contactMechId,
+            String commandIdSuffix,
+            Command c
+    ) {
+        AbstractPartyContactMechBaseCommand.SimpleCreatePartyContactMechBase createPartyContactMechBase
+                = newCreatePartyContactMechBase(partyId, contactMechId);
+        createPartyContactMechBase.setCommandId(c.getCommandId() != null ? c.getCommandId() + commandIdSuffix : UUID.randomUUID().toString());
+        createPartyContactMechBase.setRequesterId(c.getRequesterId());
+        partyContactMechApplicationService.when(createPartyContactMechBase);
+    }
+
 }

@@ -24,6 +24,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
     public static final String STATUS_ID_REJECTED = "REJECTED";
     public static final String STATUS_ID_ON_HOLD = "ON_HOLD";
     public static final List<String> AVAILABLE_STATUS_IDS = List.of(STATUS_ID_APPROVED, STATUS_ID_REJECTED, STATUS_ID_ON_HOLD);
+
     @Autowired
     private QaInspectionApplicationService qaInspectionApplicationService;
     @Autowired

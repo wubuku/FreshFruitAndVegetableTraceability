@@ -120,11 +120,21 @@ public class BffSupplierDto implements Serializable {
         this.statusId = statusId;
     }
 
+    private java.util.List<BffBusinessContactDto> businessContacts;
+
+    public java.util.List<BffBusinessContactDto> getBusinessContacts() {
+        return this.businessContacts;
+    }
+
+    public void setBusinessContacts(java.util.List<BffBusinessContactDto> businessContacts) {
+        this.businessContacts = businessContacts;
+    }
+
     public BffSupplierDto()
     {
     }
 
-    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId)
+    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts)
     {
         this.supplierId = supplierId;
         this.supplierName = supplierName;
@@ -134,6 +144,7 @@ public class BffSupplierDto implements Serializable {
         this.preferredCurrencyUomId = preferredCurrencyUomId;
         this.description = description;
         this.statusId = statusId;
+        this.businessContacts = businessContacts;
     }
 
     @Override
@@ -156,6 +167,7 @@ public class BffSupplierDto implements Serializable {
             && (preferredCurrencyUomId == other.preferredCurrencyUomId || (preferredCurrencyUomId != null && preferredCurrencyUomId.equals(other.preferredCurrencyUomId)))
             && (description == other.description || (description != null && description.equals(other.description)))
             && (statusId == other.statusId || (statusId != null && statusId.equals(other.statusId)))
+            && (businessContacts == other.businessContacts || (businessContacts != null && businessContacts.equals(other.businessContacts)))
             ;
     }
 
@@ -187,6 +199,9 @@ public class BffSupplierDto implements Serializable {
         if (this.statusId != null) {
             hash += 13 * this.statusId.hashCode();
         }
+        if (this.businessContacts != null) {
+            hash += 13 * this.businessContacts.hashCode();
+        }
         return hash;
     }
 
@@ -201,6 +216,7 @@ public class BffSupplierDto implements Serializable {
                 ", preferredCurrencyUomId=" + '\'' + preferredCurrencyUomId + '\'' +
                 ", description=" + '\'' + description + '\'' +
                 ", statusId=" + '\'' + statusId + '\'' +
+                ", businessContacts=" + businessContacts +
                 '}';
     }
 

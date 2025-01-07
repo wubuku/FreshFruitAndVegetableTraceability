@@ -27,6 +27,9 @@ valueObjects:
         type: very-long
       StatusId:
         type: id
+      BusinessContacts:
+        itemType: BffBusinessContactDto
+        isList: true
 
 services:
   BffSupplierService:
