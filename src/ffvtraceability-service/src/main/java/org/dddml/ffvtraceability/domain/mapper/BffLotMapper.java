@@ -13,9 +13,9 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-@Mapper(componentModel = "spring"//,
-        //unmappedTargetPolicy = ReportingPolicy.ERROR,
-        //unmappedSourcePolicy = ReportingPolicy.ERROR
+@Mapper(componentModel = "spring"// ,
+// unmappedTargetPolicy = ReportingPolicy.ERROR,
+// unmappedSourcePolicy = ReportingPolicy.ERROR
 )
 public interface BffLotMapper {
     default OffsetDateTime instantToOffsetDateTime(Instant instant) {

@@ -19,15 +19,15 @@ public class BffGeoMapperImpl implements BffGeoMapper {
 
         BffGeoDto bffGeoDto = new BffGeoDto();
 
-        bffGeoDto.setGeoId( bffGeoProjection.getGeoId() );
-        bffGeoDto.setGeoTypeId( bffGeoProjection.getGeoTypeId() );
-        bffGeoDto.setGeoName( bffGeoProjection.getGeoName() );
-        bffGeoDto.setGeoCode( bffGeoProjection.getGeoCode() );
-        bffGeoDto.setGeoSecCode( bffGeoProjection.getGeoSecCode() );
         bffGeoDto.setAbbreviation( bffGeoProjection.getAbbreviation() );
-        bffGeoDto.setWellKnownText( bffGeoProjection.getWellKnownText() );
-        bffGeoDto.setSequenceNumber( bffGeoProjection.getSequenceNumber() );
+        bffGeoDto.setGeoCode( bffGeoProjection.getGeoCode() );
+        bffGeoDto.setGeoId( bffGeoProjection.getGeoId() );
+        bffGeoDto.setGeoName( bffGeoProjection.getGeoName() );
+        bffGeoDto.setGeoSecCode( bffGeoProjection.getGeoSecCode() );
+        bffGeoDto.setGeoTypeId( bffGeoProjection.getGeoTypeId() );
         bffGeoDto.setParentGeoId( bffGeoProjection.getParentGeoId() );
+        bffGeoDto.setSequenceNumber( bffGeoProjection.getSequenceNumber() );
+        bffGeoDto.setWellKnownText( bffGeoProjection.getWellKnownText() );
 
         return bffGeoDto;
     }
