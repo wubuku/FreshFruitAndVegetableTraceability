@@ -49,15 +49,6 @@ public interface BffGeoRepository extends JpaRepository<AbstractGeoState.SimpleG
             @Param("keyword") String keyword
     );
 
-    interface StateProvinceProjection {
-        String getParentGeoId();
-
-        String getGeoId();
-
-        String getAbbreviation();
-
-        String getGeoName();
-
-        String getGeoTypeId();
+    interface StateProvinceProjection extends BffGeoProjection {
     }
 }

@@ -186,7 +186,7 @@ services:
 
       UpdateReceivingReferenceDocuments:
         # 更新收货单的关联文档
-        # 这个方法采用整体替换的方式？即如果之前“已关联”的文档的 Id 不在传入的文档列表中，则移除收货单和这些文档的关联关系。
+        # 这个方法采用整体更新的方式。即如果之前“已关联”的文档的 Id 不在传入的文档列表中，则移除收货单和这些文档的关联关系。
         httpMethod: PUT
         restfulResourceName: "{DocumentId}/ReferenceDocuments"
         metadata:
@@ -197,8 +197,9 @@ services:
             type: id
           ReferenceDocuments:
             itemType: BffDocumentDto
-            # 在每个 BffDocumentDto 中可以传入已保存的文档实体的 Id；
-            # 或 Id 为 null，传入文档 Id 外的其他属性，此时自动创建文档实体以及和收货单的关联关系。
+            # 在传入的每个 BffDocumentDto 对象中：
+            # * 可传入一个已保存的文档实体的 Id，表示创建（或保留）收货单和此文档的关联关系；
+            # * 也可以让 Id 为 null，传入文档 Id 外的其他属性，此时自动创建一个文档实体，以及它和收货单的关联关系。
 
       CreateReceivingItem:
         # 添加行项的方法
