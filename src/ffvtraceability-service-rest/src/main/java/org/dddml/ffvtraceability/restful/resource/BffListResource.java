@@ -1,8 +1,11 @@
 package org.dddml.ffvtraceability.restful.resource;
 
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
+import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.service.BffRawItemApplicationService;
 import org.dddml.ffvtraceability.domain.service.BffRawItemServiceCommands;
+import org.dddml.ffvtraceability.domain.service.BffSupplierApplicationService;
+import org.dddml.ffvtraceability.domain.service.BffSupplierServiceCommands;
 import org.dddml.ffvtraceability.specialization.DomainErrorUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.slf4j.Logger;
@@ -20,6 +23,9 @@ import java.util.List;
 @RestController
 public class BffListResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    BffSupplierApplicationService bffSupplierApplicationService;
 
     @Autowired
     private BffRawItemApplicationService bffRawItemApplicationService;
@@ -46,4 +52,20 @@ public class BffListResource {
         }
     }
 
+    @GetMapping("/Suppliers")
+    public List<? extends BffSupplierDto> getSuppliers(
+            @RequestParam(value = "active", required = false) String active
+    ) {
+        BffSupplierServiceCommands.GetSuppliers getSuppliers = new BffSupplierServiceCommands.GetSuppliers();
+        getSuppliers.setPage(0);
+        getSuppliers.setSize(Integer.MAX_VALUE);
+        getSuppliers.setActive(active);
+        try {
+            getSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
+            return bffSupplierApplicationService.when(getSuppliers).getContent();
+        } catch (Exception ex) {
+            logger.info(ex.getMessage(), ex);
+            throw DomainErrorUtils.convertException(ex);
+        }
+    }
 }
