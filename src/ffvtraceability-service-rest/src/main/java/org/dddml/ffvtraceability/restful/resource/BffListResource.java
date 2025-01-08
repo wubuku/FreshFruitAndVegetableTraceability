@@ -1,11 +1,9 @@
 package org.dddml.ffvtraceability.restful.resource;
 
+import org.dddml.ffvtraceability.domain.BffFacilityDto;
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
-import org.dddml.ffvtraceability.domain.service.BffRawItemApplicationService;
-import org.dddml.ffvtraceability.domain.service.BffRawItemServiceCommands;
-import org.dddml.ffvtraceability.domain.service.BffSupplierApplicationService;
-import org.dddml.ffvtraceability.domain.service.BffSupplierServiceCommands;
+import org.dddml.ffvtraceability.domain.service.*;
 import org.dddml.ffvtraceability.specialization.DomainErrorUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.slf4j.Logger;
@@ -25,15 +23,12 @@ public class BffListResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    BffSupplierApplicationService bffSupplierApplicationService;
-
-    @Autowired
     private BffRawItemApplicationService bffRawItemApplicationService;
+    @Autowired
+    private BffSupplierApplicationService bffSupplierApplicationService;
+    @Autowired
+    private BffFacilityApplicationService bffFacilityApplicationService;
 
-    //
-    // NOTE: 这里资源的路径命名应该和“分页列表”查询接口的命名保持一直，仅去掉“Bff”前缀。
-    //   因为在类名上已经包含了“Bff”前缀，所以这里不需要再重复。
-    //
     @GetMapping("RawItems") // 因为对应的分页查询接口的路径名是 "BffRawItems"
     public List<? extends BffRawItemDto> getRawItems(
             @RequestParam(value = "active", required = false) String active
@@ -63,6 +58,23 @@ public class BffListResource {
         try {
             getSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
             return bffSupplierApplicationService.when(getSuppliers).getContent();
+        } catch (Exception ex) {
+            logger.info(ex.getMessage(), ex);
+            throw DomainErrorUtils.convertException(ex);
+        }
+    }
+
+    @GetMapping("/Facilities")
+    public List<? extends BffFacilityDto> getFacilities(
+            @RequestParam(value = "active", required = false) String active
+    ) {
+        BffFacilityServiceCommands.GetFacilities getFacilities = new BffFacilityServiceCommands.GetFacilities();
+        getFacilities.setPage(0);
+        getFacilities.setSize(Integer.MAX_VALUE);
+        getFacilities.setActive(active);
+        try {
+            getFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
+            return bffFacilityApplicationService.when(getFacilities).getContent();
         } catch (Exception ex) {
             logger.info(ex.getMessage(), ex);
             throw DomainErrorUtils.convertException(ex);
