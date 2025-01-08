@@ -52,15 +52,21 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Transactional(readOnly = true)
     public Page<BffReceivingDocumentDto> when(BffReceivingServiceCommands.GetReceivingDocuments c) {
         int offset = c.getPage() * c.getSize();
-        long totalElements = bffReceivingRepository.countTotalShipments(c.getDocumentIdOrItem());
+        long totalElements = bffReceivingRepository.countTotalShipments(
+                c.getDocumentIdOrItem(), c.getSupplierId(),
+                c.getReceivedAtFrom(), //c.getReceivedAtFrom() != null ? c.getReceivedAtFrom().toInstant() : null,
+                c.getReceivedAtTo() //c.getReceivedAtTo() != null ? c.getReceivedAtTo().toInstant() : null
+        );
 
         List<BffReceivingDocumentItemProjection> projections =
                 bffReceivingRepository.findAllReceivingDocumentsWithItems(
-                        offset,
-                        c.getSize(),
-                        c.getDocumentIdOrItem());
+                        offset, c.getSize(),
+                        c.getDocumentIdOrItem(), c.getSupplierId(),
+                        c.getReceivedAtFrom(), //c.getReceivedAtFrom() != null ? c.getReceivedAtFrom().toInstant() : null,
+                        c.getReceivedAtTo() //c.getReceivedAtTo() != null ? c.getReceivedAtTo().toInstant() : null
+                );
 
-        // 获取所有shipmentIds用于查询关联文档
+        // 获取所有 Shipment IDs 以查询关联文档
         List<String> shipmentIds = projections.stream()
                 .map(BffReceivingDocumentItemProjection::getDocumentId)
                 .distinct()
@@ -70,7 +76,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         List<BffReceivingDocumentItemProjection> referenceDocuments = shipmentIds.isEmpty() ? Collections.emptyList()
                 : bffReceivingRepository.findReferenceDocumentsByShipmentIds(shipmentIds);
 
-        // 构建文档ID到引用文档列表的映射
+        // 构建 ID 到引用文档列表的映射
         Map<String, List<BffDocumentDto>> documentReferenceMap = referenceDocuments.stream()
                 .collect(Collectors.groupingBy(
                         BffReceivingDocumentItemProjection::getDocumentId,

@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import org.dddml.support.criterion.*;
+import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import static org.dddml.ffvtraceability.domain.meta.M.*;
@@ -35,12 +36,18 @@ public class BffReceivingServiceResource {
     public Page<BffReceivingDocumentDto> getReceivingDocuments(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
-        @RequestParam(value = "documentIdOrItem", required = false) String documentIdOrItem
+        @RequestParam(value = "documentIdOrItem", required = false) String documentIdOrItem,
+        @RequestParam(value = "supplierId", required = false) String supplierId,
+        @RequestParam(value = "receivedAtFrom", required = false) OffsetDateTime receivedAtFrom,
+        @RequestParam(value = "receivedAtTo", required = false) OffsetDateTime receivedAtTo
     ) {
         BffReceivingServiceCommands.GetReceivingDocuments getReceivingDocuments = new BffReceivingServiceCommands.GetReceivingDocuments();
         getReceivingDocuments.setPage(page);
         getReceivingDocuments.setSize(size);
         getReceivingDocuments.setDocumentIdOrItem(documentIdOrItem);
+        getReceivingDocuments.setSupplierId(supplierId);
+        getReceivingDocuments.setReceivedAtFrom(receivedAtFrom);
+        getReceivingDocuments.setReceivedAtTo(receivedAtTo);
         try {
         getReceivingDocuments.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(getReceivingDocuments);

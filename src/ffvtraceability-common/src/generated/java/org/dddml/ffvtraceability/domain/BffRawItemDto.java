@@ -171,11 +171,182 @@ public class BffRawItemDto implements Serializable {
         this.supplierName = supplierName;
     }
 
+    private String weightUomId;
+
+    public String getWeightUomId()
+    {
+        return this.weightUomId;
+    }
+
+    public void setWeightUomId(String weightUomId)
+    {
+        this.weightUomId = weightUomId;
+    }
+
+    /**
+     * The shipping weight of the product.
+     */
+    private java.math.BigDecimal shippingWeight;
+
+    public java.math.BigDecimal getShippingWeight()
+    {
+        return this.shippingWeight;
+    }
+
+    public void setShippingWeight(java.math.BigDecimal shippingWeight)
+    {
+        this.shippingWeight = shippingWeight;
+    }
+
+    private java.math.BigDecimal productWeight;
+
+    public java.math.BigDecimal getProductWeight()
+    {
+        return this.productWeight;
+    }
+
+    public void setProductWeight(java.math.BigDecimal productWeight)
+    {
+        this.productWeight = productWeight;
+    }
+
+    private String heightUomId;
+
+    public String getHeightUomId()
+    {
+        return this.heightUomId;
+    }
+
+    public void setHeightUomId(String heightUomId)
+    {
+        this.heightUomId = heightUomId;
+    }
+
+    private java.math.BigDecimal productHeight;
+
+    public java.math.BigDecimal getProductHeight()
+    {
+        return this.productHeight;
+    }
+
+    public void setProductHeight(java.math.BigDecimal productHeight)
+    {
+        this.productHeight = productHeight;
+    }
+
+    private java.math.BigDecimal shippingHeight;
+
+    public java.math.BigDecimal getShippingHeight()
+    {
+        return this.shippingHeight;
+    }
+
+    public void setShippingHeight(java.math.BigDecimal shippingHeight)
+    {
+        this.shippingHeight = shippingHeight;
+    }
+
+    private String widthUomId;
+
+    public String getWidthUomId()
+    {
+        return this.widthUomId;
+    }
+
+    public void setWidthUomId(String widthUomId)
+    {
+        this.widthUomId = widthUomId;
+    }
+
+    private java.math.BigDecimal productWidth;
+
+    public java.math.BigDecimal getProductWidth()
+    {
+        return this.productWidth;
+    }
+
+    public void setProductWidth(java.math.BigDecimal productWidth)
+    {
+        this.productWidth = productWidth;
+    }
+
+    private java.math.BigDecimal shippingWidth;
+
+    public java.math.BigDecimal getShippingWidth()
+    {
+        return this.shippingWidth;
+    }
+
+    public void setShippingWidth(java.math.BigDecimal shippingWidth)
+    {
+        this.shippingWidth = shippingWidth;
+    }
+
+    private String depthUomId;
+
+    public String getDepthUomId()
+    {
+        return this.depthUomId;
+    }
+
+    public void setDepthUomId(String depthUomId)
+    {
+        this.depthUomId = depthUomId;
+    }
+
+    private java.math.BigDecimal productDepth;
+
+    public java.math.BigDecimal getProductDepth()
+    {
+        return this.productDepth;
+    }
+
+    public void setProductDepth(java.math.BigDecimal productDepth)
+    {
+        this.productDepth = productDepth;
+    }
+
+    private java.math.BigDecimal shippingDepth;
+
+    public java.math.BigDecimal getShippingDepth()
+    {
+        return this.shippingDepth;
+    }
+
+    public void setShippingDepth(java.math.BigDecimal shippingDepth)
+    {
+        this.shippingDepth = shippingDepth;
+    }
+
+    private String diameterUomId;
+
+    public String getDiameterUomId()
+    {
+        return this.diameterUomId;
+    }
+
+    public void setDiameterUomId(String diameterUomId)
+    {
+        this.diameterUomId = diameterUomId;
+    }
+
+    private java.math.BigDecimal productDiameter;
+
+    public java.math.BigDecimal getProductDiameter()
+    {
+        return this.productDiameter;
+    }
+
+    public void setProductDiameter(java.math.BigDecimal productDiameter)
+    {
+        this.productDiameter = productDiameter;
+    }
+
     public BffRawItemDto()
     {
     }
 
-    public BffRawItemDto(String productId, String productName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName)
+    public BffRawItemDto(String productId, String productName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight, String heightUomId, java.math.BigDecimal productHeight, java.math.BigDecimal shippingHeight, String widthUomId, java.math.BigDecimal productWidth, java.math.BigDecimal shippingWidth, String depthUomId, java.math.BigDecimal productDepth, java.math.BigDecimal shippingDepth, String diameterUomId, java.math.BigDecimal productDiameter)
     {
         this.productId = productId;
         this.productName = productName;
@@ -190,6 +361,20 @@ public class BffRawItemDto implements Serializable {
         this.statusId = statusId;
         this.supplierId = supplierId;
         this.supplierName = supplierName;
+        this.weightUomId = weightUomId;
+        this.shippingWeight = shippingWeight;
+        this.productWeight = productWeight;
+        this.heightUomId = heightUomId;
+        this.productHeight = productHeight;
+        this.shippingHeight = shippingHeight;
+        this.widthUomId = widthUomId;
+        this.productWidth = productWidth;
+        this.shippingWidth = shippingWidth;
+        this.depthUomId = depthUomId;
+        this.productDepth = productDepth;
+        this.shippingDepth = shippingDepth;
+        this.diameterUomId = diameterUomId;
+        this.productDiameter = productDiameter;
     }
 
     @Override
@@ -217,6 +402,20 @@ public class BffRawItemDto implements Serializable {
             && (statusId == other.statusId || (statusId != null && statusId.equals(other.statusId)))
             && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
             && (supplierName == other.supplierName || (supplierName != null && supplierName.equals(other.supplierName)))
+            && (weightUomId == other.weightUomId || (weightUomId != null && weightUomId.equals(other.weightUomId)))
+            && (shippingWeight == other.shippingWeight || (shippingWeight != null && shippingWeight.equals(other.shippingWeight)))
+            && (productWeight == other.productWeight || (productWeight != null && productWeight.equals(other.productWeight)))
+            && (heightUomId == other.heightUomId || (heightUomId != null && heightUomId.equals(other.heightUomId)))
+            && (productHeight == other.productHeight || (productHeight != null && productHeight.equals(other.productHeight)))
+            && (shippingHeight == other.shippingHeight || (shippingHeight != null && shippingHeight.equals(other.shippingHeight)))
+            && (widthUomId == other.widthUomId || (widthUomId != null && widthUomId.equals(other.widthUomId)))
+            && (productWidth == other.productWidth || (productWidth != null && productWidth.equals(other.productWidth)))
+            && (shippingWidth == other.shippingWidth || (shippingWidth != null && shippingWidth.equals(other.shippingWidth)))
+            && (depthUomId == other.depthUomId || (depthUomId != null && depthUomId.equals(other.depthUomId)))
+            && (productDepth == other.productDepth || (productDepth != null && productDepth.equals(other.productDepth)))
+            && (shippingDepth == other.shippingDepth || (shippingDepth != null && shippingDepth.equals(other.shippingDepth)))
+            && (diameterUomId == other.diameterUomId || (diameterUomId != null && diameterUomId.equals(other.diameterUomId)))
+            && (productDiameter == other.productDiameter || (productDiameter != null && productDiameter.equals(other.productDiameter)))
             ;
     }
 
@@ -263,6 +462,48 @@ public class BffRawItemDto implements Serializable {
         if (this.supplierName != null) {
             hash += 13 * this.supplierName.hashCode();
         }
+        if (this.weightUomId != null) {
+            hash += 13 * this.weightUomId.hashCode();
+        }
+        if (this.shippingWeight != null) {
+            hash += 13 * this.shippingWeight.hashCode();
+        }
+        if (this.productWeight != null) {
+            hash += 13 * this.productWeight.hashCode();
+        }
+        if (this.heightUomId != null) {
+            hash += 13 * this.heightUomId.hashCode();
+        }
+        if (this.productHeight != null) {
+            hash += 13 * this.productHeight.hashCode();
+        }
+        if (this.shippingHeight != null) {
+            hash += 13 * this.shippingHeight.hashCode();
+        }
+        if (this.widthUomId != null) {
+            hash += 13 * this.widthUomId.hashCode();
+        }
+        if (this.productWidth != null) {
+            hash += 13 * this.productWidth.hashCode();
+        }
+        if (this.shippingWidth != null) {
+            hash += 13 * this.shippingWidth.hashCode();
+        }
+        if (this.depthUomId != null) {
+            hash += 13 * this.depthUomId.hashCode();
+        }
+        if (this.productDepth != null) {
+            hash += 13 * this.productDepth.hashCode();
+        }
+        if (this.shippingDepth != null) {
+            hash += 13 * this.shippingDepth.hashCode();
+        }
+        if (this.diameterUomId != null) {
+            hash += 13 * this.diameterUomId.hashCode();
+        }
+        if (this.productDiameter != null) {
+            hash += 13 * this.productDiameter.hashCode();
+        }
         return hash;
     }
 
@@ -282,6 +523,20 @@ public class BffRawItemDto implements Serializable {
                 ", statusId=" + '\'' + statusId + '\'' +
                 ", supplierId=" + '\'' + supplierId + '\'' +
                 ", supplierName=" + '\'' + supplierName + '\'' +
+                ", weightUomId=" + '\'' + weightUomId + '\'' +
+                ", shippingWeight=" + shippingWeight +
+                ", productWeight=" + productWeight +
+                ", heightUomId=" + '\'' + heightUomId + '\'' +
+                ", productHeight=" + productHeight +
+                ", shippingHeight=" + shippingHeight +
+                ", widthUomId=" + '\'' + widthUomId + '\'' +
+                ", productWidth=" + productWidth +
+                ", shippingWidth=" + shippingWidth +
+                ", depthUomId=" + '\'' + depthUomId + '\'' +
+                ", productDepth=" + productDepth +
+                ", shippingDepth=" + shippingDepth +
+                ", diameterUomId=" + '\'' + diameterUomId + '\'' +
+                ", productDiameter=" + productDiameter +
                 '}';
     }
 

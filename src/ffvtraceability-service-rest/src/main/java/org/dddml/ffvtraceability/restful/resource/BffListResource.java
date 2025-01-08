@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping(path = "BffList", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "BffLists", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class BffListResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -29,9 +29,10 @@ public class BffListResource {
     @Autowired
     private BffFacilityApplicationService bffFacilityApplicationService;
 
-    @GetMapping("/Items")
+    @GetMapping("RawItems") // 因为对应的分页查询接口的路径名是 "BffRawItems"
     public List<? extends BffRawItemDto> getRawItems(
-            @RequestParam(value = "active", required = false) String active) {
+            @RequestParam(value = "active", required = false) String active
+    ) {
         BffRawItemServiceCommands.GetRawItems getRawItems = new BffRawItemServiceCommands.GetRawItems();
         getRawItems.setPage(0);
         getRawItems.setSize(Integer.MAX_VALUE);
@@ -48,7 +49,8 @@ public class BffListResource {
 
     @GetMapping("/Suppliers")
     public List<? extends BffSupplierDto> getSuppliers(
-            @RequestParam(value = "active", required = false) String active) {
+            @RequestParam(value = "active", required = false) String active
+    ) {
         BffSupplierServiceCommands.GetSuppliers getSuppliers = new BffSupplierServiceCommands.GetSuppliers();
         getSuppliers.setPage(0);
         getSuppliers.setSize(Integer.MAX_VALUE);
@@ -61,7 +63,6 @@ public class BffListResource {
             throw DomainErrorUtils.convertException(ex);
         }
     }
-
 
     @GetMapping("/Facilities")
     public List<? extends BffFacilityDto> getFacilities(

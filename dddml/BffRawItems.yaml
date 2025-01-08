@@ -32,6 +32,50 @@ valueObjects:
         type: id
       SupplierName:
         type: name
+      WeightUomId:
+        columnName: WEIGHT_UOM_ID
+        type: id
+      ShippingWeight:
+        description: The shipping weight of the product.
+        columnName: SHIPPING_WEIGHT
+        type: fixed-point
+      ProductWeight:
+        columnName: PRODUCT_WEIGHT
+        type: fixed-point
+      HeightUomId:
+        columnName: HEIGHT_UOM_ID
+        type: id
+      ProductHeight:
+        columnName: PRODUCT_HEIGHT
+        type: fixed-point
+      ShippingHeight:
+        columnName: SHIPPING_HEIGHT
+        type: fixed-point
+      WidthUomId:
+        columnName: WIDTH_UOM_ID
+        type: id
+      ProductWidth:
+        columnName: PRODUCT_WIDTH
+        type: fixed-point
+      ShippingWidth:
+        columnName: SHIPPING_WIDTH
+        type: fixed-point
+      DepthUomId:
+        columnName: DEPTH_UOM_ID
+        type: id
+      ProductDepth:
+        columnName: PRODUCT_DEPTH
+        type: fixed-point
+      ShippingDepth:
+        columnName: SHIPPING_DEPTH
+        type: fixed-point
+      DiameterUomId:
+        columnName: DIAMETER_UOM_ID
+        type: id
+      ProductDiameter:
+        columnName: PRODUCT_DIAMETER
+        type: fixed-point
+
 
 services:
   BffRawItemService:
