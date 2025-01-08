@@ -104,6 +104,15 @@ services:
         parameters:
           DocumentIdOrItem:
             type: id
+          SupplierId:
+            type: id
+            optional: true # NOT required
+          ReceivedAtFrom:
+            type: date-time
+            optional: true # NOT required
+          ReceivedAtTo:
+            type: date-time
+            optional: true # NOT required
         result:
           itemType: BffReceivingDocumentDto
 

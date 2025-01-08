@@ -33,6 +33,20 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setStatusId( bffRawItem.getStatusId() );
         bffRawItemDto.setSupplierId( bffRawItem.getSupplierId() );
         bffRawItemDto.setSupplierName( bffRawItem.getSupplierName() );
+        bffRawItemDto.setWeightUomId( bffRawItem.getWeightUomId() );
+        bffRawItemDto.setShippingWeight( bffRawItem.getShippingWeight() );
+        bffRawItemDto.setProductWeight( bffRawItem.getProductWeight() );
+        bffRawItemDto.setHeightUomId( bffRawItem.getHeightUomId() );
+        bffRawItemDto.setProductHeight( bffRawItem.getProductHeight() );
+        bffRawItemDto.setShippingHeight( bffRawItem.getShippingHeight() );
+        bffRawItemDto.setWidthUomId( bffRawItem.getWidthUomId() );
+        bffRawItemDto.setProductWidth( bffRawItem.getProductWidth() );
+        bffRawItemDto.setShippingWidth( bffRawItem.getShippingWidth() );
+        bffRawItemDto.setDepthUomId( bffRawItem.getDepthUomId() );
+        bffRawItemDto.setProductDepth( bffRawItem.getProductDepth() );
+        bffRawItemDto.setShippingDepth( bffRawItem.getShippingDepth() );
+        bffRawItemDto.setDiameterUomId( bffRawItem.getDiameterUomId() );
+        bffRawItemDto.setProductDiameter( bffRawItem.getProductDiameter() );
 
         return bffRawItemDto;
     }
@@ -54,6 +68,20 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setQuantityUomId( productState.getQuantityUomId() );
         bffRawItemDto.setQuantityIncluded( productState.getQuantityIncluded() );
         bffRawItemDto.setPiecesIncluded( productState.getPiecesIncluded() );
+        bffRawItemDto.setWeightUomId( productState.getWeightUomId() );
+        bffRawItemDto.setShippingWeight( productState.getShippingWeight() );
+        bffRawItemDto.setProductWeight( productState.getProductWeight() );
+        bffRawItemDto.setHeightUomId( productState.getHeightUomId() );
+        bffRawItemDto.setProductHeight( productState.getProductHeight() );
+        bffRawItemDto.setShippingHeight( productState.getShippingHeight() );
+        bffRawItemDto.setWidthUomId( productState.getWidthUomId() );
+        bffRawItemDto.setProductWidth( productState.getProductWidth() );
+        bffRawItemDto.setShippingWidth( productState.getShippingWidth() );
+        bffRawItemDto.setDepthUomId( productState.getDepthUomId() );
+        bffRawItemDto.setProductDepth( productState.getProductDepth() );
+        bffRawItemDto.setShippingDepth( productState.getShippingDepth() );
+        bffRawItemDto.setDiameterUomId( productState.getDiameterUomId() );
+        bffRawItemDto.setProductDiameter( productState.getProductDiameter() );
 
         return bffRawItemDto;
     }

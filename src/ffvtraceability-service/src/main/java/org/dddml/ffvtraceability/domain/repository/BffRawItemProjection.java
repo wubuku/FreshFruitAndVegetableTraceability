@@ -34,5 +34,33 @@ public interface BffRawItemProjection {
 
     String getSupplierName();
 
+    String getWeightUomId();
+
+    java.math.BigDecimal getShippingWeight();
+
+    java.math.BigDecimal getProductWeight();
+
+    String getHeightUomId();
+
+    java.math.BigDecimal getProductHeight();
+
+    java.math.BigDecimal getShippingHeight();
+
+    String getWidthUomId();
+
+    java.math.BigDecimal getProductWidth();
+
+    java.math.BigDecimal getShippingWidth();
+
+    String getDepthUomId();
+
+    java.math.BigDecimal getProductDepth();
+
+    java.math.BigDecimal getShippingDepth();
+
+    String getDiameterUomId();
+
+    java.math.BigDecimal getProductDiameter();
+
 }
 

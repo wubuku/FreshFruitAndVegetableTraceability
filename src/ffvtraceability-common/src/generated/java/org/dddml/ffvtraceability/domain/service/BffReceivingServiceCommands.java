@@ -6,6 +6,7 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import java.util.*;
+import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public class BffReceivingServiceCommands {
@@ -44,6 +45,45 @@ public class BffReceivingServiceCommands {
 
         public void setDocumentIdOrItem(String documentIdOrItem) {
             this.documentIdOrItem = documentIdOrItem;
+        }
+
+        /**
+         * Supplier Id
+         */
+        private String supplierId;
+
+        public String getSupplierId() {
+            return supplierId;
+        }
+
+        public void setSupplierId(String supplierId) {
+            this.supplierId = supplierId;
+        }
+
+        /**
+         * Received At From
+         */
+        private OffsetDateTime receivedAtFrom;
+
+        public OffsetDateTime getReceivedAtFrom() {
+            return receivedAtFrom;
+        }
+
+        public void setReceivedAtFrom(OffsetDateTime receivedAtFrom) {
+            this.receivedAtFrom = receivedAtFrom;
+        }
+
+        /**
+         * Received At To
+         */
+        private OffsetDateTime receivedAtTo;
+
+        public OffsetDateTime getReceivedAtTo() {
+            return receivedAtTo;
+        }
+
+        public void setReceivedAtTo(OffsetDateTime receivedAtTo) {
+            this.receivedAtTo = receivedAtTo;
         }
 
     }
