@@ -19,21 +19,21 @@ mvn -pl ffvtraceability-service-rest -am test
 
 ## 测试前端 OAuth2 授权码流程
 
-见文件 `src/ffvtraceability-service-rest/src/main/resources/static/index.html`。
+测试页面见：`src/ffvtraceability-service-rest/src/main/resources/static/index.html`。
 
 
-### Web 前端 OAuth2 授权码流程优化
+---
 
-开始我们使用 service-rest 模块的 TokenController 作为代理来访问 auth-server 的 token endpoint。
+一开始我们在 service-rest 模块创建了一个 `TokenController`，作为 Web 前端的代理来访问 Auth Server 的 token endpoint。
 后面我们进行了优化，下面是对这一过程的讨论记录。
+
+
+### Auth Server 为 Web 前端 OAuth2 授权码流程所作的优化
 
 #### 问题背景
 
-原有的授权码流程中，前端页面通过 service-rest 模块的 TokenController 作为代理来访问 auth-server 的 token endpoint。这种方式存在以下问题：
-
-1. 多余的网络跳转
-2. 缺乏必要的安全机制
-3. 架构复杂度增加
+以 service-rest 项目为例，原有的授权码流程中，前端页面通过 service-rest 模块的 `TokenController` 作为代理来访问 auth-server 的 token endpoint。
+相对于我们的应用场景（Auth Server 主要服务于数量有限的企业内部应用）来说，这种方式增加了架构复杂度。
 
 
 #### 优化方案
@@ -60,7 +60,7 @@ public class WebTokenController {
 }
 ```
 
-##### 配置更新
+##### Auth Server 配置更新
 
 1. application.yml 中添加 web-clients 配置：
 
@@ -98,7 +98,7 @@ public CorsConfigurationSource corsConfigurationSource() {
 
 ##### 前端适配
 
-更新前端代码，直接调用 auth-server 的新端点：
+更新 service-rest 项目的前端代码，直接调用 Auth Server 提供的新端点：
 
 ```javascript
 const response = await fetch('http://localhost:9000/web-clients/oauth2/token', {
@@ -123,9 +123,9 @@ const response = await fetch('http://localhost:9000/web-clients/oauth2/token', {
    - 简化了系统架构
 
 2. 安全增强：
+   - 集中式的安全控制
    - 添加了客户端白名单验证
    - 实现了请求限流保护
-   - 集中式的安全控制
 
 3. 性能提升：
    - 减少了网络延迟
@@ -134,7 +134,7 @@ const response = await fetch('http://localhost:9000/web-clients/oauth2/token', {
 
 #### 后续工作
 
-1. 移除原有的 TokenController
+1. 移除 service-rest 模块原有的 TokenController
 2. 更新相关文档
 3. 监控新端点的使用情况
 4. 根据实际使用情况调整限流参数
@@ -145,3 +145,4 @@ const response = await fetch('http://localhost:9000/web-clients/oauth2/token', {
 2. 妥善保管客户端密钥
 3. 定期检查限流日志
 4. 保持与其他 OAuth2 客户端的兼容性
+

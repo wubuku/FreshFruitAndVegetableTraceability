@@ -1,0 +1,35 @@
+valueObjects:
+  BffGeoDto:
+    metadata:
+      JpaProjectionInterfaceName: BffGeoProjection
+    properties:
+      GeoId:
+        type: id
+      GeoTypeId:
+        type: id
+      GeoName:
+        type: name
+      GeoCode:
+        type: short-varchar
+      GeoSecCode:
+        type: short-varchar
+      Abbreviation:
+        type: short-varchar
+      WellKnownText:
+        type: very-long
+      # -----------------------------------
+      SequenceNumber:
+        # 序号
+        type: numeric
+      ParentGeoId:
+        type: id
+
+services:
+  BffGeoService:
+    restfulResourceName: "BffGeo"
+    methods:
+      GetAllNorthAmericanStatesAndProvinces:
+        restfulResourceName: "NorthAmericanStatesAndProvinces"
+        isQuery: true
+        result:
+          itemType: BffGeoDto

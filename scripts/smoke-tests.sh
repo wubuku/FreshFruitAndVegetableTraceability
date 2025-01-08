@@ -32,6 +32,12 @@ check_response() {
     fi
 }
 
+
+# 返回北美洲的州和省
+curl -X 'GET' \
+  'http://localhost:1023/api/BffGeo/NorthAmericanStatesAndProvinces' \
+  -H 'accept: application/json'
+
 # Test Units of Measure (Base data)
 echo -e "\n=== Testing Units of Measure ===\n"
 
@@ -679,4 +685,3 @@ curl -X 'PUT' \
   "state": "CA",
   "zipCode": "94025"
 }' | { read http_status; check_response $? "$http_status" "Update supplier business contact"; }
-
