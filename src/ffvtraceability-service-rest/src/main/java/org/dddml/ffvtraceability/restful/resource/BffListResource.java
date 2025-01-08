@@ -1,8 +1,11 @@
 package org.dddml.ffvtraceability.restful.resource;
 
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
+import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.service.BffRawItemApplicationService;
 import org.dddml.ffvtraceability.domain.service.BffRawItemServiceCommands;
+import org.dddml.ffvtraceability.domain.service.BffSupplierApplicationService;
+import org.dddml.ffvtraceability.domain.service.BffSupplierServiceCommands;
 import org.dddml.ffvtraceability.specialization.DomainErrorUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.slf4j.Logger;
@@ -15,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RequestMapping(path = "BffList", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
@@ -25,8 +26,10 @@ public class BffListResource {
 
     @Autowired
     private BffRawItemApplicationService bffRawItemApplicationService;
+    @Autowired
+    private BffSupplierApplicationService bffSupplierApplicationService;
 
-    @GetMapping("Items")
+    @GetMapping("/Items")
     public List<? extends BffRawItemDto> getRawItems(
             @RequestParam(value = "active", required = false) String active) {
         BffRawItemServiceCommands.GetRawItems getRawItems = new BffRawItemServiceCommands.GetRawItems();
@@ -37,6 +40,22 @@ public class BffListResource {
             getRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
             Page<BffRawItemDto> rawItemDtoPage = bffRawItemApplicationService.when(getRawItems);
             return rawItemDtoPage.getContent();
+        } catch (Exception ex) {
+            logger.info(ex.getMessage(), ex);
+            throw DomainErrorUtils.convertException(ex);
+        }
+    }
+
+    @GetMapping("/Suppliers")
+    public List<? extends BffSupplierDto> getSuppliers(
+            @RequestParam(value = "active", required = false) String active) {
+        BffSupplierServiceCommands.GetSuppliers getSuppliers = new BffSupplierServiceCommands.GetSuppliers();
+        getSuppliers.setPage(0);
+        getSuppliers.setSize(Integer.MAX_VALUE);
+        getSuppliers.setActive(active);
+        try {
+            getSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
+            return bffSupplierApplicationService.when(getSuppliers).getContent();
         } catch (Exception ex) {
             logger.info(ex.getMessage(), ex);
             throw DomainErrorUtils.convertException(ex);
