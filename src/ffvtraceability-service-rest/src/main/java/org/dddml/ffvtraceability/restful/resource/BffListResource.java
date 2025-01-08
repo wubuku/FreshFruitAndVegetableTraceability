@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-@RequestMapping(path = "BffList", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "BffLists", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class BffListResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -26,9 +24,14 @@ public class BffListResource {
     @Autowired
     private BffRawItemApplicationService bffRawItemApplicationService;
 
-    @GetMapping("Items")
+    //
+    // NOTE: 这里资源的路径命名应该和“分页列表”查询接口的命名保持一直，仅去掉“Bff”前缀。
+    //   因为在类名上已经包含了“Bff”前缀，所以这里不需要再重复。
+    //
+    @GetMapping("RawItems") // 因为对应的分页查询接口的路径名是 "BffRawItems"
     public List<? extends BffRawItemDto> getRawItems(
-            @RequestParam(value = "active", required = false) String active) {
+            @RequestParam(value = "active", required = false) String active
+    ) {
         BffRawItemServiceCommands.GetRawItems getRawItems = new BffRawItemServiceCommands.GetRawItems();
         getRawItems.setPage(0);
         getRawItems.setSize(Integer.MAX_VALUE);

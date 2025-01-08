@@ -20,9 +20,9 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         BffSupplierDto bffSupplierDto = new BffSupplierDto();
 
-        bffSupplierDto.setDescription( partyState.getDescription() );
         bffSupplierDto.setExternalId( partyState.getExternalId() );
         bffSupplierDto.setPreferredCurrencyUomId( partyState.getPreferredCurrencyUomId() );
+        bffSupplierDto.setDescription( partyState.getDescription() );
         bffSupplierDto.setStatusId( partyState.getStatusId() );
 
         return bffSupplierDto;
@@ -36,14 +36,14 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         BffSupplierDto bffSupplierDto = new BffSupplierDto();
 
-        bffSupplierDto.setDescription( bffSupplierProjection.getDescription() );
-        bffSupplierDto.setExternalId( bffSupplierProjection.getExternalId() );
-        bffSupplierDto.setGgn( bffSupplierProjection.getGgn() );
-        bffSupplierDto.setGln( bffSupplierProjection.getGln() );
-        bffSupplierDto.setPreferredCurrencyUomId( bffSupplierProjection.getPreferredCurrencyUomId() );
-        bffSupplierDto.setStatusId( bffSupplierProjection.getStatusId() );
         bffSupplierDto.setSupplierId( bffSupplierProjection.getSupplierId() );
         bffSupplierDto.setSupplierName( bffSupplierProjection.getSupplierName() );
+        bffSupplierDto.setGgn( bffSupplierProjection.getGgn() );
+        bffSupplierDto.setGln( bffSupplierProjection.getGln() );
+        bffSupplierDto.setExternalId( bffSupplierProjection.getExternalId() );
+        bffSupplierDto.setPreferredCurrencyUomId( bffSupplierProjection.getPreferredCurrencyUomId() );
+        bffSupplierDto.setDescription( bffSupplierProjection.getDescription() );
+        bffSupplierDto.setStatusId( bffSupplierProjection.getStatusId() );
 
         return bffSupplierDto;
     }

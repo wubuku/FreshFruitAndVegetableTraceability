@@ -20,15 +20,15 @@ public class BffFacilityLocationMapperImpl implements BffFacilityLocationMapper 
 
         BffFacilityLocationDto bffFacilityLocationDto = new BffFacilityLocationDto();
 
-        bffFacilityLocationDto.setActive( bffFacilityLocationProjection.getActive() );
-        bffFacilityLocationDto.setAisleId( bffFacilityLocationProjection.getAisleId() );
-        bffFacilityLocationDto.setAreaId( bffFacilityLocationProjection.getAreaId() );
-        bffFacilityLocationDto.setGeoPointId( bffFacilityLocationProjection.getGeoPointId() );
-        bffFacilityLocationDto.setLevelId( bffFacilityLocationProjection.getLevelId() );
         bffFacilityLocationDto.setLocationSeqId( bffFacilityLocationProjection.getLocationSeqId() );
         bffFacilityLocationDto.setLocationTypeEnumId( bffFacilityLocationProjection.getLocationTypeEnumId() );
-        bffFacilityLocationDto.setPositionId( bffFacilityLocationProjection.getPositionId() );
+        bffFacilityLocationDto.setAreaId( bffFacilityLocationProjection.getAreaId() );
+        bffFacilityLocationDto.setAisleId( bffFacilityLocationProjection.getAisleId() );
         bffFacilityLocationDto.setSectionId( bffFacilityLocationProjection.getSectionId() );
+        bffFacilityLocationDto.setLevelId( bffFacilityLocationProjection.getLevelId() );
+        bffFacilityLocationDto.setPositionId( bffFacilityLocationProjection.getPositionId() );
+        bffFacilityLocationDto.setGeoPointId( bffFacilityLocationProjection.getGeoPointId() );
+        bffFacilityLocationDto.setActive( bffFacilityLocationProjection.getActive() );
 
         return bffFacilityLocationDto;
     }
@@ -41,14 +41,14 @@ public class BffFacilityLocationMapperImpl implements BffFacilityLocationMapper 
 
         BffFacilityLocationDto bffFacilityLocationDto = new BffFacilityLocationDto();
 
-        bffFacilityLocationDto.setActive( facilityLocationState.getActive() );
-        bffFacilityLocationDto.setAisleId( facilityLocationState.getAisleId() );
-        bffFacilityLocationDto.setAreaId( facilityLocationState.getAreaId() );
-        bffFacilityLocationDto.setGeoPointId( facilityLocationState.getGeoPointId() );
-        bffFacilityLocationDto.setLevelId( facilityLocationState.getLevelId() );
         bffFacilityLocationDto.setLocationTypeEnumId( facilityLocationState.getLocationTypeEnumId() );
-        bffFacilityLocationDto.setPositionId( facilityLocationState.getPositionId() );
+        bffFacilityLocationDto.setAreaId( facilityLocationState.getAreaId() );
+        bffFacilityLocationDto.setAisleId( facilityLocationState.getAisleId() );
         bffFacilityLocationDto.setSectionId( facilityLocationState.getSectionId() );
+        bffFacilityLocationDto.setLevelId( facilityLocationState.getLevelId() );
+        bffFacilityLocationDto.setPositionId( facilityLocationState.getPositionId() );
+        bffFacilityLocationDto.setGeoPointId( facilityLocationState.getGeoPointId() );
+        bffFacilityLocationDto.setActive( facilityLocationState.getActive() );
 
         bffFacilityLocationDto.setLocationSeqId( facilityLocationState.getFacilityLocationId().getLocationSeqId() );
 

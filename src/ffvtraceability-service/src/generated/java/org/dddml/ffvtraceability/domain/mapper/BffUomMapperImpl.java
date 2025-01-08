@@ -20,12 +20,12 @@ public class BffUomMapperImpl implements BffUomMapper {
 
         BffUomDto bffUomDto = new BffUomDto();
 
-        bffUomDto.setAbbreviation( bffUomProjection.getAbbreviation() );
-        bffUomDto.setDescription( bffUomProjection.getDescription() );
-        bffUomDto.setGs1AI( bffUomProjection.getGs1AI() );
-        bffUomDto.setNumericCode( bffUomProjection.getNumericCode() );
         bffUomDto.setUomId( bffUomProjection.getUomId() );
         bffUomDto.setUomTypeId( bffUomProjection.getUomTypeId() );
+        bffUomDto.setAbbreviation( bffUomProjection.getAbbreviation() );
+        bffUomDto.setNumericCode( bffUomProjection.getNumericCode() );
+        bffUomDto.setDescription( bffUomProjection.getDescription() );
+        bffUomDto.setGs1AI( bffUomProjection.getGs1AI() );
 
         return bffUomDto;
     }
@@ -38,12 +38,12 @@ public class BffUomMapperImpl implements BffUomMapper {
 
         BffUomDto bffUomDto = new BffUomDto();
 
-        bffUomDto.setAbbreviation( uomState.getAbbreviation() );
-        bffUomDto.setDescription( uomState.getDescription() );
-        bffUomDto.setGs1AI( uomState.getGs1AI() );
-        bffUomDto.setNumericCode( uomState.getNumericCode() );
         bffUomDto.setUomId( uomState.getUomId() );
         bffUomDto.setUomTypeId( uomState.getUomTypeId() );
+        bffUomDto.setAbbreviation( uomState.getAbbreviation() );
+        bffUomDto.setNumericCode( uomState.getNumericCode() );
+        bffUomDto.setDescription( uomState.getDescription() );
+        bffUomDto.setGs1AI( uomState.getGs1AI() );
 
         return bffUomDto;
     }
