@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class BffListResource {
     private BffRawItemApplicationService bffRawItemApplicationService;
 
     @GetMapping("Items")
-    public Map<String, String> getRawItems(
+    public List<? extends BffRawItemDto> getRawItems(
             @RequestParam(value = "active", required = false) String active) {
         BffRawItemServiceCommands.GetRawItems getRawItems = new BffRawItemServiceCommands.GetRawItems();
         getRawItems.setPage(0);
@@ -35,9 +36,7 @@ public class BffListResource {
         try {
             getRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
             Page<BffRawItemDto> rawItemDtoPage = bffRawItemApplicationService.when(getRawItems);
-            Map<String, String> resultMap = rawItemDtoPage.getContent().stream()
-                    .collect(Collectors.toMap(BffRawItemDto::getProductId, BffRawItemDto::getProductName));
-            return resultMap;
+            return rawItemDtoPage.getContent();
         } catch (Exception ex) {
             logger.info(ex.getMessage(), ex);
             throw DomainErrorUtils.convertException(ex);
