@@ -20,16 +20,16 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
 
         BffRawItemDto bffRawItemDto = new BffRawItemDto();
 
-        bffRawItemDto.setProductId( bffRawItem.getProductId() );
-        bffRawItemDto.setProductName( bffRawItem.getProductName() );
         bffRawItemDto.setDescription( bffRawItem.getDescription() );
         bffRawItemDto.setGtin( bffRawItem.getGtin() );
-        bffRawItemDto.setSmallImageUrl( bffRawItem.getSmallImageUrl() );
-        bffRawItemDto.setMediumImageUrl( bffRawItem.getMediumImageUrl() );
         bffRawItemDto.setLargeImageUrl( bffRawItem.getLargeImageUrl() );
-        bffRawItemDto.setQuantityUomId( bffRawItem.getQuantityUomId() );
-        bffRawItemDto.setQuantityIncluded( bffRawItem.getQuantityIncluded() );
+        bffRawItemDto.setMediumImageUrl( bffRawItem.getMediumImageUrl() );
         bffRawItemDto.setPiecesIncluded( bffRawItem.getPiecesIncluded() );
+        bffRawItemDto.setProductId( bffRawItem.getProductId() );
+        bffRawItemDto.setProductName( bffRawItem.getProductName() );
+        bffRawItemDto.setQuantityIncluded( bffRawItem.getQuantityIncluded() );
+        bffRawItemDto.setQuantityUomId( bffRawItem.getQuantityUomId() );
+        bffRawItemDto.setSmallImageUrl( bffRawItem.getSmallImageUrl() );
         bffRawItemDto.setStatusId( bffRawItem.getStatusId() );
         bffRawItemDto.setSupplierId( bffRawItem.getSupplierId() );
         bffRawItemDto.setSupplierName( bffRawItem.getSupplierName() );
@@ -45,15 +45,15 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
 
         BffRawItemDto bffRawItemDto = new BffRawItemDto();
 
+        bffRawItemDto.setDescription( productState.getDescription() );
+        bffRawItemDto.setLargeImageUrl( productState.getLargeImageUrl() );
+        bffRawItemDto.setMediumImageUrl( productState.getMediumImageUrl() );
+        bffRawItemDto.setPiecesIncluded( productState.getPiecesIncluded() );
         bffRawItemDto.setProductId( productState.getProductId() );
         bffRawItemDto.setProductName( productState.getProductName() );
-        bffRawItemDto.setDescription( productState.getDescription() );
-        bffRawItemDto.setSmallImageUrl( productState.getSmallImageUrl() );
-        bffRawItemDto.setMediumImageUrl( productState.getMediumImageUrl() );
-        bffRawItemDto.setLargeImageUrl( productState.getLargeImageUrl() );
-        bffRawItemDto.setQuantityUomId( productState.getQuantityUomId() );
         bffRawItemDto.setQuantityIncluded( productState.getQuantityIncluded() );
-        bffRawItemDto.setPiecesIncluded( productState.getPiecesIncluded() );
+        bffRawItemDto.setQuantityUomId( productState.getQuantityUomId() );
+        bffRawItemDto.setSmallImageUrl( productState.getSmallImageUrl() );
 
         return bffRawItemDto;
     }
