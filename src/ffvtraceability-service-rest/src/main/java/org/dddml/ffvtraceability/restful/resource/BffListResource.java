@@ -63,7 +63,7 @@ public class BffListResource {
     }
 
 
-    @GetMapping
+    @GetMapping("/Facilities")
     public List<? extends BffFacilityDto> getFacilities(
             @RequestParam(value = "active", required = false) String active
     ) {
