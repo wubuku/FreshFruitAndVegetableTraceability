@@ -1,11 +1,9 @@
 package org.dddml.ffvtraceability.restful.resource;
 
+import org.dddml.ffvtraceability.domain.BffFacilityDto;
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
-import org.dddml.ffvtraceability.domain.service.BffRawItemApplicationService;
-import org.dddml.ffvtraceability.domain.service.BffRawItemServiceCommands;
-import org.dddml.ffvtraceability.domain.service.BffSupplierApplicationService;
-import org.dddml.ffvtraceability.domain.service.BffSupplierServiceCommands;
+import org.dddml.ffvtraceability.domain.service.*;
 import org.dddml.ffvtraceability.specialization.DomainErrorUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.slf4j.Logger;
@@ -28,6 +26,8 @@ public class BffListResource {
     private BffRawItemApplicationService bffRawItemApplicationService;
     @Autowired
     private BffSupplierApplicationService bffSupplierApplicationService;
+    @Autowired
+    private BffFacilityApplicationService bffFacilityApplicationService;
 
     @GetMapping("/Items")
     public List<? extends BffRawItemDto> getRawItems(
@@ -62,4 +62,21 @@ public class BffListResource {
         }
     }
 
+
+    @GetMapping
+    public List<? extends BffFacilityDto> getFacilities(
+            @RequestParam(value = "active", required = false) String active
+    ) {
+        BffFacilityServiceCommands.GetFacilities getFacilities = new BffFacilityServiceCommands.GetFacilities();
+        getFacilities.setPage(0);
+        getFacilities.setSize(Integer.MAX_VALUE);
+        getFacilities.setActive(active);
+        try {
+            getFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
+            return bffFacilityApplicationService.when(getFacilities).getContent();
+        } catch (Exception ex) {
+            logger.info(ex.getMessage(), ex);
+            throw DomainErrorUtils.convertException(ex);
+        }
+    }
 }
