@@ -6,6 +6,49 @@ valueObjects:
     properties:
       OrderId:
         type: id
+      # OrderTypeId:
+      #   type: id
+      OrderName:
+        type: name
+      ExternalId:
+        type: id
+      # SalesChannelEnumId:
+      #   type: id
+      OrderDate:
+        type: date-time
+      # Priority:
+      #   description: Sets priority for Inventory Reservation
+      #   type: indicator
+      # EntryDate:
+      #   type: date-time
+      StatusId:
+        type: id
+      # FirstAttemptOrderId:
+      #   type: id
+      CurrencyUomId:
+        type: id
+      SyncStatusId:
+        type: id
+      # BillingAccountId:
+      #   type: id
+      OriginFacilityId:
+        type: id
+      # ---------------------------------
+      Memo:
+        # 订单备注
+        type: long-varchar
+      # ---------------------------------
+      SupplierId:
+        type: id
+      CreatedAt:
+        type: date-time
+      CreatedBy:
+        type: id-long
+      UpdatedAt:
+        type: date-time
+      UpdatedBy:
+        type: id-long
+
       OrderItems:
         itemType: BffPurchaseOrderItemDto
         isList: true
@@ -31,6 +74,15 @@ valueObjects:
         type: id
       SupplierProductId:
         type: id-long
+
+      ProductName:
+        type: name
+      # AttributeSetInstanceId:
+      #   type: HashHex
+      Gtin:
+        description: "GTIN (Global Trade Item Number)"
+        type: id
+
       # ProductFeatureId:
       #   type: id
       # ProdCatalogId:

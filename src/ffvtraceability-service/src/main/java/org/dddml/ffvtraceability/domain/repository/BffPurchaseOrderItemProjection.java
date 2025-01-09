@@ -17,6 +17,10 @@ public interface BffPurchaseOrderItemProjection {
 
     String getSupplierProductId();
 
+    String getProductName();
+
+    String getGtin();
+
     java.math.BigDecimal getQuantity();
 
     java.math.BigDecimal getCancelQuantity();

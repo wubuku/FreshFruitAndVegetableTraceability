@@ -6,6 +6,7 @@
 package org.dddml.ffvtraceability.domain;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public class BffPurchaseOrderDto implements Serializable {
@@ -19,6 +20,162 @@ public class BffPurchaseOrderDto implements Serializable {
     public void setOrderId(String orderId)
     {
         this.orderId = orderId;
+    }
+
+    private String orderName;
+
+    public String getOrderName()
+    {
+        return this.orderName;
+    }
+
+    public void setOrderName(String orderName)
+    {
+        this.orderName = orderName;
+    }
+
+    private String externalId;
+
+    public String getExternalId()
+    {
+        return this.externalId;
+    }
+
+    public void setExternalId(String externalId)
+    {
+        this.externalId = externalId;
+    }
+
+    private OffsetDateTime orderDate;
+
+    public OffsetDateTime getOrderDate()
+    {
+        return this.orderDate;
+    }
+
+    public void setOrderDate(OffsetDateTime orderDate)
+    {
+        this.orderDate = orderDate;
+    }
+
+    private String statusId;
+
+    public String getStatusId()
+    {
+        return this.statusId;
+    }
+
+    public void setStatusId(String statusId)
+    {
+        this.statusId = statusId;
+    }
+
+    private String currencyUomId;
+
+    public String getCurrencyUomId()
+    {
+        return this.currencyUomId;
+    }
+
+    public void setCurrencyUomId(String currencyUomId)
+    {
+        this.currencyUomId = currencyUomId;
+    }
+
+    private String syncStatusId;
+
+    public String getSyncStatusId()
+    {
+        return this.syncStatusId;
+    }
+
+    public void setSyncStatusId(String syncStatusId)
+    {
+        this.syncStatusId = syncStatusId;
+    }
+
+    private String originFacilityId;
+
+    public String getOriginFacilityId()
+    {
+        return this.originFacilityId;
+    }
+
+    public void setOriginFacilityId(String originFacilityId)
+    {
+        this.originFacilityId = originFacilityId;
+    }
+
+    private String memo;
+
+    public String getMemo()
+    {
+        return this.memo;
+    }
+
+    public void setMemo(String memo)
+    {
+        this.memo = memo;
+    }
+
+    private String supplierId;
+
+    public String getSupplierId()
+    {
+        return this.supplierId;
+    }
+
+    public void setSupplierId(String supplierId)
+    {
+        this.supplierId = supplierId;
+    }
+
+    private OffsetDateTime createdAt;
+
+    public OffsetDateTime getCreatedAt()
+    {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt)
+    {
+        this.createdAt = createdAt;
+    }
+
+    private String createdBy;
+
+    public String getCreatedBy()
+    {
+        return this.createdBy;
+    }
+
+    public void setCreatedBy(String createdBy)
+    {
+        this.createdBy = createdBy;
+    }
+
+    private OffsetDateTime updatedAt;
+
+    public OffsetDateTime getUpdatedAt()
+    {
+        return this.updatedAt;
+    }
+
+    public void setUpdatedAt(OffsetDateTime updatedAt)
+    {
+        this.updatedAt = updatedAt;
+    }
+
+    private String updatedBy;
+
+    public String getUpdatedBy()
+    {
+        return this.updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy)
+    {
+        this.updatedBy = updatedBy;
     }
 
     private java.util.List<BffPurchaseOrderItemDto> orderItems;
@@ -35,9 +192,22 @@ public class BffPurchaseOrderDto implements Serializable {
     {
     }
 
-    public BffPurchaseOrderDto(String orderId, java.util.List<BffPurchaseOrderItemDto> orderItems)
+    public BffPurchaseOrderDto(String orderId, String orderName, String externalId, OffsetDateTime orderDate, String statusId, String currencyUomId, String syncStatusId, String originFacilityId, String memo, String supplierId, OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt, String updatedBy, java.util.List<BffPurchaseOrderItemDto> orderItems)
     {
         this.orderId = orderId;
+        this.orderName = orderName;
+        this.externalId = externalId;
+        this.orderDate = orderDate;
+        this.statusId = statusId;
+        this.currencyUomId = currencyUomId;
+        this.syncStatusId = syncStatusId;
+        this.originFacilityId = originFacilityId;
+        this.memo = memo;
+        this.supplierId = supplierId;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
+        this.updatedAt = updatedAt;
+        this.updatedBy = updatedBy;
         this.orderItems = orderItems;
     }
 
@@ -54,6 +224,19 @@ public class BffPurchaseOrderDto implements Serializable {
         BffPurchaseOrderDto other = (BffPurchaseOrderDto)obj;
         return true 
             && (orderId == other.orderId || (orderId != null && orderId.equals(other.orderId)))
+            && (orderName == other.orderName || (orderName != null && orderName.equals(other.orderName)))
+            && (externalId == other.externalId || (externalId != null && externalId.equals(other.externalId)))
+            && (orderDate == other.orderDate || (orderDate != null && orderDate.equals(other.orderDate)))
+            && (statusId == other.statusId || (statusId != null && statusId.equals(other.statusId)))
+            && (currencyUomId == other.currencyUomId || (currencyUomId != null && currencyUomId.equals(other.currencyUomId)))
+            && (syncStatusId == other.syncStatusId || (syncStatusId != null && syncStatusId.equals(other.syncStatusId)))
+            && (originFacilityId == other.originFacilityId || (originFacilityId != null && originFacilityId.equals(other.originFacilityId)))
+            && (memo == other.memo || (memo != null && memo.equals(other.memo)))
+            && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
+            && (createdAt == other.createdAt || (createdAt != null && createdAt.equals(other.createdAt)))
+            && (createdBy == other.createdBy || (createdBy != null && createdBy.equals(other.createdBy)))
+            && (updatedAt == other.updatedAt || (updatedAt != null && updatedAt.equals(other.updatedAt)))
+            && (updatedBy == other.updatedBy || (updatedBy != null && updatedBy.equals(other.updatedBy)))
             && (orderItems == other.orderItems || (orderItems != null && orderItems.equals(other.orderItems)))
             ;
     }
@@ -65,6 +248,45 @@ public class BffPurchaseOrderDto implements Serializable {
         if (this.orderId != null) {
             hash += 13 * this.orderId.hashCode();
         }
+        if (this.orderName != null) {
+            hash += 13 * this.orderName.hashCode();
+        }
+        if (this.externalId != null) {
+            hash += 13 * this.externalId.hashCode();
+        }
+        if (this.orderDate != null) {
+            hash += 13 * this.orderDate.hashCode();
+        }
+        if (this.statusId != null) {
+            hash += 13 * this.statusId.hashCode();
+        }
+        if (this.currencyUomId != null) {
+            hash += 13 * this.currencyUomId.hashCode();
+        }
+        if (this.syncStatusId != null) {
+            hash += 13 * this.syncStatusId.hashCode();
+        }
+        if (this.originFacilityId != null) {
+            hash += 13 * this.originFacilityId.hashCode();
+        }
+        if (this.memo != null) {
+            hash += 13 * this.memo.hashCode();
+        }
+        if (this.supplierId != null) {
+            hash += 13 * this.supplierId.hashCode();
+        }
+        if (this.createdAt != null) {
+            hash += 13 * this.createdAt.hashCode();
+        }
+        if (this.createdBy != null) {
+            hash += 13 * this.createdBy.hashCode();
+        }
+        if (this.updatedAt != null) {
+            hash += 13 * this.updatedAt.hashCode();
+        }
+        if (this.updatedBy != null) {
+            hash += 13 * this.updatedBy.hashCode();
+        }
         if (this.orderItems != null) {
             hash += 13 * this.orderItems.hashCode();
         }
@@ -75,6 +297,19 @@ public class BffPurchaseOrderDto implements Serializable {
     public String toString() {
         return "BffPurchaseOrderDto{" +
                 "orderId=" + '\'' + orderId + '\'' +
+                ", orderName=" + '\'' + orderName + '\'' +
+                ", externalId=" + '\'' + externalId + '\'' +
+                ", orderDate=" + orderDate +
+                ", statusId=" + '\'' + statusId + '\'' +
+                ", currencyUomId=" + '\'' + currencyUomId + '\'' +
+                ", syncStatusId=" + '\'' + syncStatusId + '\'' +
+                ", originFacilityId=" + '\'' + originFacilityId + '\'' +
+                ", memo=" + '\'' + memo + '\'' +
+                ", supplierId=" + '\'' + supplierId + '\'' +
+                ", createdAt=" + createdAt +
+                ", createdBy=" + '\'' + createdBy + '\'' +
+                ", updatedAt=" + updatedAt +
+                ", updatedBy=" + '\'' + updatedBy + '\'' +
                 ", orderItems=" + orderItems +
                 '}';
     }

@@ -99,8 +99,8 @@
         columnName: INVOICE_PER_SHIPMENT
         type: indicator
       # ---------------------------------
-      # 订单备注
       Memo:
+        # 订单备注
         type: long-varchar
       # ---------------------------------
       OrderItems:
