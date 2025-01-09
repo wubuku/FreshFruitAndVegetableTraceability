@@ -21,60 +21,60 @@ public abstract class AbstractPartyContactMechApplicationService implements Part
         return eventStore;
     }
 
-    private PartyContactMechBaseStateRepository stateRepository;
+    private PartyContactMechStateRepository stateRepository;
 
-    protected PartyContactMechBaseStateRepository getStateRepository() {
+    protected PartyContactMechStateRepository getStateRepository() {
         return stateRepository;
     }
 
-    private PartyContactMechBaseStateQueryRepository stateQueryRepository;
+    private PartyContactMechStateQueryRepository stateQueryRepository;
 
-    protected PartyContactMechBaseStateQueryRepository getStateQueryRepository() {
+    protected PartyContactMechStateQueryRepository getStateQueryRepository() {
         return stateQueryRepository;
     }
 
-    private AggregateEventListener<PartyContactMechAggregate, PartyContactMechBaseState> aggregateEventListener;
+    private AggregateEventListener<PartyContactMechAggregate, PartyContactMechState> aggregateEventListener;
 
-    public AggregateEventListener<PartyContactMechAggregate, PartyContactMechBaseState> getAggregateEventListener() {
+    public AggregateEventListener<PartyContactMechAggregate, PartyContactMechState> getAggregateEventListener() {
         return aggregateEventListener;
     }
 
-    public void setAggregateEventListener(AggregateEventListener<PartyContactMechAggregate, PartyContactMechBaseState> eventListener) {
+    public void setAggregateEventListener(AggregateEventListener<PartyContactMechAggregate, PartyContactMechState> eventListener) {
         this.aggregateEventListener = eventListener;
     }
 
-    public AbstractPartyContactMechApplicationService(EventStore eventStore, PartyContactMechBaseStateRepository stateRepository, PartyContactMechBaseStateQueryRepository stateQueryRepository) {
+    public AbstractPartyContactMechApplicationService(EventStore eventStore, PartyContactMechStateRepository stateRepository, PartyContactMechStateQueryRepository stateQueryRepository) {
         this.eventStore = eventStore;
         this.stateRepository = stateRepository;
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public void when(PartyContactMechBaseCommand.CreatePartyContactMechBase c) {
+    public void when(PartyContactMechCommand.CreatePartyContactMech c) {
         update(c, ar -> ar.create(c));
     }
 
-    public void when(PartyContactMechBaseCommand.MergePatchPartyContactMechBase c) {
+    public void when(PartyContactMechCommand.MergePatchPartyContactMech c) {
         update(c, ar -> ar.mergePatch(c));
     }
 
-    public PartyContactMechBaseState get(PartyContactMechBaseId id) {
-        PartyContactMechBaseState state = getStateRepository().get(id, true);
+    public PartyContactMechState get(PartyContactMechId id) {
+        PartyContactMechState state = getStateRepository().get(id, true);
         return state;
     }
 
-    public Iterable<PartyContactMechBaseState> getAll(Integer firstResult, Integer maxResults) {
+    public Iterable<PartyContactMechState> getAll(Integer firstResult, Integer maxResults) {
         return getStateQueryRepository().getAll(firstResult, maxResults);
     }
 
-    public Iterable<PartyContactMechBaseState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
+    public Iterable<PartyContactMechState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         return getStateQueryRepository().get(filter, orders, firstResult, maxResults);
     }
 
-    public Iterable<PartyContactMechBaseState> get(Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
+    public Iterable<PartyContactMechState> get(Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         return getStateQueryRepository().get(filter, orders, firstResult, maxResults);
     }
 
-    public Iterable<PartyContactMechBaseState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
+    public Iterable<PartyContactMechState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
         return getStateQueryRepository().getByProperty(propertyName, propertyValue, orders, firstResult, maxResults);
     }
 
@@ -86,61 +86,53 @@ public abstract class AbstractPartyContactMechApplicationService implements Part
         return getStateQueryRepository().getCount(filter);
     }
 
-    public PartyContactMechBaseEvent getEvent(PartyContactMechBaseId partyContactMechBaseId, long version) {
-        PartyContactMechBaseEvent e = (PartyContactMechBaseEvent)getEventStore().getEvent(toEventStoreAggregateId(partyContactMechBaseId), version);
+    public PartyContactMechEvent getEvent(PartyContactMechId partyContactMechId, long version) {
+        PartyContactMechEvent e = (PartyContactMechEvent)getEventStore().getEvent(toEventStoreAggregateId(partyContactMechId), version);
         if (e != null) {
-            ((PartyContactMechBaseEvent.SqlPartyContactMechBaseEvent)e).setEventReadOnly(true); 
+            ((PartyContactMechEvent.SqlPartyContactMechEvent)e).setEventReadOnly(true); 
         } else if (version == -1) {
-            return getEvent(partyContactMechBaseId, 0);
+            return getEvent(partyContactMechId, 0);
         }
         return e;
     }
 
-    public PartyContactMechBaseState getHistoryState(PartyContactMechBaseId partyContactMechBaseId, long version) {
-        EventStream eventStream = getEventStore().loadEventStream(AbstractPartyContactMechBaseEvent.class, toEventStoreAggregateId(partyContactMechBaseId), version - 1);
-        return new AbstractPartyContactMechBaseState.SimplePartyContactMechBaseState(eventStream.getEvents());
+    public PartyContactMechState getHistoryState(PartyContactMechId partyContactMechId, long version) {
+        EventStream eventStream = getEventStore().loadEventStream(AbstractPartyContactMechEvent.class, toEventStoreAggregateId(partyContactMechId), version - 1);
+        return new AbstractPartyContactMechState.SimplePartyContactMechState(eventStream.getEvents());
     }
 
-    public PartyContactMechState getPartyContactMech(PartyContactMechBaseId partyContactMechBaseId, OffsetDateTime fromDate) {
-        return getStateQueryRepository().getPartyContactMech(partyContactMechBaseId, fromDate);
+    public PartyContactMechPurposeState getPartyContactMechPurpose(PartyContactMechId partyContactMechId, String contactMechPurposeTypeId) {
+        return getStateQueryRepository().getPartyContactMechPurpose(partyContactMechId, contactMechPurposeTypeId);
     }
 
-    public Iterable<PartyContactMechState> getPartyContactMeches(PartyContactMechBaseId partyContactMechBaseId, Criterion filter, List<String> orders) {
-        return getStateQueryRepository().getPartyContactMeches(partyContactMechBaseId, filter, orders);
-    }
-
-    public PartyContactMechPurposeState getPartyContactMechPurpose(PartyContactMechBaseId partyContactMechBaseId, OffsetDateTime partyContactMechFromDate, String contactMechPurposeTypeId) {
-        return getStateQueryRepository().getPartyContactMechPurpose(partyContactMechBaseId, partyContactMechFromDate, contactMechPurposeTypeId);
-    }
-
-    public Iterable<PartyContactMechPurposeState> getPartyContactMechPurposes(PartyContactMechBaseId partyContactMechBaseId, OffsetDateTime partyContactMechFromDate, Criterion filter, List<String> orders) {
-        return getStateQueryRepository().getPartyContactMechPurposes(partyContactMechBaseId, partyContactMechFromDate, filter, orders);
+    public Iterable<PartyContactMechPurposeState> getPartyContactMechPurposes(PartyContactMechId partyContactMechId, Criterion filter, List<String> orders) {
+        return getStateQueryRepository().getPartyContactMechPurposes(partyContactMechId, filter, orders);
     }
 
 
-    public PartyContactMechAggregate getPartyContactMechAggregate(PartyContactMechBaseState state) {
+    public PartyContactMechAggregate getPartyContactMechAggregate(PartyContactMechState state) {
         return new AbstractPartyContactMechAggregate.SimplePartyContactMechAggregate(state);
     }
 
-    public EventStoreAggregateId toEventStoreAggregateId(PartyContactMechBaseId aggregateId) {
+    public EventStoreAggregateId toEventStoreAggregateId(PartyContactMechId aggregateId) {
         return new EventStoreAggregateId.SimpleEventStoreAggregateId(aggregateId);
     }
 
-    protected void update(PartyContactMechBaseCommand c, Consumer<PartyContactMechAggregate> action) {
-        PartyContactMechBaseId aggregateId = c.getPartyContactMechBaseId();
+    protected void update(PartyContactMechCommand c, Consumer<PartyContactMechAggregate> action) {
+        PartyContactMechId aggregateId = c.getPartyContactMechId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        PartyContactMechBaseState state = getStateRepository().get(aggregateId, false);
+        PartyContactMechState state = getStateRepository().get(aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);
         if (duplicate) { return; }
 
         PartyContactMechAggregate aggregate = getPartyContactMechAggregate(state);
         aggregate.throwOnInvalidStateTransition(c);
         action.accept(aggregate);
-        persist(eventStoreAggregateId, c.getVersion() == null ? PartyContactMechBaseState.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
+        persist(eventStoreAggregateId, c.getVersion() == null ? PartyContactMechState.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
 
     }
 
-    private void persist(EventStoreAggregateId eventStoreAggregateId, long version, PartyContactMechAggregate aggregate, PartyContactMechBaseState state) {
+    private void persist(EventStoreAggregateId eventStoreAggregateId, long version, PartyContactMechAggregate aggregate, PartyContactMechState state) {
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 
@@ -150,23 +142,23 @@ public abstract class AbstractPartyContactMechApplicationService implements Part
         }
     }
 
-    public void initialize(PartyContactMechBaseEvent.PartyContactMechBaseStateCreated stateCreated) {
-        PartyContactMechBaseId aggregateId = ((PartyContactMechBaseEvent.SqlPartyContactMechBaseEvent)stateCreated).getPartyContactMechBaseEventId().getPartyContactMechBaseId();
-        PartyContactMechBaseState.SqlPartyContactMechBaseState state = new AbstractPartyContactMechBaseState.SimplePartyContactMechBaseState();
-        state.setPartyContactMechBaseId(aggregateId);
+    public void initialize(PartyContactMechEvent.PartyContactMechStateCreated stateCreated) {
+        PartyContactMechId aggregateId = ((PartyContactMechEvent.SqlPartyContactMechEvent)stateCreated).getPartyContactMechEventId().getPartyContactMechId();
+        PartyContactMechState.SqlPartyContactMechState state = new AbstractPartyContactMechState.SimplePartyContactMechState();
+        state.setPartyContactMechId(aggregateId);
 
         PartyContactMechAggregate aggregate = getPartyContactMechAggregate(state);
         ((AbstractPartyContactMechAggregate) aggregate).apply(stateCreated);
 
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        persist(eventStoreAggregateId, ((PartyContactMechBaseEvent.SqlPartyContactMechBaseEvent)stateCreated).getPartyContactMechBaseEventId().getVersion(), aggregate, state);
+        persist(eventStoreAggregateId, ((PartyContactMechEvent.SqlPartyContactMechEvent)stateCreated).getPartyContactMechEventId().getVersion(), aggregate, state);
     }
 
-    protected boolean isDuplicateCommand(PartyContactMechBaseCommand command, EventStoreAggregateId eventStoreAggregateId, PartyContactMechBaseState state) {
+    protected boolean isDuplicateCommand(PartyContactMechCommand command, EventStoreAggregateId eventStoreAggregateId, PartyContactMechState state) {
         boolean duplicate = false;
-        if (command.getVersion() == null) { command.setVersion(PartyContactMechBaseState.VERSION_NULL); }
+        if (command.getVersion() == null) { command.setVersion(PartyContactMechState.VERSION_NULL); }
         if (state.getVersion() != null && state.getVersion() > command.getVersion()) {
-            Event lastEvent = getEventStore().getEvent(AbstractPartyContactMechBaseEvent.class, eventStoreAggregateId, command.getVersion());
+            Event lastEvent = getEventStore().getEvent(AbstractPartyContactMechEvent.class, eventStoreAggregateId, command.getVersion());
             if (lastEvent != null && lastEvent instanceof AbstractEvent
                && command.getCommandId() != null && command.getCommandId().equals(((AbstractEvent) lastEvent).getCommandId())) {
                 duplicate = true;
@@ -176,7 +168,7 @@ public abstract class AbstractPartyContactMechApplicationService implements Part
     }
 
     public static class SimplePartyContactMechApplicationService extends AbstractPartyContactMechApplicationService {
-        public SimplePartyContactMechApplicationService(EventStore eventStore, PartyContactMechBaseStateRepository stateRepository, PartyContactMechBaseStateQueryRepository stateQueryRepository)
+        public SimplePartyContactMechApplicationService(EventStore eventStore, PartyContactMechStateRepository stateRepository, PartyContactMechStateQueryRepository stateQueryRepository)
         {
             super(eventStore, stateRepository, stateQueryRepository);
         }

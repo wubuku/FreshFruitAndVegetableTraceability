@@ -22,12 +22,12 @@ public abstract class AbstractPartyContactMechEvent extends AbstractEvent implem
         this.partyContactMechEventId = eventId;
     }
     
-    public OffsetDateTime getFromDate() {
-        return getPartyContactMechEventId().getFromDate();
+    public PartyContactMechId getPartyContactMechId() {
+        return getPartyContactMechEventId().getPartyContactMechId();
     }
 
-    public void setFromDate(OffsetDateTime fromDate) {
-        getPartyContactMechEventId().setFromDate(fromDate);
+    public void setPartyContactMechId(PartyContactMechId partyContactMechId) {
+        getPartyContactMechEventId().setPartyContactMechId(partyContactMechId);
     }
 
     private boolean eventReadOnly;
@@ -35,6 +35,14 @@ public abstract class AbstractPartyContactMechEvent extends AbstractEvent implem
     public boolean getEventReadOnly() { return this.eventReadOnly; }
 
     public void setEventReadOnly(boolean readOnly) { this.eventReadOnly = readOnly; }
+
+    public Long getVersion() {
+        return getPartyContactMechEventId().getVersion();
+    }
+    
+    public void setVersion(Long version) {
+        getPartyContactMechEventId().setVersion(version);
+    }
 
     private String createdBy;
 
@@ -67,6 +75,16 @@ public abstract class AbstractPartyContactMechEvent extends AbstractEvent implem
         this.commandId = commandId;
     }
 
+    private String commandType;
+
+    public String getCommandType() {
+        return commandType;
+    }
+
+    public void setCommandType(String commandType) {
+        this.commandType = commandType;
+    }
+
     protected AbstractPartyContactMechEvent() {
     }
 
@@ -80,9 +98,9 @@ public abstract class AbstractPartyContactMechEvent extends AbstractEvent implem
 
     protected PartyContactMechPurposeEventId newPartyContactMechPurposeEventId(String contactMechPurposeTypeId)
     {
-        PartyContactMechPurposeEventId eventId = new PartyContactMechPurposeEventId(this.getPartyContactMechEventId().getPartyContactMechBaseId(), this.getPartyContactMechEventId().getFromDate(), 
+        PartyContactMechPurposeEventId eventId = new PartyContactMechPurposeEventId(this.getPartyContactMechEventId().getPartyContactMechId(), 
             contactMechPurposeTypeId, 
-            this.getPartyContactMechEventId().getPartyContactMechBaseVersion());
+            this.getPartyContactMechEventId().getVersion());
         return eventId;
     }
 
@@ -93,15 +111,10 @@ public abstract class AbstractPartyContactMechEvent extends AbstractEvent implem
 
     public static void throwOnInconsistentEventIds(PartyContactMechEvent.SqlPartyContactMechEvent oe, PartyContactMechPurposeEvent.SqlPartyContactMechPurposeEvent e)
     {
-        if (!oe.getPartyContactMechEventId().getPartyContactMechBaseId().equals(e.getPartyContactMechPurposeEventId().getPartyContactMechBaseId()))
+        if (!oe.getPartyContactMechEventId().getPartyContactMechId().equals(e.getPartyContactMechPurposeEventId().getPartyContactMechId()))
         { 
-            throw DomainError.named("inconsistentEventIds", "Outer Id PartyContactMechBaseId %1$s but inner id PartyContactMechBaseId %2$s", 
-                oe.getPartyContactMechEventId().getPartyContactMechBaseId(), e.getPartyContactMechPurposeEventId().getPartyContactMechBaseId());
-        }
-        if (!oe.getPartyContactMechEventId().getFromDate().equals(e.getPartyContactMechPurposeEventId().getPartyContactMechFromDate()))
-        { 
-            throw DomainError.named("inconsistentEventIds", "Outer Id FromDate %1$s but inner id PartyContactMechFromDate %2$s", 
-                oe.getPartyContactMechEventId().getFromDate(), e.getPartyContactMechPurposeEventId().getPartyContactMechFromDate());
+            throw DomainError.named("inconsistentEventIds", "Outer Id PartyContactMechId %1$s but inner id PartyContactMechId %2$s", 
+                oe.getPartyContactMechEventId().getPartyContactMechId(), e.getPartyContactMechPurposeEventId().getPartyContactMechId());
         }
     }
 
@@ -116,20 +129,30 @@ public abstract class AbstractPartyContactMechEvent extends AbstractEvent implem
 
     public abstract String getEventType();
 
+    public static class PartyContactMechLobEvent extends AbstractPartyContactMechEvent {
+
+        public Map<String, Object> getDynamicProperties() {
+            return dynamicProperties;
+        }
+
+        public void setDynamicProperties(Map<String, Object> dynamicProperties) {
+            if (dynamicProperties == null) {
+                throw new IllegalArgumentException("dynamicProperties is null.");
+            }
+            this.dynamicProperties = dynamicProperties;
+        }
+
+        private Map<String, Object> dynamicProperties = new HashMap<>();
+
+        @Override
+        public String getEventType() {
+            return "PartyContactMechLobEvent";
+        }
+
+    }
+
 
     public static abstract class AbstractPartyContactMechStateEvent extends AbstractPartyContactMechEvent implements PartyContactMechEvent.PartyContactMechStateEvent {
-        private Long version;
-
-        public Long getVersion()
-        {
-            return this.version;
-        }
-
-        public void setVersion(Long version)
-        {
-            this.version = version;
-        }
-
         private OffsetDateTime thruDate;
 
         public OffsetDateTime getThruDate()

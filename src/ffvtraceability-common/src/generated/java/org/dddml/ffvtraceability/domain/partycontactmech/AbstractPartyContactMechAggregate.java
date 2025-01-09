@@ -11,15 +11,15 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 
 public abstract class AbstractPartyContactMechAggregate extends AbstractAggregate implements PartyContactMechAggregate {
-    private PartyContactMechBaseState.MutablePartyContactMechBaseState state;
+    private PartyContactMechState.MutablePartyContactMechState state;
 
     private List<Event> changes = new ArrayList<Event>();
 
-    public AbstractPartyContactMechAggregate(PartyContactMechBaseState state) {
-        this.state = (PartyContactMechBaseState.MutablePartyContactMechBaseState)state;
+    public AbstractPartyContactMechAggregate(PartyContactMechState state) {
+        this.state = (PartyContactMechState.MutablePartyContactMechState)state;
     }
 
-    public PartyContactMechBaseState getState() {
+    public PartyContactMechState getState() {
         return this.state;
     }
 
@@ -27,19 +27,19 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
         return this.changes;
     }
 
-    public void create(PartyContactMechBaseCommand.CreatePartyContactMechBase c) {
-        if (c.getVersion() == null) { c.setVersion(PartyContactMechBaseState.VERSION_NULL); }
-        PartyContactMechBaseEvent e = map(c);
+    public void create(PartyContactMechCommand.CreatePartyContactMech c) {
+        if (c.getVersion() == null) { c.setVersion(PartyContactMechState.VERSION_NULL); }
+        PartyContactMechEvent e = map(c);
         apply(e);
     }
 
-    public void mergePatch(PartyContactMechBaseCommand.MergePatchPartyContactMechBase c) {
-        PartyContactMechBaseEvent e = map(c);
+    public void mergePatch(PartyContactMechCommand.MergePatchPartyContactMech c) {
+        PartyContactMechEvent e = map(c);
         apply(e);
     }
 
     public void throwOnInvalidStateTransition(Command c) {
-        PartyContactMechBaseCommand.throwOnInvalidStateTransition(this.state, c);
+        PartyContactMechCommand.throwOnInvalidStateTransition(this.state, c);
     }
 
     protected void apply(Event e) {
@@ -48,62 +48,9 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
         changes.add(e);
     }
 
-    protected PartyContactMechBaseEvent map(PartyContactMechBaseCommand.CreatePartyContactMechBase c) {
-        PartyContactMechBaseEventId stateEventId = new PartyContactMechBaseEventId(c.getPartyContactMechBaseId(), c.getVersion());
-        PartyContactMechBaseEvent.PartyContactMechBaseStateCreated e = newPartyContactMechBaseStateCreated(stateEventId);
-        e.setActiveFromDate(c.getActiveFromDate());
-        ((AbstractPartyContactMechBaseEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        Long version = c.getVersion();
-        for (PartyContactMechCommand.CreatePartyContactMech innerCommand : c.getCreatePartyContactMechCommands()) {
-            throwOnInconsistentCommands(c, innerCommand);
-            PartyContactMechEvent.PartyContactMechStateCreated innerEvent = mapCreate(innerCommand, c, version, this.state);
-            e.addPartyContactMechEvent(innerEvent);
-        }
-
-        return e;
-    }
-
-    protected PartyContactMechBaseEvent map(PartyContactMechBaseCommand.MergePatchPartyContactMechBase c) {
-        PartyContactMechBaseEventId stateEventId = new PartyContactMechBaseEventId(c.getPartyContactMechBaseId(), c.getVersion());
-        PartyContactMechBaseEvent.PartyContactMechBaseStateMergePatched e = newPartyContactMechBaseStateMergePatched(stateEventId);
-        e.setActiveFromDate(c.getActiveFromDate());
-        e.setIsPropertyActiveFromDateRemoved(c.getIsPropertyActiveFromDateRemoved());
-        ((AbstractPartyContactMechBaseEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        Long version = c.getVersion();
-        for (PartyContactMechCommand innerCommand : c.getPartyContactMechCommands()) {
-            throwOnInconsistentCommands(c, innerCommand);
-            PartyContactMechEvent innerEvent = map(innerCommand, c, version, this.state);
-            e.addPartyContactMechEvent(innerEvent);
-        }
-
-        return e;
-    }
-
-
-    protected PartyContactMechEvent map(PartyContactMechCommand c, PartyContactMechBaseCommand outerCommand, Long version, PartyContactMechBaseState outerState) {
-        PartyContactMechCommand.CreatePartyContactMech create = (c.getCommandType().equals(CommandType.CREATE)) ? ((PartyContactMechCommand.CreatePartyContactMech)c) : null;
-        if(create != null) {
-            return mapCreate(create, outerCommand, version, outerState);
-        }
-
-        PartyContactMechCommand.MergePatchPartyContactMech merge = (c.getCommandType().equals(CommandType.MERGE_PATCH)) ? ((PartyContactMechCommand.MergePatchPartyContactMech)c) : null;
-        if(merge != null) {
-            return mapMergePatch(merge, outerCommand, version, outerState);
-        }
-
-        throw new UnsupportedOperationException();
-    }
-
-    protected PartyContactMechEvent.PartyContactMechStateCreated mapCreate(PartyContactMechCommand.CreatePartyContactMech c, PartyContactMechBaseCommand outerCommand, Long version, PartyContactMechBaseState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        PartyContactMechEventId stateEventId = new PartyContactMechEventId(outerState.getPartyContactMechBaseId(), c.getFromDate(), version);
+    protected PartyContactMechEvent map(PartyContactMechCommand.CreatePartyContactMech c) {
+        PartyContactMechEventId stateEventId = new PartyContactMechEventId(c.getPartyContactMechId(), c.getVersion());
         PartyContactMechEvent.PartyContactMechStateCreated e = newPartyContactMechStateCreated(stateEventId);
-        PartyContactMechState s = ((EntityStateCollection.ModifiableEntityStateCollection<OffsetDateTime, PartyContactMechState>)outerState.getContactMechanisms()).getOrAddDefault(c.getFromDate());
-
         e.setThruDate(c.getThruDate());
         e.setRoleTypeId(c.getRoleTypeId());
         e.setAllowSolicitation(c.getAllowSolicitation());
@@ -112,27 +59,22 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
         e.setComments(c.getComments());
         e.setYearsWithContactMech(c.getYearsWithContactMech());
         e.setMonthsWithContactMech(c.getMonthsWithContactMech());
+        ((AbstractPartyContactMechEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-
+        Long version = c.getVersion();
         for (PartyContactMechPurposeCommand.CreatePartyContactMechPurpose innerCommand : c.getCreatePartyContactMechPurposeCommands()) {
             throwOnInconsistentCommands(c, innerCommand);
-
-            PartyContactMechPurposeEvent.PartyContactMechPurposeStateCreated innerEvent = mapCreate(innerCommand, c, version, s);
+            PartyContactMechPurposeEvent.PartyContactMechPurposeStateCreated innerEvent = mapCreate(innerCommand, c, version, this.state);
             e.addPartyContactMechPurposeEvent(innerEvent);
         }
 
         return e;
+    }
 
-    }// END map(ICreate... ////////////////////////////
-
-    protected PartyContactMechEvent.PartyContactMechStateMergePatched mapMergePatch(PartyContactMechCommand.MergePatchPartyContactMech c, PartyContactMechBaseCommand outerCommand, Long version, PartyContactMechBaseState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        PartyContactMechEventId stateEventId = new PartyContactMechEventId(outerState.getPartyContactMechBaseId(), c.getFromDate(), version);
+    protected PartyContactMechEvent map(PartyContactMechCommand.MergePatchPartyContactMech c) {
+        PartyContactMechEventId stateEventId = new PartyContactMechEventId(c.getPartyContactMechId(), c.getVersion());
         PartyContactMechEvent.PartyContactMechStateMergePatched e = newPartyContactMechStateMergePatched(stateEventId);
-        PartyContactMechState s = ((EntityStateCollection.ModifiableEntityStateCollection<OffsetDateTime, PartyContactMechState>)outerState.getContactMechanisms()).getOrAddDefault(c.getFromDate());
-
         e.setThruDate(c.getThruDate());
         e.setRoleTypeId(c.getRoleTypeId());
         e.setAllowSolicitation(c.getAllowSolicitation());
@@ -149,21 +91,18 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
         e.setIsPropertyCommentsRemoved(c.getIsPropertyCommentsRemoved());
         e.setIsPropertyYearsWithContactMechRemoved(c.getIsPropertyYearsWithContactMechRemoved());
         e.setIsPropertyMonthsWithContactMechRemoved(c.getIsPropertyMonthsWithContactMechRemoved());
-
+        ((AbstractPartyContactMechEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-
+        Long version = c.getVersion();
         for (PartyContactMechPurposeCommand innerCommand : c.getPartyContactMechPurposeCommands()) {
-                    throwOnInconsistentCommands(c, innerCommand);
-
-            PartyContactMechPurposeEvent innerEvent = map(innerCommand, c, version, s);
+            throwOnInconsistentCommands(c, innerCommand);
+            PartyContactMechPurposeEvent innerEvent = map(innerCommand, c, version, this.state);
             e.addPartyContactMechPurposeEvent(innerEvent);
         }
 
         return e;
-
-    }// END map(IMergePatch... ////////////////////////////
+    }
 
 
     protected PartyContactMechPurposeEvent map(PartyContactMechPurposeCommand c, PartyContactMechCommand outerCommand, Long version, PartyContactMechState outerState) {
@@ -182,7 +121,7 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
 
     protected PartyContactMechPurposeEvent.PartyContactMechPurposeStateCreated mapCreate(PartyContactMechPurposeCommand.CreatePartyContactMechPurpose c, PartyContactMechCommand outerCommand, Long version, PartyContactMechState outerState) {
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        PartyContactMechPurposeEventId stateEventId = new PartyContactMechPurposeEventId(outerState.getPartyContactMechBaseId(), outerState.getFromDate(), c.getContactMechPurposeTypeId(), version);
+        PartyContactMechPurposeEventId stateEventId = new PartyContactMechPurposeEventId(outerState.getPartyContactMechId(), c.getContactMechPurposeTypeId(), version);
         PartyContactMechPurposeEvent.PartyContactMechPurposeStateCreated e = newPartyContactMechPurposeStateCreated(stateEventId);
         PartyContactMechPurposeState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>)outerState.getPartyContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
 
@@ -196,7 +135,7 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
 
     protected PartyContactMechPurposeEvent.PartyContactMechPurposeStateMergePatched mapMergePatch(PartyContactMechPurposeCommand.MergePatchPartyContactMechPurpose c, PartyContactMechCommand outerCommand, Long version, PartyContactMechState outerState) {
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        PartyContactMechPurposeEventId stateEventId = new PartyContactMechPurposeEventId(outerState.getPartyContactMechBaseId(), outerState.getFromDate(), c.getContactMechPurposeTypeId(), version);
+        PartyContactMechPurposeEventId stateEventId = new PartyContactMechPurposeEventId(outerState.getPartyContactMechId(), c.getContactMechPurposeTypeId(), version);
         PartyContactMechPurposeEvent.PartyContactMechPurposeStateMergePatched e = newPartyContactMechPurposeStateMergePatched(stateEventId);
         PartyContactMechPurposeState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>)outerState.getPartyContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
 
@@ -210,78 +149,42 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
 
     }// END map(IMergePatch... ////////////////////////////
 
-    protected void throwOnInconsistentCommands(PartyContactMechBaseCommand command, PartyContactMechCommand innerCommand) {
-        AbstractPartyContactMechCommand properties = command instanceof AbstractPartyContactMechCommand ? (AbstractPartyContactMechCommand) command : null;
-        AbstractPartyContactMechCommand innerProperties = innerCommand instanceof AbstractPartyContactMechCommand ? (AbstractPartyContactMechCommand) innerCommand : null;
-        if (properties == null || innerProperties == null) { return; }
-        String outerPartyContactMechBaseIdName = "PartyContactMechBaseId";
-        PartyContactMechBaseId outerPartyContactMechBaseIdValue = properties.getPartyContactMechBaseId();
-        String innerPartyContactMechBaseIdName = "PartyContactMechBaseId";
-        PartyContactMechBaseId innerPartyContactMechBaseIdValue = innerProperties.getPartyContactMechBaseId();
-        if (innerPartyContactMechBaseIdValue == null) {
-            innerProperties.setPartyContactMechBaseId(outerPartyContactMechBaseIdValue);
-        }
-        else if (innerPartyContactMechBaseIdValue != outerPartyContactMechBaseIdValue 
-            && (innerPartyContactMechBaseIdValue == null || innerPartyContactMechBaseIdValue != null && !innerPartyContactMechBaseIdValue.equals(outerPartyContactMechBaseIdValue))) {
-            throw DomainError.named("inconsistentId", "Outer %1$s %2$s NOT equals inner %3$s %4$s", outerPartyContactMechBaseIdName, outerPartyContactMechBaseIdValue, innerPartyContactMechBaseIdName, innerPartyContactMechBaseIdValue);
-        }
-    }// END throwOnInconsistentCommands /////////////////////
-
     protected void throwOnInconsistentCommands(PartyContactMechCommand command, PartyContactMechPurposeCommand innerCommand) {
         AbstractPartyContactMechCommand properties = command instanceof AbstractPartyContactMechCommand ? (AbstractPartyContactMechCommand) command : null;
         AbstractPartyContactMechPurposeCommand innerProperties = innerCommand instanceof AbstractPartyContactMechPurposeCommand ? (AbstractPartyContactMechPurposeCommand) innerCommand : null;
         if (properties == null || innerProperties == null) { return; }
-        String outerPartyContactMechBaseIdName = "PartyContactMechBaseId";
-        PartyContactMechBaseId outerPartyContactMechBaseIdValue = properties.getPartyContactMechBaseId();
-        String innerPartyContactMechBaseIdName = "PartyContactMechBaseId";
-        PartyContactMechBaseId innerPartyContactMechBaseIdValue = innerProperties.getPartyContactMechBaseId();
-        if (innerPartyContactMechBaseIdValue == null) {
-            innerProperties.setPartyContactMechBaseId(outerPartyContactMechBaseIdValue);
+        String outerPartyContactMechIdName = "PartyContactMechId";
+        PartyContactMechId outerPartyContactMechIdValue = properties.getPartyContactMechId();
+        String innerPartyContactMechIdName = "PartyContactMechId";
+        PartyContactMechId innerPartyContactMechIdValue = innerProperties.getPartyContactMechId();
+        if (innerPartyContactMechIdValue == null) {
+            innerProperties.setPartyContactMechId(outerPartyContactMechIdValue);
         }
-        else if (innerPartyContactMechBaseIdValue != outerPartyContactMechBaseIdValue 
-            && (innerPartyContactMechBaseIdValue == null || innerPartyContactMechBaseIdValue != null && !innerPartyContactMechBaseIdValue.equals(outerPartyContactMechBaseIdValue))) {
-            throw DomainError.named("inconsistentId", "Outer %1$s %2$s NOT equals inner %3$s %4$s", outerPartyContactMechBaseIdName, outerPartyContactMechBaseIdValue, innerPartyContactMechBaseIdName, innerPartyContactMechBaseIdValue);
-        }
-        String outerFromDateName = "FromDate";
-        OffsetDateTime outerFromDateValue = properties.getFromDate();
-        String innerPartyContactMechFromDateName = "PartyContactMechFromDate";
-        OffsetDateTime innerPartyContactMechFromDateValue = innerProperties.getPartyContactMechFromDate();
-        if (innerPartyContactMechFromDateValue == null) {
-            innerProperties.setPartyContactMechFromDate(outerFromDateValue);
-        }
-        else if (innerPartyContactMechFromDateValue != outerFromDateValue 
-            && (innerPartyContactMechFromDateValue == null || innerPartyContactMechFromDateValue != null && !innerPartyContactMechFromDateValue.equals(outerFromDateValue))) {
-            throw DomainError.named("inconsistentId", "Outer %1$s %2$s NOT equals inner %3$s %4$s", outerFromDateName, outerFromDateValue, innerPartyContactMechFromDateName, innerPartyContactMechFromDateValue);
+        else if (innerPartyContactMechIdValue != outerPartyContactMechIdValue 
+            && (innerPartyContactMechIdValue == null || innerPartyContactMechIdValue != null && !innerPartyContactMechIdValue.equals(outerPartyContactMechIdValue))) {
+            throw DomainError.named("inconsistentId", "Outer %1$s %2$s NOT equals inner %3$s %4$s", outerPartyContactMechIdName, outerPartyContactMechIdValue, innerPartyContactMechIdName, innerPartyContactMechIdValue);
         }
     }// END throwOnInconsistentCommands /////////////////////
 
 
     ////////////////////////
 
-    protected PartyContactMechBaseEvent.PartyContactMechBaseStateCreated newPartyContactMechBaseStateCreated(Long version, String commandId, String requesterId) {
-        PartyContactMechBaseEventId stateEventId = new PartyContactMechBaseEventId(this.state.getPartyContactMechBaseId(), version);
-        PartyContactMechBaseEvent.PartyContactMechBaseStateCreated e = newPartyContactMechBaseStateCreated(stateEventId);
-        ((AbstractPartyContactMechBaseEvent)e).setCommandId(commandId);
+    protected PartyContactMechEvent.PartyContactMechStateCreated newPartyContactMechStateCreated(Long version, String commandId, String requesterId) {
+        PartyContactMechEventId stateEventId = new PartyContactMechEventId(this.state.getPartyContactMechId(), version);
+        PartyContactMechEvent.PartyContactMechStateCreated e = newPartyContactMechStateCreated(stateEventId);
+        ((AbstractPartyContactMechEvent)e).setCommandId(commandId);
         e.setCreatedBy(requesterId);
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         return e;
     }
 
-    protected PartyContactMechBaseEvent.PartyContactMechBaseStateMergePatched newPartyContactMechBaseStateMergePatched(Long version, String commandId, String requesterId) {
-        PartyContactMechBaseEventId stateEventId = new PartyContactMechBaseEventId(this.state.getPartyContactMechBaseId(), version);
-        PartyContactMechBaseEvent.PartyContactMechBaseStateMergePatched e = newPartyContactMechBaseStateMergePatched(stateEventId);
-        ((AbstractPartyContactMechBaseEvent)e).setCommandId(commandId);
+    protected PartyContactMechEvent.PartyContactMechStateMergePatched newPartyContactMechStateMergePatched(Long version, String commandId, String requesterId) {
+        PartyContactMechEventId stateEventId = new PartyContactMechEventId(this.state.getPartyContactMechId(), version);
+        PartyContactMechEvent.PartyContactMechStateMergePatched e = newPartyContactMechStateMergePatched(stateEventId);
+        ((AbstractPartyContactMechEvent)e).setCommandId(commandId);
         e.setCreatedBy(requesterId);
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         return e;
-    }
-
-    protected PartyContactMechBaseEvent.PartyContactMechBaseStateCreated newPartyContactMechBaseStateCreated(PartyContactMechBaseEventId stateEventId) {
-        return new AbstractPartyContactMechBaseEvent.SimplePartyContactMechBaseStateCreated(stateEventId);
-    }
-
-    protected PartyContactMechBaseEvent.PartyContactMechBaseStateMergePatched newPartyContactMechBaseStateMergePatched(PartyContactMechBaseEventId stateEventId) {
-        return new AbstractPartyContactMechBaseEvent.SimplePartyContactMechBaseStateMergePatched(stateEventId);
     }
 
     protected PartyContactMechEvent.PartyContactMechStateCreated newPartyContactMechStateCreated(PartyContactMechEventId stateEventId) {
@@ -302,7 +205,7 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
 
 
     public static class SimplePartyContactMechAggregate extends AbstractPartyContactMechAggregate {
-        public SimplePartyContactMechAggregate(PartyContactMechBaseState state) {
+        public SimplePartyContactMechAggregate(PartyContactMechState state) {
             super(state);
         }
 

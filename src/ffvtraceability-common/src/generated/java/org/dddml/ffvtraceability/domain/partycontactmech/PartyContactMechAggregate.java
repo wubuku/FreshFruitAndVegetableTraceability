@@ -12,13 +12,13 @@ import org.dddml.ffvtraceability.specialization.Event;
 import org.dddml.ffvtraceability.domain.Command;
 
 public interface PartyContactMechAggregate {
-    PartyContactMechBaseState getState();
+    PartyContactMechState getState();
 
     List<Event> getChanges();
 
-    void create(PartyContactMechBaseCommand.CreatePartyContactMechBase c);
+    void create(PartyContactMechCommand.CreatePartyContactMech c);
 
-    void mergePatch(PartyContactMechBaseCommand.MergePatchPartyContactMechBase c);
+    void mergePatch(PartyContactMechCommand.MergePatchPartyContactMech c);
 
     void throwOnInvalidStateTransition(Command c);
 }

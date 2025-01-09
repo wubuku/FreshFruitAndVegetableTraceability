@@ -5,13 +5,16 @@
 
 package org.dddml.ffvtraceability.domain.partycontactmech;
 
+import java.util.*;
+import org.dddml.support.criterion.Criterion;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
-public interface PartyContactMechEventDao {
-    void save(PartyContactMechEvent e);
+public interface PartyContactMechStateRepository {
+    PartyContactMechState get(PartyContactMechId id, boolean nullAllowed);
 
-    Iterable<PartyContactMechEvent> findByPartyContactMechBaseEventId(PartyContactMechBaseEventId partyContactMechBaseEventId);
+    void save(PartyContactMechState state);
 
+    void merge(PartyContactMechState detached);
 }
 

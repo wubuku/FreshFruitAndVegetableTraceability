@@ -3,20 +3,20 @@
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.partycontactmech">
   <class name="AbstractPartyContactMechPurposeEvent" table="party_contact_mech_purpose_event" abstract="true">
     <composite-id name="partyContactMechPurposeEventId" class="org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechPurposeEventId">
-      <key-property name="partyContactMechBaseIdPartyId">
+      <key-property name="partyContactMechIdPartyId">
         <column name="PARTY_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="partyContactMechBaseIdContactMechId">
+      <key-property name="partyContactMechIdContactMechId">
         <column name="CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="partyContactMechFromDate">
+      <key-property name="partyContactMechIdFromDate">
         <column name="FROM_DATE" sql-type="timestamptz" />
       </key-property>
       <key-property name="contactMechPurposeTypeId">
         <column name="CONTACT_MECH_PURPOSE_TYPE_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="partyContactMechBaseVersion">
-        <column name="party_contact_mech_base_version" />
+      <key-property name="partyContactMechVersion">
+        <column name="party_contact_mech_version" />
       </key-property>
     </composite-id>
     <discriminator column="event_type" type="string" />

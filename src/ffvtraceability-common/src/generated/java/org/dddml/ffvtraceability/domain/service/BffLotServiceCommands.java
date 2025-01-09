@@ -46,6 +46,19 @@ public class BffLotServiceCommands {
             this.active = active;
         }
 
+        /**
+         * Keyword
+         */
+        private String keyword;
+
+        public String getKeyword() {
+            return keyword;
+        }
+
+        public void setKeyword(String keyword) {
+            this.keyword = keyword;
+        }
+
     }
 
     public static class GetLot extends org.dddml.ffvtraceability.domain.AbstractCommand {

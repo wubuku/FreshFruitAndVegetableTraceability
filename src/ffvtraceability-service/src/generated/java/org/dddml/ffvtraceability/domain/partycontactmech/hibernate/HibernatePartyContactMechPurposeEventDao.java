@@ -42,10 +42,10 @@ public class HibernatePartyContactMechPurposeEventDao implements PartyContactMec
         Root<AbstractPartyContactMechPurposeEvent> root = cq.from(AbstractPartyContactMechPurposeEvent.class);
 
         Predicate condition = cb.and(
-            cb.equal(root.get("partyContactMechPurposeEventId").get("partyContactMechBaseIdPartyId"), partyContactMechEventId.getPartyContactMechBaseId().getPartyId()),
-            cb.equal(root.get("partyContactMechPurposeEventId").get("partyContactMechBaseIdContactMechId"), partyContactMechEventId.getPartyContactMechBaseId().getContactMechId()),
-            cb.equal(root.get("partyContactMechPurposeEventId").get("partyContactMechFromDate"), partyContactMechEventId.getFromDate()),
-            cb.equal(root.get("partyContactMechPurposeEventId").get("partyContactMechBaseVersion"), partyContactMechEventId.getPartyContactMechBaseVersion())
+            cb.equal(root.get("partyContactMechPurposeEventId").get("partyContactMechIdPartyId"), partyContactMechEventId.getPartyContactMechId().getPartyId()),
+            cb.equal(root.get("partyContactMechPurposeEventId").get("partyContactMechIdContactMechId"), partyContactMechEventId.getPartyContactMechId().getContactMechId()),
+            cb.equal(root.get("partyContactMechPurposeEventId").get("partyContactMechIdFromDate"), partyContactMechEventId.getPartyContactMechId().getFromDate()),
+            cb.equal(root.get("partyContactMechPurposeEventId").get("partyContactMechVersion"), partyContactMechEventId.getVersion())
         );
 
         cq.where(condition);

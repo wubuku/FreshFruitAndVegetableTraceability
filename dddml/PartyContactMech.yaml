@@ -1,124 +1,109 @@
 aggregates:
+  # 业务实体 - 联系方式
   PartyContactMech:
-    # 业务实体 - 联系方式
-    aggregateRootName: PartyContactMechBase
+    reservedPropertyMetadata:
+      noDeleted: true
+      noActive: true
     id:
-      name: PartyContactMechBaseId
-      type: PartyContactMechBaseId
+      name: PartyContactMechId
+      type: PartyContactMechId
+      columnNames:
+        - PARTY_ID
+        - CONTACT_MECH_ID
+        - FROM_DATE
     properties:
-      ActiveFromDate:
-        # FromDate of the active PartyContactMech record
-        # NOTE: A redundant field maintained for quick lookup of the active contact mechanism
+      ThruDate:
+        name: ThruDate
+        columnName: THRU_DATE
         type: date-time
-      ContactMechanisms:
-        itemType: PartyContactMech
+      RoleTypeId:
+        # 在使用该联系方式的时候扮演的角色类型
+        type: id
+        referenceType: RoleType
+      AllowSolicitation:
+        columnName: ALLOW_SOLICITATION
+        type: indicator
+      Extension:
+        # 分机 / 扩展
+        columnName: EXTENSION
+        type: long-varchar
+      Verified:
+        # 是否已验证
+        columnName: VERIFIED
+        type: indicator
+      Comments:
+        # 备注
+        type: comment
+      YearsWithContactMech:
+        name: YearsWithContactMech
+        columnName: YEARS_WITH_CONTACT_MECH
+        type: numeric
+      MonthsWithContactMech:
+        name: MonthsWithContactMech
+        columnName: MONTHS_WITH_CONTACT_MECH
+        type: numeric
+      # -----------------------------------------------
+      PartyContactMechPurposes:
+        itemType: PartyContactMechPurpose
+      # Active:
+      #   type: bool
+      #   defaultLogic:
+      #     Java: true
+      #     CSharp: true
     valueObjects:
-      PartyContactMechBaseId:
+      PartyContactMechId:
         properties:
           PartyId:
             type: id-ne
           ContactMechId:
             type: id-ne
+          FromDate:
+            type: date-time
 
     entities:
-      PartyContactMech:
+      PartyContactMechPurpose:
+        description: Party Contact Mechanism Purpose Entity
+        tableName: PARTY_CONTACT_MECH_PURPOSE
         reservedPropertyMetadata:
           noDeleted: true
           noActive: true
         id:
-          name: FromDate
-          type: date-time
+          name: ContactMechPurposeTypeId
+          type: id
         globalId:
-          name: PartyContactMechId
-          type: PartyContactMechId
+          name: PartyContactMechPurposeId
+          type: PartyContactMechPurposeId
           columnNames:
             - PARTY_ID
             - CONTACT_MECH_ID
             - FROM_DATE
+            - CONTACT_MECH_PURPOSE_TYPE_ID
         properties:
           ThruDate:
             name: ThruDate
             columnName: THRU_DATE
             type: date-time
-          RoleTypeId:
-            # 在使用该联系方式的时候扮演的角色类型
-            type: id
-            referenceType: RoleType
-          AllowSolicitation:
-            columnName: ALLOW_SOLICITATION
-            type: indicator
-          Extension:
-            # 分机 / 扩展
-            columnName: EXTENSION
-            type: long-varchar
-          Verified:
-            # 是否已验证
-            columnName: VERIFIED
-            type: indicator
-          Comments:
-            # 备注
-            type: comment
-          YearsWithContactMech:
-            name: YearsWithContactMech
-            columnName: YEARS_WITH_CONTACT_MECH
-            type: numeric
-          MonthsWithContactMech:
-            name: MonthsWithContactMech
-            columnName: MONTHS_WITH_CONTACT_MECH
-            type: numeric
-          # -----------------------------------------------
-          PartyContactMechPurposes:
-            itemType: PartyContactMechPurpose
-          # Active:
-          #   type: bool
-          #   defaultLogic:
-          #     Java: true
-          #     CSharp: true
 
-        entities:
-          PartyContactMechPurpose:
-            description: Party Contact Mechanism Purpose Entity
-            tableName: PARTY_CONTACT_MECH_PURPOSE
-            reservedPropertyMetadata:
-              noDeleted: true
-              noActive: true
-            id:
-              name: ContactMechPurposeTypeId
-              type: id
-            globalId:
-              name: PartyContactMechPurposeId
-              type: PartyContactMechPurposeId
-              columnNames:
-                - PARTY_ID
-                - CONTACT_MECH_ID
-                - FROM_DATE
-                - CONTACT_MECH_PURPOSE_TYPE_ID
-            properties:
-              ThruDate:
-                name: ThruDate
-                columnName: THRU_DATE
-                type: date-time
-
-        references:
-          Party:
-            type: Party
-            properties:
-              - PartyContactMechId.PartyId
-            foreignKeyName: PARTY_CMECH_PARTY
-          Person:
-            type: Person
-            properties:
-              - PartyContactMechId.PartyId
-          ContactMech:
-            type: ContactMech
-            properties:
-              - PartyContactMechId.ContactMechId
-            foreignKeyName: PARTY_CMECH_CMECH
-          TelecomNumber:
-            type: TelecomNumber
-            properties:
-              - PartyContactMechId.ContactMechId
-          PostalAddress:
-            type: PostalAddress
-            properties:
-              - PartyContactMechId.ContactMechId
+    references:
+      Party:
+        type: Party
+        properties:
+          - PartyContactMechId.PartyId
+        foreignKeyName: PARTY_CMECH_PARTY
+      Person:
+        type: Person
+        properties:
+          - PartyContactMechId.PartyId
+      ContactMech:
+        type: ContactMech
+        properties:
+          - PartyContactMechId.ContactMechId
+        foreignKeyName: PARTY_CMECH_CMECH
+      TelecomNumber:
+        type: TelecomNumber
+        properties:
+          - PartyContactMechId.ContactMechId
+      PostalAddress:
+        type: PostalAddress
+        properties:
+          - PartyContactMechId.ContactMechId

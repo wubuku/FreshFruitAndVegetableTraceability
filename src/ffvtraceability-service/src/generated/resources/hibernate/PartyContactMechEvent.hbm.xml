@@ -3,23 +3,32 @@
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.partycontactmech">
   <class name="AbstractPartyContactMechEvent" table="party_contact_mech_event" abstract="true">
     <composite-id name="partyContactMechEventId" class="org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechEventId">
-      <key-property name="partyContactMechBaseIdPartyId">
+      <key-property name="partyContactMechIdPartyId">
         <column name="PARTY_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="partyContactMechBaseIdContactMechId">
+      <key-property name="partyContactMechIdContactMechId">
         <column name="CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="fromDate">
+      <key-property name="partyContactMechIdFromDate">
         <column name="FROM_DATE" sql-type="timestamptz" />
       </key-property>
-      <key-property name="partyContactMechBaseVersion">
-        <column name="party_contact_mech_base_version" />
+      <key-property name="version">
+        <column name="version" />
       </key-property>
     </composite-id>
     <discriminator column="event_type" type="string" />
     <property name="createdBy" column="created_by" />
     <property name="createdAt" column="created_at" />
     <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractPartyContactMechEvent$PartyContactMechLobEvent" discriminator-value="PartyContactMechLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
     <subclass name="AbstractPartyContactMechEvent$AbstractPartyContactMechStateEvent" abstract="true">
       <property name="thruDate">
         <column name="THRU_DATE" sql-type="timestamptz" />
@@ -45,7 +54,6 @@
       <property name="monthsWithContactMech">
         <column name="MONTHS_WITH_CONTACT_MECH" sql-type="DECIMAL(20,0)" />
       </property>
-      <property name="version" column="version" not-null="true" />
       <subclass name="AbstractPartyContactMechEvent$SimplePartyContactMechStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractPartyContactMechEvent$SimplePartyContactMechStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyThruDateRemoved" column="is_property_thru_date_removed" />

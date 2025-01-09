@@ -50,28 +50,16 @@ public class PartyContactMechPurposeStateDto {
         this.version = version;
     }
 
-    private PartyContactMechBaseId partyContactMechBaseId;
+    private PartyContactMechId partyContactMechId;
 
-    public PartyContactMechBaseId getPartyContactMechBaseId()
+    public PartyContactMechId getPartyContactMechId()
     {
-        return this.partyContactMechBaseId;
+        return this.partyContactMechId;
     }
 
-    public void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId)
+    public void setPartyContactMechId(PartyContactMechId partyContactMechId)
     {
-        this.partyContactMechBaseId = partyContactMechBaseId;
-    }
-
-    private OffsetDateTime partyContactMechFromDate;
-
-    public OffsetDateTime getPartyContactMechFromDate()
-    {
-        return this.partyContactMechFromDate;
-    }
-
-    public void setPartyContactMechFromDate(OffsetDateTime partyContactMechFromDate)
-    {
-        this.partyContactMechFromDate = partyContactMechFromDate;
+        this.partyContactMechId = partyContactMechId;
     }
 
     private String createdBy;
@@ -160,11 +148,8 @@ public class PartyContactMechPurposeStateDto {
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }
-            if (returnedFieldsContains("PartyContactMechBaseId")) {
-                dto.setPartyContactMechBaseId(state.getPartyContactMechBaseId());
-            }
-            if (returnedFieldsContains("PartyContactMechFromDate")) {
-                dto.setPartyContactMechFromDate(state.getPartyContactMechFromDate());
+            if (returnedFieldsContains("PartyContactMechId")) {
+                dto.setPartyContactMechId(state.getPartyContactMechId());
             }
             if (returnedFieldsContains("CreatedBy")) {
                 dto.setCreatedBy(state.getCreatedBy());

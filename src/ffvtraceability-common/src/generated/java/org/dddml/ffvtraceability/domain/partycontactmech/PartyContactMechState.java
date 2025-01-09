@@ -17,7 +17,7 @@ public interface PartyContactMechState
 
     Long VERSION_NULL = VERSION_ZERO - 1;
 
-    OffsetDateTime getFromDate();
+    PartyContactMechId getPartyContactMechId();
 
     OffsetDateTime getThruDate();
 
@@ -45,12 +45,10 @@ public interface PartyContactMechState
 
     OffsetDateTime getUpdatedAt();
 
-    PartyContactMechBaseId getPartyContactMechBaseId();
-
     EntityStateCollection<String, PartyContactMechPurposeState> getPartyContactMechPurposes();
 
     interface MutablePartyContactMechState extends PartyContactMechState {
-        void setFromDate(OffsetDateTime fromDate);
+        void setPartyContactMechId(PartyContactMechId partyContactMechId);
 
         void setThruDate(OffsetDateTime thruDate);
 
@@ -78,8 +76,6 @@ public interface PartyContactMechState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId);
-
 
         void mutate(Event e);
 
@@ -90,10 +86,6 @@ public interface PartyContactMechState
     }
 
     interface SqlPartyContactMechState extends MutablePartyContactMechState {
-        PartyContactMechId getPartyContactMechId();
-
-        void setPartyContactMechId(PartyContactMechId partyContactMechId);
-
 
         boolean isStateUnsaved();
 

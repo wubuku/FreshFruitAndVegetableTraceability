@@ -10,71 +10,68 @@ import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public class PartyContactMechEventId implements Serializable {
-    private PartyContactMechBaseId partyContactMechBaseId = new PartyContactMechBaseId();
+    private PartyContactMechId partyContactMechId = new PartyContactMechId();
 
-    public PartyContactMechBaseId getPartyContactMechBaseId()
+    public PartyContactMechId getPartyContactMechId()
     {
-        return this.partyContactMechBaseId;
+        return this.partyContactMechId;
     }
 
-    public void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId)
+    public void setPartyContactMechId(PartyContactMechId partyContactMechId)
     {
-        this.partyContactMechBaseId = partyContactMechBaseId;
+        this.partyContactMechId = partyContactMechId;
     }
 
-    private OffsetDateTime fromDate;
+    private Long version;
 
-    public OffsetDateTime getFromDate()
+    public Long getVersion()
     {
-        return this.fromDate;
+        return this.version;
     }
 
-    public void setFromDate(OffsetDateTime fromDate)
+    public void setVersion(Long version)
     {
-        this.fromDate = fromDate;
+        this.version = version;
     }
 
-    private Long partyContactMechBaseVersion;
-
-    public Long getPartyContactMechBaseVersion()
+    protected String getPartyContactMechIdPartyId()
     {
-        return this.partyContactMechBaseVersion;
+        return getPartyContactMechId().getPartyId();
     }
 
-    public void setPartyContactMechBaseVersion(Long partyContactMechBaseVersion)
+    protected void setPartyContactMechIdPartyId(String partyContactMechIdPartyId)
     {
-        this.partyContactMechBaseVersion = partyContactMechBaseVersion;
+        getPartyContactMechId().setPartyId(partyContactMechIdPartyId);
     }
 
-    protected String getPartyContactMechBaseIdPartyId()
+    protected String getPartyContactMechIdContactMechId()
     {
-        return getPartyContactMechBaseId().getPartyId();
+        return getPartyContactMechId().getContactMechId();
     }
 
-    protected void setPartyContactMechBaseIdPartyId(String partyContactMechBaseIdPartyId)
+    protected void setPartyContactMechIdContactMechId(String partyContactMechIdContactMechId)
     {
-        getPartyContactMechBaseId().setPartyId(partyContactMechBaseIdPartyId);
+        getPartyContactMechId().setContactMechId(partyContactMechIdContactMechId);
     }
 
-    protected String getPartyContactMechBaseIdContactMechId()
+    protected OffsetDateTime getPartyContactMechIdFromDate()
     {
-        return getPartyContactMechBaseId().getContactMechId();
+        return getPartyContactMechId().getFromDate();
     }
 
-    protected void setPartyContactMechBaseIdContactMechId(String partyContactMechBaseIdContactMechId)
+    protected void setPartyContactMechIdFromDate(OffsetDateTime partyContactMechIdFromDate)
     {
-        getPartyContactMechBaseId().setContactMechId(partyContactMechBaseIdContactMechId);
+        getPartyContactMechId().setFromDate(partyContactMechIdFromDate);
     }
 
     public PartyContactMechEventId()
     {
     }
 
-    public PartyContactMechEventId(PartyContactMechBaseId partyContactMechBaseId, OffsetDateTime fromDate, Long partyContactMechBaseVersion)
+    public PartyContactMechEventId(PartyContactMechId partyContactMechId, Long version)
     {
-        this.partyContactMechBaseId = partyContactMechBaseId;
-        this.fromDate = fromDate;
-        this.partyContactMechBaseVersion = partyContactMechBaseVersion;
+        this.partyContactMechId = partyContactMechId;
+        this.version = version;
     }
 
     @Override
@@ -89,9 +86,8 @@ public class PartyContactMechEventId implements Serializable {
 
         PartyContactMechEventId other = (PartyContactMechEventId)obj;
         return true 
-            && (partyContactMechBaseId == other.partyContactMechBaseId || (partyContactMechBaseId != null && partyContactMechBaseId.equals(other.partyContactMechBaseId)))
-            && (fromDate == other.fromDate || (fromDate != null && fromDate.equals(other.fromDate)))
-            && (partyContactMechBaseVersion == other.partyContactMechBaseVersion || (partyContactMechBaseVersion != null && partyContactMechBaseVersion.equals(other.partyContactMechBaseVersion)))
+            && (partyContactMechId == other.partyContactMechId || (partyContactMechId != null && partyContactMechId.equals(other.partyContactMechId)))
+            && (version == other.version || (version != null && version.equals(other.version)))
             ;
     }
 
@@ -99,14 +95,11 @@ public class PartyContactMechEventId implements Serializable {
     public int hashCode()
     {
         int hash = 0;
-        if (this.partyContactMechBaseId != null) {
-            hash += 13 * this.partyContactMechBaseId.hashCode();
+        if (this.partyContactMechId != null) {
+            hash += 13 * this.partyContactMechId.hashCode();
         }
-        if (this.fromDate != null) {
-            hash += 13 * this.fromDate.hashCode();
-        }
-        if (this.partyContactMechBaseVersion != null) {
-            hash += 13 * this.partyContactMechBaseVersion.hashCode();
+        if (this.version != null) {
+            hash += 13 * this.version.hashCode();
         }
         return hash;
     }
@@ -114,17 +107,16 @@ public class PartyContactMechEventId implements Serializable {
     @Override
     public String toString() {
         return "PartyContactMechEventId{" +
-                "partyContactMechBaseId=" + partyContactMechBaseId +
-                ", fromDate=" + fromDate +
-                ", partyContactMechBaseVersion=" + partyContactMechBaseVersion +
+                "partyContactMechId=" + partyContactMechId +
+                ", version=" + version +
                 '}';
     }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
-            "partyContactMechBaseIdPartyId",
-            "partyContactMechBaseIdContactMechId",
-            "fromDate",
-            "partyContactMechBaseVersion",
+            "partyContactMechIdPartyId",
+            "partyContactMechIdContactMechId",
+            "partyContactMechIdFromDate",
+            "version",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{

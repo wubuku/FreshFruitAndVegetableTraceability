@@ -10,28 +10,16 @@ import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public class PartyContactMechPurposeEventId implements Serializable {
-    private PartyContactMechBaseId partyContactMechBaseId = new PartyContactMechBaseId();
+    private PartyContactMechId partyContactMechId = new PartyContactMechId();
 
-    public PartyContactMechBaseId getPartyContactMechBaseId()
+    public PartyContactMechId getPartyContactMechId()
     {
-        return this.partyContactMechBaseId;
+        return this.partyContactMechId;
     }
 
-    public void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId)
+    public void setPartyContactMechId(PartyContactMechId partyContactMechId)
     {
-        this.partyContactMechBaseId = partyContactMechBaseId;
-    }
-
-    private OffsetDateTime partyContactMechFromDate;
-
-    public OffsetDateTime getPartyContactMechFromDate()
-    {
-        return this.partyContactMechFromDate;
-    }
-
-    public void setPartyContactMechFromDate(OffsetDateTime partyContactMechFromDate)
-    {
-        this.partyContactMechFromDate = partyContactMechFromDate;
+        this.partyContactMechId = partyContactMechId;
     }
 
     private String contactMechPurposeTypeId;
@@ -46,48 +34,57 @@ public class PartyContactMechPurposeEventId implements Serializable {
         this.contactMechPurposeTypeId = contactMechPurposeTypeId;
     }
 
-    private Long partyContactMechBaseVersion;
+    private Long partyContactMechVersion;
 
-    public Long getPartyContactMechBaseVersion()
+    public Long getPartyContactMechVersion()
     {
-        return this.partyContactMechBaseVersion;
+        return this.partyContactMechVersion;
     }
 
-    public void setPartyContactMechBaseVersion(Long partyContactMechBaseVersion)
+    public void setPartyContactMechVersion(Long partyContactMechVersion)
     {
-        this.partyContactMechBaseVersion = partyContactMechBaseVersion;
+        this.partyContactMechVersion = partyContactMechVersion;
     }
 
-    protected String getPartyContactMechBaseIdPartyId()
+    protected String getPartyContactMechIdPartyId()
     {
-        return getPartyContactMechBaseId().getPartyId();
+        return getPartyContactMechId().getPartyId();
     }
 
-    protected void setPartyContactMechBaseIdPartyId(String partyContactMechBaseIdPartyId)
+    protected void setPartyContactMechIdPartyId(String partyContactMechIdPartyId)
     {
-        getPartyContactMechBaseId().setPartyId(partyContactMechBaseIdPartyId);
+        getPartyContactMechId().setPartyId(partyContactMechIdPartyId);
     }
 
-    protected String getPartyContactMechBaseIdContactMechId()
+    protected String getPartyContactMechIdContactMechId()
     {
-        return getPartyContactMechBaseId().getContactMechId();
+        return getPartyContactMechId().getContactMechId();
     }
 
-    protected void setPartyContactMechBaseIdContactMechId(String partyContactMechBaseIdContactMechId)
+    protected void setPartyContactMechIdContactMechId(String partyContactMechIdContactMechId)
     {
-        getPartyContactMechBaseId().setContactMechId(partyContactMechBaseIdContactMechId);
+        getPartyContactMechId().setContactMechId(partyContactMechIdContactMechId);
+    }
+
+    protected OffsetDateTime getPartyContactMechIdFromDate()
+    {
+        return getPartyContactMechId().getFromDate();
+    }
+
+    protected void setPartyContactMechIdFromDate(OffsetDateTime partyContactMechIdFromDate)
+    {
+        getPartyContactMechId().setFromDate(partyContactMechIdFromDate);
     }
 
     public PartyContactMechPurposeEventId()
     {
     }
 
-    public PartyContactMechPurposeEventId(PartyContactMechBaseId partyContactMechBaseId, OffsetDateTime partyContactMechFromDate, String contactMechPurposeTypeId, Long partyContactMechBaseVersion)
+    public PartyContactMechPurposeEventId(PartyContactMechId partyContactMechId, String contactMechPurposeTypeId, Long partyContactMechVersion)
     {
-        this.partyContactMechBaseId = partyContactMechBaseId;
-        this.partyContactMechFromDate = partyContactMechFromDate;
+        this.partyContactMechId = partyContactMechId;
         this.contactMechPurposeTypeId = contactMechPurposeTypeId;
-        this.partyContactMechBaseVersion = partyContactMechBaseVersion;
+        this.partyContactMechVersion = partyContactMechVersion;
     }
 
     @Override
@@ -102,10 +99,9 @@ public class PartyContactMechPurposeEventId implements Serializable {
 
         PartyContactMechPurposeEventId other = (PartyContactMechPurposeEventId)obj;
         return true 
-            && (partyContactMechBaseId == other.partyContactMechBaseId || (partyContactMechBaseId != null && partyContactMechBaseId.equals(other.partyContactMechBaseId)))
-            && (partyContactMechFromDate == other.partyContactMechFromDate || (partyContactMechFromDate != null && partyContactMechFromDate.equals(other.partyContactMechFromDate)))
+            && (partyContactMechId == other.partyContactMechId || (partyContactMechId != null && partyContactMechId.equals(other.partyContactMechId)))
             && (contactMechPurposeTypeId == other.contactMechPurposeTypeId || (contactMechPurposeTypeId != null && contactMechPurposeTypeId.equals(other.contactMechPurposeTypeId)))
-            && (partyContactMechBaseVersion == other.partyContactMechBaseVersion || (partyContactMechBaseVersion != null && partyContactMechBaseVersion.equals(other.partyContactMechBaseVersion)))
+            && (partyContactMechVersion == other.partyContactMechVersion || (partyContactMechVersion != null && partyContactMechVersion.equals(other.partyContactMechVersion)))
             ;
     }
 
@@ -113,17 +109,14 @@ public class PartyContactMechPurposeEventId implements Serializable {
     public int hashCode()
     {
         int hash = 0;
-        if (this.partyContactMechBaseId != null) {
-            hash += 13 * this.partyContactMechBaseId.hashCode();
-        }
-        if (this.partyContactMechFromDate != null) {
-            hash += 13 * this.partyContactMechFromDate.hashCode();
+        if (this.partyContactMechId != null) {
+            hash += 13 * this.partyContactMechId.hashCode();
         }
         if (this.contactMechPurposeTypeId != null) {
             hash += 13 * this.contactMechPurposeTypeId.hashCode();
         }
-        if (this.partyContactMechBaseVersion != null) {
-            hash += 13 * this.partyContactMechBaseVersion.hashCode();
+        if (this.partyContactMechVersion != null) {
+            hash += 13 * this.partyContactMechVersion.hashCode();
         }
         return hash;
     }
@@ -131,19 +124,18 @@ public class PartyContactMechPurposeEventId implements Serializable {
     @Override
     public String toString() {
         return "PartyContactMechPurposeEventId{" +
-                "partyContactMechBaseId=" + partyContactMechBaseId +
-                ", partyContactMechFromDate=" + partyContactMechFromDate +
+                "partyContactMechId=" + partyContactMechId +
                 ", contactMechPurposeTypeId=" + '\'' + contactMechPurposeTypeId + '\'' +
-                ", partyContactMechBaseVersion=" + partyContactMechBaseVersion +
+                ", partyContactMechVersion=" + partyContactMechVersion +
                 '}';
     }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
-            "partyContactMechBaseIdPartyId",
-            "partyContactMechBaseIdContactMechId",
-            "partyContactMechFromDate",
+            "partyContactMechIdPartyId",
+            "partyContactMechIdContactMechId",
+            "partyContactMechIdFromDate",
             "contactMechPurposeTypeId",
-            "partyContactMechBaseVersion",
+            "partyContactMechVersion",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{

@@ -13,9 +13,39 @@ import org.dddml.ffvtraceability.specialization.DomainError;
 
 public interface PartyContactMechCommand extends Command {
 
-    OffsetDateTime getFromDate();
+    PartyContactMechId getPartyContactMechId();
 
-    void setFromDate(OffsetDateTime fromDate);
+    void setPartyContactMechId(PartyContactMechId partyContactMechId);
+
+    Long getVersion();
+
+    void setVersion(Long version);
+
+    static void throwOnInvalidStateTransition(PartyContactMechState state, Command c) {
+        if (state.getVersion() == null) {
+            if (isCreationCommand((PartyContactMechCommand)c)) {
+                return;
+            }
+            throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
+        }
+        if (isCreationCommand((PartyContactMechCommand)c))
+            throw DomainError.named("rebirth", "Can't create aggregate that already exists");
+    }
+
+    static boolean isCreationCommand(PartyContactMechCommand c) {
+        if ((c instanceof PartyContactMechCommand.CreatePartyContactMech) 
+            && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(PartyContactMechState.VERSION_NULL)))
+            return true;
+        if ((c instanceof PartyContactMechCommand.MergePatchPartyContactMech))
+            return false;
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+        }
+
+        if (c.getVersion().equals(PartyContactMechState.VERSION_NULL))
+            return true;
+        return false;
+    }
 
     interface CreateOrMergePatchPartyContactMech extends PartyContactMechCommand {
         OffsetDateTime getThruDate();
@@ -103,7 +133,7 @@ public interface PartyContactMechCommand extends Command {
 
     }
 
-    interface RemovePartyContactMech extends PartyContactMechCommand {
+    interface DeletePartyContactMech extends PartyContactMechCommand {
     }
 
     interface CreatePartyContactMechPurposeCommandCollection extends Iterable<PartyContactMechPurposeCommand.CreatePartyContactMechPurpose> {

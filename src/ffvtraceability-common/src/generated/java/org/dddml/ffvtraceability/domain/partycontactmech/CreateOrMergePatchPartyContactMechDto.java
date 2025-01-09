@@ -276,11 +276,6 @@ public class CreateOrMergePatchPartyContactMechDto extends AbstractPartyContactM
             }
             return command;
         } 
-        else if (COMMAND_TYPE_REMOVE.equals(getCommandType())) {
-            AbstractPartyContactMechCommand.SimpleRemovePartyContactMech command = new AbstractPartyContactMechCommand.SimpleRemovePartyContactMech();
-            ((AbstractPartyContactMechCommandDto) this).copyTo(command);
-            return command;
-        }
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
 
@@ -309,11 +304,6 @@ public class CreateOrMergePatchPartyContactMechDto extends AbstractPartyContactM
             }
             return command;
         } 
-        else if (COMMAND_TYPE_REMOVE.equals(getCommandType())) {
-            RemovePartyContactMechDto command = new RemovePartyContactMechDto();
-            ((AbstractPartyContactMechCommandDto) this).copyTo(command);
-            return command;
-        }
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
 

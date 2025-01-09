@@ -714,13 +714,13 @@ public class AggregatesHibernateConfig {
     @Bean
     public AbstractPartyContactMechApplicationService.SimplePartyContactMechApplicationService partyContactMechApplicationService(
             @Qualifier("partyContactMechEventStore") EventStore partyContactMechEventStore,
-            PartyContactMechBaseStateRepository partyContactMechBaseStateRepository,
-            PartyContactMechBaseStateQueryRepository partyContactMechBaseStateQueryRepository
+            PartyContactMechStateRepository partyContactMechStateRepository,
+            PartyContactMechStateQueryRepository partyContactMechStateQueryRepository
     ) {
         AbstractPartyContactMechApplicationService.SimplePartyContactMechApplicationService applicationService = new AbstractPartyContactMechApplicationService.SimplePartyContactMechApplicationService(
                 partyContactMechEventStore,
-                partyContactMechBaseStateRepository,
-                partyContactMechBaseStateQueryRepository
+                partyContactMechStateRepository,
+                partyContactMechStateQueryRepository
         );
         return applicationService;
     }

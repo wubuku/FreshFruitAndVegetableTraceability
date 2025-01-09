@@ -21,42 +21,43 @@ public class HibernatePartyContactMechEventStore extends AbstractHibernateEventS
     @Override
     protected Serializable getEventId(EventStoreAggregateId eventStoreAggregateId, long version)
     {
-        return new PartyContactMechBaseEventId((PartyContactMechBaseId) eventStoreAggregateId.getId(), Long.valueOf(version));
+        return new PartyContactMechEventId((PartyContactMechId) eventStoreAggregateId.getId(), Long.valueOf(version));
     }
 
     @Override
     protected Class getSupportedEventType()
     {
-        return AbstractPartyContactMechBaseEvent.class;
+        return AbstractPartyContactMechEvent.class;
     }
 
     @Transactional(readOnly = true)
     @Override
     public EventStream loadEventStream(Class eventType, EventStoreAggregateId eventStoreAggregateId, long version) {
-        Class supportedEventType = AbstractPartyContactMechBaseEvent.class;
+        Class supportedEventType = AbstractPartyContactMechEvent.class;
         if (!eventType.isAssignableFrom(supportedEventType)) {
             throw new UnsupportedOperationException();
         }
-        PartyContactMechBaseId idObj = (PartyContactMechBaseId) eventStoreAggregateId.getId();
+        PartyContactMechId idObj = (PartyContactMechId) eventStoreAggregateId.getId();
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<AbstractPartyContactMechBaseEvent> query = cb.createQuery(AbstractPartyContactMechBaseEvent.class);
-        Root<AbstractPartyContactMechBaseEvent> root = query.from(AbstractPartyContactMechBaseEvent.class);
+        CriteriaQuery<AbstractPartyContactMechEvent> query = cb.createQuery(AbstractPartyContactMechEvent.class);
+        Root<AbstractPartyContactMechEvent> root = query.from(AbstractPartyContactMechEvent.class);
    
         query.select(root)
                 .where(cb.and(
-                    cb.equal(root.get("partyContactMechBaseEventId").get("partyContactMechBaseIdPartyId"), idObj.getPartyId()),
-                    cb.equal(root.get("partyContactMechBaseEventId").get("partyContactMechBaseIdContactMechId"), idObj.getContactMechId()),
-                    cb.lessThanOrEqualTo(root.get("partyContactMechBaseEventId").get("version"), version)
+                    cb.equal(root.get("partyContactMechEventId").get("partyContactMechIdPartyId"), idObj.getPartyId()),
+                    cb.equal(root.get("partyContactMechEventId").get("partyContactMechIdContactMechId"), idObj.getContactMechId()),
+                    cb.equal(root.get("partyContactMechEventId").get("partyContactMechIdFromDate"), idObj.getFromDate()),
+                    cb.lessThanOrEqualTo(root.get("partyContactMechEventId").get("version"), version)
                 ))
-                .orderBy(cb.asc(root.get("partyContactMechBaseEventId").get("version")));
+                .orderBy(cb.asc(root.get("partyContactMechEventId").get("version")));
 
-        List<AbstractPartyContactMechBaseEvent> es = getEntityManager().createQuery(query).getResultList();
+        List<AbstractPartyContactMechEvent> es = getEntityManager().createQuery(query).getResultList();
         for (Object e : es) {
-            ((AbstractPartyContactMechBaseEvent) e).setEventReadOnly(true);
+            ((AbstractPartyContactMechEvent) e).setEventReadOnly(true);
         }
         EventStream eventStream = new EventStream();
         if (es.size() > 0) {
-            eventStream.setSteamVersion(((AbstractPartyContactMechBaseEvent) es.get(es.size() - 1)).getPartyContactMechBaseEventId().getVersion());
+            eventStream.setSteamVersion(((AbstractPartyContactMechEvent) es.get(es.size() - 1)).getPartyContactMechEventId().getVersion());
         } else {
         }
         eventStream.setEvents(new ArrayList<>(es));

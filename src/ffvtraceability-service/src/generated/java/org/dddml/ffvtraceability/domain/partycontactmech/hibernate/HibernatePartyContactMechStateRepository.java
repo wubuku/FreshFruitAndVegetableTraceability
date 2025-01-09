@@ -16,8 +16,8 @@ import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.hibernate.*;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository("partyContactMechBaseStateRepository")
-public class HibernatePartyContactMechBaseStateRepository implements PartyContactMechBaseStateRepository {
+@Repository("partyContactMechStateRepository")
+public class HibernatePartyContactMechStateRepository implements PartyContactMechStateRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -25,7 +25,7 @@ public class HibernatePartyContactMechBaseStateRepository implements PartyContac
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("PartyContactMechBaseId", "ActiveFromDate", "ContactMechanisms", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("PartyContactMechId", "ThruDate", "RoleTypeId", "AllowSolicitation", "Extension", "Verified", "Comments", "YearsWithContactMech", "MonthsWithContactMech", "PartyContactMechPurposes", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -38,22 +38,22 @@ public class HibernatePartyContactMechBaseStateRepository implements PartyContac
     }
 
     @Transactional(readOnly = true)
-    public PartyContactMechBaseState get(PartyContactMechBaseId id, boolean nullAllowed) {
-        PartyContactMechBaseState.SqlPartyContactMechBaseState state = (PartyContactMechBaseState.SqlPartyContactMechBaseState)getEntityManager().find(AbstractPartyContactMechBaseState.SimplePartyContactMechBaseState.class, id);
+    public PartyContactMechState get(PartyContactMechId id, boolean nullAllowed) {
+        PartyContactMechState.SqlPartyContactMechState state = (PartyContactMechState.SqlPartyContactMechState)getEntityManager().find(AbstractPartyContactMechState.SimplePartyContactMechState.class, id);
         if (!nullAllowed && state == null) {
-            state = new AbstractPartyContactMechBaseState.SimplePartyContactMechBaseState();
-            state.setPartyContactMechBaseId(id);
+            state = new AbstractPartyContactMechState.SimplePartyContactMechState();
+            state.setPartyContactMechId(id);
         }
         if (getReadOnlyProxyGenerator() != null && state != null) {
-            return (PartyContactMechBaseState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{PartyContactMechBaseState.SqlPartyContactMechBaseState.class, Saveable.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
+            return (PartyContactMechState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{PartyContactMechState.SqlPartyContactMechState.class, Saveable.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
         }
         return state;
     }
 
-    public void save(PartyContactMechBaseState state) {
-        PartyContactMechBaseState s = state;
+    public void save(PartyContactMechState state) {
+        PartyContactMechState s = state;
         if (getReadOnlyProxyGenerator() != null) {
-            s = (PartyContactMechBaseState) getReadOnlyProxyGenerator().getTarget(state);
+            s = (PartyContactMechState) getReadOnlyProxyGenerator().getTarget(state);
         }
         if (s.getVersion() == null) {
             entityManager.persist(s);
@@ -68,8 +68,8 @@ public class HibernatePartyContactMechBaseStateRepository implements PartyContac
         entityManager.flush();
     }
 
-    public void merge(PartyContactMechBaseState detached) {
-        PartyContactMechBaseState persistent = getEntityManager().find(AbstractPartyContactMechBaseState.SimplePartyContactMechBaseState.class, detached.getPartyContactMechBaseId());
+    public void merge(PartyContactMechState detached) {
+        PartyContactMechState persistent = getEntityManager().find(AbstractPartyContactMechState.SimplePartyContactMechState.class, detached.getPartyContactMechId());
         if (persistent != null) {
             merge(persistent, detached);
             entityManager.merge(persistent);
@@ -79,8 +79,8 @@ public class HibernatePartyContactMechBaseStateRepository implements PartyContac
         entityManager.flush();
     }
 
-    private void merge(PartyContactMechBaseState persistent, PartyContactMechBaseState detached) {
-        ((AbstractPartyContactMechBaseState) persistent).merge(detached);
+    private void merge(PartyContactMechState persistent, PartyContactMechState detached) {
+        ((AbstractPartyContactMechState) persistent).merge(detached);
     }
 
 }

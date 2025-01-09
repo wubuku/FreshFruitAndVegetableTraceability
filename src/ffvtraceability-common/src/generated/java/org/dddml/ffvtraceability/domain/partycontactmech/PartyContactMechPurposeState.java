@@ -31,9 +31,7 @@ public interface PartyContactMechPurposeState
 
     OffsetDateTime getUpdatedAt();
 
-    PartyContactMechBaseId getPartyContactMechBaseId();
-
-    OffsetDateTime getPartyContactMechFromDate();
+    PartyContactMechId getPartyContactMechId();
 
     interface MutablePartyContactMechPurposeState extends PartyContactMechPurposeState {
         void setContactMechPurposeTypeId(String contactMechPurposeTypeId);
@@ -50,9 +48,7 @@ public interface PartyContactMechPurposeState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-        void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId);
-
-        void setPartyContactMechFromDate(OffsetDateTime partyContactMechFromDate);
+        void setPartyContactMechId(PartyContactMechId partyContactMechId);
 
 
         void mutate(Event e);

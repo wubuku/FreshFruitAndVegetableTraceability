@@ -10,31 +10,25 @@ import java.util.List;
 import org.dddml.support.criterion.Criterion;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.specialization.Event;
-import org.dddml.ffvtraceability.domain.Command;
 
-public interface PartyContactMechApplicationService {
-    void when(PartyContactMechCommand.CreatePartyContactMech c);
-
-    void when(PartyContactMechCommand.MergePatchPartyContactMech c);
-
+public interface PartyContactMechStateQueryRepository {
     PartyContactMechState get(PartyContactMechId id);
 
     Iterable<PartyContactMechState> getAll(Integer firstResult, Integer maxResults);
-
+    
     Iterable<PartyContactMechState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults);
 
     Iterable<PartyContactMechState> get(Criterion filter, List<String> orders, Integer firstResult, Integer maxResults);
+
+    PartyContactMechState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders);
+
+    PartyContactMechState getFirst(Map.Entry<String, Object> keyValue, List<String> orders);
 
     Iterable<PartyContactMechState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults);
 
     long getCount(Iterable<Map.Entry<String, Object>> filter);
 
     long getCount(Criterion filter);
-
-    PartyContactMechEvent getEvent(PartyContactMechId partyContactMechId, long version);
-
-    PartyContactMechState getHistoryState(PartyContactMechId partyContactMechId, long version);
 
     PartyContactMechPurposeState getPartyContactMechPurpose(PartyContactMechId partyContactMechId, String contactMechPurposeTypeId);
 

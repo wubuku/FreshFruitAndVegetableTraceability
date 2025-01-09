@@ -24,14 +24,14 @@ public abstract class AbstractPartyContactMechPurposeState implements PartyConta
         this.partyContactMechPurposeId = partyContactMechPurposeId;
     }
 
-    private transient PartyContactMechBaseState partyContactMechBaseState;
+    private transient PartyContactMechState partyContactMechState;
 
-    public PartyContactMechBaseState getPartyContactMechBaseState() {
-        return partyContactMechBaseState;
+    public PartyContactMechState getPartyContactMechState() {
+        return partyContactMechState;
     }
 
-    public void setPartyContactMechBaseState(PartyContactMechBaseState s) {
-        partyContactMechBaseState = s;
+    public void setPartyContactMechState(PartyContactMechState s) {
+        partyContactMechState = s;
     }
     
     private PartyContactMechState protectedPartyContactMechState;
@@ -44,20 +44,12 @@ public abstract class AbstractPartyContactMechPurposeState implements PartyConta
         this.protectedPartyContactMechState = protectedPartyContactMechState;
     }
 
-    public PartyContactMechBaseId getPartyContactMechBaseId() {
-        return this.getPartyContactMechPurposeId().getPartyContactMechBaseId();
+    public PartyContactMechId getPartyContactMechId() {
+        return this.getPartyContactMechPurposeId().getPartyContactMechId();
     }
         
-    public void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId) {
-        this.getPartyContactMechPurposeId().setPartyContactMechBaseId(partyContactMechBaseId);
-    }
-
-    public OffsetDateTime getPartyContactMechFromDate() {
-        return this.getPartyContactMechPurposeId().getPartyContactMechFromDate();
-    }
-        
-    public void setPartyContactMechFromDate(OffsetDateTime partyContactMechFromDate) {
-        this.getPartyContactMechPurposeId().setPartyContactMechFromDate(partyContactMechFromDate);
+    public void setPartyContactMechId(PartyContactMechId partyContactMechId) {
+        this.getPartyContactMechPurposeId().setPartyContactMechId(partyContactMechId);
     }
 
     public String getContactMechPurposeTypeId() {
@@ -225,16 +217,10 @@ public abstract class AbstractPartyContactMechPurposeState implements PartyConta
     }
 
     protected void throwOnWrongEvent(PartyContactMechPurposeEvent event) {
-        PartyContactMechBaseId stateEntityIdPartyContactMechBaseId = this.getPartyContactMechPurposeId().getPartyContactMechBaseId();
-        PartyContactMechBaseId eventEntityIdPartyContactMechBaseId = ((PartyContactMechPurposeEvent.SqlPartyContactMechPurposeEvent)event).getPartyContactMechPurposeEventId().getPartyContactMechBaseId();
-        if (!stateEntityIdPartyContactMechBaseId.equals(eventEntityIdPartyContactMechBaseId)) {
-            throw DomainError.named("mutateWrongEntity", "Entity Id PartyContactMechBaseId %1$s in state but entity id PartyContactMechBaseId %2$s in event", stateEntityIdPartyContactMechBaseId, eventEntityIdPartyContactMechBaseId);
-        }
-
-        OffsetDateTime stateEntityIdPartyContactMechFromDate = this.getPartyContactMechPurposeId().getPartyContactMechFromDate();
-        OffsetDateTime eventEntityIdPartyContactMechFromDate = ((PartyContactMechPurposeEvent.SqlPartyContactMechPurposeEvent)event).getPartyContactMechPurposeEventId().getPartyContactMechFromDate();
-        if (!stateEntityIdPartyContactMechFromDate.equals(eventEntityIdPartyContactMechFromDate)) {
-            throw DomainError.named("mutateWrongEntity", "Entity Id PartyContactMechFromDate %1$s in state but entity id PartyContactMechFromDate %2$s in event", stateEntityIdPartyContactMechFromDate, eventEntityIdPartyContactMechFromDate);
+        PartyContactMechId stateEntityIdPartyContactMechId = this.getPartyContactMechPurposeId().getPartyContactMechId();
+        PartyContactMechId eventEntityIdPartyContactMechId = ((PartyContactMechPurposeEvent.SqlPartyContactMechPurposeEvent)event).getPartyContactMechPurposeEventId().getPartyContactMechId();
+        if (!stateEntityIdPartyContactMechId.equals(eventEntityIdPartyContactMechId)) {
+            throw DomainError.named("mutateWrongEntity", "Entity Id PartyContactMechId %1$s in state but entity id PartyContactMechId %2$s in event", stateEntityIdPartyContactMechId, eventEntityIdPartyContactMechId);
         }
 
         String stateEntityIdContactMechPurposeTypeId = this.getPartyContactMechPurposeId().getContactMechPurposeTypeId();

@@ -10,16 +10,28 @@ import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public class PartyContactMechId implements Serializable {
-    private PartyContactMechBaseId partyContactMechBaseId = new PartyContactMechBaseId();
+    private String partyId;
 
-    public PartyContactMechBaseId getPartyContactMechBaseId()
+    public String getPartyId()
     {
-        return this.partyContactMechBaseId;
+        return this.partyId;
     }
 
-    public void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId)
+    public void setPartyId(String partyId)
     {
-        this.partyContactMechBaseId = partyContactMechBaseId;
+        this.partyId = partyId;
+    }
+
+    private String contactMechId;
+
+    public String getContactMechId()
+    {
+        return this.contactMechId;
+    }
+
+    public void setContactMechId(String contactMechId)
+    {
+        this.contactMechId = contactMechId;
     }
 
     private OffsetDateTime fromDate;
@@ -34,33 +46,14 @@ public class PartyContactMechId implements Serializable {
         this.fromDate = fromDate;
     }
 
-    protected String getPartyContactMechBaseIdPartyId()
-    {
-        return getPartyContactMechBaseId().getPartyId();
-    }
-
-    protected void setPartyContactMechBaseIdPartyId(String partyContactMechBaseIdPartyId)
-    {
-        getPartyContactMechBaseId().setPartyId(partyContactMechBaseIdPartyId);
-    }
-
-    protected String getPartyContactMechBaseIdContactMechId()
-    {
-        return getPartyContactMechBaseId().getContactMechId();
-    }
-
-    protected void setPartyContactMechBaseIdContactMechId(String partyContactMechBaseIdContactMechId)
-    {
-        getPartyContactMechBaseId().setContactMechId(partyContactMechBaseIdContactMechId);
-    }
-
     public PartyContactMechId()
     {
     }
 
-    public PartyContactMechId(PartyContactMechBaseId partyContactMechBaseId, OffsetDateTime fromDate)
+    public PartyContactMechId(String partyId, String contactMechId, OffsetDateTime fromDate)
     {
-        this.partyContactMechBaseId = partyContactMechBaseId;
+        this.partyId = partyId;
+        this.contactMechId = contactMechId;
         this.fromDate = fromDate;
     }
 
@@ -76,7 +69,8 @@ public class PartyContactMechId implements Serializable {
 
         PartyContactMechId other = (PartyContactMechId)obj;
         return true 
-            && (partyContactMechBaseId == other.partyContactMechBaseId || (partyContactMechBaseId != null && partyContactMechBaseId.equals(other.partyContactMechBaseId)))
+            && (partyId == other.partyId || (partyId != null && partyId.equals(other.partyId)))
+            && (contactMechId == other.contactMechId || (contactMechId != null && contactMechId.equals(other.contactMechId)))
             && (fromDate == other.fromDate || (fromDate != null && fromDate.equals(other.fromDate)))
             ;
     }
@@ -85,8 +79,11 @@ public class PartyContactMechId implements Serializable {
     public int hashCode()
     {
         int hash = 0;
-        if (this.partyContactMechBaseId != null) {
-            hash += 13 * this.partyContactMechBaseId.hashCode();
+        if (this.partyId != null) {
+            hash += 13 * this.partyId.hashCode();
+        }
+        if (this.contactMechId != null) {
+            hash += 13 * this.contactMechId.hashCode();
         }
         if (this.fromDate != null) {
             hash += 13 * this.fromDate.hashCode();
@@ -97,14 +94,15 @@ public class PartyContactMechId implements Serializable {
     @Override
     public String toString() {
         return "PartyContactMechId{" +
-                "partyContactMechBaseId=" + partyContactMechBaseId +
+                "partyId=" + '\'' + partyId + '\'' +
+                ", contactMechId=" + '\'' + contactMechId + '\'' +
                 ", fromDate=" + fromDate +
                 '}';
     }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
-            "partyContactMechBaseIdPartyId",
-            "partyContactMechBaseIdContactMechId",
+            "partyId",
+            "contactMechId",
             "fromDate",
     };
 

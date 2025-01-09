@@ -34,6 +34,8 @@ services:
         parameters:
           Active:
             type: indicator
+          Keyword:
+            type: id
         result:
           itemType: BffLotDto
 

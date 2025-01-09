@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.Instant;
 import java.util.Optional;
 
 public interface BffBusinessContactRepository extends JpaRepository<AbstractContactMechState, String> {
@@ -45,7 +46,7 @@ public interface BffBusinessContactRepository extends JpaRepository<AbstractCont
             AND tn.contact_number = :contactNumber
             LIMIT 1
             """, nativeQuery = true)
-    Optional<TelecomNumber> findOneTelecomNumberByPhoneInfo(
+    Optional<TelecomNumberProjection> findOneTelecomNumberByPhoneInfo(
             @Param("countryCode") String countryCode,
             @Param("areaCode") String areaCode,
             @Param("contactNumber") String contactNumber
@@ -53,7 +54,9 @@ public interface BffBusinessContactRepository extends JpaRepository<AbstractCont
 
     @Query(value = """
             SELECT DISTINCT ON (pcm.party_id)
-                pa.contact_mech_id as contactMechId,
+                pcm.party_id as partyId,
+                pcm.contact_mech_id as contactMechId,
+                pcm.from_date as fromDate,
                 pa.to_name as toName,
                 pa.address1 as address1,
                 pa.city as city,
@@ -68,13 +71,15 @@ public interface BffBusinessContactRepository extends JpaRepository<AbstractCont
             ORDER BY pcm.party_id, pcm.from_date DESC
             LIMIT 1
             """, nativeQuery = true)
-    Optional<PostalAddressProjection> findPartyCurrentPostalAddressByPartyId(
+    Optional<PartyPostalAddressProjection> findPartyCurrentPostalAddressByPartyId(
             @Param("partyId") String partyId
     );
 
     @Query(value = """
             SELECT DISTINCT ON (pcm.party_id)
-                tn.contact_mech_id as contactMechId,
+                pcm.party_id as partyId,
+                pcm.contact_mech_id as contactMechId,
+                pcm.from_date as fromDate,
                 tn.country_code as countryCode,
                 tn.area_code as areaCode,
                 tn.contact_number as contactNumber
@@ -87,9 +92,47 @@ public interface BffBusinessContactRepository extends JpaRepository<AbstractCont
             ORDER BY pcm.party_id, pcm.from_date DESC
             LIMIT 1
             """, nativeQuery = true)
-    Optional<TelecomNumber> findPartyCurrentTelecomNumberByPartyId(
+    Optional<PartyTelecomNumberProjection> findPartyCurrentTelecomNumberByPartyId(
             @Param("partyId") String partyId
     );
+
+
+    @Query(value = """
+            SELECT DISTINCT ON (pcm.party_id)
+                pcm.party_id as partyId,
+                pcm.contact_mech_id as contactMechId,
+                pcm.from_date as fromDate
+            FROM party_contact_mech pcm
+            JOIN contact_mech tn ON tn.contact_mech_id = pcm.contact_mech_id
+            WHERE pcm.party_id = :partyId
+            AND tn.contact_mech_type_id = :contactMechTypeId
+            ORDER BY pcm.party_id, pcm.from_date DESC
+            LIMIT 1
+            """, nativeQuery = true)
+    Optional<PartyContactMechIdProjection> findPartyCurrentContactMechByContactMechType(
+            @Param("partyId") String partyId,
+            @Param("contactMechTypeId") String contactMechTypeId
+    );
+
+    interface PartyContactMechIdProjection {
+        String getPartyId();
+
+        String getContactMechId();
+
+        Instant getFromDate();
+    }
+
+    interface PartyPostalAddressProjection extends PostalAddressProjection {
+        String getPartyId();
+
+        Instant getFromDate();
+    }
+
+    interface PartyTelecomNumberProjection extends TelecomNumberProjection {
+        String getPartyId();
+
+        Instant getFromDate();
+    }
 
     interface PostalAddressProjection {
         String getContactMechId();
@@ -105,7 +148,7 @@ public interface BffBusinessContactRepository extends JpaRepository<AbstractCont
         String getStateProvinceGeoId();
     }
 
-    interface TelecomNumber {
+    interface TelecomNumberProjection {
         String getContactMechId();
 
         String getCountryCode();

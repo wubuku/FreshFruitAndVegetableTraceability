@@ -24,28 +24,16 @@ public abstract class AbstractPartyContactMechPurposeCommand extends AbstractCom
         this.contactMechPurposeTypeId = contactMechPurposeTypeId;
     }
 
-    private PartyContactMechBaseId partyContactMechBaseId;
+    private PartyContactMechId partyContactMechId;
 
-    public PartyContactMechBaseId getPartyContactMechBaseId()
+    public PartyContactMechId getPartyContactMechId()
     {
-        return this.partyContactMechBaseId;
+        return this.partyContactMechId;
     }
 
-    public void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId)
+    public void setPartyContactMechId(PartyContactMechId partyContactMechId)
     {
-        this.partyContactMechBaseId = partyContactMechBaseId;
-    }
-
-    private OffsetDateTime partyContactMechFromDate;
-
-    public OffsetDateTime getPartyContactMechFromDate()
-    {
-        return this.partyContactMechFromDate;
-    }
-
-    public void setPartyContactMechFromDate(OffsetDateTime partyContactMechFromDate)
-    {
-        this.partyContactMechFromDate = partyContactMechFromDate;
+        this.partyContactMechId = partyContactMechId;
     }
 
 

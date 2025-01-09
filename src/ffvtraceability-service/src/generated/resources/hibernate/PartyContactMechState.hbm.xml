@@ -3,10 +3,10 @@
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.partycontactmech">
   <class name="org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechState$SimplePartyContactMechState" table="party_contact_mech">
     <composite-id name="partyContactMechId" class="org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId">
-      <key-property name="partyContactMechBaseIdPartyId">
+      <key-property name="partyId">
         <column name="PARTY_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="partyContactMechBaseIdContactMechId">
+      <key-property name="contactMechId">
         <column name="CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
       </key-property>
       <key-property name="fromDate">
@@ -22,10 +22,6 @@
       </key>
       <one-to-many class="org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechPurposeState$SimplePartyContactMechPurposeState" />
     </set>
-    <many-to-one name="protectedPartyContactMechBaseState" class="org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechBaseState$SimplePartyContactMechBaseState" insert="false" update="false">
-      <column name="PARTY_ID" />
-      <column name="CONTACT_MECH_ID" />
-    </many-to-one>
     <property name="thruDate">
       <column name="THRU_DATE" sql-type="timestamptz" />
     </property>

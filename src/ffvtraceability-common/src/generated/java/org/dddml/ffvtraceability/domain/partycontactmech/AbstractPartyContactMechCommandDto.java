@@ -12,23 +12,39 @@ import org.dddml.ffvtraceability.domain.AbstractCommand;
 public abstract class AbstractPartyContactMechCommandDto extends AbstractCommand {
 
     /**
-     * From Date
+     * Party Contact Mech Id
      */
-    private OffsetDateTime fromDate;
+    private PartyContactMechId partyContactMechId;
 
-    public OffsetDateTime getFromDate()
+    public PartyContactMechId getPartyContactMechId()
     {
-        return this.fromDate;
+        return this.partyContactMechId;
     }
 
-    public void setFromDate(OffsetDateTime fromDate)
+    public void setPartyContactMechId(PartyContactMechId partyContactMechId)
     {
-        this.fromDate = fromDate;
+        this.partyContactMechId = partyContactMechId;
+    }
+
+    /**
+     * Version
+     */
+    private Long version;
+
+    public Long getVersion()
+    {
+        return this.version;
+    }
+
+    public void setVersion(Long version)
+    {
+        this.version = version;
     }
 
 
     public void copyTo(PartyContactMechCommand command) {
-        command.setFromDate(this.getFromDate());
+        command.setPartyContactMechId(this.getPartyContactMechId());
+        command.setVersion(this.getVersion());
         
         command.setRequesterId(this.getRequesterId());
         command.setCommandId(this.getCommandId());

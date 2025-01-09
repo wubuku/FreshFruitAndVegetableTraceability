@@ -20,9 +20,13 @@ public interface PartyContactMechEvent extends Event {
         void setEventReadOnly(boolean readOnly);
     }
 
-    OffsetDateTime getFromDate();
+    PartyContactMechId getPartyContactMechId();
 
-    //void setFromDate(OffsetDateTime fromDate);
+    //void setPartyContactMechId(PartyContactMechId partyContactMechId);
+
+    Long getVersion();
+    
+    //void setVersion(Long version);
 
     String getCreatedBy();
 
@@ -37,10 +41,6 @@ public interface PartyContactMechEvent extends Event {
     void setCommandId(String commandId);
 
     interface PartyContactMechStateEvent extends PartyContactMechEvent {
-        Long getVersion();
-
-        void setVersion(Long version);
-
         OffsetDateTime getThruDate();
 
         void setThruDate(OffsetDateTime thruDate);

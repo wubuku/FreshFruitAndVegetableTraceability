@@ -3,13 +3,13 @@
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.partycontactmech">
   <class name="org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechPurposeState$SimplePartyContactMechPurposeState" table="PARTY_CONTACT_MECH_PURPOSE">
     <composite-id name="partyContactMechPurposeId" class="org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechPurposeId">
-      <key-property name="partyContactMechBaseIdPartyId">
+      <key-property name="partyContactMechIdPartyId">
         <column name="PARTY_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="partyContactMechBaseIdContactMechId">
+      <key-property name="partyContactMechIdContactMechId">
         <column name="CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
       </key-property>
-      <key-property name="partyContactMechFromDate">
+      <key-property name="partyContactMechIdFromDate">
         <column name="FROM_DATE" sql-type="timestamptz" />
       </key-property>
       <key-property name="contactMechPurposeTypeId">

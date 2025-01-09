@@ -14,16 +14,16 @@ import org.dddml.ffvtraceability.specialization.*;
 
 public class PartyContactMechStateDto {
 
-    private OffsetDateTime fromDate;
+    private PartyContactMechId partyContactMechId;
 
-    public OffsetDateTime getFromDate()
+    public PartyContactMechId getPartyContactMechId()
     {
-        return this.fromDate;
+        return this.partyContactMechId;
     }
 
-    public void setFromDate(OffsetDateTime fromDate)
+    public void setPartyContactMechId(PartyContactMechId partyContactMechId)
     {
-        this.fromDate = fromDate;
+        this.partyContactMechId = partyContactMechId;
     }
 
     private OffsetDateTime thruDate;
@@ -134,18 +134,6 @@ public class PartyContactMechStateDto {
         this.version = version;
     }
 
-    private PartyContactMechBaseId partyContactMechBaseId;
-
-    public PartyContactMechBaseId getPartyContactMechBaseId()
-    {
-        return this.partyContactMechBaseId;
-    }
-
-    public void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId)
-    {
-        this.partyContactMechBaseId = partyContactMechBaseId;
-    }
-
     private String createdBy;
 
     public String getCreatedBy()
@@ -235,8 +223,8 @@ public class PartyContactMechStateDto {
                 return null;
             }
             PartyContactMechStateDto dto = new PartyContactMechStateDto();
-            if (returnedFieldsContains("FromDate")) {
-                dto.setFromDate(state.getFromDate());
+            if (returnedFieldsContains("PartyContactMechId")) {
+                dto.setPartyContactMechId(state.getPartyContactMechId());
             }
             if (returnedFieldsContains("ThruDate")) {
                 dto.setThruDate(state.getThruDate());
@@ -264,9 +252,6 @@ public class PartyContactMechStateDto {
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
-            }
-            if (returnedFieldsContains("PartyContactMechBaseId")) {
-                dto.setPartyContactMechBaseId(state.getPartyContactMechBaseId());
             }
             if (returnedFieldsContains("CreatedBy")) {
                 dto.setCreatedBy(state.getCreatedBy());

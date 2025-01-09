@@ -12,28 +12,28 @@ import org.dddml.ffvtraceability.domain.AbstractCommand;
 
 public abstract class AbstractPartyContactMechCommand extends AbstractCommand implements PartyContactMechCommand {
 
-    private OffsetDateTime fromDate;
+    private PartyContactMechId partyContactMechId;
 
-    public OffsetDateTime getFromDate()
+    public PartyContactMechId getPartyContactMechId()
     {
-        return this.fromDate;
+        return this.partyContactMechId;
     }
 
-    public void setFromDate(OffsetDateTime fromDate)
+    public void setPartyContactMechId(PartyContactMechId partyContactMechId)
     {
-        this.fromDate = fromDate;
+        this.partyContactMechId = partyContactMechId;
     }
 
-    private PartyContactMechBaseId partyContactMechBaseId;
+    private Long version;
 
-    public PartyContactMechBaseId getPartyContactMechBaseId()
+    public Long getVersion()
     {
-        return this.partyContactMechBaseId;
+        return this.version;
     }
 
-    public void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId)
+    public void setVersion(Long version)
     {
-        this.partyContactMechBaseId = partyContactMechBaseId;
+        this.version = version;
     }
 
 
@@ -138,9 +138,7 @@ public abstract class AbstractPartyContactMechCommand extends AbstractCommand im
         public PartyContactMechPurposeCommand.CreatePartyContactMechPurpose newCreatePartyContactMechPurpose()
         {
             AbstractPartyContactMechPurposeCommand.SimpleCreatePartyContactMechPurpose c = new AbstractPartyContactMechPurposeCommand.SimpleCreatePartyContactMechPurpose();
-            c.setPartyContactMechBaseId(this.getPartyContactMechBaseId());
-
-            c.setPartyContactMechFromDate(this.getFromDate());
+            c.setPartyContactMechId(this.getPartyContactMechId());
 
             return c;
         }
@@ -148,9 +146,7 @@ public abstract class AbstractPartyContactMechCommand extends AbstractCommand im
         public PartyContactMechPurposeCommand.MergePatchPartyContactMechPurpose newMergePatchPartyContactMechPurpose()
         {
             AbstractPartyContactMechPurposeCommand.SimpleMergePatchPartyContactMechPurpose c = new AbstractPartyContactMechPurposeCommand.SimpleMergePatchPartyContactMechPurpose();
-            c.setPartyContactMechBaseId(this.getPartyContactMechBaseId());
-
-            c.setPartyContactMechFromDate(this.getFromDate());
+            c.setPartyContactMechId(this.getPartyContactMechId());
 
             return c;
         }
@@ -158,9 +154,7 @@ public abstract class AbstractPartyContactMechCommand extends AbstractCommand im
         public PartyContactMechPurposeCommand.RemovePartyContactMechPurpose newRemovePartyContactMechPurpose()
         {
             AbstractPartyContactMechPurposeCommand.SimpleRemovePartyContactMechPurpose c = new AbstractPartyContactMechPurposeCommand.SimpleRemovePartyContactMechPurpose();
-            c.setPartyContactMechBaseId(this.getPartyContactMechBaseId());
-
-            c.setPartyContactMechFromDate(this.getFromDate());
+            c.setPartyContactMechId(this.getPartyContactMechId());
 
             return c;
         }
@@ -309,11 +303,11 @@ public abstract class AbstractPartyContactMechCommand extends AbstractCommand im
     }
 
     
-    public static class SimpleRemovePartyContactMech extends AbstractPartyContactMechCommand implements RemovePartyContactMech
+    public static class SimpleDeletePartyContactMech extends AbstractPartyContactMechCommand implements DeletePartyContactMech
     {
         @Override
         public String getCommandType() {
-            return COMMAND_TYPE_REMOVE;
+            return COMMAND_TYPE_DELETE;
         }
     }
 

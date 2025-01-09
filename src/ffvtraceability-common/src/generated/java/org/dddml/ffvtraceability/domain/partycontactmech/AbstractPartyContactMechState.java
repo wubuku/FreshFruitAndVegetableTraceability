@@ -14,7 +14,7 @@ import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechEvent.*
 
 public abstract class AbstractPartyContactMechState implements PartyContactMechState.SqlPartyContactMechState, Saveable {
 
-    private PartyContactMechId partyContactMechId = new PartyContactMechId();
+    private PartyContactMechId partyContactMechId;
 
     public PartyContactMechId getPartyContactMechId() {
         return this.partyContactMechId;
@@ -22,42 +22,6 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
 
     public void setPartyContactMechId(PartyContactMechId partyContactMechId) {
         this.partyContactMechId = partyContactMechId;
-    }
-
-    private transient PartyContactMechBaseState partyContactMechBaseState;
-
-    public PartyContactMechBaseState getPartyContactMechBaseState() {
-        return partyContactMechBaseState;
-    }
-
-    public void setPartyContactMechBaseState(PartyContactMechBaseState s) {
-        partyContactMechBaseState = s;
-    }
-    
-    private PartyContactMechBaseState protectedPartyContactMechBaseState;
-
-    protected PartyContactMechBaseState getProtectedPartyContactMechBaseState() {
-        return protectedPartyContactMechBaseState;
-    }
-
-    protected void setProtectedPartyContactMechBaseState(PartyContactMechBaseState protectedPartyContactMechBaseState) {
-        this.protectedPartyContactMechBaseState = protectedPartyContactMechBaseState;
-    }
-
-    public PartyContactMechBaseId getPartyContactMechBaseId() {
-        return this.getPartyContactMechId().getPartyContactMechBaseId();
-    }
-        
-    public void setPartyContactMechBaseId(PartyContactMechBaseId partyContactMechBaseId) {
-        this.getPartyContactMechId().setPartyContactMechBaseId(partyContactMechBaseId);
-    }
-
-    public OffsetDateTime getFromDate() {
-        return this.getPartyContactMechId().getFromDate();
-    }
-        
-    public void setFromDate(OffsetDateTime fromDate) {
-        this.getPartyContactMechId().setFromDate(fromDate);
     }
 
     private OffsetDateTime thruDate;
@@ -230,6 +194,17 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
         this.forReapplying = forReapplying;
     }
 
+    public AbstractPartyContactMechState(List<Event> events) {
+        initializeForReapplying();
+        if (events != null && events.size() > 0) {
+            this.setPartyContactMechId(((PartyContactMechEvent.SqlPartyContactMechEvent) events.get(0)).getPartyContactMechEventId().getPartyContactMechId());
+            for (Event e : events) {
+                mutate(e);
+                this.setVersion((this.getVersion() == null ? PartyContactMechState.VERSION_NULL : this.getVersion()) + 1);
+            }
+        }
+    }
+
 
     public AbstractPartyContactMechState() {
         initializeProperties();
@@ -247,14 +222,14 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
 
     @Override
     public int hashCode() {
-        return getFromDate().hashCode();
+        return getPartyContactMechId().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
         if (obj instanceof PartyContactMechState) {
-            return Objects.equals(this.getFromDate(), ((PartyContactMechState)obj).getFromDate());
+            return Objects.equals(this.getPartyContactMechId(), ((PartyContactMechState)obj).getPartyContactMechId());
         }
         return false;
     }
@@ -418,33 +393,21 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
     }
 
     protected void throwOnWrongEvent(PartyContactMechEvent event) {
-        PartyContactMechBaseId stateEntityIdPartyContactMechBaseId = this.getPartyContactMechId().getPartyContactMechBaseId();
-        PartyContactMechBaseId eventEntityIdPartyContactMechBaseId = ((PartyContactMechEvent.SqlPartyContactMechEvent)event).getPartyContactMechEventId().getPartyContactMechBaseId();
-        if (!stateEntityIdPartyContactMechBaseId.equals(eventEntityIdPartyContactMechBaseId)) {
-            throw DomainError.named("mutateWrongEntity", "Entity Id PartyContactMechBaseId %1$s in state but entity id PartyContactMechBaseId %2$s in event", stateEntityIdPartyContactMechBaseId, eventEntityIdPartyContactMechBaseId);
+        PartyContactMechId stateEntityId = this.getPartyContactMechId(); // Aggregate Id
+        PartyContactMechId eventEntityId = ((PartyContactMechEvent.SqlPartyContactMechEvent)event).getPartyContactMechEventId().getPartyContactMechId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
+        if (!stateEntityId.equals(eventEntityId)) {
+            throw DomainError.named("mutateWrongEntity", "Entity Id %1$s in state but entity id %2$s in event", stateEntityId, eventEntityId);
         }
 
-        OffsetDateTime stateEntityIdFromDate = this.getPartyContactMechId().getFromDate();
-        OffsetDateTime eventEntityIdFromDate = ((PartyContactMechEvent.SqlPartyContactMechEvent)event).getPartyContactMechEventId().getFromDate();
-        if (!stateEntityIdFromDate.equals(eventEntityIdFromDate)) {
-            throw DomainError.named("mutateWrongEntity", "Entity Id FromDate %1$s in state but entity id FromDate %2$s in event", stateEntityIdFromDate, eventEntityIdFromDate);
-        }
-
-
-        if (getForReapplying()) { return; }
-        PartyContactMechStateEvent stateEvent = event instanceof PartyContactMechStateEvent ? (PartyContactMechStateEvent)event : null;
-        if (stateEvent == null) { return; }
 
         Long stateVersion = this.getVersion();
-        Long stateEventStateVersion = stateEvent.getVersion();
-        //if (stateEventStateVersion == null) {
-        stateEventStateVersion = stateVersion == null ? PartyContactMechState.VERSION_NULL : stateVersion;
-        stateEvent.setVersion(stateEventStateVersion);
-        //}
-        //if (!(stateVersion == null && stateEventStateVersion.equals(PartyContactMechState.VERSION_NULL)) && !stateEventStateVersion.equals(stateVersion))
-        //{
-        //    throw DomainError.named("concurrencyConflict", "Conflict between stateVersion (%1$s) and stateEventStateVersion (%2$s)", stateVersion, stateEventStateVersion);
-        //}
+        Long eventVersion = ((PartyContactMechEvent.SqlPartyContactMechEvent)event).getPartyContactMechEventId().getVersion();// Event Version
+        if (eventVersion == null) {
+            throw new NullPointerException("event.getPartyContactMechEventId().getVersion() == null");
+        }
+        if (!(stateVersion == null && eventVersion.equals(VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
+            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion == VERSION_NULL ? "NULL" : eventVersion + "");
+        }
 
     }
 
@@ -452,6 +415,10 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
     public static class SimplePartyContactMechState extends AbstractPartyContactMechState {
 
         public SimplePartyContactMechState() {
+        }
+
+        public SimplePartyContactMechState(List<Event> events) {
+            super(events);
         }
 
         public static SimplePartyContactMechState newForReapplying() {
@@ -491,7 +458,7 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
         public PartyContactMechPurposeState getOrAddDefault(String contactMechPurposeTypeId) {
             PartyContactMechPurposeState s = get(contactMechPurposeTypeId);
             if (s == null) {
-                PartyContactMechPurposeId globalId = new PartyContactMechPurposeId(getPartyContactMechId().getPartyContactMechBaseId(), getPartyContactMechId().getFromDate(), contactMechPurposeTypeId);
+                PartyContactMechPurposeId globalId = new PartyContactMechPurposeId(getPartyContactMechId(), contactMechPurposeTypeId);
                 AbstractPartyContactMechPurposeState state = new AbstractPartyContactMechPurposeState.SimplePartyContactMechPurposeState();
                 state.setPartyContactMechPurposeId(globalId);
                 add(state);
