@@ -685,3 +685,43 @@ curl -X 'PUT' \
   "state": "CA",
   "zipCode": "94025"
 }' | { read http_status; check_response $? "$http_status" "Update supplier business contact"; }
+
+
+curl -X 'POST' \
+  "${API_BASE_URL}/BffPurchaseOrders" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -d '{
+  "orderName": "Office Supplies Order",
+  "originFacilityId": "F001",
+  "memo": "Urgent order for office supplies",
+  "supplierId": "SUPPLIER_001",
+  "orderItems": [
+    {
+      "productId": "PROD001",
+      "quantity": 10,
+      "unitPrice": 5.99,
+      "itemDescription": "A4 size printer paper, 500 sheets",
+      "comments": "Deliver by next week",
+      "estimatedShipDate": "2025-01-10T08:35:11.703Z",
+      "estimatedDeliveryDate": "2025-01-15T08:35:11.703Z"
+    },
+    {
+      "productId": "ORGANIC_TOMATO_01",
+      "quantity": 5,
+      "unitPrice": 29.99,
+      "itemDescription": "Black ink cartridge for HP printers",
+      "comments": "Ensure compatibility with HP models",
+      "estimatedShipDate": "2025-01-10T08:35:11.703Z",
+      "estimatedDeliveryDate": "2025-01-15T08:35:11.703Z"
+    }
+  ]
+}'
+
+
+curl -X 'GET' \
+  "${API_BASE_URL}/BffPurchaseOrders?page=0&size=20" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X"
+

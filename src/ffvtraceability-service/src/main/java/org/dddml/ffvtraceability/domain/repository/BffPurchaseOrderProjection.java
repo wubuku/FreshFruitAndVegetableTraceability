@@ -15,8 +15,7 @@ public interface BffPurchaseOrderProjection {
 
     String getExternalId();
 
-    OffsetDateTime getOrderDate();
-
+    java.time.Instant getOrderDate();
     String getStatusId();
 
     String getCurrencyUomId();
@@ -29,12 +28,10 @@ public interface BffPurchaseOrderProjection {
 
     String getSupplierId();
 
-    OffsetDateTime getCreatedAt();
-
+    java.time.Instant getCreatedAt();
     String getCreatedBy();
 
-    OffsetDateTime getUpdatedAt();
-
+    java.time.Instant getUpdatedAt();
     String getUpdatedBy();
 
 }

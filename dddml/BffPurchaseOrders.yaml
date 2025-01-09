@@ -3,6 +3,10 @@ valueObjects:
   BffPurchaseOrderDto:
     metadata:
       JpaProjectionInterfaceName: BffPurchaseOrderProjection
+      JpaProjectionPropertyTypes:
+        OrderDate: java.time.Instant
+        CreatedAt: java.time.Instant
+        UpdatedAt: java.time.Instant
     properties:
       OrderId:
         type: id
