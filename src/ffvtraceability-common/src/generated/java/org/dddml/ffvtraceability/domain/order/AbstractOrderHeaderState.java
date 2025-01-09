@@ -997,6 +997,10 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         for (OrderItemEvent innerEvent : e.getOrderItemEvents()) {
             OrderItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(((OrderItemEvent.SqlOrderItemEvent)innerEvent).getOrderItemEventId().getOrderItemSeqId());
             ((OrderItemState.SqlOrderItemState)innerState).mutate(innerEvent);
+            if (innerEvent instanceof OrderItemEvent.OrderItemStateRemoved) {
+                //OrderItemEvent.OrderItemStateRemoved removed = (OrderItemEvent.OrderItemStateRemoved)innerEvent;
+                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItems()).removeState(innerState);
+            }
         }
         for (OrderAdjustmentEvent innerEvent : e.getOrderAdjustmentEvents()) {
             OrderAdjustmentState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(((OrderAdjustmentEvent.SqlOrderAdjustmentEvent)innerEvent).getOrderAdjustmentEventId().getOrderAdjustmentId());

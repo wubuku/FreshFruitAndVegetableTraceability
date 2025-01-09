@@ -111,6 +111,8 @@ public interface OrderItemState
 
     OffsetDateTime getUpdatedAt();
 
+    Boolean get__Deleted__();
+
     String getOrderId();
 
     interface MutableOrderItemState extends OrderItemState {
@@ -208,6 +210,8 @@ public interface OrderItemState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
+        void set__Deleted__(Boolean __Deleted__);
+
         void setOrderId(String orderId);
 
 
@@ -217,6 +221,7 @@ public interface OrderItemState
 
         //void when(OrderItemEvent.OrderItemStateMergePatched e);
 
+        //void when(OrderItemEvent.OrderItemStateRemoved e);
     }
 
     interface SqlOrderItemState extends MutableOrderItemState {

@@ -19,6 +19,8 @@ public interface BffPurchaseOrderApplicationService {
 
     String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrder c);
 
+    void when(BffPurchaseOrderServiceCommands.UpdatePurchaseOrder c);
+
     String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrderItem c);
 
     void when(BffPurchaseOrderServiceCommands.DeletePurchaseOrderItem c);

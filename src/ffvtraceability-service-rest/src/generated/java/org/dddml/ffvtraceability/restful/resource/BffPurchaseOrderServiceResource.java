@@ -92,6 +92,20 @@ public class BffPurchaseOrderServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PutMapping("{orderId}")
+    public void updatePurchaseOrder(
+        @PathVariable("orderId") String orderId,
+        @RequestBody BffPurchaseOrderDto purchaseOrder
+    ) {
+        BffPurchaseOrderServiceCommands.UpdatePurchaseOrder updatePurchaseOrder = new BffPurchaseOrderServiceCommands.UpdatePurchaseOrder();
+        updatePurchaseOrder.setOrderId(orderId);
+        updatePurchaseOrder.setPurchaseOrder(purchaseOrder);
+        try {
+        updatePurchaseOrder.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffPurchaseOrderApplicationService.when(updatePurchaseOrder);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @PostMapping("{orderId}/Items")
     public String createPurchaseOrderItem(
         @PathVariable("orderId") String orderId,

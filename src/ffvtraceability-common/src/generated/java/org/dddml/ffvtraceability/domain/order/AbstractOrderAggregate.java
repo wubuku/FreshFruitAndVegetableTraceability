@@ -309,6 +309,10 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
+        OrderItemCommand.RemoveOrderItem remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((OrderItemCommand.RemoveOrderItem)c) : null;
+        if (remove != null) {
+            return mapRemove(remove, outerCommand, version, outerState);
+        }
         throw new UnsupportedOperationException();
     }
 
@@ -461,6 +465,18 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
+
+    protected OrderItemEvent.OrderItemStateRemoved mapRemove(OrderItemCommand.RemoveOrderItem c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        OrderItemEventId stateEventId = new OrderItemEventId(outerState.getOrderId(), c.getOrderItemSeqId(), version);
+        OrderItemEvent.OrderItemStateRemoved e = newOrderItemStateRemoved(stateEventId);
+
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(IRemove... ////////////////////////////
 
 
     protected OrderAdjustmentEvent map(OrderAdjustmentCommand c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
@@ -930,6 +946,10 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
     protected OrderItemEvent.OrderItemStateMergePatched newOrderItemStateMergePatched(OrderItemEventId stateEventId) {
         return new AbstractOrderItemEvent.SimpleOrderItemStateMergePatched(stateEventId);
+    }
+
+    protected OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(OrderItemEventId stateEventId) {
+        return new AbstractOrderItemEvent.SimpleOrderItemStateRemoved(stateEventId);
     }
 
     protected OrderAdjustmentEvent.OrderAdjustmentStateCreated newOrderAdjustmentStateCreated(OrderAdjustmentEventId stateEventId) {

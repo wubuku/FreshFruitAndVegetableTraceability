@@ -186,6 +186,7 @@
         <property name="isPropertyOverrideGlAccountIdRemoved" column="is_property_override_gl_account_id_removed" />
         <property name="isPropertySalesOpportunityIdRemoved" column="is_property_sales_opportunity_id_removed" />
       </subclass>
+      <subclass name="AbstractOrderItemEvent$SimpleOrderItemStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

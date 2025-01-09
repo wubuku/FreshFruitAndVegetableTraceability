@@ -152,6 +152,36 @@ public class BffPurchaseOrderServiceCommands {
 
     }
 
+    public static class UpdatePurchaseOrder extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Purchase Order
+         */
+        private BffPurchaseOrderDto purchaseOrder;
+
+        public BffPurchaseOrderDto getPurchaseOrder() {
+            return purchaseOrder;
+        }
+
+        public void setPurchaseOrder(BffPurchaseOrderDto purchaseOrder) {
+            this.purchaseOrder = purchaseOrder;
+        }
+
+    }
+
     public static class CreatePurchaseOrderItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**

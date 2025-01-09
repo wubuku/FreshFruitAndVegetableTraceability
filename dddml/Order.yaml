@@ -148,7 +148,8 @@
       OrderItem:
         # 订单行项
         discriminator: OrderItemTypeId
-        # reservedPropertyMetadata: {}
+        reservedPropertyMetadata:
+          noDeleted: false
         id:
           name: OrderItemSeqId
           type: id
@@ -544,4 +545,3 @@
         type: indicator
       Description:
         type: description
-

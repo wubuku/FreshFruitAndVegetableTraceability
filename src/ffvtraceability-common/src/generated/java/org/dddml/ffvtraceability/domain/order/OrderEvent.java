@@ -323,6 +323,8 @@ public interface OrderEvent extends Event {
 
         OrderItemEvent.OrderItemStateMergePatched newOrderItemStateMergePatched(String orderItemSeqId);
 
+        OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(String orderItemSeqId);
+
         Iterable<OrderAdjustmentEvent> getOrderAdjustmentEvents();
         
         void addOrderAdjustmentEvent(OrderAdjustmentEvent e);

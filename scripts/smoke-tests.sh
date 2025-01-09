@@ -687,6 +687,8 @@ curl -X 'PUT' \
 }' | { read http_status; check_response $? "$http_status" "Update supplier business contact"; }
 
 
+# ---------------------------------------------------------------------------------------
+# 创建订单
 curl -X 'POST' \
   "${API_BASE_URL}/BffPurchaseOrders" \
   -H 'accept: application/json' \
@@ -719,9 +721,42 @@ curl -X 'POST' \
   ]
 }'
 
-
+# 查询订单
 curl -X 'GET' \
   "${API_BASE_URL}/BffPurchaseOrders?page=0&size=20" \
   -H 'accept: application/json' \
   -H "X-TenantID: X"
+
+
+# 更新订单行项
+# curl -X 'PUT' \
+#   'http://localhost:1023/api/BffPurchaseOrders/119GB574QF4D11ZY51/Items/1' \
+#   -H 'accept: */*' \
+#   -H 'Content-Type: application/json' \
+#   -H "X-TenantID: X"
+#   -d '{
+#    "productId": "PROD001",
+#       "quantity": 12,
+#       "unitPrice": 5.99,
+#       "itemDescription": "A4 size printer paper, 500 sheets",
+#       "comments": "Deliver by next week",
+#       "estimatedShipDate": "2025-01-10T08:35:11.703Z",
+#       "estimatedDeliveryDate": "2025-01-15T08:35:11.703Z"
+# }'
+
+# 添加订单行项
+# curl -X 'POST' \
+#   'http://localhost:1023/api/BffPurchaseOrders/119GB574QF4D11ZY51/Items' \
+#   -H 'accept: application/json' \
+#   -H 'Content-Type: application/json' \
+#   -H "X-TenantID: X" \
+#   -d '{
+#       "productId": "PROD001",
+#       "quantity": 12,
+#       "unitPrice": 5.99,
+#       "itemDescription": "A4 size printer paper, 500 sheets",
+#       "comments": "Deliver by next week",
+#       "estimatedShipDate": "2025-01-10T08:35:11.703Z",
+#       "estimatedDeliveryDate": "2025-01-15T08:35:11.703Z"
+# }'
 

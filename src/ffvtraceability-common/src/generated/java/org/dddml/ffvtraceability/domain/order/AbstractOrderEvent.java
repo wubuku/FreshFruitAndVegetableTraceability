@@ -247,6 +247,10 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         return new AbstractOrderItemEvent.SimpleOrderItemStateMergePatched(newOrderItemEventId(orderItemSeqId));
     }
 
+    public OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(String orderItemSeqId) {
+        return new AbstractOrderItemEvent.SimpleOrderItemStateRemoved(newOrderItemEventId(orderItemSeqId));
+    }
+
     public OrderAdjustmentEvent.OrderAdjustmentStateCreated newOrderAdjustmentStateCreated(String orderAdjustmentId) {
         return new AbstractOrderAdjustmentEvent.SimpleOrderAdjustmentStateCreated(newOrderAdjustmentEventId(orderAdjustmentId));
     }

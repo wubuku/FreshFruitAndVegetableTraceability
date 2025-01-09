@@ -207,6 +207,18 @@ services:
           type: id # OrderId
 
 
+      UpdatePurchaseOrder:
+        httpMethod: PUT
+        metadata:
+          RestfulPathVariable: OrderId
+          HttpRequestBody: PurchaseOrder
+        parameters:
+          OrderId:
+            type: id
+          PurchaseOrder:
+            type: BffPurchaseOrderDto
+
+
       CreatePurchaseOrderItem:
         # 添加行项的方法
         httpMethod: POST
