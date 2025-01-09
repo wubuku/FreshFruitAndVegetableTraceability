@@ -16,6 +16,7 @@ import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
 import org.dddml.ffvtraceability.domain.repository.BffBusinessContactRepository;
 import org.dddml.ffvtraceability.domain.repository.BffGeoRepository;
+import org.dddml.ffvtraceability.domain.repository.BffPartyContactMechRepository;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
@@ -59,6 +60,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     private BffGeoRepository bffGeoRepository;
     @Autowired
     private BffBusinessContactRepository bffBusinessContactRepository;
+    @Autowired
+    private BffPartyContactMechRepository bffPartyContactMechRepository;
 
     @Autowired
     private BffBusinessContactService bffBusinessContactService;
@@ -96,7 +99,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     }
 
     private void populateBusinessContactDto(BffSupplierDto dto, String supplierId) {
-        bffBusinessContactRepository.findPartyCurrentPostalAddressByPartyId(supplierId).ifPresent(x -> {
+        bffPartyContactMechRepository.findPartyCurrentPostalAddressByPartyId(supplierId).ifPresent(x -> {
             BffBusinessContactDto bc = new BffBusinessContactDto();
             bc.setBusinessName(x.getToName());
             bc.setPhysicalLocationAddress(x.getAddress1());
@@ -106,7 +109,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             dto.setBusinessContacts(Collections.singletonList(bc));
         });
 
-        bffBusinessContactRepository.findPartyCurrentTelecomNumberByPartyId(supplierId).ifPresent(x -> {
+        bffPartyContactMechRepository.findPartyCurrentTelecomNumberByPartyId(supplierId).ifPresent(x -> {
             if (dto.getBusinessContacts() == null) {
                 dto.setBusinessContacts(Collections.singletonList(new BffBusinessContactDto()));
             }
@@ -326,7 +329,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             String commandIdSuffix,
             Command c
     ) {
-        Optional<BffBusinessContactRepository.PartyContactMechIdProjection> pcmIdPrj = bffBusinessContactRepository.findPartyCurrentContactMechByContactMechType(partyId, contactMechTypeId);
+        Optional<BffPartyContactMechRepository.PartyContactMechIdProjection> pcmIdPrj = bffPartyContactMechRepository
+                .findPartyCurrentContactMechByContactMechType(partyId, contactMechTypeId);
         if (!pcmIdPrj.isPresent()) {
             createPartyContactMechAssociation(partyId, contactMechId, commandIdSuffix, c);
         } else {

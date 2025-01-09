@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.Instant;
 import java.util.Optional;
 
 public interface BffBusinessContactRepository extends JpaRepository<AbstractContactMechState, String> {
@@ -51,88 +50,6 @@ public interface BffBusinessContactRepository extends JpaRepository<AbstractCont
             @Param("areaCode") String areaCode,
             @Param("contactNumber") String contactNumber
     );
-
-    @Query(value = """
-            SELECT DISTINCT ON (pcm.party_id)
-                pcm.party_id as partyId,
-                pcm.contact_mech_id as contactMechId,
-                pcm.from_date as fromDate,
-                pa.to_name as toName,
-                pa.address1 as address1,
-                pa.city as city,
-                pa.postal_code as postalCode,
-                pa.state_province_geo_id as stateProvinceGeoId
-            FROM party_contact_mech pcm
-            JOIN contact_mech pa ON pa.contact_mech_id = pcm.contact_mech_id
-            WHERE pcm.party_id = :partyId
-            AND pa.contact_mech_type_id = 'POSTAL_ADDRESS'
-            AND pcm.from_date <= CURRENT_TIMESTAMP
-            AND (pcm.thru_date IS NULL OR pcm.thru_date > CURRENT_TIMESTAMP)
-            ORDER BY pcm.party_id, pcm.from_date DESC
-            LIMIT 1
-            """, nativeQuery = true)
-    Optional<PartyPostalAddressProjection> findPartyCurrentPostalAddressByPartyId(
-            @Param("partyId") String partyId
-    );
-
-    @Query(value = """
-            SELECT DISTINCT ON (pcm.party_id)
-                pcm.party_id as partyId,
-                pcm.contact_mech_id as contactMechId,
-                pcm.from_date as fromDate,
-                tn.country_code as countryCode,
-                tn.area_code as areaCode,
-                tn.contact_number as contactNumber
-            FROM party_contact_mech pcm
-            JOIN contact_mech tn ON tn.contact_mech_id = pcm.contact_mech_id
-            WHERE pcm.party_id = :partyId
-            AND tn.contact_mech_type_id = 'TELECOM_NUMBER'
-            AND pcm.from_date <= CURRENT_TIMESTAMP
-            AND (pcm.thru_date IS NULL OR pcm.thru_date > CURRENT_TIMESTAMP)
-            ORDER BY pcm.party_id, pcm.from_date DESC
-            LIMIT 1
-            """, nativeQuery = true)
-    Optional<PartyTelecomNumberProjection> findPartyCurrentTelecomNumberByPartyId(
-            @Param("partyId") String partyId
-    );
-
-
-    @Query(value = """
-            SELECT DISTINCT ON (pcm.party_id)
-                pcm.party_id as partyId,
-                pcm.contact_mech_id as contactMechId,
-                pcm.from_date as fromDate
-            FROM party_contact_mech pcm
-            JOIN contact_mech tn ON tn.contact_mech_id = pcm.contact_mech_id
-            WHERE pcm.party_id = :partyId
-            AND tn.contact_mech_type_id = :contactMechTypeId
-            ORDER BY pcm.party_id, pcm.from_date DESC
-            LIMIT 1
-            """, nativeQuery = true)
-    Optional<PartyContactMechIdProjection> findPartyCurrentContactMechByContactMechType(
-            @Param("partyId") String partyId,
-            @Param("contactMechTypeId") String contactMechTypeId
-    );
-
-    interface PartyContactMechIdProjection {
-        String getPartyId();
-
-        String getContactMechId();
-
-        Instant getFromDate();
-    }
-
-    interface PartyPostalAddressProjection extends PostalAddressProjection {
-        String getPartyId();
-
-        Instant getFromDate();
-    }
-
-    interface PartyTelecomNumberProjection extends TelecomNumberProjection {
-        String getPartyId();
-
-        Instant getFromDate();
-    }
 
     interface PostalAddressProjection {
         String getContactMechId();
