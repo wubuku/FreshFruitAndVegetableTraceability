@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import org.dddml.support.criterion.*;
+import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import static org.dddml.ffvtraceability.domain.meta.M.*;
@@ -34,11 +35,19 @@ public class BffPurchaseOrderServiceResource {
     @GetMapping
     public Page<BffPurchaseOrderDto> getPurchaseOrderItems(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
-        @RequestParam(value = "size", defaultValue = "20") Integer size
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "orderIdOrItem", required = false) String orderIdOrItem,
+        @RequestParam(value = "supplierId", required = false) String supplierId,
+        @RequestParam(value = "orderDateFrom", required = false) OffsetDateTime orderDateFrom,
+        @RequestParam(value = "orderDateTo", required = false) OffsetDateTime orderDateTo
     ) {
         BffPurchaseOrderServiceCommands.GetPurchaseOrderItems getPurchaseOrderItems = new BffPurchaseOrderServiceCommands.GetPurchaseOrderItems();
         getPurchaseOrderItems.setPage(page);
         getPurchaseOrderItems.setSize(size);
+        getPurchaseOrderItems.setOrderIdOrItem(orderIdOrItem);
+        getPurchaseOrderItems.setSupplierId(supplierId);
+        getPurchaseOrderItems.setOrderDateFrom(orderDateFrom);
+        getPurchaseOrderItems.setOrderDateTo(orderDateTo);
         try {
         getPurchaseOrderItems.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(getPurchaseOrderItems);
@@ -54,6 +63,74 @@ public class BffPurchaseOrderServiceResource {
         try {
         getPurchaseOrder.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(getPurchaseOrder);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @GetMapping("{orderId}/Items/{orderItemSeqId}")
+    public BffPurchaseOrderItemDto getPurchaseOrderItem(
+        @PathVariable("orderId") String orderId,
+        @PathVariable("orderItemSeqId") String orderItemSeqId
+    ) {
+        BffPurchaseOrderServiceCommands.GetPurchaseOrderItem getPurchaseOrderItem = new BffPurchaseOrderServiceCommands.GetPurchaseOrderItem();
+        getPurchaseOrderItem.setOrderId(orderId);
+        getPurchaseOrderItem.setOrderItemSeqId(orderItemSeqId);
+        try {
+        getPurchaseOrderItem.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffPurchaseOrderApplicationService.when(getPurchaseOrderItem);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PostMapping
+    public String createPurchaseOrder(
+        @RequestBody BffPurchaseOrderDto purchaseOrder
+    ) {
+        BffPurchaseOrderServiceCommands.CreatePurchaseOrder createPurchaseOrder = new BffPurchaseOrderServiceCommands.CreatePurchaseOrder();
+        createPurchaseOrder.setPurchaseOrder(purchaseOrder);
+        try {
+        createPurchaseOrder.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffPurchaseOrderApplicationService.when(createPurchaseOrder);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PostMapping("{orderId}/Items")
+    public String createPurchaseOrderItem(
+        @PathVariable("orderId") String orderId,
+        @RequestBody BffPurchaseOrderItemDto purchaseOrderItem
+    ) {
+        BffPurchaseOrderServiceCommands.CreatePurchaseOrderItem createPurchaseOrderItem = new BffPurchaseOrderServiceCommands.CreatePurchaseOrderItem();
+        createPurchaseOrderItem.setOrderId(orderId);
+        createPurchaseOrderItem.setPurchaseOrderItem(purchaseOrderItem);
+        try {
+        createPurchaseOrderItem.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffPurchaseOrderApplicationService.when(createPurchaseOrderItem);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @DeleteMapping("{orderId}/Items/{orderItemSeqId}")
+    public void deletePurchaseOrderItem(
+        @PathVariable("orderId") String orderId,
+        @PathVariable("orderItemSeqId") String orderItemSeqId
+    ) {
+        BffPurchaseOrderServiceCommands.DeletePurchaseOrderItem deletePurchaseOrderItem = new BffPurchaseOrderServiceCommands.DeletePurchaseOrderItem();
+        deletePurchaseOrderItem.setOrderId(orderId);
+        deletePurchaseOrderItem.setOrderItemSeqId(orderItemSeqId);
+        try {
+        deletePurchaseOrderItem.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffPurchaseOrderApplicationService.when(deletePurchaseOrderItem);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("{orderId}/Items/{orderItemSeqId}")
+    public void updatePurchaseOrderItem(
+        @PathVariable("orderId") String orderId,
+        @PathVariable("orderItemSeqId") String orderItemSeqId,
+        @RequestBody BffPurchaseOrderServiceCommands.UpdatePurchaseOrderItem requestBody
+    ) {
+        requestBody.setOrderId(orderId);
+        requestBody.setOrderItemSeqId(orderItemSeqId);
+        try {
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffPurchaseOrderApplicationService.when(requestBody);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

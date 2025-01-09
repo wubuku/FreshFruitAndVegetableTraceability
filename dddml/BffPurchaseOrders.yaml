@@ -148,9 +148,21 @@ services:
           IsPageable: true
           ReturnPageEnvelope: true
         isQuery: true
-        #httpMethod: GET
+        parameters:
+          OrderIdOrItem:
+            type: id
+          SupplierId:
+            type: id
+            optional: true # NOT required
+          OrderDateFrom:
+            type: date-time
+            optional: true # NOT required
+          OrderDateTo:
+            type: date-time
+            optional: true # NOT required
         result:
           itemType: BffPurchaseOrderDto
+
       GetPurchaseOrder:
         metadata:
           RestfulPathVariable: OrderId
@@ -161,4 +173,101 @@ services:
           OrderId:
             type: id
 
+
+      GetPurchaseOrderItem:
+        # 获取指定采购订单下指定行项的详情
+        restfulResourceName: "{OrderId}/Items/{OrderItemSeqId}"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+            - OrderItemSeqId
+        isQuery: true
+        result:
+          type: BffPurchaseOrderItemDto
+        parameters:
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id
+
+
+      CreatePurchaseOrder:
+        # 创建采购订单
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: PurchaseOrder
+        parameters:
+          PurchaseOrder:
+            type: BffPurchaseOrderDto
+        result:
+          type: id # OrderId
+
+
+      CreatePurchaseOrderItem:
+        # 添加行项的方法
+        httpMethod: POST
+        restfulResourceName: "{OrderId}/Items"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+          HttpRequestBody: PurchaseOrderItem
+        parameters:
+          OrderId:
+            type: id
+          PurchaseOrderItem:
+            type: BffPurchaseOrderItemDto
+        result:
+          type: id # OrderItemSeqId
+
+
+      DeletePurchaseOrderItem:
+        # 删除行项的方法
+        httpMethod: DELETE
+        restfulResourceName: "{OrderId}/Items/{OrderItemSeqId}"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+            - OrderItemSeqId
+        parameters:
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id
+
+
+      UpdatePurchaseOrderItem:
+        # 更新行项的方法
+        httpMethod: PUT
+        restfulResourceName: "{OrderId}/Items/{OrderItemSeqId}"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+            - OrderItemSeqId
+        parameters:
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id-long
+          Quantity:
+            type: fixed-point
+          CancelQuantity:
+            type: fixed-point
+          # SelectedAmount:
+          #   type: fixed-point
+          UnitPrice:
+            type: currency-precise
+          ItemDescription:
+            type: description
+          Comments:
+            type: comment
+          # StatusId:
+          #   type: id
+          # SyncStatusId:
+          #   type: id
+          EstimatedShipDate:
+            type: date-time
+          EstimatedDeliveryDate:
+            type: date-time
+
     # TODO： 是否需要支持 PO 的 CSV 导入？
+

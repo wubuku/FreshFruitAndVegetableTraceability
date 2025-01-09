@@ -42,6 +42,8 @@ import org.dddml.ffvtraceability.domain.partyrole.*;
 import org.dddml.ffvtraceability.domain.roletype.*;
 import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.orderadjustmenttype.*;
+import org.dddml.ffvtraceability.domain.ordertype.*;
+import org.dddml.ffvtraceability.domain.orderitemtype.*;
 import org.dddml.ffvtraceability.domain.shipment.*;
 import org.dddml.ffvtraceability.domain.shipmenttype.*;
 import org.dddml.ffvtraceability.domain.shippingdocument.*;

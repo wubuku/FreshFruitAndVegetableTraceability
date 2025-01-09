@@ -6,6 +6,7 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import java.util.*;
+import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public class BffPurchaseOrderServiceCommands {
@@ -33,6 +34,58 @@ public class BffPurchaseOrderServiceCommands {
             this.size = size;
         }
 
+        /**
+         * Order Id Or Item
+         */
+        private String orderIdOrItem;
+
+        public String getOrderIdOrItem() {
+            return orderIdOrItem;
+        }
+
+        public void setOrderIdOrItem(String orderIdOrItem) {
+            this.orderIdOrItem = orderIdOrItem;
+        }
+
+        /**
+         * Supplier Id
+         */
+        private String supplierId;
+
+        public String getSupplierId() {
+            return supplierId;
+        }
+
+        public void setSupplierId(String supplierId) {
+            this.supplierId = supplierId;
+        }
+
+        /**
+         * Order Date From
+         */
+        private OffsetDateTime orderDateFrom;
+
+        public OffsetDateTime getOrderDateFrom() {
+            return orderDateFrom;
+        }
+
+        public void setOrderDateFrom(OffsetDateTime orderDateFrom) {
+            this.orderDateFrom = orderDateFrom;
+        }
+
+        /**
+         * Order Date To
+         */
+        private OffsetDateTime orderDateTo;
+
+        public OffsetDateTime getOrderDateTo() {
+            return orderDateTo;
+        }
+
+        public void setOrderDateTo(OffsetDateTime orderDateTo) {
+            this.orderDateTo = orderDateTo;
+        }
+
     }
 
     public static class GetPurchaseOrder extends org.dddml.ffvtraceability.domain.AbstractCommand {
@@ -48,6 +101,234 @@ public class BffPurchaseOrderServiceCommands {
 
         public void setOrderId(String orderId) {
             this.orderId = orderId;
+        }
+
+    }
+
+    public static class GetPurchaseOrderItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Order Item Seq Id
+         */
+        private String orderItemSeqId;
+
+        public String getOrderItemSeqId() {
+            return orderItemSeqId;
+        }
+
+        public void setOrderItemSeqId(String orderItemSeqId) {
+            this.orderItemSeqId = orderItemSeqId;
+        }
+
+    }
+
+    public static class CreatePurchaseOrder extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Purchase Order
+         */
+        private BffPurchaseOrderDto purchaseOrder;
+
+        public BffPurchaseOrderDto getPurchaseOrder() {
+            return purchaseOrder;
+        }
+
+        public void setPurchaseOrder(BffPurchaseOrderDto purchaseOrder) {
+            this.purchaseOrder = purchaseOrder;
+        }
+
+    }
+
+    public static class CreatePurchaseOrderItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Purchase Order Item
+         */
+        private BffPurchaseOrderItemDto purchaseOrderItem;
+
+        public BffPurchaseOrderItemDto getPurchaseOrderItem() {
+            return purchaseOrderItem;
+        }
+
+        public void setPurchaseOrderItem(BffPurchaseOrderItemDto purchaseOrderItem) {
+            this.purchaseOrderItem = purchaseOrderItem;
+        }
+
+    }
+
+    public static class DeletePurchaseOrderItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Order Item Seq Id
+         */
+        private String orderItemSeqId;
+
+        public String getOrderItemSeqId() {
+            return orderItemSeqId;
+        }
+
+        public void setOrderItemSeqId(String orderItemSeqId) {
+            this.orderItemSeqId = orderItemSeqId;
+        }
+
+    }
+
+    public static class UpdatePurchaseOrderItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Order Item Seq Id
+         */
+        private String orderItemSeqId;
+
+        public String getOrderItemSeqId() {
+            return orderItemSeqId;
+        }
+
+        public void setOrderItemSeqId(String orderItemSeqId) {
+            this.orderItemSeqId = orderItemSeqId;
+        }
+
+        /**
+         * Quantity
+         */
+        private java.math.BigDecimal quantity;
+
+        public java.math.BigDecimal getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(java.math.BigDecimal quantity) {
+            this.quantity = quantity;
+        }
+
+        /**
+         * Cancel Quantity
+         */
+        private java.math.BigDecimal cancelQuantity;
+
+        public java.math.BigDecimal getCancelQuantity() {
+            return cancelQuantity;
+        }
+
+        public void setCancelQuantity(java.math.BigDecimal cancelQuantity) {
+            this.cancelQuantity = cancelQuantity;
+        }
+
+        /**
+         * Unit Price
+         */
+        private java.math.BigDecimal unitPrice;
+
+        public java.math.BigDecimal getUnitPrice() {
+            return unitPrice;
+        }
+
+        public void setUnitPrice(java.math.BigDecimal unitPrice) {
+            this.unitPrice = unitPrice;
+        }
+
+        /**
+         * Item Description
+         */
+        private String itemDescription;
+
+        public String getItemDescription() {
+            return itemDescription;
+        }
+
+        public void setItemDescription(String itemDescription) {
+            this.itemDescription = itemDescription;
+        }
+
+        /**
+         * Comments
+         */
+        private String comments;
+
+        public String getComments() {
+            return comments;
+        }
+
+        public void setComments(String comments) {
+            this.comments = comments;
+        }
+
+        /**
+         * Estimated Ship Date
+         */
+        private OffsetDateTime estimatedShipDate;
+
+        public OffsetDateTime getEstimatedShipDate() {
+            return estimatedShipDate;
+        }
+
+        public void setEstimatedShipDate(OffsetDateTime estimatedShipDate) {
+            this.estimatedShipDate = estimatedShipDate;
+        }
+
+        /**
+         * Estimated Delivery Date
+         */
+        private OffsetDateTime estimatedDeliveryDate;
+
+        public OffsetDateTime getEstimatedDeliveryDate() {
+            return estimatedDeliveryDate;
+        }
+
+        public void setEstimatedDeliveryDate(OffsetDateTime estimatedDeliveryDate) {
+            this.estimatedDeliveryDate = estimatedDeliveryDate;
         }
 
     }

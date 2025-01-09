@@ -1,6 +1,7 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderDto;
+import org.dddml.ffvtraceability.domain.BffPurchaseOrderItemDto;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,5 +18,30 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     @Transactional(readOnly = true)
     public BffPurchaseOrderDto when(BffPurchaseOrderServiceCommands.GetPurchaseOrder c) {
         return null; //todo
+    }
+
+    @Override
+    public BffPurchaseOrderItemDto when(BffPurchaseOrderServiceCommands.GetPurchaseOrderItem c) {
+        return null;
+    }
+
+    @Override
+    public String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrder c) {
+        return "";
+    }
+
+    @Override
+    public String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrderItem c) {
+        return "";
+    }
+
+    @Override
+    public void when(BffPurchaseOrderServiceCommands.DeletePurchaseOrderItem c) {
+
+    }
+
+    @Override
+    public void when(BffPurchaseOrderServiceCommands.UpdatePurchaseOrderItem c) {
+
     }
 }

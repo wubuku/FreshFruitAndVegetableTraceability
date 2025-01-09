@@ -516,3 +516,32 @@
         properties:
           - ParentTypeId
         foreignKeyName: ORDER_ADJ_TYPPAR
+
+  OrderType:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: OrderTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+
+  OrderItemType:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: OrderItemTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+

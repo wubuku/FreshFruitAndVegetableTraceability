@@ -5,6 +5,7 @@
 
 package org.dddml.ffvtraceability.domain.service;
 
+import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.Page;
 
@@ -13,6 +14,16 @@ public interface BffPurchaseOrderApplicationService {
     Page<BffPurchaseOrderDto> when(BffPurchaseOrderServiceCommands.GetPurchaseOrderItems c);
 
     BffPurchaseOrderDto when(BffPurchaseOrderServiceCommands.GetPurchaseOrder c);
+
+    BffPurchaseOrderItemDto when(BffPurchaseOrderServiceCommands.GetPurchaseOrderItem c);
+
+    String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrder c);
+
+    String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrderItem c);
+
+    void when(BffPurchaseOrderServiceCommands.DeletePurchaseOrderItem c);
+
+    void when(BffPurchaseOrderServiceCommands.UpdatePurchaseOrderItem c);
 
 
 }

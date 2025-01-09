@@ -101,6 +101,12 @@ import org.dddml.ffvtraceability.domain.order.hibernate.*;
 import org.dddml.ffvtraceability.domain.orderadjustmenttype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.orderadjustmenttype.hibernate.*;
+import org.dddml.ffvtraceability.domain.ordertype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.ordertype.hibernate.*;
+import org.dddml.ffvtraceability.domain.orderitemtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.orderitemtype.hibernate.*;
 import org.dddml.ffvtraceability.domain.shipment.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.shipment.hibernate.*;
@@ -609,6 +615,34 @@ public class AggregatesHibernateConfig {
         AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService applicationService = new AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService(
                 orderAdjustmentTypeStateRepository,
                 orderAdjustmentTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractOrderTypeApplicationService.SimpleOrderTypeApplicationService orderTypeApplicationService(
+            OrderTypeStateRepository orderTypeStateRepository,
+            OrderTypeStateQueryRepository orderTypeStateQueryRepository
+    ) {
+        AbstractOrderTypeApplicationService.SimpleOrderTypeApplicationService applicationService = new AbstractOrderTypeApplicationService.SimpleOrderTypeApplicationService(
+                orderTypeStateRepository,
+                orderTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractOrderItemTypeApplicationService.SimpleOrderItemTypeApplicationService orderItemTypeApplicationService(
+            OrderItemTypeStateRepository orderItemTypeStateRepository,
+            OrderItemTypeStateQueryRepository orderItemTypeStateQueryRepository
+    ) {
+        AbstractOrderItemTypeApplicationService.SimpleOrderItemTypeApplicationService applicationService = new AbstractOrderItemTypeApplicationService.SimpleOrderItemTypeApplicationService(
+                orderItemTypeStateRepository,
+                orderItemTypeStateQueryRepository
         );
         return applicationService;
     }

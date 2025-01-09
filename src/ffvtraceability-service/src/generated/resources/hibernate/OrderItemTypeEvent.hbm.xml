@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.orderitemtype">
+  <class name="AbstractOrderItemTypeEvent" table="order_item_type_event" abstract="true">
+    <composite-id name="orderItemTypeEventId" class="org.dddml.ffvtraceability.domain.orderitemtype.OrderItemTypeEventId">
+      <key-property name="orderItemTypeId">
+        <column name="order_item_type_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractOrderItemTypeEvent$OrderItemTypeLobEvent" discriminator-value="OrderItemTypeLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractOrderItemTypeEvent$AbstractOrderItemTypeStateEvent" abstract="true">
+      <property name="parentTypeId">
+        <column name="parent_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="hasTable">
+        <column name="has_table" sql-type="CHAR(1)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractOrderItemTypeEvent$SimpleOrderItemTypeStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractOrderItemTypeEvent$SimpleOrderItemTypeStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyParentTypeIdRemoved" column="is_property_parent_type_id_removed" />
+        <property name="isPropertyHasTableRemoved" column="is_property_has_table_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>
