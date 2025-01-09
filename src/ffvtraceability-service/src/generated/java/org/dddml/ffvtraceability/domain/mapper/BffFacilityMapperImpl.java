@@ -20,19 +20,19 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
 
         BffFacilityDto bffFacilityDto = new BffFacilityDto();
 
+        bffFacilityDto.setActive( bffFacilityProjection.getActive() );
+        bffFacilityDto.setDescription( bffFacilityProjection.getDescription() );
         bffFacilityDto.setFacilityId( bffFacilityProjection.getFacilityId() );
-        bffFacilityDto.setFacilityTypeId( bffFacilityProjection.getFacilityTypeId() );
-        bffFacilityDto.setParentFacilityId( bffFacilityProjection.getParentFacilityId() );
-        bffFacilityDto.setOwnerPartyId( bffFacilityProjection.getOwnerPartyId() );
         bffFacilityDto.setFacilityName( bffFacilityProjection.getFacilityName() );
         bffFacilityDto.setFacilitySize( bffFacilityProjection.getFacilitySize() );
         bffFacilityDto.setFacilitySizeUomId( bffFacilityProjection.getFacilitySizeUomId() );
-        bffFacilityDto.setDescription( bffFacilityProjection.getDescription() );
-        bffFacilityDto.setGeoPointId( bffFacilityProjection.getGeoPointId() );
-        bffFacilityDto.setGeoId( bffFacilityProjection.getGeoId() );
-        bffFacilityDto.setActive( bffFacilityProjection.getActive() );
-        bffFacilityDto.setGln( bffFacilityProjection.getGln() );
+        bffFacilityDto.setFacilityTypeId( bffFacilityProjection.getFacilityTypeId() );
         bffFacilityDto.setFfrn( bffFacilityProjection.getFfrn() );
+        bffFacilityDto.setGeoId( bffFacilityProjection.getGeoId() );
+        bffFacilityDto.setGeoPointId( bffFacilityProjection.getGeoPointId() );
+        bffFacilityDto.setGln( bffFacilityProjection.getGln() );
+        bffFacilityDto.setOwnerPartyId( bffFacilityProjection.getOwnerPartyId() );
+        bffFacilityDto.setParentFacilityId( bffFacilityProjection.getParentFacilityId() );
 
         return bffFacilityDto;
     }
@@ -45,17 +45,17 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
 
         BffFacilityDto bffFacilityDto = new BffFacilityDto();
 
+        bffFacilityDto.setActive( facilityState.getActive() );
+        bffFacilityDto.setDescription( facilityState.getDescription() );
         bffFacilityDto.setFacilityId( facilityState.getFacilityId() );
-        bffFacilityDto.setFacilityTypeId( facilityState.getFacilityTypeId() );
-        bffFacilityDto.setParentFacilityId( facilityState.getParentFacilityId() );
-        bffFacilityDto.setOwnerPartyId( facilityState.getOwnerPartyId() );
         bffFacilityDto.setFacilityName( facilityState.getFacilityName() );
         bffFacilityDto.setFacilitySize( facilityState.getFacilitySize() );
         bffFacilityDto.setFacilitySizeUomId( facilityState.getFacilitySizeUomId() );
-        bffFacilityDto.setDescription( facilityState.getDescription() );
-        bffFacilityDto.setGeoPointId( facilityState.getGeoPointId() );
+        bffFacilityDto.setFacilityTypeId( facilityState.getFacilityTypeId() );
         bffFacilityDto.setGeoId( facilityState.getGeoId() );
-        bffFacilityDto.setActive( facilityState.getActive() );
+        bffFacilityDto.setGeoPointId( facilityState.getGeoPointId() );
+        bffFacilityDto.setOwnerPartyId( facilityState.getOwnerPartyId() );
+        bffFacilityDto.setParentFacilityId( facilityState.getParentFacilityId() );
 
         return bffFacilityDto;
     }

@@ -3,6 +3,7 @@ package org.dddml.ffvtraceability.restful.resource;
 import org.dddml.ffvtraceability.domain.BffFacilityDto;
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
+import org.dddml.ffvtraceability.domain.BffUomDto;
 import org.dddml.ffvtraceability.domain.service.*;
 import org.dddml.ffvtraceability.specialization.DomainErrorUtils;
 import org.dddml.ffvtraceability.specialization.Page;
@@ -28,6 +29,8 @@ public class BffListResource {
     private BffSupplierApplicationService bffSupplierApplicationService;
     @Autowired
     private BffFacilityApplicationService bffFacilityApplicationService;
+    @Autowired
+    private BffUomApplicationService bffUomApplicationService;
 
     @GetMapping("RawItems") // 因为对应的分页查询接口的路径名是 "BffRawItems"
     public List<? extends BffRawItemDto> getRawItems(
@@ -75,6 +78,26 @@ public class BffListResource {
         try {
             getFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
             return bffFacilityApplicationService.when(getFacilities).getContent();
+        } catch (Exception ex) {
+            logger.info(ex.getMessage(), ex);
+            throw DomainErrorUtils.convertException(ex);
+        }
+    }
+
+
+    @GetMapping("/UnitsOfMeasure")
+    public List<? extends BffUomDto> getUnitsOfMeasure(
+            @RequestParam(value = "active", required = false) String active,
+            @RequestParam(value = "uomTypeId", required = false) String uomTypeId
+    ) {
+        BffUomServiceCommands.GetUnitsOfMeasure getUnitsOfMeasure = new BffUomServiceCommands.GetUnitsOfMeasure();
+        getUnitsOfMeasure.setPage(0);
+        getUnitsOfMeasure.setSize(Integer.MAX_VALUE);
+        getUnitsOfMeasure.setActive(active);
+        getUnitsOfMeasure.setUomTypeId(uomTypeId);
+        try {
+            getUnitsOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
+            return bffUomApplicationService.when(getUnitsOfMeasure).getContent();
         } catch (Exception ex) {
             logger.info(ex.getMessage(), ex);
             throw DomainErrorUtils.convertException(ex);

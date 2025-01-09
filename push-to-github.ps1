@@ -15,6 +15,6 @@ while ($true) {
     }
     else {
         Write-Host "Push failed. Retrying..." -ForegroundColor Red
-        Start-Sleep -Seconds 5  # 等待 5 秒后重试
+        Start-Sleep -Seconds 2  # 等待 5 秒后重试
     }
 }
