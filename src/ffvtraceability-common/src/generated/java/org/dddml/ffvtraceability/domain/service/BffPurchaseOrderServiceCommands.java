@@ -331,6 +331,19 @@ public class BffPurchaseOrderServiceCommands {
             this.estimatedDeliveryDate = estimatedDeliveryDate;
         }
 
+        /**
+         * Supplier Product Id
+         */
+        private String supplierProductId;
+
+        public String getSupplierProductId() {
+            return supplierProductId;
+        }
+
+        public void setSupplierProductId(String supplierProductId) {
+            this.supplierProductId = supplierProductId;
+        }
+
     }
 
 

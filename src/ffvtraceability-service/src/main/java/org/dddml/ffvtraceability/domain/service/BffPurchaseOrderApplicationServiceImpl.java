@@ -3,10 +3,7 @@ package org.dddml.ffvtraceability.domain.service;
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderDto;
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderItemDto;
 import org.dddml.ffvtraceability.domain.mapper.BffPurchaseOrderMapper;
-import org.dddml.ffvtraceability.domain.order.AbstractOrderCommand;
-import org.dddml.ffvtraceability.domain.order.OrderApplicationService;
-import org.dddml.ffvtraceability.domain.order.OrderItemCommand;
-import org.dddml.ffvtraceability.domain.order.OrderRoleCommand;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
 import org.dddml.ffvtraceability.domain.repository.BffOrderRepository;
 import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderAndItemProjection;
@@ -128,7 +125,9 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         // Set additional order header fields
         createOrder.setOrderName(purchaseOrder.getOrderName());
         createOrder.setExternalId(purchaseOrder.getExternalId());
-        createOrder.setOrderDate(OffsetDateTime.now()); //todo Is this correct?
+        createOrder.setOrderDate(
+                purchaseOrder.getOrderDate() != null ? purchaseOrder.getOrderDate() : OffsetDateTime.now()
+        ); // Is this ok?
         createOrder.setEntryDate(OffsetDateTime.now());
         //createOrder.setStatusId(purchaseOrder.getStatusId());
         createOrder.setCurrencyUomId(purchaseOrder.getCurrencyUomId());
@@ -163,7 +162,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
                 createOrderItem.setItemDescription(item.getItemDescription());
                 createOrderItem.setComments(item.getComments());
                 createOrderItem.setExternalId(item.getExternalId());
-                createOrderItem.setStatusId(item.getStatusId());
+                //createOrderItem.setStatusId(item.getStatusId());
                 createOrderItem.setSupplierProductId(item.getSupplierProductId());
                 // Add item to order
                 createOrder.getCreateOrderItemCommands().add(createOrderItem);
@@ -175,17 +174,102 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     }
 
     @Override
+    @Transactional
     public String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrderItem c) {
-        return "";
+        if (c.getOrderId() == null) {
+            throw new IllegalArgumentException("OrderId is required.");
+        }
+        OrderHeaderState orderHeaderState = orderApplicationService.get(c.getOrderId());
+        if (orderHeaderState == null) {
+            throw new IllegalArgumentException("Order not found: " + c.getOrderId());
+        }
+
+        AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
+        mergePatchOrder.setOrderId(c.getOrderId());
+
+        BffPurchaseOrderItemDto oi = c.getPurchaseOrderItem();
+        OrderItemCommand.CreateOrderItem createOrderItem = mergePatchOrder.newCreateOrderItem();
+        createOrderItem.setOrderItemSeqId(IdUtils.randomId());
+        createOrderItem.setOrderItemTypeId(PRODUCT_ORDER_ITEM);
+        createOrderItem.setProductId(oi.getProductId());
+        createOrderItem.setQuantity(oi.getQuantity());
+        createOrderItem.setUnitPrice(oi.getUnitPrice());
+        createOrderItem.setEstimatedShipDate(oi.getEstimatedShipDate());
+        createOrderItem.setEstimatedDeliveryDate(oi.getEstimatedDeliveryDate());
+        createOrderItem.setItemDescription(oi.getItemDescription());
+        createOrderItem.setComments(oi.getComments());
+        createOrderItem.setSupplierProductId(oi.getSupplierProductId());
+
+        mergePatchOrder.getOrderItemCommands().add(createOrderItem);
+        mergePatchOrder.setVersion(orderHeaderState.getVersion());
+        mergePatchOrder.setCommandId(c.getCommandId() != null ?
+                c.getCommandId() : IdUtils.randomId());
+        mergePatchOrder.setRequesterId(c.getRequesterId());
+
+        orderApplicationService.when(mergePatchOrder);
+        return createOrderItem.getOrderItemSeqId();
     }
 
     @Override
+    @Transactional
     public void when(BffPurchaseOrderServiceCommands.DeletePurchaseOrderItem c) {
+        if (c.getOrderId() == null || c.getOrderItemSeqId() == null) {
+            throw new IllegalArgumentException("OrderId and OrderItemSeqId are required.");
+        }
+        OrderHeaderState orderHeaderState = orderApplicationService.get(c.getOrderId());
+        if (orderHeaderState == null) {
+            throw new IllegalArgumentException("Order not found: " + c.getOrderId());
+        }
 
+        AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder =
+                new AbstractOrderCommand.SimpleMergePatchOrder();
+        mergePatchOrder.setOrderId(c.getOrderId());
+        mergePatchOrder.setVersion(orderHeaderState.getVersion());
+
+        OrderItemCommand.RemoveOrderItem removeOrderItem = mergePatchOrder.newRemoveOrderItem();
+        removeOrderItem.setOrderItemSeqId(c.getOrderItemSeqId());
+
+        mergePatchOrder.getOrderItemCommands().add(removeOrderItem);
+        mergePatchOrder.setCommandId(c.getCommandId() != null ?
+                c.getCommandId() : IdUtils.randomId());
+        mergePatchOrder.setRequesterId(c.getRequesterId());
+
+        orderApplicationService.when(mergePatchOrder);
     }
 
     @Override
+    @Transactional
     public void when(BffPurchaseOrderServiceCommands.UpdatePurchaseOrderItem c) {
+        if (c.getOrderId() == null || c.getOrderItemSeqId() == null) {
+            throw new IllegalArgumentException("OrderId and OrderItemSeqId are required.");
+        }
+        OrderHeaderState orderHeaderState = orderApplicationService.get(c.getOrderId());
+        if (orderHeaderState == null) {
+            throw new IllegalArgumentException("Order not found: " + c.getOrderId());
+        }
 
+        AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder =
+                new AbstractOrderCommand.SimpleMergePatchOrder();
+        mergePatchOrder.setOrderId(c.getOrderId());
+        mergePatchOrder.setVersion(orderHeaderState.getVersion());
+
+        OrderItemCommand.MergePatchOrderItem mergePatchOrderItem = mergePatchOrder.newMergePatchOrderItem();
+        mergePatchOrderItem.setOrderItemSeqId(c.getOrderItemSeqId());
+
+        // 设置更新的字段
+        mergePatchOrderItem.setQuantity(c.getQuantity());
+        mergePatchOrderItem.setUnitPrice(c.getUnitPrice());
+        mergePatchOrderItem.setEstimatedShipDate(c.getEstimatedShipDate());
+        mergePatchOrderItem.setEstimatedDeliveryDate(c.getEstimatedDeliveryDate());
+        mergePatchOrderItem.setItemDescription(c.getItemDescription());
+        mergePatchOrderItem.setComments(c.getComments());
+        mergePatchOrderItem.setSupplierProductId(c.getSupplierProductId());
+
+        mergePatchOrder.getOrderItemCommands().add(mergePatchOrderItem);
+        mergePatchOrder.setCommandId(c.getCommandId() != null ?
+                c.getCommandId() : IdUtils.randomId());
+        mergePatchOrder.setRequesterId(c.getRequesterId());
+
+        orderApplicationService.when(mergePatchOrder);
     }
 }

@@ -272,6 +272,9 @@ services:
             type: date-time
           EstimatedDeliveryDate:
             type: date-time
+          SupplierProductId:
+            type: id-long
+
 
     # TODO： 是否需要支持 PO 的 CSV 导入？
 
