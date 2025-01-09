@@ -35,12 +35,14 @@ public class BffUomServiceResource {
     public Page<BffUomDto> getUnitsOfMeasure(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
-        @RequestParam(value = "active", required = false) String active
+        @RequestParam(value = "active", required = false) String active,
+        @RequestParam(value = "uomTypeId", required = false) String uomTypeId
     ) {
         BffUomServiceCommands.GetUnitsOfMeasure getUnitsOfMeasure = new BffUomServiceCommands.GetUnitsOfMeasure();
         getUnitsOfMeasure.setPage(page);
         getUnitsOfMeasure.setSize(size);
         getUnitsOfMeasure.setActive(active);
+        getUnitsOfMeasure.setUomTypeId(uomTypeId);
         try {
         getUnitsOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffUomApplicationService.when(getUnitsOfMeasure);

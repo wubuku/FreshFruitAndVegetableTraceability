@@ -46,6 +46,19 @@ public class BffUomServiceCommands {
             this.active = active;
         }
 
+        /**
+         * Uom Type Id
+         */
+        private String uomTypeId;
+
+        public String getUomTypeId() {
+            return uomTypeId;
+        }
+
+        public void setUomTypeId(String uomTypeId) {
+            this.uomTypeId = uomTypeId;
+        }
+
     }
 
     public static class GetUnitOfMeasure extends org.dddml.ffvtraceability.domain.AbstractCommand {

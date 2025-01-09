@@ -31,6 +31,9 @@ services:
         parameters:
           Active:
             type: indicator
+          UomTypeId:
+            type: id
+            optional: true # NOT required
         result:
           itemType: BffUomDto
 

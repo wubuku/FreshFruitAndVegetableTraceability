@@ -19,6 +19,7 @@ public interface BffUomRepository extends JpaRepository<AbstractUomState.SimpleU
                 u.active as active
             FROM uom u
             WHERE (:active IS NULL OR u.active = :active)
+                AND (:uomTypeId IS NULL OR u.uom_type_id = :uomTypeId)
             ORDER BY u.created_at DESC
             """,
             countQuery = """
@@ -27,5 +28,8 @@ public interface BffUomRepository extends JpaRepository<AbstractUomState.SimpleU
                     WHERE (:active IS NULL OR u.active = :active)
                     """,
             nativeQuery = true)
-    Page<BffUomProjection> findAllUnitsOfMeasure(Pageable pageable, @Param("active") String active);
+    Page<BffUomProjection> findAllUnitsOfMeasure(Pageable pageable,
+                                                 @Param("active") String active,
+                                                 @Param("uomTypeId") String uomTypeId
+    );
 }
