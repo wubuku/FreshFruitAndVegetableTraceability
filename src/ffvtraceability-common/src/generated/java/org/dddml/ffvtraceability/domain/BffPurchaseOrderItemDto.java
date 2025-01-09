@@ -58,6 +58,33 @@ public class BffPurchaseOrderItemDto implements Serializable {
         this.supplierProductId = supplierProductId;
     }
 
+    private String productName;
+
+    public String getProductName()
+    {
+        return this.productName;
+    }
+
+    public void setProductName(String productName)
+    {
+        this.productName = productName;
+    }
+
+    /**
+     * GTIN (Global Trade Item Number)
+     */
+    private String gtin;
+
+    public String getGtin()
+    {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin)
+    {
+        this.gtin = gtin;
+    }
+
     private java.math.BigDecimal quantity;
 
     public java.math.BigDecimal getQuantity()
@@ -182,12 +209,14 @@ public class BffPurchaseOrderItemDto implements Serializable {
     {
     }
 
-    public BffPurchaseOrderItemDto(String orderItemSeqId, String externalId, String productId, String supplierProductId, java.math.BigDecimal quantity, java.math.BigDecimal cancelQuantity, java.math.BigDecimal selectedAmount, java.math.BigDecimal unitPrice, String itemDescription, String comments, String statusId, String syncStatusId, OffsetDateTime estimatedShipDate, OffsetDateTime estimatedDeliveryDate)
+    public BffPurchaseOrderItemDto(String orderItemSeqId, String externalId, String productId, String supplierProductId, String productName, String gtin, java.math.BigDecimal quantity, java.math.BigDecimal cancelQuantity, java.math.BigDecimal selectedAmount, java.math.BigDecimal unitPrice, String itemDescription, String comments, String statusId, String syncStatusId, OffsetDateTime estimatedShipDate, OffsetDateTime estimatedDeliveryDate)
     {
         this.orderItemSeqId = orderItemSeqId;
         this.externalId = externalId;
         this.productId = productId;
         this.supplierProductId = supplierProductId;
+        this.productName = productName;
+        this.gtin = gtin;
         this.quantity = quantity;
         this.cancelQuantity = cancelQuantity;
         this.selectedAmount = selectedAmount;
@@ -216,6 +245,8 @@ public class BffPurchaseOrderItemDto implements Serializable {
             && (externalId == other.externalId || (externalId != null && externalId.equals(other.externalId)))
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
             && (supplierProductId == other.supplierProductId || (supplierProductId != null && supplierProductId.equals(other.supplierProductId)))
+            && (productName == other.productName || (productName != null && productName.equals(other.productName)))
+            && (gtin == other.gtin || (gtin != null && gtin.equals(other.gtin)))
             && (quantity == other.quantity || (quantity != null && quantity.equals(other.quantity)))
             && (cancelQuantity == other.cancelQuantity || (cancelQuantity != null && cancelQuantity.equals(other.cancelQuantity)))
             && (selectedAmount == other.selectedAmount || (selectedAmount != null && selectedAmount.equals(other.selectedAmount)))
@@ -244,6 +275,12 @@ public class BffPurchaseOrderItemDto implements Serializable {
         }
         if (this.supplierProductId != null) {
             hash += 13 * this.supplierProductId.hashCode();
+        }
+        if (this.productName != null) {
+            hash += 13 * this.productName.hashCode();
+        }
+        if (this.gtin != null) {
+            hash += 13 * this.gtin.hashCode();
         }
         if (this.quantity != null) {
             hash += 13 * this.quantity.hashCode();
@@ -285,6 +322,8 @@ public class BffPurchaseOrderItemDto implements Serializable {
                 ", externalId=" + '\'' + externalId + '\'' +
                 ", productId=" + '\'' + productId + '\'' +
                 ", supplierProductId=" + '\'' + supplierProductId + '\'' +
+                ", productName=" + '\'' + productName + '\'' +
+                ", gtin=" + '\'' + gtin + '\'' +
                 ", quantity=" + quantity +
                 ", cancelQuantity=" + cancelQuantity +
                 ", selectedAmount=" + selectedAmount +

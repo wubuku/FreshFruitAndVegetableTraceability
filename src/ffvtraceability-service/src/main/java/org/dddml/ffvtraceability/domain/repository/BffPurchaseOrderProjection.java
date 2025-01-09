@@ -5,10 +5,37 @@
 
 package org.dddml.ffvtraceability.domain.repository;
 
+import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public interface BffPurchaseOrderProjection {
     String getOrderId();
+
+    String getOrderName();
+
+    String getExternalId();
+
+    OffsetDateTime getOrderDate();
+
+    String getStatusId();
+
+    String getCurrencyUomId();
+
+    String getSyncStatusId();
+
+    String getOriginFacilityId();
+
+    String getMemo();
+
+    String getSupplierId();
+
+    OffsetDateTime getCreatedAt();
+
+    String getCreatedBy();
+
+    OffsetDateTime getUpdatedAt();
+
+    String getUpdatedBy();
 
 }
 
