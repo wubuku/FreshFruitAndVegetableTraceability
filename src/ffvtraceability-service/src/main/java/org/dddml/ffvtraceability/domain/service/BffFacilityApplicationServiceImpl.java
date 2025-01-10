@@ -1,18 +1,25 @@
 package org.dddml.ffvtraceability.domain.service;
 
+import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffFacilityDto;
 import org.dddml.ffvtraceability.domain.BffFacilityLocationDto;
+import org.dddml.ffvtraceability.domain.Command;
+import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
 import org.dddml.ffvtraceability.domain.facility.*;
+import org.dddml.ffvtraceability.domain.facilitycontactmech.AbstractFacilityContactMechCommand;
+import org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechApplicationService;
+import org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId;
+import org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechState;
 import org.dddml.ffvtraceability.domain.facilitylocation.AbstractFacilityLocationCommand;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationState;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityLocationMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
-import org.dddml.ffvtraceability.domain.repository.BffFacilityLocationRepository;
-import org.dddml.ffvtraceability.domain.repository.BffFacilityRepository;
+import org.dddml.ffvtraceability.domain.repository.*;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
+import org.dddml.ffvtraceability.domain.util.TelecomNumberUtil;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,15 +27,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.dddml.ffvtraceability.domain.constants.BffFacilityConstants.FACILITY_IDENTIFICATION_TYPE_FFRN;
+import static org.dddml.ffvtraceability.domain.constants.BffFacilityConstants.FACILITY_IDENTIFICATION_TYPE_GLN;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
-import static org.dddml.ffvtraceability.domain.constants.BffFacilityConstants.*;
 
 @Service
+@Transactional
 public class BffFacilityApplicationServiceImpl implements BffFacilityApplicationService {
 
     @Autowired
@@ -48,6 +60,18 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
 
     @Autowired
     private BffFacilityLocationMapper bffFacilityLocationMapper;
+
+    @Autowired
+    private FacilityContactMechApplicationService facilityContactMechApplicationService;
+    @Autowired
+    private BffGeoRepository bffGeoRepository;
+    @Autowired
+    private BffBusinessContactRepository bffBusinessContactRepository;
+    @Autowired
+    private BffFacilityContactMechRepository bffFacilityContactMechRepository;
+
+    @Autowired
+    private BffBusinessContactService bffBusinessContactService;
 
     @Override
     @Transactional(readOnly = true)
@@ -73,7 +97,29 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 dto.setFfrn(x.getIdValue());
             }
         });
+        enrichBusinessContactDetails(dto, c.getFacilityId());
         return dto;
+    }
+
+    private void enrichBusinessContactDetails(BffFacilityDto dto, String facilityId) {
+        bffFacilityContactMechRepository.findFacilityCurrentPostalAddressByFacilityId(facilityId).ifPresent(x -> {
+            BffBusinessContactDto bc = new BffBusinessContactDto();
+            bc.setBusinessName(x.getToName());
+            bc.setPhysicalLocationAddress(x.getAddress1());
+            bc.setCity(x.getCity());
+            bc.setState(x.getStateProvinceGeoId());
+            bc.setZipCode(x.getPostalCode());
+            dto.setBusinessContacts(Collections.singletonList(bc));
+        });
+
+        bffFacilityContactMechRepository.findFacilityCurrentTelecomNumberByFacilityId(facilityId).ifPresent(x -> {
+            if (dto.getBusinessContacts() == null) {
+                dto.setBusinessContacts(Collections.singletonList(new BffBusinessContactDto()));
+            }
+            dto.getBusinessContacts().get(0).setPhoneNumber(
+                    TelecomNumberUtil.format(x.getCountryCode(), x.getAreaCode(), x.getContactNumber())
+            );
+        });
     }
 
     @Override
@@ -103,6 +149,11 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         }
 
         facilityApplicationService.when(createFacility);
+
+        if (c.getFacility().getBusinessContacts() != null && !c.getFacility().getBusinessContacts().isEmpty()) {
+            createFacilityBusinessContact(createFacility.getFacilityId(), c.getFacility().getBusinessContacts().get(0), c);
+        }
+
         return createFacility.getFacilityId();
     }
 
@@ -145,6 +196,10 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         updateFacilityIdentification(facilityState, mergePatchFacility, FACILITY_IDENTIFICATION_TYPE_GLN, c.getFacility().getGln());
 
         facilityApplicationService.when(mergePatchFacility);
+
+        if (c.getFacility().getBusinessContacts() != null && !c.getFacility().getBusinessContacts().isEmpty()) {
+            updateOrCreateFacilityBusinessContact(facilityId, c.getFacility().getBusinessContacts().get(0), c);
+        }
     }
 
     private void updateFacilityIdentification(
@@ -303,7 +358,122 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
 
     @Override
     public void when(BffFacilityServiceCommands.UpdateBusinessContact c) {
-
+        String facilityId = c.getFacilityId();
+        FacilityState f = facilityApplicationService.get(facilityId);
+        if (f == null) {
+            throw new IllegalArgumentException(String.format("Facility not found: %s", c.getFacilityId()));
+        }
+        BffBusinessContactDto bizContact = c.getBusinessContact();
+        updateOrCreateFacilityBusinessContact(facilityId, bizContact, c);
     }
 
+    private void updateOrCreateFacilityBusinessContact(String facilityId, BffBusinessContactDto bizContact, Command c) {
+        // 处理邮政地址
+        Optional<BffBusinessContactRepository.PostalAddressProjection> pa = bffBusinessContactRepository.findOnePostalAddressByBusinessInfo(
+                bizContact.getBusinessName(), bizContact.getZipCode(),
+                bizContact.getState(), bizContact.getCity(), bizContact.getPhysicalLocationAddress()
+        );
+        if (pa.isPresent()) {
+            updateOrCreateFacilityContactMechAssociation(facilityId, pa.get().getContactMechId(), ContactMechTypeId.POSTAL_ADDRESS, "-PP", c);
+        } else {
+            // 创建新的邮政地址
+            Optional<BffGeoRepository.StateProvinceProjection> stateProvince
+                    = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
+            if (!stateProvince.isPresent()) {
+                throw new IllegalArgumentException(String.format("State not found: %s", bizContact.getState()));
+            }
+            String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
+            createFacilityContactMechAssociation(facilityId, contactMechId, "-PP", c);
+        }
+
+        // 处理电话号码
+        TelecomNumberUtil.TelecomNumberDto tn = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
+        Optional<BffBusinessContactRepository.TelecomNumberProjection> telecomNumber = bffBusinessContactRepository.findOneTelecomNumberByPhoneInfo(
+                tn.getCountryCode(), tn.getAreaCode(), tn.getContactNumber());
+
+        if (telecomNumber.isPresent()) {
+            String tnContactMechId = telecomNumber.get().getContactMechId();
+            updateOrCreateFacilityContactMechAssociation(facilityId, tnContactMechId, ContactMechTypeId.TELECOM_NUMBER, "-PT", c);
+        } else {
+            String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
+            createFacilityContactMechAssociation(facilityId, contactMechId, "-PT", c);
+        }
+    }
+
+    private void createFacilityBusinessContact(
+            String facilityId, BffBusinessContactDto bizContact, Command c
+    ) {
+        if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
+            Optional<BffGeoRepository.StateProvinceProjection> stateProvince
+                    = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
+            if (!stateProvince.isPresent()) {
+                throw new IllegalArgumentException(String.format("State not found: %s", bizContact.getState()));
+            }
+            String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
+            createFacilityContactMechAssociation(facilityId, contactMechId, "-PP", c);
+        }
+
+        if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
+            String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
+            createFacilityContactMechAssociation(facilityId, contactMechId, "-PT", c);
+        }
+    }
+
+    private void updateOrCreateFacilityContactMechAssociation(
+            String facilityId,
+            String contactMechId,
+            String contactMechTypeId,
+            String commandIdSuffix,
+            Command c
+    ) {
+        Optional<BffFacilityContactMechRepository.FacilityContactMechIdProjection> pcmIdPrj = bffFacilityContactMechRepository
+                .findFacilityCurrentContactMechByContactMechType(facilityId, contactMechTypeId);
+        if (!pcmIdPrj.isPresent()) {
+            createFacilityContactMechAssociation(facilityId, contactMechId, commandIdSuffix, c);
+        } else {
+            OffsetDateTime fromDate = OffsetDateTime.ofInstant(pcmIdPrj.get().getFromDate(), ZoneOffset.UTC);
+            FacilityContactMechState pcm = facilityContactMechApplicationService.get(new FacilityContactMechId(
+                    facilityId, contactMechId, fromDate
+            ));
+            if (pcm == null) {
+                createFacilityContactMechAssociation(facilityId, contactMechId, commandIdSuffix, c);
+            } else {
+                AbstractFacilityContactMechCommand.SimpleMergePatchFacilityContactMech mergePatchFacilityContactMech
+                        = new AbstractFacilityContactMechCommand.SimpleMergePatchFacilityContactMech();
+                mergePatchFacilityContactMech.setFacilityContactMechId(pcm.getFacilityContactMechId());
+                mergePatchFacilityContactMech.setVersion(pcm.getVersion());
+                mergePatchFacilityContactMech.setThruDate(OffsetDateTime.now().plusYears(100));
+                mergePatchFacilityContactMech.setCommandId(c.getCommandId() != null ? c.getCommandId() + commandIdSuffix : UUID.randomUUID().toString());
+                mergePatchFacilityContactMech.setRequesterId(c.getRequesterId());
+                facilityContactMechApplicationService.when(mergePatchFacilityContactMech);
+            }
+        }
+    }
+
+    private void createFacilityContactMechAssociation(
+            String facilityId,
+            String contactMechId,
+            String commandIdSuffix,
+            Command c
+    ) {
+        AbstractFacilityContactMechCommand.SimpleCreateFacilityContactMech createFacilityContactMechBase
+                = buildFacilityContactMechCreationCommand(facilityId, contactMechId,
+                OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)
+        );
+        createFacilityContactMechBase.setCommandId(c.getCommandId() != null ? c.getCommandId() + commandIdSuffix : UUID.randomUUID().toString());
+        createFacilityContactMechBase.setRequesterId(c.getRequesterId());
+        facilityContactMechApplicationService.when(createFacilityContactMechBase);
+    }
+
+    private AbstractFacilityContactMechCommand.SimpleCreateFacilityContactMech buildFacilityContactMechCreationCommand(
+            String facilityId,
+            String contactMechId,
+            OffsetDateTime fromDate
+    ) {
+        AbstractFacilityContactMechCommand.SimpleCreateFacilityContactMech createFacilityContactMech =
+                new AbstractFacilityContactMechCommand.SimpleCreateFacilityContactMech();
+        createFacilityContactMech.setFacilityContactMechId(new FacilityContactMechId(facilityId, contactMechId, fromDate));
+        createFacilityContactMech.setThruDate(OffsetDateTime.now().plusYears(100));
+        return createFacilityContactMech;
+    }
 }

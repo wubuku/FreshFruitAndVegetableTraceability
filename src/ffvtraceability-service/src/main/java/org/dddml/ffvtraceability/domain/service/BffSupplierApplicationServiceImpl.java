@@ -3,7 +3,6 @@ package org.dddml.ffvtraceability.domain.service;
 import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.Command;
-import org.dddml.ffvtraceability.domain.contactmech.ContactMechApplicationService;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
 import org.dddml.ffvtraceability.domain.party.*;
@@ -51,8 +50,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     private BffSupplierMapper bffSupplierMapper;
     @Autowired
     private BffSupplierRepository bffSupplierRepository;
-    @Autowired
-    private ContactMechApplicationService contactMechApplicationService;
+
     @Autowired
     private PartyContactMechApplicationService partyContactMechApplicationService;
     @Autowired
