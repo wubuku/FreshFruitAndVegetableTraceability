@@ -17,9 +17,7 @@ import java.util.UUID;
 
 @Service
 public class BffBusinessContactServiceImpl implements BffBusinessContactService {
-
     private static final String ERROR_STATE_NOT_FOUND = "State not found: %s";
-    private static final String ERROR_PARTY_CONTACT_MECH_NOT_FOUND = "PartyContactMech not found: %s, %s";
 
     @Autowired
     private ContactMechApplicationService contactMechApplicationService;
