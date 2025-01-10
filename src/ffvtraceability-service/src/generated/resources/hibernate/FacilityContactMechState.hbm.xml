@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.facilitycontactmech">
+  <class name="org.dddml.ffvtraceability.domain.facilitycontactmech.AbstractFacilityContactMechState$SimpleFacilityContactMechState" table="facility_contact_mech">
+    <composite-id name="facilityContactMechId" class="org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId">
+      <key-property name="facilityId">
+        <column name="FACILITY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="contactMechId">
+        <column name="CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="fromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <set name="protectedFacilityContactMechPurposes" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="FACILITY_ID" />
+        <column name="CONTACT_MECH_ID" />
+        <column name="FROM_DATE" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.facilitycontactmech.AbstractFacilityContactMechPurposeState$SimpleFacilityContactMechPurposeState" />
+    </set>
+    <property name="thruDate">
+      <column name="THRU_DATE" sql-type="timestamptz" />
+    </property>
+    <property name="extension">
+      <column name="EXTENSION" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="comments">
+      <column name="comments" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

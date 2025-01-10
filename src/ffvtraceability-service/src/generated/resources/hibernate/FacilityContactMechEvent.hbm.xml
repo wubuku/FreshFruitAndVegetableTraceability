@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.facilitycontactmech">
+  <class name="AbstractFacilityContactMechEvent" table="facility_contact_mech_event" abstract="true">
+    <composite-id name="facilityContactMechEventId" class="org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechEventId">
+      <key-property name="facilityContactMechIdFacilityId">
+        <column name="FACILITY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="facilityContactMechIdContactMechId">
+        <column name="CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="facilityContactMechIdFromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractFacilityContactMechEvent$FacilityContactMechLobEvent" discriminator-value="FacilityContactMechLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractFacilityContactMechEvent$AbstractFacilityContactMechStateEvent" abstract="true">
+      <property name="thruDate">
+        <column name="THRU_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="extension">
+        <column name="EXTENSION" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="comments">
+        <column name="comments" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractFacilityContactMechEvent$SimpleFacilityContactMechStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractFacilityContactMechEvent$SimpleFacilityContactMechStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyThruDateRemoved" column="is_property_thru_date_removed" />
+        <property name="isPropertyExtensionRemoved" column="is_property_extension_removed" />
+        <property name="isPropertyCommentsRemoved" column="is_property_comments_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

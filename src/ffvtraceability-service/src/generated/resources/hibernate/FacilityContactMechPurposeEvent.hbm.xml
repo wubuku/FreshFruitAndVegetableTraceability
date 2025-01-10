@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.facilitycontactmech">
+  <class name="AbstractFacilityContactMechPurposeEvent" table="facility_contact_mech_purpose_event" abstract="true">
+    <composite-id name="facilityContactMechPurposeEventId" class="org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechPurposeEventId">
+      <key-property name="facilityContactMechIdFacilityId">
+        <column name="FACILITY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="facilityContactMechIdContactMechId">
+        <column name="CONTACT_MECH_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="facilityContactMechIdFromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+      <key-property name="contactMechPurposeTypeId">
+        <column name="CONTACT_MECH_PURPOSE_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="facilityContactMechVersion">
+        <column name="facility_contact_mech_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractFacilityContactMechPurposeEvent$AbstractFacilityContactMechPurposeStateEvent" abstract="true">
+      <property name="thruDate">
+        <column name="THRU_DATE" sql-type="timestamptz" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractFacilityContactMechPurposeEvent$SimpleFacilityContactMechPurposeStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractFacilityContactMechPurposeEvent$SimpleFacilityContactMechPurposeStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyThruDateRemoved" column="is_property_thru_date_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,62 @@
+aggregates:
+  # 设施 - 联系方式
+  FacilityContactMech:
+    reservedPropertyMetadata:
+      noDeleted: true
+      noActive: true
+    id:
+      name: FacilityContactMechId
+      type: FacilityContactMechId
+      columnNames:
+        - FACILITY_ID
+        - CONTACT_MECH_ID
+        - FROM_DATE
+    properties:
+      ThruDate:
+        name: ThruDate
+        columnName: THRU_DATE
+        type: date-time
+      Extension:
+        # 分机 / 扩展
+        columnName: EXTENSION
+        type: long-varchar
+      Comments:
+        # 备注
+        type: comment
+      # -----------------------------------------------
+      FacilityContactMechPurposes:
+        itemType: FacilityContactMechPurpose
+
+    valueObjects:
+      FacilityContactMechId:
+        properties:
+          FacilityId:
+            type: id #-ne
+          ContactMechId:
+            type: id #-ne
+          FromDate:
+            type: date-time
+
+    entities:
+      FacilityContactMechPurpose:
+        description: Facility Contact Mechanism Purpose Entity
+        tableName: FACILITY_CONTACT_MECH_PURPOSE
+        reservedPropertyMetadata:
+          noDeleted: true
+          noActive: true
+        id:
+          name: ContactMechPurposeTypeId
+          type: id
+        globalId:
+          name: FacilityContactMechPurposeId
+          type: FacilityContactMechPurposeId
+          columnNames:
+            - FACILITY_ID
+            - CONTACT_MECH_ID
+            - FROM_DATE
+            - CONTACT_MECH_PURPOSE_TYPE_ID
+        properties:
+          ThruDate:
+            name: ThruDate
+            columnName: THRU_DATE
+            type: date-time

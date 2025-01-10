@@ -6,7 +6,7 @@
     id:
       name: ContactMechId
       columnName: CONTACT_MECH_ID
-      type: id-ne
+      type: id
       
     properties:
       CountryCode:

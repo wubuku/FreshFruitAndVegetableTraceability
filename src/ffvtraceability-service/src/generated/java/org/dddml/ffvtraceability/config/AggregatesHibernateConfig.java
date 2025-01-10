@@ -128,6 +128,9 @@ import org.dddml.ffvtraceability.domain.contactmech.hibernate.*;
 import org.dddml.ffvtraceability.domain.partycontactmech.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.partycontactmech.hibernate.*;
+import org.dddml.ffvtraceability.domain.facilitycontactmech.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.facilitycontactmech.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -755,6 +758,22 @@ public class AggregatesHibernateConfig {
                 partyContactMechEventStore,
                 partyContactMechStateRepository,
                 partyContactMechStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractFacilityContactMechApplicationService.SimpleFacilityContactMechApplicationService facilityContactMechApplicationService(
+            @Qualifier("facilityContactMechEventStore") EventStore facilityContactMechEventStore,
+            FacilityContactMechStateRepository facilityContactMechStateRepository,
+            FacilityContactMechStateQueryRepository facilityContactMechStateQueryRepository
+    ) {
+        AbstractFacilityContactMechApplicationService.SimpleFacilityContactMechApplicationService applicationService = new AbstractFacilityContactMechApplicationService.SimpleFacilityContactMechApplicationService(
+                facilityContactMechEventStore,
+                facilityContactMechStateRepository,
+                facilityContactMechStateQueryRepository
         );
         return applicationService;
     }

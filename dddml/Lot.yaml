@@ -39,7 +39,7 @@ aggregates:
   LotIdentificationType:
     id:
       name: LotIdentificationTypeId
-      type: id-ne
+      type: id
     properties:
       Description:
         type: description

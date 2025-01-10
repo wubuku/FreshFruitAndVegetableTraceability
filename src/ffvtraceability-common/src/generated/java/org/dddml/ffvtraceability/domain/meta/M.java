@@ -99,6 +99,8 @@ public class M {
         typeToAggMap.put("TelecomNumber", "ContactMech");
         typeToAggMap.put("PartyContactMech", "PartyContactMech");
         typeToAggMap.put("PartyContactMechPurpose", "PartyContactMech");
+        typeToAggMap.put("FacilityContactMech", "FacilityContactMech");
+        typeToAggMap.put("FacilityContactMechPurpose", "FacilityContactMech");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -7208,6 +7210,232 @@ public class M {
         aliasMap.put("PartyContactMechId.FromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
         aliasMap.put("partyContactMechId.fromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
         aliasMap.put("PartyContactMechId.FromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class FacilityContactMechMetadata {
+
+    private FacilityContactMechMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String URL_ID_FIELD_SEPARATOR = ",";
+
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId>(org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId.class, URL_ID_FIELD_SEPARATOR) {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    };
+
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId.class;
+
+    public static final String[] propertyNames = new String[] {
+            "thruDate",
+            "extension",
+            "comments",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "facilityContactMechId.facilityId",
+            "facilityContactMechId.contactMechId",
+            "facilityContactMechId.fromDate",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "OffsetDateTime",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "OffsetDateTime",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("extension", "extension");
+        aliasMap.put("Extension", "extension");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("facilityContactMechId.facilityId", "facilityContactMechId.facilityId");
+        aliasMap.put("FacilityContactMechId.FacilityId", "facilityContactMechId.facilityId");
+        aliasMap.put("facilityContactMechId.contactMechId", "facilityContactMechId.contactMechId");
+        aliasMap.put("FacilityContactMechId.ContactMechId", "facilityContactMechId.contactMechId");
+        aliasMap.put("facilityContactMechId.fromDate", "facilityContactMechId.fromDate");
+        aliasMap.put("FacilityContactMechId.FromDate", "facilityContactMechId.fromDate");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class FacilityContactMechPurposeMetadata {
+
+    private FacilityContactMechPurposeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "contactMechPurposeTypeId",
+            "thruDate",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "facilityContactMechPurposeId.facilityContactMechIdFacilityId",
+            "facilityContactMechPurposeId.facilityContactMechIdContactMechId",
+            "facilityContactMechPurposeId.facilityContactMechIdFromDate",
+            "facilityContactMechPurposeId.contactMechPurposeTypeId",
+            "facilityContactMechId.facilityId",
+            "facilityContactMechId.contactMechId",
+            "facilityContactMechId.fromDate",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "OffsetDateTime",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("contactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("ContactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechIdFacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechIdFacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechId.facilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechId.FacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechIdContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechIdContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechId.contactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechId.ContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechIdFromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechIdFromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechId.fromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechId.FromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("facilityContactMechPurposeId.contactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("FacilityContactMechPurposeId.ContactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("facilityContactMechId.facilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("FacilityContactMechId.FacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("facilityContactMechId.facilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("FacilityContactMechId.FacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("facilityContactMechId.contactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("FacilityContactMechId.ContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("facilityContactMechId.contactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("FacilityContactMechId.ContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("facilityContactMechId.fromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("FacilityContactMechId.FromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("facilityContactMechId.fromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("FacilityContactMechId.FromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
     }
 
     private static void initPropertyTypeMap() {

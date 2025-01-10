@@ -89,7 +89,7 @@
   FacilityIdentificationType:
     id:
       name: FacilityIdentificationTypeId
-      type: id-ne
+      type: id
     properties:
       Description:
         type: description

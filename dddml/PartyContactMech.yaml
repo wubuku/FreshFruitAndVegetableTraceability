@@ -54,9 +54,9 @@ aggregates:
       PartyContactMechId:
         properties:
           PartyId:
-            type: id-ne
+            type: id #-ne
           ContactMechId:
-            type: id-ne
+            type: id #-ne
           FromDate:
             type: date-time
 
