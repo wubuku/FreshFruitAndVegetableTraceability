@@ -180,6 +180,16 @@ public class BffFacilityDto implements Serializable {
         this.ffrn = ffrn;
     }
 
+    private java.util.List<BffBusinessContactDto> businessContacts;
+
+    public java.util.List<BffBusinessContactDto> getBusinessContacts() {
+        return this.businessContacts;
+    }
+
+    public void setBusinessContacts(java.util.List<BffBusinessContactDto> businessContacts) {
+        this.businessContacts = businessContacts;
+    }
+
     private java.util.List<BffFacilityLocationDto> locations;
 
     public java.util.List<BffFacilityLocationDto> getLocations() {
@@ -194,7 +204,7 @@ public class BffFacilityDto implements Serializable {
     {
     }
 
-    public BffFacilityDto(String facilityId, String facilityTypeId, String parentFacilityId, String ownerPartyId, String facilityName, java.math.BigDecimal facilitySize, String facilitySizeUomId, String description, String geoPointId, String geoId, String active, String gln, String ffrn, java.util.List<BffFacilityLocationDto> locations)
+    public BffFacilityDto(String facilityId, String facilityTypeId, String parentFacilityId, String ownerPartyId, String facilityName, java.math.BigDecimal facilitySize, String facilitySizeUomId, String description, String geoPointId, String geoId, String active, String gln, String ffrn, java.util.List<BffBusinessContactDto> businessContacts, java.util.List<BffFacilityLocationDto> locations)
     {
         this.facilityId = facilityId;
         this.facilityTypeId = facilityTypeId;
@@ -209,6 +219,7 @@ public class BffFacilityDto implements Serializable {
         this.active = active;
         this.gln = gln;
         this.ffrn = ffrn;
+        this.businessContacts = businessContacts;
         this.locations = locations;
     }
 
@@ -237,6 +248,7 @@ public class BffFacilityDto implements Serializable {
             && (active == other.active || (active != null && active.equals(other.active)))
             && (gln == other.gln || (gln != null && gln.equals(other.gln)))
             && (ffrn == other.ffrn || (ffrn != null && ffrn.equals(other.ffrn)))
+            && (businessContacts == other.businessContacts || (businessContacts != null && businessContacts.equals(other.businessContacts)))
             && (locations == other.locations || (locations != null && locations.equals(other.locations)))
             ;
     }
@@ -284,6 +296,9 @@ public class BffFacilityDto implements Serializable {
         if (this.ffrn != null) {
             hash += 13 * this.ffrn.hashCode();
         }
+        if (this.businessContacts != null) {
+            hash += 13 * this.businessContacts.hashCode();
+        }
         if (this.locations != null) {
             hash += 13 * this.locations.hashCode();
         }
@@ -306,6 +321,7 @@ public class BffFacilityDto implements Serializable {
                 ", active=" + '\'' + active + '\'' +
                 ", gln=" + '\'' + gln + '\'' +
                 ", ffrn=" + '\'' + ffrn + '\'' +
+                ", businessContacts=" + businessContacts +
                 ", locations=" + locations +
                 '}';
     }

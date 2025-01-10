@@ -318,6 +318,36 @@ public class BffFacilityServiceCommands {
 
     }
 
+    public static class UpdateBusinessContact extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Business Contact
+         */
+        private BffBusinessContactDto businessContact;
+
+        public BffBusinessContactDto getBusinessContact() {
+            return businessContact;
+        }
+
+        public void setBusinessContact(BffBusinessContactDto businessContact) {
+            this.businessContact = businessContact;
+        }
+
+    }
+
 
 }
 

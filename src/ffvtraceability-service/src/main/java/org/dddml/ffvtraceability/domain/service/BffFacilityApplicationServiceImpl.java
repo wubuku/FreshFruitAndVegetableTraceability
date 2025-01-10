@@ -301,4 +301,9 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         facilityLocationApplicationService.when(mergePatchLocation);
     }
 
+    @Override
+    public void when(BffFacilityServiceCommands.UpdateBusinessContact c) {
+
+    }
+
 }

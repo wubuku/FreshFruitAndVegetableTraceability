@@ -55,9 +55,13 @@ valueObjects:
         type: id
         constraints:
           - FFRN
+      BusinessContacts:
+        itemType: BffBusinessContactDto
+        isList: true
       Locations:
         itemType: BffFacilityLocationDto
         isList: true
+
 
   BffFacilityLocationDto:
     metadata:
@@ -219,3 +223,17 @@ services:
             type: id
           Active:
             type: boolean
+
+
+      UpdateBusinessContact:
+        httpMethod: PUT
+        restfulResourceName: "{FacilityId}/BusinessContact"
+        metadata:
+          RestfulPathVariable: FacilityId
+          HttpRequestBody: BusinessContact
+        parameters:
+          FacilityId:
+            type: id
+          BusinessContact:
+            type: BffBusinessContactDto
+

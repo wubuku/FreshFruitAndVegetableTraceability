@@ -30,6 +30,8 @@ public interface BffFacilityApplicationService {
 
     void when(BffFacilityServiceCommands.ActivateFacilityLocation c);
 
+    void when(BffFacilityServiceCommands.UpdateBusinessContact c);
+
 
 }
 
