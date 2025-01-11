@@ -34,9 +34,14 @@
     </property>
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
+    <property name="tenantId" column="tenant_id" length="12" />
     <set name="tags" table="article_tags" lazy="false">
       <key column="article_id" />
       <element column="tags_item" type="string" not-null="true" />
     </set>
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
   </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
 </hibernate-mapping>

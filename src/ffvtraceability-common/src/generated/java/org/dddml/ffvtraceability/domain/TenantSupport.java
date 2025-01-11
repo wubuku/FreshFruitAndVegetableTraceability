@@ -20,7 +20,48 @@ public class TenantSupport {
 
     static {
         tenantIdPropertyNameMap = new HashMap<>();
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.article.ArticleState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shippingevent.ShippingEventState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.receivingevent.ReceivingEventState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.transformationevent.TransformationEventState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.gs1applicationidentifier.Gs1ApplicationIdentifierState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.attributesetinstance.AttributeSetInstanceState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.statusitem.StatusItemState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.statustype.StatusTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.uom.UomState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.uomtype.UomTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.facility.FacilityState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.facilityidentificationtype.FacilityIdentificationTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.facilitytype.FacilityTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.geo.GeoState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.geotype.GeoTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.geoassoc.GeoAssocState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.geoassoctype.GeoAssocTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.lot.LotState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.lotidentificationtype.LotIdentificationTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.party.PartyState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.partyidentificationtype.PartyIdentificationTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.product.ProductState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.producttype.ProductTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.productcategory.ProductCategoryState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.productcategorytype.ProductCategoryTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.document.DocumentState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.geopoint.GeoPointState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.partyrole.PartyRoleState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.roletype.RoleTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.order.OrderHeaderState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.orderadjustmenttype.OrderAdjustmentTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.ordertype.OrderTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.orderitemtype.OrderItemTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shipment.ShipmentState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shipmenttype.ShipmentTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shippingdocument.ShippingDocumentState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.qainspection.QaInspectionState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.contactmech.ContactMechState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechState", "tenantId");
         typesWithIdStartsWithOrEndsWithTenantId = new HashSet<>();
         typesWithIdStartsWithOrEndsWithTenantId.add("org.dddml.ffvtraceability.domain.statusitem.StatusItemState");
     }

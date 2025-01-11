@@ -123,6 +123,7 @@
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
     <property name="commandId" column="command_id" />
+    <property name="tenantId" column="tenant_id" length="12" />
     <set name="referenceDocuments" table="transformation_event_reference_documents" lazy="false">
       <key column="event_id" />
       <composite-element class="org.dddml.ffvtraceability.domain.KdeReferenceDocument">
@@ -134,5 +135,9 @@
         </property>
       </composite-element>
     </set>
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
   </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
 </hibernate-mapping>

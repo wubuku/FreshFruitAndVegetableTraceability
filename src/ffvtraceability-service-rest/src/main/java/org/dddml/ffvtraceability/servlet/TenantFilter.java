@@ -46,11 +46,7 @@ public class TenantFilter implements Filter {
             response.getWriter().flush();
             return;
         }
-        try {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } finally {
-            TenantContext.setTenantId(null);
-        }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

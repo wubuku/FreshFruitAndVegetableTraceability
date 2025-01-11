@@ -26,7 +26,20 @@ public class HibernateCompanyStateQueryRepository implements CompanyStateQueryRe
     private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {
-        return this.entityManager;
+        EntityManager em = this.entityManager;
+        String currentTenantId = TenantContext.getTenantId();
+        if (currentTenantId == null || currentTenantId.isEmpty()) {
+            throw new IllegalStateException("Tenant context not set");
+        }
+        if (TenantSupport.SUPER_TENANT_ID != null && !TenantSupport.SUPER_TENANT_ID.isEmpty()
+            && TenantSupport.SUPER_TENANT_ID.equals(currentTenantId)) {
+            return em;
+        }
+        org.hibernate.Session session = em.unwrap(org.hibernate.Session.class);
+        org.hibernate.Filter filter = session.enableFilter("tenantFilter");
+        filter.setParameter("tenantId", currentTenantId);
+        filter.validate();
+        return em;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("PartyId", "PartyTypeId", "PrimaryRoleTypeId", "ExternalId", "PreferredCurrencyUomId", "Description", "StatusId", "PartyIdentifications", "Salutation", "FirstName", "MiddleName", "LastName", "PersonalTitle", "Nickname", "Gender", "BirthDate", "DeceasedDate", "SocialSecurityNumber", "PassportNumber", "PassportExpireDate", "ExistingCustomer", "OrganizationName", "TaxIdNum", "FamilyName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));

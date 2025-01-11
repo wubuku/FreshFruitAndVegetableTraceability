@@ -32,6 +32,15 @@ check_response() {
     fi
 }
 
+#
+# NOTE: 已启用多租户！
+#
+# 初始化数据（含租户数据）：
+# java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*.xml" --xml
+#
+# 启用多租户后，下面所有测试 HTTP 请求都使用 X-TenantID 头来指定当前租户。（下面的测试指定租户 ID 为 `X`）
+#
+
 # 获取当前租户的信息
 curl -X 'GET' \
   "${API_BASE_URL}/BffTenants/current" \

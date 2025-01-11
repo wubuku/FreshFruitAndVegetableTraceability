@@ -334,6 +334,16 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.updatedAt = updatedAt;
     }
 
+    private String tenantId;
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }

@@ -23,7 +23,20 @@ public class HibernateOrderHeaderStateRepository implements OrderHeaderStateRepo
     private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {
-        return this.entityManager;
+        EntityManager em = this.entityManager;
+        String currentTenantId = TenantContext.getTenantId();
+        if (currentTenantId == null || currentTenantId.isEmpty()) {
+            throw new IllegalStateException("Tenant context not set");
+        }
+        if (TenantSupport.SUPER_TENANT_ID != null && !TenantSupport.SUPER_TENANT_ID.isEmpty()
+            && TenantSupport.SUPER_TENANT_ID.equals(currentTenantId)) {
+            return em;
+        }
+        org.hibernate.Session session = em.unwrap(org.hibernate.Session.class);
+        org.hibernate.Filter filter = session.enableFilter("tenantFilter");
+        filter.setParameter("tenantId", currentTenantId);
+        filter.validate();
+        return em;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderId", "OrderTypeId", "OrderName", "ExternalId", "SalesChannelEnumId", "OrderDate", "Priority", "EntryDate", "PickSheetPrintedDate", "VisitId", "StatusId", "FirstAttemptOrderId", "CurrencyUomId", "SyncStatusId", "BillingAccountId", "OriginFacilityId", "ProductStoreId", "TerminalId", "TransactionId", "AutoOrderShoppingListId", "NeedsInventoryIssuance", "IsRushOrder", "InternalCode", "RemainingSubTotal", "GrandTotal", "IsViewed", "InvoicePerShipment", "Memo", "OrderItems", "OrderRoles", "OrderAdjustments", "OrderContactMechanisms", "OrderShipGroups", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));

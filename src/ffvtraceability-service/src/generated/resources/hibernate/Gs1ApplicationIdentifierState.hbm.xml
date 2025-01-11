@@ -66,6 +66,7 @@
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
     <property name="commandId" column="command_id" />
+    <property name="tenantId" column="tenant_id" length="12" />
     <list name="components" table="gs1_application_identifier_component" lazy="false">
       <key column="application_identifier" />
       <index column="component_index" />
@@ -96,5 +97,9 @@
         </property>
       </composite-element>
     </list>
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
   </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
 </hibernate-mapping>

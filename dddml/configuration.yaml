@@ -10,7 +10,7 @@ configuration:
     JpaProjectionInterfaceSubPackageName: "repository"
     JakartaValidationEnabled: true
   multiTenancy:
-    discriminatorBasedMultiTenancyEnabled: false
+    discriminatorBasedMultiTenancyEnabled: true
 
   validationConstraints:
     Gs1Batch:

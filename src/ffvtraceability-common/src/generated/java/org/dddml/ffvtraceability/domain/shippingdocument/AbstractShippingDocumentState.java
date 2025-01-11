@@ -124,6 +124,16 @@ public abstract class AbstractShippingDocumentState implements ShippingDocumentS
         this.deleted = deleted;
     }
 
+    private String tenantId;
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }

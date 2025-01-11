@@ -213,6 +213,16 @@ public abstract class AbstractGs1ApplicationIdentifierState implements Gs1Applic
         this.updatedAt = updatedAt;
     }
 
+    private String tenantId;
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     private List<Gs1AppIdComponent> components;
 
     public List<Gs1AppIdComponent> getComponents() {

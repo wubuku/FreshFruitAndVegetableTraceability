@@ -22,7 +22,20 @@ public class HibernateProductStateRepository implements ProductStateRepository {
     private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {
-        return this.entityManager;
+        EntityManager em = this.entityManager;
+        String currentTenantId = TenantContext.getTenantId();
+        if (currentTenantId == null || currentTenantId.isEmpty()) {
+            throw new IllegalStateException("Tenant context not set");
+        }
+        if (TenantSupport.SUPER_TENANT_ID != null && !TenantSupport.SUPER_TENANT_ID.isEmpty()
+            && TenantSupport.SUPER_TENANT_ID.equals(currentTenantId)) {
+            return em;
+        }
+        org.hibernate.Session session = em.unwrap(org.hibernate.Session.class);
+        org.hibernate.Filter filter = session.enableFilter("tenantFilter");
+        filter.setParameter("tenantId", currentTenantId);
+        filter.validate();
+        return em;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductId", "ProductTypeId", "PrimaryProductCategoryId", "ManufacturerPartyId", "FacilityId", "IntroductionDate", "ReleaseDate", "SupportDiscontinuationDate", "SalesDiscontinuationDate", "SalesDiscWhenNotAvail", "InternalName", "BrandName", "Comments", "ProductName", "Description", "LongDescription", "PriceDetailText", "SmallImageUrl", "MediumImageUrl", "LargeImageUrl", "DetailImageUrl", "OriginalImageUrl", "DetailScreen", "InventoryMessage", "QuantityUomId", "QuantityIncluded", "PiecesIncluded", "RequireAmount", "FixedAmount", "AmountUomTypeId", "WeightUomId", "ShippingWeight", "ProductWeight", "HeightUomId", "ProductHeight", "ShippingHeight", "WidthUomId", "ProductWidth", "ShippingWidth", "DepthUomId", "ProductDepth", "ShippingDepth", "DiameterUomId", "ProductDiameter", "ProductRating", "RatingTypeEnum", "Returnable", "Taxable", "ChargeShipping", "AutoCreateKeywords", "IncludeInPromotions", "IsVirtual", "IsVariant", "VirtualVariantMethodEnum", "OriginGeoId", "RequirementMethodEnumId", "BillOfMaterialLevel", "InShippingBox", "DefaultShipmentBoxTypeId", "LotIdFilledIn", "OrderDecimalQuantity", "Active", "GoodIdentifications", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
