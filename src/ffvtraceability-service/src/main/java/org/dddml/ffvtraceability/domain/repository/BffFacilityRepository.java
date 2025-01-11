@@ -39,6 +39,7 @@ public interface BffFacilityRepository extends JpaRepository<AbstractFacilitySta
                 WHERE fi.facility_identification_type_id = 'GLN'
             ) gln ON gln.facility_id = f.facility_id
             WHERE (:active IS NULL OR f.active = :active)
+            AND (:ownerPartyId IS NULL OR f.owner_party_id = :ownerPartyId)
             ORDER BY f.created_at DESC
             """,
             countQuery = """
@@ -47,6 +48,9 @@ public interface BffFacilityRepository extends JpaRepository<AbstractFacilitySta
                     WHERE (:active IS NULL OR f.active = :active)
                     """,
             nativeQuery = true)
-    Page<BffFacilityProjection> findAllFacilities(Pageable pageable, @Param("active") String active);
+    Page<BffFacilityProjection> findAllFacilities(Pageable pageable,
+                                                  @Param("active") String active,
+                                                  @Param("ownerPartyId") String ownerPartyId
+    );
 
 }

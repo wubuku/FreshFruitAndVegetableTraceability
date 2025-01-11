@@ -17,6 +17,7 @@ import org.dddml.ffvtraceability.domain.transformationevent.*;
 import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
 import org.dddml.ffvtraceability.domain.attributesetinstance.*;
 import org.dddml.ffvtraceability.domain.statusitem.*;
+import org.dddml.ffvtraceability.domain.statustype.*;
 import org.dddml.ffvtraceability.domain.uom.*;
 import org.dddml.ffvtraceability.domain.uomtype.*;
 import org.dddml.ffvtraceability.domain.facility.*;
@@ -52,6 +53,7 @@ import org.dddml.ffvtraceability.domain.qainspection.*;
 import org.dddml.ffvtraceability.domain.contactmech.*;
 import org.dddml.ffvtraceability.domain.partycontactmech.*;
 import org.dddml.ffvtraceability.domain.facilitycontactmech.*;
+import org.dddml.ffvtraceability.domain.tenant.*;
 
 public class StaticMethodConstraints {
 

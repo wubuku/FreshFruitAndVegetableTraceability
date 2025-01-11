@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.tenant">
+  <class name="AbstractTenantEvent" table="tenant_event" abstract="true">
+    <composite-id name="tenantEventId" class="org.dddml.ffvtraceability.domain.tenant.TenantEventId">
+      <key-property name="tenantId">
+        <column name="tenant_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractTenantEvent$TenantLobEvent" discriminator-value="TenantLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractTenantEvent$AbstractTenantStateEvent" abstract="true">
+      <property name="partyId">
+        <column name="party_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="longDescription">
+        <column name="long_description" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractTenantEvent$SimpleTenantStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractTenantEvent$SimpleTenantStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyPartyIdRemoved" column="is_property_party_id_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+        <property name="isPropertyLongDescriptionRemoved" column="is_property_long_description_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

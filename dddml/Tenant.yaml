@@ -1,0 +1,28 @@
+aggregates:  
+  Tenant:
+    multiTenancy:
+      discriminatorBasedMultiTenancyEnabled: false
+    id:
+      name: TenantId
+      type: id
+    properties:
+      PartyId:
+        type: id
+      # PrimaryProductStoreId:
+      #   type: name
+      Description:
+        type: description
+      LongDescription:
+        type: long-varchar
+      # IssuedPointCurrencyUomId:
+      #   # 该租户“发行”的积分货币单位 Id
+      #   type: id
+
+    methods:
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
+      Delete:
+        isInternal: true
+

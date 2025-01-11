@@ -67,7 +67,7 @@ public class JsonEntityDataTool {
     public static void deserialize(String entityName, boolean isCommandData, String jsonString, Consumer<Object> action)
             throws ClassNotFoundException, IOException {
         Class itemClass = null;
-        itemClass = EntityClassUtils.getEntityClass(entityName, true);
+        itemClass = EntityClassUtils.getEntityInitializationClass(entityName, true);
         readJsonArrayAndConsumeItem(jsonString, itemClass, action);
     }
 

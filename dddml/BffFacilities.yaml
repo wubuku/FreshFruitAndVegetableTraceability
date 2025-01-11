@@ -99,6 +99,8 @@ services:
         parameters:
           Active:
             type: indicator
+          OwnerPartyId:
+            type: id
         result:
           itemType: BffFacilityDto
 

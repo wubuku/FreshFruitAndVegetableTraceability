@@ -1,5 +1,7 @@
 package org.dddml.ffvtraceability;
 
+import org.dddml.ffvtraceability.domain.TenantContext;
+import org.dddml.ffvtraceability.domain.TenantSupport;
 import org.dddml.ffvtraceability.specialization.DomainError;
 import org.dddml.ffvtraceability.tool.ApplicationServiceReflectUtils;
 import org.dddml.ffvtraceability.tool.JsonEntityDataTool;
@@ -24,6 +26,7 @@ public class ServiceCli {
     private static ConfigurableApplicationContext applicationContext;
 
     public static void main(final String[] args) throws Exception {
+        TenantContext.setTenantId(TenantSupport.SUPER_TENANT_ID);
         // Parse command line arguments using Picocli
         CommandLine commandLine = new CommandLine(new TopLevelCommand());
         CommandLine.ParseResult parseResult = commandLine.parseArgs(args);
@@ -138,12 +141,14 @@ public class ServiceCli {
     }
 
     private static void initializeEntities(Map<String, List<Object>> allData) {
+        boolean constraintViolationOccurred = false;
         for (Map.Entry<String, List<Object>> kv : allData.entrySet()) {
             for (Object e : kv.getValue()) {
                 try {
                     ApplicationServiceReflectUtils.invokeApplicationServiceInitializeMethod(kv.getKey(), e);
                 } catch (Exception ex) {
                     if (isCausedByConstraintViolation(ex)) {
+                        constraintViolationOccurred = true;
                         System.err.println("Constraint violation occurred while initializing entity " + kv.getKey()
                                 + ". Continuing with next entity.");
                         ex.printStackTrace(System.err);
@@ -154,6 +159,11 @@ public class ServiceCli {
                     }
                 }
             }
+        }
+        if (!constraintViolationOccurred) {
+            System.out.println("All entity data initialized successfully.");
+        } else {
+            System.out.println("Entity data initialization completed with constraint violations.");
         }
     }
 

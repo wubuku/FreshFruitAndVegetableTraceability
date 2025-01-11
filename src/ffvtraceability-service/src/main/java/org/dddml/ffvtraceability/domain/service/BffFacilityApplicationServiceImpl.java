@@ -77,7 +77,9 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Transactional(readOnly = true)
     public Page<BffFacilityDto> when(BffFacilityServiceCommands.GetFacilities c) {
         return PageUtils.toPage(
-                bffFacilityRepository.findAllFacilities(PageRequest.of(c.getPage(), c.getSize()), c.getActive()),
+                bffFacilityRepository.findAllFacilities(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getActive(), c.getOwnerPartyId()
+                ),
                 bffFacilityMapper::toBffFacilityDto
         );
     }

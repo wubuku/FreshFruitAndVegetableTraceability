@@ -46,6 +46,19 @@ public class BffFacilityServiceCommands {
             this.active = active;
         }
 
+        /**
+         * Owner Party Id
+         */
+        private String ownerPartyId;
+
+        public String getOwnerPartyId() {
+            return ownerPartyId;
+        }
+
+        public void setOwnerPartyId(String ownerPartyId) {
+            this.ownerPartyId = ownerPartyId;
+        }
+
     }
 
     public static class GetFacility extends org.dddml.ffvtraceability.domain.AbstractCommand {

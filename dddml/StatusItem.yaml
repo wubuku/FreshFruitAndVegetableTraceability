@@ -21,4 +21,18 @@
       Description:
         type: description
 
-    #references: {}
+  StatusType:
+    metadata:
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    id:
+      name: StatusTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description

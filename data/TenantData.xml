@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+
+    <Tenant tenantId="X" partyId="FRESH_MART_DC" description="Tenant X"
+        longDescription="Description of Tenant X" />
+
+    <Party partyId="FRESH_MART_DC"
+        partyTypeId="ORGANIZATION"
+        externalId="FRESH_MART_DC"
+        preferredCurrencyUomId="USD"
+        description="Fresh Mart main distribution center" />
+
+</entity-engine-xml>

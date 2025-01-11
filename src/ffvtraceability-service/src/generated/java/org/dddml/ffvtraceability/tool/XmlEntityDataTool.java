@@ -23,6 +23,9 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.Instant;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class XmlEntityDataTool {
@@ -37,14 +40,12 @@ public class XmlEntityDataTool {
     private static DefaultConversionService defaultConversionService = new DefaultConversionService();
 
     static {
-        // /////////////////////////
         BOUNDED_CONTEXT_DOMAIN_PACKAGE = getBoundedContextDomainPackage();
 
-        // /////////////////////////
+        // Converters
         defaultConversionService.addConverter(Long.class, Timestamp.class,
                 new Converter() {
 
-                    @SuppressWarnings("static-access")
                     @Override
                     public Object convert(Object source) {
                         if (source != null) {
@@ -56,8 +57,6 @@ public class XmlEntityDataTool {
 
         defaultConversionService.addConverter(Long.class, Date.class,
                 new Converter() {
-
-                    @SuppressWarnings("static-access")
                     @Override
                     public Object convert(Object source) {
                         if (source != null) {
@@ -67,6 +66,19 @@ public class XmlEntityDataTool {
                     }
                 });
 
+        defaultConversionService.addConverter(Long.class, OffsetDateTime.class,
+                new Converter() {
+                    @Override
+                    public Object convert(Object source) {
+                        if (source != null) {
+                            return OffsetDateTime.ofInstant(Instant.ofEpochMilli((Long) source), ZoneOffset.UTC);
+                        }
+                        return null;
+                    }
+                });
+        //
+        // NOTE: More converters can be added here.
+        //
     }
 
     private static String getBoundedContextDomainPackage() {
@@ -161,7 +173,14 @@ public class XmlEntityDataTool {
                     attrName, obj.getClass().getName()));
         }
         Class propertyType = propertySetter.getPropertyType();
-        propertySetter.invoke(obj, convertAttributeValue(attrVal, propertyType));
+        try {
+            propertySetter.invoke(obj, convertAttributeValue(attrVal, propertyType));
+        } catch (Exception e) {
+            throw new RuntimeException(String.format(
+                "Failed to set property '%1$s' with value '%2$s' for object '%3$s'.",
+                attrName, attrVal, obj.getClass().getName()
+            ), e);
+        }
     }
 
     private static Object convertAttributeValue(Object attributeVal, Class<?> type) {
@@ -289,12 +308,12 @@ public class XmlEntityDataTool {
                                        String entityName, Map<String, Object> attrMap) throws
             ClassNotFoundException, IntrospectionException, IllegalAccessException,
             InstantiationException, NoSuchFieldException, InvocationTargetException {
-        Class<?> beanClass = EntityClassUtils.getEntityClass(entityName, false);
+        Class<?> beanClass = EntityClassUtils.getEntityInitializationClass(entityName, false);
         //BeanInfo info = Introspector.getBeanInfo(beanClass);
 
         String createdAtPropName = getCreatedAtPropertyName(entityName);
         if (!attrMap.containsKey(createdAtPropName)) {
-            attrMap.put(createdAtPropName, Long.valueOf(System.currentTimeMillis()));
+            attrMap.put(createdAtPropName, Long.valueOf(System.currentTimeMillis())); // NOTE: Is this OK?
         }
 
         if (autoSetVersionProperty()) {

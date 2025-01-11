@@ -12,35 +12,66 @@ public class ApplicationServiceReflectUtils {
     private ApplicationServiceReflectUtils() {
     }
 
-    public static Object invokeApplicationServiceGetMethod(String entityName, Object id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
+    public static Object invokeApplicationServiceGetMethod(String entityName, Object id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String aggregateName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP.get(entityName);
         Object appSvr = getApplicationService(aggregateName);
         Class appSrvClass = appSvr.getClass();
-        Method m = null;
-        m = appSrvClass.getMethod("get", id.getClass());
+        Method m = appSrvClass.getMethod("get", id.getClass());
         return m.invoke(appSvr, id);
     }
 
-    public static void invokeApplicationServiceInitializeMethod(String entityName, Object e) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
+    public static void invokeApplicationServiceInitializeMethod(String entityName, Object e) {
         String aggregateName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP.get(entityName);
         Object appSvr = getApplicationService(aggregateName);
         Class appSrvClass = appSvr.getClass();
-        Method m = null;
+        Method m;
         Object arg = e;
-        try {
-            m = appSrvClass.getMethod("initialize", getApplicationServiceInitializeMethodParameterType(aggregateName, entityName));
-            if (!m.getParameterTypes()[0].isAssignableFrom(arg.getClass())) {
-                throw new NoSuchMethodException("No exact initialize() method.");
+        if (e.getClass().getName().endsWith("Created")) { // NOTE: Hardcoded here!
+            try {
+                m = appSrvClass.getMethod("initialize", getApplicationServiceInitializeMethodParameterType(aggregateName, entityName));
+            } catch (NoSuchMethodException ex) {
+                throw new RuntimeException("No exact initialize() method found for " + aggregateName + "." + entityName);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException("Class not found for " + aggregateName + "." + entityName);
             }
-        } catch (NoSuchMethodException | ClassNotFoundException exM) {
-            //exM.printStackTrace();
-            m = appSrvClass.getMethod("when", getApplicationServiceCreateMethodParameterType(aggregateName, entityName));
-            if (m.getParameters()[0].getClass().isAssignableFrom(e.getClass())) {
-                Method convMethod = e.getClass().getMethod(String.format("toCreate%1$s", entityName));
-                arg = convMethod.invoke(e);
+            if (!m.getParameterTypes()[0].isAssignableFrom(arg.getClass())) {
+                throw new RuntimeException("No exact initialize() method found for " + aggregateName + "." + entityName);
+            }
+        } else {
+            try {
+                m = appSrvClass.getMethod("when", getApplicationServiceCreateMethodParameterType(aggregateName, entityName));
+            } catch (NoSuchMethodException ex) {
+                throw new RuntimeException("No exact when() method found for " + aggregateName + "." + entityName);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException("Class not found for " + aggregateName + "." + entityName);
+            }
+            if (m.getParameters()[0].getType().isAssignableFrom(e.getClass())) {
+                Method convMethod = null;
+                try {
+                    convMethod = e.getClass().getMethod(String.format("toCreate%1$s", entityName));
+                } catch (NoSuchMethodException ex) {
+                    throw new RuntimeException("No toCreate" + entityName + "() method found for " + aggregateName + "." + entityName);
+                }
+                try {
+                    arg = convMethod.invoke(e);
+                } catch (IllegalAccessException ex) {
+                    throw new RuntimeException("Failed to invoke toCreate" + entityName + "() method for " + aggregateName + "." + entityName, ex);
+                } catch (InvocationTargetException ex) {
+                    throw new RuntimeException("Failed to invoke toCreate" + entityName + "() method for " + aggregateName + "." + entityName, ex);
+                }
+            } else {
+                throw new RuntimeException("No exact when() method found for " + aggregateName + "." + entityName
+                        + " with argument type " + e.getClass().getName()
+                        + " with parameter type " + m.getParameters()[0].getType().getName()
+                );
             }
         }
-        m.invoke(appSvr, arg);
+
+        try {
+            m.invoke(appSvr, arg);
+        } catch (Exception ex) {
+            throw new RuntimeException(String.format("Failed to invoke '%1$s' method for %2$s", m.getName(), aggregateName), ex);
+        }
     }
 
     private static Object getApplicationService(String aggregateName) {
@@ -50,8 +81,14 @@ public class ApplicationServiceReflectUtils {
     }
 
     private static Class getApplicationServiceInitializeMethodParameterType(String aggregateName, String typeName) throws ClassNotFoundException {
-        String paramTypeName = String.format("%1$s.domain.%2$s.%3$sStateEvent$%4$sStateCreated",
-                getBoundedContextPackageName(), aggregateName.toLowerCase(), typeName, typeName);
+        String paramTypeName = String.format(
+                "%1$s.domain.%2$s.%3$sEvent$%4$sStateCreated", // NOTE: Hardcoded here!
+                //"%1$s.domain.%2$s.%3$sStateEvent$%4$sStateCreated",
+                getBoundedContextPackageName(),
+                aggregateName.toLowerCase(),
+                typeName,
+                typeName
+        );
         return Class.forName(paramTypeName);
     }
 

@@ -26,6 +26,9 @@ import org.dddml.ffvtraceability.domain.attributesetinstance.hibernate.*;
 import org.dddml.ffvtraceability.domain.statusitem.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.statusitem.hibernate.*;
+import org.dddml.ffvtraceability.domain.statustype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.statustype.hibernate.*;
 import org.dddml.ffvtraceability.domain.uom.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.uom.hibernate.*;
@@ -131,6 +134,9 @@ import org.dddml.ffvtraceability.domain.partycontactmech.hibernate.*;
 import org.dddml.ffvtraceability.domain.facilitycontactmech.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.facilitycontactmech.hibernate.*;
+import org.dddml.ffvtraceability.domain.tenant.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.tenant.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -242,6 +248,20 @@ public class AggregatesHibernateConfig {
         AbstractStatusItemApplicationService.SimpleStatusItemApplicationService applicationService = new AbstractStatusItemApplicationService.SimpleStatusItemApplicationService(
                 statusItemStateRepository,
                 statusItemStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractStatusTypeApplicationService.SimpleStatusTypeApplicationService statusTypeApplicationService(
+            StatusTypeStateRepository statusTypeStateRepository,
+            StatusTypeStateQueryRepository statusTypeStateQueryRepository
+    ) {
+        AbstractStatusTypeApplicationService.SimpleStatusTypeApplicationService applicationService = new AbstractStatusTypeApplicationService.SimpleStatusTypeApplicationService(
+                statusTypeStateRepository,
+                statusTypeStateQueryRepository
         );
         return applicationService;
     }
@@ -774,6 +794,22 @@ public class AggregatesHibernateConfig {
                 facilityContactMechEventStore,
                 facilityContactMechStateRepository,
                 facilityContactMechStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractTenantApplicationService.SimpleTenantApplicationService tenantApplicationService(
+            @Qualifier("tenantEventStore") EventStore tenantEventStore,
+            TenantStateRepository tenantStateRepository,
+            TenantStateQueryRepository tenantStateQueryRepository
+    ) {
+        AbstractTenantApplicationService.SimpleTenantApplicationService applicationService = new AbstractTenantApplicationService.SimpleTenantApplicationService(
+                tenantEventStore,
+                tenantStateRepository,
+                tenantStateQueryRepository
         );
         return applicationService;
     }

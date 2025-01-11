@@ -1,9 +1,10 @@
 package org.dddml.ffvtraceability.tool;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import org.dddml.ffvtraceability.domain.meta.M.BoundedContextMetadata;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class EntityClassUtils {
     private final static String BOUNDED_CONTEXT_DOMAIN_PACKAGE;
@@ -12,8 +13,8 @@ public class EntityClassUtils {
         BOUNDED_CONTEXT_DOMAIN_PACKAGE = getBoundedContextDomainPackage();
     }
 
-    static Class<?> getEntityClass(String entityName, boolean preferCommandClass) throws ClassNotFoundException {
-        String[] names = getEntityClassNames(entityName, preferCommandClass);
+    static Class<?> getEntityInitializationClass(String entityName, boolean preferCommandClass) {
+        String[] names = getEntityInitializationClassNames(entityName, preferCommandClass);
         Class<?> entityClass = null;
         for (String n : names) {
             try {
@@ -28,9 +29,13 @@ public class EntityClassUtils {
         return entityClass;
     }
 
-    static protected String[] getEntityClassNames(String entityName, boolean preferCommandClass) {
-        String packageClassPath = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP
-                .get(entityName).toLowerCase();
+    static protected String[] getEntityInitializationClassNames(String entityName, boolean preferCommandClass) {
+        String aggregateName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP
+                .get(entityName);
+        if (aggregateName == null) {
+            throw new IllegalArgumentException(String.format("Aggregate name not found for entity name: %s", entityName));
+        }
+        String packageClassPath = aggregateName.toLowerCase();
         ArrayList<String> names = new ArrayList<>();
         names.add(String.format(
                 "%1$s.%2$s.Abstract%3$sEvent$Simple%4$sStateCreated",

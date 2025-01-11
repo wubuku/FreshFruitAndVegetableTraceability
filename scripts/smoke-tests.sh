@@ -32,11 +32,21 @@ check_response() {
     fi
 }
 
+# 获取当前租户的信息
+curl -X 'GET' \
+  "${API_BASE_URL}/BffTenants/current" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X"
+# 返回结果类似：
+# {"tenantId":"X","partyId":"FRESH_MART_DC","description":"Tenant X" ...}
+# 当前租户可以绑定到某个 party（业务实体），可以使用返回的 partyId 来访问当前租户所属的业务实体拥有的“设施”等。
+
 
 # 返回北美洲的州和省
 curl -X 'GET' \
-  'http://localhost:1023/api/BffGeo/NorthAmericanStatesAndProvinces' \
-  -H 'accept: application/json'
+  "${API_BASE_URL}/BffGeo/NorthAmericanStatesAndProvinces" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X"
 
 # Test Units of Measure (Base data)
 echo -e "\n=== Testing Units of Measure ===\n"
@@ -222,24 +232,24 @@ http_code=$(curl -X 'GET' \
 echo "$response"
 check_response $? "$http_code" "Query specific supplier"
 
-# Create supplier for destination facility
-curl -X 'POST' \
-  "${API_BASE_URL}/BffSuppliers" \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -H "X-TenantID: X" \
-  -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
-  -d '{
-  "supplierId": "FRESH_MART_DC",
-  "supplierName": "Fresh Mart Distribution",
-  "ggn": "4049929999998",
-  "gln": "5420000000009",
-  "externalId": "FRESH_MART_DC",
-  "preferredCurrencyUomId": "USD",
-  "description": "Fresh Mart main distribution center"
-}' | { read http_status; check_response $? "$http_status" "Create destination supplier"; }
+# Create party for destination facility
+# curl -X 'POST' \
+#   "${API_BASE_URL}/BffParties" \
+#   -H 'accept: */*' \
+#   -H 'Content-Type: application/json' \
+#   -H "X-TenantID: X" \
+#   -s \
+#   -w '%{http_code}\n' \
+#   -o /dev/null \
+#   -d '{
+#   "partyId": "FRESH_MART_DC",
+#   "partyName": "Fresh Mart Distribution",
+#   "ggn": "4049929999998",
+#   "gln": "5420000000009",
+#   "externalId": "FRESH_MART_DC",
+#   "preferredCurrencyUomId": "USD",
+#   "description": "Fresh Mart main distribution center"
+# }' | { read http_status; check_response $? "$http_status" "Create MY PARTY"; }
 
 # Test Facilities
 echo -e "\n=== Testing Facilities ===\n"
@@ -730,7 +740,7 @@ curl -X 'GET' \
 
 # 更新订单行项
 # curl -X 'PUT' \
-#   'http://localhost:1023/api/BffPurchaseOrders/119GB574QF4D11ZY51/Items/1' \
+#   "${API_BASE_URL}/api/BffPurchaseOrders/119GB574QF4D11ZY51/Items/1" \
 #   -H 'accept: */*' \
 #   -H 'Content-Type: application/json' \
 #   -H "X-TenantID: X"
@@ -746,7 +756,7 @@ curl -X 'GET' \
 
 # 添加订单行项
 # curl -X 'POST' \
-#   'http://localhost:1023/api/BffPurchaseOrders/119GB574QF4D11ZY51/Items' \
+#   "${API_BASE_URL}/api/BffPurchaseOrders/119GB574QF4D11ZY51/Items" \
 #   -H 'accept: application/json' \
 #   -H 'Content-Type: application/json' \
 #   -H "X-TenantID: X" \
