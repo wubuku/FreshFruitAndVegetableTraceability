@@ -9,6 +9,7 @@ import java.util.*;
 import org.dddml.support.criterion.Criterion;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 
 public interface ShipmentReceiptStateRepository {

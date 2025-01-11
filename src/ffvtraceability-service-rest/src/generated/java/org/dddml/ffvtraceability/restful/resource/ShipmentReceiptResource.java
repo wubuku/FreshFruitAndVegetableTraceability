@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.dddml.support.criterion.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
@@ -426,6 +427,133 @@ public class ShipmentReceiptResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    /**
+     * Retrieve.
+     * Retrieves ShipmentReceiptOrderAllocation with the specified OrderItemId.
+     */
+    @GetMapping("{receiptId}/ShipmentReceiptOrderAllocations/{orderItemId}")
+    @Transactional(readOnly = true)
+    public ShipmentReceiptOrderAllocationStateDto getShipmentReceiptOrderAllocation(@PathVariable("receiptId") String receiptId, @PathVariable("orderItemId") String orderItemId) {
+        try {
+
+            ShipmentReceiptOrderAllocationState state = shipmentReceiptApplicationService.getShipmentReceiptOrderAllocation(receiptId, new com.fasterxml.jackson.databind.ObjectMapper().readValue(orderItemId, OrderItemId.class));
+            if (state == null) { return null; }
+            ShipmentReceiptOrderAllocationStateDto.DtoConverter dtoConverter = new ShipmentReceiptOrderAllocationStateDto.DtoConverter();
+            ShipmentReceiptOrderAllocationStateDto stateDto = dtoConverter.toShipmentReceiptOrderAllocationStateDto(state);
+            dtoConverter.setAllFieldsReturned(true);
+            return stateDto;
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * Create or update.
+     * Create or update ShipmentReceiptOrderAllocation
+     */
+    @PutMapping(path = "{receiptId}/ShipmentReceiptOrderAllocations/{orderItemId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void putShipmentReceiptOrderAllocation(@PathVariable("receiptId") String receiptId, @PathVariable("orderItemId") String orderItemId,
+                       @RequestParam(value = "commandId", required = false) String commandId,
+                       @RequestParam(value = "version", required = false) Long version,
+                       @RequestParam(value = "requesterId", required = false) String requesterId,
+                       @RequestBody CreateOrMergePatchShipmentReceiptOrderAllocationDto.MergePatchShipmentReceiptOrderAllocationDto body) {
+        try {
+            ShipmentReceiptCommand.MergePatchShipmentReceipt mergePatchShipmentReceipt = new CreateOrMergePatchShipmentReceiptDto.MergePatchShipmentReceiptDto();
+            mergePatchShipmentReceipt.setReceiptId(receiptId);
+            mergePatchShipmentReceipt.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
+            if (version != null) { mergePatchShipmentReceipt.setVersion(version); }
+            mergePatchShipmentReceipt.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
+            ShipmentReceiptOrderAllocationCommand.MergePatchShipmentReceiptOrderAllocation mergePatchShipmentReceiptOrderAllocation = body;//.toMergePatchShipmentReceiptOrderAllocation();
+            mergePatchShipmentReceiptOrderAllocation.setOrderItemId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(orderItemId, OrderItemId.class));
+            mergePatchShipmentReceipt.getShipmentReceiptOrderAllocationCommands().add(mergePatchShipmentReceiptOrderAllocation);
+            mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
+            shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * Delete.
+     * Delete ShipmentReceiptOrderAllocation
+     */
+    @DeleteMapping("{receiptId}/ShipmentReceiptOrderAllocations/{orderItemId}")
+    public void deleteShipmentReceiptOrderAllocation(@PathVariable("receiptId") String receiptId, @PathVariable("orderItemId") String orderItemId,
+                       @RequestParam(value = "commandId", required = false) String commandId,
+                       @RequestParam(value = "version", required = false) Long version,
+                       @RequestParam(value = "requesterId", required = false) String requesterId) {
+        try {
+            ShipmentReceiptCommand.MergePatchShipmentReceipt mergePatchShipmentReceipt = new CreateOrMergePatchShipmentReceiptDto.MergePatchShipmentReceiptDto();
+            mergePatchShipmentReceipt.setReceiptId(receiptId);
+            mergePatchShipmentReceipt.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
+            if (version != null) { 
+                mergePatchShipmentReceipt.setVersion(version); 
+            } else {
+                mergePatchShipmentReceipt.setVersion(shipmentReceiptApplicationService.get(receiptId).getVersion());
+            }
+            mergePatchShipmentReceipt.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
+            ShipmentReceiptOrderAllocationCommand.RemoveShipmentReceiptOrderAllocation removeShipmentReceiptOrderAllocation = new RemoveShipmentReceiptOrderAllocationDto();
+            removeShipmentReceiptOrderAllocation.setOrderItemId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(orderItemId, OrderItemId.class));
+            mergePatchShipmentReceipt.getShipmentReceiptOrderAllocationCommands().add(removeShipmentReceiptOrderAllocation);
+            mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
+            shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * ShipmentReceiptOrderAllocation List
+     */
+    @GetMapping("{receiptId}/ShipmentReceiptOrderAllocations")
+    @Transactional(readOnly = true)
+    public ShipmentReceiptOrderAllocationStateDto[] getShipmentReceiptOrderAllocations(@PathVariable("receiptId") String receiptId,
+                    @RequestParam(value = "sort", required = false) String sort,
+                    @RequestParam(value = "fields", required = false) String fields,
+                    @RequestParam(value = "filter", required = false) String filter,
+                     HttpServletRequest request) {
+        try {
+            CriterionDto criterion = null;
+            if (!StringHelper.isNullOrEmpty(filter)) {
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+            } else {
+                criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
+                    .filter(kv -> ShipmentReceiptResourceUtils.getShipmentReceiptOrderAllocationFilterPropertyName(kv.getKey()) != null)
+                    .collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue())));
+            }
+            Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
+                n -> (ShipmentReceiptOrderAllocationMetadata.aliasMap.containsKey(n) ? ShipmentReceiptOrderAllocationMetadata.aliasMap.get(n) : n));
+            Iterable<ShipmentReceiptOrderAllocationState> states = shipmentReceiptApplicationService.getShipmentReceiptOrderAllocations(receiptId, c,
+                    ShipmentReceiptResourceUtils.getShipmentReceiptOrderAllocationQuerySorts(request.getParameterMap()));
+            if (states == null) { return null; }
+            ShipmentReceiptOrderAllocationStateDto.DtoConverter dtoConverter = new ShipmentReceiptOrderAllocationStateDto.DtoConverter();
+            if (StringHelper.isNullOrEmpty(fields)) {
+                dtoConverter.setAllFieldsReturned(true);
+            } else {
+                dtoConverter.setReturnedFieldsString(fields);
+            }
+            return dtoConverter.toShipmentReceiptOrderAllocationStateDtoArray(states);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * Create.
+     * Create ShipmentReceiptOrderAllocation
+     */
+    @PostMapping(path = "{receiptId}/ShipmentReceiptOrderAllocations", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void postShipmentReceiptOrderAllocation(@PathVariable("receiptId") String receiptId,
+                       @RequestParam(value = "commandId", required = false) String commandId,
+                       @RequestParam(value = "version", required = false) Long version,
+                       @RequestParam(value = "requesterId", required = false) String requesterId,
+                       @RequestBody CreateOrMergePatchShipmentReceiptOrderAllocationDto.CreateShipmentReceiptOrderAllocationDto body) {
+        try {
+            ShipmentReceiptCommand.MergePatchShipmentReceipt mergePatchShipmentReceipt = new AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt();
+            mergePatchShipmentReceipt.setReceiptId(receiptId);
+            mergePatchShipmentReceipt.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
+            if (version != null) { mergePatchShipmentReceipt.setVersion(version); }
+            mergePatchShipmentReceipt.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
+            ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation createShipmentReceiptOrderAllocation = body.toCreateShipmentReceiptOrderAllocation();
+            mergePatchShipmentReceipt.getShipmentReceiptOrderAllocationCommands().add(createShipmentReceiptOrderAllocation);
+            mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
+            shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 
 
     //protected  ShipmentReceiptStateEventDtoConverter getShipmentReceiptStateEventDtoConverter() {
@@ -450,6 +578,15 @@ public class ShipmentReceiptResource {
             @Override
             public Class resolveTypeByPropertyName(String propertyName) {
                 return ShipmentReceiptResourceUtils.getShipmentReceiptRoleFilterPropertyType(propertyName);
+            }
+        };
+    }
+
+    protected PropertyTypeResolver getShipmentReceiptOrderAllocationPropertyTypeResolver() {
+        return new PropertyTypeResolver() {
+            @Override
+            public Class resolveTypeByPropertyName(String propertyName) {
+                return ShipmentReceiptResourceUtils.getShipmentReceiptOrderAllocationFilterPropertyType(propertyName);
             }
         };
     }
@@ -555,6 +692,54 @@ public class ShipmentReceiptResource {
                     String pName = getShipmentReceiptRoleFilterPropertyName(key);
                     if (!StringHelper.isNullOrEmpty(pName)) {
                         Class pClass = getShipmentReceiptRoleFilterPropertyType(pName);
+                        filter.put(pName, ApplicationContext.current.getTypeConverter().convertFromString(pClass, values[0]));
+                    }
+                }
+            });
+            return filter.entrySet();
+        }
+
+        public static List<String> getShipmentReceiptOrderAllocationQueryOrders(String str, String separator) {
+            return QueryParamUtils.getQueryOrders(str, separator, ShipmentReceiptOrderAllocationMetadata.aliasMap);
+        }
+
+        public static List<String> getShipmentReceiptOrderAllocationQuerySorts(Map<String, String[]> queryNameValuePairs) {
+            String[] values = queryNameValuePairs.get("sort");
+            return QueryParamUtils.getQuerySorts(values, ShipmentReceiptOrderAllocationMetadata.aliasMap);
+        }
+
+        public static String getShipmentReceiptOrderAllocationFilterPropertyName(String fieldName) {
+            if ("sort".equalsIgnoreCase(fieldName)
+                    || "firstResult".equalsIgnoreCase(fieldName)
+                    || "maxResults".equalsIgnoreCase(fieldName)
+                    || "fields".equalsIgnoreCase(fieldName)) {
+                return null;
+            }
+            if (ShipmentReceiptOrderAllocationMetadata.aliasMap.containsKey(fieldName)) {
+                return ShipmentReceiptOrderAllocationMetadata.aliasMap.get(fieldName);
+            }
+            return null;
+        }
+
+        public static Class getShipmentReceiptOrderAllocationFilterPropertyType(String propertyName) {
+            if (ShipmentReceiptOrderAllocationMetadata.propertyTypeMap.containsKey(propertyName)) {
+                String propertyType = ShipmentReceiptOrderAllocationMetadata.propertyTypeMap.get(propertyName);
+                if (!StringHelper.isNullOrEmpty(propertyType)) {
+                    if (BoundedContextMetadata.CLASS_MAP.containsKey(propertyType)) {
+                        return BoundedContextMetadata.CLASS_MAP.get(propertyType);
+                    }
+                }
+            }
+            return String.class;
+        }
+
+        public static Iterable<Map.Entry<String, Object>> getShipmentReceiptOrderAllocationQueryFilterMap(Map<String, String[]> queryNameValuePairs) {
+            Map<String, Object> filter = new HashMap<>();
+            queryNameValuePairs.forEach((key, values) -> {
+                if (values.length > 0) {
+                    String pName = getShipmentReceiptOrderAllocationFilterPropertyName(key);
+                    if (!StringHelper.isNullOrEmpty(pName)) {
+                        Class pClass = getShipmentReceiptOrderAllocationFilterPropertyType(pName);
                         filter.put(pName, ApplicationContext.current.getTypeConverter().convertFromString(pClass, values[0]));
                     }
                 }

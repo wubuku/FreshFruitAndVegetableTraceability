@@ -8,6 +8,7 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt.hibernate;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -26,7 +27,7 @@ public class HibernateShipmentReceiptStateRepository implements ShipmentReceiptS
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ReceiptId", "ProductId", "ShipmentId", "ShipmentItemSeqId", "ShipmentPackageSeqId", "OrderId", "OrderItemSeqId", "ReturnId", "ReturnItemSeqId", "RejectionId", "ReceivedBy", "DatetimeReceived", "ItemDescription", "QuantityAccepted", "QuantityRejected", "LotId", "LocationSeqId", "CasesAccepted", "CasesRejected", "ShipmentReceiptRoles", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ReceiptId", "ProductId", "ShipmentId", "ShipmentItemSeqId", "ShipmentPackageSeqId", "OrderId", "OrderItemSeqId", "ReturnId", "ReturnItemSeqId", "RejectionId", "ReceivedBy", "DatetimeReceived", "ItemDescription", "QuantityAccepted", "QuantityRejected", "LotId", "LocationSeqId", "CasesAccepted", "CasesRejected", "QuantityUnallocated", "OrderAllocations", "ShipmentReceiptRoles", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

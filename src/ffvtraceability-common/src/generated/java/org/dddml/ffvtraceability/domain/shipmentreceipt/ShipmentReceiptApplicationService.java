@@ -10,6 +10,7 @@ import java.util.List;
 import org.dddml.support.criterion.Criterion;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.Event;
 import org.dddml.ffvtraceability.domain.Command;
@@ -42,6 +43,10 @@ public interface ShipmentReceiptApplicationService {
     ShipmentReceiptRoleState getShipmentReceiptRole(String shipmentReceiptReceiptId, PartyRoleId partyRoleId);
 
     Iterable<ShipmentReceiptRoleState> getShipmentReceiptRoles(String shipmentReceiptReceiptId, Criterion filter, List<String> orders);
+
+    ShipmentReceiptOrderAllocationState getShipmentReceiptOrderAllocation(String shipmentReceiptReceiptId, OrderItemId orderItemId);
+
+    Iterable<ShipmentReceiptOrderAllocationState> getShipmentReceiptOrderAllocations(String shipmentReceiptReceiptId, Criterion filter, List<String> orders);
 
 }
 

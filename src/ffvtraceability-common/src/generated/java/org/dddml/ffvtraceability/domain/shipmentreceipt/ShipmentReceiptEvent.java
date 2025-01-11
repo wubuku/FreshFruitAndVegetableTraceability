@@ -8,6 +8,7 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.Event;
 
@@ -114,6 +115,10 @@ public interface ShipmentReceiptEvent extends Event {
 
         void setCasesRejected(Long casesRejected);
 
+        java.math.BigDecimal getQuantityUnallocated();
+
+        void setQuantityUnallocated(java.math.BigDecimal quantityUnallocated);
+
     }
 
     interface ShipmentReceiptStateCreated extends ShipmentReceiptStateEvent
@@ -123,6 +128,12 @@ public interface ShipmentReceiptEvent extends Event {
         void addShipmentReceiptRoleEvent(ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateCreated e);
 
         ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateCreated newShipmentReceiptRoleStateCreated(PartyRoleId partyRoleId);
+
+        Iterable<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated> getShipmentReceiptOrderAllocationEvents();
+        
+        void addShipmentReceiptOrderAllocationEvent(ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated e);
+
+        ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated newShipmentReceiptOrderAllocationStateCreated(OrderItemId orderItemId);
 
     
     }
@@ -202,6 +213,10 @@ public interface ShipmentReceiptEvent extends Event {
 
         void setIsPropertyCasesRejectedRemoved(Boolean removed);
 
+        Boolean getIsPropertyQuantityUnallocatedRemoved();
+
+        void setIsPropertyQuantityUnallocatedRemoved(Boolean removed);
+
 
         Iterable<ShipmentReceiptRoleEvent> getShipmentReceiptRoleEvents();
         
@@ -211,11 +226,27 @@ public interface ShipmentReceiptEvent extends Event {
 
         ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateMergePatched newShipmentReceiptRoleStateMergePatched(PartyRoleId partyRoleId);
 
+        Iterable<ShipmentReceiptOrderAllocationEvent> getShipmentReceiptOrderAllocationEvents();
+        
+        void addShipmentReceiptOrderAllocationEvent(ShipmentReceiptOrderAllocationEvent e);
+
+        ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated newShipmentReceiptOrderAllocationStateCreated(OrderItemId orderItemId);
+
+        ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateMergePatched newShipmentReceiptOrderAllocationStateMergePatched(OrderItemId orderItemId);
+
+        ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved newShipmentReceiptOrderAllocationStateRemoved(OrderItemId orderItemId);
+
 
     }
 
     interface ShipmentReceiptStateDeleted extends ShipmentReceiptStateEvent
     {
+        Iterable<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved> getShipmentReceiptOrderAllocationEvents();
+        
+        void addShipmentReceiptOrderAllocationEvent(ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved e);
+        
+        ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved newShipmentReceiptOrderAllocationStateRemoved(OrderItemId orderItemId);
+
     }
 
 

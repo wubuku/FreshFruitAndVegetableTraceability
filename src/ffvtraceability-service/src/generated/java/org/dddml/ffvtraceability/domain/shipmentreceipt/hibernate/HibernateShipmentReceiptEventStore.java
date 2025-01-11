@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.specialization.hibernate.AbstractHibernateEventStore;

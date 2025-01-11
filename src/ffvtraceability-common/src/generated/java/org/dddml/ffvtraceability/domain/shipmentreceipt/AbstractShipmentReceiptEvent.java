@@ -8,6 +8,7 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.domain.AbstractEvent;
@@ -119,12 +120,50 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
         }
     }
 
+    protected ShipmentReceiptOrderAllocationEventDao getShipmentReceiptOrderAllocationEventDao() {
+        return (ShipmentReceiptOrderAllocationEventDao)ApplicationContext.current.get("shipmentReceiptOrderAllocationEventDao");
+    }
+
+    protected ShipmentReceiptOrderAllocationEventId newShipmentReceiptOrderAllocationEventId(OrderItemId orderItemId)
+    {
+        ShipmentReceiptOrderAllocationEventId eventId = new ShipmentReceiptOrderAllocationEventId(this.getShipmentReceiptEventId().getReceiptId(), 
+            orderItemId, 
+            this.getShipmentReceiptEventId().getVersion());
+        return eventId;
+    }
+
+    protected void throwOnInconsistentEventIds(ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent e)
+    {
+        throwOnInconsistentEventIds(this, e);
+    }
+
+    public static void throwOnInconsistentEventIds(ShipmentReceiptEvent.SqlShipmentReceiptEvent oe, ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent e)
+    {
+        if (!oe.getShipmentReceiptEventId().getReceiptId().equals(e.getShipmentReceiptOrderAllocationEventId().getShipmentReceiptReceiptId()))
+        { 
+            throw DomainError.named("inconsistentEventIds", "Outer Id ReceiptId %1$s but inner id ShipmentReceiptReceiptId %2$s", 
+                oe.getShipmentReceiptEventId().getReceiptId(), e.getShipmentReceiptOrderAllocationEventId().getShipmentReceiptReceiptId());
+        }
+    }
+
     public ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateCreated newShipmentReceiptRoleStateCreated(PartyRoleId partyRoleId) {
         return new AbstractShipmentReceiptRoleEvent.SimpleShipmentReceiptRoleStateCreated(newShipmentReceiptRoleEventId(partyRoleId));
     }
 
     public ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateMergePatched newShipmentReceiptRoleStateMergePatched(PartyRoleId partyRoleId) {
         return new AbstractShipmentReceiptRoleEvent.SimpleShipmentReceiptRoleStateMergePatched(newShipmentReceiptRoleEventId(partyRoleId));
+    }
+
+    public ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated newShipmentReceiptOrderAllocationStateCreated(OrderItemId orderItemId) {
+        return new AbstractShipmentReceiptOrderAllocationEvent.SimpleShipmentReceiptOrderAllocationStateCreated(newShipmentReceiptOrderAllocationEventId(orderItemId));
+    }
+
+    public ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateMergePatched newShipmentReceiptOrderAllocationStateMergePatched(OrderItemId orderItemId) {
+        return new AbstractShipmentReceiptOrderAllocationEvent.SimpleShipmentReceiptOrderAllocationStateMergePatched(newShipmentReceiptOrderAllocationEventId(orderItemId));
+    }
+
+    public ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved newShipmentReceiptOrderAllocationStateRemoved(OrderItemId orderItemId) {
+        return new AbstractShipmentReceiptOrderAllocationEvent.SimpleShipmentReceiptOrderAllocationStateRemoved(newShipmentReceiptOrderAllocationEventId(orderItemId));
     }
 
 
@@ -370,6 +409,18 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             this.casesRejected = casesRejected;
         }
 
+        private java.math.BigDecimal quantityUnallocated;
+
+        public java.math.BigDecimal getQuantityUnallocated()
+        {
+            return this.quantityUnallocated;
+        }
+
+        public void setQuantityUnallocated(java.math.BigDecimal quantityUnallocated)
+        {
+            this.quantityUnallocated = quantityUnallocated;
+        }
+
         protected AbstractShipmentReceiptStateEvent(ShipmentReceiptEventId eventId) {
             super(eventId);
         }
@@ -431,10 +482,55 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             this.shipmentReceiptRoleEvents.put(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)e).getShipmentReceiptRoleEventId(), e);
         }
 
+        private Map<ShipmentReceiptOrderAllocationEventId, ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated> shipmentReceiptOrderAllocationEvents = new HashMap<ShipmentReceiptOrderAllocationEventId, ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated>();
+        
+        private Iterable<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated> readOnlyShipmentReceiptOrderAllocationEvents;
+
+        public Iterable<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated> getShipmentReceiptOrderAllocationEvents()
+        {
+            if (!getEventReadOnly())
+            {
+                return this.shipmentReceiptOrderAllocationEvents.values();
+            }
+            else
+            {
+                if (readOnlyShipmentReceiptOrderAllocationEvents != null) { return readOnlyShipmentReceiptOrderAllocationEvents; }
+                ShipmentReceiptOrderAllocationEventDao eventDao = getShipmentReceiptOrderAllocationEventDao();
+                List<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated> eL = new ArrayList<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated>();
+                for (ShipmentReceiptOrderAllocationEvent e : eventDao.findByShipmentReceiptEventId(this.getShipmentReceiptEventId()))
+                {
+                    ((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)e).setEventReadOnly(true);
+                    eL.add((ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated)e);
+                }
+                return (readOnlyShipmentReceiptOrderAllocationEvents = eL);
+            }
+        }
+
+        public void setShipmentReceiptOrderAllocationEvents(Iterable<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated> es)
+        {
+            if (es != null)
+            {
+                for (ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated e : es)
+                {
+                    addShipmentReceiptOrderAllocationEvent(e);
+                }
+            }
+            else { this.shipmentReceiptOrderAllocationEvents.clear(); }
+        }
+        
+        public void addShipmentReceiptOrderAllocationEvent(ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated e)
+        {
+            throwOnInconsistentEventIds((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)e);
+            this.shipmentReceiptOrderAllocationEvents.put(((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)e).getShipmentReceiptOrderAllocationEventId(), e);
+        }
+
         public void save()
         {
             for (ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateCreated e : this.getShipmentReceiptRoleEvents()) {
                 getShipmentReceiptRoleEventDao().save(e);
+            }
+            for (ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated e : this.getShipmentReceiptOrderAllocationEvents()) {
+                getShipmentReceiptOrderAllocationEventDao().save(e);
             }
         }
     }
@@ -634,6 +730,16 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             this.isPropertyCasesRejectedRemoved = removed;
         }
 
+        private Boolean isPropertyQuantityUnallocatedRemoved;
+
+        public Boolean getIsPropertyQuantityUnallocatedRemoved() {
+            return this.isPropertyQuantityUnallocatedRemoved;
+        }
+
+        public void setIsPropertyQuantityUnallocatedRemoved(Boolean removed) {
+            this.isPropertyQuantityUnallocatedRemoved = removed;
+        }
+
 
         private Map<ShipmentReceiptRoleEventId, ShipmentReceiptRoleEvent> shipmentReceiptRoleEvents = new HashMap<ShipmentReceiptRoleEventId, ShipmentReceiptRoleEvent>();
         
@@ -677,10 +783,55 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             this.shipmentReceiptRoleEvents.put(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)e).getShipmentReceiptRoleEventId(), e);
         }
 
+        private Map<ShipmentReceiptOrderAllocationEventId, ShipmentReceiptOrderAllocationEvent> shipmentReceiptOrderAllocationEvents = new HashMap<ShipmentReceiptOrderAllocationEventId, ShipmentReceiptOrderAllocationEvent>();
+        
+        private Iterable<ShipmentReceiptOrderAllocationEvent> readOnlyShipmentReceiptOrderAllocationEvents;
+
+        public Iterable<ShipmentReceiptOrderAllocationEvent> getShipmentReceiptOrderAllocationEvents()
+        {
+            if (!getEventReadOnly())
+            {
+                return this.shipmentReceiptOrderAllocationEvents.values();
+            }
+            else
+            {
+                if (readOnlyShipmentReceiptOrderAllocationEvents != null) { return readOnlyShipmentReceiptOrderAllocationEvents; }
+                ShipmentReceiptOrderAllocationEventDao eventDao = getShipmentReceiptOrderAllocationEventDao();
+                List<ShipmentReceiptOrderAllocationEvent> eL = new ArrayList<ShipmentReceiptOrderAllocationEvent>();
+                for (ShipmentReceiptOrderAllocationEvent e : eventDao.findByShipmentReceiptEventId(this.getShipmentReceiptEventId()))
+                {
+                    ((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)e).setEventReadOnly(true);
+                    eL.add((ShipmentReceiptOrderAllocationEvent)e);
+                }
+                return (readOnlyShipmentReceiptOrderAllocationEvents = eL);
+            }
+        }
+
+        public void setShipmentReceiptOrderAllocationEvents(Iterable<ShipmentReceiptOrderAllocationEvent> es)
+        {
+            if (es != null)
+            {
+                for (ShipmentReceiptOrderAllocationEvent e : es)
+                {
+                    addShipmentReceiptOrderAllocationEvent(e);
+                }
+            }
+            else { this.shipmentReceiptOrderAllocationEvents.clear(); }
+        }
+        
+        public void addShipmentReceiptOrderAllocationEvent(ShipmentReceiptOrderAllocationEvent e)
+        {
+            throwOnInconsistentEventIds((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)e);
+            this.shipmentReceiptOrderAllocationEvents.put(((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)e).getShipmentReceiptOrderAllocationEventId(), e);
+        }
+
         public void save()
         {
             for (ShipmentReceiptRoleEvent e : this.getShipmentReceiptRoleEvents()) {
                 getShipmentReceiptRoleEventDao().save(e);
+            }
+            for (ShipmentReceiptOrderAllocationEvent e : this.getShipmentReceiptOrderAllocationEvents()) {
+                getShipmentReceiptOrderAllocationEventDao().save(e);
             }
         }
     }
@@ -700,8 +851,54 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
             return StateEventType.DELETED;
         }
 
+        
+        private Map<ShipmentReceiptOrderAllocationEventId, ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved> shipmentReceiptOrderAllocationEvents = new HashMap<ShipmentReceiptOrderAllocationEventId, ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved>();
+        
+        private Iterable<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved> readOnlyShipmentReceiptOrderAllocationEvents;
+
+        public Iterable<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved> getShipmentReceiptOrderAllocationEvents()
+        {
+            if (!getEventReadOnly())
+            {
+                return this.shipmentReceiptOrderAllocationEvents.values();
+            }
+            else
+            {
+                if (readOnlyShipmentReceiptOrderAllocationEvents != null) { return readOnlyShipmentReceiptOrderAllocationEvents; }
+                ShipmentReceiptOrderAllocationEventDao eventDao = getShipmentReceiptOrderAllocationEventDao();
+                List<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved> eL = new ArrayList<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved>();
+                for (ShipmentReceiptOrderAllocationEvent e : eventDao.findByShipmentReceiptEventId(this.getShipmentReceiptEventId()))
+                {
+                    ((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)e).setEventReadOnly(true);
+                    eL.add((ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved)e);
+                }
+                return (readOnlyShipmentReceiptOrderAllocationEvents = eL);
+            }
+        }
+
+        public void setShipmentReceiptOrderAllocationEvents(Iterable<ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved> es)
+        {
+            if (es != null)
+            {
+                for (ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved e : es)
+                {
+                    addShipmentReceiptOrderAllocationEvent(e);
+                }
+            }
+            else { this.shipmentReceiptOrderAllocationEvents.clear(); }
+        }
+        
+        public void addShipmentReceiptOrderAllocationEvent(ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved e)
+        {
+            throwOnInconsistentEventIds((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)e);
+            this.shipmentReceiptOrderAllocationEvents.put(((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)e).getShipmentReceiptOrderAllocationEventId(), e);
+        }
+
         public void save()
         {
+            for (ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved e : this.getShipmentReceiptOrderAllocationEvents()) {
+                getShipmentReceiptOrderAllocationEventDao().save(e);
+            }
         }
     }
 

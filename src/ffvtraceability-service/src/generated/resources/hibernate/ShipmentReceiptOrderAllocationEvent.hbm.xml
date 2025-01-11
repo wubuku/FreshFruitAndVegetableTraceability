@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipmentreceipt">
+  <class name="AbstractShipmentReceiptOrderAllocationEvent" table="shipment_receipt_order_allocation_event" abstract="true">
+    <composite-id name="shipmentReceiptOrderAllocationEventId" class="org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptOrderAllocationEventId">
+      <key-property name="shipmentReceiptReceiptId">
+        <column name="RECEIPT_ID" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="orderItemIdOrderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="orderItemIdOrderItemSeqId">
+        <column name="ORDER_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="shipmentReceiptVersion">
+        <column name="shipment_receipt_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractShipmentReceiptOrderAllocationEvent$AbstractShipmentReceiptOrderAllocationStateEvent" abstract="true">
+      <property name="quantityAllocated">
+        <column name="QUANTITY_ALLOCATED" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractShipmentReceiptOrderAllocationEvent$SimpleShipmentReceiptOrderAllocationStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractShipmentReceiptOrderAllocationEvent$SimpleShipmentReceiptOrderAllocationStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyQuantityAllocatedRemoved" column="is_property_quantity_allocated_removed" />
+      </subclass>
+      <subclass name="AbstractShipmentReceiptOrderAllocationEvent$SimpleShipmentReceiptOrderAllocationStateRemoved" discriminator-value="Removed"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

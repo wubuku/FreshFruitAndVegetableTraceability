@@ -9,6 +9,7 @@ import java.util.*;
 import java.math.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.Event;
 
@@ -56,6 +57,8 @@ public interface ShipmentReceiptState
 
     Long getCasesRejected();
 
+    java.math.BigDecimal getQuantityUnallocated();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -69,6 +72,8 @@ public interface ShipmentReceiptState
     Boolean getDeleted();
 
     EntityStateCollection<PartyRoleId, ShipmentReceiptRoleState> getShipmentReceiptRoles();
+
+    EntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> getOrderAllocations();
 
     interface MutableShipmentReceiptState extends ShipmentReceiptState {
         void setReceiptId(String receiptId);
@@ -108,6 +113,8 @@ public interface ShipmentReceiptState
         void setCasesAccepted(Long casesAccepted);
 
         void setCasesRejected(Long casesRejected);
+
+        void setQuantityUnallocated(java.math.BigDecimal quantityUnallocated);
 
         void setVersion(Long version);
 

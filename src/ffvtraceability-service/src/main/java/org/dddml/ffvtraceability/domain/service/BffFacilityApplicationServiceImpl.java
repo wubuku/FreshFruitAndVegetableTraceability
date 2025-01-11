@@ -130,7 +130,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         createFacility.setFacilityId(facilityId);
         createFacility.setFacilityTypeId(c.getFacility().getFacilityTypeId());
         createFacility.setParentFacilityId(c.getFacility().getParentFacilityId());
-        createFacility.setOwnerPartyId(c.getFacility().getOwnerPartyId());
+        createFacility.setOwnerPartyId(c.getFacility().getOwnerPartyId()); // TODO 为 null 时填入当前租户对应的 PartyId？
         createFacility.setFacilityName(c.getFacility().getFacilityName());
         createFacility.setDescription(c.getFacility().getDescription());
         createFacility.setFacilitySize(c.getFacility().getFacilitySize());

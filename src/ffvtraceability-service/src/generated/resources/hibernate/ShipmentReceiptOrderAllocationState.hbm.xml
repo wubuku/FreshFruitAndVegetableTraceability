@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipmentreceipt">
+  <class name="org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptOrderAllocationState$SimpleShipmentReceiptOrderAllocationState" table="shipment_receipt_order_allocation">
+    <composite-id name="shipmentReceiptOrderAllocationId" class="org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptOrderAllocationId">
+      <key-property name="shipmentReceiptReceiptId">
+        <column name="RECEIPT_ID" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="orderItemIdOrderId">
+        <column name="ORDER_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="orderItemIdOrderItemSeqId">
+        <column name="ORDER_ITEM_SEQ_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <many-to-one name="protectedShipmentReceiptState" class="org.dddml.ffvtraceability.domain.shipmentreceipt.AbstractShipmentReceiptState$SimpleShipmentReceiptState" insert="false" update="false">
+      <column name="RECEIPT_ID" />
+    </many-to-one>
+    <property name="quantityAllocated">
+      <column name="QUANTITY_ALLOCATED" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="__Deleted__">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

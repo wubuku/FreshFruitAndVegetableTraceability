@@ -78,6 +78,9 @@
       <property name="casesRejected">
         <column name="cases_rejected" sql-type="DECIMAL(20,0)" />
       </property>
+      <property name="quantityUnallocated">
+        <column name="QUANTITY_UNALLOCATED" sql-type="DECIMAL(18,6)" />
+      </property>
       <subclass name="AbstractShipmentReceiptEvent$SimpleShipmentReceiptStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractShipmentReceiptEvent$SimpleShipmentReceiptStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyProductIdRemoved" column="is_property_product_id_removed" />
@@ -98,6 +101,7 @@
         <property name="isPropertyLocationSeqIdRemoved" column="is_property_location_seq_id_removed" />
         <property name="isPropertyCasesAcceptedRemoved" column="is_property_cases_accepted_removed" />
         <property name="isPropertyCasesRejectedRemoved" column="is_property_cases_rejected_removed" />
+        <property name="isPropertyQuantityUnallocatedRemoved" column="is_property_quantity_unallocated_removed" />
       </subclass>
       <subclass name="AbstractShipmentReceiptEvent$SimpleShipmentReceiptStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>

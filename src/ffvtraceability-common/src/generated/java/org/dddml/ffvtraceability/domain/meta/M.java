@@ -93,6 +93,7 @@ public class M {
         typeToAggMap.put("ShippingDocument", "ShippingDocument");
         typeToAggMap.put("ShipmentReceipt", "ShipmentReceipt");
         typeToAggMap.put("ShipmentReceiptRole", "ShipmentReceipt");
+        typeToAggMap.put("ShipmentReceiptOrderAllocation", "ShipmentReceipt");
         typeToAggMap.put("QaInspection", "QaInspection");
         typeToAggMap.put("ContactMech", "ContactMech");
         typeToAggMap.put("PostalAddress", "ContactMech");
@@ -6489,6 +6490,7 @@ public class M {
             "locationSeqId",
             "casesAccepted",
             "casesRejected",
+            "quantityUnallocated",
             "version",
             "createdBy",
             "createdAt",
@@ -6518,6 +6520,7 @@ public class M {
             "String",
             "Long",
             "Long",
+            "java.math.BigDecimal",
             "Long",
             "String",
             "OffsetDateTime",
@@ -6577,6 +6580,8 @@ public class M {
         aliasMap.put("CasesAccepted", "casesAccepted");
         aliasMap.put("casesRejected", "casesRejected");
         aliasMap.put("CasesRejected", "casesRejected");
+        aliasMap.put("quantityUnallocated", "quantityUnallocated");
+        aliasMap.put("QuantityUnallocated", "quantityUnallocated");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -6694,6 +6699,113 @@ public class M {
         aliasMap.put("ShipmentReceiptRoleId.PartyRoleIdRoleTypeId", "shipmentReceiptRoleId.partyRoleIdRoleTypeId");
         aliasMap.put("shipmentReceiptRoleId.partyRoleId.roleTypeId", "shipmentReceiptRoleId.partyRoleIdRoleTypeId");
         aliasMap.put("ShipmentReceiptRoleId.PartyRoleId.RoleTypeId", "shipmentReceiptRoleId.partyRoleIdRoleTypeId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ShipmentReceiptOrderAllocationMetadata {
+
+    private ShipmentReceiptOrderAllocationMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "quantityAllocated",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "shipmentReceiptReceiptId",
+            "orderItemId.orderId",
+            "orderItemId.orderItemSeqId",
+            "shipmentReceiptOrderAllocationId.shipmentReceiptReceiptId",
+            "shipmentReceiptOrderAllocationId.orderItemIdOrderId",
+            "shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "java.math.BigDecimal",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("quantityAllocated", "quantityAllocated");
+        aliasMap.put("QuantityAllocated", "quantityAllocated");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("shipmentReceiptReceiptId", "shipmentReceiptOrderAllocationId.shipmentReceiptReceiptId");
+        aliasMap.put("ShipmentReceiptReceiptId", "shipmentReceiptOrderAllocationId.shipmentReceiptReceiptId");
+        aliasMap.put("orderItemId.orderId", "shipmentReceiptOrderAllocationId.orderItemIdOrderId");
+        aliasMap.put("OrderItemId.OrderId", "shipmentReceiptOrderAllocationId.orderItemIdOrderId");
+        aliasMap.put("orderItemId.orderId", "shipmentReceiptOrderAllocationId.orderItemIdOrderId");
+        aliasMap.put("OrderItemId.OrderId", "shipmentReceiptOrderAllocationId.orderItemIdOrderId");
+        aliasMap.put("orderItemId.orderItemSeqId", "shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId");
+        aliasMap.put("OrderItemId.OrderItemSeqId", "shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId");
+        aliasMap.put("orderItemId.orderItemSeqId", "shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId");
+        aliasMap.put("OrderItemId.OrderItemSeqId", "shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId");
+        aliasMap.put("shipmentReceiptOrderAllocationId.shipmentReceiptReceiptId", "shipmentReceiptOrderAllocationId.shipmentReceiptReceiptId");
+        aliasMap.put("ShipmentReceiptOrderAllocationId.ShipmentReceiptReceiptId", "shipmentReceiptOrderAllocationId.shipmentReceiptReceiptId");
+        aliasMap.put("shipmentReceiptOrderAllocationId.orderItemIdOrderId", "shipmentReceiptOrderAllocationId.orderItemIdOrderId");
+        aliasMap.put("ShipmentReceiptOrderAllocationId.OrderItemIdOrderId", "shipmentReceiptOrderAllocationId.orderItemIdOrderId");
+        aliasMap.put("shipmentReceiptOrderAllocationId.orderItemId.orderId", "shipmentReceiptOrderAllocationId.orderItemIdOrderId");
+        aliasMap.put("ShipmentReceiptOrderAllocationId.OrderItemId.OrderId", "shipmentReceiptOrderAllocationId.orderItemIdOrderId");
+        aliasMap.put("shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId", "shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId");
+        aliasMap.put("ShipmentReceiptOrderAllocationId.OrderItemIdOrderItemSeqId", "shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId");
+        aliasMap.put("shipmentReceiptOrderAllocationId.orderItemId.orderItemSeqId", "shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId");
+        aliasMap.put("ShipmentReceiptOrderAllocationId.OrderItemId.OrderItemSeqId", "shipmentReceiptOrderAllocationId.orderItemIdOrderItemSeqId");
     }
 
     private static void initPropertyTypeMap() {

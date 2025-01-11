@@ -7,6 +7,7 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt;
 
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 
 public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceiptCommandDto implements ShipmentReceiptCommand.CreateOrMergePatchShipmentReceipt {
@@ -281,6 +282,21 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         this.casesRejected = casesRejected;
     }
 
+    /**
+     * Quantity Unallocated
+     */
+    private java.math.BigDecimal quantityUnallocated;
+
+    public java.math.BigDecimal getQuantityUnallocated()
+    {
+        return this.quantityUnallocated;
+    }
+
+    public void setQuantityUnallocated(java.math.BigDecimal quantityUnallocated)
+    {
+        this.quantityUnallocated = quantityUnallocated;
+    }
+
 
     private CreateOrMergePatchShipmentReceiptRoleDto[] shipmentReceiptRoles = new CreateOrMergePatchShipmentReceiptRoleDto[0];
 
@@ -292,6 +308,18 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
     public void setShipmentReceiptRoles(CreateOrMergePatchShipmentReceiptRoleDto[] shipmentReceiptRoles)
     {
         this.shipmentReceiptRoles = shipmentReceiptRoles;
+    }
+
+    private CreateOrMergePatchShipmentReceiptOrderAllocationDto[] orderAllocations = new CreateOrMergePatchShipmentReceiptOrderAllocationDto[0];
+
+    public CreateOrMergePatchShipmentReceiptOrderAllocationDto[] getOrderAllocations()
+    {
+        return this.orderAllocations;
+    }
+
+    public void setOrderAllocations(CreateOrMergePatchShipmentReceiptOrderAllocationDto[] orderAllocations)
+    {
+        this.orderAllocations = orderAllocations;
     }
 
     private Boolean isPropertyProductIdRemoved;
@@ -510,6 +538,18 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         this.isPropertyCasesRejectedRemoved = removed;
     }
 
+    private Boolean isPropertyQuantityUnallocatedRemoved;
+
+    public Boolean getIsPropertyQuantityUnallocatedRemoved()
+    {
+        return this.isPropertyQuantityUnallocatedRemoved;
+    }
+
+    public void setIsPropertyQuantityUnallocatedRemoved(Boolean removed)
+    {
+        this.isPropertyQuantityUnallocatedRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchShipmentReceipt command)
     {
         ((AbstractShipmentReceiptCommandDto) this).copyTo(command);
@@ -531,6 +571,7 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         command.setLocationSeqId(this.getLocationSeqId());
         command.setCasesAccepted(this.getCasesAccepted());
         command.setCasesRejected(this.getCasesRejected());
+        command.setQuantityUnallocated(this.getQuantityUnallocated());
     }
 
     public ShipmentReceiptCommand toCommand()
@@ -546,6 +587,11 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
                     command.getShipmentReceiptRoles().add((ShipmentReceiptRoleCommand.CreateShipmentReceiptRole) cmd.toCommand());
                 }
             }
+            if (this.getOrderAllocations() != null) {
+                for (CreateOrMergePatchShipmentReceiptOrderAllocationDto cmd : this.getOrderAllocations()) {
+                    command.getOrderAllocations().add((ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation) cmd.toCommand());
+                }
+            }
             return command;
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
             AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt command = new AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt();
@@ -553,6 +599,11 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
             if (this.getShipmentReceiptRoles() != null) {
                 for (CreateOrMergePatchShipmentReceiptRoleDto cmd : this.getShipmentReceiptRoles()) {
                     command.getShipmentReceiptRoleCommands().add(cmd.toCommand());
+                }
+            }
+            if (this.getOrderAllocations() != null) {
+                for (CreateOrMergePatchShipmentReceiptOrderAllocationDto cmd : this.getOrderAllocations()) {
+                    command.getShipmentReceiptOrderAllocationCommands().add(cmd.toCommand());
                 }
             }
             return command;
@@ -574,6 +625,12 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
                     command.getCreateShipmentReceiptRoleCommands().add((ShipmentReceiptRoleCommand.CreateShipmentReceiptRole) cmd.toSubclass());
                 }
             }
+            if (this.getOrderAllocations() != null) {
+                for (CreateOrMergePatchShipmentReceiptOrderAllocationDto cmd : this.getOrderAllocations()) {
+                    if (cmd.getCommandType() == null) { cmd.setCommandType(COMMAND_TYPE_CREATE); }
+                    command.getCreateShipmentReceiptOrderAllocationCommands().add((ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation) cmd.toSubclass());
+                }
+            }
             return command;
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
             MergePatchShipmentReceiptDto command = new MergePatchShipmentReceiptDto();
@@ -581,6 +638,11 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
             if (this.getShipmentReceiptRoles() != null) {
                 for (CreateOrMergePatchShipmentReceiptRoleDto cmd : this.getShipmentReceiptRoles()) {
                     command.getShipmentReceiptRoleCommands().add(cmd.toSubclass());
+                }
+            }
+            if (this.getOrderAllocations() != null) {
+                for (CreateOrMergePatchShipmentReceiptOrderAllocationDto cmd : this.getOrderAllocations()) {
+                    command.getShipmentReceiptOrderAllocationCommands().add(cmd.toSubclass());
                 }
             }
             return command;
@@ -614,6 +676,7 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         command.setIsPropertyLocationSeqIdRemoved(this.getIsPropertyLocationSeqIdRemoved());
         command.setIsPropertyCasesAcceptedRemoved(this.getIsPropertyCasesAcceptedRemoved());
         command.setIsPropertyCasesRejectedRemoved(this.getIsPropertyCasesRejectedRemoved());
+        command.setIsPropertyQuantityUnallocatedRemoved(this.getIsPropertyQuantityUnallocatedRemoved());
     }
 
     public static class CreateShipmentReceiptDto extends CreateOrMergePatchShipmentReceiptDto implements ShipmentReceiptCommand.CreateShipmentReceipt
@@ -665,6 +728,42 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         @Override
         public ShipmentReceiptRoleCommand.CreateShipmentReceiptRole newCreateShipmentReceiptRole() {
             return new CreateOrMergePatchShipmentReceiptRoleDto.CreateShipmentReceiptRoleDto();
+        }
+
+
+        @Override
+        public CreateShipmentReceiptOrderAllocationCommandCollection getCreateShipmentReceiptOrderAllocationCommands() {
+            return new CreateShipmentReceiptOrderAllocationCommandCollection() {
+                @Override
+                public void add(ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation c) {
+                    java.util.List<CreateOrMergePatchShipmentReceiptOrderAllocationDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getOrderAllocations()));
+                    list.add((CreateOrMergePatchShipmentReceiptOrderAllocationDto) c);
+                    setOrderAllocations(list.toArray(new CreateOrMergePatchShipmentReceiptOrderAllocationDto[0]));
+                }
+
+                @Override
+                public void remove(ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation c) {
+                    java.util.List<CreateOrMergePatchShipmentReceiptOrderAllocationDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getOrderAllocations()));
+                    list.remove((CreateOrMergePatchShipmentReceiptOrderAllocationDto) c);
+                    setOrderAllocations(list.toArray(new CreateOrMergePatchShipmentReceiptOrderAllocationDto[0]));
+                }
+
+                @Override
+                public void clear() {
+                    setOrderAllocations(new CreateOrMergePatchShipmentReceiptOrderAllocationDto[]{});
+                }
+
+                @Override
+                public java.util.Iterator<ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation> iterator() {
+                    return java.util.Arrays.stream(getOrderAllocations())
+                            .map(e -> {if (e.getCommandType()==null) e.setCommandType(COMMAND_TYPE_CREATE);return (ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation) e.toSubclass();}).iterator();
+                }
+            };
+        }
+
+        @Override
+        public ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation newCreateShipmentReceiptOrderAllocation() {
+            return new CreateOrMergePatchShipmentReceiptOrderAllocationDto.CreateShipmentReceiptOrderAllocationDto();
         }
 
     }
@@ -728,6 +827,52 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
         @Override
         public ShipmentReceiptRoleCommand.RemoveShipmentReceiptRole newRemoveShipmentReceiptRole() {
             return new RemoveShipmentReceiptRoleDto();
+        }
+
+
+        @Override
+        public ShipmentReceiptOrderAllocationCommandCollection getShipmentReceiptOrderAllocationCommands() {
+            return new ShipmentReceiptOrderAllocationCommandCollection() {
+                @Override
+                public void add(ShipmentReceiptOrderAllocationCommand c) {
+                    java.util.List<CreateOrMergePatchShipmentReceiptOrderAllocationDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getOrderAllocations()));
+                    list.add((CreateOrMergePatchShipmentReceiptOrderAllocationDto) c);
+                    setOrderAllocations(list.toArray(new CreateOrMergePatchShipmentReceiptOrderAllocationDto[0]));
+                }
+
+                @Override
+                public void remove(ShipmentReceiptOrderAllocationCommand c) {
+                    java.util.List<CreateOrMergePatchShipmentReceiptOrderAllocationDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getOrderAllocations()));
+                    list.remove((CreateOrMergePatchShipmentReceiptOrderAllocationDto) c);
+                    setOrderAllocations(list.toArray(new CreateOrMergePatchShipmentReceiptOrderAllocationDto[0]));
+                }
+
+                @Override
+                public void clear() {
+                    setOrderAllocations(new CreateOrMergePatchShipmentReceiptOrderAllocationDto[]{});
+                }
+
+                @Override
+                public java.util.Iterator<ShipmentReceiptOrderAllocationCommand> iterator() {
+                    return java.util.Arrays.stream(getOrderAllocations())
+                            .map(e -> (ShipmentReceiptOrderAllocationCommand) e.toSubclass()).iterator();
+                }
+            };
+        }
+
+        @Override
+        public ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation newCreateShipmentReceiptOrderAllocation() {
+            return new CreateOrMergePatchShipmentReceiptOrderAllocationDto.CreateShipmentReceiptOrderAllocationDto();
+        }
+
+        @Override
+        public ShipmentReceiptOrderAllocationCommand.MergePatchShipmentReceiptOrderAllocation newMergePatchShipmentReceiptOrderAllocation() {
+            return new CreateOrMergePatchShipmentReceiptOrderAllocationDto.MergePatchShipmentReceiptOrderAllocationDto();
+        }
+
+        @Override
+        public ShipmentReceiptOrderAllocationCommand.RemoveShipmentReceiptOrderAllocation newRemoveShipmentReceiptOrderAllocation() {
+            return new RemoveShipmentReceiptOrderAllocationDto();
         }
 
     }

@@ -9,6 +9,7 @@ import java.util.*;
 import java.math.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 
@@ -243,6 +244,18 @@ public class ShipmentReceiptStateDto {
         this.casesRejected = casesRejected;
     }
 
+    private java.math.BigDecimal quantityUnallocated;
+
+    public java.math.BigDecimal getQuantityUnallocated()
+    {
+        return this.quantityUnallocated;
+    }
+
+    public void setQuantityUnallocated(java.math.BigDecimal quantityUnallocated)
+    {
+        this.quantityUnallocated = quantityUnallocated;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -315,10 +328,22 @@ public class ShipmentReceiptStateDto {
         this.shipmentReceiptRoles = shipmentReceiptRoles;
     }
 
+    private ShipmentReceiptOrderAllocationStateDto[] orderAllocations;
+
+    public ShipmentReceiptOrderAllocationStateDto[] getOrderAllocations()
+    {
+        return this.orderAllocations;
+    }    
+
+    public void setOrderAllocations(ShipmentReceiptOrderAllocationStateDto[] orderAllocations)
+    {
+        this.orderAllocations = orderAllocations;
+    }
+
 
     public static class DtoConverter extends AbstractStateDtoConverter
     {
-        public static Collection<String> collectionFieldNames = Arrays.asList(new String[]{"ShipmentReceiptRoles"});
+        public static Collection<String> collectionFieldNames = Arrays.asList(new String[]{"ShipmentReceiptRoles", "OrderAllocations"});
 
         @Override
         protected boolean isCollectionField(String fieldName) {
@@ -401,6 +426,9 @@ public class ShipmentReceiptStateDto {
             if (returnedFieldsContains("CasesRejected")) {
                 dto.setCasesRejected(state.getCasesRejected());
             }
+            if (returnedFieldsContains("QuantityUnallocated")) {
+                dto.setQuantityUnallocated(state.getQuantityUnallocated());
+            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }
@@ -427,6 +455,18 @@ public class ShipmentReceiptStateDto {
                     }
                 }
                 dto.setShipmentReceiptRoles(arrayList.toArray(new ShipmentReceiptRoleStateDto[0]));
+            }
+            if (returnedFieldsContains("OrderAllocations")) {
+                ArrayList<ShipmentReceiptOrderAllocationStateDto> arrayList = new ArrayList();
+                if (state.getOrderAllocations() != null) {
+                    ShipmentReceiptOrderAllocationStateDto.DtoConverter conv = new ShipmentReceiptOrderAllocationStateDto.DtoConverter();
+                    String returnFS = CollectionUtils.mapGetValueIgnoringCase(getReturnedFields(), "OrderAllocations");
+                    if(returnFS != null) { conv.setReturnedFieldsString(returnFS); } else { conv.setAllFieldsReturned(this.getAllFieldsReturned()); }
+                    for (ShipmentReceiptOrderAllocationState s : state.getOrderAllocations()) {
+                        arrayList.add(conv.toShipmentReceiptOrderAllocationStateDto(s));
+                    }
+                }
+                dto.setOrderAllocations(arrayList.toArray(new ShipmentReceiptOrderAllocationStateDto[0]));
             }
             return dto;
         }

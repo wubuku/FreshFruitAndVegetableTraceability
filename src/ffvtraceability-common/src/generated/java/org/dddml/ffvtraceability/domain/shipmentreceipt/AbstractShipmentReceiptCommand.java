@@ -8,6 +8,7 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.AbstractCommand;
 
@@ -256,6 +257,18 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
             this.casesRejected = casesRejected;
         }
 
+        private java.math.BigDecimal quantityUnallocated;
+
+        public java.math.BigDecimal getQuantityUnallocated()
+        {
+            return this.quantityUnallocated;
+        }
+
+        public void setQuantityUnallocated(java.math.BigDecimal quantityUnallocated)
+        {
+            this.quantityUnallocated = quantityUnallocated;
+        }
+
         public ShipmentReceiptRoleCommand.CreateShipmentReceiptRole newCreateShipmentReceiptRole()
         {
             AbstractShipmentReceiptRoleCommand.SimpleCreateShipmentReceiptRole c = new AbstractShipmentReceiptRoleCommand.SimpleCreateShipmentReceiptRole();
@@ -280,6 +293,30 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
             return c;
         }
 
+        public ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation newCreateShipmentReceiptOrderAllocation()
+        {
+            AbstractShipmentReceiptOrderAllocationCommand.SimpleCreateShipmentReceiptOrderAllocation c = new AbstractShipmentReceiptOrderAllocationCommand.SimpleCreateShipmentReceiptOrderAllocation();
+            c.setShipmentReceiptReceiptId(this.getReceiptId());
+
+            return c;
+        }
+
+        public ShipmentReceiptOrderAllocationCommand.MergePatchShipmentReceiptOrderAllocation newMergePatchShipmentReceiptOrderAllocation()
+        {
+            AbstractShipmentReceiptOrderAllocationCommand.SimpleMergePatchShipmentReceiptOrderAllocation c = new AbstractShipmentReceiptOrderAllocationCommand.SimpleMergePatchShipmentReceiptOrderAllocation();
+            c.setShipmentReceiptReceiptId(this.getReceiptId());
+
+            return c;
+        }
+
+        public ShipmentReceiptOrderAllocationCommand.RemoveShipmentReceiptOrderAllocation newRemoveShipmentReceiptOrderAllocation()
+        {
+            AbstractShipmentReceiptOrderAllocationCommand.SimpleRemoveShipmentReceiptOrderAllocation c = new AbstractShipmentReceiptOrderAllocationCommand.SimpleRemoveShipmentReceiptOrderAllocation();
+            c.setShipmentReceiptReceiptId(this.getReceiptId());
+
+            return c;
+        }
+
     }
 
     public static abstract class AbstractCreateShipmentReceipt extends AbstractCreateOrMergePatchShipmentReceipt implements CreateShipmentReceipt
@@ -297,6 +334,16 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
 
         public CreateShipmentReceiptRoleCommandCollection getShipmentReceiptRoles() {
             return this.createShipmentReceiptRoleCommands; //shipmentReceiptRoles;
+        }
+
+        private CreateShipmentReceiptOrderAllocationCommandCollection createShipmentReceiptOrderAllocationCommands = new SimpleCreateShipmentReceiptOrderAllocationCommandCollection();
+
+        public CreateShipmentReceiptOrderAllocationCommandCollection getCreateShipmentReceiptOrderAllocationCommands() {
+            return this.createShipmentReceiptOrderAllocationCommands;
+        }
+
+        public CreateShipmentReceiptOrderAllocationCommandCollection getOrderAllocations() {
+            return this.createShipmentReceiptOrderAllocationCommands; //orderAllocations;
         }
 
     }
@@ -524,12 +571,31 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
             this.isPropertyCasesRejectedRemoved = removed;
         }
 
+        private Boolean isPropertyQuantityUnallocatedRemoved;
+
+        public Boolean getIsPropertyQuantityUnallocatedRemoved()
+        {
+            return this.isPropertyQuantityUnallocatedRemoved;
+        }
+
+        public void setIsPropertyQuantityUnallocatedRemoved(Boolean removed)
+        {
+            this.isPropertyQuantityUnallocatedRemoved = removed;
+        }
+
 
         private ShipmentReceiptRoleCommandCollection shipmentReceiptRoleCommands = new SimpleShipmentReceiptRoleCommandCollection();
 
         public ShipmentReceiptRoleCommandCollection getShipmentReceiptRoleCommands()
         {
             return this.shipmentReceiptRoleCommands;
+        }
+
+        private ShipmentReceiptOrderAllocationCommandCollection shipmentReceiptOrderAllocationCommands = new SimpleShipmentReceiptOrderAllocationCommandCollection();
+
+        public ShipmentReceiptOrderAllocationCommandCollection getShipmentReceiptOrderAllocationCommands()
+        {
+            return this.shipmentReceiptOrderAllocationCommands;
         }
 
     }
@@ -591,6 +657,48 @@ public abstract class AbstractShipmentReceiptCommand extends AbstractCommand imp
 
         @Override
         public Iterator<ShipmentReceiptRoleCommand> iterator() {
+            return innerCommands.iterator();
+        }
+    }
+
+    public static class SimpleCreateShipmentReceiptOrderAllocationCommandCollection implements CreateShipmentReceiptOrderAllocationCommandCollection {
+        private List<ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation> innerCommands = new ArrayList<ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation>();
+
+        public void add(ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation c) {
+            innerCommands.add(c);
+        }
+
+        public void remove(ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation c) {
+            innerCommands.remove(c);
+        }
+
+        public void clear() {
+            innerCommands.clear();
+        }
+
+        @Override
+        public Iterator<ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation> iterator() {
+            return innerCommands.iterator();
+        }
+    }
+
+    public static class SimpleShipmentReceiptOrderAllocationCommandCollection implements ShipmentReceiptOrderAllocationCommandCollection {
+        private List<ShipmentReceiptOrderAllocationCommand> innerCommands = new ArrayList<ShipmentReceiptOrderAllocationCommand>();
+
+        public void add(ShipmentReceiptOrderAllocationCommand c) {
+            innerCommands.add(c);
+        }
+
+        public void remove(ShipmentReceiptOrderAllocationCommand c) {
+            innerCommands.remove(c);
+        }
+
+        public void clear() {
+            innerCommands.clear();
+        }
+
+        @Override
+        public Iterator<ShipmentReceiptOrderAllocationCommand> iterator() {
             return innerCommands.iterator();
         }
     }

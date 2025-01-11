@@ -7,6 +7,7 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt;
 
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.AbstractCommand;
 

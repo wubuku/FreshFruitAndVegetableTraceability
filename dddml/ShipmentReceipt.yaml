@@ -71,8 +71,15 @@
         description: The number of cases rejected
         type: numeric
 
+      QuantityUnallocated:
+        type: fixed-point
+        columnName: QUANTITY_UNALLOCATED
+      OrderAllocations:
+        itemType: ShipmentReceiptOrderAllocation
+
       ShipmentReceiptRoles:
         itemType: ShipmentReceiptRole
+
 
     references:
       # RejectionReason:
@@ -107,7 +114,7 @@
             - RECEIPT_ID
             - PARTY_ID
             - ROLE_TYPE_ID
-        properties: {}
+        # properties: {}
         # references:
         # ShipmentReceipt:
         # displayName: ShipmentReceipt
@@ -128,3 +135,30 @@
         # RoleTypeId:
         # columnName: ROLE_TYPE_ID
         # type: id
+
+
+      ShipmentReceiptOrderAllocation:
+        id:
+          name: OrderItemId
+          type: OrderItemId
+        globalId:
+          name: ShipmentReceiptOrderAllocationId
+          type: ShipmentReceiptOrderAllocationId
+          columnNames:
+            - RECEIPT_ID
+            - ORDER_ID
+            - ORDER_ITEM_SEQ_ID
+        reservedPropertyMetadata:
+          noDeleted: false # Removable
+          noActive: true
+        properties:
+          QuantityAllocated:
+            type: fixed-point
+            columnName: QUANTITY_ALLOCATED
+          # IsOrderItemAutoAllocated:
+          #   # 是否为“自动分配到 OrderItem”。
+          #   # 这个属性是可以派生出来的：
+          #   # - 如果 ShipmentReceipt 的 OrderItem 以及 OrderItemSeqId 不为 null，则 IsOrderItemAutoAllocated 为 true；
+          #   # - 否则为 false
+          #   type: indicator
+

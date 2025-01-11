@@ -9,6 +9,7 @@ import java.util.*;
 import java.math.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptEvent.*;
@@ -205,6 +206,16 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.casesRejected = casesRejected;
     }
 
+    private java.math.BigDecimal quantityUnallocated;
+
+    public java.math.BigDecimal getQuantityUnallocated() {
+        return this.quantityUnallocated;
+    }
+
+    public void setQuantityUnallocated(java.math.BigDecimal quantityUnallocated) {
+        this.quantityUnallocated = quantityUnallocated;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -289,6 +300,26 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.shipmentReceiptRoles = shipmentReceiptRoles;
     }
 
+    private Set<ShipmentReceiptOrderAllocationState> protectedOrderAllocations = new HashSet<>();
+
+    protected Set<ShipmentReceiptOrderAllocationState> getProtectedOrderAllocations() {
+        return this.protectedOrderAllocations;
+    }
+
+    protected void setProtectedOrderAllocations(Set<ShipmentReceiptOrderAllocationState> protectedOrderAllocations) {
+        this.protectedOrderAllocations = protectedOrderAllocations;
+    }
+
+    private EntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> orderAllocations;
+
+    public EntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> getOrderAllocations() {
+        return this.orderAllocations;
+    }
+
+    public void setOrderAllocations(EntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> orderAllocations) {
+        this.orderAllocations = orderAllocations;
+    }
+
     private Boolean stateReadOnly;
 
     public Boolean getStateReadOnly() { return this.stateReadOnly; }
@@ -329,6 +360,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
     
     protected void initializeProperties() {
         shipmentReceiptRoles = new SimpleShipmentReceiptRoleStateCollection();
+        orderAllocations = new SimpleShipmentReceiptOrderAllocationStateCollection();
     }
 
     @Override
@@ -380,6 +412,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setLocationSeqId(e.getLocationSeqId());
         this.setCasesAccepted(e.getCasesAccepted());
         this.setCasesRejected(e.getCasesRejected());
+        this.setQuantityUnallocated(e.getQuantityUnallocated());
 
         this.setDeleted(false);
 
@@ -389,6 +422,10 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         for (ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateCreated innerEvent : e.getShipmentReceiptRoleEvents()) {
             ShipmentReceiptRoleState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)innerEvent).getShipmentReceiptRoleEventId().getPartyRoleId());
             ((ShipmentReceiptRoleState.SqlShipmentReceiptRoleState)innerState).mutate(innerEvent);
+        }
+        for (ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated innerEvent : e.getShipmentReceiptOrderAllocationEvents()) {
+            ShipmentReceiptOrderAllocationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)innerEvent).getShipmentReceiptOrderAllocationEventId().getOrderItemId());
+            ((ShipmentReceiptOrderAllocationState.SqlShipmentReceiptOrderAllocationState)innerState).mutate(innerEvent);
         }
     }
 
@@ -414,6 +451,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setLocationSeqId(s.getLocationSeqId());
         this.setCasesAccepted(s.getCasesAccepted());
         this.setCasesRejected(s.getCasesRejected());
+        this.setQuantityUnallocated(s.getQuantityUnallocated());
 
         if (s.getShipmentReceiptRoles() != null) {
             Iterable<ShipmentReceiptRoleState> iterable;
@@ -444,6 +482,42 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
                     for (PartyRoleId i : removedStateIds) {
                         ShipmentReceiptRoleState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(i);
                         ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(thisInnerState);
+                    }
+                } else {
+                    throw new UnsupportedOperationException();
+                }
+            }
+        }
+
+        if (s.getOrderAllocations() != null) {
+            Iterable<ShipmentReceiptOrderAllocationState> iterable;
+            if (s.getOrderAllocations().isLazy()) {
+                iterable = s.getOrderAllocations().getLoadedStates();
+            } else {
+                iterable = s.getOrderAllocations();
+            }
+            if (iterable != null) {
+                for (ShipmentReceiptOrderAllocationState ss : iterable) {
+                    ShipmentReceiptOrderAllocationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(ss.getOrderItemId());
+                    ((AbstractShipmentReceiptOrderAllocationState) thisInnerState).merge(ss);
+                }
+            }
+        }
+        if (s.getOrderAllocations() != null) {
+            if (s.getOrderAllocations() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
+                if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getOrderAllocations()).getRemovedStates() != null) {
+                    for (ShipmentReceiptOrderAllocationState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)s.getOrderAllocations()).getRemovedStates()) {
+                        ShipmentReceiptOrderAllocationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(ss.getOrderItemId());
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAllocations()).removeState(thisInnerState);
+                    }
+                }
+            } else {
+                if (s.getOrderAllocations().isAllLoaded()) {
+                    Set<OrderItemId> removedStateIds = new HashSet<>(this.getOrderAllocations().stream().map(i -> i.getOrderItemId()).collect(java.util.stream.Collectors.toList()));
+                    s.getOrderAllocations().forEach(i -> removedStateIds.remove(i.getOrderItemId()));
+                    for (OrderItemId i : removedStateIds) {
+                        ShipmentReceiptOrderAllocationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(i);
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAllocations()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -581,6 +655,13 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         } else {
             this.setCasesRejected(e.getCasesRejected());
         }
+        if (e.getQuantityUnallocated() == null) {
+            if (e.getIsPropertyQuantityUnallocatedRemoved() != null && e.getIsPropertyQuantityUnallocatedRemoved()) {
+                this.setQuantityUnallocated(null);
+            }
+        } else {
+            this.setQuantityUnallocated(e.getQuantityUnallocated());
+        }
 
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
@@ -588,6 +669,14 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         for (ShipmentReceiptRoleEvent innerEvent : e.getShipmentReceiptRoleEvents()) {
             ShipmentReceiptRoleState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)innerEvent).getShipmentReceiptRoleEventId().getPartyRoleId());
             ((ShipmentReceiptRoleState.SqlShipmentReceiptRoleState)innerState).mutate(innerEvent);
+        }
+        for (ShipmentReceiptOrderAllocationEvent innerEvent : e.getShipmentReceiptOrderAllocationEvents()) {
+            ShipmentReceiptOrderAllocationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)innerEvent).getShipmentReceiptOrderAllocationEventId().getOrderItemId());
+            ((ShipmentReceiptOrderAllocationState.SqlShipmentReceiptOrderAllocationState)innerState).mutate(innerEvent);
+            if (innerEvent instanceof ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved) {
+                //ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved removed = (ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved)innerEvent;
+                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAllocations()).removeState(innerState);
+            }
         }
     }
 
@@ -601,11 +690,23 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         for (ShipmentReceiptRoleState innerState : this.getShipmentReceiptRoles()) {
             ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(innerState);
         }
+        for (ShipmentReceiptOrderAllocationState innerState : this.getOrderAllocations()) {
+            ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAllocations()).removeState(innerState);
+        
+            ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved innerE = e.newShipmentReceiptOrderAllocationStateRemoved(innerState.getOrderItemId());
+            innerE.setCreatedAt(e.getCreatedAt());
+            innerE.setCreatedBy(e.getCreatedBy());
+            ((ShipmentReceiptOrderAllocationState.MutableShipmentReceiptOrderAllocationState)innerState).mutate(innerE);
+            //e.addShipmentReceiptOrderAllocationEvent(innerE);
+        }
     }
 
     public void save() {
         if (shipmentReceiptRoles instanceof Saveable) {
             ((Saveable)shipmentReceiptRoles).save();
+        }
+        if (orderAllocations instanceof Saveable) {
+            ((Saveable)orderAllocations).save();
         }
     }
 
@@ -765,6 +866,127 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         @Override
         public void clear() {
             protectedShipmentReceiptRoles.clear();
+        }
+    }
+
+    class SimpleShipmentReceiptOrderAllocationStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>, Collection<ShipmentReceiptOrderAllocationState> {
+
+        @Override
+        public ShipmentReceiptOrderAllocationState get(OrderItemId orderItemId) {
+            return protectedOrderAllocations.stream().filter(
+                            e -> e.getOrderItemId().equals(orderItemId))
+                    .findFirst().orElse(null);
+        }
+
+        @Override
+        public boolean isLazy() {
+            return false;
+        }
+
+        @Override
+        public boolean isAllLoaded() {
+            return true;
+        }
+
+        @Override
+        public Collection<ShipmentReceiptOrderAllocationState> getLoadedStates() {
+            return protectedOrderAllocations;
+        }
+
+        @Override
+        public ShipmentReceiptOrderAllocationState getOrAddDefault(OrderItemId orderItemId) {
+            ShipmentReceiptOrderAllocationState s = get(orderItemId);
+            if (s == null) {
+                ShipmentReceiptOrderAllocationId globalId = new ShipmentReceiptOrderAllocationId(getReceiptId(), orderItemId);
+                AbstractShipmentReceiptOrderAllocationState state = new AbstractShipmentReceiptOrderAllocationState.SimpleShipmentReceiptOrderAllocationState();
+                state.setShipmentReceiptOrderAllocationId(globalId);
+                add(state);
+                s = state;
+            }
+            return s;
+        }
+
+        @Override
+        public int size() {
+            return protectedOrderAllocations.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return protectedOrderAllocations.isEmpty();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return protectedOrderAllocations.contains(o);
+        }
+
+        @Override
+        public Iterator<ShipmentReceiptOrderAllocationState> iterator() {
+            return protectedOrderAllocations.iterator();
+        }
+
+        @Override
+        public java.util.stream.Stream<ShipmentReceiptOrderAllocationState> stream() {
+            return protectedOrderAllocations.stream();
+        }
+
+        @Override
+        public Object[] toArray() {
+            return protectedOrderAllocations.toArray();
+        }
+
+        @Override
+        public <T> T[] toArray(T[] a) {
+            return protectedOrderAllocations.toArray(a);
+        }
+
+        @Override
+        public boolean add(ShipmentReceiptOrderAllocationState s) {
+            if (s instanceof AbstractShipmentReceiptOrderAllocationState) {
+                AbstractShipmentReceiptOrderAllocationState state = (AbstractShipmentReceiptOrderAllocationState) s;
+                state.setProtectedShipmentReceiptState(AbstractShipmentReceiptState.this);
+            }
+            return protectedOrderAllocations.add(s);
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            if (o instanceof AbstractShipmentReceiptOrderAllocationState) {
+                AbstractShipmentReceiptOrderAllocationState s = (AbstractShipmentReceiptOrderAllocationState) o;
+                s.setProtectedShipmentReceiptState(null);
+            }
+            return protectedOrderAllocations.remove(o);
+        }
+
+        @Override
+        public boolean removeState(ShipmentReceiptOrderAllocationState s) {
+            return remove(s);
+        }
+
+        @Override
+        public boolean containsAll(Collection<?> c) {
+            return protectedOrderAllocations.contains(c);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends ShipmentReceiptOrderAllocationState> c) {
+            return protectedOrderAllocations.addAll(c);
+        }
+
+        @Override
+        public boolean removeAll(Collection<?> c) {
+            return protectedOrderAllocations.removeAll(c);
+        }
+
+        @Override
+        public boolean retainAll(Collection<?> c) {
+            return protectedOrderAllocations.retainAll(c);
+        }
+
+        @Override
+        public void clear() {
+            protectedOrderAllocations.clear();
         }
     }
 

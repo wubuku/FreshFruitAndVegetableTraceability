@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import org.dddml.support.criterion.Criterion;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 
@@ -112,6 +113,14 @@ public abstract class AbstractShipmentReceiptApplicationService implements Shipm
 
     public Iterable<ShipmentReceiptRoleState> getShipmentReceiptRoles(String shipmentReceiptReceiptId, Criterion filter, List<String> orders) {
         return getStateQueryRepository().getShipmentReceiptRoles(shipmentReceiptReceiptId, filter, orders);
+    }
+
+    public ShipmentReceiptOrderAllocationState getShipmentReceiptOrderAllocation(String shipmentReceiptReceiptId, OrderItemId orderItemId) {
+        return getStateQueryRepository().getShipmentReceiptOrderAllocation(shipmentReceiptReceiptId, orderItemId);
+    }
+
+    public Iterable<ShipmentReceiptOrderAllocationState> getShipmentReceiptOrderAllocations(String shipmentReceiptReceiptId, Criterion filter, List<String> orders) {
+        return getStateQueryRepository().getShipmentReceiptOrderAllocations(shipmentReceiptReceiptId, filter, orders);
     }
 
 

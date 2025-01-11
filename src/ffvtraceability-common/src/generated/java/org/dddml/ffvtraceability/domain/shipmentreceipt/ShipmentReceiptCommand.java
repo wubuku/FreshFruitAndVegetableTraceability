@@ -8,6 +8,7 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.specialization.DomainError;
@@ -126,12 +127,20 @@ public interface ShipmentReceiptCommand extends Command {
 
         void setCasesRejected(Long casesRejected);
 
+        java.math.BigDecimal getQuantityUnallocated();
+
+        void setQuantityUnallocated(java.math.BigDecimal quantityUnallocated);
+
     }
 
     interface CreateShipmentReceipt extends CreateOrMergePatchShipmentReceipt {
         CreateShipmentReceiptRoleCommandCollection getCreateShipmentReceiptRoleCommands();
 
         ShipmentReceiptRoleCommand.CreateShipmentReceiptRole newCreateShipmentReceiptRole();
+
+        CreateShipmentReceiptOrderAllocationCommandCollection getCreateShipmentReceiptOrderAllocationCommands();
+
+        ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation newCreateShipmentReceiptOrderAllocation();
 
     }
 
@@ -208,6 +217,10 @@ public interface ShipmentReceiptCommand extends Command {
 
         void setIsPropertyCasesRejectedRemoved(Boolean removed);
 
+        Boolean getIsPropertyQuantityUnallocatedRemoved();
+
+        void setIsPropertyQuantityUnallocatedRemoved(Boolean removed);
+
 
         ShipmentReceiptRoleCommandCollection getShipmentReceiptRoleCommands();
 
@@ -216,6 +229,14 @@ public interface ShipmentReceiptCommand extends Command {
         ShipmentReceiptRoleCommand.MergePatchShipmentReceiptRole newMergePatchShipmentReceiptRole();
 
         ShipmentReceiptRoleCommand.RemoveShipmentReceiptRole newRemoveShipmentReceiptRole();
+
+        ShipmentReceiptOrderAllocationCommandCollection getShipmentReceiptOrderAllocationCommands();
+
+        ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation newCreateShipmentReceiptOrderAllocation();
+
+        ShipmentReceiptOrderAllocationCommand.MergePatchShipmentReceiptOrderAllocation newMergePatchShipmentReceiptOrderAllocation();
+
+        ShipmentReceiptOrderAllocationCommand.RemoveShipmentReceiptOrderAllocation newRemoveShipmentReceiptOrderAllocation();
 
     }
 
@@ -234,6 +255,22 @@ public interface ShipmentReceiptCommand extends Command {
         void add(ShipmentReceiptRoleCommand c);
 
         void remove(ShipmentReceiptRoleCommand c);
+
+        void clear();
+    }
+
+    interface CreateShipmentReceiptOrderAllocationCommandCollection extends Iterable<ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation> {
+        void add(ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation c);
+
+        void remove(ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation c);
+
+        void clear();
+    }
+
+    interface ShipmentReceiptOrderAllocationCommandCollection extends Iterable<ShipmentReceiptOrderAllocationCommand> {
+        void add(ShipmentReceiptOrderAllocationCommand c);
+
+        void remove(ShipmentReceiptOrderAllocationCommand c);
 
         void clear();
     }

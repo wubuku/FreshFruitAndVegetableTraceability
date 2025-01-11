@@ -8,6 +8,7 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 
@@ -75,6 +76,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setLocationSeqId(c.getLocationSeqId());
         e.setCasesAccepted(c.getCasesAccepted());
         e.setCasesRejected(c.getCasesRejected());
+        e.setQuantityUnallocated(c.getQuantityUnallocated());
         ((AbstractShipmentReceiptEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -83,6 +85,12 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
             throwOnInconsistentCommands(c, innerCommand);
             ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateCreated innerEvent = mapCreate(innerCommand, c, version, this.state);
             e.addShipmentReceiptRoleEvent(innerEvent);
+        }
+
+        for (ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation innerCommand : c.getCreateShipmentReceiptOrderAllocationCommands()) {
+            throwOnInconsistentCommands(c, innerCommand);
+            ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated innerEvent = mapCreate(innerCommand, c, version, this.state);
+            e.addShipmentReceiptOrderAllocationEvent(innerEvent);
         }
 
         return e;
@@ -109,6 +117,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setLocationSeqId(c.getLocationSeqId());
         e.setCasesAccepted(c.getCasesAccepted());
         e.setCasesRejected(c.getCasesRejected());
+        e.setQuantityUnallocated(c.getQuantityUnallocated());
         e.setIsPropertyProductIdRemoved(c.getIsPropertyProductIdRemoved());
         e.setIsPropertyShipmentIdRemoved(c.getIsPropertyShipmentIdRemoved());
         e.setIsPropertyShipmentItemSeqIdRemoved(c.getIsPropertyShipmentItemSeqIdRemoved());
@@ -127,6 +136,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         e.setIsPropertyLocationSeqIdRemoved(c.getIsPropertyLocationSeqIdRemoved());
         e.setIsPropertyCasesAcceptedRemoved(c.getIsPropertyCasesAcceptedRemoved());
         e.setIsPropertyCasesRejectedRemoved(c.getIsPropertyCasesRejectedRemoved());
+        e.setIsPropertyQuantityUnallocatedRemoved(c.getIsPropertyQuantityUnallocatedRemoved());
         ((AbstractShipmentReceiptEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -135,6 +145,12 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
             throwOnInconsistentCommands(c, innerCommand);
             ShipmentReceiptRoleEvent innerEvent = map(innerCommand, c, version, this.state);
             e.addShipmentReceiptRoleEvent(innerEvent);
+        }
+
+        for (ShipmentReceiptOrderAllocationCommand innerCommand : c.getShipmentReceiptOrderAllocationCommands()) {
+            throwOnInconsistentCommands(c, innerCommand);
+            ShipmentReceiptOrderAllocationEvent innerEvent = map(innerCommand, c, version, this.state);
+            e.addShipmentReceiptOrderAllocationEvent(innerEvent);
         }
 
         return e;
@@ -191,9 +207,87 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
 
     }// END map(IMergePatch... ////////////////////////////
 
+
+    protected ShipmentReceiptOrderAllocationEvent map(ShipmentReceiptOrderAllocationCommand c, ShipmentReceiptCommand outerCommand, Long version, ShipmentReceiptState outerState) {
+        ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation create = (c.getCommandType().equals(CommandType.CREATE)) ? ((ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation)c) : null;
+        if(create != null) {
+            return mapCreate(create, outerCommand, version, outerState);
+        }
+
+        ShipmentReceiptOrderAllocationCommand.MergePatchShipmentReceiptOrderAllocation merge = (c.getCommandType().equals(CommandType.MERGE_PATCH)) ? ((ShipmentReceiptOrderAllocationCommand.MergePatchShipmentReceiptOrderAllocation)c) : null;
+        if(merge != null) {
+            return mapMergePatch(merge, outerCommand, version, outerState);
+        }
+
+        ShipmentReceiptOrderAllocationCommand.RemoveShipmentReceiptOrderAllocation remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((ShipmentReceiptOrderAllocationCommand.RemoveShipmentReceiptOrderAllocation)c) : null;
+        if (remove != null) {
+            return mapRemove(remove, outerCommand, version, outerState);
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    protected ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated mapCreate(ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation c, ShipmentReceiptCommand outerCommand, Long version, ShipmentReceiptState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        ShipmentReceiptOrderAllocationEventId stateEventId = new ShipmentReceiptOrderAllocationEventId(outerState.getReceiptId(), c.getOrderItemId(), version);
+        ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated e = newShipmentReceiptOrderAllocationStateCreated(stateEventId);
+        ShipmentReceiptOrderAllocationState s = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)outerState.getOrderAllocations()).getOrAddDefault(c.getOrderItemId());
+
+        e.setQuantityAllocated(c.getQuantityAllocated());
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(ICreate... ////////////////////////////
+
+    protected ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateMergePatched mapMergePatch(ShipmentReceiptOrderAllocationCommand.MergePatchShipmentReceiptOrderAllocation c, ShipmentReceiptCommand outerCommand, Long version, ShipmentReceiptState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        ShipmentReceiptOrderAllocationEventId stateEventId = new ShipmentReceiptOrderAllocationEventId(outerState.getReceiptId(), c.getOrderItemId(), version);
+        ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateMergePatched e = newShipmentReceiptOrderAllocationStateMergePatched(stateEventId);
+        ShipmentReceiptOrderAllocationState s = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)outerState.getOrderAllocations()).getOrAddDefault(c.getOrderItemId());
+
+        e.setQuantityAllocated(c.getQuantityAllocated());
+        e.setIsPropertyQuantityAllocatedRemoved(c.getIsPropertyQuantityAllocatedRemoved());
+
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(IMergePatch... ////////////////////////////
+
+    protected ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved mapRemove(ShipmentReceiptOrderAllocationCommand.RemoveShipmentReceiptOrderAllocation c, ShipmentReceiptCommand outerCommand, Long version, ShipmentReceiptState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        ShipmentReceiptOrderAllocationEventId stateEventId = new ShipmentReceiptOrderAllocationEventId(outerState.getReceiptId(), c.getOrderItemId(), version);
+        ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved e = newShipmentReceiptOrderAllocationStateRemoved(stateEventId);
+
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(IRemove... ////////////////////////////
+
     protected void throwOnInconsistentCommands(ShipmentReceiptCommand command, ShipmentReceiptRoleCommand innerCommand) {
         AbstractShipmentReceiptCommand properties = command instanceof AbstractShipmentReceiptCommand ? (AbstractShipmentReceiptCommand) command : null;
         AbstractShipmentReceiptRoleCommand innerProperties = innerCommand instanceof AbstractShipmentReceiptRoleCommand ? (AbstractShipmentReceiptRoleCommand) innerCommand : null;
+        if (properties == null || innerProperties == null) { return; }
+        String outerReceiptIdName = "ReceiptId";
+        String outerReceiptIdValue = properties.getReceiptId();
+        String innerShipmentReceiptReceiptIdName = "ShipmentReceiptReceiptId";
+        String innerShipmentReceiptReceiptIdValue = innerProperties.getShipmentReceiptReceiptId();
+        if (innerShipmentReceiptReceiptIdValue == null) {
+            innerProperties.setShipmentReceiptReceiptId(outerReceiptIdValue);
+        }
+        else if (innerShipmentReceiptReceiptIdValue != outerReceiptIdValue 
+            && (innerShipmentReceiptReceiptIdValue == null || innerShipmentReceiptReceiptIdValue != null && !innerShipmentReceiptReceiptIdValue.equals(outerReceiptIdValue))) {
+            throw DomainError.named("inconsistentId", "Outer %1$s %2$s NOT equals inner %3$s %4$s", outerReceiptIdName, outerReceiptIdValue, innerShipmentReceiptReceiptIdName, innerShipmentReceiptReceiptIdValue);
+        }
+    }// END throwOnInconsistentCommands /////////////////////
+
+    protected void throwOnInconsistentCommands(ShipmentReceiptCommand command, ShipmentReceiptOrderAllocationCommand innerCommand) {
+        AbstractShipmentReceiptCommand properties = command instanceof AbstractShipmentReceiptCommand ? (AbstractShipmentReceiptCommand) command : null;
+        AbstractShipmentReceiptOrderAllocationCommand innerProperties = innerCommand instanceof AbstractShipmentReceiptOrderAllocationCommand ? (AbstractShipmentReceiptOrderAllocationCommand) innerCommand : null;
         if (properties == null || innerProperties == null) { return; }
         String outerReceiptIdName = "ReceiptId";
         String outerReceiptIdValue = properties.getReceiptId();
@@ -256,6 +350,18 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
 
     protected ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateMergePatched newShipmentReceiptRoleStateMergePatched(ShipmentReceiptRoleEventId stateEventId) {
         return new AbstractShipmentReceiptRoleEvent.SimpleShipmentReceiptRoleStateMergePatched(stateEventId);
+    }
+
+    protected ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated newShipmentReceiptOrderAllocationStateCreated(ShipmentReceiptOrderAllocationEventId stateEventId) {
+        return new AbstractShipmentReceiptOrderAllocationEvent.SimpleShipmentReceiptOrderAllocationStateCreated(stateEventId);
+    }
+
+    protected ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateMergePatched newShipmentReceiptOrderAllocationStateMergePatched(ShipmentReceiptOrderAllocationEventId stateEventId) {
+        return new AbstractShipmentReceiptOrderAllocationEvent.SimpleShipmentReceiptOrderAllocationStateMergePatched(stateEventId);
+    }
+
+    protected ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved newShipmentReceiptOrderAllocationStateRemoved(ShipmentReceiptOrderAllocationEventId stateEventId) {
+        return new AbstractShipmentReceiptOrderAllocationEvent.SimpleShipmentReceiptOrderAllocationStateRemoved(stateEventId);
     }
 
 

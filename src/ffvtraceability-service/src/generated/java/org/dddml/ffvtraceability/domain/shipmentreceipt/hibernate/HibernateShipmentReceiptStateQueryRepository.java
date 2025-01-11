@@ -8,6 +8,7 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt.hibernate;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.hibernate.Session;
 import jakarta.persistence.EntityManager;
@@ -30,7 +31,7 @@ public class HibernateShipmentReceiptStateQueryRepository implements ShipmentRec
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ReceiptId", "ProductId", "ShipmentId", "ShipmentItemSeqId", "ShipmentPackageSeqId", "OrderId", "OrderItemSeqId", "ReturnId", "ReturnItemSeqId", "RejectionId", "ReceivedBy", "DatetimeReceived", "ItemDescription", "QuantityAccepted", "QuantityRejected", "LotId", "LocationSeqId", "CasesAccepted", "CasesRejected", "ShipmentReceiptRoles", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ReceiptId", "ProductId", "ShipmentId", "ShipmentItemSeqId", "ShipmentPackageSeqId", "OrderId", "OrderItemSeqId", "ReturnId", "ReturnItemSeqId", "RejectionId", "ReceivedBy", "DatetimeReceived", "ItemDescription", "QuantityAccepted", "QuantityRejected", "LotId", "LocationSeqId", "CasesAccepted", "CasesRejected", "QuantityUnallocated", "OrderAllocations", "ShipmentReceiptRoles", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Deleted"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -165,6 +166,32 @@ public class HibernateShipmentReceiptStateQueryRepository implements ShipmentRec
 
         TypedQuery<AbstractShipmentReceiptRoleState.SimpleShipmentReceiptRoleState> query = em.createQuery(cq);
         return query.getResultList().stream().map(ShipmentReceiptRoleState.class::cast).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public ShipmentReceiptOrderAllocationState getShipmentReceiptOrderAllocation(String shipmentReceiptReceiptId, OrderItemId orderItemId) {
+        ShipmentReceiptOrderAllocationId entityId = new ShipmentReceiptOrderAllocationId(shipmentReceiptReceiptId, orderItemId);
+        return (ShipmentReceiptOrderAllocationState) getEntityManager().find(AbstractShipmentReceiptOrderAllocationState.SimpleShipmentReceiptOrderAllocationState.class, entityId);
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable<ShipmentReceiptOrderAllocationState> getShipmentReceiptOrderAllocations(String shipmentReceiptReceiptId, org.dddml.support.criterion.Criterion filter, List<String> orders) {
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbstractShipmentReceiptOrderAllocationState.SimpleShipmentReceiptOrderAllocationState> cq = cb.createQuery(AbstractShipmentReceiptOrderAllocationState.SimpleShipmentReceiptOrderAllocationState.class);
+        Root<AbstractShipmentReceiptOrderAllocationState.SimpleShipmentReceiptOrderAllocationState> root = cq.from(AbstractShipmentReceiptOrderAllocationState.SimpleShipmentReceiptOrderAllocationState.class);
+        cq.select(root);
+
+        Predicate partIdCondition = cb.and(
+            cb.equal(root.get("shipmentReceiptOrderAllocationId").get("shipmentReceiptReceiptId"), shipmentReceiptReceiptId)
+        );
+        cq.where(partIdCondition);
+
+        // Add filter and orders
+        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
+
+        TypedQuery<AbstractShipmentReceiptOrderAllocationState.SimpleShipmentReceiptOrderAllocationState> query = em.createQuery(cq);
+        return query.getResultList().stream().map(ShipmentReceiptOrderAllocationState.class::cast).collect(Collectors.toList());
     }
 
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
