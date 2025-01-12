@@ -117,6 +117,9 @@
       <property name="syncStatusId">
         <column name="SYNC_STATUS_ID" sql-type="VARCHAR(20)" />
       </property>
+      <property name="fulfillmentStatusId">
+        <column name="FULFILLMENT_STATUS_ID" sql-type="VARCHAR(20)" />
+      </property>
       <property name="estimatedShipDate">
         <column name="ESTIMATED_SHIP_DATE" sql-type="timestamptz" />
       </property>
@@ -177,6 +180,7 @@
         <property name="isPropertyCorrespondingPoIdRemoved" column="is_property_corresponding_po_id_removed" />
         <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
         <property name="isPropertySyncStatusIdRemoved" column="is_property_sync_status_id_removed" />
+        <property name="isPropertyFulfillmentStatusIdRemoved" column="is_property_fulfillment_status_id_removed" />
         <property name="isPropertyEstimatedShipDateRemoved" column="is_property_estimated_ship_date_removed" />
         <property name="isPropertyEstimatedDeliveryDateRemoved" column="is_property_estimated_delivery_date_removed" />
         <property name="isPropertyAutoCancelDateRemoved" column="is_property_auto_cancel_date_removed" />

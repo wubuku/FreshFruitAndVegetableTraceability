@@ -47,6 +47,9 @@ public class BffPurchaseOrderMapperImpl implements BffPurchaseOrderMapper {
 
         BffPurchaseOrderItemDto bffPurchaseOrderItemDto = new BffPurchaseOrderItemDto();
 
+        bffPurchaseOrderItemDto.setStatusId( purchaseOrderAndItemProjection.getItemStatusId() );
+        bffPurchaseOrderItemDto.setSyncStatusId( purchaseOrderAndItemProjection.getItemSyncStatusId() );
+        bffPurchaseOrderItemDto.setFulfillmentStatusId( purchaseOrderAndItemProjection.getItemFulfillmentStatusId() );
         bffPurchaseOrderItemDto.setOrderItemSeqId( purchaseOrderAndItemProjection.getOrderItemSeqId() );
         bffPurchaseOrderItemDto.setExternalId( purchaseOrderAndItemProjection.getExternalId() );
         bffPurchaseOrderItemDto.setProductId( purchaseOrderAndItemProjection.getProductId() );
@@ -59,8 +62,6 @@ public class BffPurchaseOrderMapperImpl implements BffPurchaseOrderMapper {
         bffPurchaseOrderItemDto.setUnitPrice( purchaseOrderAndItemProjection.getUnitPrice() );
         bffPurchaseOrderItemDto.setItemDescription( purchaseOrderAndItemProjection.getItemDescription() );
         bffPurchaseOrderItemDto.setComments( purchaseOrderAndItemProjection.getComments() );
-        bffPurchaseOrderItemDto.setStatusId( purchaseOrderAndItemProjection.getStatusId() );
-        bffPurchaseOrderItemDto.setSyncStatusId( purchaseOrderAndItemProjection.getSyncStatusId() );
         bffPurchaseOrderItemDto.setEstimatedShipDate( instantToOffsetDateTime( purchaseOrderAndItemProjection.getEstimatedShipDate() ) );
         bffPurchaseOrderItemDto.setEstimatedDeliveryDate( instantToOffsetDateTime( purchaseOrderAndItemProjection.getEstimatedDeliveryDate() ) );
 

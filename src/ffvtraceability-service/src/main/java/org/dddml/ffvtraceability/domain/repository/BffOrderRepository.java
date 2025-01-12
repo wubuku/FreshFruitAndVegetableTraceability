@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderState.SimpleOrderHeaderState, String> {
-
     String COMMON_SELECT = """
             SELECT 
                 o.order_id as orderId,
@@ -19,6 +18,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                 o.external_id as externalId,
                 o.order_type_id as orderTypeId,
                 o.status_id as statusId,
+                o.fulfillment_status_id as fulfillmentStatusId,
                 o.order_date as orderDate,
                 o.currency_uom_id as currencyUomId,
                 o.origin_facility_id as originFacilityId,
@@ -36,6 +36,9 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                 oi.supplier_product_id as supplierProductId,
                 oi.estimated_ship_date as estimatedShipDate,
                 oi.estimated_delivery_date as estimatedDeliveryDate,
+                oi.status_id as itemStatusId,
+                oi.sync_status_id as itemSyncStatusId,
+                oi.fulfillment_status_id as itemFulfillmentStatusId,
                 orole.party_id as supplierId,
                 COALESCE(p.organization_name, p.last_name) as supplierName
             """;

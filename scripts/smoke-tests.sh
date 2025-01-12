@@ -855,6 +855,20 @@ http_code=$(curl -X 'GET' \
 echo "$response"
 check_response $? "$http_code" "Query QA inspections"
 
+
+# 重新计算订单的 fulfillmentStatus
+echo "Recalculating fulfillment status..."
+# 捕获 输出 FULFILLMENT_STATUS
+FULFILLMENT_STATUS=$(curl -X 'POST' \
+  "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}/recalculateFulfillmentStatus" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -d '{}' | tr -d '"')
+echo "Order ${ORDER_ID}, fulfillment status: ${FULFILLMENT_STATUS}"
+
+  
 # curl -X 'PUT' \
 #   "${API_BASE_URL}/QaInspections/${QA_INSPECTION_ID}/_commands/QaInspectionAction" \
 #   -H 'accept: */*' \

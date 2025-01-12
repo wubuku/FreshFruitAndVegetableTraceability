@@ -358,6 +358,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         e.setCorrespondingPoId(c.getCorrespondingPoId());
         e.setStatusId(c.getStatusId());
         e.setSyncStatusId(c.getSyncStatusId());
+        e.setFulfillmentStatusId(c.getFulfillmentStatusId());
         e.setEstimatedShipDate(c.getEstimatedShipDate());
         e.setEstimatedDeliveryDate(c.getEstimatedDeliveryDate());
         e.setAutoCancelDate(c.getAutoCancelDate());
@@ -412,6 +413,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         e.setCorrespondingPoId(c.getCorrespondingPoId());
         e.setStatusId(c.getStatusId());
         e.setSyncStatusId(c.getSyncStatusId());
+        e.setFulfillmentStatusId(c.getFulfillmentStatusId());
         e.setEstimatedShipDate(c.getEstimatedShipDate());
         e.setEstimatedDeliveryDate(c.getEstimatedDeliveryDate());
         e.setAutoCancelDate(c.getAutoCancelDate());
@@ -453,6 +455,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         e.setIsPropertyCorrespondingPoIdRemoved(c.getIsPropertyCorrespondingPoIdRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
         e.setIsPropertySyncStatusIdRemoved(c.getIsPropertySyncStatusIdRemoved());
+        e.setIsPropertyFulfillmentStatusIdRemoved(c.getIsPropertyFulfillmentStatusIdRemoved());
         e.setIsPropertyEstimatedShipDateRemoved(c.getIsPropertyEstimatedShipDateRemoved());
         e.setIsPropertyEstimatedDeliveryDateRemoved(c.getIsPropertyEstimatedDeliveryDateRemoved());
         e.setIsPropertyAutoCancelDateRemoved(c.getIsPropertyAutoCancelDateRemoved());

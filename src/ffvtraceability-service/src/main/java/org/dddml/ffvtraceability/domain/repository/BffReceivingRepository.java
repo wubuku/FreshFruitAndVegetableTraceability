@@ -36,7 +36,15 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 sr.quantity_rejected as quantityRejected,
                 sr.cases_accepted as casesAccepted,
                 sr.cases_rejected as casesRejected,
-                sr.datetime_received as datetimeReceived
+                sr.datetime_received as datetimeReceived,
+                sr.order_id as orderId,
+                sr.order_item_seq_id as orderItemSeqId,
+                sr.return_id as returnId,
+                sr.return_item_seq_id as returnItemSeqId,
+                sr.rejection_id as rejectionId,
+                sr.shipment_id as shipmentId,
+                sr.shipment_item_seq_id as shipmentItemSeqId,
+                sr.shipment_package_seq_id as shipmentPackageSeqId
             """;
 
     String COMMON_JOINS = """
@@ -154,4 +162,14 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             "   AND (sd.deleted IS NULL OR sd.deleted = false)",
             nativeQuery = true)
     List<BffReceivingDocumentItemProjection> findReferenceDocumentsByShipmentIds(@Param("shipmentIds") List<String> shipmentIds);
+
+    @Query(value = COMMON_SELECT + """
+            FROM shipment s
+            """ + RECEIPT_JOIN + COMMON_JOINS + """
+            WHERE (sr.order_id = :orderId) OR 
+                (sr.order_id IS NULL AND s.primary_order_id = :orderId)
+            """,
+            nativeQuery = true)
+    List<BffReceivingDocumentItemProjection> findReceivingItemsByOrderId(@Param("orderId") String orderId);
+
 }

@@ -173,6 +173,10 @@ public interface OrderItemEvent extends Event {
 
         void setSyncStatusId(String syncStatusId);
 
+        String getFulfillmentStatusId();
+
+        void setFulfillmentStatusId(String fulfillmentStatusId);
+
         OffsetDateTime getEstimatedShipDate();
 
         void setEstimatedShipDate(OffsetDateTime estimatedShipDate);
@@ -346,6 +350,10 @@ public interface OrderItemEvent extends Event {
         Boolean getIsPropertySyncStatusIdRemoved();
 
         void setIsPropertySyncStatusIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyFulfillmentStatusIdRemoved();
+
+        void setIsPropertyFulfillmentStatusIdRemoved(Boolean removed);
 
         Boolean getIsPropertyEstimatedShipDateRemoved();
 

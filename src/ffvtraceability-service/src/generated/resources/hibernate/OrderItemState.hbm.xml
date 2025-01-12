@@ -113,6 +113,9 @@
     <property name="syncStatusId">
       <column name="SYNC_STATUS_ID" sql-type="VARCHAR(20)" />
     </property>
+    <property name="fulfillmentStatusId">
+      <column name="FULFILLMENT_STATUS_ID" sql-type="VARCHAR(20)" />
+    </property>
     <property name="estimatedShipDate">
       <column name="ESTIMATED_SHIP_DATE" sql-type="timestamptz" />
     </property>

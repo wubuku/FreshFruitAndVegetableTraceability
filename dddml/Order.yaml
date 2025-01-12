@@ -263,6 +263,11 @@
           SyncStatusId:
             columnName: SYNC_STATUS_ID
             type: id
+          # -------------------------------------
+          FulfillmentStatusId:
+            columnName: FULFILLMENT_STATUS_ID
+            type: id
+          # -------------------------------------
           EstimatedShipDate:
             columnName: ESTIMATED_SHIP_DATE
             type: date-time

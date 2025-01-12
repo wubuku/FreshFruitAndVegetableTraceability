@@ -4,6 +4,7 @@ import org.dddml.ffvtraceability.domain.BffPurchaseOrderDto;
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderItemDto;
 import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderAndItemProjection;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -18,6 +19,9 @@ public interface BffPurchaseOrderMapper {
     //@Mapping(source = "createdAtInstant", target = "createdAt")
     BffPurchaseOrderDto toBffPurchaseOrderDto(BffPurchaseOrderAndItemProjection purchaseOrderAndItemProjection);
 
+    @Mapping(source = "itemStatusId", target = "statusId")
+    @Mapping(source = "itemSyncStatusId", target = "syncStatusId")
+    @Mapping(source = "itemFulfillmentStatusId", target = "fulfillmentStatusId")
     BffPurchaseOrderItemDto toBffPurchaseOrderItemDto(BffPurchaseOrderAndItemProjection purchaseOrderAndItemProjection);
 
 }

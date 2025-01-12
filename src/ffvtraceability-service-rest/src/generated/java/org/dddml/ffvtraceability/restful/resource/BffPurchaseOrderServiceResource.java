@@ -33,7 +33,7 @@ public class BffPurchaseOrderServiceResource {
     private BffPurchaseOrderApplicationService bffPurchaseOrderApplicationService;
 
     @GetMapping
-    public Page<BffPurchaseOrderDto> getPurchaseOrderItems(
+    public Page<BffPurchaseOrderDto> getPurchaseOrders(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "orderIdOrItem", required = false) String orderIdOrItem,
@@ -41,16 +41,16 @@ public class BffPurchaseOrderServiceResource {
         @RequestParam(value = "orderDateFrom", required = false) OffsetDateTime orderDateFrom,
         @RequestParam(value = "orderDateTo", required = false) OffsetDateTime orderDateTo
     ) {
-        BffPurchaseOrderServiceCommands.GetPurchaseOrderItems getPurchaseOrderItems = new BffPurchaseOrderServiceCommands.GetPurchaseOrderItems();
-        getPurchaseOrderItems.setPage(page);
-        getPurchaseOrderItems.setSize(size);
-        getPurchaseOrderItems.setOrderIdOrItem(orderIdOrItem);
-        getPurchaseOrderItems.setSupplierId(supplierId);
-        getPurchaseOrderItems.setOrderDateFrom(orderDateFrom);
-        getPurchaseOrderItems.setOrderDateTo(orderDateTo);
+        BffPurchaseOrderServiceCommands.GetPurchaseOrders getPurchaseOrders = new BffPurchaseOrderServiceCommands.GetPurchaseOrders();
+        getPurchaseOrders.setPage(page);
+        getPurchaseOrders.setSize(size);
+        getPurchaseOrders.setOrderIdOrItem(orderIdOrItem);
+        getPurchaseOrders.setSupplierId(supplierId);
+        getPurchaseOrders.setOrderDateFrom(orderDateFrom);
+        getPurchaseOrders.setOrderDateTo(orderDateTo);
         try {
-        getPurchaseOrderItems.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffPurchaseOrderApplicationService.when(getPurchaseOrderItems);
+        getPurchaseOrders.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffPurchaseOrderApplicationService.when(getPurchaseOrders);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
@@ -103,6 +103,18 @@ public class BffPurchaseOrderServiceResource {
         try {
         updatePurchaseOrder.setRequesterId(SecurityContextUtil.getRequesterId());
         bffPurchaseOrderApplicationService.when(updatePurchaseOrder);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PostMapping("{orderId}/recalculateFulfillmentStatus")
+    public String recalculateFulfillmentStatus(
+        @PathVariable("orderId") String orderId,
+        @RequestBody BffPurchaseOrderServiceCommands.RecalculateFulfillmentStatus requestBody
+    ) {
+        requestBody.setOrderId(orderId);
+        try {
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffPurchaseOrderApplicationService.when(requestBody);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

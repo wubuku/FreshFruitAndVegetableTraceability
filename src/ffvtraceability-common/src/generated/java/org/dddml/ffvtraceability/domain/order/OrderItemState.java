@@ -85,6 +85,8 @@ public interface OrderItemState
 
     String getSyncStatusId();
 
+    String getFulfillmentStatusId();
+
     OffsetDateTime getEstimatedShipDate();
 
     OffsetDateTime getEstimatedDeliveryDate();
@@ -183,6 +185,8 @@ public interface OrderItemState
         void setStatusId(String statusId);
 
         void setSyncStatusId(String syncStatusId);
+
+        void setFulfillmentStatusId(String fulfillmentStatusId);
 
         void setEstimatedShipDate(OffsetDateTime estimatedShipDate);
 

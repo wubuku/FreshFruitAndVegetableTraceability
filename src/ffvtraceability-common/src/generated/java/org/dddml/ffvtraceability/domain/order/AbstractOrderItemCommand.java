@@ -435,6 +435,18 @@ public abstract class AbstractOrderItemCommand extends AbstractCommand implement
             this.syncStatusId = syncStatusId;
         }
 
+        private String fulfillmentStatusId;
+
+        public String getFulfillmentStatusId()
+        {
+            return this.fulfillmentStatusId;
+        }
+
+        public void setFulfillmentStatusId(String fulfillmentStatusId)
+        {
+            this.fulfillmentStatusId = fulfillmentStatusId;
+        }
+
         private OffsetDateTime estimatedShipDate;
 
         public OffsetDateTime getEstimatedShipDate()
@@ -943,6 +955,18 @@ public abstract class AbstractOrderItemCommand extends AbstractCommand implement
         public void setIsPropertySyncStatusIdRemoved(Boolean removed)
         {
             this.isPropertySyncStatusIdRemoved = removed;
+        }
+
+        private Boolean isPropertyFulfillmentStatusIdRemoved;
+
+        public Boolean getIsPropertyFulfillmentStatusIdRemoved()
+        {
+            return this.isPropertyFulfillmentStatusIdRemoved;
+        }
+
+        public void setIsPropertyFulfillmentStatusIdRemoved(Boolean removed)
+        {
+            this.isPropertyFulfillmentStatusIdRemoved = removed;
         }
 
         private Boolean isPropertyEstimatedShipDateRemoved;

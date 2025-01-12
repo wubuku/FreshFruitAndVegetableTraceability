@@ -390,6 +390,16 @@ public abstract class AbstractOrderItemState implements OrderItemState.SqlOrderI
         this.syncStatusId = syncStatusId;
     }
 
+    private String fulfillmentStatusId;
+
+    public String getFulfillmentStatusId() {
+        return this.fulfillmentStatusId;
+    }
+
+    public void setFulfillmentStatusId(String fulfillmentStatusId) {
+        this.fulfillmentStatusId = fulfillmentStatusId;
+    }
+
     private OffsetDateTime estimatedShipDate;
 
     public OffsetDateTime getEstimatedShipDate() {
@@ -628,6 +638,7 @@ public abstract class AbstractOrderItemState implements OrderItemState.SqlOrderI
         this.setCorrespondingPoId(e.getCorrespondingPoId());
         this.setStatusId(e.getStatusId());
         this.setSyncStatusId(e.getSyncStatusId());
+        this.setFulfillmentStatusId(e.getFulfillmentStatusId());
         this.setEstimatedShipDate(e.getEstimatedShipDate());
         this.setEstimatedDeliveryDate(e.getEstimatedDeliveryDate());
         this.setAutoCancelDate(e.getAutoCancelDate());
@@ -681,6 +692,7 @@ public abstract class AbstractOrderItemState implements OrderItemState.SqlOrderI
         this.setCorrespondingPoId(s.getCorrespondingPoId());
         this.setStatusId(s.getStatusId());
         this.setSyncStatusId(s.getSyncStatusId());
+        this.setFulfillmentStatusId(s.getFulfillmentStatusId());
         this.setEstimatedShipDate(s.getEstimatedShipDate());
         this.setEstimatedDeliveryDate(s.getEstimatedDeliveryDate());
         this.setAutoCancelDate(s.getAutoCancelDate());
@@ -924,6 +936,13 @@ public abstract class AbstractOrderItemState implements OrderItemState.SqlOrderI
             }
         } else {
             this.setSyncStatusId(e.getSyncStatusId());
+        }
+        if (e.getFulfillmentStatusId() == null) {
+            if (e.getIsPropertyFulfillmentStatusIdRemoved() != null && e.getIsPropertyFulfillmentStatusIdRemoved()) {
+                this.setFulfillmentStatusId(null);
+            }
+        } else {
+            this.setFulfillmentStatusId(e.getFulfillmentStatusId());
         }
         if (e.getEstimatedShipDate() == null) {
             if (e.getIsPropertyEstimatedShipDateRemoved() != null && e.getIsPropertyEstimatedShipDateRemoved()) {

@@ -11,7 +11,7 @@ import org.dddml.ffvtraceability.specialization.Page;
 
 public interface BffPurchaseOrderApplicationService {
 
-    Page<BffPurchaseOrderDto> when(BffPurchaseOrderServiceCommands.GetPurchaseOrderItems c);
+    Page<BffPurchaseOrderDto> when(BffPurchaseOrderServiceCommands.GetPurchaseOrders c);
 
     BffPurchaseOrderDto when(BffPurchaseOrderServiceCommands.GetPurchaseOrder c);
 
@@ -20,6 +20,8 @@ public interface BffPurchaseOrderApplicationService {
     String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrder c);
 
     void when(BffPurchaseOrderServiceCommands.UpdatePurchaseOrder c);
+
+    String when(BffPurchaseOrderServiceCommands.RecalculateFulfillmentStatus c);
 
     String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrderItem c);
 

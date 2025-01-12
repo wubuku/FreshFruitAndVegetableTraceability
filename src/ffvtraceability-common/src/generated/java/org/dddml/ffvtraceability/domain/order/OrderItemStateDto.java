@@ -422,6 +422,18 @@ public class OrderItemStateDto {
         this.syncStatusId = syncStatusId;
     }
 
+    private String fulfillmentStatusId;
+
+    public String getFulfillmentStatusId()
+    {
+        return this.fulfillmentStatusId;
+    }
+
+    public void setFulfillmentStatusId(String fulfillmentStatusId)
+    {
+        this.fulfillmentStatusId = fulfillmentStatusId;
+    }
+
     private OffsetDateTime estimatedShipDate;
 
     public OffsetDateTime getEstimatedShipDate()
@@ -720,6 +732,9 @@ public class OrderItemStateDto {
             }
             if (returnedFieldsContains("SyncStatusId")) {
                 dto.setSyncStatusId(state.getSyncStatusId());
+            }
+            if (returnedFieldsContains("FulfillmentStatusId")) {
+                dto.setFulfillmentStatusId(state.getFulfillmentStatusId());
             }
             if (returnedFieldsContains("EstimatedShipDate")) {
                 dto.setEstimatedShipDate(state.getEstimatedShipDate());

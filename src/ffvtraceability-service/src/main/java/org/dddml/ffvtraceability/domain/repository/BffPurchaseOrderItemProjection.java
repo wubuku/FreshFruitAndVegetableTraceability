@@ -33,9 +33,11 @@ public interface BffPurchaseOrderItemProjection {
 
     String getComments();
 
-    String getStatusId();
+    String getItemStatusId();
 
-    String getSyncStatusId();
+    String getItemSyncStatusId();
+
+    String getItemFulfillmentStatusId();
 
     java.time.Instant getEstimatedShipDate();
     java.time.Instant getEstimatedDeliveryDate();

@@ -14,7 +14,7 @@ public class BffPurchaseOrderServiceCommands {
     private BffPurchaseOrderServiceCommands() {
     }
     
-    public static class GetPurchaseOrderItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
+    public static class GetPurchaseOrders extends org.dddml.ffvtraceability.domain.AbstractCommand {
         private Integer page;
         private Integer size;
 
@@ -178,6 +178,23 @@ public class BffPurchaseOrderServiceCommands {
 
         public void setPurchaseOrder(BffPurchaseOrderDto purchaseOrder) {
             this.purchaseOrder = purchaseOrder;
+        }
+
+    }
+
+    public static class RecalculateFulfillmentStatus extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
         }
 
     }

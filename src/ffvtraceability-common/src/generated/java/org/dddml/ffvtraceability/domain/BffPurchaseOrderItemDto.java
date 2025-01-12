@@ -181,6 +181,18 @@ public class BffPurchaseOrderItemDto implements Serializable {
         this.syncStatusId = syncStatusId;
     }
 
+    private String fulfillmentStatusId;
+
+    public String getFulfillmentStatusId()
+    {
+        return this.fulfillmentStatusId;
+    }
+
+    public void setFulfillmentStatusId(String fulfillmentStatusId)
+    {
+        this.fulfillmentStatusId = fulfillmentStatusId;
+    }
+
     private OffsetDateTime estimatedShipDate;
 
     public OffsetDateTime getEstimatedShipDate()
@@ -219,7 +231,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
     {
     }
 
-    public BffPurchaseOrderItemDto(String orderItemSeqId, String externalId, String productId, String supplierProductId, String productName, String gtin, java.math.BigDecimal quantity, java.math.BigDecimal cancelQuantity, java.math.BigDecimal selectedAmount, java.math.BigDecimal unitPrice, String itemDescription, String comments, String statusId, String syncStatusId, OffsetDateTime estimatedShipDate, OffsetDateTime estimatedDeliveryDate, java.util.List<BffPurchaseOrderFulfillmentDto> fulfillments)
+    public BffPurchaseOrderItemDto(String orderItemSeqId, String externalId, String productId, String supplierProductId, String productName, String gtin, java.math.BigDecimal quantity, java.math.BigDecimal cancelQuantity, java.math.BigDecimal selectedAmount, java.math.BigDecimal unitPrice, String itemDescription, String comments, String statusId, String syncStatusId, String fulfillmentStatusId, OffsetDateTime estimatedShipDate, OffsetDateTime estimatedDeliveryDate, java.util.List<BffPurchaseOrderFulfillmentDto> fulfillments)
     {
         this.orderItemSeqId = orderItemSeqId;
         this.externalId = externalId;
@@ -235,6 +247,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
         this.comments = comments;
         this.statusId = statusId;
         this.syncStatusId = syncStatusId;
+        this.fulfillmentStatusId = fulfillmentStatusId;
         this.estimatedShipDate = estimatedShipDate;
         this.estimatedDeliveryDate = estimatedDeliveryDate;
         this.fulfillments = fulfillments;
@@ -266,6 +279,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
             && (comments == other.comments || (comments != null && comments.equals(other.comments)))
             && (statusId == other.statusId || (statusId != null && statusId.equals(other.statusId)))
             && (syncStatusId == other.syncStatusId || (syncStatusId != null && syncStatusId.equals(other.syncStatusId)))
+            && (fulfillmentStatusId == other.fulfillmentStatusId || (fulfillmentStatusId != null && fulfillmentStatusId.equals(other.fulfillmentStatusId)))
             && (estimatedShipDate == other.estimatedShipDate || (estimatedShipDate != null && estimatedShipDate.equals(other.estimatedShipDate)))
             && (estimatedDeliveryDate == other.estimatedDeliveryDate || (estimatedDeliveryDate != null && estimatedDeliveryDate.equals(other.estimatedDeliveryDate)))
             && (fulfillments == other.fulfillments || (fulfillments != null && fulfillments.equals(other.fulfillments)))
@@ -318,6 +332,9 @@ public class BffPurchaseOrderItemDto implements Serializable {
         if (this.syncStatusId != null) {
             hash += 13 * this.syncStatusId.hashCode();
         }
+        if (this.fulfillmentStatusId != null) {
+            hash += 13 * this.fulfillmentStatusId.hashCode();
+        }
         if (this.estimatedShipDate != null) {
             hash += 13 * this.estimatedShipDate.hashCode();
         }
@@ -347,6 +364,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
                 ", comments=" + '\'' + comments + '\'' +
                 ", statusId=" + '\'' + statusId + '\'' +
                 ", syncStatusId=" + '\'' + syncStatusId + '\'' +
+                ", fulfillmentStatusId=" + '\'' + fulfillmentStatusId + '\'' +
                 ", estimatedShipDate=" + estimatedShipDate +
                 ", estimatedDeliveryDate=" + estimatedDeliveryDate +
                 ", fulfillments=" + fulfillments +

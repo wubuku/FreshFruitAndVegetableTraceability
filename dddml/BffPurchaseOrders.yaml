@@ -65,6 +65,11 @@ valueObjects:
       JpaProjectionPropertyTypes:
         EstimatedShipDate: java.time.Instant
         EstimatedDeliveryDate: java.time.Instant
+      JpaProjectionPropertyAliases:
+        StatusId: ItemStatusId
+        SyncStatusId: ItemSyncStatusId
+        FulfillmentStatusId: ItemFulfillmentStatusId
+
     properties:
       OrderItemSeqId:
         type: id
@@ -140,6 +145,10 @@ valueObjects:
         type: id
       SyncStatusId:
         type: id
+      # ---------------------------------
+      FulfillmentStatusId:
+        type: id
+      # ---------------------------------
       EstimatedShipDate:
         type: date-time
       EstimatedDeliveryDate:
@@ -167,7 +176,7 @@ services:
   BffPurchaseOrderService:
     restfulResourceName: BffPurchaseOrders
     methods:
-      GetPurchaseOrderItems:
+      GetPurchaseOrders:
         metadata:
           IsPageable: true
           ReturnPageEnvelope: true
@@ -238,6 +247,22 @@ services:
           PurchaseOrder:
             type: BffPurchaseOrderDto
 
+      RecalculateFulfillmentStatus:
+        description: "Recalculate the fulfillment status of a purchase order"
+        # 重新计算并更新订单的 fulfillmentStatusId（履行状态）
+        # 订单实体（表）的 FulfillmentStatusId 字段，是根据其他表计算出来的冗余信息，用于提高查询效率。
+        httpMethod: POST
+        restfulResourceName: "{OrderId}/recalculateFulfillmentStatus"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+        parameters:
+          OrderId:
+            type: id
+        result:
+          type: id 
+          # New FulfillmentStatusId
+
 
       CreatePurchaseOrderItem:
         # 添加行项的方法
@@ -253,7 +278,8 @@ services:
           PurchaseOrderItem:
             type: BffPurchaseOrderItemDto
         result:
-          type: id # OrderItemSeqId
+          type: id
+          # OrderItemSeqId
 
 
       DeletePurchaseOrderItem:

@@ -4903,6 +4903,7 @@ public class M {
             "correspondingPoId",
             "statusId",
             "syncStatusId",
+            "fulfillmentStatusId",
             "estimatedShipDate",
             "estimatedDeliveryDate",
             "autoCancelDate",
@@ -4951,6 +4952,7 @@ public class M {
             "java.math.BigDecimal",
             "java.math.BigDecimal",
             "java.math.BigDecimal",
+            "String",
             "String",
             "String",
             "String",
@@ -5058,6 +5060,8 @@ public class M {
         aliasMap.put("StatusId", "statusId");
         aliasMap.put("syncStatusId", "syncStatusId");
         aliasMap.put("SyncStatusId", "syncStatusId");
+        aliasMap.put("fulfillmentStatusId", "fulfillmentStatusId");
+        aliasMap.put("FulfillmentStatusId", "fulfillmentStatusId");
         aliasMap.put("estimatedShipDate", "estimatedShipDate");
         aliasMap.put("EstimatedShipDate", "estimatedShipDate");
         aliasMap.put("estimatedDeliveryDate", "estimatedDeliveryDate");
