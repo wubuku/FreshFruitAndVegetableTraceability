@@ -13,4 +13,8 @@ public class BffOrderConstants {
 
     public static final String ROLE_TYPE_SUPPLIER = "SUPPLIER";
 
+    public static final String FULFILLMENT_STATUS_FULFILLED = "FULFILLED";
+    public static final String FULFILLMENT_STATUS_PARTIALLY_FULFILLED = "PARTIALLY_FULFILLED";
+    public static final String FULFILLMENT_STATUS_NOT_FULFILLED = "NOT_FULFILLED";
+
 }

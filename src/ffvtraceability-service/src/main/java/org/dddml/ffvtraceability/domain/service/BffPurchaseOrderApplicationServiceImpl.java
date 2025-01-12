@@ -27,10 +27,7 @@ import static org.dddml.ffvtraceability.domain.constants.BffOrderConstants.*;
 @Service
 @Transactional
 public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderApplicationService {
-    // 添加常量定义
-    private static final String FULFILLMENT_STATUS_FULFILLED = "FULFILLED";
-    private static final String FULFILLMENT_STATUS_PARTIALLY_FULFILLED = "PARTIALLY_FULFILLED";
-    private static final String FULFILLMENT_STATUS_NOT_FULFILLED = "NOT_FULFILLED";
+
     @Autowired
     private OrderApplicationService orderApplicationService;
     @Autowired
