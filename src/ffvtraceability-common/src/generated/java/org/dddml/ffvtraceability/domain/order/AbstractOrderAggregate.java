@@ -79,6 +79,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         e.setIsViewed(c.getIsViewed());
         e.setInvoicePerShipment(c.getInvoicePerShipment());
         e.setMemo(c.getMemo());
+        e.setFulfillmentStatusId(c.getFulfillmentStatusId());
         ((AbstractOrderEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -146,6 +147,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         e.setIsViewed(c.getIsViewed());
         e.setInvoicePerShipment(c.getInvoicePerShipment());
         e.setMemo(c.getMemo());
+        e.setFulfillmentStatusId(c.getFulfillmentStatusId());
         e.setIsPropertyOrderTypeIdRemoved(c.getIsPropertyOrderTypeIdRemoved());
         e.setIsPropertyOrderNameRemoved(c.getIsPropertyOrderNameRemoved());
         e.setIsPropertyExternalIdRemoved(c.getIsPropertyExternalIdRemoved());
@@ -173,6 +175,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         e.setIsPropertyIsViewedRemoved(c.getIsPropertyIsViewedRemoved());
         e.setIsPropertyInvoicePerShipmentRemoved(c.getIsPropertyInvoicePerShipmentRemoved());
         e.setIsPropertyMemoRemoved(c.getIsPropertyMemoRemoved());
+        e.setIsPropertyFulfillmentStatusIdRemoved(c.getIsPropertyFulfillmentStatusIdRemoved());
         ((AbstractOrderEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

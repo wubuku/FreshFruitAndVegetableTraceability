@@ -26,6 +26,8 @@ public interface BffPurchaseOrderProjection {
 
     String getMemo();
 
+    String getFulfillmentStatusId();
+
     String getSupplierId();
 
     java.time.Instant getCreatedAt();

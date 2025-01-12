@@ -74,6 +74,8 @@ public interface OrderHeaderState
 
     String getMemo();
 
+    String getFulfillmentStatusId();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -150,6 +152,8 @@ public interface OrderHeaderState
         void setInvoicePerShipment(String invoicePerShipment);
 
         void setMemo(String memo);
+
+        void setFulfillmentStatusId(String fulfillmentStatusId);
 
         void setVersion(Long version);
 

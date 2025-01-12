@@ -118,6 +118,9 @@
     <property name="memo">
       <column name="memo" sql-type="VARCHAR(255)" />
     </property>
+    <property name="fulfillmentStatusId">
+      <column name="FULFILLMENT_STATUS_ID" sql-type="VARCHAR(20)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

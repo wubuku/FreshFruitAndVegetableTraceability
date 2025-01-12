@@ -41,6 +41,8 @@ valueObjects:
       Memo:
         # 订单备注
         type: long-varchar
+      FulfillmentStatusId:
+        type: id
       # ---------------------------------
       SupplierId:
         type: id
@@ -142,6 +144,24 @@ valueObjects:
         type: date-time
       EstimatedDeliveryDate:
         type: date-time
+      Fulfillments:
+        itemType: BffPurchaseOrderFulfillmentDto
+        isList: true
+
+  BffPurchaseOrderFulfillmentDto:
+    metadata:
+      JpaProjectionInterfaceName: BffPurchaseOrderFulfillmentProjection
+    properties:
+      ReceiptId:
+        # 收货行项 Id
+        type: id-long
+      AllocatedQuantity:
+        type: fixed-point
+      ReceivedAt:
+        type: date-time
+      QaStatusId:
+        type: id
+
 
 services:
   BffPurchaseOrderService:

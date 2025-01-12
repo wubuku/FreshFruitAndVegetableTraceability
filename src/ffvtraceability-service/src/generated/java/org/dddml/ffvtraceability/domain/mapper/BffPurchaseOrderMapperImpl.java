@@ -29,6 +29,7 @@ public class BffPurchaseOrderMapperImpl implements BffPurchaseOrderMapper {
         bffPurchaseOrderDto.setSyncStatusId( purchaseOrderAndItemProjection.getSyncStatusId() );
         bffPurchaseOrderDto.setOriginFacilityId( purchaseOrderAndItemProjection.getOriginFacilityId() );
         bffPurchaseOrderDto.setMemo( purchaseOrderAndItemProjection.getMemo() );
+        bffPurchaseOrderDto.setFulfillmentStatusId( purchaseOrderAndItemProjection.getFulfillmentStatusId() );
         bffPurchaseOrderDto.setSupplierId( purchaseOrderAndItemProjection.getSupplierId() );
         bffPurchaseOrderDto.setCreatedAt( instantToOffsetDateTime( purchaseOrderAndItemProjection.getCreatedAt() ) );
         bffPurchaseOrderDto.setCreatedBy( purchaseOrderAndItemProjection.getCreatedBy() );

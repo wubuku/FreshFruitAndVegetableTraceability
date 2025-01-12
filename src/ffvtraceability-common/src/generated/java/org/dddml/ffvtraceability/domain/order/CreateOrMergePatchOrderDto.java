@@ -416,6 +416,21 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         this.memo = memo;
     }
 
+    /**
+     * Fulfillment Status Id
+     */
+    private String fulfillmentStatusId;
+
+    public String getFulfillmentStatusId()
+    {
+        return this.fulfillmentStatusId;
+    }
+
+    public void setFulfillmentStatusId(String fulfillmentStatusId)
+    {
+        this.fulfillmentStatusId = fulfillmentStatusId;
+    }
+
 
     private CreateOrMergePatchOrderRoleDto[] orderRoles = new CreateOrMergePatchOrderRoleDto[0];
 
@@ -801,6 +816,18 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         this.isPropertyMemoRemoved = removed;
     }
 
+    private Boolean isPropertyFulfillmentStatusIdRemoved;
+
+    public Boolean getIsPropertyFulfillmentStatusIdRemoved()
+    {
+        return this.isPropertyFulfillmentStatusIdRemoved;
+    }
+
+    public void setIsPropertyFulfillmentStatusIdRemoved(Boolean removed)
+    {
+        this.isPropertyFulfillmentStatusIdRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchOrder command)
     {
         ((AbstractOrderCommandDto) this).copyTo(command);
@@ -831,6 +858,7 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         command.setIsViewed(this.getIsViewed());
         command.setInvoicePerShipment(this.getInvoicePerShipment());
         command.setMemo(this.getMemo());
+        command.setFulfillmentStatusId(this.getFulfillmentStatusId());
     }
 
     public OrderCommand toCommand()
@@ -1007,6 +1035,7 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         command.setIsPropertyIsViewedRemoved(this.getIsPropertyIsViewedRemoved());
         command.setIsPropertyInvoicePerShipmentRemoved(this.getIsPropertyInvoicePerShipmentRemoved());
         command.setIsPropertyMemoRemoved(this.getIsPropertyMemoRemoved());
+        command.setIsPropertyFulfillmentStatusIdRemoved(this.getIsPropertyFulfillmentStatusIdRemoved());
     }
 
     public static class CreateOrderDto extends CreateOrMergePatchOrderDto implements OrderCommand.CreateOrder

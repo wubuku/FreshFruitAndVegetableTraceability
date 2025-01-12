@@ -205,11 +205,21 @@ public class BffPurchaseOrderItemDto implements Serializable {
         this.estimatedDeliveryDate = estimatedDeliveryDate;
     }
 
+    private java.util.List<BffPurchaseOrderFulfillmentDto> fulfillments;
+
+    public java.util.List<BffPurchaseOrderFulfillmentDto> getFulfillments() {
+        return this.fulfillments;
+    }
+
+    public void setFulfillments(java.util.List<BffPurchaseOrderFulfillmentDto> fulfillments) {
+        this.fulfillments = fulfillments;
+    }
+
     public BffPurchaseOrderItemDto()
     {
     }
 
-    public BffPurchaseOrderItemDto(String orderItemSeqId, String externalId, String productId, String supplierProductId, String productName, String gtin, java.math.BigDecimal quantity, java.math.BigDecimal cancelQuantity, java.math.BigDecimal selectedAmount, java.math.BigDecimal unitPrice, String itemDescription, String comments, String statusId, String syncStatusId, OffsetDateTime estimatedShipDate, OffsetDateTime estimatedDeliveryDate)
+    public BffPurchaseOrderItemDto(String orderItemSeqId, String externalId, String productId, String supplierProductId, String productName, String gtin, java.math.BigDecimal quantity, java.math.BigDecimal cancelQuantity, java.math.BigDecimal selectedAmount, java.math.BigDecimal unitPrice, String itemDescription, String comments, String statusId, String syncStatusId, OffsetDateTime estimatedShipDate, OffsetDateTime estimatedDeliveryDate, java.util.List<BffPurchaseOrderFulfillmentDto> fulfillments)
     {
         this.orderItemSeqId = orderItemSeqId;
         this.externalId = externalId;
@@ -227,6 +237,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
         this.syncStatusId = syncStatusId;
         this.estimatedShipDate = estimatedShipDate;
         this.estimatedDeliveryDate = estimatedDeliveryDate;
+        this.fulfillments = fulfillments;
     }
 
     @Override
@@ -257,6 +268,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
             && (syncStatusId == other.syncStatusId || (syncStatusId != null && syncStatusId.equals(other.syncStatusId)))
             && (estimatedShipDate == other.estimatedShipDate || (estimatedShipDate != null && estimatedShipDate.equals(other.estimatedShipDate)))
             && (estimatedDeliveryDate == other.estimatedDeliveryDate || (estimatedDeliveryDate != null && estimatedDeliveryDate.equals(other.estimatedDeliveryDate)))
+            && (fulfillments == other.fulfillments || (fulfillments != null && fulfillments.equals(other.fulfillments)))
             ;
     }
 
@@ -312,6 +324,9 @@ public class BffPurchaseOrderItemDto implements Serializable {
         if (this.estimatedDeliveryDate != null) {
             hash += 13 * this.estimatedDeliveryDate.hashCode();
         }
+        if (this.fulfillments != null) {
+            hash += 13 * this.fulfillments.hashCode();
+        }
         return hash;
     }
 
@@ -334,6 +349,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
                 ", syncStatusId=" + '\'' + syncStatusId + '\'' +
                 ", estimatedShipDate=" + estimatedShipDate +
                 ", estimatedDeliveryDate=" + estimatedDeliveryDate +
+                ", fulfillments=" + fulfillments +
                 '}';
     }
 

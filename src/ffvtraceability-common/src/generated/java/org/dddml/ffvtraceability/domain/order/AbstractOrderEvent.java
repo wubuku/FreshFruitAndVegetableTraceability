@@ -618,6 +618,18 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
             this.memo = memo;
         }
 
+        private String fulfillmentStatusId;
+
+        public String getFulfillmentStatusId()
+        {
+            return this.fulfillmentStatusId;
+        }
+
+        public void setFulfillmentStatusId(String fulfillmentStatusId)
+        {
+            this.fulfillmentStatusId = fulfillmentStatusId;
+        }
+
         protected AbstractOrderStateEvent(OrderEventId eventId) {
             super(eventId);
         }
@@ -1150,6 +1162,16 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
         public void setIsPropertyMemoRemoved(Boolean removed) {
             this.isPropertyMemoRemoved = removed;
+        }
+
+        private Boolean isPropertyFulfillmentStatusIdRemoved;
+
+        public Boolean getIsPropertyFulfillmentStatusIdRemoved() {
+            return this.isPropertyFulfillmentStatusIdRemoved;
+        }
+
+        public void setIsPropertyFulfillmentStatusIdRemoved(Boolean removed) {
+            this.isPropertyFulfillmentStatusIdRemoved = removed;
         }
 
 

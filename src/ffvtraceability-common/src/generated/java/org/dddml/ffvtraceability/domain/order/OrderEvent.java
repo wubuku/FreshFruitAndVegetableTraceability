@@ -150,6 +150,10 @@ public interface OrderEvent extends Event {
 
         void setMemo(String memo);
 
+        String getFulfillmentStatusId();
+
+        void setFulfillmentStatusId(String fulfillmentStatusId);
+
     }
 
     interface OrderStateCreated extends OrderStateEvent
@@ -297,6 +301,10 @@ public interface OrderEvent extends Event {
         Boolean getIsPropertyMemoRemoved();
 
         void setIsPropertyMemoRemoved(Boolean removed);
+
+        Boolean getIsPropertyFulfillmentStatusIdRemoved();
+
+        void setIsPropertyFulfillmentStatusIdRemoved(Boolean removed);
 
 
         Iterable<OrderRoleEvent> getOrderRoleEvents();

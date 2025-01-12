@@ -295,6 +295,16 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.memo = memo;
     }
 
+    private String fulfillmentStatusId;
+
+    public String getFulfillmentStatusId() {
+        return this.fulfillmentStatusId;
+    }
+
+    public void setFulfillmentStatusId(String fulfillmentStatusId) {
+        this.fulfillmentStatusId = fulfillmentStatusId;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -561,6 +571,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setIsViewed(e.getIsViewed());
         this.setInvoicePerShipment(e.getInvoicePerShipment());
         this.setMemo(e.getMemo());
+        this.setFulfillmentStatusId(e.getFulfillmentStatusId());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -618,6 +629,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setIsViewed(s.getIsViewed());
         this.setInvoicePerShipment(s.getInvoicePerShipment());
         this.setMemo(s.getMemo());
+        this.setFulfillmentStatusId(s.getFulfillmentStatusId());
 
         if (s.getOrderRoles() != null) {
             Iterable<OrderRoleState> iterable;
@@ -991,6 +1003,13 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             }
         } else {
             this.setMemo(e.getMemo());
+        }
+        if (e.getFulfillmentStatusId() == null) {
+            if (e.getIsPropertyFulfillmentStatusIdRemoved() != null && e.getIsPropertyFulfillmentStatusIdRemoved()) {
+                this.setFulfillmentStatusId(null);
+            }
+        } else {
+            this.setFulfillmentStatusId(e.getFulfillmentStatusId());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

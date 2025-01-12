@@ -33,6 +33,9 @@ valueObjects:
         type: id
       CreatedAt:
         type: date-time
+      # ReceivedAt:
+      #   type: date-time
+      #   # 目前使用 CreatedAt 作为 ReceivedAt。有必要区分吗？
       ReceivingItems:
         itemType: BffReceivingItemDto
         isList: true

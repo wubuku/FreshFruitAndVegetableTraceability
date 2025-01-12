@@ -157,6 +157,10 @@ public interface OrderCommand extends Command {
 
         void setMemo(String memo);
 
+        String getFulfillmentStatusId();
+
+        void setFulfillmentStatusId(String fulfillmentStatusId);
+
     }
 
     interface CreateOrder extends CreateOrMergePatchOrder {
@@ -290,6 +294,10 @@ public interface OrderCommand extends Command {
         Boolean getIsPropertyMemoRemoved();
 
         void setIsPropertyMemoRemoved(Boolean removed);
+
+        Boolean getIsPropertyFulfillmentStatusIdRemoved();
+
+        void setIsPropertyFulfillmentStatusIdRemoved(Boolean removed);
 
 
         OrderRoleCommandCollection getOrderRoleCommands();

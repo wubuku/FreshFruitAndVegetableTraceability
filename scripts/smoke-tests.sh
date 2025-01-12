@@ -555,12 +555,18 @@ http_code=$(curl -X 'GET' \
 echo "$response"
 check_response $? "$http_code" "Query lots"
 
-# Test Receiving
-echo -e "\n=== Testing Receiving ===\n"
 
-# Create receipt
+# ---------------------------------------------------------------------------------------
+# 订单测试
+echo -e "\n=== Testing Purchase Orders ===\n"
+
+# Create additional raw items (Required by Orders)
+echo -e "\n=== Creating Additional Raw Items ===\n"
+
+# Create organic lettuce
+echo "Creating organic lettuce raw item..."
 curl -X 'POST' \
-  "${API_BASE_URL}/BffReceipts" \
+  "${API_BASE_URL}/BffRawItems" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
@@ -568,17 +574,184 @@ curl -X 'POST' \
   -w '%{http_code}\n' \
   -o /dev/null \
   -d '{
+  "productId": "ORGANIC_LETTUCE_01",
+  "productName": "Organic Lettuce",
+  "description": "Fresh organic lettuce from certified farms",
+  "gtin": "0614141123454",
+  "quantityUomId": "KGM",
+  "quantityIncluded": 1.0,
+  "piecesIncluded": 1,
+  "statusId": "ACTIVE",
+  "supplierId": "SUPPLIER_001"
+}' | { read http_status; check_response $? "$http_status" "Create lettuce raw item"; }
+
+# Create organic cucumber
+echo "Creating organic cucumber raw item..."
+curl -X 'POST' \
+  "${API_BASE_URL}/BffRawItems" \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "productId": "ORGANIC_CUCUMBER_01",
+  "productName": "Organic Cucumber",
+  "description": "Fresh organic cucumbers from certified farms",
+  "gtin": "0614141123455",
+  "quantityUomId": "KGM",
+  "quantityIncluded": 1.0,
+  "piecesIncluded": 1,
+  "statusId": "ACTIVE",
+  "supplierId": "SUPPLIER_001"
+}' | { read http_status; check_response $? "$http_status" "Create cucumber raw item"; }
+
+# Create another lot (Required by second receiving item)
+echo "Creating another lot..."
+curl -X 'POST' \
+  "${API_BASE_URL}/BffLots" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "lotId": "LOT20240315B",
+  "gs1Batch": "LOT20240315B",
+  "quantity": 100,
+  "expirationDate": "2034-12-18T08:53:18.475Z"
+}' | { read http_status; check_response $? "$http_status" "Create second lot"; }
+
+
+# 测试查询订单列表
+echo "Querying purchase orders..."
+response=$(curl -X 'GET' \
+  "${API_BASE_URL}/BffPurchaseOrders?page=0&size=20" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X" \
+  -s)
+http_code=$(curl -X 'GET' \
+  "${API_BASE_URL}/BffPurchaseOrders?page=0&size=20" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}' \
+  -o /dev/null)
+
+echo "$response"
+check_response $? "$http_code" "Query purchase orders"
+
+# 创建订单并提取 orderId
+echo "Creating purchase order..."
+ORDER_ID=$(curl -X 'POST' \
+  "${API_BASE_URL}/BffPurchaseOrders" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -d '{
+  "orderName": "Organic Produce Order",
+  "originFacilityId": "F001",
+  "memo": "Weekly organic produce order",
+  "supplierId": "SUPPLIER_001",
+  "orderItems": [
+    {
+      "productId": "ORGANIC_TOMATO_01",
+      "quantity": 500,
+      "unitPrice": 2.99,
+      "itemDescription": "Organic Tomatoes, Grade A",
+      "comments": "Require fresh produce",
+      "estimatedShipDate": "2024-03-20T08:00:00Z",
+      "estimatedDeliveryDate": "2024-03-21T08:00:00Z"
+    },
+    {
+      "productId": "ORGANIC_LETTUCE_01",
+      "quantity": 300,
+      "unitPrice": 1.99,
+      "itemDescription": "Organic Lettuce",
+      "comments": "Keep refrigerated",
+      "estimatedShipDate": "2024-03-20T08:00:00Z",
+      "estimatedDeliveryDate": "2024-03-21T08:00:00Z"
+    }
+  ]
+}' | tr -d '"')
+
+# 检查订单ID是否成功获取
+if [ -z "$ORDER_ID" ]; then
+  echo -e "${RED}ERROR: Failed to get Order ID from response${NC}"
+  exit 1
+fi
+
+echo "Created purchase order with ID: $ORDER_ID"
+check_response $? "$http_code" "Create purchase order"
+
+# 更新订单行项
+echo "Updating order item..."
+curl -X 'PUT' \
+  "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}/Items/1" \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+   "productId": "ORGANIC_TOMATO_01",
+   "quantity": 550,
+   "unitPrice": 2.99,
+   "itemDescription": "Organic Tomatoes, Grade A",
+   "comments": "Updated: Require extra fresh produce",
+   "estimatedShipDate": "2024-03-20T08:00:00Z",
+   "estimatedDeliveryDate": "2024-03-21T08:00:00Z"
+}' | { read http_status; check_response $? "$http_status" "Update order item"; }
+
+# 添加新的订单行项
+echo "Adding new order item..."
+curl -X 'POST' \
+  "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}/Items" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+   "productId": "ORGANIC_CUCUMBER_01",
+   "quantity": 200,
+   "unitPrice": 1.49,
+   "itemDescription": "Organic Cucumbers",
+   "comments": "New item added",
+   "estimatedShipDate": "2024-03-20T08:00:00Z",
+   "estimatedDeliveryDate": "2024-03-21T08:00:00Z"
+}' | { read http_status; check_response $? "$http_status" "Add order item"; }
+
+
+# ---------------------------------------------------------------------------------------
+# Test Receiving
+echo -e "\n=== Testing Receiving ===\n"
+
+# 创建收货单并提取 receivingDocumentId
+echo "Creating receipt..."
+RECEIVING_ID=$(curl -X 'POST' \
+  "${API_BASE_URL}/BffReceipts" \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -d '{
   "partyIdTo": "FRESH_MART_DC",
   "partyIdFrom": "SUPPLIER_001",
   "originFacilityId": "F001",
   "destinationFacilityId": "DC_FRESH",
-  "primaryOrderId": "PO2024031501",
+  "primaryOrderId": "'${ORDER_ID}'",
   "receivingItems": [
     {
       "productId": "ORGANIC_TOMATO_01",
       "lotId": "LOT20240315A",
       "locationSeqId": "DC_FRESH-WH01-A01",
-      "itemDescription": "Organic Tomato",
+      "itemDescription": "Organic Tomatoes",
       "quantityAccepted": 500.00,
       "quantityRejected": 20.00,
       "casesAccepted": 25,
@@ -590,15 +763,41 @@ curl -X 'POST' \
       "documentLocation": "https://example.com/docs/asn/ASN2024031502.pdf"
     }
   ]
-}' | { read http_status; check_response $? "$http_status" "Create receipt"; }
+}' | tr -d '"')
+
+# 检查收货单ID是否成功获取
+if [ -z "$RECEIVING_ID" ]; then
+  echo -e "${RED}ERROR: Failed to get Receiving ID from response${NC}"
+  exit 1
+fi
+
+echo "Created receipt with ID: $RECEIVING_ID"
+check_response $? "$http_code" "Create receipt"
+
+# 添加收货行项
+echo "Adding receiving item..."
+curl -X 'POST' \
+  "${API_BASE_URL}/BffReceipts/${RECEIVING_ID}/Items" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "productId": "ORGANIC_LETTUCE_01",
+  "lotId": "LOT20240315B",
+  "locationSeqId": "DC_FRESH-WH01-B02",
+  "itemDescription": "Organic Lettuce",
+  "quantityAccepted": 290.00,
+  "quantityRejected": 10.00,
+  "casesAccepted": 15,
+  "casesRejected": 1
+}' | { read http_status; check_response $? "$http_status" "Add receiving item"; }
+
 
 # Query Receipts
 echo "Querying Receipts..."
-response=$(curl -X 'GET' \
-  "${API_BASE_URL}/BffReceipts?page=0&size=20&documentIdOrItem=ORGANIC_TOMATO_01" \
-  -H 'accept: application/json' \
-  -H "X-TenantID: X" \
-  -s)
 http_code=$(curl -X 'GET' \
   "${API_BASE_URL}/BffReceipts?page=0&size=20&documentIdOrItem=ORGANIC_TOMATO_01" \
   -H 'accept: application/json' \
@@ -704,78 +903,4 @@ curl -X 'PUT' \
   "state": "CA",
   "zipCode": "94025"
 }' | { read http_status; check_response $? "$http_status" "Update supplier business contact"; }
-
-
-# ---------------------------------------------------------------------------------------
-# 创建订单
-curl -X 'POST' \
-  "${API_BASE_URL}/BffPurchaseOrders" \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -H "X-TenantID: X" \
-  -d '{
-  "orderName": "Office Supplies Order",
-  "originFacilityId": "F001",
-  "memo": "Urgent order for office supplies",
-  "supplierId": "SUPPLIER_001",
-  "orderItems": [
-    {
-      "productId": "PROD001",
-      "quantity": 10,
-      "unitPrice": 5.99,
-      "itemDescription": "A4 size printer paper, 500 sheets",
-      "comments": "Deliver by next week",
-      "estimatedShipDate": "2025-01-10T08:35:11.703Z",
-      "estimatedDeliveryDate": "2025-01-15T08:35:11.703Z"
-    },
-    {
-      "productId": "ORGANIC_TOMATO_01",
-      "quantity": 5,
-      "unitPrice": 29.99,
-      "itemDescription": "Black ink cartridge for HP printers",
-      "comments": "Ensure compatibility with HP models",
-      "estimatedShipDate": "2025-01-10T08:35:11.703Z",
-      "estimatedDeliveryDate": "2025-01-15T08:35:11.703Z"
-    }
-  ]
-}'
-
-# 查询订单
-curl -X 'GET' \
-  "${API_BASE_URL}/BffPurchaseOrders?page=0&size=20" \
-  -H 'accept: application/json' \
-  -H "X-TenantID: X"
-
-
-# 更新订单行项
-# curl -X 'PUT' \
-#   "${API_BASE_URL}/api/BffPurchaseOrders/119GB574QF4D11ZY51/Items/1" \
-#   -H 'accept: */*' \
-#   -H 'Content-Type: application/json' \
-#   -H "X-TenantID: X"
-#   -d '{
-#    "productId": "PROD001",
-#       "quantity": 12,
-#       "unitPrice": 5.99,
-#       "itemDescription": "A4 size printer paper, 500 sheets",
-#       "comments": "Deliver by next week",
-#       "estimatedShipDate": "2025-01-10T08:35:11.703Z",
-#       "estimatedDeliveryDate": "2025-01-15T08:35:11.703Z"
-# }'
-
-# 添加订单行项
-# curl -X 'POST' \
-#   "${API_BASE_URL}/api/BffPurchaseOrders/119GB574QF4D11ZY51/Items" \
-#   -H 'accept: application/json' \
-#   -H 'Content-Type: application/json' \
-#   -H "X-TenantID: X" \
-#   -d '{
-#       "productId": "PROD001",
-#       "quantity": 12,
-#       "unitPrice": 5.99,
-#       "itemDescription": "A4 size printer paper, 500 sheets",
-#       "comments": "Deliver by next week",
-#       "estimatedShipDate": "2025-01-10T08:35:11.703Z",
-#       "estimatedDeliveryDate": "2025-01-15T08:35:11.703Z"
-# }'
 

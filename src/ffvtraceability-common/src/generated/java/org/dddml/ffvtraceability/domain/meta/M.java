@@ -4516,6 +4516,7 @@ public class M {
             "isViewed",
             "invoicePerShipment",
             "memo",
+            "fulfillmentStatusId",
             "version",
             "createdBy",
             "createdAt",
@@ -4551,6 +4552,7 @@ public class M {
             "String",
             "java.math.BigDecimal",
             "java.math.BigDecimal",
+            "String",
             "String",
             "String",
             "String",
@@ -4631,6 +4633,8 @@ public class M {
         aliasMap.put("InvoicePerShipment", "invoicePerShipment");
         aliasMap.put("memo", "memo");
         aliasMap.put("Memo", "memo");
+        aliasMap.put("fulfillmentStatusId", "fulfillmentStatusId");
+        aliasMap.put("FulfillmentStatusId", "fulfillmentStatusId");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

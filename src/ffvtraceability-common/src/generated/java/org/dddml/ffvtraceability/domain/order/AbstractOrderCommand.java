@@ -364,6 +364,18 @@ public abstract class AbstractOrderCommand extends AbstractCommand implements Or
             this.memo = memo;
         }
 
+        private String fulfillmentStatusId;
+
+        public String getFulfillmentStatusId()
+        {
+            return this.fulfillmentStatusId;
+        }
+
+        public void setFulfillmentStatusId(String fulfillmentStatusId)
+        {
+            this.fulfillmentStatusId = fulfillmentStatusId;
+        }
+
         public OrderRoleCommand.CreateOrderRole newCreateOrderRole()
         {
             AbstractOrderRoleCommand.SimpleCreateOrderRole c = new AbstractOrderRoleCommand.SimpleCreateOrderRole();
@@ -874,6 +886,18 @@ public abstract class AbstractOrderCommand extends AbstractCommand implements Or
         public void setIsPropertyMemoRemoved(Boolean removed)
         {
             this.isPropertyMemoRemoved = removed;
+        }
+
+        private Boolean isPropertyFulfillmentStatusIdRemoved;
+
+        public Boolean getIsPropertyFulfillmentStatusIdRemoved()
+        {
+            return this.isPropertyFulfillmentStatusIdRemoved;
+        }
+
+        public void setIsPropertyFulfillmentStatusIdRemoved(Boolean removed)
+        {
+            this.isPropertyFulfillmentStatusIdRemoved = removed;
         }
 
 

@@ -351,6 +351,18 @@ public class OrderHeaderStateDto {
         this.memo = memo;
     }
 
+    private String fulfillmentStatusId;
+
+    public String getFulfillmentStatusId()
+    {
+        return this.fulfillmentStatusId;
+    }
+
+    public void setFulfillmentStatusId(String fulfillmentStatusId)
+    {
+        this.fulfillmentStatusId = fulfillmentStatusId;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -583,6 +595,9 @@ public class OrderHeaderStateDto {
             }
             if (returnedFieldsContains("Memo")) {
                 dto.setMemo(state.getMemo());
+            }
+            if (returnedFieldsContains("FulfillmentStatusId")) {
+                dto.setFulfillmentStatusId(state.getFulfillmentStatusId());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

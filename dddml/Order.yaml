@@ -102,6 +102,9 @@
       Memo:
         # 订单备注
         type: long-varchar
+      FulfillmentStatusId:
+        columnName: FULFILLMENT_STATUS_ID
+        type: id
       # ---------------------------------
       OrderItems:
         itemType: OrderItem
@@ -461,7 +464,6 @@
             type: id
           SupplierPayableAmount:
             type: currency-amount
-          # ----------------------------------------------
           SupplierSyncStatusId:
             # 供应商同步状态 ID
             type: id
