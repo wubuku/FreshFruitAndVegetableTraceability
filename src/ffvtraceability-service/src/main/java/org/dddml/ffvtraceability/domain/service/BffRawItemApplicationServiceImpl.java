@@ -88,31 +88,32 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
 //        if (c.getRawItem().getSupplierId() != null && partyApplicationService.get(c.getRawItem().getSupplierId()) == null) {
 //            throw new IllegalArgumentException("SupplierId is not valid.");
 //        }
+        BffRawItemDto rawItem = c.getRawItem();
         AbstractProductCommand.SimpleCreateProduct createProduct = new AbstractProductCommand.SimpleCreateProduct();
-        createProduct.setProductId(c.getRawItem().getProductId() != null ? c.getRawItem().getProductId() : IdUtils.randomId());
-        //(c.getRawItem().getProductId()); // NOTE: ignore the productId from the client side?
+        createProduct.setProductId(rawItem.getProductId() != null ? rawItem.getProductId() : IdUtils.randomId());
+        //(rawItem.getProductId()); // NOTE: ignore the productId from the client side?
         //createProduct.setProductTypeId("PRODUCT");
-        createProduct.setProductName(c.getRawItem().getProductName());
-        createProduct.setSmallImageUrl(c.getRawItem().getSmallImageUrl());
-        createProduct.setMediumImageUrl(c.getRawItem().getMediumImageUrl());
-        createProduct.setLargeImageUrl(c.getRawItem().getLargeImageUrl());
-        createProduct.setQuantityUomId(c.getRawItem().getQuantityUomId());
+        createProduct.setProductName(rawItem.getProductName());
+        createProduct.setSmallImageUrl(rawItem.getSmallImageUrl());
+        createProduct.setMediumImageUrl(rawItem.getMediumImageUrl());
+        createProduct.setLargeImageUrl(rawItem.getLargeImageUrl());
+        createProduct.setQuantityUomId(rawItem.getQuantityUomId());
         // If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
-        createProduct.setQuantityIncluded(c.getRawItem().getQuantityIncluded());
-        createProduct.setPiecesIncluded(c.getRawItem().getPiecesIncluded());
+        createProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
+        createProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
         createProduct.setCommandId(createProduct.getProductId()); //c.getCommandId());
         createProduct.setRequesterId(c.getRequesterId());
-        if (c.getRawItem().getGtin() != null) {
+        if (rawItem.getGtin() != null) {
             AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification createGoodIdentification
                     = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
             createGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
-            createGoodIdentification.setIdValue(c.getRawItem().getGtin());
+            createGoodIdentification.setIdValue(rawItem.getGtin());
             createProduct.getCreateGoodIdentificationCommands().add(createGoodIdentification);
         }
         productApplicationService.when(createProduct);
 
-        if (c.getRawItem().getSupplierId() != null) {
-            createSupplierProduct(createProduct.getProductId(), c.getRawItem().getSupplierId(), c);
+        if (rawItem.getSupplierId() != null) {
+            createSupplierProduct(createProduct.getProductId(), rawItem.getSupplierId(), c);
         }
         return createProduct.getProductId();
     }
@@ -125,55 +126,59 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         if (productState == null) {
             throw new IllegalArgumentException("Raw item not found: " + productId);
         }
+        BffRawItemDto rawItem = c.getRawItem();
         AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
         mergePatchProduct.setProductId(productId);
         mergePatchProduct.setProductTypeId("PRODUCT"); // Hard code to "PRODUCT"?
         mergePatchProduct.setVersion(productState.getVersion());
-        mergePatchProduct.setProductName(c.getRawItem().getProductName());
-        mergePatchProduct.setDescription(c.getRawItem().getDescription());
-        mergePatchProduct.setSmallImageUrl(c.getRawItem().getSmallImageUrl());
-        mergePatchProduct.setMediumImageUrl(c.getRawItem().getMediumImageUrl());
-        mergePatchProduct.setLargeImageUrl(c.getRawItem().getLargeImageUrl());
-        mergePatchProduct.setQuantityUomId(c.getRawItem().getQuantityUomId());
-        mergePatchProduct.setQuantityIncluded(c.getRawItem().getQuantityIncluded());
-        mergePatchProduct.setPiecesIncluded(c.getRawItem().getPiecesIncluded());
+        mergePatchProduct.setProductName(rawItem.getProductName());
+        mergePatchProduct.setDescription(rawItem.getDescription());
+        mergePatchProduct.setSmallImageUrl(rawItem.getSmallImageUrl());
+        mergePatchProduct.setMediumImageUrl(rawItem.getMediumImageUrl());
+        mergePatchProduct.setLargeImageUrl(rawItem.getLargeImageUrl());
+        if (rawItem.getQuantityUomId() != null)
+            mergePatchProduct.setQuantityUomId(rawItem.getQuantityUomId());
+        if (rawItem.getQuantityIncluded() != null)
+            mergePatchProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
+        if (rawItem.getPiecesIncluded() != null)
+            mergePatchProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchProduct.setRequesterId(c.getRequesterId());
         productApplicationService.when(mergePatchProduct);
 
-        if (c.getRawItem().getGtin() != null) {
+        if (rawItem.getGtin() != null) {
             var existingGtin = productState.getGoodIdentifications().stream()
                     .filter(x -> x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN))
                     .findFirst();
 
             if (existingGtin.isPresent()) {
-                if (!existingGtin.get().getIdValue().equals(c.getRawItem().getGtin())) {
+                if (!existingGtin.get().getIdValue().equals(rawItem.getGtin())) {
                     GoodIdentificationCommand.MergePatchGoodIdentification mergePatchGoodIdentification
                             = mergePatchProduct.newMergePatchGoodIdentification();
                     mergePatchGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
-                    mergePatchGoodIdentification.setIdValue(c.getRawItem().getGtin());
+                    mergePatchGoodIdentification.setIdValue(rawItem.getGtin());
                     mergePatchProduct.getGoodIdentificationCommands().add(mergePatchGoodIdentification);
                 }
             } else {
                 GoodIdentificationCommand.CreateGoodIdentification createGoodIdentification
                         = mergePatchProduct.newCreateGoodIdentification();
                 createGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
-                createGoodIdentification.setIdValue(c.getRawItem().getGtin());
+                createGoodIdentification.setIdValue(rawItem.getGtin());
                 mergePatchProduct.getGoodIdentificationCommands().add(createGoodIdentification);
             }
         }
-        if (c.getRawItem().getSupplierId() != null) {
+        if (rawItem.getSupplierId() != null) {
             // 这里不需要使用完整的 ID 全等匹配查询
             BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.findSupplierProductAssociation(
                     productId,
-                    c.getRawItem().getSupplierId(),
+                    rawItem.getSupplierId(),
                     DEFAULT_CURRENCY_UOM_ID,
                     BigDecimal.ZERO,
                     OffsetDateTime.now()
             );
             SupplierProductAssocId supplierProductAssocId;
             if (existingAssoc == null) {
-                createSupplierProduct(productId, c.getRawItem().getSupplierId(), c);
+                createSupplierProduct(productId, rawItem.getSupplierId(), c);
             } else {
                 supplierProductAssocId = bffSupplierProductAssocIdMapper.toSupplierProductAssocId(existingAssoc);
                 AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct
