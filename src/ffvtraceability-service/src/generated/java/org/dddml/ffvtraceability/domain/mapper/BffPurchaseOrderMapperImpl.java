@@ -2,8 +2,10 @@ package org.dddml.ffvtraceability.domain.mapper;
 
 import javax.annotation.processing.Generated;
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderDto;
+import org.dddml.ffvtraceability.domain.BffPurchaseOrderFulfillmentDto;
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderItemDto;
 import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderAndItemProjection;
+import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderFulfillmentProjection;
 import org.springframework.stereotype.Component;
 
 @Generated(
@@ -67,5 +69,21 @@ public class BffPurchaseOrderMapperImpl implements BffPurchaseOrderMapper {
         bffPurchaseOrderItemDto.setEstimatedDeliveryDate( instantToOffsetDateTime( purchaseOrderAndItemProjection.getEstimatedDeliveryDate() ) );
 
         return bffPurchaseOrderItemDto;
+    }
+
+    @Override
+    public BffPurchaseOrderFulfillmentDto toBffPurchaseOrderFulfillmentDto(BffPurchaseOrderFulfillmentProjection purchaseOrderFulfillmentProjection) {
+        if ( purchaseOrderFulfillmentProjection == null ) {
+            return null;
+        }
+
+        BffPurchaseOrderFulfillmentDto bffPurchaseOrderFulfillmentDto = new BffPurchaseOrderFulfillmentDto();
+
+        bffPurchaseOrderFulfillmentDto.setReceiptId( purchaseOrderFulfillmentProjection.getReceiptId() );
+        bffPurchaseOrderFulfillmentDto.setAllocatedQuantity( purchaseOrderFulfillmentProjection.getAllocatedQuantity() );
+        bffPurchaseOrderFulfillmentDto.setReceivedAt( instantToOffsetDateTime( purchaseOrderFulfillmentProjection.getReceivedAt() ) );
+        bffPurchaseOrderFulfillmentDto.setQaStatusId( purchaseOrderFulfillmentProjection.getQaStatusId() );
+
+        return bffPurchaseOrderFulfillmentDto;
     }
 }

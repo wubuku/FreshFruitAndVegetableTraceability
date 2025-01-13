@@ -162,6 +162,8 @@ valueObjects:
   BffPurchaseOrderFulfillmentDto:
     metadata:
       JpaProjectionInterfaceName: BffPurchaseOrderFulfillmentProjection
+      JpaProjectionPropertyTypes:
+        ReceivedAt: java.time.Instant
     properties:
       ReceiptId:
         # 收货行项 Id
@@ -207,6 +209,10 @@ services:
         parameters:
           OrderId:
             type: id
+          IncludesItemFulfillments:
+            # 是否包含行项的履行状态
+            type: bool
+            optional: true # NOT required
 
 
       GetPurchaseOrderItem:
@@ -224,6 +230,10 @@ services:
             type: id
           OrderItemSeqId:
             type: id
+          IncludesFulfillments:
+            # 是否包含（当前行项的）履行状态
+            type: bool
+            optional: true # NOT required
 
 
       CreatePurchaseOrder:

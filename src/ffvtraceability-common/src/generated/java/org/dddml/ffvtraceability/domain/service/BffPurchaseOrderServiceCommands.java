@@ -103,6 +103,19 @@ public class BffPurchaseOrderServiceCommands {
             this.orderId = orderId;
         }
 
+        /**
+         * Includes Item Fulfillments
+         */
+        private Boolean includesItemFulfillments;
+
+        public Boolean getIncludesItemFulfillments() {
+            return includesItemFulfillments;
+        }
+
+        public void setIncludesItemFulfillments(Boolean includesItemFulfillments) {
+            this.includesItemFulfillments = includesItemFulfillments;
+        }
+
     }
 
     public static class GetPurchaseOrderItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
@@ -131,6 +144,19 @@ public class BffPurchaseOrderServiceCommands {
 
         public void setOrderItemSeqId(String orderItemSeqId) {
             this.orderItemSeqId = orderItemSeqId;
+        }
+
+        /**
+         * Includes Fulfillments
+         */
+        private Boolean includesFulfillments;
+
+        public Boolean getIncludesFulfillments() {
+            return includesFulfillments;
+        }
+
+        public void setIncludesFulfillments(Boolean includesFulfillments) {
+            this.includesFulfillments = includesFulfillments;
         }
 
     }

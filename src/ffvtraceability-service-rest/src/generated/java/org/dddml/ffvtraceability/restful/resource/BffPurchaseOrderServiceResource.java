@@ -56,10 +56,12 @@ public class BffPurchaseOrderServiceResource {
 
     @GetMapping("{orderId}")
     public BffPurchaseOrderDto getPurchaseOrder(
-        @PathVariable("orderId") String orderId
+        @PathVariable("orderId") String orderId,
+        @RequestParam(value = "includesItemFulfillments", required = false) Boolean includesItemFulfillments
     ) {
         BffPurchaseOrderServiceCommands.GetPurchaseOrder getPurchaseOrder = new BffPurchaseOrderServiceCommands.GetPurchaseOrder();
         getPurchaseOrder.setOrderId(orderId);
+        getPurchaseOrder.setIncludesItemFulfillments(includesItemFulfillments);
         try {
         getPurchaseOrder.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(getPurchaseOrder);
@@ -69,11 +71,13 @@ public class BffPurchaseOrderServiceResource {
     @GetMapping("{orderId}/Items/{orderItemSeqId}")
     public BffPurchaseOrderItemDto getPurchaseOrderItem(
         @PathVariable("orderId") String orderId,
-        @PathVariable("orderItemSeqId") String orderItemSeqId
+        @PathVariable("orderItemSeqId") String orderItemSeqId,
+        @RequestParam(value = "includesFulfillments", required = false) Boolean includesFulfillments
     ) {
         BffPurchaseOrderServiceCommands.GetPurchaseOrderItem getPurchaseOrderItem = new BffPurchaseOrderServiceCommands.GetPurchaseOrderItem();
         getPurchaseOrderItem.setOrderId(orderId);
         getPurchaseOrderItem.setOrderItemSeqId(orderItemSeqId);
+        getPurchaseOrderItem.setIncludesFulfillments(includesFulfillments);
         try {
         getPurchaseOrderItem.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(getPurchaseOrderItem);

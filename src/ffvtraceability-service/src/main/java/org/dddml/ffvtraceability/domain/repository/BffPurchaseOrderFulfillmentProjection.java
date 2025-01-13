@@ -13,8 +13,7 @@ public interface BffPurchaseOrderFulfillmentProjection {
 
     java.math.BigDecimal getAllocatedQuantity();
 
-    OffsetDateTime getReceivedAt();
-
+    java.time.Instant getReceivedAt();
     String getQaStatusId();
 
 }

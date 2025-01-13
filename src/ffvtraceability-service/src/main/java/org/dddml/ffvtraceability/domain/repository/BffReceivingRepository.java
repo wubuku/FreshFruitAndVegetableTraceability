@@ -172,4 +172,21 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             nativeQuery = true)
     List<BffReceivingDocumentItemProjection> findReceivingItemsByOrderId(@Param("orderId") String orderId);
 
+    @Query(value = """
+            SELECT 
+                oa.receipt_id as receiptId,
+                oa.quantity_allocated as allocatedQuantity,
+                sr.datetime_received as receivedAt,
+                s.qa_status_id as qaStatusId
+            FROM shipment_receipt_order_allocation oa
+            JOIN shipment_receipt sr ON oa.receipt_id = sr.receipt_id
+            JOIN shipment s ON sr.shipment_id = s.shipment_id
+            WHERE oa.order_id = :orderId 
+                AND oa.order_item_seq_id = :orderItemSeqId
+            """,
+            nativeQuery = true)
+    List<BffPurchaseOrderFulfillmentProjection> findPurchaseOrderItemFulfillments(
+            @Param("orderId") String orderId,
+            @Param("orderItemSeqId") String orderItemSeqId
+    );
 }

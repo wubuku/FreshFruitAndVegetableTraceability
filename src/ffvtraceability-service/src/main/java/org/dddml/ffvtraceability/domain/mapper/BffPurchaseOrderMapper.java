@@ -1,8 +1,10 @@
 package org.dddml.ffvtraceability.domain.mapper;
 
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderDto;
+import org.dddml.ffvtraceability.domain.BffPurchaseOrderFulfillmentDto;
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderItemDto;
 import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderAndItemProjection;
+import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderFulfillmentProjection;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -24,4 +26,5 @@ public interface BffPurchaseOrderMapper {
     @Mapping(source = "itemFulfillmentStatusId", target = "fulfillmentStatusId")
     BffPurchaseOrderItemDto toBffPurchaseOrderItemDto(BffPurchaseOrderAndItemProjection purchaseOrderAndItemProjection);
 
+    BffPurchaseOrderFulfillmentDto toBffPurchaseOrderFulfillmentDto(BffPurchaseOrderFulfillmentProjection purchaseOrderFulfillmentProjection);
 }

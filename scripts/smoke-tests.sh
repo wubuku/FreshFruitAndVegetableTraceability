@@ -868,7 +868,32 @@ FULFILLMENT_STATUS=$(curl -X 'POST' \
   -d '{}' | tr -d '"')
 echo "Order ${ORDER_ID}, fulfillment status: ${FULFILLMENT_STATUS}"
 
-  
+# 查询订单，包含行项的履行状态。注意参数 includesItemFulfillments=true
+echo "Querying order item fulfillments..."
+response=$(curl -X 'GET' \
+  "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}?includesItemFulfillments=true" \
+  -H 'accept: application/json'  
+  -H "X-TenantID: X" \
+  -s
+)
+echo "$response"
+# 输出类似：
+# {"orderId":"11CMNR3KCJRZ4PXE95","orderName":"Organic Produce Order","orderDate":"2025-01-12T13:12:53.591547Z","originFacilityId":"F001","memo":"Weekly organic produce order","supplierId":"SUPPLIER_001","supplierName":"Vegetables Farm","createdAt":"2025-01-12T13:12:53.599303Z","orderItems":[{"orderItemSeqId":"2" ...
+
+# 查询订单行项，包含（当前行项的）履行状态。注意参数 includesFulfillments=true
+# 提取 orderItems 中的 orderItemSeqId
+ORDER_ITEM_SEQ_ID=$(echo "$response" | jq -r '.orderItems[0].orderItemSeqId')
+echo "Using Order Item Seq ID: ${ORDER_ITEM_SEQ_ID}"
+
+response=$(curl -X 'GET' \
+  "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}/Items/${ORDER_ITEM_SEQ_ID}?includesFulfillments=true" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X" \
+  -s
+)
+echo "$response"
+
+
 # curl -X 'PUT' \
 #   "${API_BASE_URL}/QaInspections/${QA_INSPECTION_ID}/_commands/QaInspectionAction" \
 #   -H 'accept: */*' \

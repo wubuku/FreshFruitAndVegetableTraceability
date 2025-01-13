@@ -110,6 +110,17 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
                         .map(bffPurchaseOrderMapper::toBffPurchaseOrderItemDto)
                         .collect(Collectors.toList())
         );
+        if (c.getIncludesItemFulfillments() != null && c.getIncludesItemFulfillments()) {
+            for (BffPurchaseOrderItemDto item : order.getOrderItems()) {
+                item.setFulfillments(
+                        bffReceivingRepository.findPurchaseOrderItemFulfillments(
+                                        c.getOrderId(), item.getOrderItemSeqId()
+                                ).stream()
+                                .map(bffPurchaseOrderMapper::toBffPurchaseOrderFulfillmentDto)
+                                .collect(Collectors.toList())
+                );
+            }
+        }
 
         return order;
     }
@@ -122,7 +133,17 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         if (projection == null) {
             return null;
         }
-        return bffPurchaseOrderMapper.toBffPurchaseOrderItemDto(projection);
+        BffPurchaseOrderItemDto orderItem = bffPurchaseOrderMapper.toBffPurchaseOrderItemDto(projection);
+        if (c.getIncludesFulfillments() != null && c.getIncludesFulfillments()) {
+            orderItem.setFulfillments(
+                    bffReceivingRepository.findPurchaseOrderItemFulfillments(
+                                    c.getOrderId(), c.getOrderItemSeqId()
+                            ).stream()
+                            .map(bffPurchaseOrderMapper::toBffPurchaseOrderFulfillmentDto)
+                            .collect(Collectors.toList())
+            );
+        }
+        return orderItem;
     }
 
     @Override
