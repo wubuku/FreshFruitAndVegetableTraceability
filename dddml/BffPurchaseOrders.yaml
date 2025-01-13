@@ -46,6 +46,8 @@ valueObjects:
       # ---------------------------------
       SupplierId:
         type: id
+      SupplierName:
+        type: name
       CreatedAt:
         type: date-time
       CreatedBy:

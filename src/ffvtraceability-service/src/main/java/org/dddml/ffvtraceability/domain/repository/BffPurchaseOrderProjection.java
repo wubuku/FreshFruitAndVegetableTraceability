@@ -30,6 +30,8 @@ public interface BffPurchaseOrderProjection {
 
     String getSupplierId();
 
+    String getSupplierName();
+
     java.time.Instant getCreatedAt();
     String getCreatedBy();
 

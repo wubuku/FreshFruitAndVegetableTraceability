@@ -57,25 +57,31 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
             """;
     // AND (oi.deleted IS NULL OR oi.deleted = false)
 
+    String COMMON_WHERE = """
+            WHERE o.order_type_id = 'PURCHASE_ORDER'
+                AND (:orderIdOrItem IS NULL 
+                OR o.order_id LIKE CONCAT(:orderIdOrItem, '%')
+                OR oi.product_id LIKE CONCAT(:orderIdOrItem, '%')
+                OR gi.id_value LIKE CONCAT(:orderIdOrItem, '%'))
+                AND (:supplierId IS NULL OR o.order_id IN (
+                    SELECT order_id FROM order_role 
+                    WHERE party_id = :supplierId AND role_type_id = 'SUPPLIER'
+                ))
+                AND (CAST(:orderDateFrom AS timestamptz) IS NULL OR o.order_date >= :orderDateFrom)
+                AND (CAST(:orderDateTo AS timestamptz) IS NULL OR o.order_date <= :orderDateTo)
+            """;
+
+    String PRODUCT_JOINS = """
+            LEFT JOIN product prod ON oi.product_id = prod.product_id
+            LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
+                AND gi.good_identification_type_id = 'GTIN'
+            """;
+
     @Query(value = """
             WITH filtered_orders AS (
                 SELECT DISTINCT o.order_id, o.order_date
                 FROM order_header o
-                """ + ORDER_ITEM_JOIN + """
-                LEFT JOIN product prod ON oi.product_id = prod.product_id
-                LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
-                    AND gi.good_identification_type_id = 'GTIN'
-                WHERE o.order_type_id = 'PURCHASE_ORDER'
-                    AND (:orderIdOrItem IS NULL 
-                    OR o.order_id LIKE CONCAT(:orderIdOrItem, '%')
-                    OR oi.product_id LIKE CONCAT(:orderIdOrItem, '%')
-                    OR gi.id_value LIKE CONCAT(:orderIdOrItem, '%'))
-                    AND (:supplierId IS NULL OR o.order_id IN (
-                        SELECT order_id FROM order_role 
-                        WHERE party_id = :supplierId AND role_type_id = 'SUPPLIER'
-                    ))
-                    AND (CAST(:orderDateFrom AS timestamptz) IS NULL OR o.order_date >= :orderDateFrom)
-                    AND (CAST(:orderDateTo AS timestamptz) IS NULL OR o.order_date <= :orderDateTo)
+                """ + ORDER_ITEM_JOIN + PRODUCT_JOINS + COMMON_WHERE + """
                 ORDER BY o.order_date DESC
                 LIMIT :pageSize OFFSET :offset
             )
@@ -97,22 +103,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
     @Query(value = """
             SELECT COUNT(DISTINCT o.order_id)
             FROM order_header o
-            LEFT JOIN order_item oi ON o.order_id = oi.order_id
-            LEFT JOIN product prod ON oi.product_id = prod.product_id
-            LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
-                AND gi.good_identification_type_id = 'GTIN'
-            WHERE o.order_type_id = 'PURCHASE_ORDER'
-                AND (:orderIdOrItem IS NULL OR
-                    o.order_id LIKE CONCAT(:orderIdOrItem, '%') OR
-                    oi.product_id LIKE CONCAT(:orderIdOrItem, '%') OR
-                    gi.id_value LIKE CONCAT(:orderIdOrItem, '%'))
-                AND (:supplierId IS NULL OR o.order_id IN (
-                    SELECT order_id FROM order_role 
-                    WHERE party_id = :supplierId AND role_type_id = 'SUPPLIER'
-                ))
-                AND (CAST(:orderDateFrom AS timestamptz) IS NULL OR o.order_date >= :orderDateFrom)
-                AND (CAST(:orderDateTo AS timestamptz) IS NULL OR o.order_date <= :orderDateTo)
-            """, nativeQuery = true)
+            """ + ORDER_ITEM_JOIN + PRODUCT_JOINS + COMMON_WHERE, nativeQuery = true)
     long countTotalShipments(@Param("orderIdOrItem") String orderIdOrItem,
                              @Param("supplierId") String supplierId,
                              @Param("orderDateFrom") OffsetDateTime orderDateFrom,

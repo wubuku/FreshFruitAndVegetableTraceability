@@ -28,8 +28,9 @@ valueObjects:
         type: numeric
       StatusId:
         type: id
-      SupplierId: #Vendor
+      SupplierId:
         type: id
+        # Vendor
       SupplierName:
         type: name
       WeightUomId:

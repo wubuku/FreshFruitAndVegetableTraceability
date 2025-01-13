@@ -142,6 +142,18 @@ public class BffPurchaseOrderDto implements Serializable {
         this.supplierId = supplierId;
     }
 
+    private String supplierName;
+
+    public String getSupplierName()
+    {
+        return this.supplierName;
+    }
+
+    public void setSupplierName(String supplierName)
+    {
+        this.supplierName = supplierName;
+    }
+
     private OffsetDateTime createdAt;
 
     public OffsetDateTime getCreatedAt()
@@ -204,7 +216,7 @@ public class BffPurchaseOrderDto implements Serializable {
     {
     }
 
-    public BffPurchaseOrderDto(String orderId, String orderName, String externalId, OffsetDateTime orderDate, String statusId, String currencyUomId, String syncStatusId, String originFacilityId, String memo, String fulfillmentStatusId, String supplierId, OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt, String updatedBy, java.util.List<BffPurchaseOrderItemDto> orderItems)
+    public BffPurchaseOrderDto(String orderId, String orderName, String externalId, OffsetDateTime orderDate, String statusId, String currencyUomId, String syncStatusId, String originFacilityId, String memo, String fulfillmentStatusId, String supplierId, String supplierName, OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt, String updatedBy, java.util.List<BffPurchaseOrderItemDto> orderItems)
     {
         this.orderId = orderId;
         this.orderName = orderName;
@@ -217,6 +229,7 @@ public class BffPurchaseOrderDto implements Serializable {
         this.memo = memo;
         this.fulfillmentStatusId = fulfillmentStatusId;
         this.supplierId = supplierId;
+        this.supplierName = supplierName;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.updatedAt = updatedAt;
@@ -247,6 +260,7 @@ public class BffPurchaseOrderDto implements Serializable {
             && (memo == other.memo || (memo != null && memo.equals(other.memo)))
             && (fulfillmentStatusId == other.fulfillmentStatusId || (fulfillmentStatusId != null && fulfillmentStatusId.equals(other.fulfillmentStatusId)))
             && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
+            && (supplierName == other.supplierName || (supplierName != null && supplierName.equals(other.supplierName)))
             && (createdAt == other.createdAt || (createdAt != null && createdAt.equals(other.createdAt)))
             && (createdBy == other.createdBy || (createdBy != null && createdBy.equals(other.createdBy)))
             && (updatedAt == other.updatedAt || (updatedAt != null && updatedAt.equals(other.updatedAt)))
@@ -292,6 +306,9 @@ public class BffPurchaseOrderDto implements Serializable {
         if (this.supplierId != null) {
             hash += 13 * this.supplierId.hashCode();
         }
+        if (this.supplierName != null) {
+            hash += 13 * this.supplierName.hashCode();
+        }
         if (this.createdAt != null) {
             hash += 13 * this.createdAt.hashCode();
         }
@@ -324,6 +341,7 @@ public class BffPurchaseOrderDto implements Serializable {
                 ", memo=" + '\'' + memo + '\'' +
                 ", fulfillmentStatusId=" + '\'' + fulfillmentStatusId + '\'' +
                 ", supplierId=" + '\'' + supplierId + '\'' +
+                ", supplierName=" + '\'' + supplierName + '\'' +
                 ", createdAt=" + createdAt +
                 ", createdBy=" + '\'' + createdBy + '\'' +
                 ", updatedAt=" + updatedAt +
