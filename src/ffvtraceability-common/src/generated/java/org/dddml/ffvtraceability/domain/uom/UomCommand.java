@@ -72,6 +72,10 @@ public interface UomCommand extends Command {
 
         void setActive(String active);
 
+        String getUomName();
+
+        void setUomName(String uomName);
+
     }
 
     interface CreateUom extends CreateOrMergePatchUom {
@@ -101,6 +105,10 @@ public interface UomCommand extends Command {
         Boolean getIsPropertyActiveRemoved();
 
         void setIsPropertyActiveRemoved(Boolean removed);
+
+        Boolean getIsPropertyUomNameRemoved();
+
+        void setIsPropertyUomNameRemoved(Boolean removed);
 
 
     }

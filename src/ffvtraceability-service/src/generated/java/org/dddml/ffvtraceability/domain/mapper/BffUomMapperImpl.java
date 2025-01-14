@@ -26,6 +26,8 @@ public class BffUomMapperImpl implements BffUomMapper {
         bffUomDto.setNumericCode( bffUomProjection.getNumericCode() );
         bffUomDto.setDescription( bffUomProjection.getDescription() );
         bffUomDto.setGs1AI( bffUomProjection.getGs1AI() );
+        bffUomDto.setActive( bffUomProjection.getActive() );
+        bffUomDto.setUomName( bffUomProjection.getUomName() );
 
         return bffUomDto;
     }
@@ -44,6 +46,8 @@ public class BffUomMapperImpl implements BffUomMapper {
         bffUomDto.setNumericCode( uomState.getNumericCode() );
         bffUomDto.setDescription( uomState.getDescription() );
         bffUomDto.setGs1AI( uomState.getGs1AI() );
+        bffUomDto.setActive( uomState.getActive() );
+        bffUomDto.setUomName( uomState.getUomName() );
 
         return bffUomDto;
     }

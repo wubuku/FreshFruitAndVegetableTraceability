@@ -1,18 +1,23 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
+import org.dddml.ffvtraceability.domain.BffShipmentBoxTypeDto;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.mapper.BffRawItemMapper;
+import org.dddml.ffvtraceability.domain.mapper.BffShipmentBoxTypeMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierProductAssocIdMapper;
 import org.dddml.ffvtraceability.domain.party.PartyApplicationService;
 import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierProductAssocProjection;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.AbstractShipmentBoxTypeCommand;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeApplicationService;
 import org.dddml.ffvtraceability.domain.supplierproduct.AbstractSupplierProductCommand;
 import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductApplicationService;
 import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId;
 import org.dddml.ffvtraceability.domain.uom.UomApplicationService;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
+import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.DEFAULT_CURRENCY_UOM_ID;
@@ -53,6 +59,11 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Autowired
     private BffSupplierProductAssocIdMapper bffSupplierProductAssocIdMapper;
 
+    @Autowired
+    private ShipmentBoxTypeApplicationService shipmentBoxTypeApplicationService;
+
+    @Autowired
+    private BffShipmentBoxTypeMapper bffShipmentBoxTypeMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -74,6 +85,12 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                     dto.setGtin(x.getIdValue());
                 }
             });
+            if (productState.getDefaultShipmentBoxTypeId() != null) {
+                // 连带返回默认的发货箱类型信息？
+                dto.setDefaultShipmentBoxType(bffShipmentBoxTypeMapper.toBffShipmentBoxTypeDto(
+                        shipmentBoxTypeApplicationService.get(dto.getDefaultShipmentBoxTypeId())
+                ));
+            }
             return dto;
         }
         return null;
@@ -101,8 +118,32 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         // If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
         createProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
         createProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
-        createProduct.setCommandId(createProduct.getProductId()); //c.getCommandId());
+        createProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : createProduct.getProductId());
         createProduct.setRequesterId(c.getRequesterId());
+        createProduct.setDescription(rawItem.getDescription());
+
+        // Weight related fields
+        createProduct.setWeightUomId(rawItem.getWeightUomId());
+        createProduct.setShippingWeight(rawItem.getShippingWeight());
+        createProduct.setProductWeight(rawItem.getProductWeight());
+        // Height related fields
+        createProduct.setHeightUomId(rawItem.getHeightUomId());
+        createProduct.setProductHeight(rawItem.getProductHeight());
+        createProduct.setShippingHeight(rawItem.getShippingHeight());
+        // Width related fields
+        createProduct.setWidthUomId(rawItem.getWidthUomId());
+        createProduct.setProductWidth(rawItem.getProductWidth());
+        createProduct.setShippingWidth(rawItem.getShippingWidth());
+        // Depth related fields
+        createProduct.setDepthUomId(rawItem.getDepthUomId());
+        createProduct.setProductDepth(rawItem.getProductDepth());
+        createProduct.setShippingDepth(rawItem.getShippingDepth());
+        // Diameter related fields
+        createProduct.setDiameterUomId(rawItem.getDiameterUomId());
+        createProduct.setProductDiameter(rawItem.getProductDiameter());
+
+        createProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(rawItem.getActive()));
+
         if (rawItem.getGtin() != null) {
             AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification createGoodIdentification
                     = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
@@ -110,12 +151,37 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             createGoodIdentification.setIdValue(rawItem.getGtin());
             createProduct.getCreateGoodIdentificationCommands().add(createGoodIdentification);
         }
+        if (rawItem.getDefaultShipmentBoxTypeId() != null) {
+            createProduct.setDefaultShipmentBoxTypeId(rawItem.getDefaultShipmentBoxTypeId());
+        } else if (rawItem.getDefaultShipmentBoxType() != null) {
+            createProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
+        }
         productApplicationService.when(createProduct);
 
         if (rawItem.getSupplierId() != null) {
             createSupplierProduct(createProduct.getProductId(), rawItem.getSupplierId(), c);
         }
         return createProduct.getProductId();
+    }
+
+    private String createShipmentBoxType(BffRawItemDto rawItem, Command c) {
+        BffShipmentBoxTypeDto shipmentBoxTypeDto = rawItem.getDefaultShipmentBoxType();
+        AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType createShipmentBoxType
+                = new AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType();
+        createShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeDto.getShipmentBoxTypeId() != null
+                ? shipmentBoxTypeDto.getShipmentBoxTypeId() : IdUtils.randomId());
+        createShipmentBoxType.setDescription(shipmentBoxTypeDto.getDescription());
+        createShipmentBoxType.setDimensionUomId(shipmentBoxTypeDto.getDimensionUomId());
+        createShipmentBoxType.setBoxLength(shipmentBoxTypeDto.getBoxLength());
+        createShipmentBoxType.setBoxHeight(shipmentBoxTypeDto.getBoxHeight());
+        createShipmentBoxType.setBoxWidth(shipmentBoxTypeDto.getBoxWidth());
+        createShipmentBoxType.setWeightUomId(shipmentBoxTypeDto.getWeightUomId());
+        createShipmentBoxType.setBoxWeight(shipmentBoxTypeDto.getBoxWeight());
+        createShipmentBoxType.setBoxTypeName(shipmentBoxTypeDto.getBoxTypeName());
+        createShipmentBoxType.setCommandId(c.getCommandId() != null ? c.getCommandId() : createShipmentBoxType.getShipmentBoxTypeId());
+        createShipmentBoxType.setRequesterId(c.getRequesterId());
+        shipmentBoxTypeApplicationService.when(createShipmentBoxType);
+        return createShipmentBoxType.getShipmentBoxTypeId();
     }
 
     @Override
@@ -142,12 +208,51 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             mergePatchProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
         if (rawItem.getPiecesIncluded() != null)
             mergePatchProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
+        if (rawItem.getWeightUomId() != null)
+            mergePatchProduct.setWeightUomId(rawItem.getWeightUomId());
+        if (rawItem.getShippingWeight() != null)
+            mergePatchProduct.setShippingWeight(rawItem.getShippingWeight());
+        if (rawItem.getProductWeight() != null)
+            mergePatchProduct.setProductWeight(rawItem.getProductWeight());
+
+        if (rawItem.getHeightUomId() != null)
+            mergePatchProduct.setHeightUomId(rawItem.getHeightUomId());
+        if (rawItem.getProductHeight() != null)
+            mergePatchProduct.setProductHeight(rawItem.getProductHeight());
+        if (rawItem.getShippingHeight() != null)
+            mergePatchProduct.setShippingHeight(rawItem.getShippingHeight());
+
+        if (rawItem.getWidthUomId() != null)
+            mergePatchProduct.setWidthUomId(rawItem.getWidthUomId());
+        if (rawItem.getProductWidth() != null)
+            mergePatchProduct.setProductWidth(rawItem.getProductWidth());
+        if (rawItem.getShippingWidth() != null)
+            mergePatchProduct.setShippingWidth(rawItem.getShippingWidth());
+
+        if (rawItem.getDepthUomId() != null)
+            mergePatchProduct.setDepthUomId(rawItem.getDepthUomId());
+        if (rawItem.getProductDepth() != null)
+            mergePatchProduct.setProductDepth(rawItem.getProductDepth());
+        if (rawItem.getShippingDepth() != null)
+            mergePatchProduct.setShippingDepth(rawItem.getShippingDepth());
+
+        if (rawItem.getDiameterUomId() != null)
+            mergePatchProduct.setDiameterUomId(rawItem.getDiameterUomId());
+        if (rawItem.getProductDiameter() != null)
+            mergePatchProduct.setProductDiameter(rawItem.getProductDiameter());
+        mergePatchProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(rawItem.getActive()));
+
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchProduct.setRequesterId(c.getRequesterId());
+        if (rawItem.getDefaultShipmentBoxTypeId() != null) {
+            mergePatchProduct.setDefaultShipmentBoxTypeId(rawItem.getDefaultShipmentBoxTypeId());
+        } else if (rawItem.getDefaultShipmentBoxType() != null) {
+            mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
+        }
         productApplicationService.when(mergePatchProduct);
 
         if (rawItem.getGtin() != null) {
-            var existingGtin = productState.getGoodIdentifications().stream()
+            Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
                     .filter(x -> x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN))
                     .findFirst();
 

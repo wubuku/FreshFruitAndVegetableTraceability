@@ -65,6 +65,10 @@ public interface UomEvent extends Event {
 
         void setActive(String active);
 
+        String getUomName();
+
+        void setUomName(String uomName);
+
     }
 
     interface UomStateCreated extends UomStateEvent
@@ -98,6 +102,10 @@ public interface UomEvent extends Event {
         Boolean getIsPropertyActiveRemoved();
 
         void setIsPropertyActiveRemoved(Boolean removed);
+
+        Boolean getIsPropertyUomNameRemoved();
+
+        void setIsPropertyUomNameRemoved(Boolean removed);
 
 
 

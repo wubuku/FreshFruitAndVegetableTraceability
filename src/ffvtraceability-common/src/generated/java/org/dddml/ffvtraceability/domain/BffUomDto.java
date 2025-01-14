@@ -84,11 +84,35 @@ public class BffUomDto implements Serializable {
         this.gs1AI = gs1AI;
     }
 
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
+    private String uomName;
+
+    public String getUomName()
+    {
+        return this.uomName;
+    }
+
+    public void setUomName(String uomName)
+    {
+        this.uomName = uomName;
+    }
+
     public BffUomDto()
     {
     }
 
-    public BffUomDto(String uomId, String uomTypeId, String abbreviation, Long numericCode, String description, String gs1AI)
+    public BffUomDto(String uomId, String uomTypeId, String abbreviation, Long numericCode, String description, String gs1AI, String active, String uomName)
     {
         this.uomId = uomId;
         this.uomTypeId = uomTypeId;
@@ -96,6 +120,8 @@ public class BffUomDto implements Serializable {
         this.numericCode = numericCode;
         this.description = description;
         this.gs1AI = gs1AI;
+        this.active = active;
+        this.uomName = uomName;
     }
 
     @Override
@@ -116,6 +142,8 @@ public class BffUomDto implements Serializable {
             && (numericCode == other.numericCode || (numericCode != null && numericCode.equals(other.numericCode)))
             && (description == other.description || (description != null && description.equals(other.description)))
             && (gs1AI == other.gs1AI || (gs1AI != null && gs1AI.equals(other.gs1AI)))
+            && (active == other.active || (active != null && active.equals(other.active)))
+            && (uomName == other.uomName || (uomName != null && uomName.equals(other.uomName)))
             ;
     }
 
@@ -141,6 +169,12 @@ public class BffUomDto implements Serializable {
         if (this.gs1AI != null) {
             hash += 13 * this.gs1AI.hashCode();
         }
+        if (this.active != null) {
+            hash += 13 * this.active.hashCode();
+        }
+        if (this.uomName != null) {
+            hash += 13 * this.uomName.hashCode();
+        }
         return hash;
     }
 
@@ -153,6 +187,8 @@ public class BffUomDto implements Serializable {
                 ", numericCode=" + numericCode +
                 ", description=" + '\'' + description + '\'' +
                 ", gs1AI=" + '\'' + gs1AI + '\'' +
+                ", active=" + '\'' + active + '\'' +
+                ", uomName=" + '\'' + uomName + '\'' +
                 '}';
     }
 

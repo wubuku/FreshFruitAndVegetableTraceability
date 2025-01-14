@@ -44,6 +44,7 @@ public class TenantSupport {
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.partyidentificationtype.PartyIdentificationTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.product.ProductState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.producttype.ProductTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.productcategory.ProductCategoryState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.productcategorytype.ProductCategoryTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.document.DocumentState", "tenantId");

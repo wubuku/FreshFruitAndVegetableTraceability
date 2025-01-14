@@ -47,6 +47,8 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setShippingDepth( bffRawItem.getShippingDepth() );
         bffRawItemDto.setDiameterUomId( bffRawItem.getDiameterUomId() );
         bffRawItemDto.setProductDiameter( bffRawItem.getProductDiameter() );
+        bffRawItemDto.setActive( bffRawItem.getActive() );
+        bffRawItemDto.setDefaultShipmentBoxTypeId( bffRawItem.getDefaultShipmentBoxTypeId() );
 
         return bffRawItemDto;
     }
@@ -82,6 +84,8 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setShippingDepth( productState.getShippingDepth() );
         bffRawItemDto.setDiameterUomId( productState.getDiameterUomId() );
         bffRawItemDto.setProductDiameter( productState.getProductDiameter() );
+        bffRawItemDto.setActive( productState.getActive() );
+        bffRawItemDto.setDefaultShipmentBoxTypeId( productState.getDefaultShipmentBoxTypeId() );
 
         return bffRawItemDto;
     }

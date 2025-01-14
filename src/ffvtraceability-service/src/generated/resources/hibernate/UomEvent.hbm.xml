@@ -42,6 +42,9 @@
       <property name="active">
         <column name="active" sql-type="CHAR(1)" />
       </property>
+      <property name="uomName">
+        <column name="uom_name" sql-type="VARCHAR(100)" />
+      </property>
       <subclass name="AbstractUomEvent$SimpleUomStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractUomEvent$SimpleUomStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyUomTypeIdRemoved" column="is_property_uom_type_id_removed" />
@@ -50,6 +53,7 @@
         <property name="isPropertyGs1AIRemoved" column="is_property_gs1_ai_removed" />
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
         <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
+        <property name="isPropertyUomNameRemoved" column="is_property_uom_name_removed" />
       </subclass>
     </subclass>
   </class>

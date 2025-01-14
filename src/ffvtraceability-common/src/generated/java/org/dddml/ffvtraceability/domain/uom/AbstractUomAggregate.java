@@ -57,6 +57,7 @@ public abstract class AbstractUomAggregate extends AbstractAggregate implements 
         e.setGs1AI(c.getGs1AI());
         e.setDescription(c.getDescription());
         e.setActive(c.getActive());
+        e.setUomName(c.getUomName());
         ((AbstractUomEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -72,12 +73,14 @@ public abstract class AbstractUomAggregate extends AbstractAggregate implements 
         e.setGs1AI(c.getGs1AI());
         e.setDescription(c.getDescription());
         e.setActive(c.getActive());
+        e.setUomName(c.getUomName());
         e.setIsPropertyUomTypeIdRemoved(c.getIsPropertyUomTypeIdRemoved());
         e.setIsPropertyAbbreviationRemoved(c.getIsPropertyAbbreviationRemoved());
         e.setIsPropertyNumericCodeRemoved(c.getIsPropertyNumericCodeRemoved());
         e.setIsPropertyGs1AIRemoved(c.getIsPropertyGs1AIRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
+        e.setIsPropertyUomNameRemoved(c.getIsPropertyUomNameRemoved());
         ((AbstractUomEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

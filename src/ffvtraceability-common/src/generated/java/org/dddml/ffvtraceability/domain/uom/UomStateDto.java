@@ -98,6 +98,18 @@ public class UomStateDto {
         this.active = active;
     }
 
+    private String uomName;
+
+    public String getUomName()
+    {
+        return this.uomName;
+    }
+
+    public void setUomName(String uomName)
+    {
+        this.uomName = uomName;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -207,6 +219,9 @@ public class UomStateDto {
             }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
+            }
+            if (returnedFieldsContains("UomName")) {
+                dto.setUomName(state.getUomName());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

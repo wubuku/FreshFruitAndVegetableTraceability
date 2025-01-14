@@ -77,6 +77,9 @@ import org.dddml.ffvtraceability.domain.product.hibernate.*;
 import org.dddml.ffvtraceability.domain.producttype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.producttype.hibernate.*;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.hibernate.*;
 import org.dddml.ffvtraceability.domain.productcategory.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.productcategory.hibernate.*;
@@ -502,6 +505,22 @@ public class AggregatesHibernateConfig {
         AbstractProductTypeApplicationService.SimpleProductTypeApplicationService applicationService = new AbstractProductTypeApplicationService.SimpleProductTypeApplicationService(
                 productTypeStateRepository,
                 productTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService shipmentBoxTypeApplicationService(
+            @Qualifier("shipmentBoxTypeEventStore") EventStore shipmentBoxTypeEventStore,
+            ShipmentBoxTypeStateRepository shipmentBoxTypeStateRepository,
+            ShipmentBoxTypeStateQueryRepository shipmentBoxTypeStateQueryRepository
+    ) {
+        AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService applicationService = new AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService(
+                shipmentBoxTypeEventStore,
+                shipmentBoxTypeStateRepository,
+                shipmentBoxTypeStateQueryRepository
         );
         return applicationService;
     }

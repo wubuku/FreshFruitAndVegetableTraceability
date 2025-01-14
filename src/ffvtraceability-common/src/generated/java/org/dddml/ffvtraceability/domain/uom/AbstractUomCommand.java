@@ -111,6 +111,18 @@ public abstract class AbstractUomCommand extends AbstractCommand implements UomC
             this.active = active;
         }
 
+        private String uomName;
+
+        public String getUomName()
+        {
+            return this.uomName;
+        }
+
+        public void setUomName(String uomName)
+        {
+            this.uomName = uomName;
+        }
+
     }
 
     public static abstract class AbstractCreateUom extends AbstractCreateOrMergePatchUom implements CreateUom
@@ -199,6 +211,18 @@ public abstract class AbstractUomCommand extends AbstractCommand implements UomC
         public void setIsPropertyActiveRemoved(Boolean removed)
         {
             this.isPropertyActiveRemoved = removed;
+        }
+
+        private Boolean isPropertyUomNameRemoved;
+
+        public Boolean getIsPropertyUomNameRemoved()
+        {
+            return this.isPropertyUomNameRemoved;
+        }
+
+        public void setIsPropertyUomNameRemoved(Boolean removed)
+        {
+            this.isPropertyUomNameRemoved = removed;
         }
 
 

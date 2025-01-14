@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipmentboxtype">
+  <class name="AbstractShipmentBoxTypeEvent" table="shipment_box_type_event" abstract="true">
+    <composite-id name="shipmentBoxTypeEventId" class="org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeEventId">
+      <key-property name="shipmentBoxTypeId">
+        <column name="shipment_box_type_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractShipmentBoxTypeEvent$ShipmentBoxTypeLobEvent" discriminator-value="ShipmentBoxTypeLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractShipmentBoxTypeEvent$AbstractShipmentBoxTypeStateEvent" abstract="true">
+      <property name="description">
+        <column name="DESCRIPTION" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="dimensionUomId">
+        <column name="DIMENSION_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="boxLength">
+        <column name="BOX_LENGTH" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="boxWidth">
+        <column name="BOX_WIDTH" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="boxHeight">
+        <column name="BOX_HEIGHT" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="weightUomId">
+        <column name="WEIGHT_UOM_ID" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="boxWeight">
+        <column name="BOX_WEIGHT" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="boxTypeName">
+        <column name="BOX_TYPE_NAME" sql-type="VARCHAR(100)" />
+      </property>
+      <subclass name="AbstractShipmentBoxTypeEvent$SimpleShipmentBoxTypeStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractShipmentBoxTypeEvent$SimpleShipmentBoxTypeStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+        <property name="isPropertyDimensionUomIdRemoved" column="is_property_dimension_uom_id_removed" />
+        <property name="isPropertyBoxLengthRemoved" column="is_property_box_length_removed" />
+        <property name="isPropertyBoxWidthRemoved" column="is_property_box_width_removed" />
+        <property name="isPropertyBoxHeightRemoved" column="is_property_box_height_removed" />
+        <property name="isPropertyWeightUomIdRemoved" column="is_property_weight_uom_id_removed" />
+        <property name="isPropertyBoxWeightRemoved" column="is_property_box_weight_removed" />
+        <property name="isPropertyBoxTypeNameRemoved" column="is_property_box_type_name_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

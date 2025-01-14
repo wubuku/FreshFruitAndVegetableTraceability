@@ -69,6 +69,7 @@ public class M {
         typeToAggMap.put("Product", "Product");
         typeToAggMap.put("GoodIdentification", "Product");
         typeToAggMap.put("ProductType", "ProductType");
+        typeToAggMap.put("ShipmentBoxType", "ShipmentBoxType");
         typeToAggMap.put("ProductCategory", "ProductCategory");
         typeToAggMap.put("ProductCategoryType", "ProductCategoryType");
         typeToAggMap.put("SupplierProduct", "SupplierProduct");
@@ -1500,6 +1501,7 @@ public class M {
             "gs1AI",
             "description",
             "active",
+            "uomName",
             "version",
             "createdBy",
             "createdAt",
@@ -1514,6 +1516,7 @@ public class M {
             "String",
             "String",
             "Long",
+            "String",
             "String",
             "String",
             "String",
@@ -1552,6 +1555,8 @@ public class M {
         aliasMap.put("Description", "description");
         aliasMap.put("active", "active");
         aliasMap.put("Active", "active");
+        aliasMap.put("uomName", "uomName");
+        aliasMap.put("UomName", "uomName");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -3667,6 +3672,115 @@ public class M {
         aliasMap.put("HasTable", "hasTable");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ShipmentBoxTypeMetadata {
+
+    private ShipmentBoxTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "shipmentBoxTypeId",
+            "description",
+            "dimensionUomId",
+            "boxLength",
+            "boxWidth",
+            "boxHeight",
+            "weightUomId",
+            "boxWeight",
+            "boxTypeName",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "java.math.BigDecimal",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("shipmentBoxTypeId", "shipmentBoxTypeId");
+        aliasMap.put("ShipmentBoxTypeId", "shipmentBoxTypeId");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("dimensionUomId", "dimensionUomId");
+        aliasMap.put("DimensionUomId", "dimensionUomId");
+        aliasMap.put("boxLength", "boxLength");
+        aliasMap.put("BoxLength", "boxLength");
+        aliasMap.put("boxWidth", "boxWidth");
+        aliasMap.put("BoxWidth", "boxWidth");
+        aliasMap.put("boxHeight", "boxHeight");
+        aliasMap.put("BoxHeight", "boxHeight");
+        aliasMap.put("weightUomId", "weightUomId");
+        aliasMap.put("WeightUomId", "weightUomId");
+        aliasMap.put("boxWeight", "boxWeight");
+        aliasMap.put("BoxWeight", "boxWeight");
+        aliasMap.put("boxTypeName", "boxTypeName");
+        aliasMap.put("BoxTypeName", "boxTypeName");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

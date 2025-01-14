@@ -30,6 +30,20 @@ public class IndicatorUtils {
         }
     }
 
+    public static String asIndicatorDefaultYes(String indicator) {
+        if (indicator == null) {
+            return INDICATOR_YES;
+        }
+        return toBoolean(indicator) ? INDICATOR_YES : INDICATOR_NO;
+    }
+
+    public static String asIndicatorDefaultNo(String indicator) {
+        if (indicator == null) {
+            return INDICATOR_NO;
+        }
+        return toBoolean(indicator) ? INDICATOR_YES : INDICATOR_NO;
+    }
+
     public static String toIndicator(Boolean b) {
         if (b == null) {
             return null;

@@ -21,6 +21,8 @@
         type: description
       Active:
         type: indicator
+      UomName:
+        type: name
 
     references:
       UomType:

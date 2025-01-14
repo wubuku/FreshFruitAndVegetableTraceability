@@ -17,6 +17,10 @@ valueObjects:
       Gs1AI:
         description: "GS1 Application Identifiers"
         type: id
+      Active:
+        type: indicator
+      UomName:
+        type: name
 
 services:
   BffUomService:

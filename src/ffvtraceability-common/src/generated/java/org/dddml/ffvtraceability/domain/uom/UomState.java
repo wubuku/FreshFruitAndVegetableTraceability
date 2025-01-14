@@ -31,6 +31,8 @@ public interface UomState
 
     String getActive();
 
+    String getUomName();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -55,6 +57,8 @@ public interface UomState
         void setDescription(String description);
 
         void setActive(String active);
+
+        void setUomName(String uomName);
 
         void setVersion(Long version);
 

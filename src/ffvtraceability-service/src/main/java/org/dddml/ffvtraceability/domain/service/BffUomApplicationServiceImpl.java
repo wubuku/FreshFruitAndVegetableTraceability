@@ -7,6 +7,7 @@ import org.dddml.ffvtraceability.domain.uom.AbstractUomCommand;
 import org.dddml.ffvtraceability.domain.uom.UomApplicationService;
 import org.dddml.ffvtraceability.domain.uom.UomState;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
+import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,8 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
         createUom.setDescription(c.getUom().getDescription());
         createUom.setNumericCode(c.getUom().getNumericCode());
         createUom.setGs1AI(c.getUom().getGs1AI());
+        createUom.setUomName(c.getUom().getUomName());
+        createUom.setActive(IndicatorUtils.asIndicatorDefaultYes(c.getUom().getActive()));
         createUom.setCommandId(c.getCommandId() != null ? c.getCommandId() : createUom.getUomId());
         createUom.setRequesterId(c.getRequesterId());
         uomApplicationService.when(createUom);
@@ -84,6 +87,8 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
         mergePatchUom.setDescription(c.getUom().getDescription());
         mergePatchUom.setNumericCode(c.getUom().getNumericCode());
         mergePatchUom.setGs1AI(c.getUom().getGs1AI());
+        mergePatchUom.setUomName(c.getUom().getUomName());
+        mergePatchUom.setActive(IndicatorUtils.asIndicatorDefaultYes(c.getUom().getActive()));
         mergePatchUom.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchUom.setRequesterId(c.getRequesterId());
         uomApplicationService.when(mergePatchUom);

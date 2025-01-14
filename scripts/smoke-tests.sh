@@ -872,7 +872,7 @@ echo "Order ${ORDER_ID}, fulfillment status: ${FULFILLMENT_STATUS}"
 echo "Querying order item fulfillments..."
 response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}?includesItemFulfillments=true" \
-  -H 'accept: application/json'  
+  -H 'accept: application/json' \
   -H "X-TenantID: X" \
   -s
 )

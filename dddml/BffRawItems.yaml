@@ -34,48 +34,43 @@ valueObjects:
       SupplierName:
         type: name
       WeightUomId:
-        columnName: WEIGHT_UOM_ID
         type: id
       ShippingWeight:
         description: The shipping weight of the product.
-        columnName: SHIPPING_WEIGHT
         type: fixed-point
       ProductWeight:
-        columnName: PRODUCT_WEIGHT
         type: fixed-point
       HeightUomId:
-        columnName: HEIGHT_UOM_ID
         type: id
       ProductHeight:
-        columnName: PRODUCT_HEIGHT
         type: fixed-point
       ShippingHeight:
-        columnName: SHIPPING_HEIGHT
         type: fixed-point
       WidthUomId:
-        columnName: WIDTH_UOM_ID
         type: id
       ProductWidth:
-        columnName: PRODUCT_WIDTH
         type: fixed-point
       ShippingWidth:
-        columnName: SHIPPING_WIDTH
         type: fixed-point
       DepthUomId:
-        columnName: DEPTH_UOM_ID
         type: id
       ProductDepth:
-        columnName: PRODUCT_DEPTH
         type: fixed-point
       ShippingDepth:
-        columnName: SHIPPING_DEPTH
         type: fixed-point
       DiameterUomId:
-        columnName: DIAMETER_UOM_ID
         type: id
       ProductDiameter:
-        columnName: PRODUCT_DIAMETER
         type: fixed-point
+      Active:
+        type: indicator
+      DefaultShipmentBoxTypeId:
+        # 默认的装运箱类型 Id
+        type: id
+      # -------------------------------------------------------------------
+      DefaultShipmentBoxType:
+        # 在需要的时候，返回默认的装运箱类型的详细信息
+        type: BffShipmentBoxTypeDto
 
 
 services:
@@ -153,7 +148,7 @@ services:
         parameters:
           RawItems:
             itemType: BffRawItemDto
-
+ 
       # 关于支持通过 CVS 文件导入 RawItem：
       # 可以为这样的功能单独开发开发一个 RestController。它的方法可以不在 DDDML 模型中定义。
       #

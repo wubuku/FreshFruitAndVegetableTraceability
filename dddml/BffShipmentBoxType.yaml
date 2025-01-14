@@ -1,0 +1,106 @@
+
+valueObjects:
+  BffShipmentBoxTypeDto:
+    metadata:
+      JpaProjectionInterfaceName: BffShipmentBoxTypeProjection
+    properties:
+      ShipmentBoxTypeId:
+        type: id
+      Description:
+        type: description
+      DimensionUomId:
+        type: id
+      BoxLength:
+        type: fixed-point
+      BoxWidth:
+        type: fixed-point
+      BoxHeight:
+        type: fixed-point
+      WeightUomId:
+        type: id
+      BoxWeight:
+        type: fixed-point
+      Active:
+        type: indicator
+      BoxTypeName:
+        type: name
+
+
+services:
+  BffShipmentBoxTypeService:
+    restfulResourceName: "BffShipmentBoxTypes"
+    methods:
+      GetShipmentBoxTypes:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        parameters:
+          Active:
+            type: indicator
+          ShipmentBoxTypeId:
+            type: id
+            optional: true # NOT required
+        result:
+          itemType: BffShipmentBoxTypeDto
+
+      GetShipmentBoxType:
+        metadata:
+          RestfulPathVariable: ShipmentBoxTypeId
+        isQuery: true
+        result:
+          type: BffShipmentBoxTypeDto
+        parameters:
+          ShipmentBoxTypeId:
+            type: id
+
+      CreateShipmentBoxType:
+        # 新增 ShipmentBoxType
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: ShipmentBoxType
+        parameters:
+          ShipmentBoxType:
+            type: BffShipmentBoxTypeDto
+        result:
+          type: id # ShipmentBoxTypeId
+
+      UpdateShipmentBoxType:
+        metadata:
+          RestfulPathVariable: ShipmentBoxTypeId
+          HttpRequestBody: ShipmentBoxType
+        httpMethod: PUT
+        parameters:
+          ShipmentBoxTypeId:
+            type: id
+            optional: false # is required
+          ShipmentBoxType:
+            type: BffShipmentBoxTypeDto
+
+      ActivateShipmentBoxType:
+        # 禁用 / 激活指定 Id 的 ShipmentBoxType
+        restfulResourceName: "{ShipmentBoxTypeId}/active"
+        metadata:
+          RestfulPathVariable: ShipmentBoxTypeId
+          HttpRequestBody: Active
+        httpMethod: PUT
+        parameters:
+          ShipmentBoxTypeId:
+            type: id
+            optional: false # is required
+          Active:
+            # 禁用传入 false；激活传入 true。
+            type: boolean
+
+
+      BatchAddShipmentBoxTypes:
+        # 批量添加 ShipmentBoxType
+        httpMethod: POST
+        restfulResourceName: "batchAddShipmentBoxTypes"
+        metadata:
+          HttpRequestBody: ShipmentBoxTypes
+        parameters:
+          ShipmentBoxTypes:
+            itemType: BffShipmentBoxTypeDto
+

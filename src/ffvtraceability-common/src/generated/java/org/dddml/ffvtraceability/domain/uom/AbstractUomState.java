@@ -84,6 +84,16 @@ public abstract class AbstractUomState implements UomState.SqlUomState {
         this.active = active;
     }
 
+    private String uomName;
+
+    public String getUomName() {
+        return this.uomName;
+    }
+
+    public void setUomName(String uomName) {
+        this.uomName = uomName;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -224,6 +234,7 @@ public abstract class AbstractUomState implements UomState.SqlUomState {
         this.setGs1AI(e.getGs1AI());
         this.setDescription(e.getDescription());
         this.setActive(e.getActive());
+        this.setUomName(e.getUomName());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -240,6 +251,7 @@ public abstract class AbstractUomState implements UomState.SqlUomState {
         this.setGs1AI(s.getGs1AI());
         this.setDescription(s.getDescription());
         this.setActive(s.getActive());
+        this.setUomName(s.getUomName());
     }
 
     public void when(UomStateMergePatched e) {
@@ -286,6 +298,13 @@ public abstract class AbstractUomState implements UomState.SqlUomState {
             }
         } else {
             this.setActive(e.getActive());
+        }
+        if (e.getUomName() == null) {
+            if (e.getIsPropertyUomNameRemoved() != null && e.getIsPropertyUomNameRemoved()) {
+                this.setUomName(null);
+            }
+        } else {
+            this.setUomName(e.getUomName());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

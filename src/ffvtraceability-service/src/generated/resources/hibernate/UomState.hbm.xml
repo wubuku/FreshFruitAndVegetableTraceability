@@ -25,6 +25,9 @@
     <property name="active">
       <column name="active" sql-type="CHAR(1)" />
     </property>
+    <property name="uomName">
+      <column name="uom_name" sql-type="VARCHAR(100)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

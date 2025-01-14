@@ -20,5 +20,9 @@ public interface BffUomProjection {
 
     String getGs1AI();
 
+    String getActive();
+
+    String getUomName();
+
 }
 
