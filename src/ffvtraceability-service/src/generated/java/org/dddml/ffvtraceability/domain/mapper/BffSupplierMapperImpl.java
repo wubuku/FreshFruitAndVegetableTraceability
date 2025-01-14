@@ -2,6 +2,7 @@ package org.dddml.ffvtraceability.domain.mapper;
 
 import javax.annotation.processing.Generated;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
+import org.dddml.ffvtraceability.domain.party.AbstractPartyCommand;
 import org.dddml.ffvtraceability.domain.party.PartyState;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierProjection;
 import org.springframework.stereotype.Component;
@@ -46,5 +47,37 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         bffSupplierDto.setStatusId( bffSupplierProjection.getStatusId() );
 
         return bffSupplierDto;
+    }
+
+    @Override
+    public AbstractPartyCommand.SimpleCreateParty toCreateParty(BffSupplierDto bffSupplierDto) {
+        if ( bffSupplierDto == null ) {
+            return null;
+        }
+
+        AbstractPartyCommand.SimpleCreateParty simpleCreateParty = new AbstractPartyCommand.SimpleCreateParty();
+
+        simpleCreateParty.setExternalId( bffSupplierDto.getExternalId() );
+        simpleCreateParty.setPreferredCurrencyUomId( bffSupplierDto.getPreferredCurrencyUomId() );
+        simpleCreateParty.setDescription( bffSupplierDto.getDescription() );
+        simpleCreateParty.setStatusId( bffSupplierDto.getStatusId() );
+
+        return simpleCreateParty;
+    }
+
+    @Override
+    public AbstractPartyCommand.SimpleMergePatchParty toMergePatchParty(BffSupplierDto bffSupplierDto) {
+        if ( bffSupplierDto == null ) {
+            return null;
+        }
+
+        AbstractPartyCommand.SimpleMergePatchParty simpleMergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
+
+        simpleMergePatchParty.setExternalId( bffSupplierDto.getExternalId() );
+        simpleMergePatchParty.setPreferredCurrencyUomId( bffSupplierDto.getPreferredCurrencyUomId() );
+        simpleMergePatchParty.setDescription( bffSupplierDto.getDescription() );
+        simpleMergePatchParty.setStatusId( bffSupplierDto.getStatusId() );
+
+        return simpleMergePatchParty;
     }
 }

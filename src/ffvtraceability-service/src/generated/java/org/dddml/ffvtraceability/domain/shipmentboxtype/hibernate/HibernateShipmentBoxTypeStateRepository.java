@@ -38,7 +38,7 @@ public class HibernateShipmentBoxTypeStateRepository implements ShipmentBoxTypeS
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ShipmentBoxTypeId", "Description", "DimensionUomId", "BoxLength", "BoxWidth", "BoxHeight", "WeightUomId", "BoxWeight", "BoxTypeName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ShipmentBoxTypeId", "Description", "DimensionUomId", "BoxLength", "BoxWidth", "BoxHeight", "WeightUomId", "BoxWeight", "Active", "BoxTypeName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

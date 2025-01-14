@@ -2,6 +2,7 @@ package org.dddml.ffvtraceability.domain.mapper;
 
 import org.dddml.ffvtraceability.domain.BffLotDto;
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
+import org.dddml.ffvtraceability.domain.lot.AbstractLotCommand;
 import org.dddml.ffvtraceability.domain.lot.LotState;
 import org.dddml.ffvtraceability.domain.repository.BffLotProjection;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemProjection;
@@ -26,4 +27,8 @@ public interface BffLotMapper {
     BffLotDto toBffLotDto(BffLotProjection bffLotProjection);
 
     BffLotDto toBffLotDto(LotState lotState);
+
+    AbstractLotCommand.SimpleCreateLot toCreateLot(BffLotDto bffLotDto);
+
+    AbstractLotCommand.SimpleMergePatchLot toMergePatchLot(BffLotDto bffLotDto);
 }

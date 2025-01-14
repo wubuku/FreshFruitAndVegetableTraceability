@@ -45,6 +45,9 @@
       <property name="boxWeight">
         <column name="BOX_WEIGHT" sql-type="DECIMAL(18,6)" />
       </property>
+      <property name="active">
+        <column name="active" sql-type="CHAR(1)" />
+      </property>
       <property name="boxTypeName">
         <column name="BOX_TYPE_NAME" sql-type="VARCHAR(100)" />
       </property>
@@ -57,6 +60,7 @@
         <property name="isPropertyBoxHeightRemoved" column="is_property_box_height_removed" />
         <property name="isPropertyWeightUomIdRemoved" column="is_property_weight_uom_id_removed" />
         <property name="isPropertyBoxWeightRemoved" column="is_property_box_weight_removed" />
+        <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
         <property name="isPropertyBoxTypeNameRemoved" column="is_property_box_type_name_removed" />
       </subclass>
     </subclass>

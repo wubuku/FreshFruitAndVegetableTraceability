@@ -110,6 +110,18 @@ public class ShipmentBoxTypeStateDto {
         this.boxWeight = boxWeight;
     }
 
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
     private String boxTypeName;
 
     public String getBoxTypeName()
@@ -234,6 +246,9 @@ public class ShipmentBoxTypeStateDto {
             }
             if (returnedFieldsContains("BoxWeight")) {
                 dto.setBoxWeight(state.getBoxWeight());
+            }
+            if (returnedFieldsContains("Active")) {
+                dto.setActive(state.getActive());
             }
             if (returnedFieldsContains("BoxTypeName")) {
                 dto.setBoxTypeName(state.getBoxTypeName());

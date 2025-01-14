@@ -1,0 +1,33 @@
+﻿aggregates:
+  ShipmentBoxType:
+    id:
+      name: ShipmentBoxTypeId
+      type: id
+    properties:
+      Description:
+        type: description
+        columnName: DESCRIPTION
+      DimensionUomId:
+        type: id
+        columnName: DIMENSION_UOM_ID
+      BoxLength:
+        type: fixed-point
+        columnName: BOX_LENGTH
+      BoxWidth:
+        type: fixed-point
+        columnName: BOX_WIDTH
+      BoxHeight:
+        type: fixed-point
+        columnName: BOX_HEIGHT
+      WeightUomId:
+        type: id
+        columnName: WEIGHT_UOM_ID
+      BoxWeight:
+        type: fixed-point
+        columnName: BOX_WEIGHT
+      Active:
+        type: indicator
+      BoxTypeName:
+        type: name
+        columnName: BOX_TYPE_NAME
+

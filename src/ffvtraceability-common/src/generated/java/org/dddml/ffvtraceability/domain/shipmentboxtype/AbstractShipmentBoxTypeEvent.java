@@ -203,6 +203,18 @@ public abstract class AbstractShipmentBoxTypeEvent extends AbstractEvent impleme
             this.boxWeight = boxWeight;
         }
 
+        private String active;
+
+        public String getActive()
+        {
+            return this.active;
+        }
+
+        public void setActive(String active)
+        {
+            this.active = active;
+        }
+
         private String boxTypeName;
 
         public String getBoxTypeName()
@@ -319,6 +331,16 @@ public abstract class AbstractShipmentBoxTypeEvent extends AbstractEvent impleme
 
         public void setIsPropertyBoxWeightRemoved(Boolean removed) {
             this.isPropertyBoxWeightRemoved = removed;
+        }
+
+        private Boolean isPropertyActiveRemoved;
+
+        public Boolean getIsPropertyActiveRemoved() {
+            return this.isPropertyActiveRemoved;
+        }
+
+        public void setIsPropertyActiveRemoved(Boolean removed) {
+            this.isPropertyActiveRemoved = removed;
         }
 
         private Boolean isPropertyBoxTypeNameRemoved;

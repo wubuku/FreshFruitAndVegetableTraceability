@@ -76,6 +76,10 @@ public interface ShipmentBoxTypeCommand extends Command {
 
         void setBoxWeight(java.math.BigDecimal boxWeight);
 
+        String getActive();
+
+        void setActive(String active);
+
         String getBoxTypeName();
 
         void setBoxTypeName(String boxTypeName);
@@ -113,6 +117,10 @@ public interface ShipmentBoxTypeCommand extends Command {
         Boolean getIsPropertyBoxWeightRemoved();
 
         void setIsPropertyBoxWeightRemoved(Boolean removed);
+
+        Boolean getIsPropertyActiveRemoved();
+
+        void setIsPropertyActiveRemoved(Boolean removed);
 
         Boolean getIsPropertyBoxTypeNameRemoved();
 

@@ -116,6 +116,21 @@ public class CreateOrMergePatchShipmentBoxTypeDto extends AbstractShipmentBoxTyp
     }
 
     /**
+     * Active
+     */
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
+    /**
      * Box Type Name
      */
     private String boxTypeName;
@@ -215,6 +230,18 @@ public class CreateOrMergePatchShipmentBoxTypeDto extends AbstractShipmentBoxTyp
         this.isPropertyBoxWeightRemoved = removed;
     }
 
+    private Boolean isPropertyActiveRemoved;
+
+    public Boolean getIsPropertyActiveRemoved()
+    {
+        return this.isPropertyActiveRemoved;
+    }
+
+    public void setIsPropertyActiveRemoved(Boolean removed)
+    {
+        this.isPropertyActiveRemoved = removed;
+    }
+
     private Boolean isPropertyBoxTypeNameRemoved;
 
     public Boolean getIsPropertyBoxTypeNameRemoved()
@@ -237,6 +264,7 @@ public class CreateOrMergePatchShipmentBoxTypeDto extends AbstractShipmentBoxTyp
         command.setBoxHeight(this.getBoxHeight());
         command.setWeightUomId(this.getWeightUomId());
         command.setBoxWeight(this.getBoxWeight());
+        command.setActive(this.getActive());
         command.setBoxTypeName(this.getBoxTypeName());
     }
 
@@ -289,6 +317,7 @@ public class CreateOrMergePatchShipmentBoxTypeDto extends AbstractShipmentBoxTyp
         command.setIsPropertyBoxHeightRemoved(this.getIsPropertyBoxHeightRemoved());
         command.setIsPropertyWeightUomIdRemoved(this.getIsPropertyWeightUomIdRemoved());
         command.setIsPropertyBoxWeightRemoved(this.getIsPropertyBoxWeightRemoved());
+        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
         command.setIsPropertyBoxTypeNameRemoved(this.getIsPropertyBoxTypeNameRemoved());
     }
 

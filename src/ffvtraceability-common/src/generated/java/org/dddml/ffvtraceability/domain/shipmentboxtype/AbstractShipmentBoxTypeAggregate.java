@@ -58,6 +58,7 @@ public abstract class AbstractShipmentBoxTypeAggregate extends AbstractAggregate
         e.setBoxHeight(c.getBoxHeight());
         e.setWeightUomId(c.getWeightUomId());
         e.setBoxWeight(c.getBoxWeight());
+        e.setActive(c.getActive());
         e.setBoxTypeName(c.getBoxTypeName());
         ((AbstractShipmentBoxTypeEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
@@ -75,6 +76,7 @@ public abstract class AbstractShipmentBoxTypeAggregate extends AbstractAggregate
         e.setBoxHeight(c.getBoxHeight());
         e.setWeightUomId(c.getWeightUomId());
         e.setBoxWeight(c.getBoxWeight());
+        e.setActive(c.getActive());
         e.setBoxTypeName(c.getBoxTypeName());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyDimensionUomIdRemoved(c.getIsPropertyDimensionUomIdRemoved());
@@ -83,6 +85,7 @@ public abstract class AbstractShipmentBoxTypeAggregate extends AbstractAggregate
         e.setIsPropertyBoxHeightRemoved(c.getIsPropertyBoxHeightRemoved());
         e.setIsPropertyWeightUomIdRemoved(c.getIsPropertyWeightUomIdRemoved());
         e.setIsPropertyBoxWeightRemoved(c.getIsPropertyBoxWeightRemoved());
+        e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
         e.setIsPropertyBoxTypeNameRemoved(c.getIsPropertyBoxTypeNameRemoved());
         ((AbstractShipmentBoxTypeEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());

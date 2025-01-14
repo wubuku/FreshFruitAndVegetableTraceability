@@ -2,6 +2,7 @@ package org.dddml.ffvtraceability.domain.mapper;
 
 import javax.annotation.processing.Generated;
 import org.dddml.ffvtraceability.domain.BffLotDto;
+import org.dddml.ffvtraceability.domain.lot.AbstractLotCommand;
 import org.dddml.ffvtraceability.domain.lot.LotState;
 import org.dddml.ffvtraceability.domain.repository.BffLotProjection;
 import org.springframework.stereotype.Component;
@@ -41,5 +42,35 @@ public class BffLotMapperImpl implements BffLotMapper {
         bffLotDto.setExpirationDate( lotState.getExpirationDate() );
 
         return bffLotDto;
+    }
+
+    @Override
+    public AbstractLotCommand.SimpleCreateLot toCreateLot(BffLotDto bffLotDto) {
+        if ( bffLotDto == null ) {
+            return null;
+        }
+
+        AbstractLotCommand.SimpleCreateLot simpleCreateLot = new AbstractLotCommand.SimpleCreateLot();
+
+        simpleCreateLot.setLotId( bffLotDto.getLotId() );
+        simpleCreateLot.setQuantity( bffLotDto.getQuantity() );
+        simpleCreateLot.setExpirationDate( bffLotDto.getExpirationDate() );
+
+        return simpleCreateLot;
+    }
+
+    @Override
+    public AbstractLotCommand.SimpleMergePatchLot toMergePatchLot(BffLotDto bffLotDto) {
+        if ( bffLotDto == null ) {
+            return null;
+        }
+
+        AbstractLotCommand.SimpleMergePatchLot simpleMergePatchLot = new AbstractLotCommand.SimpleMergePatchLot();
+
+        simpleMergePatchLot.setLotId( bffLotDto.getLotId() );
+        simpleMergePatchLot.setQuantity( bffLotDto.getQuantity() );
+        simpleMergePatchLot.setExpirationDate( bffLotDto.getExpirationDate() );
+
+        return simpleMergePatchLot;
     }
 }

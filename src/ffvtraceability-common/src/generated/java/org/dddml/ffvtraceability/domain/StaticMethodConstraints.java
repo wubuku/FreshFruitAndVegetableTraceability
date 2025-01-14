@@ -34,7 +34,6 @@ import org.dddml.ffvtraceability.domain.party.*;
 import org.dddml.ffvtraceability.domain.partyidentificationtype.*;
 import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.producttype.*;
-import org.dddml.ffvtraceability.domain.shipmentboxtype.*;
 import org.dddml.ffvtraceability.domain.productcategory.*;
 import org.dddml.ffvtraceability.domain.productcategorytype.*;
 import org.dddml.ffvtraceability.domain.supplierproduct.*;
@@ -55,6 +54,7 @@ import org.dddml.ffvtraceability.domain.contactmech.*;
 import org.dddml.ffvtraceability.domain.partycontactmech.*;
 import org.dddml.ffvtraceability.domain.facilitycontactmech.*;
 import org.dddml.ffvtraceability.domain.tenant.*;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.*;
 
 public class StaticMethodConstraints {
 

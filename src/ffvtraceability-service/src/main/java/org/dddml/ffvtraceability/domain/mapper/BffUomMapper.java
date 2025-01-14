@@ -4,6 +4,7 @@ import org.dddml.ffvtraceability.domain.BffLotDto;
 import org.dddml.ffvtraceability.domain.BffUomDto;
 import org.dddml.ffvtraceability.domain.repository.BffLotProjection;
 import org.dddml.ffvtraceability.domain.repository.BffUomProjection;
+import org.dddml.ffvtraceability.domain.uom.AbstractUomCommand;
 import org.dddml.ffvtraceability.domain.uom.UomState;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -25,4 +26,8 @@ public interface BffUomMapper {
     BffUomDto toBffUomDto(BffUomProjection bffUomProjection);
 
     BffUomDto toBffUomDto(UomState uomState);
+
+    AbstractUomCommand.SimpleCreateUom toCreateUom(BffUomDto bffUomDto);
+
+    AbstractUomCommand.SimpleMergePatchUom toMergePatchUom(BffUomDto bffUomDto);
 }

@@ -94,6 +94,16 @@ public abstract class AbstractShipmentBoxTypeState implements ShipmentBoxTypeSta
         this.boxWeight = boxWeight;
     }
 
+    private String active;
+
+    public String getActive() {
+        return this.active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
     private String boxTypeName;
 
     public String getBoxTypeName() {
@@ -245,6 +255,7 @@ public abstract class AbstractShipmentBoxTypeState implements ShipmentBoxTypeSta
         this.setBoxHeight(e.getBoxHeight());
         this.setWeightUomId(e.getWeightUomId());
         this.setBoxWeight(e.getBoxWeight());
+        this.setActive(e.getActive());
         this.setBoxTypeName(e.getBoxTypeName());
 
         this.setCreatedBy(e.getCreatedBy());
@@ -263,6 +274,7 @@ public abstract class AbstractShipmentBoxTypeState implements ShipmentBoxTypeSta
         this.setBoxHeight(s.getBoxHeight());
         this.setWeightUomId(s.getWeightUomId());
         this.setBoxWeight(s.getBoxWeight());
+        this.setActive(s.getActive());
         this.setBoxTypeName(s.getBoxTypeName());
     }
 
@@ -317,6 +329,13 @@ public abstract class AbstractShipmentBoxTypeState implements ShipmentBoxTypeSta
             }
         } else {
             this.setBoxWeight(e.getBoxWeight());
+        }
+        if (e.getActive() == null) {
+            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
+                this.setActive(null);
+            }
+        } else {
+            this.setActive(e.getActive());
         }
         if (e.getBoxTypeName() == null) {
             if (e.getIsPropertyBoxTypeNameRemoved() != null && e.getIsPropertyBoxTypeNameRemoved()) {

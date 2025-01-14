@@ -51,6 +51,7 @@ public class BffShipmentBoxTypeMapperImpl implements BffShipmentBoxTypeMapper {
         bffShipmentBoxTypeDto.setBoxHeight( shipmentBoxTypeState.getBoxHeight() );
         bffShipmentBoxTypeDto.setWeightUomId( shipmentBoxTypeState.getWeightUomId() );
         bffShipmentBoxTypeDto.setBoxWeight( shipmentBoxTypeState.getBoxWeight() );
+        bffShipmentBoxTypeDto.setActive( shipmentBoxTypeState.getActive() );
         bffShipmentBoxTypeDto.setBoxTypeName( shipmentBoxTypeState.getBoxTypeName() );
 
         return bffShipmentBoxTypeDto;
@@ -72,6 +73,7 @@ public class BffShipmentBoxTypeMapperImpl implements BffShipmentBoxTypeMapper {
         simpleCreateShipmentBoxType.setBoxHeight( bffShipmentBoxTypeDto.getBoxHeight() );
         simpleCreateShipmentBoxType.setWeightUomId( bffShipmentBoxTypeDto.getWeightUomId() );
         simpleCreateShipmentBoxType.setBoxWeight( bffShipmentBoxTypeDto.getBoxWeight() );
+        simpleCreateShipmentBoxType.setActive( bffShipmentBoxTypeDto.getActive() );
         simpleCreateShipmentBoxType.setBoxTypeName( bffShipmentBoxTypeDto.getBoxTypeName() );
 
         return simpleCreateShipmentBoxType;
@@ -93,6 +95,7 @@ public class BffShipmentBoxTypeMapperImpl implements BffShipmentBoxTypeMapper {
         simpleMergePatchShipmentBoxType.setBoxHeight( bffShipmentBoxTypeDto.getBoxHeight() );
         simpleMergePatchShipmentBoxType.setWeightUomId( bffShipmentBoxTypeDto.getWeightUomId() );
         simpleMergePatchShipmentBoxType.setBoxWeight( bffShipmentBoxTypeDto.getBoxWeight() );
+        simpleMergePatchShipmentBoxType.setActive( bffShipmentBoxTypeDto.getActive() );
         simpleMergePatchShipmentBoxType.setBoxTypeName( bffShipmentBoxTypeDto.getBoxTypeName() );
 
         return simpleMergePatchShipmentBoxType;

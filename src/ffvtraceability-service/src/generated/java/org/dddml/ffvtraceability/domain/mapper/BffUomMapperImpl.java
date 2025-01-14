@@ -3,6 +3,7 @@ package org.dddml.ffvtraceability.domain.mapper;
 import javax.annotation.processing.Generated;
 import org.dddml.ffvtraceability.domain.BffUomDto;
 import org.dddml.ffvtraceability.domain.repository.BffUomProjection;
+import org.dddml.ffvtraceability.domain.uom.AbstractUomCommand;
 import org.dddml.ffvtraceability.domain.uom.UomState;
 import org.springframework.stereotype.Component;
 
@@ -50,5 +51,45 @@ public class BffUomMapperImpl implements BffUomMapper {
         bffUomDto.setUomName( uomState.getUomName() );
 
         return bffUomDto;
+    }
+
+    @Override
+    public AbstractUomCommand.SimpleCreateUom toCreateUom(BffUomDto bffUomDto) {
+        if ( bffUomDto == null ) {
+            return null;
+        }
+
+        AbstractUomCommand.SimpleCreateUom simpleCreateUom = new AbstractUomCommand.SimpleCreateUom();
+
+        simpleCreateUom.setUomId( bffUomDto.getUomId() );
+        simpleCreateUom.setUomTypeId( bffUomDto.getUomTypeId() );
+        simpleCreateUom.setAbbreviation( bffUomDto.getAbbreviation() );
+        simpleCreateUom.setNumericCode( bffUomDto.getNumericCode() );
+        simpleCreateUom.setGs1AI( bffUomDto.getGs1AI() );
+        simpleCreateUom.setDescription( bffUomDto.getDescription() );
+        simpleCreateUom.setActive( bffUomDto.getActive() );
+        simpleCreateUom.setUomName( bffUomDto.getUomName() );
+
+        return simpleCreateUom;
+    }
+
+    @Override
+    public AbstractUomCommand.SimpleMergePatchUom toMergePatchUom(BffUomDto bffUomDto) {
+        if ( bffUomDto == null ) {
+            return null;
+        }
+
+        AbstractUomCommand.SimpleMergePatchUom simpleMergePatchUom = new AbstractUomCommand.SimpleMergePatchUom();
+
+        simpleMergePatchUom.setUomId( bffUomDto.getUomId() );
+        simpleMergePatchUom.setUomTypeId( bffUomDto.getUomTypeId() );
+        simpleMergePatchUom.setAbbreviation( bffUomDto.getAbbreviation() );
+        simpleMergePatchUom.setNumericCode( bffUomDto.getNumericCode() );
+        simpleMergePatchUom.setGs1AI( bffUomDto.getGs1AI() );
+        simpleMergePatchUom.setDescription( bffUomDto.getDescription() );
+        simpleMergePatchUom.setActive( bffUomDto.getActive() );
+        simpleMergePatchUom.setUomName( bffUomDto.getUomName() );
+
+        return simpleMergePatchUom;
     }
 }

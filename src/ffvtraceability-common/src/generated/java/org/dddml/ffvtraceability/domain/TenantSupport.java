@@ -44,7 +44,6 @@ public class TenantSupport {
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.partyidentificationtype.PartyIdentificationTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.product.ProductState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.producttype.ProductTypeState", "tenantId");
-        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.productcategory.ProductCategoryState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.productcategorytype.ProductCategoryTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.document.DocumentState", "tenantId");
@@ -63,6 +62,7 @@ public class TenantSupport {
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.contactmech.ContactMechState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeState", "tenantId");
         typesWithIdStartsWithOrEndsWithTenantId = new HashSet<>();
         typesWithIdStartsWithOrEndsWithTenantId.add("org.dddml.ffvtraceability.domain.statusitem.StatusItemState");
     }

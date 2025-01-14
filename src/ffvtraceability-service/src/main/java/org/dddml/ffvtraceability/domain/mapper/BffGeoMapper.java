@@ -2,6 +2,7 @@ package org.dddml.ffvtraceability.domain.mapper;
 
 import org.dddml.ffvtraceability.domain.BffGeoDto;
 import org.dddml.ffvtraceability.domain.BffLotDto;
+import org.dddml.ffvtraceability.domain.geo.AbstractGeoCommand;
 import org.dddml.ffvtraceability.domain.lot.LotState;
 import org.dddml.ffvtraceability.domain.repository.BffGeoProjection;
 import org.dddml.ffvtraceability.domain.repository.BffLotProjection;
@@ -18,4 +19,8 @@ import java.time.ZoneOffset;
 )
 public interface BffGeoMapper {
     BffGeoDto toBffGeoDto(BffGeoProjection bffGeoProjection);
+
+    AbstractGeoCommand.SimpleCreateGeo toCreateGeo(BffGeoDto bffGeoDto);
+
+    AbstractGeoCommand.SimpleMergePatchGeo toMergePatchGeo(BffGeoDto bffGeoDto);
 }

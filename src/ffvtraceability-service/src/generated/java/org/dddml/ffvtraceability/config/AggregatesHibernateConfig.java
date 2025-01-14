@@ -77,9 +77,6 @@ import org.dddml.ffvtraceability.domain.product.hibernate.*;
 import org.dddml.ffvtraceability.domain.producttype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.producttype.hibernate.*;
-import org.dddml.ffvtraceability.domain.shipmentboxtype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.shipmentboxtype.hibernate.*;
 import org.dddml.ffvtraceability.domain.productcategory.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.productcategory.hibernate.*;
@@ -140,6 +137,9 @@ import org.dddml.ffvtraceability.domain.facilitycontactmech.hibernate.*;
 import org.dddml.ffvtraceability.domain.tenant.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.tenant.hibernate.*;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -512,22 +512,6 @@ public class AggregatesHibernateConfig {
 
 
     @Bean
-    public AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService shipmentBoxTypeApplicationService(
-            @Qualifier("shipmentBoxTypeEventStore") EventStore shipmentBoxTypeEventStore,
-            ShipmentBoxTypeStateRepository shipmentBoxTypeStateRepository,
-            ShipmentBoxTypeStateQueryRepository shipmentBoxTypeStateQueryRepository
-    ) {
-        AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService applicationService = new AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService(
-                shipmentBoxTypeEventStore,
-                shipmentBoxTypeStateRepository,
-                shipmentBoxTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
     public AbstractProductCategoryApplicationService.SimpleProductCategoryApplicationService productCategoryApplicationService(
             @Qualifier("productCategoryEventStore") EventStore productCategoryEventStore,
             ProductCategoryStateRepository productCategoryStateRepository,
@@ -829,6 +813,22 @@ public class AggregatesHibernateConfig {
                 tenantEventStore,
                 tenantStateRepository,
                 tenantStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService shipmentBoxTypeApplicationService(
+            @Qualifier("shipmentBoxTypeEventStore") EventStore shipmentBoxTypeEventStore,
+            ShipmentBoxTypeStateRepository shipmentBoxTypeStateRepository,
+            ShipmentBoxTypeStateQueryRepository shipmentBoxTypeStateQueryRepository
+    ) {
+        AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService applicationService = new AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService(
+                shipmentBoxTypeEventStore,
+                shipmentBoxTypeStateRepository,
+                shipmentBoxTypeStateQueryRepository
         );
         return applicationService;
     }

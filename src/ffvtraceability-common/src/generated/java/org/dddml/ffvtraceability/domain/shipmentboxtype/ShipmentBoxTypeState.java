@@ -33,6 +33,8 @@ public interface ShipmentBoxTypeState
 
     java.math.BigDecimal getBoxWeight();
 
+    String getActive();
+
     String getBoxTypeName();
 
     Long getVersion();
@@ -61,6 +63,8 @@ public interface ShipmentBoxTypeState
         void setWeightUomId(String weightUomId);
 
         void setBoxWeight(java.math.BigDecimal boxWeight);
+
+        void setActive(String active);
 
         void setBoxTypeName(String boxTypeName);
 
