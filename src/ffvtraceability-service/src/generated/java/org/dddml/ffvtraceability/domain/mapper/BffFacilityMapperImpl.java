@@ -2,6 +2,7 @@ package org.dddml.ffvtraceability.domain.mapper;
 
 import javax.annotation.processing.Generated;
 import org.dddml.ffvtraceability.domain.BffFacilityDto;
+import org.dddml.ffvtraceability.domain.facility.AbstractFacilityCommand;
 import org.dddml.ffvtraceability.domain.facility.FacilityState;
 import org.dddml.ffvtraceability.domain.repository.BffFacilityProjection;
 import org.springframework.stereotype.Component;
@@ -62,5 +63,55 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
         bffFacilityDto.setSequenceNumber( facilityState.getSequenceNumber() );
 
         return bffFacilityDto;
+    }
+
+    @Override
+    public AbstractFacilityCommand.SimpleCreateFacility toCreateFacility(BffFacilityDto bffFacilityDto) {
+        if ( bffFacilityDto == null ) {
+            return null;
+        }
+
+        AbstractFacilityCommand.SimpleCreateFacility simpleCreateFacility = new AbstractFacilityCommand.SimpleCreateFacility();
+
+        simpleCreateFacility.setFacilityId( bffFacilityDto.getFacilityId() );
+        simpleCreateFacility.setFacilityTypeId( bffFacilityDto.getFacilityTypeId() );
+        simpleCreateFacility.setParentFacilityId( bffFacilityDto.getParentFacilityId() );
+        simpleCreateFacility.setOwnerPartyId( bffFacilityDto.getOwnerPartyId() );
+        simpleCreateFacility.setFacilityName( bffFacilityDto.getFacilityName() );
+        simpleCreateFacility.setFacilitySize( bffFacilityDto.getFacilitySize() );
+        simpleCreateFacility.setFacilitySizeUomId( bffFacilityDto.getFacilitySizeUomId() );
+        simpleCreateFacility.setDescription( bffFacilityDto.getDescription() );
+        simpleCreateFacility.setGeoPointId( bffFacilityDto.getGeoPointId() );
+        simpleCreateFacility.setGeoId( bffFacilityDto.getGeoId() );
+        simpleCreateFacility.setFacilityLevel( bffFacilityDto.getFacilityLevel() );
+        simpleCreateFacility.setActive( bffFacilityDto.getActive() );
+        simpleCreateFacility.setSequenceNumber( bffFacilityDto.getSequenceNumber() );
+
+        return simpleCreateFacility;
+    }
+
+    @Override
+    public AbstractFacilityCommand.SimpleMergePatchFacility toMergePatchFacility(BffFacilityDto bffFacilityDto) {
+        if ( bffFacilityDto == null ) {
+            return null;
+        }
+
+        AbstractFacilityCommand.SimpleMergePatchFacility simpleMergePatchFacility = new AbstractFacilityCommand.SimpleMergePatchFacility();
+
+        simpleMergePatchFacility.setFacilityId( bffFacilityDto.getFacilityId() );
+        simpleMergePatchFacility.setFacilityTypeId( bffFacilityDto.getFacilityTypeId() );
+        simpleMergePatchFacility.setParentFacilityId( bffFacilityDto.getParentFacilityId() );
+        simpleMergePatchFacility.setOwnerPartyId( bffFacilityDto.getOwnerPartyId() );
+        simpleMergePatchFacility.setFacilityName( bffFacilityDto.getFacilityName() );
+        simpleMergePatchFacility.setFacilitySize( bffFacilityDto.getFacilitySize() );
+        simpleMergePatchFacility.setFacilitySizeUomId( bffFacilityDto.getFacilitySizeUomId() );
+        simpleMergePatchFacility.setDescription( bffFacilityDto.getDescription() );
+        simpleMergePatchFacility.setGeoPointId( bffFacilityDto.getGeoPointId() );
+        simpleMergePatchFacility.setGeoId( bffFacilityDto.getGeoId() );
+        simpleMergePatchFacility.setFacilityLevel( bffFacilityDto.getFacilityLevel() );
+        simpleMergePatchFacility.setActive( bffFacilityDto.getActive() );
+        simpleMergePatchFacility.setSequenceNumber( bffFacilityDto.getSequenceNumber() );
+
+        return simpleMergePatchFacility;
     }
 }
