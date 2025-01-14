@@ -113,9 +113,17 @@ public interface FacilityEvent extends Event {
 
         void setGeoId(String geoId);
 
+        Long getFacilityLevel();
+
+        void setFacilityLevel(Long facilityLevel);
+
         String getActive();
 
         void setActive(String active);
+
+        Long getSequenceNumber();
+
+        void setSequenceNumber(Long sequenceNumber);
 
     }
 
@@ -205,9 +213,17 @@ public interface FacilityEvent extends Event {
 
         void setIsPropertyGeoIdRemoved(Boolean removed);
 
+        Boolean getIsPropertyFacilityLevelRemoved();
+
+        void setIsPropertyFacilityLevelRemoved(Boolean removed);
+
         Boolean getIsPropertyActiveRemoved();
 
         void setIsPropertyActiveRemoved(Boolean removed);
+
+        Boolean getIsPropertySequenceNumberRemoved();
+
+        void setIsPropertySequenceNumberRemoved(Boolean removed);
 
 
         Iterable<FacilityIdentificationEvent> getFacilityIdentificationEvents();

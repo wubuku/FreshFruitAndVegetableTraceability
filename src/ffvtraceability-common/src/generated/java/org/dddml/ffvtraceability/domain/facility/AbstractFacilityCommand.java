@@ -255,6 +255,18 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
             this.geoId = geoId;
         }
 
+        private Long facilityLevel;
+
+        public Long getFacilityLevel()
+        {
+            return this.facilityLevel;
+        }
+
+        public void setFacilityLevel(Long facilityLevel)
+        {
+            this.facilityLevel = facilityLevel;
+        }
+
         private String active;
 
         public String getActive()
@@ -265,6 +277,18 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
         public void setActive(String active)
         {
             this.active = active;
+        }
+
+        private Long sequenceNumber;
+
+        public Long getSequenceNumber()
+        {
+            return this.sequenceNumber;
+        }
+
+        public void setSequenceNumber(Long sequenceNumber)
+        {
+            this.sequenceNumber = sequenceNumber;
         }
 
         public FacilityIdentificationCommand.CreateFacilityIdentification newCreateFacilityIdentification()
@@ -535,6 +559,18 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
             this.isPropertyGeoIdRemoved = removed;
         }
 
+        private Boolean isPropertyFacilityLevelRemoved;
+
+        public Boolean getIsPropertyFacilityLevelRemoved()
+        {
+            return this.isPropertyFacilityLevelRemoved;
+        }
+
+        public void setIsPropertyFacilityLevelRemoved(Boolean removed)
+        {
+            this.isPropertyFacilityLevelRemoved = removed;
+        }
+
         private Boolean isPropertyActiveRemoved;
 
         public Boolean getIsPropertyActiveRemoved()
@@ -545,6 +581,18 @@ public abstract class AbstractFacilityCommand extends AbstractCommand implements
         public void setIsPropertyActiveRemoved(Boolean removed)
         {
             this.isPropertyActiveRemoved = removed;
+        }
+
+        private Boolean isPropertySequenceNumberRemoved;
+
+        public Boolean getIsPropertySequenceNumberRemoved()
+        {
+            return this.isPropertySequenceNumberRemoved;
+        }
+
+        public void setIsPropertySequenceNumberRemoved(Boolean removed)
+        {
+            this.isPropertySequenceNumberRemoved = removed;
         }
 
 

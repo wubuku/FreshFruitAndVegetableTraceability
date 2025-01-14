@@ -180,6 +180,30 @@ public class BffFacilityDto implements Serializable {
         this.ffrn = ffrn;
     }
 
+    private Long facilityLevel;
+
+    public Long getFacilityLevel()
+    {
+        return this.facilityLevel;
+    }
+
+    public void setFacilityLevel(Long facilityLevel)
+    {
+        this.facilityLevel = facilityLevel;
+    }
+
+    private Long sequenceNumber;
+
+    public Long getSequenceNumber()
+    {
+        return this.sequenceNumber;
+    }
+
+    public void setSequenceNumber(Long sequenceNumber)
+    {
+        this.sequenceNumber = sequenceNumber;
+    }
+
     private java.util.List<BffBusinessContactDto> businessContacts;
 
     public java.util.List<BffBusinessContactDto> getBusinessContacts() {
@@ -204,7 +228,7 @@ public class BffFacilityDto implements Serializable {
     {
     }
 
-    public BffFacilityDto(String facilityId, String facilityTypeId, String parentFacilityId, String ownerPartyId, String facilityName, java.math.BigDecimal facilitySize, String facilitySizeUomId, String description, String geoPointId, String geoId, String active, String gln, String ffrn, java.util.List<BffBusinessContactDto> businessContacts, java.util.List<BffFacilityLocationDto> locations)
+    public BffFacilityDto(String facilityId, String facilityTypeId, String parentFacilityId, String ownerPartyId, String facilityName, java.math.BigDecimal facilitySize, String facilitySizeUomId, String description, String geoPointId, String geoId, String active, String gln, String ffrn, Long facilityLevel, Long sequenceNumber, java.util.List<BffBusinessContactDto> businessContacts, java.util.List<BffFacilityLocationDto> locations)
     {
         this.facilityId = facilityId;
         this.facilityTypeId = facilityTypeId;
@@ -219,6 +243,8 @@ public class BffFacilityDto implements Serializable {
         this.active = active;
         this.gln = gln;
         this.ffrn = ffrn;
+        this.facilityLevel = facilityLevel;
+        this.sequenceNumber = sequenceNumber;
         this.businessContacts = businessContacts;
         this.locations = locations;
     }
@@ -248,6 +274,8 @@ public class BffFacilityDto implements Serializable {
             && (active == other.active || (active != null && active.equals(other.active)))
             && (gln == other.gln || (gln != null && gln.equals(other.gln)))
             && (ffrn == other.ffrn || (ffrn != null && ffrn.equals(other.ffrn)))
+            && (facilityLevel == other.facilityLevel || (facilityLevel != null && facilityLevel.equals(other.facilityLevel)))
+            && (sequenceNumber == other.sequenceNumber || (sequenceNumber != null && sequenceNumber.equals(other.sequenceNumber)))
             && (businessContacts == other.businessContacts || (businessContacts != null && businessContacts.equals(other.businessContacts)))
             && (locations == other.locations || (locations != null && locations.equals(other.locations)))
             ;
@@ -296,6 +324,12 @@ public class BffFacilityDto implements Serializable {
         if (this.ffrn != null) {
             hash += 13 * this.ffrn.hashCode();
         }
+        if (this.facilityLevel != null) {
+            hash += 13 * this.facilityLevel.hashCode();
+        }
+        if (this.sequenceNumber != null) {
+            hash += 13 * this.sequenceNumber.hashCode();
+        }
         if (this.businessContacts != null) {
             hash += 13 * this.businessContacts.hashCode();
         }
@@ -321,6 +355,8 @@ public class BffFacilityDto implements Serializable {
                 ", active=" + '\'' + active + '\'' +
                 ", gln=" + '\'' + gln + '\'' +
                 ", ffrn=" + '\'' + ffrn + '\'' +
+                ", facilityLevel=" + facilityLevel +
+                ", sequenceNumber=" + sequenceNumber +
                 ", businessContacts=" + businessContacts +
                 ", locations=" + locations +
                 '}';

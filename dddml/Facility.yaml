@@ -40,21 +40,21 @@
         type: id
       DefaultWeightUomId:
         type: id
-      # ---------------------
-      # 地理位置点 Id（经纬度）
       GeoPointId:
+        # 地理位置点 Id（经纬度）
         type: id
-      # ---------------------
-      # 位置 Id
       GeoId:
+        # 位置 Id
         type: id
-      # # ----------------------------------
-      # # 设施（仓库）的联系地址 Id.
-      # # 不使用 FacilityContactMech 实体？
-      # PostalAddressContactMechId:
-      #   type: id-ne
+      FacilityLevel:
+        # 设施级别
+        type: numeric
       Active:
         type: indicator
+      # -----------------------------------
+      SequenceNumber:
+        # 序号，可以用于前端的显示排序
+        type: numeric
 
       FacilityIdentifications:
         itemType: FacilityIdentification

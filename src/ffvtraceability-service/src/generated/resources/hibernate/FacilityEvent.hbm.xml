@@ -78,8 +78,14 @@
       <property name="geoId">
         <column name="geo_id" sql-type="VARCHAR(20)" />
       </property>
+      <property name="facilityLevel">
+        <column name="facility_level" sql-type="DECIMAL(20,0)" />
+      </property>
       <property name="active">
         <column name="active" sql-type="CHAR(1)" />
+      </property>
+      <property name="sequenceNumber">
+        <column name="sequence_number" sql-type="DECIMAL(20,0)" />
       </property>
       <subclass name="AbstractFacilityEvent$SimpleFacilityStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractFacilityEvent$SimpleFacilityStateMergePatched" discriminator-value="MergePatched">
@@ -101,7 +107,9 @@
         <property name="isPropertyDefaultWeightUomIdRemoved" column="is_property_default_weight_uom_id_removed" />
         <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
         <property name="isPropertyGeoIdRemoved" column="is_property_geo_id_removed" />
+        <property name="isPropertyFacilityLevelRemoved" column="is_property_facility_level_removed" />
         <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
+        <property name="isPropertySequenceNumberRemoved" column="is_property_sequence_number_removed" />
       </subclass>
     </subclass>
   </class>

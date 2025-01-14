@@ -69,7 +69,9 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         e.setDefaultWeightUomId(c.getDefaultWeightUomId());
         e.setGeoPointId(c.getGeoPointId());
         e.setGeoId(c.getGeoId());
+        e.setFacilityLevel(c.getFacilityLevel());
         e.setActive(c.getActive());
+        e.setSequenceNumber(c.getSequenceNumber());
         ((AbstractFacilityEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -104,7 +106,9 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         e.setDefaultWeightUomId(c.getDefaultWeightUomId());
         e.setGeoPointId(c.getGeoPointId());
         e.setGeoId(c.getGeoId());
+        e.setFacilityLevel(c.getFacilityLevel());
         e.setActive(c.getActive());
+        e.setSequenceNumber(c.getSequenceNumber());
         e.setIsPropertyFacilityTypeIdRemoved(c.getIsPropertyFacilityTypeIdRemoved());
         e.setIsPropertyParentFacilityIdRemoved(c.getIsPropertyParentFacilityIdRemoved());
         e.setIsPropertyOwnerPartyIdRemoved(c.getIsPropertyOwnerPartyIdRemoved());
@@ -123,7 +127,9 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         e.setIsPropertyDefaultWeightUomIdRemoved(c.getIsPropertyDefaultWeightUomIdRemoved());
         e.setIsPropertyGeoPointIdRemoved(c.getIsPropertyGeoPointIdRemoved());
         e.setIsPropertyGeoIdRemoved(c.getIsPropertyGeoIdRemoved());
+        e.setIsPropertyFacilityLevelRemoved(c.getIsPropertyFacilityLevelRemoved());
         e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
+        e.setIsPropertySequenceNumberRemoved(c.getIsPropertySequenceNumberRemoved());
         ((AbstractFacilityEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

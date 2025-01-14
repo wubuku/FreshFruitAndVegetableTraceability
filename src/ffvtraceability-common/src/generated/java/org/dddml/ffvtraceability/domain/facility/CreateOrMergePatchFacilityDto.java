@@ -281,6 +281,21 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
     }
 
     /**
+     * Facility Level
+     */
+    private Long facilityLevel;
+
+    public Long getFacilityLevel()
+    {
+        return this.facilityLevel;
+    }
+
+    public void setFacilityLevel(Long facilityLevel)
+    {
+        this.facilityLevel = facilityLevel;
+    }
+
+    /**
      * Active
      */
     private String active;
@@ -293,6 +308,21 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
     public void setActive(String active)
     {
         this.active = active;
+    }
+
+    /**
+     * Sequence Number
+     */
+    private Long sequenceNumber;
+
+    public Long getSequenceNumber()
+    {
+        return this.sequenceNumber;
+    }
+
+    public void setSequenceNumber(Long sequenceNumber)
+    {
+        this.sequenceNumber = sequenceNumber;
     }
 
 
@@ -524,6 +554,18 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         this.isPropertyGeoIdRemoved = removed;
     }
 
+    private Boolean isPropertyFacilityLevelRemoved;
+
+    public Boolean getIsPropertyFacilityLevelRemoved()
+    {
+        return this.isPropertyFacilityLevelRemoved;
+    }
+
+    public void setIsPropertyFacilityLevelRemoved(Boolean removed)
+    {
+        this.isPropertyFacilityLevelRemoved = removed;
+    }
+
     private Boolean isPropertyActiveRemoved;
 
     public Boolean getIsPropertyActiveRemoved()
@@ -534,6 +576,18 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
     public void setIsPropertyActiveRemoved(Boolean removed)
     {
         this.isPropertyActiveRemoved = removed;
+    }
+
+    private Boolean isPropertySequenceNumberRemoved;
+
+    public Boolean getIsPropertySequenceNumberRemoved()
+    {
+        return this.isPropertySequenceNumberRemoved;
+    }
+
+    public void setIsPropertySequenceNumberRemoved(Boolean removed)
+    {
+        this.isPropertySequenceNumberRemoved = removed;
     }
 
     public void copyTo(CreateOrMergePatchFacility command)
@@ -557,7 +611,9 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         command.setDefaultWeightUomId(this.getDefaultWeightUomId());
         command.setGeoPointId(this.getGeoPointId());
         command.setGeoId(this.getGeoId());
+        command.setFacilityLevel(this.getFacilityLevel());
         command.setActive(this.getActive());
+        command.setSequenceNumber(this.getSequenceNumber());
     }
 
     public FacilityCommand toCommand()
@@ -641,7 +697,9 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
         command.setIsPropertyDefaultWeightUomIdRemoved(this.getIsPropertyDefaultWeightUomIdRemoved());
         command.setIsPropertyGeoPointIdRemoved(this.getIsPropertyGeoPointIdRemoved());
         command.setIsPropertyGeoIdRemoved(this.getIsPropertyGeoIdRemoved());
+        command.setIsPropertyFacilityLevelRemoved(this.getIsPropertyFacilityLevelRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
+        command.setIsPropertySequenceNumberRemoved(this.getIsPropertySequenceNumberRemoved());
     }
 
     public static class CreateFacilityDto extends CreateOrMergePatchFacilityDto implements FacilityCommand.CreateFacility

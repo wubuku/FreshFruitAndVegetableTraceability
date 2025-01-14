@@ -55,7 +55,11 @@ public interface FacilityState
 
     String getGeoId();
 
+    Long getFacilityLevel();
+
     String getActive();
+
+    Long getSequenceNumber();
 
     Long getVersion();
 
@@ -108,7 +112,11 @@ public interface FacilityState
 
         void setGeoId(String geoId);
 
+        void setFacilityLevel(Long facilityLevel);
+
         void setActive(String active);
+
+        void setSequenceNumber(Long sequenceNumber);
 
         void setVersion(Long version);
 

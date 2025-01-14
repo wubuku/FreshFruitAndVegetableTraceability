@@ -55,6 +55,13 @@ valueObjects:
         type: id
         constraints:
           - FFRN
+      FacilityLevel:
+        # 设施级别
+        type: numeric
+      # -----------------------------------
+      SequenceNumber:
+        # 序号，可以用于前端的显示排序
+        type: numeric
       BusinessContacts:
         itemType: BffBusinessContactDto
         isList: true

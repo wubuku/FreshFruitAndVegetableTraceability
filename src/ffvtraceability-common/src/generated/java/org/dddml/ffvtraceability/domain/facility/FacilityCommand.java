@@ -120,9 +120,17 @@ public interface FacilityCommand extends Command {
 
         void setGeoId(String geoId);
 
+        Long getFacilityLevel();
+
+        void setFacilityLevel(Long facilityLevel);
+
         String getActive();
 
         void setActive(String active);
+
+        Long getSequenceNumber();
+
+        void setSequenceNumber(Long sequenceNumber);
 
     }
 
@@ -206,9 +214,17 @@ public interface FacilityCommand extends Command {
 
         void setIsPropertyGeoIdRemoved(Boolean removed);
 
+        Boolean getIsPropertyFacilityLevelRemoved();
+
+        void setIsPropertyFacilityLevelRemoved(Boolean removed);
+
         Boolean getIsPropertyActiveRemoved();
 
         void setIsPropertyActiveRemoved(Boolean removed);
+
+        Boolean getIsPropertySequenceNumberRemoved();
+
+        void setIsPropertySequenceNumberRemoved(Boolean removed);
 
 
         FacilityIdentificationCommandCollection getFacilityIdentificationCommands();

@@ -33,6 +33,8 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
         bffFacilityDto.setActive( bffFacilityProjection.getActive() );
         bffFacilityDto.setGln( bffFacilityProjection.getGln() );
         bffFacilityDto.setFfrn( bffFacilityProjection.getFfrn() );
+        bffFacilityDto.setFacilityLevel( bffFacilityProjection.getFacilityLevel() );
+        bffFacilityDto.setSequenceNumber( bffFacilityProjection.getSequenceNumber() );
 
         return bffFacilityDto;
     }
@@ -56,6 +58,8 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
         bffFacilityDto.setGeoPointId( facilityState.getGeoPointId() );
         bffFacilityDto.setGeoId( facilityState.getGeoId() );
         bffFacilityDto.setActive( facilityState.getActive() );
+        bffFacilityDto.setFacilityLevel( facilityState.getFacilityLevel() );
+        bffFacilityDto.setSequenceNumber( facilityState.getSequenceNumber() );
 
         return bffFacilityDto;
     }

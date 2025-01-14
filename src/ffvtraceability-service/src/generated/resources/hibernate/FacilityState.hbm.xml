@@ -67,8 +67,14 @@
     <property name="geoId">
       <column name="geo_id" sql-type="VARCHAR(20)" />
     </property>
+    <property name="facilityLevel">
+      <column name="facility_level" sql-type="DECIMAL(20,0)" />
+    </property>
     <property name="active">
       <column name="active" sql-type="CHAR(1)" />
+    </property>
+    <property name="sequenceNumber">
+      <column name="sequence_number" sql-type="DECIMAL(20,0)" />
     </property>
     <property name="createdBy">
       <column name="created_by" />

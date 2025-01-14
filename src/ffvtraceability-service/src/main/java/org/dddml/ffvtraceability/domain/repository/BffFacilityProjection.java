@@ -34,5 +34,9 @@ public interface BffFacilityProjection {
 
     String getFfrn();
 
+    Long getFacilityLevel();
+
+    Long getSequenceNumber();
+
 }
 

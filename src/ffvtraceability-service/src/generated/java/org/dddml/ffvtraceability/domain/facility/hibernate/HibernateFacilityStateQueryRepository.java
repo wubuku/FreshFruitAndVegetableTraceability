@@ -42,7 +42,7 @@ public class HibernateFacilityStateQueryRepository implements FacilityStateQuery
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityId", "FacilityTypeId", "ParentFacilityId", "OwnerPartyId", "DefaultInventoryItemTypeId", "FacilityName", "PrimaryFacilityGroupId", "OldSquareFootage", "FacilitySize", "FacilitySizeUomId", "ProductStoreId", "DefaultDaysToShip", "OpenedDate", "ClosedDate", "Description", "DefaultDimensionUomId", "DefaultWeightUomId", "GeoPointId", "GeoId", "Active", "FacilityIdentifications", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("FacilityId", "FacilityTypeId", "ParentFacilityId", "OwnerPartyId", "DefaultInventoryItemTypeId", "FacilityName", "PrimaryFacilityGroupId", "OldSquareFootage", "FacilitySize", "FacilitySizeUomId", "ProductStoreId", "DefaultDaysToShip", "OpenedDate", "ClosedDate", "Description", "DefaultDimensionUomId", "DefaultWeightUomId", "GeoPointId", "GeoId", "FacilityLevel", "Active", "SequenceNumber", "FacilityIdentifications", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

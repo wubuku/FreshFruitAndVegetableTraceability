@@ -242,6 +242,18 @@ public class FacilityStateDto {
         this.geoId = geoId;
     }
 
+    private Long facilityLevel;
+
+    public Long getFacilityLevel()
+    {
+        return this.facilityLevel;
+    }
+
+    public void setFacilityLevel(Long facilityLevel)
+    {
+        this.facilityLevel = facilityLevel;
+    }
+
     private String active;
 
     public String getActive()
@@ -252,6 +264,18 @@ public class FacilityStateDto {
     public void setActive(String active)
     {
         this.active = active;
+    }
+
+    private Long sequenceNumber;
+
+    public Long getSequenceNumber()
+    {
+        return this.sequenceNumber;
+    }
+
+    public void setSequenceNumber(Long sequenceNumber)
+    {
+        this.sequenceNumber = sequenceNumber;
     }
 
     private Long version;
@@ -412,8 +436,14 @@ public class FacilityStateDto {
             if (returnedFieldsContains("GeoId")) {
                 dto.setGeoId(state.getGeoId());
             }
+            if (returnedFieldsContains("FacilityLevel")) {
+                dto.setFacilityLevel(state.getFacilityLevel());
+            }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
+            }
+            if (returnedFieldsContains("SequenceNumber")) {
+                dto.setSequenceNumber(state.getSequenceNumber());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

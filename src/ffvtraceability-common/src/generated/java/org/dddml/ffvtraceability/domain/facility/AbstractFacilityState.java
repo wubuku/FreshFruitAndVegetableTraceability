@@ -204,6 +204,16 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         this.geoId = geoId;
     }
 
+    private Long facilityLevel;
+
+    public Long getFacilityLevel() {
+        return this.facilityLevel;
+    }
+
+    public void setFacilityLevel(Long facilityLevel) {
+        this.facilityLevel = facilityLevel;
+    }
+
     private String active;
 
     public String getActive() {
@@ -212,6 +222,16 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
 
     public void setActive(String active) {
         this.active = active;
+    }
+
+    private Long sequenceNumber;
+
+    public Long getSequenceNumber() {
+        return this.sequenceNumber;
+    }
+
+    public void setSequenceNumber(Long sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
     }
 
     private Long version;
@@ -387,7 +407,9 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         this.setDefaultWeightUomId(e.getDefaultWeightUomId());
         this.setGeoPointId(e.getGeoPointId());
         this.setGeoId(e.getGeoId());
+        this.setFacilityLevel(e.getFacilityLevel());
         this.setActive(e.getActive());
+        this.setSequenceNumber(e.getSequenceNumber());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -420,7 +442,9 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         this.setDefaultWeightUomId(s.getDefaultWeightUomId());
         this.setGeoPointId(s.getGeoPointId());
         this.setGeoId(s.getGeoId());
+        this.setFacilityLevel(s.getFacilityLevel());
         this.setActive(s.getActive());
+        this.setSequenceNumber(s.getSequenceNumber());
 
         if (s.getFacilityIdentifications() != null) {
             Iterable<FacilityIdentificationState> iterable;
@@ -588,12 +612,26 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         } else {
             this.setGeoId(e.getGeoId());
         }
+        if (e.getFacilityLevel() == null) {
+            if (e.getIsPropertyFacilityLevelRemoved() != null && e.getIsPropertyFacilityLevelRemoved()) {
+                this.setFacilityLevel(null);
+            }
+        } else {
+            this.setFacilityLevel(e.getFacilityLevel());
+        }
         if (e.getActive() == null) {
             if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
                 this.setActive(null);
             }
         } else {
             this.setActive(e.getActive());
+        }
+        if (e.getSequenceNumber() == null) {
+            if (e.getIsPropertySequenceNumberRemoved() != null && e.getIsPropertySequenceNumberRemoved()) {
+                this.setSequenceNumber(null);
+            }
+        } else {
+            this.setSequenceNumber(e.getSequenceNumber());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

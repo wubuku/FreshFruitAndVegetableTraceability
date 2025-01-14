@@ -1707,7 +1707,9 @@ public class M {
             "defaultWeightUomId",
             "geoPointId",
             "geoId",
+            "facilityLevel",
             "active",
+            "sequenceNumber",
             "version",
             "createdBy",
             "createdAt",
@@ -1737,7 +1739,9 @@ public class M {
             "String",
             "String",
             "String",
+            "Long",
             "String",
+            "Long",
             "Long",
             "String",
             "OffsetDateTime",
@@ -1797,8 +1801,12 @@ public class M {
         aliasMap.put("GeoPointId", "geoPointId");
         aliasMap.put("geoId", "geoId");
         aliasMap.put("GeoId", "geoId");
+        aliasMap.put("facilityLevel", "facilityLevel");
+        aliasMap.put("FacilityLevel", "facilityLevel");
         aliasMap.put("active", "active");
         aliasMap.put("Active", "active");
+        aliasMap.put("sequenceNumber", "sequenceNumber");
+        aliasMap.put("SequenceNumber", "sequenceNumber");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
