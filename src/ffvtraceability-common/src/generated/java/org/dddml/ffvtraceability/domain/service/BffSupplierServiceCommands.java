@@ -172,6 +172,23 @@ public class BffSupplierServiceCommands {
 
     }
 
+    public static class BatchAddSuppliers extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Suppliers
+         */
+        private BffSupplierDto[] suppliers;
+
+        public BffSupplierDto[] getSuppliers() {
+            return suppliers;
+        }
+
+        public void setSuppliers(BffSupplierDto[] suppliers) {
+            this.suppliers = suppliers;
+        }
+
+    }
+
 
 }
 

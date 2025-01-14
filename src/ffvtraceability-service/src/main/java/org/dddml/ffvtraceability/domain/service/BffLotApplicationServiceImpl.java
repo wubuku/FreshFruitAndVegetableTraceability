@@ -20,6 +20,7 @@ import java.util.UUID;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.*;
 
 @Service
+@Transactional
 public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     public static final String LOT_IDENTIFICATION_TYPE_GS1_BATCH = "GS1_BATCH";
 
@@ -109,5 +110,10 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
         mergePatchLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchLot.setRequesterId(c.getRequesterId());
         lotApplicationService.when(mergePatchLot);
+    }
+
+    @Override
+    public void when(BffLotServiceCommands.BatchAddLots c) {
+        //todo
     }
 }

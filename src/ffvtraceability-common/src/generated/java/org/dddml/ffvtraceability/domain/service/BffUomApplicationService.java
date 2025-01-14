@@ -20,6 +20,8 @@ public interface BffUomApplicationService {
 
     void when(BffUomServiceCommands.ActivateUnitOfMeasure c);
 
+    void when(BffUomServiceCommands.BatchAddUnitsOfMeasure c);
+
 
 }
 

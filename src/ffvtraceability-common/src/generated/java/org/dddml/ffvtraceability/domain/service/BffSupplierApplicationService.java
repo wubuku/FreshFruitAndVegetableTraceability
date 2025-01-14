@@ -22,6 +22,8 @@ public interface BffSupplierApplicationService {
 
     void when(BffSupplierServiceCommands.UpdateBusinessContact c);
 
+    void when(BffSupplierServiceCommands.BatchAddSuppliers c);
+
 
 }
 

@@ -20,6 +20,8 @@ public interface BffLotApplicationService {
 
     void when(BffLotServiceCommands.ActivateLot c);
 
+    void when(BffLotServiceCommands.BatchAddLots c);
+
 
 }
 

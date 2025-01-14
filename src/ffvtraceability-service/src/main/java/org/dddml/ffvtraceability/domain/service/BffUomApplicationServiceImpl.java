@@ -20,6 +20,7 @@ import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
 
 @Service
+@Transactional
 public class BffUomApplicationServiceImpl implements BffUomApplicationService {
     @Autowired
     private UomApplicationService uomApplicationService;
@@ -102,5 +103,10 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
         mergePatchUom.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchUom.setRequesterId(c.getRequesterId());
         uomApplicationService.when(mergePatchUom);
+    }
+
+    @Override
+    public void when(BffUomServiceCommands.BatchAddUnitsOfMeasure c) {
+        //todo
     }
 }

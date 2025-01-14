@@ -113,5 +113,17 @@ public class BffSupplierServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping("batchAddSuppliers")
+    public void batchAddSuppliers(
+        @RequestBody @Valid BffSupplierDto[] suppliers
+    ) {
+        BffSupplierServiceCommands.BatchAddSuppliers batchAddSuppliers = new BffSupplierServiceCommands.BatchAddSuppliers();
+        batchAddSuppliers.setSuppliers(suppliers);
+        try {
+        batchAddSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffSupplierApplicationService.when(batchAddSuppliers);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 }
 

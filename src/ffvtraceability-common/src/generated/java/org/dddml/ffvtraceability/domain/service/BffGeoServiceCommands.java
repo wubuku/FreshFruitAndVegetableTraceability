@@ -17,6 +17,27 @@ public class BffGeoServiceCommands {
 
     }
 
+    public static class GetCountries extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+    }
+
+    public static class GetStatesAndProvinces extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Country Id
+         */
+        private String countryId;
+
+        public String getCountryId() {
+            return countryId;
+        }
+
+        public void setCountryId(String countryId) {
+            this.countryId = countryId;
+        }
+
+    }
+
 
 }
 

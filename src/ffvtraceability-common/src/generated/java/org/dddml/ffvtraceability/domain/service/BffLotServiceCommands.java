@@ -155,6 +155,23 @@ public class BffLotServiceCommands {
 
     }
 
+    public static class BatchAddLots extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Lots
+         */
+        private BffLotDto[] lots;
+
+        public BffLotDto[] getLots() {
+            return lots;
+        }
+
+        public void setLots(BffLotDto[] lots) {
+            this.lots = lots;
+        }
+
+    }
+
 
 }
 

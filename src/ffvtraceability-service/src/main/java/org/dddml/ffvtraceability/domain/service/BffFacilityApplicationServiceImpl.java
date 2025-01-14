@@ -313,6 +313,11 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     }
 
     @Override
+    public void when(BffFacilityServiceCommands.BatchAddFacilityLocations c) {
+        //todo
+    }
+
+    @Override
     @Transactional
     public void when(BffFacilityServiceCommands.UpdateFacilityLocation c) {
         FacilityLocationId locationId = new FacilityLocationId(c.getFacilityId(), c.getLocationSeqId());

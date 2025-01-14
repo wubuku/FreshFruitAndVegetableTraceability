@@ -11,6 +11,10 @@ public interface BffGeoApplicationService {
 
     Iterable<BffGeoDto> when(BffGeoServiceCommands.GetAllNorthAmericanStatesAndProvinces c);
 
+    Iterable<BffGeoDto> when(BffGeoServiceCommands.GetCountries c);
+
+    Iterable<BffGeoDto> when(BffGeoServiceCommands.GetStatesAndProvinces c);
+
 
 }
 

@@ -37,6 +37,7 @@ import java.util.UUID;
 import static org.dddml.ffvtraceability.domain.constants.BffSupplierConstants.*;
 
 @Service
+@Transactional
 public class BffSupplierApplicationServiceImpl implements BffSupplierApplicationService {
 
     private static final String ERROR_SUPPLIER_NOT_FOUND = "Supplier not found: %s";
@@ -262,6 +263,11 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         }
         BffBusinessContactDto bizContact = c.getBusinessContact();
         updateOrCreatePartyBusinessContact(partyId, bizContact, c);
+    }
+
+    @Override
+    public void when(BffSupplierServiceCommands.BatchAddSuppliers c) {
+        //todo
     }
 
     private void updateOrCreatePartyBusinessContact(String partyId, BffBusinessContactDto bizContact, Command c) {

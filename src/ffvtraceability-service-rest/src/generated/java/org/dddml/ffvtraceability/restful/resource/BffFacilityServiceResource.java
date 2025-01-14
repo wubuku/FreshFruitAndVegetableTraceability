@@ -143,6 +143,20 @@ public class BffFacilityServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping("{facilityId}/Locations/batchAddFacilityLocations")
+    public void batchAddFacilityLocations(
+        @PathVariable("facilityId") String facilityId,
+        @RequestBody BffFacilityLocationDto[] facilityLocations
+    ) {
+        BffFacilityServiceCommands.BatchAddFacilityLocations batchAddFacilityLocations = new BffFacilityServiceCommands.BatchAddFacilityLocations();
+        batchAddFacilityLocations.setFacilityId(facilityId);
+        batchAddFacilityLocations.setFacilityLocations(facilityLocations);
+        try {
+        batchAddFacilityLocations.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffFacilityApplicationService.when(batchAddFacilityLocations);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @PutMapping("{facilityId}/Locations/{locationSeqId}")
     public void updateFacilityLocation(
         @PathVariable("facilityId") String facilityId,

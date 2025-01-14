@@ -20,10 +20,23 @@ public class BffGeoApplicationServiceImpl implements BffGeoApplicationService {
     private BffGeoMapper bffGeoMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable<BffGeoDto> when(BffGeoServiceCommands.GetAllNorthAmericanStatesAndProvinces c) {
         return bffGeoRepository.findAllNorthAmericanStatesAndProvinces().stream().map(
                 bffGeoMapper::toBffGeoDto
         ).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<BffGeoDto> when(BffGeoServiceCommands.GetCountries c) {
+        return null; //todo
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<BffGeoDto> when(BffGeoServiceCommands.GetStatesAndProvinces c) {
+        return null; //todo
     }
 
 }

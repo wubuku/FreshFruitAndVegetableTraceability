@@ -245,6 +245,36 @@ public class BffFacilityServiceCommands {
 
     }
 
+    public static class BatchAddFacilityLocations extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Facility Locations
+         */
+        private BffFacilityLocationDto[] facilityLocations;
+
+        public BffFacilityLocationDto[] getFacilityLocations() {
+            return facilityLocations;
+        }
+
+        public void setFacilityLocations(BffFacilityLocationDto[] facilityLocations) {
+            this.facilityLocations = facilityLocations;
+        }
+
+    }
+
     public static class UpdateFacilityLocation extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**

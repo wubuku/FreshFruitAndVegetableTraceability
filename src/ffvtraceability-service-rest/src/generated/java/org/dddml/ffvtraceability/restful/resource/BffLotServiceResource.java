@@ -101,5 +101,17 @@ public class BffLotServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping("batchAddLots")
+    public void batchAddLots(
+        @RequestBody @Valid BffLotDto[] lots
+    ) {
+        BffLotServiceCommands.BatchAddLots batchAddLots = new BffLotServiceCommands.BatchAddLots();
+        batchAddLots.setLots(lots);
+        try {
+        batchAddLots.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffLotApplicationService.when(batchAddLots);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 }
 

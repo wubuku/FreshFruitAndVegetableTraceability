@@ -155,6 +155,23 @@ public class BffUomServiceCommands {
 
     }
 
+    public static class BatchAddUnitsOfMeasure extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Units Of Measure
+         */
+        private BffUomDto[] unitsOfMeasure;
+
+        public BffUomDto[] getUnitsOfMeasure() {
+            return unitsOfMeasure;
+        }
+
+        public void setUnitsOfMeasure(BffUomDto[] unitsOfMeasure) {
+            this.unitsOfMeasure = unitsOfMeasure;
+        }
+
+    }
+
 
 }
 

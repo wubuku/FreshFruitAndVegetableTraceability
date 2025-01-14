@@ -101,5 +101,17 @@ public class BffUomServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping("batchAddUnitsOfMeasure")
+    public void batchAddUnitsOfMeasure(
+        @RequestBody BffUomDto[] unitsOfMeasure
+    ) {
+        BffUomServiceCommands.BatchAddUnitsOfMeasure batchAddUnitsOfMeasure = new BffUomServiceCommands.BatchAddUnitsOfMeasure();
+        batchAddUnitsOfMeasure.setUnitsOfMeasure(unitsOfMeasure);
+        try {
+        batchAddUnitsOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffUomApplicationService.when(batchAddUnitsOfMeasure);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 }
 
