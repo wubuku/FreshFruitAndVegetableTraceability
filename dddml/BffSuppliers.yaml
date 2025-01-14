@@ -108,3 +108,14 @@ services:
             type: id
           BusinessContact:
             type: BffBusinessContactDto
+
+
+      BatchAddSuppliers:
+        # 批量添加 Supplier
+        httpMethod: POST
+        restfulResourceName: "batchAddSuppliers"
+        metadata:
+          HttpRequestBody: Suppliers
+        parameters:
+          Suppliers:
+            itemType: BffSupplierDto

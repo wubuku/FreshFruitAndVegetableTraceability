@@ -86,3 +86,13 @@ services:
           Active:
             # 禁用传入 false；激活传入 true。
             type: boolean
+
+      BatchAddLots:
+        # 批量添加 Lot
+        httpMethod: POST
+        restfulResourceName: "batchAddLots"
+        metadata:
+          HttpRequestBody: Lots
+        parameters:
+          Lots:
+            itemType: BffLotDto

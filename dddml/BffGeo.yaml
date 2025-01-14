@@ -33,3 +33,20 @@ services:
         isQuery: true
         result:
           itemType: BffGeoDto
+
+      GetCountries:
+        restfulResourceName: "Countries"
+        isQuery: true
+        result:
+          itemType: BffGeoDto
+
+      GetStatesAndProvinces:
+        restfulResourceName: "StatesAndProvinces"
+        isQuery: true
+        result:
+          itemType: BffGeoDto
+        parameters:
+          CountryId:
+            type: id
+            optional: false # is required
+

@@ -194,6 +194,22 @@ services:
           FacilityLocation:
             type: BffFacilityLocationDto
 
+
+      BatchAddFacilityLocations:
+        # 批量添加 FacilityLocation
+        httpMethod: POST
+        restfulResourceName: "{FacilityId}/Locations/batchAddFacilityLocations"
+        metadata:
+          RestfulPathVariables:
+            - FacilityId
+          HttpRequestBody: FacilityLocations
+        parameters:
+          FacilityId:
+            type: id
+          FacilityLocations:
+            itemType: BffFacilityLocationDto
+
+
       UpdateFacilityLocation:
         httpMethod: PUT
         restfulResourceName: "{FacilityId}/Locations/{LocationSeqId}"

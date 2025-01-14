@@ -84,3 +84,15 @@ services:
           Active:
             # 禁用传入 false；激活传入 true。
             type: boolean
+
+
+      BatchAddUnitsOfMeasure:
+        # 批量添加 Uom
+        httpMethod: POST
+        restfulResourceName: "batchAddUnitsOfMeasure"
+        metadata:
+          HttpRequestBody: UnitsOfMeasure
+        parameters:
+          UnitsOfMeasure:
+            itemType: BffUomDto
+
