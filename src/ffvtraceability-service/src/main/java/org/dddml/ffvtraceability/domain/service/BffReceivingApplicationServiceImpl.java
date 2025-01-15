@@ -32,21 +32,50 @@ import java.util.stream.StreamSupport;
 public class BffReceivingApplicationServiceImpl implements BffReceivingApplicationService {
     @Autowired
     private ShipmentReceiptApplicationService shipmentReceiptApplicationService;
-
     @Autowired
     private ShipmentApplicationService shipmentApplicationService;
-
     @Autowired
     private ShippingDocumentApplicationService shippingDocumentApplicationService;
-
     @Autowired
     private DocumentApplicationService documentApplicationService;
-
     @Autowired
     private BffReceivingMapper bffReceivingMapper;
-
     @Autowired
     private BffReceivingRepository bffReceivingRepository;
+    @Autowired
+    private CteReceivingEventSynchronizationService cteReceivingEventSynchronizationService;
+
+    static BffReceivingDocumentDto getReceivingDocument(
+            BffReceivingRepository bffReceivingRepository,
+            BffReceivingMapper bffReceivingMapper,
+            String shipmentId
+    ) {
+        List<BffReceivingDocumentItemProjection> projections = bffReceivingRepository
+                .findReceivingDocumentWithItems(shipmentId);
+        if (projections.isEmpty()) {
+            return null;
+        }
+
+        // 查询关联文档
+        List<BffReceivingDocumentItemProjection> referenceDocuments =
+                bffReceivingRepository.findReferenceDocumentsByShipmentIds(Collections.singletonList(shipmentId));
+        // 构建收货单DTO
+        BffReceivingDocumentDto document = bffReceivingMapper.toBffReceivingDocumentDto(projections.get(0));
+        // 添加行项
+        document.setReceivingItems(
+                projections.stream()
+                        .filter(p -> p.getReceiptId() != null)
+                        .map(bffReceivingMapper::toBffReceivingItemDto)
+                        .collect(Collectors.toList())
+        );
+        // 添加关联文档
+        document.setReferenceDocuments(
+                referenceDocuments.stream()
+                        .map(bffReceivingMapper::toReferenceDocument)
+                        .collect(Collectors.toList())
+        );
+        return document;
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -123,35 +152,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Override
     @Transactional(readOnly = true)
     public BffReceivingDocumentDto when(BffReceivingServiceCommands.GetReceivingDocument c) {
-        List<BffReceivingDocumentItemProjection> projections =
-                bffReceivingRepository.findReceivingDocumentWithItems(c.getDocumentId());
-        if (projections.isEmpty()) {
-            return null;
-        }
-
-        // 查询关联文档
-        List<BffReceivingDocumentItemProjection> referenceDocuments =
-                bffReceivingRepository.findReferenceDocumentsByShipmentIds(Collections.singletonList(c.getDocumentId()));
-
-        // 构建收货单DTO
-        BffReceivingDocumentDto document = bffReceivingMapper.toBffReceivingDocumentDto(projections.get(0));
-
-        // 添加行项
-        document.setReceivingItems(
-                projections.stream()
-                        .filter(p -> p.getReceiptId() != null)
-                        .map(bffReceivingMapper::toBffReceivingItemDto)
-                        .collect(Collectors.toList())
+        return getReceivingDocument(bffReceivingRepository, bffReceivingMapper,
+                c.getDocumentId()
         );
-
-        // 添加关联文档
-        document.setReferenceDocuments(
-                referenceDocuments.stream()
-                        .map(bffReceivingMapper::toReferenceDocument)
-                        .collect(Collectors.toList())
-        );
-
-        return document;
     }
 
     @Override
@@ -272,6 +275,12 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         shipmentApplicationService.when(mergePatchShipment);
     }
 
+//    // Helper method to validate state
+//    private boolean isValidStateForQaConfirmation(ShipmentState state) {
+//        // Add your state validation logic here
+//        return state != null && state.getStatus() != null;
+//    }
+
     @Override
     @Transactional
     public void when(BffReceivingServiceCommands.SubmitReceivingDocument c) {
@@ -324,12 +333,6 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             throw new RuntimeException("Failed to confirm QA inspections for shipment: " + shipmentId, e);
         }
     }
-
-//    // Helper method to validate state
-//    private boolean isValidStateForQaConfirmation(ShipmentState state) {
-//        // Add your state validation logic here
-//        return state != null && state.getStatus() != null;
-//    }
 
     @Override
     @Transactional
@@ -485,6 +488,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
     @Override
     public void when(BffReceivingServiceCommands.SynchronizeCteReceivingEvents c) {
-        //todo
+        cteReceivingEventSynchronizationService.synchronizeReceivingEvent(c.getDocumentId(), c);
     }
+
 }

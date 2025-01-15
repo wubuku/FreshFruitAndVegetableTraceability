@@ -1,7 +1,6 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffLotDto;
-import org.dddml.ffvtraceability.domain.BffUomDto;
 import org.dddml.ffvtraceability.domain.lot.AbstractLotCommand;
 import org.dddml.ffvtraceability.domain.lot.LotApplicationService;
 import org.dddml.ffvtraceability.domain.lot.LotIdentificationCommand;
@@ -19,12 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.*;
+import static org.dddml.ffvtraceability.domain.constants.BffLotConstants.LOT_IDENTIFICATION_TYPE_GS1_BATCH;
+import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
+import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
 
 @Service
 @Transactional
 public class BffLotApplicationServiceImpl implements BffLotApplicationService {
-    public static final String LOT_IDENTIFICATION_TYPE_GS1_BATCH = "GS1_BATCH";
 
     @Autowired
     private LotApplicationService lotApplicationService;

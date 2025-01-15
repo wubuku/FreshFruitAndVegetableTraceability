@@ -32,6 +32,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.dddml.ffvtraceability.domain.constants.BffFacilityConstants.FACILITY_IDENTIFICATION_TYPE_FFRN;
@@ -73,6 +74,31 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Autowired
     private BffBusinessContactService bffBusinessContactService;
 
+    static BffBusinessContactDto getBusinessContact(
+            BffFacilityContactMechRepository bffFacilityContactMechRepository,
+            String facilityId
+    ) {
+        AtomicReference<BffBusinessContactDto> bc = new AtomicReference<>();
+        bffFacilityContactMechRepository.findFacilityCurrentPostalAddressByFacilityId(facilityId).ifPresent(x -> {
+            bc.set(new BffBusinessContactDto());
+            bc.get().setBusinessName(x.getToName());
+            bc.get().setPhysicalLocationAddress(x.getAddress1());
+            bc.get().setCity(x.getCity());
+            bc.get().setState(x.getStateProvinceGeoId());
+            bc.get().setZipCode(x.getPostalCode());
+        });
+
+        bffFacilityContactMechRepository.findFacilityCurrentTelecomNumberByFacilityId(facilityId).ifPresent(x -> {
+            if (bc.get() == null) {
+                bc.set(new BffBusinessContactDto());
+            }
+            bc.get().setPhoneNumber(
+                    TelecomNumberUtil.format(x.getCountryCode(), x.getAreaCode(), x.getContactNumber())
+            );
+        });
+        return bc.get();
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Page<BffFacilityDto> when(BffFacilityServiceCommands.GetFacilities c) {
@@ -104,24 +130,10 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     }
 
     private void enrichBusinessContactDetails(BffFacilityDto dto, String facilityId) {
-        bffFacilityContactMechRepository.findFacilityCurrentPostalAddressByFacilityId(facilityId).ifPresent(x -> {
-            BffBusinessContactDto bc = new BffBusinessContactDto();
-            bc.setBusinessName(x.getToName());
-            bc.setPhysicalLocationAddress(x.getAddress1());
-            bc.setCity(x.getCity());
-            bc.setState(x.getStateProvinceGeoId());
-            bc.setZipCode(x.getPostalCode());
+        BffBusinessContactDto bc = getBusinessContact(bffFacilityContactMechRepository, facilityId);
+        if (bc != null) {
             dto.setBusinessContacts(Collections.singletonList(bc));
-        });
-
-        bffFacilityContactMechRepository.findFacilityCurrentTelecomNumberByFacilityId(facilityId).ifPresent(x -> {
-            if (dto.getBusinessContacts() == null) {
-                dto.setBusinessContacts(Collections.singletonList(new BffBusinessContactDto()));
-            }
-            dto.getBusinessContacts().get(0).setPhoneNumber(
-                    TelecomNumberUtil.format(x.getCountryCode(), x.getAreaCode(), x.getContactNumber())
-            );
-        });
+        }
     }
 
     @Override
