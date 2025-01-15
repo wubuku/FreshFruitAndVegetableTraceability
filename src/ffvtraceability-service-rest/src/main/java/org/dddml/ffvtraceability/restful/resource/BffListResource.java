@@ -1,9 +1,6 @@
 package org.dddml.ffvtraceability.restful.resource;
 
-import org.dddml.ffvtraceability.domain.BffFacilityDto;
-import org.dddml.ffvtraceability.domain.BffRawItemDto;
-import org.dddml.ffvtraceability.domain.BffSupplierDto;
-import org.dddml.ffvtraceability.domain.BffUomDto;
+import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.service.*;
 import org.dddml.ffvtraceability.specialization.DomainErrorUtils;
 import org.dddml.ffvtraceability.specialization.Page;
@@ -31,6 +28,27 @@ public class BffListResource {
     private BffFacilityApplicationService bffFacilityApplicationService;
     @Autowired
     private BffUomApplicationService bffUomApplicationService;
+    @Autowired
+    private BffShipmentBoxTypeApplicationService bffShipmentBoxTypeApplicationService;
+
+    @GetMapping("/ShipmentBoxTypes")
+    public List<? extends BffShipmentBoxTypeDto> getShipmentBoxTypes(
+            @RequestParam(value = "active", required = false) String active,
+            @RequestParam(value = "shipmentBoxTypeId", required = false) String shipmentBoxTypeId
+    ) {
+        BffShipmentBoxTypeServiceCommands.GetShipmentBoxTypes getShipmentBoxTypes = new BffShipmentBoxTypeServiceCommands.GetShipmentBoxTypes();
+        getShipmentBoxTypes.setPage(0);
+        getShipmentBoxTypes.setSize(Integer.MAX_VALUE);
+        getShipmentBoxTypes.setActive(active);
+        getShipmentBoxTypes.setShipmentBoxTypeId(shipmentBoxTypeId);
+        try {
+            getShipmentBoxTypes.setRequesterId(SecurityContextUtil.getRequesterId());
+            return bffShipmentBoxTypeApplicationService.when(getShipmentBoxTypes).getContent();
+        } catch (Exception ex) {
+            logger.info(ex.getMessage(), ex);
+            throw DomainErrorUtils.convertException(ex);
+        }
+    }
 
     @GetMapping("RawItems") // 因为对应的分页查询接口的路径名是 "BffRawItems"
     public List<? extends BffRawItemDto> getRawItems(
