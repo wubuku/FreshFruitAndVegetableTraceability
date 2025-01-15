@@ -108,7 +108,7 @@
         <column name="transformation_location_state" sql-type="VARCHAR(50)" />
       </property>
       <property name="zipCode">
-        <column name="transformation_location_zip_code" sql-type="VARCHAR(20)" />
+        <column name="transformation_location_zip_code" sql-type="VARCHAR(30)" />
       </property>
     </component>
     <property name="dateTransformed">

@@ -95,16 +95,16 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
     }
 
     private KdeLocationDescription getKdeLocationDescription(String facilityId) {
-        BffBusinessContactDto originFacilityContact = BffFacilityApplicationServiceImpl.getBusinessContact(
+        BffBusinessContactDto facilityContact = BffFacilityApplicationServiceImpl.getBusinessContact(
                 bffFacilityContactMechRepository, facilityId
         );
         KdeLocationDescription ld = new KdeLocationDescription();
-        ld.setBusinessName(originFacilityContact.getBusinessName());
-        ld.setState(originFacilityContact.getState());
-        ld.setCity(originFacilityContact.getCity());
-        ld.setPhysicalLocationAddress(originFacilityContact.getPhysicalLocationAddress());
-        ld.setZipCode(originFacilityContact.getZipCode());
-        ld.setPhoneNumber(originFacilityContact.getPhoneNumber());
+        ld.setBusinessName(facilityContact.getBusinessName());
+        ld.setState(facilityContact.getState());
+        ld.setCity(facilityContact.getCity());
+        ld.setPhysicalLocationAddress(facilityContact.getPhysicalLocationAddress());
+        ld.setZipCode(facilityContact.getZipCode());
+        ld.setPhoneNumber(facilityContact.getPhoneNumber());
         return ld;
     }
 }

@@ -81,11 +81,23 @@ public class BffBusinessContactDto implements Serializable {
         this.zipCode = zipCode;
     }
 
+    private String country;
+
+    public String getCountry()
+    {
+        return this.country;
+    }
+
+    public void setCountry(String country)
+    {
+        this.country = country;
+    }
+
     public BffBusinessContactDto()
     {
     }
 
-    public BffBusinessContactDto(String businessName, String phoneNumber, String physicalLocationAddress, String city, String state, String zipCode)
+    public BffBusinessContactDto(String businessName, String phoneNumber, String physicalLocationAddress, String city, String state, String zipCode, String country)
     {
         this.businessName = businessName;
         this.phoneNumber = phoneNumber;
@@ -93,6 +105,7 @@ public class BffBusinessContactDto implements Serializable {
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+        this.country = country;
     }
 
     @Override
@@ -113,6 +126,7 @@ public class BffBusinessContactDto implements Serializable {
             && (city == other.city || (city != null && city.equals(other.city)))
             && (state == other.state || (state != null && state.equals(other.state)))
             && (zipCode == other.zipCode || (zipCode != null && zipCode.equals(other.zipCode)))
+            && (country == other.country || (country != null && country.equals(other.country)))
             ;
     }
 
@@ -138,6 +152,9 @@ public class BffBusinessContactDto implements Serializable {
         if (this.zipCode != null) {
             hash += 13 * this.zipCode.hashCode();
         }
+        if (this.country != null) {
+            hash += 13 * this.country.hashCode();
+        }
         return hash;
     }
 
@@ -150,6 +167,7 @@ public class BffBusinessContactDto implements Serializable {
                 ", city=" + '\'' + city + '\'' +
                 ", state=" + '\'' + state + '\'' +
                 ", zipCode=" + '\'' + zipCode + '\'' +
+                ", country=" + '\'' + country + '\'' +
                 '}';
     }
 

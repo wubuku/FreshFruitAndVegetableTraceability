@@ -77,7 +77,7 @@ typeDefinitions:
     javaType: String
 
   KdeZipCode:
-    sqlType: VARCHAR(20)
+    sqlType: VARCHAR(30)
     javaType: String
 
   KdeUrl:

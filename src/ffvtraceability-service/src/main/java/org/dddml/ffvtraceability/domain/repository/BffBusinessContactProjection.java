@@ -20,5 +20,7 @@ public interface BffBusinessContactProjection {
 
     String getZipCode();
 
+    String getCountry();
+
 }
 
