@@ -21,20 +21,20 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
 
         BffFacilityDto bffFacilityDto = new BffFacilityDto();
 
+        bffFacilityDto.setActive( bffFacilityProjection.getActive() );
+        bffFacilityDto.setDescription( bffFacilityProjection.getDescription() );
         bffFacilityDto.setFacilityId( bffFacilityProjection.getFacilityId() );
-        bffFacilityDto.setFacilityTypeId( bffFacilityProjection.getFacilityTypeId() );
-        bffFacilityDto.setParentFacilityId( bffFacilityProjection.getParentFacilityId() );
-        bffFacilityDto.setOwnerPartyId( bffFacilityProjection.getOwnerPartyId() );
+        bffFacilityDto.setFacilityLevel( bffFacilityProjection.getFacilityLevel() );
         bffFacilityDto.setFacilityName( bffFacilityProjection.getFacilityName() );
         bffFacilityDto.setFacilitySize( bffFacilityProjection.getFacilitySize() );
         bffFacilityDto.setFacilitySizeUomId( bffFacilityProjection.getFacilitySizeUomId() );
-        bffFacilityDto.setDescription( bffFacilityProjection.getDescription() );
-        bffFacilityDto.setGeoPointId( bffFacilityProjection.getGeoPointId() );
-        bffFacilityDto.setGeoId( bffFacilityProjection.getGeoId() );
-        bffFacilityDto.setActive( bffFacilityProjection.getActive() );
-        bffFacilityDto.setGln( bffFacilityProjection.getGln() );
+        bffFacilityDto.setFacilityTypeId( bffFacilityProjection.getFacilityTypeId() );
         bffFacilityDto.setFfrn( bffFacilityProjection.getFfrn() );
-        bffFacilityDto.setFacilityLevel( bffFacilityProjection.getFacilityLevel() );
+        bffFacilityDto.setGeoId( bffFacilityProjection.getGeoId() );
+        bffFacilityDto.setGeoPointId( bffFacilityProjection.getGeoPointId() );
+        bffFacilityDto.setGln( bffFacilityProjection.getGln() );
+        bffFacilityDto.setOwnerPartyId( bffFacilityProjection.getOwnerPartyId() );
+        bffFacilityDto.setParentFacilityId( bffFacilityProjection.getParentFacilityId() );
         bffFacilityDto.setSequenceNumber( bffFacilityProjection.getSequenceNumber() );
 
         return bffFacilityDto;
@@ -48,18 +48,18 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
 
         BffFacilityDto bffFacilityDto = new BffFacilityDto();
 
+        bffFacilityDto.setActive( facilityState.getActive() );
+        bffFacilityDto.setDescription( facilityState.getDescription() );
         bffFacilityDto.setFacilityId( facilityState.getFacilityId() );
-        bffFacilityDto.setFacilityTypeId( facilityState.getFacilityTypeId() );
-        bffFacilityDto.setParentFacilityId( facilityState.getParentFacilityId() );
-        bffFacilityDto.setOwnerPartyId( facilityState.getOwnerPartyId() );
+        bffFacilityDto.setFacilityLevel( facilityState.getFacilityLevel() );
         bffFacilityDto.setFacilityName( facilityState.getFacilityName() );
         bffFacilityDto.setFacilitySize( facilityState.getFacilitySize() );
         bffFacilityDto.setFacilitySizeUomId( facilityState.getFacilitySizeUomId() );
-        bffFacilityDto.setDescription( facilityState.getDescription() );
-        bffFacilityDto.setGeoPointId( facilityState.getGeoPointId() );
+        bffFacilityDto.setFacilityTypeId( facilityState.getFacilityTypeId() );
         bffFacilityDto.setGeoId( facilityState.getGeoId() );
-        bffFacilityDto.setActive( facilityState.getActive() );
-        bffFacilityDto.setFacilityLevel( facilityState.getFacilityLevel() );
+        bffFacilityDto.setGeoPointId( facilityState.getGeoPointId() );
+        bffFacilityDto.setOwnerPartyId( facilityState.getOwnerPartyId() );
+        bffFacilityDto.setParentFacilityId( facilityState.getParentFacilityId() );
         bffFacilityDto.setSequenceNumber( facilityState.getSequenceNumber() );
 
         return bffFacilityDto;
@@ -74,17 +74,17 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
         AbstractFacilityCommand.SimpleCreateFacility simpleCreateFacility = new AbstractFacilityCommand.SimpleCreateFacility();
 
         simpleCreateFacility.setFacilityId( bffFacilityDto.getFacilityId() );
-        simpleCreateFacility.setFacilityTypeId( bffFacilityDto.getFacilityTypeId() );
-        simpleCreateFacility.setParentFacilityId( bffFacilityDto.getParentFacilityId() );
-        simpleCreateFacility.setOwnerPartyId( bffFacilityDto.getOwnerPartyId() );
+        simpleCreateFacility.setActive( bffFacilityDto.getActive() );
+        simpleCreateFacility.setDescription( bffFacilityDto.getDescription() );
+        simpleCreateFacility.setFacilityLevel( bffFacilityDto.getFacilityLevel() );
         simpleCreateFacility.setFacilityName( bffFacilityDto.getFacilityName() );
         simpleCreateFacility.setFacilitySize( bffFacilityDto.getFacilitySize() );
         simpleCreateFacility.setFacilitySizeUomId( bffFacilityDto.getFacilitySizeUomId() );
-        simpleCreateFacility.setDescription( bffFacilityDto.getDescription() );
-        simpleCreateFacility.setGeoPointId( bffFacilityDto.getGeoPointId() );
+        simpleCreateFacility.setFacilityTypeId( bffFacilityDto.getFacilityTypeId() );
         simpleCreateFacility.setGeoId( bffFacilityDto.getGeoId() );
-        simpleCreateFacility.setFacilityLevel( bffFacilityDto.getFacilityLevel() );
-        simpleCreateFacility.setActive( bffFacilityDto.getActive() );
+        simpleCreateFacility.setGeoPointId( bffFacilityDto.getGeoPointId() );
+        simpleCreateFacility.setOwnerPartyId( bffFacilityDto.getOwnerPartyId() );
+        simpleCreateFacility.setParentFacilityId( bffFacilityDto.getParentFacilityId() );
         simpleCreateFacility.setSequenceNumber( bffFacilityDto.getSequenceNumber() );
 
         return simpleCreateFacility;
@@ -99,17 +99,17 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
         AbstractFacilityCommand.SimpleMergePatchFacility simpleMergePatchFacility = new AbstractFacilityCommand.SimpleMergePatchFacility();
 
         simpleMergePatchFacility.setFacilityId( bffFacilityDto.getFacilityId() );
-        simpleMergePatchFacility.setFacilityTypeId( bffFacilityDto.getFacilityTypeId() );
-        simpleMergePatchFacility.setParentFacilityId( bffFacilityDto.getParentFacilityId() );
-        simpleMergePatchFacility.setOwnerPartyId( bffFacilityDto.getOwnerPartyId() );
+        simpleMergePatchFacility.setActive( bffFacilityDto.getActive() );
+        simpleMergePatchFacility.setDescription( bffFacilityDto.getDescription() );
+        simpleMergePatchFacility.setFacilityLevel( bffFacilityDto.getFacilityLevel() );
         simpleMergePatchFacility.setFacilityName( bffFacilityDto.getFacilityName() );
         simpleMergePatchFacility.setFacilitySize( bffFacilityDto.getFacilitySize() );
         simpleMergePatchFacility.setFacilitySizeUomId( bffFacilityDto.getFacilitySizeUomId() );
-        simpleMergePatchFacility.setDescription( bffFacilityDto.getDescription() );
-        simpleMergePatchFacility.setGeoPointId( bffFacilityDto.getGeoPointId() );
+        simpleMergePatchFacility.setFacilityTypeId( bffFacilityDto.getFacilityTypeId() );
         simpleMergePatchFacility.setGeoId( bffFacilityDto.getGeoId() );
-        simpleMergePatchFacility.setFacilityLevel( bffFacilityDto.getFacilityLevel() );
-        simpleMergePatchFacility.setActive( bffFacilityDto.getActive() );
+        simpleMergePatchFacility.setGeoPointId( bffFacilityDto.getGeoPointId() );
+        simpleMergePatchFacility.setOwnerPartyId( bffFacilityDto.getOwnerPartyId() );
+        simpleMergePatchFacility.setParentFacilityId( bffFacilityDto.getParentFacilityId() );
         simpleMergePatchFacility.setSequenceNumber( bffFacilityDto.getSequenceNumber() );
 
         return simpleMergePatchFacility;
