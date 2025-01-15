@@ -22,5 +22,9 @@ public interface BffBusinessContactProjection {
 
     String getCountry();
 
+    String getStateProvinceGeoId();
+
+    String getCountryGeoId();
+
 }
 

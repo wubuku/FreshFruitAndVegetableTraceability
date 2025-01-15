@@ -13,9 +13,19 @@ valueObjects:
       City:
         type: name
       State:
+        # 州/省的名字（描述）
         type: name
       ZipCode:
         type: short-varchar
+      Country:
+        # 国家名字（描述）
+        type: name
+      StateProvinceGeoId:
+        # 州/省的地理 ID（关联到 Geo 实体的 GeoId）
+        type: id
+      CountryGeoId:
+        # 国家的地理 ID（关联到 Geo 实体的 GeoId）
+        type: id
 
 
 
