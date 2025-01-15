@@ -30,7 +30,9 @@ public class BffGeoApplicationServiceImpl implements BffGeoApplicationService {
     @Override
     @Transactional(readOnly = true)
     public Iterable<BffGeoDto> when(BffGeoServiceCommands.GetCountries c) {
-        return null; //todo
+        return bffGeoRepository.findAllCountries().stream().map(
+                bffGeoMapper::toBffGeoDto
+        ).collect(Collectors.toUnmodifiableList());
     }
 
     @Override

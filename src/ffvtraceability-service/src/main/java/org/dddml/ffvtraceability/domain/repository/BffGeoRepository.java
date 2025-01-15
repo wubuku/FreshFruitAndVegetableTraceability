@@ -31,6 +31,9 @@ public interface BffGeoRepository extends JpaRepository<AbstractGeoState.SimpleG
             nativeQuery = true)
     List<StateProvinceProjection> findAllNorthAmericanStatesAndProvinces();
 
+    @Query(value = "select * from geo g where g.geo_type_id='COUNTRY'", nativeQuery = true)
+    List<BffGeoProjection> findAllCountries();
+
     @Query(value = NORTH_AMERICAN_STATE_OR_PROVINCE_BASE_QUERY + """
             AND (
                 LOWER(ga.geo_id_to) = LOWER(:keyword)
