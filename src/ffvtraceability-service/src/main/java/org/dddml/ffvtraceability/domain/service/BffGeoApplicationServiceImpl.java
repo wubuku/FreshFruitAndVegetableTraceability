@@ -38,7 +38,9 @@ public class BffGeoApplicationServiceImpl implements BffGeoApplicationService {
     @Override
     @Transactional(readOnly = true)
     public Iterable<BffGeoDto> when(BffGeoServiceCommands.GetStatesAndProvinces c) {
-        return null; //todo
+        return bffGeoRepository.findStatesAndProvincesByCountryId(c.getCountryId()).stream().map(
+                bffGeoMapper::toBffGeoDto
+        ).collect(Collectors.toUnmodifiableList());
     }
 
 }
