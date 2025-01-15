@@ -102,7 +102,10 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             bc.setBusinessName(x.getToName());
             bc.setPhysicalLocationAddress(x.getAddress1());
             bc.setCity(x.getCity());
-            bc.setState(x.getStateProvinceGeoId());
+            bc.setStateProvinceGeoId(x.getStateProvinceGeoId());
+            //bc.setState(x.getStateProvinceGeoId());//todo state or province name;
+            //bc.setCountryGeoId(); //todo set country Geo Id.
+            //bc.setCountry(); //todo set country name.
             bc.setZipCode(x.getPostalCode());
             dto.setBusinessContacts(Collections.singletonList(bc));
         });
@@ -310,10 +313,14 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             String partyId, BffBusinessContactDto bizContact, Command c
     ) {
         if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
-            Optional<BffGeoRepository.StateProvinceProjection> stateProvince
-                    = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
-            if (!stateProvince.isPresent()) {
-                throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
+            if (bizContact.getStateProvinceGeoId() != null) {
+                //todo ?
+            } else {
+                Optional<BffGeoRepository.StateProvinceProjection> stateProvince
+                        = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
+                if (!stateProvince.isPresent()) {
+                    throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
+                }
             }
             String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
             createPartyContactMechAssociation(partyId, contactMechId, "-PP", c);
