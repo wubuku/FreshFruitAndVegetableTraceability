@@ -75,10 +75,11 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
             throw new IllegalArgumentException("Unit of measure not found: " + uomId);
         }
         BffUomDto uomDto = c.getUom();
+        uomDto.setUomId(uomId); // Id 有可能是通过 URL 传入的，所以需要设置
         AbstractUomCommand.SimpleMergePatchUom mergePatchUom = bffUomMapper.toMergePatchUom(uomDto);
         mergePatchUom.setActive(IndicatorUtils.asIndicatorDefaultYes(uomDto.getActive()));
 
-        mergePatchUom.setVersion(uomState.getVersion());
+        mergePatchUom.setVersion(uomState.getVersion()); // 乐观锁。需要设置状态对象中的版本号
         mergePatchUom.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchUom.setRequesterId(c.getRequesterId());
         uomApplicationService.when(mergePatchUom);

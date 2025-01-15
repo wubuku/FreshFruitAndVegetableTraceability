@@ -4,6 +4,7 @@ import org.dddml.ffvtraceability.domain.BffShipmentBoxTypeDto;
 import org.dddml.ffvtraceability.domain.mapper.BffShipmentBoxTypeMapper;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.AbstractShipmentBoxTypeCommand;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeApplicationService;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeState;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
 import org.dddml.ffvtraceability.specialization.Page;
@@ -53,11 +54,21 @@ public class BffShipmentBoxTypeApplicationServiceImpl implements BffShipmentBoxT
 
     @Override
     public void when(BffShipmentBoxTypeServiceCommands.UpdateShipmentBoxType c) {
+        String shipmentBoxTypeId = c.getShipmentBoxTypeId();
         BffShipmentBoxTypeDto shipmentBoxTypeDto = c.getShipmentBoxType();
+        shipmentBoxTypeDto.setShipmentBoxTypeId(shipmentBoxTypeId);
+
+        ShipmentBoxTypeState shipmentBoxTypeState = shipmentBoxTypeApplicationService.get(shipmentBoxTypeId);
+        if (shipmentBoxTypeState == null) {
+            throw new IllegalArgumentException("ShipmentBoxType not found: " + shipmentBoxTypeId);
+        }
+
         AbstractShipmentBoxTypeCommand.SimpleMergePatchShipmentBoxType toMergePatchShipmentBoxType
                 = bffShipmentBoxTypeMapper.toMergePatchShipmentBoxType(shipmentBoxTypeDto);
-        //todo
-
+        toMergePatchShipmentBoxType.setActive(IndicatorUtils.asIndicatorDefaultYes(shipmentBoxTypeDto.getActive()));
+        toMergePatchShipmentBoxType.setVersion(shipmentBoxTypeState.getVersion());
+        toMergePatchShipmentBoxType.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        toMergePatchShipmentBoxType.setRequesterId(c.getRequesterId());
         shipmentBoxTypeApplicationService.when(toMergePatchShipmentBoxType);
     }
 

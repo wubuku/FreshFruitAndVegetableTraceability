@@ -22,9 +22,10 @@ public class BffLotMapperImpl implements BffLotMapper {
         BffLotDto bffLotDto = new BffLotDto();
 
         bffLotDto.setExpirationDate( instantToOffsetDateTime( bffLotProjection.getExpirationDateInstant() ) );
-        bffLotDto.setGs1Batch( bffLotProjection.getGs1Batch() );
         bffLotDto.setLotId( bffLotProjection.getLotId() );
+        bffLotDto.setGs1Batch( bffLotProjection.getGs1Batch() );
         bffLotDto.setQuantity( bffLotProjection.getQuantity() );
+        bffLotDto.setActive( bffLotProjection.getActive() );
 
         return bffLotDto;
     }
@@ -37,9 +38,10 @@ public class BffLotMapperImpl implements BffLotMapper {
 
         BffLotDto bffLotDto = new BffLotDto();
 
-        bffLotDto.setExpirationDate( lotState.getExpirationDate() );
         bffLotDto.setLotId( lotState.getLotId() );
         bffLotDto.setQuantity( lotState.getQuantity() );
+        bffLotDto.setExpirationDate( lotState.getExpirationDate() );
+        bffLotDto.setActive( lotState.getActive() );
 
         return bffLotDto;
     }
@@ -53,8 +55,9 @@ public class BffLotMapperImpl implements BffLotMapper {
         AbstractLotCommand.SimpleCreateLot simpleCreateLot = new AbstractLotCommand.SimpleCreateLot();
 
         simpleCreateLot.setLotId( bffLotDto.getLotId() );
-        simpleCreateLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleCreateLot.setQuantity( bffLotDto.getQuantity() );
+        simpleCreateLot.setExpirationDate( bffLotDto.getExpirationDate() );
+        simpleCreateLot.setActive( bffLotDto.getActive() );
 
         return simpleCreateLot;
     }
@@ -68,8 +71,9 @@ public class BffLotMapperImpl implements BffLotMapper {
         AbstractLotCommand.SimpleMergePatchLot simpleMergePatchLot = new AbstractLotCommand.SimpleMergePatchLot();
 
         simpleMergePatchLot.setLotId( bffLotDto.getLotId() );
-        simpleMergePatchLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleMergePatchLot.setQuantity( bffLotDto.getQuantity() );
+        simpleMergePatchLot.setExpirationDate( bffLotDto.getExpirationDate() );
+        simpleMergePatchLot.setActive( bffLotDto.getActive() );
 
         return simpleMergePatchLot;
     }
