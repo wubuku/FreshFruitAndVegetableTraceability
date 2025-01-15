@@ -56,15 +56,10 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
     @Override
     @Transactional
     public String when(BffUomServiceCommands.CreateUnitOfMeasure c) {
-        AbstractUomCommand.SimpleCreateUom createUom = new AbstractUomCommand.SimpleCreateUom();
-        createUom.setUomId(c.getUom().getUomId() != null ? c.getUom().getUomId() : IdUtils.randomId());
-        createUom.setUomTypeId(c.getUom().getUomTypeId());
-        createUom.setAbbreviation(c.getUom().getAbbreviation());
-        createUom.setDescription(c.getUom().getDescription());
-        createUom.setNumericCode(c.getUom().getNumericCode());
-        createUom.setGs1AI(c.getUom().getGs1AI());
-        createUom.setUomName(c.getUom().getUomName());
-        createUom.setActive(IndicatorUtils.asIndicatorDefaultYes(c.getUom().getActive()));
+        BffUomDto uomDto = c.getUom();
+        AbstractUomCommand.SimpleCreateUom createUom = bffUomMapper.toCreateUom(uomDto);
+        createUom.setUomId(uomDto.getUomId() != null ? uomDto.getUomId() : IdUtils.randomId());
+        createUom.setActive(IndicatorUtils.asIndicatorDefaultYes(uomDto.getActive()));
         createUom.setCommandId(c.getCommandId() != null ? c.getCommandId() : createUom.getUomId());
         createUom.setRequesterId(c.getRequesterId());
         uomApplicationService.when(createUom);
@@ -79,16 +74,11 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
         if (uomState == null) {
             throw new IllegalArgumentException("Unit of measure not found: " + uomId);
         }
-        AbstractUomCommand.SimpleMergePatchUom mergePatchUom = new AbstractUomCommand.SimpleMergePatchUom();
-        mergePatchUom.setUomId(uomId);
-        mergePatchUom.setUomTypeId(c.getUom().getUomTypeId());
+        BffUomDto uomDto = c.getUom();
+        AbstractUomCommand.SimpleMergePatchUom mergePatchUom = bffUomMapper.toMergePatchUom(uomDto);
+        mergePatchUom.setActive(IndicatorUtils.asIndicatorDefaultYes(uomDto.getActive()));
+
         mergePatchUom.setVersion(uomState.getVersion());
-        mergePatchUom.setAbbreviation(c.getUom().getAbbreviation());
-        mergePatchUom.setDescription(c.getUom().getDescription());
-        mergePatchUom.setNumericCode(c.getUom().getNumericCode());
-        mergePatchUom.setGs1AI(c.getUom().getGs1AI());
-        mergePatchUom.setUomName(c.getUom().getUomName());
-        mergePatchUom.setActive(IndicatorUtils.asIndicatorDefaultYes(c.getUom().getActive()));
         mergePatchUom.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchUom.setRequesterId(c.getRequesterId());
         uomApplicationService.when(mergePatchUom);
