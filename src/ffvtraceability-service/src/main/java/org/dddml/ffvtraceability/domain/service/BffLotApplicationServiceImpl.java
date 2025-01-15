@@ -1,6 +1,7 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffLotDto;
+import org.dddml.ffvtraceability.domain.BffUomDto;
 import org.dddml.ffvtraceability.domain.lot.AbstractLotCommand;
 import org.dddml.ffvtraceability.domain.lot.LotApplicationService;
 import org.dddml.ffvtraceability.domain.lot.LotIdentificationCommand;
@@ -8,6 +9,7 @@ import org.dddml.ffvtraceability.domain.lot.LotState;
 import org.dddml.ffvtraceability.domain.mapper.BffLotMapper;
 import org.dddml.ffvtraceability.domain.repository.BffLotRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
+import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,17 +63,16 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     @Override
     @Transactional
     public String when(BffLotServiceCommands.CreateLot c) {
-        AbstractLotCommand.SimpleCreateLot createLot = new AbstractLotCommand.SimpleCreateLot();
-        createLot.setLotId(c.getLot().getLotId() != null ? c.getLot().getLotId() : IdUtils.randomId());
-        createLot.setExpirationDate(c.getLot().getExpirationDate());
-        createLot.setQuantity(c.getLot().getQuantity());
-        createLot.setActive(INDICATOR_YES);
-        createLot.setCommandId(createLot.getLotId());
+        BffLotDto lotDto = c.getLot();
+        AbstractLotCommand.SimpleCreateLot createLot = bffLotMapper.toCreateLot(lotDto);
+        createLot.setLotId(lotDto.getLotId() != null ? lotDto.getLotId() : IdUtils.randomId());
+        createLot.setActive(IndicatorUtils.asIndicatorDefaultYes(lotDto.getActive())); // 将前端传入的 active 规范化
+        createLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : createLot.getLotId());
         createLot.setRequesterId(c.getRequesterId());
-        if (c.getLot().getGs1Batch() != null) {
+        if (lotDto.getGs1Batch() != null) {
             LotIdentificationCommand.CreateLotIdentification createLotIdentification = createLot.newCreateLotIdentification();
             createLotIdentification.setLotIdentificationTypeId(LOT_IDENTIFICATION_TYPE_GS1_BATCH);
-            createLotIdentification.setIdValue(c.getLot().getGs1Batch());
+            createLotIdentification.setIdValue(lotDto.getGs1Batch());
         }
         lotApplicationService.when(createLot);
         return createLot.getLotId();
@@ -81,15 +82,15 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     @Transactional
     public void when(BffLotServiceCommands.UpdateLot c) {
         String lotId = c.getLotId();
+        BffLotDto lotDto = c.getLot();
+        lotDto.setLotId(lotId);
         LotState lotState = lotApplicationService.get(lotId);
         if (lotState == null) {
             throw new IllegalArgumentException("Lot not found: " + lotId);
         }
-        AbstractLotCommand.SimpleMergePatchLot mergePatchLot = new AbstractLotCommand.SimpleMergePatchLot();
-        mergePatchLot.setLotId(lotId);
+        AbstractLotCommand.SimpleMergePatchLot mergePatchLot = bffLotMapper.toMergePatchLot(lotDto);
+
         mergePatchLot.setVersion(lotState.getVersion());
-        mergePatchLot.setExpirationDate(c.getLot().getExpirationDate());
-        mergePatchLot.setQuantity(c.getLot().getQuantity());
         mergePatchLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchLot.setRequesterId(c.getRequesterId());
         lotApplicationService.when(mergePatchLot);

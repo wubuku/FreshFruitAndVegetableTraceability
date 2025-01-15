@@ -22,20 +22,20 @@ public class BffPurchaseOrderMapperImpl implements BffPurchaseOrderMapper {
 
         BffPurchaseOrderDto bffPurchaseOrderDto = new BffPurchaseOrderDto();
 
-        bffPurchaseOrderDto.setCreatedAt( instantToOffsetDateTime( purchaseOrderAndItemProjection.getCreatedAt() ) );
-        bffPurchaseOrderDto.setCreatedBy( purchaseOrderAndItemProjection.getCreatedBy() );
-        bffPurchaseOrderDto.setCurrencyUomId( purchaseOrderAndItemProjection.getCurrencyUomId() );
-        bffPurchaseOrderDto.setExternalId( purchaseOrderAndItemProjection.getExternalId() );
-        bffPurchaseOrderDto.setFulfillmentStatusId( purchaseOrderAndItemProjection.getFulfillmentStatusId() );
-        bffPurchaseOrderDto.setMemo( purchaseOrderAndItemProjection.getMemo() );
-        bffPurchaseOrderDto.setOrderDate( instantToOffsetDateTime( purchaseOrderAndItemProjection.getOrderDate() ) );
         bffPurchaseOrderDto.setOrderId( purchaseOrderAndItemProjection.getOrderId() );
         bffPurchaseOrderDto.setOrderName( purchaseOrderAndItemProjection.getOrderName() );
-        bffPurchaseOrderDto.setOriginFacilityId( purchaseOrderAndItemProjection.getOriginFacilityId() );
+        bffPurchaseOrderDto.setExternalId( purchaseOrderAndItemProjection.getExternalId() );
+        bffPurchaseOrderDto.setOrderDate( instantToOffsetDateTime( purchaseOrderAndItemProjection.getOrderDate() ) );
         bffPurchaseOrderDto.setStatusId( purchaseOrderAndItemProjection.getStatusId() );
+        bffPurchaseOrderDto.setCurrencyUomId( purchaseOrderAndItemProjection.getCurrencyUomId() );
+        bffPurchaseOrderDto.setSyncStatusId( purchaseOrderAndItemProjection.getSyncStatusId() );
+        bffPurchaseOrderDto.setOriginFacilityId( purchaseOrderAndItemProjection.getOriginFacilityId() );
+        bffPurchaseOrderDto.setMemo( purchaseOrderAndItemProjection.getMemo() );
+        bffPurchaseOrderDto.setFulfillmentStatusId( purchaseOrderAndItemProjection.getFulfillmentStatusId() );
         bffPurchaseOrderDto.setSupplierId( purchaseOrderAndItemProjection.getSupplierId() );
         bffPurchaseOrderDto.setSupplierName( purchaseOrderAndItemProjection.getSupplierName() );
-        bffPurchaseOrderDto.setSyncStatusId( purchaseOrderAndItemProjection.getSyncStatusId() );
+        bffPurchaseOrderDto.setCreatedAt( instantToOffsetDateTime( purchaseOrderAndItemProjection.getCreatedAt() ) );
+        bffPurchaseOrderDto.setCreatedBy( purchaseOrderAndItemProjection.getCreatedBy() );
         bffPurchaseOrderDto.setUpdatedAt( instantToOffsetDateTime( purchaseOrderAndItemProjection.getUpdatedAt() ) );
         bffPurchaseOrderDto.setUpdatedBy( purchaseOrderAndItemProjection.getUpdatedBy() );
 
@@ -53,20 +53,20 @@ public class BffPurchaseOrderMapperImpl implements BffPurchaseOrderMapper {
         bffPurchaseOrderItemDto.setStatusId( purchaseOrderAndItemProjection.getItemStatusId() );
         bffPurchaseOrderItemDto.setSyncStatusId( purchaseOrderAndItemProjection.getItemSyncStatusId() );
         bffPurchaseOrderItemDto.setFulfillmentStatusId( purchaseOrderAndItemProjection.getItemFulfillmentStatusId() );
-        bffPurchaseOrderItemDto.setCancelQuantity( purchaseOrderAndItemProjection.getCancelQuantity() );
-        bffPurchaseOrderItemDto.setComments( purchaseOrderAndItemProjection.getComments() );
-        bffPurchaseOrderItemDto.setEstimatedDeliveryDate( instantToOffsetDateTime( purchaseOrderAndItemProjection.getEstimatedDeliveryDate() ) );
-        bffPurchaseOrderItemDto.setEstimatedShipDate( instantToOffsetDateTime( purchaseOrderAndItemProjection.getEstimatedShipDate() ) );
-        bffPurchaseOrderItemDto.setExternalId( purchaseOrderAndItemProjection.getExternalId() );
-        bffPurchaseOrderItemDto.setGtin( purchaseOrderAndItemProjection.getGtin() );
-        bffPurchaseOrderItemDto.setItemDescription( purchaseOrderAndItemProjection.getItemDescription() );
         bffPurchaseOrderItemDto.setOrderItemSeqId( purchaseOrderAndItemProjection.getOrderItemSeqId() );
+        bffPurchaseOrderItemDto.setExternalId( purchaseOrderAndItemProjection.getExternalId() );
         bffPurchaseOrderItemDto.setProductId( purchaseOrderAndItemProjection.getProductId() );
-        bffPurchaseOrderItemDto.setProductName( purchaseOrderAndItemProjection.getProductName() );
-        bffPurchaseOrderItemDto.setQuantity( purchaseOrderAndItemProjection.getQuantity() );
-        bffPurchaseOrderItemDto.setSelectedAmount( purchaseOrderAndItemProjection.getSelectedAmount() );
         bffPurchaseOrderItemDto.setSupplierProductId( purchaseOrderAndItemProjection.getSupplierProductId() );
+        bffPurchaseOrderItemDto.setProductName( purchaseOrderAndItemProjection.getProductName() );
+        bffPurchaseOrderItemDto.setGtin( purchaseOrderAndItemProjection.getGtin() );
+        bffPurchaseOrderItemDto.setQuantity( purchaseOrderAndItemProjection.getQuantity() );
+        bffPurchaseOrderItemDto.setCancelQuantity( purchaseOrderAndItemProjection.getCancelQuantity() );
+        bffPurchaseOrderItemDto.setSelectedAmount( purchaseOrderAndItemProjection.getSelectedAmount() );
         bffPurchaseOrderItemDto.setUnitPrice( purchaseOrderAndItemProjection.getUnitPrice() );
+        bffPurchaseOrderItemDto.setItemDescription( purchaseOrderAndItemProjection.getItemDescription() );
+        bffPurchaseOrderItemDto.setComments( purchaseOrderAndItemProjection.getComments() );
+        bffPurchaseOrderItemDto.setEstimatedShipDate( instantToOffsetDateTime( purchaseOrderAndItemProjection.getEstimatedShipDate() ) );
+        bffPurchaseOrderItemDto.setEstimatedDeliveryDate( instantToOffsetDateTime( purchaseOrderAndItemProjection.getEstimatedDeliveryDate() ) );
 
         return bffPurchaseOrderItemDto;
     }
@@ -79,10 +79,10 @@ public class BffPurchaseOrderMapperImpl implements BffPurchaseOrderMapper {
 
         BffPurchaseOrderFulfillmentDto bffPurchaseOrderFulfillmentDto = new BffPurchaseOrderFulfillmentDto();
 
-        bffPurchaseOrderFulfillmentDto.setAllocatedQuantity( purchaseOrderFulfillmentProjection.getAllocatedQuantity() );
-        bffPurchaseOrderFulfillmentDto.setQaStatusId( purchaseOrderFulfillmentProjection.getQaStatusId() );
         bffPurchaseOrderFulfillmentDto.setReceiptId( purchaseOrderFulfillmentProjection.getReceiptId() );
+        bffPurchaseOrderFulfillmentDto.setAllocatedQuantity( purchaseOrderFulfillmentProjection.getAllocatedQuantity() );
         bffPurchaseOrderFulfillmentDto.setReceivedAt( instantToOffsetDateTime( purchaseOrderFulfillmentProjection.getReceivedAt() ) );
+        bffPurchaseOrderFulfillmentDto.setQaStatusId( purchaseOrderFulfillmentProjection.getQaStatusId() );
 
         return bffPurchaseOrderFulfillmentDto;
     }

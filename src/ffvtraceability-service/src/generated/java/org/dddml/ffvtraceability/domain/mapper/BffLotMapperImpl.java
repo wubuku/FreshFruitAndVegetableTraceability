@@ -22,6 +22,7 @@ public class BffLotMapperImpl implements BffLotMapper {
         BffLotDto bffLotDto = new BffLotDto();
 
         bffLotDto.setExpirationDate( instantToOffsetDateTime( bffLotProjection.getExpirationDateInstant() ) );
+        bffLotDto.setActive( bffLotProjection.getActive() );
         bffLotDto.setGs1Batch( bffLotProjection.getGs1Batch() );
         bffLotDto.setLotId( bffLotProjection.getLotId() );
         bffLotDto.setQuantity( bffLotProjection.getQuantity() );
@@ -37,6 +38,7 @@ public class BffLotMapperImpl implements BffLotMapper {
 
         BffLotDto bffLotDto = new BffLotDto();
 
+        bffLotDto.setActive( lotState.getActive() );
         bffLotDto.setExpirationDate( lotState.getExpirationDate() );
         bffLotDto.setLotId( lotState.getLotId() );
         bffLotDto.setQuantity( lotState.getQuantity() );
@@ -53,6 +55,7 @@ public class BffLotMapperImpl implements BffLotMapper {
         AbstractLotCommand.SimpleCreateLot simpleCreateLot = new AbstractLotCommand.SimpleCreateLot();
 
         simpleCreateLot.setLotId( bffLotDto.getLotId() );
+        simpleCreateLot.setActive( bffLotDto.getActive() );
         simpleCreateLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleCreateLot.setQuantity( bffLotDto.getQuantity() );
 
@@ -68,6 +71,7 @@ public class BffLotMapperImpl implements BffLotMapper {
         AbstractLotCommand.SimpleMergePatchLot simpleMergePatchLot = new AbstractLotCommand.SimpleMergePatchLot();
 
         simpleMergePatchLot.setLotId( bffLotDto.getLotId() );
+        simpleMergePatchLot.setActive( bffLotDto.getActive() );
         simpleMergePatchLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleMergePatchLot.setQuantity( bffLotDto.getQuantity() );
 

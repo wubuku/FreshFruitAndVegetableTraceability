@@ -20,6 +20,8 @@ valueObjects:
         type: fixed-point
       ExpirationDate:
         type: date-time
+      Active:
+        type: indicator
 
 services:
   BffLotService:

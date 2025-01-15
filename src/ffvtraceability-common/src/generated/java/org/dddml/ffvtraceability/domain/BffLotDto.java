@@ -63,16 +63,29 @@ public class BffLotDto implements Serializable {
         this.expirationDate = expirationDate;
     }
 
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
     public BffLotDto()
     {
     }
 
-    public BffLotDto(String lotId, String gs1Batch, java.math.BigDecimal quantity, OffsetDateTime expirationDate)
+    public BffLotDto(String lotId, String gs1Batch, java.math.BigDecimal quantity, OffsetDateTime expirationDate, String active)
     {
         this.lotId = lotId;
         this.gs1Batch = gs1Batch;
         this.quantity = quantity;
         this.expirationDate = expirationDate;
+        this.active = active;
     }
 
     @Override
@@ -91,6 +104,7 @@ public class BffLotDto implements Serializable {
             && (gs1Batch == other.gs1Batch || (gs1Batch != null && gs1Batch.equals(other.gs1Batch)))
             && (quantity == other.quantity || (quantity != null && quantity.equals(other.quantity)))
             && (expirationDate == other.expirationDate || (expirationDate != null && expirationDate.equals(other.expirationDate)))
+            && (active == other.active || (active != null && active.equals(other.active)))
             ;
     }
 
@@ -110,6 +124,9 @@ public class BffLotDto implements Serializable {
         if (this.expirationDate != null) {
             hash += 13 * this.expirationDate.hashCode();
         }
+        if (this.active != null) {
+            hash += 13 * this.active.hashCode();
+        }
         return hash;
     }
 
@@ -120,6 +137,7 @@ public class BffLotDto implements Serializable {
                 ", gs1Batch=" + '\'' + gs1Batch + '\'' +
                 ", quantity=" + quantity +
                 ", expirationDate=" + expirationDate +
+                ", active=" + '\'' + active + '\'' +
                 '}';
     }
 
