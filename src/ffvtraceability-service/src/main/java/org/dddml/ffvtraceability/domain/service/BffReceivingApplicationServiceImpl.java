@@ -482,4 +482,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
         shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
     }
+
+    @Override
+    public void when(BffReceivingServiceCommands.SynchronizeCteReceivingEvents c) {
+        //todo
+    }
 }

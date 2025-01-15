@@ -440,6 +440,23 @@ public class BffReceivingServiceCommands {
 
     }
 
+    public static class SynchronizeCteReceivingEvents extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+    }
+
 
 }
 

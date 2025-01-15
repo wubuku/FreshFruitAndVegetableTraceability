@@ -23,23 +23,23 @@ typeDefinitions:
     javaType: String
 
   KdeDate:
-    sqlType: VARCHAR(14)
+    sqlType: VARCHAR(30)
     javaType: String
 
   KdeBatch:
-    sqlType: VARCHAR(20)
+    sqlType: VARCHAR(30)
     javaType: String
 
   KdeSerialNumber:
-    sqlType: VARCHAR(20)
+    sqlType: VARCHAR(100)
     javaType: String
 
   KdeQuantity:
-    sqlType: DECIMAL(20,2)
+    sqlType: DECIMAL(30,2)
     javaType: BigDecimal
 
   KdeUom:
-    sqlType: VARCHAR(20)
+    sqlType: VARCHAR(50)
     javaType: String
 
   KdeProductName:

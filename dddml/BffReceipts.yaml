@@ -279,3 +279,14 @@ services:
           CasesRejected:
             description: The number of cases rejected
             type: numeric
+
+
+      SynchronizeCteReceivingEvents:
+        # 同步收货单的 Critical Tracking Events
+        httpMethod: POST
+        restfulResourceName: "{DocumentId}/synchronizeCteReceivingEvents"
+        metadata:
+          RestfulPathVariable: DocumentId
+        parameters:
+          DocumentId:
+            type: id

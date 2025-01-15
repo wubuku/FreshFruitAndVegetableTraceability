@@ -12,30 +12,30 @@
         <column name="traceability_lot_code_case_gtin" sql-type="VARCHAR(14)" />
       </property>
       <property name="caseBatch">
-        <column name="traceability_lot_code_case_batch" sql-type="VARCHAR(20)" />
+        <column name="traceability_lot_code_case_batch" sql-type="VARCHAR(30)" />
       </property>
       <property name="palletSscc">
         <column name="traceability_lot_code_pallet_sscc" sql-type="VARCHAR(18)" />
       </property>
       <property name="packDate">
-        <column name="traceability_lot_code_pack_date" sql-type="VARCHAR(14)" />
+        <column name="traceability_lot_code_pack_date" sql-type="VARCHAR(30)" />
       </property>
       <property name="harvestDate">
-        <column name="traceability_lot_code_harvest_date" sql-type="VARCHAR(14)" />
+        <column name="traceability_lot_code_harvest_date" sql-type="VARCHAR(30)" />
       </property>
       <property name="bestIfUsedByDate">
-        <column name="traceability_lot_code_best_if_used_by_date" sql-type="VARCHAR(14)" />
+        <column name="traceability_lot_code_best_if_used_by_date" sql-type="VARCHAR(30)" />
       </property>
       <property name="serialNumber">
-        <column name="traceability_lot_code_serial_number" sql-type="VARCHAR(20)" />
+        <column name="traceability_lot_code_serial_number" sql-type="VARCHAR(100)" />
       </property>
     </component>
     <component name="quantityAndUom" class="org.dddml.ffvtraceability.domain.KdeQuantityAndUom">
       <property name="quantity">
-        <column name="quantity_and_uom_quantity" sql-type="DECIMAL(20,2)" />
+        <column name="quantity_and_uom_quantity" sql-type="DECIMAL(30,2)" />
       </property>
       <property name="uom">
-        <column name="quantity_and_uom_uom" sql-type="VARCHAR(20)" />
+        <column name="quantity_and_uom_uom" sql-type="VARCHAR(50)" />
       </property>
     </component>
     <component name="productDescription" class="org.dddml.ffvtraceability.domain.KdeProductDescription">
@@ -90,7 +90,7 @@
       </property>
     </component>
     <property name="receiveDate">
-      <column name="receive_date" sql-type="VARCHAR(14)" />
+      <column name="receive_date" sql-type="VARCHAR(30)" />
     </property>
     <component name="tlcSourceOrTlcSourceReference" class="org.dddml.ffvtraceability.domain.KdeTlcSourceOrTlcSourceReference">
       <property name="tlcSourceBusinessName">

@@ -12,22 +12,22 @@
         <column name="food_used_tlc_case_gtin" sql-type="VARCHAR(14)" />
       </property>
       <property name="caseBatch">
-        <column name="food_used_tlc_case_batch" sql-type="VARCHAR(20)" />
+        <column name="food_used_tlc_case_batch" sql-type="VARCHAR(30)" />
       </property>
       <property name="palletSscc">
         <column name="food_used_tlc_pallet_sscc" sql-type="VARCHAR(18)" />
       </property>
       <property name="packDate">
-        <column name="food_used_tlc_pack_date" sql-type="VARCHAR(14)" />
+        <column name="food_used_tlc_pack_date" sql-type="VARCHAR(30)" />
       </property>
       <property name="harvestDate">
-        <column name="food_used_tlc_harvest_date" sql-type="VARCHAR(14)" />
+        <column name="food_used_tlc_harvest_date" sql-type="VARCHAR(30)" />
       </property>
       <property name="bestIfUsedByDate">
-        <column name="food_used_tlc_best_if_used_by_date" sql-type="VARCHAR(14)" />
+        <column name="food_used_tlc_best_if_used_by_date" sql-type="VARCHAR(30)" />
       </property>
       <property name="serialNumber">
-        <column name="food_used_tlc_serial_number" sql-type="VARCHAR(20)" />
+        <column name="food_used_tlc_serial_number" sql-type="VARCHAR(100)" />
       </property>
     </component>
     <component name="foodUsedProductDescription" class="org.dddml.ffvtraceability.domain.KdeProductDescription">
@@ -43,10 +43,10 @@
     </component>
     <component name="foodUsedQuantityAndUom" class="org.dddml.ffvtraceability.domain.KdeQuantityAndUom">
       <property name="quantity">
-        <column name="food_used_quantity_and_uom_quantity" sql-type="DECIMAL(20,2)" />
+        <column name="food_used_quantity_and_uom_quantity" sql-type="DECIMAL(30,2)" />
       </property>
       <property name="uom">
-        <column name="food_used_quantity_and_uom_uom" sql-type="VARCHAR(20)" />
+        <column name="food_used_quantity_and_uom_uom" sql-type="VARCHAR(50)" />
       </property>
     </component>
     <component name="foodProducedNewTlc" class="org.dddml.ffvtraceability.domain.KdeTraceabilityLotCode">
@@ -54,22 +54,22 @@
         <column name="food_produced_new_tlc_case_gtin" sql-type="VARCHAR(14)" />
       </property>
       <property name="caseBatch">
-        <column name="food_produced_new_tlc_case_batch" sql-type="VARCHAR(20)" />
+        <column name="food_produced_new_tlc_case_batch" sql-type="VARCHAR(30)" />
       </property>
       <property name="palletSscc">
         <column name="food_produced_new_tlc_pallet_sscc" sql-type="VARCHAR(18)" />
       </property>
       <property name="packDate">
-        <column name="food_produced_new_tlc_pack_date" sql-type="VARCHAR(14)" />
+        <column name="food_produced_new_tlc_pack_date" sql-type="VARCHAR(30)" />
       </property>
       <property name="harvestDate">
-        <column name="food_produced_new_tlc_harvest_date" sql-type="VARCHAR(14)" />
+        <column name="food_produced_new_tlc_harvest_date" sql-type="VARCHAR(30)" />
       </property>
       <property name="bestIfUsedByDate">
-        <column name="food_produced_new_tlc_best_if_used_by_date" sql-type="VARCHAR(14)" />
+        <column name="food_produced_new_tlc_best_if_used_by_date" sql-type="VARCHAR(30)" />
       </property>
       <property name="serialNumber">
-        <column name="food_produced_new_tlc_serial_number" sql-type="VARCHAR(20)" />
+        <column name="food_produced_new_tlc_serial_number" sql-type="VARCHAR(100)" />
       </property>
     </component>
     <component name="foodProducedProductDescription" class="org.dddml.ffvtraceability.domain.KdeProductDescription">
@@ -85,10 +85,10 @@
     </component>
     <component name="foodProducedQuantityAndUom" class="org.dddml.ffvtraceability.domain.KdeQuantityAndUom">
       <property name="quantity">
-        <column name="food_produced_quantity_and_uom_quantity" sql-type="DECIMAL(20,2)" />
+        <column name="food_produced_quantity_and_uom_quantity" sql-type="DECIMAL(30,2)" />
       </property>
       <property name="uom">
-        <column name="food_produced_quantity_and_uom_uom" sql-type="VARCHAR(20)" />
+        <column name="food_produced_quantity_and_uom_uom" sql-type="VARCHAR(50)" />
       </property>
     </component>
     <component name="transformationLocation" class="org.dddml.ffvtraceability.domain.KdeLocationDescription">
@@ -112,7 +112,7 @@
       </property>
     </component>
     <property name="dateTransformed">
-      <column name="date_transformed" sql-type="VARCHAR(14)" />
+      <column name="date_transformed" sql-type="VARCHAR(30)" />
     </property>
     <property name="createdBy">
       <column name="created_by" />

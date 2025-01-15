@@ -33,6 +33,8 @@ public interface BffReceivingApplicationService {
 
     void when(BffReceivingServiceCommands.UpdateReceivingItem c);
 
+    void when(BffReceivingServiceCommands.SynchronizeCteReceivingEvents c);
+
 
 }
 

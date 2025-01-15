@@ -186,5 +186,17 @@ public class BffReceivingServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping("{documentId}/synchronizeCteReceivingEvents")
+    public void synchronizeCteReceivingEvents(
+        @PathVariable("documentId") String documentId,
+        @RequestBody BffReceivingServiceCommands.SynchronizeCteReceivingEvents requestBody
+    ) {
+        requestBody.setDocumentId(documentId);
+        try {
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(requestBody);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 }
 
