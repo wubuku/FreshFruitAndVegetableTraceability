@@ -19,9 +19,14 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
                 pa.address1 as address1,
                 pa.city as city,
                 pa.postal_code as postalCode,
-                pa.state_province_geo_id as stateProvinceGeoId
+                pa.state_province_geo_id as stateProvinceGeoId,
+                pa.country_geo_id as countryId,
+                gc.geo_name as countryGeoName,
+                gp.geo_name as stateProvinceGeoName                
             FROM party_contact_mech pcm
             JOIN contact_mech pa ON pa.contact_mech_id = pcm.contact_mech_id
+            left join geo gc on pa.country_geo_id = gc.geo_id
+            left join geo gp on pa.state_province_geo_id = gp.geo_id
             WHERE pcm.party_id = :partyId
             AND pa.contact_mech_type_id = 'POSTAL_ADDRESS'
             AND pcm.from_date <= CURRENT_TIMESTAMP

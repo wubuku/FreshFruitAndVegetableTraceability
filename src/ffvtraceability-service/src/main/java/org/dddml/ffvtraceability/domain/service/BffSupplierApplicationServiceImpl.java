@@ -4,7 +4,6 @@ import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
-import org.dddml.ffvtraceability.domain.geo.GeoApplicationService;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
 import org.dddml.ffvtraceability.domain.party.*;
 import org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechCommand;
@@ -64,8 +63,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Autowired
     private BffBusinessContactService bffBusinessContactService;
-    @Autowired
-    private GeoApplicationService geoApplicationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -107,14 +104,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             bc.setCity(x.getCity());
             bc.setStateProvinceGeoId(x.getStateProvinceGeoId());
             bc.setCountryGeoId(x.getCountryGeoId());
-            var country = geoApplicationService.get(x.getCountryGeoId());
-            if (country != null) {
-                bc.setCountry(country.getGeoName());
-            }
-            var state = geoApplicationService.get(x.getStateProvinceGeoId());
-            if (state != null) {
-                bc.setState(state.getGeoName());
-            }
+            bc.setState(x.getStateProvinceGeoName());
+            bc.setCountry(x.getCountryGeoName());
             bc.setZipCode(x.getPostalCode());
             dto.setBusinessContacts(Collections.singletonList(bc));
         });

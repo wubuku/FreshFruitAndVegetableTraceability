@@ -65,6 +65,10 @@ public interface BffBusinessContactRepository extends JpaRepository<AbstractCont
         String getStateProvinceGeoId();
 
         String getCountryGeoId();
+
+        String getStateProvinceGeoName();
+
+        String getCountryGeoName();
     }
 
     interface TelecomNumberProjection {
