@@ -308,20 +308,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             String partyId, BffBusinessContactDto bizContact, Command c
     ) {
         if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
-            if (bizContact.getStateProvinceGeoId() != null) {
-                Optional<BffGeoRepository.StateProvinceProjection> stateProvince
-                        = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());
-                if (!stateProvince.isPresent()) {
-                    throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getStateProvinceGeoId()));
-                }
-            } else {
-//                Optional<BffGeoRepository.StateProvinceProjection> stateProvince
-//                        = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
-//                if (!stateProvince.isPresent()) {
-//                    throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
-//                }
-                throw new NullPointerException("State or province id cant be null");
-            }
             String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
             createPartyContactMechAssociation(partyId, contactMechId, "-PP", c);
         }
