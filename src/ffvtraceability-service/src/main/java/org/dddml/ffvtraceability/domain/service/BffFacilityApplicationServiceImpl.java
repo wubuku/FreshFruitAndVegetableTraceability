@@ -415,15 +415,6 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             String facilityId, BffBusinessContactDto bizContact, Command c
     ) {
         if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
-            if (bizContact.getStateProvinceGeoId() != null) {
-                Optional<BffGeoRepository.StateProvinceProjection> stateProvince
-                        = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());
-                if (!stateProvince.isPresent()) {
-                    throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getStateProvinceGeoId()));
-                }
-            } else {
-                throw new NullPointerException("State or province id cant be null");
-            }
             String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
             createFacilityContactMechAssociation(facilityId, contactMechId, "-PP", c);
         }
