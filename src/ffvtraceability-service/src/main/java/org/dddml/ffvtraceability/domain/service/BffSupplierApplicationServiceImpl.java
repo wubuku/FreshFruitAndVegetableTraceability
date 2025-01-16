@@ -4,6 +4,7 @@ import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
+import org.dddml.ffvtraceability.domain.geo.GeoApplicationService;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
 import org.dddml.ffvtraceability.domain.party.*;
 import org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechCommand;
@@ -22,6 +23,7 @@ import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.domain.util.TelecomNumberUtil;
 import org.dddml.ffvtraceability.specialization.Page;
+import org.mapstruct.ap.shaded.freemarker.template.utility.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -63,6 +65,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Autowired
     private BffBusinessContactService bffBusinessContactService;
+    @Autowired
+    private GeoApplicationService geoApplicationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -103,9 +107,15 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             bc.setPhysicalLocationAddress(x.getAddress1());
             bc.setCity(x.getCity());
             bc.setStateProvinceGeoId(x.getStateProvinceGeoId());
-            //bc.setState(x.getStateProvinceGeoId());//todo state or province name;
-            //bc.setCountryGeoId(); //todo set country Geo Id.
-            //bc.setCountry(); //todo set country name.
+            bc.setCountryGeoId(x.getCountryGeoId());
+            var country = geoApplicationService.get(x.getCountryGeoId());
+            if (country != null) {
+                bc.setCountry(country.getGeoName());
+            }
+            var state = geoApplicationService.get(x.getStateProvinceGeoId());
+            if (state != null) {
+                bc.setState(state.getGeoName());
+            }
             bc.setZipCode(x.getPostalCode());
             dto.setBusinessContacts(Collections.singletonList(bc));
         });
@@ -314,13 +324,18 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     ) {
         if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
             if (bizContact.getStateProvinceGeoId() != null) {
-                //todo ?
-            } else {
                 Optional<BffGeoRepository.StateProvinceProjection> stateProvince
-                        = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
+                        = bffGeoRepository.findStateOrProvinceInfoById(bizContact.getStateProvinceGeoId());
                 if (!stateProvince.isPresent()) {
-                    throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
+                    throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getStateProvinceGeoId()));
                 }
+            } else {
+//                Optional<BffGeoRepository.StateProvinceProjection> stateProvince
+//                        = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
+//                if (!stateProvince.isPresent()) {
+//                    throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
+//                }
+                throw new NullArgumentException("State or province id cant be null");
             }
             String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
             createPartyContactMechAssociation(partyId, contactMechId, "-PP", c);
