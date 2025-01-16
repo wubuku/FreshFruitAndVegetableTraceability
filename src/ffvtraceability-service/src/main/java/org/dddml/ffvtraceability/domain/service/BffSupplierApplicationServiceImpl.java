@@ -23,7 +23,6 @@ import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.domain.util.TelecomNumberUtil;
 import org.dddml.ffvtraceability.specialization.Page;
-import org.mapstruct.ap.shaded.freemarker.template.utility.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -335,7 +334,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 //                if (!stateProvince.isPresent()) {
 //                    throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
 //                }
-                throw new NullArgumentException("State or province id cant be null");
+                throw new NullPointerException("State or province id cant be null");
             }
             String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
             createPartyContactMechAssociation(partyId, contactMechId, "-PP", c);
