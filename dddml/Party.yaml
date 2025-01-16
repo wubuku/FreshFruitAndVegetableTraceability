@@ -217,9 +217,9 @@
           LegalOrganization:
             discriminatorValue: "LEGAL_ORGANIZATION"
 
-            properties:
-              TaxIdNum:
-                type: string
+            # properties:
+              # TaxIdNum:
+              #   type: string
 
             subtypes:
               # -----------------------
