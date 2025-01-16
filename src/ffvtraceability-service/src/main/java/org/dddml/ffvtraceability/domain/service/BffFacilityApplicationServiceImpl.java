@@ -44,24 +44,19 @@ import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES
 @Transactional
 public class BffFacilityApplicationServiceImpl implements BffFacilityApplicationService {
 
+    private static final String ERROR_STATE_NOT_FOUND = "State not found: %s";
     @Autowired
     private BffFacilityRepository bffFacilityRepository;
-
     @Autowired
     private FacilityApplicationService facilityApplicationService;
-
     @Autowired
     private BffFacilityMapper bffFacilityMapper;
-
     @Autowired
     private FacilityLocationApplicationService facilityLocationApplicationService;
-
     @Autowired
     private BffFacilityLocationRepository bffFacilityLocationRepository;
-
     @Autowired
     private BffFacilityLocationMapper bffFacilityLocationMapper;
-
     @Autowired
     private FacilityContactMechApplicationService facilityContactMechApplicationService;
     @Autowired
@@ -70,7 +65,6 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     private BffBusinessContactRepository bffBusinessContactRepository;
     @Autowired
     private BffFacilityContactMechRepository bffFacilityContactMechRepository;
-
     @Autowired
     private BffBusinessContactService bffBusinessContactService;
 
@@ -84,7 +78,10 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             bc.get().setBusinessName(x.getToName());
             bc.get().setPhysicalLocationAddress(x.getAddress1());
             bc.get().setCity(x.getCity());
-            bc.get().setState(x.getStateProvinceGeoId());
+            bc.get().setState(x.getStateProvinceGeoName());
+            bc.get().setStateProvinceGeoId(x.getStateProvinceGeoId());
+            bc.get().setCountryGeoId(x.getCountryGeoId());
+            bc.get().setCountry(x.getCountryGeoName());
             bc.get().setZipCode(x.getPostalCode());
         });
 
