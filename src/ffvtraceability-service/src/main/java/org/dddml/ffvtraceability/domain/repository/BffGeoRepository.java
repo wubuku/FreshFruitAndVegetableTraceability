@@ -10,33 +10,23 @@ import java.util.Optional;
 
 public interface BffGeoRepository extends JpaRepository<AbstractGeoState.SimpleGeoState, String> {
 
-    String NORTH_AMERICAN_STATE_OR_PROVINCE_BASE_QUERY = """
-            SELECT 
-                ga.geo_id as parentGeoId,
-                ga.geo_id_to as geoId,
-                g.geo_name as parentGeoName,
-                tg.abbreviation as abbreviation,
-                tg.geo_name as geoName,
-                tg.geo_type_id as geoTypeId
-            FROM geo_assoc ga
-            LEFT JOIN geo g ON ga.geo_id = g.geo_id
-            LEFT JOIN geo tg ON ga.geo_id_to = tg.geo_id
-            WHERE g.geo_type_id = 'COUNTRY' 
-            AND (g.geo_id = 'USA' OR g.geo_id = 'CAN')
-            AND (tg.geo_type_id = 'STATE' OR tg.geo_type_id = 'PROVINCE')
-            """;
     String STATE_OR_PROVINCE_BASE_QUERY = """
             SELECT 
                 ga.geo_id as parentGeoId,
+                g.geo_name as parentGeoName,
                 ga.geo_id_to as geoId,
-                tg.abbreviation as abbreviation,
                 tg.geo_name as geoName,
+                tg.abbreviation as abbreviation,
                 tg.geo_type_id as geoTypeId
             FROM geo_assoc ga
             LEFT JOIN geo g ON ga.geo_id = g.geo_id
             LEFT JOIN geo tg ON ga.geo_id_to = tg.geo_id
             WHERE g.geo_type_id = 'COUNTRY' 
             AND (tg.geo_type_id = 'STATE' OR tg.geo_type_id = 'PROVINCE')
+            """;
+
+    String NORTH_AMERICAN_STATE_OR_PROVINCE_BASE_QUERY = STATE_OR_PROVINCE_BASE_QUERY + """
+            AND (g.geo_id = 'USA' OR g.geo_id = 'CAN')
             """;
 
     @Query(value = NORTH_AMERICAN_STATE_OR_PROVINCE_BASE_QUERY + """
@@ -48,20 +38,20 @@ public interface BffGeoRepository extends JpaRepository<AbstractGeoState.SimpleG
     /**
      * Get Province or state's information(include country info) by its id
      *
-     * @param stateProvinceId
+     * @param stateProvinceGeoId
      * @return
      */
-    @Query(value = NORTH_AMERICAN_STATE_OR_PROVINCE_BASE_QUERY + """
-            AND tg.geo_id= :stateProvinceId
+    @Query(value = STATE_OR_PROVINCE_BASE_QUERY + """
+            AND tg.geo_id= :stateProvinceGeoId
             """, nativeQuery = true)
-    Optional<StateProvinceProjection> findStateOrProvinceInfoById(@Param("stateProvinceId") String stateProvinceId);
+    Optional<StateProvinceProjection> findStateOrProvinceById(@Param("stateProvinceGeoId") String stateProvinceGeoId);
 
     @Query(value = STATE_OR_PROVINCE_BASE_QUERY + """
-            AND g.geo_id = :countryId
+            AND g.geo_id = :countryGeoId
             ORDER BY ga.geo_id, tg.geo_name
             """,
             nativeQuery = true)
-    List<StateProvinceProjection> findStatesAndProvincesByCountryId(@Param("countryId") String countryId);
+    List<StateProvinceProjection> findStatesAndProvincesByCountryId(@Param("countryGeoId") String countryGeoId);
 
     @Query(value = """
             select 

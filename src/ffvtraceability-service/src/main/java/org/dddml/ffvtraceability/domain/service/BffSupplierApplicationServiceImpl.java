@@ -292,11 +292,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             updateOrCreatePartyContactMechAssociation(partyId, pa.get().getContactMechId(), ContactMechTypeId.POSTAL_ADDRESS, "-PP", c);
         } else {
             // 创建新的邮政地址
-            Optional<BffGeoRepository.StateProvinceProjection> stateProvince
-                    = bffGeoRepository.findOneNorthAmericanStateOrProvinceByKeyword(bizContact.getState());
-            if (!stateProvince.isPresent()) {
-                throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
-            }
             String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
             createPartyContactMechAssociation(partyId, contactMechId, "-PP", c);
             //handlePartyContactMechAssociation(partyId, createPostalAddress.getContactMechId(), "-PP", c);
@@ -324,7 +319,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
             if (bizContact.getStateProvinceGeoId() != null) {
                 Optional<BffGeoRepository.StateProvinceProjection> stateProvince
-                        = bffGeoRepository.findStateOrProvinceInfoById(bizContact.getStateProvinceGeoId());
+                        = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());
                 if (!stateProvince.isPresent()) {
                     throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getStateProvinceGeoId()));
                 }

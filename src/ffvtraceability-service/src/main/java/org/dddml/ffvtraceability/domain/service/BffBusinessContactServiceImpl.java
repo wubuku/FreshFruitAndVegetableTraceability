@@ -31,7 +31,7 @@ public class BffBusinessContactServiceImpl implements BffBusinessContactService 
     @Override
     public String createPostalAddress(BffBusinessContactDto bizContact, Command c) {
         Optional<BffGeoRepository.StateProvinceProjection> stateProvince
-                = bffGeoRepository.findStateOrProvinceInfoById(bizContact.getStateProvinceGeoId());
+                = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());
         if (!stateProvince.isPresent()) {
             throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
         }
