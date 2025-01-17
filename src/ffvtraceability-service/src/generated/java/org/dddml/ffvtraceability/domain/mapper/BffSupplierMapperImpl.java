@@ -51,8 +51,9 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         bffSupplierDto.setTaxId( bffSupplierProjection.getTaxId() );
         bffSupplierDto.setGs1CompanyPrefix( bffSupplierProjection.getGs1CompanyPrefix() );
         bffSupplierDto.setInternalId( bffSupplierProjection.getInternalId() );
-        bffSupplierDto.setSupplierTypeId( bffSupplierProjection.getSupplierTypeId() );
         bffSupplierDto.setTpaNumber( bffSupplierProjection.getTpaNumber() );
+        bffSupplierDto.setSupplierTypeEnumId( bffSupplierProjection.getSupplierTypeEnumId() );
+        bffSupplierDto.setSupplierProductTypeDescription( bffSupplierProjection.getSupplierProductTypeDescription() );
         bffSupplierDto.setCertificationCodes( bffSupplierProjection.getCertificationCodes() );
         bffSupplierDto.setBankAccountInformation( bffSupplierProjection.getBankAccountInformation() );
         bffSupplierDto.setTelephone( bffSupplierProjection.getTelephone() );

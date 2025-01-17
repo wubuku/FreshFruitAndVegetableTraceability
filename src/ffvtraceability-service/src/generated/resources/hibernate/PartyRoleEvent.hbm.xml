@@ -27,8 +27,17 @@
       </property>
     </subclass>
     <subclass name="AbstractPartyRoleEvent$AbstractPartyRoleStateEvent" abstract="true">
+      <property name="supplierTypeEnumId">
+        <column name="supplier_type_enum_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="supplierProductTypeDescription">
+        <column name="supplier_product_type_description" sql-type="VARCHAR(20)" />
+      </property>
       <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateCreated" discriminator-value="Created"></subclass>
-      <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateMergePatched" discriminator-value="MergePatched"></subclass>
+      <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertySupplierTypeEnumIdRemoved" column="is_property_supplier_type_enum_id_removed" />
+        <property name="isPropertySupplierProductTypeDescriptionRemoved" column="is_property_supplier_product_type_description_removed" />
+      </subclass>
     </subclass>
   </class>
 </hibernate-mapping>

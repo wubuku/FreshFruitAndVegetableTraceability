@@ -1,0 +1,32 @@
+aggregates:
+  Enumeration:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: EnumId
+      type: id
+    properties:
+      EnumTypeId:
+        type: id
+      EnumCode:
+        type: short-varchar
+      SequenceId:
+        type: id
+      Description:
+        type: description
+
+
+  EnumerationType:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: EnumTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+

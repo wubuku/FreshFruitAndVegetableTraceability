@@ -10,10 +10,66 @@ import org.dddml.ffvtraceability.domain.*;
 
 public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto implements PartyRoleCommand.CreateOrMergePatchPartyRole {
 
+    /**
+     * Supplier Type Enum Id
+     */
+    private String supplierTypeEnumId;
+
+    public String getSupplierTypeEnumId()
+    {
+        return this.supplierTypeEnumId;
+    }
+
+    public void setSupplierTypeEnumId(String supplierTypeEnumId)
+    {
+        this.supplierTypeEnumId = supplierTypeEnumId;
+    }
+
+    /**
+     * Supplier Product Type Description
+     */
+    private String supplierProductTypeDescription;
+
+    public String getSupplierProductTypeDescription()
+    {
+        return this.supplierProductTypeDescription;
+    }
+
+    public void setSupplierProductTypeDescription(String supplierProductTypeDescription)
+    {
+        this.supplierProductTypeDescription = supplierProductTypeDescription;
+    }
+
+
+    private Boolean isPropertySupplierTypeEnumIdRemoved;
+
+    public Boolean getIsPropertySupplierTypeEnumIdRemoved()
+    {
+        return this.isPropertySupplierTypeEnumIdRemoved;
+    }
+
+    public void setIsPropertySupplierTypeEnumIdRemoved(Boolean removed)
+    {
+        this.isPropertySupplierTypeEnumIdRemoved = removed;
+    }
+
+    private Boolean isPropertySupplierProductTypeDescriptionRemoved;
+
+    public Boolean getIsPropertySupplierProductTypeDescriptionRemoved()
+    {
+        return this.isPropertySupplierProductTypeDescriptionRemoved;
+    }
+
+    public void setIsPropertySupplierProductTypeDescriptionRemoved(Boolean removed)
+    {
+        this.isPropertySupplierProductTypeDescriptionRemoved = removed;
+    }
 
     public void copyTo(CreateOrMergePatchPartyRole command)
     {
         ((AbstractPartyRoleCommandDto) this).copyTo(command);
+        command.setSupplierTypeEnumId(this.getSupplierTypeEnumId());
+        command.setSupplierProductTypeDescription(this.getSupplierProductTypeDescription());
     }
 
     public PartyRoleCommand toCommand()
@@ -58,6 +114,8 @@ public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto 
     public void copyTo(MergePatchPartyRole command)
     {
         copyTo((CreateOrMergePatchPartyRole) command);
+        command.setIsPropertySupplierTypeEnumIdRemoved(this.getIsPropertySupplierTypeEnumIdRemoved());
+        command.setIsPropertySupplierProductTypeDescriptionRemoved(this.getIsPropertySupplierProductTypeDescriptionRemoved());
     }
 
     public static class CreatePartyRoleDto extends CreateOrMergePatchPartyRoleDto implements PartyRoleCommand.CreatePartyRole

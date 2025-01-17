@@ -181,18 +181,6 @@ public class BffSupplierDto implements Serializable {
         this.internalId = internalId;
     }
 
-    private String supplierTypeId;
-
-    public String getSupplierTypeId()
-    {
-        return this.supplierTypeId;
-    }
-
-    public void setSupplierTypeId(String supplierTypeId)
-    {
-        this.supplierTypeId = supplierTypeId;
-    }
-
     /**
      * Trade Partner Agreement Number
      */
@@ -206,6 +194,30 @@ public class BffSupplierDto implements Serializable {
     public void setTpaNumber(String tpaNumber)
     {
         this.tpaNumber = tpaNumber;
+    }
+
+    private String supplierTypeEnumId;
+
+    public String getSupplierTypeEnumId()
+    {
+        return this.supplierTypeEnumId;
+    }
+
+    public void setSupplierTypeEnumId(String supplierTypeEnumId)
+    {
+        this.supplierTypeEnumId = supplierTypeEnumId;
+    }
+
+    private String supplierProductTypeDescription;
+
+    public String getSupplierProductTypeDescription()
+    {
+        return this.supplierProductTypeDescription;
+    }
+
+    public void setSupplierProductTypeDescription(String supplierProductTypeDescription)
+    {
+        this.supplierProductTypeDescription = supplierProductTypeDescription;
     }
 
     /**
@@ -290,7 +302,7 @@ public class BffSupplierDto implements Serializable {
     {
     }
 
-    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String supplierTypeId, String tpaNumber, String certificationCodes, String bankAccountInformation, String telephone, String email, String webSite, String active)
+    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String tpaNumber, String supplierTypeEnumId, String supplierProductTypeDescription, String certificationCodes, String bankAccountInformation, String telephone, String email, String webSite, String active)
     {
         this.supplierId = supplierId;
         this.supplierName = supplierName;
@@ -305,8 +317,9 @@ public class BffSupplierDto implements Serializable {
         this.taxId = taxId;
         this.gs1CompanyPrefix = gs1CompanyPrefix;
         this.internalId = internalId;
-        this.supplierTypeId = supplierTypeId;
         this.tpaNumber = tpaNumber;
+        this.supplierTypeEnumId = supplierTypeEnumId;
+        this.supplierProductTypeDescription = supplierProductTypeDescription;
         this.certificationCodes = certificationCodes;
         this.bankAccountInformation = bankAccountInformation;
         this.telephone = telephone;
@@ -340,8 +353,9 @@ public class BffSupplierDto implements Serializable {
             && (taxId == other.taxId || (taxId != null && taxId.equals(other.taxId)))
             && (gs1CompanyPrefix == other.gs1CompanyPrefix || (gs1CompanyPrefix != null && gs1CompanyPrefix.equals(other.gs1CompanyPrefix)))
             && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
-            && (supplierTypeId == other.supplierTypeId || (supplierTypeId != null && supplierTypeId.equals(other.supplierTypeId)))
             && (tpaNumber == other.tpaNumber || (tpaNumber != null && tpaNumber.equals(other.tpaNumber)))
+            && (supplierTypeEnumId == other.supplierTypeEnumId || (supplierTypeEnumId != null && supplierTypeEnumId.equals(other.supplierTypeEnumId)))
+            && (supplierProductTypeDescription == other.supplierProductTypeDescription || (supplierProductTypeDescription != null && supplierProductTypeDescription.equals(other.supplierProductTypeDescription)))
             && (certificationCodes == other.certificationCodes || (certificationCodes != null && certificationCodes.equals(other.certificationCodes)))
             && (bankAccountInformation == other.bankAccountInformation || (bankAccountInformation != null && bankAccountInformation.equals(other.bankAccountInformation)))
             && (telephone == other.telephone || (telephone != null && telephone.equals(other.telephone)))
@@ -394,11 +408,14 @@ public class BffSupplierDto implements Serializable {
         if (this.internalId != null) {
             hash += 13 * this.internalId.hashCode();
         }
-        if (this.supplierTypeId != null) {
-            hash += 13 * this.supplierTypeId.hashCode();
-        }
         if (this.tpaNumber != null) {
             hash += 13 * this.tpaNumber.hashCode();
+        }
+        if (this.supplierTypeEnumId != null) {
+            hash += 13 * this.supplierTypeEnumId.hashCode();
+        }
+        if (this.supplierProductTypeDescription != null) {
+            hash += 13 * this.supplierProductTypeDescription.hashCode();
         }
         if (this.certificationCodes != null) {
             hash += 13 * this.certificationCodes.hashCode();
@@ -437,8 +454,9 @@ public class BffSupplierDto implements Serializable {
                 ", taxId=" + '\'' + taxId + '\'' +
                 ", gs1CompanyPrefix=" + '\'' + gs1CompanyPrefix + '\'' +
                 ", internalId=" + '\'' + internalId + '\'' +
-                ", supplierTypeId=" + '\'' + supplierTypeId + '\'' +
                 ", tpaNumber=" + '\'' + tpaNumber + '\'' +
+                ", supplierTypeEnumId=" + '\'' + supplierTypeEnumId + '\'' +
+                ", supplierProductTypeDescription=" + '\'' + supplierProductTypeDescription + '\'' +
                 ", certificationCodes=" + '\'' + certificationCodes + '\'' +
                 ", bankAccountInformation=" + '\'' + bankAccountInformation + '\'' +
                 ", telephone=" + '\'' + telephone + '\'' +

@@ -119,6 +119,30 @@ public abstract class AbstractPartyRoleEvent extends AbstractEvent implements Pa
 
 
     public static abstract class AbstractPartyRoleStateEvent extends AbstractPartyRoleEvent implements PartyRoleEvent.PartyRoleStateEvent {
+        private String supplierTypeEnumId;
+
+        public String getSupplierTypeEnumId()
+        {
+            return this.supplierTypeEnumId;
+        }
+
+        public void setSupplierTypeEnumId(String supplierTypeEnumId)
+        {
+            this.supplierTypeEnumId = supplierTypeEnumId;
+        }
+
+        private String supplierProductTypeDescription;
+
+        public String getSupplierProductTypeDescription()
+        {
+            return this.supplierProductTypeDescription;
+        }
+
+        public void setSupplierProductTypeDescription(String supplierProductTypeDescription)
+        {
+            this.supplierProductTypeDescription = supplierProductTypeDescription;
+        }
+
         protected AbstractPartyRoleStateEvent(PartyRoleEventId eventId) {
             super(eventId);
         }
@@ -153,6 +177,26 @@ public abstract class AbstractPartyRoleEvent extends AbstractEvent implements Pa
 
         public String getEventType() {
             return StateEventType.MERGE_PATCHED;
+        }
+
+        private Boolean isPropertySupplierTypeEnumIdRemoved;
+
+        public Boolean getIsPropertySupplierTypeEnumIdRemoved() {
+            return this.isPropertySupplierTypeEnumIdRemoved;
+        }
+
+        public void setIsPropertySupplierTypeEnumIdRemoved(Boolean removed) {
+            this.isPropertySupplierTypeEnumIdRemoved = removed;
+        }
+
+        private Boolean isPropertySupplierProductTypeDescriptionRemoved;
+
+        public Boolean getIsPropertySupplierProductTypeDescriptionRemoved() {
+            return this.isPropertySupplierProductTypeDescriptionRemoved;
+        }
+
+        public void setIsPropertySupplierProductTypeDescriptionRemoved(Boolean removed) {
+            this.isPropertySupplierProductTypeDescriptionRemoved = removed;
         }
 
 

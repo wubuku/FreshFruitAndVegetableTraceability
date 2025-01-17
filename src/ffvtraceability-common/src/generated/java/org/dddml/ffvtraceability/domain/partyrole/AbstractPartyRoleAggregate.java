@@ -51,6 +51,8 @@ public abstract class AbstractPartyRoleAggregate extends AbstractAggregate imple
     protected PartyRoleEvent map(PartyRoleCommand.CreatePartyRole c) {
         PartyRoleEventId stateEventId = new PartyRoleEventId(c.getPartyRoleId(), c.getVersion());
         PartyRoleEvent.PartyRoleStateCreated e = newPartyRoleStateCreated(stateEventId);
+        e.setSupplierTypeEnumId(c.getSupplierTypeEnumId());
+        e.setSupplierProductTypeDescription(c.getSupplierProductTypeDescription());
         ((AbstractPartyRoleEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -60,6 +62,10 @@ public abstract class AbstractPartyRoleAggregate extends AbstractAggregate imple
     protected PartyRoleEvent map(PartyRoleCommand.MergePatchPartyRole c) {
         PartyRoleEventId stateEventId = new PartyRoleEventId(c.getPartyRoleId(), c.getVersion());
         PartyRoleEvent.PartyRoleStateMergePatched e = newPartyRoleStateMergePatched(stateEventId);
+        e.setSupplierTypeEnumId(c.getSupplierTypeEnumId());
+        e.setSupplierProductTypeDescription(c.getSupplierProductTypeDescription());
+        e.setIsPropertySupplierTypeEnumIdRemoved(c.getIsPropertySupplierTypeEnumIdRemoved());
+        e.setIsPropertySupplierProductTypeDescriptionRemoved(c.getIsPropertySupplierProductTypeDescriptionRemoved());
         ((AbstractPartyRoleEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

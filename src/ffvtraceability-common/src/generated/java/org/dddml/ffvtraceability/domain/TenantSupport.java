@@ -64,6 +64,8 @@ public class TenantSupport {
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.enumeration.EnumerationState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.enumerationtype.EnumerationTypeState", "tenantId");
         typesWithIdStartsWithOrEndsWithTenantId = new HashSet<>();
         typesWithIdStartsWithOrEndsWithTenantId.add("org.dddml.ffvtraceability.domain.statusitem.StatusItemState");
     }

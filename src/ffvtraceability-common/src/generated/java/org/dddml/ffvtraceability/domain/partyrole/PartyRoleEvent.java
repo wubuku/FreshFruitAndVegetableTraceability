@@ -41,6 +41,14 @@ public interface PartyRoleEvent extends Event {
     void setCommandId(String commandId);
 
     interface PartyRoleStateEvent extends PartyRoleEvent {
+        String getSupplierTypeEnumId();
+
+        void setSupplierTypeEnumId(String supplierTypeEnumId);
+
+        String getSupplierProductTypeDescription();
+
+        void setSupplierProductTypeDescription(String supplierProductTypeDescription);
+
     }
 
     interface PartyRoleStateCreated extends PartyRoleStateEvent
@@ -51,6 +59,14 @@ public interface PartyRoleEvent extends Event {
 
     interface PartyRoleStateMergePatched extends PartyRoleStateEvent
     {
+        Boolean getIsPropertySupplierTypeEnumIdRemoved();
+
+        void setIsPropertySupplierTypeEnumIdRemoved(Boolean removed);
+
+        Boolean getIsPropertySupplierProductTypeDescriptionRemoved();
+
+        void setIsPropertySupplierProductTypeDescriptionRemoved(Boolean removed);
+
 
 
     }

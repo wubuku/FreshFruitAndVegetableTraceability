@@ -106,6 +106,8 @@ public class M {
         typeToAggMap.put("FacilityContactMechPurpose", "FacilityContactMech");
         typeToAggMap.put("Tenant", "Tenant");
         typeToAggMap.put("ShipmentBoxType", "ShipmentBoxType");
+        typeToAggMap.put("Enumeration", "Enumeration");
+        typeToAggMap.put("EnumerationType", "EnumerationType");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -4372,6 +4374,8 @@ public class M {
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partyrole.PartyRoleId.class;
 
     public static final String[] propertyNames = new String[] {
+            "supplierTypeEnumId",
+            "supplierProductTypeDescription",
             "version",
             "createdBy",
             "createdAt",
@@ -4384,6 +4388,8 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
             "Long",
             "String",
             "OffsetDateTime",
@@ -4407,6 +4413,10 @@ public class M {
     }
 
     private static void initAliasMap() {
+        aliasMap.put("supplierTypeEnumId", "supplierTypeEnumId");
+        aliasMap.put("SupplierTypeEnumId", "supplierTypeEnumId");
+        aliasMap.put("supplierProductTypeDescription", "supplierProductTypeDescription");
+        aliasMap.put("SupplierProductTypeDescription", "supplierProductTypeDescription");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -7982,6 +7992,188 @@ public class M {
         aliasMap.put("Active", "active");
         aliasMap.put("boxTypeName", "boxTypeName");
         aliasMap.put("BoxTypeName", "boxTypeName");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class EnumerationMetadata {
+
+    private EnumerationMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "enumId",
+            "enumTypeId",
+            "enumCode",
+            "sequenceId",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("enumId", "enumId");
+        aliasMap.put("EnumId", "enumId");
+        aliasMap.put("enumTypeId", "enumTypeId");
+        aliasMap.put("EnumTypeId", "enumTypeId");
+        aliasMap.put("enumCode", "enumCode");
+        aliasMap.put("EnumCode", "enumCode");
+        aliasMap.put("sequenceId", "sequenceId");
+        aliasMap.put("SequenceId", "sequenceId");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class EnumerationTypeMetadata {
+
+    private EnumerationTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "enumTypeId",
+            "parentTypeId",
+            "hasTable",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("enumTypeId", "enumTypeId");
+        aliasMap.put("EnumTypeId", "enumTypeId");
+        aliasMap.put("parentTypeId", "parentTypeId");
+        aliasMap.put("ParentTypeId", "parentTypeId");
+        aliasMap.put("hasTable", "hasTable");
+        aliasMap.put("HasTable", "hasTable");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

@@ -24,6 +24,26 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         this.partyRoleId = partyRoleId;
     }
 
+    private String supplierTypeEnumId;
+
+    public String getSupplierTypeEnumId() {
+        return this.supplierTypeEnumId;
+    }
+
+    public void setSupplierTypeEnumId(String supplierTypeEnumId) {
+        this.supplierTypeEnumId = supplierTypeEnumId;
+    }
+
+    private String supplierProductTypeDescription;
+
+    public String getSupplierProductTypeDescription() {
+        return this.supplierProductTypeDescription;
+    }
+
+    public void setSupplierProductTypeDescription(String supplierProductTypeDescription) {
+        this.supplierProductTypeDescription = supplierProductTypeDescription;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -158,6 +178,8 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
     public void when(PartyRoleStateCreated e) {
         throwOnWrongEvent(e);
 
+        this.setSupplierTypeEnumId(e.getSupplierTypeEnumId());
+        this.setSupplierProductTypeDescription(e.getSupplierProductTypeDescription());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -168,11 +190,27 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         if (s == this) {
             return;
         }
+        this.setSupplierTypeEnumId(s.getSupplierTypeEnumId());
+        this.setSupplierProductTypeDescription(s.getSupplierProductTypeDescription());
     }
 
     public void when(PartyRoleStateMergePatched e) {
         throwOnWrongEvent(e);
 
+        if (e.getSupplierTypeEnumId() == null) {
+            if (e.getIsPropertySupplierTypeEnumIdRemoved() != null && e.getIsPropertySupplierTypeEnumIdRemoved()) {
+                this.setSupplierTypeEnumId(null);
+            }
+        } else {
+            this.setSupplierTypeEnumId(e.getSupplierTypeEnumId());
+        }
+        if (e.getSupplierProductTypeDescription() == null) {
+            if (e.getIsPropertySupplierProductTypeDescriptionRemoved() != null && e.getIsPropertySupplierProductTypeDescriptionRemoved()) {
+                this.setSupplierProductTypeDescription(null);
+            }
+        } else {
+            this.setSupplierProductTypeDescription(e.getSupplierProductTypeDescription());
+        }
 
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());

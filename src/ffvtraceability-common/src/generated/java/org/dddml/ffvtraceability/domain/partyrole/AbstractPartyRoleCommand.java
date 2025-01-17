@@ -39,6 +39,30 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
 
     public static abstract class AbstractCreateOrMergePatchPartyRole extends AbstractPartyRoleCommand implements CreateOrMergePatchPartyRole
     {
+        private String supplierTypeEnumId;
+
+        public String getSupplierTypeEnumId()
+        {
+            return this.supplierTypeEnumId;
+        }
+
+        public void setSupplierTypeEnumId(String supplierTypeEnumId)
+        {
+            this.supplierTypeEnumId = supplierTypeEnumId;
+        }
+
+        private String supplierProductTypeDescription;
+
+        public String getSupplierProductTypeDescription()
+        {
+            return this.supplierProductTypeDescription;
+        }
+
+        public void setSupplierProductTypeDescription(String supplierProductTypeDescription)
+        {
+            this.supplierProductTypeDescription = supplierProductTypeDescription;
+        }
+
     }
 
     public static abstract class AbstractCreatePartyRole extends AbstractCreateOrMergePatchPartyRole implements CreatePartyRole
@@ -55,6 +79,30 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_MERGE_PATCH;
+        }
+
+        private Boolean isPropertySupplierTypeEnumIdRemoved;
+
+        public Boolean getIsPropertySupplierTypeEnumIdRemoved()
+        {
+            return this.isPropertySupplierTypeEnumIdRemoved;
+        }
+
+        public void setIsPropertySupplierTypeEnumIdRemoved(Boolean removed)
+        {
+            this.isPropertySupplierTypeEnumIdRemoved = removed;
+        }
+
+        private Boolean isPropertySupplierProductTypeDescriptionRemoved;
+
+        public Boolean getIsPropertySupplierProductTypeDescriptionRemoved()
+        {
+            return this.isPropertySupplierProductTypeDescriptionRemoved;
+        }
+
+        public void setIsPropertySupplierProductTypeDescriptionRemoved(Boolean removed)
+        {
+            this.isPropertySupplierProductTypeDescriptionRemoved = removed;
         }
 
 

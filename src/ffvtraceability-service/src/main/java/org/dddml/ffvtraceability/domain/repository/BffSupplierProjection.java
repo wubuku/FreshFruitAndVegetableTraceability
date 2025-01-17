@@ -32,9 +32,11 @@ public interface BffSupplierProjection {
 
     String getInternalId();
 
-    String getSupplierTypeId();
-
     String getTpaNumber();
+
+    String getSupplierTypeEnumId();
+
+    String getSupplierProductTypeDescription();
 
     String getCertificationCodes();
 

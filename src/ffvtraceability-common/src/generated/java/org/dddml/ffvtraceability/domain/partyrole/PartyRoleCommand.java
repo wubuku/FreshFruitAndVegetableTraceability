@@ -48,12 +48,28 @@ public interface PartyRoleCommand extends Command {
     }
 
     interface CreateOrMergePatchPartyRole extends PartyRoleCommand {
+        String getSupplierTypeEnumId();
+
+        void setSupplierTypeEnumId(String supplierTypeEnumId);
+
+        String getSupplierProductTypeDescription();
+
+        void setSupplierProductTypeDescription(String supplierProductTypeDescription);
+
     }
 
     interface CreatePartyRole extends CreateOrMergePatchPartyRole {
     }
 
     interface MergePatchPartyRole extends CreateOrMergePatchPartyRole {
+        Boolean getIsPropertySupplierTypeEnumIdRemoved();
+
+        void setIsPropertySupplierTypeEnumIdRemoved(Boolean removed);
+
+        Boolean getIsPropertySupplierProductTypeDescriptionRemoved();
+
+        void setIsPropertySupplierProductTypeDescriptionRemoved(Boolean removed);
+
 
     }
 

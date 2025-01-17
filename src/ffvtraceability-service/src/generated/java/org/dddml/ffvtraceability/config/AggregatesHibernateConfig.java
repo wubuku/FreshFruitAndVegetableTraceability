@@ -143,6 +143,12 @@ import org.dddml.ffvtraceability.domain.tenant.hibernate.*;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.enumeration.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.enumeration.hibernate.*;
+import org.dddml.ffvtraceability.domain.enumerationtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.enumerationtype.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -846,6 +852,34 @@ public class AggregatesHibernateConfig {
                 shipmentBoxTypeEventStore,
                 shipmentBoxTypeStateRepository,
                 shipmentBoxTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractEnumerationApplicationService.SimpleEnumerationApplicationService enumerationApplicationService(
+            EnumerationStateRepository enumerationStateRepository,
+            EnumerationStateQueryRepository enumerationStateQueryRepository
+    ) {
+        AbstractEnumerationApplicationService.SimpleEnumerationApplicationService applicationService = new AbstractEnumerationApplicationService.SimpleEnumerationApplicationService(
+                enumerationStateRepository,
+                enumerationStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractEnumerationTypeApplicationService.SimpleEnumerationTypeApplicationService enumerationTypeApplicationService(
+            EnumerationTypeStateRepository enumerationTypeStateRepository,
+            EnumerationTypeStateQueryRepository enumerationTypeStateQueryRepository
+    ) {
+        AbstractEnumerationTypeApplicationService.SimpleEnumerationTypeApplicationService applicationService = new AbstractEnumerationTypeApplicationService.SimpleEnumerationTypeApplicationService(
+                enumerationTypeStateRepository,
+                enumerationTypeStateQueryRepository
         );
         return applicationService;
     }
