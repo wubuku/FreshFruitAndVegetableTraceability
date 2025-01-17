@@ -1077,3 +1077,12 @@ curl -X 'PUT' \
   "zipCode": "94025"
 }' | { read http_status; check_response $? "$http_status" "Update supplier business contact"; }
 
+
+# 查询供应商类型枚举
+echo "Querying supplier type enumeration..."
+curl -X 'GET' \
+  "${API_BASE_URL}/Enumerations?enumTypeId=SUPPLIER_TYPE_ENUM" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X"
+
+

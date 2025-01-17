@@ -1,5 +1,7 @@
 aggregates:
   Enumeration:
+    multiTenancy:
+      discriminatorBasedMultiTenancyEnabled: false
     metadata:
       NoEventSourcing: true
     id:
@@ -17,6 +19,8 @@ aggregates:
 
 
   EnumerationType:
+    multiTenancy:
+      discriminatorBasedMultiTenancyEnabled: false
     metadata:
       NoEventSourcing: true
     id:

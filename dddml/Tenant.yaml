@@ -1,4 +1,4 @@
-aggregates:  
+aggregates:
   Tenant:
     multiTenancy:
       discriminatorBasedMultiTenancyEnabled: false

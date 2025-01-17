@@ -22,20 +22,7 @@ public class HibernateEnumerationStateRepository implements EnumerationStateRepo
     private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {
-        EntityManager em = this.entityManager;
-        String currentTenantId = TenantContext.getTenantId();
-        if (currentTenantId == null || currentTenantId.isEmpty()) {
-            throw new IllegalStateException("Tenant context not set");
-        }
-        if (TenantSupport.SUPER_TENANT_ID != null && !TenantSupport.SUPER_TENANT_ID.isEmpty()
-            && TenantSupport.SUPER_TENANT_ID.equals(currentTenantId)) {
-            return em;
-        }
-        org.hibernate.Session session = em.unwrap(org.hibernate.Session.class);
-        org.hibernate.Filter filter = session.enableFilter("tenantFilter");
-        filter.setParameter("tenantId", currentTenantId);
-        filter.validate();
-        return em;
+        return this.entityManager;
     }
 
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("EnumId", "EnumTypeId", "EnumCode", "SequenceId", "Description", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
