@@ -55,9 +55,9 @@ valueObjects:
       BankAccountInformation:
         description: "Bank Account Information"
         type: description
-      # 电话
       Telephone:
         type: short-varchar
+        # 电话
       Email:
         type: id # todo: email?
       WebSite:

@@ -51,6 +51,42 @@ public abstract class AbstractLotIdentificationCommand extends AbstractCommand i
             this.idValue = idValue;
         }
 
+        private String gtin;
+
+        public String getGtin()
+        {
+            return this.gtin;
+        }
+
+        public void setGtin(String gtin)
+        {
+            this.gtin = gtin;
+        }
+
+        private String gs1Batch;
+
+        public String getGs1Batch()
+        {
+            return this.gs1Batch;
+        }
+
+        public void setGs1Batch(String gs1Batch)
+        {
+            this.gs1Batch = gs1Batch;
+        }
+
+        private String sourceFacilityId;
+
+        public String getSourceFacilityId()
+        {
+            return this.sourceFacilityId;
+        }
+
+        public void setSourceFacilityId(String sourceFacilityId)
+        {
+            this.sourceFacilityId = sourceFacilityId;
+        }
+
     }
 
     public static abstract class AbstractCreateLotIdentification extends AbstractCreateOrMergePatchLotIdentification implements CreateLotIdentification
@@ -79,6 +115,42 @@ public abstract class AbstractLotIdentificationCommand extends AbstractCommand i
         public void setIsPropertyIdValueRemoved(Boolean removed)
         {
             this.isPropertyIdValueRemoved = removed;
+        }
+
+        private Boolean isPropertyGtinRemoved;
+
+        public Boolean getIsPropertyGtinRemoved()
+        {
+            return this.isPropertyGtinRemoved;
+        }
+
+        public void setIsPropertyGtinRemoved(Boolean removed)
+        {
+            this.isPropertyGtinRemoved = removed;
+        }
+
+        private Boolean isPropertyGs1BatchRemoved;
+
+        public Boolean getIsPropertyGs1BatchRemoved()
+        {
+            return this.isPropertyGs1BatchRemoved;
+        }
+
+        public void setIsPropertyGs1BatchRemoved(Boolean removed)
+        {
+            this.isPropertyGs1BatchRemoved = removed;
+        }
+
+        private Boolean isPropertySourceFacilityIdRemoved;
+
+        public Boolean getIsPropertySourceFacilityIdRemoved()
+        {
+            return this.isPropertySourceFacilityIdRemoved;
+        }
+
+        public void setIsPropertySourceFacilityIdRemoved(Boolean removed)
+        {
+            this.isPropertySourceFacilityIdRemoved = removed;
         }
 
 

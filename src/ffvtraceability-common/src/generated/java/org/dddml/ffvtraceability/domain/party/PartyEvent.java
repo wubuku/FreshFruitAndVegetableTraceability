@@ -65,6 +65,18 @@ public interface PartyEvent extends Event {
 
         void setStatusId(String statusId);
 
+        String getEmail();
+
+        void setEmail(String email);
+
+        String getWebSite();
+
+        void setWebSite(String webSite);
+
+        String getTelephone();
+
+        void setTelephone(String telephone);
+
     }
 
     interface PartyStateCreated extends PartyStateEvent
@@ -104,6 +116,18 @@ public interface PartyEvent extends Event {
         Boolean getIsPropertyStatusIdRemoved();
 
         void setIsPropertyStatusIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyEmailRemoved();
+
+        void setIsPropertyEmailRemoved(Boolean removed);
+
+        Boolean getIsPropertyWebSiteRemoved();
+
+        void setIsPropertyWebSiteRemoved(Boolean removed);
+
+        Boolean getIsPropertyTelephoneRemoved();
+
+        void setIsPropertyTelephoneRemoved(Boolean removed);
 
 
         Iterable<PartyIdentificationEvent> getPartyIdentificationEvents();

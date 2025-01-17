@@ -72,6 +72,18 @@ public interface PartyCommand extends Command {
 
         void setStatusId(String statusId);
 
+        String getEmail();
+
+        void setEmail(String email);
+
+        String getWebSite();
+
+        void setWebSite(String webSite);
+
+        String getTelephone();
+
+        void setTelephone(String telephone);
+
         String getSalutation();
 
         void setSalutation(String salutation);
@@ -165,6 +177,18 @@ public interface PartyCommand extends Command {
         Boolean getIsPropertyStatusIdRemoved();
 
         void setIsPropertyStatusIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyEmailRemoved();
+
+        void setIsPropertyEmailRemoved(Boolean removed);
+
+        Boolean getIsPropertyWebSiteRemoved();
+
+        void setIsPropertyWebSiteRemoved(Boolean removed);
+
+        Boolean getIsPropertyTelephoneRemoved();
+
+        void setIsPropertyTelephoneRemoved(Boolean removed);
 
         Boolean getIsPropertySalutationRemoved();
 

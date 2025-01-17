@@ -70,6 +70,9 @@ public abstract class AbstractFamilyState extends AbstractInformalOrganizationSt
         this.setPreferredCurrencyUomId(e.getPreferredCurrencyUomId());
         this.setDescription(e.getDescription());
         this.setStatusId(e.getStatusId());
+        this.setEmail(e.getEmail());
+        this.setWebSite(e.getWebSite());
+        this.setTelephone(e.getTelephone());
         this.setOrganizationName(e.getOrganizationName());
         this.setFamilyName(e.getFamilyName());
 
@@ -97,6 +100,9 @@ public abstract class AbstractFamilyState extends AbstractInformalOrganizationSt
         this.setPreferredCurrencyUomId(s.getPreferredCurrencyUomId());
         this.setDescription(s.getDescription());
         this.setStatusId(s.getStatusId());
+        this.setEmail(s.getEmail());
+        this.setWebSite(s.getWebSite());
+        this.setTelephone(s.getTelephone());
         this.setOrganizationName(s.getOrganizationName());
         this.setFamilyName(s.getFamilyName());
 
@@ -181,6 +187,27 @@ public abstract class AbstractFamilyState extends AbstractInformalOrganizationSt
             }
         } else {
             this.setStatusId(e.getStatusId());
+        }
+        if (e.getEmail() == null) {
+            if (e.getIsPropertyEmailRemoved() != null && e.getIsPropertyEmailRemoved()) {
+                this.setEmail(null);
+            }
+        } else {
+            this.setEmail(e.getEmail());
+        }
+        if (e.getWebSite() == null) {
+            if (e.getIsPropertyWebSiteRemoved() != null && e.getIsPropertyWebSiteRemoved()) {
+                this.setWebSite(null);
+            }
+        } else {
+            this.setWebSite(e.getWebSite());
+        }
+        if (e.getTelephone() == null) {
+            if (e.getIsPropertyTelephoneRemoved() != null && e.getIsPropertyTelephoneRemoved()) {
+                this.setTelephone(null);
+            }
+        } else {
+            this.setTelephone(e.getTelephone());
         }
         if (e.getOrganizationName() == null) {
             if (e.getIsPropertyOrganizationNameRemoved() != null && e.getIsPropertyOrganizationNameRemoved()) {

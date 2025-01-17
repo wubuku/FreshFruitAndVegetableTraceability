@@ -42,6 +42,15 @@
       <property name="statusId">
         <column name="STATUS_ID" sql-type="VARCHAR(20)" />
       </property>
+      <property name="email">
+        <column name="email" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="webSite">
+        <column name="web_site" sql-type="VARCHAR(2000)" />
+      </property>
+      <property name="telephone">
+        <column name="telephone" sql-type="VARCHAR(60)" />
+      </property>
       <subclass name="AbstractPartyEvent$SimplePartyStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractPartyEvent$SimplePartyStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
@@ -50,6 +59,9 @@
         <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
         <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
+        <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
+        <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
       </subclass>
       <subclass name="AbstractPersonEvent$AbstractPersonStateEvent" abstract="true">
         <property name="salutation">
@@ -112,6 +124,9 @@
           <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
           <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
           <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+          <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
+          <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
+          <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
         </subclass>
       </subclass>
       <subclass name="AbstractOrganizationEvent$AbstractOrganizationStateEvent" abstract="true">
@@ -127,6 +142,9 @@
           <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
           <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
           <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+          <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
+          <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
+          <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
         </subclass>
         <subclass name="AbstractLegalOrganizationEvent$AbstractLegalOrganizationStateEvent" abstract="true">
           <subclass name="AbstractLegalOrganizationEvent$SimpleLegalOrganizationStateCreated" discriminator-value="LegalOrganizationCreated"></subclass>
@@ -138,6 +156,9 @@
             <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
             <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
             <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+            <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
+            <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
+            <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
           </subclass>
           <subclass name="AbstractCompanyEvent$AbstractCompanyStateEvent" abstract="true">
             <subclass name="AbstractCompanyEvent$SimpleCompanyStateCreated" discriminator-value="CompanyCreated"></subclass>
@@ -149,6 +170,9 @@
               <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
               <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
               <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+              <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
+              <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
+              <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
             </subclass>
           </subclass>
         </subclass>
@@ -162,6 +186,9 @@
             <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
             <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
             <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+            <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
+            <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
+            <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
           </subclass>
         </subclass>
         <subclass name="AbstractInformalOrganizationEvent$AbstractInformalOrganizationStateEvent" abstract="true">
@@ -179,6 +206,9 @@
               <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
               <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
               <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+              <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
+              <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
+              <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
             </subclass>
           </subclass>
         </subclass>

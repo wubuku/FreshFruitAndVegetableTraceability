@@ -19,6 +19,14 @@ public interface PartyRoleState
 
     PartyRoleId getPartyRoleId();
 
+    String getSupplierShortName();
+
+    String getTpaNumber();
+
+    String getCertificationCodes();
+
+    String getBankAccountInformation();
+
     String getSupplierTypeEnumId();
 
     String getSupplierProductTypeDescription();
@@ -35,6 +43,14 @@ public interface PartyRoleState
 
     interface MutablePartyRoleState extends PartyRoleState {
         void setPartyRoleId(PartyRoleId partyRoleId);
+
+        void setSupplierShortName(String supplierShortName);
+
+        void setTpaNumber(String tpaNumber);
+
+        void setCertificationCodes(String certificationCodes);
+
+        void setBankAccountInformation(String bankAccountInformation);
 
         void setSupplierTypeEnumId(String supplierTypeEnumId);
 

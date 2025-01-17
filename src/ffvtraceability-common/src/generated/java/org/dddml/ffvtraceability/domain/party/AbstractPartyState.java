@@ -84,6 +84,36 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
         this.statusId = statusId;
     }
 
+    private String email;
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String webSite;
+
+    public String getWebSite() {
+        return this.webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
+    }
+
+    private String telephone;
+
+    public String getTelephone() {
+        return this.telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -245,6 +275,9 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
         this.setPreferredCurrencyUomId(e.getPreferredCurrencyUomId());
         this.setDescription(e.getDescription());
         this.setStatusId(e.getStatusId());
+        this.setEmail(e.getEmail());
+        this.setWebSite(e.getWebSite());
+        this.setTelephone(e.getTelephone());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -265,6 +298,9 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
         this.setPreferredCurrencyUomId(s.getPreferredCurrencyUomId());
         this.setDescription(s.getDescription());
         this.setStatusId(s.getStatusId());
+        this.setEmail(s.getEmail());
+        this.setWebSite(s.getWebSite());
+        this.setTelephone(s.getTelephone());
 
         if (s.getPartyIdentifications() != null) {
             Iterable<PartyIdentificationState> iterable;
@@ -347,6 +383,27 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
             }
         } else {
             this.setStatusId(e.getStatusId());
+        }
+        if (e.getEmail() == null) {
+            if (e.getIsPropertyEmailRemoved() != null && e.getIsPropertyEmailRemoved()) {
+                this.setEmail(null);
+            }
+        } else {
+            this.setEmail(e.getEmail());
+        }
+        if (e.getWebSite() == null) {
+            if (e.getIsPropertyWebSiteRemoved() != null && e.getIsPropertyWebSiteRemoved()) {
+                this.setWebSite(null);
+            }
+        } else {
+            this.setWebSite(e.getWebSite());
+        }
+        if (e.getTelephone() == null) {
+            if (e.getIsPropertyTelephoneRemoved() != null && e.getIsPropertyTelephoneRemoved()) {
+                this.setTelephone(null);
+            }
+        } else {
+            this.setTelephone(e.getTelephone());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

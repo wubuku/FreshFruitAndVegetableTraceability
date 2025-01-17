@@ -98,6 +98,42 @@ public class PartyStateDto {
         this.statusId = statusId;
     }
 
+    private String email;
+
+    public String getEmail()
+    {
+        return this.email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    private String webSite;
+
+    public String getWebSite()
+    {
+        return this.webSite;
+    }
+
+    public void setWebSite(String webSite)
+    {
+        this.webSite = webSite;
+    }
+
+    private String telephone;
+
+    public String getTelephone()
+    {
+        return this.telephone;
+    }
+
+    public void setTelephone(String telephone)
+    {
+        this.telephone = telephone;
+    }
+
     private String salutation;
 
     public String getSalutation()
@@ -399,6 +435,15 @@ public class PartyStateDto {
             }
             if (returnedFieldsContains("StatusId")) {
                 dto.setStatusId(state.getStatusId());
+            }
+            if (returnedFieldsContains("Email")) {
+                dto.setEmail(state.getEmail());
+            }
+            if (returnedFieldsContains("WebSite")) {
+                dto.setWebSite(state.getWebSite());
+            }
+            if (returnedFieldsContains("Telephone")) {
+                dto.setTelephone(state.getTelephone());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

@@ -25,6 +25,8 @@ public interface LotState
 
     String getActive();
 
+    String getGs1Batch();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -45,6 +47,8 @@ public interface LotState
         void setExpirationDate(OffsetDateTime expirationDate);
 
         void setActive(String active);
+
+        void setGs1Batch(String gs1Batch);
 
         void setVersion(Long version);
 

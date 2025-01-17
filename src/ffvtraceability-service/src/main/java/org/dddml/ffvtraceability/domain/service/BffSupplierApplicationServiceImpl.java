@@ -31,7 +31,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 
-import static org.dddml.ffvtraceability.domain.constants.BffSupplierConstants.*;
+import static org.dddml.ffvtraceability.domain.constants.BffPartyConstants.*;
 
 @Service
 @Transactional

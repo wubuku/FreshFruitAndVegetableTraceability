@@ -5,6 +5,12 @@ public class BffLotConstants {
         // Prevent instantiation
     }
 
+    @Deprecated
     public static final String LOT_IDENTIFICATION_TYPE_GS1_BATCH = "GS1_BATCH";
+
+    /**
+     * Traceability lot code.
+     */
+    public static final String LOT_IDENTIFICATION_TYPE_TLC = "TLC";
 
 }

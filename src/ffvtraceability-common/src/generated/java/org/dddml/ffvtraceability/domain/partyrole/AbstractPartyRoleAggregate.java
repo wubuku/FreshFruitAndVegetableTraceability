@@ -51,6 +51,10 @@ public abstract class AbstractPartyRoleAggregate extends AbstractAggregate imple
     protected PartyRoleEvent map(PartyRoleCommand.CreatePartyRole c) {
         PartyRoleEventId stateEventId = new PartyRoleEventId(c.getPartyRoleId(), c.getVersion());
         PartyRoleEvent.PartyRoleStateCreated e = newPartyRoleStateCreated(stateEventId);
+        e.setSupplierShortName(c.getSupplierShortName());
+        e.setTpaNumber(c.getTpaNumber());
+        e.setCertificationCodes(c.getCertificationCodes());
+        e.setBankAccountInformation(c.getBankAccountInformation());
         e.setSupplierTypeEnumId(c.getSupplierTypeEnumId());
         e.setSupplierProductTypeDescription(c.getSupplierProductTypeDescription());
         ((AbstractPartyRoleEvent)e).setCommandId(c.getCommandId());
@@ -62,8 +66,16 @@ public abstract class AbstractPartyRoleAggregate extends AbstractAggregate imple
     protected PartyRoleEvent map(PartyRoleCommand.MergePatchPartyRole c) {
         PartyRoleEventId stateEventId = new PartyRoleEventId(c.getPartyRoleId(), c.getVersion());
         PartyRoleEvent.PartyRoleStateMergePatched e = newPartyRoleStateMergePatched(stateEventId);
+        e.setSupplierShortName(c.getSupplierShortName());
+        e.setTpaNumber(c.getTpaNumber());
+        e.setCertificationCodes(c.getCertificationCodes());
+        e.setBankAccountInformation(c.getBankAccountInformation());
         e.setSupplierTypeEnumId(c.getSupplierTypeEnumId());
         e.setSupplierProductTypeDescription(c.getSupplierProductTypeDescription());
+        e.setIsPropertySupplierShortNameRemoved(c.getIsPropertySupplierShortNameRemoved());
+        e.setIsPropertyTpaNumberRemoved(c.getIsPropertyTpaNumberRemoved());
+        e.setIsPropertyCertificationCodesRemoved(c.getIsPropertyCertificationCodesRemoved());
+        e.setIsPropertyBankAccountInformationRemoved(c.getIsPropertyBankAccountInformationRemoved());
         e.setIsPropertySupplierTypeEnumIdRemoved(c.getIsPropertySupplierTypeEnumIdRemoved());
         e.setIsPropertySupplierProductTypeDescriptionRemoved(c.getIsPropertySupplierProductTypeDescriptionRemoved());
         ((AbstractPartyRoleEvent)e).setCommandId(c.getCommandId());

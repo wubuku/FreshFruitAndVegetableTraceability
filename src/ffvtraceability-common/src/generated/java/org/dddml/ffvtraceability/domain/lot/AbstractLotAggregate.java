@@ -54,6 +54,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
         e.setActive(c.getActive());
+        e.setGs1Batch(c.getGs1Batch());
         ((AbstractLotEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -73,9 +74,11 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
         e.setActive(c.getActive());
+        e.setGs1Batch(c.getGs1Batch());
         e.setIsPropertyQuantityRemoved(c.getIsPropertyQuantityRemoved());
         e.setIsPropertyExpirationDateRemoved(c.getIsPropertyExpirationDateRemoved());
         e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
+        e.setIsPropertyGs1BatchRemoved(c.getIsPropertyGs1BatchRemoved());
         ((AbstractLotEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -111,6 +114,9 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         LotIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)outerState.getLotIdentifications()).getOrAddDefault(c.getLotIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
+        e.setGtin(c.getGtin());
+        e.setGs1Batch(c.getGs1Batch());
+        e.setSourceFacilityId(c.getSourceFacilityId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
 
@@ -125,7 +131,13 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         LotIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)outerState.getLotIdentifications()).getOrAddDefault(c.getLotIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
+        e.setGtin(c.getGtin());
+        e.setGs1Batch(c.getGs1Batch());
+        e.setSourceFacilityId(c.getSourceFacilityId());
         e.setIsPropertyIdValueRemoved(c.getIsPropertyIdValueRemoved());
+        e.setIsPropertyGtinRemoved(c.getIsPropertyGtinRemoved());
+        e.setIsPropertyGs1BatchRemoved(c.getIsPropertyGs1BatchRemoved());
+        e.setIsPropertySourceFacilityIdRemoved(c.getIsPropertySourceFacilityIdRemoved());
 
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

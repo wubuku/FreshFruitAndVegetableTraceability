@@ -1,7 +1,7 @@
 package org.dddml.ffvtraceability.domain.constants;
 
-public final class BffSupplierConstants {
-    private BffSupplierConstants() {
+public final class BffPartyConstants {
+    private BffPartyConstants() {
         // Prevent instantiation
     }
 
@@ -20,4 +20,19 @@ public final class BffSupplierConstants {
      * GLN (Global Location Number)
      */
     public static final String PARTY_IDENTIFICATION_TYPE_GLN = "GLN";
+
+    /**
+     * GCP (GS1 Company Prefix)
+     */
+    public static final String PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX = "GCP";
+
+    /**
+     * TAX_ID (Tax ID / VAT Number)
+     */
+    public static final String PARTY_IDENTIFICATION_TYPE_TAX_ID = "TAX_ID";
+
+    /**
+     * INTERNAL_ID (Internal ID)
+     */
+    public static final String PARTY_IDENTIFICATION_TYPE_INTERNAL_ID = "INTERNAL_ID";
 } 

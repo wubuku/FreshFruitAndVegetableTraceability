@@ -25,6 +25,51 @@ public class CreateOrMergePatchLotIdentificationDto extends AbstractLotIdentific
         this.idValue = idValue;
     }
 
+    /**
+     * Gtin
+     */
+    private String gtin;
+
+    public String getGtin()
+    {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin)
+    {
+        this.gtin = gtin;
+    }
+
+    /**
+     * Gs1 Batch
+     */
+    private String gs1Batch;
+
+    public String getGs1Batch()
+    {
+        return this.gs1Batch;
+    }
+
+    public void setGs1Batch(String gs1Batch)
+    {
+        this.gs1Batch = gs1Batch;
+    }
+
+    /**
+     * The facility (location) where TLC was assigned during initial packing or transformation
+     */
+    private String sourceFacilityId;
+
+    public String getSourceFacilityId()
+    {
+        return this.sourceFacilityId;
+    }
+
+    public void setSourceFacilityId(String sourceFacilityId)
+    {
+        this.sourceFacilityId = sourceFacilityId;
+    }
+
 
     private Boolean isPropertyIdValueRemoved;
 
@@ -38,10 +83,49 @@ public class CreateOrMergePatchLotIdentificationDto extends AbstractLotIdentific
         this.isPropertyIdValueRemoved = removed;
     }
 
+    private Boolean isPropertyGtinRemoved;
+
+    public Boolean getIsPropertyGtinRemoved()
+    {
+        return this.isPropertyGtinRemoved;
+    }
+
+    public void setIsPropertyGtinRemoved(Boolean removed)
+    {
+        this.isPropertyGtinRemoved = removed;
+    }
+
+    private Boolean isPropertyGs1BatchRemoved;
+
+    public Boolean getIsPropertyGs1BatchRemoved()
+    {
+        return this.isPropertyGs1BatchRemoved;
+    }
+
+    public void setIsPropertyGs1BatchRemoved(Boolean removed)
+    {
+        this.isPropertyGs1BatchRemoved = removed;
+    }
+
+    private Boolean isPropertySourceFacilityIdRemoved;
+
+    public Boolean getIsPropertySourceFacilityIdRemoved()
+    {
+        return this.isPropertySourceFacilityIdRemoved;
+    }
+
+    public void setIsPropertySourceFacilityIdRemoved(Boolean removed)
+    {
+        this.isPropertySourceFacilityIdRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchLotIdentification command)
     {
         ((AbstractLotIdentificationCommandDto) this).copyTo(command);
         command.setIdValue(this.getIdValue());
+        command.setGtin(this.getGtin());
+        command.setGs1Batch(this.getGs1Batch());
+        command.setSourceFacilityId(this.getSourceFacilityId());
     }
 
     public LotIdentificationCommand toCommand()
@@ -97,6 +181,9 @@ public class CreateOrMergePatchLotIdentificationDto extends AbstractLotIdentific
     {
         copyTo((CreateOrMergePatchLotIdentification) command);
         command.setIsPropertyIdValueRemoved(this.getIsPropertyIdValueRemoved());
+        command.setIsPropertyGtinRemoved(this.getIsPropertyGtinRemoved());
+        command.setIsPropertyGs1BatchRemoved(this.getIsPropertyGs1BatchRemoved());
+        command.setIsPropertySourceFacilityIdRemoved(this.getIsPropertySourceFacilityIdRemoved());
     }
 
     public static class CreateLotIdentificationDto extends CreateOrMergePatchLotIdentificationDto implements LotIdentificationCommand.CreateLotIdentification

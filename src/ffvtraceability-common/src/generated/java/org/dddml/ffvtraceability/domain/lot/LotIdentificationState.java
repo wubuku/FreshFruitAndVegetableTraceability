@@ -21,6 +21,12 @@ public interface LotIdentificationState
 
     String getIdValue();
 
+    String getGtin();
+
+    String getGs1Batch();
+
+    String getSourceFacilityId();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -37,6 +43,12 @@ public interface LotIdentificationState
         void setLotIdentificationTypeId(String lotIdentificationTypeId);
 
         void setIdValue(String idValue);
+
+        void setGtin(String gtin);
+
+        void setGs1Batch(String gs1Batch);
+
+        void setSourceFacilityId(String sourceFacilityId);
 
         void setVersion(Long version);
 

@@ -31,6 +31,13 @@
       # type: id
       # IsUnread:
       #   type: indicator
+      Email:
+        type: id # todo: email?
+      WebSite:
+        type: url
+      Telephone:
+        type: short-varchar
+
       PartyIdentifications:
         itemType: PartyIdentification
 

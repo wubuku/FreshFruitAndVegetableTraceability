@@ -22,6 +22,18 @@ public interface LotIdentificationCommand extends Command {
 
         void setIdValue(String idValue);
 
+        String getGtin();
+
+        void setGtin(String gtin);
+
+        String getGs1Batch();
+
+        void setGs1Batch(String gs1Batch);
+
+        String getSourceFacilityId();
+
+        void setSourceFacilityId(String sourceFacilityId);
+
     }
 
     interface CreateLotIdentification extends CreateOrMergePatchLotIdentification {
@@ -31,6 +43,18 @@ public interface LotIdentificationCommand extends Command {
         Boolean getIsPropertyIdValueRemoved();
 
         void setIsPropertyIdValueRemoved(Boolean removed);
+
+        Boolean getIsPropertyGtinRemoved();
+
+        void setIsPropertyGtinRemoved(Boolean removed);
+
+        Boolean getIsPropertyGs1BatchRemoved();
+
+        void setIsPropertyGs1BatchRemoved(Boolean removed);
+
+        Boolean getIsPropertySourceFacilityIdRemoved();
+
+        void setIsPropertySourceFacilityIdRemoved(Boolean removed);
 
 
     }

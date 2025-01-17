@@ -64,6 +64,15 @@ public class FamilyStateDto extends InformalOrganizationStateDto {
             if (returnedFieldsContains("StatusId")) {
                 dto.setStatusId(state.getStatusId());
             }
+            if (returnedFieldsContains("Email")) {
+                dto.setEmail(state.getEmail());
+            }
+            if (returnedFieldsContains("WebSite")) {
+                dto.setWebSite(state.getWebSite());
+            }
+            if (returnedFieldsContains("Telephone")) {
+                dto.setTelephone(state.getTelephone());
+            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }

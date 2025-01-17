@@ -54,6 +54,16 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.active = active;
     }
 
+    private String gs1Batch;
+
+    public String getGs1Batch() {
+        return this.gs1Batch;
+    }
+
+    public void setGs1Batch(String gs1Batch) {
+        this.gs1Batch = gs1Batch;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -212,6 +222,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.setQuantity(e.getQuantity());
         this.setExpirationDate(e.getExpirationDate());
         this.setActive(e.getActive());
+        this.setGs1Batch(e.getGs1Batch());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -229,6 +240,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.setQuantity(s.getQuantity());
         this.setExpirationDate(s.getExpirationDate());
         this.setActive(s.getActive());
+        this.setGs1Batch(s.getGs1Batch());
 
         if (s.getLotIdentifications() != null) {
             Iterable<LotIdentificationState> iterable;
@@ -290,6 +302,13 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
             }
         } else {
             this.setActive(e.getActive());
+        }
+        if (e.getGs1Batch() == null) {
+            if (e.getIsPropertyGs1BatchRemoved() != null && e.getIsPropertyGs1BatchRemoved()) {
+                this.setGs1Batch(null);
+            }
+        } else {
+            this.setGs1Batch(e.getGs1Batch());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

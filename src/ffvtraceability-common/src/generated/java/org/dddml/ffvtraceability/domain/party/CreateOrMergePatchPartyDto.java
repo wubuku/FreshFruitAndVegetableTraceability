@@ -101,6 +101,51 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
     }
 
     /**
+     * Email
+     */
+    private String email;
+
+    public String getEmail()
+    {
+        return this.email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    /**
+     * Web Site
+     */
+    private String webSite;
+
+    public String getWebSite()
+    {
+        return this.webSite;
+    }
+
+    public void setWebSite(String webSite)
+    {
+        this.webSite = webSite;
+    }
+
+    /**
+     * Telephone
+     */
+    private String telephone;
+
+    public String getTelephone()
+    {
+        return this.telephone;
+    }
+
+    public void setTelephone(String telephone)
+    {
+        this.telephone = telephone;
+    }
+
+    /**
      * Salutation
      */
     private String salutation;
@@ -410,6 +455,42 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         this.isPropertyStatusIdRemoved = removed;
     }
 
+    private Boolean isPropertyEmailRemoved;
+
+    public Boolean getIsPropertyEmailRemoved()
+    {
+        return this.isPropertyEmailRemoved;
+    }
+
+    public void setIsPropertyEmailRemoved(Boolean removed)
+    {
+        this.isPropertyEmailRemoved = removed;
+    }
+
+    private Boolean isPropertyWebSiteRemoved;
+
+    public Boolean getIsPropertyWebSiteRemoved()
+    {
+        return this.isPropertyWebSiteRemoved;
+    }
+
+    public void setIsPropertyWebSiteRemoved(Boolean removed)
+    {
+        this.isPropertyWebSiteRemoved = removed;
+    }
+
+    private Boolean isPropertyTelephoneRemoved;
+
+    public Boolean getIsPropertyTelephoneRemoved()
+    {
+        return this.isPropertyTelephoneRemoved;
+    }
+
+    public void setIsPropertyTelephoneRemoved(Boolean removed)
+    {
+        this.isPropertyTelephoneRemoved = removed;
+    }
+
     private Boolean isPropertySalutationRemoved;
 
     public Boolean getIsPropertySalutationRemoved()
@@ -599,6 +680,9 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         command.setPreferredCurrencyUomId(this.getPreferredCurrencyUomId());
         command.setDescription(this.getDescription());
         command.setStatusId(this.getStatusId());
+        command.setEmail(this.getEmail());
+        command.setWebSite(this.getWebSite());
+        command.setTelephone(this.getTelephone());
         command.setSalutation(this.getSalutation());
         command.setFirstName(this.getFirstName());
         command.setMiddleName(this.getMiddleName());
@@ -685,6 +769,9 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         command.setIsPropertyPreferredCurrencyUomIdRemoved(this.getIsPropertyPreferredCurrencyUomIdRemoved());
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
         command.setIsPropertyStatusIdRemoved(this.getIsPropertyStatusIdRemoved());
+        command.setIsPropertyEmailRemoved(this.getIsPropertyEmailRemoved());
+        command.setIsPropertyWebSiteRemoved(this.getIsPropertyWebSiteRemoved());
+        command.setIsPropertyTelephoneRemoved(this.getIsPropertyTelephoneRemoved());
         command.setIsPropertySalutationRemoved(this.getIsPropertySalutationRemoved());
         command.setIsPropertyFirstNameRemoved(this.getIsPropertyFirstNameRemoved());
         command.setIsPropertyMiddleNameRemoved(this.getIsPropertyMiddleNameRemoved());

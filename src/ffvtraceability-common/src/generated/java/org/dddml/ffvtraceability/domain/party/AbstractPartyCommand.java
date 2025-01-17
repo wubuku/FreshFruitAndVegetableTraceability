@@ -111,6 +111,42 @@ public abstract class AbstractPartyCommand extends AbstractCommand implements Pa
             this.statusId = statusId;
         }
 
+        private String email;
+
+        public String getEmail()
+        {
+            return this.email;
+        }
+
+        public void setEmail(String email)
+        {
+            this.email = email;
+        }
+
+        private String webSite;
+
+        public String getWebSite()
+        {
+            return this.webSite;
+        }
+
+        public void setWebSite(String webSite)
+        {
+            this.webSite = webSite;
+        }
+
+        private String telephone;
+
+        public String getTelephone()
+        {
+            return this.telephone;
+        }
+
+        public void setTelephone(String telephone)
+        {
+            this.telephone = telephone;
+        }
+
         private String salutation;
 
         public String getSalutation()
@@ -413,6 +449,42 @@ public abstract class AbstractPartyCommand extends AbstractCommand implements Pa
         public void setIsPropertyStatusIdRemoved(Boolean removed)
         {
             this.isPropertyStatusIdRemoved = removed;
+        }
+
+        private Boolean isPropertyEmailRemoved;
+
+        public Boolean getIsPropertyEmailRemoved()
+        {
+            return this.isPropertyEmailRemoved;
+        }
+
+        public void setIsPropertyEmailRemoved(Boolean removed)
+        {
+            this.isPropertyEmailRemoved = removed;
+        }
+
+        private Boolean isPropertyWebSiteRemoved;
+
+        public Boolean getIsPropertyWebSiteRemoved()
+        {
+            return this.isPropertyWebSiteRemoved;
+        }
+
+        public void setIsPropertyWebSiteRemoved(Boolean removed)
+        {
+            this.isPropertyWebSiteRemoved = removed;
+        }
+
+        private Boolean isPropertyTelephoneRemoved;
+
+        public Boolean getIsPropertyTelephoneRemoved()
+        {
+            return this.isPropertyTelephoneRemoved;
+        }
+
+        public void setIsPropertyTelephoneRemoved(Boolean removed)
+        {
+            this.isPropertyTelephoneRemoved = removed;
         }
 
         private Boolean isPropertySalutationRemoved;

@@ -38,6 +38,42 @@ public class LotIdentificationStateDto {
         this.idValue = idValue;
     }
 
+    private String gtin;
+
+    public String getGtin()
+    {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin)
+    {
+        this.gtin = gtin;
+    }
+
+    private String gs1Batch;
+
+    public String getGs1Batch()
+    {
+        return this.gs1Batch;
+    }
+
+    public void setGs1Batch(String gs1Batch)
+    {
+        this.gs1Batch = gs1Batch;
+    }
+
+    private String sourceFacilityId;
+
+    public String getSourceFacilityId()
+    {
+        return this.sourceFacilityId;
+    }
+
+    public void setSourceFacilityId(String sourceFacilityId)
+    {
+        this.sourceFacilityId = sourceFacilityId;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -144,6 +180,15 @@ public class LotIdentificationStateDto {
             }
             if (returnedFieldsContains("IdValue")) {
                 dto.setIdValue(state.getIdValue());
+            }
+            if (returnedFieldsContains("Gtin")) {
+                dto.setGtin(state.getGtin());
+            }
+            if (returnedFieldsContains("Gs1Batch")) {
+                dto.setGs1Batch(state.getGs1Batch());
+            }
+            if (returnedFieldsContains("SourceFacilityId")) {
+                dto.setSourceFacilityId(state.getSourceFacilityId());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

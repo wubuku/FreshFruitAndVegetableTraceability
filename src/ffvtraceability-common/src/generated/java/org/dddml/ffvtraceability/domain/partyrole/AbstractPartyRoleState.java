@@ -24,6 +24,46 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         this.partyRoleId = partyRoleId;
     }
 
+    private String supplierShortName;
+
+    public String getSupplierShortName() {
+        return this.supplierShortName;
+    }
+
+    public void setSupplierShortName(String supplierShortName) {
+        this.supplierShortName = supplierShortName;
+    }
+
+    private String tpaNumber;
+
+    public String getTpaNumber() {
+        return this.tpaNumber;
+    }
+
+    public void setTpaNumber(String tpaNumber) {
+        this.tpaNumber = tpaNumber;
+    }
+
+    private String certificationCodes;
+
+    public String getCertificationCodes() {
+        return this.certificationCodes;
+    }
+
+    public void setCertificationCodes(String certificationCodes) {
+        this.certificationCodes = certificationCodes;
+    }
+
+    private String bankAccountInformation;
+
+    public String getBankAccountInformation() {
+        return this.bankAccountInformation;
+    }
+
+    public void setBankAccountInformation(String bankAccountInformation) {
+        this.bankAccountInformation = bankAccountInformation;
+    }
+
     private String supplierTypeEnumId;
 
     public String getSupplierTypeEnumId() {
@@ -178,6 +218,10 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
     public void when(PartyRoleStateCreated e) {
         throwOnWrongEvent(e);
 
+        this.setSupplierShortName(e.getSupplierShortName());
+        this.setTpaNumber(e.getTpaNumber());
+        this.setCertificationCodes(e.getCertificationCodes());
+        this.setBankAccountInformation(e.getBankAccountInformation());
         this.setSupplierTypeEnumId(e.getSupplierTypeEnumId());
         this.setSupplierProductTypeDescription(e.getSupplierProductTypeDescription());
 
@@ -190,6 +234,10 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         if (s == this) {
             return;
         }
+        this.setSupplierShortName(s.getSupplierShortName());
+        this.setTpaNumber(s.getTpaNumber());
+        this.setCertificationCodes(s.getCertificationCodes());
+        this.setBankAccountInformation(s.getBankAccountInformation());
         this.setSupplierTypeEnumId(s.getSupplierTypeEnumId());
         this.setSupplierProductTypeDescription(s.getSupplierProductTypeDescription());
     }
@@ -197,6 +245,34 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
     public void when(PartyRoleStateMergePatched e) {
         throwOnWrongEvent(e);
 
+        if (e.getSupplierShortName() == null) {
+            if (e.getIsPropertySupplierShortNameRemoved() != null && e.getIsPropertySupplierShortNameRemoved()) {
+                this.setSupplierShortName(null);
+            }
+        } else {
+            this.setSupplierShortName(e.getSupplierShortName());
+        }
+        if (e.getTpaNumber() == null) {
+            if (e.getIsPropertyTpaNumberRemoved() != null && e.getIsPropertyTpaNumberRemoved()) {
+                this.setTpaNumber(null);
+            }
+        } else {
+            this.setTpaNumber(e.getTpaNumber());
+        }
+        if (e.getCertificationCodes() == null) {
+            if (e.getIsPropertyCertificationCodesRemoved() != null && e.getIsPropertyCertificationCodesRemoved()) {
+                this.setCertificationCodes(null);
+            }
+        } else {
+            this.setCertificationCodes(e.getCertificationCodes());
+        }
+        if (e.getBankAccountInformation() == null) {
+            if (e.getIsPropertyBankAccountInformationRemoved() != null && e.getIsPropertyBankAccountInformationRemoved()) {
+                this.setBankAccountInformation(null);
+            }
+        } else {
+            this.setBankAccountInformation(e.getBankAccountInformation());
+        }
         if (e.getSupplierTypeEnumId() == null) {
             if (e.getIsPropertySupplierTypeEnumIdRemoved() != null && e.getIsPropertySupplierTypeEnumIdRemoved()) {
                 this.setSupplierTypeEnumId(null);

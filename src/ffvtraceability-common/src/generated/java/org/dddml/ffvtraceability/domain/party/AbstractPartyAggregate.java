@@ -82,6 +82,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -104,6 +107,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setSalutation(c.getSalutation());
         e.setFirstName(c.getFirstName());
         e.setMiddleName(c.getMiddleName());
@@ -139,6 +145,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
@@ -162,6 +171,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
@@ -185,6 +197,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
@@ -208,6 +223,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
@@ -231,6 +249,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         e.setFamilyName(c.getFamilyName());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
@@ -280,12 +301,18 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setIsPropertyPartyTypeIdRemoved(c.getIsPropertyPartyTypeIdRemoved());
         e.setIsPropertyPrimaryRoleTypeIdRemoved(c.getIsPropertyPrimaryRoleTypeIdRemoved());
         e.setIsPropertyExternalIdRemoved(c.getIsPropertyExternalIdRemoved());
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
+        e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
+        e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -308,6 +335,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setSalutation(c.getSalutation());
         e.setFirstName(c.getFirstName());
         e.setMiddleName(c.getMiddleName());
@@ -340,6 +370,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
+        e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
+        e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -362,6 +395,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         e.setIsPropertyOrganizationNameRemoved(c.getIsPropertyOrganizationNameRemoved());
         e.setIsPropertyPartyTypeIdRemoved(c.getIsPropertyPartyTypeIdRemoved());
@@ -370,6 +406,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
+        e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
+        e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -392,6 +431,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         e.setIsPropertyOrganizationNameRemoved(c.getIsPropertyOrganizationNameRemoved());
         e.setIsPropertyPartyTypeIdRemoved(c.getIsPropertyPartyTypeIdRemoved());
@@ -400,6 +442,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
+        e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
+        e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -422,6 +467,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         e.setIsPropertyOrganizationNameRemoved(c.getIsPropertyOrganizationNameRemoved());
         e.setIsPropertyPartyTypeIdRemoved(c.getIsPropertyPartyTypeIdRemoved());
@@ -430,6 +478,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
+        e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
+        e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -452,6 +503,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         e.setIsPropertyOrganizationNameRemoved(c.getIsPropertyOrganizationNameRemoved());
         e.setIsPropertyPartyTypeIdRemoved(c.getIsPropertyPartyTypeIdRemoved());
@@ -460,6 +514,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
+        e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
+        e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -482,6 +539,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setEmail(c.getEmail());
+        e.setWebSite(c.getWebSite());
+        e.setTelephone(c.getTelephone());
         e.setOrganizationName(c.getOrganizationName());
         e.setFamilyName(c.getFamilyName());
         e.setIsPropertyFamilyNameRemoved(c.getIsPropertyFamilyNameRemoved());
@@ -492,6 +552,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
+        e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
+        e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

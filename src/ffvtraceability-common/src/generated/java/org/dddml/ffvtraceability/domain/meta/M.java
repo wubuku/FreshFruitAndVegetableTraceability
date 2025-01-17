@@ -2626,6 +2626,7 @@ public class M {
             "quantity",
             "expirationDate",
             "active",
+            "gs1Batch",
             "version",
             "createdBy",
             "createdAt",
@@ -2639,6 +2640,7 @@ public class M {
             "String",
             "java.math.BigDecimal",
             "OffsetDateTime",
+            "String",
             "String",
             "Long",
             "String",
@@ -2669,6 +2671,8 @@ public class M {
         aliasMap.put("ExpirationDate", "expirationDate");
         aliasMap.put("active", "active");
         aliasMap.put("Active", "active");
+        aliasMap.put("gs1Batch", "gs1Batch");
+        aliasMap.put("Gs1Batch", "gs1Batch");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -2711,6 +2715,9 @@ public class M {
     public static final String[] propertyNames = new String[] {
             "lotIdentificationTypeId",
             "idValue",
+            "gtin",
+            "gs1Batch",
+            "sourceFacilityId",
             "version",
             "createdBy",
             "createdAt",
@@ -2724,6 +2731,9 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
             "String",
             "String",
             "Long",
@@ -2754,6 +2764,12 @@ public class M {
         aliasMap.put("LotIdentificationTypeId", "lotIdentificationId.lotIdentificationTypeId");
         aliasMap.put("idValue", "idValue");
         aliasMap.put("IdValue", "idValue");
+        aliasMap.put("gtin", "gtin");
+        aliasMap.put("Gtin", "gtin");
+        aliasMap.put("gs1Batch", "gs1Batch");
+        aliasMap.put("Gs1Batch", "gs1Batch");
+        aliasMap.put("sourceFacilityId", "sourceFacilityId");
+        aliasMap.put("SourceFacilityId", "sourceFacilityId");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -2890,6 +2906,9 @@ public class M {
             "preferredCurrencyUomId",
             "description",
             "statusId",
+            "email",
+            "webSite",
+            "telephone",
             "salutation",
             "firstName",
             "middleName",
@@ -2915,6 +2934,9 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
             "String",
             "String",
             "String",
@@ -2972,6 +2994,12 @@ public class M {
         aliasMap.put("Description", "description");
         aliasMap.put("statusId", "statusId");
         aliasMap.put("StatusId", "statusId");
+        aliasMap.put("email", "email");
+        aliasMap.put("Email", "email");
+        aliasMap.put("webSite", "webSite");
+        aliasMap.put("WebSite", "webSite");
+        aliasMap.put("telephone", "telephone");
+        aliasMap.put("Telephone", "telephone");
         aliasMap.put("salutation", "salutation");
         aliasMap.put("Salutation", "salutation");
         aliasMap.put("firstName", "firstName");
@@ -4374,6 +4402,10 @@ public class M {
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partyrole.PartyRoleId.class;
 
     public static final String[] propertyNames = new String[] {
+            "supplierShortName",
+            "tpaNumber",
+            "certificationCodes",
+            "bankAccountInformation",
             "supplierTypeEnumId",
             "supplierProductTypeDescription",
             "version",
@@ -4388,6 +4420,10 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
             "String",
             "String",
             "Long",
@@ -4413,6 +4449,14 @@ public class M {
     }
 
     private static void initAliasMap() {
+        aliasMap.put("supplierShortName", "supplierShortName");
+        aliasMap.put("SupplierShortName", "supplierShortName");
+        aliasMap.put("tpaNumber", "tpaNumber");
+        aliasMap.put("TpaNumber", "tpaNumber");
+        aliasMap.put("certificationCodes", "certificationCodes");
+        aliasMap.put("CertificationCodes", "certificationCodes");
+        aliasMap.put("bankAccountInformation", "bankAccountInformation");
+        aliasMap.put("BankAccountInformation", "bankAccountInformation");
         aliasMap.put("supplierTypeEnumId", "supplierTypeEnumId");
         aliasMap.put("SupplierTypeEnumId", "supplierTypeEnumId");
         aliasMap.put("supplierProductTypeDescription", "supplierProductTypeDescription");

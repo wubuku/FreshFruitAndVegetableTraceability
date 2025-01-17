@@ -11,6 +11,18 @@
       </key-property>
     </composite-id>
     <version name="version" column="version" type="long" />
+    <property name="supplierShortName">
+      <column name="supplier_short_name" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="tpaNumber">
+      <column name="tpa_number" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="certificationCodes">
+      <column name="certification_codes" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="bankAccountInformation">
+      <column name="bank_account_information" sql-type="VARCHAR(255)" />
+    </property>
     <property name="supplierTypeEnumId">
       <column name="supplier_type_enum_id" sql-type="VARCHAR(20)" />
     </property>

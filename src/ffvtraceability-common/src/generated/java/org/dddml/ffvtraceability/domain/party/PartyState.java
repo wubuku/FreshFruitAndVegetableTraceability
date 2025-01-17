@@ -31,6 +31,12 @@ public interface PartyState
 
     String getStatusId();
 
+    String getEmail();
+
+    String getWebSite();
+
+    String getTelephone();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -57,6 +63,12 @@ public interface PartyState
         void setDescription(String description);
 
         void setStatusId(String statusId);
+
+        void setEmail(String email);
+
+        void setWebSite(String webSite);
+
+        void setTelephone(String telephone);
 
         void setVersion(Long version);
 

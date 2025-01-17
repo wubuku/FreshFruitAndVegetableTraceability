@@ -41,6 +41,22 @@ public interface PartyRoleEvent extends Event {
     void setCommandId(String commandId);
 
     interface PartyRoleStateEvent extends PartyRoleEvent {
+        String getSupplierShortName();
+
+        void setSupplierShortName(String supplierShortName);
+
+        String getTpaNumber();
+
+        void setTpaNumber(String tpaNumber);
+
+        String getCertificationCodes();
+
+        void setCertificationCodes(String certificationCodes);
+
+        String getBankAccountInformation();
+
+        void setBankAccountInformation(String bankAccountInformation);
+
         String getSupplierTypeEnumId();
 
         void setSupplierTypeEnumId(String supplierTypeEnumId);
@@ -59,6 +75,22 @@ public interface PartyRoleEvent extends Event {
 
     interface PartyRoleStateMergePatched extends PartyRoleStateEvent
     {
+        Boolean getIsPropertySupplierShortNameRemoved();
+
+        void setIsPropertySupplierShortNameRemoved(Boolean removed);
+
+        Boolean getIsPropertyTpaNumberRemoved();
+
+        void setIsPropertyTpaNumberRemoved(Boolean removed);
+
+        Boolean getIsPropertyCertificationCodesRemoved();
+
+        void setIsPropertyCertificationCodesRemoved(Boolean removed);
+
+        Boolean getIsPropertyBankAccountInformationRemoved();
+
+        void setIsPropertyBankAccountInformationRemoved(Boolean removed);
+
         Boolean getIsPropertySupplierTypeEnumIdRemoved();
 
         void setIsPropertySupplierTypeEnumIdRemoved(Boolean removed);

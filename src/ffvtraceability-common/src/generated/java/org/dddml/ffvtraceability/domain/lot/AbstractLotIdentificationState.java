@@ -70,6 +70,36 @@ public abstract class AbstractLotIdentificationState implements LotIdentificatio
         this.idValue = idValue;
     }
 
+    private String gtin;
+
+    public String getGtin() {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin) {
+        this.gtin = gtin;
+    }
+
+    private String gs1Batch;
+
+    public String getGs1Batch() {
+        return this.gs1Batch;
+    }
+
+    public void setGs1Batch(String gs1Batch) {
+        this.gs1Batch = gs1Batch;
+    }
+
+    private String sourceFacilityId;
+
+    public String getSourceFacilityId() {
+        return this.sourceFacilityId;
+    }
+
+    public void setSourceFacilityId(String sourceFacilityId) {
+        this.sourceFacilityId = sourceFacilityId;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -184,6 +214,9 @@ public abstract class AbstractLotIdentificationState implements LotIdentificatio
         throwOnWrongEvent(e);
 
         this.setIdValue(e.getIdValue());
+        this.setGtin(e.getGtin());
+        this.setGs1Batch(e.getGs1Batch());
+        this.setSourceFacilityId(e.getSourceFacilityId());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -195,6 +228,9 @@ public abstract class AbstractLotIdentificationState implements LotIdentificatio
             return;
         }
         this.setIdValue(s.getIdValue());
+        this.setGtin(s.getGtin());
+        this.setGs1Batch(s.getGs1Batch());
+        this.setSourceFacilityId(s.getSourceFacilityId());
     }
 
     public void when(LotIdentificationStateMergePatched e) {
@@ -206,6 +242,27 @@ public abstract class AbstractLotIdentificationState implements LotIdentificatio
             }
         } else {
             this.setIdValue(e.getIdValue());
+        }
+        if (e.getGtin() == null) {
+            if (e.getIsPropertyGtinRemoved() != null && e.getIsPropertyGtinRemoved()) {
+                this.setGtin(null);
+            }
+        } else {
+            this.setGtin(e.getGtin());
+        }
+        if (e.getGs1Batch() == null) {
+            if (e.getIsPropertyGs1BatchRemoved() != null && e.getIsPropertyGs1BatchRemoved()) {
+                this.setGs1Batch(null);
+            }
+        } else {
+            this.setGs1Batch(e.getGs1Batch());
+        }
+        if (e.getSourceFacilityId() == null) {
+            if (e.getIsPropertySourceFacilityIdRemoved() != null && e.getIsPropertySourceFacilityIdRemoved()) {
+                this.setSourceFacilityId(null);
+            }
+        } else {
+            this.setSourceFacilityId(e.getSourceFacilityId());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

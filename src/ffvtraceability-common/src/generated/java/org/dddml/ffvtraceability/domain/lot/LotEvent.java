@@ -53,6 +53,10 @@ public interface LotEvent extends Event {
 
         void setActive(String active);
 
+        String getGs1Batch();
+
+        void setGs1Batch(String gs1Batch);
+
     }
 
     interface LotStateCreated extends LotStateEvent
@@ -80,6 +84,10 @@ public interface LotEvent extends Event {
         Boolean getIsPropertyActiveRemoved();
 
         void setIsPropertyActiveRemoved(Boolean removed);
+
+        Boolean getIsPropertyGs1BatchRemoved();
+
+        void setIsPropertyGs1BatchRemoved(Boolean removed);
 
 
         Iterable<LotIdentificationEvent> getLotIdentificationEvents();

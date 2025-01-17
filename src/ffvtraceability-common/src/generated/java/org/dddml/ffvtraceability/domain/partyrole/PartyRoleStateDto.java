@@ -26,6 +26,54 @@ public class PartyRoleStateDto {
         this.partyRoleId = partyRoleId;
     }
 
+    private String supplierShortName;
+
+    public String getSupplierShortName()
+    {
+        return this.supplierShortName;
+    }
+
+    public void setSupplierShortName(String supplierShortName)
+    {
+        this.supplierShortName = supplierShortName;
+    }
+
+    private String tpaNumber;
+
+    public String getTpaNumber()
+    {
+        return this.tpaNumber;
+    }
+
+    public void setTpaNumber(String tpaNumber)
+    {
+        this.tpaNumber = tpaNumber;
+    }
+
+    private String certificationCodes;
+
+    public String getCertificationCodes()
+    {
+        return this.certificationCodes;
+    }
+
+    public void setCertificationCodes(String certificationCodes)
+    {
+        this.certificationCodes = certificationCodes;
+    }
+
+    private String bankAccountInformation;
+
+    public String getBankAccountInformation()
+    {
+        return this.bankAccountInformation;
+    }
+
+    public void setBankAccountInformation(String bankAccountInformation)
+    {
+        this.bankAccountInformation = bankAccountInformation;
+    }
+
     private String supplierTypeEnumId;
 
     public String getSupplierTypeEnumId()
@@ -141,6 +189,18 @@ public class PartyRoleStateDto {
             PartyRoleStateDto dto = new PartyRoleStateDto();
             if (returnedFieldsContains("PartyRoleId")) {
                 dto.setPartyRoleId(state.getPartyRoleId());
+            }
+            if (returnedFieldsContains("SupplierShortName")) {
+                dto.setSupplierShortName(state.getSupplierShortName());
+            }
+            if (returnedFieldsContains("TpaNumber")) {
+                dto.setTpaNumber(state.getTpaNumber());
+            }
+            if (returnedFieldsContains("CertificationCodes")) {
+                dto.setCertificationCodes(state.getCertificationCodes());
+            }
+            if (returnedFieldsContains("BankAccountInformation")) {
+                dto.setBankAccountInformation(state.getBankAccountInformation());
             }
             if (returnedFieldsContains("SupplierTypeEnumId")) {
                 dto.setSupplierTypeEnumId(state.getSupplierTypeEnumId());

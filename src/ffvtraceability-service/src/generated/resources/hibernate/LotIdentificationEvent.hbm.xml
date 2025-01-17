@@ -19,12 +19,24 @@
     <property name="commandId" column="command_id" />
     <subclass name="AbstractLotIdentificationEvent$AbstractLotIdentificationStateEvent" abstract="true">
       <property name="idValue">
-        <column name="id_value" sql-type="VARCHAR(20)" />
+        <column name="id_value" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="gtin">
+        <column name="gtin" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="gs1Batch">
+        <column name="gs1_batch" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="sourceFacilityId">
+        <column name="source_facility_id" sql-type="VARCHAR(20)" />
       </property>
       <property name="version" column="version" not-null="true" />
       <subclass name="AbstractLotIdentificationEvent$SimpleLotIdentificationStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractLotIdentificationEvent$SimpleLotIdentificationStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyIdValueRemoved" column="is_property_id_value_removed" />
+        <property name="isPropertyGtinRemoved" column="is_property_gtin_removed" />
+        <property name="isPropertyGs1BatchRemoved" column="is_property_gs1_batch_removed" />
+        <property name="isPropertySourceFacilityIdRemoved" column="is_property_source_facility_id_removed" />
       </subclass>
     </subclass>
   </class>

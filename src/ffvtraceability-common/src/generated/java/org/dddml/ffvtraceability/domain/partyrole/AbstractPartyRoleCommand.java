@@ -39,6 +39,54 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
 
     public static abstract class AbstractCreateOrMergePatchPartyRole extends AbstractPartyRoleCommand implements CreateOrMergePatchPartyRole
     {
+        private String supplierShortName;
+
+        public String getSupplierShortName()
+        {
+            return this.supplierShortName;
+        }
+
+        public void setSupplierShortName(String supplierShortName)
+        {
+            this.supplierShortName = supplierShortName;
+        }
+
+        private String tpaNumber;
+
+        public String getTpaNumber()
+        {
+            return this.tpaNumber;
+        }
+
+        public void setTpaNumber(String tpaNumber)
+        {
+            this.tpaNumber = tpaNumber;
+        }
+
+        private String certificationCodes;
+
+        public String getCertificationCodes()
+        {
+            return this.certificationCodes;
+        }
+
+        public void setCertificationCodes(String certificationCodes)
+        {
+            this.certificationCodes = certificationCodes;
+        }
+
+        private String bankAccountInformation;
+
+        public String getBankAccountInformation()
+        {
+            return this.bankAccountInformation;
+        }
+
+        public void setBankAccountInformation(String bankAccountInformation)
+        {
+            this.bankAccountInformation = bankAccountInformation;
+        }
+
         private String supplierTypeEnumId;
 
         public String getSupplierTypeEnumId()
@@ -79,6 +127,54 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_MERGE_PATCH;
+        }
+
+        private Boolean isPropertySupplierShortNameRemoved;
+
+        public Boolean getIsPropertySupplierShortNameRemoved()
+        {
+            return this.isPropertySupplierShortNameRemoved;
+        }
+
+        public void setIsPropertySupplierShortNameRemoved(Boolean removed)
+        {
+            this.isPropertySupplierShortNameRemoved = removed;
+        }
+
+        private Boolean isPropertyTpaNumberRemoved;
+
+        public Boolean getIsPropertyTpaNumberRemoved()
+        {
+            return this.isPropertyTpaNumberRemoved;
+        }
+
+        public void setIsPropertyTpaNumberRemoved(Boolean removed)
+        {
+            this.isPropertyTpaNumberRemoved = removed;
+        }
+
+        private Boolean isPropertyCertificationCodesRemoved;
+
+        public Boolean getIsPropertyCertificationCodesRemoved()
+        {
+            return this.isPropertyCertificationCodesRemoved;
+        }
+
+        public void setIsPropertyCertificationCodesRemoved(Boolean removed)
+        {
+            this.isPropertyCertificationCodesRemoved = removed;
+        }
+
+        private Boolean isPropertyBankAccountInformationRemoved;
+
+        public Boolean getIsPropertyBankAccountInformationRemoved()
+        {
+            return this.isPropertyBankAccountInformationRemoved;
+        }
+
+        public void setIsPropertyBankAccountInformationRemoved(Boolean removed)
+        {
+            this.isPropertyBankAccountInformationRemoved = removed;
         }
 
         private Boolean isPropertySupplierTypeEnumIdRemoved;

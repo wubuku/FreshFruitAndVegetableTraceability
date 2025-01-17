@@ -9,9 +9,6 @@ aggregates:
     #     name: "__Active__"
 
     properties:
-      # Gs1Batch:
-      #   description: "GS1 BATCH (AI=10)"
-      #   type: id
       Quantity:
         type: fixed-point
       ExpirationDate:
@@ -20,6 +17,10 @@ aggregates:
         itemType: LotIdentification
       Active:
         type: indicator
+      Gs1Batch:
+        description: "GS1 BATCH (AI=10)"
+        type: id
+        # 可以用于“暂存” GS1 Batch 信息，以便在后续的处理中使用。
 
     entities:
       LotIdentification:
@@ -34,7 +35,20 @@ aggregates:
             - lot_identification_type_id
         properties:
           IdValue:
+            type: id-long
+          # -------------------------------------------------------
+          # 以下属性用于将 Traceability Lot Code 映射到 LotId。
+          # 此时，Id Value 的格式可以为 `(01){Gtin}(10){GS1 Batch}`
+          # -------------------------------------------------------
+          Gtin:
             type: id
+            # GTIN
+          Gs1Batch:
+            type: id
+          SourceFacilityId:
+            type: id
+            description: "The facility (location) where TLC was assigned during initial packing or transformation"
+
 
   LotIdentificationType:
     id:

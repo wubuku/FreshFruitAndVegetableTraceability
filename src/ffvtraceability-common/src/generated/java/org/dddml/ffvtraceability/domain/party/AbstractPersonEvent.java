@@ -507,6 +507,36 @@ public abstract class AbstractPersonEvent extends AbstractPartyEvent implements 
             this.isPropertyStatusIdRemoved = removed;
         }
 
+        private Boolean isPropertyEmailRemoved;
+
+        public Boolean getIsPropertyEmailRemoved() {
+            return this.isPropertyEmailRemoved;
+        }
+
+        public void setIsPropertyEmailRemoved(Boolean removed) {
+            this.isPropertyEmailRemoved = removed;
+        }
+
+        private Boolean isPropertyWebSiteRemoved;
+
+        public Boolean getIsPropertyWebSiteRemoved() {
+            return this.isPropertyWebSiteRemoved;
+        }
+
+        public void setIsPropertyWebSiteRemoved(Boolean removed) {
+            this.isPropertyWebSiteRemoved = removed;
+        }
+
+        private Boolean isPropertyTelephoneRemoved;
+
+        public Boolean getIsPropertyTelephoneRemoved() {
+            return this.isPropertyTelephoneRemoved;
+        }
+
+        public void setIsPropertyTelephoneRemoved(Boolean removed) {
+            this.isPropertyTelephoneRemoved = removed;
+        }
+
 
         private Map<PartyIdentificationEventId, PartyIdentificationEvent> partyIdentificationEvents = new HashMap<PartyIdentificationEventId, PartyIdentificationEvent>();
         

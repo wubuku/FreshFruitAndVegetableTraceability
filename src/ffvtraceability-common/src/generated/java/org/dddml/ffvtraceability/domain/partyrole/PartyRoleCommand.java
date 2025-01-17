@@ -48,6 +48,22 @@ public interface PartyRoleCommand extends Command {
     }
 
     interface CreateOrMergePatchPartyRole extends PartyRoleCommand {
+        String getSupplierShortName();
+
+        void setSupplierShortName(String supplierShortName);
+
+        String getTpaNumber();
+
+        void setTpaNumber(String tpaNumber);
+
+        String getCertificationCodes();
+
+        void setCertificationCodes(String certificationCodes);
+
+        String getBankAccountInformation();
+
+        void setBankAccountInformation(String bankAccountInformation);
+
         String getSupplierTypeEnumId();
 
         void setSupplierTypeEnumId(String supplierTypeEnumId);
@@ -62,6 +78,22 @@ public interface PartyRoleCommand extends Command {
     }
 
     interface MergePatchPartyRole extends CreateOrMergePatchPartyRole {
+        Boolean getIsPropertySupplierShortNameRemoved();
+
+        void setIsPropertySupplierShortNameRemoved(Boolean removed);
+
+        Boolean getIsPropertyTpaNumberRemoved();
+
+        void setIsPropertyTpaNumberRemoved(Boolean removed);
+
+        Boolean getIsPropertyCertificationCodesRemoved();
+
+        void setIsPropertyCertificationCodesRemoved(Boolean removed);
+
+        Boolean getIsPropertyBankAccountInformationRemoved();
+
+        void setIsPropertyBankAccountInformationRemoved(Boolean removed);
+
         Boolean getIsPropertySupplierTypeEnumIdRemoved();
 
         void setIsPropertySupplierTypeEnumIdRemoved(Boolean removed);

@@ -62,6 +62,18 @@ public class LotStateDto {
         this.active = active;
     }
 
+    private String gs1Batch;
+
+    public String getGs1Batch()
+    {
+        return this.gs1Batch;
+    }
+
+    public void setGs1Batch(String gs1Batch)
+    {
+        this.gs1Batch = gs1Batch;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -174,6 +186,9 @@ public class LotStateDto {
             }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
+            }
+            if (returnedFieldsContains("Gs1Batch")) {
+                dto.setGs1Batch(state.getGs1Batch());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

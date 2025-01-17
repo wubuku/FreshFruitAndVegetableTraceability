@@ -57,6 +57,18 @@ public interface InformalOrganizationEvent extends OrganizationEvent {
 
         void setIsPropertyStatusIdRemoved(Boolean removed);
 
+        Boolean getIsPropertyEmailRemoved();
+
+        void setIsPropertyEmailRemoved(Boolean removed);
+
+        Boolean getIsPropertyWebSiteRemoved();
+
+        void setIsPropertyWebSiteRemoved(Boolean removed);
+
+        Boolean getIsPropertyTelephoneRemoved();
+
+        void setIsPropertyTelephoneRemoved(Boolean removed);
+
 
         Iterable<PartyIdentificationEvent> getPartyIdentificationEvents();
         

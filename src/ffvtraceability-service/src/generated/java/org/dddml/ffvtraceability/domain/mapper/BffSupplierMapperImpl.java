@@ -25,6 +25,9 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         bffSupplierDto.setPreferredCurrencyUomId( partyState.getPreferredCurrencyUomId() );
         bffSupplierDto.setDescription( partyState.getDescription() );
         bffSupplierDto.setStatusId( partyState.getStatusId() );
+        bffSupplierDto.setTelephone( partyState.getTelephone() );
+        bffSupplierDto.setEmail( partyState.getEmail() );
+        bffSupplierDto.setWebSite( partyState.getWebSite() );
 
         bffSupplierDto.setActive( PARTY_STATUS_ACTIVE.equals(partyState.getStatusId()) || partyState.getStatusId() == null ? "Y" : "N" );
 
@@ -77,6 +80,9 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         simpleCreateParty.setPreferredCurrencyUomId( bffSupplierDto.getPreferredCurrencyUomId() );
         simpleCreateParty.setDescription( bffSupplierDto.getDescription() );
         simpleCreateParty.setStatusId( bffSupplierDto.getStatusId() );
+        simpleCreateParty.setEmail( bffSupplierDto.getEmail() );
+        simpleCreateParty.setWebSite( bffSupplierDto.getWebSite() );
+        simpleCreateParty.setTelephone( bffSupplierDto.getTelephone() );
 
         return simpleCreateParty;
     }
@@ -93,6 +99,9 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         simpleMergePatchParty.setPreferredCurrencyUomId( bffSupplierDto.getPreferredCurrencyUomId() );
         simpleMergePatchParty.setDescription( bffSupplierDto.getDescription() );
         simpleMergePatchParty.setStatusId( bffSupplierDto.getStatusId() );
+        simpleMergePatchParty.setEmail( bffSupplierDto.getEmail() );
+        simpleMergePatchParty.setWebSite( bffSupplierDto.getWebSite() );
+        simpleMergePatchParty.setTelephone( bffSupplierDto.getTelephone() );
 
         return simpleMergePatchParty;
     }
