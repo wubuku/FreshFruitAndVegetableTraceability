@@ -46,6 +46,7 @@ public abstract class AbstractFacilityLocationApplicationService implements Faci
         ss.setLocationCode(c.getLocationCode());
         ss.setGln(c.getGln());
         ss.setDescription(c.getDescription());
+        ss.setLocationName(c.getLocationName());
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -134,6 +135,13 @@ public abstract class AbstractFacilityLocationApplicationService implements Faci
             }
         } else {
             ss.setDescription(c.getDescription());
+        }
+        if (c.getLocationName() == null) {
+            if (c.getIsPropertyLocationNameRemoved() != null && c.getIsPropertyLocationNameRemoved()) {
+                ss.setLocationName(null);
+            }
+        } else {
+            ss.setLocationName(c.getLocationName());
         }
         ss.setUpdatedBy(c.getRequesterId());
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

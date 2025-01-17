@@ -153,11 +153,23 @@ public class BffFacilityLocationDto implements Serializable {
         this.description = description;
     }
 
+    private String locationName;
+
+    public String getLocationName()
+    {
+        return this.locationName;
+    }
+
+    public void setLocationName(String locationName)
+    {
+        this.locationName = locationName;
+    }
+
     public BffFacilityLocationDto()
     {
     }
 
-    public BffFacilityLocationDto(String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId, String active, String locationCode, String gln, String description)
+    public BffFacilityLocationDto(String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId, String active, String locationCode, String gln, String description, String locationName)
     {
         this.locationSeqId = locationSeqId;
         this.locationTypeEnumId = locationTypeEnumId;
@@ -171,6 +183,7 @@ public class BffFacilityLocationDto implements Serializable {
         this.locationCode = locationCode;
         this.gln = gln;
         this.description = description;
+        this.locationName = locationName;
     }
 
     @Override
@@ -197,6 +210,7 @@ public class BffFacilityLocationDto implements Serializable {
             && (locationCode == other.locationCode || (locationCode != null && locationCode.equals(other.locationCode)))
             && (gln == other.gln || (gln != null && gln.equals(other.gln)))
             && (description == other.description || (description != null && description.equals(other.description)))
+            && (locationName == other.locationName || (locationName != null && locationName.equals(other.locationName)))
             ;
     }
 
@@ -240,6 +254,9 @@ public class BffFacilityLocationDto implements Serializable {
         if (this.description != null) {
             hash += 13 * this.description.hashCode();
         }
+        if (this.locationName != null) {
+            hash += 13 * this.locationName.hashCode();
+        }
         return hash;
     }
 
@@ -258,6 +275,7 @@ public class BffFacilityLocationDto implements Serializable {
                 ", locationCode=" + '\'' + locationCode + '\'' +
                 ", gln=" + '\'' + gln + '\'' +
                 ", description=" + '\'' + description + '\'' +
+                ", locationName=" + '\'' + locationName + '\'' +
                 '}';
     }
 

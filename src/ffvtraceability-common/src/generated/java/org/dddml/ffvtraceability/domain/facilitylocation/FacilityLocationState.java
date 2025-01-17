@@ -41,6 +41,8 @@ public interface FacilityLocationState
 
     String getDescription();
 
+    String getLocationName();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -77,6 +79,8 @@ public interface FacilityLocationState
         void setGln(String gln);
 
         void setDescription(String description);
+
+        void setLocationName(String locationName);
 
         void setVersion(Long version);
 

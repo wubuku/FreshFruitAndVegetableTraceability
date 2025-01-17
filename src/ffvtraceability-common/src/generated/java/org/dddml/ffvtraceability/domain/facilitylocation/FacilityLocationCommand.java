@@ -92,6 +92,10 @@ public interface FacilityLocationCommand extends Command {
 
         void setDescription(String description);
 
+        String getLocationName();
+
+        void setLocationName(String locationName);
+
     }
 
     interface CreateFacilityLocation extends CreateOrMergePatchFacilityLocation {
@@ -141,6 +145,10 @@ public interface FacilityLocationCommand extends Command {
         Boolean getIsPropertyDescriptionRemoved();
 
         void setIsPropertyDescriptionRemoved(Boolean removed);
+
+        Boolean getIsPropertyLocationNameRemoved();
+
+        void setIsPropertyLocationNameRemoved(Boolean removed);
 
 
     }

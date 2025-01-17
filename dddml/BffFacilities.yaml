@@ -106,6 +106,9 @@ valueObjects:
         type: id
       Description:
         type: long-varchar
+      LocationName:
+        type: name
+        # 一个描述性的名称
 
 services:
   BffFacilityService:

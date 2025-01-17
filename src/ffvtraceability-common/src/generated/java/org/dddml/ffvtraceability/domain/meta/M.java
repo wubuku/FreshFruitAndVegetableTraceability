@@ -2132,6 +2132,7 @@ public class M {
             "locationCode",
             "gln",
             "description",
+            "locationName",
             "version",
             "createdBy",
             "createdAt",
@@ -2144,6 +2145,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
             "String",
             "String",
             "String",
@@ -2200,6 +2202,8 @@ public class M {
         aliasMap.put("Gln", "gln");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
+        aliasMap.put("locationName", "locationName");
+        aliasMap.put("LocationName", "locationName");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

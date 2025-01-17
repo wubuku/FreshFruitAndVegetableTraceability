@@ -133,6 +133,16 @@ public abstract class AbstractFacilityLocationState implements FacilityLocationS
         this.description = description;
     }
 
+    private String locationName;
+
+    public String getLocationName() {
+        return this.locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -266,6 +276,7 @@ public abstract class AbstractFacilityLocationState implements FacilityLocationS
         this.setLocationCode(s.getLocationCode());
         this.setGln(s.getGln());
         this.setDescription(s.getDescription());
+        this.setLocationName(s.getLocationName());
     }
 
     public void save() {

@@ -44,6 +44,9 @@
     <property name="description">
       <column name="description" sql-type="VARCHAR(255)" />
     </property>
+    <property name="locationName">
+      <column name="location_name" sql-type="VARCHAR(100)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

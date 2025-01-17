@@ -158,6 +158,18 @@ public class FacilityLocationStateDto {
         this.description = description;
     }
 
+    private String locationName;
+
+    public String getLocationName()
+    {
+        return this.locationName;
+    }
+
+    public void setLocationName(String locationName)
+    {
+        this.locationName = locationName;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -282,6 +294,9 @@ public class FacilityLocationStateDto {
             }
             if (returnedFieldsContains("Description")) {
                 dto.setDescription(state.getDescription());
+            }
+            if (returnedFieldsContains("LocationName")) {
+                dto.setLocationName(state.getLocationName());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

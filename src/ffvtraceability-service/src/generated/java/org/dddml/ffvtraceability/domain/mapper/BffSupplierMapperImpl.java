@@ -26,6 +26,8 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         bffSupplierDto.setDescription( partyState.getDescription() );
         bffSupplierDto.setStatusId( partyState.getStatusId() );
 
+        bffSupplierDto.setActive( PARTY_STATUS_ACTIVE.equals(partyState.getStatusId()) || partyState.getStatusId() == null ? "Y" : "N" );
+
         return bffSupplierDto;
     }
 
@@ -56,7 +58,8 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         bffSupplierDto.setTelephone( bffSupplierProjection.getTelephone() );
         bffSupplierDto.setEmail( bffSupplierProjection.getEmail() );
         bffSupplierDto.setWebSite( bffSupplierProjection.getWebSite() );
-        bffSupplierDto.setActive( bffSupplierProjection.getActive() );
+
+        bffSupplierDto.setActive( PARTY_STATUS_ACTIVE.equals(bffSupplierProjection.getStatusId()) || bffSupplierProjection.getStatusId() == null? "Y" : "N" );
 
         return bffSupplierDto;
     }

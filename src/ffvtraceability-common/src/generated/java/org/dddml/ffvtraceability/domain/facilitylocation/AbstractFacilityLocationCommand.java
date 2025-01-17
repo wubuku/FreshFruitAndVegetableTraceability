@@ -171,6 +171,18 @@ public abstract class AbstractFacilityLocationCommand extends AbstractCommand im
             this.description = description;
         }
 
+        private String locationName;
+
+        public String getLocationName()
+        {
+            return this.locationName;
+        }
+
+        public void setLocationName(String locationName)
+        {
+            this.locationName = locationName;
+        }
+
     }
 
     public static abstract class AbstractCreateFacilityLocation extends AbstractCreateOrMergePatchFacilityLocation implements CreateFacilityLocation
@@ -319,6 +331,18 @@ public abstract class AbstractFacilityLocationCommand extends AbstractCommand im
         public void setIsPropertyDescriptionRemoved(Boolean removed)
         {
             this.isPropertyDescriptionRemoved = removed;
+        }
+
+        private Boolean isPropertyLocationNameRemoved;
+
+        public Boolean getIsPropertyLocationNameRemoved()
+        {
+            return this.isPropertyLocationNameRemoved;
+        }
+
+        public void setIsPropertyLocationNameRemoved(Boolean removed)
+        {
+            this.isPropertyLocationNameRemoved = removed;
         }
 
 
