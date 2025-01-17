@@ -6,12 +6,10 @@ public final class BffRawItemConstants {
     }
 
     /**
-     * GTIN (Global Trade Item Number)
-     */
-    public static final String GOOD_IDENTIFICATION_TYPE_GTIN = "GTIN";
-
-    /**
      * Default currency for raw items
      */
     public static final String DEFAULT_CURRENCY_UOM_ID = "USD";
+    //todo 供应商有 `PreferredCurrencyUomId` 属性。
+    //    如果供应商的 `PreferredCurrencyUomId` 不为空，那么应该使用供应商的 `PreferredCurrencyUomId`。
+    //    搜索使用了 DEFAULT_CURRENCY_UOM_ID 的地方，看看是否需要修改。
 } 

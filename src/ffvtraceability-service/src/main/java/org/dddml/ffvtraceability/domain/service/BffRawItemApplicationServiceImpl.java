@@ -31,7 +31,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.DEFAULT_CURRENCY_UOM_ID;
-import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.GOOD_IDENTIFICATION_TYPE_GTIN;
+import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.GOOD_IDENTIFICATION_TYPE_GTIN;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
 
