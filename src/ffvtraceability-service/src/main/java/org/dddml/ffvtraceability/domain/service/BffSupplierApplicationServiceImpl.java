@@ -304,12 +304,40 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Override
     public void when(BffSupplierServiceCommands.BatchActivateSuppliers c) {
-        //todo
+        Arrays.stream(c.getSupplierIds()).forEach(supplierId -> {
+            PartyState partyState = partyApplicationService.get(supplierId);
+            if (partyState == null) {
+                throw new IllegalArgumentException(String.format(ERROR_SUPPLIER_NOT_FOUND, supplierId));
+            }
+            if (!partyState.getStatusId().equals(PARTY_STATUS_ACTIVE)) {
+                AbstractPartyCommand.SimpleMergePatchParty mergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
+                mergePatchParty.setPartyId(supplierId);
+                mergePatchParty.setVersion(partyState.getVersion());
+                mergePatchParty.setStatusId(PARTY_STATUS_ACTIVE);
+                mergePatchParty.setRequesterId(c.getRequesterId());
+                mergePatchParty.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+                partyApplicationService.when(mergePatchParty);
+            }
+        });
     }
 
     @Override
     public void when(BffSupplierServiceCommands.BatchDeactivateSuppliers c) {
-        //todo
+        Arrays.stream(c.getSupplierIds()).forEach(supplierId -> {
+            PartyState partyState = partyApplicationService.get(supplierId);
+            if (partyState == null) {
+                throw new IllegalArgumentException(String.format(ERROR_SUPPLIER_NOT_FOUND, supplierId));
+            }
+            if (!partyState.getStatusId().equals(PARTY_STATUS_INACTIVE)) {
+                AbstractPartyCommand.SimpleMergePatchParty mergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
+                mergePatchParty.setPartyId(supplierId);
+                mergePatchParty.setVersion(partyState.getVersion());
+                mergePatchParty.setStatusId(PARTY_STATUS_INACTIVE);
+                mergePatchParty.setRequesterId(c.getRequesterId());
+                mergePatchParty.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+                partyApplicationService.when(mergePatchParty);
+            }
+        });
     }
 
     private void updateOrCreatePartyBusinessContact(String partyId, BffBusinessContactDto bizContact, Command c) {
