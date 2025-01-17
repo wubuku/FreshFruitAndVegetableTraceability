@@ -21,9 +21,9 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         BffSupplierDto bffSupplierDto = new BffSupplierDto();
 
+        bffSupplierDto.setDescription( partyState.getDescription() );
         bffSupplierDto.setExternalId( partyState.getExternalId() );
         bffSupplierDto.setPreferredCurrencyUomId( partyState.getPreferredCurrencyUomId() );
-        bffSupplierDto.setDescription( partyState.getDescription() );
         bffSupplierDto.setStatusId( partyState.getStatusId() );
 
         return bffSupplierDto;
@@ -37,23 +37,23 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         BffSupplierDto bffSupplierDto = new BffSupplierDto();
 
-        bffSupplierDto.setSupplierId( bffSupplierProjection.getSupplierId() );
-        bffSupplierDto.setSupplierName( bffSupplierProjection.getSupplierName() );
+        bffSupplierDto.setBankAccountInformation( bffSupplierProjection.getBankAccountInformation() );
+        bffSupplierDto.setCertificationCodes( bffSupplierProjection.getCertificationCodes() );
+        bffSupplierDto.setDescription( bffSupplierProjection.getDescription() );
+        bffSupplierDto.setEmail( bffSupplierProjection.getEmail() );
+        bffSupplierDto.setExternalId( bffSupplierProjection.getExternalId() );
         bffSupplierDto.setGgn( bffSupplierProjection.getGgn() );
         bffSupplierDto.setGln( bffSupplierProjection.getGln() );
-        bffSupplierDto.setExternalId( bffSupplierProjection.getExternalId() );
-        bffSupplierDto.setPreferredCurrencyUomId( bffSupplierProjection.getPreferredCurrencyUomId() );
-        bffSupplierDto.setDescription( bffSupplierProjection.getDescription() );
-        bffSupplierDto.setStatusId( bffSupplierProjection.getStatusId() );
-        bffSupplierDto.setSupplierShortName( bffSupplierProjection.getSupplierShortName() );
-        bffSupplierDto.setTaxId( bffSupplierProjection.getTaxId() );
         bffSupplierDto.setGs1CompanyPrefix( bffSupplierProjection.getGs1CompanyPrefix() );
         bffSupplierDto.setInternalId( bffSupplierProjection.getInternalId() );
+        bffSupplierDto.setPreferredCurrencyUomId( bffSupplierProjection.getPreferredCurrencyUomId() );
+        bffSupplierDto.setStatusId( bffSupplierProjection.getStatusId() );
+        bffSupplierDto.setSupplierId( bffSupplierProjection.getSupplierId() );
+        bffSupplierDto.setSupplierName( bffSupplierProjection.getSupplierName() );
+        bffSupplierDto.setSupplierShortName( bffSupplierProjection.getSupplierShortName() );
         bffSupplierDto.setSupplierTypeId( bffSupplierProjection.getSupplierTypeId() );
+        bffSupplierDto.setTaxId( bffSupplierProjection.getTaxId() );
         bffSupplierDto.setTpaNumber( bffSupplierProjection.getTpaNumber() );
-        bffSupplierDto.setCertificationCodes( bffSupplierProjection.getCertificationCodes() );
-        bffSupplierDto.setBankAccountInformation( bffSupplierProjection.getBankAccountInformation() );
-        bffSupplierDto.setEmail( bffSupplierProjection.getEmail() );
         bffSupplierDto.setWebSite( bffSupplierProjection.getWebSite() );
 
         return bffSupplierDto;
@@ -67,9 +67,9 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         AbstractPartyCommand.SimpleCreateParty simpleCreateParty = new AbstractPartyCommand.SimpleCreateParty();
 
+        simpleCreateParty.setDescription( bffSupplierDto.getDescription() );
         simpleCreateParty.setExternalId( bffSupplierDto.getExternalId() );
         simpleCreateParty.setPreferredCurrencyUomId( bffSupplierDto.getPreferredCurrencyUomId() );
-        simpleCreateParty.setDescription( bffSupplierDto.getDescription() );
         simpleCreateParty.setStatusId( bffSupplierDto.getStatusId() );
 
         return simpleCreateParty;
@@ -83,9 +83,9 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         AbstractPartyCommand.SimpleMergePatchParty simpleMergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
 
+        simpleMergePatchParty.setDescription( bffSupplierDto.getDescription() );
         simpleMergePatchParty.setExternalId( bffSupplierDto.getExternalId() );
         simpleMergePatchParty.setPreferredCurrencyUomId( bffSupplierDto.getPreferredCurrencyUomId() );
-        simpleMergePatchParty.setDescription( bffSupplierDto.getDescription() );
         simpleMergePatchParty.setStatusId( bffSupplierDto.getStatusId() );
 
         return simpleMergePatchParty;
