@@ -209,7 +209,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             }
         }
 
-        if (c.getReceivingDocument() != null) {
+        if (c.getReceivingDocument() != null && c.getReceivingDocument().getReferenceDocuments() != null) {
             for (BffDocumentDto referenceDocument : c.getReceivingDocument().getReferenceDocuments()) {
                 String refDocumentId;
                 if (referenceDocument.getDocumentId() == null) {
