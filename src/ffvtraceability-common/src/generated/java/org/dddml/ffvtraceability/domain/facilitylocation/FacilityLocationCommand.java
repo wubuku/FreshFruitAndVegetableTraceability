@@ -80,6 +80,18 @@ public interface FacilityLocationCommand extends Command {
 
         void setActive(String active);
 
+        String getLocationCode();
+
+        void setLocationCode(String locationCode);
+
+        String getGln();
+
+        void setGln(String gln);
+
+        String getDescription();
+
+        void setDescription(String description);
+
     }
 
     interface CreateFacilityLocation extends CreateOrMergePatchFacilityLocation {
@@ -117,6 +129,18 @@ public interface FacilityLocationCommand extends Command {
         Boolean getIsPropertyActiveRemoved();
 
         void setIsPropertyActiveRemoved(Boolean removed);
+
+        Boolean getIsPropertyLocationCodeRemoved();
+
+        void setIsPropertyLocationCodeRemoved(Boolean removed);
+
+        Boolean getIsPropertyGlnRemoved();
+
+        void setIsPropertyGlnRemoved(Boolean removed);
+
+        Boolean getIsPropertyDescriptionRemoved();
+
+        void setIsPropertyDescriptionRemoved(Boolean removed);
 
 
     }

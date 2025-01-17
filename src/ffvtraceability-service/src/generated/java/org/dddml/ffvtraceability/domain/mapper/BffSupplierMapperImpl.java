@@ -53,6 +53,7 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         bffSupplierDto.setTpaNumber( bffSupplierProjection.getTpaNumber() );
         bffSupplierDto.setCertificationCodes( bffSupplierProjection.getCertificationCodes() );
         bffSupplierDto.setBankAccountInformation( bffSupplierProjection.getBankAccountInformation() );
+        bffSupplierDto.setTelephone( bffSupplierProjection.getTelephone() );
         bffSupplierDto.setEmail( bffSupplierProjection.getEmail() );
         bffSupplierDto.setWebSite( bffSupplierProjection.getWebSite() );
 

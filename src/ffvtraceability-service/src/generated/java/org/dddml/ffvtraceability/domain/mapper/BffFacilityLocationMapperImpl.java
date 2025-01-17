@@ -29,6 +29,9 @@ public class BffFacilityLocationMapperImpl implements BffFacilityLocationMapper 
         bffFacilityLocationDto.setPositionId( bffFacilityLocationProjection.getPositionId() );
         bffFacilityLocationDto.setGeoPointId( bffFacilityLocationProjection.getGeoPointId() );
         bffFacilityLocationDto.setActive( bffFacilityLocationProjection.getActive() );
+        bffFacilityLocationDto.setLocationCode( bffFacilityLocationProjection.getLocationCode() );
+        bffFacilityLocationDto.setGln( bffFacilityLocationProjection.getGln() );
+        bffFacilityLocationDto.setDescription( bffFacilityLocationProjection.getDescription() );
 
         return bffFacilityLocationDto;
     }
@@ -49,6 +52,9 @@ public class BffFacilityLocationMapperImpl implements BffFacilityLocationMapper 
         bffFacilityLocationDto.setPositionId( facilityLocationState.getPositionId() );
         bffFacilityLocationDto.setGeoPointId( facilityLocationState.getGeoPointId() );
         bffFacilityLocationDto.setActive( facilityLocationState.getActive() );
+        bffFacilityLocationDto.setLocationCode( facilityLocationState.getLocationCode() );
+        bffFacilityLocationDto.setGln( facilityLocationState.getGln() );
+        bffFacilityLocationDto.setDescription( facilityLocationState.getDescription() );
 
         bffFacilityLocationDto.setLocationSeqId( facilityLocationState.getFacilityLocationId().getLocationSeqId() );
 

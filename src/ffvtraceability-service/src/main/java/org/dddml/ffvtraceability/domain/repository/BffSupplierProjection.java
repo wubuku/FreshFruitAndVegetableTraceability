@@ -40,6 +40,8 @@ public interface BffSupplierProjection {
 
     String getBankAccountInformation();
 
+    String getTelephone();
+
     String getEmail();
 
     String getWebSite();

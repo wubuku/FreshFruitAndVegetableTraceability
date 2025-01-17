@@ -2128,6 +2128,9 @@ public class M {
             "positionId",
             "geoPointId",
             "active",
+            "locationCode",
+            "gln",
+            "description",
             "version",
             "createdBy",
             "createdAt",
@@ -2140,6 +2143,9 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
             "String",
             "String",
             "String",
@@ -2187,6 +2193,12 @@ public class M {
         aliasMap.put("GeoPointId", "geoPointId");
         aliasMap.put("active", "active");
         aliasMap.put("Active", "active");
+        aliasMap.put("locationCode", "locationCode");
+        aliasMap.put("LocationCode", "locationCode");
+        aliasMap.put("gln", "gln");
+        aliasMap.put("Gln", "gln");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

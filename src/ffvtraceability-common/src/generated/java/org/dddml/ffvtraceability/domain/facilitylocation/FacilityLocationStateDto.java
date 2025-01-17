@@ -122,6 +122,42 @@ public class FacilityLocationStateDto {
         this.active = active;
     }
 
+    private String locationCode;
+
+    public String getLocationCode()
+    {
+        return this.locationCode;
+    }
+
+    public void setLocationCode(String locationCode)
+    {
+        this.locationCode = locationCode;
+    }
+
+    private String gln;
+
+    public String getGln()
+    {
+        return this.gln;
+    }
+
+    public void setGln(String gln)
+    {
+        this.gln = gln;
+    }
+
+    private String description;
+
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -237,6 +273,15 @@ public class FacilityLocationStateDto {
             }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
+            }
+            if (returnedFieldsContains("LocationCode")) {
+                dto.setLocationCode(state.getLocationCode());
+            }
+            if (returnedFieldsContains("Gln")) {
+                dto.setGln(state.getGln());
+            }
+            if (returnedFieldsContains("Description")) {
+                dto.setDescription(state.getDescription());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

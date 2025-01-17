@@ -189,6 +189,40 @@ public class BffSupplierServiceCommands {
 
     }
 
+    public static class BatchActivateSuppliers extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Supplier Ids
+         */
+        private String[] supplierIds;
+
+        public String[] getSupplierIds() {
+            return supplierIds;
+        }
+
+        public void setSupplierIds(String[] supplierIds) {
+            this.supplierIds = supplierIds;
+        }
+
+    }
+
+    public static class BatchDeactivateSuppliers extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Supplier Ids
+         */
+        private String[] supplierIds;
+
+        public String[] getSupplierIds() {
+            return supplierIds;
+        }
+
+        public void setSupplierIds(String[] supplierIds) {
+            this.supplierIds = supplierIds;
+        }
+
+    }
+
 
 }
 

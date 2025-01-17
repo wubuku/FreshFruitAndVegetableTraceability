@@ -103,6 +103,36 @@ public abstract class AbstractFacilityLocationState implements FacilityLocationS
         this.active = active;
     }
 
+    private String locationCode;
+
+    public String getLocationCode() {
+        return this.locationCode;
+    }
+
+    public void setLocationCode(String locationCode) {
+        this.locationCode = locationCode;
+    }
+
+    private String gln;
+
+    public String getGln() {
+        return this.gln;
+    }
+
+    public void setGln(String gln) {
+        this.gln = gln;
+    }
+
+    private String description;
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -233,6 +263,9 @@ public abstract class AbstractFacilityLocationState implements FacilityLocationS
         this.setPositionId(s.getPositionId());
         this.setGeoPointId(s.getGeoPointId());
         this.setActive(s.getActive());
+        this.setLocationCode(s.getLocationCode());
+        this.setGln(s.getGln());
+        this.setDescription(s.getDescription());
     }
 
     public void save() {

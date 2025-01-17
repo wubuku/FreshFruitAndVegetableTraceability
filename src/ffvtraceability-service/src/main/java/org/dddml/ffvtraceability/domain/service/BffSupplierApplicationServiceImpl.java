@@ -302,6 +302,16 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         }
     }
 
+    @Override
+    public void when(BffSupplierServiceCommands.BatchActivateSuppliers c) {
+        //todo
+    }
+
+    @Override
+    public void when(BffSupplierServiceCommands.BatchDeactivateSuppliers c) {
+        //todo
+    }
+
     private void updateOrCreatePartyBusinessContact(String partyId, BffBusinessContactDto bizContact, Command c) {
         // 处理邮政地址
         Optional<BffBusinessContactRepository.PostalAddressProjection> pa = bffBusinessContactRepository.findOnePostalAddressByBusinessInfo(

@@ -82,18 +82,30 @@ valueObjects:
         type: id
       AreaId:
         type: id
+        # 区域，Warehouse Zone
       AisleId:
         type: id
+        # 巷道
       SectionId:
         type: id
+        # 货架
       LevelId:
         type: id
+        # 层级（货架层）
       PositionId:
         type: id
+        # 货位（具体存放货物的位置点）
       GeoPointId:
         type: id
       Active:
         type: indicator
+      LocationCode:
+        type: id-long
+        # 可读的编码 / 内部编码
+      Gln:
+        type: id
+      Description:
+        type: long-varchar
 
 services:
   BffFacilityService:

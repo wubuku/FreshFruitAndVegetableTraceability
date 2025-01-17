@@ -135,6 +135,42 @@ public abstract class AbstractFacilityLocationCommand extends AbstractCommand im
             this.active = active;
         }
 
+        private String locationCode;
+
+        public String getLocationCode()
+        {
+            return this.locationCode;
+        }
+
+        public void setLocationCode(String locationCode)
+        {
+            this.locationCode = locationCode;
+        }
+
+        private String gln;
+
+        public String getGln()
+        {
+            return this.gln;
+        }
+
+        public void setGln(String gln)
+        {
+            this.gln = gln;
+        }
+
+        private String description;
+
+        public String getDescription()
+        {
+            return this.description;
+        }
+
+        public void setDescription(String description)
+        {
+            this.description = description;
+        }
+
     }
 
     public static abstract class AbstractCreateFacilityLocation extends AbstractCreateOrMergePatchFacilityLocation implements CreateFacilityLocation
@@ -247,6 +283,42 @@ public abstract class AbstractFacilityLocationCommand extends AbstractCommand im
         public void setIsPropertyActiveRemoved(Boolean removed)
         {
             this.isPropertyActiveRemoved = removed;
+        }
+
+        private Boolean isPropertyLocationCodeRemoved;
+
+        public Boolean getIsPropertyLocationCodeRemoved()
+        {
+            return this.isPropertyLocationCodeRemoved;
+        }
+
+        public void setIsPropertyLocationCodeRemoved(Boolean removed)
+        {
+            this.isPropertyLocationCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyGlnRemoved;
+
+        public Boolean getIsPropertyGlnRemoved()
+        {
+            return this.isPropertyGlnRemoved;
+        }
+
+        public void setIsPropertyGlnRemoved(Boolean removed)
+        {
+            this.isPropertyGlnRemoved = removed;
+        }
+
+        private Boolean isPropertyDescriptionRemoved;
+
+        public Boolean getIsPropertyDescriptionRemoved()
+        {
+            return this.isPropertyDescriptionRemoved;
+        }
+
+        public void setIsPropertyDescriptionRemoved(Boolean removed)
+        {
+            this.isPropertyDescriptionRemoved = removed;
         }
 
 

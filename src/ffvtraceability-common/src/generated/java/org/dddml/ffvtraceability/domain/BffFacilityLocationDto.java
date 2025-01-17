@@ -117,11 +117,47 @@ public class BffFacilityLocationDto implements Serializable {
         this.active = active;
     }
 
+    private String locationCode;
+
+    public String getLocationCode()
+    {
+        return this.locationCode;
+    }
+
+    public void setLocationCode(String locationCode)
+    {
+        this.locationCode = locationCode;
+    }
+
+    private String gln;
+
+    public String getGln()
+    {
+        return this.gln;
+    }
+
+    public void setGln(String gln)
+    {
+        this.gln = gln;
+    }
+
+    private String description;
+
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
     public BffFacilityLocationDto()
     {
     }
 
-    public BffFacilityLocationDto(String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId, String active)
+    public BffFacilityLocationDto(String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId, String active, String locationCode, String gln, String description)
     {
         this.locationSeqId = locationSeqId;
         this.locationTypeEnumId = locationTypeEnumId;
@@ -132,6 +168,9 @@ public class BffFacilityLocationDto implements Serializable {
         this.positionId = positionId;
         this.geoPointId = geoPointId;
         this.active = active;
+        this.locationCode = locationCode;
+        this.gln = gln;
+        this.description = description;
     }
 
     @Override
@@ -155,6 +194,9 @@ public class BffFacilityLocationDto implements Serializable {
             && (positionId == other.positionId || (positionId != null && positionId.equals(other.positionId)))
             && (geoPointId == other.geoPointId || (geoPointId != null && geoPointId.equals(other.geoPointId)))
             && (active == other.active || (active != null && active.equals(other.active)))
+            && (locationCode == other.locationCode || (locationCode != null && locationCode.equals(other.locationCode)))
+            && (gln == other.gln || (gln != null && gln.equals(other.gln)))
+            && (description == other.description || (description != null && description.equals(other.description)))
             ;
     }
 
@@ -189,6 +231,15 @@ public class BffFacilityLocationDto implements Serializable {
         if (this.active != null) {
             hash += 13 * this.active.hashCode();
         }
+        if (this.locationCode != null) {
+            hash += 13 * this.locationCode.hashCode();
+        }
+        if (this.gln != null) {
+            hash += 13 * this.gln.hashCode();
+        }
+        if (this.description != null) {
+            hash += 13 * this.description.hashCode();
+        }
         return hash;
     }
 
@@ -204,6 +255,9 @@ public class BffFacilityLocationDto implements Serializable {
                 ", positionId=" + '\'' + positionId + '\'' +
                 ", geoPointId=" + '\'' + geoPointId + '\'' +
                 ", active=" + '\'' + active + '\'' +
+                ", locationCode=" + '\'' + locationCode + '\'' +
+                ", gln=" + '\'' + gln + '\'' +
+                ", description=" + '\'' + description + '\'' +
                 '}';
     }
 

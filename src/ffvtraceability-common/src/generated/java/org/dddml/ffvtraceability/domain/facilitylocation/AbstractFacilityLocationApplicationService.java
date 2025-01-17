@@ -43,6 +43,9 @@ public abstract class AbstractFacilityLocationApplicationService implements Faci
         ss.setPositionId(c.getPositionId());
         ss.setGeoPointId(c.getGeoPointId());
         ss.setActive(c.getActive());
+        ss.setLocationCode(c.getLocationCode());
+        ss.setGln(c.getGln());
+        ss.setDescription(c.getDescription());
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         ss.setCommandId(c.getCommandId());
@@ -110,6 +113,27 @@ public abstract class AbstractFacilityLocationApplicationService implements Faci
             }
         } else {
             ss.setActive(c.getActive());
+        }
+        if (c.getLocationCode() == null) {
+            if (c.getIsPropertyLocationCodeRemoved() != null && c.getIsPropertyLocationCodeRemoved()) {
+                ss.setLocationCode(null);
+            }
+        } else {
+            ss.setLocationCode(c.getLocationCode());
+        }
+        if (c.getGln() == null) {
+            if (c.getIsPropertyGlnRemoved() != null && c.getIsPropertyGlnRemoved()) {
+                ss.setGln(null);
+            }
+        } else {
+            ss.setGln(c.getGln());
+        }
+        if (c.getDescription() == null) {
+            if (c.getIsPropertyDescriptionRemoved() != null && c.getIsPropertyDescriptionRemoved()) {
+                ss.setDescription(null);
+            }
+        } else {
+            ss.setDescription(c.getDescription());
         }
         ss.setUpdatedBy(c.getRequesterId());
         ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

@@ -238,6 +238,18 @@ public class BffSupplierDto implements Serializable {
         this.bankAccountInformation = bankAccountInformation;
     }
 
+    private String telephone;
+
+    public String getTelephone()
+    {
+        return this.telephone;
+    }
+
+    public void setTelephone(String telephone)
+    {
+        this.telephone = telephone;
+    }
+
     private String email;
 
     public String getEmail()
@@ -266,7 +278,7 @@ public class BffSupplierDto implements Serializable {
     {
     }
 
-    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String supplierTypeId, String tpaNumber, String certificationCodes, String bankAccountInformation, String email, String webSite)
+    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String supplierTypeId, String tpaNumber, String certificationCodes, String bankAccountInformation, String telephone, String email, String webSite)
     {
         this.supplierId = supplierId;
         this.supplierName = supplierName;
@@ -285,6 +297,7 @@ public class BffSupplierDto implements Serializable {
         this.tpaNumber = tpaNumber;
         this.certificationCodes = certificationCodes;
         this.bankAccountInformation = bankAccountInformation;
+        this.telephone = telephone;
         this.email = email;
         this.webSite = webSite;
     }
@@ -318,6 +331,7 @@ public class BffSupplierDto implements Serializable {
             && (tpaNumber == other.tpaNumber || (tpaNumber != null && tpaNumber.equals(other.tpaNumber)))
             && (certificationCodes == other.certificationCodes || (certificationCodes != null && certificationCodes.equals(other.certificationCodes)))
             && (bankAccountInformation == other.bankAccountInformation || (bankAccountInformation != null && bankAccountInformation.equals(other.bankAccountInformation)))
+            && (telephone == other.telephone || (telephone != null && telephone.equals(other.telephone)))
             && (email == other.email || (email != null && email.equals(other.email)))
             && (webSite == other.webSite || (webSite != null && webSite.equals(other.webSite)))
             ;
@@ -378,6 +392,9 @@ public class BffSupplierDto implements Serializable {
         if (this.bankAccountInformation != null) {
             hash += 13 * this.bankAccountInformation.hashCode();
         }
+        if (this.telephone != null) {
+            hash += 13 * this.telephone.hashCode();
+        }
         if (this.email != null) {
             hash += 13 * this.email.hashCode();
         }
@@ -407,6 +424,7 @@ public class BffSupplierDto implements Serializable {
                 ", tpaNumber=" + '\'' + tpaNumber + '\'' +
                 ", certificationCodes=" + '\'' + certificationCodes + '\'' +
                 ", bankAccountInformation=" + '\'' + bankAccountInformation + '\'' +
+                ", telephone=" + '\'' + telephone + '\'' +
                 ", email=" + '\'' + email + '\'' +
                 ", webSite=" + '\'' + webSite + '\'' +
                 '}';

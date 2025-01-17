@@ -130,6 +130,51 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
         this.active = active;
     }
 
+    /**
+     * Location Code
+     */
+    private String locationCode;
+
+    public String getLocationCode()
+    {
+        return this.locationCode;
+    }
+
+    public void setLocationCode(String locationCode)
+    {
+        this.locationCode = locationCode;
+    }
+
+    /**
+     * Gln
+     */
+    private String gln;
+
+    public String getGln()
+    {
+        return this.gln;
+    }
+
+    public void setGln(String gln)
+    {
+        this.gln = gln;
+    }
+
+    /**
+     * Description
+     */
+    private String description;
+
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
 
     private Boolean isPropertyLocationTypeEnumIdRemoved;
 
@@ -225,6 +270,42 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
     public void setIsPropertyActiveRemoved(Boolean removed)
     {
         this.isPropertyActiveRemoved = removed;
+    }
+
+    private Boolean isPropertyLocationCodeRemoved;
+
+    public Boolean getIsPropertyLocationCodeRemoved()
+    {
+        return this.isPropertyLocationCodeRemoved;
+    }
+
+    public void setIsPropertyLocationCodeRemoved(Boolean removed)
+    {
+        this.isPropertyLocationCodeRemoved = removed;
+    }
+
+    private Boolean isPropertyGlnRemoved;
+
+    public Boolean getIsPropertyGlnRemoved()
+    {
+        return this.isPropertyGlnRemoved;
+    }
+
+    public void setIsPropertyGlnRemoved(Boolean removed)
+    {
+        this.isPropertyGlnRemoved = removed;
+    }
+
+    private Boolean isPropertyDescriptionRemoved;
+
+    public Boolean getIsPropertyDescriptionRemoved()
+    {
+        return this.isPropertyDescriptionRemoved;
+    }
+
+    public void setIsPropertyDescriptionRemoved(Boolean removed)
+    {
+        this.isPropertyDescriptionRemoved = removed;
     }
 
     public FacilityLocationCommand toCommand()
@@ -390,6 +471,36 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
                 CreateOrMergePatchFacilityLocationDto.this.setActive(p);
             }
 
+            @Override
+            public String getLocationCode() {
+                return CreateOrMergePatchFacilityLocationDto.this.getLocationCode();
+            }
+
+            @Override
+            public void setLocationCode(String p) {
+                CreateOrMergePatchFacilityLocationDto.this.setLocationCode(p);
+            }
+
+            @Override
+            public String getGln() {
+                return CreateOrMergePatchFacilityLocationDto.this.getGln();
+            }
+
+            @Override
+            public void setGln(String p) {
+                CreateOrMergePatchFacilityLocationDto.this.setGln(p);
+            }
+
+            @Override
+            public String getDescription() {
+                return CreateOrMergePatchFacilityLocationDto.this.getDescription();
+            }
+
+            @Override
+            public void setDescription(String p) {
+                CreateOrMergePatchFacilityLocationDto.this.setDescription(p);
+            }
+
 
         };
     }
@@ -532,6 +643,36 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
             }
 
             @Override
+            public String getLocationCode() {
+                return CreateOrMergePatchFacilityLocationDto.this.getLocationCode();
+            }
+
+            @Override
+            public void setLocationCode(String p) {
+                CreateOrMergePatchFacilityLocationDto.this.setLocationCode(p);
+            }
+
+            @Override
+            public String getGln() {
+                return CreateOrMergePatchFacilityLocationDto.this.getGln();
+            }
+
+            @Override
+            public void setGln(String p) {
+                CreateOrMergePatchFacilityLocationDto.this.setGln(p);
+            }
+
+            @Override
+            public String getDescription() {
+                return CreateOrMergePatchFacilityLocationDto.this.getDescription();
+            }
+
+            @Override
+            public void setDescription(String p) {
+                CreateOrMergePatchFacilityLocationDto.this.setDescription(p);
+            }
+
+            @Override
             public Boolean getIsPropertyLocationTypeEnumIdRemoved() {
                 return CreateOrMergePatchFacilityLocationDto.this.getIsPropertyLocationTypeEnumIdRemoved();
             }
@@ -609,6 +750,36 @@ public class CreateOrMergePatchFacilityLocationDto extends AbstractFacilityLocat
             @Override
             public void setIsPropertyActiveRemoved(Boolean removed) {
                 CreateOrMergePatchFacilityLocationDto.this.setIsPropertyActiveRemoved(removed);
+            }
+
+            @Override
+            public Boolean getIsPropertyLocationCodeRemoved() {
+                return CreateOrMergePatchFacilityLocationDto.this.getIsPropertyLocationCodeRemoved();
+            }
+
+            @Override
+            public void setIsPropertyLocationCodeRemoved(Boolean removed) {
+                CreateOrMergePatchFacilityLocationDto.this.setIsPropertyLocationCodeRemoved(removed);
+            }
+
+            @Override
+            public Boolean getIsPropertyGlnRemoved() {
+                return CreateOrMergePatchFacilityLocationDto.this.getIsPropertyGlnRemoved();
+            }
+
+            @Override
+            public void setIsPropertyGlnRemoved(Boolean removed) {
+                CreateOrMergePatchFacilityLocationDto.this.setIsPropertyGlnRemoved(removed);
+            }
+
+            @Override
+            public Boolean getIsPropertyDescriptionRemoved() {
+                return CreateOrMergePatchFacilityLocationDto.this.getIsPropertyDescriptionRemoved();
+            }
+
+            @Override
+            public void setIsPropertyDescriptionRemoved(Boolean removed) {
+                CreateOrMergePatchFacilityLocationDto.this.setIsPropertyDescriptionRemoved(removed);
             }
 
 

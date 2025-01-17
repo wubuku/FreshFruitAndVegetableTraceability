@@ -26,5 +26,11 @@ public interface BffFacilityLocationProjection {
 
     String getActive();
 
+    String getLocationCode();
+
+    String getGln();
+
+    String getDescription();
+
 }
 

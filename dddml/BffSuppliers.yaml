@@ -51,6 +51,9 @@ valueObjects:
       BankAccountInformation:
         description: "Bank Account Information"
         type: description
+      # 电话
+      Telephone:
+        type: short-varchar
       Email:
         type: id # todo: email?
       WebSite:
@@ -145,3 +148,23 @@ services:
         parameters:
           Suppliers:
             itemType: BffSupplierDto
+
+      # 批量“激活”
+      BatchActivateSuppliers:
+        httpMethod: POST
+        restfulResourceName: "batchActivateSuppliers"
+        metadata:
+          HttpRequestBody: SupplierIds
+        parameters:
+          SupplierIds:
+            itemType: id
+      
+      # 批量“禁用”
+      BatchDeactivateSuppliers:
+        httpMethod: POST
+        restfulResourceName: "batchDeactivateSuppliers"
+        metadata:
+          HttpRequestBody: SupplierIds
+        parameters:
+          SupplierIds:
+            itemType: id

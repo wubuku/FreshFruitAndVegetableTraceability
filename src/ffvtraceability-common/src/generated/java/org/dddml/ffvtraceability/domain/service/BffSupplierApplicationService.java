@@ -24,6 +24,10 @@ public interface BffSupplierApplicationService {
 
     void when(BffSupplierServiceCommands.BatchAddSuppliers c);
 
+    void when(BffSupplierServiceCommands.BatchActivateSuppliers c);
+
+    void when(BffSupplierServiceCommands.BatchDeactivateSuppliers c);
+
 
 }
 
