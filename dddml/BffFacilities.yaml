@@ -59,6 +59,8 @@ valueObjects:
         # 设施级别
         type: numeric
       # -----------------------------------
+      InternalId:
+        type: id
       SequenceNumber:
         # 序号，可以用于前端的显示排序
         type: numeric

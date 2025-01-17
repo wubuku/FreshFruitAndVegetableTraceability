@@ -35,6 +35,7 @@ public class BffFacilityMapperImpl implements BffFacilityMapper {
         bffFacilityDto.setGln( bffFacilityProjection.getGln() );
         bffFacilityDto.setFfrn( bffFacilityProjection.getFfrn() );
         bffFacilityDto.setFacilityLevel( bffFacilityProjection.getFacilityLevel() );
+        bffFacilityDto.setInternalId( bffFacilityProjection.getInternalId() );
         bffFacilityDto.setSequenceNumber( bffFacilityProjection.getSequenceNumber() );
 
         return bffFacilityDto;
