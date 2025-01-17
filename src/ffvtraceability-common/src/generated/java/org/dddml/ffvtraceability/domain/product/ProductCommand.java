@@ -292,6 +292,34 @@ public interface ProductCommand extends Command {
 
         void setActive(String active);
 
+        String getCaseUomId();
+
+        void setCaseUomId(String caseUomId);
+
+        String getOrganicCertifications();
+
+        void setOrganicCertifications(String organicCertifications);
+
+        String getMaterialCompositionDescription();
+
+        void setMaterialCompositionDescription(String materialCompositionDescription);
+
+        String getCountryOfOrigin();
+
+        void setCountryOfOrigin(String countryOfOrigin);
+
+        String getShelfLifeDescription();
+
+        void setShelfLifeDescription(String shelfLifeDescription);
+
+        String getHandlingInstructions();
+
+        void setHandlingInstructions(String handlingInstructions);
+
+        String getStorageConditions();
+
+        void setStorageConditions(String storageConditions);
+
     }
 
     interface CreateProduct extends CreateOrMergePatchProduct {
@@ -545,6 +573,34 @@ public interface ProductCommand extends Command {
         Boolean getIsPropertyActiveRemoved();
 
         void setIsPropertyActiveRemoved(Boolean removed);
+
+        Boolean getIsPropertyCaseUomIdRemoved();
+
+        void setIsPropertyCaseUomIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyOrganicCertificationsRemoved();
+
+        void setIsPropertyOrganicCertificationsRemoved(Boolean removed);
+
+        Boolean getIsPropertyMaterialCompositionDescriptionRemoved();
+
+        void setIsPropertyMaterialCompositionDescriptionRemoved(Boolean removed);
+
+        Boolean getIsPropertyCountryOfOriginRemoved();
+
+        void setIsPropertyCountryOfOriginRemoved(Boolean removed);
+
+        Boolean getIsPropertyShelfLifeDescriptionRemoved();
+
+        void setIsPropertyShelfLifeDescriptionRemoved(Boolean removed);
+
+        Boolean getIsPropertyHandlingInstructionsRemoved();
+
+        void setIsPropertyHandlingInstructionsRemoved(Boolean removed);
+
+        Boolean getIsPropertyStorageConditionsRemoved();
+
+        void setIsPropertyStorageConditionsRemoved(Boolean removed);
 
 
         GoodIdentificationCommandCollection getGoodIdentificationCommands();

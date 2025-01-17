@@ -3271,6 +3271,13 @@ public class M {
             "lotIdFilledIn",
             "orderDecimalQuantity",
             "active",
+            "caseUomId",
+            "organicCertifications",
+            "materialCompositionDescription",
+            "countryOfOrigin",
+            "shelfLifeDescription",
+            "handlingInstructions",
+            "storageConditions",
             "version",
             "createdBy",
             "createdAt",
@@ -3338,6 +3345,13 @@ public class M {
             "String",
             "String",
             "Long",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
             "String",
             "String",
             "String",
@@ -3488,6 +3502,20 @@ public class M {
         aliasMap.put("OrderDecimalQuantity", "orderDecimalQuantity");
         aliasMap.put("active", "active");
         aliasMap.put("Active", "active");
+        aliasMap.put("caseUomId", "caseUomId");
+        aliasMap.put("CaseUomId", "caseUomId");
+        aliasMap.put("organicCertifications", "organicCertifications");
+        aliasMap.put("OrganicCertifications", "organicCertifications");
+        aliasMap.put("materialCompositionDescription", "materialCompositionDescription");
+        aliasMap.put("MaterialCompositionDescription", "materialCompositionDescription");
+        aliasMap.put("countryOfOrigin", "countryOfOrigin");
+        aliasMap.put("CountryOfOrigin", "countryOfOrigin");
+        aliasMap.put("shelfLifeDescription", "shelfLifeDescription");
+        aliasMap.put("ShelfLifeDescription", "shelfLifeDescription");
+        aliasMap.put("handlingInstructions", "handlingInstructions");
+        aliasMap.put("HandlingInstructions", "handlingInstructions");
+        aliasMap.put("storageConditions", "storageConditions");
+        aliasMap.put("StorageConditions", "storageConditions");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

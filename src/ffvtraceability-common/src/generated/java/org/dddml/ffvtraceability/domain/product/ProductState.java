@@ -141,6 +141,20 @@ public interface ProductState
 
     String getActive();
 
+    String getCaseUomId();
+
+    String getOrganicCertifications();
+
+    String getMaterialCompositionDescription();
+
+    String getCountryOfOrigin();
+
+    String getShelfLifeDescription();
+
+    String getHandlingInstructions();
+
+    String getStorageConditions();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -277,6 +291,20 @@ public interface ProductState
         void setOrderDecimalQuantity(String orderDecimalQuantity);
 
         void setActive(String active);
+
+        void setCaseUomId(String caseUomId);
+
+        void setOrganicCertifications(String organicCertifications);
+
+        void setMaterialCompositionDescription(String materialCompositionDescription);
+
+        void setCountryOfOrigin(String countryOfOrigin);
+
+        void setShelfLifeDescription(String shelfLifeDescription);
+
+        void setHandlingInstructions(String handlingInstructions);
+
+        void setStorageConditions(String storageConditions);
 
         void setVersion(Long version);
 

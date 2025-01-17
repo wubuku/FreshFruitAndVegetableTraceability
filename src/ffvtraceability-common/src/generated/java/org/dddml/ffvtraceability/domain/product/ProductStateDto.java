@@ -758,6 +758,90 @@ public class ProductStateDto {
         this.active = active;
     }
 
+    private String caseUomId;
+
+    public String getCaseUomId()
+    {
+        return this.caseUomId;
+    }
+
+    public void setCaseUomId(String caseUomId)
+    {
+        this.caseUomId = caseUomId;
+    }
+
+    private String organicCertifications;
+
+    public String getOrganicCertifications()
+    {
+        return this.organicCertifications;
+    }
+
+    public void setOrganicCertifications(String organicCertifications)
+    {
+        this.organicCertifications = organicCertifications;
+    }
+
+    private String materialCompositionDescription;
+
+    public String getMaterialCompositionDescription()
+    {
+        return this.materialCompositionDescription;
+    }
+
+    public void setMaterialCompositionDescription(String materialCompositionDescription)
+    {
+        this.materialCompositionDescription = materialCompositionDescription;
+    }
+
+    private String countryOfOrigin;
+
+    public String getCountryOfOrigin()
+    {
+        return this.countryOfOrigin;
+    }
+
+    public void setCountryOfOrigin(String countryOfOrigin)
+    {
+        this.countryOfOrigin = countryOfOrigin;
+    }
+
+    private String shelfLifeDescription;
+
+    public String getShelfLifeDescription()
+    {
+        return this.shelfLifeDescription;
+    }
+
+    public void setShelfLifeDescription(String shelfLifeDescription)
+    {
+        this.shelfLifeDescription = shelfLifeDescription;
+    }
+
+    private String handlingInstructions;
+
+    public String getHandlingInstructions()
+    {
+        return this.handlingInstructions;
+    }
+
+    public void setHandlingInstructions(String handlingInstructions)
+    {
+        this.handlingInstructions = handlingInstructions;
+    }
+
+    private String storageConditions;
+
+    public String getStorageConditions()
+    {
+        return this.storageConditions;
+    }
+
+    public void setStorageConditions(String storageConditions)
+    {
+        this.storageConditions = storageConditions;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -1044,6 +1128,27 @@ public class ProductStateDto {
             }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
+            }
+            if (returnedFieldsContains("CaseUomId")) {
+                dto.setCaseUomId(state.getCaseUomId());
+            }
+            if (returnedFieldsContains("OrganicCertifications")) {
+                dto.setOrganicCertifications(state.getOrganicCertifications());
+            }
+            if (returnedFieldsContains("MaterialCompositionDescription")) {
+                dto.setMaterialCompositionDescription(state.getMaterialCompositionDescription());
+            }
+            if (returnedFieldsContains("CountryOfOrigin")) {
+                dto.setCountryOfOrigin(state.getCountryOfOrigin());
+            }
+            if (returnedFieldsContains("ShelfLifeDescription")) {
+                dto.setShelfLifeDescription(state.getShelfLifeDescription());
+            }
+            if (returnedFieldsContains("HandlingInstructions")) {
+                dto.setHandlingInstructions(state.getHandlingInstructions());
+            }
+            if (returnedFieldsContains("StorageConditions")) {
+                dto.setStorageConditions(state.getStorageConditions());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

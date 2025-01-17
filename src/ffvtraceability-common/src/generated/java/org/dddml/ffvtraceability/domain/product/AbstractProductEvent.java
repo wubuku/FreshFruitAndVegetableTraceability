@@ -885,6 +885,90 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
             this.active = active;
         }
 
+        private String caseUomId;
+
+        public String getCaseUomId()
+        {
+            return this.caseUomId;
+        }
+
+        public void setCaseUomId(String caseUomId)
+        {
+            this.caseUomId = caseUomId;
+        }
+
+        private String organicCertifications;
+
+        public String getOrganicCertifications()
+        {
+            return this.organicCertifications;
+        }
+
+        public void setOrganicCertifications(String organicCertifications)
+        {
+            this.organicCertifications = organicCertifications;
+        }
+
+        private String materialCompositionDescription;
+
+        public String getMaterialCompositionDescription()
+        {
+            return this.materialCompositionDescription;
+        }
+
+        public void setMaterialCompositionDescription(String materialCompositionDescription)
+        {
+            this.materialCompositionDescription = materialCompositionDescription;
+        }
+
+        private String countryOfOrigin;
+
+        public String getCountryOfOrigin()
+        {
+            return this.countryOfOrigin;
+        }
+
+        public void setCountryOfOrigin(String countryOfOrigin)
+        {
+            this.countryOfOrigin = countryOfOrigin;
+        }
+
+        private String shelfLifeDescription;
+
+        public String getShelfLifeDescription()
+        {
+            return this.shelfLifeDescription;
+        }
+
+        public void setShelfLifeDescription(String shelfLifeDescription)
+        {
+            this.shelfLifeDescription = shelfLifeDescription;
+        }
+
+        private String handlingInstructions;
+
+        public String getHandlingInstructions()
+        {
+            return this.handlingInstructions;
+        }
+
+        public void setHandlingInstructions(String handlingInstructions)
+        {
+            this.handlingInstructions = handlingInstructions;
+        }
+
+        private String storageConditions;
+
+        public String getStorageConditions()
+        {
+            return this.storageConditions;
+        }
+
+        public void setStorageConditions(String storageConditions)
+        {
+            this.storageConditions = storageConditions;
+        }
+
         protected AbstractProductStateEvent(ProductEventId eventId) {
             super(eventId);
         }
@@ -1577,6 +1661,76 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
         public void setIsPropertyActiveRemoved(Boolean removed) {
             this.isPropertyActiveRemoved = removed;
+        }
+
+        private Boolean isPropertyCaseUomIdRemoved;
+
+        public Boolean getIsPropertyCaseUomIdRemoved() {
+            return this.isPropertyCaseUomIdRemoved;
+        }
+
+        public void setIsPropertyCaseUomIdRemoved(Boolean removed) {
+            this.isPropertyCaseUomIdRemoved = removed;
+        }
+
+        private Boolean isPropertyOrganicCertificationsRemoved;
+
+        public Boolean getIsPropertyOrganicCertificationsRemoved() {
+            return this.isPropertyOrganicCertificationsRemoved;
+        }
+
+        public void setIsPropertyOrganicCertificationsRemoved(Boolean removed) {
+            this.isPropertyOrganicCertificationsRemoved = removed;
+        }
+
+        private Boolean isPropertyMaterialCompositionDescriptionRemoved;
+
+        public Boolean getIsPropertyMaterialCompositionDescriptionRemoved() {
+            return this.isPropertyMaterialCompositionDescriptionRemoved;
+        }
+
+        public void setIsPropertyMaterialCompositionDescriptionRemoved(Boolean removed) {
+            this.isPropertyMaterialCompositionDescriptionRemoved = removed;
+        }
+
+        private Boolean isPropertyCountryOfOriginRemoved;
+
+        public Boolean getIsPropertyCountryOfOriginRemoved() {
+            return this.isPropertyCountryOfOriginRemoved;
+        }
+
+        public void setIsPropertyCountryOfOriginRemoved(Boolean removed) {
+            this.isPropertyCountryOfOriginRemoved = removed;
+        }
+
+        private Boolean isPropertyShelfLifeDescriptionRemoved;
+
+        public Boolean getIsPropertyShelfLifeDescriptionRemoved() {
+            return this.isPropertyShelfLifeDescriptionRemoved;
+        }
+
+        public void setIsPropertyShelfLifeDescriptionRemoved(Boolean removed) {
+            this.isPropertyShelfLifeDescriptionRemoved = removed;
+        }
+
+        private Boolean isPropertyHandlingInstructionsRemoved;
+
+        public Boolean getIsPropertyHandlingInstructionsRemoved() {
+            return this.isPropertyHandlingInstructionsRemoved;
+        }
+
+        public void setIsPropertyHandlingInstructionsRemoved(Boolean removed) {
+            this.isPropertyHandlingInstructionsRemoved = removed;
+        }
+
+        private Boolean isPropertyStorageConditionsRemoved;
+
+        public Boolean getIsPropertyStorageConditionsRemoved() {
+            return this.isPropertyStorageConditionsRemoved;
+        }
+
+        public void setIsPropertyStorageConditionsRemoved(Boolean removed) {
+            this.isPropertyStorageConditionsRemoved = removed;
         }
 
 

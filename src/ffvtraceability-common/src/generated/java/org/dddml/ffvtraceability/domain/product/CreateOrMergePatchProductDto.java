@@ -925,6 +925,111 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         this.active = active;
     }
 
+    /**
+     * Case Uom Id
+     */
+    private String caseUomId;
+
+    public String getCaseUomId()
+    {
+        return this.caseUomId;
+    }
+
+    public void setCaseUomId(String caseUomId)
+    {
+        this.caseUomId = caseUomId;
+    }
+
+    /**
+     * Organic Certifications
+     */
+    private String organicCertifications;
+
+    public String getOrganicCertifications()
+    {
+        return this.organicCertifications;
+    }
+
+    public void setOrganicCertifications(String organicCertifications)
+    {
+        this.organicCertifications = organicCertifications;
+    }
+
+    /**
+     * Material Composition Description
+     */
+    private String materialCompositionDescription;
+
+    public String getMaterialCompositionDescription()
+    {
+        return this.materialCompositionDescription;
+    }
+
+    public void setMaterialCompositionDescription(String materialCompositionDescription)
+    {
+        this.materialCompositionDescription = materialCompositionDescription;
+    }
+
+    /**
+     * Country Of Origin
+     */
+    private String countryOfOrigin;
+
+    public String getCountryOfOrigin()
+    {
+        return this.countryOfOrigin;
+    }
+
+    public void setCountryOfOrigin(String countryOfOrigin)
+    {
+        this.countryOfOrigin = countryOfOrigin;
+    }
+
+    /**
+     * Shelf Life Description
+     */
+    private String shelfLifeDescription;
+
+    public String getShelfLifeDescription()
+    {
+        return this.shelfLifeDescription;
+    }
+
+    public void setShelfLifeDescription(String shelfLifeDescription)
+    {
+        this.shelfLifeDescription = shelfLifeDescription;
+    }
+
+    /**
+     * Handling Instructions
+     */
+    private String handlingInstructions;
+
+    public String getHandlingInstructions()
+    {
+        return this.handlingInstructions;
+    }
+
+    public void setHandlingInstructions(String handlingInstructions)
+    {
+        this.handlingInstructions = handlingInstructions;
+    }
+
+    /**
+     * Storage Conditions
+     */
+    private String storageConditions;
+
+    public String getStorageConditions()
+    {
+        return this.storageConditions;
+    }
+
+    public void setStorageConditions(String storageConditions)
+    {
+        this.storageConditions = storageConditions;
+    }
+
 
     private CreateOrMergePatchGoodIdentificationDto[] goodIdentifications = new CreateOrMergePatchGoodIdentificationDto[0];
 
@@ -1670,6 +1775,90 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         this.isPropertyActiveRemoved = removed;
     }
 
+    private Boolean isPropertyCaseUomIdRemoved;
+
+    public Boolean getIsPropertyCaseUomIdRemoved()
+    {
+        return this.isPropertyCaseUomIdRemoved;
+    }
+
+    public void setIsPropertyCaseUomIdRemoved(Boolean removed)
+    {
+        this.isPropertyCaseUomIdRemoved = removed;
+    }
+
+    private Boolean isPropertyOrganicCertificationsRemoved;
+
+    public Boolean getIsPropertyOrganicCertificationsRemoved()
+    {
+        return this.isPropertyOrganicCertificationsRemoved;
+    }
+
+    public void setIsPropertyOrganicCertificationsRemoved(Boolean removed)
+    {
+        this.isPropertyOrganicCertificationsRemoved = removed;
+    }
+
+    private Boolean isPropertyMaterialCompositionDescriptionRemoved;
+
+    public Boolean getIsPropertyMaterialCompositionDescriptionRemoved()
+    {
+        return this.isPropertyMaterialCompositionDescriptionRemoved;
+    }
+
+    public void setIsPropertyMaterialCompositionDescriptionRemoved(Boolean removed)
+    {
+        this.isPropertyMaterialCompositionDescriptionRemoved = removed;
+    }
+
+    private Boolean isPropertyCountryOfOriginRemoved;
+
+    public Boolean getIsPropertyCountryOfOriginRemoved()
+    {
+        return this.isPropertyCountryOfOriginRemoved;
+    }
+
+    public void setIsPropertyCountryOfOriginRemoved(Boolean removed)
+    {
+        this.isPropertyCountryOfOriginRemoved = removed;
+    }
+
+    private Boolean isPropertyShelfLifeDescriptionRemoved;
+
+    public Boolean getIsPropertyShelfLifeDescriptionRemoved()
+    {
+        return this.isPropertyShelfLifeDescriptionRemoved;
+    }
+
+    public void setIsPropertyShelfLifeDescriptionRemoved(Boolean removed)
+    {
+        this.isPropertyShelfLifeDescriptionRemoved = removed;
+    }
+
+    private Boolean isPropertyHandlingInstructionsRemoved;
+
+    public Boolean getIsPropertyHandlingInstructionsRemoved()
+    {
+        return this.isPropertyHandlingInstructionsRemoved;
+    }
+
+    public void setIsPropertyHandlingInstructionsRemoved(Boolean removed)
+    {
+        this.isPropertyHandlingInstructionsRemoved = removed;
+    }
+
+    private Boolean isPropertyStorageConditionsRemoved;
+
+    public Boolean getIsPropertyStorageConditionsRemoved()
+    {
+        return this.isPropertyStorageConditionsRemoved;
+    }
+
+    public void setIsPropertyStorageConditionsRemoved(Boolean removed)
+    {
+        this.isPropertyStorageConditionsRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchProduct command)
     {
         ((AbstractProductCommandDto) this).copyTo(command);
@@ -1734,6 +1923,13 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setLotIdFilledIn(this.getLotIdFilledIn());
         command.setOrderDecimalQuantity(this.getOrderDecimalQuantity());
         command.setActive(this.getActive());
+        command.setCaseUomId(this.getCaseUomId());
+        command.setOrganicCertifications(this.getOrganicCertifications());
+        command.setMaterialCompositionDescription(this.getMaterialCompositionDescription());
+        command.setCountryOfOrigin(this.getCountryOfOrigin());
+        command.setShelfLifeDescription(this.getShelfLifeDescription());
+        command.setHandlingInstructions(this.getHandlingInstructions());
+        command.setStorageConditions(this.getStorageConditions());
     }
 
     public ProductCommand toCommand()
@@ -1860,6 +2056,13 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setIsPropertyLotIdFilledInRemoved(this.getIsPropertyLotIdFilledInRemoved());
         command.setIsPropertyOrderDecimalQuantityRemoved(this.getIsPropertyOrderDecimalQuantityRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
+        command.setIsPropertyCaseUomIdRemoved(this.getIsPropertyCaseUomIdRemoved());
+        command.setIsPropertyOrganicCertificationsRemoved(this.getIsPropertyOrganicCertificationsRemoved());
+        command.setIsPropertyMaterialCompositionDescriptionRemoved(this.getIsPropertyMaterialCompositionDescriptionRemoved());
+        command.setIsPropertyCountryOfOriginRemoved(this.getIsPropertyCountryOfOriginRemoved());
+        command.setIsPropertyShelfLifeDescriptionRemoved(this.getIsPropertyShelfLifeDescriptionRemoved());
+        command.setIsPropertyHandlingInstructionsRemoved(this.getIsPropertyHandlingInstructionsRemoved());
+        command.setIsPropertyStorageConditionsRemoved(this.getIsPropertyStorageConditionsRemoved());
     }
 
     public static class CreateProductDto extends CreateOrMergePatchProductDto implements ProductCommand.CreateProduct

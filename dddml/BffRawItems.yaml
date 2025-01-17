@@ -8,6 +8,10 @@ valueObjects:
         type: id
       ProductName:
         type: name
+      InternalName:
+        type: description
+      BrandName:
+        type: name
       Description:
         type: description
       Gtin:
@@ -21,11 +25,14 @@ valueObjects:
         type: url
       QuantityUomId:
         type: id
+        # 主计量单位的 ID，比如“oz”
       QuantityIncluded:
         description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
         type: fixed-point
+        # 一件（piece）的数量（以“主计量单位”计算）
       PiecesIncluded:
         type: numeric
+        # 一个包装内包含的“件数”，如果包装内没有“分件”，则该值设置为 1（可以把 null 看作 1）
       StatusId:
         type: id
       SupplierId:
@@ -71,6 +78,44 @@ valueObjects:
       DefaultShipmentBoxType:
         # 在需要的时候，返回默认的装运箱类型的详细信息
         type: BffShipmentBoxTypeDto
+        # 在 DefaultShipmentBoxType 中包含“包装尺寸”和“包装重量”信息
+          # DimensionUomId:
+          #   type: id
+          # BoxLength:
+          #   type: fixed-point
+          # BoxWidth:
+          #   type: fixed-point
+          # BoxHeight:
+          #   type: fixed-point
+          # WeightUomId:
+          #   type: id
+          # BoxWeight:
+          #   type: fixed-point
+      # -------------------------------------------------------------------
+      CaseUomId:
+        type: id
+        # 用于描述“包装类型”的单位 Id。比如 EA、BX(Box)、PLT(Pallet)、PK(Pack)
+      InternalId:
+        # 内部编码
+        type: id
+      ProduceVariety:
+        type: name
+      HsCode:
+        type: id
+        # HS Code（海关商品编码）
+        # 全称：Harmonized System Code（协调制度编码）
+      OrganicCertifications:
+        type: description
+      MaterialCompositionDescription:
+        type: description
+      CountryOfOrigin:
+        type: name
+      ShelfLifeDescription:
+        type: description
+      HandlingInstructions:
+        type: description
+      StorageConditions:
+        type: description
 
 
 services:

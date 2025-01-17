@@ -23,6 +23,8 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
 
         bffRawItemDto.setProductId( bffRawItem.getProductId() );
         bffRawItemDto.setProductName( bffRawItem.getProductName() );
+        bffRawItemDto.setInternalName( bffRawItem.getInternalName() );
+        bffRawItemDto.setBrandName( bffRawItem.getBrandName() );
         bffRawItemDto.setDescription( bffRawItem.getDescription() );
         bffRawItemDto.setGtin( bffRawItem.getGtin() );
         bffRawItemDto.setSmallImageUrl( bffRawItem.getSmallImageUrl() );
@@ -50,6 +52,16 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setProductDiameter( bffRawItem.getProductDiameter() );
         bffRawItemDto.setActive( bffRawItem.getActive() );
         bffRawItemDto.setDefaultShipmentBoxTypeId( bffRawItem.getDefaultShipmentBoxTypeId() );
+        bffRawItemDto.setCaseUomId( bffRawItem.getCaseUomId() );
+        bffRawItemDto.setInternalId( bffRawItem.getInternalId() );
+        bffRawItemDto.setProduceVariety( bffRawItem.getProduceVariety() );
+        bffRawItemDto.setHsCode( bffRawItem.getHsCode() );
+        bffRawItemDto.setOrganicCertifications( bffRawItem.getOrganicCertifications() );
+        bffRawItemDto.setMaterialCompositionDescription( bffRawItem.getMaterialCompositionDescription() );
+        bffRawItemDto.setCountryOfOrigin( bffRawItem.getCountryOfOrigin() );
+        bffRawItemDto.setShelfLifeDescription( bffRawItem.getShelfLifeDescription() );
+        bffRawItemDto.setHandlingInstructions( bffRawItem.getHandlingInstructions() );
+        bffRawItemDto.setStorageConditions( bffRawItem.getStorageConditions() );
 
         return bffRawItemDto;
     }
@@ -64,6 +76,8 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
 
         bffRawItemDto.setProductId( productState.getProductId() );
         bffRawItemDto.setProductName( productState.getProductName() );
+        bffRawItemDto.setInternalName( productState.getInternalName() );
+        bffRawItemDto.setBrandName( productState.getBrandName() );
         bffRawItemDto.setDescription( productState.getDescription() );
         bffRawItemDto.setSmallImageUrl( productState.getSmallImageUrl() );
         bffRawItemDto.setMediumImageUrl( productState.getMediumImageUrl() );
@@ -87,6 +101,13 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setProductDiameter( productState.getProductDiameter() );
         bffRawItemDto.setActive( productState.getActive() );
         bffRawItemDto.setDefaultShipmentBoxTypeId( productState.getDefaultShipmentBoxTypeId() );
+        bffRawItemDto.setCaseUomId( productState.getCaseUomId() );
+        bffRawItemDto.setOrganicCertifications( productState.getOrganicCertifications() );
+        bffRawItemDto.setMaterialCompositionDescription( productState.getMaterialCompositionDescription() );
+        bffRawItemDto.setCountryOfOrigin( productState.getCountryOfOrigin() );
+        bffRawItemDto.setShelfLifeDescription( productState.getShelfLifeDescription() );
+        bffRawItemDto.setHandlingInstructions( productState.getHandlingInstructions() );
+        bffRawItemDto.setStorageConditions( productState.getStorageConditions() );
 
         return bffRawItemDto;
     }
@@ -100,6 +121,8 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         AbstractProductCommand.SimpleCreateProduct simpleCreateProduct = new AbstractProductCommand.SimpleCreateProduct();
 
         simpleCreateProduct.setProductId( bffRawItemDto.getProductId() );
+        simpleCreateProduct.setInternalName( bffRawItemDto.getInternalName() );
+        simpleCreateProduct.setBrandName( bffRawItemDto.getBrandName() );
         simpleCreateProduct.setProductName( bffRawItemDto.getProductName() );
         simpleCreateProduct.setDescription( bffRawItemDto.getDescription() );
         simpleCreateProduct.setSmallImageUrl( bffRawItemDto.getSmallImageUrl() );
@@ -124,6 +147,13 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         simpleCreateProduct.setProductDiameter( bffRawItemDto.getProductDiameter() );
         simpleCreateProduct.setDefaultShipmentBoxTypeId( bffRawItemDto.getDefaultShipmentBoxTypeId() );
         simpleCreateProduct.setActive( bffRawItemDto.getActive() );
+        simpleCreateProduct.setCaseUomId( bffRawItemDto.getCaseUomId() );
+        simpleCreateProduct.setOrganicCertifications( bffRawItemDto.getOrganicCertifications() );
+        simpleCreateProduct.setMaterialCompositionDescription( bffRawItemDto.getMaterialCompositionDescription() );
+        simpleCreateProduct.setCountryOfOrigin( bffRawItemDto.getCountryOfOrigin() );
+        simpleCreateProduct.setShelfLifeDescription( bffRawItemDto.getShelfLifeDescription() );
+        simpleCreateProduct.setHandlingInstructions( bffRawItemDto.getHandlingInstructions() );
+        simpleCreateProduct.setStorageConditions( bffRawItemDto.getStorageConditions() );
 
         return simpleCreateProduct;
     }
@@ -137,6 +167,8 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         AbstractProductCommand.SimpleMergePatchProduct simpleMergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
 
         simpleMergePatchProduct.setProductId( bffRawItemDto.getProductId() );
+        simpleMergePatchProduct.setInternalName( bffRawItemDto.getInternalName() );
+        simpleMergePatchProduct.setBrandName( bffRawItemDto.getBrandName() );
         simpleMergePatchProduct.setProductName( bffRawItemDto.getProductName() );
         simpleMergePatchProduct.setDescription( bffRawItemDto.getDescription() );
         simpleMergePatchProduct.setSmallImageUrl( bffRawItemDto.getSmallImageUrl() );
@@ -161,6 +193,13 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         simpleMergePatchProduct.setProductDiameter( bffRawItemDto.getProductDiameter() );
         simpleMergePatchProduct.setDefaultShipmentBoxTypeId( bffRawItemDto.getDefaultShipmentBoxTypeId() );
         simpleMergePatchProduct.setActive( bffRawItemDto.getActive() );
+        simpleMergePatchProduct.setCaseUomId( bffRawItemDto.getCaseUomId() );
+        simpleMergePatchProduct.setOrganicCertifications( bffRawItemDto.getOrganicCertifications() );
+        simpleMergePatchProduct.setMaterialCompositionDescription( bffRawItemDto.getMaterialCompositionDescription() );
+        simpleMergePatchProduct.setCountryOfOrigin( bffRawItemDto.getCountryOfOrigin() );
+        simpleMergePatchProduct.setShelfLifeDescription( bffRawItemDto.getShelfLifeDescription() );
+        simpleMergePatchProduct.setHandlingInstructions( bffRawItemDto.getHandlingInstructions() );
+        simpleMergePatchProduct.setStorageConditions( bffRawItemDto.getStorageConditions() );
 
         return simpleMergePatchProduct;
     }

@@ -207,6 +207,27 @@
       <property name="active">
         <column name="active" sql-type="CHAR(1)" />
       </property>
+      <property name="caseUomId">
+        <column name="case_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="organicCertifications">
+        <column name="organic_certifications" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="materialCompositionDescription">
+        <column name="material_composition_description" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="countryOfOrigin">
+        <column name="country_of_origin" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="shelfLifeDescription">
+        <column name="shelf_life_description" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="handlingInstructions">
+        <column name="handling_instructions" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="storageConditions">
+        <column name="storage_conditions" sql-type="VARCHAR(255)" />
+      </property>
       <subclass name="AbstractProductEvent$SimpleProductStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractProductEvent$SimpleProductStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyProductTypeIdRemoved" column="is_property_product_type_id_removed" />
@@ -270,6 +291,13 @@
         <property name="isPropertyLotIdFilledInRemoved" column="is_property_lot_id_filled_in_removed" />
         <property name="isPropertyOrderDecimalQuantityRemoved" column="is_property_order_decimal_quantity_removed" />
         <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
+        <property name="isPropertyCaseUomIdRemoved" column="is_property_case_uom_id_removed" />
+        <property name="isPropertyOrganicCertificationsRemoved" column="is_property_organic_certifications_removed" />
+        <property name="isPropertyMaterialCompositionDescriptionRemoved" column="is_property_material_composition_description_removed" />
+        <property name="isPropertyCountryOfOriginRemoved" column="is_property_country_of_origin_removed" />
+        <property name="isPropertyShelfLifeDescriptionRemoved" column="is_property_shelf_life_description_removed" />
+        <property name="isPropertyHandlingInstructionsRemoved" column="is_property_handling_instructions_removed" />
+        <property name="isPropertyStorageConditionsRemoved" column="is_property_storage_conditions_removed" />
       </subclass>
     </subclass>
   </class>

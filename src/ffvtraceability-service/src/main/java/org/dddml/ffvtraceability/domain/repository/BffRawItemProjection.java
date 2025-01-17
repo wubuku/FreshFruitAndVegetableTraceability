@@ -12,6 +12,10 @@ public interface BffRawItemProjection {
 
     String getProductName();
 
+    String getInternalName();
+
+    String getBrandName();
+
     String getDescription();
 
     String getGtin();
@@ -65,6 +69,26 @@ public interface BffRawItemProjection {
     String getActive();
 
     String getDefaultShipmentBoxTypeId();
+
+    String getCaseUomId();
+
+    String getInternalId();
+
+    String getProduceVariety();
+
+    String getHsCode();
+
+    String getOrganicCertifications();
+
+    String getMaterialCompositionDescription();
+
+    String getCountryOfOrigin();
+
+    String getShelfLifeDescription();
+
+    String getHandlingInstructions();
+
+    String getStorageConditions();
 
     String getDefaultShipmentBoxTypeShipmentBoxTypeId();
 

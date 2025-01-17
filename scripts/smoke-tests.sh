@@ -48,7 +48,7 @@ curl -X 'GET' \
   -H "X-TenantID: X"
 # 返回结果类似：
 # {"tenantId":"X","partyId":"FRESH_MART_DC","description":"Tenant X" ...}
-# 当前租户可以绑定到某个 party（业务实体），可以使用返回的 partyId 来访问当前租户所属的业务实体拥有的“设施”等。
+# 当前租户可以绑定到某个 party（业务实体），可以使用返回的 partyId 来访问当前租户所属的业务实体拥有的"设施"等。
 
 
 # 返回北美洲的州和省
@@ -59,6 +59,7 @@ curl -X 'GET' \
 
 # Test Units of Measure (Base data)
 echo -e "\n=== Testing Units of Measure ===\n"
+
 
 # Create KGM (Required by Raw Items)
 curl -X 'POST' \
@@ -74,7 +75,7 @@ curl -X 'POST' \
   "uomTypeId": "WEIGHT_MEASURE",
   "abbreviation": "kg",
   "description": "Kilogram - The base unit of mass in the International System of Units (SI)",
-  "gs1AI": "3102"
+  "gs1AI": "3100"
 }' | { read http_status; check_response $? "$http_status" "Create KGM unit"; }
 
 # Query Units of Measure
@@ -146,6 +147,139 @@ curl -X 'POST' \
   "description": "Square Meter - The measurement of area in the International System of Units (SI)",
   "gs1AI": "3340"
 }' | { read http_status; check_response $? "$http_status" "Create SQM unit"; }
+
+
+# Create TNE (Metric Ton)
+curl -X 'POST' \
+  "${API_BASE_URL}/BffUnitsOfMeasure" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "uomId": "TNE",
+  "uomTypeId": "WEIGHT_MEASURE",
+  "abbreviation": "t",
+  "description": "Metric Ton - A unit of mass equal to 1,000 kilograms",
+  "gs1AI": "3100"
+}' | { read http_status; check_response $? "$http_status" "Create TNE unit"; }
+# 注意：由于 GS1 标准中没有直接表示公吨的 AI，这里使用 3100（整数千克）。
+# 在生成 GS1 条码时，需要将公吨值乘以 1000 转换为千克。
+# 在读取 GS1 条码时，需要将千克值除以 1000 转换回公吨。
+
+# Create LB (Pound)
+curl -X 'POST' \
+  "${API_BASE_URL}/BffUnitsOfMeasure" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "uomId": "LB",
+  "uomTypeId": "WEIGHT_MEASURE",
+  "abbreviation": "lb",
+  "description": "Pound - A unit of mass commonly used in North America",
+  "gs1AI": "3200"
+}' | { read http_status; check_response $? "$http_status" "Create LB unit"; }
+
+# Create OZ (Ounce)
+curl -X 'POST' \
+  "${API_BASE_URL}/BffUnitsOfMeasure" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "uomId": "OZ",
+  "uomTypeId": "WEIGHT_MEASURE",
+  "abbreviation": "oz",
+  "description": "Ounce - A unit of mass commonly used in North America",
+  "gs1AI": "3560"
+}' | { read http_status; check_response $? "$http_status" "Create OZ unit"; }
+
+
+# <UomType description="Packaging Type" hasTable="N" uomTypeId="PACKAGE_TYPE_MEASURE"/>
+# GS1 AI：
+    # "applicationIdentifier": "37",
+    # "formatString": "N2+N..8",
+    # "label": "COUNT",
+    # "description": "Count of trade items or trade item pieces contained in a logistic unit",
+
+# Create EA (Each)
+curl -X 'POST' \
+  "${API_BASE_URL}/BffUnitsOfMeasure" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "uomId": "EA",
+  "uomTypeId": "PACKAGE_TYPE_MEASURE",
+  "abbreviation": "ea",
+  "description": "Each - A single unit or piece",
+  "gs1AI": "37"
+}' | { read http_status; check_response $? "$http_status" "Create EA unit"; }
+
+# Create BX (Box)
+curl -X 'POST' \
+  "${API_BASE_URL}/BffUnitsOfMeasure" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "uomId": "BX",
+  "uomTypeId": "PACKAGE_TYPE_MEASURE",
+  "abbreviation": "bx",
+  "description": "Box - A container for packaging items",
+  "gs1AI": "37"
+}' | { read http_status; check_response $? "$http_status" "Create BX unit"; }
+
+# Create PLT (Pallet)
+curl -X 'POST' \
+  "${API_BASE_URL}/BffUnitsOfMeasure" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "uomId": "PLT",
+  "uomTypeId": "PACKAGE_TYPE_MEASURE",
+  "abbreviation": "plt",
+  "description": "Pallet - A flat transport structure to support goods",
+  "gs1AI": "37"
+}' | { read http_status; check_response $? "$http_status" "Create PLT unit"; }
+
+# Create PK (Pack)
+curl -X 'POST' \
+  "${API_BASE_URL}/BffUnitsOfMeasure" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "uomId": "PK",
+  "uomTypeId": "PACKAGE_TYPE_MEASURE",
+  "abbreviation": "pk",
+  "description": "Pack - A bundle or package of items",
+  "gs1AI": "37"
+}' | { read http_status; check_response $? "$http_status" "Create PK unit"; }
+
+
 
 # Test Documents
 echo -e "\n=== Testing Documents ===\n"

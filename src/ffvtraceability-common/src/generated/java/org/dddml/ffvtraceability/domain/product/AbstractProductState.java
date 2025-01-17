@@ -634,6 +634,76 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.active = active;
     }
 
+    private String caseUomId;
+
+    public String getCaseUomId() {
+        return this.caseUomId;
+    }
+
+    public void setCaseUomId(String caseUomId) {
+        this.caseUomId = caseUomId;
+    }
+
+    private String organicCertifications;
+
+    public String getOrganicCertifications() {
+        return this.organicCertifications;
+    }
+
+    public void setOrganicCertifications(String organicCertifications) {
+        this.organicCertifications = organicCertifications;
+    }
+
+    private String materialCompositionDescription;
+
+    public String getMaterialCompositionDescription() {
+        return this.materialCompositionDescription;
+    }
+
+    public void setMaterialCompositionDescription(String materialCompositionDescription) {
+        this.materialCompositionDescription = materialCompositionDescription;
+    }
+
+    private String countryOfOrigin;
+
+    public String getCountryOfOrigin() {
+        return this.countryOfOrigin;
+    }
+
+    public void setCountryOfOrigin(String countryOfOrigin) {
+        this.countryOfOrigin = countryOfOrigin;
+    }
+
+    private String shelfLifeDescription;
+
+    public String getShelfLifeDescription() {
+        return this.shelfLifeDescription;
+    }
+
+    public void setShelfLifeDescription(String shelfLifeDescription) {
+        this.shelfLifeDescription = shelfLifeDescription;
+    }
+
+    private String handlingInstructions;
+
+    public String getHandlingInstructions() {
+        return this.handlingInstructions;
+    }
+
+    public void setHandlingInstructions(String handlingInstructions) {
+        this.handlingInstructions = handlingInstructions;
+    }
+
+    private String storageConditions;
+
+    public String getStorageConditions() {
+        return this.storageConditions;
+    }
+
+    public void setStorageConditions(String storageConditions) {
+        this.storageConditions = storageConditions;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -850,6 +920,13 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setLotIdFilledIn(e.getLotIdFilledIn());
         this.setOrderDecimalQuantity(e.getOrderDecimalQuantity());
         this.setActive(e.getActive());
+        this.setCaseUomId(e.getCaseUomId());
+        this.setOrganicCertifications(e.getOrganicCertifications());
+        this.setMaterialCompositionDescription(e.getMaterialCompositionDescription());
+        this.setCountryOfOrigin(e.getCountryOfOrigin());
+        this.setShelfLifeDescription(e.getShelfLifeDescription());
+        this.setHandlingInstructions(e.getHandlingInstructions());
+        this.setStorageConditions(e.getStorageConditions());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -925,6 +1002,13 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setLotIdFilledIn(s.getLotIdFilledIn());
         this.setOrderDecimalQuantity(s.getOrderDecimalQuantity());
         this.setActive(s.getActive());
+        this.setCaseUomId(s.getCaseUomId());
+        this.setOrganicCertifications(s.getOrganicCertifications());
+        this.setMaterialCompositionDescription(s.getMaterialCompositionDescription());
+        this.setCountryOfOrigin(s.getCountryOfOrigin());
+        this.setShelfLifeDescription(s.getShelfLifeDescription());
+        this.setHandlingInstructions(s.getHandlingInstructions());
+        this.setStorageConditions(s.getStorageConditions());
 
         if (s.getGoodIdentifications() != null) {
             Iterable<GoodIdentificationState> iterable;
@@ -1392,6 +1476,55 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             }
         } else {
             this.setActive(e.getActive());
+        }
+        if (e.getCaseUomId() == null) {
+            if (e.getIsPropertyCaseUomIdRemoved() != null && e.getIsPropertyCaseUomIdRemoved()) {
+                this.setCaseUomId(null);
+            }
+        } else {
+            this.setCaseUomId(e.getCaseUomId());
+        }
+        if (e.getOrganicCertifications() == null) {
+            if (e.getIsPropertyOrganicCertificationsRemoved() != null && e.getIsPropertyOrganicCertificationsRemoved()) {
+                this.setOrganicCertifications(null);
+            }
+        } else {
+            this.setOrganicCertifications(e.getOrganicCertifications());
+        }
+        if (e.getMaterialCompositionDescription() == null) {
+            if (e.getIsPropertyMaterialCompositionDescriptionRemoved() != null && e.getIsPropertyMaterialCompositionDescriptionRemoved()) {
+                this.setMaterialCompositionDescription(null);
+            }
+        } else {
+            this.setMaterialCompositionDescription(e.getMaterialCompositionDescription());
+        }
+        if (e.getCountryOfOrigin() == null) {
+            if (e.getIsPropertyCountryOfOriginRemoved() != null && e.getIsPropertyCountryOfOriginRemoved()) {
+                this.setCountryOfOrigin(null);
+            }
+        } else {
+            this.setCountryOfOrigin(e.getCountryOfOrigin());
+        }
+        if (e.getShelfLifeDescription() == null) {
+            if (e.getIsPropertyShelfLifeDescriptionRemoved() != null && e.getIsPropertyShelfLifeDescriptionRemoved()) {
+                this.setShelfLifeDescription(null);
+            }
+        } else {
+            this.setShelfLifeDescription(e.getShelfLifeDescription());
+        }
+        if (e.getHandlingInstructions() == null) {
+            if (e.getIsPropertyHandlingInstructionsRemoved() != null && e.getIsPropertyHandlingInstructionsRemoved()) {
+                this.setHandlingInstructions(null);
+            }
+        } else {
+            this.setHandlingInstructions(e.getHandlingInstructions());
+        }
+        if (e.getStorageConditions() == null) {
+            if (e.getIsPropertyStorageConditionsRemoved() != null && e.getIsPropertyStorageConditionsRemoved()) {
+                this.setStorageConditions(null);
+            }
+        } else {
+            this.setStorageConditions(e.getStorageConditions());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

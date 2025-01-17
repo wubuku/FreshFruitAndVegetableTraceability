@@ -220,6 +220,20 @@
         type: indicator
       Active:
         type: indicator
+      CaseUomId:
+        type: id
+      OrganicCertifications:
+        type: description
+      MaterialCompositionDescription:
+        type: description
+      CountryOfOrigin:
+        type: name
+      ShelfLifeDescription:
+        type: description
+      HandlingInstructions:
+        type: description
+      StorageConditions:
+        type: description
 
       # # -------------------------------------------------------------------
       # # 产品属性集 Id.
