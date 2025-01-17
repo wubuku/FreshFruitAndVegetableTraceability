@@ -14,7 +14,6 @@ import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
 import org.dddml.ffvtraceability.domain.repository.BffBusinessContactRepository;
-import org.dddml.ffvtraceability.domain.repository.BffGeoRepository;
 import org.dddml.ffvtraceability.domain.repository.BffPartyContactMechRepository;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
@@ -30,9 +29,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.dddml.ffvtraceability.domain.constants.BffSupplierConstants.*;
 
@@ -41,7 +38,8 @@ import static org.dddml.ffvtraceability.domain.constants.BffSupplierConstants.*;
 public class BffSupplierApplicationServiceImpl implements BffSupplierApplicationService {
 
     private static final String ERROR_SUPPLIER_NOT_FOUND = "Supplier not found: %s";
-    private static final String ERROR_STATE_NOT_FOUND = "State not found: %s";
+    private static final String ERROR_SUPPLIER_ALREADY_EXISTS = "Supplier already exists: %s";
+
 
     @Autowired
     private PartyApplicationService partyApplicationService;
@@ -54,8 +52,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Autowired
     private PartyContactMechApplicationService partyContactMechApplicationService;
-    @Autowired
-    private BffGeoRepository bffGeoRepository;
     @Autowired
     private BffBusinessContactRepository bffBusinessContactRepository;
     @Autowired
@@ -123,36 +119,11 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Override
     @Transactional
     public String when(BffSupplierServiceCommands.CreateSupplier c) {
-        AbstractPartyCommand.SimpleCreateOrganization createParty = new AbstractPartyCommand.SimpleCreateOrganization();
-        createParty.setPartyId(c.getSupplier().getSupplierId() != null ? c.getSupplier().getSupplierId() : IdUtils.randomId());
-        createParty.setOrganizationName(c.getSupplier().getSupplierName());
-        createParty.setExternalId(c.getSupplier().getExternalId());
-        createParty.setDescription(c.getSupplier().getDescription());
-        createParty.setPreferredCurrencyUomId(c.getSupplier().getPreferredCurrencyUomId() != null ? c.getSupplier().getPreferredCurrencyUomId() : DEFAULT_PREFERRED_CURRENCY_UOM_ID);
-        if (c.getSupplier().getGgn() != null) {
-            addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GGN, c.getSupplier().getGgn());
-        }
-        if (c.getSupplier().getGln() != null) {
-            addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GLN, c.getSupplier().getGln());
-        }
-        createParty.setStatusId(PARTY_STATUS_ACTIVE); // default status
-        createParty.setCommandId(c.getCommandId() != null ? c.getCommandId() : createParty.getPartyId());
-        createParty.setRequesterId(c.getRequesterId());
-        partyApplicationService.when(createParty);
-
-        AbstractPartyRoleCommand.SimpleCreatePartyRole createPartyRole = new AbstractPartyRoleCommand.SimpleCreatePartyRole();
-        PartyRoleId partyRoleId = new PartyRoleId();
-        partyRoleId.setPartyId(createParty.getPartyId());
-        partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
-        createPartyRole.setPartyRoleId(partyRoleId);
-        createPartyRole.setCommandId(createParty.getCommandId() + "-SPP");
-        createPartyRole.setRequesterId(c.getRequesterId());
-        partyRoleApplicationService.when(createPartyRole);
-
+        String partyId = createSupplierParty(c.getSupplier(), c);
         if (c.getSupplier().getBusinessContacts() != null && !c.getSupplier().getBusinessContacts().isEmpty()) {
-            createPartyBusinessContact(createParty.getPartyId(), c.getSupplier().getBusinessContacts().get(0), c);
+            createPartyBusinessContact(partyId, c.getSupplier().getBusinessContacts().get(0), c);
         }
-        return createParty.getPartyId();
+        return partyId;
     }
 
     private void addPartyIdentification(
@@ -268,9 +239,67 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         updateOrCreatePartyBusinessContact(partyId, bizContact, c);
     }
 
+    private String createSupplierParty(BffSupplierDto supplier, Command c) {
+        AbstractPartyCommand.SimpleCreateOrganization createParty = new AbstractPartyCommand.SimpleCreateOrganization();
+        if (supplier.getSupplierId() != null) {
+            var partyState = partyApplicationService.get(supplier.getSupplierId());
+            if (partyState != null) {
+                throw new IllegalArgumentException(String.format(ERROR_SUPPLIER_ALREADY_EXISTS, supplier.getSupplierId()));
+            }
+            createParty.setPartyId(supplier.getSupplierId());
+        } else {
+            createParty.setPartyId(IdUtils.randomId());
+        }
+        createParty.setOrganizationName(supplier.getSupplierName());
+        createParty.setExternalId(supplier.getExternalId());
+        createParty.setDescription(supplier.getDescription());
+        createParty.setPreferredCurrencyUomId(supplier.getPreferredCurrencyUomId() != null ? supplier.getPreferredCurrencyUomId() : DEFAULT_PREFERRED_CURRENCY_UOM_ID);
+        if (supplier.getGgn() != null) {
+            addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GGN, supplier.getGgn());
+        }
+        if (supplier.getGln() != null) {
+            addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GLN, supplier.getGln());
+        }
+        createParty.setStatusId(PARTY_STATUS_ACTIVE); // default status
+        createParty.setCommandId(c.getCommandId() != null ? c.getCommandId() : createParty.getPartyId());
+        createParty.setRequesterId(c.getRequesterId());
+        partyApplicationService.when(createParty);
+
+        AbstractPartyRoleCommand.SimpleCreatePartyRole createPartyRole = new AbstractPartyRoleCommand.SimpleCreatePartyRole();
+        PartyRoleId partyRoleId = new PartyRoleId();
+        partyRoleId.setPartyId(createParty.getPartyId());
+        partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
+        createPartyRole.setPartyRoleId(partyRoleId);
+        createPartyRole.setCommandId(createParty.getCommandId() + "-SPP");
+        createPartyRole.setRequesterId(c.getRequesterId());
+        partyRoleApplicationService.when(createPartyRole);
+
+        return createParty.getPartyId();
+    }
+
     @Override
     public void when(BffSupplierServiceCommands.BatchAddSuppliers c) {
-        //todo
+        //首先查看提供了supplier Id的记录，看是否有重复。
+        List<String> supplierIds = new ArrayList<>();
+        for (var supplier : c.getSuppliers()) {
+            if (supplier.getSupplierId() != null && !supplier.getSupplierId().isEmpty()) {
+                if (supplierIds.contains(supplier.getSupplierId())) {
+                    throw new IllegalArgumentException("Duplicate supplier ID: " + supplier.getSupplierId());
+                }
+                //再检查提供supplier Id的记录看是否在数据库中已存在？
+//                if (partyApplicationService.get(supplierDto.getSupplierId()) != null) {
+//                    throw new IllegalArgumentException(String.format(ERROR_SUPPLIER_ALREADY_EXISTS, supplierDto.getSupplierId()));
+//                }
+                supplierIds.add(supplier.getSupplierId());
+            }
+        }
+        //循环以添加新的供应商
+        for (BffSupplierDto supplierDto : c.getSuppliers()) {
+            String partyId = createSupplierParty(supplierDto, c);
+            if (supplierDto.getBusinessContacts() != null && !supplierDto.getBusinessContacts().isEmpty()) {
+                createPartyBusinessContact(partyId, supplierDto.getBusinessContacts().get(0), c);
+            }
+        }
     }
 
     private void updateOrCreatePartyBusinessContact(String partyId, BffBusinessContactDto bizContact, Command c) {
