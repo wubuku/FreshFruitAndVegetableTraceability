@@ -46,5 +46,7 @@ public interface BffSupplierProjection {
 
     String getWebSite();
 
+    String getActive();
+
 }
 

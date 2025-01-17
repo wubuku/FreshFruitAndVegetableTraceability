@@ -58,6 +58,8 @@ valueObjects:
         type: id # todo: email?
       WebSite:
         type: url
+      Active:
+        type: indicator
 
 
 services:

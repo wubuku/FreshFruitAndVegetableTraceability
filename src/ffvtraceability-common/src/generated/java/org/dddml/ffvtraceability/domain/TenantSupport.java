@@ -60,6 +60,7 @@ public class TenantSupport {
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.qainspection.QaInspectionState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.contactmech.ContactMechState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.contactmechpurposetype.ContactMechPurposeTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeState", "tenantId");

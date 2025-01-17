@@ -56,6 +56,7 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
         bffSupplierDto.setTelephone( bffSupplierProjection.getTelephone() );
         bffSupplierDto.setEmail( bffSupplierProjection.getEmail() );
         bffSupplierDto.setWebSite( bffSupplierProjection.getWebSite() );
+        bffSupplierDto.setActive( bffSupplierProjection.getActive() );
 
         return bffSupplierDto;
     }

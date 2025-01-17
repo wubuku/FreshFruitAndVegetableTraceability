@@ -17,5 +17,24 @@
       InfoString:
         type: long-varchar
         
-    
-    
+
+  ContactMechPurposeType:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: ContactMechPurposeTypeId
+      type: id
+    properties:
+      ParentTypeId:
+        columnName: PARENT_TYPE_ID
+        type: id-ne
+      HasTable:
+        columnName: HAS_TABLE
+        type: indicator
+      AskForRole:
+        # 请求接洽者角色
+        type: name
+      Description:
+        columnName: DESCRIPTION
+        type: description
+

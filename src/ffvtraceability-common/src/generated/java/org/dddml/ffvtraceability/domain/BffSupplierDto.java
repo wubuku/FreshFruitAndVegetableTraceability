@@ -274,11 +274,23 @@ public class BffSupplierDto implements Serializable {
         this.webSite = webSite;
     }
 
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
     public BffSupplierDto()
     {
     }
 
-    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String supplierTypeId, String tpaNumber, String certificationCodes, String bankAccountInformation, String telephone, String email, String webSite)
+    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String supplierTypeId, String tpaNumber, String certificationCodes, String bankAccountInformation, String telephone, String email, String webSite, String active)
     {
         this.supplierId = supplierId;
         this.supplierName = supplierName;
@@ -300,6 +312,7 @@ public class BffSupplierDto implements Serializable {
         this.telephone = telephone;
         this.email = email;
         this.webSite = webSite;
+        this.active = active;
     }
 
     @Override
@@ -334,6 +347,7 @@ public class BffSupplierDto implements Serializable {
             && (telephone == other.telephone || (telephone != null && telephone.equals(other.telephone)))
             && (email == other.email || (email != null && email.equals(other.email)))
             && (webSite == other.webSite || (webSite != null && webSite.equals(other.webSite)))
+            && (active == other.active || (active != null && active.equals(other.active)))
             ;
     }
 
@@ -401,6 +415,9 @@ public class BffSupplierDto implements Serializable {
         if (this.webSite != null) {
             hash += 13 * this.webSite.hashCode();
         }
+        if (this.active != null) {
+            hash += 13 * this.active.hashCode();
+        }
         return hash;
     }
 
@@ -427,6 +444,7 @@ public class BffSupplierDto implements Serializable {
                 ", telephone=" + '\'' + telephone + '\'' +
                 ", email=" + '\'' + email + '\'' +
                 ", webSite=" + '\'' + webSite + '\'' +
+                ", active=" + '\'' + active + '\'' +
                 '}';
     }
 

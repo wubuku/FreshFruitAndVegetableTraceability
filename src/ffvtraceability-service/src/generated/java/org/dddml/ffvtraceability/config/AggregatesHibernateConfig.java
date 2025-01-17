@@ -128,6 +128,9 @@ import org.dddml.ffvtraceability.domain.qainspection.hibernate.*;
 import org.dddml.ffvtraceability.domain.contactmech.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.contactmech.hibernate.*;
+import org.dddml.ffvtraceability.domain.contactmechpurposetype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.contactmechpurposetype.hibernate.*;
 import org.dddml.ffvtraceability.domain.partycontactmech.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.partycontactmech.hibernate.*;
@@ -765,6 +768,20 @@ public class AggregatesHibernateConfig {
                 contactMechEventStore,
                 contactMechStateRepository,
                 contactMechStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractContactMechPurposeTypeApplicationService.SimpleContactMechPurposeTypeApplicationService contactMechPurposeTypeApplicationService(
+            ContactMechPurposeTypeStateRepository contactMechPurposeTypeStateRepository,
+            ContactMechPurposeTypeStateQueryRepository contactMechPurposeTypeStateQueryRepository
+    ) {
+        AbstractContactMechPurposeTypeApplicationService.SimpleContactMechPurposeTypeApplicationService applicationService = new AbstractContactMechPurposeTypeApplicationService.SimpleContactMechPurposeTypeApplicationService(
+                contactMechPurposeTypeStateRepository,
+                contactMechPurposeTypeStateQueryRepository
         );
         return applicationService;
     }
