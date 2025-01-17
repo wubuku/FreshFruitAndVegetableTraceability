@@ -52,6 +52,9 @@ public class PostalAddressStateDto extends ContactMechStateDto {
             if (returnedFieldsContains("InfoString")) {
                 dto.setInfoString(state.getInfoString());
             }
+            if (returnedFieldsContains("AskForName")) {
+                dto.setAskForName(state.getAskForName());
+            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }

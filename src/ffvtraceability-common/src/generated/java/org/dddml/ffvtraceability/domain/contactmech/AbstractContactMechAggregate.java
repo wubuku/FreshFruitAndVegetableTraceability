@@ -49,6 +49,9 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
     }
 
     protected ContactMechEvent map(ContactMechCommand.CreateContactMech c) {
+        if(ContactMechTypeId.MISC_CONTACT_MECH.equals(c.getContactMechTypeId())) {
+            return mapToMiscContactMechEvent(c);
+        }
         if(ContactMechTypeId.POSTAL_ADDRESS.equals(c.getContactMechTypeId())) {
             return mapToPostalAddressEvent(c);
         }
@@ -58,11 +61,26 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         throw new IllegalArgumentException();
     }
 
+    protected MiscContactMechEvent mapToMiscContactMechEvent(ContactMechCommand.CreateContactMech c) {
+        ContactMechEventId stateEventId = new ContactMechEventId(c.getContactMechId(), c.getVersion());
+        MiscContactMechEvent.MiscContactMechStateCreated e = newMiscContactMechStateCreated(stateEventId);
+        e.setContactMechTypeId(c.getContactMechTypeId());
+        e.setInfoString(c.getInfoString());
+        e.setAskForName(c.getAskForName());
+        e.setEmail(c.getEmail());
+        e.setAskForRole(c.getAskForRole());
+        ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        return e;
+    }
+
     protected PostalAddressEvent mapToPostalAddressEvent(ContactMechCommand.CreateContactMech c) {
         ContactMechEventId stateEventId = new ContactMechEventId(c.getContactMechId(), c.getVersion());
         PostalAddressEvent.PostalAddressStateCreated e = newPostalAddressStateCreated(stateEventId);
         e.setContactMechTypeId(c.getContactMechTypeId());
         e.setInfoString(c.getInfoString());
+        e.setAskForName(c.getAskForName());
         e.setToName(c.getToName());
         e.setAttnName(c.getAttnName());
         e.setAddress1(c.getAddress1());
@@ -90,10 +108,10 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         TelecomNumberEvent.TelecomNumberStateCreated e = newTelecomNumberStateCreated(stateEventId);
         e.setContactMechTypeId(c.getContactMechTypeId());
         e.setInfoString(c.getInfoString());
+        e.setAskForName(c.getAskForName());
         e.setCountryCode(c.getCountryCode());
         e.setAreaCode(c.getAreaCode());
         e.setContactNumber(c.getContactNumber());
-        e.setAskForName(c.getAskForName());
         ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -101,6 +119,9 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
     }
 
     protected ContactMechEvent map(ContactMechCommand.MergePatchContactMech c) {
+        if(c.getContactMechTypeId().equals(ContactMechTypeId.MISC_CONTACT_MECH)) {
+            return mapToMiscContactMechEvent(c);
+        }
         if(c.getContactMechTypeId().equals(ContactMechTypeId.POSTAL_ADDRESS)) {
             return mapToPostalAddressEvent(c);
         }
@@ -110,11 +131,31 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         throw new IllegalArgumentException();
     }
 
+    protected MiscContactMechEvent mapToMiscContactMechEvent(ContactMechCommand.MergePatchContactMech c) {
+        ContactMechEventId stateEventId = new ContactMechEventId(c.getContactMechId(), c.getVersion());
+        MiscContactMechEvent.MiscContactMechStateMergePatched e = newMiscContactMechStateMergePatched(stateEventId);
+        e.setContactMechTypeId(c.getContactMechTypeId());
+        e.setInfoString(c.getInfoString());
+        e.setAskForName(c.getAskForName());
+        e.setEmail(c.getEmail());
+        e.setAskForRole(c.getAskForRole());
+        e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
+        e.setIsPropertyAskForRoleRemoved(c.getIsPropertyAskForRoleRemoved());
+        e.setIsPropertyContactMechTypeIdRemoved(c.getIsPropertyContactMechTypeIdRemoved());
+        e.setIsPropertyInfoStringRemoved(c.getIsPropertyInfoStringRemoved());
+        e.setIsPropertyAskForNameRemoved(c.getIsPropertyAskForNameRemoved());
+        ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        return e;
+    }
+
     protected PostalAddressEvent mapToPostalAddressEvent(ContactMechCommand.MergePatchContactMech c) {
         ContactMechEventId stateEventId = new ContactMechEventId(c.getContactMechId(), c.getVersion());
         PostalAddressEvent.PostalAddressStateMergePatched e = newPostalAddressStateMergePatched(stateEventId);
         e.setContactMechTypeId(c.getContactMechTypeId());
         e.setInfoString(c.getInfoString());
+        e.setAskForName(c.getAskForName());
         e.setToName(c.getToName());
         e.setAttnName(c.getAttnName());
         e.setAddress1(c.getAddress1());
@@ -149,6 +190,7 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         e.setIsPropertyGeoPointIdRemoved(c.getIsPropertyGeoPointIdRemoved());
         e.setIsPropertyContactMechTypeIdRemoved(c.getIsPropertyContactMechTypeIdRemoved());
         e.setIsPropertyInfoStringRemoved(c.getIsPropertyInfoStringRemoved());
+        e.setIsPropertyAskForNameRemoved(c.getIsPropertyAskForNameRemoved());
         ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -160,16 +202,16 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         TelecomNumberEvent.TelecomNumberStateMergePatched e = newTelecomNumberStateMergePatched(stateEventId);
         e.setContactMechTypeId(c.getContactMechTypeId());
         e.setInfoString(c.getInfoString());
+        e.setAskForName(c.getAskForName());
         e.setCountryCode(c.getCountryCode());
         e.setAreaCode(c.getAreaCode());
         e.setContactNumber(c.getContactNumber());
-        e.setAskForName(c.getAskForName());
         e.setIsPropertyCountryCodeRemoved(c.getIsPropertyCountryCodeRemoved());
         e.setIsPropertyAreaCodeRemoved(c.getIsPropertyAreaCodeRemoved());
         e.setIsPropertyContactNumberRemoved(c.getIsPropertyContactNumberRemoved());
-        e.setIsPropertyAskForNameRemoved(c.getIsPropertyAskForNameRemoved());
         e.setIsPropertyContactMechTypeIdRemoved(c.getIsPropertyContactMechTypeIdRemoved());
         e.setIsPropertyInfoStringRemoved(c.getIsPropertyInfoStringRemoved());
+        e.setIsPropertyAskForNameRemoved(c.getIsPropertyAskForNameRemoved());
         ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -178,6 +220,14 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
 
 
     ////////////////////////
+    protected MiscContactMechEvent.MiscContactMechStateCreated newMiscContactMechStateCreated(ContactMechEventId stateEventId) {
+        return new AbstractMiscContactMechEvent.SimpleMiscContactMechStateCreated(stateEventId);
+    }
+
+    protected MiscContactMechEvent.MiscContactMechStateMergePatched newMiscContactMechStateMergePatched(ContactMechEventId stateEventId) {
+        return new AbstractMiscContactMechEvent.SimpleMiscContactMechStateMergePatched(stateEventId);
+    }
+
     protected PostalAddressEvent.PostalAddressStateCreated newPostalAddressStateCreated(ContactMechEventId stateEventId) {
         return new AbstractPostalAddressEvent.SimplePostalAddressStateCreated(stateEventId);
     }

@@ -19,16 +19,12 @@ public interface TelecomNumberState extends ContactMechState
 
     String getContactNumber();
 
-    String getAskForName();
-
     interface MutableTelecomNumberState extends TelecomNumberState, ContactMechState.MutableContactMechState {
         void setCountryCode(String countryCode);
 
         void setAreaCode(String areaCode);
 
         void setContactNumber(String contactNumber);
-
-        void setAskForName(String askForName);
 
         //void when(TelecomNumberEvent.TelecomNumberStateCreated e);
 

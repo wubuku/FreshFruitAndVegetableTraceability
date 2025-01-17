@@ -21,7 +21,7 @@ import org.dddml.ffvtraceability.specialization.jpa.*;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class HibernateContactMechStateQueryRepository implements ContactMechStateQueryRepository {
+public class HibernateMiscContactMechStateQueryRepository implements MiscContactMechStateQueryRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -55,96 +55,55 @@ public class HibernateContactMechStateQueryRepository implements ContactMechStat
     }
 
     @Transactional(readOnly = true)
-    public ContactMechState get(String id) {
-        ContactMechState state = (ContactMechState)getEntityManager().find(AbstractContactMechState.class, id);
+    public MiscContactMechState get(String id) {
+        MiscContactMechState state = (MiscContactMechState)getEntityManager().find(AbstractMiscContactMechState.SimpleMiscContactMechState.class, id);
         return state;
     }
 
     @Transactional(readOnly = true)
-    public Iterable<ContactMechState> getAll(Integer firstResult, Integer maxResults) {
-        return getAll(ContactMechState.class, firstResult, maxResults);
-    }
-    
-    @Transactional(readOnly = true)
-    public Iterable<ContactMechState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        return get(ContactMechState.class, filter, orders, firstResult, maxResults);
-    }
-
-    @Transactional(readOnly = true)
-    public Iterable<ContactMechState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        return get(ContactMechState.class, filter, orders, firstResult, maxResults);
-    }
-
-    @Transactional(readOnly = true)
-    public ContactMechState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
-        return getFirst(ContactMechState.class, filter, orders);
-    }
-
-    @Transactional(readOnly = true)
-    public ContactMechState getFirst(Map.Entry<String, Object> keyValue, List<String> orders) {
-        return getFirst(ContactMechState.class, keyValue, orders);
-    }
-
-    @Transactional(readOnly = true)
-    public Iterable<ContactMechState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
-        return getByProperty(ContactMechState.class, propertyName, propertyValue, orders, firstResult, maxResults);
-    }
-
-    @Transactional(readOnly = true)
-    public long getCount(Iterable<Map.Entry<String, Object>> filter) {
-        return getCount(ContactMechState.class, filter);
-    }
-
-    @Transactional(readOnly = true)
-    public long getCount(org.dddml.support.criterion.Criterion filter) {
-        return getCount(ContactMechState.class, filter);
-    }
-    // //////////////////////////////////////
-
-    @Transactional(readOnly = true)
-    public Iterable<ContactMechState> getAll(Class<? extends ContactMechState> stateType, Integer firstResult, Integer maxResults) {
+    public Iterable<MiscContactMechState> getAll(Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractContactMechState> cq = cb.createQuery(AbstractContactMechState.class);
-        Root<AbstractContactMechState> root = cq.from(AbstractContactMechState.class);
+        CriteriaQuery<AbstractMiscContactMechState.SimpleMiscContactMechState> cq = cb.createQuery(AbstractMiscContactMechState.SimpleMiscContactMechState.class);
+        Root<AbstractMiscContactMechState.SimpleMiscContactMechState> root = cq.from(AbstractMiscContactMechState.SimpleMiscContactMechState.class);
         cq.select(root);
         addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractContactMechState> query = em.createQuery(cq);
+        TypedQuery<AbstractMiscContactMechState.SimpleMiscContactMechState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
-        return query.getResultList().stream().map(ContactMechState.class::cast).collect(Collectors.toList());
+        return query.getResultList().stream().map(MiscContactMechState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public Iterable<ContactMechState> get(Class<? extends ContactMechState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
+    public Iterable<MiscContactMechState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractContactMechState> cq = cb.createQuery(AbstractContactMechState.class);
-        Root<AbstractContactMechState> root = cq.from(AbstractContactMechState.class);
+        CriteriaQuery<AbstractMiscContactMechState.SimpleMiscContactMechState> cq = cb.createQuery(AbstractMiscContactMechState.SimpleMiscContactMechState.class);
+        Root<AbstractMiscContactMechState.SimpleMiscContactMechState> root = cq.from(AbstractMiscContactMechState.SimpleMiscContactMechState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
         addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractContactMechState> query = em.createQuery(cq);
+        TypedQuery<AbstractMiscContactMechState.SimpleMiscContactMechState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
-        return query.getResultList().stream().map(ContactMechState.class::cast).collect(Collectors.toList());
+        return query.getResultList().stream().map(MiscContactMechState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public Iterable<ContactMechState> get(Class<? extends ContactMechState> stateType, org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
+    public Iterable<MiscContactMechState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractContactMechState> cq = cb.createQuery(AbstractContactMechState.class);
-        Root<AbstractContactMechState> root = cq.from(AbstractContactMechState.class);
+        CriteriaQuery<AbstractMiscContactMechState.SimpleMiscContactMechState> cq = cb.createQuery(AbstractMiscContactMechState.SimpleMiscContactMechState.class);
+        Root<AbstractMiscContactMechState.SimpleMiscContactMechState> root = cq.from(AbstractMiscContactMechState.SimpleMiscContactMechState.class);
         cq.select(root);
         JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
         addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractContactMechState> query = em.createQuery(cq);
+        TypedQuery<AbstractMiscContactMechState.SimpleMiscContactMechState> query = em.createQuery(cq);
         JpaUtils.applyPagination(query, firstResult, maxResults);
-        return query.getResultList().stream().map(ContactMechState.class::cast).collect(Collectors.toList());
+        return query.getResultList().stream().map(MiscContactMechState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public ContactMechState getFirst(Class<? extends ContactMechState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
-        List<ContactMechState> list = (List<ContactMechState>)get(stateType, filter, orders, 0, 1);
+    public MiscContactMechState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
+        List<MiscContactMechState> list = (List<MiscContactMechState>)get(filter, orders, 0, 1);
         if (list == null || list.size() <= 0) {
             return null;
         }
@@ -152,14 +111,14 @@ public class HibernateContactMechStateQueryRepository implements ContactMechStat
     }
 
     @Transactional(readOnly = true)
-    public ContactMechState getFirst(Class<? extends ContactMechState> stateType, Map.Entry<String, Object> keyValue, List<String> orders) {
+    public MiscContactMechState getFirst(Map.Entry<String, Object> keyValue, List<String> orders) {
         List<Map.Entry<String, Object>> filter = new ArrayList<>();
         filter.add(keyValue);
-        return getFirst(stateType, filter, orders);
+        return getFirst(filter, orders);
     }
 
     @Transactional(readOnly = true)
-    public Iterable<ContactMechState> getByProperty(Class<? extends ContactMechState> stateType, String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
+    public Iterable<MiscContactMechState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
         Map.Entry<String, Object> keyValue = new AbstractMap.SimpleEntry<>(propertyName, propertyValue);
         List<Map.Entry<String, Object>> filter = new ArrayList<>();
         filter.add(keyValue);
@@ -167,11 +126,11 @@ public class HibernateContactMechStateQueryRepository implements ContactMechStat
     }
 
     @Transactional(readOnly = true)
-    public long getCount(Class<? extends ContactMechState> stateType, Iterable<Map.Entry<String, Object>> filter) {
+    public long getCount(Iterable<Map.Entry<String, Object>> filter) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<AbstractContactMechState> root = cq.from(AbstractContactMechState.class);
+        Root<AbstractMiscContactMechState.SimpleMiscContactMechState> root = cq.from(AbstractMiscContactMechState.SimpleMiscContactMechState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -181,11 +140,11 @@ public class HibernateContactMechStateQueryRepository implements ContactMechStat
     }
 
     @Transactional(readOnly = true)
-    public long getCount(Class<? extends ContactMechState> stateType, org.dddml.support.criterion.Criterion filter) {
+    public long getCount(org.dddml.support.criterion.Criterion filter) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<AbstractContactMechState> root = cq.from(AbstractContactMechState.class);
+        Root<AbstractMiscContactMechState.SimpleMiscContactMechState> root = cq.from(AbstractMiscContactMechState.SimpleMiscContactMechState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);

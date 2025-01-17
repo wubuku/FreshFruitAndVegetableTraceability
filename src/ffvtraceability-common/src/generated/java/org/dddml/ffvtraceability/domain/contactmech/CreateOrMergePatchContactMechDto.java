@@ -41,6 +41,51 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     }
 
     /**
+     * Ask For Name
+     */
+    private String askForName;
+
+    public String getAskForName()
+    {
+        return this.askForName;
+    }
+
+    public void setAskForName(String askForName)
+    {
+        this.askForName = askForName;
+    }
+
+    /**
+     * Email
+     */
+    private String email;
+
+    public String getEmail()
+    {
+        return this.email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    /**
+     * Ask For Role
+     */
+    private String askForRole;
+
+    public String getAskForRole()
+    {
+        return this.askForRole;
+    }
+
+    public void setAskForRole(String askForRole)
+    {
+        this.askForRole = askForRole;
+    }
+
+    /**
      * To Name
      */
     private String toName;
@@ -325,21 +370,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         this.contactNumber = contactNumber;
     }
 
-    /**
-     * Ask For Name
-     */
-    private String askForName;
-
-    public String getAskForName()
-    {
-        return this.askForName;
-    }
-
-    public void setAskForName(String askForName)
-    {
-        this.askForName = askForName;
-    }
-
 
     private Boolean isPropertyContactMechTypeIdRemoved;
 
@@ -363,6 +393,42 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     public void setIsPropertyInfoStringRemoved(Boolean removed)
     {
         this.isPropertyInfoStringRemoved = removed;
+    }
+
+    private Boolean isPropertyAskForNameRemoved;
+
+    public Boolean getIsPropertyAskForNameRemoved()
+    {
+        return this.isPropertyAskForNameRemoved;
+    }
+
+    public void setIsPropertyAskForNameRemoved(Boolean removed)
+    {
+        this.isPropertyAskForNameRemoved = removed;
+    }
+
+    private Boolean isPropertyEmailRemoved;
+
+    public Boolean getIsPropertyEmailRemoved()
+    {
+        return this.isPropertyEmailRemoved;
+    }
+
+    public void setIsPropertyEmailRemoved(Boolean removed)
+    {
+        this.isPropertyEmailRemoved = removed;
+    }
+
+    private Boolean isPropertyAskForRoleRemoved;
+
+    public Boolean getIsPropertyAskForRoleRemoved()
+    {
+        return this.isPropertyAskForRoleRemoved;
+    }
+
+    public void setIsPropertyAskForRoleRemoved(Boolean removed)
+    {
+        this.isPropertyAskForRoleRemoved = removed;
     }
 
     private Boolean isPropertyToNameRemoved;
@@ -593,23 +659,14 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         this.isPropertyContactNumberRemoved = removed;
     }
 
-    private Boolean isPropertyAskForNameRemoved;
-
-    public Boolean getIsPropertyAskForNameRemoved()
-    {
-        return this.isPropertyAskForNameRemoved;
-    }
-
-    public void setIsPropertyAskForNameRemoved(Boolean removed)
-    {
-        this.isPropertyAskForNameRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchContactMech command)
     {
         ((AbstractContactMechCommandDto) this).copyTo(command);
         command.setContactMechTypeId(this.getContactMechTypeId());
         command.setInfoString(this.getInfoString());
+        command.setAskForName(this.getAskForName());
+        command.setEmail(this.getEmail());
+        command.setAskForRole(this.getAskForRole());
         command.setToName(this.getToName());
         command.setAttnName(this.getAttnName());
         command.setAddress1(this.getAddress1());
@@ -629,7 +686,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setCountryCode(this.getCountryCode());
         command.setAreaCode(this.getAreaCode());
         command.setContactNumber(this.getContactNumber());
-        command.setAskForName(this.getAskForName());
     }
 
     public ContactMechCommand toCommand()
@@ -676,6 +732,9 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         copyTo((CreateOrMergePatchContactMech) command);
         command.setIsPropertyContactMechTypeIdRemoved(this.getIsPropertyContactMechTypeIdRemoved());
         command.setIsPropertyInfoStringRemoved(this.getIsPropertyInfoStringRemoved());
+        command.setIsPropertyAskForNameRemoved(this.getIsPropertyAskForNameRemoved());
+        command.setIsPropertyEmailRemoved(this.getIsPropertyEmailRemoved());
+        command.setIsPropertyAskForRoleRemoved(this.getIsPropertyAskForRoleRemoved());
         command.setIsPropertyToNameRemoved(this.getIsPropertyToNameRemoved());
         command.setIsPropertyAttnNameRemoved(this.getIsPropertyAttnNameRemoved());
         command.setIsPropertyAddress1Removed(this.getIsPropertyAddress1Removed());
@@ -695,7 +754,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setIsPropertyCountryCodeRemoved(this.getIsPropertyCountryCodeRemoved());
         command.setIsPropertyAreaCodeRemoved(this.getIsPropertyAreaCodeRemoved());
         command.setIsPropertyContactNumberRemoved(this.getIsPropertyContactNumberRemoved());
-        command.setIsPropertyAskForNameRemoved(this.getIsPropertyAskForNameRemoved());
     }
 
     public static class CreateContactMechDto extends CreateOrMergePatchContactMechDto implements ContactMechCommand.CreateContactMech

@@ -23,6 +23,8 @@ public interface ContactMechState
 
     String getInfoString();
 
+    String getAskForName();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -39,6 +41,8 @@ public interface ContactMechState
         void setContactMechTypeId(String contactMechTypeId);
 
         void setInfoString(String infoString);
+
+        void setAskForName(String askForName);
 
         void setVersion(Long version);
 

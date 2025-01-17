@@ -50,6 +50,42 @@ public class ContactMechStateDto {
         this.infoString = infoString;
     }
 
+    private String askForName;
+
+    public String getAskForName()
+    {
+        return this.askForName;
+    }
+
+    public void setAskForName(String askForName)
+    {
+        this.askForName = askForName;
+    }
+
+    private String email;
+
+    public String getEmail()
+    {
+        return this.email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    private String askForRole;
+
+    public String getAskForRole()
+    {
+        return this.askForRole;
+    }
+
+    public void setAskForRole(String askForRole)
+    {
+        this.askForRole = askForRole;
+    }
+
     private String toName;
 
     public String getToName()
@@ -278,18 +314,6 @@ public class ContactMechStateDto {
         this.contactNumber = contactNumber;
     }
 
-    private String askForName;
-
-    public String getAskForName()
-    {
-        return this.askForName;
-    }
-
-    public void setAskForName(String askForName)
-    {
-        this.askForName = askForName;
-    }
-
     private Long version;
 
     public Long getVersion()
@@ -388,6 +412,9 @@ public class ContactMechStateDto {
             if (returnedFieldsContains("InfoString")) {
                 dto.setInfoString(state.getInfoString());
             }
+            if (returnedFieldsContains("AskForName")) {
+                dto.setAskForName(state.getAskForName());
+            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }
@@ -403,6 +430,19 @@ public class ContactMechStateDto {
             if (returnedFieldsContains("UpdatedAt")) {
                 dto.setUpdatedAt(state.getUpdatedAt());
             }
+
+          // ////////////////
+          if (state instanceof MiscContactMechState) {
+            MiscContactMechState ss = (MiscContactMechState) state;
+            dto.setContactMechTypeId(ContactMechTypeId.MISC_CONTACT_MECH);
+            if (returnedFieldsContains("Email")) {
+                dto.setEmail(ss.getEmail());
+            }
+            if (returnedFieldsContains("AskForRole")) {
+                dto.setAskForRole(ss.getAskForRole());
+            }
+          }
+          // ////////////////
 
           // ////////////////
           if (state instanceof PostalAddressState) {
@@ -471,9 +511,6 @@ public class ContactMechStateDto {
             }
             if (returnedFieldsContains("ContactNumber")) {
                 dto.setContactNumber(ss.getContactNumber());
-            }
-            if (returnedFieldsContains("AskForName")) {
-                dto.setAskForName(ss.getAskForName());
             }
           }
           // ////////////////

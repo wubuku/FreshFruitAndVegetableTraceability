@@ -84,6 +84,7 @@ aggregates:
             columnName: THRU_DATE
             type: date-time
 
+
     references:
       Party:
         type: Party

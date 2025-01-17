@@ -37,7 +37,6 @@ public abstract class AbstractContactMechPurposeTypeApplicationService implement
         ContactMechPurposeTypeState.SqlContactMechPurposeTypeState ss = ((ContactMechPurposeTypeState.SqlContactMechPurposeTypeState)s);
         ss.setParentTypeId(c.getParentTypeId());
         ss.setHasTable(c.getHasTable());
-        ss.setAskForRole(c.getAskForRole());
         ss.setDescription(c.getDescription());
         ss.setCreatedBy(c.getRequesterId());
         ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -64,13 +63,6 @@ public abstract class AbstractContactMechPurposeTypeApplicationService implement
             }
         } else {
             ss.setHasTable(c.getHasTable());
-        }
-        if (c.getAskForRole() == null) {
-            if (c.getIsPropertyAskForRoleRemoved() != null && c.getIsPropertyAskForRoleRemoved()) {
-                ss.setAskForRole(null);
-            }
-        } else {
-            ss.setAskForRole(c.getAskForRole());
         }
         if (c.getDescription() == null) {
             if (c.getIsPropertyDescriptionRemoved() != null && c.getIsPropertyDescriptionRemoved()) {

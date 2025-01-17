@@ -451,6 +451,16 @@ public abstract class AbstractPostalAddressEvent extends AbstractContactMechEven
             this.isPropertyInfoStringRemoved = removed;
         }
 
+        private Boolean isPropertyAskForNameRemoved;
+
+        public Boolean getIsPropertyAskForNameRemoved() {
+            return this.isPropertyAskForNameRemoved;
+        }
+
+        public void setIsPropertyAskForNameRemoved(Boolean removed) {
+            this.isPropertyAskForNameRemoved = removed;
+        }
+
 
     }
 

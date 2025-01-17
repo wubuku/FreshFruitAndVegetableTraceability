@@ -63,6 +63,42 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
             this.infoString = infoString;
         }
 
+        private String askForName;
+
+        public String getAskForName()
+        {
+            return this.askForName;
+        }
+
+        public void setAskForName(String askForName)
+        {
+            this.askForName = askForName;
+        }
+
+        private String email;
+
+        public String getEmail()
+        {
+            return this.email;
+        }
+
+        public void setEmail(String email)
+        {
+            this.email = email;
+        }
+
+        private String askForRole;
+
+        public String getAskForRole()
+        {
+            return this.askForRole;
+        }
+
+        public void setAskForRole(String askForRole)
+        {
+            this.askForRole = askForRole;
+        }
+
         private String toName;
 
         public String getToName()
@@ -291,18 +327,6 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
             this.contactNumber = contactNumber;
         }
 
-        private String askForName;
-
-        public String getAskForName()
-        {
-            return this.askForName;
-        }
-
-        public void setAskForName(String askForName)
-        {
-            this.askForName = askForName;
-        }
-
     }
 
     public static abstract class AbstractCreateContactMech extends AbstractCreateOrMergePatchContactMech implements CreateContactMech
@@ -343,6 +367,42 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
         public void setIsPropertyInfoStringRemoved(Boolean removed)
         {
             this.isPropertyInfoStringRemoved = removed;
+        }
+
+        private Boolean isPropertyAskForNameRemoved;
+
+        public Boolean getIsPropertyAskForNameRemoved()
+        {
+            return this.isPropertyAskForNameRemoved;
+        }
+
+        public void setIsPropertyAskForNameRemoved(Boolean removed)
+        {
+            this.isPropertyAskForNameRemoved = removed;
+        }
+
+        private Boolean isPropertyEmailRemoved;
+
+        public Boolean getIsPropertyEmailRemoved()
+        {
+            return this.isPropertyEmailRemoved;
+        }
+
+        public void setIsPropertyEmailRemoved(Boolean removed)
+        {
+            this.isPropertyEmailRemoved = removed;
+        }
+
+        private Boolean isPropertyAskForRoleRemoved;
+
+        public Boolean getIsPropertyAskForRoleRemoved()
+        {
+            return this.isPropertyAskForRoleRemoved;
+        }
+
+        public void setIsPropertyAskForRoleRemoved(Boolean removed)
+        {
+            this.isPropertyAskForRoleRemoved = removed;
         }
 
         private Boolean isPropertyToNameRemoved;
@@ -573,23 +633,17 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
             this.isPropertyContactNumberRemoved = removed;
         }
 
-        private Boolean isPropertyAskForNameRemoved;
-
-        public Boolean getIsPropertyAskForNameRemoved()
-        {
-            return this.isPropertyAskForNameRemoved;
-        }
-
-        public void setIsPropertyAskForNameRemoved(Boolean removed)
-        {
-            this.isPropertyAskForNameRemoved = removed;
-        }
-
 
     }
 
     public static class SimpleCreateContactMech extends AbstractCreateContactMech
     {
+    }
+
+    public static class SimpleCreateMiscContactMech extends SimpleCreateContactMech {
+        public SimpleCreateMiscContactMech() {
+            super.setContactMechTypeId(ContactMechTypeId.MISC_CONTACT_MECH);
+        }
     }
 
     public static class SimpleCreatePostalAddress extends SimpleCreateContactMech {
@@ -607,6 +661,12 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
     
     public static class SimpleMergePatchContactMech extends AbstractMergePatchContactMech
     {
+    }
+
+    public static class SimpleMergePatchMiscContactMech extends SimpleMergePatchContactMech {
+        public SimpleMergePatchMiscContactMech() {
+            super.setContactMechTypeId(ContactMechTypeId.MISC_CONTACT_MECH);
+        }
     }
 
     public static class SimpleMergePatchPostalAddress extends SimpleMergePatchContactMech {
@@ -637,6 +697,12 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
 
         public void setContactMechTypeId(String contactMechTypeId) {
             this.contactMechTypeId = contactMechTypeId;
+        }
+    }
+
+    public static class SimpleDeleteMiscContactMech extends SimpleDeleteContactMech {
+        public SimpleDeleteMiscContactMech() {
+            super.setContactMechTypeId(ContactMechTypeId.MISC_CONTACT_MECH);
         }
     }
 

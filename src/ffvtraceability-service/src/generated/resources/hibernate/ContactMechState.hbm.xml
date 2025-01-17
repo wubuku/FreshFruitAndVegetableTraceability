@@ -11,6 +11,9 @@
     <property name="infoString">
       <column name="info_string" sql-type="VARCHAR(255)" />
     </property>
+    <property name="askForName">
+      <column name="ask_for_name" sql-type="VARCHAR(100)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>
@@ -20,6 +23,14 @@
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
     <property name="tenantId" column="tenant_id" length="12" />
+    <subclass name="org.dddml.ffvtraceability.domain.contactmech.AbstractMiscContactMechState$SimpleMiscContactMechState" discriminator-value="MISC_CONTACT_MECH" abstract="false">
+      <property name="email">
+        <column name="email" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="askForRole">
+        <column name="ask_for_role" sql-type="VARCHAR(100)" />
+      </property>
+    </subclass>
     <subclass name="org.dddml.ffvtraceability.domain.contactmech.AbstractPostalAddressState$SimplePostalAddressState" discriminator-value="POSTAL_ADDRESS" abstract="false">
       <property name="toName">
         <column name="to_name" sql-type="VARCHAR(100)" />
@@ -79,9 +90,6 @@
       </property>
       <property name="contactNumber">
         <column name="contact_number" sql-type="VARCHAR(60)" />
-      </property>
-      <property name="askForName">
-        <column name="ask_for_name" sql-type="VARCHAR(100)" />
       </property>
     </subclass>
     <filter name="tenantFilter" condition="tenant_id = :tenantId" />

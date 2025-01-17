@@ -12,7 +12,7 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 
 
-public class TelecomNumberStateDto extends ContactMechStateDto {
+public class MiscContactMechStateDto extends ContactMechStateDto {
 
 
     public static class DtoConverter extends AbstractStateDtoConverter
@@ -24,25 +24,25 @@ public class TelecomNumberStateDto extends ContactMechStateDto {
             return CollectionUtils.collectionContainsIgnoringCase(collectionFieldNames, fieldName);
         }
 
-        public TelecomNumberStateDto[] toTelecomNumberStateDtoArray(Iterable<ContactMechState> states) {
-            return toTelecomNumberStateDtoList(states).toArray(new TelecomNumberStateDto[0]);
+        public MiscContactMechStateDto[] toMiscContactMechStateDtoArray(Iterable<ContactMechState> states) {
+            return toMiscContactMechStateDtoList(states).toArray(new MiscContactMechStateDto[0]);
         }
 
-        public List<TelecomNumberStateDto> toTelecomNumberStateDtoList(Iterable<ContactMechState> states) {
-            ArrayList<TelecomNumberStateDto> stateDtos = new ArrayList();
+        public List<MiscContactMechStateDto> toMiscContactMechStateDtoList(Iterable<ContactMechState> states) {
+            ArrayList<MiscContactMechStateDto> stateDtos = new ArrayList();
             for (ContactMechState s : states) {
-                TelecomNumberStateDto dto = toTelecomNumberStateDto(s);
+                MiscContactMechStateDto dto = toMiscContactMechStateDto(s);
                 stateDtos.add(dto);
             }
             return stateDtos;
         }
 
-        public TelecomNumberStateDto toTelecomNumberStateDto(ContactMechState state)
+        public MiscContactMechStateDto toMiscContactMechStateDto(ContactMechState state)
         {
             if(state == null) {
                 return null;
             }
-            TelecomNumberStateDto dto = new TelecomNumberStateDto();
+            MiscContactMechStateDto dto = new MiscContactMechStateDto();
             if (returnedFieldsContains("ContactMechId")) {
                 dto.setContactMechId(state.getContactMechId());
             }
@@ -72,17 +72,14 @@ public class TelecomNumberStateDto extends ContactMechStateDto {
             }
 
           // ////////////////
-          if (state instanceof TelecomNumberState) {
-            TelecomNumberState ss = (TelecomNumberState) state;
-            dto.setContactMechTypeId(ContactMechTypeId.TELECOM_NUMBER);
-            if (returnedFieldsContains("CountryCode")) {
-                dto.setCountryCode(ss.getCountryCode());
+          if (state instanceof MiscContactMechState) {
+            MiscContactMechState ss = (MiscContactMechState) state;
+            dto.setContactMechTypeId(ContactMechTypeId.MISC_CONTACT_MECH);
+            if (returnedFieldsContains("Email")) {
+                dto.setEmail(ss.getEmail());
             }
-            if (returnedFieldsContains("AreaCode")) {
-                dto.setAreaCode(ss.getAreaCode());
-            }
-            if (returnedFieldsContains("ContactNumber")) {
-                dto.setContactNumber(ss.getContactNumber());
+            if (returnedFieldsContains("AskForRole")) {
+                dto.setAskForRole(ss.getAskForRole());
             }
           }
           // ////////////////

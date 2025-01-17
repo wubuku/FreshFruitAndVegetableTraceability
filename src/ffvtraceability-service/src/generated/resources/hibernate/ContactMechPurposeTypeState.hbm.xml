@@ -13,9 +13,6 @@
     <property name="hasTable">
       <column name="HAS_TABLE" sql-type="CHAR(1)" />
     </property>
-    <property name="askForRole">
-      <column name="ask_for_role" sql-type="VARCHAR(100)" />
-    </property>
     <property name="description">
       <column name="DESCRIPTION" sql-type="VARCHAR(255)" />
     </property>

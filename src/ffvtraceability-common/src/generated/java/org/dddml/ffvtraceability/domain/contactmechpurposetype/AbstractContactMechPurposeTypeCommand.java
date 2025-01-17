@@ -63,18 +63,6 @@ public abstract class AbstractContactMechPurposeTypeCommand extends AbstractComm
             this.hasTable = hasTable;
         }
 
-        private String askForRole;
-
-        public String getAskForRole()
-        {
-            return this.askForRole;
-        }
-
-        public void setAskForRole(String askForRole)
-        {
-            this.askForRole = askForRole;
-        }
-
         private String description;
 
         public String getDescription()
@@ -127,18 +115,6 @@ public abstract class AbstractContactMechPurposeTypeCommand extends AbstractComm
         public void setIsPropertyHasTableRemoved(Boolean removed)
         {
             this.isPropertyHasTableRemoved = removed;
-        }
-
-        private Boolean isPropertyAskForRoleRemoved;
-
-        public Boolean getIsPropertyAskForRoleRemoved()
-        {
-            return this.isPropertyAskForRoleRemoved;
-        }
-
-        public void setIsPropertyAskForRoleRemoved(Boolean removed)
-        {
-            this.isPropertyAskForRoleRemoved = removed;
         }
 
         private Boolean isPropertyDescriptionRemoved;

@@ -44,6 +44,16 @@ public abstract class AbstractContactMechState implements ContactMechState.SqlCo
         this.infoString = infoString;
     }
 
+    private String askForName;
+
+    public String getAskForName() {
+        return this.askForName;
+    }
+
+    public void setAskForName(String askForName) {
+        this.askForName = askForName;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -180,6 +190,7 @@ public abstract class AbstractContactMechState implements ContactMechState.SqlCo
 
         this.setContactMechTypeId(e.getContactMechTypeId());
         this.setInfoString(e.getInfoString());
+        this.setAskForName(e.getAskForName());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -192,6 +203,7 @@ public abstract class AbstractContactMechState implements ContactMechState.SqlCo
         }
         this.setContactMechTypeId(s.getContactMechTypeId());
         this.setInfoString(s.getInfoString());
+        this.setAskForName(s.getAskForName());
     }
 
     public void when(ContactMechStateMergePatched e) {
@@ -210,6 +222,13 @@ public abstract class AbstractContactMechState implements ContactMechState.SqlCo
             }
         } else {
             this.setInfoString(e.getInfoString());
+        }
+        if (e.getAskForName() == null) {
+            if (e.getIsPropertyAskForNameRemoved() != null && e.getIsPropertyAskForNameRemoved()) {
+                this.setAskForName(null);
+            }
+        } else {
+            this.setAskForName(e.getAskForName());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

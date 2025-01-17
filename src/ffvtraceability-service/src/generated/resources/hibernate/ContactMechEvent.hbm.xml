@@ -30,10 +30,30 @@
       <property name="infoString">
         <column name="info_string" sql-type="VARCHAR(255)" />
       </property>
+      <property name="askForName">
+        <column name="ask_for_name" sql-type="VARCHAR(100)" />
+      </property>
       <subclass name="AbstractContactMechEvent$AbstractContactMechStateCreated" abstract="true" discriminator-value="Created"></subclass>
       <subclass name="AbstractContactMechEvent$AbstractContactMechStateMergePatched" abstract="true" discriminator-value="MergePatched">
         <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
         <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
+        <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
+      </subclass>
+      <subclass name="AbstractMiscContactMechEvent$AbstractMiscContactMechStateEvent" abstract="true">
+        <property name="email">
+          <column name="email" sql-type="VARCHAR(20)" />
+        </property>
+        <property name="askForRole">
+          <column name="ask_for_role" sql-type="VARCHAR(100)" />
+        </property>
+        <subclass name="AbstractMiscContactMechEvent$SimpleMiscContactMechStateCreated" discriminator-value="MiscContactMechCreated"></subclass>
+        <subclass name="AbstractMiscContactMechEvent$SimpleMiscContactMechStateMergePatched" discriminator-value="MiscContactMechMergePatched">
+          <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
+          <property name="isPropertyAskForRoleRemoved" column="is_property_ask_for_role_removed" />
+          <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
+          <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
+          <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
+        </subclass>
       </subclass>
       <subclass name="AbstractPostalAddressEvent$AbstractPostalAddressStateEvent" abstract="true">
         <property name="toName">
@@ -104,6 +124,7 @@
           <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
           <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
           <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
+          <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
         </subclass>
       </subclass>
       <subclass name="AbstractTelecomNumberEvent$AbstractTelecomNumberStateEvent" abstract="true">
@@ -116,17 +137,14 @@
         <property name="contactNumber">
           <column name="contact_number" sql-type="VARCHAR(60)" />
         </property>
-        <property name="askForName">
-          <column name="ask_for_name" sql-type="VARCHAR(100)" />
-        </property>
         <subclass name="AbstractTelecomNumberEvent$SimpleTelecomNumberStateCreated" discriminator-value="TelecomNumberCreated"></subclass>
         <subclass name="AbstractTelecomNumberEvent$SimpleTelecomNumberStateMergePatched" discriminator-value="TelecomNumberMergePatched">
           <property name="isPropertyCountryCodeRemoved" column="is_property_country_code_removed" />
           <property name="isPropertyAreaCodeRemoved" column="is_property_area_code_removed" />
           <property name="isPropertyContactNumberRemoved" column="is_property_contact_number_removed" />
-          <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
           <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
           <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
+          <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
         </subclass>
       </subclass>
     </subclass>

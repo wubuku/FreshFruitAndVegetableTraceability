@@ -50,18 +50,6 @@ public class ContactMechPurposeTypeStateDto {
         this.hasTable = hasTable;
     }
 
-    private String askForRole;
-
-    public String getAskForRole()
-    {
-        return this.askForRole;
-    }
-
-    public void setAskForRole(String askForRole)
-    {
-        this.askForRole = askForRole;
-    }
-
     private String description;
 
     public String getDescription()
@@ -171,9 +159,6 @@ public class ContactMechPurposeTypeStateDto {
             }
             if (returnedFieldsContains("HasTable")) {
                 dto.setHasTable(state.getHasTable());
-            }
-            if (returnedFieldsContains("AskForRole")) {
-                dto.setAskForRole(state.getAskForRole());
             }
             if (returnedFieldsContains("Description")) {
                 dto.setDescription(state.getDescription());

@@ -56,6 +56,18 @@ public interface ContactMechCommand extends Command {
 
         void setInfoString(String infoString);
 
+        String getAskForName();
+
+        void setAskForName(String askForName);
+
+        String getEmail();
+
+        void setEmail(String email);
+
+        String getAskForRole();
+
+        void setAskForRole(String askForRole);
+
         String getToName();
 
         void setToName(String toName);
@@ -132,10 +144,6 @@ public interface ContactMechCommand extends Command {
 
         void setContactNumber(String contactNumber);
 
-        String getAskForName();
-
-        void setAskForName(String askForName);
-
     }
 
     interface CreateContactMech extends CreateOrMergePatchContactMech {
@@ -149,6 +157,18 @@ public interface ContactMechCommand extends Command {
         Boolean getIsPropertyInfoStringRemoved();
 
         void setIsPropertyInfoStringRemoved(Boolean removed);
+
+        Boolean getIsPropertyAskForNameRemoved();
+
+        void setIsPropertyAskForNameRemoved(Boolean removed);
+
+        Boolean getIsPropertyEmailRemoved();
+
+        void setIsPropertyEmailRemoved(Boolean removed);
+
+        Boolean getIsPropertyAskForRoleRemoved();
+
+        void setIsPropertyAskForRoleRemoved(Boolean removed);
 
         Boolean getIsPropertyToNameRemoved();
 
@@ -225,10 +245,6 @@ public interface ContactMechCommand extends Command {
         Boolean getIsPropertyContactNumberRemoved();
 
         void setIsPropertyContactNumberRemoved(Boolean removed);
-
-        Boolean getIsPropertyAskForNameRemoved();
-
-        void setIsPropertyAskForNameRemoved(Boolean removed);
 
 
     }

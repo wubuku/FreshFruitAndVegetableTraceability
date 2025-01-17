@@ -56,10 +56,6 @@ public interface ContactMechPurposeTypeCommand extends Command {
 
         void setHasTable(String hasTable);
 
-        String getAskForRole();
-
-        void setAskForRole(String askForRole);
-
         String getDescription();
 
         void setDescription(String description);
@@ -77,10 +73,6 @@ public interface ContactMechPurposeTypeCommand extends Command {
         Boolean getIsPropertyHasTableRemoved();
 
         void setIsPropertyHasTableRemoved(Boolean removed);
-
-        Boolean getIsPropertyAskForRoleRemoved();
-
-        void setIsPropertyAskForRoleRemoved(Boolean removed);
 
         Boolean getIsPropertyDescriptionRemoved();
 

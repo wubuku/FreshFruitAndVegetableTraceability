@@ -143,6 +143,18 @@ public abstract class AbstractContactMechEvent extends AbstractEvent implements 
             this.infoString = infoString;
         }
 
+        private String askForName;
+
+        public String getAskForName()
+        {
+            return this.askForName;
+        }
+
+        public void setAskForName(String askForName)
+        {
+            this.askForName = askForName;
+        }
+
         protected AbstractContactMechStateEvent(ContactMechEventId eventId) {
             super(eventId);
         }
@@ -197,6 +209,16 @@ public abstract class AbstractContactMechEvent extends AbstractEvent implements 
 
         public void setIsPropertyInfoStringRemoved(Boolean removed) {
             this.isPropertyInfoStringRemoved = removed;
+        }
+
+        private Boolean isPropertyAskForNameRemoved;
+
+        public Boolean getIsPropertyAskForNameRemoved() {
+            return this.isPropertyAskForNameRemoved;
+        }
+
+        public void setIsPropertyAskForNameRemoved(Boolean removed) {
+            this.isPropertyAskForNameRemoved = removed;
         }
 
 

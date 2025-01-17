@@ -10,41 +10,31 @@ import java.math.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
-import org.dddml.ffvtraceability.domain.contactmech.TelecomNumberEvent.*;
+import org.dddml.ffvtraceability.domain.contactmech.MiscContactMechEvent.*;
 
-public abstract class AbstractTelecomNumberState extends AbstractContactMechState implements TelecomNumberState.SqlTelecomNumberState {
+public abstract class AbstractMiscContactMechState extends AbstractContactMechState implements MiscContactMechState.SqlMiscContactMechState {
 
-    private String countryCode;
+    private String email;
 
-    public String getCountryCode() {
-        return this.countryCode;
+    public String getEmail() {
+        return this.email;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    private String areaCode;
+    private String askForRole;
 
-    public String getAreaCode() {
-        return this.areaCode;
+    public String getAskForRole() {
+        return this.askForRole;
     }
 
-    public void setAreaCode(String areaCode) {
-        this.areaCode = areaCode;
+    public void setAskForRole(String askForRole) {
+        this.askForRole = askForRole;
     }
 
-    private String contactNumber;
-
-    public String getContactNumber() {
-        return this.contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
-    public AbstractTelecomNumberState(List<Event> events) {
+    public AbstractMiscContactMechState(List<Event> events) {
         initializeForReapplying();
         if (events != null && events.size() > 0) {
             this.setContactMechId(((ContactMechEvent.SqlContactMechEvent) events.get(0)).getContactMechEventId().getContactMechId());
@@ -56,7 +46,7 @@ public abstract class AbstractTelecomNumberState extends AbstractContactMechStat
     }
 
 
-    public AbstractTelecomNumberState() {
+    public AbstractMiscContactMechState() {
         initializeProperties();
     }
 
@@ -72,24 +62,23 @@ public abstract class AbstractTelecomNumberState extends AbstractContactMechStat
 
     public void mutate(Event e) {
         setStateReadOnly(false);
-        if (e instanceof TelecomNumberStateCreated) {
-            when((TelecomNumberStateCreated) e);
-        } else if (e instanceof TelecomNumberStateMergePatched) {
-            when((TelecomNumberStateMergePatched) e);
+        if (e instanceof MiscContactMechStateCreated) {
+            when((MiscContactMechStateCreated) e);
+        } else if (e instanceof MiscContactMechStateMergePatched) {
+            when((MiscContactMechStateMergePatched) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
     }
 
-    public void when(TelecomNumberStateCreated e) {
+    public void when(MiscContactMechStateCreated e) {
         throwOnWrongEvent(e);
 
         this.setContactMechTypeId(e.getContactMechTypeId());
         this.setInfoString(e.getInfoString());
         this.setAskForName(e.getAskForName());
-        this.setCountryCode(e.getCountryCode());
-        this.setAreaCode(e.getAreaCode());
-        this.setContactNumber(e.getContactNumber());
+        this.setEmail(e.getEmail());
+        this.setAskForRole(e.getAskForRole());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -98,22 +87,21 @@ public abstract class AbstractTelecomNumberState extends AbstractContactMechStat
 
     @Override
     public void merge(ContactMechState s) {
-        merge((TelecomNumberState)s);
+        merge((MiscContactMechState)s);
     }
 
-    public void merge(TelecomNumberState s) {
+    public void merge(MiscContactMechState s) {
         if (s == this) {
             return;
         }
         this.setContactMechTypeId(s.getContactMechTypeId());
         this.setInfoString(s.getInfoString());
         this.setAskForName(s.getAskForName());
-        this.setCountryCode(s.getCountryCode());
-        this.setAreaCode(s.getAreaCode());
-        this.setContactNumber(s.getContactNumber());
+        this.setEmail(s.getEmail());
+        this.setAskForRole(s.getAskForRole());
     }
 
-    public void when(TelecomNumberStateMergePatched e) {
+    public void when(MiscContactMechStateMergePatched e) {
         throwOnWrongEvent(e);
 
         if (e.getContactMechTypeId() == null) {
@@ -137,26 +125,19 @@ public abstract class AbstractTelecomNumberState extends AbstractContactMechStat
         } else {
             this.setAskForName(e.getAskForName());
         }
-        if (e.getCountryCode() == null) {
-            if (e.getIsPropertyCountryCodeRemoved() != null && e.getIsPropertyCountryCodeRemoved()) {
-                this.setCountryCode(null);
+        if (e.getEmail() == null) {
+            if (e.getIsPropertyEmailRemoved() != null && e.getIsPropertyEmailRemoved()) {
+                this.setEmail(null);
             }
         } else {
-            this.setCountryCode(e.getCountryCode());
+            this.setEmail(e.getEmail());
         }
-        if (e.getAreaCode() == null) {
-            if (e.getIsPropertyAreaCodeRemoved() != null && e.getIsPropertyAreaCodeRemoved()) {
-                this.setAreaCode(null);
+        if (e.getAskForRole() == null) {
+            if (e.getIsPropertyAskForRoleRemoved() != null && e.getIsPropertyAskForRoleRemoved()) {
+                this.setAskForRole(null);
             }
         } else {
-            this.setAreaCode(e.getAreaCode());
-        }
-        if (e.getContactNumber() == null) {
-            if (e.getIsPropertyContactNumberRemoved() != null && e.getIsPropertyContactNumberRemoved()) {
-                this.setContactNumber(null);
-            }
-        } else {
-            this.setContactNumber(e.getContactNumber());
+            this.setAskForRole(e.getAskForRole());
         }
 
         this.setUpdatedBy(e.getCreatedBy());
@@ -169,17 +150,17 @@ public abstract class AbstractTelecomNumberState extends AbstractContactMechStat
     }
 
 
-    public static class SimpleTelecomNumberState extends AbstractTelecomNumberState {
+    public static class SimpleMiscContactMechState extends AbstractMiscContactMechState {
 
-        public SimpleTelecomNumberState() {
+        public SimpleMiscContactMechState() {
         }
 
-        public SimpleTelecomNumberState(List<Event> events) {
+        public SimpleMiscContactMechState(List<Event> events) {
             super(events);
         }
 
-        public static SimpleTelecomNumberState newForReapplying() {
-            SimpleTelecomNumberState s = new SimpleTelecomNumberState();
+        public static SimpleMiscContactMechState newForReapplying() {
+            SimpleMiscContactMechState s = new SimpleMiscContactMechState();
             s.initializeForReapplying();
             return s;
         }

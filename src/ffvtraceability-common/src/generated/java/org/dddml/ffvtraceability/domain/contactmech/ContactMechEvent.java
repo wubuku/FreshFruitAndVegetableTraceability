@@ -49,6 +49,10 @@ public interface ContactMechEvent extends Event {
 
         void setInfoString(String infoString);
 
+        String getAskForName();
+
+        void setAskForName(String askForName);
+
     }
 
     interface ContactMechStateCreated extends ContactMechStateEvent
@@ -66,6 +70,10 @@ public interface ContactMechEvent extends Event {
         Boolean getIsPropertyInfoStringRemoved();
 
         void setIsPropertyInfoStringRemoved(Boolean removed);
+
+        Boolean getIsPropertyAskForNameRemoved();
+
+        void setIsPropertyAskForNameRemoved(Boolean removed);
 
 
 

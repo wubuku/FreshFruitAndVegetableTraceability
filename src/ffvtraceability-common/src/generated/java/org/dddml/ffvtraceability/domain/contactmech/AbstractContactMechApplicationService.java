@@ -159,6 +159,18 @@ public abstract class AbstractContactMechApplicationService implements ContactMe
         }
     }
 
+    public void initialize(MiscContactMechEvent.MiscContactMechStateCreated stateCreated) {
+        String aggregateId = ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getContactMechId();
+        MiscContactMechState.SqlMiscContactMechState state = new AbstractMiscContactMechState.SimpleMiscContactMechState();
+        state.setContactMechId(aggregateId);
+
+        ContactMechAggregate aggregate = getContactMechAggregate(state);
+        ((AbstractContactMechAggregate) aggregate).apply(stateCreated);
+
+        EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
+        persist(eventStoreAggregateId, ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getVersion(), aggregate, state);
+    }
+
     public void initialize(PostalAddressEvent.PostalAddressStateCreated stateCreated) {
         String aggregateId = ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getContactMechId();
         PostalAddressState.SqlPostalAddressState state = new AbstractPostalAddressState.SimplePostalAddressState();
@@ -195,6 +207,9 @@ public abstract class AbstractContactMechApplicationService implements ContactMe
             switch (discriminatorVal) {
                 case ContactMechTypeId.CONTACT_MECH:
                     clazz = ContactMechState.class;
+                    break;
+                case ContactMechTypeId.MISC_CONTACT_MECH:
+                    clazz = MiscContactMechState.class;
                     break;
                 case ContactMechTypeId.POSTAL_ADDRESS:
                     clazz = PostalAddressState.class;

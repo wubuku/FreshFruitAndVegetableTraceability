@@ -159,6 +159,10 @@ public interface PostalAddressEvent extends ContactMechEvent {
 
         void setIsPropertyInfoStringRemoved(Boolean removed);
 
+        Boolean getIsPropertyAskForNameRemoved();
+
+        void setIsPropertyAskForNameRemoved(Boolean removed);
+
 
 
     }

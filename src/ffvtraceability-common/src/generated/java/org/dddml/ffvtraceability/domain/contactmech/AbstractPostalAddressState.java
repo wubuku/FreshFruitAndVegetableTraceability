@@ -216,6 +216,7 @@ public abstract class AbstractPostalAddressState extends AbstractContactMechStat
 
         this.setContactMechTypeId(e.getContactMechTypeId());
         this.setInfoString(e.getInfoString());
+        this.setAskForName(e.getAskForName());
         this.setToName(e.getToName());
         this.setAttnName(e.getAttnName());
         this.setAddress1(e.getAddress1());
@@ -249,6 +250,7 @@ public abstract class AbstractPostalAddressState extends AbstractContactMechStat
         }
         this.setContactMechTypeId(s.getContactMechTypeId());
         this.setInfoString(s.getInfoString());
+        this.setAskForName(s.getAskForName());
         this.setToName(s.getToName());
         this.setAttnName(s.getAttnName());
         this.setAddress1(s.getAddress1());
@@ -283,6 +285,13 @@ public abstract class AbstractPostalAddressState extends AbstractContactMechStat
             }
         } else {
             this.setInfoString(e.getInfoString());
+        }
+        if (e.getAskForName() == null) {
+            if (e.getIsPropertyAskForNameRemoved() != null && e.getIsPropertyAskForNameRemoved()) {
+                this.setAskForName(null);
+            }
+        } else {
+            this.setAskForName(e.getAskForName());
         }
         if (e.getToName() == null) {
             if (e.getIsPropertyToNameRemoved() != null && e.getIsPropertyToNameRemoved()) {

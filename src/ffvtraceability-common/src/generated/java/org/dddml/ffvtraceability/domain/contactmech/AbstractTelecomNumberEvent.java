@@ -79,18 +79,6 @@ public abstract class AbstractTelecomNumberEvent extends AbstractContactMechEven
             this.contactNumber = contactNumber;
         }
 
-        private String askForName;
-
-        public String getAskForName()
-        {
-            return this.askForName;
-        }
-
-        public void setAskForName(String askForName)
-        {
-            this.askForName = askForName;
-        }
-
         protected AbstractTelecomNumberStateEvent(ContactMechEventId eventId) {
             super(eventId);
         }
@@ -157,16 +145,6 @@ public abstract class AbstractTelecomNumberEvent extends AbstractContactMechEven
             this.isPropertyContactNumberRemoved = removed;
         }
 
-        private Boolean isPropertyAskForNameRemoved;
-
-        public Boolean getIsPropertyAskForNameRemoved() {
-            return this.isPropertyAskForNameRemoved;
-        }
-
-        public void setIsPropertyAskForNameRemoved(Boolean removed) {
-            this.isPropertyAskForNameRemoved = removed;
-        }
-
         private Boolean isPropertyContactMechTypeIdRemoved;
 
         public Boolean getIsPropertyContactMechTypeIdRemoved() {
@@ -185,6 +163,16 @@ public abstract class AbstractTelecomNumberEvent extends AbstractContactMechEven
 
         public void setIsPropertyInfoStringRemoved(Boolean removed) {
             this.isPropertyInfoStringRemoved = removed;
+        }
+
+        private Boolean isPropertyAskForNameRemoved;
+
+        public Boolean getIsPropertyAskForNameRemoved() {
+            return this.isPropertyAskForNameRemoved;
+        }
+
+        public void setIsPropertyAskForNameRemoved(Boolean removed) {
+            this.isPropertyAskForNameRemoved = removed;
         }
 
 

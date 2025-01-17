@@ -38,7 +38,7 @@ public class HibernateContactMechStateRepository implements ContactMechStateRepo
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ContactMechId", "ContactMechTypeId", "InfoString", "ToName", "AttnName", "Address1", "Address2", "Directions", "City", "PostalCode", "PostalCodeExt", "CountryGeoId", "StateProvinceGeoId", "PrefectureGeoId", "CountyGeoId", "TownGeoId", "AssocTelecomContactMechId", "PostalCodeGeoId", "GeoPointId", "CountryCode", "AreaCode", "ContactNumber", "AskForName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ContactMechId", "ContactMechTypeId", "InfoString", "AskForName", "Email", "AskForRole", "ToName", "AttnName", "Address1", "Address2", "Directions", "City", "PostalCode", "PostalCodeExt", "CountryGeoId", "StateProvinceGeoId", "PrefectureGeoId", "CountyGeoId", "TownGeoId", "AssocTelecomContactMechId", "PostalCodeGeoId", "GeoPointId", "CountryCode", "AreaCode", "ContactNumber", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -73,6 +73,9 @@ public class HibernateContactMechStateRepository implements ContactMechStateRepo
         Class<? extends AbstractContactMechState> clazz = null;
         if (state != null) {
             // do nothing.
+        }
+        else if (type.equals(MiscContactMechState.class)) {
+            clazz = AbstractMiscContactMechState.SimpleMiscContactMechState.class;
         }
         else if (type.equals(PostalAddressState.class)) {
             clazz = AbstractPostalAddressState.SimplePostalAddressState.class;

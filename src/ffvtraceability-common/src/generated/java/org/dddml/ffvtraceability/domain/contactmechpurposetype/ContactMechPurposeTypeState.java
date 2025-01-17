@@ -23,8 +23,6 @@ public interface ContactMechPurposeTypeState
 
     String getHasTable();
 
-    String getAskForRole();
-
     String getDescription();
 
     Long getVersion();
@@ -45,8 +43,6 @@ public interface ContactMechPurposeTypeState
         void setParentTypeId(String parentTypeId);
 
         void setHasTable(String hasTable);
-
-        void setAskForRole(String askForRole);
 
         void setDescription(String description);
 

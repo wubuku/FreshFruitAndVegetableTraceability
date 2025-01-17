@@ -97,6 +97,7 @@ public class M {
         typeToAggMap.put("ShipmentReceiptOrderAllocation", "ShipmentReceipt");
         typeToAggMap.put("QaInspection", "QaInspection");
         typeToAggMap.put("ContactMech", "ContactMech");
+        typeToAggMap.put("MiscContactMech", "ContactMech");
         typeToAggMap.put("PostalAddress", "ContactMech");
         typeToAggMap.put("TelecomNumber", "ContactMech");
         typeToAggMap.put("ContactMechPurposeType", "ContactMechPurposeType");
@@ -7149,6 +7150,9 @@ public class M {
             "contactMechId",
             "contactMechTypeId",
             "infoString",
+            "askForName",
+            "email",
+            "askForRole",
             "toName",
             "attnName",
             "address1",
@@ -7168,7 +7172,6 @@ public class M {
             "countryCode",
             "areaCode",
             "contactNumber",
-            "askForName",
             "version",
             "createdBy",
             "createdAt",
@@ -7179,6 +7182,8 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
             "String",
             "String",
             "String",
@@ -7229,6 +7234,12 @@ public class M {
         aliasMap.put("ContactMechTypeId", "contactMechTypeId");
         aliasMap.put("infoString", "infoString");
         aliasMap.put("InfoString", "infoString");
+        aliasMap.put("askForName", "askForName");
+        aliasMap.put("AskForName", "askForName");
+        aliasMap.put("email", "email");
+        aliasMap.put("Email", "email");
+        aliasMap.put("askForRole", "askForRole");
+        aliasMap.put("AskForRole", "askForRole");
         aliasMap.put("toName", "toName");
         aliasMap.put("ToName", "toName");
         aliasMap.put("attnName", "attnName");
@@ -7267,8 +7278,6 @@ public class M {
         aliasMap.put("AreaCode", "areaCode");
         aliasMap.put("contactNumber", "contactNumber");
         aliasMap.put("ContactNumber", "contactNumber");
-        aliasMap.put("askForName", "askForName");
-        aliasMap.put("AskForName", "askForName");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -7314,7 +7323,6 @@ public class M {
             "contactMechPurposeTypeId",
             "parentTypeId",
             "hasTable",
-            "askForRole",
             "description",
             "version",
             "createdBy",
@@ -7326,7 +7334,6 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
-            "String",
             "String",
             "String",
             "String",
@@ -7358,8 +7365,6 @@ public class M {
         aliasMap.put("ParentTypeId", "parentTypeId");
         aliasMap.put("hasTable", "hasTable");
         aliasMap.put("HasTable", "hasTable");
-        aliasMap.put("askForRole", "askForRole");
-        aliasMap.put("AskForRole", "askForRole");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
         aliasMap.put("version", "version");

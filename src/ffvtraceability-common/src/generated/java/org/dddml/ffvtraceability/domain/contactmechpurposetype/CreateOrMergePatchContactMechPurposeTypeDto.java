@@ -41,21 +41,6 @@ public class CreateOrMergePatchContactMechPurposeTypeDto extends AbstractContact
     }
 
     /**
-     * Ask For Role
-     */
-    private String askForRole;
-
-    public String getAskForRole()
-    {
-        return this.askForRole;
-    }
-
-    public void setAskForRole(String askForRole)
-    {
-        this.askForRole = askForRole;
-    }
-
-    /**
      * Description
      */
     private String description;
@@ -93,18 +78,6 @@ public class CreateOrMergePatchContactMechPurposeTypeDto extends AbstractContact
     public void setIsPropertyHasTableRemoved(Boolean removed)
     {
         this.isPropertyHasTableRemoved = removed;
-    }
-
-    private Boolean isPropertyAskForRoleRemoved;
-
-    public Boolean getIsPropertyAskForRoleRemoved()
-    {
-        return this.isPropertyAskForRoleRemoved;
-    }
-
-    public void setIsPropertyAskForRoleRemoved(Boolean removed)
-    {
-        this.isPropertyAskForRoleRemoved = removed;
     }
 
     private Boolean isPropertyDescriptionRemoved;
@@ -223,16 +196,6 @@ public class CreateOrMergePatchContactMechPurposeTypeDto extends AbstractContact
             }
 
             @Override
-            public String getAskForRole() {
-                return CreateOrMergePatchContactMechPurposeTypeDto.this.getAskForRole();
-            }
-
-            @Override
-            public void setAskForRole(String p) {
-                CreateOrMergePatchContactMechPurposeTypeDto.this.setAskForRole(p);
-            }
-
-            @Override
             public String getDescription() {
                 return CreateOrMergePatchContactMechPurposeTypeDto.this.getDescription();
             }
@@ -324,16 +287,6 @@ public class CreateOrMergePatchContactMechPurposeTypeDto extends AbstractContact
             }
 
             @Override
-            public String getAskForRole() {
-                return CreateOrMergePatchContactMechPurposeTypeDto.this.getAskForRole();
-            }
-
-            @Override
-            public void setAskForRole(String p) {
-                CreateOrMergePatchContactMechPurposeTypeDto.this.setAskForRole(p);
-            }
-
-            @Override
             public String getDescription() {
                 return CreateOrMergePatchContactMechPurposeTypeDto.this.getDescription();
             }
@@ -361,16 +314,6 @@ public class CreateOrMergePatchContactMechPurposeTypeDto extends AbstractContact
             @Override
             public void setIsPropertyHasTableRemoved(Boolean removed) {
                 CreateOrMergePatchContactMechPurposeTypeDto.this.setIsPropertyHasTableRemoved(removed);
-            }
-
-            @Override
-            public Boolean getIsPropertyAskForRoleRemoved() {
-                return CreateOrMergePatchContactMechPurposeTypeDto.this.getIsPropertyAskForRoleRemoved();
-            }
-
-            @Override
-            public void setIsPropertyAskForRoleRemoved(Boolean removed) {
-                CreateOrMergePatchContactMechPurposeTypeDto.this.setIsPropertyAskForRoleRemoved(removed);
             }
 
             @Override

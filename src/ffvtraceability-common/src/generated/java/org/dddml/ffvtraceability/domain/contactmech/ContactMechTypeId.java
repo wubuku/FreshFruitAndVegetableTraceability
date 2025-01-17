@@ -9,6 +9,8 @@ package org.dddml.ffvtraceability.domain.contactmech;
 public class ContactMechTypeId {
     public static final String CONTACT_MECH = "CONTACT_MECH";
 
+    public static final String MISC_CONTACT_MECH = "MISC_CONTACT_MECH";
+
     public static final String POSTAL_ADDRESS = "POSTAL_ADDRESS";
 
     public static final String TELECOM_NUMBER = "TELECOM_NUMBER";

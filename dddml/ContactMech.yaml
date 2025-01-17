@@ -16,7 +16,22 @@
         type: id
       InfoString:
         type: long-varchar
-        
+      AskForName:
+        type: name
+        # 请求接洽者名字
+
+    subtypes:
+      MiscContactMech:
+        displayName: Miscellaneous Contact Mechanism
+        discriminatorValue: "MISC_CONTACT_MECH"
+        description: "A catch-all category for contact mechanisms that don't fit into standard categories like phone, postal address, etc."
+        properties:
+          Email:
+            type: id # todo: email?
+          AskForRole:
+            # 请求接洽者角色
+            type: name
+
 
   ContactMechPurposeType:
     metadata:
@@ -31,9 +46,6 @@
       HasTable:
         columnName: HAS_TABLE
         type: indicator
-      AskForRole:
-        # 请求接洽者角色
-        type: name
       Description:
         columnName: DESCRIPTION
         type: description

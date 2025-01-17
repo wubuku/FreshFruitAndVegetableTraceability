@@ -43,16 +43,6 @@ public abstract class AbstractContactMechPurposeTypeState implements ContactMech
         this.hasTable = hasTable;
     }
 
-    private String askForRole;
-
-    public String getAskForRole() {
-        return this.askForRole;
-    }
-
-    public void setAskForRole(String askForRole) {
-        this.askForRole = askForRole;
-    }
-
     private String description;
 
     public String getDescription() {
@@ -187,7 +177,6 @@ public abstract class AbstractContactMechPurposeTypeState implements ContactMech
         }
         this.setParentTypeId(s.getParentTypeId());
         this.setHasTable(s.getHasTable());
-        this.setAskForRole(s.getAskForRole());
         this.setDescription(s.getDescription());
     }
 

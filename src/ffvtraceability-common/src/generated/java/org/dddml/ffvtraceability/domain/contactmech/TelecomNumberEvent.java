@@ -25,10 +25,6 @@ public interface TelecomNumberEvent extends ContactMechEvent {
 
         void setContactNumber(String contactNumber);
 
-        String getAskForName();
-
-        void setAskForName(String askForName);
-
     }
 
     interface TelecomNumberStateCreated extends TelecomNumberStateEvent
@@ -51,10 +47,6 @@ public interface TelecomNumberEvent extends ContactMechEvent {
 
         void setIsPropertyContactNumberRemoved(Boolean removed);
 
-        Boolean getIsPropertyAskForNameRemoved();
-
-        void setIsPropertyAskForNameRemoved(Boolean removed);
-
         Boolean getIsPropertyContactMechTypeIdRemoved();
 
         void setIsPropertyContactMechTypeIdRemoved(Boolean removed);
@@ -62,6 +54,10 @@ public interface TelecomNumberEvent extends ContactMechEvent {
         Boolean getIsPropertyInfoStringRemoved();
 
         void setIsPropertyInfoStringRemoved(Boolean removed);
+
+        Boolean getIsPropertyAskForNameRemoved();
+
+        void setIsPropertyAskForNameRemoved(Boolean removed);
 
 
 
