@@ -13,10 +13,6 @@ import org.dddml.ffvtraceability.specialization.Event;
 public interface LegalOrganizationEvent extends OrganizationEvent {
 
     interface LegalOrganizationStateEvent extends OrganizationStateEvent, LegalOrganizationEvent {
-        String getTaxIdNum();
-
-        void setTaxIdNum(String taxIdNum);
-
     }
 
     interface LegalOrganizationStateCreated extends LegalOrganizationStateEvent
@@ -33,10 +29,6 @@ public interface LegalOrganizationEvent extends OrganizationEvent {
 
     interface LegalOrganizationStateMergePatched extends LegalOrganizationStateEvent
     {
-        Boolean getIsPropertyTaxIdNumRemoved();
-
-        void setIsPropertyTaxIdNumRemoved(Boolean removed);
-
         Boolean getIsPropertyOrganizationNameRemoved();
 
         void setIsPropertyOrganizationNameRemoved(Boolean removed);

@@ -9,9 +9,12 @@
       type: id
     properties:
       ToName:
+        # 收件人名称
         type: name
       AttnName:
+        description: "Attention Name"
         type: name
+        # 主要收件人（组织）内的具体接收个人
       Address1:
         type: long-varchar
       Address2:

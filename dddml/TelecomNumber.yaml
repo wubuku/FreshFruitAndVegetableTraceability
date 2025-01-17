@@ -16,4 +16,5 @@
       ContactNumber:
         type: short-varchar
       AskForName:
+        # 请求接听人姓名
         type: name

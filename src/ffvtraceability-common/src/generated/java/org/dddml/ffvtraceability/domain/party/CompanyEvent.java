@@ -29,10 +29,6 @@ public interface CompanyEvent extends LegalOrganizationEvent {
 
     interface CompanyStateMergePatched extends CompanyStateEvent
     {
-        Boolean getIsPropertyTaxIdNumRemoved();
-
-        void setIsPropertyTaxIdNumRemoved(Boolean removed);
-
         Boolean getIsPropertyOrganizationNameRemoved();
 
         void setIsPropertyOrganizationNameRemoved(Boolean removed);

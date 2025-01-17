@@ -14,16 +14,6 @@ import org.dddml.ffvtraceability.domain.party.LegalOrganizationEvent.*;
 
 public abstract class AbstractLegalOrganizationState extends AbstractOrganizationState implements LegalOrganizationState.SqlLegalOrganizationState, Saveable {
 
-    private String taxIdNum;
-
-    public String getTaxIdNum() {
-        return this.taxIdNum;
-    }
-
-    public void setTaxIdNum(String taxIdNum) {
-        this.taxIdNum = taxIdNum;
-    }
-
     public AbstractLegalOrganizationState(List<Event> events) {
         initializeForReapplying();
         if (events != null && events.size() > 0) {
@@ -71,7 +61,6 @@ public abstract class AbstractLegalOrganizationState extends AbstractOrganizatio
         this.setDescription(e.getDescription());
         this.setStatusId(e.getStatusId());
         this.setOrganizationName(e.getOrganizationName());
-        this.setTaxIdNum(e.getTaxIdNum());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -98,7 +87,6 @@ public abstract class AbstractLegalOrganizationState extends AbstractOrganizatio
         this.setDescription(s.getDescription());
         this.setStatusId(s.getStatusId());
         this.setOrganizationName(s.getOrganizationName());
-        this.setTaxIdNum(s.getTaxIdNum());
 
         if (s.getPartyIdentifications() != null) {
             Iterable<PartyIdentificationState> iterable;
@@ -188,13 +176,6 @@ public abstract class AbstractLegalOrganizationState extends AbstractOrganizatio
             }
         } else {
             this.setOrganizationName(e.getOrganizationName());
-        }
-        if (e.getTaxIdNum() == null) {
-            if (e.getIsPropertyTaxIdNumRemoved() != null && e.getIsPropertyTaxIdNumRemoved()) {
-                this.setTaxIdNum(null);
-            }
-        } else {
-            this.setTaxIdNum(e.getTaxIdNum());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

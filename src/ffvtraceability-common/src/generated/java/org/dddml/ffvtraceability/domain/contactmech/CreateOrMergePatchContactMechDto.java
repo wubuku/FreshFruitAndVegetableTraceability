@@ -56,7 +56,7 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     }
 
     /**
-     * Attn Name
+     * Attention Name
      */
     private String attnName;
 

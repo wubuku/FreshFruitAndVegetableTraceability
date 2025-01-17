@@ -24,5 +24,25 @@ public interface BffSupplierProjection {
 
     String getStatusId();
 
+    String getSupplierShortName();
+
+    String getTaxId();
+
+    String getGs1CompanyPrefix();
+
+    String getInternalId();
+
+    String getSupplierTypeId();
+
+    String getTpaNumber();
+
+    String getCertificationCodes();
+
+    String getBankAccountInformation();
+
+    String getEmail();
+
+    String getWebSite();
+
 }
 

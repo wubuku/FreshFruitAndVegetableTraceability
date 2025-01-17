@@ -128,10 +128,6 @@ public interface PartyCommand extends Command {
 
         void setOrganizationName(String organizationName);
 
-        String getTaxIdNum();
-
-        void setTaxIdNum(String taxIdNum);
-
         String getFamilyName();
 
         void setFamilyName(String familyName);
@@ -225,10 +221,6 @@ public interface PartyCommand extends Command {
         Boolean getIsPropertyOrganizationNameRemoved();
 
         void setIsPropertyOrganizationNameRemoved(Boolean removed);
-
-        Boolean getIsPropertyTaxIdNumRemoved();
-
-        void setIsPropertyTaxIdNumRemoved(Boolean removed);
 
         Boolean getIsPropertyFamilyNameRemoved();
 

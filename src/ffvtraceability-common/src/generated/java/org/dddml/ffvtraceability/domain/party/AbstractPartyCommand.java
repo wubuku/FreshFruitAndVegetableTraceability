@@ -279,18 +279,6 @@ public abstract class AbstractPartyCommand extends AbstractCommand implements Pa
             this.organizationName = organizationName;
         }
 
-        private String taxIdNum;
-
-        public String getTaxIdNum()
-        {
-            return this.taxIdNum;
-        }
-
-        public void setTaxIdNum(String taxIdNum)
-        {
-            this.taxIdNum = taxIdNum;
-        }
-
         private String familyName;
 
         public String getFamilyName()
@@ -593,18 +581,6 @@ public abstract class AbstractPartyCommand extends AbstractCommand implements Pa
         public void setIsPropertyOrganizationNameRemoved(Boolean removed)
         {
             this.isPropertyOrganizationNameRemoved = removed;
-        }
-
-        private Boolean isPropertyTaxIdNumRemoved;
-
-        public Boolean getIsPropertyTaxIdNumRemoved()
-        {
-            return this.isPropertyTaxIdNumRemoved;
-        }
-
-        public void setIsPropertyTaxIdNumRemoved(Boolean removed)
-        {
-            this.isPropertyTaxIdNumRemoved = removed;
         }
 
         private Boolean isPropertyFamilyNameRemoved;

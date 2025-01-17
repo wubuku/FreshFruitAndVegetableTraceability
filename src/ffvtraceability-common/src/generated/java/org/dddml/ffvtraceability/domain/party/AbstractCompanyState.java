@@ -61,7 +61,6 @@ public abstract class AbstractCompanyState extends AbstractLegalOrganizationStat
         this.setDescription(e.getDescription());
         this.setStatusId(e.getStatusId());
         this.setOrganizationName(e.getOrganizationName());
-        this.setTaxIdNum(e.getTaxIdNum());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -88,7 +87,6 @@ public abstract class AbstractCompanyState extends AbstractLegalOrganizationStat
         this.setDescription(s.getDescription());
         this.setStatusId(s.getStatusId());
         this.setOrganizationName(s.getOrganizationName());
-        this.setTaxIdNum(s.getTaxIdNum());
 
         if (s.getPartyIdentifications() != null) {
             Iterable<PartyIdentificationState> iterable;
@@ -178,13 +176,6 @@ public abstract class AbstractCompanyState extends AbstractLegalOrganizationStat
             }
         } else {
             this.setOrganizationName(e.getOrganizationName());
-        }
-        if (e.getTaxIdNum() == null) {
-            if (e.getIsPropertyTaxIdNumRemoved() != null && e.getIsPropertyTaxIdNumRemoved()) {
-                this.setTaxIdNum(null);
-            }
-        } else {
-            this.setTaxIdNum(e.getTaxIdNum());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

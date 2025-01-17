@@ -26,6 +26,10 @@ valueObjects:
       CountryGeoId:
         # 国家的地理 ID（关联到 Geo 实体的 GeoId）
         type: id
+      Email:
+        type: id # todo: email?
+      ContactRole:
+        type: name
 
 
 

@@ -77,18 +77,6 @@ public abstract class AbstractLegalOrganizationEvent extends AbstractOrganizatio
 
 
     public static abstract class AbstractLegalOrganizationStateEvent extends AbstractOrganizationStateEvent implements LegalOrganizationEvent.LegalOrganizationStateEvent {
-        private String taxIdNum;
-
-        public String getTaxIdNum()
-        {
-            return this.taxIdNum;
-        }
-
-        public void setTaxIdNum(String taxIdNum)
-        {
-            this.taxIdNum = taxIdNum;
-        }
-
         protected AbstractLegalOrganizationStateEvent(PartyEventId eventId) {
             super(eventId);
         }
@@ -171,16 +159,6 @@ public abstract class AbstractLegalOrganizationEvent extends AbstractOrganizatio
 
         public String getEventType() {
             return StateEventType.MERGE_PATCHED;
-        }
-
-        private Boolean isPropertyTaxIdNumRemoved;
-
-        public Boolean getIsPropertyTaxIdNumRemoved() {
-            return this.isPropertyTaxIdNumRemoved;
-        }
-
-        public void setIsPropertyTaxIdNumRemoved(Boolean removed) {
-            this.isPropertyTaxIdNumRemoved = removed;
         }
 
         private Boolean isPropertyOrganizationNameRemoved;

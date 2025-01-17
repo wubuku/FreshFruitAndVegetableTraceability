@@ -161,16 +161,6 @@ public abstract class AbstractCompanyEvent extends AbstractLegalOrganizationEven
             return StateEventType.MERGE_PATCHED;
         }
 
-        private Boolean isPropertyTaxIdNumRemoved;
-
-        public Boolean getIsPropertyTaxIdNumRemoved() {
-            return this.isPropertyTaxIdNumRemoved;
-        }
-
-        public void setIsPropertyTaxIdNumRemoved(Boolean removed) {
-            this.isPropertyTaxIdNumRemoved = removed;
-        }
-
         private Boolean isPropertyOrganizationNameRemoved;
 
         public Boolean getIsPropertyOrganizationNameRemoved() {

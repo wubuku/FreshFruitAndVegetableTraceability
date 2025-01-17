@@ -163,7 +163,6 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
         e.setOrganizationName(c.getOrganizationName());
-        e.setTaxIdNum(c.getTaxIdNum());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -187,7 +186,6 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
         e.setOrganizationName(c.getOrganizationName());
-        e.setTaxIdNum(c.getTaxIdNum());
         ((AbstractPartyEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -395,8 +393,6 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
         e.setOrganizationName(c.getOrganizationName());
-        e.setTaxIdNum(c.getTaxIdNum());
-        e.setIsPropertyTaxIdNumRemoved(c.getIsPropertyTaxIdNumRemoved());
         e.setIsPropertyOrganizationNameRemoved(c.getIsPropertyOrganizationNameRemoved());
         e.setIsPropertyPartyTypeIdRemoved(c.getIsPropertyPartyTypeIdRemoved());
         e.setIsPropertyPrimaryRoleTypeIdRemoved(c.getIsPropertyPrimaryRoleTypeIdRemoved());
@@ -427,8 +423,6 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
         e.setOrganizationName(c.getOrganizationName());
-        e.setTaxIdNum(c.getTaxIdNum());
-        e.setIsPropertyTaxIdNumRemoved(c.getIsPropertyTaxIdNumRemoved());
         e.setIsPropertyOrganizationNameRemoved(c.getIsPropertyOrganizationNameRemoved());
         e.setIsPropertyPartyTypeIdRemoved(c.getIsPropertyPartyTypeIdRemoved());
         e.setIsPropertyPrimaryRoleTypeIdRemoved(c.getIsPropertyPrimaryRoleTypeIdRemoved());

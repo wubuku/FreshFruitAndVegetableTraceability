@@ -26,5 +26,9 @@ public interface BffBusinessContactProjection {
 
     String getCountryGeoId();
 
+    String getEmail();
+
+    String getContactRole();
+
 }
 

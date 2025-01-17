@@ -86,9 +86,6 @@
       </property>
       <subclass name="org.dddml.ffvtraceability.domain.party.AbstractOrganizationState$SimpleOrganizationState" discriminator-value="ORGANIZATION"></subclass>
       <subclass name="org.dddml.ffvtraceability.domain.party.AbstractLegalOrganizationState" abstract="true">
-        <property name="taxIdNum">
-          <column name="tax_id_num" />
-        </property>
         <subclass name="org.dddml.ffvtraceability.domain.party.AbstractLegalOrganizationState$SimpleLegalOrganizationState" discriminator-value="LEGAL_ORGANIZATION"></subclass>
         <subclass name="org.dddml.ffvtraceability.domain.party.AbstractCompanyState$SimpleCompanyState" discriminator-value="COMPANY" abstract="false"></subclass>
       </subclass>

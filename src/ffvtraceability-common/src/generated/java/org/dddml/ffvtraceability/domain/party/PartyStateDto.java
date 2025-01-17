@@ -266,18 +266,6 @@ public class PartyStateDto {
         this.organizationName = organizationName;
     }
 
-    private String taxIdNum;
-
-    public String getTaxIdNum()
-    {
-        return this.taxIdNum;
-    }
-
-    public void setTaxIdNum(String taxIdNum)
-    {
-        this.taxIdNum = taxIdNum;
-    }
-
     private String familyName;
 
     public String getFamilyName()
@@ -500,9 +488,6 @@ public class PartyStateDto {
           if (state instanceof LegalOrganizationState) {
             LegalOrganizationState ss = (LegalOrganizationState) state;
             dto.setPartyTypeId(PartyTypeId.LEGAL_ORGANIZATION);
-            if (returnedFieldsContains("TaxIdNum")) {
-                dto.setTaxIdNum(ss.getTaxIdNum());
-            }
           }
           // ////////////////
 

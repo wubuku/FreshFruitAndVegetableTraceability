@@ -311,21 +311,6 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
     }
 
     /**
-     * Tax Id Num
-     */
-    private String taxIdNum;
-
-    public String getTaxIdNum()
-    {
-        return this.taxIdNum;
-    }
-
-    public void setTaxIdNum(String taxIdNum)
-    {
-        this.taxIdNum = taxIdNum;
-    }
-
-    /**
      * Family Name
      */
     private String familyName;
@@ -593,18 +578,6 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         this.isPropertyOrganizationNameRemoved = removed;
     }
 
-    private Boolean isPropertyTaxIdNumRemoved;
-
-    public Boolean getIsPropertyTaxIdNumRemoved()
-    {
-        return this.isPropertyTaxIdNumRemoved;
-    }
-
-    public void setIsPropertyTaxIdNumRemoved(Boolean removed)
-    {
-        this.isPropertyTaxIdNumRemoved = removed;
-    }
-
     private Boolean isPropertyFamilyNameRemoved;
 
     public Boolean getIsPropertyFamilyNameRemoved()
@@ -640,7 +613,6 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         command.setPassportExpireDate(this.getPassportExpireDate());
         command.setExistingCustomer(this.getExistingCustomer());
         command.setOrganizationName(this.getOrganizationName());
-        command.setTaxIdNum(this.getTaxIdNum());
         command.setFamilyName(this.getFamilyName());
     }
 
@@ -727,7 +699,6 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         command.setIsPropertyPassportExpireDateRemoved(this.getIsPropertyPassportExpireDateRemoved());
         command.setIsPropertyExistingCustomerRemoved(this.getIsPropertyExistingCustomerRemoved());
         command.setIsPropertyOrganizationNameRemoved(this.getIsPropertyOrganizationNameRemoved());
-        command.setIsPropertyTaxIdNumRemoved(this.getIsPropertyTaxIdNumRemoved());
         command.setIsPropertyFamilyNameRemoved(this.getIsPropertyFamilyNameRemoved());
     }
 

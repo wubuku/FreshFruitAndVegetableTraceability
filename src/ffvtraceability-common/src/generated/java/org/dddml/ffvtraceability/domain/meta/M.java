@@ -2885,7 +2885,6 @@ public class M {
             "passportExpireDate",
             "existingCustomer",
             "organizationName",
-            "taxIdNum",
             "familyName",
             "version",
             "createdBy",
@@ -2916,7 +2915,6 @@ public class M {
             "String",
             "String",
             "java.sql.Date",
-            "String",
             "String",
             "String",
             "String",
@@ -2983,8 +2981,6 @@ public class M {
         aliasMap.put("ExistingCustomer", "existingCustomer");
         aliasMap.put("organizationName", "organizationName");
         aliasMap.put("OrganizationName", "organizationName");
-        aliasMap.put("taxIdNum", "taxIdNum");
-        aliasMap.put("TaxIdNum", "taxIdNum");
         aliasMap.put("familyName", "familyName");
         aliasMap.put("FamilyName", "familyName");
         aliasMap.put("version", "version");

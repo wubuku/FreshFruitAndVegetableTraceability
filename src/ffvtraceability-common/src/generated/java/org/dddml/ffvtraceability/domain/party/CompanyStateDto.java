@@ -106,9 +106,6 @@ public class CompanyStateDto extends LegalOrganizationStateDto {
           if (state instanceof LegalOrganizationState) {
             LegalOrganizationState ss = (LegalOrganizationState) state;
             dto.setPartyTypeId(PartyTypeId.LEGAL_ORGANIZATION);
-            if (returnedFieldsContains("TaxIdNum")) {
-                dto.setTaxIdNum(ss.getTaxIdNum());
-            }
           }
           // ////////////////
 

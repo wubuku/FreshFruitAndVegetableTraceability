@@ -38,7 +38,7 @@ public class HibernatePartyStateRepository implements PartyStateRepository {
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("PartyId", "PartyTypeId", "PrimaryRoleTypeId", "ExternalId", "PreferredCurrencyUomId", "Description", "StatusId", "PartyIdentifications", "Salutation", "FirstName", "MiddleName", "LastName", "PersonalTitle", "Nickname", "Gender", "BirthDate", "DeceasedDate", "SocialSecurityNumber", "PassportNumber", "PassportExpireDate", "ExistingCustomer", "OrganizationName", "TaxIdNum", "FamilyName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("PartyId", "PartyTypeId", "PrimaryRoleTypeId", "ExternalId", "PreferredCurrencyUomId", "Description", "StatusId", "PartyIdentifications", "Salutation", "FirstName", "MiddleName", "LastName", "PersonalTitle", "Nickname", "Gender", "BirthDate", "DeceasedDate", "SocialSecurityNumber", "PassportNumber", "PassportExpireDate", "ExistingCustomer", "OrganizationName", "FamilyName", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

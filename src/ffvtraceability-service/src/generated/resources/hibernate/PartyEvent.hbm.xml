@@ -129,12 +129,8 @@
           <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
         </subclass>
         <subclass name="AbstractLegalOrganizationEvent$AbstractLegalOrganizationStateEvent" abstract="true">
-          <property name="taxIdNum">
-            <column name="tax_id_num" />
-          </property>
           <subclass name="AbstractLegalOrganizationEvent$SimpleLegalOrganizationStateCreated" discriminator-value="LegalOrganizationCreated"></subclass>
           <subclass name="AbstractLegalOrganizationEvent$SimpleLegalOrganizationStateMergePatched" discriminator-value="LegalOrganizationMergePatched">
-            <property name="isPropertyTaxIdNumRemoved" column="is_property_tax_id_num_removed" />
             <property name="isPropertyOrganizationNameRemoved" column="is_property_organization_name_removed" />
             <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
             <property name="isPropertyPrimaryRoleTypeIdRemoved" column="is_property_primary_role_type_id_removed" />
@@ -146,7 +142,6 @@
           <subclass name="AbstractCompanyEvent$AbstractCompanyStateEvent" abstract="true">
             <subclass name="AbstractCompanyEvent$SimpleCompanyStateCreated" discriminator-value="CompanyCreated"></subclass>
             <subclass name="AbstractCompanyEvent$SimpleCompanyStateMergePatched" discriminator-value="CompanyMergePatched">
-              <property name="isPropertyTaxIdNumRemoved" column="is_property_tax_id_num_removed" />
               <property name="isPropertyOrganizationNameRemoved" column="is_property_organization_name_removed" />
               <property name="isPropertyPartyTypeIdRemoved" column="is_property_party_type_id_removed" />
               <property name="isPropertyPrimaryRoleTypeIdRemoved" column="is_property_primary_role_type_id_removed" />

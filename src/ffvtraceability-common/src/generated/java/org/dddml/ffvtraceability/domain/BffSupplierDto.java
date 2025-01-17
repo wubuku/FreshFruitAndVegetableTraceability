@@ -130,11 +130,143 @@ public class BffSupplierDto implements Serializable {
         this.businessContacts = businessContacts;
     }
 
+    private String supplierShortName;
+
+    public String getSupplierShortName()
+    {
+        return this.supplierShortName;
+    }
+
+    public void setSupplierShortName(String supplierShortName)
+    {
+        this.supplierShortName = supplierShortName;
+    }
+
+    private String taxId;
+
+    public String getTaxId()
+    {
+        return this.taxId;
+    }
+
+    public void setTaxId(String taxId)
+    {
+        this.taxId = taxId;
+    }
+
+    /**
+     * GS1 Company Prefix
+     */
+    private String gs1CompanyPrefix;
+
+    public String getGs1CompanyPrefix()
+    {
+        return this.gs1CompanyPrefix;
+    }
+
+    public void setGs1CompanyPrefix(String gs1CompanyPrefix)
+    {
+        this.gs1CompanyPrefix = gs1CompanyPrefix;
+    }
+
+    private String internalId;
+
+    public String getInternalId()
+    {
+        return this.internalId;
+    }
+
+    public void setInternalId(String internalId)
+    {
+        this.internalId = internalId;
+    }
+
+    private String supplierTypeId;
+
+    public String getSupplierTypeId()
+    {
+        return this.supplierTypeId;
+    }
+
+    public void setSupplierTypeId(String supplierTypeId)
+    {
+        this.supplierTypeId = supplierTypeId;
+    }
+
+    /**
+     * Trade Partner Agreement Number
+     */
+    private String tpaNumber;
+
+    public String getTpaNumber()
+    {
+        return this.tpaNumber;
+    }
+
+    public void setTpaNumber(String tpaNumber)
+    {
+        this.tpaNumber = tpaNumber;
+    }
+
+    /**
+     * Certification Codes
+     */
+    private String certificationCodes;
+
+    public String getCertificationCodes()
+    {
+        return this.certificationCodes;
+    }
+
+    public void setCertificationCodes(String certificationCodes)
+    {
+        this.certificationCodes = certificationCodes;
+    }
+
+    /**
+     * Bank Account Information
+     */
+    private String bankAccountInformation;
+
+    public String getBankAccountInformation()
+    {
+        return this.bankAccountInformation;
+    }
+
+    public void setBankAccountInformation(String bankAccountInformation)
+    {
+        this.bankAccountInformation = bankAccountInformation;
+    }
+
+    private String email;
+
+    public String getEmail()
+    {
+        return this.email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    private String webSite;
+
+    public String getWebSite()
+    {
+        return this.webSite;
+    }
+
+    public void setWebSite(String webSite)
+    {
+        this.webSite = webSite;
+    }
+
     public BffSupplierDto()
     {
     }
 
-    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts)
+    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String supplierTypeId, String tpaNumber, String certificationCodes, String bankAccountInformation, String email, String webSite)
     {
         this.supplierId = supplierId;
         this.supplierName = supplierName;
@@ -145,6 +277,16 @@ public class BffSupplierDto implements Serializable {
         this.description = description;
         this.statusId = statusId;
         this.businessContacts = businessContacts;
+        this.supplierShortName = supplierShortName;
+        this.taxId = taxId;
+        this.gs1CompanyPrefix = gs1CompanyPrefix;
+        this.internalId = internalId;
+        this.supplierTypeId = supplierTypeId;
+        this.tpaNumber = tpaNumber;
+        this.certificationCodes = certificationCodes;
+        this.bankAccountInformation = bankAccountInformation;
+        this.email = email;
+        this.webSite = webSite;
     }
 
     @Override
@@ -168,6 +310,16 @@ public class BffSupplierDto implements Serializable {
             && (description == other.description || (description != null && description.equals(other.description)))
             && (statusId == other.statusId || (statusId != null && statusId.equals(other.statusId)))
             && (businessContacts == other.businessContacts || (businessContacts != null && businessContacts.equals(other.businessContacts)))
+            && (supplierShortName == other.supplierShortName || (supplierShortName != null && supplierShortName.equals(other.supplierShortName)))
+            && (taxId == other.taxId || (taxId != null && taxId.equals(other.taxId)))
+            && (gs1CompanyPrefix == other.gs1CompanyPrefix || (gs1CompanyPrefix != null && gs1CompanyPrefix.equals(other.gs1CompanyPrefix)))
+            && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
+            && (supplierTypeId == other.supplierTypeId || (supplierTypeId != null && supplierTypeId.equals(other.supplierTypeId)))
+            && (tpaNumber == other.tpaNumber || (tpaNumber != null && tpaNumber.equals(other.tpaNumber)))
+            && (certificationCodes == other.certificationCodes || (certificationCodes != null && certificationCodes.equals(other.certificationCodes)))
+            && (bankAccountInformation == other.bankAccountInformation || (bankAccountInformation != null && bankAccountInformation.equals(other.bankAccountInformation)))
+            && (email == other.email || (email != null && email.equals(other.email)))
+            && (webSite == other.webSite || (webSite != null && webSite.equals(other.webSite)))
             ;
     }
 
@@ -202,6 +354,36 @@ public class BffSupplierDto implements Serializable {
         if (this.businessContacts != null) {
             hash += 13 * this.businessContacts.hashCode();
         }
+        if (this.supplierShortName != null) {
+            hash += 13 * this.supplierShortName.hashCode();
+        }
+        if (this.taxId != null) {
+            hash += 13 * this.taxId.hashCode();
+        }
+        if (this.gs1CompanyPrefix != null) {
+            hash += 13 * this.gs1CompanyPrefix.hashCode();
+        }
+        if (this.internalId != null) {
+            hash += 13 * this.internalId.hashCode();
+        }
+        if (this.supplierTypeId != null) {
+            hash += 13 * this.supplierTypeId.hashCode();
+        }
+        if (this.tpaNumber != null) {
+            hash += 13 * this.tpaNumber.hashCode();
+        }
+        if (this.certificationCodes != null) {
+            hash += 13 * this.certificationCodes.hashCode();
+        }
+        if (this.bankAccountInformation != null) {
+            hash += 13 * this.bankAccountInformation.hashCode();
+        }
+        if (this.email != null) {
+            hash += 13 * this.email.hashCode();
+        }
+        if (this.webSite != null) {
+            hash += 13 * this.webSite.hashCode();
+        }
         return hash;
     }
 
@@ -217,6 +399,16 @@ public class BffSupplierDto implements Serializable {
                 ", description=" + '\'' + description + '\'' +
                 ", statusId=" + '\'' + statusId + '\'' +
                 ", businessContacts=" + businessContacts +
+                ", supplierShortName=" + '\'' + supplierShortName + '\'' +
+                ", taxId=" + '\'' + taxId + '\'' +
+                ", gs1CompanyPrefix=" + '\'' + gs1CompanyPrefix + '\'' +
+                ", internalId=" + '\'' + internalId + '\'' +
+                ", supplierTypeId=" + '\'' + supplierTypeId + '\'' +
+                ", tpaNumber=" + '\'' + tpaNumber + '\'' +
+                ", certificationCodes=" + '\'' + certificationCodes + '\'' +
+                ", bankAccountInformation=" + '\'' + bankAccountInformation + '\'' +
+                ", email=" + '\'' + email + '\'' +
+                ", webSite=" + '\'' + webSite + '\'' +
                 '}';
     }
 

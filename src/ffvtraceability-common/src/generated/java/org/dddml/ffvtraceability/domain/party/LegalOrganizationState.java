@@ -13,11 +13,7 @@ import org.dddml.ffvtraceability.specialization.Event;
 
 public interface LegalOrganizationState extends OrganizationState
 {
-    String getTaxIdNum();
-
     interface MutableLegalOrganizationState extends LegalOrganizationState, OrganizationState.MutableOrganizationState {
-        void setTaxIdNum(String taxIdNum);
-
         //void when(LegalOrganizationEvent.LegalOrganizationStateCreated e);
 
         //void when(LegalOrganizationEvent.LegalOrganizationStateMergePatched e);

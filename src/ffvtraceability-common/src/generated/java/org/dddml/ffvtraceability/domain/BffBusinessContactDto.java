@@ -117,11 +117,35 @@ public class BffBusinessContactDto implements Serializable {
         this.countryGeoId = countryGeoId;
     }
 
+    private String email;
+
+    public String getEmail()
+    {
+        return this.email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    private String contactRole;
+
+    public String getContactRole()
+    {
+        return this.contactRole;
+    }
+
+    public void setContactRole(String contactRole)
+    {
+        this.contactRole = contactRole;
+    }
+
     public BffBusinessContactDto()
     {
     }
 
-    public BffBusinessContactDto(String businessName, String phoneNumber, String physicalLocationAddress, String city, String state, String zipCode, String country, String stateProvinceGeoId, String countryGeoId)
+    public BffBusinessContactDto(String businessName, String phoneNumber, String physicalLocationAddress, String city, String state, String zipCode, String country, String stateProvinceGeoId, String countryGeoId, String email, String contactRole)
     {
         this.businessName = businessName;
         this.phoneNumber = phoneNumber;
@@ -132,6 +156,8 @@ public class BffBusinessContactDto implements Serializable {
         this.country = country;
         this.stateProvinceGeoId = stateProvinceGeoId;
         this.countryGeoId = countryGeoId;
+        this.email = email;
+        this.contactRole = contactRole;
     }
 
     @Override
@@ -155,6 +181,8 @@ public class BffBusinessContactDto implements Serializable {
             && (country == other.country || (country != null && country.equals(other.country)))
             && (stateProvinceGeoId == other.stateProvinceGeoId || (stateProvinceGeoId != null && stateProvinceGeoId.equals(other.stateProvinceGeoId)))
             && (countryGeoId == other.countryGeoId || (countryGeoId != null && countryGeoId.equals(other.countryGeoId)))
+            && (email == other.email || (email != null && email.equals(other.email)))
+            && (contactRole == other.contactRole || (contactRole != null && contactRole.equals(other.contactRole)))
             ;
     }
 
@@ -189,6 +217,12 @@ public class BffBusinessContactDto implements Serializable {
         if (this.countryGeoId != null) {
             hash += 13 * this.countryGeoId.hashCode();
         }
+        if (this.email != null) {
+            hash += 13 * this.email.hashCode();
+        }
+        if (this.contactRole != null) {
+            hash += 13 * this.contactRole.hashCode();
+        }
         return hash;
     }
 
@@ -204,6 +238,8 @@ public class BffBusinessContactDto implements Serializable {
                 ", country=" + '\'' + country + '\'' +
                 ", stateProvinceGeoId=" + '\'' + stateProvinceGeoId + '\'' +
                 ", countryGeoId=" + '\'' + countryGeoId + '\'' +
+                ", email=" + '\'' + email + '\'' +
+                ", contactRole=" + '\'' + contactRole + '\'' +
                 '}';
     }
 

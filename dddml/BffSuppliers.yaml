@@ -30,6 +30,32 @@ valueObjects:
       BusinessContacts:
         itemType: BffBusinessContactDto
         isList: true
+      SupplierShortName:
+        # 供应商的缩写名称
+        type: name
+      TaxId:
+        type: id
+      Gs1CompanyPrefix:
+        description: "GS1 Company Prefix"
+        type: id
+      InternalId:
+        type: id
+      SupplierTypeId:
+        type: id
+      TpaNumber:
+        description: "Trade Partner Agreement Number"
+        type: name
+      CertificationCodes:
+        description: "Certification Codes"
+        type: description
+      BankAccountInformation:
+        description: "Bank Account Information"
+        type: description
+      Email:
+        type: id # todo: email?
+      WebSite:
+        type: url
+
 
 services:
   BffSupplierService:
