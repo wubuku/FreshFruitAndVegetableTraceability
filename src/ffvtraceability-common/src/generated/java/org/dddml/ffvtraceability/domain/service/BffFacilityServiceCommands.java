@@ -95,6 +95,23 @@ public class BffFacilityServiceCommands {
 
     }
 
+    public static class BatchAddFacilities extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facilities
+         */
+        private BffFacilityDto[] facilities;
+
+        public BffFacilityDto[] getFacilities() {
+            return facilities;
+        }
+
+        public void setFacilities(BffFacilityDto[] facilities) {
+            this.facilities = facilities;
+        }
+
+    }
+
     public static class UpdateFacility extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
@@ -151,6 +168,40 @@ public class BffFacilityServiceCommands {
 
         public void setActive(Boolean active) {
             this.active = active;
+        }
+
+    }
+
+    public static class BatchActivateFacilities extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Ids
+         */
+        private String[] facilityIds;
+
+        public String[] getFacilityIds() {
+            return facilityIds;
+        }
+
+        public void setFacilityIds(String[] facilityIds) {
+            this.facilityIds = facilityIds;
+        }
+
+    }
+
+    public static class BatchDeactivateFacilities extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Ids
+         */
+        private String[] facilityIds;
+
+        public String[] getFacilityIds() {
+            return facilityIds;
+        }
+
+        public void setFacilityIds(String[] facilityIds) {
+            this.facilityIds = facilityIds;
         }
 
     }
@@ -275,57 +326,6 @@ public class BffFacilityServiceCommands {
 
     }
 
-    public static class BatchAddFacilities extends org.dddml.ffvtraceability.domain.AbstractCommand {
-
-        /**
-         * Facilities
-         */
-        private BffFacilityDto[] facilities;
-
-        public BffFacilityDto[] getFacilities() {
-            return facilities;
-        }
-
-        public void setFacilities(BffFacilityDto[] facilities) {
-            this.facilities = facilities;
-        }
-
-    }
-
-    public static class BatchActivateFacilities extends org.dddml.ffvtraceability.domain.AbstractCommand {
-
-        /**
-         * Facility Ids
-         */
-        private String[] facilityIds;
-
-        public String[] getFacilityIds() {
-            return facilityIds;
-        }
-
-        public void setFacilityIds(String[] facilityIds) {
-            this.facilityIds = facilityIds;
-        }
-
-    }
-
-    public static class BatchDeactivateFacilities extends org.dddml.ffvtraceability.domain.AbstractCommand {
-
-        /**
-         * Facility Ids
-         */
-        private String[] facilityIds;
-
-        public String[] getFacilityIds() {
-            return facilityIds;
-        }
-
-        public void setFacilityIds(String[] facilityIds) {
-            this.facilityIds = facilityIds;
-        }
-
-    }
-
     public static class UpdateFacilityLocation extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
@@ -408,6 +408,66 @@ public class BffFacilityServiceCommands {
 
         public void setActive(Boolean active) {
             this.active = active;
+        }
+
+    }
+
+    public static class BatchDeactivateLocations extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Location Seq Ids
+         */
+        private String[] locationSeqIds;
+
+        public String[] getLocationSeqIds() {
+            return locationSeqIds;
+        }
+
+        public void setLocationSeqIds(String[] locationSeqIds) {
+            this.locationSeqIds = locationSeqIds;
+        }
+
+    }
+
+    public static class BatchActivateLocations extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Location Seq Ids
+         */
+        private String[] locationSeqIds;
+
+        public String[] getLocationSeqIds() {
+            return locationSeqIds;
+        }
+
+        public void setLocationSeqIds(String[] locationSeqIds) {
+            this.locationSeqIds = locationSeqIds;
         }
 
     }

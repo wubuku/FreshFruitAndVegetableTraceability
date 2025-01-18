@@ -115,6 +115,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
 
     @Override
     public void when(BffLotServiceCommands.BatchAddLots c) {
+
         //todo
     }
 }

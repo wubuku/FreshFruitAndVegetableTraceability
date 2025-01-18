@@ -193,7 +193,7 @@ services:
         parameters:
           FacilityIds:
             itemType: id
-            
+
       # 批量“禁用”
       BatchDeactivateFacilities:
         httpMethod: PUT
@@ -295,6 +295,33 @@ services:
           Active:
             type: boolean
 
+      # 批量禁用 FacilityLocation
+      BatchDeactivateLocations:
+        httpMethod: PUT
+        restfulResourceName: "{FacilityId}/Locations/batchDeactivateLocations"
+        metadata:
+          RestfulPathVariables:
+            - FacilityId
+          HttpRequestBody: LocationSeqIds
+        parameters:
+          FacilityId:
+            type: id
+          LocationSeqIds:
+            itemType: id
+
+      # 批量激活 FacilityLocation
+      BatchActivateLocations:
+        httpMethod: PUT
+        restfulResourceName: "{FacilityId}/Locations/batchActivateLocations"
+        metadata:
+          RestfulPathVariables:
+            - FacilityId
+          HttpRequestBody: LocationSeqIds
+        parameters:
+          FacilityId:
+            type: id
+          LocationSeqIds:
+            itemType: id
 
       UpdateBusinessContact:
         httpMethod: PUT

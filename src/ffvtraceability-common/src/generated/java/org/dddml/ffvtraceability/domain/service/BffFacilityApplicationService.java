@@ -16,9 +16,15 @@ public interface BffFacilityApplicationService {
 
     String when(BffFacilityServiceCommands.CreateFacility c);
 
+    void when(BffFacilityServiceCommands.BatchAddFacilities c);
+
     void when(BffFacilityServiceCommands.UpdateFacility c);
 
     void when(BffFacilityServiceCommands.ActivateFacility c);
+
+    void when(BffFacilityServiceCommands.BatchActivateFacilities c);
+
+    void when(BffFacilityServiceCommands.BatchDeactivateFacilities c);
 
     Iterable<BffFacilityLocationDto> when(BffFacilityServiceCommands.GetFacilityLocations c);
 
@@ -28,15 +34,13 @@ public interface BffFacilityApplicationService {
 
     void when(BffFacilityServiceCommands.BatchAddFacilityLocations c);
 
-    void when(BffFacilityServiceCommands.BatchAddFacilities c);
-
-    void when(BffFacilityServiceCommands.BatchActivateFacilities c);
-
-    void when(BffFacilityServiceCommands.BatchDeactivateFacilities c);
-
     void when(BffFacilityServiceCommands.UpdateFacilityLocation c);
 
     void when(BffFacilityServiceCommands.ActivateFacilityLocation c);
+
+    void when(BffFacilityServiceCommands.BatchDeactivateLocations c);
+
+    void when(BffFacilityServiceCommands.BatchActivateLocations c);
 
     void when(BffFacilityServiceCommands.UpdateBusinessContact c);
 
