@@ -43,6 +43,20 @@ For Windows, use the following command:
 docker run -v .:/myapp wubuku/dddappp-java:master --dddmlDirectoryPath /myapp/dddml --boundedContextName Dddml.FfvTraceability --boundedContextJavaPackageName org.dddml.ffvtraceability --javaProjectsDirectoryPath /myapp/src --javaProjectNamePrefix ffvtraceability --pomGroupId dddml.ffvtraceability
 ```
 
+For powershell, use the following command:
+
+```powershell
+docker run `
+-v ${PWD}:/myapp `
+wubuku/dddappp-java:master `
+--dddmlDirectoryPath /myapp/dddml `
+--boundedContextName Dddml.FfvTraceability `
+--boundedContextJavaPackageName org.dddml.ffvtraceability `
+--javaProjectsDirectoryPath /myapp/src `
+--javaProjectNamePrefix ffvtraceability `
+--pomGroupId dddml.ffvtraceability
+```
+
 
 ### Build project
 
