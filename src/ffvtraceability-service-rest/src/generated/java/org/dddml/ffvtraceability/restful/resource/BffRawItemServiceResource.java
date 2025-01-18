@@ -111,5 +111,29 @@ public class BffRawItemServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PutMapping("batchActivateRawItems")
+    public void batchActivateRawItems(
+        @RequestBody String[] productIds
+    ) {
+        BffRawItemServiceCommands.BatchActivateRawItems batchActivateRawItems = new BffRawItemServiceCommands.BatchActivateRawItems();
+        batchActivateRawItems.setProductIds(productIds);
+        try {
+        batchActivateRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffRawItemApplicationService.when(batchActivateRawItems);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PutMapping("batchDeactivateRawItems")
+    public void batchDeactivateRawItems(
+        @RequestBody String[] productIds
+    ) {
+        BffRawItemServiceCommands.BatchDeactivateRawItems batchDeactivateRawItems = new BffRawItemServiceCommands.BatchDeactivateRawItems();
+        batchDeactivateRawItems.setProductIds(productIds);
+        try {
+        batchDeactivateRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffRawItemApplicationService.when(batchDeactivateRawItems);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 }
 

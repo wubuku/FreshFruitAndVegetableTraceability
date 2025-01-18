@@ -78,7 +78,7 @@ valueObjects:
       DefaultShipmentBoxType:
         # 在需要的时候，返回默认的装运箱类型的详细信息
         type: BffShipmentBoxTypeDto
-        # 在 DefaultShipmentBoxType 中包含“包装尺寸”和“包装重量”信息
+          # 在 DefaultShipmentBoxType 中包含“包装尺寸”和“包装重量”信息
           # DimensionUomId:
           #   type: id
           # BoxLength:
@@ -90,7 +90,7 @@ valueObjects:
           # WeightUomId:
           #   type: id
           # BoxWeight:
-          #   type: fixed-point
+        #   type: fixed-point
       # -------------------------------------------------------------------
       CaseUomId:
         type: id
@@ -193,7 +193,27 @@ services:
         parameters:
           RawItems:
             itemType: BffRawItemDto
- 
+
+      # 批量“激活”
+      BatchActivateRawItems:
+        httpMethod: PUT
+        restfulResourceName: "batchActivateRawItems"
+        metadata:
+          HttpRequestBody: ProductIds
+        parameters:
+          ProductIds:
+            itemType: id
+
+      # 批量“禁用”
+      BatchDeactivateRawItems:
+        httpMethod: PUT
+        restfulResourceName: "batchDeactivateRawItems"
+        metadata:
+          HttpRequestBody: ProductIds
+        parameters:
+          ProductIds:
+            itemType: id
+
       # 关于支持通过 CVS 文件导入 RawItem：
       # 可以为这样的功能单独开发开发一个 RestController。它的方法可以不在 DDDML 模型中定义。
       #

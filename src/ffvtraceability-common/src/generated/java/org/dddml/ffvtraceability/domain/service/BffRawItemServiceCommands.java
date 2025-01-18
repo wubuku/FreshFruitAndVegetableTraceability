@@ -159,6 +159,40 @@ public class BffRawItemServiceCommands {
 
     }
 
+    public static class BatchActivateRawItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Ids
+         */
+        private String[] productIds;
+
+        public String[] getProductIds() {
+            return productIds;
+        }
+
+        public void setProductIds(String[] productIds) {
+            this.productIds = productIds;
+        }
+
+    }
+
+    public static class BatchDeactivateRawItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Ids
+         */
+        private String[] productIds;
+
+        public String[] getProductIds() {
+            return productIds;
+        }
+
+        public void setProductIds(String[] productIds) {
+            this.productIds = productIds;
+        }
+
+    }
+
 
 }
 
