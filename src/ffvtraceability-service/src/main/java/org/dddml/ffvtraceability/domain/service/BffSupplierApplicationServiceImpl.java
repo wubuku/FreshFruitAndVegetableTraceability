@@ -39,6 +39,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     private static final String ERROR_SUPPLIER_NOT_FOUND = "Supplier not found: %s";
     private static final String ERROR_SUPPLIER_ALREADY_EXISTS = "Supplier already exists: %s";
+    private static final String ERROR_DUPLICATE_SUPPLIER = "Duplicate supplier: %s";
 
 
     @Autowired
@@ -284,12 +285,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         for (var supplier : c.getSuppliers()) {
             if (supplier.getSupplierId() != null && !supplier.getSupplierId().isEmpty()) {
                 if (supplierIds.contains(supplier.getSupplierId())) {
-                    throw new IllegalArgumentException("Duplicate supplier ID: " + supplier.getSupplierId());
+                    throw new IllegalArgumentException(String.format(ERROR_DUPLICATE_SUPPLIER, supplier.getSupplierId()));
                 }
-                //再检查提供supplier Id的记录看是否在数据库中已存在？
-//                if (partyApplicationService.get(supplierDto.getSupplierId()) != null) {
-//                    throw new IllegalArgumentException(String.format(ERROR_SUPPLIER_ALREADY_EXISTS, supplierDto.getSupplierId()));
-//                }
                 supplierIds.add(supplier.getSupplierId());
             }
         }

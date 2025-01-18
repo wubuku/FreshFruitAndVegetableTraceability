@@ -42,7 +42,9 @@ import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES
 @Transactional
 public class BffFacilityApplicationServiceImpl implements BffFacilityApplicationService {
 
-    private static final String ERROR_STATE_NOT_FOUND = "State not found: %s";
+    private static final String ERROR_FACILITY_NOT_FOUND = "Facility not found: %s";
+    private static final String ERROR_FACILITY_ALREADY_EXISTS = "Facility already exists: %s";
+    private static final String ERROR_FACILITY_SUPPLIER = "Duplicate facility: %s";
     @Autowired
     private BffFacilityRepository bffFacilityRepository;
     @Autowired
@@ -130,6 +132,15 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Override
     @Transactional
     public String when(BffFacilityServiceCommands.CreateFacility c) {
+        BffFacilityDto facility = c.getFacility();
+        if (facility.getFacilityId() != null && !facility.getFacilityId().trim().isEmpty()) {
+            String facilityId = facility.getFacilityId().trim();
+            FacilityState facilityState = facilityApplicationService.get(facilityId);
+            if (facilityState != null) {
+                throw new IllegalArgumentException(String.format(ERROR_FACILITY_ALREADY_EXISTS, facilityId));
+            }
+            facility.setFacilityId(facilityId);
+        }
         return createSingleFacility(c.getFacility(), c);
     }
 
@@ -141,11 +152,11 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             if (facility.getFacilityId() != null && !facility.getFacilityId().trim().isEmpty()) {
                 String facilityId = facility.getFacilityId().trim();
                 if (facilityIds.contains(facilityId)) {
-                    throw new IllegalArgumentException("设备I重复,Id:" + facilityId);
+                    throw new IllegalArgumentException(String.format(ERROR_FACILITY_SUPPLIER, facilityId));
                 }
                 FacilityState facilityState = facilityApplicationService.get(facilityId);
                 if (facilityState != null) {
-                    throw new IllegalArgumentException("设备已经存在,Id:" + facilityId);
+                    throw new IllegalArgumentException(String.format(ERROR_FACILITY_ALREADY_EXISTS, facilityId));
                 }
                 facility.setFacilityId(facilityId);// 保证不存在空格
                 facilityIds.add(facilityId);
