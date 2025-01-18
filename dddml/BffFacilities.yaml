@@ -241,7 +241,7 @@ services:
         metadata:
           HttpRequestBody: Facilities
         parameters:
-          Suppliers:
+          Facilities:
             itemType: BffFacilityDto
 
       UpdateFacilityLocation:
