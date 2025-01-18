@@ -22,11 +22,11 @@ public class BffLotMapperImpl implements BffLotMapper {
         BffLotDto bffLotDto = new BffLotDto();
 
         bffLotDto.setExpirationDate( instantToOffsetDateTime( bffLotProjection.getExpirationDateInstant() ) );
-        bffLotDto.setLotId( bffLotProjection.getLotId() );
-        bffLotDto.setGs1Batch( bffLotProjection.getGs1Batch() );
-        bffLotDto.setQuantity( bffLotProjection.getQuantity() );
         bffLotDto.setActive( bffLotProjection.getActive() );
+        bffLotDto.setGs1Batch( bffLotProjection.getGs1Batch() );
         bffLotDto.setInternalId( bffLotProjection.getInternalId() );
+        bffLotDto.setLotId( bffLotProjection.getLotId() );
+        bffLotDto.setQuantity( bffLotProjection.getQuantity() );
 
         return bffLotDto;
     }
@@ -39,12 +39,12 @@ public class BffLotMapperImpl implements BffLotMapper {
 
         BffLotDto bffLotDto = new BffLotDto();
 
-        bffLotDto.setLotId( lotState.getLotId() );
-        bffLotDto.setGs1Batch( lotState.getGs1Batch() );
-        bffLotDto.setQuantity( lotState.getQuantity() );
-        bffLotDto.setExpirationDate( lotState.getExpirationDate() );
         bffLotDto.setActive( lotState.getActive() );
+        bffLotDto.setExpirationDate( lotState.getExpirationDate() );
+        bffLotDto.setGs1Batch( lotState.getGs1Batch() );
         bffLotDto.setInternalId( lotState.getInternalId() );
+        bffLotDto.setLotId( lotState.getLotId() );
+        bffLotDto.setQuantity( lotState.getQuantity() );
 
         return bffLotDto;
     }
@@ -58,11 +58,11 @@ public class BffLotMapperImpl implements BffLotMapper {
         AbstractLotCommand.SimpleCreateLot simpleCreateLot = new AbstractLotCommand.SimpleCreateLot();
 
         simpleCreateLot.setLotId( bffLotDto.getLotId() );
-        simpleCreateLot.setQuantity( bffLotDto.getQuantity() );
-        simpleCreateLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleCreateLot.setActive( bffLotDto.getActive() );
+        simpleCreateLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleCreateLot.setGs1Batch( bffLotDto.getGs1Batch() );
         simpleCreateLot.setInternalId( bffLotDto.getInternalId() );
+        simpleCreateLot.setQuantity( bffLotDto.getQuantity() );
 
         return simpleCreateLot;
     }
@@ -76,11 +76,11 @@ public class BffLotMapperImpl implements BffLotMapper {
         AbstractLotCommand.SimpleMergePatchLot simpleMergePatchLot = new AbstractLotCommand.SimpleMergePatchLot();
 
         simpleMergePatchLot.setLotId( bffLotDto.getLotId() );
-        simpleMergePatchLot.setQuantity( bffLotDto.getQuantity() );
-        simpleMergePatchLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleMergePatchLot.setActive( bffLotDto.getActive() );
+        simpleMergePatchLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleMergePatchLot.setGs1Batch( bffLotDto.getGs1Batch() );
         simpleMergePatchLot.setInternalId( bffLotDto.getInternalId() );
+        simpleMergePatchLot.setQuantity( bffLotDto.getQuantity() );
 
         return simpleMergePatchLot;
     }
