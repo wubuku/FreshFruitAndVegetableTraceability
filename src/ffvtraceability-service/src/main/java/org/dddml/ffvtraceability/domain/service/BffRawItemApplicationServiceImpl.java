@@ -32,6 +32,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.GOOD_IDENTIFICATION_TYPE_GTIN;
+import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.GOOD_IDENTIFICATION_TYPE_INTERNAL_ID;
 import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.DEFAULT_CURRENCY_UOM_ID;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
@@ -83,6 +84,8 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             productState.getGoodIdentifications().stream().forEach(x -> {
                 if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN)) {
                     dto.setGtin(x.getIdValue());
+                } else if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID)) {
+                    dto.setInternalId(x.getIdValue());
                 }
             });
             if (productState.getDefaultShipmentBoxTypeId() != null) {
@@ -146,11 +149,12 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(rawItem.getActive()));
 
         if (rawItem.getGtin() != null) {
-            AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification createGoodIdentification = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
-            createGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
-            createGoodIdentification.setIdValue(rawItem.getGtin());
-            createProduct.getCreateGoodIdentificationCommands().add(createGoodIdentification);
+            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin(), createProduct);
         }
+        if (rawItem.getInternalId() != null) {
+            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId(), createProduct);
+        }
+
         if (rawItem.getDefaultShipmentBoxTypeId() != null) {
             createProduct.setDefaultShipmentBoxTypeId(rawItem.getDefaultShipmentBoxTypeId());
         } else if (rawItem.getDefaultShipmentBoxType() != null) {
@@ -162,6 +166,14 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             createSupplierProduct(createProduct.getProductId(), rawItem.getSupplierId(), c);
         }
         return createProduct.getProductId();
+    }
+
+    private void addGoodIdentification(String goodIdentificationTypeId, String idValue,
+                                       AbstractProductCommand.SimpleCreateProduct createProduct) {
+        AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification createGoodIdentification = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
+        createGoodIdentification.setGoodIdentificationTypeId(goodIdentificationTypeId);
+        createGoodIdentification.setIdValue(idValue);
+        createProduct.getCreateGoodIdentificationCommands().add(createGoodIdentification);
     }
 
     private String createShipmentBoxType(BffRawItemDto rawItem, Command c) {

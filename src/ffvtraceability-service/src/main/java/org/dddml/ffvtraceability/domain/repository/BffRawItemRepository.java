@@ -40,6 +40,7 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 p.default_shipment_box_type_id as defaultShipmentBoxTypeId,
                 p.active as active,
                 gi.id_value as gtin,
+                ii.id_value as internalId,
                 party.party_id as supplierId,
                 party.supplier_name as supplierName
                 
@@ -51,6 +52,15 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 FROM good_identification gi
                 WHERE gi.good_identification_type_id = 'GTIN'
             ) gi ON gi.product_id = p.product_id
+            
+            LEFT JOIN (
+                SELECT
+                    gi.product_id,
+                    gi.id_value
+                FROM good_identification gi
+                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.product_id = p.product_id
+            
             LEFT JOIN (
                 SELECT DISTINCT ON (sp.product_id)
                     sp.product_id,
