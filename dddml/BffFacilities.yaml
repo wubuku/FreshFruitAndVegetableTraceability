@@ -246,7 +246,7 @@ services:
 
       # 批量“激活”
       BatchActivateFacilities:
-        httpMethod: POST
+        httpMethod: PUT
         restfulResourceName: "batchActivateFacilities"
         metadata:
           HttpRequestBody: FacilityIds
@@ -256,7 +256,7 @@ services:
 
       # 批量“禁用”
       BatchDeactivateFacilities:
-        httpMethod: POST
+        httpMethod: PUT
         restfulResourceName: "batchDeactivateFacilities"
         metadata:
           HttpRequestBody: FacilityIds

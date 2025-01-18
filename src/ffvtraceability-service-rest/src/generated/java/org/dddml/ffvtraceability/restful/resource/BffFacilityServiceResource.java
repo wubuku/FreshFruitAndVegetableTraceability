@@ -169,7 +169,7 @@ public class BffFacilityServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @PostMapping("batchActivateFacilities")
+    @PutMapping("batchActivateFacilities")
     public void batchActivateFacilities(
         @RequestBody String[] facilityIds
     ) {
@@ -181,7 +181,7 @@ public class BffFacilityServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @PostMapping("batchDeactivateFacilities")
+    @PutMapping("batchDeactivateFacilities")
     public void batchDeactivateFacilities(
         @RequestBody String[] facilityIds
     ) {
