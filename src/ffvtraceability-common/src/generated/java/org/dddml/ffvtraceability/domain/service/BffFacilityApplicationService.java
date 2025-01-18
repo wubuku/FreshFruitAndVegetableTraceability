@@ -28,6 +28,8 @@ public interface BffFacilityApplicationService {
 
     void when(BffFacilityServiceCommands.BatchAddFacilityLocations c);
 
+    void when(BffFacilityServiceCommands.BatchAddFacilities c);
+
     void when(BffFacilityServiceCommands.UpdateFacilityLocation c);
 
     void when(BffFacilityServiceCommands.ActivateFacilityLocation c);
