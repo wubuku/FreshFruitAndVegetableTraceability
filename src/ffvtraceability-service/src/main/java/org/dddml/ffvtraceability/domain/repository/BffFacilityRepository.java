@@ -56,6 +56,7 @@ public interface BffFacilityRepository extends JpaRepository<AbstractFacilitySta
                     SELECT COUNT(*)
                     FROM facility f
                     WHERE (:active IS NULL OR f.active = :active)
+                    AND (:ownerPartyId IS NULL OR f.owner_party_id = :ownerPartyId)
                     """,
             nativeQuery = true)
     Page<BffFacilityProjection> findAllFacilities(Pageable pageable,
