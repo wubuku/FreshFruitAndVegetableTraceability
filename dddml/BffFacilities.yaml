@@ -152,6 +152,16 @@ services:
         result:
           type: id # FacilityId
 
+      BatchAddFacilities:
+        # 批量添加设施
+        httpMethod: POST
+        restfulResourceName: "batchAddFacilities"
+        metadata:
+          HttpRequestBody: Facilities
+        parameters:
+          Facilities:
+            itemType: BffFacilityDto
+
       UpdateFacility:
         httpMethod: PUT
         metadata:
@@ -174,6 +184,25 @@ services:
             type: id
           Active:
             type: boolean
+      # 批量“激活”
+      BatchActivateFacilities:
+        httpMethod: PUT
+        restfulResourceName: "batchActivateFacilities"
+        metadata:
+          HttpRequestBody: FacilityIds
+        parameters:
+          FacilityIds:
+            itemType: id
+            
+      # 批量“禁用”
+      BatchDeactivateFacilities:
+        httpMethod: PUT
+        restfulResourceName: "batchDeactivateFacilities"
+        metadata:
+          HttpRequestBody: FacilityIds
+        parameters:
+          FacilityIds:
+            itemType: id
 
       GetFacilityLocations:
         httpMethod: GET
@@ -233,36 +262,6 @@ services:
             type: id
           FacilityLocations:
             itemType: BffFacilityLocationDto
-
-      BatchAddFacilities:
-        # 批量添加设施
-        httpMethod: POST
-        restfulResourceName: "batchAddFacilities"
-        metadata:
-          HttpRequestBody: Facilities
-        parameters:
-          Facilities:
-            itemType: BffFacilityDto
-
-      # 批量“激活”
-      BatchActivateFacilities:
-        httpMethod: PUT
-        restfulResourceName: "batchActivateFacilities"
-        metadata:
-          HttpRequestBody: FacilityIds
-        parameters:
-          FacilityIds:
-            itemType: id
-
-      # 批量“禁用”
-      BatchDeactivateFacilities:
-        httpMethod: PUT
-        restfulResourceName: "batchDeactivateFacilities"
-        metadata:
-          HttpRequestBody: FacilityIds
-        parameters:
-          FacilityIds:
-            itemType: id
 
       UpdateFacilityLocation:
         httpMethod: PUT
