@@ -23,7 +23,7 @@ Here is the [DDDML model files](../dddml).
 ### Run dddappp Project Creation Tool
 
 
-In repository root directory, run:
+In repository root directory, run (for Linux or macOS):
 
 ```shell
 docker run \
@@ -35,6 +35,12 @@ wubuku/dddappp-java:master \
 --javaProjectsDirectoryPath /myapp/src \
 --javaProjectNamePrefix ffvtraceability \
 --pomGroupId dddml.ffvtraceability
+```
+
+For Windows, use the following command:
+
+```cmd
+docker run -v .:/myapp wubuku/dddappp-java:master --dddmlDirectoryPath /myapp/dddml --boundedContextName Dddml.FfvTraceability --boundedContextJavaPackageName org.dddml.ffvtraceability --javaProjectsDirectoryPath /myapp/src --javaProjectNamePrefix ffvtraceability --pomGroupId dddml.ffvtraceability
 ```
 
 
