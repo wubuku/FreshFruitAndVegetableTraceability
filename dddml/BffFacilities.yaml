@@ -234,6 +234,15 @@ services:
           FacilityLocations:
             itemType: BffFacilityLocationDto
 
+      BatchAddFacilities:
+        # 批量添加设施
+        httpMethod: POST
+        restfulResourceName: "batchAddFacilities"
+        metadata:
+          HttpRequestBody: Facilities
+        parameters:
+          Suppliers:
+            itemType: BffFacilityDto
 
       UpdateFacilityLocation:
         httpMethod: PUT
