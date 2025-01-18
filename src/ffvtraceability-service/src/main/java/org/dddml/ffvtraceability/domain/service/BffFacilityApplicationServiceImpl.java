@@ -29,10 +29,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -133,37 +130,62 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Override
     @Transactional
     public String when(BffFacilityServiceCommands.CreateFacility c) {
-        String facilityId = c.getFacility().getFacilityId() != null ? c.getFacility().getFacilityId()
-                : IdUtils.randomId();
+        return createSingleFacility(c.getFacility(), c);
+    }
+
+    @Override
+    @Transactional
+    public void when(BffFacilityServiceCommands.BatchAddFacilities c) {
+        List<String> facilityIds = new ArrayList<>();
+        Arrays.stream(c.getFacilities()).forEach(facility -> {
+            if (facility.getFacilityId() != null && !facility.getFacilityId().trim().isEmpty()) {
+                String facilityId = facility.getFacilityId().trim();
+                if (facilityIds.contains(facilityId)) {
+                    throw new IllegalArgumentException("设备I重复,Id:" + facilityId);
+                }
+                FacilityState facilityState = facilityApplicationService.get(facilityId);
+                if (facilityState != null) {
+                    throw new IllegalArgumentException("设备已经存在,Id:" + facilityId);
+                }
+                facility.setFacilityId(facilityId);// 保证不存在空格
+                facilityIds.add(facilityId);
+            }
+        });// 这一段纯粹是检查
+
+        // 下面这一段才是真正的添加
+        Arrays.stream(c.getFacilities()).forEach(facility -> {
+            createSingleFacility(facility, c);
+        });
+    }
+
+    private String createSingleFacility(BffFacilityDto facility, Command c) {
         AbstractFacilityCommand.SimpleCreateFacility createFacility = new AbstractFacilityCommand.SimpleCreateFacility();
-        createFacility.setFacilityId(facilityId);
-        createFacility.setFacilityTypeId(c.getFacility().getFacilityTypeId());
-        createFacility.setParentFacilityId(c.getFacility().getParentFacilityId());
-        createFacility.setOwnerPartyId(c.getFacility().getOwnerPartyId()); // TODO 为 null 时填入当前租户对应的 PartyId？
-        createFacility.setFacilityName(c.getFacility().getFacilityName());
-        createFacility.setDescription(c.getFacility().getDescription());
-        createFacility.setFacilitySize(c.getFacility().getFacilitySize());
-        createFacility.setFacilitySizeUomId(c.getFacility().getFacilitySizeUomId());
-        createFacility.setGeoPointId(c.getFacility().getGeoPointId());
-        createFacility.setGeoId(c.getFacility().getGeoId());
+        createFacility.setFacilityId(facility.getFacilityId() != null ? facility.getFacilityId() : IdUtils.randomId());
+        createFacility.setFacilityTypeId(facility.getFacilityTypeId());
+        createFacility.setParentFacilityId(facility.getParentFacilityId());
+        createFacility.setOwnerPartyId(facility.getOwnerPartyId()); // TODO 为 null 时填入当前租户对应的 PartyId？
+        createFacility.setFacilityName(facility.getFacilityName());
+        createFacility.setDescription(facility.getDescription());
+        createFacility.setFacilitySize(facility.getFacilitySize());
+        createFacility.setFacilitySizeUomId(facility.getFacilitySizeUomId());
+        createFacility.setGeoPointId(facility.getGeoPointId());
+        createFacility.setGeoId(facility.getGeoId());
         createFacility.setActive(INDICATOR_YES); // 默认激活
         createFacility.setCommandId(createFacility.getFacilityId());
         createFacility.setRequesterId(c.getRequesterId());
 
-        if (c.getFacility().getFfrn() != null) {
-            addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_FFRN, c.getFacility().getFfrn());
+        if (facility.getFfrn() != null) {
+            addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_FFRN, facility.getFfrn());
         }
-        if (c.getFacility().getGln() != null) {
-            addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_GLN, c.getFacility().getGln());
+        if (facility.getGln() != null) {
+            addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_GLN, facility.getGln());
         }
 
         facilityApplicationService.when(createFacility);
 
-        if (c.getFacility().getBusinessContacts() != null && !c.getFacility().getBusinessContacts().isEmpty()) {
-            createFacilityBusinessContact(createFacility.getFacilityId(), c.getFacility().getBusinessContacts().get(0),
-                    c);
+        if (facility.getBusinessContacts() != null && !facility.getBusinessContacts().isEmpty()) {
+            createFacilityBusinessContact(createFacility.getFacilityId(), facility.getBusinessContacts().get(0), c);
         }
-
         return createFacility.getFacilityId();
     }
 
@@ -292,7 +314,6 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         return null;
     }
 
-
     private void validateFacilityLocation(String facilityId, String locationSeqId) {
         if (facilityId == null) {
             throw new IllegalArgumentException("FacilityId is required.");
@@ -310,8 +331,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             BffFacilityLocationDto location,
             String commandId,
             String requesterId) {
-        AbstractFacilityLocationCommand.SimpleCreateFacilityLocation createLocation =
-                new AbstractFacilityLocationCommand.SimpleCreateFacilityLocation();
+        AbstractFacilityLocationCommand.SimpleCreateFacilityLocation createLocation = new AbstractFacilityLocationCommand.SimpleCreateFacilityLocation();
 
         FacilityLocationId locationId = new FacilityLocationId(facilityId, location.getLocationSeqId());
         createLocation.setFacilityLocationId(locationId);
@@ -337,8 +357,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 c.getFacilityId(),
                 c.getFacilityLocation(),
                 c.getCommandId(),
-                c.getRequesterId()
-        );
+                c.getRequesterId());
     }
 
     @Override
@@ -351,9 +370,8 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                             c.getFacilityId(),
                             location,
                             c.getCommandId(),
-                            //null, // 批量添加时使用locationSeqId作为commandId
-                            c.getRequesterId()
-                    );
+                            // null, // 批量添加时使用locationSeqId作为commandId
+                            c.getRequesterId());
                 });
     }
 
