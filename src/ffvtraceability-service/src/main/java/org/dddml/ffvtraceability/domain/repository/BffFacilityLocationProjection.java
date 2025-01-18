@@ -8,6 +8,8 @@ package org.dddml.ffvtraceability.domain.repository;
 import org.dddml.ffvtraceability.domain.*;
 
 public interface BffFacilityLocationProjection {
+    String getFacilityId();
+
     String getLocationSeqId();
 
     String getLocationTypeEnumId();

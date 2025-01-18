@@ -42,7 +42,7 @@ public class HibernateLotStateQueryRepository implements LotStateQueryRepository
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("LotId", "Quantity", "ExpirationDate", "LotIdentifications", "Active", "Gs1Batch", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("LotId", "Quantity", "ExpirationDate", "LotIdentifications", "Active", "Gs1Batch", "InternalId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

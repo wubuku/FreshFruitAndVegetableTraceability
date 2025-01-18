@@ -70,6 +70,21 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.gs1Batch = gs1Batch;
     }
 
+    /**
+     * Internal Id
+     */
+    private String internalId;
+
+    public String getInternalId()
+    {
+        return this.internalId;
+    }
+
+    public void setInternalId(String internalId)
+    {
+        this.internalId = internalId;
+    }
+
 
     private CreateOrMergePatchLotIdentificationDto[] lotIdentifications = new CreateOrMergePatchLotIdentificationDto[0];
 
@@ -131,6 +146,18 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.isPropertyGs1BatchRemoved = removed;
     }
 
+    private Boolean isPropertyInternalIdRemoved;
+
+    public Boolean getIsPropertyInternalIdRemoved()
+    {
+        return this.isPropertyInternalIdRemoved;
+    }
+
+    public void setIsPropertyInternalIdRemoved(Boolean removed)
+    {
+        this.isPropertyInternalIdRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchLot command)
     {
         ((AbstractLotCommandDto) this).copyTo(command);
@@ -138,6 +165,7 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         command.setExpirationDate(this.getExpirationDate());
         command.setActive(this.getActive());
         command.setGs1Batch(this.getGs1Batch());
+        command.setInternalId(this.getInternalId());
     }
 
     public LotCommand toCommand()
@@ -207,6 +235,7 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         command.setIsPropertyExpirationDateRemoved(this.getIsPropertyExpirationDateRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
         command.setIsPropertyGs1BatchRemoved(this.getIsPropertyGs1BatchRemoved());
+        command.setIsPropertyInternalIdRemoved(this.getIsPropertyInternalIdRemoved());
     }
 
     public static class CreateLotDto extends CreateOrMergePatchLotDto implements LotCommand.CreateLot

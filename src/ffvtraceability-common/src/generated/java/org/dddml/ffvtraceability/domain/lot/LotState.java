@@ -27,6 +27,8 @@ public interface LotState
 
     String getGs1Batch();
 
+    String getInternalId();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -49,6 +51,8 @@ public interface LotState
         void setActive(String active);
 
         void setGs1Batch(String gs1Batch);
+
+        void setInternalId(String internalId);
 
         void setVersion(Long version);
 

@@ -57,6 +57,10 @@ public interface LotEvent extends Event {
 
         void setGs1Batch(String gs1Batch);
 
+        String getInternalId();
+
+        void setInternalId(String internalId);
+
     }
 
     interface LotStateCreated extends LotStateEvent
@@ -88,6 +92,10 @@ public interface LotEvent extends Event {
         Boolean getIsPropertyGs1BatchRemoved();
 
         void setIsPropertyGs1BatchRemoved(Boolean removed);
+
+        Boolean getIsPropertyInternalIdRemoved();
+
+        void setIsPropertyInternalIdRemoved(Boolean removed);
 
 
         Iterable<LotIdentificationEvent> getLotIdentificationEvents();

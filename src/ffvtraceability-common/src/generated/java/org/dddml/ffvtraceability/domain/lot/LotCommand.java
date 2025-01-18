@@ -64,6 +64,10 @@ public interface LotCommand extends Command {
 
         void setGs1Batch(String gs1Batch);
 
+        String getInternalId();
+
+        void setInternalId(String internalId);
+
     }
 
     interface CreateLot extends CreateOrMergePatchLot {
@@ -89,6 +93,10 @@ public interface LotCommand extends Command {
         Boolean getIsPropertyGs1BatchRemoved();
 
         void setIsPropertyGs1BatchRemoved(Boolean removed);
+
+        Boolean getIsPropertyInternalIdRemoved();
+
+        void setIsPropertyInternalIdRemoved(Boolean removed);
 
 
         LotIdentificationCommandCollection getLotIdentificationCommands();

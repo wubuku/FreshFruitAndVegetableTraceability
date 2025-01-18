@@ -18,5 +18,7 @@ public interface BffLotProjection {
     java.time.Instant getExpirationDateInstant();
     String getActive();
 
+    String getInternalId();
+
 }
 

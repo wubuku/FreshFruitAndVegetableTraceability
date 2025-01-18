@@ -201,6 +201,18 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
             this.gs1Batch = gs1Batch;
         }
 
+        private String internalId;
+
+        public String getInternalId()
+        {
+            return this.internalId;
+        }
+
+        public void setInternalId(String internalId)
+        {
+            this.internalId = internalId;
+        }
+
         protected AbstractLotStateEvent(LotEventId eventId) {
             super(eventId);
         }
@@ -323,6 +335,16 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
 
         public void setIsPropertyGs1BatchRemoved(Boolean removed) {
             this.isPropertyGs1BatchRemoved = removed;
+        }
+
+        private Boolean isPropertyInternalIdRemoved;
+
+        public Boolean getIsPropertyInternalIdRemoved() {
+            return this.isPropertyInternalIdRemoved;
+        }
+
+        public void setIsPropertyInternalIdRemoved(Boolean removed) {
+            this.isPropertyInternalIdRemoved = removed;
         }
 
 

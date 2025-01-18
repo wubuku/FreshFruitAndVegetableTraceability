@@ -87,6 +87,18 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
             this.gs1Batch = gs1Batch;
         }
 
+        private String internalId;
+
+        public String getInternalId()
+        {
+            return this.internalId;
+        }
+
+        public void setInternalId(String internalId)
+        {
+            this.internalId = internalId;
+        }
+
         public LotIdentificationCommand.CreateLotIdentification newCreateLotIdentification()
         {
             AbstractLotIdentificationCommand.SimpleCreateLotIdentification c = new AbstractLotIdentificationCommand.SimpleCreateLotIdentification();
@@ -185,6 +197,18 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
         public void setIsPropertyGs1BatchRemoved(Boolean removed)
         {
             this.isPropertyGs1BatchRemoved = removed;
+        }
+
+        private Boolean isPropertyInternalIdRemoved;
+
+        public Boolean getIsPropertyInternalIdRemoved()
+        {
+            return this.isPropertyInternalIdRemoved;
+        }
+
+        public void setIsPropertyInternalIdRemoved(Boolean removed)
+        {
+            this.isPropertyInternalIdRemoved = removed;
         }
 
 

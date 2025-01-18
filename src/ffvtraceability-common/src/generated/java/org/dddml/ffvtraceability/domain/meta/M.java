@@ -2628,6 +2628,7 @@ public class M {
             "expirationDate",
             "active",
             "gs1Batch",
+            "internalId",
             "version",
             "createdBy",
             "createdAt",
@@ -2641,6 +2642,7 @@ public class M {
             "String",
             "java.math.BigDecimal",
             "OffsetDateTime",
+            "String",
             "String",
             "String",
             "Long",
@@ -2674,6 +2676,8 @@ public class M {
         aliasMap.put("Active", "active");
         aliasMap.put("gs1Batch", "gs1Batch");
         aliasMap.put("Gs1Batch", "gs1Batch");
+        aliasMap.put("internalId", "internalId");
+        aliasMap.put("InternalId", "internalId");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

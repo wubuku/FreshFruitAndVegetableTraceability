@@ -74,6 +74,18 @@ public class LotStateDto {
         this.gs1Batch = gs1Batch;
     }
 
+    private String internalId;
+
+    public String getInternalId()
+    {
+        return this.internalId;
+    }
+
+    public void setInternalId(String internalId)
+    {
+        this.internalId = internalId;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -189,6 +201,9 @@ public class LotStateDto {
             }
             if (returnedFieldsContains("Gs1Batch")) {
                 dto.setGs1Batch(state.getGs1Batch());
+            }
+            if (returnedFieldsContains("InternalId")) {
+                dto.setInternalId(state.getInternalId());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

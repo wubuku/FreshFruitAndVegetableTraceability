@@ -55,6 +55,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setExpirationDate(c.getExpirationDate());
         e.setActive(c.getActive());
         e.setGs1Batch(c.getGs1Batch());
+        e.setInternalId(c.getInternalId());
         ((AbstractLotEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -75,10 +76,12 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setExpirationDate(c.getExpirationDate());
         e.setActive(c.getActive());
         e.setGs1Batch(c.getGs1Batch());
+        e.setInternalId(c.getInternalId());
         e.setIsPropertyQuantityRemoved(c.getIsPropertyQuantityRemoved());
         e.setIsPropertyExpirationDateRemoved(c.getIsPropertyExpirationDateRemoved());
         e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
         e.setIsPropertyGs1BatchRemoved(c.getIsPropertyGs1BatchRemoved());
+        e.setIsPropertyInternalIdRemoved(c.getIsPropertyInternalIdRemoved());
         ((AbstractLotEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

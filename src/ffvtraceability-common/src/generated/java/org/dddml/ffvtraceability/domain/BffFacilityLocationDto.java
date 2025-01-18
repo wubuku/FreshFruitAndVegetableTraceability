@@ -9,6 +9,18 @@ import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
 
 public class BffFacilityLocationDto implements Serializable {
+    private String facilityId;
+
+    public String getFacilityId()
+    {
+        return this.facilityId;
+    }
+
+    public void setFacilityId(String facilityId)
+    {
+        this.facilityId = facilityId;
+    }
+
     private String locationSeqId;
 
     public String getLocationSeqId()
@@ -169,8 +181,9 @@ public class BffFacilityLocationDto implements Serializable {
     {
     }
 
-    public BffFacilityLocationDto(String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId, String active, String locationCode, String gln, String description, String locationName)
+    public BffFacilityLocationDto(String facilityId, String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId, String active, String locationCode, String gln, String description, String locationName)
     {
+        this.facilityId = facilityId;
         this.locationSeqId = locationSeqId;
         this.locationTypeEnumId = locationTypeEnumId;
         this.areaId = areaId;
@@ -198,6 +211,7 @@ public class BffFacilityLocationDto implements Serializable {
 
         BffFacilityLocationDto other = (BffFacilityLocationDto)obj;
         return true 
+            && (facilityId == other.facilityId || (facilityId != null && facilityId.equals(other.facilityId)))
             && (locationSeqId == other.locationSeqId || (locationSeqId != null && locationSeqId.equals(other.locationSeqId)))
             && (locationTypeEnumId == other.locationTypeEnumId || (locationTypeEnumId != null && locationTypeEnumId.equals(other.locationTypeEnumId)))
             && (areaId == other.areaId || (areaId != null && areaId.equals(other.areaId)))
@@ -218,6 +232,9 @@ public class BffFacilityLocationDto implements Serializable {
     public int hashCode()
     {
         int hash = 0;
+        if (this.facilityId != null) {
+            hash += 13 * this.facilityId.hashCode();
+        }
         if (this.locationSeqId != null) {
             hash += 13 * this.locationSeqId.hashCode();
         }
@@ -263,7 +280,8 @@ public class BffFacilityLocationDto implements Serializable {
     @Override
     public String toString() {
         return "BffFacilityLocationDto{" +
-                "locationSeqId=" + '\'' + locationSeqId + '\'' +
+                "facilityId=" + '\'' + facilityId + '\'' +
+                ", locationSeqId=" + '\'' + locationSeqId + '\'' +
                 ", locationTypeEnumId=" + '\'' + locationTypeEnumId + '\'' +
                 ", areaId=" + '\'' + areaId + '\'' +
                 ", aisleId=" + '\'' + aisleId + '\'' +

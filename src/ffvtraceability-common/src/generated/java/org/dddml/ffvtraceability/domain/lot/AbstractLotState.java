@@ -64,6 +64,16 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.gs1Batch = gs1Batch;
     }
 
+    private String internalId;
+
+    public String getInternalId() {
+        return this.internalId;
+    }
+
+    public void setInternalId(String internalId) {
+        this.internalId = internalId;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -223,6 +233,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.setExpirationDate(e.getExpirationDate());
         this.setActive(e.getActive());
         this.setGs1Batch(e.getGs1Batch());
+        this.setInternalId(e.getInternalId());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -241,6 +252,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.setExpirationDate(s.getExpirationDate());
         this.setActive(s.getActive());
         this.setGs1Batch(s.getGs1Batch());
+        this.setInternalId(s.getInternalId());
 
         if (s.getLotIdentifications() != null) {
             Iterable<LotIdentificationState> iterable;
@@ -309,6 +321,13 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
             }
         } else {
             this.setGs1Batch(e.getGs1Batch());
+        }
+        if (e.getInternalId() == null) {
+            if (e.getIsPropertyInternalIdRemoved() != null && e.getIsPropertyInternalIdRemoved()) {
+                this.setInternalId(null);
+            }
+        } else {
+            this.setInternalId(e.getInternalId());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

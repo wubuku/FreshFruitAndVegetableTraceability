@@ -22,6 +22,8 @@ valueObjects:
         type: date-time
       Active:
         type: indicator
+      InternalId:
+        type: id
 
 services:
   BffLotService:

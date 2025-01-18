@@ -6,7 +6,6 @@ valueObjects:
     properties:
       FacilityId:
         type: id
-
       FacilityTypeId:
         type: id
       ParentFacilityId:
@@ -76,6 +75,9 @@ valueObjects:
     metadata:
       JpaProjectionInterfaceName: BffFacilityLocationProjection
     properties:
+      FacilityId:
+        type: id
+        # 可以用于查询出“所有设施的所有位置”
       LocationSeqId:
         type: id
       LocationTypeEnumId:
@@ -188,7 +190,6 @@ services:
         result:
           itemType: BffFacilityLocationDto
 
-
       GetFacilityLocation:
         restfulResourceName: "{FacilityId}/Locations/{LocationSeqId}"
         metadata:
@@ -279,3 +280,21 @@ services:
           BusinessContact:
             type: BffBusinessContactDto
 
+  BffFacilityLocationService:
+    restfulResourceName: BffFacilityLocations
+    methods:
+      GetFacilityLocations:
+        # 获取设施位置的列表
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        parameters:
+          Active:
+            type: indicator
+          OwnerPartyId:
+            type: id
+          FacilityId:
+            type: id
+        result:
+          itemType: BffFacilityLocationDto
