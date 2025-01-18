@@ -22,7 +22,8 @@ public interface BffFacilityRepository extends JpaRepository<AbstractFacilitySta
                 f.geo_id as geoId,
                 f.active as active,
                 ffrn.id_value as ffrn,
-                gln.id_value as gln
+                gln.id_value as gln,
+                ii.id_value as internalId
             FROM facility f
             LEFT JOIN (
                 SELECT 
@@ -38,6 +39,15 @@ public interface BffFacilityRepository extends JpaRepository<AbstractFacilitySta
                 FROM facility_identification fi
                 WHERE fi.facility_identification_type_id = 'GLN'
             ) gln ON gln.facility_id = f.facility_id
+            
+            LEFT JOIN (
+                SELECT 
+                    fi.facility_id,
+                    fi.id_value
+                FROM facility_identification fi
+                WHERE fi.facility_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.facility_id = f.facility_id
+            
             WHERE (:active IS NULL OR f.active = :active)
             AND (:ownerPartyId IS NULL OR f.owner_party_id = :ownerPartyId)
             ORDER BY f.created_at DESC

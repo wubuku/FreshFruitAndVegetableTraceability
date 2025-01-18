@@ -14,4 +14,10 @@ public final class BffFacilityConstants {
      * GLN (Global Location Number)
      */
     public static final String FACILITY_IDENTIFICATION_TYPE_GLN = "GLN";
-} 
+
+
+    /**
+     * INTERNAL_ID (Internal ID)
+     */
+    public static final String FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID = "INTERNAL_ID";
+}

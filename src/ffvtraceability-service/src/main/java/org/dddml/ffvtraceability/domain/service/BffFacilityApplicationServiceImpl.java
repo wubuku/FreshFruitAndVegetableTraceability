@@ -33,8 +33,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static org.dddml.ffvtraceability.domain.constants.BffFacilityConstants.FACILITY_IDENTIFICATION_TYPE_FFRN;
-import static org.dddml.ffvtraceability.domain.constants.BffFacilityConstants.FACILITY_IDENTIFICATION_TYPE_GLN;
+import static org.dddml.ffvtraceability.domain.constants.BffFacilityConstants.*;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
 
@@ -116,6 +115,8 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 dto.setGln(x.getIdValue());
             } else if (x.getFacilityIdentificationTypeId().equals(FACILITY_IDENTIFICATION_TYPE_FFRN)) {
                 dto.setFfrn(x.getIdValue());
+            } else if (x.getFacilityIdentificationTypeId().equals(FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID)) {
+                dto.setInternalId(x.getIdValue());
             }
         });
         enrichBusinessContactDetails(dto, c.getFacilityId());
@@ -190,6 +191,9 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         }
         if (facility.getGln() != null) {
             addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_GLN, facility.getGln());
+        }
+        if (facility.getInternalId() != null) {
+            addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID, facility.getInternalId());
         }
 
         facilityApplicationService.when(createFacility);
