@@ -291,17 +291,39 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Override
     @Transactional
     public void when(BffFacilityServiceCommands.ActivateFacility c) {
-        String facilityId = c.getFacilityId();
+        boolean active = c.getActive() != null && c.getActive();
+        updateFacilityActive(c.getFacilityId(), active, c);
+    }
+
+    @Override
+    @Transactional
+    public void when(BffFacilityServiceCommands.BatchActivateFacilities c) {
+        batchUpdateFacilityActive(c.getFacilityIds(), true, c);
+    }
+
+    @Override
+    @Transactional
+    public void when(BffFacilityServiceCommands.BatchDeactivateFacilities c) {
+        batchUpdateFacilityActive(c.getFacilityIds(), false, c);
+    }
+
+    private void batchUpdateFacilityActive(String[] facilityIds, boolean active, Command c) {
+        Arrays.stream(facilityIds).forEach(facilityId -> updateFacilityActive(facilityId, active, c));
+    }
+
+    private void updateFacilityActive(String facilityId, boolean active, Command c) {
         FacilityState facilityState = facilityApplicationService.get(facilityId);
         if (facilityState == null) {
             throw new IllegalArgumentException("Facility not found: " + facilityId);
         }
+
         AbstractFacilityCommand.SimpleMergePatchFacility mergePatchFacility = new AbstractFacilityCommand.SimpleMergePatchFacility();
         mergePatchFacility.setFacilityId(facilityId);
         mergePatchFacility.setVersion(facilityState.getVersion());
-        mergePatchFacility.setActive(c.getActive() ? INDICATOR_YES : INDICATOR_NO);
+        mergePatchFacility.setActive(active ? INDICATOR_YES : INDICATOR_NO);
         mergePatchFacility.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchFacility.setRequesterId(c.getRequesterId());
+
         facilityApplicationService.when(mergePatchFacility);
     }
 
@@ -423,7 +445,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation mergePatchLocation = new AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation();
         mergePatchLocation.setFacilityLocationId(locationId);
         mergePatchLocation.setVersion(locationState.getVersion());
-        mergePatchLocation.setActive(c.getActive() ? INDICATOR_YES : INDICATOR_NO);
+        mergePatchLocation.setActive(c.getActive() != null && c.getActive() ? INDICATOR_YES : INDICATOR_NO);
         mergePatchLocation.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchLocation.setRequesterId(c.getRequesterId());
 

@@ -30,6 +30,10 @@ public interface BffFacilityApplicationService {
 
     void when(BffFacilityServiceCommands.BatchAddFacilities c);
 
+    void when(BffFacilityServiceCommands.BatchActivateFacilities c);
+
+    void when(BffFacilityServiceCommands.BatchDeactivateFacilities c);
+
     void when(BffFacilityServiceCommands.UpdateFacilityLocation c);
 
     void when(BffFacilityServiceCommands.ActivateFacilityLocation c);

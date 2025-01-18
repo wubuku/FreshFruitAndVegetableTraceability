@@ -169,6 +169,30 @@ public class BffFacilityServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping("batchActivateFacilities")
+    public void batchActivateFacilities(
+        @RequestBody String[] facilityIds
+    ) {
+        BffFacilityServiceCommands.BatchActivateFacilities batchActivateFacilities = new BffFacilityServiceCommands.BatchActivateFacilities();
+        batchActivateFacilities.setFacilityIds(facilityIds);
+        try {
+        batchActivateFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffFacilityApplicationService.when(batchActivateFacilities);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PostMapping("batchDeactivateFacilities")
+    public void batchDeactivateFacilities(
+        @RequestBody String[] facilityIds
+    ) {
+        BffFacilityServiceCommands.BatchDeactivateFacilities batchDeactivateFacilities = new BffFacilityServiceCommands.BatchDeactivateFacilities();
+        batchDeactivateFacilities.setFacilityIds(facilityIds);
+        try {
+        batchDeactivateFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffFacilityApplicationService.when(batchDeactivateFacilities);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @PutMapping("{facilityId}/Locations/{locationSeqId}")
     public void updateFacilityLocation(
         @PathVariable("facilityId") String facilityId,

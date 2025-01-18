@@ -244,6 +244,26 @@ services:
           Facilities:
             itemType: BffFacilityDto
 
+      # 批量“激活”
+      BatchActivateFacilities:
+        httpMethod: POST
+        restfulResourceName: "batchActivateFacilities"
+        metadata:
+          HttpRequestBody: FacilityIds
+        parameters:
+          FacilityIds:
+            itemType: id
+
+      # 批量“禁用”
+      BatchDeactivateFacilities:
+        httpMethod: POST
+        restfulResourceName: "batchDeactivateFacilities"
+        metadata:
+          HttpRequestBody: FacilityIds
+        parameters:
+          FacilityIds:
+            itemType: id
+
       UpdateFacilityLocation:
         httpMethod: PUT
         restfulResourceName: "{FacilityId}/Locations/{LocationSeqId}"
