@@ -87,6 +87,12 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
                 dto.setGln(x.getIdValue());
             } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GGN)) {
                 dto.setGgn(x.getIdValue());
+            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX)) {
+                dto.setGs1CompanyPrefix(x.getIdValue());
+            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_TAX_ID)) {
+                dto.setTaxId(x.getIdValue());
+            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID)) {
+                dto.setInternalId(x.getIdValue());
             }
         });
         enrichBusinessContactDetails(dto, c.getSupplierId());
@@ -260,6 +266,15 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         }
         if (supplier.getGln() != null) {
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GLN, supplier.getGln());
+        }
+        if (supplier.getInternalId() != null) {
+            addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, supplier.getInternalId());
+        }
+        if (supplier.getGs1CompanyPrefix() != null) {
+            addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX, supplier.getGs1CompanyPrefix());
+        }
+        if (supplier.getTaxId() != null) {
+            addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_TAX_ID, supplier.getTaxId());
         }
         createParty.setStatusId(PARTY_STATUS_ACTIVE); // default status
         createParty.setCommandId(c.getCommandId() != null ? c.getCommandId() : createParty.getPartyId());
