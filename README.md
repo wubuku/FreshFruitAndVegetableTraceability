@@ -272,13 +272,18 @@ Transformation CTE: for foods used in transformation:
 Foods produced through transformation.
 
 * For each FTL food produced through transformation, the following information should be recorded:
-  * Traceabilitylotcode
+  * Traceability lot code
   * Product description
   * Quantity and Unit of Measure
-  * Transformationdate
+  * Transformation date
   * The location where you transformed the food. This is also known as the TLC Source and may be pointed to using TLC Source Reference.
   * Referenced Document Type and Number.
   * For each traceability lot produced through transformation of a raw agricultural commodity (other than a food obtained from a fishing vessel) on the Food Traceability List that was not initially packed prior to your transformation of the food, you must maintain records containing the information specified in § 1.1330(a) Initial Packing or (c) Initial Packing of foods from exempt entities, and, if the raw agricultural commodity is sprouts, the information specified in § 1.1330(b) Initial Packing of Sprouts.
+
+> § 1.1330 What records must I keep when I am performing the initial packing of a raw agricultural commodity (other than a food obtained from a fishing vessel) on the Food Traceability List?
+> 
+> https://www.ecfr.gov/current/title-21/section-1.1330
+
 
 ##### Sortable Spreadsheets
 
@@ -881,6 +886,26 @@ https://www.gs1.org/standards/fresh-fruit-and-vegetable-traceability-guideline/c
 12. UOM (Unit of Measure):
     - 计量单位
     - 用于描述产品数量的标准单位
+
+
+### RAC 和 RTE
+
+在食品工业中，特别是在食品安全和可追溯性的语境下：
+
+- RAC (Raw Agricultural Commodity)
+  - 原始农产品
+  - 指未经加工的农产品，如刚从田地收获的水果、蔬菜等
+  - 例如：新鲜采摘的生菜、未清洗的胡萝卜等
+
+- RTE (Ready-To-Eat)
+  - 即食食品
+  - 指可以直接食用，无需进一步烹饪或加工的食品
+  - 例如：预包装沙拉、切好的水果等
+
+这两个术语在食品安全监管中经常出现，特别是在 FSMA（食品安全现代化法案）的背景下：
+
+- RAC 通常需要更严格的初始处理和清洗程序
+- RTE 产品因为可以直接食用，所以在加工过程中需要更高的卫生标准和更严格的控制措施。
 
 
 ### GIAI 和 GRAI（资产标识）
