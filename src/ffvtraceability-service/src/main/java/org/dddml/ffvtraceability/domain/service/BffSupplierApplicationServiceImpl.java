@@ -221,10 +221,10 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         if (partyState == null) {
             throw new IllegalArgumentException(String.format(ERROR_SUPPLIER_NOT_FOUND, c.getSupplierId()));
         }
-        AbstractPartyCommand.SimpleMergePatchParty mergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
+        AbstractPartyCommand.SimpleMergePatchOrganization mergePatchParty = new AbstractPartyCommand.SimpleMergePatchOrganization();
         mergePatchParty.setPartyId(supplierId);
         mergePatchParty.setVersion(partyState.getVersion());
-        if (c.getActive()) {
+        if (c.getActive() != null && c.getActive()) {
             mergePatchParty.setStatusId(PARTY_STATUS_ACTIVE);
         } else {
             mergePatchParty.setStatusId(PARTY_STATUS_INACTIVE);
@@ -294,6 +294,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     }
 
     @Override
+    @Transactional
     public void when(BffSupplierServiceCommands.BatchAddSuppliers c) {
         //首先查看提供了supplier Id的记录，看是否有重复。
         List<String> supplierIds = new ArrayList<>();
@@ -315,6 +316,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     }
 
     @Override
+    @Transactional
     public void when(BffSupplierServiceCommands.BatchActivateSuppliers c) {
         Arrays.stream(c.getSupplierIds()).forEach(supplierId -> {
             PartyState partyState = partyApplicationService.get(supplierId);
@@ -322,7 +324,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
                 throw new IllegalArgumentException(String.format(ERROR_SUPPLIER_NOT_FOUND, supplierId));
             }
             if (!partyState.getStatusId().equals(PARTY_STATUS_ACTIVE)) {
-                AbstractPartyCommand.SimpleMergePatchParty mergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
+                AbstractPartyCommand.SimpleMergePatchOrganization mergePatchParty = new AbstractPartyCommand.SimpleMergePatchOrganization();
                 mergePatchParty.setPartyId(supplierId);
                 mergePatchParty.setVersion(partyState.getVersion());
                 mergePatchParty.setStatusId(PARTY_STATUS_ACTIVE);
@@ -334,6 +336,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     }
 
     @Override
+    @Transactional
     public void when(BffSupplierServiceCommands.BatchDeactivateSuppliers c) {
         Arrays.stream(c.getSupplierIds()).forEach(supplierId -> {
             PartyState partyState = partyApplicationService.get(supplierId);
@@ -341,7 +344,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
                 throw new IllegalArgumentException(String.format(ERROR_SUPPLIER_NOT_FOUND, supplierId));
             }
             if (!partyState.getStatusId().equals(PARTY_STATUS_INACTIVE)) {
-                AbstractPartyCommand.SimpleMergePatchParty mergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
+                AbstractPartyCommand.SimpleMergePatchOrganization mergePatchParty = new AbstractPartyCommand.SimpleMergePatchOrganization();
                 mergePatchParty.setPartyId(supplierId);
                 mergePatchParty.setVersion(partyState.getVersion());
                 mergePatchParty.setStatusId(PARTY_STATUS_INACTIVE);
