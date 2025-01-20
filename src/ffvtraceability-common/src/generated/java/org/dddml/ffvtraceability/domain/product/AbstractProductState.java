@@ -644,6 +644,16 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.caseUomId = caseUomId;
     }
 
+    private String produceVariety;
+
+    public String getProduceVariety() {
+        return this.produceVariety;
+    }
+
+    public void setProduceVariety(String produceVariety) {
+        this.produceVariety = produceVariety;
+    }
+
     private String organicCertifications;
 
     public String getOrganicCertifications() {
@@ -921,6 +931,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setOrderDecimalQuantity(e.getOrderDecimalQuantity());
         this.setActive(e.getActive());
         this.setCaseUomId(e.getCaseUomId());
+        this.setProduceVariety(e.getProduceVariety());
         this.setOrganicCertifications(e.getOrganicCertifications());
         this.setMaterialCompositionDescription(e.getMaterialCompositionDescription());
         this.setCountryOfOrigin(e.getCountryOfOrigin());
@@ -1003,6 +1014,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setOrderDecimalQuantity(s.getOrderDecimalQuantity());
         this.setActive(s.getActive());
         this.setCaseUomId(s.getCaseUomId());
+        this.setProduceVariety(s.getProduceVariety());
         this.setOrganicCertifications(s.getOrganicCertifications());
         this.setMaterialCompositionDescription(s.getMaterialCompositionDescription());
         this.setCountryOfOrigin(s.getCountryOfOrigin());
@@ -1483,6 +1495,13 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             }
         } else {
             this.setCaseUomId(e.getCaseUomId());
+        }
+        if (e.getProduceVariety() == null) {
+            if (e.getIsPropertyProduceVarietyRemoved() != null && e.getIsPropertyProduceVarietyRemoved()) {
+                this.setProduceVariety(null);
+            }
+        } else {
+            this.setProduceVariety(e.getProduceVariety());
         }
         if (e.getOrganicCertifications() == null) {
             if (e.getIsPropertyOrganicCertificationsRemoved() != null && e.getIsPropertyOrganicCertificationsRemoved()) {

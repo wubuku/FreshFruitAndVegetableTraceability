@@ -783,6 +783,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
             this.caseUomId = caseUomId;
         }
 
+        private String produceVariety;
+
+        public String getProduceVariety()
+        {
+            return this.produceVariety;
+        }
+
+        public void setProduceVariety(String produceVariety)
+        {
+            this.produceVariety = produceVariety;
+        }
+
         private String organicCertifications;
 
         public String getOrganicCertifications()
@@ -1649,6 +1661,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
         public void setIsPropertyCaseUomIdRemoved(Boolean removed)
         {
             this.isPropertyCaseUomIdRemoved = removed;
+        }
+
+        private Boolean isPropertyProduceVarietyRemoved;
+
+        public Boolean getIsPropertyProduceVarietyRemoved()
+        {
+            return this.isPropertyProduceVarietyRemoved;
+        }
+
+        public void setIsPropertyProduceVarietyRemoved(Boolean removed)
+        {
+            this.isPropertyProduceVarietyRemoved = removed;
         }
 
         private Boolean isPropertyOrganicCertificationsRemoved;

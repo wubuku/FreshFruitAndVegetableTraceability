@@ -120,6 +120,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setOrderDecimalQuantity(c.getOrderDecimalQuantity());
         e.setActive(c.getActive());
         e.setCaseUomId(c.getCaseUomId());
+        e.setProduceVariety(c.getProduceVariety());
         e.setOrganicCertifications(c.getOrganicCertifications());
         e.setMaterialCompositionDescription(c.getMaterialCompositionDescription());
         e.setCountryOfOrigin(c.getCountryOfOrigin());
@@ -211,6 +212,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setOrderDecimalQuantity(c.getOrderDecimalQuantity());
         e.setActive(c.getActive());
         e.setCaseUomId(c.getCaseUomId());
+        e.setProduceVariety(c.getProduceVariety());
         e.setOrganicCertifications(c.getOrganicCertifications());
         e.setMaterialCompositionDescription(c.getMaterialCompositionDescription());
         e.setCountryOfOrigin(c.getCountryOfOrigin());
@@ -279,6 +281,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setIsPropertyOrderDecimalQuantityRemoved(c.getIsPropertyOrderDecimalQuantityRemoved());
         e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
         e.setIsPropertyCaseUomIdRemoved(c.getIsPropertyCaseUomIdRemoved());
+        e.setIsPropertyProduceVarietyRemoved(c.getIsPropertyProduceVarietyRemoved());
         e.setIsPropertyOrganicCertificationsRemoved(c.getIsPropertyOrganicCertificationsRemoved());
         e.setIsPropertyMaterialCompositionDescriptionRemoved(c.getIsPropertyMaterialCompositionDescriptionRemoved());
         e.setIsPropertyCountryOfOriginRemoved(c.getIsPropertyCountryOfOriginRemoved());

@@ -210,6 +210,9 @@
       <property name="caseUomId">
         <column name="case_uom_id" sql-type="VARCHAR(20)" />
       </property>
+      <property name="produceVariety">
+        <column name="produce_variety" sql-type="VARCHAR(100)" />
+      </property>
       <property name="organicCertifications">
         <column name="organic_certifications" sql-type="VARCHAR(255)" />
       </property>
@@ -292,6 +295,7 @@
         <property name="isPropertyOrderDecimalQuantityRemoved" column="is_property_order_decimal_quantity_removed" />
         <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
         <property name="isPropertyCaseUomIdRemoved" column="is_property_case_uom_id_removed" />
+        <property name="isPropertyProduceVarietyRemoved" column="is_property_produce_variety_removed" />
         <property name="isPropertyOrganicCertificationsRemoved" column="is_property_organic_certifications_removed" />
         <property name="isPropertyMaterialCompositionDescriptionRemoved" column="is_property_material_composition_description_removed" />
         <property name="isPropertyCountryOfOriginRemoved" column="is_property_country_of_origin_removed" />

@@ -197,6 +197,9 @@
     <property name="caseUomId">
       <column name="case_uom_id" sql-type="VARCHAR(20)" />
     </property>
+    <property name="produceVariety">
+      <column name="produce_variety" sql-type="VARCHAR(100)" />
+    </property>
     <property name="organicCertifications">
       <column name="organic_certifications" sql-type="VARCHAR(255)" />
     </property>

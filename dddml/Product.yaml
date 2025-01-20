@@ -222,6 +222,8 @@
         type: indicator
       CaseUomId:
         type: id
+      ProduceVariety:
+        type: name
       OrganicCertifications:
         type: description
       MaterialCompositionDescription:

@@ -770,6 +770,18 @@ public class ProductStateDto {
         this.caseUomId = caseUomId;
     }
 
+    private String produceVariety;
+
+    public String getProduceVariety()
+    {
+        return this.produceVariety;
+    }
+
+    public void setProduceVariety(String produceVariety)
+    {
+        this.produceVariety = produceVariety;
+    }
+
     private String organicCertifications;
 
     public String getOrganicCertifications()
@@ -1131,6 +1143,9 @@ public class ProductStateDto {
             }
             if (returnedFieldsContains("CaseUomId")) {
                 dto.setCaseUomId(state.getCaseUomId());
+            }
+            if (returnedFieldsContains("ProduceVariety")) {
+                dto.setProduceVariety(state.getProduceVariety());
             }
             if (returnedFieldsContains("OrganicCertifications")) {
                 dto.setOrganicCertifications(state.getOrganicCertifications());
