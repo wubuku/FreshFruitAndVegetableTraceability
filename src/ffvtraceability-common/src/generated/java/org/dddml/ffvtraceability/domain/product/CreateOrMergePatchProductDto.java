@@ -941,6 +941,21 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
     }
 
     /**
+     * Produce Variety
+     */
+    private String produceVariety;
+
+    public String getProduceVariety()
+    {
+        return this.produceVariety;
+    }
+
+    public void setProduceVariety(String produceVariety)
+    {
+        this.produceVariety = produceVariety;
+    }
+
+    /**
      * Organic Certifications
      */
     private String organicCertifications;
@@ -1787,6 +1802,18 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         this.isPropertyCaseUomIdRemoved = removed;
     }
 
+    private Boolean isPropertyProduceVarietyRemoved;
+
+    public Boolean getIsPropertyProduceVarietyRemoved()
+    {
+        return this.isPropertyProduceVarietyRemoved;
+    }
+
+    public void setIsPropertyProduceVarietyRemoved(Boolean removed)
+    {
+        this.isPropertyProduceVarietyRemoved = removed;
+    }
+
     private Boolean isPropertyOrganicCertificationsRemoved;
 
     public Boolean getIsPropertyOrganicCertificationsRemoved()
@@ -1924,6 +1951,7 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setOrderDecimalQuantity(this.getOrderDecimalQuantity());
         command.setActive(this.getActive());
         command.setCaseUomId(this.getCaseUomId());
+        command.setProduceVariety(this.getProduceVariety());
         command.setOrganicCertifications(this.getOrganicCertifications());
         command.setMaterialCompositionDescription(this.getMaterialCompositionDescription());
         command.setCountryOfOrigin(this.getCountryOfOrigin());
@@ -2057,6 +2085,7 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setIsPropertyOrderDecimalQuantityRemoved(this.getIsPropertyOrderDecimalQuantityRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
         command.setIsPropertyCaseUomIdRemoved(this.getIsPropertyCaseUomIdRemoved());
+        command.setIsPropertyProduceVarietyRemoved(this.getIsPropertyProduceVarietyRemoved());
         command.setIsPropertyOrganicCertificationsRemoved(this.getIsPropertyOrganicCertificationsRemoved());
         command.setIsPropertyMaterialCompositionDescriptionRemoved(this.getIsPropertyMaterialCompositionDescriptionRemoved());
         command.setIsPropertyCountryOfOriginRemoved(this.getIsPropertyCountryOfOriginRemoved());

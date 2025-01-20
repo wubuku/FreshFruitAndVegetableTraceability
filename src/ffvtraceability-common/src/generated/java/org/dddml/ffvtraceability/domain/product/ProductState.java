@@ -143,6 +143,8 @@ public interface ProductState
 
     String getCaseUomId();
 
+    String getProduceVariety();
+
     String getOrganicCertifications();
 
     String getMaterialCompositionDescription();
@@ -293,6 +295,8 @@ public interface ProductState
         void setActive(String active);
 
         void setCaseUomId(String caseUomId);
+
+        void setProduceVariety(String produceVariety);
 
         void setOrganicCertifications(String organicCertifications);
 

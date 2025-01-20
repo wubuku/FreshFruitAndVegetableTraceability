@@ -289,6 +289,10 @@ public interface ProductEvent extends Event {
 
         void setCaseUomId(String caseUomId);
 
+        String getProduceVariety();
+
+        void setProduceVariety(String produceVariety);
+
         String getOrganicCertifications();
 
         void setOrganicCertifications(String organicCertifications);
@@ -576,6 +580,10 @@ public interface ProductEvent extends Event {
         Boolean getIsPropertyCaseUomIdRemoved();
 
         void setIsPropertyCaseUomIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyProduceVarietyRemoved();
+
+        void setIsPropertyProduceVarietyRemoved(Boolean removed);
 
         Boolean getIsPropertyOrganicCertificationsRemoved();
 
