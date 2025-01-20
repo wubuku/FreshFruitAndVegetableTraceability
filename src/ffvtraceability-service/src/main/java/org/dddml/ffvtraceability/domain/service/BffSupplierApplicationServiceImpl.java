@@ -13,6 +13,7 @@ import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechState;
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
+import org.dddml.ffvtraceability.domain.partyrole.PartyRoleState;
 import org.dddml.ffvtraceability.domain.repository.BffBusinessContactRepository;
 import org.dddml.ffvtraceability.domain.repository.BffPartyContactMechRepository;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierRepository;
@@ -82,6 +83,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             return null;
         }
         BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(partyState);
+
+
         partyState.getPartyIdentifications().stream().forEach(x -> {
             if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GLN)) {
                 dto.setGln(x.getIdValue());
@@ -95,11 +98,24 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
                 dto.setInternalId(x.getIdValue());
             }
         });
+        PartyRoleId partyRoleId = new PartyRoleId();
+        partyRoleId.setPartyId(c.getSupplierId());
+        partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
+        PartyRoleState partyRoleState = partyRoleApplicationService.get(partyRoleId);
+        if (partyRoleState != null) {
+            dto.setBankAccountInformation(partyRoleState.getBankAccountInformation());
+            dto.setCertificationCodes(partyRoleState.getCertificationCodes());
+            dto.setSupplierShortName(partyRoleState.getSupplierShortName());
+            dto.setTpaNumber(partyRoleState.getTpaNumber());
+            dto.setSupplierProductTypeDescription(partyRoleState.getSupplierProductTypeDescription());
+            dto.setSupplierTypeEnumId(partyRoleState.getSupplierTypeEnumId());
+        }
         enrichBusinessContactDetails(dto, c.getSupplierId());
         return dto;
     }
 
     private void enrichBusinessContactDetails(BffSupplierDto dto, String supplierId) {
+
         bffPartyContactMechRepository.findPartyCurrentPostalAddressByPartyId(supplierId).ifPresent(x -> {
             BffBusinessContactDto bc = new BffBusinessContactDto();
             bc.setBusinessName(x.getToName());
@@ -260,6 +276,11 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         createParty.setOrganizationName(supplier.getSupplierName());
         createParty.setExternalId(supplier.getExternalId());
         createParty.setDescription(supplier.getDescription());
+        createParty.setWebSite(supplier.getWebSite());
+        createParty.setEmail(supplier.getEmail());
+        createParty.setTelephone(supplier.getTelephone());
+
+
         createParty.setPreferredCurrencyUomId(supplier.getPreferredCurrencyUomId() != null ? supplier.getPreferredCurrencyUomId() : DEFAULT_PREFERRED_CURRENCY_UOM_ID);
         if (supplier.getGgn() != null) {
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GGN, supplier.getGgn());
@@ -288,6 +309,12 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         createPartyRole.setPartyRoleId(partyRoleId);
         createPartyRole.setCommandId(createParty.getCommandId() + "-SPP");
         createPartyRole.setRequesterId(c.getRequesterId());
+        createPartyRole.setBankAccountInformation(supplier.getBankAccountInformation());
+        createPartyRole.setCertificationCodes(supplier.getCertificationCodes());
+        createPartyRole.setSupplierShortName(supplier.getSupplierShortName());
+        createPartyRole.setTpaNumber(supplier.getTpaNumber());
+        createPartyRole.setSupplierProductTypeDescription(supplier.getSupplierProductTypeDescription());
+        createPartyRole.setSupplierTypeEnumId(supplier.getSupplierTypeEnumId());
         partyRoleApplicationService.when(createPartyRole);
 
         return createParty.getPartyId();
