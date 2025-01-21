@@ -66,6 +66,7 @@ public class BffBusinessContactServiceImpl implements BffBusinessContactService 
         AbstractContactMechCommand.SimpleCreateMiscContactMech createMiscContactMech = new AbstractContactMechCommand.SimpleCreateMiscContactMech();
         createMiscContactMech.setEmail(bizContact.getEmail());
         createMiscContactMech.setAskForRole(bizContact.getContactRole());
+        createMiscContactMech.setAskForName(bizContact.getBusinessName());
         createMiscContactMech.setContactMechId(IdUtils.randomId());
         return createMiscContactMech;
     }

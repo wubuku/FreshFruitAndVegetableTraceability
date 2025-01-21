@@ -351,26 +351,22 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         return null;
     }
 
-    private void validateFacilityLocation(String facilityId, String locationSeqId) {
-        if (facilityId == null) {
-            throw new IllegalArgumentException("FacilityId is required.");
-        }
-        if (locationSeqId == null) {
-            throw new IllegalArgumentException("LocationSeqId is required.");
-        }
-        if (!locationSeqId.startsWith(facilityId)) {
-            throw new IllegalArgumentException("LocationSeqId must start with FacilityId.");
-        }
-    }
-
     private void createSingleFacilityLocation(
             String facilityId,
             BffFacilityLocationDto location,
             String commandId,
             String requesterId) {
         AbstractFacilityLocationCommand.SimpleCreateFacilityLocation createLocation = new AbstractFacilityLocationCommand.SimpleCreateFacilityLocation();
-
-        FacilityLocationId locationId = new FacilityLocationId(facilityId, location.getLocationSeqId());
+        FacilityLocationId locationId = new FacilityLocationId();
+        locationId.setFacilityId(facilityId);
+        if (location.getLocationSeqId() != null) {
+            locationId.setLocationSeqId(location.getLocationSeqId());
+            if (facilityLocationApplicationService.get(locationId) != null) {
+                throw new IllegalArgumentException(String.format("Location already exists.Location:%s,%s", facilityId, location.getLocationSeqId()));
+            }
+        } else {
+            locationId.setLocationSeqId(IdUtils.randomId());
+        }
         createLocation.setFacilityLocationId(locationId);
         createLocation.setLocationTypeEnumId(location.getLocationTypeEnumId());
         createLocation.setAreaId(location.getAreaId());
@@ -379,6 +375,10 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         createLocation.setLevelId(location.getLevelId());
         createLocation.setPositionId(location.getPositionId());
         createLocation.setGeoPointId(location.getGeoPointId());
+        createLocation.setLocationName(location.getLocationName());
+        createLocation.setLocationCode(location.getLocationCode());
+        createLocation.setDescription(location.getDescription());
+        createLocation.setGln(location.getGln());
         createLocation.setActive(INDICATOR_YES); // 默认激活
         createLocation.setCommandId(commandId != null ? commandId : locationId.getLocationSeqId());
         createLocation.setRequesterId(requesterId);
@@ -389,7 +389,12 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Override
     @Transactional
     public void when(BffFacilityServiceCommands.CreateFacilityLocation c) {
-        validateFacilityLocation(c.getFacilityId(), c.getFacilityLocation().getLocationSeqId());
+        if (c.getFacilityLocation() == null) {
+            throw new NullPointerException("Location cant be null");
+        }
+        if (c.getFacilityLocation().getLocationName() == null && c.getFacilityLocation().getLocationSeqId() == null) {
+            throw new IllegalArgumentException("LocationSeqId and LocationName cannot both be null");
+        }
         createSingleFacilityLocation(
                 c.getFacilityId(),
                 c.getFacilityLocation(),
@@ -400,14 +405,29 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Override
     @Transactional
     public void when(BffFacilityServiceCommands.BatchAddFacilityLocations c) {
+        if (c.getFacilityId() == null) {
+            throw new IllegalArgumentException("FacilityId is required.");
+        }
+        //首先查看一下有没有重复的LocationSeqId
+        List<String> locationSeqIds = new ArrayList<>();
+        Arrays.stream(c.getFacilityLocations()).forEach(location -> {
+            if (location.getLocationSeqId() != null) {
+                if (locationSeqIds.contains(location.getLocationSeqId())) {
+                    throw new IllegalArgumentException(String.format("Duplicate Location:%s", location.getLocationSeqId()));
+                }
+                locationSeqIds.add(location.getLocationSeqId());
+            } else {
+                if (location.getLocationName() == null || location.getLocationName().isBlank()) {
+                    throw new IllegalArgumentException("LocationSeqId and LocationName cannot both be null");
+                }
+            }
+        });
         Arrays.stream(c.getFacilityLocations())
                 .forEach(location -> {
-                    validateFacilityLocation(c.getFacilityId(), location.getLocationSeqId());
                     createSingleFacilityLocation(
                             c.getFacilityId(),
                             location,
                             c.getCommandId(),
-                            // null, // 批量添加时使用locationSeqId作为commandId
                             c.getRequesterId());
                 });
     }

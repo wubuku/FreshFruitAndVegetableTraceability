@@ -32,6 +32,7 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
         bffReceivingDocumentDto.setPrimaryOrderId( documentItemProjection.getPrimaryOrderId() );
         bffReceivingDocumentDto.setPrimaryReturnId( documentItemProjection.getPrimaryReturnId() );
         bffReceivingDocumentDto.setPrimaryShipGroupSeqId( documentItemProjection.getPrimaryShipGroupSeqId() );
+        bffReceivingDocumentDto.setQaInspectionStatusId( documentItemProjection.getQaInspectionStatusId() );
         bffReceivingDocumentDto.setQaStatusId( documentItemProjection.getQaStatusId() );
         bffReceivingDocumentDto.setStatusId( documentItemProjection.getStatusId() );
 
@@ -54,6 +55,7 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
         bffReceivingItemDto.setLotId( documentItemProjection.getLotId() );
         bffReceivingItemDto.setOrderId( documentItemProjection.getOrderId() );
         bffReceivingItemDto.setOrderItemSeqId( documentItemProjection.getOrderItemSeqId() );
+        bffReceivingItemDto.setOutstandingOrderQuantity( documentItemProjection.getOutstandingOrderQuantity() );
         bffReceivingItemDto.setProductId( documentItemProjection.getProductId() );
         bffReceivingItemDto.setProductName( documentItemProjection.getProductName() );
         bffReceivingItemDto.setQuantityAccepted( documentItemProjection.getQuantityAccepted() );
