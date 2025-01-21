@@ -31,8 +31,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.GOOD_IDENTIFICATION_TYPE_GTIN;
-import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.GOOD_IDENTIFICATION_TYPE_INTERNAL_ID;
+import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.*;
 import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.DEFAULT_CURRENCY_UOM_ID;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
@@ -86,6 +85,8 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                     dto.setGtin(x.getIdValue());
                 } else if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID)) {
                     dto.setInternalId(x.getIdValue());
+                } else if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_HS_CODE)) {
+                    dto.setHsCode(x.getIdValue());
                 }
             });
             if (productState.getDefaultShipmentBoxTypeId() != null) {
@@ -122,9 +123,17 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         // quantityUomId=oz, piecesIncluded=6.
         createProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
         createProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
-        createProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : createProduct.getProductId());
-        createProduct.setRequesterId(c.getRequesterId());
         createProduct.setDescription(rawItem.getDescription());
+        createProduct.setBrandName(rawItem.getBrandName());
+        createProduct.setProduceVariety(rawItem.getProduceVariety());
+        createProduct.setOrganicCertifications(rawItem.getOrganicCertifications());
+        createProduct.setCountryOfOrigin(rawItem.getCountryOfOrigin());
+        createProduct.setShelfLifeDescription(rawItem.getShelfLifeDescription());
+        createProduct.setHandlingInstructions(rawItem.getHandlingInstructions());
+        createProduct.setStorageConditions(rawItem.getStorageConditions());
+        createProduct.setMaterialCompositionDescription(rawItem.getMaterialCompositionDescription());
+        createProduct.setCertificationCodes(rawItem.getCertificationCodes());
+
 
         // Weight related fields
         createProduct.setWeightUomId(rawItem.getWeightUomId());
@@ -154,12 +163,17 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         if (rawItem.getInternalId() != null) {
             addGoodIdentification(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId(), createProduct);
         }
+        if (rawItem.getHsCode() != null) {
+            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_HS_CODE, rawItem.getHsCode(), createProduct);
+        }
 
         if (rawItem.getDefaultShipmentBoxTypeId() != null) {
             createProduct.setDefaultShipmentBoxTypeId(rawItem.getDefaultShipmentBoxTypeId());
         } else if (rawItem.getDefaultShipmentBoxType() != null) {
             createProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
         }
+        createProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : createProduct.getProductId());
+        createProduct.setRequesterId(c.getRequesterId());
         productApplicationService.when(createProduct);
 
         if (rawItem.getSupplierId() != null) {

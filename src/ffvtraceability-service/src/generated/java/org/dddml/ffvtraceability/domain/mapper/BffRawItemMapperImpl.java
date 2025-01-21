@@ -24,6 +24,7 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setActive( bffRawItem.getActive() );
         bffRawItemDto.setBrandName( bffRawItem.getBrandName() );
         bffRawItemDto.setCaseUomId( bffRawItem.getCaseUomId() );
+        bffRawItemDto.setCertificationCodes( bffRawItem.getCertificationCodes() );
         bffRawItemDto.setCountryOfOrigin( bffRawItem.getCountryOfOrigin() );
         bffRawItemDto.setDefaultShipmentBoxTypeId( bffRawItem.getDefaultShipmentBoxTypeId() );
         bffRawItemDto.setDepthUomId( bffRawItem.getDepthUomId() );
@@ -77,6 +78,7 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setActive( productState.getActive() );
         bffRawItemDto.setBrandName( productState.getBrandName() );
         bffRawItemDto.setCaseUomId( productState.getCaseUomId() );
+        bffRawItemDto.setCertificationCodes( productState.getCertificationCodes() );
         bffRawItemDto.setCountryOfOrigin( productState.getCountryOfOrigin() );
         bffRawItemDto.setDefaultShipmentBoxTypeId( productState.getDefaultShipmentBoxTypeId() );
         bffRawItemDto.setDepthUomId( productState.getDepthUomId() );
@@ -125,6 +127,7 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         simpleCreateProduct.setActive( bffRawItemDto.getActive() );
         simpleCreateProduct.setBrandName( bffRawItemDto.getBrandName() );
         simpleCreateProduct.setCaseUomId( bffRawItemDto.getCaseUomId() );
+        simpleCreateProduct.setCertificationCodes( bffRawItemDto.getCertificationCodes() );
         simpleCreateProduct.setCountryOfOrigin( bffRawItemDto.getCountryOfOrigin() );
         simpleCreateProduct.setDefaultShipmentBoxTypeId( bffRawItemDto.getDefaultShipmentBoxTypeId() );
         simpleCreateProduct.setDepthUomId( bffRawItemDto.getDepthUomId() );
@@ -172,6 +175,7 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         simpleMergePatchProduct.setActive( bffRawItemDto.getActive() );
         simpleMergePatchProduct.setBrandName( bffRawItemDto.getBrandName() );
         simpleMergePatchProduct.setCaseUomId( bffRawItemDto.getCaseUomId() );
+        simpleMergePatchProduct.setCertificationCodes( bffRawItemDto.getCertificationCodes() );
         simpleMergePatchProduct.setCountryOfOrigin( bffRawItemDto.getCountryOfOrigin() );
         simpleMergePatchProduct.setDefaultShipmentBoxTypeId( bffRawItemDto.getDefaultShipmentBoxTypeId() );
         simpleMergePatchProduct.setDepthUomId( bffRawItemDto.getDepthUomId() );
