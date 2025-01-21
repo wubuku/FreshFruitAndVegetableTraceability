@@ -127,6 +127,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setShelfLifeDescription(c.getShelfLifeDescription());
         e.setHandlingInstructions(c.getHandlingInstructions());
         e.setStorageConditions(c.getStorageConditions());
+        e.setCertificationCodes(c.getCertificationCodes());
         ((AbstractProductEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -219,6 +220,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setShelfLifeDescription(c.getShelfLifeDescription());
         e.setHandlingInstructions(c.getHandlingInstructions());
         e.setStorageConditions(c.getStorageConditions());
+        e.setCertificationCodes(c.getCertificationCodes());
         e.setIsPropertyProductTypeIdRemoved(c.getIsPropertyProductTypeIdRemoved());
         e.setIsPropertyPrimaryProductCategoryIdRemoved(c.getIsPropertyPrimaryProductCategoryIdRemoved());
         e.setIsPropertyManufacturerPartyIdRemoved(c.getIsPropertyManufacturerPartyIdRemoved());
@@ -288,6 +290,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setIsPropertyShelfLifeDescriptionRemoved(c.getIsPropertyShelfLifeDescriptionRemoved());
         e.setIsPropertyHandlingInstructionsRemoved(c.getIsPropertyHandlingInstructionsRemoved());
         e.setIsPropertyStorageConditionsRemoved(c.getIsPropertyStorageConditionsRemoved());
+        e.setIsPropertyCertificationCodesRemoved(c.getIsPropertyCertificationCodesRemoved());
         ((AbstractProductEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

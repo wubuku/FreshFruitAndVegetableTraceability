@@ -1094,3 +1094,10 @@ curl -X 'GET' \
 #   -H "X-TenantID: X"
 
 
+# # 查询“收货单”信息，并且只是“带出”收货行项关联的“采购订单行项”的未履行数量。
+# # 需要设置 `includesOutstandingOrderQuantity=true`
+# curl -X 'GET' \
+#   "${API_BASE_URL}/BffReceipts/${RECEIVING_ID}?includesOutstandingOrderQuantity=true" \
+#   -H 'accept: application/json' \
+#   -H 'Content-Type: application/json' \
+#   -H "X-TenantID: X"

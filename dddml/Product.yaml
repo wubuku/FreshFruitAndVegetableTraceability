@@ -236,6 +236,8 @@
         type: description
       StorageConditions:
         type: description
+      CertificationCodes:
+        type: description
 
       # # -------------------------------------------------------------------
       # # 产品属性集 Id.

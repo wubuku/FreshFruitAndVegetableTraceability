@@ -218,6 +218,9 @@
     <property name="storageConditions">
       <column name="storage_conditions" sql-type="VARCHAR(255)" />
     </property>
+    <property name="certificationCodes">
+      <column name="certification_codes" sql-type="VARCHAR(255)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

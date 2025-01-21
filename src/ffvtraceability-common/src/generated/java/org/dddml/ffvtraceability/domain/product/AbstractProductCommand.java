@@ -867,6 +867,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
             this.storageConditions = storageConditions;
         }
 
+        private String certificationCodes;
+
+        public String getCertificationCodes()
+        {
+            return this.certificationCodes;
+        }
+
+        public void setCertificationCodes(String certificationCodes)
+        {
+            this.certificationCodes = certificationCodes;
+        }
+
         public GoodIdentificationCommand.CreateGoodIdentification newCreateGoodIdentification()
         {
             AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification c = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
@@ -1745,6 +1757,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
         public void setIsPropertyStorageConditionsRemoved(Boolean removed)
         {
             this.isPropertyStorageConditionsRemoved = removed;
+        }
+
+        private Boolean isPropertyCertificationCodesRemoved;
+
+        public Boolean getIsPropertyCertificationCodesRemoved()
+        {
+            return this.isPropertyCertificationCodesRemoved;
+        }
+
+        public void setIsPropertyCertificationCodesRemoved(Boolean removed)
+        {
+            this.isPropertyCertificationCodesRemoved = removed;
         }
 
 

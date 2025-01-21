@@ -324,6 +324,10 @@ public interface ProductCommand extends Command {
 
         void setStorageConditions(String storageConditions);
 
+        String getCertificationCodes();
+
+        void setCertificationCodes(String certificationCodes);
+
     }
 
     interface CreateProduct extends CreateOrMergePatchProduct {
@@ -609,6 +613,10 @@ public interface ProductCommand extends Command {
         Boolean getIsPropertyStorageConditionsRemoved();
 
         void setIsPropertyStorageConditionsRemoved(Boolean removed);
+
+        Boolean getIsPropertyCertificationCodesRemoved();
+
+        void setIsPropertyCertificationCodesRemoved(Boolean removed);
 
 
         GoodIdentificationCommandCollection getGoodIdentificationCommands();

@@ -854,6 +854,18 @@ public class ProductStateDto {
         this.storageConditions = storageConditions;
     }
 
+    private String certificationCodes;
+
+    public String getCertificationCodes()
+    {
+        return this.certificationCodes;
+    }
+
+    public void setCertificationCodes(String certificationCodes)
+    {
+        this.certificationCodes = certificationCodes;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -1164,6 +1176,9 @@ public class ProductStateDto {
             }
             if (returnedFieldsContains("StorageConditions")) {
                 dto.setStorageConditions(state.getStorageConditions());
+            }
+            if (returnedFieldsContains("CertificationCodes")) {
+                dto.setCertificationCodes(state.getCertificationCodes());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

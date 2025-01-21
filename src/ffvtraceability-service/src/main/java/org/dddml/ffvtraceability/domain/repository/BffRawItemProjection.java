@@ -90,6 +90,8 @@ public interface BffRawItemProjection {
 
     String getStorageConditions();
 
+    String getCertificationCodes();
+
     String getDefaultShipmentBoxTypeShipmentBoxTypeId();
 
     String getDefaultShipmentBoxTypeDescription();

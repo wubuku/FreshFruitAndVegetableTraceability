@@ -157,6 +157,8 @@ public interface ProductState
 
     String getStorageConditions();
 
+    String getCertificationCodes();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -309,6 +311,8 @@ public interface ProductState
         void setHandlingInstructions(String handlingInstructions);
 
         void setStorageConditions(String storageConditions);
+
+        void setCertificationCodes(String certificationCodes);
 
         void setVersion(Long version);
 

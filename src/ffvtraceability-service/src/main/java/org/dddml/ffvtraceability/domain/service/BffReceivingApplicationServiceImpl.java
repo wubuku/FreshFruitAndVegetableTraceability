@@ -5,6 +5,7 @@ import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
 import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
+import org.dddml.ffvtraceability.domain.repository.BffOrderRepository;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProjection;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
 import org.dddml.ffvtraceability.domain.shipment.AbstractShipmentCommand;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,6 +46,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     private BffReceivingRepository bffReceivingRepository;
     @Autowired
     private CteReceivingEventSynchronizationService cteReceivingEventSynchronizationService;
+    @Autowired
+    private BffOrderRepository bffOrderRepository;
 
     static BffReceivingDocumentDto getReceivingDocument(
             BffReceivingRepository bffReceivingRepository,
@@ -152,9 +156,19 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Override
     @Transactional(readOnly = true)
     public BffReceivingDocumentDto when(BffReceivingServiceCommands.GetReceivingDocument c) {
-        return getReceivingDocument(bffReceivingRepository, bffReceivingMapper,
+        BffReceivingDocumentDto receivingDocument = getReceivingDocument(bffReceivingRepository, bffReceivingMapper,
                 c.getDocumentId()
         );
+        if (c.getIncludesOutstandingOrderQuantity() != null && c.getIncludesOutstandingOrderQuantity()
+                && receivingDocument != null && receivingDocument.getReceivingItems() != null
+        ) {
+            for (BffReceivingItemDto item : receivingDocument.getReceivingItems()) {
+                Optional<BigDecimal> oq = bffOrderRepository
+                        .findReceiptAssociatedOrderItemOutstandingQuantity(item.getReceiptId());
+                oq.ifPresent(item::setOutstandingOrderQuantity);
+            }
+        }
+        return receivingDocument;
     }
 
     @Override

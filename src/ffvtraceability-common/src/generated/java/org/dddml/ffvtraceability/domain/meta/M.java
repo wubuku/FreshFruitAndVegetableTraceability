@@ -3331,6 +3331,7 @@ public class M {
             "shelfLifeDescription",
             "handlingInstructions",
             "storageConditions",
+            "certificationCodes",
             "version",
             "createdBy",
             "createdAt",
@@ -3398,6 +3399,7 @@ public class M {
             "String",
             "String",
             "Long",
+            "String",
             "String",
             "String",
             "String",
@@ -3572,6 +3574,8 @@ public class M {
         aliasMap.put("HandlingInstructions", "handlingInstructions");
         aliasMap.put("storageConditions", "storageConditions");
         aliasMap.put("StorageConditions", "storageConditions");
+        aliasMap.put("certificationCodes", "certificationCodes");
+        aliasMap.put("CertificationCodes", "certificationCodes");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

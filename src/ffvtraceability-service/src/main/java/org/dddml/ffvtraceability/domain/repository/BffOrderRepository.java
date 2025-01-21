@@ -101,6 +101,18 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                 AND oi.order_item_seq_id = :orderItemSeqId
             """;
 
+    String RECEIPT_ORDER_ITEMS_JOIN = """
+            FROM order_item oi
+            INNER JOIN (
+                SELECT DISTINCT
+                    order_id,
+                    order_item_seq_id
+                FROM shipment_receipt_order_allocation a
+                WHERE a.receipt_id = :receiptId
+            ) receipt_items ON oi.order_id = receipt_items.order_id
+                AND oi.order_item_seq_id = receipt_items.order_item_seq_id
+            """;
+
     @Query(value = """
             WITH filtered_orders AS (
                 SELECT DISTINCT o.order_id, o.order_date
@@ -181,7 +193,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
      */
     @Query(value = """
             SELECT 
-                SUM(oa.quantity_allocated) as fulfilled_quantity
+                SUM(COALESCE(oa.quantity_allocated, 0)) as fulfilled_quantity
             """ + RECEIPT_ALLOCATION_JOIN_AND_WHERE, nativeQuery = true)
     Optional<BigDecimal> findPurchaseOrderItemFulfilledQuantity(
             @Param("orderId") String orderId,
@@ -199,7 +211,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
             ),
             fulfilled AS (
                 SELECT 
-                    COALESCE(SUM(oa.quantity_allocated), 0) as fulfilled_quantity
+                    SUM(COALESCE(oa.quantity_allocated, 0)) as fulfilled_quantity
                 """ + RECEIPT_ALLOCATION_JOIN_AND_WHERE + """
             )
             SELECT 
@@ -214,4 +226,31 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
             @Param("orderItemSeqId") String orderItemSeqId
     );
 
+    /**
+     * 查询“收货行项”所关联的采购订单行项的未履行数量。
+     */
+    @Query(value = """
+            WITH demand AS (
+                SELECT 
+                    """ + ORDER_ITEM_DEMAND_QUANTITY + """
+            """ + RECEIPT_ORDER_ITEMS_JOIN + """
+            ),
+            fulfilled AS (
+                SELECT 
+                    SUM(COALESCE(oa.quantity_allocated, 0)) as fulfilled_quantity
+                """ + RECEIPT_ORDER_ITEMS_JOIN + """
+                LEFT JOIN shipment_receipt_order_allocation oa ON
+                    oi.order_id = oa.order_id
+                    AND oi.order_item_seq_id = oa.order_item_seq_id
+            )
+            SELECT 
+                CASE 
+                    WHEN demand.demand_quantity IS NULL THEN NULL
+                    ELSE demand.demand_quantity - fulfilled.fulfilled_quantity
+                END as outstanding_quantity
+            FROM demand, fulfilled
+            """, nativeQuery = true)
+    Optional<BigDecimal> findReceiptAssociatedOrderItemOutstandingQuantity(
+            @Param("receiptId") String receiptId
+    );
 }

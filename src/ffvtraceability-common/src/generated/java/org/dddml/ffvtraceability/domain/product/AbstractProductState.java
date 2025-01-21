@@ -714,6 +714,16 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.storageConditions = storageConditions;
     }
 
+    private String certificationCodes;
+
+    public String getCertificationCodes() {
+        return this.certificationCodes;
+    }
+
+    public void setCertificationCodes(String certificationCodes) {
+        this.certificationCodes = certificationCodes;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -938,6 +948,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setShelfLifeDescription(e.getShelfLifeDescription());
         this.setHandlingInstructions(e.getHandlingInstructions());
         this.setStorageConditions(e.getStorageConditions());
+        this.setCertificationCodes(e.getCertificationCodes());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -1021,6 +1032,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setShelfLifeDescription(s.getShelfLifeDescription());
         this.setHandlingInstructions(s.getHandlingInstructions());
         this.setStorageConditions(s.getStorageConditions());
+        this.setCertificationCodes(s.getCertificationCodes());
 
         if (s.getGoodIdentifications() != null) {
             Iterable<GoodIdentificationState> iterable;
@@ -1544,6 +1556,13 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             }
         } else {
             this.setStorageConditions(e.getStorageConditions());
+        }
+        if (e.getCertificationCodes() == null) {
+            if (e.getIsPropertyCertificationCodesRemoved() != null && e.getIsPropertyCertificationCodesRemoved()) {
+                this.setCertificationCodes(null);
+            }
+        } else {
+            this.setCertificationCodes(e.getCertificationCodes());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

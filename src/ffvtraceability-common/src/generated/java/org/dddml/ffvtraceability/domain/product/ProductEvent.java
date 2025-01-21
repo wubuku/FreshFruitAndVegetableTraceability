@@ -317,6 +317,10 @@ public interface ProductEvent extends Event {
 
         void setStorageConditions(String storageConditions);
 
+        String getCertificationCodes();
+
+        void setCertificationCodes(String certificationCodes);
+
     }
 
     interface ProductStateCreated extends ProductStateEvent
@@ -608,6 +612,10 @@ public interface ProductEvent extends Event {
         Boolean getIsPropertyStorageConditionsRemoved();
 
         void setIsPropertyStorageConditionsRemoved(Boolean removed);
+
+        Boolean getIsPropertyCertificationCodesRemoved();
+
+        void setIsPropertyCertificationCodesRemoved(Boolean removed);
 
 
         Iterable<GoodIdentificationEvent> getGoodIdentificationEvents();

@@ -116,6 +116,9 @@ valueObjects:
         type: description
       StorageConditions:
         type: description
+      CertificationCodes:
+        type: description
+
 
 
 services:

@@ -231,6 +231,9 @@
       <property name="storageConditions">
         <column name="storage_conditions" sql-type="VARCHAR(255)" />
       </property>
+      <property name="certificationCodes">
+        <column name="certification_codes" sql-type="VARCHAR(255)" />
+      </property>
       <subclass name="AbstractProductEvent$SimpleProductStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractProductEvent$SimpleProductStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyProductTypeIdRemoved" column="is_property_product_type_id_removed" />
@@ -302,6 +305,7 @@
         <property name="isPropertyShelfLifeDescriptionRemoved" column="is_property_shelf_life_description_removed" />
         <property name="isPropertyHandlingInstructionsRemoved" column="is_property_handling_instructions_removed" />
         <property name="isPropertyStorageConditionsRemoved" column="is_property_storage_conditions_removed" />
+        <property name="isPropertyCertificationCodesRemoved" column="is_property_certification_codes_removed" />
       </subclass>
     </subclass>
   </class>
