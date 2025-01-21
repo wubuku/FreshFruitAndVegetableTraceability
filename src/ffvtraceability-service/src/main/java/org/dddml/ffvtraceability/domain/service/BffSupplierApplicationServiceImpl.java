@@ -3,6 +3,9 @@ package org.dddml.ffvtraceability.domain.service;
 import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.Command;
+import org.dddml.ffvtraceability.domain.contactmech.AbstractContactMechCommand;
+import org.dddml.ffvtraceability.domain.contactmech.ContactMechApplicationService;
+import org.dddml.ffvtraceability.domain.contactmech.ContactMechStateRepository;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
 import org.dddml.ffvtraceability.domain.party.*;
@@ -51,6 +54,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     private BffSupplierMapper bffSupplierMapper;
     @Autowired
     private BffSupplierRepository bffSupplierRepository;
+    @Autowired
+    private ContactMechStateRepository contactMechStateRepository;
 
     @Autowired
     private PartyContactMechApplicationService partyContactMechApplicationService;
@@ -61,6 +66,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Autowired
     private BffBusinessContactService bffBusinessContactService;
+    @Autowired
+    private ContactMechApplicationService contactMechApplicationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -109,6 +116,14 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             dto.getBusinessContacts().get(0).setPhoneNumber(
                     TelecomNumberUtil.format(x.getCountryCode(), x.getAreaCode(), x.getContactNumber())
             );
+        });
+
+        bffPartyContactMechRepository.findPartyCurrentMisContactMechByPartyId(supplierId).ifPresent(x -> {
+            if (dto.getBusinessContacts() == null) {
+                dto.setBusinessContacts(Collections.singletonList(new BffBusinessContactDto()));
+            }
+            dto.getBusinessContacts().get(0).setEmail(x.getEmail());
+            dto.getBusinessContacts().get(0).setContactRole(x.getAskForRole());
         });
     }
 
@@ -397,6 +412,17 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
             String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
             createPartyContactMechAssociation(partyId, contactMechId, "-PT", c);
+        }
+        if (bizContact.getEmail() != null && !bizContact.getEmail().trim().isEmpty()) {
+            AbstractContactMechCommand.SimpleCreateMiscContactMech createMiscContactMech = new AbstractContactMechCommand.SimpleCreateMiscContactMech();
+            createMiscContactMech.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-T" : UUID.randomUUID().toString());
+            createMiscContactMech.setRequesterId(c.getRequesterId());
+            createMiscContactMech.setEmail(bizContact.getEmail().trim());
+            createMiscContactMech.setContactMechId(IdUtils.randomId());
+            createMiscContactMech.setAskForRole(bizContact.getContactRole());
+            contactMechApplicationService.when(createMiscContactMech);
+            String contactMechId = createMiscContactMech.getContactMechId();
+            createPartyContactMechAssociation(partyId, contactMechId, "-PE", c);
         }
     }
 
