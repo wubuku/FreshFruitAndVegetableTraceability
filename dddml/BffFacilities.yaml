@@ -79,7 +79,7 @@ valueObjects:
         type: id
         # 可以用于查询出“所有设施的所有位置”
       LocationSeqId:
-        type: id
+        type: id-long
       LocationTypeEnumId:
         type: id
       AreaId:
@@ -232,7 +232,7 @@ services:
           FacilityId:
             type: id
           LocationSeqId:
-            type: id
+            type: id-long
 
       CreateFacilityLocation:
         # 创建设施位置（仓库的货位是设施位置的一种）
@@ -275,7 +275,7 @@ services:
           FacilityId:
             type: id
           LocationSeqId:
-            type: id
+            type: id-long
           FacilityLocation:
             type: BffFacilityLocationDto
 
@@ -291,7 +291,7 @@ services:
           FacilityId:
             type: id
           LocationSeqId:
-            type: id
+            type: id-long
           Active:
             type: boolean
 

@@ -61,7 +61,7 @@
       LotId:
         type: id
       LocationSeqId:
-        type: id
+        type: id-long
       # CaseUomId:
       #   type: id
       CasesAccepted:

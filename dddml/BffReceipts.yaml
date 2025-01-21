@@ -68,7 +68,7 @@ valueObjects:
       LotId:
         type: id
       LocationSeqId:
-        type: id
+        type: id-long
       ItemDescription:
         type: description
       QuantityAccepted:
@@ -296,7 +296,7 @@ services:
           LotId:
             type: id
           LocationSeqId:
-            type: id
+            type: id-long
             # 更新行项的货位（Location）
           ItemDescription:
             type: description

@@ -65,7 +65,7 @@
       <column name="lot_id" sql-type="VARCHAR(20)" />
     </property>
     <property name="locationSeqId">
-      <column name="location_seq_id" sql-type="VARCHAR(20)" />
+      <column name="location_seq_id" sql-type="VARCHAR(60)" />
     </property>
     <property name="casesAccepted">
       <column name="cases_accepted" sql-type="DECIMAL(20,0)" />
