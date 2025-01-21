@@ -46,5 +46,7 @@ public interface BffReceivingItemProjection {
 
     String getShipmentPackageSeqId();
 
+    java.math.BigDecimal getOutstandingOrderQuantity();
+
 }
 

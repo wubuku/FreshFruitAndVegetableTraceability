@@ -31,6 +31,11 @@ valueObjects:
         type: id
       QaStatusId:
         type: id
+      QaInspectionStatusId:
+        type: id
+        # 这是一个遍历各个收货行项的 QA 信息，派生（“汇总”）的状态。
+        # 可能的取值：
+        # Inspected, Partially Inspected, Pending Inspection
       CreatedAt:
         type: date-time
       # ReceivedAt:
@@ -94,6 +99,9 @@ valueObjects:
         type: id
       ShipmentPackageSeqId:
         type: id
+      OutstandingOrderQuantity:
+        # 对应的订单（PO）的未完成的数量
+        type: fixed-point
 
 services:
   BffReceivingService:
@@ -116,6 +124,10 @@ services:
           ReceivedAtTo:
             type: date-time
             optional: true # NOT required
+          DerivesQaInspectionStatus:
+            # 是否“带出”（包含派生的） QA 检查状态（`QaInspectionStatusId`）
+            type: bool
+            optional: true # NOT required
         result:
           itemType: BffReceivingDocumentDto
 
@@ -130,6 +142,14 @@ services:
         parameters:
           DocumentId:
             type: id
+          DerivesQaInspectionStatus:
+            # 是否“带出”（包含派生的） QA 检查状态（`QaInspectionStatusId`）
+            type: bool
+            optional: true # NOT required
+          IncludesOutstandingOrderQuantity:
+            # 是否“带出”（包含）对应的订单（PO）的未完成的数量（`OutstandingOrderQuantity`）
+            type: bool
+            optional: true # NOT required
 
       GetReceivingItem:
         # 获取指定收货单下指定行项的详情

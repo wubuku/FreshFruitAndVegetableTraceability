@@ -95,5 +95,17 @@ public class BffQaInspectionServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping("batchAddOrUpdateQaInspections")
+    public void batchAddOrUpdateQaInspections(
+        @RequestBody BffQaInspectionDto[] qaInspections
+    ) {
+        BffQaInspectionServiceCommands.BatchAddOrUpdateQaInspections batchAddOrUpdateQaInspections = new BffQaInspectionServiceCommands.BatchAddOrUpdateQaInspections();
+        batchAddOrUpdateQaInspections.setQaInspections(qaInspections);
+        try {
+        batchAddOrUpdateQaInspections.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffQaInspectionApplicationService.when(batchAddOrUpdateQaInspections);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 }
 

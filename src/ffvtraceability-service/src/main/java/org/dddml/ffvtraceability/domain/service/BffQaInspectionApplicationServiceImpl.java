@@ -141,4 +141,9 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
             when(createCommand);
         }
     }
+
+    @Override
+    public void when(BffQaInspectionServiceCommands.BatchAddOrUpdateQaInspections c) {
+        //todo
+    }
 }

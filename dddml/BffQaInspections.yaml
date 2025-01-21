@@ -119,3 +119,16 @@ services:
         parameters:
           QaInspections:
             itemType: BffQaInspectionDto
+
+      BatchAddOrUpdateQaInspections:
+        # 批量添加或更新 QA Inspection
+        httpMethod: POST
+        restfulResourceName: "batchAddOrUpdateQaInspections"
+        metadata:
+          HttpRequestBody: QaInspections
+        parameters:
+          QaInspections:
+            itemType: BffQaInspectionDto
+            # 使用 `QaInspectionId`（如果不为 null）或者 `ReceiptId`（目前不允许为 null） 来查询 QA Inspection。
+            # 如果查询不到 QA Inspection，则创建新的 QA Inspection；
+            # 否则更新 QA Inspection。

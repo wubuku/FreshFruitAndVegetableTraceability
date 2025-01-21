@@ -86,6 +86,19 @@ public class BffReceivingServiceCommands {
             this.receivedAtTo = receivedAtTo;
         }
 
+        /**
+         * Derives Qa Inspection Status
+         */
+        private Boolean derivesQaInspectionStatus;
+
+        public Boolean getDerivesQaInspectionStatus() {
+            return derivesQaInspectionStatus;
+        }
+
+        public void setDerivesQaInspectionStatus(Boolean derivesQaInspectionStatus) {
+            this.derivesQaInspectionStatus = derivesQaInspectionStatus;
+        }
+
     }
 
     public static class GetReceivingDocument extends org.dddml.ffvtraceability.domain.AbstractCommand {
@@ -101,6 +114,32 @@ public class BffReceivingServiceCommands {
 
         public void setDocumentId(String documentId) {
             this.documentId = documentId;
+        }
+
+        /**
+         * Derives Qa Inspection Status
+         */
+        private Boolean derivesQaInspectionStatus;
+
+        public Boolean getDerivesQaInspectionStatus() {
+            return derivesQaInspectionStatus;
+        }
+
+        public void setDerivesQaInspectionStatus(Boolean derivesQaInspectionStatus) {
+            this.derivesQaInspectionStatus = derivesQaInspectionStatus;
+        }
+
+        /**
+         * Includes Outstanding Order Quantity
+         */
+        private Boolean includesOutstandingOrderQuantity;
+
+        public Boolean getIncludesOutstandingOrderQuantity() {
+            return includesOutstandingOrderQuantity;
+        }
+
+        public void setIncludesOutstandingOrderQuantity(Boolean includesOutstandingOrderQuantity) {
+            this.includesOutstandingOrderQuantity = includesOutstandingOrderQuantity;
         }
 
     }

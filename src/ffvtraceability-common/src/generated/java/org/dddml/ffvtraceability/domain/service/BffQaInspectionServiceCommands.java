@@ -124,6 +124,23 @@ public class BffQaInspectionServiceCommands {
 
     }
 
+    public static class BatchAddOrUpdateQaInspections extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Qa Inspections
+         */
+        private BffQaInspectionDto[] qaInspections;
+
+        public BffQaInspectionDto[] getQaInspections() {
+            return qaInspections;
+        }
+
+        public void setQaInspections(BffQaInspectionDto[] qaInspections) {
+            this.qaInspections = qaInspections;
+        }
+
+    }
+
 
 }
 

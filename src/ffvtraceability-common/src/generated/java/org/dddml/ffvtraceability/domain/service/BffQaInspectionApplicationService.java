@@ -19,6 +19,8 @@ public interface BffQaInspectionApplicationService {
 
     void when(BffQaInspectionServiceCommands.BatchAddQaInspections c);
 
+    void when(BffQaInspectionServiceCommands.BatchAddOrUpdateQaInspections c);
+
 
 }
 

@@ -39,7 +39,8 @@ public class BffReceivingServiceResource {
         @RequestParam(value = "documentIdOrItem", required = false) String documentIdOrItem,
         @RequestParam(value = "supplierId", required = false) String supplierId,
         @RequestParam(value = "receivedAtFrom", required = false) OffsetDateTime receivedAtFrom,
-        @RequestParam(value = "receivedAtTo", required = false) OffsetDateTime receivedAtTo
+        @RequestParam(value = "receivedAtTo", required = false) OffsetDateTime receivedAtTo,
+        @RequestParam(value = "derivesQaInspectionStatus", required = false) Boolean derivesQaInspectionStatus
     ) {
         BffReceivingServiceCommands.GetReceivingDocuments getReceivingDocuments = new BffReceivingServiceCommands.GetReceivingDocuments();
         getReceivingDocuments.setPage(page);
@@ -48,6 +49,7 @@ public class BffReceivingServiceResource {
         getReceivingDocuments.setSupplierId(supplierId);
         getReceivingDocuments.setReceivedAtFrom(receivedAtFrom);
         getReceivingDocuments.setReceivedAtTo(receivedAtTo);
+        getReceivingDocuments.setDerivesQaInspectionStatus(derivesQaInspectionStatus);
         try {
         getReceivingDocuments.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(getReceivingDocuments);
@@ -56,10 +58,14 @@ public class BffReceivingServiceResource {
 
     @GetMapping("{documentId}")
     public BffReceivingDocumentDto getReceivingDocument(
-        @PathVariable("documentId") String documentId
+        @PathVariable("documentId") String documentId,
+        @RequestParam(value = "derivesQaInspectionStatus", required = false) Boolean derivesQaInspectionStatus,
+        @RequestParam(value = "includesOutstandingOrderQuantity", required = false) Boolean includesOutstandingOrderQuantity
     ) {
         BffReceivingServiceCommands.GetReceivingDocument getReceivingDocument = new BffReceivingServiceCommands.GetReceivingDocument();
         getReceivingDocument.setDocumentId(documentId);
+        getReceivingDocument.setDerivesQaInspectionStatus(derivesQaInspectionStatus);
+        getReceivingDocument.setIncludesOutstandingOrderQuantity(includesOutstandingOrderQuantity);
         try {
         getReceivingDocument.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(getReceivingDocument);
