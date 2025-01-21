@@ -105,12 +105,14 @@ public class BffListResource {
 
     @GetMapping("/Facilities")
     public List<? extends BffFacilityDto> getFacilities(
-            @RequestParam(value = "active", required = false) String active
+            @RequestParam(value = "active", required = false) String active,
+            @RequestParam(value = "ownerPartyId", required = false) String ownerPartyId
     ) {
         BffFacilityServiceCommands.GetFacilities getFacilities = new BffFacilityServiceCommands.GetFacilities();
         getFacilities.setPage(0);
         getFacilities.setSize(Integer.MAX_VALUE);
         getFacilities.setActive(active);
+        getFacilities.setOwnerPartyId(ownerPartyId);
         try {
             getFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
             return bffFacilityApplicationService.when(getFacilities).getContent();
