@@ -84,6 +84,20 @@ public class BffPurchaseOrderServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @GetMapping("{orderId}/Items/{orderItemSeqId}/OutstandingQuantity")
+    public java.math.BigDecimal getPurchaseOrderItemOutstandingQuantity(
+        @PathVariable("orderId") String orderId,
+        @PathVariable("orderItemSeqId") String orderItemSeqId
+    ) {
+        BffPurchaseOrderServiceCommands.GetPurchaseOrderItemOutstandingQuantity getPurchaseOrderItemOutstandingQuantity = new BffPurchaseOrderServiceCommands.GetPurchaseOrderItemOutstandingQuantity();
+        getPurchaseOrderItemOutstandingQuantity.setOrderId(orderId);
+        getPurchaseOrderItemOutstandingQuantity.setOrderItemSeqId(orderItemSeqId);
+        try {
+        getPurchaseOrderItemOutstandingQuantity.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffPurchaseOrderApplicationService.when(getPurchaseOrderItemOutstandingQuantity);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @PostMapping
     public String createPurchaseOrder(
         @RequestBody BffPurchaseOrderDto purchaseOrder

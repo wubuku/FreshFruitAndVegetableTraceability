@@ -1086,3 +1086,11 @@ curl -X 'GET' \
   -H "X-TenantID: X"
 
 
+# # 查询采购订单行项的未履行数量
+# echo "Querying purchase order item outstanding quantity..."
+# curl -X 'GET' \
+#   "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}/Items/${ORDER_ITEM_SEQ_ID}/OutstandingQuantity" \
+#   -H 'accept: application/json' \
+#   -H "X-TenantID: X"
+
+

@@ -235,6 +235,22 @@ services:
             type: bool
             optional: true # NOT required
 
+      GetPurchaseOrderItemOutstandingQuantity:
+        # 查询指定采购订单下指定行项的未履行数量
+        restfulResourceName: "{OrderId}/Items/{OrderItemSeqId}/OutstandingQuantity"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+            - OrderItemSeqId
+        isQuery: true
+        result:
+          type: fixed-point
+        parameters:
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id
+
 
       CreatePurchaseOrder:
         # 创建采购订单

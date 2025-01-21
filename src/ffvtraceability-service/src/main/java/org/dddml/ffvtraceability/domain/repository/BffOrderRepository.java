@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderState.SimpleOrderHeaderState, String> {
@@ -77,6 +79,28 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                 AND gi.good_identification_type_id = 'GTIN'
             """;
 
+    String ORDER_ITEM_DEMAND_QUANTITY = """
+            (oi.quantity - (CASE
+                WHEN oi.cancel_quantity IS NULL THEN 0
+                ELSE oi.cancel_quantity
+            END)) as demand_quantity
+            """;
+
+    String ORDER_ITEM_BASE_WHERE = """
+            FROM order_item oi
+            WHERE oi.order_id = :orderId
+                AND oi.order_item_seq_id = :orderItemSeqId
+            """;
+
+    String RECEIPT_ALLOCATION_JOIN_AND_WHERE = """
+            FROM order_item oi
+            LEFT JOIN shipment_receipt_order_allocation oa ON
+                oi.order_id = oa.order_id
+                AND oi.order_item_seq_id = oa.order_item_seq_id
+            WHERE oi.order_id = :orderId
+                AND oi.order_item_seq_id = :orderItemSeqId
+            """;
+
     @Query(value = """
             WITH filtered_orders AS (
                 SELECT DISTINCT o.order_id, o.order_date
@@ -139,4 +163,55 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
     BffPurchaseOrderAndItemProjection findPurchaseOrderItem(
             @Param("orderId") String orderId,
             @Param("orderItemSeqId") String orderItemSeqId);
+
+    /**
+     * 查询订单行项的需求数量。
+     */
+    @Query(value = """
+            SELECT 
+                """ + ORDER_ITEM_DEMAND_QUANTITY + """
+            """ + ORDER_ITEM_BASE_WHERE, nativeQuery = true)
+    Optional<BigDecimal> findOrderItemDemandQuantity(
+            @Param("orderId") String orderId,
+            @Param("orderItemSeqId") String orderItemSeqId
+    );
+
+    /**
+     * 查询采购订单行项的履行数量。
+     */
+    @Query(value = """
+            SELECT 
+                SUM(oa.quantity_allocated) as fulfilled_quantity
+            """ + RECEIPT_ALLOCATION_JOIN_AND_WHERE, nativeQuery = true)
+    Optional<BigDecimal> findPurchaseOrderItemFulfilledQuantity(
+            @Param("orderId") String orderId,
+            @Param("orderItemSeqId") String orderItemSeqId
+    );
+
+    /**
+     * 查询采购订单行项的未履行数量。
+     */
+    @Query(value = """
+            WITH demand AS (
+                SELECT 
+                    """ + ORDER_ITEM_DEMAND_QUANTITY + """
+            """ + ORDER_ITEM_BASE_WHERE + """
+            ),
+            fulfilled AS (
+                SELECT 
+                    COALESCE(SUM(oa.quantity_allocated), 0) as fulfilled_quantity
+                """ + RECEIPT_ALLOCATION_JOIN_AND_WHERE + """
+            )
+            SELECT 
+                CASE 
+                    WHEN demand.demand_quantity IS NULL THEN NULL
+                    ELSE demand.demand_quantity - fulfilled.fulfilled_quantity
+                END as outstanding_quantity
+            FROM demand, fulfilled
+            """, nativeQuery = true)
+    Optional<BigDecimal> findPurchaseOrderItemOutstandingQuantity(
+            @Param("orderId") String orderId,
+            @Param("orderItemSeqId") String orderItemSeqId
+    );
+
 }
