@@ -163,6 +163,19 @@ services:
         result:
           type: id # DocumentId
 
+      UpdateReceivingDocument:
+        # 更新收货单
+        httpMethod: PUT
+        restfulResourceName: "{DocumentId}"
+        metadata:
+          RestfulPathVariable: DocumentId
+          HttpRequestBody: ReceivingDocument
+        parameters:
+          DocumentId:
+            type: id
+          ReceivingDocument:
+            type: BffReceivingDocumentDto
+
       UpdateReceivingPrimaryOrderId:
         # 给收货时未填写 PO 单号的收货单补充 PO 单号。
         httpMethod: PUT

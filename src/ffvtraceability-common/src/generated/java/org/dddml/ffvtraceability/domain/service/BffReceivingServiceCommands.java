@@ -152,6 +152,36 @@ public class BffReceivingServiceCommands {
 
     }
 
+    public static class UpdateReceivingDocument extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+        /**
+         * Receiving Document
+         */
+        private BffReceivingDocumentDto receivingDocument;
+
+        public BffReceivingDocumentDto getReceivingDocument() {
+            return receivingDocument;
+        }
+
+        public void setReceivingDocument(BffReceivingDocumentDto receivingDocument) {
+            this.receivingDocument = receivingDocument;
+        }
+
+    }
+
     public static class UpdateReceivingPrimaryOrderId extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
