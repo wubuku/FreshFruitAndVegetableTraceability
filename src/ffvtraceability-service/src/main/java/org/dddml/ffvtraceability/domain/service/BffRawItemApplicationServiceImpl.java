@@ -349,6 +349,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
 
         AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
         mergePatchProduct.setProductId(productId);
+        mergePatchProduct.setProductTypeId(ProductTypeId.PRODUCT);
         mergePatchProduct.setVersion(productState.getVersion());
         mergePatchProduct.setActive(active ? INDICATOR_YES : INDICATOR_NO);
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
