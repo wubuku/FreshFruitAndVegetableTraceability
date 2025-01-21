@@ -51,6 +51,25 @@ public class BffBusinessContactServiceImpl implements BffBusinessContactService 
         return createTelecomNumber.getContactMechId();
     }
 
+
+    @Override
+    public String createMiscContact(BffBusinessContactDto bizContact, Command c) {
+        AbstractContactMechCommand.SimpleCreateMiscContactMech createMiscContactMech = newCreateMiscContactMech(bizContact);
+        createMiscContactMech.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-T" : UUID.randomUUID().toString());
+        createMiscContactMech.setRequesterId(c.getRequesterId());
+        contactMechApplicationService.when(createMiscContactMech);
+        return createMiscContactMech.getContactMechId();
+    }
+
+    private AbstractContactMechCommand.SimpleCreateMiscContactMech newCreateMiscContactMech(BffBusinessContactDto bizContact) {
+
+        AbstractContactMechCommand.SimpleCreateMiscContactMech createMiscContactMech = new AbstractContactMechCommand.SimpleCreateMiscContactMech();
+        createMiscContactMech.setEmail(bizContact.getEmail());
+        createMiscContactMech.setAskForRole(bizContact.getContactRole());
+        createMiscContactMech.setContactMechId(IdUtils.randomId());
+        return createMiscContactMech;
+    }
+
     private AbstractContactMechCommand.SimpleCreateTelecomNumber newCreateTelecomNumber(BffBusinessContactDto bizContact) {
         TelecomNumberUtil.TelecomNumberDto telecomNumberDto = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
         AbstractContactMechCommand.SimpleCreateTelecomNumber createTelecomNumber = new AbstractContactMechCommand.SimpleCreateTelecomNumber();
