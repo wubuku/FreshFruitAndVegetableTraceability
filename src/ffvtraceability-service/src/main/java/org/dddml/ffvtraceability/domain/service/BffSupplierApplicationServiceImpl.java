@@ -3,6 +3,8 @@ package org.dddml.ffvtraceability.domain.service;
 import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.Command;
+import org.dddml.ffvtraceability.domain.contactmech.ContactMechApplicationService;
+import org.dddml.ffvtraceability.domain.contactmech.ContactMechStateRepository;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
 import org.dddml.ffvtraceability.domain.party.*;
@@ -13,9 +15,9 @@ import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechState;
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
-import org.dddml.ffvtraceability.domain.partyrole.PartyRoleState;
 import org.dddml.ffvtraceability.domain.repository.BffBusinessContactRepository;
 import org.dddml.ffvtraceability.domain.repository.BffPartyContactMechRepository;
+import org.dddml.ffvtraceability.domain.repository.BffSupplierProjection;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
@@ -51,6 +53,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     private BffSupplierMapper bffSupplierMapper;
     @Autowired
     private BffSupplierRepository bffSupplierRepository;
+    @Autowired
+    private ContactMechStateRepository contactMechStateRepository;
 
     @Autowired
     private PartyContactMechApplicationService partyContactMechApplicationService;
@@ -61,6 +65,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
     @Autowired
     private BffBusinessContactService bffBusinessContactService;
+    @Autowired
+    private ContactMechApplicationService contactMechApplicationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -78,40 +84,13 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Override
     @Transactional(readOnly = true)
     public BffSupplierDto when(BffSupplierServiceCommands.GetSupplier c) {
-        PartyState partyState = partyApplicationService.get(c.getSupplierId());
-        if (partyState == null) {
-            return null;
+        Optional<BffSupplierProjection> projection = bffSupplierRepository.findSupplierById(c.getSupplierId());
+        if (projection.isPresent()) {
+            BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(projection.get());
+            enrichBusinessContactDetails(dto, c.getSupplierId());
+            return dto;
         }
-        BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(partyState);
-
-
-        partyState.getPartyIdentifications().stream().forEach(x -> {
-            if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GLN)) {
-                dto.setGln(x.getIdValue());
-            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GGN)) {
-                dto.setGgn(x.getIdValue());
-            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX)) {
-                dto.setGs1CompanyPrefix(x.getIdValue());
-            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_TAX_ID)) {
-                dto.setTaxId(x.getIdValue());
-            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID)) {
-                dto.setInternalId(x.getIdValue());
-            }
-        });
-        PartyRoleId partyRoleId = new PartyRoleId();
-        partyRoleId.setPartyId(c.getSupplierId());
-        partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
-        PartyRoleState partyRoleState = partyRoleApplicationService.get(partyRoleId);
-        if (partyRoleState != null) {
-            dto.setBankAccountInformation(partyRoleState.getBankAccountInformation());
-            dto.setCertificationCodes(partyRoleState.getCertificationCodes());
-            dto.setSupplierShortName(partyRoleState.getSupplierShortName());
-            dto.setTpaNumber(partyRoleState.getTpaNumber());
-            dto.setSupplierProductTypeDescription(partyRoleState.getSupplierProductTypeDescription());
-            dto.setSupplierTypeEnumId(partyRoleState.getSupplierTypeEnumId());
-        }
-        enrichBusinessContactDetails(dto, c.getSupplierId());
-        return dto;
+        return null;
     }
 
     private void enrichBusinessContactDetails(BffSupplierDto dto, String supplierId) {
@@ -136,6 +115,14 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             dto.getBusinessContacts().get(0).setPhoneNumber(
                     TelecomNumberUtil.format(x.getCountryCode(), x.getAreaCode(), x.getContactNumber())
             );
+        });
+
+        bffPartyContactMechRepository.findPartyCurrentMisContactMechByPartyId(supplierId).ifPresent(x -> {
+            if (dto.getBusinessContacts() == null) {
+                dto.setBusinessContacts(Collections.singletonList(new BffBusinessContactDto()));
+            }
+            dto.getBusinessContacts().get(0).setEmail(x.getEmail());
+            dto.getBusinessContacts().get(0).setContactRole(x.getAskForRole());
         });
     }
 
@@ -424,6 +411,10 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
             String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
             createPartyContactMechAssociation(partyId, contactMechId, "-PT", c);
+        }
+        if (bizContact.getEmail() != null && !bizContact.getEmail().trim().isEmpty()) {
+            String contactMechId = bffBusinessContactService.createMiscContact(bizContact, c);
+            createPartyContactMechAssociation(partyId, contactMechId, "-PE", c);
         }
     }
 

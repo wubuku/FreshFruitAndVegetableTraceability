@@ -7,4 +7,6 @@ public interface BffBusinessContactService {
     String createPostalAddress(BffBusinessContactDto bizContact, Command c);
 
     String createTelecomNumber(BffBusinessContactDto bizContact, Command c);
+
+    String createMiscContact(BffBusinessContactDto bizContact, Command c);
 }

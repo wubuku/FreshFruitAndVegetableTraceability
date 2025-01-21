@@ -59,6 +59,27 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
             @Param("partyId") String partyId
     );
 
+    @Query(value = """
+            SELECT DISTINCT ON (pcm.party_id)
+                pcm.party_id as partyId,
+                pcm.contact_mech_id as contactMechId,
+                pcm.from_date as fromDate,
+                tn.email as email,
+                tn.ask_for_role as askForRole,
+                tn.contact_number as contactNumber
+            FROM party_contact_mech pcm
+            JOIN contact_mech tn ON tn.contact_mech_id = pcm.contact_mech_id
+            WHERE pcm.party_id = :partyId
+            AND tn.contact_mech_type_id = 'MISC_CONTACT_MECH'
+            AND pcm.from_date <= CURRENT_TIMESTAMP
+            AND (pcm.thru_date IS NULL OR pcm.thru_date > CURRENT_TIMESTAMP)
+            ORDER BY pcm.party_id, pcm.from_date DESC
+            LIMIT 1
+            """, nativeQuery = true)
+    Optional<PartyMiscContactMechProjection> findPartyCurrentMisContactMechByPartyId(
+            @Param("partyId") String partyId
+    );
+
 
     @Query(value = """
             SELECT DISTINCT ON (pcm.party_id)
@@ -83,6 +104,12 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
         String getContactMechId();
 
         Instant getFromDate();
+    }
+
+    interface PartyMiscContactMechProjection extends PartyContactMechIdProjection {
+        String getEmail();
+
+        String getAskForRole();
     }
 
     interface PartyPostalAddressProjection extends BffBusinessContactRepository.PostalAddressProjection {
