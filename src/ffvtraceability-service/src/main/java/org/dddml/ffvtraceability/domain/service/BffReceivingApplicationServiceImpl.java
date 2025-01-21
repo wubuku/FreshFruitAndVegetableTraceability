@@ -233,6 +233,11 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         return createShipment.getShipmentId();
     }
 
+    @Override
+    public void when(BffReceivingServiceCommands.UpdateReceivingDocument c) {
+        //todo
+    }
+
     private void createShippingDocument(String shipmentId, String referenceDocumentId, Command c) {
         AbstractShippingDocumentCommand.SimpleCreateShippingDocument createShippingDocument = new AbstractShippingDocumentCommand.SimpleCreateShippingDocument();
         createShippingDocument.setDocumentId(referenceDocumentId);

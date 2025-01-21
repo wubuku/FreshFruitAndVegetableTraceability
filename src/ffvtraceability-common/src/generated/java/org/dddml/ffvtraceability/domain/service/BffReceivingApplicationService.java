@@ -19,6 +19,8 @@ public interface BffReceivingApplicationService {
 
     String when(BffReceivingServiceCommands.CreateReceivingDocument c);
 
+    void when(BffReceivingServiceCommands.UpdateReceivingDocument c);
+
     void when(BffReceivingServiceCommands.UpdateReceivingPrimaryOrderId c);
 
     void when(BffReceivingServiceCommands.SubmitReceivingDocument c);

@@ -92,6 +92,20 @@ public class BffReceivingServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PutMapping("{documentId}")
+    public void updateReceivingDocument(
+        @PathVariable("documentId") String documentId,
+        @RequestBody BffReceivingDocumentDto receivingDocument
+    ) {
+        BffReceivingServiceCommands.UpdateReceivingDocument updateReceivingDocument = new BffReceivingServiceCommands.UpdateReceivingDocument();
+        updateReceivingDocument.setDocumentId(documentId);
+        updateReceivingDocument.setReceivingDocument(receivingDocument);
+        try {
+        updateReceivingDocument.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(updateReceivingDocument);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @PutMapping("{documentId}/PrimaryOrderId")
     public void updateReceivingPrimaryOrderId(
         @PathVariable("documentId") String documentId,
