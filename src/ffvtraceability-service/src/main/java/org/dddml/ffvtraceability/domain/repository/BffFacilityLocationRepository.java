@@ -21,6 +21,10 @@ public interface BffFacilityLocationRepository extends JpaRepository<
                 fl.level_id as levelId,
                 fl.position_id as positionId,
                 fl.geo_point_id as geoPointId,
+                fl.location_code as locationCode,
+                fl.gln as gln,
+                fl.description as description,
+                fl.location_name as locationName,
                 fl.active as active
             FROM facility_location fl
             WHERE fl.facility_id = :facilityId
@@ -43,6 +47,10 @@ public interface BffFacilityLocationRepository extends JpaRepository<
                 fl.level_id as levelId,
                 fl.position_id as positionId,
                 fl.geo_point_id as geoPointId,
+                fl.location_code as locationCode,
+                fl.gln as gln,
+                fl.description as description,
+                fl.location_name as locationName,
                 fl.active as active
             FROM facility_location fl
             WHERE (:active IS NULL OR fl.active = :active)
