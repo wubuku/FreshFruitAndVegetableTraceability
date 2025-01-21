@@ -78,37 +78,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Override
     @Transactional(readOnly = true)
     public BffSupplierDto when(BffSupplierServiceCommands.GetSupplier c) {
-//        PartyState partyState = partyApplicationService.get(c.getSupplierId());
-//        if (partyState == null) {
-//            return null;
-//        }
-//        BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(partyState);
-//        partyState.getPartyIdentifications().stream().forEach(x -> {
-//            if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GLN)) {
-//                dto.setGln(x.getIdValue());
-//            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GGN)) {
-//                dto.setGgn(x.getIdValue());
-//            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX)) {
-//                dto.setGs1CompanyPrefix(x.getIdValue());
-//            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_TAX_ID)) {
-//                dto.setTaxId(x.getIdValue());
-//            } else if (x.getPartyIdentificationTypeId().equals(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID)) {
-//                dto.setInternalId(x.getIdValue());
-//            }
-//        });
-//        PartyRoleId partyRoleId = new PartyRoleId();
-//        partyRoleId.setPartyId(c.getSupplierId());
-//        partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
-//        PartyRoleState partyRoleState = partyRoleApplicationService.get(partyRoleId);
-//        if (partyRoleState != null) {
-//            dto.setBankAccountInformation(partyRoleState.getBankAccountInformation());
-//            dto.setCertificationCodes(partyRoleState.getCertificationCodes());
-//            dto.setSupplierShortName(partyRoleState.getSupplierShortName());
-//            dto.setTpaNumber(partyRoleState.getTpaNumber());
-//            dto.setSupplierProductTypeDescription(partyRoleState.getSupplierProductTypeDescription());
-//            dto.setSupplierTypeEnumId(partyRoleState.getSupplierTypeEnumId());
-//        }
-
         Optional<BffSupplierProjection> projection = bffSupplierRepository.findSupplierById(c.getSupplierId());
         if (projection.isPresent()) {
             BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(projection.get());
