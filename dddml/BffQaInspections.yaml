@@ -88,7 +88,9 @@ services:
             type: id-long
 
       CreateQaInspection:
-        # NOTE: 当 ReceiptId 不为空时，要求 QaInspectionId 必须等于 ReceiptId？（简化处理逻辑）
+        # NOTE: 当 `ReceiptId` 不为空时，要求 `QaInspectionId` 要么为 null，要么必须等于 `ReceiptId`。
+        # 后端会直接使用 `ReceiptId` 作为 `QaInspectionId` 来创建 QA Inspection。
+        # （按照当前的场景，这样做可以简化后续的处理逻辑）
         httpMethod: POST
         metadata:
           HttpRequestBody: QaInspection
@@ -99,7 +101,8 @@ services:
           type: id-long # QaInspectionId
 
       UpdateQaInspection:
-        #更新指定的 Item 的信息
+        # 更新指定的 Item 的信息。
+        # NOTE: 不允许修改 `ReceiptId`。
         metadata:
           RestfulPathVariable: QaInspectionId
           HttpRequestBody: QaInspection
@@ -130,6 +133,7 @@ services:
         parameters:
           QaInspections:
             itemType: BffQaInspectionDto
-            # 使用 `QaInspectionId`（如果不为 null）或者 `ReceiptId`（目前不允许为 null） 来查询 QA Inspection。
+            # 使用 `QaInspectionId` 来查询 QA Inspection。
+            # （一般情况情况下，`QaInspectionId` 应该等于 `ReceiptId`。因为目前没有“不经过收货”就直接检验的场景）
             # 如果查询不到 QA Inspection，则创建新的 QA Inspection；
             # 否则更新 QA Inspection。
