@@ -191,6 +191,36 @@ public class BffPurchaseOrderServiceCommands {
 
     }
 
+    public static class GetPurchaseOrderProductOutstandingQuantityByProductId extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+    }
+
     public static class CreatePurchaseOrder extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**

@@ -1026,7 +1026,10 @@ response=$(curl -X 'GET' \
   -s
 )
 echo "$response"
-
+# 输出类似：{"orderItemSeqId":"1","productId":"ORGANIC_TOMATO_01","productName":"Organic Tomato","gtin":"0614141123453","quantity":550.000000,"unitPrice":2.990,"itemDescription":"Organic Tomatoes, Grade A","comments":"Updated: Require extra fresh produce","estimatedShipDate":"2024-03-20T08:00:00Z","estimatedDeliveryDate":"2024-03-21T08:00:00Z","fulfillments":[{"receiptId":"11CCL74RZCU00FZCVG-1","allocatedQuantity":500.000000,"receivedAt":"2025-01-12T04:30:43.862706Z","qaStatusId":"DRAFTED"},{"receiptId":"11CD2111RBF6YQ3N86-1","allocatedQuantity":50.000000,"receivedAt":"2025-01-12T05:39:41.546006Z","qaStatusId":"DRAFTED"}]}
+# 提取出 productId
+PRODUCT_ID=$(echo "$response" | jq -r '.productId')
+echo "Using Product ID: ${PRODUCT_ID}"
 
 # curl -X 'PUT' \
 #   "${API_BASE_URL}/QaInspections/${QA_INSPECTION_ID}/_commands/QaInspectionAction" \
@@ -1090,6 +1093,13 @@ curl -X 'GET' \
 # echo "Querying purchase order item outstanding quantity..."
 # curl -X 'GET' \
 #   "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}/Items/${ORDER_ITEM_SEQ_ID}/OutstandingQuantity" \
+#   -H 'accept: application/json' \
+#   -H "X-TenantID: X"
+
+# # 查询采购订单的某个产品的未履行数量
+# echo "Querying purchase order product outstanding quantity..."
+# curl -X 'GET' \
+#   "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}/getOutstandingQuantityByProduct?productId=${PRODUCT_ID}" \
 #   -H 'accept: application/json' \
 #   -H "X-TenantID: X"
 

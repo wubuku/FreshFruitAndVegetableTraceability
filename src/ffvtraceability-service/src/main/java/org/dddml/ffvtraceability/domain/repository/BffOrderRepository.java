@@ -113,6 +113,15 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                 AND oi.order_item_seq_id = receipt_items.order_item_seq_id
             """;
 
+    String OUTSTANDING_QUANTITY_SELECT = """
+            SELECT 
+                CASE 
+                    WHEN demand.demand_quantity IS NULL THEN NULL
+                    ELSE demand.demand_quantity - fulfilled.fulfilled_quantity
+                END as outstanding_quantity
+            FROM demand, fulfilled
+            """;
+
     @Query(value = """
             WITH filtered_orders AS (
                 SELECT DISTINCT o.order_id, o.order_date
@@ -214,20 +223,44 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                     SUM(COALESCE(oa.quantity_allocated, 0)) as fulfilled_quantity
                 """ + RECEIPT_ALLOCATION_JOIN_AND_WHERE + """
             )
-            SELECT 
-                CASE 
-                    WHEN demand.demand_quantity IS NULL THEN NULL
-                    ELSE demand.demand_quantity - fulfilled.fulfilled_quantity
-                END as outstanding_quantity
-            FROM demand, fulfilled
-            """, nativeQuery = true)
+            """ + OUTSTANDING_QUANTITY_SELECT, nativeQuery = true)
     Optional<BigDecimal> findPurchaseOrderItemOutstandingQuantity(
             @Param("orderId") String orderId,
             @Param("orderItemSeqId") String orderItemSeqId
     );
 
     /**
-     * 查询“收货行项”所关联的采购订单行项的未履行数量。
+     * 查询采购订单行项（可能是多个行项，只要匹配产品 Id 就好）的未履行数量（多个行项的话需要合计）。
+     */
+    @Query(value = """
+            WITH demand AS (
+                SELECT 
+                    SUM(oi.quantity - (CASE
+                        WHEN oi.cancel_quantity IS NULL THEN 0
+                        ELSE oi.cancel_quantity
+                    END)) as demand_quantity
+                FROM order_item oi
+                WHERE oi.order_id = :orderId
+                    AND oi.product_id = :productId
+            ),
+            fulfilled AS (
+                SELECT 
+                    SUM(COALESCE(oa.quantity_allocated, 0)) as fulfilled_quantity
+                FROM order_item oi
+                LEFT JOIN shipment_receipt_order_allocation oa ON
+                    oi.order_id = oa.order_id
+                    AND oi.order_item_seq_id = oa.order_item_seq_id
+                WHERE oi.order_id = :orderId
+                    AND oi.product_id = :productId
+            )
+            """ + OUTSTANDING_QUANTITY_SELECT, nativeQuery = true)
+    Optional<BigDecimal> findPurchaseOrderItemOutstandingQuantityByProductId(
+            @Param("orderId") String orderId,
+            @Param("productId") String productId
+    );
+
+    /**
+     * 查询"收货行项"所关联的采购订单行项的未履行数量。
      */
     @Query(value = """
             WITH demand AS (
@@ -243,13 +276,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                     oi.order_id = oa.order_id
                     AND oi.order_item_seq_id = oa.order_item_seq_id
             )
-            SELECT 
-                CASE 
-                    WHEN demand.demand_quantity IS NULL THEN NULL
-                    ELSE demand.demand_quantity - fulfilled.fulfilled_quantity
-                END as outstanding_quantity
-            FROM demand, fulfilled
-            """, nativeQuery = true)
+            """ + OUTSTANDING_QUANTITY_SELECT, nativeQuery = true)
     Optional<BigDecimal> findReceiptAssociatedOrderItemOutstandingQuantity(
             @Param("receiptId") String receiptId
     );
