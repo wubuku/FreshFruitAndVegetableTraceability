@@ -1120,3 +1120,13 @@ curl -X 'GET' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X"
+
+# 查询收货单列表，并要求“连带”返回每个收货单的 QA 检验状态
+# 注意设置参数 `derivesQaInspectionStatus=true`
+# 不建议滥用，可能会导致性能问题。
+# 也许后面可以考虑提供一个“批量查询收货单的 QA 检验状态”的接口，由前端组合使用。
+curl -X 'GET' \
+  "${API_BASE_URL}/BffReceipts?derivesQaInspectionStatus=true" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X"

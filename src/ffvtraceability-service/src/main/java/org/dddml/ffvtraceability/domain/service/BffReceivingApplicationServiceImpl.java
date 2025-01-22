@@ -146,6 +146,16 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                         }
                 ).collect(Collectors.toList());
 
+        if (c.getDerivesQaInspectionStatus() != null && c.getDerivesQaInspectionStatus()) {
+            // 查询 QA 检验状态
+            Map<String, String> qaInspectionStatusMap =
+                    bffReceivingRepository.findQaInspectionStatusByShipmentIds(shipmentIds)
+                            .stream()
+                            .map(p -> new AbstractMap.SimpleEntry<>(p.getDocumentId(), p.getQaInspectionStatusId()))
+                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            receivingDocuments.forEach(d -> d.setQaInspectionStatusId(qaInspectionStatusMap.get(d.getDocumentId())));
+        }
+
         return Page.builder(receivingDocuments)
                 .totalElements(totalElements)
                 .size(c.getSize())
@@ -172,7 +182,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             }
         }
         if (c.getDerivesQaInspectionStatus() != null && c.getDerivesQaInspectionStatus()) {
-            bffReceivingRepository.findQaInspectionStatusByDocumentId(c.getDocumentId())
+            bffReceivingRepository.findQaInspectionStatusByShipmentId(c.getDocumentId())
                     .ifPresent(receivingDocument::setQaInspectionStatusId);
         }
         return receivingDocument;

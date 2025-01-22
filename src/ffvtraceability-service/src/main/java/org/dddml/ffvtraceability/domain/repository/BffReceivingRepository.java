@@ -217,15 +217,32 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
     /**
      * 根据收货单 ID 查询其 QA 检验状态
      *
-     * @param documentId 收货单 ID (shipment_id)
+     * @param shipmentId 收货单 ID (shipment_id)
      * @return 返回 QA 检验状态：
      * - 'INSPECTED': 所有收货行项都已完成检验
      * - 'PARTIALLY_INSPECTED': 部分收货行项已完成检验
      * - 'PENDING_INSPECTION': 未开始检验或检验中
      */
     @Query(value = QA_INSPECTION_STATUS_SELECT + """
-            WHERE s.shipment_id = :documentId
+            WHERE s.shipment_id = :shipmentId
             GROUP BY s.shipment_id
             """, nativeQuery = true)
-    Optional<String> findQaInspectionStatusByDocumentId(@Param("documentId") String documentId);
+    Optional<String> findQaInspectionStatusByShipmentId(@Param("shipmentId") String shipmentId);
+
+    /**
+     * 根据多个收货单 ID 批量查询其 QA 检验状态
+     */
+    @Query(value = """
+            SELECT 
+                outer_s.shipment_id as documentId,
+                (""" + QA_INSPECTION_STATUS_SELECT + """
+                    WHERE s.shipment_id = outer_s.shipment_id
+                    GROUP BY s.shipment_id
+                ) as qaInspectionStatusId
+            FROM shipment outer_s
+            WHERE outer_s.shipment_id IN :shipmentIds
+            """, nativeQuery = true)
+    List<BffReceivingDocumentProjection> findQaInspectionStatusByShipmentIds(
+            @Param("shipmentIds") List<String> shipmentIds
+    );
 }
