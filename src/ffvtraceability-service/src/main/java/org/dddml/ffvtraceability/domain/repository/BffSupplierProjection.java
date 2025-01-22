@@ -50,5 +50,9 @@ public interface BffSupplierProjection {
 
     String getActive();
 
+    Long getSequenceNumber();
+
+    Long getFacilityLevel();
+
 }
 
