@@ -27,7 +27,7 @@
         type: id
       SupplierProductTypeDescription:
         # 供应商提供的产品/服务类型的信息描述：实体产品，服务（Service）等。
-        type: id
+        type: description
 
       # ------------------------------------------------------------
 

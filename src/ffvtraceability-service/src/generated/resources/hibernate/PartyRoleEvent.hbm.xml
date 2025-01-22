@@ -43,7 +43,7 @@
         <column name="supplier_type_enum_id" sql-type="VARCHAR(20)" />
       </property>
       <property name="supplierProductTypeDescription">
-        <column name="supplier_product_type_description" sql-type="VARCHAR(20)" />
+        <column name="supplier_product_type_description" sql-type="VARCHAR(255)" />
       </property>
       <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateMergePatched" discriminator-value="MergePatched">

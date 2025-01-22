@@ -27,7 +27,7 @@
       <column name="supplier_type_enum_id" sql-type="VARCHAR(20)" />
     </property>
     <property name="supplierProductTypeDescription">
-      <column name="supplier_product_type_description" sql-type="VARCHAR(20)" />
+      <column name="supplier_product_type_description" sql-type="VARCHAR(255)" />
     </property>
     <property name="createdBy">
       <column name="created_by" />
