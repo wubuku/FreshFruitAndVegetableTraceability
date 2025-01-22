@@ -20,7 +20,7 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
                 pa.city as city,
                 pa.postal_code as postalCode,
                 pa.state_province_geo_id as stateProvinceGeoId,
-                pa.country_geo_id as countryId,
+                pa.country_geo_id as countryGeoId,
                 gc.geo_name as countryGeoName,
                 gp.geo_name as stateProvinceGeoName
             FROM facility_contact_mech pcm

@@ -179,6 +179,8 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         createFacility.setFacilityName(facility.getFacilityName());
         createFacility.setDescription(facility.getDescription());
         createFacility.setFacilitySize(facility.getFacilitySize());
+        createFacility.setSequenceNumber(facility.getSequenceNumber());
+        createFacility.setFacilityLevel(facility.getFacilityLevel());
         createFacility.setFacilitySizeUomId(facility.getFacilitySizeUomId());
         createFacility.setGeoPointId(facility.getGeoPointId());
         createFacility.setGeoId(facility.getGeoId());
