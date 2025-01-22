@@ -154,6 +154,12 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     }
 
     @Override
+    public BigDecimal when(BffPurchaseOrderServiceCommands.GetPurchaseOrderProductOutstandingQuantityByProductId c) {
+        return bffOrderRepository.findPurchaseOrderItemOutstandingQuantityByProductId(c.getOrderId(), c.getProductId())
+                .orElse(null);
+    }
+
+    @Override
     @Transactional
     public String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrder c) {
         BffPurchaseOrderDto purchaseOrder = c.getPurchaseOrder();

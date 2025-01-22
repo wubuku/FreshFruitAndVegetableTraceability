@@ -19,6 +19,8 @@ public interface BffPurchaseOrderApplicationService {
 
     java.math.BigDecimal when(BffPurchaseOrderServiceCommands.GetPurchaseOrderItemOutstandingQuantity c);
 
+    java.math.BigDecimal when(BffPurchaseOrderServiceCommands.GetPurchaseOrderProductOutstandingQuantityByProductId c);
+
     String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrder c);
 
     void when(BffPurchaseOrderServiceCommands.UpdatePurchaseOrder c);

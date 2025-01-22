@@ -175,7 +175,6 @@ valueObjects:
       QaStatusId:
         type: id
 
-
 services:
   BffPurchaseOrderService:
     restfulResourceName: BffPurchaseOrders
@@ -214,7 +213,6 @@ services:
             type: bool
             optional: true # NOT required
 
-
       GetPurchaseOrderItem:
         # 获取指定采购订单下指定行项的详情
         restfulResourceName: "{OrderId}/Items/{OrderItemSeqId}"
@@ -251,6 +249,21 @@ services:
           OrderItemSeqId:
             type: id
 
+      GetPurchaseOrderProductOutstandingQuantityByProductId:
+        # 查询指定采购订单下指定产品的未履行数量
+        restfulResourceName: "{OrderId}/getOutstandingQuantityByProduct"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+        isQuery: true
+        result:
+          type: fixed-point
+        parameters:
+          OrderId:
+            type: id
+          ProductId:
+            type: id
+            optional: false # Is required
 
       CreatePurchaseOrder:
         # 创建采购订单
@@ -262,7 +275,6 @@ services:
             type: BffPurchaseOrderDto
         result:
           type: id # OrderId
-
 
       UpdatePurchaseOrder:
         httpMethod: PUT
@@ -288,9 +300,8 @@ services:
           OrderId:
             type: id
         result:
-          type: id 
+          type: id
           # New FulfillmentStatusId
-
 
       CreatePurchaseOrderItem:
         # 添加行项的方法
@@ -309,7 +320,6 @@ services:
           type: id
           # OrderItemSeqId
 
-
       DeletePurchaseOrderItem:
         # 删除行项的方法
         httpMethod: DELETE
@@ -323,7 +333,6 @@ services:
             type: id
           OrderItemSeqId:
             type: id
-
 
       UpdatePurchaseOrderItem:
         # 更新行项的方法
@@ -361,6 +370,4 @@ services:
           SupplierProductId:
             type: id-long
 
-
     # TODO： 是否需要支持 PO 的 CSV 导入？
-
