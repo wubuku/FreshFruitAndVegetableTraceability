@@ -64,7 +64,9 @@ valueObjects:
         type: url
       Active:
         type: indicator
-
+      Facilities:
+        itemType: BffFacilityDto
+        isList: true
 
 services:
   BffSupplierService:

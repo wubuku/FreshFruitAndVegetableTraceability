@@ -298,11 +298,21 @@ public class BffSupplierDto implements Serializable {
         this.active = active;
     }
 
+    private java.util.List<BffFacilityDto> facilities;
+
+    public java.util.List<BffFacilityDto> getFacilities() {
+        return this.facilities;
+    }
+
+    public void setFacilities(java.util.List<BffFacilityDto> facilities) {
+        this.facilities = facilities;
+    }
+
     public BffSupplierDto()
     {
     }
 
-    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String tpaNumber, String supplierTypeEnumId, String supplierProductTypeDescription, String certificationCodes, String bankAccountInformation, String telephone, String email, String webSite, String active)
+    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String tpaNumber, String supplierTypeEnumId, String supplierProductTypeDescription, String certificationCodes, String bankAccountInformation, String telephone, String email, String webSite, String active, java.util.List<BffFacilityDto> facilities)
     {
         this.supplierId = supplierId;
         this.supplierName = supplierName;
@@ -326,6 +336,7 @@ public class BffSupplierDto implements Serializable {
         this.email = email;
         this.webSite = webSite;
         this.active = active;
+        this.facilities = facilities;
     }
 
     @Override
@@ -362,6 +373,7 @@ public class BffSupplierDto implements Serializable {
             && (email == other.email || (email != null && email.equals(other.email)))
             && (webSite == other.webSite || (webSite != null && webSite.equals(other.webSite)))
             && (active == other.active || (active != null && active.equals(other.active)))
+            && (facilities == other.facilities || (facilities != null && facilities.equals(other.facilities)))
             ;
     }
 
@@ -435,6 +447,9 @@ public class BffSupplierDto implements Serializable {
         if (this.active != null) {
             hash += 13 * this.active.hashCode();
         }
+        if (this.facilities != null) {
+            hash += 13 * this.facilities.hashCode();
+        }
         return hash;
     }
 
@@ -463,6 +478,7 @@ public class BffSupplierDto implements Serializable {
                 ", email=" + '\'' + email + '\'' +
                 ", webSite=" + '\'' + webSite + '\'' +
                 ", active=" + '\'' + active + '\'' +
+                ", facilities=" + facilities +
                 '}';
     }
 
