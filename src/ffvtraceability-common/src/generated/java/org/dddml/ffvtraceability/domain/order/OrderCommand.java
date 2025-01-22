@@ -157,6 +157,10 @@ public interface OrderCommand extends Command {
 
         void setMemo(String memo);
 
+        String getContactDescription();
+
+        void setContactDescription(String contactDescription);
+
         String getFulfillmentStatusId();
 
         void setFulfillmentStatusId(String fulfillmentStatusId);
@@ -294,6 +298,10 @@ public interface OrderCommand extends Command {
         Boolean getIsPropertyMemoRemoved();
 
         void setIsPropertyMemoRemoved(Boolean removed);
+
+        Boolean getIsPropertyContactDescriptionRemoved();
+
+        void setIsPropertyContactDescriptionRemoved(Boolean removed);
 
         Boolean getIsPropertyFulfillmentStatusIdRemoved();
 

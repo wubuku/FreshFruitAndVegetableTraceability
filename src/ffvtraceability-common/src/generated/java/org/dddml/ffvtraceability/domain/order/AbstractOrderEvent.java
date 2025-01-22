@@ -618,6 +618,18 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
             this.memo = memo;
         }
 
+        private String contactDescription;
+
+        public String getContactDescription()
+        {
+            return this.contactDescription;
+        }
+
+        public void setContactDescription(String contactDescription)
+        {
+            this.contactDescription = contactDescription;
+        }
+
         private String fulfillmentStatusId;
 
         public String getFulfillmentStatusId()
@@ -1162,6 +1174,16 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
         public void setIsPropertyMemoRemoved(Boolean removed) {
             this.isPropertyMemoRemoved = removed;
+        }
+
+        private Boolean isPropertyContactDescriptionRemoved;
+
+        public Boolean getIsPropertyContactDescriptionRemoved() {
+            return this.isPropertyContactDescriptionRemoved;
+        }
+
+        public void setIsPropertyContactDescriptionRemoved(Boolean removed) {
+            this.isPropertyContactDescriptionRemoved = removed;
         }
 
         private Boolean isPropertyFulfillmentStatusIdRemoved;

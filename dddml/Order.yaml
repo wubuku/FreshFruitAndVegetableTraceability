@@ -102,6 +102,8 @@
       Memo:
         # 订单备注
         type: long-varchar
+      ContactDescription:
+        type: description
       FulfillmentStatusId:
         columnName: FULFILLMENT_STATUS_ID
         type: id

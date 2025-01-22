@@ -295,6 +295,16 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.memo = memo;
     }
 
+    private String contactDescription;
+
+    public String getContactDescription() {
+        return this.contactDescription;
+    }
+
+    public void setContactDescription(String contactDescription) {
+        this.contactDescription = contactDescription;
+    }
+
     private String fulfillmentStatusId;
 
     public String getFulfillmentStatusId() {
@@ -571,6 +581,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setIsViewed(e.getIsViewed());
         this.setInvoicePerShipment(e.getInvoicePerShipment());
         this.setMemo(e.getMemo());
+        this.setContactDescription(e.getContactDescription());
         this.setFulfillmentStatusId(e.getFulfillmentStatusId());
 
         this.setCreatedBy(e.getCreatedBy());
@@ -629,6 +640,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setIsViewed(s.getIsViewed());
         this.setInvoicePerShipment(s.getInvoicePerShipment());
         this.setMemo(s.getMemo());
+        this.setContactDescription(s.getContactDescription());
         this.setFulfillmentStatusId(s.getFulfillmentStatusId());
 
         if (s.getOrderRoles() != null) {
@@ -1003,6 +1015,13 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             }
         } else {
             this.setMemo(e.getMemo());
+        }
+        if (e.getContactDescription() == null) {
+            if (e.getIsPropertyContactDescriptionRemoved() != null && e.getIsPropertyContactDescriptionRemoved()) {
+                this.setContactDescription(null);
+            }
+        } else {
+            this.setContactDescription(e.getContactDescription());
         }
         if (e.getFulfillmentStatusId() == null) {
             if (e.getIsPropertyFulfillmentStatusIdRemoved() != null && e.getIsPropertyFulfillmentStatusIdRemoved()) {

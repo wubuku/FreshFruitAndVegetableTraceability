@@ -150,6 +150,10 @@ public interface OrderEvent extends Event {
 
         void setMemo(String memo);
 
+        String getContactDescription();
+
+        void setContactDescription(String contactDescription);
+
         String getFulfillmentStatusId();
 
         void setFulfillmentStatusId(String fulfillmentStatusId);
@@ -301,6 +305,10 @@ public interface OrderEvent extends Event {
         Boolean getIsPropertyMemoRemoved();
 
         void setIsPropertyMemoRemoved(Boolean removed);
+
+        Boolean getIsPropertyContactDescriptionRemoved();
+
+        void setIsPropertyContactDescriptionRemoved(Boolean removed);
 
         Boolean getIsPropertyFulfillmentStatusIdRemoved();
 

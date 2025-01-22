@@ -417,6 +417,21 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
     }
 
     /**
+     * Contact Description
+     */
+    private String contactDescription;
+
+    public String getContactDescription()
+    {
+        return this.contactDescription;
+    }
+
+    public void setContactDescription(String contactDescription)
+    {
+        this.contactDescription = contactDescription;
+    }
+
+    /**
      * Fulfillment Status Id
      */
     private String fulfillmentStatusId;
@@ -816,6 +831,18 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         this.isPropertyMemoRemoved = removed;
     }
 
+    private Boolean isPropertyContactDescriptionRemoved;
+
+    public Boolean getIsPropertyContactDescriptionRemoved()
+    {
+        return this.isPropertyContactDescriptionRemoved;
+    }
+
+    public void setIsPropertyContactDescriptionRemoved(Boolean removed)
+    {
+        this.isPropertyContactDescriptionRemoved = removed;
+    }
+
     private Boolean isPropertyFulfillmentStatusIdRemoved;
 
     public Boolean getIsPropertyFulfillmentStatusIdRemoved()
@@ -858,6 +885,7 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         command.setIsViewed(this.getIsViewed());
         command.setInvoicePerShipment(this.getInvoicePerShipment());
         command.setMemo(this.getMemo());
+        command.setContactDescription(this.getContactDescription());
         command.setFulfillmentStatusId(this.getFulfillmentStatusId());
     }
 
@@ -1035,6 +1063,7 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
         command.setIsPropertyIsViewedRemoved(this.getIsPropertyIsViewedRemoved());
         command.setIsPropertyInvoicePerShipmentRemoved(this.getIsPropertyInvoicePerShipmentRemoved());
         command.setIsPropertyMemoRemoved(this.getIsPropertyMemoRemoved());
+        command.setIsPropertyContactDescriptionRemoved(this.getIsPropertyContactDescriptionRemoved());
         command.setIsPropertyFulfillmentStatusIdRemoved(this.getIsPropertyFulfillmentStatusIdRemoved());
     }
 
