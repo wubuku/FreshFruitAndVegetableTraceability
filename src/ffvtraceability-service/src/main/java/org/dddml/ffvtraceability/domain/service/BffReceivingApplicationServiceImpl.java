@@ -159,6 +159,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         BffReceivingDocumentDto receivingDocument = getReceivingDocument(bffReceivingRepository, bffReceivingMapper,
                 c.getDocumentId()
         );
+        if (receivingDocument == null) {
+            return null;
+        }
         if (c.getIncludesOutstandingOrderQuantity() != null && c.getIncludesOutstandingOrderQuantity()
                 && receivingDocument != null && receivingDocument.getReceivingItems() != null
         ) {
@@ -167,6 +170,10 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                         .findReceiptAssociatedOrderItemOutstandingQuantity(item.getReceiptId());
                 oq.ifPresent(item::setOutstandingOrderQuantity);
             }
+        }
+        if (c.getDerivesQaInspectionStatus() != null && c.getDerivesQaInspectionStatus()) {
+            bffReceivingRepository.findQaInspectionStatusByDocumentId(c.getDocumentId())
+                    .ifPresent(receivingDocument::setQaInspectionStatusId);
         }
         return receivingDocument;
     }

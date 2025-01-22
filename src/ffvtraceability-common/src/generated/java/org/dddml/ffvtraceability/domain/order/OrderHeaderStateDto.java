@@ -351,6 +351,18 @@ public class OrderHeaderStateDto {
         this.memo = memo;
     }
 
+    private String contactDescription;
+
+    public String getContactDescription()
+    {
+        return this.contactDescription;
+    }
+
+    public void setContactDescription(String contactDescription)
+    {
+        this.contactDescription = contactDescription;
+    }
+
     private String fulfillmentStatusId;
 
     public String getFulfillmentStatusId()
@@ -595,6 +607,9 @@ public class OrderHeaderStateDto {
             }
             if (returnedFieldsContains("Memo")) {
                 dto.setMemo(state.getMemo());
+            }
+            if (returnedFieldsContains("ContactDescription")) {
+                dto.setContactDescription(state.getContactDescription());
             }
             if (returnedFieldsContains("FulfillmentStatusId")) {
                 dto.setFulfillmentStatusId(state.getFulfillmentStatusId());

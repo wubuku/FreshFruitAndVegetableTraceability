@@ -157,6 +157,17 @@ services:
             type: bool
             optional: true # NOT required
 
+      # GetReceivingDocumentQaInspectionStatus:
+      #   restfulResourceName: "{DocumentId}/getQaInspectionStatus"
+      #   metadata:
+      #     RestfulPathVariable: DocumentId
+      #   isQuery: true
+      #   result:
+      #     type: id
+      #   parameters:
+      #     DocumentId:
+      #       type: id
+
       GetReceivingItem:
         # 获取指定收货单下指定行项的详情
         restfulResourceName: "{DocumentId}/Items/{ReceiptId}"

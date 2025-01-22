@@ -118,6 +118,18 @@ public class BffPurchaseOrderDto implements Serializable {
         this.memo = memo;
     }
 
+    private String contactDescription;
+
+    public String getContactDescription()
+    {
+        return this.contactDescription;
+    }
+
+    public void setContactDescription(String contactDescription)
+    {
+        this.contactDescription = contactDescription;
+    }
+
     private String fulfillmentStatusId;
 
     public String getFulfillmentStatusId()
@@ -216,7 +228,7 @@ public class BffPurchaseOrderDto implements Serializable {
     {
     }
 
-    public BffPurchaseOrderDto(String orderId, String orderName, String externalId, OffsetDateTime orderDate, String statusId, String currencyUomId, String syncStatusId, String originFacilityId, String memo, String fulfillmentStatusId, String supplierId, String supplierName, OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt, String updatedBy, java.util.List<BffPurchaseOrderItemDto> orderItems)
+    public BffPurchaseOrderDto(String orderId, String orderName, String externalId, OffsetDateTime orderDate, String statusId, String currencyUomId, String syncStatusId, String originFacilityId, String memo, String contactDescription, String fulfillmentStatusId, String supplierId, String supplierName, OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt, String updatedBy, java.util.List<BffPurchaseOrderItemDto> orderItems)
     {
         this.orderId = orderId;
         this.orderName = orderName;
@@ -227,6 +239,7 @@ public class BffPurchaseOrderDto implements Serializable {
         this.syncStatusId = syncStatusId;
         this.originFacilityId = originFacilityId;
         this.memo = memo;
+        this.contactDescription = contactDescription;
         this.fulfillmentStatusId = fulfillmentStatusId;
         this.supplierId = supplierId;
         this.supplierName = supplierName;
@@ -258,6 +271,7 @@ public class BffPurchaseOrderDto implements Serializable {
             && (syncStatusId == other.syncStatusId || (syncStatusId != null && syncStatusId.equals(other.syncStatusId)))
             && (originFacilityId == other.originFacilityId || (originFacilityId != null && originFacilityId.equals(other.originFacilityId)))
             && (memo == other.memo || (memo != null && memo.equals(other.memo)))
+            && (contactDescription == other.contactDescription || (contactDescription != null && contactDescription.equals(other.contactDescription)))
             && (fulfillmentStatusId == other.fulfillmentStatusId || (fulfillmentStatusId != null && fulfillmentStatusId.equals(other.fulfillmentStatusId)))
             && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
             && (supplierName == other.supplierName || (supplierName != null && supplierName.equals(other.supplierName)))
@@ -300,6 +314,9 @@ public class BffPurchaseOrderDto implements Serializable {
         if (this.memo != null) {
             hash += 13 * this.memo.hashCode();
         }
+        if (this.contactDescription != null) {
+            hash += 13 * this.contactDescription.hashCode();
+        }
         if (this.fulfillmentStatusId != null) {
             hash += 13 * this.fulfillmentStatusId.hashCode();
         }
@@ -339,6 +356,7 @@ public class BffPurchaseOrderDto implements Serializable {
                 ", syncStatusId=" + '\'' + syncStatusId + '\'' +
                 ", originFacilityId=" + '\'' + originFacilityId + '\'' +
                 ", memo=" + '\'' + memo + '\'' +
+                ", contactDescription=" + '\'' + contactDescription + '\'' +
                 ", fulfillmentStatusId=" + '\'' + fulfillmentStatusId + '\'' +
                 ", supplierId=" + '\'' + supplierId + '\'' +
                 ", supplierName=" + '\'' + supplierName + '\'' +

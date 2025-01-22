@@ -41,6 +41,8 @@ valueObjects:
       Memo:
         # 订单备注
         type: long-varchar
+      ContactDescription:
+        type: description
       FulfillmentStatusId:
         type: id
       # ---------------------------------

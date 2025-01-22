@@ -118,6 +118,9 @@
     <property name="memo">
       <column name="memo" sql-type="VARCHAR(255)" />
     </property>
+    <property name="contactDescription">
+      <column name="contact_description" sql-type="VARCHAR(255)" />
+    </property>
     <property name="fulfillmentStatusId">
       <column name="FULFILLMENT_STATUS_ID" sql-type="VARCHAR(20)" />
     </property>

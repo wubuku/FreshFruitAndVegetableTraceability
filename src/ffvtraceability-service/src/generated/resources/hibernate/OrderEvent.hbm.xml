@@ -105,6 +105,9 @@
       <property name="memo">
         <column name="memo" sql-type="VARCHAR(255)" />
       </property>
+      <property name="contactDescription">
+        <column name="contact_description" sql-type="VARCHAR(255)" />
+      </property>
       <property name="fulfillmentStatusId">
         <column name="FULFILLMENT_STATUS_ID" sql-type="VARCHAR(20)" />
       </property>
@@ -137,6 +140,7 @@
         <property name="isPropertyIsViewedRemoved" column="is_property_is_viewed_removed" />
         <property name="isPropertyInvoicePerShipmentRemoved" column="is_property_invoice_per_shipment_removed" />
         <property name="isPropertyMemoRemoved" column="is_property_memo_removed" />
+        <property name="isPropertyContactDescriptionRemoved" column="is_property_contact_description_removed" />
         <property name="isPropertyFulfillmentStatusIdRemoved" column="is_property_fulfillment_status_id_removed" />
       </subclass>
     </subclass>

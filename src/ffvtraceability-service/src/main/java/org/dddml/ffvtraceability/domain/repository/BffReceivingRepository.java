@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BffReceivingRepository extends JpaRepository<AbstractShipmentReceiptState.SimpleShipmentReceiptState, String> {
@@ -58,6 +59,29 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
     String RECEIPT_JOIN = """
             LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id 
                 AND (sr.deleted IS NULL OR sr.deleted = false)
+            """;
+
+    /**
+     * SQL 片段常量，用于计算 shipment 的 QA 检验状态。
+     * 通过分析 shipment 关联的所有 shipment_receipt 的 qa_inspection 状态，得出整体的检验状态：
+     * - 'INSPECTED': 所有收货行项都已完成检验 (APPROVED 或 REJECTED)
+     * - 'PARTIALLY_INSPECTED': 部分收货行项已完成检验，部分未完成
+     * - 'PENDING_INSPECTION': 没有收货行项，或所有收货行项都未完成检验
+     */
+    String QA_INSPECTION_STATUS_SELECT = """
+            SELECT
+                CASE
+                    WHEN COUNT(sr.receipt_id) = 0 THEN 'PENDING_INSPECTION'
+                    WHEN COUNT(sr.receipt_id) = COUNT(CASE WHEN qi.status_id IN ('APPROVED', 'REJECTED') THEN 1 END) 
+                        THEN 'INSPECTED'
+                    WHEN COUNT(CASE WHEN qi.status_id IN ('APPROVED', 'REJECTED') THEN 1 END) > 0 
+                        THEN 'PARTIALLY_INSPECTED'
+                    ELSE 'PENDING_INSPECTION'
+                END
+            FROM shipment s
+            LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id 
+                AND (sr.deleted IS NULL OR sr.deleted = false)
+            LEFT JOIN qa_inspection qi ON sr.receipt_id = qi.receipt_id
             """;
 
     @Query(value = """
@@ -189,4 +213,19 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             @Param("orderId") String orderId,
             @Param("orderItemSeqId") String orderItemSeqId
     );
+
+    /**
+     * 根据收货单 ID 查询其 QA 检验状态
+     *
+     * @param documentId 收货单 ID (shipment_id)
+     * @return 返回 QA 检验状态：
+     * - 'INSPECTED': 所有收货行项都已完成检验
+     * - 'PARTIALLY_INSPECTED': 部分收货行项已完成检验
+     * - 'PENDING_INSPECTION': 未开始检验或检验中
+     */
+    @Query(value = QA_INSPECTION_STATUS_SELECT + """
+            WHERE s.shipment_id = :documentId
+            GROUP BY s.shipment_id
+            """, nativeQuery = true)
+    Optional<String> findQaInspectionStatusByDocumentId(@Param("documentId") String documentId);
 }
