@@ -90,6 +90,14 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             bc.get().setPhoneNumber(
                     TelecomNumberUtil.format(x.getCountryCode(), x.getAreaCode(), x.getContactNumber()));
         });
+
+        bffFacilityContactMechRepository.findFacilityCurrentMisContactMechByFacilityId(facilityId).ifPresent(x -> {
+            if (bc.get() == null) {
+                bc.set(new BffBusinessContactDto());
+            }
+            bc.get().setEmail(x.getEmail());
+            bc.get().setContactRole(x.getAskForRole());
+        });
         return bc.get();
     }
 
@@ -560,10 +568,13 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
             createFacilityContactMechAssociation(facilityId, contactMechId, "-PP", c);
         }
-
         if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
             String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
             createFacilityContactMechAssociation(facilityId, contactMechId, "-PT", c);
+        }
+        if (bizContact.getEmail() != null && !bizContact.getEmail().trim().isEmpty()) {
+            String contactMechId = bffBusinessContactService.createMiscContact(bizContact, c);
+            createFacilityContactMechAssociation(facilityId, contactMechId, "-PE", c);
         }
     }
 
