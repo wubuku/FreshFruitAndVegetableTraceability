@@ -13,6 +13,7 @@ aggregates:
       ReceiptId:
         type: id-long
         # 关联的收货记录 Id
+        # NOTE: 当 ReceiptId 不为空时，要求 QaInspectionId 必须等于 ReceiptId？
       StatusId:
         type: id
         command:

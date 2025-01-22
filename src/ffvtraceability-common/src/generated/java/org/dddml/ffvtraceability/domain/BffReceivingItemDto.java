@@ -258,11 +258,23 @@ public class BffReceivingItemDto implements Serializable {
         this.outstandingOrderQuantity = outstandingOrderQuantity;
     }
 
+    private String qaInspectionStatusId;
+
+    public String getQaInspectionStatusId()
+    {
+        return this.qaInspectionStatusId;
+    }
+
+    public void setQaInspectionStatusId(String qaInspectionStatusId)
+    {
+        this.qaInspectionStatusId = qaInspectionStatusId;
+    }
+
     public BffReceivingItemDto()
     {
     }
 
-    public BffReceivingItemDto(String receiptId, String productId, String productName, String gtin, String lotId, String locationSeqId, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity)
+    public BffReceivingItemDto(String receiptId, String productId, String productName, String gtin, String lotId, String locationSeqId, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity, String qaInspectionStatusId)
     {
         this.receiptId = receiptId;
         this.productId = productId;
@@ -284,6 +296,7 @@ public class BffReceivingItemDto implements Serializable {
         this.shipmentItemSeqId = shipmentItemSeqId;
         this.shipmentPackageSeqId = shipmentPackageSeqId;
         this.outstandingOrderQuantity = outstandingOrderQuantity;
+        this.qaInspectionStatusId = qaInspectionStatusId;
     }
 
     @Override
@@ -318,6 +331,7 @@ public class BffReceivingItemDto implements Serializable {
             && (shipmentItemSeqId == other.shipmentItemSeqId || (shipmentItemSeqId != null && shipmentItemSeqId.equals(other.shipmentItemSeqId)))
             && (shipmentPackageSeqId == other.shipmentPackageSeqId || (shipmentPackageSeqId != null && shipmentPackageSeqId.equals(other.shipmentPackageSeqId)))
             && (outstandingOrderQuantity == other.outstandingOrderQuantity || (outstandingOrderQuantity != null && outstandingOrderQuantity.equals(other.outstandingOrderQuantity)))
+            && (qaInspectionStatusId == other.qaInspectionStatusId || (qaInspectionStatusId != null && qaInspectionStatusId.equals(other.qaInspectionStatusId)))
             ;
     }
 
@@ -385,6 +399,9 @@ public class BffReceivingItemDto implements Serializable {
         if (this.outstandingOrderQuantity != null) {
             hash += 13 * this.outstandingOrderQuantity.hashCode();
         }
+        if (this.qaInspectionStatusId != null) {
+            hash += 13 * this.qaInspectionStatusId.hashCode();
+        }
         return hash;
     }
 
@@ -411,6 +428,7 @@ public class BffReceivingItemDto implements Serializable {
                 ", shipmentItemSeqId=" + '\'' + shipmentItemSeqId + '\'' +
                 ", shipmentPackageSeqId=" + '\'' + shipmentPackageSeqId + '\'' +
                 ", outstandingOrderQuantity=" + outstandingOrderQuantity +
+                ", qaInspectionStatusId=" + '\'' + qaInspectionStatusId + '\'' +
                 '}';
     }
 

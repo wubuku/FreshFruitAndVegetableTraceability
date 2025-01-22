@@ -88,6 +88,7 @@ services:
             type: id-long
 
       CreateQaInspection:
+        # NOTE: 当 ReceiptId 不为空时，要求 QaInspectionId 必须等于 ReceiptId？（简化处理逻辑）
         httpMethod: POST
         metadata:
           HttpRequestBody: QaInspection

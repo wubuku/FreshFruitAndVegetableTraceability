@@ -48,5 +48,7 @@ public interface BffReceivingItemProjection {
 
     java.math.BigDecimal getOutstandingOrderQuantity();
 
+    String getQaInspectionStatusId();
+
 }
 
