@@ -1106,8 +1106,17 @@ curl -X 'GET' \
 
 # # 查询“收货单”信息，并要求返回“收货行项”关联的“采购订单行项”的未履行数量。
 # # 注意设置参数 `includesOutstandingOrderQuantity=true`
-# curl -X 'GET' \
-#   "${API_BASE_URL}/BffReceipts/${RECEIVING_ID}?includesOutstandingOrderQuantity=true" \
-#   -H 'accept: application/json' \
-#   -H 'Content-Type: application/json' \
-#   -H "X-TenantID: X"
+curl -X 'GET' \
+  "${API_BASE_URL}/BffReceipts/${RECEIVING_ID}?includesOutstandingOrderQuantity=true" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X"
+
+# 查询“收货单”信息，并要求返回 QA 检验状态
+# 注意设置参数 `derivesQaInspectionStatus=true`
+echo "Querying receiving document QA inspection status..."
+curl -X 'GET' \
+  "${API_BASE_URL}/BffReceipts/${RECEIVING_ID}?includesOutstandingOrderQuantity=true&derivesQaInspectionStatus=true" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X"
