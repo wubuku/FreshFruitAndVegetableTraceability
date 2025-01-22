@@ -7,6 +7,7 @@ import org.dddml.ffvtraceability.domain.document.DocumentState;
 import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
 import org.dddml.ffvtraceability.domain.repository.BffOrderRepository;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProjection;
+import org.dddml.ffvtraceability.domain.repository.BffReceivingItemProjection;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
 import org.dddml.ffvtraceability.domain.shipment.AbstractShipmentCommand;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
@@ -173,7 +174,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             return null;
         }
         if (c.getIncludesOutstandingOrderQuantity() != null && c.getIncludesOutstandingOrderQuantity()
-                && receivingDocument != null && receivingDocument.getReceivingItems() != null
+                && receivingDocument.getReceivingItems() != null
         ) {
             for (BffReceivingItemDto item : receivingDocument.getReceivingItems()) {
                 Optional<BigDecimal> oq = bffOrderRepository
@@ -184,6 +185,18 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (c.getDerivesQaInspectionStatus() != null && c.getDerivesQaInspectionStatus()) {
             bffReceivingRepository.findQaInspectionStatusByShipmentId(c.getDocumentId())
                     .ifPresent(receivingDocument::setQaInspectionStatusId);
+            if (receivingDocument.getReceivingItems() != null) {
+                List<BffReceivingItemProjection> itemProjections =
+                        bffReceivingRepository.findQaInspectionStatusByShipmentReceiptIds(
+                                receivingDocument.getReceivingItems().stream()
+                                        .map(BffReceivingItemDto::getReceiptId)
+                                        .collect(Collectors.toList())
+                        );
+                Map<String, String> m = itemProjections.stream()
+                        .collect(Collectors.toMap(BffReceivingItemProjection::getReceiptId,
+                                BffReceivingItemProjection::getQaInspectionStatusId));
+                receivingDocument.getReceivingItems().forEach(i -> i.setQaInspectionStatusId(m.get(i.getReceiptId())));
+            }
         }
         return receivingDocument;
     }

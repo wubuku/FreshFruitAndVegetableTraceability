@@ -245,4 +245,29 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
     List<BffReceivingDocumentProjection> findQaInspectionStatusByShipmentIds(
             @Param("shipmentIds") List<String> shipmentIds
     );
+
+    /**
+     * 查询收货行项的 QA 检验状态
+     *
+     * @param receiptIds 收货行项ID列表
+     * @return 返回收货行项的QA检验状态列表，每个状态可能为:
+     * - INSPECTION_PASSED: 通过检验 (qa_inspection.status_id = 'APPROVED')
+     * - INSPECTION_FAILED: 未通过检验 (qa_inspection.status_id = 'REJECTED')
+     * - null: 其他情况
+     */
+    @Query(value = """
+            SELECT 
+                sr.receipt_id as receiptId,
+                CASE 
+                    WHEN qi.status_id = 'APPROVED' THEN 'INSPECTION_PASSED'
+                    WHEN qi.status_id = 'REJECTED' THEN 'INSPECTION_FAILED'
+                    ELSE NULL 
+                END as qaInspectionStatusId
+            FROM shipment_receipt sr
+            LEFT JOIN qa_inspection qi ON sr.receipt_id = qi.receipt_id
+            WHERE sr.receipt_id IN :receiptIds
+            """, nativeQuery = true)
+    List<BffReceivingItemProjection> findQaInspectionStatusByShipmentReceiptIds(
+            @Param("receiptIds") List<String> receiptIds
+    );
 }
