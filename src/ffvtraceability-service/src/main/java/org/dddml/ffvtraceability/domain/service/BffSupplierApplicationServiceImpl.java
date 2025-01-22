@@ -367,6 +367,16 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             if (supplierDto.getBusinessContacts() != null && !supplierDto.getBusinessContacts().isEmpty()) {
                 createPartyBusinessContact(partyId, supplierDto.getBusinessContacts().get(0), c);
             }
+            //设施
+            if (supplierDto.getFacilities() != null && !supplierDto.getFacilities().isEmpty()) {
+                BffFacilityServiceCommands.BatchAddFacilities batchAddFacilities = new BffFacilityServiceCommands.BatchAddFacilities();
+                supplierDto.getFacilities().forEach(bffFacilityDto -> {
+                    bffFacilityDto.setOwnerPartyId(partyId);//将设施的ownerPartyId改为当前生成的Party的Id
+                });
+                batchAddFacilities.setFacilities(supplierDto.getFacilities().toArray(new BffFacilityDto[0]));
+                batchAddFacilities.setRequesterId(c.getRequesterId());
+                bffFacilityApplicationService.when(batchAddFacilities);
+            }
         }
     }
 
