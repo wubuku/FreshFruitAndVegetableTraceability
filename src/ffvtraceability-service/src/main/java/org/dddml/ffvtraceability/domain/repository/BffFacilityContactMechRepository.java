@@ -64,6 +64,28 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
             SELECT DISTINCT ON (pcm.facility_id)
                 pcm.facility_id as facilityId,
                 pcm.contact_mech_id as contactMechId,
+                pcm.from_date as fromDate,
+                tn.email as email,
+                tn.ask_for_role as askForRole,
+                tn.contact_number as contactNumber
+            FROM facility_contact_mech pcm
+            JOIN contact_mech tn ON tn.contact_mech_id = pcm.contact_mech_id
+            WHERE pcm.facility_id = :facilityId
+            AND tn.contact_mech_type_id = 'MISC_CONTACT_MECH'
+            AND pcm.from_date <= CURRENT_TIMESTAMP
+            AND (pcm.thru_date IS NULL OR pcm.thru_date > CURRENT_TIMESTAMP)
+            ORDER BY pcm.facility_id, pcm.from_date DESC
+            LIMIT 1
+            """, nativeQuery = true)
+    Optional<FacilityMiscContactMechProjection> findFacilityCurrentMisContactMechByFacilityId(
+            @Param("facilityId") String facilityId
+    );
+
+
+    @Query(value = """
+            SELECT DISTINCT ON (pcm.facility_id)
+                pcm.facility_id as facilityId,
+                pcm.contact_mech_id as contactMechId,
                 pcm.from_date as fromDate
             FROM facility_contact_mech pcm
             JOIN contact_mech tn ON tn.contact_mech_id = pcm.contact_mech_id
@@ -77,12 +99,20 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
             @Param("contactMechTypeId") String contactMechTypeId
     );
 
+
     interface FacilityContactMechIdProjection {
         String getFacilityId();
 
         String getContactMechId();
 
         Instant getFromDate();
+    }
+
+
+    interface FacilityMiscContactMechProjection extends FacilityContactMechIdProjection {
+        String getEmail();
+
+        String getAskForRole();
     }
 
     interface FacilityPostalAddressProjection extends BffBusinessContactRepository.PostalAddressProjection {

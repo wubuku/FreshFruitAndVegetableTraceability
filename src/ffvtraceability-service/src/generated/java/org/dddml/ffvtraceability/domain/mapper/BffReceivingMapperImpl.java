@@ -58,6 +58,7 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
         bffReceivingItemDto.setOutstandingOrderQuantity( documentItemProjection.getOutstandingOrderQuantity() );
         bffReceivingItemDto.setProductId( documentItemProjection.getProductId() );
         bffReceivingItemDto.setProductName( documentItemProjection.getProductName() );
+        bffReceivingItemDto.setQaInspectionStatusId( documentItemProjection.getQaInspectionStatusId() );
         bffReceivingItemDto.setQuantityAccepted( documentItemProjection.getQuantityAccepted() );
         bffReceivingItemDto.setQuantityRejected( documentItemProjection.getQuantityRejected() );
         bffReceivingItemDto.setReceiptId( documentItemProjection.getReceiptId() );

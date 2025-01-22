@@ -1,11 +1,13 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
+import org.dddml.ffvtraceability.domain.BffFacilityDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechApplicationService;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechStateRepository;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
+import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
 import org.dddml.ffvtraceability.domain.party.*;
 import org.dddml.ffvtraceability.domain.partycontactmech.AbstractPartyContactMechCommand;
@@ -15,10 +17,7 @@ import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechState;
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
-import org.dddml.ffvtraceability.domain.repository.BffBusinessContactRepository;
-import org.dddml.ffvtraceability.domain.repository.BffPartyContactMechRepository;
-import org.dddml.ffvtraceability.domain.repository.BffSupplierProjection;
-import org.dddml.ffvtraceability.domain.repository.BffSupplierRepository;
+import org.dddml.ffvtraceability.domain.repository.*;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
@@ -55,6 +54,12 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     private BffSupplierRepository bffSupplierRepository;
     @Autowired
     private ContactMechStateRepository contactMechStateRepository;
+    @Autowired
+    private BffFacilityRepository bffFacilityRepository;
+    @Autowired
+    private BffFacilityMapper bffFacilityMapper;
+    @Autowired
+    private BffFacilityContactMechRepository bffFacilityContactMechRepository;
 
     @Autowired
     private PartyContactMechApplicationService partyContactMechApplicationService;
@@ -67,6 +72,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     private BffBusinessContactService bffBusinessContactService;
     @Autowired
     private ContactMechApplicationService contactMechApplicationService;
+    @Autowired
+    private BffFacilityApplicationService bffFacilityApplicationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -87,13 +94,36 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         Optional<BffSupplierProjection> projection = bffSupplierRepository.findSupplierById(c.getSupplierId());
         if (projection.isPresent()) {
             BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(projection.get());
-            enrichBusinessContactDetails(dto, c.getSupplierId());
+            enrichSupplierBusinessContactDetails(dto, c.getSupplierId());
+            enrichFacilityDetails(dto, c.getSupplierId());
             return dto;
         }
         return null;
     }
 
-    private void enrichBusinessContactDetails(BffSupplierDto dto, String supplierId) {
+    private void enrichFacilityDetails(BffSupplierDto dto, String supplierId) {
+        List<BffFacilityProjection> facilityProjections = bffFacilityRepository.findFacilitiesByOwnerPartyId(supplierId);
+        if (dto != null && !facilityProjections.isEmpty()) {
+            List<BffFacilityDto> facilityDtos = new ArrayList<>();
+            facilityProjections.forEach(bffFacilityProjection -> {
+                BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(bffFacilityProjection);
+                enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
+                facilityDtos.add(bffFacilityDto);
+            });
+            dto.setFacilities(facilityDtos);
+        }
+    }
+
+    private void enrichFacilityBusinessContactDetails(BffFacilityDto dto, String facilityId) {
+        BffBusinessContactDto facilityContact = BffFacilityApplicationServiceImpl.getBusinessContact(
+                bffFacilityContactMechRepository, facilityId
+        );
+        if (facilityContact != null) {
+            dto.setBusinessContacts(Collections.singletonList(facilityContact));
+        }
+    }
+
+    private void enrichSupplierBusinessContactDetails(BffSupplierDto dto, String supplierId) {
 
         bffPartyContactMechRepository.findPartyCurrentPostalAddressByPartyId(supplierId).ifPresent(x -> {
             BffBusinessContactDto bc = new BffBusinessContactDto();
@@ -130,8 +160,19 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Transactional
     public String when(BffSupplierServiceCommands.CreateSupplier c) {
         String partyId = createSupplierParty(c.getSupplier(), c);
+        //联系方式
         if (c.getSupplier().getBusinessContacts() != null && !c.getSupplier().getBusinessContacts().isEmpty()) {
             createPartyBusinessContact(partyId, c.getSupplier().getBusinessContacts().get(0), c);
+        }
+        //设施
+        if (c.getSupplier().getFacilities() != null && !c.getSupplier().getFacilities().isEmpty()) {
+            BffFacilityServiceCommands.BatchAddFacilities batchAddFacilities = new BffFacilityServiceCommands.BatchAddFacilities();
+            c.getSupplier().getFacilities().forEach(bffFacilityDto -> {
+                bffFacilityDto.setOwnerPartyId(partyId);//将设施的ownerPartyId改为当前生成的Party的Id
+            });
+            batchAddFacilities.setFacilities(c.getSupplier().getFacilities().toArray(new BffFacilityDto[0]));
+            batchAddFacilities.setRequesterId(c.getRequesterId());
+            bffFacilityApplicationService.when(batchAddFacilities);
         }
         return partyId;
     }
