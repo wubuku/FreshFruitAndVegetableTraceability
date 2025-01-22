@@ -17,6 +17,7 @@ import org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechState;
 import org.dddml.ffvtraceability.domain.partyrole.AbstractPartyRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleApplicationService;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
+import org.dddml.ffvtraceability.domain.partyrole.PartyRoleState;
 import org.dddml.ffvtraceability.domain.repository.*;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
@@ -32,6 +33,7 @@ import org.springframework.util.StringUtils;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.dddml.ffvtraceability.domain.constants.BffPartyConstants.*;
 
@@ -192,6 +194,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Override
     @Transactional
     public void when(BffSupplierServiceCommands.UpdateSupplier c) {
+
         String supplierId = c.getSupplierId();
         PartyState partyState = partyApplicationService.get(supplierId);
         if (partyState == null) {
@@ -200,24 +203,90 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         BffSupplierDto bffSupplier = c.getSupplier();
         AbstractPartyCommand.SimpleMergePatchOrganization mergePatchParty = new AbstractPartyCommand.SimpleMergePatchOrganization();
         mergePatchParty.setPartyId(supplierId);
-        mergePatchParty.setOrganizationName(c.getSupplier().getSupplierName());
-        mergePatchParty.setVersion(partyState.getVersion());//乐观锁
+        mergePatchParty.setOrganizationName(bffSupplier.getSupplierName());
+        mergePatchParty.setVersion(partyState.getVersion());// 乐观锁
         mergePatchParty.setRequesterId(c.getRequesterId());
         mergePatchParty.setExternalId(bffSupplier.getExternalId());
         mergePatchParty.setDescription(bffSupplier.getDescription());
+        mergePatchParty.setWebSite(bffSupplier.getWebSite());
+        mergePatchParty.setTelephone(bffSupplier.getTelephone());
+        if (bffSupplier.getPreferredCurrencyUomId() != null) {
+            mergePatchParty.setPreferredCurrencyUomId(bffSupplier.getPreferredCurrencyUomId());
+        }
+        //以上为Supplier(Party本身）基础资料的修改
+
+
         updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GGN, bffSupplier.getGgn());
         updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GLN, bffSupplier.getGln());
-        if (StringUtils.hasText(c.getSupplier().getStatusId()) && (
-                PARTY_STATUS_ACTIVE.equals(c.getSupplier().getStatusId())
-                        || PARTY_STATUS_INACTIVE.equals(c.getSupplier().getStatusId())
-        )) {
+        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX, bffSupplier.getGgn());
+        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_TAX_ID, bffSupplier.getGln());
+        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, bffSupplier.getGln());
+
+
+        if (StringUtils.hasText(c.getSupplier().getStatusId())
+                && (PARTY_STATUS_ACTIVE.equals(c.getSupplier().getStatusId())
+                || PARTY_STATUS_INACTIVE.equals(c.getSupplier().getStatusId()))) {
             mergePatchParty.setStatusId(c.getSupplier().getStatusId());
         }
         partyApplicationService.when(mergePatchParty);
 
+        //修改PartyRole
+        PartyRoleId partyRoleId = new PartyRoleId();
+        partyRoleId.setPartyId(bffSupplier.getSupplierId());
+        partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
+        PartyRoleState partyRole = partyRoleApplicationService.get(partyRoleId);
+        if (partyRole != null) {//有就改
+            AbstractPartyRoleCommand.SimpleMergePatchPartyRole simpleMergePatchPartyRole = new AbstractPartyRoleCommand.SimpleMergePatchPartyRole();
+            simpleMergePatchPartyRole.setPartyRoleId(partyRoleId);
+            simpleMergePatchPartyRole.setRequesterId(c.getRequesterId());
+            simpleMergePatchPartyRole.setBankAccountInformation(bffSupplier.getBankAccountInformation());
+            simpleMergePatchPartyRole.setCertificationCodes(bffSupplier.getCertificationCodes());
+            simpleMergePatchPartyRole.setSupplierShortName(bffSupplier.getSupplierShortName());
+            simpleMergePatchPartyRole.setTpaNumber(bffSupplier.getTpaNumber());
+            simpleMergePatchPartyRole.setSupplierProductTypeDescription(bffSupplier.getSupplierProductTypeDescription());
+            simpleMergePatchPartyRole.setSupplierTypeEnumId(bffSupplier.getSupplierTypeEnumId());
+            partyRoleApplicationService.when(simpleMergePatchPartyRole);
+        } else {//没有就添加
+            AbstractPartyRoleCommand.SimpleCreatePartyRole createPartyRole = new AbstractPartyRoleCommand.SimpleCreatePartyRole();
+            partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
+            createPartyRole.setPartyRoleId(partyRoleId);
+            createPartyRole.setCommandId(c.getCommandId() + "-SPP");
+            createPartyRole.setRequesterId(c.getRequesterId());
+            createPartyRole.setBankAccountInformation(bffSupplier.getBankAccountInformation());
+            createPartyRole.setCertificationCodes(bffSupplier.getCertificationCodes());
+            createPartyRole.setSupplierShortName(bffSupplier.getSupplierShortName());
+            createPartyRole.setTpaNumber(bffSupplier.getTpaNumber());
+            createPartyRole.setSupplierProductTypeDescription(bffSupplier.getSupplierProductTypeDescription());
+            createPartyRole.setSupplierTypeEnumId(bffSupplier.getSupplierTypeEnumId());
+            partyRoleApplicationService.when(createPartyRole);
+        }
+
+        //修改联系方式
         if (c.getSupplier().getBusinessContacts() != null && !c.getSupplier().getBusinessContacts().isEmpty()) {
             updateOrCreatePartyBusinessContact(supplierId, c.getSupplier().getBusinessContacts().get(0), c);
         }
+
+        //修改其关联设施列表
+        List<BffFacilityProjection> facilityProjections = bffFacilityRepository.findFacilitiesByOwnerPartyId(supplierId);
+        List<String> originalFacilityIds = new ArrayList<>();
+        facilityProjections.forEach(bffFacilityProjection -> originalFacilityIds.add(bffFacilityProjection.getFacilityId()));
+        List<String> newFacilityIds = bffSupplier.getFacilities().stream().map(BffFacilityDto::getFacilityId).filter(Objects::nonNull).collect(Collectors.toList());
+        List<BffFacilityDto> needToAddedNoId = bffSupplier.getFacilities().stream().filter(bffFacilityDto -> bffFacilityDto.getFacilityId() == null).collect(Collectors.toList());
+        List<String> needToUpdateIds = new ArrayList<>();
+        List<String> needToAddedHasIds = new ArrayList<>();
+        List<String> needToDeletedIds = new ArrayList<>();
+        newFacilityIds.forEach(newId -> {
+            if (originalFacilityIds.contains(newId)) {
+                needToUpdateIds.add(newId);//原来有，现在也有，属于更新的
+            } else {
+                needToAddedHasIds.add(newId);//有Id,但是并不在原有的列表中，那么也属于应该添加的
+            }
+        });
+        originalFacilityIds.forEach(oldId -> {
+            if (!newFacilityIds.contains(oldId)) {
+                needToDeletedIds.add(oldId);
+            }
+        });
     }
 
     private void updatePartyIdentification(
