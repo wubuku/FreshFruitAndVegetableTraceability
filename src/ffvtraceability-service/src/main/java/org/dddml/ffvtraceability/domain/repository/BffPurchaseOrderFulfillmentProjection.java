@@ -11,10 +11,16 @@ import org.dddml.ffvtraceability.domain.*;
 public interface BffPurchaseOrderFulfillmentProjection {
     String getReceiptId();
 
+    String getShipmentId();
+
     java.math.BigDecimal getAllocatedQuantity();
 
     java.time.Instant getReceivedAt();
-    String getQaStatusId();
+    String getShipmentQaStatusId();
+
+    String getShipmentQaInspectionStatusId();
+
+    String getShipmentStatusId();
 
 }
 

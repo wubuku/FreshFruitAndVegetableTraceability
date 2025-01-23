@@ -22,6 +22,18 @@ public class BffPurchaseOrderFulfillmentDto implements Serializable {
         this.receiptId = receiptId;
     }
 
+    private String shipmentId;
+
+    public String getShipmentId()
+    {
+        return this.shipmentId;
+    }
+
+    public void setShipmentId(String shipmentId)
+    {
+        this.shipmentId = shipmentId;
+    }
+
     private java.math.BigDecimal allocatedQuantity;
 
     public java.math.BigDecimal getAllocatedQuantity()
@@ -46,28 +58,55 @@ public class BffPurchaseOrderFulfillmentDto implements Serializable {
         this.receivedAt = receivedAt;
     }
 
-    private String qaStatusId;
+    private String shipmentQaStatusId;
 
-    public String getQaStatusId()
+    public String getShipmentQaStatusId()
     {
-        return this.qaStatusId;
+        return this.shipmentQaStatusId;
     }
 
-    public void setQaStatusId(String qaStatusId)
+    public void setShipmentQaStatusId(String shipmentQaStatusId)
     {
-        this.qaStatusId = qaStatusId;
+        this.shipmentQaStatusId = shipmentQaStatusId;
+    }
+
+    private String shipmentQaInspectionStatusId;
+
+    public String getShipmentQaInspectionStatusId()
+    {
+        return this.shipmentQaInspectionStatusId;
+    }
+
+    public void setShipmentQaInspectionStatusId(String shipmentQaInspectionStatusId)
+    {
+        this.shipmentQaInspectionStatusId = shipmentQaInspectionStatusId;
+    }
+
+    private String shipmentStatusId;
+
+    public String getShipmentStatusId()
+    {
+        return this.shipmentStatusId;
+    }
+
+    public void setShipmentStatusId(String shipmentStatusId)
+    {
+        this.shipmentStatusId = shipmentStatusId;
     }
 
     public BffPurchaseOrderFulfillmentDto()
     {
     }
 
-    public BffPurchaseOrderFulfillmentDto(String receiptId, java.math.BigDecimal allocatedQuantity, OffsetDateTime receivedAt, String qaStatusId)
+    public BffPurchaseOrderFulfillmentDto(String receiptId, String shipmentId, java.math.BigDecimal allocatedQuantity, OffsetDateTime receivedAt, String shipmentQaStatusId, String shipmentQaInspectionStatusId, String shipmentStatusId)
     {
         this.receiptId = receiptId;
+        this.shipmentId = shipmentId;
         this.allocatedQuantity = allocatedQuantity;
         this.receivedAt = receivedAt;
-        this.qaStatusId = qaStatusId;
+        this.shipmentQaStatusId = shipmentQaStatusId;
+        this.shipmentQaInspectionStatusId = shipmentQaInspectionStatusId;
+        this.shipmentStatusId = shipmentStatusId;
     }
 
     @Override
@@ -83,9 +122,12 @@ public class BffPurchaseOrderFulfillmentDto implements Serializable {
         BffPurchaseOrderFulfillmentDto other = (BffPurchaseOrderFulfillmentDto)obj;
         return true 
             && (receiptId == other.receiptId || (receiptId != null && receiptId.equals(other.receiptId)))
+            && (shipmentId == other.shipmentId || (shipmentId != null && shipmentId.equals(other.shipmentId)))
             && (allocatedQuantity == other.allocatedQuantity || (allocatedQuantity != null && allocatedQuantity.equals(other.allocatedQuantity)))
             && (receivedAt == other.receivedAt || (receivedAt != null && receivedAt.equals(other.receivedAt)))
-            && (qaStatusId == other.qaStatusId || (qaStatusId != null && qaStatusId.equals(other.qaStatusId)))
+            && (shipmentQaStatusId == other.shipmentQaStatusId || (shipmentQaStatusId != null && shipmentQaStatusId.equals(other.shipmentQaStatusId)))
+            && (shipmentQaInspectionStatusId == other.shipmentQaInspectionStatusId || (shipmentQaInspectionStatusId != null && shipmentQaInspectionStatusId.equals(other.shipmentQaInspectionStatusId)))
+            && (shipmentStatusId == other.shipmentStatusId || (shipmentStatusId != null && shipmentStatusId.equals(other.shipmentStatusId)))
             ;
     }
 
@@ -96,14 +138,23 @@ public class BffPurchaseOrderFulfillmentDto implements Serializable {
         if (this.receiptId != null) {
             hash += 13 * this.receiptId.hashCode();
         }
+        if (this.shipmentId != null) {
+            hash += 13 * this.shipmentId.hashCode();
+        }
         if (this.allocatedQuantity != null) {
             hash += 13 * this.allocatedQuantity.hashCode();
         }
         if (this.receivedAt != null) {
             hash += 13 * this.receivedAt.hashCode();
         }
-        if (this.qaStatusId != null) {
-            hash += 13 * this.qaStatusId.hashCode();
+        if (this.shipmentQaStatusId != null) {
+            hash += 13 * this.shipmentQaStatusId.hashCode();
+        }
+        if (this.shipmentQaInspectionStatusId != null) {
+            hash += 13 * this.shipmentQaInspectionStatusId.hashCode();
+        }
+        if (this.shipmentStatusId != null) {
+            hash += 13 * this.shipmentStatusId.hashCode();
         }
         return hash;
     }
@@ -112,9 +163,12 @@ public class BffPurchaseOrderFulfillmentDto implements Serializable {
     public String toString() {
         return "BffPurchaseOrderFulfillmentDto{" +
                 "receiptId=" + '\'' + receiptId + '\'' +
+                ", shipmentId=" + '\'' + shipmentId + '\'' +
                 ", allocatedQuantity=" + allocatedQuantity +
                 ", receivedAt=" + receivedAt +
-                ", qaStatusId=" + '\'' + qaStatusId + '\'' +
+                ", shipmentQaStatusId=" + '\'' + shipmentQaStatusId + '\'' +
+                ", shipmentQaInspectionStatusId=" + '\'' + shipmentQaInspectionStatusId + '\'' +
+                ", shipmentStatusId=" + '\'' + shipmentStatusId + '\'' +
                 '}';
     }
 

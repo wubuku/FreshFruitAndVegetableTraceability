@@ -170,11 +170,18 @@ valueObjects:
       ReceiptId:
         # 收货行项 Id
         type: id-long
+      ShipmentId:
+        type: id
       AllocatedQuantity:
         type: fixed-point
       ReceivedAt:
         type: date-time
-      QaStatusId:
+      ShipmentQaStatusId:
+        type: id
+      ShipmentQaInspectionStatusId:
+        type: id
+        # Inspected, Partially Inspected, Pending Inspection
+      ShipmentStatusId:
         type: id
 
 services:

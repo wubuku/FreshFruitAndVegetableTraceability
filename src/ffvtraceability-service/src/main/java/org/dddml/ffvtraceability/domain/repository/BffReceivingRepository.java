@@ -200,11 +200,17 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             SELECT 
                 oa.receipt_id as receiptId,
                 oa.quantity_allocated as allocatedQuantity,
-                sr.datetime_received as receivedAt,
-                s.qa_status_id as qaStatusId
+                sr1.datetime_received as receivedAt,
+                s1.shipment_id as shipmentId,
+                s1.qa_status_id as shipmentQaStatusId,
+                s1.status_id as shipmentStatusId,
+                (""" + QA_INSPECTION_STATUS_SELECT + """
+                    WHERE s.shipment_id = s1.shipment_id
+                    GROUP BY s.shipment_id
+                ) as shipmentQaInspectionStatusId
             FROM shipment_receipt_order_allocation oa
-            JOIN shipment_receipt sr ON oa.receipt_id = sr.receipt_id
-            JOIN shipment s ON sr.shipment_id = s.shipment_id
+            JOIN shipment_receipt sr1 ON oa.receipt_id = sr1.receipt_id
+            JOIN shipment s1 ON sr1.shipment_id = s1.shipment_id
             WHERE oa.order_id = :orderId 
                 AND oa.order_item_seq_id = :orderItemSeqId
             """,

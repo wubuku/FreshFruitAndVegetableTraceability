@@ -81,9 +81,12 @@ public class BffPurchaseOrderMapperImpl implements BffPurchaseOrderMapper {
         BffPurchaseOrderFulfillmentDto bffPurchaseOrderFulfillmentDto = new BffPurchaseOrderFulfillmentDto();
 
         bffPurchaseOrderFulfillmentDto.setReceiptId( purchaseOrderFulfillmentProjection.getReceiptId() );
+        bffPurchaseOrderFulfillmentDto.setShipmentId( purchaseOrderFulfillmentProjection.getShipmentId() );
         bffPurchaseOrderFulfillmentDto.setAllocatedQuantity( purchaseOrderFulfillmentProjection.getAllocatedQuantity() );
         bffPurchaseOrderFulfillmentDto.setReceivedAt( instantToOffsetDateTime( purchaseOrderFulfillmentProjection.getReceivedAt() ) );
-        bffPurchaseOrderFulfillmentDto.setQaStatusId( purchaseOrderFulfillmentProjection.getQaStatusId() );
+        bffPurchaseOrderFulfillmentDto.setShipmentQaStatusId( purchaseOrderFulfillmentProjection.getShipmentQaStatusId() );
+        bffPurchaseOrderFulfillmentDto.setShipmentQaInspectionStatusId( purchaseOrderFulfillmentProjection.getShipmentQaInspectionStatusId() );
+        bffPurchaseOrderFulfillmentDto.setShipmentStatusId( purchaseOrderFulfillmentProjection.getShipmentStatusId() );
 
         return bffPurchaseOrderFulfillmentDto;
     }
