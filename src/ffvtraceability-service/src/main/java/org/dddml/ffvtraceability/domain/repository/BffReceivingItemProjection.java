@@ -50,5 +50,7 @@ public interface BffReceivingItemProjection {
 
     String getQaInspectionStatusId();
 
+    Boolean getDeleted();
+
 }
 

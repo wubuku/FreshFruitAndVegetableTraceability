@@ -270,11 +270,23 @@ public class BffReceivingItemDto implements Serializable {
         this.qaInspectionStatusId = qaInspectionStatusId;
     }
 
+    private Boolean deleted;
+
+    public Boolean getDeleted()
+    {
+        return this.deleted;
+    }
+
+    public void setDeleted(Boolean deleted)
+    {
+        this.deleted = deleted;
+    }
+
     public BffReceivingItemDto()
     {
     }
 
-    public BffReceivingItemDto(String receiptId, String productId, String productName, String gtin, String lotId, String locationSeqId, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity, String qaInspectionStatusId)
+    public BffReceivingItemDto(String receiptId, String productId, String productName, String gtin, String lotId, String locationSeqId, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity, String qaInspectionStatusId, Boolean deleted)
     {
         this.receiptId = receiptId;
         this.productId = productId;
@@ -297,6 +309,7 @@ public class BffReceivingItemDto implements Serializable {
         this.shipmentPackageSeqId = shipmentPackageSeqId;
         this.outstandingOrderQuantity = outstandingOrderQuantity;
         this.qaInspectionStatusId = qaInspectionStatusId;
+        this.deleted = deleted;
     }
 
     @Override
@@ -332,6 +345,7 @@ public class BffReceivingItemDto implements Serializable {
             && (shipmentPackageSeqId == other.shipmentPackageSeqId || (shipmentPackageSeqId != null && shipmentPackageSeqId.equals(other.shipmentPackageSeqId)))
             && (outstandingOrderQuantity == other.outstandingOrderQuantity || (outstandingOrderQuantity != null && outstandingOrderQuantity.equals(other.outstandingOrderQuantity)))
             && (qaInspectionStatusId == other.qaInspectionStatusId || (qaInspectionStatusId != null && qaInspectionStatusId.equals(other.qaInspectionStatusId)))
+            && (deleted == other.deleted || (deleted != null && deleted.equals(other.deleted)))
             ;
     }
 
@@ -402,6 +416,9 @@ public class BffReceivingItemDto implements Serializable {
         if (this.qaInspectionStatusId != null) {
             hash += 13 * this.qaInspectionStatusId.hashCode();
         }
+        if (this.deleted != null) {
+            hash += 13 * this.deleted.hashCode();
+        }
         return hash;
     }
 
@@ -429,6 +446,7 @@ public class BffReceivingItemDto implements Serializable {
                 ", shipmentPackageSeqId=" + '\'' + shipmentPackageSeqId + '\'' +
                 ", outstandingOrderQuantity=" + outstandingOrderQuantity +
                 ", qaInspectionStatusId=" + '\'' + qaInspectionStatusId + '\'' +
+                ", deleted=" + deleted +
                 '}';
     }
 

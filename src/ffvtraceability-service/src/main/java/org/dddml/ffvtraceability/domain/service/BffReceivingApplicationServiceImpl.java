@@ -4,6 +4,9 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
+import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
+import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId;
+import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationState;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
 import org.dddml.ffvtraceability.domain.repository.*;
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@Transactional
 public class BffReceivingApplicationServiceImpl implements BffReceivingApplicationService {
     @Autowired
     private ShipmentReceiptApplicationService shipmentReceiptApplicationService;
@@ -54,6 +58,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     private BffFacilityMapper bffFacilityMapper;
     @Autowired
     private BffFacilityContactMechRepository bffFacilityContactMechRepository;
+    @Autowired
+    private FacilityLocationApplicationService facilityLocationApplicationService;
 
     static BffReceivingDocumentDto getReceivingDocument(
             BffReceivingRepository bffReceivingRepository,
@@ -86,6 +92,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         );
         return document;
     }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -307,8 +314,85 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     }
 
     @Override
+    @Transactional
     public void when(BffReceivingServiceCommands.UpdateReceivingDocument c) {
-        //todo
+        BffReceivingDocumentDto receivingDocumentDto = c.getReceivingDocument();
+        String shipmentId = receivingDocumentDto.getDocumentId();
+        ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
+        if (shipmentState == null) {
+            throw new IllegalArgumentException("Shipment (receiving document) not found: " + shipmentId);
+        }
+        String originFacilityId = receivingDocumentDto.getOriginFacilityId();
+
+        AbstractShipmentCommand.SimpleMergePatchShipment mergePatchShipment =
+                new AbstractShipmentCommand.SimpleMergePatchShipment();
+        mergePatchShipment.setShipmentId(shipmentId);
+        mergePatchShipment.setVersion(shipmentState.getVersion());
+        mergePatchShipment.setPrimaryOrderId(receivingDocumentDto.getPrimaryOrderId());
+        mergePatchShipment.setOriginFacilityId(originFacilityId);
+        // todo: More fields to update?
+        mergePatchShipment.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchShipment.setRequesterId(c.getRequesterId());
+        shipmentApplicationService.when(mergePatchShipment);
+
+        if (receivingDocumentDto.getReceivingItems() != null && !receivingDocumentDto.getReceivingItems().isEmpty()) {
+            for (BffReceivingItemDto itemDto : receivingDocumentDto.getReceivingItems()) {
+                // validate facility location
+                FacilityLocationState fl = facilityLocationApplicationService.get(new FacilityLocationId(originFacilityId, itemDto.getLocationSeqId()));
+                if (fl == null) {
+                    throw new IllegalArgumentException("Location not found: " + originFacilityId + "/" + itemDto.getLocationSeqId());
+                }
+                boolean isNewItem = true;
+                boolean isDeleted = false;
+                ShipmentReceiptState itemState = null;
+                String receiptId = itemDto.getReceiptId();
+                if (itemDto.getReceiptId() != null) {
+                    itemState = shipmentReceiptApplicationService.get(receiptId);
+                    if (itemState != null) {
+                        isNewItem = false;
+                        if (itemDto.getDeleted() != null && itemDto.getDeleted()) {
+                            isDeleted = true;
+                        }
+                    }
+                }
+                if (isNewItem) {
+                    createReceivingItem(itemDto, shipmentId, c);
+                } else {
+                    if (isDeleted) {
+                        if (itemState == null) {
+                            // throw new IllegalArgumentException("Receipt not found: " + receiptId);
+                            // should not happen?
+                        } else {
+                            deleteReceivingItem(receiptId, itemState.getVersion(), c, true);
+                        }
+                    } else {
+                        BffReceivingServiceCommands.UpdateReceivingItem u = toUpdateReceivingItem(c, itemDto, shipmentId);
+                        updateReceivingItem(receiptId, itemState, u, true);
+                    }
+                }
+            }
+        }
+    }
+
+    private BffReceivingServiceCommands.UpdateReceivingItem toUpdateReceivingItem(
+            BffReceivingServiceCommands.UpdateReceivingDocument c,
+            BffReceivingItemDto itemDto,
+            String shipmentId
+    ) {
+        BffReceivingServiceCommands.UpdateReceivingItem u = new BffReceivingServiceCommands.UpdateReceivingItem();
+        // Set properties from itemDto to update command
+        u.setDocumentId(shipmentId);
+        u.setReceiptId(itemDto.getReceiptId());
+        //u.setProductId(itemDto.getProductId());
+        u.setLotId(itemDto.getLotId());
+        u.setLocationSeqId(itemDto.getLocationSeqId());
+        u.setQuantityAccepted(itemDto.getQuantityAccepted());
+        u.setQuantityRejected(itemDto.getQuantityRejected());
+        u.setCasesAccepted(itemDto.getCasesAccepted());
+        u.setCasesRejected(itemDto.getCasesRejected());
+        u.setItemDescription(itemDto.getItemDescription());
+        u.setRequesterId(c.getRequesterId());
+        return u;
     }
 
     private void createShippingDocument(String shipmentId, String referenceDocumentId, Command c) {
@@ -471,32 +555,42 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (shipmentState == null) {
             throw new IllegalArgumentException("Shipment (receiving document) not found: " + shipmentId);
         }
+        BffReceivingItemDto receivingItemDto = c.getReceivingItem();
 
+        String receiptId = createReceivingItem(receivingItemDto, shipmentId, c);
+        return receiptId;
+    }
+
+    private String createReceivingItem(
+            BffReceivingItemDto receivingItemDto,
+            String shipmentId,
+            Command c
+    ) {
         // 创建收货单行项
         AbstractShipmentReceiptCommand.SimpleCreateShipmentReceipt createShipmentReceipt =
                 new AbstractShipmentReceiptCommand.SimpleCreateShipmentReceipt();
 
         // 生成行项ID
-        String receiptId = c.getReceivingItem().getReceiptId() != null ? (
-                c.getReceivingItem().getReceiptId().startsWith(shipmentId)
-                        ? c.getReceivingItem().getReceiptId()
-                        : shipmentId + "-" + c.getReceivingItem().getReceiptId()
+        String receiptId = receivingItemDto.getReceiptId() != null ? (
+                receivingItemDto.getReceiptId().startsWith(shipmentId)
+                        ? receivingItemDto.getReceiptId()
+                        : shipmentId + "-" + receivingItemDto.getReceiptId()
         ) : shipmentId + "-" + IdUtils.randomId();
         createShipmentReceipt.setReceiptId(receiptId);
         createShipmentReceipt.setShipmentId(shipmentId);
 
         // 设置行项数据
-        createShipmentReceipt.setProductId(c.getReceivingItem().getProductId());
-        createShipmentReceipt.setLotId(c.getReceivingItem().getLotId());
-        createShipmentReceipt.setLocationSeqId(c.getReceivingItem().getLocationSeqId());
-        createShipmentReceipt.setQuantityAccepted(c.getReceivingItem().getQuantityAccepted());
-        createShipmentReceipt.setQuantityRejected(c.getReceivingItem().getQuantityRejected());
-        createShipmentReceipt.setCasesAccepted(c.getReceivingItem().getCasesAccepted());
-        createShipmentReceipt.setCasesRejected(c.getReceivingItem().getCasesRejected());
-        createShipmentReceipt.setItemDescription(c.getReceivingItem().getItemDescription());
+        createShipmentReceipt.setProductId(receivingItemDto.getProductId());
+        createShipmentReceipt.setLotId(receivingItemDto.getLotId());
+        createShipmentReceipt.setLocationSeqId(receivingItemDto.getLocationSeqId());
+        createShipmentReceipt.setQuantityAccepted(receivingItemDto.getQuantityAccepted());
+        createShipmentReceipt.setQuantityRejected(receivingItemDto.getQuantityRejected());
+        createShipmentReceipt.setCasesAccepted(receivingItemDto.getCasesAccepted());
+        createShipmentReceipt.setCasesRejected(receivingItemDto.getCasesRejected());
+        createShipmentReceipt.setItemDescription(receivingItemDto.getItemDescription());
         createShipmentReceipt.setDatetimeReceived(OffsetDateTime.now());
         createShipmentReceipt.setReceivedBy(c.getRequesterId());
-        createShipmentReceipt.setCommandId(receiptId);
+        createShipmentReceipt.setCommandId(receiptId); // NOTE: 与 receiptId 保持一致
         createShipmentReceipt.setRequesterId(c.getRequesterId());
 
         shipmentReceiptApplicationService.when(createShipmentReceipt);
@@ -515,13 +609,17 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             throw new IllegalArgumentException("Shipment (receiving document) Id mismatch: " + c.getDocumentId());
         }
 
+        deleteReceivingItem(receiptId, receiptState.getVersion(), c, false);
+    }
+
+    private void deleteReceivingItem(String receiptId, Long version, Command c, boolean randomCmdId) {
         AbstractShipmentReceiptCommand.SimpleDeleteShipmentReceipt deleteShipmentReceipt =
                 new AbstractShipmentReceiptCommand.SimpleDeleteShipmentReceipt();
         deleteShipmentReceipt.setReceiptId(receiptId);
-        deleteShipmentReceipt.setCommandId(c.getCommandId() != null ?
-                c.getCommandId() : UUID.randomUUID().toString());
+        deleteShipmentReceipt.setVersion(version);
+        deleteShipmentReceipt.setCommandId(randomCmdId ? UUID.randomUUID().toString()
+                : (c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString()));
         deleteShipmentReceipt.setRequesterId(c.getRequesterId());
-
         shipmentReceiptApplicationService.when(deleteShipmentReceipt);
     }
 
@@ -531,7 +629,6 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (c.getDocumentId() == null || c.getReceiptId() == null) {
             throw new IllegalArgumentException("DocumentId and ReceiptId are required.");
         }
-
         String receiptId = c.getReceiptId();
         ShipmentReceiptState shipmentReceiptState = shipmentReceiptApplicationService.get(receiptId);
         if (shipmentReceiptState == null) {
@@ -541,6 +638,14 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             throw new IllegalArgumentException("Shipment (receiving document) Id mismatch: " + c.getDocumentId());
         }
 
+        updateReceivingItem(receiptId, shipmentReceiptState, c, false);
+    }
+
+    private void updateReceivingItem(String receiptId,
+                                     ShipmentReceiptState shipmentReceiptState,
+                                     BffReceivingServiceCommands.UpdateReceivingItem c,
+                                     boolean randomCmdId
+    ) {
         AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt mergePatchShipmentReceipt =
                 new AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt();
         mergePatchShipmentReceipt.setReceiptId(receiptId);
@@ -557,8 +662,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         mergePatchShipmentReceipt.setCasesRejected(item.getCasesRejected());
         mergePatchShipmentReceipt.setItemDescription(item.getItemDescription());
 
-        mergePatchShipmentReceipt.setCommandId(c.getCommandId() != null ?
-                c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchShipmentReceipt.setCommandId(randomCmdId ? UUID.randomUUID().toString() :
+                (c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString()));
         mergePatchShipmentReceipt.setRequesterId(c.getRequesterId());
 
         shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);

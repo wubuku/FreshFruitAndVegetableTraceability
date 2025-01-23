@@ -113,7 +113,9 @@ valueObjects:
         # 收货行项的 QA 信息
         # 可能的取值：通过检验，未通过检验
         # INSPECTION_PASSED, INSPECTION_FAILED
-
+      Deleted:
+        type: bool
+        # 可用于批量更新时指示为需要删除的行项
 
 services:
   BffReceivingService:
