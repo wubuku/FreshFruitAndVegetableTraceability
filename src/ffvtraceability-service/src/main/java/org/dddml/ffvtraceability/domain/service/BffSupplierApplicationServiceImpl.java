@@ -94,13 +94,13 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Transactional(readOnly = true)
     public BffSupplierDto when(BffSupplierServiceCommands.GetSupplier c) {
         Optional<BffSupplierProjection> projection = bffSupplierRepository.findSupplierById(c.getSupplierId());
-        if (projection.isPresent()) {
-            BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(projection.get());
-            enrichSupplierBusinessContactDetails(dto, c.getSupplierId());
-            enrichFacilityDetails(dto, c.getSupplierId());
-            return dto;
+        if (projection.isEmpty()) {
+            return null;
         }
-        return null;
+        BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(projection.get());
+        enrichSupplierBusinessContactDetails(dto, c.getSupplierId());
+        enrichFacilityDetails(dto, c.getSupplierId());
+        return dto;
     }
 
     private void enrichFacilityDetails(BffSupplierDto dto, String supplierId) {

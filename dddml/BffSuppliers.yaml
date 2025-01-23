@@ -94,6 +94,11 @@ services:
         parameters:
           SupplierId:
             type: id
+          IncludesFacilities:
+            # 是否包含供应商拥有的设施信息
+            type: bool
+            optional: true # NOT required
+
 
       CreateSupplier:
         # 新增 Supplier

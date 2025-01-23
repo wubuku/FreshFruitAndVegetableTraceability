@@ -49,10 +49,12 @@ public class BffSupplierServiceResource {
 
     @GetMapping("{supplierId}")
     public BffSupplierDto getSupplier(
-        @PathVariable("supplierId") String supplierId
+        @PathVariable("supplierId") String supplierId,
+        @RequestParam(value = "includesFacilities", required = false) Boolean includesFacilities
     ) {
         BffSupplierServiceCommands.GetSupplier getSupplier = new BffSupplierServiceCommands.GetSupplier();
         getSupplier.setSupplierId(supplierId);
+        getSupplier.setIncludesFacilities(includesFacilities);
         try {
         getSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffSupplierApplicationService.when(getSupplier);

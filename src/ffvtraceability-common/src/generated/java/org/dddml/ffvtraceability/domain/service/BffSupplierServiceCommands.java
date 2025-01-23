@@ -63,6 +63,19 @@ public class BffSupplierServiceCommands {
             this.supplierId = supplierId;
         }
 
+        /**
+         * Includes Facilities
+         */
+        private Boolean includesFacilities;
+
+        public Boolean getIncludesFacilities() {
+            return includesFacilities;
+        }
+
+        public void setIncludesFacilities(Boolean includesFacilities) {
+            this.includesFacilities = includesFacilities;
+        }
+
     }
 
     public static class CreateSupplier extends org.dddml.ffvtraceability.domain.AbstractCommand {
