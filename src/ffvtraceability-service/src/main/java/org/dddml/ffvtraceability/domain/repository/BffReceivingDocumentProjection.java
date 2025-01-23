@@ -36,5 +36,69 @@ public interface BffReceivingDocumentProjection {
     String getQaInspectionStatusId();
 
     java.time.Instant getCreatedAt();
+    String getOriginFacilityFacilityId();
+
+    String getOriginFacilityFacilityTypeId();
+
+    String getOriginFacilityParentFacilityId();
+
+    String getOriginFacilityOwnerPartyId();
+
+    String getOriginFacilityFacilityName();
+
+    java.math.BigDecimal getOriginFacilityFacilitySize();
+
+    String getOriginFacilityFacilitySizeUomId();
+
+    String getOriginFacilityDescription();
+
+    String getOriginFacilityGeoPointId();
+
+    String getOriginFacilityGeoId();
+
+    String getOriginFacilityActive();
+
+    String getOriginFacilityGln();
+
+    String getOriginFacilityFfrn();
+
+    Long getOriginFacilityFacilityLevel();
+
+    String getOriginFacilityInternalId();
+
+    Long getOriginFacilitySequenceNumber();
+
+    String getDestinationFacilityFacilityId();
+
+    String getDestinationFacilityFacilityTypeId();
+
+    String getDestinationFacilityParentFacilityId();
+
+    String getDestinationFacilityOwnerPartyId();
+
+    String getDestinationFacilityFacilityName();
+
+    java.math.BigDecimal getDestinationFacilityFacilitySize();
+
+    String getDestinationFacilityFacilitySizeUomId();
+
+    String getDestinationFacilityDescription();
+
+    String getDestinationFacilityGeoPointId();
+
+    String getDestinationFacilityGeoId();
+
+    String getDestinationFacilityActive();
+
+    String getDestinationFacilityGln();
+
+    String getDestinationFacilityFfrn();
+
+    Long getDestinationFacilityFacilityLevel();
+
+    String getDestinationFacilityInternalId();
+
+    Long getDestinationFacilitySequenceNumber();
+
 }
 

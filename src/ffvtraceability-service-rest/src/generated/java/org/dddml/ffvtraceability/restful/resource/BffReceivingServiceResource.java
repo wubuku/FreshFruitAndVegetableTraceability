@@ -60,12 +60,16 @@ public class BffReceivingServiceResource {
     public BffReceivingDocumentDto getReceivingDocument(
         @PathVariable("documentId") String documentId,
         @RequestParam(value = "derivesQaInspectionStatus", required = false) Boolean derivesQaInspectionStatus,
-        @RequestParam(value = "includesOutstandingOrderQuantity", required = false) Boolean includesOutstandingOrderQuantity
+        @RequestParam(value = "includesOutstandingOrderQuantity", required = false) Boolean includesOutstandingOrderQuantity,
+        @RequestParam(value = "includesOriginFacility", required = false) Boolean includesOriginFacility,
+        @RequestParam(value = "includesDestinationFacility", required = false) Boolean includesDestinationFacility
     ) {
         BffReceivingServiceCommands.GetReceivingDocument getReceivingDocument = new BffReceivingServiceCommands.GetReceivingDocument();
         getReceivingDocument.setDocumentId(documentId);
         getReceivingDocument.setDerivesQaInspectionStatus(derivesQaInspectionStatus);
         getReceivingDocument.setIncludesOutstandingOrderQuantity(includesOutstandingOrderQuantity);
+        getReceivingDocument.setIncludesOriginFacility(includesOriginFacility);
+        getReceivingDocument.setIncludesDestinationFacility(includesDestinationFacility);
         try {
         getReceivingDocument.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(getReceivingDocument);

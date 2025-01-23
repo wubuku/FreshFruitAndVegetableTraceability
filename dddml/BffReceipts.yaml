@@ -47,6 +47,12 @@ valueObjects:
       ReferenceDocuments:
         itemType: BffDocumentDto # itemType: id
         isList: true
+      OriginFacility:
+        type: BffFacilityDto
+      DestinationFacility:
+        # 暂时可能不会使用
+        type: BffFacilityDto
+
 
   BffReceivingItemDto:
     metadata:
@@ -154,6 +160,14 @@ services:
             optional: true # NOT required
           IncludesOutstandingOrderQuantity:
             # 是否“带出”（包含）对应的订单（PO）的未完成的数量（`OutstandingOrderQuantity`）
+            type: bool
+            optional: true # NOT required
+          IncludesOriginFacility:
+            # 是否包含原仓库（OriginFacility）信息
+            type: bool
+            optional: true # NOT required
+          IncludesDestinationFacility:
+            # 是否包含目的仓库（DestinationFacility）信息
             type: bool
             optional: true # NOT required
 

@@ -4,11 +4,9 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
+import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
-import org.dddml.ffvtraceability.domain.repository.BffOrderRepository;
-import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProjection;
-import org.dddml.ffvtraceability.domain.repository.BffReceivingItemProjection;
-import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
+import org.dddml.ffvtraceability.domain.repository.*;
 import org.dddml.ffvtraceability.domain.shipment.AbstractShipmentCommand;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentCommands;
@@ -49,6 +47,13 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     private CteReceivingEventSynchronizationService cteReceivingEventSynchronizationService;
     @Autowired
     private BffOrderRepository bffOrderRepository;
+
+    @Autowired
+    private BffFacilityRepository bffFacilityRepository;
+    @Autowired
+    private BffFacilityMapper bffFacilityMapper;
+    @Autowired
+    private BffFacilityContactMechRepository bffFacilityContactMechRepository;
 
     static BffReceivingDocumentDto getReceivingDocument(
             BffReceivingRepository bffReceivingRepository,
@@ -198,7 +203,31 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 receivingDocument.getReceivingItems().forEach(i -> i.setQaInspectionStatusId(m.get(i.getReceiptId())));
             }
         }
+        if (c.getIncludesOriginFacility() != null && c.getIncludesOriginFacility()
+                && receivingDocument.getOriginFacilityId() != null
+        ) {
+            receivingDocument.setOriginFacility(getBffFacilityDto(receivingDocument.getOriginFacilityId()));
+        }
         return receivingDocument;
+    }
+
+    private BffFacilityDto getBffFacilityDto(String facilityId) {
+        Optional<BffFacilityProjection> facilityProjection = bffFacilityRepository.findFacilityByFacilityId(facilityId);
+        if (facilityProjection.isEmpty()) {
+            return null;
+        }
+        BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(facilityProjection.get());
+        enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
+        return bffFacilityDto;
+    }
+
+    private void enrichFacilityBusinessContactDetails(BffFacilityDto dto, String facilityId) {
+        BffBusinessContactDto facilityContact = BffFacilityApplicationServiceImpl.getBusinessContact(
+                bffFacilityContactMechRepository, facilityId
+        );
+        if (facilityContact != null) {
+            dto.setBusinessContacts(Collections.singletonList(facilityContact));
+        }
     }
 
     @Override

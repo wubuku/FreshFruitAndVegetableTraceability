@@ -142,6 +142,32 @@ public class BffReceivingServiceCommands {
             this.includesOutstandingOrderQuantity = includesOutstandingOrderQuantity;
         }
 
+        /**
+         * Includes Origin Facility
+         */
+        private Boolean includesOriginFacility;
+
+        public Boolean getIncludesOriginFacility() {
+            return includesOriginFacility;
+        }
+
+        public void setIncludesOriginFacility(Boolean includesOriginFacility) {
+            this.includesOriginFacility = includesOriginFacility;
+        }
+
+        /**
+         * Includes Destination Facility
+         */
+        private Boolean includesDestinationFacility;
+
+        public Boolean getIncludesDestinationFacility() {
+            return includesDestinationFacility;
+        }
+
+        public void setIncludesDestinationFacility(Boolean includesDestinationFacility) {
+            this.includesDestinationFacility = includesDestinationFacility;
+        }
+
     }
 
     public static class GetReceivingItem extends org.dddml.ffvtraceability.domain.AbstractCommand {

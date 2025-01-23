@@ -198,11 +198,355 @@ public class BffReceivingDocumentDto implements Serializable {
         this.referenceDocuments = referenceDocuments;
     }
 
+    private BffFacilityDto originFacility = new BffFacilityDto();
+
+    public BffFacilityDto getOriginFacility()
+    {
+        return this.originFacility;
+    }
+
+    public void setOriginFacility(BffFacilityDto originFacility)
+    {
+        this.originFacility = originFacility;
+    }
+
+    private BffFacilityDto destinationFacility = new BffFacilityDto();
+
+    public BffFacilityDto getDestinationFacility()
+    {
+        return this.destinationFacility;
+    }
+
+    public void setDestinationFacility(BffFacilityDto destinationFacility)
+    {
+        this.destinationFacility = destinationFacility;
+    }
+
+    protected String getOriginFacilityFacilityId()
+    {
+        return getOriginFacility().getFacilityId();
+    }
+
+    protected void setOriginFacilityFacilityId(String originFacilityFacilityId)
+    {
+        getOriginFacility().setFacilityId(originFacilityFacilityId);
+    }
+
+    protected String getOriginFacilityFacilityTypeId()
+    {
+        return getOriginFacility().getFacilityTypeId();
+    }
+
+    protected void setOriginFacilityFacilityTypeId(String originFacilityFacilityTypeId)
+    {
+        getOriginFacility().setFacilityTypeId(originFacilityFacilityTypeId);
+    }
+
+    protected String getOriginFacilityParentFacilityId()
+    {
+        return getOriginFacility().getParentFacilityId();
+    }
+
+    protected void setOriginFacilityParentFacilityId(String originFacilityParentFacilityId)
+    {
+        getOriginFacility().setParentFacilityId(originFacilityParentFacilityId);
+    }
+
+    protected String getOriginFacilityOwnerPartyId()
+    {
+        return getOriginFacility().getOwnerPartyId();
+    }
+
+    protected void setOriginFacilityOwnerPartyId(String originFacilityOwnerPartyId)
+    {
+        getOriginFacility().setOwnerPartyId(originFacilityOwnerPartyId);
+    }
+
+    protected String getOriginFacilityFacilityName()
+    {
+        return getOriginFacility().getFacilityName();
+    }
+
+    protected void setOriginFacilityFacilityName(String originFacilityFacilityName)
+    {
+        getOriginFacility().setFacilityName(originFacilityFacilityName);
+    }
+
+    protected java.math.BigDecimal getOriginFacilityFacilitySize()
+    {
+        return getOriginFacility().getFacilitySize();
+    }
+
+    protected void setOriginFacilityFacilitySize(java.math.BigDecimal originFacilityFacilitySize)
+    {
+        getOriginFacility().setFacilitySize(originFacilityFacilitySize);
+    }
+
+    protected String getOriginFacilityFacilitySizeUomId()
+    {
+        return getOriginFacility().getFacilitySizeUomId();
+    }
+
+    protected void setOriginFacilityFacilitySizeUomId(String originFacilityFacilitySizeUomId)
+    {
+        getOriginFacility().setFacilitySizeUomId(originFacilityFacilitySizeUomId);
+    }
+
+    protected String getOriginFacilityDescription()
+    {
+        return getOriginFacility().getDescription();
+    }
+
+    protected void setOriginFacilityDescription(String originFacilityDescription)
+    {
+        getOriginFacility().setDescription(originFacilityDescription);
+    }
+
+    protected String getOriginFacilityGeoPointId()
+    {
+        return getOriginFacility().getGeoPointId();
+    }
+
+    protected void setOriginFacilityGeoPointId(String originFacilityGeoPointId)
+    {
+        getOriginFacility().setGeoPointId(originFacilityGeoPointId);
+    }
+
+    protected String getOriginFacilityGeoId()
+    {
+        return getOriginFacility().getGeoId();
+    }
+
+    protected void setOriginFacilityGeoId(String originFacilityGeoId)
+    {
+        getOriginFacility().setGeoId(originFacilityGeoId);
+    }
+
+    protected String getOriginFacilityActive()
+    {
+        return getOriginFacility().getActive();
+    }
+
+    protected void setOriginFacilityActive(String originFacilityActive)
+    {
+        getOriginFacility().setActive(originFacilityActive);
+    }
+
+    protected String getOriginFacilityGln()
+    {
+        return getOriginFacility().getGln();
+    }
+
+    protected void setOriginFacilityGln(String originFacilityGln)
+    {
+        getOriginFacility().setGln(originFacilityGln);
+    }
+
+    protected String getOriginFacilityFfrn()
+    {
+        return getOriginFacility().getFfrn();
+    }
+
+    protected void setOriginFacilityFfrn(String originFacilityFfrn)
+    {
+        getOriginFacility().setFfrn(originFacilityFfrn);
+    }
+
+    protected Long getOriginFacilityFacilityLevel()
+    {
+        return getOriginFacility().getFacilityLevel();
+    }
+
+    protected void setOriginFacilityFacilityLevel(Long originFacilityFacilityLevel)
+    {
+        getOriginFacility().setFacilityLevel(originFacilityFacilityLevel);
+    }
+
+    protected String getOriginFacilityInternalId()
+    {
+        return getOriginFacility().getInternalId();
+    }
+
+    protected void setOriginFacilityInternalId(String originFacilityInternalId)
+    {
+        getOriginFacility().setInternalId(originFacilityInternalId);
+    }
+
+    protected Long getOriginFacilitySequenceNumber()
+    {
+        return getOriginFacility().getSequenceNumber();
+    }
+
+    protected void setOriginFacilitySequenceNumber(Long originFacilitySequenceNumber)
+    {
+        getOriginFacility().setSequenceNumber(originFacilitySequenceNumber);
+    }
+
+    protected String getDestinationFacilityFacilityId()
+    {
+        return getDestinationFacility().getFacilityId();
+    }
+
+    protected void setDestinationFacilityFacilityId(String destinationFacilityFacilityId)
+    {
+        getDestinationFacility().setFacilityId(destinationFacilityFacilityId);
+    }
+
+    protected String getDestinationFacilityFacilityTypeId()
+    {
+        return getDestinationFacility().getFacilityTypeId();
+    }
+
+    protected void setDestinationFacilityFacilityTypeId(String destinationFacilityFacilityTypeId)
+    {
+        getDestinationFacility().setFacilityTypeId(destinationFacilityFacilityTypeId);
+    }
+
+    protected String getDestinationFacilityParentFacilityId()
+    {
+        return getDestinationFacility().getParentFacilityId();
+    }
+
+    protected void setDestinationFacilityParentFacilityId(String destinationFacilityParentFacilityId)
+    {
+        getDestinationFacility().setParentFacilityId(destinationFacilityParentFacilityId);
+    }
+
+    protected String getDestinationFacilityOwnerPartyId()
+    {
+        return getDestinationFacility().getOwnerPartyId();
+    }
+
+    protected void setDestinationFacilityOwnerPartyId(String destinationFacilityOwnerPartyId)
+    {
+        getDestinationFacility().setOwnerPartyId(destinationFacilityOwnerPartyId);
+    }
+
+    protected String getDestinationFacilityFacilityName()
+    {
+        return getDestinationFacility().getFacilityName();
+    }
+
+    protected void setDestinationFacilityFacilityName(String destinationFacilityFacilityName)
+    {
+        getDestinationFacility().setFacilityName(destinationFacilityFacilityName);
+    }
+
+    protected java.math.BigDecimal getDestinationFacilityFacilitySize()
+    {
+        return getDestinationFacility().getFacilitySize();
+    }
+
+    protected void setDestinationFacilityFacilitySize(java.math.BigDecimal destinationFacilityFacilitySize)
+    {
+        getDestinationFacility().setFacilitySize(destinationFacilityFacilitySize);
+    }
+
+    protected String getDestinationFacilityFacilitySizeUomId()
+    {
+        return getDestinationFacility().getFacilitySizeUomId();
+    }
+
+    protected void setDestinationFacilityFacilitySizeUomId(String destinationFacilityFacilitySizeUomId)
+    {
+        getDestinationFacility().setFacilitySizeUomId(destinationFacilityFacilitySizeUomId);
+    }
+
+    protected String getDestinationFacilityDescription()
+    {
+        return getDestinationFacility().getDescription();
+    }
+
+    protected void setDestinationFacilityDescription(String destinationFacilityDescription)
+    {
+        getDestinationFacility().setDescription(destinationFacilityDescription);
+    }
+
+    protected String getDestinationFacilityGeoPointId()
+    {
+        return getDestinationFacility().getGeoPointId();
+    }
+
+    protected void setDestinationFacilityGeoPointId(String destinationFacilityGeoPointId)
+    {
+        getDestinationFacility().setGeoPointId(destinationFacilityGeoPointId);
+    }
+
+    protected String getDestinationFacilityGeoId()
+    {
+        return getDestinationFacility().getGeoId();
+    }
+
+    protected void setDestinationFacilityGeoId(String destinationFacilityGeoId)
+    {
+        getDestinationFacility().setGeoId(destinationFacilityGeoId);
+    }
+
+    protected String getDestinationFacilityActive()
+    {
+        return getDestinationFacility().getActive();
+    }
+
+    protected void setDestinationFacilityActive(String destinationFacilityActive)
+    {
+        getDestinationFacility().setActive(destinationFacilityActive);
+    }
+
+    protected String getDestinationFacilityGln()
+    {
+        return getDestinationFacility().getGln();
+    }
+
+    protected void setDestinationFacilityGln(String destinationFacilityGln)
+    {
+        getDestinationFacility().setGln(destinationFacilityGln);
+    }
+
+    protected String getDestinationFacilityFfrn()
+    {
+        return getDestinationFacility().getFfrn();
+    }
+
+    protected void setDestinationFacilityFfrn(String destinationFacilityFfrn)
+    {
+        getDestinationFacility().setFfrn(destinationFacilityFfrn);
+    }
+
+    protected Long getDestinationFacilityFacilityLevel()
+    {
+        return getDestinationFacility().getFacilityLevel();
+    }
+
+    protected void setDestinationFacilityFacilityLevel(Long destinationFacilityFacilityLevel)
+    {
+        getDestinationFacility().setFacilityLevel(destinationFacilityFacilityLevel);
+    }
+
+    protected String getDestinationFacilityInternalId()
+    {
+        return getDestinationFacility().getInternalId();
+    }
+
+    protected void setDestinationFacilityInternalId(String destinationFacilityInternalId)
+    {
+        getDestinationFacility().setInternalId(destinationFacilityInternalId);
+    }
+
+    protected Long getDestinationFacilitySequenceNumber()
+    {
+        return getDestinationFacility().getSequenceNumber();
+    }
+
+    protected void setDestinationFacilitySequenceNumber(Long destinationFacilitySequenceNumber)
+    {
+        getDestinationFacility().setSequenceNumber(destinationFacilitySequenceNumber);
+    }
+
     public BffReceivingDocumentDto()
     {
     }
 
-    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String partyNameFrom, String originFacilityId, String originFacilityName, String destinationFacilityId, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, String qaStatusId, String qaInspectionStatusId, OffsetDateTime createdAt, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<BffDocumentDto> referenceDocuments)
+    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String partyNameFrom, String originFacilityId, String originFacilityName, String destinationFacilityId, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, String qaStatusId, String qaInspectionStatusId, OffsetDateTime createdAt, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<BffDocumentDto> referenceDocuments, BffFacilityDto originFacility, BffFacilityDto destinationFacility)
     {
         this.documentId = documentId;
         this.statusId = statusId;
@@ -220,6 +564,8 @@ public class BffReceivingDocumentDto implements Serializable {
         this.createdAt = createdAt;
         this.receivingItems = receivingItems;
         this.referenceDocuments = referenceDocuments;
+        this.originFacility = originFacility;
+        this.destinationFacility = destinationFacility;
     }
 
     @Override
@@ -250,6 +596,8 @@ public class BffReceivingDocumentDto implements Serializable {
             && (createdAt == other.createdAt || (createdAt != null && createdAt.equals(other.createdAt)))
             && (receivingItems == other.receivingItems || (receivingItems != null && receivingItems.equals(other.receivingItems)))
             && (referenceDocuments == other.referenceDocuments || (referenceDocuments != null && referenceDocuments.equals(other.referenceDocuments)))
+            && (originFacility == other.originFacility || (originFacility != null && originFacility.equals(other.originFacility)))
+            && (destinationFacility == other.destinationFacility || (destinationFacility != null && destinationFacility.equals(other.destinationFacility)))
             ;
     }
 
@@ -305,6 +653,12 @@ public class BffReceivingDocumentDto implements Serializable {
         if (this.referenceDocuments != null) {
             hash += 13 * this.referenceDocuments.hashCode();
         }
+        if (this.originFacility != null) {
+            hash += 13 * this.originFacility.hashCode();
+        }
+        if (this.destinationFacility != null) {
+            hash += 13 * this.destinationFacility.hashCode();
+        }
         return hash;
     }
 
@@ -327,6 +681,8 @@ public class BffReceivingDocumentDto implements Serializable {
                 ", createdAt=" + createdAt +
                 ", receivingItems=" + receivingItems +
                 ", referenceDocuments=" + referenceDocuments +
+                ", originFacility=" + originFacility +
+                ", destinationFacility=" + destinationFacility +
                 '}';
     }
 
