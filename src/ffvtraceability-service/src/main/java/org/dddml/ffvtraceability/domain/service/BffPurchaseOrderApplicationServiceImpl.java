@@ -360,6 +360,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     private void setupCreateOrderItemCommand(OrderItemCommand.CreateOrderItem createOrderItem,
                                              BffPurchaseOrderItemDto item
     ) {
+        //TODO 这里如果item.getOrderItemSeqId() != null，但是数据库里面已经存在了呢？
         createOrderItem.setOrderItemSeqId(
                 item.getOrderItemSeqId() != null ? item.getOrderItemSeqId() : IdUtils.randomId()
         );
