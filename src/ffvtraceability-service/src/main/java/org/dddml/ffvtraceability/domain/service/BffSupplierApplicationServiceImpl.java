@@ -211,6 +211,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         mergePatchParty.setExternalId(bffSupplier.getExternalId());
         mergePatchParty.setDescription(bffSupplier.getDescription());
         mergePatchParty.setWebSite(bffSupplier.getWebSite());
+        mergePatchParty.setEmail(bffSupplier.getEmail());
         mergePatchParty.setTelephone(bffSupplier.getTelephone());
         if (bffSupplier.getPreferredCurrencyUomId() != null) {
             mergePatchParty.setPreferredCurrencyUomId(bffSupplier.getPreferredCurrencyUomId());
@@ -220,16 +221,16 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
         updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GGN, bffSupplier.getGgn());
         updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GLN, bffSupplier.getGln());
-        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX, bffSupplier.getGgn());
-        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_TAX_ID, bffSupplier.getGln());
-        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, bffSupplier.getGln());
+        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX, bffSupplier.getGs1CompanyPrefix());
+        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_TAX_ID, bffSupplier.getTaxId());
+        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, bffSupplier.getInternalId());
 
 
-        if (StringUtils.hasText(c.getSupplier().getStatusId())
-                && (PARTY_STATUS_ACTIVE.equals(c.getSupplier().getStatusId())
-                || PARTY_STATUS_INACTIVE.equals(c.getSupplier().getStatusId()))) {
-            mergePatchParty.setStatusId(c.getSupplier().getStatusId());
-        }
+//        if (StringUtils.hasText(c.getSupplier().getStatusId())
+//                && (PARTY_STATUS_ACTIVE.equals(c.getSupplier().getStatusId())
+//                || PARTY_STATUS_INACTIVE.equals(c.getSupplier().getStatusId()))) {
+//            mergePatchParty.setStatusId(c.getSupplier().getStatusId());
+//        }
         partyApplicationService.when(mergePatchParty);
 
         //修改PartyRole
@@ -240,6 +241,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         if (partyRole != null) {//有就改
             AbstractPartyRoleCommand.SimpleMergePatchPartyRole simpleMergePatchPartyRole = new AbstractPartyRoleCommand.SimpleMergePatchPartyRole();
             simpleMergePatchPartyRole.setPartyRoleId(partyRoleId);
+            simpleMergePatchPartyRole.setVersion(partyRole.getVersion());
             simpleMergePatchPartyRole.setRequesterId(c.getRequesterId());
             simpleMergePatchPartyRole.setBankAccountInformation(bffSupplier.getBankAccountInformation());
             simpleMergePatchPartyRole.setCertificationCodes(bffSupplier.getCertificationCodes());
