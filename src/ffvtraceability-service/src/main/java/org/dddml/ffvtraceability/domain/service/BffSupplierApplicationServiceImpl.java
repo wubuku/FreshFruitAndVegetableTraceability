@@ -273,6 +273,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         List<String> originalFacilityIds = new ArrayList<>();
         facilityProjections.forEach(bffFacilityProjection -> originalFacilityIds.add(bffFacilityProjection.getFacilityId()));
         List<String> newFacilityIds = bffSupplier.getFacilities().stream().map(BffFacilityDto::getFacilityId).filter(Objects::nonNull).collect(Collectors.toList());
+        //前端传过来没有Id的设施列表，这部分会用来表示要添加的设施列表
         List<BffFacilityDto> needToAddedNoId = bffSupplier.getFacilities().stream().filter(bffFacilityDto -> bffFacilityDto.getFacilityId() == null).collect(Collectors.toList());
         List<String> needToUpdateIds = new ArrayList<>();
         List<String> needToAddedHasIds = new ArrayList<>();
@@ -289,6 +290,48 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
                 needToDeletedIds.add(oldId);
             }
         });
+        //客户端传过来的需要添加的设施列表（一部分是前端传过来没有Id的，另一部分是跟原有的列表比对但是在原有列表中不存在的）
+        List<BffFacilityDto> needToAddedDtos = new ArrayList<>();
+        needToAddedNoId.forEach(dto -> {
+            dto.setOwnerPartyId(bffSupplier.getSupplierId());
+            needToAddedDtos.add(dto);
+        });
+        needToAddedHasIds.forEach(facilityId -> {
+            bffSupplier.getFacilities().forEach(facilityDto -> {
+                if (facilityDto.getFacilityId().equals(facilityId)) {
+                    facilityDto.setOwnerPartyId(bffSupplier.getSupplierId());
+                    needToAddedDtos.add(facilityDto);
+                }
+            });
+        });
+        if (!needToAddedDtos.isEmpty()) {
+            BffFacilityServiceCommands.BatchAddFacilities batchAddFacilities = new BffFacilityServiceCommands.BatchAddFacilities();
+            batchAddFacilities.setFacilities(needToAddedDtos.toArray(new BffFacilityDto[0]));
+            batchAddFacilities.setRequesterId(c.getRequesterId());
+            bffFacilityApplicationService.when(batchAddFacilities);
+        }
+        //以上为批量添加处理
+
+        //数据库里存在但是前端未传过来的设施列表做批量禁用处理
+        BffFacilityServiceCommands.BatchDeactivateFacilities batchDeactivateFacilities = new BffFacilityServiceCommands.BatchDeactivateFacilities();
+        batchDeactivateFacilities.setFacilityIds(needToDeletedIds.toArray(new String[0]));
+        batchDeactivateFacilities.setRequesterId(c.getRequesterId());
+        bffFacilityApplicationService.when(batchDeactivateFacilities);
+
+        //数据库里面存在前端也传过来的做更新处理（判断依据：Id相同）
+        if (!needToUpdateIds.isEmpty()) {
+            BffFacilityServiceCommands.UpdateFacility updateFacility = new BffFacilityServiceCommands.UpdateFacility();
+            needToUpdateIds.forEach(facilityId -> {
+                bffSupplier.getFacilities().forEach(facility -> {
+                    if (facilityId.equals(facility.getFacilityId())) {
+                        updateFacility.setFacilityId(facilityId);
+                        updateFacility.setFacility(facility);
+                        updateFacility.setRequesterId(c.getRequesterId());
+                        bffFacilityApplicationService.when(updateFacility);
+                    }
+                });
+            });
+        }
     }
 
     private void updatePartyIdentification(
