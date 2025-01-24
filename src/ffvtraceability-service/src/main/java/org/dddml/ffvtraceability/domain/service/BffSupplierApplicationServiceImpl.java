@@ -565,6 +565,16 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             createPartyContactMechAssociation(partyId, contactMechId, "-PT", c);
             //handlePartyContactMechAssociation(partyId, createTelecomNumber.getContactMechId(), "-PT", c);
         }
+        // 处理Email等
+        Optional<BffBusinessContactRepository.MiscContactMechProjection> miscContactMech = bffBusinessContactRepository.findOneMiscContactMechByInfo(
+                bizContact.getEmail(), bizContact.getContactRole());
+
+        if (miscContactMech.isPresent()) {
+            updateOrCreatePartyContactMechAssociation(partyId, miscContactMech.get().getContactMechId(), ContactMechTypeId.MISC_CONTACT_MECH, "-PE", c);
+        } else {
+            String contactMechId = bffBusinessContactService.createMiscContact(bizContact, c);
+            createPartyContactMechAssociation(partyId, contactMechId, "-PE", c);
+        }
     }
 
     private void createPartyBusinessContact(

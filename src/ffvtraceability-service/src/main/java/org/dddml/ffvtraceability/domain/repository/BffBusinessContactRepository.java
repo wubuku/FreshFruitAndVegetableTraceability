@@ -51,6 +51,29 @@ public interface BffBusinessContactRepository extends JpaRepository<AbstractCont
             @Param("contactNumber") String contactNumber
     );
 
+
+    @Query(value = """
+            SELECT 
+                tn.contact_mech_id as contactMechId,
+                tn.email as email,
+                tn.ask_for_role as askForRole
+            FROM contact_mech tn
+            WHERE tn.email = :email
+            AND tn.ask_for_role = :askForRole
+            LIMIT 1
+            """, nativeQuery = true)
+    Optional<MiscContactMechProjection> findOneMiscContactMechByInfo(
+            @Param("email") String email,
+            @Param("askForRole") String askForRole
+    );
+
+    interface MiscContactMechProjection {
+        String getContactMechId();
+        String getEmail();
+
+        String getAskForRole();
+    }
+
     interface PostalAddressProjection {
         String getContactMechId();
 
