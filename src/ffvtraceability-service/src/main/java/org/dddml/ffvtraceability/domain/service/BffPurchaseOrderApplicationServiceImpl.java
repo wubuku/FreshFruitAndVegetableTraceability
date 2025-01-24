@@ -178,6 +178,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         createOrder.setCurrencyUomId(purchaseOrder.getCurrencyUomId());
         createOrder.setOriginFacilityId(purchaseOrder.getOriginFacilityId());
         createOrder.setMemo(purchaseOrder.getMemo());
+        createOrder.setContactDescription(purchaseOrder.getContactDescription());
 
         // Set audit fields
         createOrder.setCommandId(createOrder.getOrderId());
