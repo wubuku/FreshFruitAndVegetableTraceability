@@ -234,6 +234,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         partyApplicationService.when(mergePatchParty);
 
         //修改PartyRole
+
+
         PartyRoleId partyRoleId = new PartyRoleId();
         partyRoleId.setPartyId(bffSupplier.getSupplierId());
         partyRoleId.setRoleTypeId(PARTY_ROLE_SUPPLIER);
@@ -300,7 +302,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         });
         needToAddedHasIds.forEach(facilityId -> {
             bffSupplier.getFacilities().forEach(facilityDto -> {
-                if (facilityDto.getFacilityId().equals(facilityId)) {
+                if (facilityId.equals(facilityDto.getFacilityId())) {
                     facilityDto.setOwnerPartyId(bffSupplier.getSupplierId());
                     needToAddedDtos.add(facilityDto);
                 }
