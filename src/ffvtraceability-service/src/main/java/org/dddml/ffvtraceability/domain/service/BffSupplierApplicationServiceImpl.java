@@ -99,7 +99,9 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         }
         BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(projection.get());
         enrichSupplierBusinessContactDetails(dto, c.getSupplierId());
-        enrichFacilityDetails(dto, c.getSupplierId());
+        if (c.getIncludesFacilities() != null && c.getIncludesFacilities()) {
+            enrichFacilityDetails(dto, c.getSupplierId());
+        }
         return dto;
     }
 
