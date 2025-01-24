@@ -26,6 +26,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                 o.origin_facility_id as originFacilityId,
                 f.facility_name as originFacilityName,
                 o.memo as memo,
+                o.contact_description as contactDescription,
                 o.created_at as createdAt,
                 oi.order_item_seq_id as orderItemSeqId,
                 oi.product_id as productId,

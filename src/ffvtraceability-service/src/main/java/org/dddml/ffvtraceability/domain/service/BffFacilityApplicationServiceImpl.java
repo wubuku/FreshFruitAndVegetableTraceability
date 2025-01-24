@@ -254,6 +254,8 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 c.getFacility().getFfrn());
         updateFacilityIdentification(facilityState, mergePatchFacility, FACILITY_IDENTIFICATION_TYPE_GLN,
                 c.getFacility().getGln());
+        updateFacilityIdentification(facilityState, mergePatchFacility, FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID,
+                c.getFacility().getInternalId());
 
         facilityApplicationService.when(mergePatchFacility);
 

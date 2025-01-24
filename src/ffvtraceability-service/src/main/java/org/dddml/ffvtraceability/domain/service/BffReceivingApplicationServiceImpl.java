@@ -204,9 +204,16 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                                         .map(BffReceivingItemDto::getReceiptId)
                                         .collect(Collectors.toList())
                         );
-                Map<String, String> m = itemProjections.stream()
-                        .collect(Collectors.toMap(BffReceivingItemProjection::getReceiptId,
-                                BffReceivingItemProjection::getQaInspectionStatusId));
+                Map<String, String> m = new HashMap<>();
+                itemProjections.forEach(bffReceivingItemProjection -> {
+                    String receiptId = bffReceivingItemProjection.getReceiptId();
+                    String qaInspectionStatusId = bffReceivingItemProjection.getQaInspectionStatusId();
+                    m.put(receiptId, qaInspectionStatusId);
+                });
+//              以下这种写法当 bffReceivingItemProjection.getQaInspectionStatusId();返回null时，报错。
+//              Map<String, String> m = itemProjections.stream()
+//                        .collect(Collectors.toMap(BffReceivingItemProjection::getReceiptId,
+//                                BffReceivingItemProjection::getQaInspectionStatusId));
                 receivingDocument.getReceivingItems().forEach(i -> i.setQaInspectionStatusId(m.get(i.getReceiptId())));
             }
         }
