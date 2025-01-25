@@ -201,31 +201,6 @@ spring:
       enabled: true
       path: /h2-console
 
-# 存储服务配置
-storage:
-  # 当前使用的存储服务类型：minio, aws, gcs
-  type: minio
-  
-  # MinIO 配置
-  minio:
-    endpoint: http://localhost:9000
-    access-key: admin
-    secret-key: password123
-    bucket: my-bucket
-  
-  # AWS S3 配置
-  aws:
-    access-key: your-aws-access-key
-    secret-key: your-aws-secret-key
-    region: your-aws-region
-    bucket: your-aws-bucket
-  
-  # GCS 配置
-  gcs:
-    project-id: your-project-id
-    credentials-path: classpath:gcp-credentials.json
-    bucket: your-gcs-bucket
-
 # 文件上传配置
 spring:
   servlet:
@@ -245,20 +220,32 @@ storage:
     access-key: admin
     secret-key: password123
     bucket: my-bucket
+    bucket-policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": ["s3:GetObject"],
+            "Resource": ["my-bucket/public/*"]
+          }
+        ]
+      }
   
-  # 文件上传配置
-  upload:
-    max-file-size: 10MB
-    allowed-types:
-      - image/*
-      - application/pdf
-      - text/*
-    public-path: public
+  # AWS S3 配置
+  aws:
+    access-key: your-aws-access-key
+    secret-key: your-aws-secret-key
+    region: your-aws-region
+    bucket: your-bucket
   
-  # 临时URL配置
-  url:
-    default-expiry: 1800  # 30分钟
-    min-remaining: 300    # 5分钟
+  # GCS 配置
+  gcs:
+    project-id: your-project-id
+    credentials-path: classpath:gcp-credentials.json
+    bucket: your-bucket
+```
 
 ### 5. 验证开发环境
 
@@ -288,6 +275,10 @@ CREATE INDEX idx_user_id ON file_info(user_id);
 
 ### 2. 实体类定义
 ```java
+import javax.persistence.*;
+import java.time.Instant;
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "file_info")
 public class FileInfo {
@@ -492,7 +483,7 @@ public interface StorageService {
 }
 ```
 
-## 第三部分：存储服务实现
+## 第三部分：存储服务接口和实现
 
 ### 1. 存储服务接口
 ```java
@@ -586,9 +577,15 @@ public class MinioConfig {
                 minioClient.makeBucket(MakeBucketArgs.builder()
                         .bucket(bucket)
                         .build());
+                
+                // 设置bucket policy
+                minioClient.setBucketPolicy(SetBucketPolicyArgs.builder()
+                        .bucket(bucket)
+                        .config(bucketPolicy)
+                        .build());
             }
         } catch (Exception e) {
-            throw new StorageException("Could not initialize MinIO storage", e);
+            throw new StorageException("Could not initialize storage", e);
         }
     }
 }
@@ -597,6 +594,7 @@ public class MinioConfig {
 2. **MinIO 存储服务实现 (MinioStorageService.java)**
 ```java
 @Service("minioStorageService")
+@ConditionalOnProperty(name = "storage.type", havingValue = "minio", matchIfMissing = true)
 public class MinioStorageService implements StorageService {
     private static final Logger log = LoggerFactory.getLogger(MinioStorageService.class);
     
@@ -675,24 +673,26 @@ public class MinioStorageService implements StorageService {
     @Override
     public String makePublic(String path) {
         try {
-            // 生成新的公开访问路径
-            String publicPath = "public/" + path;
-            
-            // 复制对象到公开目录
-            minioClient.copyObject(CopyObjectArgs.builder()
+            // 正确: 将文件移动到public目录下，该目录已通过bucket policy配置为公开访问
+            String publicPath = "public/" + FilenameUtils.getName(path);
+            minioClient.copyObject(
+                CopyObjectArgs.builder()
                     .bucket(minioConfig.getBucket())
                     .object(publicPath)
                     .source(CopySource.builder()
-                            .bucket(minioConfig.getBucket())
-                            .object(path)
-                            .build())
-                    .build());
+                        .bucket(minioConfig.getBucket())
+                        .object(path)
+                        .build())
+                    .build()
+            );
             
-            // 删除原始对象
-            minioClient.removeObject(RemoveObjectArgs.builder()
+            // 删除原文件
+            minioClient.removeObject(
+                RemoveObjectArgs.builder()
                     .bucket(minioConfig.getBucket())
                     .object(path)
-                    .build());
+                    .build()
+            );
             
             return publicPath;
         } catch (Exception e) {
@@ -784,19 +784,10 @@ public class S3StorageService implements StorageService {
     @Override
     public String makePublic(String path) {
         try {
-            // 生成新的公开访问路径
-            String publicPath = "public/" + path;
+            // 设置对象的ACL为公开读取
+            s3Client.setObjectAcl(s3Config.getBucket(), path, CannedAccessControlList.PublicRead);
             
-            // 复制对象到公开目录
-            CopyObjectRequest copyObjRequest = new CopyObjectRequest(
-                    s3Config.getBucket(), path,
-                    s3Config.getBucket(), publicPath);
-            s3Client.copyObject(copyObjRequest);
-            
-            // 删除原始对象
-            s3Client.deleteObject(s3Config.getBucket(), path);
-            
-            return publicPath;
+            return path;
         } catch (Exception e) {
             throw new StorageException("Could not make file public", e);
         }
@@ -887,19 +878,12 @@ public class GcsStorageService implements StorageService {
     @Override
     public String makePublic(String path) {
         try {
-            // 生成新的公开访问路径
-            String publicPath = "public/" + path;
+            // 设置对象的ACL为公开读取
+            BlobId blobId = BlobId.of(gcsConfig.getBucket(), path);
+            Blob blob = storage.get(blobId);
+            blob.toBuilder().setAcl(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER))).build().update();
             
-            // 复制对象到公开目录
-            storage.copy(CopyRequest.newBuilder()
-                    .setSource(BlobId.of(gcsConfig.getBucket(), path))
-                    .setTarget(BlobId.of(gcsConfig.getBucket(), publicPath))
-                    .build());
-            
-            // 删除原始对象
-            storage.delete(gcsConfig.getBucket(), path);
-            
-            return publicPath;
+            return path;
         } catch (Exception e) {
             throw new StorageException("Could not make file public", e);
         }
@@ -907,7 +891,7 @@ public class GcsStorageService implements StorageService {
 }
 ```
 
-## 第三部分：业务逻辑实现
+## 第四部分：业务逻辑实现
 
 ### 1. 文件服务
 ```java
@@ -918,10 +902,17 @@ public class FileService {
     
     private final StorageService storageService;
     private final FileInfoRepository fileInfoRepository;
+    private final int defaultUrlExpiry;
+    private final int minRemainingTime;
     
-    public FileService(StorageService storageService, FileInfoRepository fileInfoRepository) {
+    public FileService(StorageService storageService, 
+                      FileInfoRepository fileInfoRepository,
+                      @Value("${storage.url.default-expiry:1800}") int defaultUrlExpiry,
+                      @Value("${storage.url.min-remaining:300}") int minRemainingTime) {
         this.storageService = storageService;
         this.fileInfoRepository = fileInfoRepository;
+        this.defaultUrlExpiry = defaultUrlExpiry;
+        this.minRemainingTime = minRemainingTime;
     }
     
     /**
@@ -957,10 +948,10 @@ public class FileService {
         }
 
         if (fileInfo.getUrlExpireTime() == null || 
-            fileInfo.getUrlExpireTime().isBefore(Instant.now())) {
-            String url = storageService.generateUrl(fileInfo.getStorageFilename(), 1800);
+            fileInfo.getUrlExpireTime().isBefore(Instant.now().plusSeconds(minRemainingTime))) {
+            String url = storageService.generateUrl(fileInfo.getStorageFilename(), defaultUrlExpiry);
             fileInfo.setUrl(url);
-            fileInfo.setUrlExpireTime(Instant.now().plusSeconds(1800));
+            fileInfo.setUrlExpireTime(Instant.now().plusSeconds(defaultUrlExpiry));
             return fileInfoRepository.save(fileInfo);
         }
         return fileInfo;
@@ -994,9 +985,9 @@ public class FileService {
                 fileInfo.setUrl(url);
                 fileInfo.setUrlExpireTime(null);  // 公开文件URL不过期
             } else {
-                String url = storageService.generateUrl(path, 1800);
+                String url = storageService.generateUrl(path, defaultUrlExpiry);
                 fileInfo.setUrl(url);
-                fileInfo.setUrlExpireTime(Instant.now().plusSeconds(1800));
+                fileInfo.setUrlExpireTime(Instant.now().plusSeconds(defaultUrlExpiry));
             }
             
             return fileInfoRepository.save(fileInfo);
@@ -1038,22 +1029,69 @@ public class FileService {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         return String.format("%s/%s_%s.%s", userId, timestamp, randomStr, extension);
     }
+
+    /**
+     * 获取文件访问URL
+     */
+    public String getFileUrl(FileInfo fileInfo) {
+        if (fileInfo.isPublic()) {
+            return storageService.getPublicUrl(fileInfo.getStorageFilename());
+        }
+        return storageService.generateUrl(fileInfo.getStorageFilename(), defaultUrlExpiry);
+    }
+
+    /**
+     * 下载文件
+     * @param fileInfo 文件信息
+     * @return 文件字节数组
+     */
+    public byte[] downloadFile(FileInfo fileInfo) {
+        try {
+            return storageService.downloadFile(fileInfo.getStorageFilename());
+        } catch (Exception e) {
+            log.error("Failed to download file: {}", fileInfo.getStorageFilename(), e);
+            throw new StorageException("Could not download file", e);
+        }
+    }
 }
 ```
 
 ### 2. 控制器实现
 ```java
+import java.io.IOException;
+import java.net.URI;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 @RestController
 @RequestMapping("/api/files")
 public class FileController {
     private static final Logger log = LoggerFactory.getLogger(FileController.class);
-    
     private final FileService fileService;
-    private final StorageService storageService;
+    private final int minRemainingTime;
     
-    public FileController(FileService fileService, StorageService storageService) {
+    public FileController(FileService fileService,
+                         @Value("${storage.url.min-remaining:300}") int minRemainingTime) {
         this.fileService = fileService;
-        this.storageService = storageService;
+        this.minRemainingTime = minRemainingTime;
     }
     
     @PostMapping("/upload")
@@ -1098,7 +1136,7 @@ public class FileController {
         String userId = ((UserDetails) authentication.getPrincipal()).getUsername();
         FileInfo fileInfo = fileService.getFileWithOptionalUser(fileId, userId);
         
-        byte[] data = storageService.downloadFile(fileInfo.getStorageFilename());
+        byte[] data = fileService.downloadFile(fileInfo);  // 通过FileService下载
         ByteArrayResource resource = new ByteArrayResource(data);
         
         return ResponseEntity.ok()
@@ -1113,7 +1151,6 @@ public class FileController {
             @PathVariable String fileId,
             Authentication authentication) {
         try {
-            // 获取当前用户，可能为null
             String userId = authentication != null ? 
                 ((UserDetails) authentication.getPrincipal()).getUsername() : null;
             
@@ -1127,9 +1164,10 @@ public class FileController {
             }
 
             // 检查是否已有有效的临时URL
+            Instant now = Instant.now();
             if (fileInfo.getUrl() != null && 
                 fileInfo.getUrlExpireTime() != null && 
-                fileInfo.getUrlExpireTime().isAfter(Instant.now().plusSeconds(300))) {
+                !now.isAfter(fileInfo.getUrlExpireTime().minusSeconds(minRemainingTime))) {
                 // 如果现有URL还有超过5分钟有效期,直接重定向到该URL
                 return ResponseEntity.status(HttpStatus.FOUND)
                         .location(URI.create(fileInfo.getUrl()))
@@ -1137,428 +1175,22 @@ public class FileController {
             }
 
             // 生成新的临时URL(30分钟有效)
-            String tempUrl = storageService.generateUrl(fileInfo.getStorageFilename(), 1800);
+            String url = fileService.getFileUrl(fileInfo);
             
-            // 更新文件信息
-            fileInfo.setUrl(tempUrl);
-            fileInfo.setUrlExpireTime(Instant.now().plusSeconds(1800));
-            fileService.updateFileInfo(fileInfo);
-
             // 重定向到临时URL
             return ResponseEntity.status(HttpStatus.FOUND)
-                    .location(URI.create(tempUrl))
+                    .location(URI.create(url))
                     .build();
-                
+            
         } catch (Exception e) {
+            log.error("Failed to serve media file", e);
             return ResponseEntity.notFound().build();
         }
     }
 }
 ```
 
-## 第四部分：测试和验证
-
-### 1. 环境验证
-
-1. **检查清单**
-   - MinIO 服务是否正常运行（访问 http://localhost:9001）
-   - 应用配置是否正确（检查 application.yml）
-   - 数据库是否可以连接（访问 http://localhost:8080/h2-console）
-
-2. **启动应用**
-   - 运行 FileServiceApplication 主类
-   - 检查启动日志是否有错误
-
-### 2. API 测试
-
-1. **文件上传测试**
-```bash
-# 使用 curl 测试上传
-curl -X POST http://localhost:8080/api/files/upload \
-  -H "Authorization: Basic YWRtaW46YWRtaW4xMjM=" \
-  -F "file=@test.txt"
-
-# 上传公开文件
-curl -X POST http://localhost:8080/api/files/upload \
-  -H "Authorization: Basic YWRtaW46YWRtaW4xMjM=" \
-  -F "file=@test.txt" \
-  -F "isPublic=true"
-
-# 预期返回：
-{
-  "id": "...",
-  "originalFilename": "test.txt",
-  "url": "http://..."
-}
-```
-
-2. **文件下载测试**
-```bash
-# 使用返回的文件ID测试下载
-curl -O -J -L http://localhost:8080/api/files/{fileId}/download \
-  -H "Authorization: Basic YWRtaW46YWRtaW4xMjM="
-```
-
-3. **文件列表测试**
-```bash
-curl http://localhost:8080/api/files \
-  -H "Authorization: Basic YWRtaW46YWRtaW4xMjM="
-```
-
-4. **文件删除测试**
-```bash
-curl -X DELETE http://localhost:8080/api/files/{fileId} \
-  -H "Authorization: Basic YWRtaW46YWRtaW4xMjM="
-```
-
-## 第四部分：部署和维护
-
-### 1. 部署准备
-
-1. **环境检查清单**
-   - JDK 版本确认
-   - Maven 依赖完整性检查
-   - MinIO 服务可用性验证
-   - 数据库连接测试
-   - 配置文件检查
-
-2. **配置文件准备**
-```yaml
-# application-prod.yml
-spring:
-  datasource:
-    url: jdbc:mysql://your-db-host:3306/filedb
-    username: your-username
-    password: your-password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
-
-storage:
-  type: minio
-  minio:
-    endpoint: http://your-minio-host:9000
-    access-key: your-access-key
-    secret-key: your-secret-key
-    bucket: your-bucket
-
-server:
-  port: 8080
-  servlet:
-    context-path: /file-service
-```
-
-3. **数据库迁移脚本**
-```sql
--- V1__init.sql
-CREATE TABLE file_info (
-    id VARCHAR(36) PRIMARY KEY,
-    original_filename VARCHAR(255) NOT NULL,
-    storage_filename VARCHAR(255) NOT NULL,
-    content_type VARCHAR(100),
-    size BIGINT,
-    user_id VARCHAR(100) NOT NULL,
-    upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    url VARCHAR(1000),
-    url_expire_time TIMESTAMP,
-    is_public BOOLEAN DEFAULT FALSE
-);
-
-CREATE INDEX idx_user_id ON file_info(user_id);
-```
-
-### 2. 部署步骤
-
-1. **打包应用**
-```bash
-mvn clean package -DskipTests
-```
-
-2. **准备 Docker 文件**
-```dockerfile
-FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-COPY target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
-```
-
-3. **构建和运行容器**
-```bash
-# 构建镜像
-docker build -t file-service .
-
-# 运行容器
-docker run -d \
-  --name file-service \
-  -p 8080:8080 \
-  -v /path/to/config:/config \
-  -e SPRING_PROFILES_ACTIVE=prod \
-  file-service
-```
-
-### 3. 监控和日志
-
-1. **应用监控**
-```xml
-<!-- 添加 Actuator 依赖 -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-actuator</artifactId>
-</dependency>
-```
-
-```yaml
-# 监控配置
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,metrics,prometheus
-  endpoint:
-    health:
-      show-details: always
-```
-
-2. **日志配置**
-```xml
-<!-- 添加日志依赖 -->
-<dependency>
-    <groupId>net.logstash.logback</groupId>
-    <artifactId>logstash-logback-encoder</artifactId>
-    <version>7.2</version>
-</dependency>
-```
-
-```xml
-<!-- logback-spring.xml -->
-<configuration>
-    <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/file-service.log</file>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/file-service.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>7</maxHistory>
-        </rollingPolicy>
-    </appender>
-
-    <root level="INFO">
-        <appender-ref ref="JSON_FILE"/>
-    </root>
-</configuration>
-```
-
-## 第五部分：存储服务扩展
-
-### 1. AWS S3 实现
-
-1. **S3 配置类**
-```java
-@Configuration
-@EnableConfigurationProperties
-@ConfigurationProperties(prefix = "storage.aws")
-@Data
-public class S3Config {
-    private String accessKey;
-    private String secretKey;
-    private String region;
-    private String bucket;
-    
-    @Bean
-    @ConditionalOnProperty(name = "storage.type", havingValue = "aws")
-    public AmazonS3 amazonS3() {
-        return AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(
-                    new BasicAWSCredentials(accessKey, secretKey)))
-                .withRegion(region)
-                .build();
-    }
-}
-```
-
-2. **S3 存储服务实现**
-```java
-@Service("awsStorageService")
-@RequiredArgsConstructor
-public class S3StorageService implements StorageService {
-    private static final Logger log = LoggerFactory.getLogger(S3StorageService.class);
-    
-    private final AmazonS3 s3Client;
-    private final S3Config s3Config;
-    
-    @Override
-    public String uploadFile(MultipartFile file, String path) {
-        try {
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(file.getContentType());
-            metadata.setContentLength(file.getSize());
-            
-            s3Client.putObject(s3Config.getBucket(), path, file.getInputStream(), metadata);
-            return path;
-        } catch (Exception e) {
-            throw new StorageException("Failed to upload file to AWS S3", e);
-        }
-    }
-    
-    @Override
-    public String generateUrl(String path, int expiryMinutes) {
-        Date expiration = new Date();
-        expiration.setTime(expiration.getTime() + (expiryMinutes * 60 * 1000));
-        
-        return s3Client.generatePresignedUrl(s3Config.getBucket(), path, expiration).toString();
-    }
-    
-    @Override
-    public void deleteFile(String path) {
-        s3Client.deleteObject(s3Config.getBucket(), path);
-    }
-    
-    @Override
-    public byte[] downloadFile(String path) {
-        try {
-            S3Object object = s3Client.getObject(s3Config.getBucket(), path);
-            return IOUtils.toByteArray(object.getObjectContent());
-        } catch (Exception e) {
-            throw new StorageException("Failed to download file from AWS S3", e);
-        }
-    }
-    
-    @Override
-    public String getPublicUrl(String path) {
-        return String.format("https://%s.s3.%s.amazonaws.com/%s",
-                s3Config.getBucket(), s3Config.getRegion(), path);
-    }
-    
-    @Override
-    public String makePublic(String path) {
-        try {
-            // 生成新的公开访问路径
-            String publicPath = "public/" + path;
-            
-            // 复制对象到公开目录
-            CopyObjectRequest copyObjRequest = new CopyObjectRequest(
-                    s3Config.getBucket(), path,
-                    s3Config.getBucket(), publicPath);
-            s3Client.copyObject(copyObjRequest);
-            
-            // 删除原始对象
-            s3Client.deleteObject(s3Config.getBucket(), path);
-            
-            return publicPath;
-        } catch (Exception e) {
-            throw new StorageException("Could not make file public", e);
-        }
-    }
-}
-```
-
-### 2. GCS 实现
-
-1. **GCS 配置类**
-```java
-@Configuration
-@EnableConfigurationProperties
-@ConfigurationProperties(prefix = "storage.gcs")
-@Data
-public class GcsConfig {
-    private String projectId;
-    private String credentialsPath;
-    private String bucket;
-    
-    @Bean
-    @ConditionalOnProperty(name = "storage.type", havingValue = "gcs")
-    public Storage googleCloudStorage() throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(
-            new ClassPathResource(credentialsPath).getInputStream());
-        
-        return StorageOptions.newBuilder()
-                .setProjectId(projectId)
-                .setCredentials(credentials)
-                .build()
-                .getService();
-    }
-}
-```
-
-2. **GCS 存储服务实现**
-```java
-@Service("gcsStorageService")
-@RequiredArgsConstructor
-public class GcsStorageService implements StorageService {
-    private static final Logger log = LoggerFactory.getLogger(GcsStorageService.class);
-    
-    private final Storage storage;
-    private final GcsConfig gcsConfig;
-    
-    @Override
-    public String uploadFile(MultipartFile file, String path) {
-        try {
-            BlobInfo blobInfo = BlobInfo.newBuilder(gcsConfig.getBucket(), path)
-                    .setContentType(file.getContentType())
-                    .build();
-            
-            storage.create(blobInfo, file.getBytes());
-            return path;
-        } catch (Exception e) {
-            throw new StorageException("Failed to upload file to GCS", e);
-        }
-    }
-    
-    @Override
-    public String generateUrl(String path, int expiryMinutes) {
-        BlobInfo blobInfo = BlobInfo.newBuilder(gcsConfig.getBucket(), path).build();
-        
-        return storage.signUrl(blobInfo, expiryMinutes, TimeUnit.MINUTES).toString();
-    }
-    
-    @Override
-    public void deleteFile(String path) {
-        storage.delete(gcsConfig.getBucket(), path);
-    }
-    
-    @Override
-    public byte[] downloadFile(String path) {
-        try {
-            Blob blob = storage.get(gcsConfig.getBucket(), path);
-            return blob.getContent();
-        } catch (Exception e) {
-            throw new StorageException("Failed to download file from GCS", e);
-        }
-    }
-    
-    @Override
-    public String getPublicUrl(String path) {
-        return String.format("https://storage.googleapis.com/%s/%s",
-                gcsConfig.getBucket(), path);
-    }
-    
-    @Override
-    public String makePublic(String path) {
-        try {
-            // 生成新的公开访问路径
-            String publicPath = "public/" + path;
-            
-            // 复制对象到公开目录
-            storage.copy(CopyRequest.newBuilder()
-                    .setSource(BlobId.of(gcsConfig.getBucket(), path))
-                    .setTarget(BlobId.of(gcsConfig.getBucket(), publicPath))
-                    .build());
-            
-            // 删除原始对象
-            storage.delete(gcsConfig.getBucket(), path);
-            
-            return publicPath;
-        } catch (Exception e) {
-            throw new StorageException("Could not make file public", e);
-        }
-    }
-}
-```
-
-## 第六部分：性能优化和最佳实践
+## 第五部分：性能优化和最佳实践
 
 ### 1. 性能优化
 
@@ -1656,7 +1288,7 @@ public class StorageMetrics {
 }
 ```
 
-## 第七部分：安全配置
+## 第六部分：安全配置
 
 ### 1. Security 配置类 (SecurityConfig.java)
 ```java
@@ -1689,7 +1321,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-## 第八部分：配置类
+## 第七部分：配置类
 
 ### 1. StorageConfig
 ```java
@@ -1713,24 +1345,28 @@ public class StorageConfig {
 }
 ```
 
-## 结语
+## 重要说明
 
-本文档详细介绍了如何在 Spring Boot 项目中实现一个可扩展的文件管理服务。通过合理的抽象和设计，我们实现了：
+### 1. 关于文件公开访问
 
-1. 基础的文件上传下载功能
-2. 多存储服务支持
-3. 安全的文件访问控制
-4. 完善的监控和维护机制
+文件的公开访问涉及两个层面的配置：
 
-建议在实际使用时：
+1. **存储桶(Bucket)级别**
+    - 需要专门配置用于公开访问的bucket
+    - 必须正确配置bucket的访问策略
+    - 不同存储服务的配置方式略有不同
 
-1. 根据具体需求调整配置参数
-2. 完善错误处理和日志记录
-3. 添加必要的单元测试
-4. 定期检查和更新依赖版本
-5. 建立完善的备份和恢复机制
+2. **对象(Object)级别**
+    - MinIO：通过bucket policy控制访问权限
+    - AWS S3：支持对象级别的ACL设置
+    - GCS：支持对象级别的ACL设置
 
-如有问题，请参考相关文档或联系技术支持。
+### 2. 安全注意事项
+
+1. 公开bucket仅用于确实需要公开访问的文件
+2. 定期审查公开文件的必要性
+3. 建议启用访问日志记录
+4. 考虑使用CDN来提供公开文件的访问
 
 ```java
 @Repository
@@ -1751,16 +1387,33 @@ public class StorageException extends RuntimeException {
 
 @RestControllerAdvice
 public class FileExceptionHandler {
+    private static final Logger log = LoggerFactory.getLogger(FileExceptionHandler.class);
+  
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<String> handleStorageException(StorageException e) {
+        log.error("Storage error occurred", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(e.getMessage());
     }
 
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<String> handleFileNotFoundException(FileNotFoundException e) {
+        log.warn("File not found", e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
+        log.warn("Access denied", e);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(e.getMessage());
+    }
+}
+
+public class FileNotFoundException extends RuntimeException {
+    public FileNotFoundException(String message) {
+        super(message);
     }
 }
 
