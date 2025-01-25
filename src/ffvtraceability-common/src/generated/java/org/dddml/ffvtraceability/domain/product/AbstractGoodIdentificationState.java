@@ -120,6 +120,16 @@ public abstract class AbstractGoodIdentificationState implements GoodIdentificat
         this.updatedAt = updatedAt;
     }
 
+    private Boolean __Deleted__;
+
+    public Boolean get__Deleted__() {
+        return this.__Deleted__;
+    }
+
+    public void set__Deleted__(Boolean __Deleted__) {
+        this.__Deleted__ = __Deleted__;
+    }
+
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -175,6 +185,8 @@ public abstract class AbstractGoodIdentificationState implements GoodIdentificat
             when((GoodIdentificationStateCreated) e);
         } else if (e instanceof GoodIdentificationStateMergePatched) {
             when((GoodIdentificationStateMergePatched) e);
+        } else if (e instanceof GoodIdentificationStateRemoved) {
+            when((GoodIdentificationStateRemoved) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -184,6 +196,8 @@ public abstract class AbstractGoodIdentificationState implements GoodIdentificat
         throwOnWrongEvent(e);
 
         this.setIdValue(e.getIdValue());
+
+        this.set__Deleted__(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -208,6 +222,15 @@ public abstract class AbstractGoodIdentificationState implements GoodIdentificat
             this.setIdValue(e.getIdValue());
         }
 
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+    }
+
+    public void when(GoodIdentificationStateRemoved e) {
+        throwOnWrongEvent(e);
+
+        this.set__Deleted__(true);
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 

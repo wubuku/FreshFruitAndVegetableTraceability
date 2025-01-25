@@ -626,6 +626,8 @@ public interface ProductEvent extends Event {
 
         GoodIdentificationEvent.GoodIdentificationStateMergePatched newGoodIdentificationStateMergePatched(String goodIdentificationTypeId);
 
+        GoodIdentificationEvent.GoodIdentificationStateRemoved newGoodIdentificationStateRemoved(String goodIdentificationTypeId);
+
 
     }
 

@@ -102,14 +102,10 @@ public class GcsStorageService implements StorageService {
     @Override
     public String makePublic(String path) {
         try {
-            // 构造新的公开路径
-            String filename = path.substring(path.lastIndexOf('/') + 1);
-            String publicPath = "public/" + filename;
-
-            // 复制到 public 目录
+            // 复制到公开存储桶
             BlobId sourceBlobId = BlobId.of(privateBucket, path);
-            BlobId targetBlobId = BlobId.of(publicBucket, publicPath);
-
+            BlobId targetBlobId = BlobId.of(publicBucket, path);  // 使用相同的路径
+            
             Storage.CopyRequest copyRequest = Storage.CopyRequest.newBuilder()
                     .setSource(sourceBlobId)
                     .setTarget(targetBlobId)
@@ -117,10 +113,11 @@ public class GcsStorageService implements StorageService {
 
             storage.copy(copyRequest);
 
-            // 删除原文件
+            // 删除私有存储桶中的文件
             storage.delete(sourceBlobId);
 
-            return publicPath;
+            // 返回带 public/ 前缀的路径
+            return "public/" + path;
         } catch (Exception e) {
             throw new StorageException("Could not make file public", e);
         }

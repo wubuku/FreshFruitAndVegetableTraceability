@@ -126,6 +126,10 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
         return new AbstractGoodIdentificationEvent.SimpleGoodIdentificationStateMergePatched(newGoodIdentificationEventId(goodIdentificationTypeId));
     }
 
+    public GoodIdentificationEvent.GoodIdentificationStateRemoved newGoodIdentificationStateRemoved(String goodIdentificationTypeId) {
+        return new AbstractGoodIdentificationEvent.SimpleGoodIdentificationStateRemoved(newGoodIdentificationEventId(goodIdentificationTypeId));
+    }
+
 
     public abstract String getEventType();
 

@@ -155,7 +155,7 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
     }
 
     protected FacilityIdentificationEvent.FacilityIdentificationStateCreated mapCreate(FacilityIdentificationCommand.CreateFacilityIdentification c, FacilityCommand outerCommand, Long version, FacilityState outerState) {

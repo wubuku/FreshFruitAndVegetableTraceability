@@ -5,18 +5,23 @@
 
 package org.dddml.ffvtraceability.restful.resource;
 
-import jakarta.validation.Valid;
-import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
-import org.dddml.ffvtraceability.domain.BffSupplierDto;
-import org.dddml.ffvtraceability.domain.service.BffSupplierApplicationService;
-import org.dddml.ffvtraceability.domain.service.BffSupplierServiceCommands;
-import org.dddml.ffvtraceability.specialization.DomainErrorUtils;
-import org.dddml.ffvtraceability.specialization.Page;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.*;
+import jakarta.servlet.http.*;
+import jakarta.validation.*;
+import jakarta.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import org.dddml.support.criterion.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.specialization.*;
+import static org.dddml.ffvtraceability.domain.meta.M.*;
+import org.dddml.ffvtraceability.domain.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.*;
 
 @RequestMapping(path = "BffSuppliers", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
@@ -28,150 +33,122 @@ public class BffSupplierServiceResource {
 
     @GetMapping
     public Page<BffSupplierDto> getSuppliers(
-            @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "20") Integer size,
-            @RequestParam(value = "active", required = false) String active
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "active", required = false) String active
     ) {
         BffSupplierServiceCommands.GetSuppliers getSuppliers = new BffSupplierServiceCommands.GetSuppliers();
         getSuppliers.setPage(page);
         getSuppliers.setSize(size);
         getSuppliers.setActive(active);
         try {
-            getSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
-            return bffSupplierApplicationService.when(getSuppliers);
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        getSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffSupplierApplicationService.when(getSuppliers);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{supplierId}")
     public BffSupplierDto getSupplier(
-            @PathVariable("supplierId") String supplierId,
-            @RequestParam(value = "includesFacilities", required = false) Boolean includesFacilities
+        @PathVariable("supplierId") String supplierId,
+        @RequestParam(value = "includesFacilities", required = false) Boolean includesFacilities
     ) {
         BffSupplierServiceCommands.GetSupplier getSupplier = new BffSupplierServiceCommands.GetSupplier();
         getSupplier.setSupplierId(supplierId);
         getSupplier.setIncludesFacilities(includesFacilities);
         try {
-            getSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
-            return bffSupplierApplicationService.when(getSupplier);
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        getSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffSupplierApplicationService.when(getSupplier);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping
     public String createSupplier(
-            @RequestBody @Valid BffSupplierDto supplier
+        @RequestBody @Valid BffSupplierDto supplier
     ) {
         BffSupplierServiceCommands.CreateSupplier createSupplier = new BffSupplierServiceCommands.CreateSupplier();
         createSupplier.setSupplier(supplier);
         try {
-            createSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
-            return bffSupplierApplicationService.when(createSupplier);
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        createSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffSupplierApplicationService.when(createSupplier);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PutMapping("{supplierId}")
     public void updateSupplier(
-            @PathVariable("supplierId") String supplierId,
-            @RequestBody @Valid BffSupplierDto supplier
+        @PathVariable("supplierId") String supplierId,
+        @RequestBody @Valid BffSupplierDto supplier
     ) {
         BffSupplierServiceCommands.UpdateSupplier updateSupplier = new BffSupplierServiceCommands.UpdateSupplier();
         updateSupplier.setSupplierId(supplierId);
-        supplier.setSupplierId(supplierId);
         updateSupplier.setSupplier(supplier);
         try {
-            updateSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
-            bffSupplierApplicationService.when(updateSupplier);
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        updateSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffSupplierApplicationService.when(updateSupplier);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PutMapping("{supplierId}/active")
     public void activateSupplier(
-            @PathVariable("supplierId") String supplierId,
-            @RequestBody Boolean active
+        @PathVariable("supplierId") String supplierId,
+        @RequestBody Boolean active
     ) {
         BffSupplierServiceCommands.ActivateSupplier activateSupplier = new BffSupplierServiceCommands.ActivateSupplier();
         activateSupplier.setSupplierId(supplierId);
         activateSupplier.setActive(active);
         try {
-            activateSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
-            bffSupplierApplicationService.when(activateSupplier);
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        activateSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffSupplierApplicationService.when(activateSupplier);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PutMapping("{supplierId}/BusinessContact")
     public void updateBusinessContact(
-            @PathVariable("supplierId") String supplierId,
-            @RequestBody @Valid BffBusinessContactDto businessContact
+        @PathVariable("supplierId") String supplierId,
+        @RequestBody @Valid BffBusinessContactDto businessContact
     ) {
         BffSupplierServiceCommands.UpdateBusinessContact updateBusinessContact = new BffSupplierServiceCommands.UpdateBusinessContact();
         updateBusinessContact.setSupplierId(supplierId);
         updateBusinessContact.setBusinessContact(businessContact);
         try {
-            updateBusinessContact.setRequesterId(SecurityContextUtil.getRequesterId());
-            bffSupplierApplicationService.when(updateBusinessContact);
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        updateBusinessContact.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffSupplierApplicationService.when(updateBusinessContact);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping("batchAddSuppliers")
     public void batchAddSuppliers(
-            @RequestBody @Valid BffSupplierDto[] suppliers
+        @RequestBody @Valid BffSupplierDto[] suppliers
     ) {
         BffSupplierServiceCommands.BatchAddSuppliers batchAddSuppliers = new BffSupplierServiceCommands.BatchAddSuppliers();
         batchAddSuppliers.setSuppliers(suppliers);
         try {
-            batchAddSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
-            bffSupplierApplicationService.when(batchAddSuppliers);
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        batchAddSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffSupplierApplicationService.when(batchAddSuppliers);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping("batchActivateSuppliers")
     public void batchActivateSuppliers(
-            @RequestBody String[] supplierIds
+        @RequestBody String[] supplierIds
     ) {
         BffSupplierServiceCommands.BatchActivateSuppliers batchActivateSuppliers = new BffSupplierServiceCommands.BatchActivateSuppliers();
         batchActivateSuppliers.setSupplierIds(supplierIds);
         try {
-            batchActivateSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
-            bffSupplierApplicationService.when(batchActivateSuppliers);
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        batchActivateSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffSupplierApplicationService.when(batchActivateSuppliers);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping("batchDeactivateSuppliers")
     public void batchDeactivateSuppliers(
-            @RequestBody String[] supplierIds
+        @RequestBody String[] supplierIds
     ) {
         BffSupplierServiceCommands.BatchDeactivateSuppliers batchDeactivateSuppliers = new BffSupplierServiceCommands.BatchDeactivateSuppliers();
         batchDeactivateSuppliers.setSupplierIds(supplierIds);
         try {
-            batchDeactivateSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
-            bffSupplierApplicationService.when(batchDeactivateSuppliers);
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        batchDeactivateSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffSupplierApplicationService.when(batchDeactivateSuppliers);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 }

@@ -63,6 +63,10 @@ public interface GoodIdentificationEvent extends Event {
 
     }
 
+    interface GoodIdentificationStateRemoved extends GoodIdentificationStateEvent
+    {
+    }
+
 
 }
 

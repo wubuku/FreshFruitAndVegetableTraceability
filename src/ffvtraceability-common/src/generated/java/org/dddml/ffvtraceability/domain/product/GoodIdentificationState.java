@@ -31,6 +31,8 @@ public interface GoodIdentificationState
 
     OffsetDateTime getUpdatedAt();
 
+    Boolean get__Deleted__();
+
     String getProductId();
 
     interface MutableGoodIdentificationState extends GoodIdentificationState {
@@ -48,6 +50,8 @@ public interface GoodIdentificationState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
+        void set__Deleted__(Boolean __Deleted__);
+
         void setProductId(String productId);
 
 
@@ -57,6 +61,7 @@ public interface GoodIdentificationState
 
         //void when(GoodIdentificationEvent.GoodIdentificationStateMergePatched e);
 
+        //void when(GoodIdentificationEvent.GoodIdentificationStateRemoved e);
     }
 
     interface SqlGoodIdentificationState extends MutableGoodIdentificationState {

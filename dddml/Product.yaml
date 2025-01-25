@@ -281,6 +281,9 @@
     entities:
       # 货物标识
       GoodIdentification:
+        reservedPropertyMetadata:
+          noDeleted: false # Removable
+          noActive: true          
         id:
           name: GoodIdentificationTypeId
           type: id

@@ -1571,6 +1571,10 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         for (GoodIdentificationEvent innerEvent : e.getGoodIdentificationEvents()) {
             GoodIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(((GoodIdentificationEvent.SqlGoodIdentificationEvent)innerEvent).getGoodIdentificationEventId().getGoodIdentificationTypeId());
             ((GoodIdentificationState.SqlGoodIdentificationState)innerState).mutate(innerEvent);
+            if (innerEvent instanceof GoodIdentificationEvent.GoodIdentificationStateRemoved) {
+                //GoodIdentificationEvent.GoodIdentificationStateRemoved removed = (GoodIdentificationEvent.GoodIdentificationStateRemoved)innerEvent;
+                ((EntityStateCollection.ModifiableEntityStateCollection)this.getGoodIdentifications()).removeState(innerState);
+            }
         }
     }
 

@@ -100,8 +100,17 @@ public class AwsStorageService implements StorageService {
     @Override
     public String makePublic(String path) {
         try {
-            s3Client.setObjectAcl(publicBucket, path, CannedAccessControlList.PublicRead);
-            return getPublicUrl(path);
+            // 从私有桶复制到公开桶
+            CopyObjectRequest copyRequest = new CopyObjectRequest(
+                    privateBucket, path,
+                    publicBucket, path);
+            s3Client.copyObject(copyRequest);
+
+            // 删除私有桶中的文件
+            s3Client.deleteObject(privateBucket, path);
+
+            // 返回带 public/ 前缀的路径
+            return "public/" + path;
         } catch (Exception e) {
             throw new StorageException("Could not make file public", e);
         }

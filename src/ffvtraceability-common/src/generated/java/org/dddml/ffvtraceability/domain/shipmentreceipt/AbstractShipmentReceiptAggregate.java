@@ -177,7 +177,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
     }
 
     protected ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateCreated mapCreate(ShipmentReceiptRoleCommand.CreateShipmentReceiptRole c, ShipmentReceiptCommand outerCommand, Long version, ShipmentReceiptState outerState) {
@@ -223,7 +223,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         if (remove != null) {
             return mapRemove(remove, outerCommand, version, outerState);
         }
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
     }
 
     protected ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated mapCreate(ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation c, ShipmentReceiptCommand outerCommand, Long version, ShipmentReceiptState outerState) {
