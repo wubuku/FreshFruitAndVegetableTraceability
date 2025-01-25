@@ -279,34 +279,11 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         } else if (rawItem.getDefaultShipmentBoxType() != null) {
             mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
         }
-        productApplicationService.when(mergePatchProduct);
+        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin());
+        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId());
+        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE, rawItem.getHsCode());
 
-        Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
-                .filter(x -> x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN))
-                .findFirst();
-        if (rawItem.getGtin() != null) {
-            if (existingGtin.isPresent()) {
-                if (!existingGtin.get().getIdValue().equals(rawItem.getGtin())) {
-                    GoodIdentificationCommand.MergePatchGoodIdentification mergePatchGoodIdentification = mergePatchProduct
-                            .newMergePatchGoodIdentification();
-                    mergePatchGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
-                    mergePatchGoodIdentification.setIdValue(rawItem.getGtin());
-                    mergePatchProduct.getGoodIdentificationCommands().add(mergePatchGoodIdentification);
-                }
-            } else {
-                GoodIdentificationCommand.CreateGoodIdentification createGoodIdentification = mergePatchProduct
-                        .newCreateGoodIdentification();
-                createGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
-                createGoodIdentification.setIdValue(rawItem.getGtin());
-                mergePatchProduct.getGoodIdentificationCommands().add(createGoodIdentification);
-            }
-        } else {
-            if (existingGtin.isPresent()) {//原来有，现在没有，做删除处理
-                GoodIdentificationCommand.RemoveGoodIdentification removeGoodIdentification = mergePatchProduct.newRemoveGoodIdentification();
-                removeGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
-                mergePatchProduct.getGoodIdentificationCommands().add(removeGoodIdentification);
-            }
-        }
+        productApplicationService.when(mergePatchProduct);
         if (rawItem.getSupplierId() != null) {
             // 这里不需要使用完整的 ID 全等匹配查询
             BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.findSupplierProductAssociation(
@@ -327,6 +304,35 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                 mergePatchSupplierProduct.setCommandId(UUID.randomUUID().toString());
                 mergePatchSupplierProduct.setRequesterId(c.getRequesterId());
                 supplierProductApplicationService.when(mergePatchSupplierProduct);
+            }
+        }
+    }
+
+    private void updateProductIdentification(AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct, ProductState productState, String identificationTypeId, String newValue) {
+        Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
+                .filter(x -> x.getGoodIdentificationTypeId().equals(identificationTypeId))
+                .findFirst();
+        if (newValue != null) {
+            if (existingGtin.isPresent()) {
+                if (!newValue.equals(existingGtin.get().getIdValue())) {
+                    GoodIdentificationCommand.MergePatchGoodIdentification mergePatchGoodIdentification = mergePatchProduct
+                            .newMergePatchGoodIdentification();
+                    mergePatchGoodIdentification.setGoodIdentificationTypeId(identificationTypeId);
+                    mergePatchGoodIdentification.setIdValue(newValue);
+                    mergePatchProduct.getGoodIdentificationCommands().add(mergePatchGoodIdentification);
+                }
+            } else {
+                GoodIdentificationCommand.CreateGoodIdentification createGoodIdentification = mergePatchProduct
+                        .newCreateGoodIdentification();
+                createGoodIdentification.setGoodIdentificationTypeId(identificationTypeId);
+                createGoodIdentification.setIdValue(newValue);
+                mergePatchProduct.getGoodIdentificationCommands().add(createGoodIdentification);
+            }
+        } else {
+            if (existingGtin.isPresent()) {//原来有，现在没有，做删除处理
+                GoodIdentificationCommand.RemoveGoodIdentification removeGoodIdentification = mergePatchProduct.newRemoveGoodIdentification();
+                removeGoodIdentification.setGoodIdentificationTypeId(identificationTypeId);
+                mergePatchProduct.getGoodIdentificationCommands().add(removeGoodIdentification);
             }
         }
     }
