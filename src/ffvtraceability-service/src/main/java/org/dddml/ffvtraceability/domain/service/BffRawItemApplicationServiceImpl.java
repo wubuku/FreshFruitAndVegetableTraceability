@@ -154,7 +154,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         // Diameter related fields
         createProduct.setDiameterUomId(rawItem.getDiameterUomId());
         createProduct.setProductDiameter(rawItem.getProductDiameter());
-
+        //默认情况下（不传值）就是Y
         createProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(rawItem.getActive()));
 
         if (rawItem.getGtin() != null) {
@@ -214,6 +214,9 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Override
     @Transactional
     public void when(BffRawItemServiceCommands.UpdateRawItem c) {
+        if (c.getProductId() == null) {
+            throw new NullPointerException("Product id can't be null");
+        }
         String productId = c.getProductId();
         ProductState productState = productApplicationService.get(productId);
         if (productState == null) {
@@ -278,11 +281,10 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         }
         productApplicationService.when(mergePatchProduct);
 
+        Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
+                .filter(x -> x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN))
+                .findFirst();
         if (rawItem.getGtin() != null) {
-            Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
-                    .filter(x -> x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN))
-                    .findFirst();
-
             if (existingGtin.isPresent()) {
                 if (!existingGtin.get().getIdValue().equals(rawItem.getGtin())) {
                     GoodIdentificationCommand.MergePatchGoodIdentification mergePatchGoodIdentification = mergePatchProduct
@@ -297,6 +299,12 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                 createGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
                 createGoodIdentification.setIdValue(rawItem.getGtin());
                 mergePatchProduct.getGoodIdentificationCommands().add(createGoodIdentification);
+            }
+        } else {
+            if (existingGtin.isPresent()) {//原来有，现在没有，做删除处理
+                GoodIdentificationCommand.RemoveGoodIdentification removeGoodIdentification = mergePatchProduct.newRemoveGoodIdentification();
+                removeGoodIdentification.setGoodIdentificationTypeId(GOOD_IDENTIFICATION_TYPE_GTIN);
+                mergePatchProduct.getGoodIdentificationCommands().add(removeGoodIdentification);
             }
         }
         if (rawItem.getSupplierId() != null) {
