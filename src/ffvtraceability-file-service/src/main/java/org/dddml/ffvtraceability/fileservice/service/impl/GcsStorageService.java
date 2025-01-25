@@ -16,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.TimeUnit;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.ServiceAccountCredentials;
+
 @Service
 @ConditionalOnProperty(name = "storage.type", havingValue = "gcs")
 public class GcsStorageService implements StorageService {
@@ -43,10 +46,43 @@ public class GcsStorageService implements StorageService {
                     .setContentType(file.getContentType())
                     .build();
 
+            // 上传文件
             storage.create(blobInfo, file.getBytes());
             return path;
         } catch (Exception e) {
+            log.error("Failed to upload file to GCS", e);
             throw new StorageException("Could not store file to GCS", e);
+        }
+    }
+
+    @Override
+    public String generateUrl(String path, int expiryMinutes) {
+        try {
+            String bucket = path.startsWith("public/") ? publicBucket : privateBucket;
+            String objectName = path.startsWith("public/") ?
+                    path.substring("public/".length()) : path;
+
+            log.info("Generating URL for bucket: {}, object: {}", bucket, objectName);
+            
+            if (path.startsWith("public/")) {
+                // 公开文件直接返回公开URL
+                return String.format("https://storage.googleapis.com/%s/%s",
+                        publicBucket, objectName);
+            }
+
+            // 私有文件
+            BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of(bucket, objectName)).build();
+            
+            // 使用服务账号凭证生成签名URL
+            return storage.signUrl(
+                    blobInfo,
+                    expiryMinutes,
+                    TimeUnit.MINUTES,
+                    Storage.SignUrlOption.withV4Signature()
+            ).toString();
+        } catch (Exception e) {
+            log.error("Failed to generate URL. Error: {}", e.getMessage(), e);
+            throw new StorageException("Could not generate URL", e);
         }
     }
 
@@ -61,24 +97,20 @@ public class GcsStorageService implements StorageService {
     }
 
     @Override
-    public String generateUrl(String path, int expiryMinutes) {
-        // 私有文件生成带签名的临时 URL
-        try {
-            BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of(privateBucket, path)).build();
-            return storage.signUrl(blobInfo, expiryMinutes, TimeUnit.MINUTES,
-                            Storage.SignUrlOption.withV4Signature())
-                    .toString();
-        } catch (Exception e) {
-            throw new StorageException("Could not generate URL", e);
-        }
-    }
-
-    @Override
     public void deleteFile(String path) {
         try {
-            BlobId blobId = BlobId.of(privateBucket, path);
-            storage.delete(blobId);
+            String bucket = path.startsWith("public/") ? publicBucket : privateBucket;
+            String objectName = path.startsWith("public/") ?
+                    path.substring("public/".length()) : path;
+
+            BlobId blobId = BlobId.of(bucket, objectName);
+            boolean deleted = storage.delete(blobId);
+            
+            if (!deleted) {
+                log.warn("File not found when attempting to delete: {}", path);
+            }
         } catch (Exception e) {
+            log.error("Failed to delete file", e);
             throw new StorageException("Could not delete file", e);
         }
     }
@@ -86,7 +118,11 @@ public class GcsStorageService implements StorageService {
     @Override
     public byte[] downloadFile(String path) {
         try {
-            Blob blob = storage.get(BlobId.of(privateBucket, path));
+            String bucket = path.startsWith("public/") ? publicBucket : privateBucket;
+            String objectName = path.startsWith("public/") ?
+                    path.substring("public/".length()) : path;
+
+            Blob blob = storage.get(BlobId.of(bucket, objectName));
             if (blob == null) {
                 throw new StorageException("File not found: " + path);
             }
@@ -95,6 +131,7 @@ public class GcsStorageService implements StorageService {
             blob.downloadTo(outputStream);
             return outputStream.toByteArray();
         } catch (Exception e) {
+            log.error("Failed to download file", e);
             throw new StorageException("Could not download file", e);
         }
     }
@@ -102,23 +139,34 @@ public class GcsStorageService implements StorageService {
     @Override
     public String makePublic(String path) {
         try {
-            // 复制到公开存储桶
-            BlobId sourceBlobId = BlobId.of(privateBucket, path);
-            BlobId targetBlobId = BlobId.of(publicBucket, path);  // 使用相同的路径
+            // 源文件信息
+            String objectName = path;
+            BlobId sourceBlobId = BlobId.of(privateBucket, objectName);
+            Blob sourceBlob = storage.get(sourceBlobId);
             
-            Storage.CopyRequest copyRequest = Storage.CopyRequest.newBuilder()
-                    .setSource(sourceBlobId)
-                    .setTarget(targetBlobId)
+            if (sourceBlob == null) {
+                throw new StorageException("Source file not found: " + path);
+            }
+
+            // 复制到公开存储桶
+            BlobId targetBlobId = BlobId.of(publicBucket, objectName);
+            BlobInfo targetBlobInfo = BlobInfo.newBuilder(targetBlobId)
+                    .setContentType(sourceBlob.getContentType())
                     .build();
 
-            storage.copy(copyRequest);
+            // 执行复制
+            storage.copy(Storage.CopyRequest.newBuilder()
+                    .setSource(sourceBlobId)
+                    .setTarget(targetBlobInfo)
+                    .build());
 
-            // 删除私有存储桶中的文件
+            // 删除源文件
             storage.delete(sourceBlobId);
 
-            // 返回带 public/ 前缀的路径
-            return "public/" + path;
+            // 返回新的公开路径
+            return "public/" + objectName;
         } catch (Exception e) {
+            log.error("Failed to make file public", e);
             throw new StorageException("Could not make file public", e);
         }
     }

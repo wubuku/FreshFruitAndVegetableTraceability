@@ -47,7 +47,7 @@ storage:
   
   gcs:
     project-id: woven-justice-441107-h8
-    private-bucket: flex-api
+    private-bucket: flex-api-private
     public-bucket: flex-api-public
 
   aws:
