@@ -275,7 +275,8 @@ storage:
     access-key: your-aws-access-key
     secret-key: your-aws-secret-key
     region: your-aws-region
-    bucket: your-bucket
+    private-bucket: flex-api-private
+    public-bucket: flex-api-public
   
   # GCS 配置
   gcs:
@@ -778,34 +779,47 @@ public class S3StorageService implements StorageService {
     @Override
     public String uploadFile(MultipartFile file, String path) {
         try {
+            String bucket = path.startsWith("public/") ? s3Config.getBucket() : s3Config.getPrivateBucket();
+            String key = path.startsWith("public/") ? 
+                    path.substring("public/".length()) : path;
+
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
-            
-            s3Client.putObject(s3Config.getBucket(), path, file.getInputStream(), metadata);
+
+            PutObjectRequest request = new PutObjectRequest(bucket, key,
+                    new ByteArrayInputStream(file.getBytes()), metadata);
+
+            s3Client.putObject(request);
             return path;
-        } catch (Exception e) {
-            throw new StorageException("Failed to upload file to AWS S3", e);
+        } catch (IOException e) {
+            throw new StorageException("Could not store file to S3", e);
         }
     }
     
     @Override
     public String generateUrl(String path, int expiryMinutes) {
-        Date expiration = new Date();
-        expiration.setTime(expiration.getTime() + (expiryMinutes * 60 * 1000));
-        
-        return s3Client.generatePresignedUrl(s3Config.getBucket(), path, expiration).toString();
+        try {
+            GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(s3Config.getPrivateBucket(), path)
+                    .withMethod(HttpMethod.GET)
+                    .withExpiration(Date.from(Instant.now().plusSeconds(expiryMinutes * 60L)));
+
+            URL url = s3Client.generatePresignedUrl(request);
+            return url.toString();
+        } catch (Exception e) {
+            throw new StorageException("Could not generate URL", e);
+        }
     }
     
     @Override
     public void deleteFile(String path) {
-        s3Client.deleteObject(s3Config.getBucket(), path);
+        s3Client.deleteObject(s3Config.getPrivateBucket(), path);
     }
     
     @Override
     public byte[] downloadFile(String path) {
         try {
-            S3Object object = s3Client.getObject(s3Config.getBucket(), path);
+            S3Object object = s3Client.getObject(s3Config.getPrivateBucket(), path);
             return IOUtils.toByteArray(object.getObjectContent());
         } catch (Exception e) {
             throw new StorageException("Failed to download file from AWS S3", e);
@@ -814,15 +828,19 @@ public class S3StorageService implements StorageService {
     
     @Override
     public String getPublicUrl(String path) {
+        if (!path.startsWith("public/")) {
+            throw new StorageException("Not a public file");
+        }
+        String key = path.substring("public/".length());
         return String.format("https://%s.s3.%s.amazonaws.com/%s",
-                s3Config.getBucket(), s3Config.getRegion(), path);
+                s3Config.getBucket(), s3Config.getRegion(), key);
     }
     
     @Override
     public String makePublic(String path) {
         try {
             // 设置对象的ACL为公开读取
-            s3Client.setObjectAcl(s3Config.getBucket(), path, CannedAccessControlList.PublicRead);
+            s3Client.setObjectAcl(s3Config.getPrivateBucket(), path, CannedAccessControlList.PublicRead);
             
             return path;
         } catch (Exception e) {
@@ -1488,7 +1506,7 @@ gsutil mb gs://flex-api-private
 gsutil mb gs://flex-api-public
 ```
 
-2. 设置公开存储桶的访问权限：
+2. 设置公开存储桶策略：
 ```bash
 # 允许公开访问
 gsutil iam ch allUsers:objectViewer gs://flex-api-public
@@ -1535,4 +1553,69 @@ export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account.json"
 1. 两个存储桶完全分离，便于权限管理
 2. 公开存储桶中的所有文件都可以被公开访问
 3. 私有存储桶中的文件需要认证才能访问
+4. 定期审查公开存储桶中的文件
+
+### AWS S3 配置
+
+我们使用两个存储桶来分别存储公开和私有文件：
+- 公开文件存储在公开存储桶中
+- 私有文件存储在私有存储桶中
+
+#### 1. 配置文件设置
+```yaml
+storage:
+  type: aws
+  aws:
+    access-key: your-aws-access-key
+    secret-key: your-aws-secret-key
+    region: your-aws-region
+    private-bucket: flex-api-private
+    public-bucket: flex-api-public
+```
+
+#### 2. 存储桶创建和配置
+
+1. 创建存储桶：
+   - 在 AWS Console 创建两个 S3 存储桶
+   - 或使用 AWS CLI：
+```bash
+# 创建私有存储桶
+aws s3 mb s3://flex-api-private
+
+# 创建公开存储桶
+aws s3 mb s3://flex-api-public
+```
+
+2. 配置公开存储桶策略：
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::flex-api-public/*"
+        }
+    ]
+}
+```
+
+#### 3. 文件访问机制
+
+1. 公开文件：
+   - 存储在 public 存储桶中
+   - 可以通过固定 URL 直接访问
+   - 格式：`https://{bucket}.s3.{region}.amazonaws.com/{filename}`
+
+2. 私有文件：
+   - 存储在 private 存储桶中
+   - 通过预签名 URL 访问
+   - URL 包含临时访问令牌
+
+注意：
+1. 确保正确配置 CORS 策略
+2. 定期轮换 AWS 访问密钥
+3. 使用 IAM 角色而不是访问密钥（在 AWS 环境中）
 4. 定期审查公开存储桶中的文件

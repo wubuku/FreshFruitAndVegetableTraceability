@@ -16,7 +16,8 @@ public class AwsConfig {
     private String accessKey;
     private String secretKey;
     private String region;
-    private String bucket;
+    private String privateBucket;
+    private String publicBucket;
 
     // Getters and Setters
     public String getAccessKey() {
@@ -43,12 +44,20 @@ public class AwsConfig {
         this.region = region;
     }
 
-    public String getBucket() {
-        return bucket;
+    public String getPrivateBucket() {
+        return privateBucket;
     }
 
-    public void setBucket(String bucket) {
-        this.bucket = bucket;
+    public void setPrivateBucket(String privateBucket) {
+        this.privateBucket = privateBucket;
+    }
+
+    public String getPublicBucket() {
+        return publicBucket;
+    }
+
+    public void setPublicBucket(String publicBucket) {
+        this.publicBucket = publicBucket;
     }
 
     @Bean

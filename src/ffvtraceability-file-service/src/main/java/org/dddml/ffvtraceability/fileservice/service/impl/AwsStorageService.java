@@ -24,21 +24,27 @@ public class AwsStorageService implements StorageService {
     private static final Logger log = LoggerFactory.getLogger(AwsStorageService.class);
 
     private final AmazonS3 s3Client;
-    private final String bucket;
+    private final String privateBucket;
+    private final String publicBucket;
 
     public AwsStorageService(AmazonS3 s3Client, AwsConfig config) {
         this.s3Client = s3Client;
-        this.bucket = config.getBucket();
+        this.privateBucket = config.getPrivateBucket();
+        this.publicBucket = config.getPublicBucket();
     }
 
     @Override
     public String uploadFile(MultipartFile file, String path) {
         try {
+            String bucket = path.startsWith("public/") ? publicBucket : privateBucket;
+            String key = path.startsWith("public/") ? 
+                    path.substring("public/".length()) : path;
+
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
 
-            PutObjectRequest request = new PutObjectRequest(bucket, path,
+            PutObjectRequest request = new PutObjectRequest(bucket, key,
                     new ByteArrayInputStream(file.getBytes()), metadata);
 
             s3Client.putObject(request);
@@ -49,12 +55,21 @@ public class AwsStorageService implements StorageService {
     }
 
     @Override
+    public String getPublicUrl(String path) {
+        if (!path.startsWith("public/")) {
+            throw new StorageException("Not a public file");
+        }
+        String key = path.substring("public/".length());
+        return String.format("https://%s.s3.%s.amazonaws.com/%s",
+                publicBucket, s3Client.getRegionName(), key);
+    }
+
+    @Override
     public String generateUrl(String path, int expiryMinutes) {
         try {
-            Date expiration = Date.from(Instant.now().plusSeconds(expiryMinutes * 60L));
-            GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucket, path)
+            GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(privateBucket, path)
                     .withMethod(HttpMethod.GET)
-                    .withExpiration(expiration);
+                    .withExpiration(Date.from(Instant.now().plusSeconds(expiryMinutes * 60L)));
 
             URL url = s3Client.generatePresignedUrl(request);
             return url.toString();
@@ -66,7 +81,7 @@ public class AwsStorageService implements StorageService {
     @Override
     public void deleteFile(String path) {
         try {
-            s3Client.deleteObject(bucket, path);
+            s3Client.deleteObject(privateBucket, path);
         } catch (Exception e) {
             throw new StorageException("Could not delete file", e);
         }
@@ -75,7 +90,7 @@ public class AwsStorageService implements StorageService {
     @Override
     public byte[] downloadFile(String path) {
         try {
-            S3Object object = s3Client.getObject(bucket, path);
+            S3Object object = s3Client.getObject(privateBucket, path);
             return object.getObjectContent().readAllBytes();
         } catch (Exception e) {
             throw new StorageException("Could not download file", e);
@@ -83,15 +98,9 @@ public class AwsStorageService implements StorageService {
     }
 
     @Override
-    public String getPublicUrl(String path) {
-        return String.format("https://%s.s3.%s.amazonaws.com/%s",
-                bucket, s3Client.getRegion(), path);
-    }
-
-    @Override
     public String makePublic(String path) {
         try {
-            s3Client.setObjectAcl(bucket, path, CannedAccessControlList.PublicRead);
+            s3Client.setObjectAcl(publicBucket, path, CannedAccessControlList.PublicRead);
             return getPublicUrl(path);
         } catch (Exception e) {
             throw new StorageException("Could not make file public", e);
