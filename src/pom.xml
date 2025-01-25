@@ -32,6 +32,7 @@
         <module>ffvtraceability-service-cli</module>
         <module>ffvtraceability-auth-server</module>
         <module>ffvtraceability-resource-server</module>
+        <module>ffvtraceability-file-service</module>
     </modules>
 
     <dependencyManagement>
