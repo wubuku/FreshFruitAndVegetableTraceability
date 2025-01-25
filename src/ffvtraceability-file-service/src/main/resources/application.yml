@@ -45,11 +45,10 @@ storage:
   
   type: minio
   
-  minio:
-    endpoint: http://localhost:9000
-    access-key: sR0M20dawA1y4SRBnz9p
-    secret-key: c5pyo789dmbfdI8GDspnRZkbrg8XDwzUVhULCCYS
-    bucket: my-bucket
+  gcs:
+    project-id: your-project-id
+    credentials-path: classpath:gcp-credentials.json
+    bucket: your-bucket-name
 
   aws:
     access-key: your-aws-access-key
@@ -57,7 +56,8 @@ storage:
     region: your-aws-region
     bucket: your-bucket
   
-  gcs:
-    project-id: your-project-id
-    credentials-path: classpath:gcp-credentials.json
-    bucket: your-bucket 
+  minio:
+    endpoint: http://localhost:9000
+    access-key: sR0M20dawA1y4SRBnz9p
+    secret-key: c5pyo789dmbfdI8GDspnRZkbrg8XDwzUVhULCCYS
+    bucket: my-bucket 

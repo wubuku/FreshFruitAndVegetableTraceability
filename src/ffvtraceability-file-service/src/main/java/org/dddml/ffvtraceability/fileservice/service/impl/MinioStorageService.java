@@ -2,8 +2,6 @@ package org.dddml.ffvtraceability.fileservice.service.impl;
 
 import io.minio.*;
 import io.minio.http.Method;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.dddml.ffvtraceability.fileservice.config.MinioConfig;
 import org.dddml.ffvtraceability.fileservice.exception.StorageException;
 import org.dddml.ffvtraceability.fileservice.service.StorageService;
@@ -13,6 +11,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 @Service("minioStorageService")
@@ -79,7 +79,16 @@ public class MinioStorageService implements StorageService {
                     .bucket(minioConfig.getBucket())
                     .object(path)
                     .build());
-            return IOUtils.toByteArray(response);
+
+            try (InputStream is = response;
+                 ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+                return os.toByteArray();
+            }
         } catch (Exception e) {
             log.error("Failed to download file", e);
             throw new StorageException("Could not download file", e);
@@ -95,7 +104,9 @@ public class MinioStorageService implements StorageService {
     @Override
     public String makePublic(String path) {
         try {
-            String publicPath = "public/" + FilenameUtils.getName(path);
+            String filename = path.substring(path.lastIndexOf('/') + 1);
+            String publicPath = "public/" + filename;
+
             minioClient.copyObject(
                     CopyObjectArgs.builder()
                             .bucket(minioConfig.getBucket())

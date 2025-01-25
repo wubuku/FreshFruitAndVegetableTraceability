@@ -1,6 +1,5 @@
 package org.dddml.ffvtraceability.fileservice.service;
 
-import org.apache.commons.io.FilenameUtils;
 import org.dddml.ffvtraceability.fileservice.domain.FileInfo;
 import org.dddml.ffvtraceability.fileservice.exception.FileNotFoundException;
 import org.dddml.ffvtraceability.fileservice.exception.StorageException;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,7 +46,7 @@ public class FileService {
         }
 
         // 非公开文件需要验证用户权限
-        if (userId == null || !fileInfo.getUserId().equals(userId)) {
+        if (!fileInfo.getUserId().equals(userId)) {
             throw new AccessDeniedException("Access denied to file: " + fileId);
         }
 
@@ -75,13 +73,24 @@ public class FileService {
 
     public FileInfo uploadFile(MultipartFile file, String userId, boolean isPublic) {
         try {
-            String path = isPublic ? "public/" + generateStoragePath(userId, file)
-                    : generateStoragePath(userId, file);
+            String originalFilename = file.getOriginalFilename();
+            String extension = "";
+            if (originalFilename != null) {
+                int lastDotIndex = originalFilename.lastIndexOf('.');
+                if (lastDotIndex > 0) {
+                    extension = originalFilename.substring(lastDotIndex + 1);
+                }
+            }
+
+            String storageFilename = UUID.randomUUID() + (extension.isEmpty() ? "" : "." + extension);
+
+            String path = isPublic ? "public/" + storageFilename
+                    : storageFilename;
 
             storageService.uploadFile(file, path);
 
             FileInfo fileInfo = new FileInfo();
-            fileInfo.setOriginalFilename(file.getOriginalFilename());
+            fileInfo.setOriginalFilename(originalFilename);
             fileInfo.setStorageFilename(path);
             fileInfo.setContentType(file.getContentType());
             fileInfo.setSize(file.getSize());
@@ -122,13 +131,6 @@ public class FileService {
 
     public List<FileInfo> listFiles(String userId) {
         return fileInfoRepository.findByUserId(userId);
-    }
-
-    private String generateStoragePath(String userId, MultipartFile file) {
-        String timestamp = String.valueOf(System.currentTimeMillis());
-        String randomStr = UUID.randomUUID().toString().substring(0, 8);
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        return String.format("%s/%s_%s.%s", userId, timestamp, randomStr, extension);
     }
 
     public String getFileUrl(FileInfo fileInfo) {
