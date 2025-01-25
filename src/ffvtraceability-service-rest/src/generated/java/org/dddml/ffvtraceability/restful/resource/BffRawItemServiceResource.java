@@ -78,6 +78,7 @@ public class BffRawItemServiceResource {
     ) {
         BffRawItemServiceCommands.UpdateRawItem updateRawItem = new BffRawItemServiceCommands.UpdateRawItem();
         updateRawItem.setProductId(productId);
+        rawItem.setProductId(productId);
         updateRawItem.setRawItem(rawItem);
         try {
         updateRawItem.setRequesterId(SecurityContextUtil.getRequesterId());

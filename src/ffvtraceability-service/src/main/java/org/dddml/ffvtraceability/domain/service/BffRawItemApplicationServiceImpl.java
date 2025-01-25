@@ -279,7 +279,6 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         } else if (rawItem.getDefaultShipmentBoxType() != null) {
             mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
         }
-        productApplicationService.when(mergePatchProduct);
 
         Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
                 .filter(x -> x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN))
@@ -307,6 +306,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                 mergePatchProduct.getGoodIdentificationCommands().add(removeGoodIdentification);
             }
         }
+        productApplicationService.when(mergePatchProduct);
         if (rawItem.getSupplierId() != null) {
             // 这里不需要使用完整的 ID 全等匹配查询
             BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.findSupplierProductAssociation(
