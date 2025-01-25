@@ -1,6 +1,5 @@
 package org.dddml.ffvtraceability.fileservice.config;
 
-import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import org.dddml.ffvtraceability.fileservice.exception.StorageException;
@@ -8,26 +7,15 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ResourceLoader;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 @Configuration
 @ConfigurationProperties(prefix = "storage.gcs")
 @ConditionalOnProperty(name = "storage.type", havingValue = "gcs")
 public class GcsConfig {
     private String projectId;
-    private String credentialsPath;
-    private String bucket;
+    private String privateBucket;
+    private String publicBucket;
 
-    private final ResourceLoader resourceLoader;
-
-    public GcsConfig(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
-
-    // Getters and Setters
     public String getProjectId() {
         return projectId;
     }
@@ -36,36 +24,30 @@ public class GcsConfig {
         this.projectId = projectId;
     }
 
-    public String getCredentialsPath() {
-        return credentialsPath;
+    public String getPrivateBucket() {
+        return privateBucket;
     }
 
-    public void setCredentialsPath(String credentialsPath) {
-        this.credentialsPath = credentialsPath;
+    public void setPrivateBucket(String privateBucket) {
+        this.privateBucket = privateBucket;
     }
 
-    public String getBucket() {
-        return bucket;
+    public String getPublicBucket() {
+        return publicBucket;
     }
 
-    public void setBucket(String bucket) {
-        this.bucket = bucket;
+    public void setPublicBucket(String publicBucket) {
+        this.publicBucket = publicBucket;
     }
 
     @Bean
     public Storage storage() {
         try {
-            InputStream credentialsStream = resourceLoader.getResource(credentialsPath)
-                    .getInputStream();
-            
-            GoogleCredentials credentials = GoogleCredentials.fromStream(credentialsStream);
-            
             return StorageOptions.newBuilder()
                     .setProjectId(projectId)
-                    .setCredentials(credentials)
                     .build()
                     .getService();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new StorageException("Could not initialize GCS", e);
         }
     }

@@ -86,9 +86,9 @@ public class FileController {
     public ResponseEntity<Resource> downloadFile(
             @PathVariable String fileId,
             Authentication authentication) {
-        String userId = authentication != null ? 
-            ((UserDetails) authentication.getPrincipal()).getUsername() : null;
-            
+        String userId = authentication != null ?
+                ((UserDetails) authentication.getPrincipal()).getUsername() : null;
+
         FileInfo fileInfo = fileService.getFileWithOptionalUser(fileId, userId);
 
         byte[] data = fileService.downloadFile(fileInfo);

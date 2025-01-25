@@ -280,8 +280,8 @@ storage:
   # GCS 配置
   gcs:
     project-id: your-project-id
-    credentials-path: classpath:gcp-credentials.json
-    bucket: your-bucket
+    private-bucket: flex-api-private
+    public-bucket: flex-api-public
 ```
 
 ### 5. 验证开发环境
@@ -1461,55 +1461,78 @@ curl -X GET \
 }
 ```
 
-```java
-@Repository
-public interface FileInfoRepository extends JpaRepository<FileInfo, String> {
-    Optional<FileInfo> findByIdAndUserId(String id, String userId);
-    List<FileInfo> findByUserId(String userId);
-}
+### Google Cloud Storage 配置
 
-public class StorageException extends RuntimeException {
-    public StorageException(String message) {
-        super(message);
-    }
+我们使用两个存储桶来分别存储公开和私有文件：
+- 公开文件存储在公开存储桶中
+- 私有文件存储在私有存储桶中
 
-    public StorageException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
-
-@RestControllerAdvice
-public class FileExceptionHandler {
-    private static final Logger log = LoggerFactory.getLogger(FileExceptionHandler.class);
-  
-    @ExceptionHandler(StorageException.class)
-    public ResponseEntity<String> handleStorageException(StorageException e) {
-        log.error("Storage error occurred", e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(e.getMessage());
-    }
-
-    @ExceptionHandler(FileNotFoundException.class)
-    public ResponseEntity<String> handleFileNotFoundException(FileNotFoundException e) {
-        log.warn("File not found", e);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(e.getMessage());
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
-        log.warn("Access denied", e);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(e.getMessage());
-    }
-}
-
-public class FileNotFoundException extends RuntimeException {
-    public FileNotFoundException(String message) {
-        super(message);
-    }
-}
-
+#### 1. 配置文件设置
+```yaml
+storage:
+  type: gcs  # 启用 GCS 存储服务
+  gcs:
+    project-id: your-project-id     # GCP 项目 ID
+    private-bucket: flex-api-private # 私有文件存储桶
+    public-bucket: flex-api-public  # 公开文件存储桶
 ```
 
+#### 2. 存储桶创建和配置
 
+1. 创建存储桶：
+```bash
+# 创建私有存储桶
+gsutil mb gs://flex-api-private
+
+# 创建公开存储桶
+gsutil mb gs://flex-api-public
+```
+
+2. 设置公开存储桶的访问权限：
+```bash
+# 允许公开访问
+gsutil iam ch allUsers:objectViewer gs://flex-api-public
+```
+
+#### 3. 认证配置
+
+本服务使用 Application Default Credentials (ADC) 进行认证：
+
+1. 本地开发环境：
+```bash
+# 使用 gcloud CLI 登录，会自动配置本地凭证
+gcloud auth application-default login
+```
+
+2. Google Cloud 环境（如 GKE）：
+   - 默认使用节点的服务账号
+   - 或配置 Workload Identity
+
+3. 其他环境：
+```bash
+# 设置凭证环境变量
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account.json"
+```
+
+#### 4. 文件访问机制
+
+1. 公开文件：
+   - 存储在 public 存储桶中
+   - 可以通过固定 URL 直接访问
+   - 格式：`https://storage.googleapis.com/flex-api-public/filename`
+
+2. 私有文件：
+   - 存储在 private 存储桶中
+   - 通过签名 URL 访问
+   - URL 包含临时访问令牌
+
+#### 5. 所需权限
+- Storage Object Viewer (`roles/storage.objectViewer`)
+- Storage Object Creator (`roles/storage.objectCreator`)
+- Storage Object Admin (`roles/storage.objectAdmin`)
+
+注意：
+1. 两个存储桶完全分离，便于权限管理
+2. 公开存储桶中的所有文件都可以被公开访问
+3. 私有存储桶中的文件需要认证才能访问
+4. 定期审查公开存储桶中的文件

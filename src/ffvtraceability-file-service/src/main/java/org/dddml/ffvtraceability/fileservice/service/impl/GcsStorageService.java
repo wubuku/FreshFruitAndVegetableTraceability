@@ -1,6 +1,9 @@
 package org.dddml.ffvtraceability.fileservice.service.impl;
 
-import com.google.cloud.storage.*;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
 import org.dddml.ffvtraceability.fileservice.config.GcsConfig;
 import org.dddml.ffvtraceability.fileservice.exception.StorageException;
 import org.dddml.ffvtraceability.fileservice.service.StorageService;
@@ -11,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -20,17 +22,23 @@ public class GcsStorageService implements StorageService {
     private static final Logger log = LoggerFactory.getLogger(GcsStorageService.class);
 
     private final Storage storage;
-    private final String bucket;
+    private final String privateBucket;
+    private final String publicBucket;
 
     public GcsStorageService(Storage storage, GcsConfig config) {
         this.storage = storage;
-        this.bucket = config.getBucket();
+        this.privateBucket = config.getPrivateBucket();
+        this.publicBucket = config.getPublicBucket();
     }
 
     @Override
     public String uploadFile(MultipartFile file, String path) {
         try {
-            BlobId blobId = BlobId.of(bucket, path);
+            String bucket = path.startsWith("public/") ? publicBucket : privateBucket;
+            String objectName = path.startsWith("public/") ?
+                    path.substring("public/".length()) : path;
+
+            BlobId blobId = BlobId.of(bucket, objectName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
                     .setContentType(file.getContentType())
                     .build();
@@ -43,16 +51,23 @@ public class GcsStorageService implements StorageService {
     }
 
     @Override
+    public String getPublicUrl(String path) {
+        if (!path.startsWith("public/")) {
+            throw new StorageException("Not a public file");
+        }
+        String objectName = path.substring("public/".length());
+        return String.format("https://storage.googleapis.com/%s/%s",
+                publicBucket, objectName);
+    }
+
+    @Override
     public String generateUrl(String path, int expiryMinutes) {
+        // 私有文件生成带签名的临时 URL
         try {
-            BlobId blobId = BlobId.of(bucket, path);
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-
-            URL url = storage.signUrl(blobInfo,
-                    expiryMinutes, TimeUnit.MINUTES,
-                    Storage.SignUrlOption.withV4Signature());
-
-            return url.toString();
+            BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of(privateBucket, path)).build();
+            return storage.signUrl(blobInfo, expiryMinutes, TimeUnit.MINUTES,
+                            Storage.SignUrlOption.withV4Signature())
+                    .toString();
         } catch (Exception e) {
             throw new StorageException("Could not generate URL", e);
         }
@@ -61,7 +76,7 @@ public class GcsStorageService implements StorageService {
     @Override
     public void deleteFile(String path) {
         try {
-            BlobId blobId = BlobId.of(bucket, path);
+            BlobId blobId = BlobId.of(privateBucket, path);
             storage.delete(blobId);
         } catch (Exception e) {
             throw new StorageException("Could not delete file", e);
@@ -71,7 +86,7 @@ public class GcsStorageService implements StorageService {
     @Override
     public byte[] downloadFile(String path) {
         try {
-            Blob blob = storage.get(BlobId.of(bucket, path));
+            Blob blob = storage.get(BlobId.of(privateBucket, path));
             if (blob == null) {
                 throw new StorageException("File not found: " + path);
             }
@@ -85,24 +100,27 @@ public class GcsStorageService implements StorageService {
     }
 
     @Override
-    public String getPublicUrl(String path) {
-        return String.format("https://storage.googleapis.com/%s/%s", bucket, path);
-    }
-
-    @Override
     public String makePublic(String path) {
         try {
-            BlobId blobId = BlobId.of(bucket, path);
-            Blob blob = storage.get(blobId);
-            if (blob == null) {
-                throw new StorageException("File not found: " + path);
-            }
+            // 构造新的公开路径
+            String filename = path.substring(path.lastIndexOf('/') + 1);
+            String publicPath = "public/" + filename;
 
-            Acl.Entity entity = Acl.User.ofAllUsers();
-            Acl.Role role = Acl.Role.READER;
-            blob.createAcl(Acl.of(entity, role));
+            // 复制到 public 目录
+            BlobId sourceBlobId = BlobId.of(privateBucket, path);
+            BlobId targetBlobId = BlobId.of(publicBucket, publicPath);
 
-            return getPublicUrl(path);
+            Storage.CopyRequest copyRequest = Storage.CopyRequest.newBuilder()
+                    .setSource(sourceBlobId)
+                    .setTarget(targetBlobId)
+                    .build();
+
+            storage.copy(copyRequest);
+
+            // 删除原文件
+            storage.delete(sourceBlobId);
+
+            return publicPath;
         } catch (Exception e) {
             throw new StorageException("Could not make file public", e);
         }

@@ -43,12 +43,12 @@ storage:
   security:
     allow-anonymous-upload: true
   
-  type: minio
+  type: gcs
   
   gcs:
-    project-id: your-project-id
-    credentials-path: classpath:gcp-credentials.json
-    bucket: your-bucket-name
+    project-id: woven-justice-441107-h8
+    private-bucket: flex-api
+    public-bucket: flex-api-public
 
   aws:
     access-key: your-aws-access-key
