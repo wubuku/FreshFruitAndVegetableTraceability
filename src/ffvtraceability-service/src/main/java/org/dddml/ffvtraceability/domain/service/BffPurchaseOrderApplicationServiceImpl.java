@@ -212,6 +212,17 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         }
         OrderHeaderState orderHeaderState = getAndValidateOrder(c.getOrderId());
 
+        //新增的行项目的itemSeqId不能与当前订单中已经存在的重复
+        if (c.getPurchaseOrderItem().getOrderItemSeqId() != null
+                && !c.getPurchaseOrderItem().getOrderItemSeqId().isEmpty()) {
+            orderHeaderState.getOrderItems().forEach(orderItemState -> {
+                if (c.getPurchaseOrderItem().getOrderItemSeqId().equals(orderItemState.getOrderItemSeqId())) {
+                    throw new IllegalArgumentException(String.format("The Order Item Seq Id:%s already exists.",
+                            c.getPurchaseOrderItem().getOrderItemSeqId()));
+                }
+            });
+        }
+
         AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
         mergePatchOrder.setOrderId(c.getOrderId());
         mergePatchOrder.setVersion(orderHeaderState.getVersion());
