@@ -285,7 +285,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         item.setItemDescription(c.getItemDescription());
         item.setComments(c.getComments());
         item.setSupplierProductId(c.getSupplierProductId());
-
+        //TODO 声明这个BffPurchaseOrderItemDto item变量然后又给 mergePatchOrderItem 赋值，显得毫无意义。
         setupMergePatchOrderItemCommand(mergePatchOrderItem, item);
         mergePatchOrder.getOrderItemCommands().add(mergePatchOrderItem);
 
