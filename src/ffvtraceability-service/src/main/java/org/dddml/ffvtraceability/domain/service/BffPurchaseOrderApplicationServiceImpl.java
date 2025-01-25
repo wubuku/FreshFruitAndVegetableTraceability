@@ -212,6 +212,17 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         }
         OrderHeaderState orderHeaderState = getAndValidateOrder(c.getOrderId());
 
+        //新增的行项目的itemSeqId不能与当前订单中已经存在的重复
+        if (c.getPurchaseOrderItem().getOrderItemSeqId() != null
+                && !c.getPurchaseOrderItem().getOrderItemSeqId().isEmpty()) {
+            orderHeaderState.getOrderItems().forEach(orderItemState -> {
+                if (c.getPurchaseOrderItem().getOrderItemSeqId().equals(orderItemState.getOrderItemSeqId())) {
+                    throw new IllegalArgumentException(String.format("The Order Item Seq Id:%s already exists.",
+                            c.getPurchaseOrderItem().getOrderItemSeqId()));
+                }
+            });
+        }
+
         AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
         mergePatchOrder.setOrderId(c.getOrderId());
         mergePatchOrder.setVersion(orderHeaderState.getVersion());
@@ -265,17 +276,17 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         mergePatchOrder.setVersion(orderHeaderState.getVersion());
 
         OrderItemCommand.MergePatchOrderItem mergePatchOrderItem = mergePatchOrder.newMergePatchOrderItem();
-        BffPurchaseOrderItemDto item = new BffPurchaseOrderItemDto();
-        item.setOrderItemSeqId(c.getOrderItemSeqId());
-        item.setQuantity(c.getQuantity());
-        item.setUnitPrice(c.getUnitPrice());
-        item.setEstimatedShipDate(c.getEstimatedShipDate());
-        item.setEstimatedDeliveryDate(c.getEstimatedDeliveryDate());
-        item.setItemDescription(c.getItemDescription());
-        item.setComments(c.getComments());
-        item.setSupplierProductId(c.getSupplierProductId());
 
-        setupMergePatchOrderItemCommand(mergePatchOrderItem, item);
+        mergePatchOrderItem.setOrderItemSeqId(c.getOrderItemSeqId());
+        mergePatchOrderItem.setQuantity(c.getQuantity());
+        mergePatchOrderItem.setUnitPrice(c.getUnitPrice());
+        mergePatchOrderItem.setEstimatedShipDate(c.getEstimatedShipDate());
+        mergePatchOrderItem.setEstimatedDeliveryDate(c.getEstimatedDeliveryDate());
+        mergePatchOrderItem.setItemDescription(c.getItemDescription());
+        mergePatchOrderItem.setComments(c.getComments());
+        //mergePatchOrderItem.setExternalId(c.getExternalId());
+        mergePatchOrderItem.setSupplierProductId(c.getSupplierProductId());
+
         mergePatchOrder.getOrderItemCommands().add(mergePatchOrderItem);
 
         mergePatchOrder.setCommandId(c.getCommandId() != null ?
@@ -344,17 +355,17 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     }
 
     private void setupMergePatchOrderItemCommand(OrderItemCommand.MergePatchOrderItem mergePatchOrderItem,
-                                                 BffPurchaseOrderItemDto item
+                                                 BffPurchaseOrderItemDto c
     ) {
-        mergePatchOrderItem.setOrderItemSeqId(item.getOrderItemSeqId());
-        mergePatchOrderItem.setQuantity(item.getQuantity());
-        mergePatchOrderItem.setUnitPrice(item.getUnitPrice());
-        mergePatchOrderItem.setEstimatedShipDate(item.getEstimatedShipDate());
-        mergePatchOrderItem.setEstimatedDeliveryDate(item.getEstimatedDeliveryDate());
-        mergePatchOrderItem.setItemDescription(item.getItemDescription());
-        mergePatchOrderItem.setComments(item.getComments());
-        mergePatchOrderItem.setExternalId(item.getExternalId());
-        mergePatchOrderItem.setSupplierProductId(item.getSupplierProductId());
+        mergePatchOrderItem.setOrderItemSeqId(c.getOrderItemSeqId());
+        mergePatchOrderItem.setQuantity(c.getQuantity());
+        mergePatchOrderItem.setUnitPrice(c.getUnitPrice());
+        mergePatchOrderItem.setEstimatedShipDate(c.getEstimatedShipDate());
+        mergePatchOrderItem.setEstimatedDeliveryDate(c.getEstimatedDeliveryDate());
+        mergePatchOrderItem.setItemDescription(c.getItemDescription());
+        mergePatchOrderItem.setComments(c.getComments());
+        mergePatchOrderItem.setExternalId(c.getExternalId());
+        mergePatchOrderItem.setSupplierProductId(c.getSupplierProductId());
     }
 
     private void setupCreateOrderItemCommand(OrderItemCommand.CreateOrderItem createOrderItem,
