@@ -69,6 +69,37 @@ docker run -d \
      - Username: admin
      - Password: password123
 
+5. 配置 Bucket 和访问策略：
+    1. 登录 MinIO Console (http://localhost:9001)
+    2. 点击左侧菜单的 "Buckets"
+    3. 点击 "Create Bucket"，创建名为 "my-bucket" 的 bucket
+    4. 在 Buckets 列表中点击 "my-bucket"
+    5. 点击 "Access Policy" 标签页
+    6. 选择 "Add Policy"，然后：
+       - 选择 "Custom"
+       - 在编辑器中输入以下策略：
+       ```json
+       {
+         "Version": "2012-10-17",
+         "Statement": [
+           {
+             "Effect": "Allow",
+             "Principal": {
+               "AWS": ["*"]
+             },
+             "Action": ["s3:GetObject"],
+             "Resource": ["arn:aws:s3:::my-bucket/public/*"]
+           }
+         ]
+       }
+       ```
+    7. 点击 "Add" 保存策略。
+        这个配置将允许任何人访问 my-bucket 中 public/ 目录下的文件，
+        与应用程序中的公开访问机制相匹配。或者，使用预设选项：
+          - 选择 "Prefix" 输入 "public/"
+          - 选择 "Access" 为 "readonly"
+          - 点击 "Add"
+
 ### 4. 项目依赖配置
 
 1. 在 pom.xml 中添加必要的依赖：
@@ -220,18 +251,24 @@ storage:
     access-key: admin
     secret-key: password123
     bucket: my-bucket
-    bucket-policy: |
-      {
-        "Version": "2012-10-17",
-        "Statement": [
-          {
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": ["s3:GetObject"],
-            "Resource": ["my-bucket/public/*"]
-          }
-        ]
-      }
+    # bucket-policy: |
+    #   {
+    #     "Version": "2012-10-17",
+    #     "Statement": [
+    #       {
+    #         "Effect": "Allow",
+    #         "Principal": {
+    #           "AWS": ["*"]
+    #         },
+    #         "Action": [
+    #           "s3:GetObject",
+    #           "s3:GetObjectVersion"
+    #         ],
+    #         "Resource": ["arn:aws:s3:::my-bucket/public/*"],
+    #         "Sid": "PublicRead"
+    #       }
+    #     ]
+    #   }
   
   # AWS S3 配置
   aws:
@@ -578,11 +615,11 @@ public class MinioConfig {
                         .bucket(bucket)
                         .build());
                 
-                // 设置bucket policy
-                minioClient.setBucketPolicy(SetBucketPolicyArgs.builder()
-                        .bucket(bucket)
-                        .config(bucketPolicy)
-                        .build());
+                // // 设置bucket policy
+                // minioClient.setBucketPolicy(SetBucketPolicyArgs.builder()
+                //         .bucket(bucket)
+                //         .config(bucketPolicy)
+                //         .build());
             }
         } catch (Exception e) {
             throw new StorageException("Could not initialize storage", e);
@@ -1345,28 +1382,84 @@ public class StorageConfig {
 }
 ```
 
-## 重要说明
+## 第八部分：API 测试示例
 
-### 1. 关于文件公开访问
+以下是使用 curl 命令测试文件服务 API 的示例。请根据实际部署的服务地址和端口调整 URL。
 
-文件的公开访问涉及两个层面的配置：
+### 1. 文件上传
+```bash
+# 上传私有文件
+curl -X POST \
+  -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" \
+  -F "file=@/path/to/your/file.jpg" \
+  -F "isPublic=false" \
+  http://localhost:8080/api/files/upload
 
-1. **存储桶(Bucket)级别**
-    - 需要专门配置用于公开访问的bucket
-    - 必须正确配置bucket的访问策略
-    - 不同存储服务的配置方式略有不同
+# 上传公开文件
+curl -X POST \
+  -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" \
+  -F "file=@/path/to/your/file.jpg" \
+  -F "isPublic=true" \
+  http://localhost:8080/api/files/upload
+```
 
-2. **对象(Object)级别**
-    - MinIO：通过bucket policy控制访问权限
-    - AWS S3：支持对象级别的ACL设置
-    - GCS：支持对象级别的ACL设置
+### 2. 获取文件信息
+```bash
+# 获取指定文件的元数据信息
+curl -X GET \
+  -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" \
+  http://localhost:8080/api/files/{fileId}
+```
 
-### 2. 安全注意事项
+### 3. 下载文件
+```bash
+# 下载文件
+curl -X GET \
+  -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" \
+  -O \
+  http://localhost:8080/api/files/{fileId}/download
 
-1. 公开bucket仅用于确实需要公开访问的文件
-2. 定期审查公开文件的必要性
-3. 建议启用访问日志记录
-4. 考虑使用CDN来提供公开文件的访问
+# 访问媒体文件（支持公开访问）
+curl -X GET \
+  http://localhost:8080/api/files/{fileId}/media
+```
+
+### 4. 删除文件
+```bash
+# 删除指定文件
+curl -X DELETE \
+  -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" \
+  http://localhost:8080/api/files/{fileId}
+```
+
+### 5. 获取文件列表
+```bash
+# 获取当前用户的所有文件
+curl -X GET \
+  -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" \
+  http://localhost:8080/api/files
+```
+
+注意事项：
+1. 将 `dXNlcjpwYXNzd29yZA==` 替换为实际的 Base64 编码的认证信息（格式：`username:password`）
+2. 将 `{fileId}` 替换为实际的文件 ID
+3. 将 `/path/to/your/file.jpg` 替换为要上传的实际文件路径
+4. 根据实际部署情况调整主机地址和端口号
+
+测试响应示例：
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "originalFilename": "example.jpg",
+  "contentType": "image/jpeg",
+  "size": 12345,
+  "userId": "user123",
+  "uploadTime": "2024-03-19T10:30:00Z",
+  "url": "http://localhost:9000/my-bucket/public/example.jpg",
+  "urlExpireTime": null,
+  "isPublic": true
+}
+```
 
 ```java
 @Repository
