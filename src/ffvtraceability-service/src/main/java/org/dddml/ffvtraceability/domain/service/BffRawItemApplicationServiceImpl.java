@@ -284,7 +284,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE, rawItem.getHsCode());
 
         productApplicationService.when(mergePatchProduct);
-        if (rawItem.getSupplierId() != null) {
+        if (rawItem.getSupplierId() != null) {//TODO 如果更新的时候不提供SupplierId,但是原来有呢？
             // 这里不需要使用完整的 ID 全等匹配查询
             BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.findSupplierProductAssociation(
                     productId,
