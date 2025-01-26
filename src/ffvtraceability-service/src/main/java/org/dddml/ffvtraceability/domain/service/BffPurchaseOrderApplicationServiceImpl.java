@@ -355,17 +355,17 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     }
 
     private void setupMergePatchOrderItemCommand(OrderItemCommand.MergePatchOrderItem mergePatchOrderItem,
-                                                 BffPurchaseOrderItemDto c
+                                                 BffPurchaseOrderItemDto item
     ) {
-        mergePatchOrderItem.setOrderItemSeqId(c.getOrderItemSeqId());
-        mergePatchOrderItem.setQuantity(c.getQuantity());
-        mergePatchOrderItem.setUnitPrice(c.getUnitPrice());
-        mergePatchOrderItem.setEstimatedShipDate(c.getEstimatedShipDate());
-        mergePatchOrderItem.setEstimatedDeliveryDate(c.getEstimatedDeliveryDate());
-        mergePatchOrderItem.setItemDescription(c.getItemDescription());
-        mergePatchOrderItem.setComments(c.getComments());
-        mergePatchOrderItem.setExternalId(c.getExternalId());
-        mergePatchOrderItem.setSupplierProductId(c.getSupplierProductId());
+        mergePatchOrderItem.setOrderItemSeqId(item.getOrderItemSeqId());
+        mergePatchOrderItem.setQuantity(item.getQuantity());
+        mergePatchOrderItem.setUnitPrice(item.getUnitPrice());
+        mergePatchOrderItem.setEstimatedShipDate(item.getEstimatedShipDate());
+        mergePatchOrderItem.setEstimatedDeliveryDate(item.getEstimatedDeliveryDate());
+        mergePatchOrderItem.setItemDescription(item.getItemDescription());
+        mergePatchOrderItem.setComments(item.getComments());
+        mergePatchOrderItem.setExternalId(item.getExternalId());
+        mergePatchOrderItem.setSupplierProductId(item.getSupplierProductId());
     }
 
     private void setupCreateOrderItemCommand(OrderItemCommand.CreateOrderItem createOrderItem,
