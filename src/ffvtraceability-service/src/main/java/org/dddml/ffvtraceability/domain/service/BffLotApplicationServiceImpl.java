@@ -3,7 +3,6 @@ package org.dddml.ffvtraceability.domain.service;
 import org.dddml.ffvtraceability.domain.BffLotDto;
 import org.dddml.ffvtraceability.domain.lot.AbstractLotCommand;
 import org.dddml.ffvtraceability.domain.lot.LotApplicationService;
-import org.dddml.ffvtraceability.domain.lot.LotIdentificationCommand;
 import org.dddml.ffvtraceability.domain.lot.LotState;
 import org.dddml.ffvtraceability.domain.mapper.BffLotMapper;
 import org.dddml.ffvtraceability.domain.repository.BffLotRepository;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.dddml.ffvtraceability.domain.constants.BffLotConstants.LOT_IDENTIFICATION_TYPE_GS1_BATCH;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
 
@@ -55,11 +53,11 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
             return null;
         }
         BffLotDto dto = bffLotMapper.toBffLotDto(lotState);
-        lotState.getLotIdentifications().stream().forEach(x -> {
-            if (x.getLotIdentificationTypeId().equals(LOT_IDENTIFICATION_TYPE_GS1_BATCH)) {
-                dto.setGs1Batch(x.getIdValue());
-            }
-        });
+//        lotState.getLotIdentifications().stream().forEach(x -> {
+//            if (x.getLotIdentificationTypeId().equals(LOT_IDENTIFICATION_TYPE_GS1_BATCH)) {
+//                dto.setGs1Batch(x.getIdValue());
+//            }
+//        });
         return dto;
     }
 
@@ -80,13 +78,13 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
         createLot.setActive(IndicatorUtils.asIndicatorDefaultYes(lotDto.getActive())); // 将前端传入的 active 规范化
         createLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : createLot.getLotId());
         createLot.setRequesterId(c.getRequesterId());
-        if (lotDto.getGs1Batch() != null) {
-            LotIdentificationCommand.CreateLotIdentification createLotIdentification = createLot.newCreateLotIdentification();
-            createLotIdentification.setLotIdentificationTypeId(LOT_IDENTIFICATION_TYPE_GS1_BATCH);
-            createLotIdentification.setIdValue(lotDto.getGs1Batch());
-            createLot.getCreateLotIdentificationCommands().add(createLotIdentification);
-        }
-        //createLot.setGs1Batch(lotDto.getGs1Batch());
+//        if (lotDto.getGs1Batch() != null) {
+//            LotIdentificationCommand.CreateLotIdentification createLotIdentification = createLot.newCreateLotIdentification();
+//            createLotIdentification.setLotIdentificationTypeId(LOT_IDENTIFICATION_TYPE_GS1_BATCH);
+//            createLotIdentification.setIdValue(lotDto.getGs1Batch());
+//            createLot.getCreateLotIdentificationCommands().add(createLotIdentification);
+//        }
+        createLot.setGs1Batch(lotDto.getGs1Batch());
         lotApplicationService.when(createLot);
         return createLot.getLotId();
     }
