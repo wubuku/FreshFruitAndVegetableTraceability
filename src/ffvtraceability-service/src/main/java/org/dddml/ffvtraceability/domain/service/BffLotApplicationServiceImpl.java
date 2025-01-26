@@ -64,6 +64,14 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     @Transactional
     public String when(BffLotServiceCommands.CreateLot c) {
         BffLotDto lotDto = c.getLot();
+        if (lotDto == null) {
+            throw new NullPointerException("Lot information can't be null");
+        }
+        if (lotDto.getLotId() != null && !lotDto.getLotId().isEmpty()) {
+            if (lotApplicationService.get(lotDto.getLotId()) != null) {
+                throw new IllegalArgumentException(String.format("已经存在的批次:%s", lotDto.getLotId()));
+            }
+        }
         AbstractLotCommand.SimpleCreateLot createLot = bffLotMapper.toCreateLot(lotDto);
         createLot.setLotId(lotDto.getLotId() != null ? lotDto.getLotId() : IdUtils.randomId());
         createLot.setActive(IndicatorUtils.asIndicatorDefaultYes(lotDto.getActive())); // 将前端传入的 active 规范化
@@ -73,7 +81,9 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
             LotIdentificationCommand.CreateLotIdentification createLotIdentification = createLot.newCreateLotIdentification();
             createLotIdentification.setLotIdentificationTypeId(LOT_IDENTIFICATION_TYPE_GS1_BATCH);
             createLotIdentification.setIdValue(lotDto.getGs1Batch());
+            createLot.getCreateLotIdentificationCommands().add(createLotIdentification);
         }
+        //createLot.setGs1Batch(lotDto.getGs1Batch());
         lotApplicationService.when(createLot);
         return createLot.getLotId();
     }
