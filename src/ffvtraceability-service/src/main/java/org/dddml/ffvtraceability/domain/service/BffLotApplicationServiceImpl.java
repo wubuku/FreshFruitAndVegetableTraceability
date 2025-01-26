@@ -94,7 +94,9 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     public void when(BffLotServiceCommands.UpdateLot c) {
         String lotId = c.getLotId();
         BffLotDto lotDto = c.getLot();
-        lotDto.setLotId(lotId);
+        if (lotDto == null) {
+            throw new NullPointerException("Lot information can't be null");
+        }
         LotState lotState = lotApplicationService.get(lotId);
         if (lotState == null) {
             throw new IllegalArgumentException("Lot not found: " + lotId);
@@ -103,6 +105,11 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
 
         mergePatchLot.setVersion(lotState.getVersion());
         mergePatchLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        mergePatchLot.setGs1Batch(lotDto.getGs1Batch());
+        mergePatchLot.setInternalId(lotDto.getInternalId());
+        mergePatchLot.setQuantity(lotDto.getQuantity());
+        mergePatchLot.setExpirationDate(lotDto.getExpirationDate());
+        mergePatchLot.setLotId(lotId);
         mergePatchLot.setRequesterId(c.getRequesterId());
         lotApplicationService.when(mergePatchLot);
     }
@@ -118,7 +125,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
         AbstractLotCommand.SimpleMergePatchLot mergePatchLot = new AbstractLotCommand.SimpleMergePatchLot();
         mergePatchLot.setLotId(lotId);
         mergePatchLot.setVersion(lotState.getVersion());
-        mergePatchLot.setActive(c.getActive() ? INDICATOR_YES : INDICATOR_NO);
+        mergePatchLot.setActive(c.getActive() != null && c.getActive() ? INDICATOR_YES : INDICATOR_NO);
         mergePatchLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchLot.setRequesterId(c.getRequesterId());
         lotApplicationService.when(mergePatchLot);
