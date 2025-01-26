@@ -15,6 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
@@ -74,9 +77,11 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
             }
         }
         AbstractLotCommand.SimpleCreateLot createLot = bffLotMapper.toCreateLot(lotDto);
-        createLot.setLotId(lotDto.getLotId() != null ? lotDto.getLotId() : IdUtils.randomId());
+        createLot.setLotId(lotDto.getLotId() != null && !lotDto.getLotId().isEmpty() ? lotDto.getLotId() : IdUtils.randomId());
         createLot.setActive(IndicatorUtils.asIndicatorDefaultYes(lotDto.getActive())); // 将前端传入的 active 规范化
         createLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : createLot.getLotId());
+        createLot.setGs1Batch(lotDto.getGs1Batch());
+        createLot.setInternalId(lotDto.getInternalId());
         createLot.setRequesterId(c.getRequesterId());
 //        if (lotDto.getGs1Batch() != null) {
 //            LotIdentificationCommand.CreateLotIdentification createLotIdentification = createLot.newCreateLotIdentification();
@@ -84,7 +89,6 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
 //            createLotIdentification.setIdValue(lotDto.getGs1Batch());
 //            createLot.getCreateLotIdentificationCommands().add(createLotIdentification);
 //        }
-        createLot.setGs1Batch(lotDto.getGs1Batch());
         lotApplicationService.when(createLot);
         return createLot.getLotId();
     }
@@ -133,7 +137,20 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
 
     @Override
     public void when(BffLotServiceCommands.BatchAddLots c) {
-
-        //todo
+        List<String> lotIds = new ArrayList<>();
+        //前端传过来的dto列表中，如果dto包括了id，那么这些id不能重复
+        Arrays.stream(c.getLots()).forEach(dto -> {
+            if (dto.getLotId() != null && !dto.getLotId().isEmpty()) {
+                if (lotIds.contains(dto.getLotId())) {
+                    throw new IllegalArgumentException(String.format("重复的批次Id:%s", dto.getLotId()));
+                } else {
+                    lotIds.add(dto.getLotId());
+                }
+            }
+            BffLotServiceCommands.CreateLot createLot = new BffLotServiceCommands.CreateLot();
+            createLot.setRequesterId(c.getRequesterId());
+            createLot.setLot(dto);
+            when(createLot);
+        });
     }
 }
