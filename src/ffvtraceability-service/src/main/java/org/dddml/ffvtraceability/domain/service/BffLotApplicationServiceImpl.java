@@ -47,17 +47,20 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     @Override
     @Transactional(readOnly = true)
     public BffLotDto when(BffLotServiceCommands.GetLot c) {
-        LotState lotState = lotApplicationService.get(c.getLotId());
-        if (lotState != null) {
-            BffLotDto dto = bffLotMapper.toBffLotDto(lotState);
-            lotState.getLotIdentifications().stream().forEach(x -> {
-                if (x.getLotIdentificationTypeId().equals(LOT_IDENTIFICATION_TYPE_GS1_BATCH)) {
-                    dto.setGs1Batch(x.getIdValue());
-                }
-            });
-            return dto;
+        if (c.getLotId() == null) {
+            throw new NullPointerException("Lot id can't be null");
         }
-        return null;
+        LotState lotState = lotApplicationService.get(c.getLotId());
+        if (lotState == null) {
+            return null;
+        }
+        BffLotDto dto = bffLotMapper.toBffLotDto(lotState);
+        lotState.getLotIdentifications().stream().forEach(x -> {
+            if (x.getLotIdentificationTypeId().equals(LOT_IDENTIFICATION_TYPE_GS1_BATCH)) {
+                dto.setGs1Batch(x.getIdValue());
+            }
+        });
+        return dto;
     }
 
     @Override
