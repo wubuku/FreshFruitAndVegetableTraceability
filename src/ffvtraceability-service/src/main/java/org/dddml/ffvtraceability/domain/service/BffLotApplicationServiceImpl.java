@@ -49,7 +49,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     @Transactional(readOnly = true)
     public BffLotDto when(BffLotServiceCommands.GetLot c) {
         if (c.getLotId() == null) {
-            throw new NullPointerException("Lot id can't be null");
+            throw new IllegalArgumentException("Lot id can't be null");
         }
         LotState lotState = lotApplicationService.get(c.getLotId());
         if (lotState == null) {
@@ -69,7 +69,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     public String when(BffLotServiceCommands.CreateLot c) {
         BffLotDto lotDto = c.getLot();
         if (lotDto == null) {
-            throw new NullPointerException("Lot information can't be null");
+            throw new IllegalArgumentException("Lot information can't be null");
         }
         if (lotDto.getLotId() != null && !lotDto.getLotId().isEmpty()) {
             if (lotApplicationService.get(lotDto.getLotId()) != null) {
@@ -99,7 +99,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
         String lotId = c.getLotId();
         BffLotDto lotDto = c.getLot();
         if (lotDto == null) {
-            throw new NullPointerException("Lot information can't be null");
+            throw new IllegalArgumentException("Lot information can't be null");
         }
         LotState lotState = lotApplicationService.get(lotId);
         if (lotState == null) {
