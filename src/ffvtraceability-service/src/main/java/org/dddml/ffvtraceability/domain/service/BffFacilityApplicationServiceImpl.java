@@ -402,7 +402,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Transactional
     public void when(BffFacilityServiceCommands.CreateFacilityLocation c) {
         if (c.getFacilityLocation() == null) {
-            throw new NullPointerException("Location cant be null");
+            throw new IllegalArgumentException("FacilityLocation cant be null");
         }
         if (c.getFacilityLocation().getLocationName() == null && c.getFacilityLocation().getLocationSeqId() == null) {
             throw new IllegalArgumentException("LocationSeqId and LocationName cannot both be null");

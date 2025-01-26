@@ -215,7 +215,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Transactional
     public void when(BffRawItemServiceCommands.UpdateRawItem c) {
         if (c.getProductId() == null) {
-            throw new NullPointerException("Product id can't be null");
+            throw new IllegalArgumentException("Product id can't be null");
         }
         String productId = c.getProductId();
         ProductState productState = productApplicationService.get(productId);
