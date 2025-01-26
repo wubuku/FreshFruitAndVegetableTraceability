@@ -258,6 +258,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Override
     @Transactional
     public String when(BffReceivingServiceCommands.CreateReceivingDocument c) {
+        if (c.getReceivingDocument() == null) {
+            throw new IllegalArgumentException("Receiving information can't be null");
+        }
         // NOTE: 将"BFF 文档 Id"映射到 Shipment Id
         AbstractShipmentCommand.SimpleCreateShipment createShipment = new AbstractShipmentCommand.SimpleCreateShipment();
         createShipment.setShipmentId(c.getReceivingDocument().getDocumentId() != null ? c.getReceivingDocument().getDocumentId() : IdUtils.randomId());
@@ -296,7 +299,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             }
         }
 
-        if (c.getReceivingDocument() != null && c.getReceivingDocument().getReferenceDocuments() != null) {
+        if (c.getReceivingDocument().getReferenceDocuments() != null) {
             for (BffDocumentDto referenceDocument : c.getReceivingDocument().getReferenceDocuments()) {
                 String refDocumentId;
                 if (referenceDocument.getDocumentId() == null) {
