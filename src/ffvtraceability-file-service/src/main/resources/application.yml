@@ -6,21 +6,28 @@ spring:
     name: file-service
   
   datasource:
-    url: jdbc:h2:mem:filedb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
+    # url: jdbc:h2:mem:filedb
+    # driver-class-name: org.h2.Driver
+    # username: sa
+    # password: password
+    url: jdbc:postgresql://127.0.0.1/test4
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
   
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    # database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
     hibernate:
       ddl-auto: update
-    show-sql: true
     properties:
       hibernate:
         jdbc.time_zone: UTC
         format_sql: true
-  
+        # hbm2ddl:
+        #   auto: update
+
   h2:
     console:
       enabled: true
