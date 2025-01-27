@@ -35,12 +35,12 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
     public String allocateAndUpdateFulfillmentStatus(String orderId, Command c) {
         OrderHeaderState orderHeaderState = getAndValidateOrder(orderId);
         // 计算需求和履行数量
-        Map<OrderItemId, BigDecimal> demandQuantities = calculateDemandQuantities(orderHeaderState, orderId);
+        Map<OrderItemId, BigDecimal> demandQuantities = calculateDemandQuantities(orderHeaderState);
         List<BffReceivingDocumentItemProjection> receivingItems = bffReceivingRepository.findReceivingItemsByOrderId(orderId);
         Map<String, BigDecimal> fulfillmentQuantities = calculateFulfillmentQuantities(receivingItems);
         // 执行两步分配
         AllocationResult allocationResult = performTwoStepAllocation(
-                orderHeaderState, orderId, demandQuantities, receivingItems, fulfillmentQuantities
+                orderHeaderState, demandQuantities, receivingItems, fulfillmentQuantities
         );
         // 更新收货单的分配信息
         updateReceiptAllocations(allocationResult, c);
@@ -48,7 +48,8 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
         return calculateFulfillmentStatus(orderHeaderState, allocationResult.getTotalAllocatedQuantities(), c);
     }
 
-    private Map<OrderItemId, BigDecimal> calculateDemandQuantities(OrderHeaderState orderHeaderState, String orderId) {
+    private Map<OrderItemId, BigDecimal> calculateDemandQuantities(OrderHeaderState orderHeaderState) {
+        String orderId = orderHeaderState.getOrderId();
         return orderHeaderState.getOrderItems().stream()
                 .filter(x -> x.getQuantity() != null)
                 .collect(Collectors.toMap(
@@ -68,11 +69,10 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
 
     private AllocationResult performTwoStepAllocation(
             OrderHeaderState orderHeaderState,
-            String orderId,
             Map<OrderItemId, BigDecimal> demandQuantities,
             List<BffReceivingDocumentItemProjection> receivingItems,
             Map<String, BigDecimal> fulfillmentQuantities) {
-
+        String orderId = orderHeaderState.getOrderId();
         // 初始化
         List<QuantityAllocationService.AllocationResult<OrderItemId, String>> firstStepResults = new ArrayList<>();
         List<QuantityAllocationService.UnallocatedFulfillment<String>> totalUnallocatedFulfillments = new ArrayList<>();
@@ -85,7 +85,7 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
 
         // 第二步分配
         List<QuantityAllocationService.AllocationResult<OrderItemId, String>> secondStepResults =
-                performSecondStepAllocation(orderHeaderState, orderId, receivingItems,
+                performSecondStepAllocation(orderHeaderState, receivingItems,
                         remainingDemandQuantities, remainingFulfillmentQuantities, totalUnallocatedFulfillments);
 
         // 合并结果
@@ -160,12 +160,12 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
 
     private List<QuantityAllocationService.AllocationResult<OrderItemId, String>> performSecondStepAllocation(
             OrderHeaderState orderHeaderState,
-            String orderId,
             List<BffReceivingDocumentItemProjection> receivingItems,
             Map<OrderItemId, BigDecimal> remainingDemandQuantities,
             Map<String, BigDecimal> remainingFulfillmentQuantities,
             List<QuantityAllocationService.UnallocatedFulfillment<String>> totalUnallocatedFulfillments
     ) {
+        String orderId = orderHeaderState.getOrderId();
         List<QuantityAllocationService.AllocationResult<OrderItemId, String>> secondStepResults = new ArrayList<>();
         // 按 productId 分组
         Map<String, List<OrderItemState>> orderItemsByProduct = orderHeaderState.getOrderItems().stream()

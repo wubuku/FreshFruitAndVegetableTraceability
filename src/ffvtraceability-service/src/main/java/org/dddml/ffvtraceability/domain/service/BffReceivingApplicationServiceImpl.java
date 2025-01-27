@@ -327,12 +327,19 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Transactional
     public void when(BffReceivingServiceCommands.UpdateReceivingDocument c) {
         BffReceivingDocumentDto receivingDocumentDto = c.getReceivingDocument();
+        if (receivingDocumentDto == null) {
+            throw new IllegalArgumentException("Receiving information can't be null");
+        }
         String shipmentId = receivingDocumentDto.getDocumentId();
         ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
         if (shipmentState == null) {
             throw new IllegalArgumentException("Shipment (receiving document) not found: " + shipmentId);
         }
         String originFacilityId = receivingDocumentDto.getOriginFacilityId();
+        if (originFacilityId == null || originFacilityId.isEmpty()) {
+            //如果它是null，后面的new FacilityLocationId就得出问题
+            throw new IllegalArgumentException("Original Facility can't be null");
+        }
 
         AbstractShipmentCommand.SimpleMergePatchShipment mergePatchShipment =
                 new AbstractShipmentCommand.SimpleMergePatchShipment();
@@ -345,13 +352,14 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         mergePatchShipment.setRequesterId(c.getRequesterId());
         shipmentApplicationService.when(mergePatchShipment);
 
-        if (receivingDocumentDto.getReceivingItems() != null && !receivingDocumentDto.getReceivingItems().isEmpty()) {
+        if (receivingDocumentDto.getReceivingItems() != null) {
             for (BffReceivingItemDto itemDto : receivingDocumentDto.getReceivingItems()) {
                 // validate facility location
                 FacilityLocationState fl = facilityLocationApplicationService.get(new FacilityLocationId(originFacilityId, itemDto.getLocationSeqId()));
                 if (fl == null) {
                     throw new IllegalArgumentException("Location not found: " + originFacilityId + "/" + itemDto.getLocationSeqId());
                 }
+                //shipmentState.getShipmentItems()
                 boolean isNewItem = true;
                 boolean isDeleted = false;
                 ShipmentReceiptState itemState = null;
