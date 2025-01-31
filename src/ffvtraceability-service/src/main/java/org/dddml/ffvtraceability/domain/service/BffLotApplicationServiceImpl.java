@@ -73,7 +73,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
         }
         if (lotDto.getLotId() != null && !lotDto.getLotId().isEmpty()) {
             if (lotApplicationService.get(lotDto.getLotId()) != null) {
-                throw new IllegalArgumentException(String.format("已经存在的批次:%s", lotDto.getLotId()));
+                throw new IllegalArgumentException(String.format("Lot already exists: %s", lotDto.getLotId()));
             }
         }
         AbstractLotCommand.SimpleCreateLot createLot = bffLotMapper.toCreateLot(lotDto);
@@ -142,7 +142,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
         Arrays.stream(c.getLots()).forEach(dto -> {
             if (dto.getLotId() != null && !dto.getLotId().isEmpty()) {
                 if (lotIds.contains(dto.getLotId())) {
-                    throw new IllegalArgumentException(String.format("重复的批次Id:%s", dto.getLotId()));
+                    throw new IllegalArgumentException(String.format("Duplicate lot Id: %s", dto.getLotId()));
                 } else {
                     lotIds.add(dto.getLotId());
                 }

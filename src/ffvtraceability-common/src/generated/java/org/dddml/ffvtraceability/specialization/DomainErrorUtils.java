@@ -12,84 +12,114 @@ public class DomainErrorUtils {
      * @return A RuntimeException (either DomainError or a wrapped RuntimeException)
      */
     public static RuntimeException convertException(Exception rawException) {
-        Exception e = tryGetDomainError(rawException);
-        if (shouldBeRegardedAsDomainError(e)) {
-            DomainError domainError = e instanceof DomainError
-                    ? (DomainError) e
-                    : DomainError.named("[" + e.getClass().getName() + "]", e.getMessage());
-            // onDomainError.accept(domainError);
-            return domainError;// throw domainError;
+        if (rawException == null) {
+            return new RuntimeException("Null exception provided");
+        }
+
+        Exception unwrappedException = unwrapException(rawException);
+        if (isDomainException(unwrappedException)) {
+            DomainError domainError = unwrappedException instanceof DomainError
+                    ? (DomainError) unwrappedException
+                    : DomainError.named("[" + unwrappedException.getClass().getName() + "]",
+                    unwrappedException.getMessage() != null ? unwrappedException.getMessage() : "No message");
+            return domainError;
         } else {
             String msg = "[" + UUID.randomUUID() + "] Exception caught.";
-            RuntimeException runtimeException = new RuntimeException(msg, e);
-            // onOtherException.accept(runtimeException);
-            return runtimeException;// throw runtimeException;
+            return new RuntimeException(msg, unwrappedException);
         }
     }
 
     /**
-     * Determines whether an exception should be regarded a Domain Error.
+     * Determines if an exception represents a domain exception based on its type and stack trace.
+     * An exception is considered a domain exception if it is either:
+     * 1. An instance of DomainError
+     * 2. A java.lang exception thrown from the domain layer
+     * 3. Matches specific exception patterns defined in the configuration
      *
      * @param e The exception to evaluate
-     * @return true if the exception should be treated as a Domain Error, false
-     *         otherwise
+     * @return true if the exception represents a domain exception, false otherwise
      */
-    private static boolean shouldBeRegardedAsDomainError(Exception e) {
+    private static boolean isDomainException(Exception e) {
+        if (e == null) {
+            return false;
+        }
+
         if (e instanceof DomainError) {
             return true;
         }
-        final String[][] exceptionAndStackTraceClassNamesArray = new String[][] {
-                new String[] { DomainError.class.getName() },
-                // TODO: Should exceptions from java.lang package thrown in the Domain layer be
-                // regarded Domain Errors?
-                new String[] { "java.lang.",
-                        "org.dddml.ffvtraceability.domain." },
+
+        final String[][] exceptionAndStackTraceClassNamesArray = new String[][]{
+                new String[]{DomainError.class.getName()},
+                // TODO: Should exceptions from java.lang package thrown in the Domain layer be regarded Domain Errors?
+                new String[]{"java.lang.",
+                        "org.dddml.ffvtraceability.domain."},
                 // Should all dynamic proxy reflection exceptions be regarded domain errors?
                 // Perhaps dynamic proxy exceptions should be "unwrapped"?
                 // new String[]{"java.lang.reflect.UndeclaredThrowableException",
                 // "com.sun.proxy.", "org.dddml.ffvtraceability.domain."}
         };
-        boolean b = false;
-        for (int i = 0; i < exceptionAndStackTraceClassNamesArray.length; i++) {
-            String[] exceptionAndStackTraceClassNames = exceptionAndStackTraceClassNamesArray[i];
-            if (e.getClass().getName().startsWith(exceptionAndStackTraceClassNames[0])) {
+
+        StackTraceElement[] stackTrace = e.getStackTrace();
+        if (stackTrace == null) {
+            return false;
+        }
+
+        String className = e.getClass().getName();
+        boolean matched = false;
+        for (String[] exceptionAndStackTraceClassNames : exceptionAndStackTraceClassNamesArray) {
+            if (exceptionAndStackTraceClassNames.length == 0) {
+                continue;
+            }
+
+            if (className.startsWith(exceptionAndStackTraceClassNames[0])) {
                 if (exceptionAndStackTraceClassNames.length == 1) {
-                    // Only need to match the exception name, not the stack trace elements
-                    b = true;
+                    matched = true;
                     break;
                 }
-                if (e.getStackTrace().length >= exceptionAndStackTraceClassNames.length - 1) {
+
+                if (stackTrace.length >= exceptionAndStackTraceClassNames.length - 1) {
+                    boolean allMatched = true;
                     for (int j = 1; j < exceptionAndStackTraceClassNames.length; j++) {
-                        if (!e.getStackTrace()[j - 1].getClassName().startsWith(exceptionAndStackTraceClassNames[j])) {
+                        StackTraceElement element = stackTrace[j - 1];
+                        if (element == null || element.getClassName() == null ||
+                                !element.getClassName().startsWith(exceptionAndStackTraceClassNames[j])) {
+                            allMatched = false;
                             break;
                         }
-                        if (j == exceptionAndStackTraceClassNames.length - 1) {
-                            // All required stack trace elements have been matched
-                            b = true;
-                        }
+                    }
+                    if (allMatched) {
+                        matched = true;
+                        break;
                     }
                 }
             }
-            if (b) {
-                break;
-            }
         }
-        return b;
+        return matched;
     }
 
     /**
-     * Attempts to extract a DomainError from an UndeclaredThrowableException.
-     * This is useful for handling exceptions thrown by dynamic proxies.
+     * Unwraps an exception by extracting the underlying cause from proxy-related wrappers.
+     * This method handles common proxy and reflection wrappers:
+     * - UndeclaredThrowableException from dynamic proxies
+     * - InvocationTargetException from reflection calls
      *
-     * @param e The exception to process
-     * @return The extracted DomainError if found, otherwise the original exception
+     * @param e The wrapped exception
+     * @return The unwrapped exception, or the original exception if no unwrapping is needed
      */
-    private static Exception tryGetDomainError(Exception e) {
-        if (e instanceof java.lang.reflect.UndeclaredThrowableException) {
-            java.lang.reflect.UndeclaredThrowableException undeclaredThrowableException = (java.lang.reflect.UndeclaredThrowableException) e;
+    private static Exception unwrapException(Exception e) {
+        if (e == null) {
+            return null;
+        }
+
+        if (e instanceof java.lang.reflect.UndeclaredThrowableException undeclaredThrowableException) {
+
             Throwable undeclaredThrowable = undeclaredThrowableException.getUndeclaredThrowable();
-            if (undeclaredThrowable instanceof java.lang.reflect.InvocationTargetException) {
-                java.lang.reflect.InvocationTargetException invocationTargetException = (java.lang.reflect.InvocationTargetException) undeclaredThrowable;
+            if (undeclaredThrowable == null) {
+                return e;
+            }
+
+            if (undeclaredThrowable instanceof java.lang.reflect.InvocationTargetException invocationTargetException) {
+
                 Throwable targetException = invocationTargetException.getTargetException();
                 if (targetException instanceof DomainError) {
                     return (DomainError) targetException;

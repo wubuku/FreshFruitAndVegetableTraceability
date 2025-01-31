@@ -2629,6 +2629,12 @@ public class M {
             "active",
             "gs1Batch",
             "internalId",
+            "gtin",
+            "sourceFacilityId",
+            "palletSscc",
+            "packDate",
+            "harvestDate",
+            "serialNumber",
             "version",
             "createdBy",
             "createdAt",
@@ -2644,6 +2650,12 @@ public class M {
             "OffsetDateTime",
             "String",
             "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "OffsetDateTime",
             "String",
             "Long",
             "String",
@@ -2678,6 +2690,18 @@ public class M {
         aliasMap.put("Gs1Batch", "gs1Batch");
         aliasMap.put("internalId", "internalId");
         aliasMap.put("InternalId", "internalId");
+        aliasMap.put("gtin", "gtin");
+        aliasMap.put("Gtin", "gtin");
+        aliasMap.put("sourceFacilityId", "sourceFacilityId");
+        aliasMap.put("SourceFacilityId", "sourceFacilityId");
+        aliasMap.put("palletSscc", "palletSscc");
+        aliasMap.put("PalletSscc", "palletSscc");
+        aliasMap.put("packDate", "packDate");
+        aliasMap.put("PackDate", "packDate");
+        aliasMap.put("harvestDate", "harvestDate");
+        aliasMap.put("HarvestDate", "harvestDate");
+        aliasMap.put("serialNumber", "serialNumber");
+        aliasMap.put("SerialNumber", "serialNumber");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

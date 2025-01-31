@@ -29,6 +29,18 @@ public interface LotState
 
     String getInternalId();
 
+    String getGtin();
+
+    String getSourceFacilityId();
+
+    String getPalletSscc();
+
+    OffsetDateTime getPackDate();
+
+    OffsetDateTime getHarvestDate();
+
+    String getSerialNumber();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -53,6 +65,18 @@ public interface LotState
         void setGs1Batch(String gs1Batch);
 
         void setInternalId(String internalId);
+
+        void setGtin(String gtin);
+
+        void setSourceFacilityId(String sourceFacilityId);
+
+        void setPalletSscc(String palletSscc);
+
+        void setPackDate(OffsetDateTime packDate);
+
+        void setHarvestDate(OffsetDateTime harvestDate);
+
+        void setSerialNumber(String serialNumber);
 
         void setVersion(Long version);
 

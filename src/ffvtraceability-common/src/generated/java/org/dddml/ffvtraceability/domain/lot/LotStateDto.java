@@ -86,6 +86,78 @@ public class LotStateDto {
         this.internalId = internalId;
     }
 
+    private String gtin;
+
+    public String getGtin()
+    {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin)
+    {
+        this.gtin = gtin;
+    }
+
+    private String sourceFacilityId;
+
+    public String getSourceFacilityId()
+    {
+        return this.sourceFacilityId;
+    }
+
+    public void setSourceFacilityId(String sourceFacilityId)
+    {
+        this.sourceFacilityId = sourceFacilityId;
+    }
+
+    private String palletSscc;
+
+    public String getPalletSscc()
+    {
+        return this.palletSscc;
+    }
+
+    public void setPalletSscc(String palletSscc)
+    {
+        this.palletSscc = palletSscc;
+    }
+
+    private OffsetDateTime packDate;
+
+    public OffsetDateTime getPackDate()
+    {
+        return this.packDate;
+    }
+
+    public void setPackDate(OffsetDateTime packDate)
+    {
+        this.packDate = packDate;
+    }
+
+    private OffsetDateTime harvestDate;
+
+    public OffsetDateTime getHarvestDate()
+    {
+        return this.harvestDate;
+    }
+
+    public void setHarvestDate(OffsetDateTime harvestDate)
+    {
+        this.harvestDate = harvestDate;
+    }
+
+    private String serialNumber;
+
+    public String getSerialNumber()
+    {
+        return this.serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber)
+    {
+        this.serialNumber = serialNumber;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -204,6 +276,24 @@ public class LotStateDto {
             }
             if (returnedFieldsContains("InternalId")) {
                 dto.setInternalId(state.getInternalId());
+            }
+            if (returnedFieldsContains("Gtin")) {
+                dto.setGtin(state.getGtin());
+            }
+            if (returnedFieldsContains("SourceFacilityId")) {
+                dto.setSourceFacilityId(state.getSourceFacilityId());
+            }
+            if (returnedFieldsContains("PalletSscc")) {
+                dto.setPalletSscc(state.getPalletSscc());
+            }
+            if (returnedFieldsContains("PackDate")) {
+                dto.setPackDate(state.getPackDate());
+            }
+            if (returnedFieldsContains("HarvestDate")) {
+                dto.setHarvestDate(state.getHarvestDate());
+            }
+            if (returnedFieldsContains("SerialNumber")) {
+                dto.setSerialNumber(state.getSerialNumber());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

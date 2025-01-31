@@ -39,6 +39,24 @@
       <property name="internalId">
         <column name="internal_id" sql-type="VARCHAR(20)" />
       </property>
+      <property name="gtin">
+        <column name="gtin" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="sourceFacilityId">
+        <column name="source_facility_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="palletSscc">
+        <column name="pallet_sscc" sql-type="VARCHAR(18)" />
+      </property>
+      <property name="packDate">
+        <column name="pack_date" sql-type="timestamptz" />
+      </property>
+      <property name="harvestDate">
+        <column name="harvest_date" sql-type="timestamptz" />
+      </property>
+      <property name="serialNumber">
+        <column name="serial_number" sql-type="VARCHAR(60)" />
+      </property>
       <subclass name="AbstractLotEvent$SimpleLotStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractLotEvent$SimpleLotStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed" />
@@ -46,6 +64,12 @@
         <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
         <property name="isPropertyGs1BatchRemoved" column="is_property_gs1_batch_removed" />
         <property name="isPropertyInternalIdRemoved" column="is_property_internal_id_removed" />
+        <property name="isPropertyGtinRemoved" column="is_property_gtin_removed" />
+        <property name="isPropertySourceFacilityIdRemoved" column="is_property_source_facility_id_removed" />
+        <property name="isPropertyPalletSsccRemoved" column="is_property_pallet_sscc_removed" />
+        <property name="isPropertyPackDateRemoved" column="is_property_pack_date_removed" />
+        <property name="isPropertyHarvestDateRemoved" column="is_property_harvest_date_removed" />
+        <property name="isPropertySerialNumberRemoved" column="is_property_serial_number_removed" />
       </subclass>
     </subclass>
   </class>

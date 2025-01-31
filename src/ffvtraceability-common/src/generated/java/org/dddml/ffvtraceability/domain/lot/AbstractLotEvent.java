@@ -213,6 +213,78 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
             this.internalId = internalId;
         }
 
+        private String gtin;
+
+        public String getGtin()
+        {
+            return this.gtin;
+        }
+
+        public void setGtin(String gtin)
+        {
+            this.gtin = gtin;
+        }
+
+        private String sourceFacilityId;
+
+        public String getSourceFacilityId()
+        {
+            return this.sourceFacilityId;
+        }
+
+        public void setSourceFacilityId(String sourceFacilityId)
+        {
+            this.sourceFacilityId = sourceFacilityId;
+        }
+
+        private String palletSscc;
+
+        public String getPalletSscc()
+        {
+            return this.palletSscc;
+        }
+
+        public void setPalletSscc(String palletSscc)
+        {
+            this.palletSscc = palletSscc;
+        }
+
+        private OffsetDateTime packDate;
+
+        public OffsetDateTime getPackDate()
+        {
+            return this.packDate;
+        }
+
+        public void setPackDate(OffsetDateTime packDate)
+        {
+            this.packDate = packDate;
+        }
+
+        private OffsetDateTime harvestDate;
+
+        public OffsetDateTime getHarvestDate()
+        {
+            return this.harvestDate;
+        }
+
+        public void setHarvestDate(OffsetDateTime harvestDate)
+        {
+            this.harvestDate = harvestDate;
+        }
+
+        private String serialNumber;
+
+        public String getSerialNumber()
+        {
+            return this.serialNumber;
+        }
+
+        public void setSerialNumber(String serialNumber)
+        {
+            this.serialNumber = serialNumber;
+        }
+
         protected AbstractLotStateEvent(LotEventId eventId) {
             super(eventId);
         }
@@ -345,6 +417,66 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
 
         public void setIsPropertyInternalIdRemoved(Boolean removed) {
             this.isPropertyInternalIdRemoved = removed;
+        }
+
+        private Boolean isPropertyGtinRemoved;
+
+        public Boolean getIsPropertyGtinRemoved() {
+            return this.isPropertyGtinRemoved;
+        }
+
+        public void setIsPropertyGtinRemoved(Boolean removed) {
+            this.isPropertyGtinRemoved = removed;
+        }
+
+        private Boolean isPropertySourceFacilityIdRemoved;
+
+        public Boolean getIsPropertySourceFacilityIdRemoved() {
+            return this.isPropertySourceFacilityIdRemoved;
+        }
+
+        public void setIsPropertySourceFacilityIdRemoved(Boolean removed) {
+            this.isPropertySourceFacilityIdRemoved = removed;
+        }
+
+        private Boolean isPropertyPalletSsccRemoved;
+
+        public Boolean getIsPropertyPalletSsccRemoved() {
+            return this.isPropertyPalletSsccRemoved;
+        }
+
+        public void setIsPropertyPalletSsccRemoved(Boolean removed) {
+            this.isPropertyPalletSsccRemoved = removed;
+        }
+
+        private Boolean isPropertyPackDateRemoved;
+
+        public Boolean getIsPropertyPackDateRemoved() {
+            return this.isPropertyPackDateRemoved;
+        }
+
+        public void setIsPropertyPackDateRemoved(Boolean removed) {
+            this.isPropertyPackDateRemoved = removed;
+        }
+
+        private Boolean isPropertyHarvestDateRemoved;
+
+        public Boolean getIsPropertyHarvestDateRemoved() {
+            return this.isPropertyHarvestDateRemoved;
+        }
+
+        public void setIsPropertyHarvestDateRemoved(Boolean removed) {
+            this.isPropertyHarvestDateRemoved = removed;
+        }
+
+        private Boolean isPropertySerialNumberRemoved;
+
+        public Boolean getIsPropertySerialNumberRemoved() {
+            return this.isPropertySerialNumberRemoved;
+        }
+
+        public void setIsPropertySerialNumberRemoved(Boolean removed) {
+            this.isPropertySerialNumberRemoved = removed;
         }
 
 

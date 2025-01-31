@@ -30,12 +30,6 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
 
     @Override
     public void synchronizeReceivingEvent(String shipmentId, Command command) {
-        // 参考：
-        //KdeLocationDescription;
-        //KdeProductDescription
-        //KdeQuantityAndUom
-        //KdeReferenceDocument
-        //KdeTraceabilityLotCode
         BffReceivingDocumentDto receivingDocument = getReceivingDocument(bffReceivingRepository, bffReceivingMapper,
                 shipmentId
         );
@@ -58,6 +52,9 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
 
             e.setEventId(receivingItem.getReceiptId());
 
+            //e.setReceiveDate(receivingDocument.getCreatedAt());// todo format DateTime?
+
+            //KdeTraceabilityLotCode
             KdeTraceabilityLotCode tlc = new KdeTraceabilityLotCode();
             tlc.setCaseGtin(receivingItem.getGtin());
             tlc.setCaseBatch(receivingItem.getLotId());// Get Batch from LotId?
@@ -68,9 +65,11 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             //tlc.setBestIfUsedByDate();
             e.setTraceabilityLotCode(tlc);
 
+            //KdeProductDescription
             KdeProductDescription pd = new KdeProductDescription();
-            KdeQuantityAndUom qu = new KdeQuantityAndUom();
 
+            //KdeQuantityAndUom
+            KdeQuantityAndUom qu = new KdeQuantityAndUom();
             //qu.setUom(); // todo
             //receivingItem.getProductId();//todo get Uom from ProductId?
             qu.setQuantity(receivingItem.getQuantityAccepted()); // Or use `receivingItem.getCasesAccepted()`?
@@ -82,14 +81,17 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             e.setProductDescription(pd);
             e.setQuantityAndUom(qu);
 
+            //KdeLocationDescription
             KdeLocationDescription shipFrom = getKdeLocationDescription(receivingDocument.getOriginFacilityId());
             e.setShipFromLocation(shipFrom);
             KdeLocationDescription shipTo = getKdeLocationDescription(receivingDocument.getDestinationFacilityId());
             e.setShipToLocation(shipTo);
 
-            //e.setShipDate(receivingDocument.getCreatedAt());// todo format DateTime?
+            //KdeReferenceDocument
 
-            //e.setTlcSourceOrTlcSourceReference(); //todo
+            KdeTlcSourceOrTlcSourceReference tlcSrcOrSrcRef = new KdeTlcSourceOrTlcSourceReference();
+            e.setTlcSourceOrTlcSourceReference(tlcSrcOrSrcRef); // TODO
+
 
         }
     }

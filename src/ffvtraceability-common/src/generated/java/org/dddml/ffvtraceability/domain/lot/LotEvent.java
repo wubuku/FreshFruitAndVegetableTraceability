@@ -61,6 +61,30 @@ public interface LotEvent extends Event {
 
         void setInternalId(String internalId);
 
+        String getGtin();
+
+        void setGtin(String gtin);
+
+        String getSourceFacilityId();
+
+        void setSourceFacilityId(String sourceFacilityId);
+
+        String getPalletSscc();
+
+        void setPalletSscc(String palletSscc);
+
+        OffsetDateTime getPackDate();
+
+        void setPackDate(OffsetDateTime packDate);
+
+        OffsetDateTime getHarvestDate();
+
+        void setHarvestDate(OffsetDateTime harvestDate);
+
+        String getSerialNumber();
+
+        void setSerialNumber(String serialNumber);
+
     }
 
     interface LotStateCreated extends LotStateEvent
@@ -96,6 +120,30 @@ public interface LotEvent extends Event {
         Boolean getIsPropertyInternalIdRemoved();
 
         void setIsPropertyInternalIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyGtinRemoved();
+
+        void setIsPropertyGtinRemoved(Boolean removed);
+
+        Boolean getIsPropertySourceFacilityIdRemoved();
+
+        void setIsPropertySourceFacilityIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyPalletSsccRemoved();
+
+        void setIsPropertyPalletSsccRemoved(Boolean removed);
+
+        Boolean getIsPropertyPackDateRemoved();
+
+        void setIsPropertyPackDateRemoved(Boolean removed);
+
+        Boolean getIsPropertyHarvestDateRemoved();
+
+        void setIsPropertyHarvestDateRemoved(Boolean removed);
+
+        Boolean getIsPropertySerialNumberRemoved();
+
+        void setIsPropertySerialNumberRemoved(Boolean removed);
 
 
         Iterable<LotIdentificationEvent> getLotIdentificationEvents();

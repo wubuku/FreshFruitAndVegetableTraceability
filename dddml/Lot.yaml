@@ -13,6 +13,9 @@ aggregates:
         type: fixed-point
       ExpirationDate:
         type: date-time
+      #BestIfUsedByDate:
+      #  type: KdeDate
+      #  description: "AI (15) Best if Used by Date"
       LotIdentifications:
         itemType: LotIdentification
       Active:
@@ -20,9 +23,33 @@ aggregates:
       Gs1Batch:
         description: "GS1 BATCH (AI=10)"
         type: id
-        # 可以用于“暂存” GS1 Batch 信息，以便在后续的处理中使用。
+      # CaseBatch:
+      #   type: KdeBatch
+      #   description: "AI (10) Case Batch/Lot"
+      #   # Use for Traceability Lot Code (TLC)
       InternalId:
         type: id
+      Gtin:
+        type: id
+        # description: "AI (01) Case GTIN"
+      SourceFacilityId:
+        type: id
+      PalletSscc:
+        type: SSCC
+        # description: "AI (00) Pallet SSCC"
+        # use for Traceability Lot Code (TLC)
+      PackDate:
+        type: date-time
+        # description: "AI (13) Pack Date"
+        # use for Traceability Lot Code (TLC)
+      HarvestDate:
+        type: date-time
+        # description: "AI (13) Harvest Date"
+        # use for Traceability Lot Code (TLC)
+      SerialNumber:
+        type: id-long
+        # description: "AI (21) Serial Number"
+        # use for Traceability Lot Code (TLC)
 
     entities:
       LotIdentification:

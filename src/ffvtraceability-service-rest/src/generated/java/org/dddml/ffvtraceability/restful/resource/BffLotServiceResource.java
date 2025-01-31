@@ -80,7 +80,6 @@ public class BffLotServiceResource {
     ) {
         BffLotServiceCommands.UpdateLot updateLot = new BffLotServiceCommands.UpdateLot();
         updateLot.setLotId(lotId);
-        lot.setLotId(lotId);
         updateLot.setLot(lot);
         try {
         updateLot.setRequesterId(SecurityContextUtil.getRequesterId());

@@ -374,7 +374,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         if (location.getLocationSeqId() != null) {
             locationId.setLocationSeqId(location.getLocationSeqId());
             if (facilityLocationApplicationService.get(locationId) != null) {
-                throw new IllegalArgumentException(String.format("Location already exists.Location:%s,%s", facilityId, location.getLocationSeqId()));
+                throw new IllegalArgumentException(String.format("Location already exists. Location: %s,%s", facilityId, location.getLocationSeqId()));
             }
         } else {
             locationId.setLocationSeqId(IdUtils.randomId());
@@ -425,7 +425,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         Arrays.stream(c.getFacilityLocations()).forEach(location -> {
             if (location.getLocationSeqId() != null) {
                 if (locationSeqIds.contains(location.getLocationSeqId())) {
-                    throw new IllegalArgumentException(String.format("Duplicate Location:%s", location.getLocationSeqId()));
+                    throw new IllegalArgumentException(String.format("Duplicate Location: %s", location.getLocationSeqId()));
                 }
                 locationSeqIds.add(location.getLocationSeqId());
             } else {

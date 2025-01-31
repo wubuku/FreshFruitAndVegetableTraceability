@@ -28,6 +28,24 @@
     <property name="internalId">
       <column name="internal_id" sql-type="VARCHAR(20)" />
     </property>
+    <property name="gtin">
+      <column name="gtin" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="sourceFacilityId">
+      <column name="source_facility_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="palletSscc">
+      <column name="pallet_sscc" sql-type="VARCHAR(18)" />
+    </property>
+    <property name="packDate">
+      <column name="pack_date" sql-type="timestamptz" />
+    </property>
+    <property name="harvestDate">
+      <column name="harvest_date" sql-type="timestamptz" />
+    </property>
+    <property name="serialNumber">
+      <column name="serial_number" sql-type="VARCHAR(60)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>
