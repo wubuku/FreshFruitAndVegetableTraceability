@@ -41,6 +41,21 @@ public class CreateOrMergePatchTenantDto extends AbstractTenantCommandDto implem
     }
 
     /**
+     * Date Time Format
+     */
+    private String dateTimeFormat;
+
+    public String getDateTimeFormat()
+    {
+        return this.dateTimeFormat;
+    }
+
+    public void setDateTimeFormat(String dateTimeFormat)
+    {
+        this.dateTimeFormat = dateTimeFormat;
+    }
+
+    /**
      * Description
      */
     private String description;
@@ -95,6 +110,18 @@ public class CreateOrMergePatchTenantDto extends AbstractTenantCommandDto implem
         this.isPropertyTimeZoneIdRemoved = removed;
     }
 
+    private Boolean isPropertyDateTimeFormatRemoved;
+
+    public Boolean getIsPropertyDateTimeFormatRemoved()
+    {
+        return this.isPropertyDateTimeFormatRemoved;
+    }
+
+    public void setIsPropertyDateTimeFormatRemoved(Boolean removed)
+    {
+        this.isPropertyDateTimeFormatRemoved = removed;
+    }
+
     private Boolean isPropertyDescriptionRemoved;
 
     public Boolean getIsPropertyDescriptionRemoved()
@@ -124,6 +151,7 @@ public class CreateOrMergePatchTenantDto extends AbstractTenantCommandDto implem
         ((AbstractTenantCommandDto) this).copyTo(command);
         command.setPartyId(this.getPartyId());
         command.setTimeZoneId(this.getTimeZoneId());
+        command.setDateTimeFormat(this.getDateTimeFormat());
         command.setDescription(this.getDescription());
         command.setLongDescription(this.getLongDescription());
     }
@@ -172,6 +200,7 @@ public class CreateOrMergePatchTenantDto extends AbstractTenantCommandDto implem
         copyTo((CreateOrMergePatchTenant) command);
         command.setIsPropertyPartyIdRemoved(this.getIsPropertyPartyIdRemoved());
         command.setIsPropertyTimeZoneIdRemoved(this.getIsPropertyTimeZoneIdRemoved());
+        command.setIsPropertyDateTimeFormatRemoved(this.getIsPropertyDateTimeFormatRemoved());
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
         command.setIsPropertyLongDescriptionRemoved(this.getIsPropertyLongDescriptionRemoved());
     }

@@ -49,6 +49,10 @@ public interface TenantEvent extends Event {
 
         void setTimeZoneId(String timeZoneId);
 
+        String getDateTimeFormat();
+
+        void setDateTimeFormat(String dateTimeFormat);
+
         String getDescription();
 
         void setDescription(String description);
@@ -74,6 +78,10 @@ public interface TenantEvent extends Event {
         Boolean getIsPropertyTimeZoneIdRemoved();
 
         void setIsPropertyTimeZoneIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyDateTimeFormatRemoved();
+
+        void setIsPropertyDateTimeFormatRemoved(Boolean removed);
 
         Boolean getIsPropertyDescriptionRemoved();
 

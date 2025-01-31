@@ -30,6 +30,9 @@
       <property name="timeZoneId">
         <column name="time_zone_id" sql-type="VARCHAR(60)" />
       </property>
+      <property name="dateTimeFormat">
+        <column name="date_time_format" sql-type="VARCHAR(60)" />
+      </property>
       <property name="description">
         <column name="description" sql-type="VARCHAR(255)" />
       </property>
@@ -40,6 +43,7 @@
       <subclass name="AbstractTenantEvent$SimpleTenantStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyPartyIdRemoved" column="is_property_party_id_removed" />
         <property name="isPropertyTimeZoneIdRemoved" column="is_property_time_zone_id_removed" />
+        <property name="isPropertyDateTimeFormatRemoved" column="is_property_date_time_format_removed" />
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
         <property name="isPropertyLongDescriptionRemoved" column="is_property_long_description_removed" />
       </subclass>

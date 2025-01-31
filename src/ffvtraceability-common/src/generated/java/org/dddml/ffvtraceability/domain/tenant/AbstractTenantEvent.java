@@ -143,6 +143,18 @@ public abstract class AbstractTenantEvent extends AbstractEvent implements Tenan
             this.timeZoneId = timeZoneId;
         }
 
+        private String dateTimeFormat;
+
+        public String getDateTimeFormat()
+        {
+            return this.dateTimeFormat;
+        }
+
+        public void setDateTimeFormat(String dateTimeFormat)
+        {
+            this.dateTimeFormat = dateTimeFormat;
+        }
+
         private String description;
 
         public String getDescription()
@@ -221,6 +233,16 @@ public abstract class AbstractTenantEvent extends AbstractEvent implements Tenan
 
         public void setIsPropertyTimeZoneIdRemoved(Boolean removed) {
             this.isPropertyTimeZoneIdRemoved = removed;
+        }
+
+        private Boolean isPropertyDateTimeFormatRemoved;
+
+        public Boolean getIsPropertyDateTimeFormatRemoved() {
+            return this.isPropertyDateTimeFormatRemoved;
+        }
+
+        public void setIsPropertyDateTimeFormatRemoved(Boolean removed) {
+            this.isPropertyDateTimeFormatRemoved = removed;
         }
 
         private Boolean isPropertyDescriptionRemoved;

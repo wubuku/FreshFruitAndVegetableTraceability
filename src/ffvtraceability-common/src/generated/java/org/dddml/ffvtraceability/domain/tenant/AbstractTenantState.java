@@ -44,6 +44,16 @@ public abstract class AbstractTenantState implements TenantState.SqlTenantState 
         this.timeZoneId = timeZoneId;
     }
 
+    private String dateTimeFormat;
+
+    public String getDateTimeFormat() {
+        return this.dateTimeFormat;
+    }
+
+    public void setDateTimeFormat(String dateTimeFormat) {
+        this.dateTimeFormat = dateTimeFormat;
+    }
+
     private String description;
 
     public String getDescription() {
@@ -190,6 +200,7 @@ public abstract class AbstractTenantState implements TenantState.SqlTenantState 
 
         this.setPartyId(e.getPartyId());
         this.setTimeZoneId(e.getTimeZoneId());
+        this.setDateTimeFormat(e.getDateTimeFormat());
         this.setDescription(e.getDescription());
         this.setLongDescription(e.getLongDescription());
 
@@ -204,6 +215,7 @@ public abstract class AbstractTenantState implements TenantState.SqlTenantState 
         }
         this.setPartyId(s.getPartyId());
         this.setTimeZoneId(s.getTimeZoneId());
+        this.setDateTimeFormat(s.getDateTimeFormat());
         this.setDescription(s.getDescription());
         this.setLongDescription(s.getLongDescription());
     }
@@ -224,6 +236,13 @@ public abstract class AbstractTenantState implements TenantState.SqlTenantState 
             }
         } else {
             this.setTimeZoneId(e.getTimeZoneId());
+        }
+        if (e.getDateTimeFormat() == null) {
+            if (e.getIsPropertyDateTimeFormatRemoved() != null && e.getIsPropertyDateTimeFormatRemoved()) {
+                this.setDateTimeFormat(null);
+            }
+        } else {
+            this.setDateTimeFormat(e.getDateTimeFormat());
         }
         if (e.getDescription() == null) {
             if (e.getIsPropertyDescriptionRemoved() != null && e.getIsPropertyDescriptionRemoved()) {

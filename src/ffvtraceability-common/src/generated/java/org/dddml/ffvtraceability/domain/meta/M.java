@@ -7924,6 +7924,7 @@ public class M {
             "tenantId",
             "partyId",
             "timeZoneId",
+            "dateTimeFormat",
             "description",
             "longDescription",
             "version",
@@ -7936,6 +7937,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
             "String",
             "String",
             "String",
@@ -7968,6 +7970,8 @@ public class M {
         aliasMap.put("PartyId", "partyId");
         aliasMap.put("timeZoneId", "timeZoneId");
         aliasMap.put("TimeZoneId", "timeZoneId");
+        aliasMap.put("dateTimeFormat", "dateTimeFormat");
+        aliasMap.put("DateTimeFormat", "dateTimeFormat");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
         aliasMap.put("longDescription", "longDescription");

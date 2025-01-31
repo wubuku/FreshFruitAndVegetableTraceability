@@ -12,6 +12,9 @@ aggregates:
       #   type: name
       TimeZoneId:
         type: id-long
+      DateTimeFormat:
+        type: short-varchar
+        # DateTimeFormatter Pattern
       Description:
         type: description
       LongDescription:

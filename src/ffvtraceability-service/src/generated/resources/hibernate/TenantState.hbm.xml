@@ -13,6 +13,9 @@
     <property name="timeZoneId">
       <column name="time_zone_id" sql-type="VARCHAR(60)" />
     </property>
+    <property name="dateTimeFormat">
+      <column name="date_time_format" sql-type="VARCHAR(60)" />
+    </property>
     <property name="description">
       <column name="description" sql-type="VARCHAR(255)" />
     </property>

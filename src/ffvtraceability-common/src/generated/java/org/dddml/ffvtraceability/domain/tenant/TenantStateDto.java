@@ -50,6 +50,18 @@ public class TenantStateDto {
         this.timeZoneId = timeZoneId;
     }
 
+    private String dateTimeFormat;
+
+    public String getDateTimeFormat()
+    {
+        return this.dateTimeFormat;
+    }
+
+    public void setDateTimeFormat(String dateTimeFormat)
+    {
+        this.dateTimeFormat = dateTimeFormat;
+    }
+
     private String description;
 
     public String getDescription()
@@ -171,6 +183,9 @@ public class TenantStateDto {
             }
             if (returnedFieldsContains("TimeZoneId")) {
                 dto.setTimeZoneId(state.getTimeZoneId());
+            }
+            if (returnedFieldsContains("DateTimeFormat")) {
+                dto.setDateTimeFormat(state.getDateTimeFormat());
             }
             if (returnedFieldsContains("Description")) {
                 dto.setDescription(state.getDescription());

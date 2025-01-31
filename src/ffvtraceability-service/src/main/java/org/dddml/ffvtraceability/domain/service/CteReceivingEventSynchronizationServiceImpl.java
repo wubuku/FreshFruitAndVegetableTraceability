@@ -1,6 +1,10 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.constants.BffLotConstants;
+import org.dddml.ffvtraceability.domain.lot.LotApplicationService;
+import org.dddml.ffvtraceability.domain.lot.LotIdentificationState;
+import org.dddml.ffvtraceability.domain.lot.LotState;
 import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
 import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
 import org.dddml.ffvtraceability.domain.product.ProductState;
@@ -8,6 +12,8 @@ import org.dddml.ffvtraceability.domain.receivingevent.AbstractReceivingEventCom
 import org.dddml.ffvtraceability.domain.repository.BffFacilityContactMechRepository;
 import org.dddml.ffvtraceability.domain.repository.BffFacilityRepository;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
+import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
+import org.dddml.ffvtraceability.domain.shipment.ShipmentState;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState;
 import org.dddml.ffvtraceability.domain.tenant.TenantApplicationService;
@@ -20,11 +26,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.dddml.ffvtraceability.domain.service.BffReceivingApplicationServiceImpl.getReceivingDocument;
 
 @Service
 @Transactional
 public class CteReceivingEventSynchronizationServiceImpl implements CteReceivingEventSynchronizationService {
+    private static final String DEFAULT_DATE_TIME_FORMAT = "yyyy/M/d HH:mm:ss";
+
     @Autowired
     ShipmentReceiptApplicationService shipmentReceiptApplicationService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -42,6 +58,18 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
     private ProductApplicationService productApplicationService;
     @Autowired
     private UomApplicationService uomApplicationService;
+    @Autowired
+    private ShipmentApplicationService shipmentApplicationService;
+    @Autowired
+    private LotApplicationService lotApplicationService;
+
+    public static String formatKdeProductDescription(KdeProductDescription pd) {
+        String sb = pd.getProductName() +
+                " - " +
+                pd.getPackagingSize();
+        // sb.append(" ").append(pd.getPackagingStyle()); // NOTE: ignore PackagingStyle?
+        return sb;
+    }
 
     @Override
     public void synchronizeReceivingEvent(String shipmentId, Command command) {
@@ -64,57 +92,191 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
                 mergePatchReceivingEvent.setVersion(receiptState.getVersion());
                 e = mergePatchReceivingEvent;
             }
-
             e.setEventId(receivingItem.getReceiptId());
-
-            // todo 使用 getCurrentTenantTimeZoneId 来格式化得到一个“当地时间”字符串？
-            //e.setReceiveDate(receivingDocument.getCreatedAt());// todo format DateTime?
+            e.setReceiveDate(formatDateTime(receivingDocument.getCreatedAt())); // TODO: use `createdAt`?
 
             String productId = receivingItem.getProductId();
+            String productName = receivingItem.getProductName();
+            ProductState productState = productApplicationService.get(productId);
+
+            UomState qtyUomState = null;
+            if (productState.getQuantityUomId() != null) {
+                qtyUomState = uomApplicationService.get(productState.getQuantityUomId());
+            }
+            UomState caseUomState = null;
+            if (productState.getCaseUomId() != null) {
+                caseUomState = uomApplicationService.get(productState.getCaseUomId());
+            }
 
             //KdeProductDescription
-            KdeProductDescription pd = new KdeProductDescription();
-            ProductState productState = productApplicationService.get(productId);
-            UomState qtyUomState = uomApplicationService.get(productState.getQuantityUomId());
-            UomState caseUomState = uomApplicationService.get(productState.getCaseUomId());
-            productState.getPiecesIncluded();//todo
-            productState.getQuantityIncluded();//todo
-
-            pd.setProductName(receivingItem.getProductName());
-            //pd.setPackagingSize(); // todo
-            //pd.setPackagingStyle(); // todo
+            KdeProductDescription pd = getKdeProductDescription(productName, productState, qtyUomState, caseUomState);
             e.setProductDescription(pd);
 
             //KdeQuantityAndUom
-            KdeQuantityAndUom qu = new KdeQuantityAndUom();
-            //qu.setUom(); // todo 设置单位（Case 单位优先？）
-            qu.setQuantity(receivingItem.getQuantityAccepted()); // Or use `receivingItem.getCasesAccepted()`?
+            KdeQuantityAndUom qu = getKdeQuantityAndUom(receivingItem, caseUomState, qtyUomState);
             e.setQuantityAndUom(qu);
 
             //KdeTraceabilityLotCode
-            KdeTraceabilityLotCode tlc = new KdeTraceabilityLotCode();
-            tlc.setCaseGtin(receivingItem.getGtin());
-            tlc.setCaseBatch(receivingItem.getLotId());// Get Batch from LotId?
-            //tlc.setPalletSscc();
-            //tlc.setSerialNumber();
-            //tlc.setPackDate();
-            //tlc.setHarvestDate();
-            //tlc.setBestIfUsedByDate();
+            KdeTraceabilityLotCode tlc = getKdeTraceabilityLotCode(receivingItem);
             e.setTraceabilityLotCode(tlc);
 
-            //KdeLocationDescription
+            //ShipFrom KdeLocationDescription
             KdeLocationDescription shipFrom = getKdeLocationDescription(receivingDocument.getOriginFacilityId());
             e.setShipFromLocation(shipFrom);
+            //ShipTo KdeLocationDescription
             KdeLocationDescription shipTo = getKdeLocationDescription(receivingDocument.getDestinationFacilityId());
             e.setShipToLocation(shipTo);
 
-            //KdeReferenceDocument // todo 引用的相关单据
+            //KdeReferenceDocument
+            List<KdeReferenceDocument> referenceDocuments = getKdeReferenceDocuments(receivingItem, receivingDocument);
+            e.setReferenceDocuments(referenceDocuments.toArray(new KdeReferenceDocument[0]));
 
-            //KdeTlcSourceOrTlcSourceReference // TODO ...
-//            KdeTlcSourceOrTlcSourceReference tlcSrcOrSrcRef = new KdeTlcSourceOrTlcSourceReference();
-//            e.setTlcSourceOrTlcSourceReference(tlcSrcOrSrcRef);
+            //KdeTlcSourceOrTlcSourceReference // TODO KdeTlcSourceOrTlcSourceReference ...
+            // KdeTlcSourceOrTlcSourceReference tlcSrcOrSrcRef = new KdeTlcSourceOrTlcSourceReference();
+            // e.setTlcSourceOrTlcSourceReference(tlcSrcOrSrcRef);
 
         }
+    }
+
+    private KdeTraceabilityLotCode getKdeTraceabilityLotCode(BffReceivingItemDto receivingItem) {
+        KdeTraceabilityLotCode tlc = new KdeTraceabilityLotCode();
+        String lotId = receivingItem.getLotId();
+        String gtin = receivingItem.getGtin();
+        String batch = lotId;
+
+        LotState lotState = lotApplicationService.get(lotId);
+        if (lotState != null) {
+            Optional<LotIdentificationState> tlcLotIdentification = lotState.getLotIdentifications().stream().filter(
+                    x -> BffLotConstants.LOT_IDENTIFICATION_TYPE_TLC.equals(x.getLotIdentificationTypeId())
+            ).findAny();
+            if (tlcLotIdentification.isPresent()) {
+                LotIdentificationState l = tlcLotIdentification.get();
+                gtin = l.getGtin();
+                batch = l.getGs1Batch();
+            } else {
+                if (lotState.getGtin() != null && !lotState.getGtin().trim().isEmpty()) {
+                    gtin = lotState.getGtin().trim();
+                }
+                if (lotState.getGs1Batch() != null && !lotState.getGs1Batch().trim().isEmpty()) {
+                    batch = lotState.getGs1Batch().trim();
+                }
+            }
+            tlc.setPalletSscc(lotState.getPalletSscc());
+            tlc.setSerialNumber(lotState.getSerialNumber());
+            if (lotState.getPackDate() != null) {
+                tlc.setPackDate(formatDateTime(lotState.getPackDate()));
+            }
+            if (lotState.getHarvestDate() != null) {
+                tlc.setHarvestDate(formatDateTime(lotState.getHarvestDate()));
+            }
+            if (lotState.getExpirationDate() != null) {
+                tlc.setBestIfUsedByDate(formatDateTime(lotState.getExpirationDate()));
+            }
+        }
+        tlc.setCaseGtin(gtin);
+        tlc.setCaseBatch(batch);
+        return tlc;
+    }
+
+    private List<KdeReferenceDocument> getKdeReferenceDocuments(
+            BffReceivingItemDto receivingItem,
+            BffReceivingDocumentDto receivingDocument
+    ) {
+        String shipmentId = receivingDocument.getDocumentId();
+        List<KdeReferenceDocument> referenceDocuments = new ArrayList<>();
+        String poId = null;
+        if (receivingItem.getOrderId() != null) {
+            poId = receivingItem.getOrderId();
+        } else if (receivingDocument.getPrimaryOrderId() != null) {
+            poId = receivingDocument.getPrimaryOrderId();
+        }
+        if (poId != null) {
+            KdeReferenceDocument poDoc = new KdeReferenceDocument();
+            poDoc.setDocumentType("PO");
+            poDoc.setDocumentNumber(poId);
+            referenceDocuments.add(poDoc);
+        }
+
+        KdeReferenceDocument shipDoc = new KdeReferenceDocument();
+        ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
+        if (shipmentState != null) {
+            shipDoc.setDocumentType(shipmentState.getShipmentTypeId());
+        } else {
+            shipDoc.setDocumentType("SHIPMENT");
+        }
+        shipDoc.setDocumentNumber(shipmentId);
+        return referenceDocuments;
+    }
+
+    private KdeQuantityAndUom getKdeQuantityAndUom(BffReceivingItemDto receivingItem, UomState caseUomState, UomState qtyUomState) {
+        KdeQuantityAndUom qu = new KdeQuantityAndUom();
+        if (receivingItem.getCasesAccepted() != null) {
+            qu.setQuantity(BigDecimal.valueOf(receivingItem.getCasesAccepted()));
+            qu.setUom(formatUomName(caseUomState, "Case"));
+        } else {
+            qu.setQuantity(receivingItem.getQuantityAccepted()); // Or use ``?
+            qu.setUom(formatUomName(qtyUomState, qtyUomState != null ? qtyUomState.getUomId() : null));
+        }
+        return qu;
+    }
+
+    private String formatUomName(UomState uomState, String defaultName) {
+        if (uomState == null) {
+            return defaultName;
+        }
+        return uomState.getUomName() != null ? uomState.getUomName()
+                : (uomState.getAbbreviation() != null ? uomState.getAbbreviation()
+                : (uomState.getDescription() != null ? uomState.getDescription()
+                : defaultName
+        ));
+    }
+
+    private KdeProductDescription getKdeProductDescription(
+            String productName,
+            ProductState productState,
+            UomState qtyUomState,
+            UomState caseUomState
+    ) {
+        String prdName = productName;
+        if (prdName == null || prdName.isEmpty()) {
+            prdName = productState.getProductName();
+        }
+        if (prdName == null || prdName.isEmpty()) {
+            prdName = productState.getBrandName();
+        }
+
+        KdeProductDescription pd = new KdeProductDescription();
+        pd.setProductName(prdName);
+        StringBuilder sb = new StringBuilder();
+        if (productState.getQuantityIncluded() != null) {
+            sb.append(productState.getQuantityIncluded().toBigInteger()); // Only int?
+            if (qtyUomState != null) {
+                if (qtyUomState.getAbbreviation() != null) {
+                    sb.append(qtyUomState.getAbbreviation());
+                } else if (qtyUomState.getUomName() != null) {
+                    sb.append(" ").append(qtyUomState.getUomName());
+                } else if (qtyUomState.getDescription() != null) {
+                    sb.append(" ").append(qtyUomState.getDescription());
+                } else {
+                    sb.append(" ").append(qtyUomState.getUomId());
+                }
+            }
+        }
+        if (productState.getPiecesIncluded() != null && productState.getPiecesIncluded() != 1) {
+            sb.append(" - ")
+                    .append(productState.getQuantityIncluded())
+                    .append(" Pack"); // NOTE: hard coded here?
+        }
+
+        pd.setPackagingSize(sb.toString());
+
+        pd.setPackagingStyle(caseUomState == null ? "Case"
+                : (caseUomState.getUomName() != null ? caseUomState.getUomName()
+                : (caseUomState.getDescription() != null ? caseUomState.getDescription()
+                : (caseUomState.getAbbreviation() != null ? caseUomState.getAbbreviation()
+                : "Case"//caseUomState.getUomId()
+        ))));
+        return pd;
     }
 
     private KdeLocationDescription getKdeLocationDescription(String facilityId) {
@@ -131,21 +293,26 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
         return ld;
     }
 
-    private String getCurrentTenantTimeZoneId() {
+    private String formatDateTime(OffsetDateTime dt) {
+        TenantState tenantState = null;
         if (TenantContext.getTenantId() == null) {
-            logger.error("TenantId is not set.");
-            throw new IllegalStateException("TenantId is not set.");
+            logger.warn("TenantId is not set.");
+            //throw new IllegalStateException("TenantId is not set.");
+        } else {
+            tenantState = tenantApplicationService.get(TenantContext.getTenantId());
+            if (tenantState == null) {
+                String message = "Tenant not found: " + TenantContext.getTenantId();
+                logger.warn(message);
+                //throw new IllegalStateException(message);
+            }
         }
-        TenantState tenantState = tenantApplicationService.get(TenantContext.getTenantId());
-        if (tenantState == null) {
-            String message = "Tenant not found: " + TenantContext.getTenantId();
-            logger.error(message);
-            throw new IllegalStateException(message);
+        String dateTimeFormat = (tenantState != null && tenantState.getDateTimeFormat() != null)
+                ? tenantState.getDateTimeFormat() : DEFAULT_DATE_TIME_FORMAT;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateTimeFormat);
+        if (tenantState != null && tenantState.getTimeZoneId() != null && !tenantState.getTimeZoneId().isEmpty()) {
+            dateTimeFormatter = dateTimeFormatter.withZone(ZoneId.of(tenantState.getTimeZoneId()));
         }
-        if (tenantState.getTimeZoneId() == null && tenantState.getTimeZoneId().isEmpty()) {
-            throw new IllegalStateException("TenantId timezone Id is not set.");
-        }
-        return tenantState.getTimeZoneId();
+        return dateTimeFormatter.format(dt);
     }
 
 }

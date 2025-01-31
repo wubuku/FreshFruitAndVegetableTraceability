@@ -53,6 +53,7 @@ public abstract class AbstractTenantAggregate extends AbstractAggregate implemen
         TenantEvent.TenantStateCreated e = newTenantStateCreated(stateEventId);
         e.setPartyId(c.getPartyId());
         e.setTimeZoneId(c.getTimeZoneId());
+        e.setDateTimeFormat(c.getDateTimeFormat());
         e.setDescription(c.getDescription());
         e.setLongDescription(c.getLongDescription());
         ((AbstractTenantEvent)e).setCommandId(c.getCommandId());
@@ -66,10 +67,12 @@ public abstract class AbstractTenantAggregate extends AbstractAggregate implemen
         TenantEvent.TenantStateMergePatched e = newTenantStateMergePatched(stateEventId);
         e.setPartyId(c.getPartyId());
         e.setTimeZoneId(c.getTimeZoneId());
+        e.setDateTimeFormat(c.getDateTimeFormat());
         e.setDescription(c.getDescription());
         e.setLongDescription(c.getLongDescription());
         e.setIsPropertyPartyIdRemoved(c.getIsPropertyPartyIdRemoved());
         e.setIsPropertyTimeZoneIdRemoved(c.getIsPropertyTimeZoneIdRemoved());
+        e.setIsPropertyDateTimeFormatRemoved(c.getIsPropertyDateTimeFormatRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyLongDescriptionRemoved(c.getIsPropertyLongDescriptionRemoved());
         ((AbstractTenantEvent)e).setCommandId(c.getCommandId());

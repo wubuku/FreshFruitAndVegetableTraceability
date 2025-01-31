@@ -23,6 +23,8 @@ public interface TenantState
 
     String getTimeZoneId();
 
+    String getDateTimeFormat();
+
     String getDescription();
 
     String getLongDescription();
@@ -43,6 +45,8 @@ public interface TenantState
         void setPartyId(String partyId);
 
         void setTimeZoneId(String timeZoneId);
+
+        void setDateTimeFormat(String dateTimeFormat);
 
         void setDescription(String description);
 

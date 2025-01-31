@@ -56,6 +56,10 @@ public interface TenantCommand extends Command {
 
         void setTimeZoneId(String timeZoneId);
 
+        String getDateTimeFormat();
+
+        void setDateTimeFormat(String dateTimeFormat);
+
         String getDescription();
 
         void setDescription(String description);
@@ -77,6 +81,10 @@ public interface TenantCommand extends Command {
         Boolean getIsPropertyTimeZoneIdRemoved();
 
         void setIsPropertyTimeZoneIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyDateTimeFormatRemoved();
+
+        void setIsPropertyDateTimeFormatRemoved(Boolean removed);
 
         Boolean getIsPropertyDescriptionRemoved();
 

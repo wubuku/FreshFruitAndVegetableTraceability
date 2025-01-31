@@ -63,6 +63,18 @@ public abstract class AbstractTenantCommand extends AbstractCommand implements T
             this.timeZoneId = timeZoneId;
         }
 
+        private String dateTimeFormat;
+
+        public String getDateTimeFormat()
+        {
+            return this.dateTimeFormat;
+        }
+
+        public void setDateTimeFormat(String dateTimeFormat)
+        {
+            this.dateTimeFormat = dateTimeFormat;
+        }
+
         private String description;
 
         public String getDescription()
@@ -127,6 +139,18 @@ public abstract class AbstractTenantCommand extends AbstractCommand implements T
         public void setIsPropertyTimeZoneIdRemoved(Boolean removed)
         {
             this.isPropertyTimeZoneIdRemoved = removed;
+        }
+
+        private Boolean isPropertyDateTimeFormatRemoved;
+
+        public Boolean getIsPropertyDateTimeFormatRemoved()
+        {
+            return this.isPropertyDateTimeFormatRemoved;
+        }
+
+        public void setIsPropertyDateTimeFormatRemoved(Boolean removed)
+        {
+            this.isPropertyDateTimeFormatRemoved = removed;
         }
 
         private Boolean isPropertyDescriptionRemoved;
