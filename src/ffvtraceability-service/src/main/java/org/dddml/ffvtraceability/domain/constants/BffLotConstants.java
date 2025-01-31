@@ -9,8 +9,8 @@ public class BffLotConstants {
     public static final String LOT_IDENTIFICATION_TYPE_GS1_BATCH = "GS1_BATCH";
 
     /**
-     * Traceability lot code.
+     * TLC (Traceability lot code) case GTIN/BATCH.
      */
-    public static final String LOT_IDENTIFICATION_TYPE_TLC = "TLC";
+    public static final String LOT_IDENTIFICATION_TYPE_TLC_CASE_GTIN_BATCH = "TLC_CASE_GTIN_BATCH";
 
 }

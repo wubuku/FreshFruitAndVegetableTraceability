@@ -141,24 +141,24 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
     private KdeTraceabilityLotCode getKdeTraceabilityLotCode(BffReceivingItemDto receivingItem) {
         KdeTraceabilityLotCode tlc = new KdeTraceabilityLotCode();
         String lotId = receivingItem.getLotId();
-        String gtin = receivingItem.getGtin();
-        String batch = lotId;
+        String caseGtin = receivingItem.getGtin(); // NOTE: Might this not be a real Case GTIN?
+        String caseBatch = lotId; // NOTE: Might this not be a real Case BATCH?
 
         LotState lotState = lotApplicationService.get(lotId);
         if (lotState != null) {
             Optional<LotIdentificationState> tlcLotIdentification = lotState.getLotIdentifications().stream().filter(
-                    x -> BffLotConstants.LOT_IDENTIFICATION_TYPE_TLC.equals(x.getLotIdentificationTypeId())
+                    x -> BffLotConstants.LOT_IDENTIFICATION_TYPE_TLC_CASE_GTIN_BATCH.equals(x.getLotIdentificationTypeId())
             ).findAny();
             if (tlcLotIdentification.isPresent()) {
                 LotIdentificationState l = tlcLotIdentification.get();
-                gtin = l.getGtin();
-                batch = l.getGs1Batch();
+                caseGtin = l.getGtin();
+                caseBatch = l.getGs1Batch();
             } else {
                 if (lotState.getGtin() != null && !lotState.getGtin().trim().isEmpty()) {
-                    gtin = lotState.getGtin().trim();
+                    caseGtin = lotState.getGtin().trim();
                 }
                 if (lotState.getGs1Batch() != null && !lotState.getGs1Batch().trim().isEmpty()) {
-                    batch = lotState.getGs1Batch().trim();
+                    caseBatch = lotState.getGs1Batch().trim();
                 }
             }
             tlc.setPalletSscc(lotState.getPalletSscc());
@@ -173,8 +173,8 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
                 tlc.setBestIfUsedByDate(formatDateTime(lotState.getExpirationDate()));
             }
         }
-        tlc.setCaseGtin(gtin);
-        tlc.setCaseBatch(batch);
+        tlc.setCaseGtin(caseGtin);
+        tlc.setCaseBatch(caseBatch);
         return tlc;
     }
 
