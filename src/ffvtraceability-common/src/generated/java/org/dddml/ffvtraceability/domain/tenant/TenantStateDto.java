@@ -38,6 +38,18 @@ public class TenantStateDto {
         this.partyId = partyId;
     }
 
+    private String timeZoneId;
+
+    public String getTimeZoneId()
+    {
+        return this.timeZoneId;
+    }
+
+    public void setTimeZoneId(String timeZoneId)
+    {
+        this.timeZoneId = timeZoneId;
+    }
+
     private String description;
 
     public String getDescription()
@@ -156,6 +168,9 @@ public class TenantStateDto {
             }
             if (returnedFieldsContains("PartyId")) {
                 dto.setPartyId(state.getPartyId());
+            }
+            if (returnedFieldsContains("TimeZoneId")) {
+                dto.setTimeZoneId(state.getTimeZoneId());
             }
             if (returnedFieldsContains("Description")) {
                 dto.setDescription(state.getDescription());

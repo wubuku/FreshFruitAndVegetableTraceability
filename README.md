@@ -422,6 +422,47 @@ JSON-LD 的应用场景：
 GTIN 解析：https://www.lspedia.com/zh-cn/blog/anatomy-of-a-gtin
 
 
+#### CTE 中的产品描述
+
+CTE 表格片段实例：
+
+| Product Description | Quantity Packed | UOM Packed |
+|-------------------|-----------------|------------|
+| Romaine Hearts- 3 Pack | 100 | Cases |
+
+
+1. Product Description（产品描述）
+- 值：Romaine Hearts- 3 Pack。
+- 含义：这里的 "3 Pack" 可能表示这是一个标准包装单位（一箱里装3包）
+
+1. Quantity Packed（包装数量）
+- 值：100
+- 含义：表示包装了 100 个单位。
+
+1. UOM Packed（包装计量单位）
+- 值：Cases
+- 含义：单位是"箱"
+
+
+对于这样一个产品：
+
+> If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+
+产品描述可简写为：
+
+`Soda - 12oz - 6-Pack`
+
+
+解析这个格式：
+- Soda - 基础产品名称
+- 12oz - 每单品的容量规格
+- 6-Pack - 包装单位（表示每包6罐）
+
+这种格式在行业中很常见，遵循了 "主产品 + 规格 + 包装单位" 的写法。
+
+我们可以考虑在主要元素之间用" - "（连字符加空格）分隔。而在"6-Pack"中的连字符不加空格，因为这是一个复合词
+
+
 --------
 
 ## Fresh Fruit and Vegetable Traceability Guideline

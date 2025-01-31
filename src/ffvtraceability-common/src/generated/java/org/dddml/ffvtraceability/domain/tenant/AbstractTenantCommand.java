@@ -51,6 +51,18 @@ public abstract class AbstractTenantCommand extends AbstractCommand implements T
             this.partyId = partyId;
         }
 
+        private String timeZoneId;
+
+        public String getTimeZoneId()
+        {
+            return this.timeZoneId;
+        }
+
+        public void setTimeZoneId(String timeZoneId)
+        {
+            this.timeZoneId = timeZoneId;
+        }
+
         private String description;
 
         public String getDescription()
@@ -103,6 +115,18 @@ public abstract class AbstractTenantCommand extends AbstractCommand implements T
         public void setIsPropertyPartyIdRemoved(Boolean removed)
         {
             this.isPropertyPartyIdRemoved = removed;
+        }
+
+        private Boolean isPropertyTimeZoneIdRemoved;
+
+        public Boolean getIsPropertyTimeZoneIdRemoved()
+        {
+            return this.isPropertyTimeZoneIdRemoved;
+        }
+
+        public void setIsPropertyTimeZoneIdRemoved(Boolean removed)
+        {
+            this.isPropertyTimeZoneIdRemoved = removed;
         }
 
         private Boolean isPropertyDescriptionRemoved;

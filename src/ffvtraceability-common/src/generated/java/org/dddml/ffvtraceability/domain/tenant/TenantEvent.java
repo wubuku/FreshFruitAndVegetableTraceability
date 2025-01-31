@@ -45,6 +45,10 @@ public interface TenantEvent extends Event {
 
         void setPartyId(String partyId);
 
+        String getTimeZoneId();
+
+        void setTimeZoneId(String timeZoneId);
+
         String getDescription();
 
         void setDescription(String description);
@@ -66,6 +70,10 @@ public interface TenantEvent extends Event {
         Boolean getIsPropertyPartyIdRemoved();
 
         void setIsPropertyPartyIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyTimeZoneIdRemoved();
+
+        void setIsPropertyTimeZoneIdRemoved(Boolean removed);
 
         Boolean getIsPropertyDescriptionRemoved();
 

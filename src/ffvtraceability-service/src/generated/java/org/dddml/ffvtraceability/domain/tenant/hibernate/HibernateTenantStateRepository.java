@@ -25,7 +25,7 @@ public class HibernateTenantStateRepository implements TenantStateRepository {
         return this.entityManager;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("TenantId", "PartyId", "Description", "LongDescription", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("TenantId", "PartyId", "TimeZoneId", "Description", "LongDescription", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

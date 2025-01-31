@@ -26,6 +26,21 @@ public class CreateOrMergePatchTenantDto extends AbstractTenantCommandDto implem
     }
 
     /**
+     * Time Zone Id
+     */
+    private String timeZoneId;
+
+    public String getTimeZoneId()
+    {
+        return this.timeZoneId;
+    }
+
+    public void setTimeZoneId(String timeZoneId)
+    {
+        this.timeZoneId = timeZoneId;
+    }
+
+    /**
      * Description
      */
     private String description;
@@ -68,6 +83,18 @@ public class CreateOrMergePatchTenantDto extends AbstractTenantCommandDto implem
         this.isPropertyPartyIdRemoved = removed;
     }
 
+    private Boolean isPropertyTimeZoneIdRemoved;
+
+    public Boolean getIsPropertyTimeZoneIdRemoved()
+    {
+        return this.isPropertyTimeZoneIdRemoved;
+    }
+
+    public void setIsPropertyTimeZoneIdRemoved(Boolean removed)
+    {
+        this.isPropertyTimeZoneIdRemoved = removed;
+    }
+
     private Boolean isPropertyDescriptionRemoved;
 
     public Boolean getIsPropertyDescriptionRemoved()
@@ -96,6 +123,7 @@ public class CreateOrMergePatchTenantDto extends AbstractTenantCommandDto implem
     {
         ((AbstractTenantCommandDto) this).copyTo(command);
         command.setPartyId(this.getPartyId());
+        command.setTimeZoneId(this.getTimeZoneId());
         command.setDescription(this.getDescription());
         command.setLongDescription(this.getLongDescription());
     }
@@ -143,6 +171,7 @@ public class CreateOrMergePatchTenantDto extends AbstractTenantCommandDto implem
     {
         copyTo((CreateOrMergePatchTenant) command);
         command.setIsPropertyPartyIdRemoved(this.getIsPropertyPartyIdRemoved());
+        command.setIsPropertyTimeZoneIdRemoved(this.getIsPropertyTimeZoneIdRemoved());
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
         command.setIsPropertyLongDescriptionRemoved(this.getIsPropertyLongDescriptionRemoved());
     }

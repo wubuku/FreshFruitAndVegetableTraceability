@@ -10,6 +10,9 @@
     <property name="partyId">
       <column name="party_id" sql-type="VARCHAR(20)" />
     </property>
+    <property name="timeZoneId">
+      <column name="time_zone_id" sql-type="VARCHAR(60)" />
+    </property>
     <property name="description">
       <column name="description" sql-type="VARCHAR(255)" />
     </property>

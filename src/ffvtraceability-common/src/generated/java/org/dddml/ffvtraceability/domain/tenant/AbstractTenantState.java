@@ -34,6 +34,16 @@ public abstract class AbstractTenantState implements TenantState.SqlTenantState 
         this.partyId = partyId;
     }
 
+    private String timeZoneId;
+
+    public String getTimeZoneId() {
+        return this.timeZoneId;
+    }
+
+    public void setTimeZoneId(String timeZoneId) {
+        this.timeZoneId = timeZoneId;
+    }
+
     private String description;
 
     public String getDescription() {
@@ -179,6 +189,7 @@ public abstract class AbstractTenantState implements TenantState.SqlTenantState 
         throwOnWrongEvent(e);
 
         this.setPartyId(e.getPartyId());
+        this.setTimeZoneId(e.getTimeZoneId());
         this.setDescription(e.getDescription());
         this.setLongDescription(e.getLongDescription());
 
@@ -192,6 +203,7 @@ public abstract class AbstractTenantState implements TenantState.SqlTenantState 
             return;
         }
         this.setPartyId(s.getPartyId());
+        this.setTimeZoneId(s.getTimeZoneId());
         this.setDescription(s.getDescription());
         this.setLongDescription(s.getLongDescription());
     }
@@ -205,6 +217,13 @@ public abstract class AbstractTenantState implements TenantState.SqlTenantState 
             }
         } else {
             this.setPartyId(e.getPartyId());
+        }
+        if (e.getTimeZoneId() == null) {
+            if (e.getIsPropertyTimeZoneIdRemoved() != null && e.getIsPropertyTimeZoneIdRemoved()) {
+                this.setTimeZoneId(null);
+            }
+        } else {
+            this.setTimeZoneId(e.getTimeZoneId());
         }
         if (e.getDescription() == null) {
             if (e.getIsPropertyDescriptionRemoved() != null && e.getIsPropertyDescriptionRemoved()) {

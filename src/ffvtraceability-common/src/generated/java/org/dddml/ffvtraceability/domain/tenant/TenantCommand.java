@@ -52,6 +52,10 @@ public interface TenantCommand extends Command {
 
         void setPartyId(String partyId);
 
+        String getTimeZoneId();
+
+        void setTimeZoneId(String timeZoneId);
+
         String getDescription();
 
         void setDescription(String description);
@@ -69,6 +73,10 @@ public interface TenantCommand extends Command {
         Boolean getIsPropertyPartyIdRemoved();
 
         void setIsPropertyPartyIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyTimeZoneIdRemoved();
+
+        void setIsPropertyTimeZoneIdRemoved(Boolean removed);
 
         Boolean getIsPropertyDescriptionRemoved();
 
