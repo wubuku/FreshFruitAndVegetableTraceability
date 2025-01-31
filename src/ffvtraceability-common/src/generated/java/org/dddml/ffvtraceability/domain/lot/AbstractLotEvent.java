@@ -189,30 +189,6 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
             this.active = active;
         }
 
-        private String gs1Batch;
-
-        public String getGs1Batch()
-        {
-            return this.gs1Batch;
-        }
-
-        public void setGs1Batch(String gs1Batch)
-        {
-            this.gs1Batch = gs1Batch;
-        }
-
-        private String internalId;
-
-        public String getInternalId()
-        {
-            return this.internalId;
-        }
-
-        public void setInternalId(String internalId)
-        {
-            this.internalId = internalId;
-        }
-
         private String gtin;
 
         public String getGtin()
@@ -225,6 +201,18 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
             this.gtin = gtin;
         }
 
+        private String gs1Batch;
+
+        public String getGs1Batch()
+        {
+            return this.gs1Batch;
+        }
+
+        public void setGs1Batch(String gs1Batch)
+        {
+            this.gs1Batch = gs1Batch;
+        }
+
         private String sourceFacilityId;
 
         public String getSourceFacilityId()
@@ -235,6 +223,18 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
         public void setSourceFacilityId(String sourceFacilityId)
         {
             this.sourceFacilityId = sourceFacilityId;
+        }
+
+        private String internalId;
+
+        public String getInternalId()
+        {
+            return this.internalId;
+        }
+
+        public void setInternalId(String internalId)
+        {
+            this.internalId = internalId;
         }
 
         private String palletSscc;
@@ -399,26 +399,6 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
             this.isPropertyActiveRemoved = removed;
         }
 
-        private Boolean isPropertyGs1BatchRemoved;
-
-        public Boolean getIsPropertyGs1BatchRemoved() {
-            return this.isPropertyGs1BatchRemoved;
-        }
-
-        public void setIsPropertyGs1BatchRemoved(Boolean removed) {
-            this.isPropertyGs1BatchRemoved = removed;
-        }
-
-        private Boolean isPropertyInternalIdRemoved;
-
-        public Boolean getIsPropertyInternalIdRemoved() {
-            return this.isPropertyInternalIdRemoved;
-        }
-
-        public void setIsPropertyInternalIdRemoved(Boolean removed) {
-            this.isPropertyInternalIdRemoved = removed;
-        }
-
         private Boolean isPropertyGtinRemoved;
 
         public Boolean getIsPropertyGtinRemoved() {
@@ -429,6 +409,16 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
             this.isPropertyGtinRemoved = removed;
         }
 
+        private Boolean isPropertyGs1BatchRemoved;
+
+        public Boolean getIsPropertyGs1BatchRemoved() {
+            return this.isPropertyGs1BatchRemoved;
+        }
+
+        public void setIsPropertyGs1BatchRemoved(Boolean removed) {
+            this.isPropertyGs1BatchRemoved = removed;
+        }
+
         private Boolean isPropertySourceFacilityIdRemoved;
 
         public Boolean getIsPropertySourceFacilityIdRemoved() {
@@ -437,6 +427,16 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
 
         public void setIsPropertySourceFacilityIdRemoved(Boolean removed) {
             this.isPropertySourceFacilityIdRemoved = removed;
+        }
+
+        private Boolean isPropertyInternalIdRemoved;
+
+        public Boolean getIsPropertyInternalIdRemoved() {
+            return this.isPropertyInternalIdRemoved;
+        }
+
+        public void setIsPropertyInternalIdRemoved(Boolean removed) {
+            this.isPropertyInternalIdRemoved = removed;
         }
 
         private Boolean isPropertyPalletSsccRemoved;

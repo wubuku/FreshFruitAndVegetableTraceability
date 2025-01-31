@@ -25,8 +25,6 @@ public interface LotIdentificationState
 
     String getGs1Batch();
 
-    String getSourceFacilityId();
-
     Long getVersion();
 
     String getCreatedBy();
@@ -47,8 +45,6 @@ public interface LotIdentificationState
         void setGtin(String gtin);
 
         void setGs1Batch(String gs1Batch);
-
-        void setSourceFacilityId(String sourceFacilityId);
 
         void setVersion(Long version);
 

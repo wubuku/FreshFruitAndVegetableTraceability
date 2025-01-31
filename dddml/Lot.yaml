@@ -20,6 +20,9 @@ aggregates:
         itemType: LotIdentification
       Active:
         type: indicator
+      Gtin:
+        type: id
+        # description: "AI (01) Case GTIN"
       Gs1Batch:
         description: "GS1 BATCH (AI=10)"
         type: id
@@ -27,13 +30,12 @@ aggregates:
       #   type: KdeBatch
       #   description: "AI (10) Case Batch/Lot"
       #   # Use for Traceability Lot Code (TLC)
-      InternalId:
-        type: id
-      Gtin:
-        type: id
-        # description: "AI (01) Case GTIN"
       SourceFacilityId:
         type: id
+        description: "The facility (location) where TLC was assigned during initial packing or transformation"
+      InternalId:
+        type: id
+      # ---------------------------------------------------------------------
       PalletSscc:
         type: SSCC
         # description: "AI (00) Pallet SSCC"
@@ -50,6 +52,7 @@ aggregates:
         type: id-long
         # description: "AI (21) Serial Number"
         # use for Traceability Lot Code (TLC)
+      # ---------------------------------------------------------------------
 
     entities:
       LotIdentification:
@@ -74,9 +77,9 @@ aggregates:
           Gs1Batch:
             type: id
           # ---------------------------------------------------------------------
-          SourceFacilityId:
-            type: id
-            description: "The facility (location) where TLC was assigned during initial packing or transformation"
+          # SourceFacilityId:
+          #   type: id
+
 
 
   LotIdentificationType:

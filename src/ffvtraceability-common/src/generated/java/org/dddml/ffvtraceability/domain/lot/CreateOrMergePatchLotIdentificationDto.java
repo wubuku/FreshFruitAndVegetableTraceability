@@ -55,21 +55,6 @@ public class CreateOrMergePatchLotIdentificationDto extends AbstractLotIdentific
         this.gs1Batch = gs1Batch;
     }
 
-    /**
-     * The facility (location) where TLC was assigned during initial packing or transformation
-     */
-    private String sourceFacilityId;
-
-    public String getSourceFacilityId()
-    {
-        return this.sourceFacilityId;
-    }
-
-    public void setSourceFacilityId(String sourceFacilityId)
-    {
-        this.sourceFacilityId = sourceFacilityId;
-    }
-
 
     private Boolean isPropertyIdValueRemoved;
 
@@ -107,25 +92,12 @@ public class CreateOrMergePatchLotIdentificationDto extends AbstractLotIdentific
         this.isPropertyGs1BatchRemoved = removed;
     }
 
-    private Boolean isPropertySourceFacilityIdRemoved;
-
-    public Boolean getIsPropertySourceFacilityIdRemoved()
-    {
-        return this.isPropertySourceFacilityIdRemoved;
-    }
-
-    public void setIsPropertySourceFacilityIdRemoved(Boolean removed)
-    {
-        this.isPropertySourceFacilityIdRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchLotIdentification command)
     {
         ((AbstractLotIdentificationCommandDto) this).copyTo(command);
         command.setIdValue(this.getIdValue());
         command.setGtin(this.getGtin());
         command.setGs1Batch(this.getGs1Batch());
-        command.setSourceFacilityId(this.getSourceFacilityId());
     }
 
     public LotIdentificationCommand toCommand()
@@ -183,7 +155,6 @@ public class CreateOrMergePatchLotIdentificationDto extends AbstractLotIdentific
         command.setIsPropertyIdValueRemoved(this.getIsPropertyIdValueRemoved());
         command.setIsPropertyGtinRemoved(this.getIsPropertyGtinRemoved());
         command.setIsPropertyGs1BatchRemoved(this.getIsPropertyGs1BatchRemoved());
-        command.setIsPropertySourceFacilityIdRemoved(this.getIsPropertySourceFacilityIdRemoved());
     }
 
     public static class CreateLotIdentificationDto extends CreateOrMergePatchLotIdentificationDto implements LotIdentificationCommand.CreateLotIdentification

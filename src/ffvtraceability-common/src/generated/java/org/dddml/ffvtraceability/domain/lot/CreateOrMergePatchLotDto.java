@@ -56,36 +56,6 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     }
 
     /**
-     * GS1 BATCH (AI=10)
-     */
-    private String gs1Batch;
-
-    public String getGs1Batch()
-    {
-        return this.gs1Batch;
-    }
-
-    public void setGs1Batch(String gs1Batch)
-    {
-        this.gs1Batch = gs1Batch;
-    }
-
-    /**
-     * Internal Id
-     */
-    private String internalId;
-
-    public String getInternalId()
-    {
-        return this.internalId;
-    }
-
-    public void setInternalId(String internalId)
-    {
-        this.internalId = internalId;
-    }
-
-    /**
      * Gtin
      */
     private String gtin;
@@ -101,7 +71,22 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     }
 
     /**
-     * Source Facility Id
+     * GS1 BATCH (AI=10)
+     */
+    private String gs1Batch;
+
+    public String getGs1Batch()
+    {
+        return this.gs1Batch;
+    }
+
+    public void setGs1Batch(String gs1Batch)
+    {
+        this.gs1Batch = gs1Batch;
+    }
+
+    /**
+     * The facility (location) where TLC was assigned during initial packing or transformation
      */
     private String sourceFacilityId;
 
@@ -113,6 +98,21 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     public void setSourceFacilityId(String sourceFacilityId)
     {
         this.sourceFacilityId = sourceFacilityId;
+    }
+
+    /**
+     * Internal Id
+     */
+    private String internalId;
+
+    public String getInternalId()
+    {
+        return this.internalId;
+    }
+
+    public void setInternalId(String internalId)
+    {
+        this.internalId = internalId;
     }
 
     /**
@@ -224,30 +224,6 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.isPropertyActiveRemoved = removed;
     }
 
-    private Boolean isPropertyGs1BatchRemoved;
-
-    public Boolean getIsPropertyGs1BatchRemoved()
-    {
-        return this.isPropertyGs1BatchRemoved;
-    }
-
-    public void setIsPropertyGs1BatchRemoved(Boolean removed)
-    {
-        this.isPropertyGs1BatchRemoved = removed;
-    }
-
-    private Boolean isPropertyInternalIdRemoved;
-
-    public Boolean getIsPropertyInternalIdRemoved()
-    {
-        return this.isPropertyInternalIdRemoved;
-    }
-
-    public void setIsPropertyInternalIdRemoved(Boolean removed)
-    {
-        this.isPropertyInternalIdRemoved = removed;
-    }
-
     private Boolean isPropertyGtinRemoved;
 
     public Boolean getIsPropertyGtinRemoved()
@@ -260,6 +236,18 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.isPropertyGtinRemoved = removed;
     }
 
+    private Boolean isPropertyGs1BatchRemoved;
+
+    public Boolean getIsPropertyGs1BatchRemoved()
+    {
+        return this.isPropertyGs1BatchRemoved;
+    }
+
+    public void setIsPropertyGs1BatchRemoved(Boolean removed)
+    {
+        this.isPropertyGs1BatchRemoved = removed;
+    }
+
     private Boolean isPropertySourceFacilityIdRemoved;
 
     public Boolean getIsPropertySourceFacilityIdRemoved()
@@ -270,6 +258,18 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     public void setIsPropertySourceFacilityIdRemoved(Boolean removed)
     {
         this.isPropertySourceFacilityIdRemoved = removed;
+    }
+
+    private Boolean isPropertyInternalIdRemoved;
+
+    public Boolean getIsPropertyInternalIdRemoved()
+    {
+        return this.isPropertyInternalIdRemoved;
+    }
+
+    public void setIsPropertyInternalIdRemoved(Boolean removed)
+    {
+        this.isPropertyInternalIdRemoved = removed;
     }
 
     private Boolean isPropertyPalletSsccRemoved;
@@ -326,10 +326,10 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         command.setQuantity(this.getQuantity());
         command.setExpirationDate(this.getExpirationDate());
         command.setActive(this.getActive());
-        command.setGs1Batch(this.getGs1Batch());
-        command.setInternalId(this.getInternalId());
         command.setGtin(this.getGtin());
+        command.setGs1Batch(this.getGs1Batch());
         command.setSourceFacilityId(this.getSourceFacilityId());
+        command.setInternalId(this.getInternalId());
         command.setPalletSscc(this.getPalletSscc());
         command.setPackDate(this.getPackDate());
         command.setHarvestDate(this.getHarvestDate());
@@ -402,10 +402,10 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         command.setIsPropertyQuantityRemoved(this.getIsPropertyQuantityRemoved());
         command.setIsPropertyExpirationDateRemoved(this.getIsPropertyExpirationDateRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
-        command.setIsPropertyGs1BatchRemoved(this.getIsPropertyGs1BatchRemoved());
-        command.setIsPropertyInternalIdRemoved(this.getIsPropertyInternalIdRemoved());
         command.setIsPropertyGtinRemoved(this.getIsPropertyGtinRemoved());
+        command.setIsPropertyGs1BatchRemoved(this.getIsPropertyGs1BatchRemoved());
         command.setIsPropertySourceFacilityIdRemoved(this.getIsPropertySourceFacilityIdRemoved());
+        command.setIsPropertyInternalIdRemoved(this.getIsPropertyInternalIdRemoved());
         command.setIsPropertyPalletSsccRemoved(this.getIsPropertyPalletSsccRemoved());
         command.setIsPropertyPackDateRemoved(this.getIsPropertyPackDateRemoved());
         command.setIsPropertyHarvestDateRemoved(this.getIsPropertyHarvestDateRemoved());

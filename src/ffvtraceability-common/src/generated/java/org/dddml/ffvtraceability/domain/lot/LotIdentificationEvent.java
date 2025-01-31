@@ -53,10 +53,6 @@ public interface LotIdentificationEvent extends Event {
 
         void setGs1Batch(String gs1Batch);
 
-        String getSourceFacilityId();
-
-        void setSourceFacilityId(String sourceFacilityId);
-
     }
 
     interface LotIdentificationStateCreated extends LotIdentificationStateEvent
@@ -78,10 +74,6 @@ public interface LotIdentificationEvent extends Event {
         Boolean getIsPropertyGs1BatchRemoved();
 
         void setIsPropertyGs1BatchRemoved(Boolean removed);
-
-        Boolean getIsPropertySourceFacilityIdRemoved();
-
-        void setIsPropertySourceFacilityIdRemoved(Boolean removed);
 
 
 

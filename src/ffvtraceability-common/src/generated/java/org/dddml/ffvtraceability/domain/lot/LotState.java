@@ -25,13 +25,13 @@ public interface LotState
 
     String getActive();
 
-    String getGs1Batch();
-
-    String getInternalId();
-
     String getGtin();
 
+    String getGs1Batch();
+
     String getSourceFacilityId();
+
+    String getInternalId();
 
     String getPalletSscc();
 
@@ -62,13 +62,13 @@ public interface LotState
 
         void setActive(String active);
 
-        void setGs1Batch(String gs1Batch);
-
-        void setInternalId(String internalId);
-
         void setGtin(String gtin);
 
+        void setGs1Batch(String gs1Batch);
+
         void setSourceFacilityId(String sourceFacilityId);
+
+        void setInternalId(String internalId);
 
         void setPalletSscc(String palletSscc);
 

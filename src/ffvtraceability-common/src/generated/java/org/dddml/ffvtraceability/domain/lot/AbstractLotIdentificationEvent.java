@@ -127,18 +127,6 @@ public abstract class AbstractLotIdentificationEvent extends AbstractEvent imple
             this.gs1Batch = gs1Batch;
         }
 
-        private String sourceFacilityId;
-
-        public String getSourceFacilityId()
-        {
-            return this.sourceFacilityId;
-        }
-
-        public void setSourceFacilityId(String sourceFacilityId)
-        {
-            this.sourceFacilityId = sourceFacilityId;
-        }
-
         protected AbstractLotIdentificationStateEvent(LotIdentificationEventId eventId) {
             super(eventId);
         }
@@ -203,16 +191,6 @@ public abstract class AbstractLotIdentificationEvent extends AbstractEvent imple
 
         public void setIsPropertyGs1BatchRemoved(Boolean removed) {
             this.isPropertyGs1BatchRemoved = removed;
-        }
-
-        private Boolean isPropertySourceFacilityIdRemoved;
-
-        public Boolean getIsPropertySourceFacilityIdRemoved() {
-            return this.isPropertySourceFacilityIdRemoved;
-        }
-
-        public void setIsPropertySourceFacilityIdRemoved(Boolean removed) {
-            this.isPropertySourceFacilityIdRemoved = removed;
         }
 
 

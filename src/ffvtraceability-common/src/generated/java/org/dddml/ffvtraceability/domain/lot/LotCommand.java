@@ -60,21 +60,21 @@ public interface LotCommand extends Command {
 
         void setActive(String active);
 
-        String getGs1Batch();
-
-        void setGs1Batch(String gs1Batch);
-
-        String getInternalId();
-
-        void setInternalId(String internalId);
-
         String getGtin();
 
         void setGtin(String gtin);
 
+        String getGs1Batch();
+
+        void setGs1Batch(String gs1Batch);
+
         String getSourceFacilityId();
 
         void setSourceFacilityId(String sourceFacilityId);
+
+        String getInternalId();
+
+        void setInternalId(String internalId);
 
         String getPalletSscc();
 
@@ -114,21 +114,21 @@ public interface LotCommand extends Command {
 
         void setIsPropertyActiveRemoved(Boolean removed);
 
-        Boolean getIsPropertyGs1BatchRemoved();
-
-        void setIsPropertyGs1BatchRemoved(Boolean removed);
-
-        Boolean getIsPropertyInternalIdRemoved();
-
-        void setIsPropertyInternalIdRemoved(Boolean removed);
-
         Boolean getIsPropertyGtinRemoved();
 
         void setIsPropertyGtinRemoved(Boolean removed);
 
+        Boolean getIsPropertyGs1BatchRemoved();
+
+        void setIsPropertyGs1BatchRemoved(Boolean removed);
+
         Boolean getIsPropertySourceFacilityIdRemoved();
 
         void setIsPropertySourceFacilityIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyInternalIdRemoved();
+
+        void setIsPropertyInternalIdRemoved(Boolean removed);
 
         Boolean getIsPropertyPalletSsccRemoved();
 

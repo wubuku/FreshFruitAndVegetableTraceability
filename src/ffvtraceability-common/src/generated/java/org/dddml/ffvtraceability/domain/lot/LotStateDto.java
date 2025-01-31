@@ -62,30 +62,6 @@ public class LotStateDto {
         this.active = active;
     }
 
-    private String gs1Batch;
-
-    public String getGs1Batch()
-    {
-        return this.gs1Batch;
-    }
-
-    public void setGs1Batch(String gs1Batch)
-    {
-        this.gs1Batch = gs1Batch;
-    }
-
-    private String internalId;
-
-    public String getInternalId()
-    {
-        return this.internalId;
-    }
-
-    public void setInternalId(String internalId)
-    {
-        this.internalId = internalId;
-    }
-
     private String gtin;
 
     public String getGtin()
@@ -98,6 +74,18 @@ public class LotStateDto {
         this.gtin = gtin;
     }
 
+    private String gs1Batch;
+
+    public String getGs1Batch()
+    {
+        return this.gs1Batch;
+    }
+
+    public void setGs1Batch(String gs1Batch)
+    {
+        this.gs1Batch = gs1Batch;
+    }
+
     private String sourceFacilityId;
 
     public String getSourceFacilityId()
@@ -108,6 +96,18 @@ public class LotStateDto {
     public void setSourceFacilityId(String sourceFacilityId)
     {
         this.sourceFacilityId = sourceFacilityId;
+    }
+
+    private String internalId;
+
+    public String getInternalId()
+    {
+        return this.internalId;
+    }
+
+    public void setInternalId(String internalId)
+    {
+        this.internalId = internalId;
     }
 
     private String palletSscc;
@@ -271,17 +271,17 @@ public class LotStateDto {
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
             }
-            if (returnedFieldsContains("Gs1Batch")) {
-                dto.setGs1Batch(state.getGs1Batch());
-            }
-            if (returnedFieldsContains("InternalId")) {
-                dto.setInternalId(state.getInternalId());
-            }
             if (returnedFieldsContains("Gtin")) {
                 dto.setGtin(state.getGtin());
             }
+            if (returnedFieldsContains("Gs1Batch")) {
+                dto.setGs1Batch(state.getGs1Batch());
+            }
             if (returnedFieldsContains("SourceFacilityId")) {
                 dto.setSourceFacilityId(state.getSourceFacilityId());
+            }
+            if (returnedFieldsContains("InternalId")) {
+                dto.setInternalId(state.getInternalId());
             }
             if (returnedFieldsContains("PalletSscc")) {
                 dto.setPalletSscc(state.getPalletSscc());

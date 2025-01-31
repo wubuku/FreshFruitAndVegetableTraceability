@@ -22,17 +22,17 @@
     <property name="active">
       <column name="active" sql-type="CHAR(1)" />
     </property>
-    <property name="gs1Batch">
-      <column name="gs1_batch" sql-type="VARCHAR(20)" />
-    </property>
-    <property name="internalId">
-      <column name="internal_id" sql-type="VARCHAR(20)" />
-    </property>
     <property name="gtin">
       <column name="gtin" sql-type="VARCHAR(20)" />
     </property>
+    <property name="gs1Batch">
+      <column name="gs1_batch" sql-type="VARCHAR(20)" />
+    </property>
     <property name="sourceFacilityId">
       <column name="source_facility_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="internalId">
+      <column name="internal_id" sql-type="VARCHAR(20)" />
     </property>
     <property name="palletSscc">
       <column name="pallet_sscc" sql-type="VARCHAR(18)" />

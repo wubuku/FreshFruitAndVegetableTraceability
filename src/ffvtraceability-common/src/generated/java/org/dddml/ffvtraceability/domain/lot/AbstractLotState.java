@@ -54,26 +54,6 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.active = active;
     }
 
-    private String gs1Batch;
-
-    public String getGs1Batch() {
-        return this.gs1Batch;
-    }
-
-    public void setGs1Batch(String gs1Batch) {
-        this.gs1Batch = gs1Batch;
-    }
-
-    private String internalId;
-
-    public String getInternalId() {
-        return this.internalId;
-    }
-
-    public void setInternalId(String internalId) {
-        this.internalId = internalId;
-    }
-
     private String gtin;
 
     public String getGtin() {
@@ -84,6 +64,16 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.gtin = gtin;
     }
 
+    private String gs1Batch;
+
+    public String getGs1Batch() {
+        return this.gs1Batch;
+    }
+
+    public void setGs1Batch(String gs1Batch) {
+        this.gs1Batch = gs1Batch;
+    }
+
     private String sourceFacilityId;
 
     public String getSourceFacilityId() {
@@ -92,6 +82,16 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
 
     public void setSourceFacilityId(String sourceFacilityId) {
         this.sourceFacilityId = sourceFacilityId;
+    }
+
+    private String internalId;
+
+    public String getInternalId() {
+        return this.internalId;
+    }
+
+    public void setInternalId(String internalId) {
+        this.internalId = internalId;
     }
 
     private String palletSscc;
@@ -292,10 +292,10 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.setQuantity(e.getQuantity());
         this.setExpirationDate(e.getExpirationDate());
         this.setActive(e.getActive());
-        this.setGs1Batch(e.getGs1Batch());
-        this.setInternalId(e.getInternalId());
         this.setGtin(e.getGtin());
+        this.setGs1Batch(e.getGs1Batch());
         this.setSourceFacilityId(e.getSourceFacilityId());
+        this.setInternalId(e.getInternalId());
         this.setPalletSscc(e.getPalletSscc());
         this.setPackDate(e.getPackDate());
         this.setHarvestDate(e.getHarvestDate());
@@ -317,10 +317,10 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.setQuantity(s.getQuantity());
         this.setExpirationDate(s.getExpirationDate());
         this.setActive(s.getActive());
-        this.setGs1Batch(s.getGs1Batch());
-        this.setInternalId(s.getInternalId());
         this.setGtin(s.getGtin());
+        this.setGs1Batch(s.getGs1Batch());
         this.setSourceFacilityId(s.getSourceFacilityId());
+        this.setInternalId(s.getInternalId());
         this.setPalletSscc(s.getPalletSscc());
         this.setPackDate(s.getPackDate());
         this.setHarvestDate(s.getHarvestDate());
@@ -387,20 +387,6 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         } else {
             this.setActive(e.getActive());
         }
-        if (e.getGs1Batch() == null) {
-            if (e.getIsPropertyGs1BatchRemoved() != null && e.getIsPropertyGs1BatchRemoved()) {
-                this.setGs1Batch(null);
-            }
-        } else {
-            this.setGs1Batch(e.getGs1Batch());
-        }
-        if (e.getInternalId() == null) {
-            if (e.getIsPropertyInternalIdRemoved() != null && e.getIsPropertyInternalIdRemoved()) {
-                this.setInternalId(null);
-            }
-        } else {
-            this.setInternalId(e.getInternalId());
-        }
         if (e.getGtin() == null) {
             if (e.getIsPropertyGtinRemoved() != null && e.getIsPropertyGtinRemoved()) {
                 this.setGtin(null);
@@ -408,12 +394,26 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         } else {
             this.setGtin(e.getGtin());
         }
+        if (e.getGs1Batch() == null) {
+            if (e.getIsPropertyGs1BatchRemoved() != null && e.getIsPropertyGs1BatchRemoved()) {
+                this.setGs1Batch(null);
+            }
+        } else {
+            this.setGs1Batch(e.getGs1Batch());
+        }
         if (e.getSourceFacilityId() == null) {
             if (e.getIsPropertySourceFacilityIdRemoved() != null && e.getIsPropertySourceFacilityIdRemoved()) {
                 this.setSourceFacilityId(null);
             }
         } else {
             this.setSourceFacilityId(e.getSourceFacilityId());
+        }
+        if (e.getInternalId() == null) {
+            if (e.getIsPropertyInternalIdRemoved() != null && e.getIsPropertyInternalIdRemoved()) {
+                this.setInternalId(null);
+            }
+        } else {
+            this.setInternalId(e.getInternalId());
         }
         if (e.getPalletSscc() == null) {
             if (e.getIsPropertyPalletSsccRemoved() != null && e.getIsPropertyPalletSsccRemoved()) {

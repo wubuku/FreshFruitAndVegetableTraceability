@@ -75,18 +75,6 @@ public abstract class AbstractLotIdentificationCommand extends AbstractCommand i
             this.gs1Batch = gs1Batch;
         }
 
-        private String sourceFacilityId;
-
-        public String getSourceFacilityId()
-        {
-            return this.sourceFacilityId;
-        }
-
-        public void setSourceFacilityId(String sourceFacilityId)
-        {
-            this.sourceFacilityId = sourceFacilityId;
-        }
-
     }
 
     public static abstract class AbstractCreateLotIdentification extends AbstractCreateOrMergePatchLotIdentification implements CreateLotIdentification
@@ -139,18 +127,6 @@ public abstract class AbstractLotIdentificationCommand extends AbstractCommand i
         public void setIsPropertyGs1BatchRemoved(Boolean removed)
         {
             this.isPropertyGs1BatchRemoved = removed;
-        }
-
-        private Boolean isPropertySourceFacilityIdRemoved;
-
-        public Boolean getIsPropertySourceFacilityIdRemoved()
-        {
-            return this.isPropertySourceFacilityIdRemoved;
-        }
-
-        public void setIsPropertySourceFacilityIdRemoved(Boolean removed)
-        {
-            this.isPropertySourceFacilityIdRemoved = removed;
         }
 
 

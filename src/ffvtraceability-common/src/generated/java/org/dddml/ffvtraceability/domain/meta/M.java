@@ -2627,10 +2627,10 @@ public class M {
             "quantity",
             "expirationDate",
             "active",
-            "gs1Batch",
-            "internalId",
             "gtin",
+            "gs1Batch",
             "sourceFacilityId",
+            "internalId",
             "palletSscc",
             "packDate",
             "harvestDate",
@@ -2686,14 +2686,14 @@ public class M {
         aliasMap.put("ExpirationDate", "expirationDate");
         aliasMap.put("active", "active");
         aliasMap.put("Active", "active");
-        aliasMap.put("gs1Batch", "gs1Batch");
-        aliasMap.put("Gs1Batch", "gs1Batch");
-        aliasMap.put("internalId", "internalId");
-        aliasMap.put("InternalId", "internalId");
         aliasMap.put("gtin", "gtin");
         aliasMap.put("Gtin", "gtin");
+        aliasMap.put("gs1Batch", "gs1Batch");
+        aliasMap.put("Gs1Batch", "gs1Batch");
         aliasMap.put("sourceFacilityId", "sourceFacilityId");
         aliasMap.put("SourceFacilityId", "sourceFacilityId");
+        aliasMap.put("internalId", "internalId");
+        aliasMap.put("InternalId", "internalId");
         aliasMap.put("palletSscc", "palletSscc");
         aliasMap.put("PalletSscc", "palletSscc");
         aliasMap.put("packDate", "packDate");
@@ -2746,7 +2746,6 @@ public class M {
             "idValue",
             "gtin",
             "gs1Batch",
-            "sourceFacilityId",
             "version",
             "createdBy",
             "createdAt",
@@ -2760,7 +2759,6 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
-            "String",
             "String",
             "String",
             "String",
@@ -2797,8 +2795,6 @@ public class M {
         aliasMap.put("Gtin", "gtin");
         aliasMap.put("gs1Batch", "gs1Batch");
         aliasMap.put("Gs1Batch", "gs1Batch");
-        aliasMap.put("sourceFacilityId", "sourceFacilityId");
-        aliasMap.put("SourceFacilityId", "sourceFacilityId");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

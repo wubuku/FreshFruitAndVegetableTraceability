@@ -54,10 +54,10 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
         e.setActive(c.getActive());
-        e.setGs1Batch(c.getGs1Batch());
-        e.setInternalId(c.getInternalId());
         e.setGtin(c.getGtin());
+        e.setGs1Batch(c.getGs1Batch());
         e.setSourceFacilityId(c.getSourceFacilityId());
+        e.setInternalId(c.getInternalId());
         e.setPalletSscc(c.getPalletSscc());
         e.setPackDate(c.getPackDate());
         e.setHarvestDate(c.getHarvestDate());
@@ -81,10 +81,10 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
         e.setActive(c.getActive());
-        e.setGs1Batch(c.getGs1Batch());
-        e.setInternalId(c.getInternalId());
         e.setGtin(c.getGtin());
+        e.setGs1Batch(c.getGs1Batch());
         e.setSourceFacilityId(c.getSourceFacilityId());
+        e.setInternalId(c.getInternalId());
         e.setPalletSscc(c.getPalletSscc());
         e.setPackDate(c.getPackDate());
         e.setHarvestDate(c.getHarvestDate());
@@ -92,10 +92,10 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setIsPropertyQuantityRemoved(c.getIsPropertyQuantityRemoved());
         e.setIsPropertyExpirationDateRemoved(c.getIsPropertyExpirationDateRemoved());
         e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
-        e.setIsPropertyGs1BatchRemoved(c.getIsPropertyGs1BatchRemoved());
-        e.setIsPropertyInternalIdRemoved(c.getIsPropertyInternalIdRemoved());
         e.setIsPropertyGtinRemoved(c.getIsPropertyGtinRemoved());
+        e.setIsPropertyGs1BatchRemoved(c.getIsPropertyGs1BatchRemoved());
         e.setIsPropertySourceFacilityIdRemoved(c.getIsPropertySourceFacilityIdRemoved());
+        e.setIsPropertyInternalIdRemoved(c.getIsPropertyInternalIdRemoved());
         e.setIsPropertyPalletSsccRemoved(c.getIsPropertyPalletSsccRemoved());
         e.setIsPropertyPackDateRemoved(c.getIsPropertyPackDateRemoved());
         e.setIsPropertyHarvestDateRemoved(c.getIsPropertyHarvestDateRemoved());
@@ -137,7 +137,6 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setIdValue(c.getIdValue());
         e.setGtin(c.getGtin());
         e.setGs1Batch(c.getGs1Batch());
-        e.setSourceFacilityId(c.getSourceFacilityId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
 
@@ -154,11 +153,9 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setIdValue(c.getIdValue());
         e.setGtin(c.getGtin());
         e.setGs1Batch(c.getGs1Batch());
-        e.setSourceFacilityId(c.getSourceFacilityId());
         e.setIsPropertyIdValueRemoved(c.getIsPropertyIdValueRemoved());
         e.setIsPropertyGtinRemoved(c.getIsPropertyGtinRemoved());
         e.setIsPropertyGs1BatchRemoved(c.getIsPropertyGs1BatchRemoved());
-        e.setIsPropertySourceFacilityIdRemoved(c.getIsPropertySourceFacilityIdRemoved());
 
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

@@ -62,18 +62,6 @@ public class LotIdentificationStateDto {
         this.gs1Batch = gs1Batch;
     }
 
-    private String sourceFacilityId;
-
-    public String getSourceFacilityId()
-    {
-        return this.sourceFacilityId;
-    }
-
-    public void setSourceFacilityId(String sourceFacilityId)
-    {
-        this.sourceFacilityId = sourceFacilityId;
-    }
-
     private Long version;
 
     public Long getVersion()
@@ -186,9 +174,6 @@ public class LotIdentificationStateDto {
             }
             if (returnedFieldsContains("Gs1Batch")) {
                 dto.setGs1Batch(state.getGs1Batch());
-            }
-            if (returnedFieldsContains("SourceFacilityId")) {
-                dto.setSourceFacilityId(state.getSourceFacilityId());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
