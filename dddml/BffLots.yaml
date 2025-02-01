@@ -131,10 +131,12 @@ services:
             itemType: BffLotDto
  
       # -----------------------------------------------------------------------------
-      # 对于同样的 Case GTIN 和 Case Batch 组合，可以存在多条记录
-      # 但其中有一条“特殊记录”，它只有 GTIN 和 Batch 是必填的（其他属性一般情况下应为 null）。
-      # 这种特殊记录对于每个 GTIN+Batch 组合只能存在一条。
+      # 对于同样的 Case GTIN 和 Case Batch 组合，可以存在多条 Lot 记录。
+      # 但其中有一种“特殊记录”，对于每个 GTIN+Batch 组合只能存在一条。
+      # 这种特殊记录的 GTIN 和 Batch 是必填的，且 SourceFacilityId 一般情况下也应该有值。
+      # （除此以外的其他属性一般情况下应为 null。）
       # 基于这个业务场景，我们将这种记录称为 "Primary" TLC (Traceability Lot Code)。
+      # 它的主要作用之一是用于确定赋予 TLC GTIN/Batch 的“源头设施”。
       # -----------------------------------------------------------------------------
       CreatePrimaryTlc:
         # 创建“特殊”的 Traceability Lot Code (TLC)
