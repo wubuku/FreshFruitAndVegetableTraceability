@@ -21,12 +21,18 @@ public class BffLotMapperImpl implements BffLotMapper {
 
         BffLotDto bffLotDto = new BffLotDto();
 
-        bffLotDto.setExpirationDate( instantToOffsetDateTime( bffLotProjection.getExpirationDateInstant() ) );
         bffLotDto.setLotId( bffLotProjection.getLotId() );
         bffLotDto.setGs1Batch( bffLotProjection.getGs1Batch() );
         bffLotDto.setQuantity( bffLotProjection.getQuantity() );
+        bffLotDto.setExpirationDate( instantToOffsetDateTime( bffLotProjection.getExpirationDate() ) );
         bffLotDto.setActive( bffLotProjection.getActive() );
         bffLotDto.setInternalId( bffLotProjection.getInternalId() );
+        bffLotDto.setGtin( bffLotProjection.getGtin() );
+        bffLotDto.setSourceFacilityId( bffLotProjection.getSourceFacilityId() );
+        bffLotDto.setPalletSscc( bffLotProjection.getPalletSscc() );
+        bffLotDto.setPackDate( instantToOffsetDateTime( bffLotProjection.getPackDate() ) );
+        bffLotDto.setHarvestDate( instantToOffsetDateTime( bffLotProjection.getHarvestDate() ) );
+        bffLotDto.setSerialNumber( bffLotProjection.getSerialNumber() );
 
         return bffLotDto;
     }
@@ -45,6 +51,12 @@ public class BffLotMapperImpl implements BffLotMapper {
         bffLotDto.setExpirationDate( lotState.getExpirationDate() );
         bffLotDto.setActive( lotState.getActive() );
         bffLotDto.setInternalId( lotState.getInternalId() );
+        bffLotDto.setGtin( lotState.getGtin() );
+        bffLotDto.setSourceFacilityId( lotState.getSourceFacilityId() );
+        bffLotDto.setPalletSscc( lotState.getPalletSscc() );
+        bffLotDto.setPackDate( lotState.getPackDate() );
+        bffLotDto.setHarvestDate( lotState.getHarvestDate() );
+        bffLotDto.setSerialNumber( lotState.getSerialNumber() );
 
         return bffLotDto;
     }
@@ -61,8 +73,14 @@ public class BffLotMapperImpl implements BffLotMapper {
         simpleCreateLot.setQuantity( bffLotDto.getQuantity() );
         simpleCreateLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleCreateLot.setActive( bffLotDto.getActive() );
+        simpleCreateLot.setGtin( bffLotDto.getGtin() );
         simpleCreateLot.setGs1Batch( bffLotDto.getGs1Batch() );
+        simpleCreateLot.setSourceFacilityId( bffLotDto.getSourceFacilityId() );
         simpleCreateLot.setInternalId( bffLotDto.getInternalId() );
+        simpleCreateLot.setPalletSscc( bffLotDto.getPalletSscc() );
+        simpleCreateLot.setPackDate( bffLotDto.getPackDate() );
+        simpleCreateLot.setHarvestDate( bffLotDto.getHarvestDate() );
+        simpleCreateLot.setSerialNumber( bffLotDto.getSerialNumber() );
 
         return simpleCreateLot;
     }
@@ -79,8 +97,14 @@ public class BffLotMapperImpl implements BffLotMapper {
         simpleMergePatchLot.setQuantity( bffLotDto.getQuantity() );
         simpleMergePatchLot.setExpirationDate( bffLotDto.getExpirationDate() );
         simpleMergePatchLot.setActive( bffLotDto.getActive() );
+        simpleMergePatchLot.setGtin( bffLotDto.getGtin() );
         simpleMergePatchLot.setGs1Batch( bffLotDto.getGs1Batch() );
+        simpleMergePatchLot.setSourceFacilityId( bffLotDto.getSourceFacilityId() );
         simpleMergePatchLot.setInternalId( bffLotDto.getInternalId() );
+        simpleMergePatchLot.setPalletSscc( bffLotDto.getPalletSscc() );
+        simpleMergePatchLot.setPackDate( bffLotDto.getPackDate() );
+        simpleMergePatchLot.setHarvestDate( bffLotDto.getHarvestDate() );
+        simpleMergePatchLot.setSerialNumber( bffLotDto.getSerialNumber() );
 
         return simpleMergePatchLot;
     }

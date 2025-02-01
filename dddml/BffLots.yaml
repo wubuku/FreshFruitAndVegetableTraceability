@@ -3,10 +3,12 @@ valueObjects:
   BffLotDto:
     metadata:
       JpaProjectionInterfaceName: BffLotProjection
-      JpaProjectionPropertyAliases:
-        ExpirationDate: ExpirationDateInstant
+      #JpaProjectionPropertyAliases:
+      #  ExpirationDate: ExpirationDateInstant
       JpaProjectionPropertyTypes:
         ExpirationDate: java.time.Instant
+        HarvestDate: java.time.Instant
+        PackDate: java.time.Instant
       JakartaValidationEnabled: true
     properties:
       LotId:
@@ -24,6 +26,33 @@ valueObjects:
         type: indicator
       InternalId:
         type: id
+      Gtin:
+        type: id
+        # description: "AI (01) Case GTIN"
+      # CaseBatch:
+      #   type: KdeBatch
+      #   description: "AI (10) Case Batch/Lot"
+      #   # Use for Traceability Lot Code (TLC)
+      SourceFacilityId:
+        type: id
+        description: "The facility (location) where TLC was assigned during initial packing or transformation"
+      # ---------------------------------------------------------------------
+      PalletSscc:
+        type: SSCC
+        # description: "AI (00) Pallet SSCC"
+        # use for Traceability Lot Code (TLC)
+      PackDate:
+        type: date-time
+        # description: "AI (13) Pack Date"
+        # use for Traceability Lot Code (TLC)
+      HarvestDate:
+        type: date-time
+        # description: "AI (13) Harvest Date"
+        # use for Traceability Lot Code (TLC)
+      SerialNumber:
+        type: id-long
+        # description: "AI (21) Serial Number"
+        # use for Traceability Lot Code (TLC)
 
 services:
   BffLotService:

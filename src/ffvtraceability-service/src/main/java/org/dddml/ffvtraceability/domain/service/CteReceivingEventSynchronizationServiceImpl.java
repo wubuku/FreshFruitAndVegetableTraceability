@@ -141,8 +141,8 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
     private KdeTraceabilityLotCode getKdeTraceabilityLotCode(BffReceivingItemDto receivingItem) {
         KdeTraceabilityLotCode tlc = new KdeTraceabilityLotCode();
         String lotId = receivingItem.getLotId();
-        String caseGtin = receivingItem.getGtin(); // NOTE: Might this not be a real Case GTIN?
-        String caseBatch = lotId; // NOTE: Might this not be a real Case BATCH?
+        String caseGtin = null;
+        String caseBatch = null; // = lotId??? NOTE: Might the `lotId` not be a real Case BATCH?
 
         LotState lotState = lotApplicationService.get(lotId);
         if (lotState != null) {
@@ -150,15 +150,17 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
                     x -> BffLotConstants.LOT_IDENTIFICATION_TYPE_TLC_CASE_GTIN_BATCH.equals(x.getLotIdentificationTypeId())
             ).findAny();
             if (tlcLotIdentification.isPresent()) {
+                // User Case GTIN of LotIdentification
                 LotIdentificationState l = tlcLotIdentification.get();
                 caseGtin = l.getGtin();
                 caseBatch = l.getGs1Batch();
             } else {
                 if (lotState.getGtin() != null && !lotState.getGtin().trim().isEmpty()) {
-                    caseGtin = lotState.getGtin().trim();
+                    // Use GTIN of Lot
+                    caseGtin = lotState.getGtin().trim(); // NOTE: Might this not be a real Case GTIN?
                 }
                 if (lotState.getGs1Batch() != null && !lotState.getGs1Batch().trim().isEmpty()) {
-                    caseBatch = lotState.getGs1Batch().trim();
+                    caseBatch = lotState.getGs1Batch().trim(); // NOTE: Might this not be a real Case Batch?
                 }
             }
             tlc.setPalletSscc(lotState.getPalletSscc());
@@ -172,6 +174,10 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             if (lotState.getExpirationDate() != null) {
                 tlc.setBestIfUsedByDate(formatDateTime(lotState.getExpirationDate()));
             }
+        }
+        if ((caseGtin == null || caseGtin.trim().isEmpty()) && receivingItem.getGtin() != null) {
+            // Use GTIN of Product
+            caseGtin = receivingItem.getGtin(); // NOTE: Might this not be a real Case GTIN?
         }
         tlc.setCaseGtin(caseGtin);
         tlc.setCaseBatch(caseBatch);

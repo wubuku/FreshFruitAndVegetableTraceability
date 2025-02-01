@@ -87,11 +87,86 @@ public class BffLotDto implements Serializable {
         this.internalId = internalId;
     }
 
+    private String gtin;
+
+    public String getGtin()
+    {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin)
+    {
+        this.gtin = gtin;
+    }
+
+    /**
+     * The facility (location) where TLC was assigned during initial packing or transformation
+     */
+    private String sourceFacilityId;
+
+    public String getSourceFacilityId()
+    {
+        return this.sourceFacilityId;
+    }
+
+    public void setSourceFacilityId(String sourceFacilityId)
+    {
+        this.sourceFacilityId = sourceFacilityId;
+    }
+
+    private String palletSscc;
+
+    public String getPalletSscc()
+    {
+        return this.palletSscc;
+    }
+
+    public void setPalletSscc(String palletSscc)
+    {
+        this.palletSscc = palletSscc;
+    }
+
+    private OffsetDateTime packDate;
+
+    public OffsetDateTime getPackDate()
+    {
+        return this.packDate;
+    }
+
+    public void setPackDate(OffsetDateTime packDate)
+    {
+        this.packDate = packDate;
+    }
+
+    private OffsetDateTime harvestDate;
+
+    public OffsetDateTime getHarvestDate()
+    {
+        return this.harvestDate;
+    }
+
+    public void setHarvestDate(OffsetDateTime harvestDate)
+    {
+        this.harvestDate = harvestDate;
+    }
+
+    private String serialNumber;
+
+    public String getSerialNumber()
+    {
+        return this.serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber)
+    {
+        this.serialNumber = serialNumber;
+    }
+
     public BffLotDto()
     {
     }
 
-    public BffLotDto(String lotId, String gs1Batch, java.math.BigDecimal quantity, OffsetDateTime expirationDate, String active, String internalId)
+    public BffLotDto(String lotId, String gs1Batch, java.math.BigDecimal quantity, OffsetDateTime expirationDate, String active, String internalId, String gtin, String sourceFacilityId, String palletSscc, OffsetDateTime packDate, OffsetDateTime harvestDate, String serialNumber)
     {
         this.lotId = lotId;
         this.gs1Batch = gs1Batch;
@@ -99,6 +174,12 @@ public class BffLotDto implements Serializable {
         this.expirationDate = expirationDate;
         this.active = active;
         this.internalId = internalId;
+        this.gtin = gtin;
+        this.sourceFacilityId = sourceFacilityId;
+        this.palletSscc = palletSscc;
+        this.packDate = packDate;
+        this.harvestDate = harvestDate;
+        this.serialNumber = serialNumber;
     }
 
     @Override
@@ -119,6 +200,12 @@ public class BffLotDto implements Serializable {
             && (expirationDate == other.expirationDate || (expirationDate != null && expirationDate.equals(other.expirationDate)))
             && (active == other.active || (active != null && active.equals(other.active)))
             && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
+            && (gtin == other.gtin || (gtin != null && gtin.equals(other.gtin)))
+            && (sourceFacilityId == other.sourceFacilityId || (sourceFacilityId != null && sourceFacilityId.equals(other.sourceFacilityId)))
+            && (palletSscc == other.palletSscc || (palletSscc != null && palletSscc.equals(other.palletSscc)))
+            && (packDate == other.packDate || (packDate != null && packDate.equals(other.packDate)))
+            && (harvestDate == other.harvestDate || (harvestDate != null && harvestDate.equals(other.harvestDate)))
+            && (serialNumber == other.serialNumber || (serialNumber != null && serialNumber.equals(other.serialNumber)))
             ;
     }
 
@@ -144,6 +231,24 @@ public class BffLotDto implements Serializable {
         if (this.internalId != null) {
             hash += 13 * this.internalId.hashCode();
         }
+        if (this.gtin != null) {
+            hash += 13 * this.gtin.hashCode();
+        }
+        if (this.sourceFacilityId != null) {
+            hash += 13 * this.sourceFacilityId.hashCode();
+        }
+        if (this.palletSscc != null) {
+            hash += 13 * this.palletSscc.hashCode();
+        }
+        if (this.packDate != null) {
+            hash += 13 * this.packDate.hashCode();
+        }
+        if (this.harvestDate != null) {
+            hash += 13 * this.harvestDate.hashCode();
+        }
+        if (this.serialNumber != null) {
+            hash += 13 * this.serialNumber.hashCode();
+        }
         return hash;
     }
 
@@ -156,6 +261,12 @@ public class BffLotDto implements Serializable {
                 ", expirationDate=" + expirationDate +
                 ", active=" + '\'' + active + '\'' +
                 ", internalId=" + '\'' + internalId + '\'' +
+                ", gtin=" + '\'' + gtin + '\'' +
+                ", sourceFacilityId=" + '\'' + sourceFacilityId + '\'' +
+                ", palletSscc=" + '\'' + palletSscc + '\'' +
+                ", packDate=" + packDate +
+                ", harvestDate=" + harvestDate +
+                ", serialNumber=" + '\'' + serialNumber + '\'' +
                 '}';
     }
 

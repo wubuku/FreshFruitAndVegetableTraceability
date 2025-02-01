@@ -15,10 +15,20 @@ public interface BffLotProjection {
 
     java.math.BigDecimal getQuantity();
 
-    java.time.Instant getExpirationDateInstant();
+    java.time.Instant getExpirationDate();
     String getActive();
 
     String getInternalId();
+
+    String getGtin();
+
+    String getSourceFacilityId();
+
+    String getPalletSscc();
+
+    java.time.Instant getPackDate();
+    java.time.Instant getHarvestDate();
+    String getSerialNumber();
 
 }
 

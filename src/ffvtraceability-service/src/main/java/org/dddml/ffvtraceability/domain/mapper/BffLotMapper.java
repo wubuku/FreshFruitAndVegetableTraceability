@@ -23,7 +23,6 @@ public interface BffLotMapper {
         return instant != null ? instant.atOffset(ZoneOffset.UTC) : null;
     }
 
-    @Mapping(source = "expirationDateInstant", target = "expirationDate")
     BffLotDto toBffLotDto(BffLotProjection bffLotProjection);
 
     BffLotDto toBffLotDto(LotState lotState);
