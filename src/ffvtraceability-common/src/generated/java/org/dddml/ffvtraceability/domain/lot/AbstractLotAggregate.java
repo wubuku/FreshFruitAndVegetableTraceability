@@ -53,6 +53,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         LotEvent.LotStateCreated e = newLotStateCreated(stateEventId);
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
+        e.setLotTypeId(c.getLotTypeId());
         e.setActive(c.getActive());
         e.setGtin(c.getGtin());
         e.setGs1Batch(c.getGs1Batch());
@@ -80,6 +81,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         LotEvent.LotStateMergePatched e = newLotStateMergePatched(stateEventId);
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
+        e.setLotTypeId(c.getLotTypeId());
         e.setActive(c.getActive());
         e.setGtin(c.getGtin());
         e.setGs1Batch(c.getGs1Batch());
@@ -91,6 +93,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setSerialNumber(c.getSerialNumber());
         e.setIsPropertyQuantityRemoved(c.getIsPropertyQuantityRemoved());
         e.setIsPropertyExpirationDateRemoved(c.getIsPropertyExpirationDateRemoved());
+        e.setIsPropertyLotTypeIdRemoved(c.getIsPropertyLotTypeIdRemoved());
         e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
         e.setIsPropertyGtinRemoved(c.getIsPropertyGtinRemoved());
         e.setIsPropertyGs1BatchRemoved(c.getIsPropertyGs1BatchRemoved());

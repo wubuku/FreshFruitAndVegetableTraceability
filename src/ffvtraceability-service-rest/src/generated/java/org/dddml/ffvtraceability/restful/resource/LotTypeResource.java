@@ -17,7 +17,7 @@ import org.dddml.support.criterion.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
-import org.dddml.ffvtraceability.domain.lotidentificationtype.*;
+import org.dddml.ffvtraceability.domain.lottype.*;
 import static org.dddml.ffvtraceability.domain.meta.M.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,23 +27,23 @@ import org.dddml.support.criterion.TypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@RequestMapping(path = "LotIdentificationTypes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "LotTypes", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
-public class LotIdentificationTypeResource {
+public class LotTypeResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @Autowired
-    private LotIdentificationTypeApplicationService lotIdentificationTypeApplicationService;
+    private LotTypeApplicationService lotTypeApplicationService;
 
 
     /**
      * Retrieve.
-     * Retrieve LotIdentificationTypes
+     * Retrieve LotTypes
      */
     @GetMapping
     @Transactional(readOnly = true)
-    public LotIdentificationTypeStateDto[] getAll( HttpServletRequest request,
+    public LotTypeStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
@@ -53,40 +53,40 @@ public class LotIdentificationTypeResource {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
-            Iterable<LotIdentificationTypeState> states = null; 
+            Iterable<LotTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
                 criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
-                    .filter(kv -> LotIdentificationTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
+                    .filter(kv -> LotTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
                     .collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue())));
             }
             Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
-                n -> (LotIdentificationTypeMetadata.aliasMap.containsKey(n) ? LotIdentificationTypeMetadata.aliasMap.get(n) : n));
-            states = lotIdentificationTypeApplicationService.get(
+                n -> (LotTypeMetadata.aliasMap.containsKey(n) ? LotTypeMetadata.aliasMap.get(n) : n));
+            states = lotTypeApplicationService.get(
                 c,
-                LotIdentificationTypeResourceUtils.getQuerySorts(request.getParameterMap()),
+                LotTypeResourceUtils.getQuerySorts(request.getParameterMap()),
                 firstResult, maxResults);
 
-            LotIdentificationTypeStateDto.DtoConverter dtoConverter = new LotIdentificationTypeStateDto.DtoConverter();
+            LotTypeStateDto.DtoConverter dtoConverter = new LotTypeStateDto.DtoConverter();
             if (StringHelper.isNullOrEmpty(fields)) {
                 dtoConverter.setAllFieldsReturned(true);
             } else {
                 dtoConverter.setReturnedFieldsString(fields);
             }
-            return dtoConverter.toLotIdentificationTypeStateDtoArray(states);
+            return dtoConverter.toLotTypeStateDtoArray(states);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
      * Retrieve in pages.
-     * Retrieve LotIdentificationTypes in pages.
+     * Retrieve LotTypes in pages.
      */
     @GetMapping("_page")
     @Transactional(readOnly = true)
-    public Page<LotIdentificationTypeStateDto> getPage( HttpServletRequest request,
+    public Page<LotTypeStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
@@ -94,30 +94,30 @@ public class LotIdentificationTypeResource {
         try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
-            Iterable<LotIdentificationTypeState> states = null; 
+            Iterable<LotTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
                 criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
-                    .filter(kv -> LotIdentificationTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
+                    .filter(kv -> LotTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
                     .collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue())));
             }
             Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
-                n -> (LotIdentificationTypeMetadata.aliasMap.containsKey(n) ? LotIdentificationTypeMetadata.aliasMap.get(n) : n));
-            states = lotIdentificationTypeApplicationService.get(
+                n -> (LotTypeMetadata.aliasMap.containsKey(n) ? LotTypeMetadata.aliasMap.get(n) : n));
+            states = lotTypeApplicationService.get(
                 c,
-                LotIdentificationTypeResourceUtils.getQuerySorts(request.getParameterMap()),
+                LotTypeResourceUtils.getQuerySorts(request.getParameterMap()),
                 firstResult, maxResults);
-            long count = lotIdentificationTypeApplicationService.getCount(c);
+            long count = lotTypeApplicationService.getCount(c);
 
-            LotIdentificationTypeStateDto.DtoConverter dtoConverter = new LotIdentificationTypeStateDto.DtoConverter();
+            LotTypeStateDto.DtoConverter dtoConverter = new LotTypeStateDto.DtoConverter();
             if (StringHelper.isNullOrEmpty(fields)) {
                 dtoConverter.setAllFieldsReturned(true);
             } else {
                 dtoConverter.setReturnedFieldsString(fields);
             }
-            Page.PageImpl<LotIdentificationTypeStateDto> statePage =  new Page.PageImpl<>(dtoConverter.toLotIdentificationTypeStateDtoList(states), count);
+            Page.PageImpl<LotTypeStateDto> statePage =  new Page.PageImpl<>(dtoConverter.toLotTypeStateDtoList(states), count);
             statePage.setSize(size);
             statePage.setNumber(page);
             return statePage;
@@ -127,23 +127,23 @@ public class LotIdentificationTypeResource {
 
     /**
      * Retrieve.
-     * Retrieves LotIdentificationType with the specified ID.
+     * Retrieves LotType with the specified ID.
      */
-    @GetMapping("{lotIdentificationTypeId}")
+    @GetMapping("{lotTypeId}")
     @Transactional(readOnly = true)
-    public LotIdentificationTypeStateDto get(@PathVariable("lotIdentificationTypeId") String lotIdentificationTypeId, @RequestParam(value = "fields", required = false) String fields) {
+    public LotTypeStateDto get(@PathVariable("lotTypeId") String lotTypeId, @RequestParam(value = "fields", required = false) String fields) {
         try {
-            String idObj = lotIdentificationTypeId;
-            LotIdentificationTypeState state = lotIdentificationTypeApplicationService.get(idObj);
+            String idObj = lotTypeId;
+            LotTypeState state = lotTypeApplicationService.get(idObj);
             if (state == null) { return null; }
 
-            LotIdentificationTypeStateDto.DtoConverter dtoConverter = new LotIdentificationTypeStateDto.DtoConverter();
+            LotTypeStateDto.DtoConverter dtoConverter = new LotTypeStateDto.DtoConverter();
             if (StringHelper.isNullOrEmpty(fields)) {
                 dtoConverter.setAllFieldsReturned(true);
             } else {
                 dtoConverter.setReturnedFieldsString(fields);
             }
-            return dtoConverter.toLotIdentificationTypeStateDto(state);
+            return dtoConverter.toLotTypeStateDto(state);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
@@ -163,8 +163,8 @@ public class LotIdentificationTypeResource {
             Criterion c = CriterionDto.toSubclass(criterion,
                 getCriterionTypeConverter(), 
                 getPropertyTypeResolver(), 
-                n -> (LotIdentificationTypeMetadata.aliasMap.containsKey(n) ? LotIdentificationTypeMetadata.aliasMap.get(n) : n));
-            count = lotIdentificationTypeApplicationService.getCount(c);
+                n -> (LotTypeMetadata.aliasMap.containsKey(n) ? LotTypeMetadata.aliasMap.get(n) : n));
+            count = lotTypeApplicationService.getCount(c);
             return count;
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
@@ -173,18 +173,18 @@ public class LotIdentificationTypeResource {
 
     /**
      * Create.
-     * Create LotIdentificationType
+     * Create LotType
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody CreateOrMergePatchLotIdentificationTypeDto.CreateLotIdentificationTypeDto value,  HttpServletResponse response) {
+    public String post(@RequestBody CreateOrMergePatchLotTypeDto.CreateLotTypeDto value,  HttpServletResponse response) {
         try {
-            LotIdentificationTypeCommand.CreateLotIdentificationType cmd = value;//.toCreateLotIdentificationType();
-            if (cmd.getLotIdentificationTypeId() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "LotIdentificationType");
+            LotTypeCommand.CreateLotType cmd = value;//.toCreateLotType();
+            if (cmd.getLotTypeId() == null) {
+                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "LotType");
             }
-            String idObj = cmd.getLotIdentificationTypeId();
+            String idObj = cmd.getLotTypeId();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            lotIdentificationTypeApplicationService.when(cmd);
+            lotTypeApplicationService.when(cmd);
 
             return idObj;
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
@@ -193,25 +193,25 @@ public class LotIdentificationTypeResource {
 
     /**
      * Create or update.
-     * Create or update LotIdentificationType
+     * Create or update LotType
      */
-    @PutMapping("{lotIdentificationTypeId}")
-    public void put(@PathVariable("lotIdentificationTypeId") String lotIdentificationTypeId, @RequestBody CreateOrMergePatchLotIdentificationTypeDto value) {
+    @PutMapping("{lotTypeId}")
+    public void put(@PathVariable("lotTypeId") String lotTypeId, @RequestBody CreateOrMergePatchLotTypeDto value) {
         try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
-                LotIdentificationTypeCommand.MergePatchLotIdentificationType cmd = (LotIdentificationTypeCommand.MergePatchLotIdentificationType) value.toSubclass();
-                LotIdentificationTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(lotIdentificationTypeId, cmd);
+                LotTypeCommand.MergePatchLotType cmd = (LotTypeCommand.MergePatchLotType) value.toSubclass();
+                LotTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(lotTypeId, cmd);
                 cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-                lotIdentificationTypeApplicationService.when(cmd);
+                lotTypeApplicationService.when(cmd);
                 return;
             }
 
             value.setCommandType(Command.COMMAND_TYPE_CREATE);
-            LotIdentificationTypeCommand.CreateLotIdentificationType cmd = (LotIdentificationTypeCommand.CreateLotIdentificationType) value.toSubclass();
-            LotIdentificationTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(lotIdentificationTypeId, cmd);
+            LotTypeCommand.CreateLotType cmd = (LotTypeCommand.CreateLotType) value.toSubclass();
+            LotTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(lotTypeId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            lotIdentificationTypeApplicationService.when(cmd);
+            lotTypeApplicationService.when(cmd);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
@@ -219,16 +219,16 @@ public class LotIdentificationTypeResource {
 
     /**
      * Patch.
-     * Patch LotIdentificationType
+     * Patch LotType
      */
-    @PatchMapping("{lotIdentificationTypeId}")
-    public void patch(@PathVariable("lotIdentificationTypeId") String lotIdentificationTypeId, @RequestBody CreateOrMergePatchLotIdentificationTypeDto.MergePatchLotIdentificationTypeDto value) {
+    @PatchMapping("{lotTypeId}")
+    public void patch(@PathVariable("lotTypeId") String lotTypeId, @RequestBody CreateOrMergePatchLotTypeDto.MergePatchLotTypeDto value) {
         try {
 
-            LotIdentificationTypeCommand.MergePatchLotIdentificationType cmd = value;//.toMergePatchLotIdentificationType();
-            LotIdentificationTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(lotIdentificationTypeId, cmd);
+            LotTypeCommand.MergePatchLotType cmd = value;//.toMergePatchLotType();
+            LotTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(lotTypeId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            lotIdentificationTypeApplicationService.when(cmd);
+            lotTypeApplicationService.when(cmd);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
@@ -238,7 +238,7 @@ public class LotIdentificationTypeResource {
         try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
-            LotIdentificationTypeMetadata.propertyTypeMap.forEach((key, value) -> {
+            LotTypeMetadata.propertyTypeMap.forEach((key, value) -> {
                 filtering.add(new PropertyMetadataDto(key, value, true));
             });
             return filtering;
@@ -255,30 +255,30 @@ public class LotIdentificationTypeResource {
         return new PropertyTypeResolver() {
             @Override
             public Class resolveTypeByPropertyName(String propertyName) {
-                return LotIdentificationTypeResourceUtils.getFilterPropertyType(propertyName);
+                return LotTypeResourceUtils.getFilterPropertyType(propertyName);
             }
         };
     }
 
  
-    public static class LotIdentificationTypeResourceUtils {
+    public static class LotTypeResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(String lotIdentificationTypeId, org.dddml.ffvtraceability.domain.lotidentificationtype.LotIdentificationTypeCommand value) {
-            String idObj = lotIdentificationTypeId;
-            if (value.getLotIdentificationTypeId() == null) {
-                value.setLotIdentificationTypeId(idObj);
-            } else if (!value.getLotIdentificationTypeId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", lotIdentificationTypeId, value.getLotIdentificationTypeId());
+        public static void setNullIdOrThrowOnInconsistentIds(String lotTypeId, org.dddml.ffvtraceability.domain.lottype.LotTypeCommand value) {
+            String idObj = lotTypeId;
+            if (value.getLotTypeId() == null) {
+                value.setLotTypeId(idObj);
+            } else if (!value.getLotTypeId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", lotTypeId, value.getLotTypeId());
             }
         }
     
         public static List<String> getQueryOrders(String str, String separator) {
-            return QueryParamUtils.getQueryOrders(str, separator, LotIdentificationTypeMetadata.aliasMap);
+            return QueryParamUtils.getQueryOrders(str, separator, LotTypeMetadata.aliasMap);
         }
 
         public static List<String> getQuerySorts(Map<String, String[]> queryNameValuePairs) {
             String[] values = queryNameValuePairs.get("sort");
-            return QueryParamUtils.getQuerySorts(values, LotIdentificationTypeMetadata.aliasMap);
+            return QueryParamUtils.getQuerySorts(values, LotTypeMetadata.aliasMap);
         }
 
         public static String getFilterPropertyName(String fieldName) {
@@ -288,15 +288,15 @@ public class LotIdentificationTypeResource {
                     || "fields".equalsIgnoreCase(fieldName)) {
                 return null;
             }
-            if (LotIdentificationTypeMetadata.aliasMap.containsKey(fieldName)) {
-                return LotIdentificationTypeMetadata.aliasMap.get(fieldName);
+            if (LotTypeMetadata.aliasMap.containsKey(fieldName)) {
+                return LotTypeMetadata.aliasMap.get(fieldName);
             }
             return null;
         }
 
         public static Class getFilterPropertyType(String propertyName) {
-            if (LotIdentificationTypeMetadata.propertyTypeMap.containsKey(propertyName)) {
-                String propertyType = LotIdentificationTypeMetadata.propertyTypeMap.get(propertyName);
+            if (LotTypeMetadata.propertyTypeMap.containsKey(propertyName)) {
+                String propertyType = LotTypeMetadata.propertyTypeMap.get(propertyName);
                 if (!StringHelper.isNullOrEmpty(propertyType)) {
                     if (BoundedContextMetadata.CLASS_MAP.containsKey(propertyType)) {
                         return BoundedContextMetadata.CLASS_MAP.get(propertyType);
@@ -320,14 +320,14 @@ public class LotIdentificationTypeResource {
             return filter.entrySet();
         }
 
-        public static LotIdentificationTypeStateDto[] toLotIdentificationTypeStateDtoArray(Iterable<String> ids) {
-            List<LotIdentificationTypeStateDto> states = new ArrayList<>();
+        public static LotTypeStateDto[] toLotTypeStateDtoArray(Iterable<String> ids) {
+            List<LotTypeStateDto> states = new ArrayList<>();
             ids.forEach(i -> {
-                LotIdentificationTypeStateDto dto = new LotIdentificationTypeStateDto();
-                dto.setLotIdentificationTypeId(i);
+                LotTypeStateDto dto = new LotTypeStateDto();
+                dto.setLotTypeId(i);
                 states.add(dto);
             });
-            return states.toArray(new LotIdentificationTypeStateDto[0]);
+            return states.toArray(new LotTypeStateDto[0]);
         }
 
     }

@@ -10,7 +10,6 @@ import java.math.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
-import org.dddml.ffvtraceability.domain.lotidentificationtype.LotIdentificationTypeEvent.*;
 
 public abstract class AbstractLotIdentificationTypeState implements LotIdentificationTypeState.SqlLotIdentificationTypeState {
 
@@ -114,15 +113,14 @@ public abstract class AbstractLotIdentificationTypeState implements LotIdentific
         this.forReapplying = forReapplying;
     }
 
-    public AbstractLotIdentificationTypeState(List<Event> events) {
-        initializeForReapplying();
-        if (events != null && events.size() > 0) {
-            this.setLotIdentificationTypeId(((LotIdentificationTypeEvent.SqlLotIdentificationTypeEvent) events.get(0)).getLotIdentificationTypeEventId().getLotIdentificationTypeId());
-            for (Event e : events) {
-                mutate(e);
-                this.setVersion((this.getVersion() == null ? LotIdentificationTypeState.VERSION_NULL : this.getVersion()) + 1);
-            }
-        }
+    private String commandId;
+
+    public String getCommandId() {
+        return this.commandId;
+    }
+
+    public void setCommandId(String commandId) {
+        this.commandId = commandId;
     }
 
 
@@ -153,28 +151,6 @@ public abstract class AbstractLotIdentificationTypeState implements LotIdentific
         return false;
     }
 
-
-    public void mutate(Event e) {
-        setStateReadOnly(false);
-        if (e instanceof LotIdentificationTypeStateCreated) {
-            when((LotIdentificationTypeStateCreated) e);
-        } else if (e instanceof LotIdentificationTypeStateMergePatched) {
-            when((LotIdentificationTypeStateMergePatched) e);
-        } else {
-            throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
-        }
-    }
-
-    public void when(LotIdentificationTypeStateCreated e) {
-        throwOnWrongEvent(e);
-
-        this.setDescription(e.getDescription());
-
-        this.setCreatedBy(e.getCreatedBy());
-        this.setCreatedAt(e.getCreatedAt());
-
-    }
-
     public void merge(LotIdentificationTypeState s) {
         if (s == this) {
             return;
@@ -182,52 +158,13 @@ public abstract class AbstractLotIdentificationTypeState implements LotIdentific
         this.setDescription(s.getDescription());
     }
 
-    public void when(LotIdentificationTypeStateMergePatched e) {
-        throwOnWrongEvent(e);
-
-        if (e.getDescription() == null) {
-            if (e.getIsPropertyDescriptionRemoved() != null && e.getIsPropertyDescriptionRemoved()) {
-                this.setDescription(null);
-            }
-        } else {
-            this.setDescription(e.getDescription());
-        }
-
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-    }
-
     public void save() {
-    }
-
-    protected void throwOnWrongEvent(LotIdentificationTypeEvent event) {
-        String stateEntityId = this.getLotIdentificationTypeId(); // Aggregate Id
-        String eventEntityId = ((LotIdentificationTypeEvent.SqlLotIdentificationTypeEvent)event).getLotIdentificationTypeEventId().getLotIdentificationTypeId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
-        if (!stateEntityId.equals(eventEntityId)) {
-            throw DomainError.named("mutateWrongEntity", "Entity Id %1$s in state but entity id %2$s in event", stateEntityId, eventEntityId);
-        }
-
-
-        Long stateVersion = this.getVersion();
-        Long eventVersion = ((LotIdentificationTypeEvent.SqlLotIdentificationTypeEvent)event).getLotIdentificationTypeEventId().getVersion();// Event Version
-        if (eventVersion == null) {
-            throw new NullPointerException("event.getLotIdentificationTypeEventId().getVersion() == null");
-        }
-        if (!(stateVersion == null && eventVersion.equals(VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
-            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion == VERSION_NULL ? "NULL" : eventVersion + "");
-        }
-
     }
 
 
     public static class SimpleLotIdentificationTypeState extends AbstractLotIdentificationTypeState {
 
         public SimpleLotIdentificationTypeState() {
-        }
-
-        public SimpleLotIdentificationTypeState(List<Event> events) {
-            super(events);
         }
 
         public static SimpleLotIdentificationTypeState newForReapplying() {

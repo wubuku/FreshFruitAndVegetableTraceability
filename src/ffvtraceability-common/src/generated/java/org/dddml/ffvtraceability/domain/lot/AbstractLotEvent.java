@@ -177,6 +177,18 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
             this.expirationDate = expirationDate;
         }
 
+        private String lotTypeId;
+
+        public String getLotTypeId()
+        {
+            return this.lotTypeId;
+        }
+
+        public void setLotTypeId(String lotTypeId)
+        {
+            this.lotTypeId = lotTypeId;
+        }
+
         private String active;
 
         public String getActive()
@@ -387,6 +399,16 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
 
         public void setIsPropertyExpirationDateRemoved(Boolean removed) {
             this.isPropertyExpirationDateRemoved = removed;
+        }
+
+        private Boolean isPropertyLotTypeIdRemoved;
+
+        public Boolean getIsPropertyLotTypeIdRemoved() {
+            return this.isPropertyLotTypeIdRemoved;
+        }
+
+        public void setIsPropertyLotTypeIdRemoved(Boolean removed) {
+            this.isPropertyLotTypeIdRemoved = removed;
         }
 
         private Boolean isPropertyActiveRemoved;

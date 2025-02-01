@@ -219,6 +219,8 @@
                 type: fixed-point
 
   ShipmentType:
+    metadata:
+      NoEventSourcing: true
     id:
       name: ShipmentTypeId
       type: id

@@ -57,17 +57,12 @@ public class HibernateLotIdentificationTypeStateRepository implements LotIdentif
             state = new AbstractLotIdentificationTypeState.SimpleLotIdentificationTypeState();
             state.setLotIdentificationTypeId(id);
         }
-        if (getReadOnlyProxyGenerator() != null && state != null) {
-            return (LotIdentificationTypeState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{LotIdentificationTypeState.SqlLotIdentificationTypeState.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
-        }
         return state;
     }
 
+    @Transactional
     public void save(LotIdentificationTypeState state) {
         LotIdentificationTypeState s = state;
-        if (getReadOnlyProxyGenerator() != null) {
-            s = (LotIdentificationTypeState) getReadOnlyProxyGenerator().getTarget(state);
-        }
         if (s.getVersion() == null) {
             entityManager.persist(s);
         } else {

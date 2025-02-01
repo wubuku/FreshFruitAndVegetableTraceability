@@ -32,9 +32,5 @@ public interface FacilityIdentificationTypeApplicationService {
 
     long getCount(Criterion filter);
 
-    FacilityIdentificationTypeEvent getEvent(String facilityIdentificationTypeId, long version);
-
-    FacilityIdentificationTypeState getHistoryState(String facilityIdentificationTypeId, long version);
-
 }
 

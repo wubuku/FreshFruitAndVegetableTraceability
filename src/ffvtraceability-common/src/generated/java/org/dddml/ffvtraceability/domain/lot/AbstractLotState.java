@@ -44,6 +44,16 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.expirationDate = expirationDate;
     }
 
+    private String lotTypeId;
+
+    public String getLotTypeId() {
+        return this.lotTypeId;
+    }
+
+    public void setLotTypeId(String lotTypeId) {
+        this.lotTypeId = lotTypeId;
+    }
+
     private String active;
 
     public String getActive() {
@@ -291,6 +301,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
 
         this.setQuantity(e.getQuantity());
         this.setExpirationDate(e.getExpirationDate());
+        this.setLotTypeId(e.getLotTypeId());
         this.setActive(e.getActive());
         this.setGtin(e.getGtin());
         this.setGs1Batch(e.getGs1Batch());
@@ -316,6 +327,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         }
         this.setQuantity(s.getQuantity());
         this.setExpirationDate(s.getExpirationDate());
+        this.setLotTypeId(s.getLotTypeId());
         this.setActive(s.getActive());
         this.setGtin(s.getGtin());
         this.setGs1Batch(s.getGs1Batch());
@@ -379,6 +391,13 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
             }
         } else {
             this.setExpirationDate(e.getExpirationDate());
+        }
+        if (e.getLotTypeId() == null) {
+            if (e.getIsPropertyLotTypeIdRemoved() != null && e.getIsPropertyLotTypeIdRemoved()) {
+                this.setLotTypeId(null);
+            }
+        } else {
+            this.setLotTypeId(e.getLotTypeId());
         }
         if (e.getActive() == null) {
             if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {

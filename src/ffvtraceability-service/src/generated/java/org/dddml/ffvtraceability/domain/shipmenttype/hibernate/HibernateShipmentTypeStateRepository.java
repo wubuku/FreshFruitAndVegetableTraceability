@@ -57,17 +57,12 @@ public class HibernateShipmentTypeStateRepository implements ShipmentTypeStateRe
             state = new AbstractShipmentTypeState.SimpleShipmentTypeState();
             state.setShipmentTypeId(id);
         }
-        if (getReadOnlyProxyGenerator() != null && state != null) {
-            return (ShipmentTypeState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{ShipmentTypeState.SqlShipmentTypeState.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
-        }
         return state;
     }
 
+    @Transactional
     public void save(ShipmentTypeState state) {
         ShipmentTypeState s = state;
-        if (getReadOnlyProxyGenerator() != null) {
-            s = (ShipmentTypeState) getReadOnlyProxyGenerator().getTarget(state);
-        }
         if (s.getVersion() == null) {
             entityManager.persist(s);
         } else {

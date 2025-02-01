@@ -41,6 +41,21 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     }
 
     /**
+     * Lot Type Id
+     */
+    private String lotTypeId;
+
+    public String getLotTypeId()
+    {
+        return this.lotTypeId;
+    }
+
+    public void setLotTypeId(String lotTypeId)
+    {
+        this.lotTypeId = lotTypeId;
+    }
+
+    /**
      * Active
      */
     private String active;
@@ -212,6 +227,18 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.isPropertyExpirationDateRemoved = removed;
     }
 
+    private Boolean isPropertyLotTypeIdRemoved;
+
+    public Boolean getIsPropertyLotTypeIdRemoved()
+    {
+        return this.isPropertyLotTypeIdRemoved;
+    }
+
+    public void setIsPropertyLotTypeIdRemoved(Boolean removed)
+    {
+        this.isPropertyLotTypeIdRemoved = removed;
+    }
+
     private Boolean isPropertyActiveRemoved;
 
     public Boolean getIsPropertyActiveRemoved()
@@ -325,6 +352,7 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         ((AbstractLotCommandDto) this).copyTo(command);
         command.setQuantity(this.getQuantity());
         command.setExpirationDate(this.getExpirationDate());
+        command.setLotTypeId(this.getLotTypeId());
         command.setActive(this.getActive());
         command.setGtin(this.getGtin());
         command.setGs1Batch(this.getGs1Batch());
@@ -401,6 +429,7 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         copyTo((CreateOrMergePatchLot) command);
         command.setIsPropertyQuantityRemoved(this.getIsPropertyQuantityRemoved());
         command.setIsPropertyExpirationDateRemoved(this.getIsPropertyExpirationDateRemoved());
+        command.setIsPropertyLotTypeIdRemoved(this.getIsPropertyLotTypeIdRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
         command.setIsPropertyGtinRemoved(this.getIsPropertyGtinRemoved());
         command.setIsPropertyGs1BatchRemoved(this.getIsPropertyGs1BatchRemoved());

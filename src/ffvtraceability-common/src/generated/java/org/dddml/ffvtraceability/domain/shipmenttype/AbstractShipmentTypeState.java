@@ -10,7 +10,6 @@ import java.math.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
-import org.dddml.ffvtraceability.domain.shipmenttype.ShipmentTypeEvent.*;
 
 public abstract class AbstractShipmentTypeState implements ShipmentTypeState.SqlShipmentTypeState {
 
@@ -134,15 +133,14 @@ public abstract class AbstractShipmentTypeState implements ShipmentTypeState.Sql
         this.forReapplying = forReapplying;
     }
 
-    public AbstractShipmentTypeState(List<Event> events) {
-        initializeForReapplying();
-        if (events != null && events.size() > 0) {
-            this.setShipmentTypeId(((ShipmentTypeEvent.SqlShipmentTypeEvent) events.get(0)).getShipmentTypeEventId().getShipmentTypeId());
-            for (Event e : events) {
-                mutate(e);
-                this.setVersion((this.getVersion() == null ? ShipmentTypeState.VERSION_NULL : this.getVersion()) + 1);
-            }
-        }
+    private String commandId;
+
+    public String getCommandId() {
+        return this.commandId;
+    }
+
+    public void setCommandId(String commandId) {
+        this.commandId = commandId;
     }
 
 
@@ -173,30 +171,6 @@ public abstract class AbstractShipmentTypeState implements ShipmentTypeState.Sql
         return false;
     }
 
-
-    public void mutate(Event e) {
-        setStateReadOnly(false);
-        if (e instanceof ShipmentTypeStateCreated) {
-            when((ShipmentTypeStateCreated) e);
-        } else if (e instanceof ShipmentTypeStateMergePatched) {
-            when((ShipmentTypeStateMergePatched) e);
-        } else {
-            throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
-        }
-    }
-
-    public void when(ShipmentTypeStateCreated e) {
-        throwOnWrongEvent(e);
-
-        this.setParentTypeId(e.getParentTypeId());
-        this.setHasTable(e.getHasTable());
-        this.setDescription(e.getDescription());
-
-        this.setCreatedBy(e.getCreatedBy());
-        this.setCreatedAt(e.getCreatedAt());
-
-    }
-
     public void merge(ShipmentTypeState s) {
         if (s == this) {
             return;
@@ -206,66 +180,13 @@ public abstract class AbstractShipmentTypeState implements ShipmentTypeState.Sql
         this.setDescription(s.getDescription());
     }
 
-    public void when(ShipmentTypeStateMergePatched e) {
-        throwOnWrongEvent(e);
-
-        if (e.getParentTypeId() == null) {
-            if (e.getIsPropertyParentTypeIdRemoved() != null && e.getIsPropertyParentTypeIdRemoved()) {
-                this.setParentTypeId(null);
-            }
-        } else {
-            this.setParentTypeId(e.getParentTypeId());
-        }
-        if (e.getHasTable() == null) {
-            if (e.getIsPropertyHasTableRemoved() != null && e.getIsPropertyHasTableRemoved()) {
-                this.setHasTable(null);
-            }
-        } else {
-            this.setHasTable(e.getHasTable());
-        }
-        if (e.getDescription() == null) {
-            if (e.getIsPropertyDescriptionRemoved() != null && e.getIsPropertyDescriptionRemoved()) {
-                this.setDescription(null);
-            }
-        } else {
-            this.setDescription(e.getDescription());
-        }
-
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-    }
-
     public void save() {
-    }
-
-    protected void throwOnWrongEvent(ShipmentTypeEvent event) {
-        String stateEntityId = this.getShipmentTypeId(); // Aggregate Id
-        String eventEntityId = ((ShipmentTypeEvent.SqlShipmentTypeEvent)event).getShipmentTypeEventId().getShipmentTypeId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
-        if (!stateEntityId.equals(eventEntityId)) {
-            throw DomainError.named("mutateWrongEntity", "Entity Id %1$s in state but entity id %2$s in event", stateEntityId, eventEntityId);
-        }
-
-
-        Long stateVersion = this.getVersion();
-        Long eventVersion = ((ShipmentTypeEvent.SqlShipmentTypeEvent)event).getShipmentTypeEventId().getVersion();// Event Version
-        if (eventVersion == null) {
-            throw new NullPointerException("event.getShipmentTypeEventId().getVersion() == null");
-        }
-        if (!(stateVersion == null && eventVersion.equals(VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
-            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion == VERSION_NULL ? "NULL" : eventVersion + "");
-        }
-
     }
 
 
     public static class SimpleShipmentTypeState extends AbstractShipmentTypeState {
 
         public SimpleShipmentTypeState() {
-        }
-
-        public SimpleShipmentTypeState(List<Event> events) {
-            super(events);
         }
 
         public static SimpleShipmentTypeState newForReapplying() {

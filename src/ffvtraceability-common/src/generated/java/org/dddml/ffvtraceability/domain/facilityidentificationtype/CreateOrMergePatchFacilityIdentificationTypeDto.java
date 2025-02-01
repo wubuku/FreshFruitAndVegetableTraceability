@@ -38,25 +38,15 @@ public class CreateOrMergePatchFacilityIdentificationTypeDto extends AbstractFac
         this.isPropertyDescriptionRemoved = removed;
     }
 
-    public void copyTo(CreateOrMergePatchFacilityIdentificationType command)
-    {
-        ((AbstractFacilityIdentificationTypeCommandDto) this).copyTo(command);
-        command.setDescription(this.getDescription());
-    }
-
     public FacilityIdentificationTypeCommand toCommand()
     {
         if (getCommandType() == null) {
             setCommandType(COMMAND_TYPE_MERGE_PATCH);
         }
         if (COMMAND_TYPE_CREATE.equals(getCommandType())) {
-            AbstractFacilityIdentificationTypeCommand.SimpleCreateFacilityIdentificationType command = new AbstractFacilityIdentificationTypeCommand.SimpleCreateFacilityIdentificationType();
-            copyTo((AbstractFacilityIdentificationTypeCommand.AbstractCreateFacilityIdentificationType) command);
-            return command;
+            return toCreateFacilityIdentificationType();
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
-            AbstractFacilityIdentificationTypeCommand.SimpleMergePatchFacilityIdentificationType command = new AbstractFacilityIdentificationTypeCommand.SimpleMergePatchFacilityIdentificationType();
-            copyTo((AbstractFacilityIdentificationTypeCommand.SimpleMergePatchFacilityIdentificationType) command);
-            return command;
+            return toMergePatchFacilityIdentificationType();
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
@@ -67,26 +57,163 @@ public class CreateOrMergePatchFacilityIdentificationTypeDto extends AbstractFac
             setCommandType(COMMAND_TYPE_MERGE_PATCH);
         }
         if (COMMAND_TYPE_CREATE.equals(getCommandType()) || null == getCommandType()) {
-            CreateFacilityIdentificationTypeDto command = new CreateFacilityIdentificationTypeDto();
-            copyTo((CreateFacilityIdentificationType) command);
-            return command;
+            return toCreateFacilityIdentificationType();
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
-            MergePatchFacilityIdentificationTypeDto command = new MergePatchFacilityIdentificationTypeDto();
-            copyTo((MergePatchFacilityIdentificationType) command);
-            return command;
+            return toMergePatchFacilityIdentificationType();
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
 
-    public void copyTo(CreateFacilityIdentificationType command)
-    {
-        copyTo((CreateOrMergePatchFacilityIdentificationType) command);
+    protected FacilityIdentificationTypeCommand.CreateFacilityIdentificationType toCreateFacilityIdentificationType() {
+        return new FacilityIdentificationTypeCommand.CreateFacilityIdentificationType() {
+            @Override
+            public String getFacilityIdentificationTypeId() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getFacilityIdentificationTypeId();
+            }
+
+            @Override
+            public void setFacilityIdentificationTypeId(String p) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setFacilityIdentificationTypeId(p);
+            }
+
+            @Override
+            public Long getVersion() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getVersion();
+            }
+
+            @Override
+            public void setVersion(Long p) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setVersion(p);
+            }
+
+            @Override
+            public String getCommandType() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getCommandType();
+            }
+
+            @Override
+            public void setCommandType(String commandType) {
+                 CreateOrMergePatchFacilityIdentificationTypeDto.this.setCommandType(commandType);
+            }
+
+            @Override
+            public String getCommandId() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getCommandId();
+            }
+
+            @Override
+            public void setCommandId(String commandId) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setCommandId(commandId);
+            }
+
+            @Override
+            public String getRequesterId() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getRequesterId();
+            }
+
+            @Override
+            public void setRequesterId(String requesterId) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setRequesterId(requesterId);
+            }
+
+            @Override
+            public java.util.Map<String, Object> getCommandContext() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getCommandContext();
+            }
+
+            @Override
+            public String getDescription() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getDescription();
+            }
+
+            @Override
+            public void setDescription(String p) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setDescription(p);
+            }
+
+
+        };
     }
 
-    public void copyTo(MergePatchFacilityIdentificationType command)
-    {
-        copyTo((CreateOrMergePatchFacilityIdentificationType) command);
-        command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
+    protected FacilityIdentificationTypeCommand.MergePatchFacilityIdentificationType toMergePatchFacilityIdentificationType() {
+        return new FacilityIdentificationTypeCommand.MergePatchFacilityIdentificationType() {
+            @Override
+            public String getFacilityIdentificationTypeId() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getFacilityIdentificationTypeId();
+            }
+
+            @Override
+            public void setFacilityIdentificationTypeId(String p) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setFacilityIdentificationTypeId(p);
+            }
+
+            @Override
+            public Long getVersion() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getVersion();
+            }
+
+            @Override
+            public void setVersion(Long p) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setVersion(p);
+            }
+
+            @Override
+            public String getCommandType() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getCommandType();
+            }
+
+            @Override
+            public void setCommandType(String commandType) {
+                 CreateOrMergePatchFacilityIdentificationTypeDto.this.setCommandType(commandType);
+            }
+
+            @Override
+            public String getCommandId() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getCommandId();
+            }
+
+            @Override
+            public void setCommandId(String commandId) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setCommandId(commandId);
+            }
+
+            @Override
+            public String getRequesterId() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getRequesterId();
+            }
+
+            @Override
+            public void setRequesterId(String requesterId) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setRequesterId(requesterId);
+            }
+
+            @Override
+            public java.util.Map<String, Object> getCommandContext() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getCommandContext();
+            }
+
+            @Override
+            public String getDescription() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getDescription();
+            }
+
+            @Override
+            public void setDescription(String p) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setDescription(p);
+            }
+
+            @Override
+            public Boolean getIsPropertyDescriptionRemoved() {
+                return CreateOrMergePatchFacilityIdentificationTypeDto.this.getIsPropertyDescriptionRemoved();
+            }
+
+            @Override
+            public void setIsPropertyDescriptionRemoved(Boolean removed) {
+                CreateOrMergePatchFacilityIdentificationTypeDto.this.setIsPropertyDescriptionRemoved(removed);
+            }
+
+
+        };
     }
 
     public static class CreateFacilityIdentificationTypeDto extends CreateOrMergePatchFacilityIdentificationTypeDto implements FacilityIdentificationTypeCommand.CreateFacilityIdentificationType
@@ -101,7 +228,7 @@ public class CreateOrMergePatchFacilityIdentificationTypeDto extends AbstractFac
         }
         public FacilityIdentificationTypeCommand.CreateFacilityIdentificationType toCreateFacilityIdentificationType()
         {
-            return (FacilityIdentificationTypeCommand.CreateFacilityIdentificationType) toCommand();
+            return super.toCreateFacilityIdentificationType();
         }
 
     }
@@ -118,7 +245,7 @@ public class CreateOrMergePatchFacilityIdentificationTypeDto extends AbstractFac
         }
         public FacilityIdentificationTypeCommand.MergePatchFacilityIdentificationType toMergePatchFacilityIdentificationType()
         {
-            return (FacilityIdentificationTypeCommand.MergePatchFacilityIdentificationType) toCommand();
+            return super.toMergePatchFacilityIdentificationType();
         }
 
     }

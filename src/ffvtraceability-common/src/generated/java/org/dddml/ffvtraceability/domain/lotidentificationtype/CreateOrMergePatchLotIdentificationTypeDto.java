@@ -38,25 +38,15 @@ public class CreateOrMergePatchLotIdentificationTypeDto extends AbstractLotIdent
         this.isPropertyDescriptionRemoved = removed;
     }
 
-    public void copyTo(CreateOrMergePatchLotIdentificationType command)
-    {
-        ((AbstractLotIdentificationTypeCommandDto) this).copyTo(command);
-        command.setDescription(this.getDescription());
-    }
-
     public LotIdentificationTypeCommand toCommand()
     {
         if (getCommandType() == null) {
             setCommandType(COMMAND_TYPE_MERGE_PATCH);
         }
         if (COMMAND_TYPE_CREATE.equals(getCommandType())) {
-            AbstractLotIdentificationTypeCommand.SimpleCreateLotIdentificationType command = new AbstractLotIdentificationTypeCommand.SimpleCreateLotIdentificationType();
-            copyTo((AbstractLotIdentificationTypeCommand.AbstractCreateLotIdentificationType) command);
-            return command;
+            return toCreateLotIdentificationType();
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
-            AbstractLotIdentificationTypeCommand.SimpleMergePatchLotIdentificationType command = new AbstractLotIdentificationTypeCommand.SimpleMergePatchLotIdentificationType();
-            copyTo((AbstractLotIdentificationTypeCommand.SimpleMergePatchLotIdentificationType) command);
-            return command;
+            return toMergePatchLotIdentificationType();
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
@@ -67,26 +57,163 @@ public class CreateOrMergePatchLotIdentificationTypeDto extends AbstractLotIdent
             setCommandType(COMMAND_TYPE_MERGE_PATCH);
         }
         if (COMMAND_TYPE_CREATE.equals(getCommandType()) || null == getCommandType()) {
-            CreateLotIdentificationTypeDto command = new CreateLotIdentificationTypeDto();
-            copyTo((CreateLotIdentificationType) command);
-            return command;
+            return toCreateLotIdentificationType();
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
-            MergePatchLotIdentificationTypeDto command = new MergePatchLotIdentificationTypeDto();
-            copyTo((MergePatchLotIdentificationType) command);
-            return command;
+            return toMergePatchLotIdentificationType();
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
 
-    public void copyTo(CreateLotIdentificationType command)
-    {
-        copyTo((CreateOrMergePatchLotIdentificationType) command);
+    protected LotIdentificationTypeCommand.CreateLotIdentificationType toCreateLotIdentificationType() {
+        return new LotIdentificationTypeCommand.CreateLotIdentificationType() {
+            @Override
+            public String getLotIdentificationTypeId() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getLotIdentificationTypeId();
+            }
+
+            @Override
+            public void setLotIdentificationTypeId(String p) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setLotIdentificationTypeId(p);
+            }
+
+            @Override
+            public Long getVersion() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getVersion();
+            }
+
+            @Override
+            public void setVersion(Long p) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setVersion(p);
+            }
+
+            @Override
+            public String getCommandType() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getCommandType();
+            }
+
+            @Override
+            public void setCommandType(String commandType) {
+                 CreateOrMergePatchLotIdentificationTypeDto.this.setCommandType(commandType);
+            }
+
+            @Override
+            public String getCommandId() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getCommandId();
+            }
+
+            @Override
+            public void setCommandId(String commandId) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setCommandId(commandId);
+            }
+
+            @Override
+            public String getRequesterId() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getRequesterId();
+            }
+
+            @Override
+            public void setRequesterId(String requesterId) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setRequesterId(requesterId);
+            }
+
+            @Override
+            public java.util.Map<String, Object> getCommandContext() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getCommandContext();
+            }
+
+            @Override
+            public String getDescription() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getDescription();
+            }
+
+            @Override
+            public void setDescription(String p) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setDescription(p);
+            }
+
+
+        };
     }
 
-    public void copyTo(MergePatchLotIdentificationType command)
-    {
-        copyTo((CreateOrMergePatchLotIdentificationType) command);
-        command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
+    protected LotIdentificationTypeCommand.MergePatchLotIdentificationType toMergePatchLotIdentificationType() {
+        return new LotIdentificationTypeCommand.MergePatchLotIdentificationType() {
+            @Override
+            public String getLotIdentificationTypeId() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getLotIdentificationTypeId();
+            }
+
+            @Override
+            public void setLotIdentificationTypeId(String p) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setLotIdentificationTypeId(p);
+            }
+
+            @Override
+            public Long getVersion() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getVersion();
+            }
+
+            @Override
+            public void setVersion(Long p) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setVersion(p);
+            }
+
+            @Override
+            public String getCommandType() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getCommandType();
+            }
+
+            @Override
+            public void setCommandType(String commandType) {
+                 CreateOrMergePatchLotIdentificationTypeDto.this.setCommandType(commandType);
+            }
+
+            @Override
+            public String getCommandId() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getCommandId();
+            }
+
+            @Override
+            public void setCommandId(String commandId) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setCommandId(commandId);
+            }
+
+            @Override
+            public String getRequesterId() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getRequesterId();
+            }
+
+            @Override
+            public void setRequesterId(String requesterId) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setRequesterId(requesterId);
+            }
+
+            @Override
+            public java.util.Map<String, Object> getCommandContext() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getCommandContext();
+            }
+
+            @Override
+            public String getDescription() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getDescription();
+            }
+
+            @Override
+            public void setDescription(String p) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setDescription(p);
+            }
+
+            @Override
+            public Boolean getIsPropertyDescriptionRemoved() {
+                return CreateOrMergePatchLotIdentificationTypeDto.this.getIsPropertyDescriptionRemoved();
+            }
+
+            @Override
+            public void setIsPropertyDescriptionRemoved(Boolean removed) {
+                CreateOrMergePatchLotIdentificationTypeDto.this.setIsPropertyDescriptionRemoved(removed);
+            }
+
+
+        };
     }
 
     public static class CreateLotIdentificationTypeDto extends CreateOrMergePatchLotIdentificationTypeDto implements LotIdentificationTypeCommand.CreateLotIdentificationType
@@ -101,7 +228,7 @@ public class CreateOrMergePatchLotIdentificationTypeDto extends AbstractLotIdent
         }
         public LotIdentificationTypeCommand.CreateLotIdentificationType toCreateLotIdentificationType()
         {
-            return (LotIdentificationTypeCommand.CreateLotIdentificationType) toCommand();
+            return super.toCreateLotIdentificationType();
         }
 
     }
@@ -118,7 +245,7 @@ public class CreateOrMergePatchLotIdentificationTypeDto extends AbstractLotIdent
         }
         public LotIdentificationTypeCommand.MergePatchLotIdentificationType toMergePatchLotIdentificationType()
         {
-            return (LotIdentificationTypeCommand.MergePatchLotIdentificationType) toCommand();
+            return super.toMergePatchLotIdentificationType();
         }
 
     }

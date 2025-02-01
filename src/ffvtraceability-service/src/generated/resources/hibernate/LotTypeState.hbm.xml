@@ -1,18 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
-<hibernate-mapping package="org.dddml.ffvtraceability.domain.shipmenttype">
-  <class name="org.dddml.ffvtraceability.domain.shipmenttype.AbstractShipmentTypeState$SimpleShipmentTypeState" table="shipment_type">
-    <id name="shipmentTypeId" length="20">
-      <column name="shipment_type_id" sql-type="VARCHAR(20)" />
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.lottype">
+  <class name="org.dddml.ffvtraceability.domain.lottype.AbstractLotTypeState$SimpleLotTypeState" table="lot_type">
+    <id name="lotTypeId" length="20">
+      <column name="lot_type_id" sql-type="VARCHAR(20)" />
       <generator class="assigned" />
     </id>
     <version name="version" column="version" type="long" />
-    <property name="parentTypeId">
-      <column name="parent_type_id" sql-type="VARCHAR(20)" />
-    </property>
-    <property name="hasTable">
-      <column name="has_table" sql-type="CHAR(1)" />
-    </property>
     <property name="description">
       <column name="description" sql-type="VARCHAR(255)" />
     </property>

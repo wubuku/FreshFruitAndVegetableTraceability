@@ -246,40 +246,6 @@ public class FacilityIdentificationTypeResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @GetMapping("{facilityIdentificationTypeId}/_events/{version}")
-    @Transactional(readOnly = true)
-    public FacilityIdentificationTypeEvent getEvent(@PathVariable("facilityIdentificationTypeId") String facilityIdentificationTypeId, @PathVariable("version") long version) {
-        try {
-
-            String idObj = facilityIdentificationTypeId;
-            //FacilityIdentificationTypeStateEventDtoConverter dtoConverter = getFacilityIdentificationTypeStateEventDtoConverter();
-            return facilityIdentificationTypeApplicationService.getEvent(idObj, version);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-    @GetMapping("{facilityIdentificationTypeId}/_historyStates/{version}")
-    @Transactional(readOnly = true)
-    public FacilityIdentificationTypeStateDto getHistoryState(@PathVariable("facilityIdentificationTypeId") String facilityIdentificationTypeId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
-
-            String idObj = facilityIdentificationTypeId;
-            FacilityIdentificationTypeStateDto.DtoConverter dtoConverter = new FacilityIdentificationTypeStateDto.DtoConverter();
-            if (StringHelper.isNullOrEmpty(fields)) {
-                dtoConverter.setAllFieldsReturned(true);
-            } else {
-                dtoConverter.setReturnedFieldsString(fields);
-            }
-            return dtoConverter.toFacilityIdentificationTypeStateDto(facilityIdentificationTypeApplicationService.getHistoryState(idObj, version));
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-
-    //protected  FacilityIdentificationTypeStateEventDtoConverter getFacilityIdentificationTypeStateEventDtoConverter() {
-    //    return new FacilityIdentificationTypeStateEventDtoConverter();
-    //}
 
     protected TypeConverter getCriterionTypeConverter() {
         return new DefaultTypeConverter();

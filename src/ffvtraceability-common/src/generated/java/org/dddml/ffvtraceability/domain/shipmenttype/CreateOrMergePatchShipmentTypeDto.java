@@ -92,27 +92,15 @@ public class CreateOrMergePatchShipmentTypeDto extends AbstractShipmentTypeComma
         this.isPropertyDescriptionRemoved = removed;
     }
 
-    public void copyTo(CreateOrMergePatchShipmentType command)
-    {
-        ((AbstractShipmentTypeCommandDto) this).copyTo(command);
-        command.setParentTypeId(this.getParentTypeId());
-        command.setHasTable(this.getHasTable());
-        command.setDescription(this.getDescription());
-    }
-
     public ShipmentTypeCommand toCommand()
     {
         if (getCommandType() == null) {
             setCommandType(COMMAND_TYPE_MERGE_PATCH);
         }
         if (COMMAND_TYPE_CREATE.equals(getCommandType())) {
-            AbstractShipmentTypeCommand.SimpleCreateShipmentType command = new AbstractShipmentTypeCommand.SimpleCreateShipmentType();
-            copyTo((AbstractShipmentTypeCommand.AbstractCreateShipmentType) command);
-            return command;
+            return toCreateShipmentType();
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
-            AbstractShipmentTypeCommand.SimpleMergePatchShipmentType command = new AbstractShipmentTypeCommand.SimpleMergePatchShipmentType();
-            copyTo((AbstractShipmentTypeCommand.SimpleMergePatchShipmentType) command);
-            return command;
+            return toMergePatchShipmentType();
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
@@ -123,28 +111,223 @@ public class CreateOrMergePatchShipmentTypeDto extends AbstractShipmentTypeComma
             setCommandType(COMMAND_TYPE_MERGE_PATCH);
         }
         if (COMMAND_TYPE_CREATE.equals(getCommandType()) || null == getCommandType()) {
-            CreateShipmentTypeDto command = new CreateShipmentTypeDto();
-            copyTo((CreateShipmentType) command);
-            return command;
+            return toCreateShipmentType();
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
-            MergePatchShipmentTypeDto command = new MergePatchShipmentTypeDto();
-            copyTo((MergePatchShipmentType) command);
-            return command;
+            return toMergePatchShipmentType();
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
 
-    public void copyTo(CreateShipmentType command)
-    {
-        copyTo((CreateOrMergePatchShipmentType) command);
+    protected ShipmentTypeCommand.CreateShipmentType toCreateShipmentType() {
+        return new ShipmentTypeCommand.CreateShipmentType() {
+            @Override
+            public String getShipmentTypeId() {
+                return CreateOrMergePatchShipmentTypeDto.this.getShipmentTypeId();
+            }
+
+            @Override
+            public void setShipmentTypeId(String p) {
+                CreateOrMergePatchShipmentTypeDto.this.setShipmentTypeId(p);
+            }
+
+            @Override
+            public Long getVersion() {
+                return CreateOrMergePatchShipmentTypeDto.this.getVersion();
+            }
+
+            @Override
+            public void setVersion(Long p) {
+                CreateOrMergePatchShipmentTypeDto.this.setVersion(p);
+            }
+
+            @Override
+            public String getCommandType() {
+                return CreateOrMergePatchShipmentTypeDto.this.getCommandType();
+            }
+
+            @Override
+            public void setCommandType(String commandType) {
+                 CreateOrMergePatchShipmentTypeDto.this.setCommandType(commandType);
+            }
+
+            @Override
+            public String getCommandId() {
+                return CreateOrMergePatchShipmentTypeDto.this.getCommandId();
+            }
+
+            @Override
+            public void setCommandId(String commandId) {
+                CreateOrMergePatchShipmentTypeDto.this.setCommandId(commandId);
+            }
+
+            @Override
+            public String getRequesterId() {
+                return CreateOrMergePatchShipmentTypeDto.this.getRequesterId();
+            }
+
+            @Override
+            public void setRequesterId(String requesterId) {
+                CreateOrMergePatchShipmentTypeDto.this.setRequesterId(requesterId);
+            }
+
+            @Override
+            public java.util.Map<String, Object> getCommandContext() {
+                return CreateOrMergePatchShipmentTypeDto.this.getCommandContext();
+            }
+
+            @Override
+            public String getParentTypeId() {
+                return CreateOrMergePatchShipmentTypeDto.this.getParentTypeId();
+            }
+
+            @Override
+            public void setParentTypeId(String p) {
+                CreateOrMergePatchShipmentTypeDto.this.setParentTypeId(p);
+            }
+
+            @Override
+            public String getHasTable() {
+                return CreateOrMergePatchShipmentTypeDto.this.getHasTable();
+            }
+
+            @Override
+            public void setHasTable(String p) {
+                CreateOrMergePatchShipmentTypeDto.this.setHasTable(p);
+            }
+
+            @Override
+            public String getDescription() {
+                return CreateOrMergePatchShipmentTypeDto.this.getDescription();
+            }
+
+            @Override
+            public void setDescription(String p) {
+                CreateOrMergePatchShipmentTypeDto.this.setDescription(p);
+            }
+
+
+        };
     }
 
-    public void copyTo(MergePatchShipmentType command)
-    {
-        copyTo((CreateOrMergePatchShipmentType) command);
-        command.setIsPropertyParentTypeIdRemoved(this.getIsPropertyParentTypeIdRemoved());
-        command.setIsPropertyHasTableRemoved(this.getIsPropertyHasTableRemoved());
-        command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
+    protected ShipmentTypeCommand.MergePatchShipmentType toMergePatchShipmentType() {
+        return new ShipmentTypeCommand.MergePatchShipmentType() {
+            @Override
+            public String getShipmentTypeId() {
+                return CreateOrMergePatchShipmentTypeDto.this.getShipmentTypeId();
+            }
+
+            @Override
+            public void setShipmentTypeId(String p) {
+                CreateOrMergePatchShipmentTypeDto.this.setShipmentTypeId(p);
+            }
+
+            @Override
+            public Long getVersion() {
+                return CreateOrMergePatchShipmentTypeDto.this.getVersion();
+            }
+
+            @Override
+            public void setVersion(Long p) {
+                CreateOrMergePatchShipmentTypeDto.this.setVersion(p);
+            }
+
+            @Override
+            public String getCommandType() {
+                return CreateOrMergePatchShipmentTypeDto.this.getCommandType();
+            }
+
+            @Override
+            public void setCommandType(String commandType) {
+                 CreateOrMergePatchShipmentTypeDto.this.setCommandType(commandType);
+            }
+
+            @Override
+            public String getCommandId() {
+                return CreateOrMergePatchShipmentTypeDto.this.getCommandId();
+            }
+
+            @Override
+            public void setCommandId(String commandId) {
+                CreateOrMergePatchShipmentTypeDto.this.setCommandId(commandId);
+            }
+
+            @Override
+            public String getRequesterId() {
+                return CreateOrMergePatchShipmentTypeDto.this.getRequesterId();
+            }
+
+            @Override
+            public void setRequesterId(String requesterId) {
+                CreateOrMergePatchShipmentTypeDto.this.setRequesterId(requesterId);
+            }
+
+            @Override
+            public java.util.Map<String, Object> getCommandContext() {
+                return CreateOrMergePatchShipmentTypeDto.this.getCommandContext();
+            }
+
+            @Override
+            public String getParentTypeId() {
+                return CreateOrMergePatchShipmentTypeDto.this.getParentTypeId();
+            }
+
+            @Override
+            public void setParentTypeId(String p) {
+                CreateOrMergePatchShipmentTypeDto.this.setParentTypeId(p);
+            }
+
+            @Override
+            public String getHasTable() {
+                return CreateOrMergePatchShipmentTypeDto.this.getHasTable();
+            }
+
+            @Override
+            public void setHasTable(String p) {
+                CreateOrMergePatchShipmentTypeDto.this.setHasTable(p);
+            }
+
+            @Override
+            public String getDescription() {
+                return CreateOrMergePatchShipmentTypeDto.this.getDescription();
+            }
+
+            @Override
+            public void setDescription(String p) {
+                CreateOrMergePatchShipmentTypeDto.this.setDescription(p);
+            }
+
+            @Override
+            public Boolean getIsPropertyParentTypeIdRemoved() {
+                return CreateOrMergePatchShipmentTypeDto.this.getIsPropertyParentTypeIdRemoved();
+            }
+
+            @Override
+            public void setIsPropertyParentTypeIdRemoved(Boolean removed) {
+                CreateOrMergePatchShipmentTypeDto.this.setIsPropertyParentTypeIdRemoved(removed);
+            }
+
+            @Override
+            public Boolean getIsPropertyHasTableRemoved() {
+                return CreateOrMergePatchShipmentTypeDto.this.getIsPropertyHasTableRemoved();
+            }
+
+            @Override
+            public void setIsPropertyHasTableRemoved(Boolean removed) {
+                CreateOrMergePatchShipmentTypeDto.this.setIsPropertyHasTableRemoved(removed);
+            }
+
+            @Override
+            public Boolean getIsPropertyDescriptionRemoved() {
+                return CreateOrMergePatchShipmentTypeDto.this.getIsPropertyDescriptionRemoved();
+            }
+
+            @Override
+            public void setIsPropertyDescriptionRemoved(Boolean removed) {
+                CreateOrMergePatchShipmentTypeDto.this.setIsPropertyDescriptionRemoved(removed);
+            }
+
+
+        };
     }
 
     public static class CreateShipmentTypeDto extends CreateOrMergePatchShipmentTypeDto implements ShipmentTypeCommand.CreateShipmentType
@@ -159,7 +342,7 @@ public class CreateOrMergePatchShipmentTypeDto extends AbstractShipmentTypeComma
         }
         public ShipmentTypeCommand.CreateShipmentType toCreateShipmentType()
         {
-            return (ShipmentTypeCommand.CreateShipmentType) toCommand();
+            return super.toCreateShipmentType();
         }
 
     }
@@ -176,7 +359,7 @@ public class CreateOrMergePatchShipmentTypeDto extends AbstractShipmentTypeComma
         }
         public ShipmentTypeCommand.MergePatchShipmentType toMergePatchShipmentType()
         {
-            return (ShipmentTypeCommand.MergePatchShipmentType) toCommand();
+            return super.toMergePatchShipmentType();
         }
 
     }

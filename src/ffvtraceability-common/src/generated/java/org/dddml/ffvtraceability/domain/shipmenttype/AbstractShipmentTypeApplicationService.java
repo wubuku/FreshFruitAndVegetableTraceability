@@ -13,14 +13,6 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 
 public abstract class AbstractShipmentTypeApplicationService implements ShipmentTypeApplicationService {
-
-    private EventStore eventStore;
-
-    protected EventStore getEventStore()
-    {
-        return eventStore;
-    }
-
     private ShipmentTypeStateRepository stateRepository;
 
     protected ShipmentTypeStateRepository getStateRepository() {
@@ -33,28 +25,57 @@ public abstract class AbstractShipmentTypeApplicationService implements Shipment
         return stateQueryRepository;
     }
 
-    private AggregateEventListener<ShipmentTypeAggregate, ShipmentTypeState> aggregateEventListener;
-
-    public AggregateEventListener<ShipmentTypeAggregate, ShipmentTypeState> getAggregateEventListener() {
-        return aggregateEventListener;
-    }
-
-    public void setAggregateEventListener(AggregateEventListener<ShipmentTypeAggregate, ShipmentTypeState> eventListener) {
-        this.aggregateEventListener = eventListener;
-    }
-
-    public AbstractShipmentTypeApplicationService(EventStore eventStore, ShipmentTypeStateRepository stateRepository, ShipmentTypeStateQueryRepository stateQueryRepository) {
-        this.eventStore = eventStore;
+    public AbstractShipmentTypeApplicationService(ShipmentTypeStateRepository stateRepository, ShipmentTypeStateQueryRepository stateQueryRepository) {
         this.stateRepository = stateRepository;
         this.stateQueryRepository = stateQueryRepository;
     }
 
     public void when(ShipmentTypeCommand.CreateShipmentType c) {
-        update(c, ar -> ar.create(c));
+        update(c, s -> {
+        // //////////////////////////
+        throwOnConcurrencyConflict(s, c);
+        ShipmentTypeState.SqlShipmentTypeState ss = ((ShipmentTypeState.SqlShipmentTypeState)s);
+        ss.setParentTypeId(c.getParentTypeId());
+        ss.setHasTable(c.getHasTable());
+        ss.setDescription(c.getDescription());
+        ss.setCreatedBy(c.getRequesterId());
+        ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        ss.setCommandId(c.getCommandId());
+        // //////////////////////////
+        });
     }
 
     public void when(ShipmentTypeCommand.MergePatchShipmentType c) {
-        update(c, ar -> ar.mergePatch(c));
+        update(c, s -> {
+        // //////////////////////////////////
+        throwOnConcurrencyConflict(s, c);
+        ShipmentTypeState.SqlShipmentTypeState ss = ((ShipmentTypeState.SqlShipmentTypeState)s);
+        if (c.getParentTypeId() == null) {
+            if (c.getIsPropertyParentTypeIdRemoved() != null && c.getIsPropertyParentTypeIdRemoved()) {
+                ss.setParentTypeId(null);
+            }
+        } else {
+            ss.setParentTypeId(c.getParentTypeId());
+        }
+        if (c.getHasTable() == null) {
+            if (c.getIsPropertyHasTableRemoved() != null && c.getIsPropertyHasTableRemoved()) {
+                ss.setHasTable(null);
+            }
+        } else {
+            ss.setHasTable(c.getHasTable());
+        }
+        if (c.getDescription() == null) {
+            if (c.getIsPropertyDescriptionRemoved() != null && c.getIsPropertyDescriptionRemoved()) {
+                ss.setDescription(null);
+            }
+        } else {
+            ss.setDescription(c.getDescription());
+        }
+        ss.setUpdatedBy(c.getRequesterId());
+        ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        ss.setCommandId(c.getCommandId());
+        // //////////////////////////////////
+        });
     }
 
     public ShipmentTypeState get(String id) {
@@ -86,83 +107,51 @@ public abstract class AbstractShipmentTypeApplicationService implements Shipment
         return getStateQueryRepository().getCount(filter);
     }
 
-    public ShipmentTypeEvent getEvent(String shipmentTypeId, long version) {
-        ShipmentTypeEvent e = (ShipmentTypeEvent)getEventStore().getEvent(toEventStoreAggregateId(shipmentTypeId), version);
-        if (e != null) {
-            ((ShipmentTypeEvent.SqlShipmentTypeEvent)e).setEventReadOnly(true); 
-        } else if (version == -1) {
-            return getEvent(shipmentTypeId, 0);
-        }
-        return e;
-    }
-
-    public ShipmentTypeState getHistoryState(String shipmentTypeId, long version) {
-        EventStream eventStream = getEventStore().loadEventStream(AbstractShipmentTypeEvent.class, toEventStoreAggregateId(shipmentTypeId), version - 1);
-        return new AbstractShipmentTypeState.SimpleShipmentTypeState(eventStream.getEvents());
-    }
-
-
-    public ShipmentTypeAggregate getShipmentTypeAggregate(ShipmentTypeState state) {
-        return new AbstractShipmentTypeAggregate.SimpleShipmentTypeAggregate(state);
-    }
-
     public EventStoreAggregateId toEventStoreAggregateId(String aggregateId) {
         return new EventStoreAggregateId.SimpleEventStoreAggregateId(aggregateId);
     }
 
-    protected void update(ShipmentTypeCommand c, Consumer<ShipmentTypeAggregate> action) {
+    protected void update(ShipmentTypeCommand c, Consumer<ShipmentTypeState> action) {
         String aggregateId = c.getShipmentTypeId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
         ShipmentTypeState state = getStateRepository().get(aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);
         if (duplicate) { return; }
 
-        ShipmentTypeAggregate aggregate = getShipmentTypeAggregate(state);
-        aggregate.throwOnInvalidStateTransition(c);
-        action.accept(aggregate);
-        persist(eventStoreAggregateId, c.getVersion() == null ? ShipmentTypeState.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
+        ShipmentTypeCommand.throwOnInvalidStateTransition(state, c);
+        action.accept(state);
+        persist(eventStoreAggregateId, c.getVersion() == null ? ShipmentTypeState.VERSION_NULL : c.getVersion(), state); // State version may be null!
 
     }
 
-    private void persist(EventStoreAggregateId eventStoreAggregateId, long version, ShipmentTypeAggregate aggregate, ShipmentTypeState state) {
-        getEventStore().appendEvents(eventStoreAggregateId, version, 
-            aggregate.getChanges(), (events) -> { 
-                getStateRepository().save(state); 
-            });
-        if (aggregateEventListener != null) {
-            aggregateEventListener.eventAppended(new AggregateEvent<>(aggregate, state, aggregate.getChanges()));
-        }
-    }
-
-    public void initialize(ShipmentTypeEvent.ShipmentTypeStateCreated stateCreated) {
-        String aggregateId = ((ShipmentTypeEvent.SqlShipmentTypeEvent)stateCreated).getShipmentTypeEventId().getShipmentTypeId();
-        ShipmentTypeState.SqlShipmentTypeState state = new AbstractShipmentTypeState.SimpleShipmentTypeState();
-        state.setShipmentTypeId(aggregateId);
-
-        ShipmentTypeAggregate aggregate = getShipmentTypeAggregate(state);
-        ((AbstractShipmentTypeAggregate) aggregate).apply(stateCreated);
-
-        EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        persist(eventStoreAggregateId, ((ShipmentTypeEvent.SqlShipmentTypeEvent)stateCreated).getShipmentTypeEventId().getVersion(), aggregate, state);
+    private void persist(EventStoreAggregateId eventStoreAggregateId, long version, ShipmentTypeState state) {
+        getStateRepository().save(state);
     }
 
     protected boolean isDuplicateCommand(ShipmentTypeCommand command, EventStoreAggregateId eventStoreAggregateId, ShipmentTypeState state) {
         boolean duplicate = false;
         if (command.getVersion() == null) { command.setVersion(ShipmentTypeState.VERSION_NULL); }
-        if (state.getVersion() != null && state.getVersion() > command.getVersion()) {
-            Event lastEvent = getEventStore().getEvent(AbstractShipmentTypeEvent.class, eventStoreAggregateId, command.getVersion());
-            if (lastEvent != null && lastEvent instanceof AbstractEvent
-               && command.getCommandId() != null && command.getCommandId().equals(((AbstractEvent) lastEvent).getCommandId())) {
+        if (state.getVersion() != null && state.getVersion() == command.getVersion() + 1) {
+            if (command.getCommandId() != null && command.getCommandId().equals(state.getCommandId())) {
                 duplicate = true;
             }
         }
         return duplicate;
     }
 
+    protected static void throwOnConcurrencyConflict(ShipmentTypeState s, ShipmentTypeCommand c) {
+        Long stateVersion = s.getVersion();
+        Long commandVersion = c.getVersion();
+        if (commandVersion == null) { commandVersion = ShipmentTypeState.VERSION_NULL; }
+        if (!(stateVersion == null && commandVersion.equals(ShipmentTypeState.VERSION_NULL)) && !commandVersion.equals(stateVersion)) {
+            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and command version (%2$s)", stateVersion, commandVersion);
+        }
+    }
+
     public static class SimpleShipmentTypeApplicationService extends AbstractShipmentTypeApplicationService {
-        public SimpleShipmentTypeApplicationService(EventStore eventStore, ShipmentTypeStateRepository stateRepository, ShipmentTypeStateQueryRepository stateQueryRepository)
+        public SimpleShipmentTypeApplicationService(ShipmentTypeStateRepository stateRepository, ShipmentTypeStateQueryRepository stateQueryRepository)
         {
-            super(eventStore, stateRepository, stateQueryRepository);
+            super(stateRepository, stateQueryRepository);
         }
     }
 

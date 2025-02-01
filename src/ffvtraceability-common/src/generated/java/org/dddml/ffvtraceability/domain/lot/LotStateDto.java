@@ -50,6 +50,18 @@ public class LotStateDto {
         this.expirationDate = expirationDate;
     }
 
+    private String lotTypeId;
+
+    public String getLotTypeId()
+    {
+        return this.lotTypeId;
+    }
+
+    public void setLotTypeId(String lotTypeId)
+    {
+        this.lotTypeId = lotTypeId;
+    }
+
     private String active;
 
     public String getActive()
@@ -267,6 +279,9 @@ public class LotStateDto {
             }
             if (returnedFieldsContains("ExpirationDate")) {
                 dto.setExpirationDate(state.getExpirationDate());
+            }
+            if (returnedFieldsContains("LotTypeId")) {
+                dto.setLotTypeId(state.getLotTypeId());
             }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());

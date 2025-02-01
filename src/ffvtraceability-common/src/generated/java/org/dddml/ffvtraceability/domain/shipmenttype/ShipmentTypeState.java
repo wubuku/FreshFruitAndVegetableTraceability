@@ -35,6 +35,8 @@ public interface ShipmentTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getCommandId();
+
     interface MutableShipmentTypeState extends ShipmentTypeState {
         void setShipmentTypeId(String shipmentTypeId);
 
@@ -54,12 +56,7 @@ public interface ShipmentTypeState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-
-        void mutate(Event e);
-
-        //void when(ShipmentTypeEvent.ShipmentTypeStateCreated e);
-
-        //void when(ShipmentTypeEvent.ShipmentTypeStateMergePatched e);
+        void setCommandId(String commandId);
 
     }
 

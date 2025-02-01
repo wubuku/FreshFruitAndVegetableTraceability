@@ -49,6 +49,10 @@ public interface LotEvent extends Event {
 
         void setExpirationDate(OffsetDateTime expirationDate);
 
+        String getLotTypeId();
+
+        void setLotTypeId(String lotTypeId);
+
         String getActive();
 
         void setActive(String active);
@@ -108,6 +112,10 @@ public interface LotEvent extends Event {
         Boolean getIsPropertyExpirationDateRemoved();
 
         void setIsPropertyExpirationDateRemoved(Boolean removed);
+
+        Boolean getIsPropertyLotTypeIdRemoved();
+
+        void setIsPropertyLotTypeIdRemoved(Boolean removed);
 
         Boolean getIsPropertyActiveRemoved();
 

@@ -33,9 +33,9 @@
         foreignKeyName: UOM_TO_TYPE
 
   UomType:
-    #reservedPropertyMetadata: {}
     #metadata:
     #  NoEventSourcing: true
+    #reservedPropertyMetadata: {}
     id:
       name: UomTypeId
       type: id

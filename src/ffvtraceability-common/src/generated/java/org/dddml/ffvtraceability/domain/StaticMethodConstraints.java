@@ -29,6 +29,7 @@ import org.dddml.ffvtraceability.domain.geotype.*;
 import org.dddml.ffvtraceability.domain.geoassoc.*;
 import org.dddml.ffvtraceability.domain.geoassoctype.*;
 import org.dddml.ffvtraceability.domain.lot.*;
+import org.dddml.ffvtraceability.domain.lottype.*;
 import org.dddml.ffvtraceability.domain.lotidentificationtype.*;
 import org.dddml.ffvtraceability.domain.party.*;
 import org.dddml.ffvtraceability.domain.partyidentificationtype.*;

@@ -23,6 +23,8 @@ public interface LotState
 
     OffsetDateTime getExpirationDate();
 
+    String getLotTypeId();
+
     String getActive();
 
     String getGtin();
@@ -59,6 +61,8 @@ public interface LotState
         void setQuantity(java.math.BigDecimal quantity);
 
         void setExpirationDate(OffsetDateTime expirationDate);
+
+        void setLotTypeId(String lotTypeId);
 
         void setActive(String active);
 

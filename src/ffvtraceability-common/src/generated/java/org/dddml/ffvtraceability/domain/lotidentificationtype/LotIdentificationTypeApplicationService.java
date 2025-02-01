@@ -32,9 +32,5 @@ public interface LotIdentificationTypeApplicationService {
 
     long getCount(Criterion filter);
 
-    LotIdentificationTypeEvent getEvent(String lotIdentificationTypeId, long version);
-
-    LotIdentificationTypeState getHistoryState(String lotIdentificationTypeId, long version);
-
 }
 

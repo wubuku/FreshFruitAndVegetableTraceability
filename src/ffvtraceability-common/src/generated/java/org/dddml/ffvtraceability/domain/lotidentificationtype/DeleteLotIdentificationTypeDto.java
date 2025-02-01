@@ -19,9 +19,64 @@ public class DeleteLotIdentificationTypeDto extends AbstractLotIdentificationTyp
 
     public LotIdentificationTypeCommand.DeleteLotIdentificationType toDeleteLotIdentificationType()
     {
-        AbstractLotIdentificationTypeCommand.SimpleDeleteLotIdentificationType command = new AbstractLotIdentificationTypeCommand.SimpleDeleteLotIdentificationType();
-        ((AbstractLotIdentificationTypeCommandDto)this).copyTo(command);
-        return command;
+        return new LotIdentificationTypeCommand.DeleteLotIdentificationType() {
+            @Override
+            public String getLotIdentificationTypeId() {
+                return DeleteLotIdentificationTypeDto.this.getLotIdentificationTypeId();
+            }
+
+            @Override
+            public void setLotIdentificationTypeId(String p) {
+                DeleteLotIdentificationTypeDto.this.setLotIdentificationTypeId(p);
+            }
+
+            @Override
+            public Long getVersion() {
+                return DeleteLotIdentificationTypeDto.this.getVersion();
+            }
+
+            @Override
+            public void setVersion(Long p) {
+                DeleteLotIdentificationTypeDto.this.setVersion(p);
+            }
+
+            @Override
+            public String getCommandType() {
+                return DeleteLotIdentificationTypeDto.this.getCommandType();
+            }
+
+            @Override
+            public void setCommandType(String commandType) {
+                 DeleteLotIdentificationTypeDto.this.setCommandType(commandType);
+            }
+
+            @Override
+            public String getCommandId() {
+                return DeleteLotIdentificationTypeDto.this.getCommandId();
+            }
+
+            @Override
+            public void setCommandId(String commandId) {
+                DeleteLotIdentificationTypeDto.this.setCommandId(commandId);
+            }
+
+            @Override
+            public String getRequesterId() {
+                return DeleteLotIdentificationTypeDto.this.getRequesterId();
+            }
+
+            @Override
+            public void setRequesterId(String requesterId) {
+                DeleteLotIdentificationTypeDto.this.setRequesterId(requesterId);
+            }
+
+            @Override
+            public java.util.Map<String, Object> getCommandContext() {
+                return DeleteLotIdentificationTypeDto.this.getCommandContext();
+            }
+
+
+        };
     }
 }
 

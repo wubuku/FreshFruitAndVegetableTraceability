@@ -42,12 +42,4 @@ public abstract class AbstractFacilityIdentificationTypeCommandDto extends Abstr
     }
 
 
-    public void copyTo(FacilityIdentificationTypeCommand command) {
-        command.setFacilityIdentificationTypeId(this.getFacilityIdentificationTypeId());
-        command.setVersion(this.getVersion());
-        
-        command.setRequesterId(this.getRequesterId());
-        command.setCommandId(this.getCommandId());
-    }
-
 }

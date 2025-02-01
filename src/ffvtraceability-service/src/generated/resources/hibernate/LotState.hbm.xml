@@ -19,6 +19,9 @@
     <property name="expirationDate">
       <column name="expiration_date" sql-type="timestamptz" />
     </property>
+    <property name="lotTypeId">
+      <column name="lot_type_id" sql-type="VARCHAR(20)" />
+    </property>
     <property name="active">
       <column name="active" sql-type="CHAR(1)" />
     </property>

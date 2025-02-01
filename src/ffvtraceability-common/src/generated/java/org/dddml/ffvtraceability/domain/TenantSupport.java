@@ -39,6 +39,7 @@ public class TenantSupport {
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.geoassoc.GeoAssocState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.geoassoctype.GeoAssocTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.lot.LotState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.lottype.LotTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.lotidentificationtype.LotIdentificationTypeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.party.PartyState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.partyidentificationtype.PartyIdentificationTypeState", "tenantId");

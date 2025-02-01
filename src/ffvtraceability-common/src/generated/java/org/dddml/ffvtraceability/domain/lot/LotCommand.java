@@ -56,6 +56,10 @@ public interface LotCommand extends Command {
 
         void setExpirationDate(OffsetDateTime expirationDate);
 
+        String getLotTypeId();
+
+        void setLotTypeId(String lotTypeId);
+
         String getActive();
 
         void setActive(String active);
@@ -109,6 +113,10 @@ public interface LotCommand extends Command {
         Boolean getIsPropertyExpirationDateRemoved();
 
         void setIsPropertyExpirationDateRemoved(Boolean removed);
+
+        Boolean getIsPropertyLotTypeIdRemoved();
+
+        void setIsPropertyLotTypeIdRemoved(Boolean removed);
 
         Boolean getIsPropertyActiveRemoved();
 

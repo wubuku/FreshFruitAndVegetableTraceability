@@ -87,6 +87,8 @@
 
 
   FacilityIdentificationType:
+    metadata:
+      NoEventSourcing: true
     id:
       name: FacilityIdentificationTypeId
       type: id

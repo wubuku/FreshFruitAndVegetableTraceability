@@ -31,6 +31,8 @@ public interface LotIdentificationTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getCommandId();
+
     interface MutableLotIdentificationTypeState extends LotIdentificationTypeState {
         void setLotIdentificationTypeId(String lotIdentificationTypeId);
 
@@ -46,12 +48,7 @@ public interface LotIdentificationTypeState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
-
-        void mutate(Event e);
-
-        //void when(LotIdentificationTypeEvent.LotIdentificationTypeStateCreated e);
-
-        //void when(LotIdentificationTypeEvent.LotIdentificationTypeStateMergePatched e);
+        void setCommandId(String commandId);
 
     }
 

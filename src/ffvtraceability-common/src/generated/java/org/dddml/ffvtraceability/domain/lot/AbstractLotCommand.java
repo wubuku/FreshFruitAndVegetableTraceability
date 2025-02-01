@@ -63,6 +63,18 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
             this.expirationDate = expirationDate;
         }
 
+        private String lotTypeId;
+
+        public String getLotTypeId()
+        {
+            return this.lotTypeId;
+        }
+
+        public void setLotTypeId(String lotTypeId)
+        {
+            this.lotTypeId = lotTypeId;
+        }
+
         private String active;
 
         public String getActive()
@@ -245,6 +257,18 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
         public void setIsPropertyExpirationDateRemoved(Boolean removed)
         {
             this.isPropertyExpirationDateRemoved = removed;
+        }
+
+        private Boolean isPropertyLotTypeIdRemoved;
+
+        public Boolean getIsPropertyLotTypeIdRemoved()
+        {
+            return this.isPropertyLotTypeIdRemoved;
+        }
+
+        public void setIsPropertyLotTypeIdRemoved(Boolean removed)
+        {
+            this.isPropertyLotTypeIdRemoved = removed;
         }
 
         private Boolean isPropertyActiveRemoved;

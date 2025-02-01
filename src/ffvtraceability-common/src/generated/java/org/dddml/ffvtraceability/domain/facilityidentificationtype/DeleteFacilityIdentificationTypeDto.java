@@ -19,9 +19,64 @@ public class DeleteFacilityIdentificationTypeDto extends AbstractFacilityIdentif
 
     public FacilityIdentificationTypeCommand.DeleteFacilityIdentificationType toDeleteFacilityIdentificationType()
     {
-        AbstractFacilityIdentificationTypeCommand.SimpleDeleteFacilityIdentificationType command = new AbstractFacilityIdentificationTypeCommand.SimpleDeleteFacilityIdentificationType();
-        ((AbstractFacilityIdentificationTypeCommandDto)this).copyTo(command);
-        return command;
+        return new FacilityIdentificationTypeCommand.DeleteFacilityIdentificationType() {
+            @Override
+            public String getFacilityIdentificationTypeId() {
+                return DeleteFacilityIdentificationTypeDto.this.getFacilityIdentificationTypeId();
+            }
+
+            @Override
+            public void setFacilityIdentificationTypeId(String p) {
+                DeleteFacilityIdentificationTypeDto.this.setFacilityIdentificationTypeId(p);
+            }
+
+            @Override
+            public Long getVersion() {
+                return DeleteFacilityIdentificationTypeDto.this.getVersion();
+            }
+
+            @Override
+            public void setVersion(Long p) {
+                DeleteFacilityIdentificationTypeDto.this.setVersion(p);
+            }
+
+            @Override
+            public String getCommandType() {
+                return DeleteFacilityIdentificationTypeDto.this.getCommandType();
+            }
+
+            @Override
+            public void setCommandType(String commandType) {
+                 DeleteFacilityIdentificationTypeDto.this.setCommandType(commandType);
+            }
+
+            @Override
+            public String getCommandId() {
+                return DeleteFacilityIdentificationTypeDto.this.getCommandId();
+            }
+
+            @Override
+            public void setCommandId(String commandId) {
+                DeleteFacilityIdentificationTypeDto.this.setCommandId(commandId);
+            }
+
+            @Override
+            public String getRequesterId() {
+                return DeleteFacilityIdentificationTypeDto.this.getRequesterId();
+            }
+
+            @Override
+            public void setRequesterId(String requesterId) {
+                DeleteFacilityIdentificationTypeDto.this.setRequesterId(requesterId);
+            }
+
+            @Override
+            public java.util.Map<String, Object> getCommandContext() {
+                return DeleteFacilityIdentificationTypeDto.this.getCommandContext();
+            }
+
+
+        };
     }
 }
 

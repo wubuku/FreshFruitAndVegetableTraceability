@@ -13,14 +13,6 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 
 public abstract class AbstractFacilityIdentificationTypeApplicationService implements FacilityIdentificationTypeApplicationService {
-
-    private EventStore eventStore;
-
-    protected EventStore getEventStore()
-    {
-        return eventStore;
-    }
-
     private FacilityIdentificationTypeStateRepository stateRepository;
 
     protected FacilityIdentificationTypeStateRepository getStateRepository() {
@@ -33,28 +25,41 @@ public abstract class AbstractFacilityIdentificationTypeApplicationService imple
         return stateQueryRepository;
     }
 
-    private AggregateEventListener<FacilityIdentificationTypeAggregate, FacilityIdentificationTypeState> aggregateEventListener;
-
-    public AggregateEventListener<FacilityIdentificationTypeAggregate, FacilityIdentificationTypeState> getAggregateEventListener() {
-        return aggregateEventListener;
-    }
-
-    public void setAggregateEventListener(AggregateEventListener<FacilityIdentificationTypeAggregate, FacilityIdentificationTypeState> eventListener) {
-        this.aggregateEventListener = eventListener;
-    }
-
-    public AbstractFacilityIdentificationTypeApplicationService(EventStore eventStore, FacilityIdentificationTypeStateRepository stateRepository, FacilityIdentificationTypeStateQueryRepository stateQueryRepository) {
-        this.eventStore = eventStore;
+    public AbstractFacilityIdentificationTypeApplicationService(FacilityIdentificationTypeStateRepository stateRepository, FacilityIdentificationTypeStateQueryRepository stateQueryRepository) {
         this.stateRepository = stateRepository;
         this.stateQueryRepository = stateQueryRepository;
     }
 
     public void when(FacilityIdentificationTypeCommand.CreateFacilityIdentificationType c) {
-        update(c, ar -> ar.create(c));
+        update(c, s -> {
+        // //////////////////////////
+        throwOnConcurrencyConflict(s, c);
+        FacilityIdentificationTypeState.SqlFacilityIdentificationTypeState ss = ((FacilityIdentificationTypeState.SqlFacilityIdentificationTypeState)s);
+        ss.setDescription(c.getDescription());
+        ss.setCreatedBy(c.getRequesterId());
+        ss.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        ss.setCommandId(c.getCommandId());
+        // //////////////////////////
+        });
     }
 
     public void when(FacilityIdentificationTypeCommand.MergePatchFacilityIdentificationType c) {
-        update(c, ar -> ar.mergePatch(c));
+        update(c, s -> {
+        // //////////////////////////////////
+        throwOnConcurrencyConflict(s, c);
+        FacilityIdentificationTypeState.SqlFacilityIdentificationTypeState ss = ((FacilityIdentificationTypeState.SqlFacilityIdentificationTypeState)s);
+        if (c.getDescription() == null) {
+            if (c.getIsPropertyDescriptionRemoved() != null && c.getIsPropertyDescriptionRemoved()) {
+                ss.setDescription(null);
+            }
+        } else {
+            ss.setDescription(c.getDescription());
+        }
+        ss.setUpdatedBy(c.getRequesterId());
+        ss.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        ss.setCommandId(c.getCommandId());
+        // //////////////////////////////////
+        });
     }
 
     public FacilityIdentificationTypeState get(String id) {
@@ -86,83 +91,51 @@ public abstract class AbstractFacilityIdentificationTypeApplicationService imple
         return getStateQueryRepository().getCount(filter);
     }
 
-    public FacilityIdentificationTypeEvent getEvent(String facilityIdentificationTypeId, long version) {
-        FacilityIdentificationTypeEvent e = (FacilityIdentificationTypeEvent)getEventStore().getEvent(toEventStoreAggregateId(facilityIdentificationTypeId), version);
-        if (e != null) {
-            ((FacilityIdentificationTypeEvent.SqlFacilityIdentificationTypeEvent)e).setEventReadOnly(true); 
-        } else if (version == -1) {
-            return getEvent(facilityIdentificationTypeId, 0);
-        }
-        return e;
-    }
-
-    public FacilityIdentificationTypeState getHistoryState(String facilityIdentificationTypeId, long version) {
-        EventStream eventStream = getEventStore().loadEventStream(AbstractFacilityIdentificationTypeEvent.class, toEventStoreAggregateId(facilityIdentificationTypeId), version - 1);
-        return new AbstractFacilityIdentificationTypeState.SimpleFacilityIdentificationTypeState(eventStream.getEvents());
-    }
-
-
-    public FacilityIdentificationTypeAggregate getFacilityIdentificationTypeAggregate(FacilityIdentificationTypeState state) {
-        return new AbstractFacilityIdentificationTypeAggregate.SimpleFacilityIdentificationTypeAggregate(state);
-    }
-
     public EventStoreAggregateId toEventStoreAggregateId(String aggregateId) {
         return new EventStoreAggregateId.SimpleEventStoreAggregateId(aggregateId);
     }
 
-    protected void update(FacilityIdentificationTypeCommand c, Consumer<FacilityIdentificationTypeAggregate> action) {
+    protected void update(FacilityIdentificationTypeCommand c, Consumer<FacilityIdentificationTypeState> action) {
         String aggregateId = c.getFacilityIdentificationTypeId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
         FacilityIdentificationTypeState state = getStateRepository().get(aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);
         if (duplicate) { return; }
 
-        FacilityIdentificationTypeAggregate aggregate = getFacilityIdentificationTypeAggregate(state);
-        aggregate.throwOnInvalidStateTransition(c);
-        action.accept(aggregate);
-        persist(eventStoreAggregateId, c.getVersion() == null ? FacilityIdentificationTypeState.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
+        FacilityIdentificationTypeCommand.throwOnInvalidStateTransition(state, c);
+        action.accept(state);
+        persist(eventStoreAggregateId, c.getVersion() == null ? FacilityIdentificationTypeState.VERSION_NULL : c.getVersion(), state); // State version may be null!
 
     }
 
-    private void persist(EventStoreAggregateId eventStoreAggregateId, long version, FacilityIdentificationTypeAggregate aggregate, FacilityIdentificationTypeState state) {
-        getEventStore().appendEvents(eventStoreAggregateId, version, 
-            aggregate.getChanges(), (events) -> { 
-                getStateRepository().save(state); 
-            });
-        if (aggregateEventListener != null) {
-            aggregateEventListener.eventAppended(new AggregateEvent<>(aggregate, state, aggregate.getChanges()));
-        }
-    }
-
-    public void initialize(FacilityIdentificationTypeEvent.FacilityIdentificationTypeStateCreated stateCreated) {
-        String aggregateId = ((FacilityIdentificationTypeEvent.SqlFacilityIdentificationTypeEvent)stateCreated).getFacilityIdentificationTypeEventId().getFacilityIdentificationTypeId();
-        FacilityIdentificationTypeState.SqlFacilityIdentificationTypeState state = new AbstractFacilityIdentificationTypeState.SimpleFacilityIdentificationTypeState();
-        state.setFacilityIdentificationTypeId(aggregateId);
-
-        FacilityIdentificationTypeAggregate aggregate = getFacilityIdentificationTypeAggregate(state);
-        ((AbstractFacilityIdentificationTypeAggregate) aggregate).apply(stateCreated);
-
-        EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        persist(eventStoreAggregateId, ((FacilityIdentificationTypeEvent.SqlFacilityIdentificationTypeEvent)stateCreated).getFacilityIdentificationTypeEventId().getVersion(), aggregate, state);
+    private void persist(EventStoreAggregateId eventStoreAggregateId, long version, FacilityIdentificationTypeState state) {
+        getStateRepository().save(state);
     }
 
     protected boolean isDuplicateCommand(FacilityIdentificationTypeCommand command, EventStoreAggregateId eventStoreAggregateId, FacilityIdentificationTypeState state) {
         boolean duplicate = false;
         if (command.getVersion() == null) { command.setVersion(FacilityIdentificationTypeState.VERSION_NULL); }
-        if (state.getVersion() != null && state.getVersion() > command.getVersion()) {
-            Event lastEvent = getEventStore().getEvent(AbstractFacilityIdentificationTypeEvent.class, eventStoreAggregateId, command.getVersion());
-            if (lastEvent != null && lastEvent instanceof AbstractEvent
-               && command.getCommandId() != null && command.getCommandId().equals(((AbstractEvent) lastEvent).getCommandId())) {
+        if (state.getVersion() != null && state.getVersion() == command.getVersion() + 1) {
+            if (command.getCommandId() != null && command.getCommandId().equals(state.getCommandId())) {
                 duplicate = true;
             }
         }
         return duplicate;
     }
 
+    protected static void throwOnConcurrencyConflict(FacilityIdentificationTypeState s, FacilityIdentificationTypeCommand c) {
+        Long stateVersion = s.getVersion();
+        Long commandVersion = c.getVersion();
+        if (commandVersion == null) { commandVersion = FacilityIdentificationTypeState.VERSION_NULL; }
+        if (!(stateVersion == null && commandVersion.equals(FacilityIdentificationTypeState.VERSION_NULL)) && !commandVersion.equals(stateVersion)) {
+            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and command version (%2$s)", stateVersion, commandVersion);
+        }
+    }
+
     public static class SimpleFacilityIdentificationTypeApplicationService extends AbstractFacilityIdentificationTypeApplicationService {
-        public SimpleFacilityIdentificationTypeApplicationService(EventStore eventStore, FacilityIdentificationTypeStateRepository stateRepository, FacilityIdentificationTypeStateQueryRepository stateQueryRepository)
+        public SimpleFacilityIdentificationTypeApplicationService(FacilityIdentificationTypeStateRepository stateRepository, FacilityIdentificationTypeStateQueryRepository stateQueryRepository)
         {
-            super(eventStore, stateRepository, stateQueryRepository);
+            super(stateRepository, stateQueryRepository);
         }
     }
 

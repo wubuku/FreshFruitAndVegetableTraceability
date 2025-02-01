@@ -62,6 +62,9 @@ import org.dddml.ffvtraceability.domain.geoassoctype.hibernate.*;
 import org.dddml.ffvtraceability.domain.lot.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.lot.hibernate.*;
+import org.dddml.ffvtraceability.domain.lottype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.lottype.hibernate.*;
 import org.dddml.ffvtraceability.domain.lotidentificationtype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.lotidentificationtype.hibernate.*;
@@ -330,12 +333,10 @@ public class AggregatesHibernateConfig {
 
     @Bean
     public AbstractFacilityIdentificationTypeApplicationService.SimpleFacilityIdentificationTypeApplicationService facilityIdentificationTypeApplicationService(
-            @Qualifier("facilityIdentificationTypeEventStore") EventStore facilityIdentificationTypeEventStore,
             FacilityIdentificationTypeStateRepository facilityIdentificationTypeStateRepository,
             FacilityIdentificationTypeStateQueryRepository facilityIdentificationTypeStateQueryRepository
     ) {
         AbstractFacilityIdentificationTypeApplicationService.SimpleFacilityIdentificationTypeApplicationService applicationService = new AbstractFacilityIdentificationTypeApplicationService.SimpleFacilityIdentificationTypeApplicationService(
-                facilityIdentificationTypeEventStore,
                 facilityIdentificationTypeStateRepository,
                 facilityIdentificationTypeStateQueryRepository
         );
@@ -445,13 +446,25 @@ public class AggregatesHibernateConfig {
 
 
     @Bean
+    public AbstractLotTypeApplicationService.SimpleLotTypeApplicationService lotTypeApplicationService(
+            LotTypeStateRepository lotTypeStateRepository,
+            LotTypeStateQueryRepository lotTypeStateQueryRepository
+    ) {
+        AbstractLotTypeApplicationService.SimpleLotTypeApplicationService applicationService = new AbstractLotTypeApplicationService.SimpleLotTypeApplicationService(
+                lotTypeStateRepository,
+                lotTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
     public AbstractLotIdentificationTypeApplicationService.SimpleLotIdentificationTypeApplicationService lotIdentificationTypeApplicationService(
-            @Qualifier("lotIdentificationTypeEventStore") EventStore lotIdentificationTypeEventStore,
             LotIdentificationTypeStateRepository lotIdentificationTypeStateRepository,
             LotIdentificationTypeStateQueryRepository lotIdentificationTypeStateQueryRepository
     ) {
         AbstractLotIdentificationTypeApplicationService.SimpleLotIdentificationTypeApplicationService applicationService = new AbstractLotIdentificationTypeApplicationService.SimpleLotIdentificationTypeApplicationService(
-                lotIdentificationTypeEventStore,
                 lotIdentificationTypeStateRepository,
                 lotIdentificationTypeStateQueryRepository
         );
@@ -702,12 +715,10 @@ public class AggregatesHibernateConfig {
 
     @Bean
     public AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService shipmentTypeApplicationService(
-            @Qualifier("shipmentTypeEventStore") EventStore shipmentTypeEventStore,
             ShipmentTypeStateRepository shipmentTypeStateRepository,
             ShipmentTypeStateQueryRepository shipmentTypeStateQueryRepository
     ) {
         AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService applicationService = new AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService(
-                shipmentTypeEventStore,
                 shipmentTypeStateRepository,
                 shipmentTypeStateQueryRepository
         );

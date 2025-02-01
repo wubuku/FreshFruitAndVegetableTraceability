@@ -16,6 +16,8 @@ aggregates:
       #BestIfUsedByDate:
       #  type: KdeDate
       #  description: "AI (15) Best if Used by Date"
+      LotTypeId:
+        type: id
       LotIdentifications:
         itemType: LotIdentification
       Active:
@@ -71,18 +73,38 @@ aggregates:
           # ---------------------------------------------------------------------
           # 以下属性可用于将 TLC Case GTIN/BATCH 映射到 LotId。
           # 此时，Id Value 的格式可以为 `(01){Gtin}(10){GS1 Batch}`
-          # TLC：Traceability Lot Code。
+          # （注：TLC 指的是 Traceability Lot Code。）
+          # 虽然在 Lot 属性中也包含了 GTIN 和 GS1 Batch，但是没有唯一性约束。
+          # 通过使用 LotIdentification 可以保证“唯一性”。
           Gtin:
             type: id
           Gs1Batch:
             type: id
-          # ---------------------------------------------------------------------
           # SourceFacilityId:
           #   type: id
+          # ---------------------------------------------------------------------
 
+
+  # -----------------------------------------------------------------------------------
+  # 我们似乎有必要区分不同的 Lot 类型。
+  # 比如针对 TLC (Traceability Lot Code) 的 Lot，视情况可能需要包含了不少 Optional 属性；
+  # 也有可能需要单独指示仅包含 TLC Case GTIN/BATCH 的 Lot；
+  # 还有可能存在“内部 Lot”等。
+  # -----------------------------------------------------------------------------------
+  LotType:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: LotTypeId
+      type: id
+    properties:
+      Description:
+        type: description
 
 
   LotIdentificationType:
+    metadata:
+      NoEventSourcing: true
     id:
       name: LotIdentificationTypeId
       type: id

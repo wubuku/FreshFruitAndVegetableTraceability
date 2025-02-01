@@ -42,12 +42,4 @@ public abstract class AbstractLotIdentificationTypeCommandDto extends AbstractCo
     }
 
 
-    public void copyTo(LotIdentificationTypeCommand command) {
-        command.setLotIdentificationTypeId(this.getLotIdentificationTypeId());
-        command.setVersion(this.getVersion());
-        
-        command.setRequesterId(this.getRequesterId());
-        command.setCommandId(this.getCommandId());
-    }
-
 }

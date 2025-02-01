@@ -246,40 +246,6 @@ public class ShipmentTypeResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @GetMapping("{shipmentTypeId}/_events/{version}")
-    @Transactional(readOnly = true)
-    public ShipmentTypeEvent getEvent(@PathVariable("shipmentTypeId") String shipmentTypeId, @PathVariable("version") long version) {
-        try {
-
-            String idObj = shipmentTypeId;
-            //ShipmentTypeStateEventDtoConverter dtoConverter = getShipmentTypeStateEventDtoConverter();
-            return shipmentTypeApplicationService.getEvent(idObj, version);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-    @GetMapping("{shipmentTypeId}/_historyStates/{version}")
-    @Transactional(readOnly = true)
-    public ShipmentTypeStateDto getHistoryState(@PathVariable("shipmentTypeId") String shipmentTypeId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
-
-            String idObj = shipmentTypeId;
-            ShipmentTypeStateDto.DtoConverter dtoConverter = new ShipmentTypeStateDto.DtoConverter();
-            if (StringHelper.isNullOrEmpty(fields)) {
-                dtoConverter.setAllFieldsReturned(true);
-            } else {
-                dtoConverter.setReturnedFieldsString(fields);
-            }
-            return dtoConverter.toShipmentTypeStateDto(shipmentTypeApplicationService.getHistoryState(idObj, version));
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-
-    //protected  ShipmentTypeStateEventDtoConverter getShipmentTypeStateEventDtoConverter() {
-    //    return new ShipmentTypeStateEventDtoConverter();
-    //}
 
     protected TypeConverter getCriterionTypeConverter() {
         return new DefaultTypeConverter();
