@@ -39,7 +39,7 @@ import static org.dddml.ffvtraceability.domain.service.BffReceivingApplicationSe
 @Service
 @Transactional
 public class CteReceivingEventSynchronizationServiceImpl implements CteReceivingEventSynchronizationService {
-    private static final String DEFAULT_DATE_TIME_FORMAT = "yyyy/M/d HH:mm:ss";
+    private static final String DEFAULT_DATE_TIME_FORMAT = "M/d/yyyy HH:mm:ss"; // 这个默认格式 OK？
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -313,13 +313,20 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
         }
         pd.setProductName(prdName);
 
-        // 包装（内容）大小
+        //
+        // If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+        // 产品描述我们考虑简写（格式化）为：
+        // `Soda - 12oz - 6 Pack`
+        //
+
+        // 包装（内容的）大小
         StringBuilder sb = new StringBuilder();
         if (productState.getQuantityIncluded() != null) {
             sb.append(productState.getQuantityIncluded().toBigInteger()); // Only int?
             if (qtyUomState != null) {
                 if (qtyUomState.getAbbreviation() != null) {
-                    sb.append(qtyUomState.getAbbreviation()); // NOTE: 这里在数量和“单位缩写”之间没有空格。
+                    sb.append(qtyUomState.getAbbreviation());
+                    // NOTE: 这里在数量和“单位缩写”之间没有空格。
                 } else if (qtyUomState.getUomName() != null) {
                     sb.append(" ").append(qtyUomState.getUomName());
                 } else if (qtyUomState.getDescription() != null) {
@@ -329,20 +336,20 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
                 }
             }
         }
-        // NOTE：这里“件”的描述硬编码为“Pack”。是否合适？
+
         if (productState.getPiecesIncluded() != null && productState.getPiecesIncluded() != 1) {
             sb.append(" - ")
                     .append(productState.getPiecesIncluded())
-                    .append(" Pack");
+                    .append(" Pack"); // NOTE：这里“件”的描述硬编码为“Pack”。是否合适？
         }
         pd.setPackagingSize(sb.toString());
 
         // 包装风格
-        pd.setPackagingStyle(caseUomState == null ? "Case"
+        pd.setPackagingStyle(caseUomState == null ? "Case" // 默认为 Case？
                 : (caseUomState.getUomName() != null ? caseUomState.getUomName()
                 : (caseUomState.getDescription() != null ? caseUomState.getDescription()
                 : (caseUomState.getAbbreviation() != null ? caseUomState.getAbbreviation()
-                : "Case"//caseUomState.getUomId()
+                : "Case" //不使用 caseUomState.getUomId()？
         ))));
         return pd;
     }
