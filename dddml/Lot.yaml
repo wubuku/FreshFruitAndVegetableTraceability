@@ -58,6 +58,10 @@ aggregates:
 
     entities:
       LotIdentification:
+        uniqueConstraints:
+          UniqueIdValue:
+            - IdValue
+            # Is this unique constraint OK?
         id:
           name: LotIdentificationTypeId
           type: id
@@ -88,7 +92,7 @@ aggregates:
   # -----------------------------------------------------------------------------------
   # 我们似乎有必要区分不同的 Lot 类型。
   # 比如针对 TLC (Traceability Lot Code) 的 Lot，视情况可能需要包含了不少 Optional 属性；
-  # 也有可能需要单独指示仅包含 TLC Case GTIN/BATCH 的 Lot；
+  # 也有可能需要单独指示仅包含 TLC Case GTIN/BATCH 的 Lot（Primary TLC）；
   # 还有可能存在“内部 Lot”等。
   # -----------------------------------------------------------------------------------
   LotType:

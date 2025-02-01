@@ -172,6 +172,53 @@ public class BffLotServiceCommands {
 
     }
 
+    public static class CreatePrimaryTlc extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Primary Tlc
+         */
+        private BffLotDto primaryTlc;
+
+        public BffLotDto getPrimaryTlc() {
+            return primaryTlc;
+        }
+
+        public void setPrimaryTlc(BffLotDto primaryTlc) {
+            this.primaryTlc = primaryTlc;
+        }
+
+    }
+
+    public static class ConvertToPrimaryTlc extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Lot Id
+         */
+        private String lotId;
+
+        public String getLotId() {
+            return lotId;
+        }
+
+        public void setLotId(String lotId) {
+            this.lotId = lotId;
+        }
+
+        /**
+         * Primary Tlc
+         */
+        private BffLotDto primaryTlc;
+
+        public BffLotDto getPrimaryTlc() {
+            return primaryTlc;
+        }
+
+        public void setPrimaryTlc(BffLotDto primaryTlc) {
+            this.primaryTlc = primaryTlc;
+        }
+
+    }
+
 
 }
 

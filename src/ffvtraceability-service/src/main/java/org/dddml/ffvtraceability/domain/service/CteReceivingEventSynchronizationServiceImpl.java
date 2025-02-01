@@ -9,9 +9,7 @@ import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
 import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
 import org.dddml.ffvtraceability.domain.product.ProductState;
 import org.dddml.ffvtraceability.domain.receivingevent.AbstractReceivingEventCommand;
-import org.dddml.ffvtraceability.domain.repository.BffFacilityContactMechRepository;
-import org.dddml.ffvtraceability.domain.repository.BffFacilityRepository;
-import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
+import org.dddml.ffvtraceability.domain.repository.*;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentState;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
@@ -62,6 +60,8 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
     private ShipmentApplicationService shipmentApplicationService;
     @Autowired
     private LotApplicationService lotApplicationService;
+    @Autowired
+    private BffLotRepository bffLotRepository;
 
     public static String formatKdeProductDescription(KdeProductDescription pd) {
         String sb = pd.getProductName() +
@@ -131,9 +131,17 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             List<KdeReferenceDocument> referenceDocuments = getKdeReferenceDocuments(receivingItem, receivingDocument);
             e.setReferenceDocuments(referenceDocuments.toArray(new KdeReferenceDocument[0]));
 
-            //KdeTlcSourceOrTlcSourceReference // TODO KdeTlcSourceOrTlcSourceReference ...
-            // KdeTlcSourceOrTlcSourceReference tlcSrcOrSrcRef = new KdeTlcSourceOrTlcSourceReference();
-            // e.setTlcSourceOrTlcSourceReference(tlcSrcOrSrcRef);
+            //KdeTlcSourceOrTlcSourceReference
+            if (tlc.getCaseGtin() != null && tlc.getCaseBatch() != null) {
+                Optional<BffLotProjection> lotProjection = bffLotRepository.findPrimaryTlcByCaseGtinAndBatch(tlc.getCaseGtin(), tlc.getCaseBatch());
+                if (lotProjection.isPresent() && lotProjection.get().getSourceFacilityId() != null) {
+                    String sourceFacilityId = lotProjection.get().getSourceFacilityId();
+                    KdeLocationDescription tlcLocationDescription = getKdeLocationDescription(sourceFacilityId);
+                    KdeTlcSourceOrTlcSourceReference tlcSrcOrSrcRef = new KdeTlcSourceOrTlcSourceReference();
+                    tlcSrcOrSrcRef.setTlcSource(tlcLocationDescription);
+                    e.setTlcSourceOrTlcSourceReference(tlcSrcOrSrcRef);
+                }
+            }
 
         }
     }

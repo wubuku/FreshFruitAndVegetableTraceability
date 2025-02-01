@@ -59,9 +59,16 @@ public interface BffLotRepository extends JpaRepository<AbstractLotState.SimpleL
                     "    AND li.gtin = :caseGtin " +
                     "    AND li.gs1_batch = :caseBatch",
             nativeQuery = true)
-    Optional<BffLotProjection> findByCaseGtinAndBatch(
+    Optional<BffLotProjection> findPrimaryTlcByCaseGtinAndBatch(
             @Param("caseGtin") String caseGtin,
             @Param("caseBatch") String caseBatch
     );
+    // 似乎没有必要添加下面的条件：
+    /*
+    AND l.pallet_sscc IS NULL
+    AND l.pack_date IS NULL
+    AND l.harvest_date IS NULL
+    AND l.serial_number IS NULL
+     */
 
 }

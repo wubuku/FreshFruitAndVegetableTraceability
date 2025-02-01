@@ -15,7 +15,7 @@
       <column name="lot_id" />
     </many-to-one>
     <property name="idValue">
-      <column name="id_value" sql-type="VARCHAR(60)" />
+      <column name="id_value" unique-key="UniqueIdValue" sql-type="VARCHAR(60)" />
     </property>
     <property name="gtin">
       <column name="gtin" sql-type="VARCHAR(20)" />

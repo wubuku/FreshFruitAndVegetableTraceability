@@ -5,8 +5,9 @@ public class BffLotConstants {
         // Prevent instantiation
     }
 
-    @Deprecated
-    public static final String LOT_IDENTIFICATION_TYPE_GS1_BATCH = "GS1_BATCH";
+    public static final String LOT_TYPE_ID_PRIMARY_TLC = "PRIMARY_TLC";
+
+    // @Deprecated public static final String LOT_IDENTIFICATION_TYPE_GS1_BATCH = "GS1_BATCH";
 
     /**
      * TLC (Traceability lot code) case GTIN/BATCH.

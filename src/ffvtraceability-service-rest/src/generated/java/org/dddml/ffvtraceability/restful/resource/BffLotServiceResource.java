@@ -113,5 +113,31 @@ public class BffLotServiceResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    @PostMapping("createPrimaryTlc")
+    public String createPrimaryTlc(
+        @RequestBody @Valid BffLotDto primaryTlc
+    ) {
+        BffLotServiceCommands.CreatePrimaryTlc createPrimaryTlc = new BffLotServiceCommands.CreatePrimaryTlc();
+        createPrimaryTlc.setPrimaryTlc(primaryTlc);
+        try {
+        createPrimaryTlc.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffLotApplicationService.when(createPrimaryTlc);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    @PostMapping("{lotId}/convertToPrimaryTlc")
+    public void convertToPrimaryTlc(
+        @PathVariable("lotId") String lotId,
+        @RequestBody @Valid BffLotDto primaryTlc
+    ) {
+        BffLotServiceCommands.ConvertToPrimaryTlc convertToPrimaryTlc = new BffLotServiceCommands.ConvertToPrimaryTlc();
+        convertToPrimaryTlc.setLotId(lotId);
+        convertToPrimaryTlc.setPrimaryTlc(primaryTlc);
+        try {
+        convertToPrimaryTlc.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffLotApplicationService.when(convertToPrimaryTlc);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 }
 

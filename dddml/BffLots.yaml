@@ -129,3 +129,36 @@ services:
         parameters:
           Lots:
             itemType: BffLotDto
+ 
+      # -----------------------------------------------------------------------------
+      # 对于同样的 Case GTIN 和 Case Batch 组合，可以存在多条记录
+      # 但其中有一条“特殊记录”，它只有 GTIN 和 Batch 是必填的（其他属性一般情况下应为 null）。
+      # 这种特殊记录对于每个 GTIN+Batch 组合只能存在一条。
+      # 基于这个业务场景，我们将这种记录称为 "Primary" TLC (Traceability Lot Code)。
+      # -----------------------------------------------------------------------------
+      CreatePrimaryTlc:
+        # 创建“特殊”的 Traceability Lot Code (TLC)
+        httpMethod: POST
+        restfulResourceName: "createPrimaryTlc"
+        metadata:
+          HttpRequestBody: PrimaryTlc
+        parameters:
+          PrimaryTlc:
+            type: BffLotDto
+        result:
+          type: id # LotId of created Primary TLC
+
+      ConvertToPrimaryTlc:
+        # 将一条“普通”的 Lot 记录转换为 Primary TLC
+        httpMethod: POST
+        restfulResourceName: "{LotId}/convertToPrimaryTlc"
+        metadata:
+          RestfulPathVariable: LotId
+          HttpRequestBody: PrimaryTlc
+        parameters:
+          LotId:
+            type: id
+          PrimaryTlc:
+            type: BffLotDto
+
+
