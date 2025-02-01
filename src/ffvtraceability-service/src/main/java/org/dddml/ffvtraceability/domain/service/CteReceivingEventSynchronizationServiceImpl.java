@@ -117,12 +117,15 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             ProductState productState = productApplicationService.get(productId);
 
             UomState qtyUomState = null;
-            if (productState.getQuantityUomId() != null) {
-                qtyUomState = uomApplicationService.get(productState.getQuantityUomId());
-            }
             UomState caseUomState = null;
-            if (productState.getCaseUomId() != null) {
-                caseUomState = uomApplicationService.get(productState.getCaseUomId());
+
+            if (productState != null) {
+                if (productState.getQuantityUomId() != null) {
+                    qtyUomState = uomApplicationService.get(productState.getQuantityUomId());
+                }
+                if (productState.getCaseUomId() != null) {
+                    caseUomState = uomApplicationService.get(productState.getCaseUomId());
+                }
             }
 
             //KdeProductDescription
@@ -170,15 +173,19 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
 
     private KdeTraceabilityLotCode getKdeTraceabilityLotCode(BffReceivingItemDto receivingItem) {
         KdeTraceabilityLotCode tlc = new KdeTraceabilityLotCode();
+        if (receivingItem == null || receivingItem.getLotId() == null) {
+            return tlc;
+        }
+
         String lotId = receivingItem.getLotId();
         String caseGtin = null;
         String caseBatch = null; // = lotId??? NOTE: Might the `lotId` not be a real Case BATCH?
 
         LotState lotState = lotApplicationService.get(lotId);
-        if (lotState != null) {
-            Optional<LotIdentificationState> tlcLotIdentification = lotState.getLotIdentifications().stream().filter(
-                    x -> BffLotConstants.LOT_IDENTIFICATION_TYPE_TLC_CASE_GTIN_BATCH.equals(x.getLotIdentificationTypeId())
-            ).findAny();
+        if (lotState != null && lotState.getLotIdentifications() != null) {
+            Optional<LotIdentificationState> tlcLotIdentification = lotState.getLotIdentifications().stream()
+                    .filter(x -> x != null && BffLotConstants.LOT_IDENTIFICATION_TYPE_TLC_CASE_GTIN_BATCH.equals(x.getLotIdentificationTypeId()))
+                    .findAny();
             if (tlcLotIdentification.isPresent()) {
                 // User Case GTIN of LotIdentification
                 LotIdentificationState l = tlcLotIdentification.get();
@@ -218,8 +225,16 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             BffReceivingItemDto receivingItem,
             BffReceivingDocumentDto receivingDocument
     ) {
-        String shipmentId = receivingDocument.getDocumentId();
         List<KdeReferenceDocument> referenceDocuments = new ArrayList<>();
+        if (receivingDocument == null || receivingItem == null) {
+            return referenceDocuments;
+        }
+
+        String shipmentId = receivingDocument.getDocumentId();
+        if (shipmentId == null) {
+            return referenceDocuments;
+        }
+
         String poId = null;
         if (receivingItem.getOrderId() != null) {
             poId = receivingItem.getOrderId();
@@ -239,7 +254,7 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             if (shipmentState != null) {
                 doc.setDocumentType(shipmentState.getShipmentTypeId());
             } else {
-                doc.setDocumentType("SHIPMENT");
+                doc.setDocumentType("SHIPMENT"); // 硬编码？
             }
             doc.setDocumentNumber(shipmentId);
             referenceDocuments.add(doc);
@@ -276,6 +291,16 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             UomState qtyUomState,
             UomState caseUomState
     ) {
+        KdeProductDescription pd = new KdeProductDescription();
+
+        // 防御性处理 productState 为空的情况
+        if (productState == null) {
+            pd.setProductName(productName != null ? productName : "");
+            pd.setPackagingSize("");
+            pd.setPackagingStyle("Case");
+            return pd;
+        }
+
         String prdName = productName;
         if (prdName == null || prdName.isEmpty()) {
             prdName = productState.getProductName();
@@ -283,15 +308,18 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
         if (prdName == null || prdName.isEmpty()) {
             prdName = productState.getBrandName();
         }
-
-        KdeProductDescription pd = new KdeProductDescription();
+        if (prdName == null || prdName.isEmpty()) {
+            prdName = ""; // 确保不会返回 null？
+        }
         pd.setProductName(prdName);
+
+        // 包装（内容）大小
         StringBuilder sb = new StringBuilder();
         if (productState.getQuantityIncluded() != null) {
             sb.append(productState.getQuantityIncluded().toBigInteger()); // Only int?
             if (qtyUomState != null) {
                 if (qtyUomState.getAbbreviation() != null) {
-                    sb.append(qtyUomState.getAbbreviation());
+                    sb.append(qtyUomState.getAbbreviation()); // NOTE: 这里在数量和“单位缩写”之间没有空格。
                 } else if (qtyUomState.getUomName() != null) {
                     sb.append(" ").append(qtyUomState.getUomName());
                 } else if (qtyUomState.getDescription() != null) {
@@ -301,14 +329,15 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
                 }
             }
         }
+        // NOTE：这里“件”的描述硬编码为“Pack”。是否合适？
         if (productState.getPiecesIncluded() != null && productState.getPiecesIncluded() != 1) {
             sb.append(" - ")
                     .append(productState.getQuantityIncluded())
-                    .append(" Pack"); // NOTE: hard coded here?
+                    .append(" Pack");
         }
-
         pd.setPackagingSize(sb.toString());
 
+        // 包装风格
         pd.setPackagingStyle(caseUomState == null ? "Case"
                 : (caseUomState.getUomName() != null ? caseUomState.getUomName()
                 : (caseUomState.getDescription() != null ? caseUomState.getDescription()
@@ -336,16 +365,20 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
     }
 
     private String formatDateTime(OffsetDateTime dt) {
+        if (dt == null) {
+            return "";
+        }
+
         TenantState tenantState = null;
         if (TenantContext.getTenantId() == null) {
             logger.warn("TenantId is not set.");
-            //throw new IllegalStateException("TenantId is not set.");
+            // 不抛出异常
         } else {
             tenantState = tenantApplicationService.get(TenantContext.getTenantId());
             if (tenantState == null) {
                 String message = "Tenant not found: " + TenantContext.getTenantId();
                 logger.warn(message);
-                //throw new IllegalStateException(message);
+                // 不抛出异常
             }
         }
         String dateTimeFormat = (tenantState != null && tenantState.getDateTimeFormat() != null)
