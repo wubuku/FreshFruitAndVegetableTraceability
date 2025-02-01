@@ -227,20 +227,23 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             poId = receivingDocument.getPrimaryOrderId();
         }
         if (poId != null) {
-            KdeReferenceDocument poDoc = new KdeReferenceDocument();
-            poDoc.setDocumentType("PO");
-            poDoc.setDocumentNumber(poId);
-            referenceDocuments.add(poDoc);
+            KdeReferenceDocument doc = new KdeReferenceDocument();
+            doc.setDocumentType("PO");
+            doc.setDocumentNumber(poId);
+            referenceDocuments.add(doc);
         }
-
-        KdeReferenceDocument shipDoc = new KdeReferenceDocument();
-        ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
-        if (shipmentState != null) {
-            shipDoc.setDocumentType(shipmentState.getShipmentTypeId());
-        } else {
-            shipDoc.setDocumentType("SHIPMENT");
+        // 总是添加 shipment Id？
+        {
+            KdeReferenceDocument doc = new KdeReferenceDocument();
+            ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
+            if (shipmentState != null) {
+                doc.setDocumentType(shipmentState.getShipmentTypeId());
+            } else {
+                doc.setDocumentType("SHIPMENT");
+            }
+            doc.setDocumentNumber(shipmentId);
+            referenceDocuments.add(doc);
         }
-        shipDoc.setDocumentNumber(shipmentId);
         return referenceDocuments;
     }
 

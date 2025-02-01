@@ -1198,6 +1198,46 @@ curl -X 'GET' \
   -H "X-TenantID: X"
 
 # ------------------------------------------------------------------------------------
+# 为前面出现过的 Lot 记录，创建对应的 Primary Tlc
+echo -e "\n=== Creating Primary TLC ===\n"
+
+# 为 LOT20240315A (有机番茄) 创建 Primary TLC
+echo "Creating Primary TLC for organic tomatoes..."
+curl -X 'POST' \
+  "${API_BASE_URL}/BffLots/createPrimaryTlc" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "gs1Batch": "LOT20240315A",
+  "quantity": 500,
+  "expirationDate": "2034-12-18T08:53:18.475Z",
+  "gtin": "0614141123453",
+  "sourceFacilityId": "F001"
+}' | { read http_status; check_response $? "$http_status" "Create Primary TLC for tomatoes"; }
+
+# 为 LOT20240315B (有机生菜) 创建 Primary TLC
+echo "Creating Primary TLC for organic lettuce..."
+curl -X 'POST' \
+  "${API_BASE_URL}/BffLots/createPrimaryTlc" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "gs1Batch": "LOT20240315B",
+  "quantity": 290,
+  "expirationDate": "2034-12-18T08:53:18.475Z",
+  "gtin": "0614141123454",
+  "sourceFacilityId": "F001"
+}' | { read http_status; check_response $? "$http_status" "Create Primary TLC for lettuce"; }
+
+
 # 触发生成 CTE receiving 事件
 curl -X 'POST' \
   "${API_BASE_URL}/BffReceipts/${RECEIVING_ID}/synchronizeCteReceivingEvents" \
