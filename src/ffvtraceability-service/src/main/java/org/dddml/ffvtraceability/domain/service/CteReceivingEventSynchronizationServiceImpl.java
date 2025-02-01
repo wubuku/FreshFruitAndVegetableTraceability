@@ -332,7 +332,7 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
         // NOTE：这里“件”的描述硬编码为“Pack”。是否合适？
         if (productState.getPiecesIncluded() != null && productState.getPiecesIncluded() != 1) {
             sb.append(" - ")
-                    .append(productState.getQuantityIncluded())
+                    .append(productState.getPiecesIncluded())
                     .append(" Pack");
         }
         pd.setPackagingSize(sb.toString());
