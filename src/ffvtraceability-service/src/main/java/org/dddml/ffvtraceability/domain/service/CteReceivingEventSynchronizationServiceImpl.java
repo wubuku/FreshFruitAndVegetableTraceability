@@ -9,11 +9,13 @@ import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
 import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
 import org.dddml.ffvtraceability.domain.product.ProductState;
 import org.dddml.ffvtraceability.domain.receivingevent.AbstractReceivingEventCommand;
+import org.dddml.ffvtraceability.domain.receivingevent.ReceivingEventApplicationService;
+import org.dddml.ffvtraceability.domain.receivingevent.ReceivingEventCommand;
+import org.dddml.ffvtraceability.domain.receivingevent.ReceivingEventState;
 import org.dddml.ffvtraceability.domain.repository.*;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentState;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
-import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState;
 import org.dddml.ffvtraceability.domain.tenant.TenantApplicationService;
 import org.dddml.ffvtraceability.domain.tenant.TenantState;
 import org.dddml.ffvtraceability.domain.uom.UomApplicationService;
@@ -39,27 +41,41 @@ import static org.dddml.ffvtraceability.domain.service.BffReceivingApplicationSe
 public class CteReceivingEventSynchronizationServiceImpl implements CteReceivingEventSynchronizationService {
     private static final String DEFAULT_DATE_TIME_FORMAT = "yyyy/M/d HH:mm:ss";
 
-    @Autowired
-    ShipmentReceiptApplicationService shipmentReceiptApplicationService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private ReceivingEventApplicationService receivingEventApplicationService;
+
+    @Autowired
+    private ShipmentReceiptApplicationService shipmentReceiptApplicationService;
+
     @Autowired
     private BffFacilityRepository bffFacilityRepository;
+
     @Autowired
     private BffFacilityContactMechRepository bffFacilityContactMechRepository;
+
     @Autowired
     private BffReceivingMapper bffReceivingMapper;
+
     @Autowired
     private BffReceivingRepository bffReceivingRepository;
+
     @Autowired
     private TenantApplicationService tenantApplicationService;
+
     @Autowired
     private ProductApplicationService productApplicationService;
+
     @Autowired
     private UomApplicationService uomApplicationService;
+
     @Autowired
     private ShipmentApplicationService shipmentApplicationService;
+
     @Autowired
     private LotApplicationService lotApplicationService;
+
     @Autowired
     private BffLotRepository bffLotRepository;
 
@@ -82,17 +98,18 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
         for (BffReceivingItemDto receivingItem : receivingDocument.getReceivingItems()) {
             AbstractReceivingEventCommand.AbstractCreateOrMergePatchReceivingEvent e;
             String receiptId = receivingItem.getReceiptId();
-            ShipmentReceiptState receiptState = shipmentReceiptApplicationService.get(receiptId);
-
-            if (receiptState == null) {
+            //ShipmentReceiptState receiptState = shipmentReceiptApplicationService.get(receiptId);
+            String eventId = receiptId;
+            ReceivingEventState receivingEventState = receivingEventApplicationService.get(eventId);
+            if (receivingEventState == null) {
                 AbstractReceivingEventCommand.SimpleCreateReceivingEvent createReceivingEvent = new AbstractReceivingEventCommand.SimpleCreateReceivingEvent();
                 e = createReceivingEvent;
             } else {
                 AbstractReceivingEventCommand.SimpleMergePatchReceivingEvent mergePatchReceivingEvent = new AbstractReceivingEventCommand.SimpleMergePatchReceivingEvent();
-                mergePatchReceivingEvent.setVersion(receiptState.getVersion());
+                mergePatchReceivingEvent.setVersion(receivingEventState.getVersion());
                 e = mergePatchReceivingEvent;
             }
-            e.setEventId(receivingItem.getReceiptId());
+            e.setEventId(eventId);
             e.setReceiveDate(formatDateTime(receivingDocument.getCreatedAt())); // TODO: use `createdAt`?
 
             String productId = receivingItem.getProductId();
@@ -143,6 +160,11 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
                 }
             }
 
+            if (e instanceof ReceivingEventCommand.CreateReceivingEvent) {
+                receivingEventApplicationService.when((ReceivingEventCommand.CreateReceivingEvent) e);
+            } else { //if (e instanceof ReceivingEventCommand.MergePatchReceivingEvent)
+                receivingEventApplicationService.when((ReceivingEventCommand.MergePatchReceivingEvent) e);
+            }
         }
     }
 
@@ -298,6 +320,9 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
                 bffFacilityContactMechRepository, facilityId
         );
         KdeLocationDescription ld = new KdeLocationDescription();
+        if (facilityContact == null) {
+            return ld; // NOTE: return an empty object?
+        }
         ld.setBusinessName(facilityContact.getBusinessName());
         ld.setState(facilityContact.getState());
         ld.setCity(facilityContact.getCity());

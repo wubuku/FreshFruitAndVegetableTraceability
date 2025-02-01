@@ -338,6 +338,8 @@ curl -X 'POST' \
   "preferredCurrencyUomId": "USD",
   "description": "Organic Vegetables Farm - specializing in greenhouse vegetables with GLOBALG.A.P. certification"
 }' | { read http_status; check_response $? "$http_status" "Create source supplier"; }
+# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+# todo 不过，前提是服务端需要把出错信息返回来（待完成）
 
 # Query Suppliers
 echo "Querying Suppliers..."
@@ -375,6 +377,9 @@ http_code=$(curl -X 'GET' \
 echo "$response"
 check_response $? "$http_code" "Query specific supplier"
 
+# -----------------------------------------------------------------------------------
+# 下面的数据可以通过 XML 数据文件导入：
+# -----------------------------------------------------------------------------------
 # Create party for destination facility
 # curl -X 'POST' \
 #   "${API_BASE_URL}/BffParties" \
@@ -393,6 +398,7 @@ check_response $? "$http_code" "Query specific supplier"
 #   "preferredCurrencyUomId": "USD",
 #   "description": "Fresh Mart main distribution center"
 # }' | { read http_status; check_response $? "$http_status" "Create MY PARTY"; }
+
 
 # Test Facilities
 echo -e "\n=== Testing Facilities ===\n"
@@ -417,6 +423,7 @@ curl -X 'POST' \
   "gln": "1234567890123",
   "ffrn": "12345678901"
 }' | { read http_status; check_response $? "$http_status" "Create source facility"; }
+# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
 
 # Query Facilities
 echo "Querying Facilities..."
@@ -474,6 +481,8 @@ curl -X 'POST' \
   "gln": "1234567890124",
   "ffrn": "12345678902"
 }' | { read http_status; check_response $? "$http_status" "Create destination facility"; }
+# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+
 
 # Create location for source facility
 curl -X 'POST' \
@@ -495,6 +504,8 @@ curl -X 'POST' \
   "geoPointId": "GP001",
   "active": "Y"
 }' | { read http_status; check_response $? "$http_status" "Create location for source facility"; }
+# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+
 
 # Query Locations for F001
 echo "Querying Locations for F001..."
@@ -549,6 +560,8 @@ curl -X 'POST' \
   "geoPointId": "GP002",
   "active": "Y"
 }' | { read http_status; check_response $? "$http_status" "Create location for destination facility"; }
+# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+
 
 # Query Locations for DC_FRESH
 echo "Querying Locations for DC_FRESH..."
@@ -670,6 +683,8 @@ curl -X 'POST' \
   "quantity": 100,
   "expirationDate": "2034-12-18T08:53:18.475Z"
 }' | { read http_status; check_response $? "$http_status" "Create lot"; }
+# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+
 
 # Query Lots
 echo "Querying Lots..."
@@ -757,6 +772,7 @@ curl -X 'POST' \
   "quantity": 100,
   "expirationDate": "2034-12-18T08:53:18.475Z"
 }' | { read http_status; check_response $? "$http_status" "Create second lot"; }
+# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
 
 
 # 测试查询订单列表
@@ -1076,9 +1092,59 @@ curl -X 'PUT' \
   "phoneNumber": "+1 415 555 0123",
   "physicalLocationAddress": "2500 Sand Hill Road",
   "city": "Menlo Park",
-  "state": "CA",
+  "stateProvinceGeoId": "CA",
   "zipCode": "94025"
 }' | { read http_status; check_response $? "$http_status" "Update supplier business contact"; }
+
+
+# 更新之前出现过的所有 Facility 的联系方式
+
+# Update facility business contact information
+echo "Updating facility business contacts..."
+
+# Update DC_FRESH facility contact
+curl -X 'PUT' \
+  "${API_BASE_URL}/BffFacilities/DC_FRESH/BusinessContact" \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "businessName": "Fresh Mart Distribution Center",
+  "phoneNumber": "+1 408 555 0123",
+  "physicalLocationAddress": "2800 Distribution Way",
+  "city": "San Jose",
+  "stateProvinceGeoId": "CA",
+  "zipCode": "95134",
+  "country": "USA",
+  "email": "operations@freshmart-dc.example.com",
+  "contactRole": "Distribution Center Manager"
+}' | { read http_status; check_response $? "$http_status" "Update DC_FRESH business contact"; }
+
+# Update F001 facility contact
+curl -X 'PUT' \
+  "${API_BASE_URL}/BffFacilities/F001/BusinessContact" \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -s \
+  -w '%{http_code}\n' \
+  -o /dev/null \
+  -d '{
+  "businessName": "Fresh Produce Processing Center",
+  "phoneNumber": "+1 831 555 0456",
+  "physicalLocationAddress": "1200 Agriculture Road",
+  "city": "Salinas",
+  "stateProvinceGeoId": "CA",
+  "zipCode": "93901",
+  "country": "USA",
+  "email": "operations@fresh-produce.example.com",
+  "contactRole": "Processing Center Supervisor"
+}' | { read http_status; check_response $? "$http_status" "Update F001 business contact"; }
+
+
 
 
 # 查询供应商类型枚举
@@ -1130,3 +1196,66 @@ curl -X 'GET' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X"
+
+# ------------------------------------------------------------------------------------
+# 触发生成 CTE receiving 事件
+curl -X 'POST' \
+  "${API_BASE_URL}/BffReceipts/${RECEIVING_ID}/synchronizeCteReceivingEvents" \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -d '{
+  "documentId": "${RECEIVING_ID}"
+}'
+
+# 查询 CTE receiving 事件
+echo "Querying CTE receiving events..."
+curl -X 'GET' \
+  "${API_BASE_URL}/ReceivingEvents?firstResult=0&maxResults=2147483647" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X"
+
+# 输出类似：
+# [
+#   {
+#     "eventId": "11CNCH5KSXV0DBX1SA-11CNCH3HT0FF70RELK",
+#     "traceabilityLotCode": {
+#       "caseGtin": "0614141123454",
+#       "bestIfUsedByDate": "2034/12/18 08:53:18"
+#     },
+#     "quantityAndUom": {
+#       "quantity": 15,
+#       "uom": "Case"
+#     },
+#     "productDescription": {
+#       "productName": "Organic Lettuce",
+#       "packagingSize": "1kg",
+#       "packagingStyle": "Case"
+#     },
+#     "shipToLocation": {
+#       "businessName": "Fresh Mart Distribution Center",
+#       "phoneNumber": "+1 408 5550123",
+#       "physicalLocationAddress": "2800 Distribution Way",
+#       "city": "San Jose",
+#       "state": "California",
+#       "zipCode": "95134"
+#     },
+#     "shipFromLocation": {
+#       "businessName": "Fresh Produce Processing Center",
+#       "phoneNumber": "+1 831 5550456",
+#       "physicalLocationAddress": "1200 Agriculture Road",
+#       "city": "Salinas",
+#       "state": "California",
+#       "zipCode": "93901"
+#     },
+#     "receiveDate": "2025/1/12 14:26:21",
+#     "version": 0,
+#     "createdAt": "2025-02-01T09:40:23.523649Z",
+#     "referenceDocuments": [
+#       {
+#         "documentType": "PO",
+#         "documentNumber": "11CNCG1DDHF29WGVU2"
+#       }
+#     ]
+#   }
+# ]

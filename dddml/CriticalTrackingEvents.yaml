@@ -31,6 +31,9 @@ aggregates:
       QuantityAndUom:
         type: KdeQuantityAndUom
         description: "Quantity and UOM"
+        columnNames:
+          - quantity
+          - uom
       ProductDescription:
         type: KdeProductDescription
         description: "Product Description"
@@ -81,6 +84,9 @@ aggregates:
       QuantityAndUom:
         type: KdeQuantityAndUom
         description: "Quantity and UOM"
+        columnNames:
+          - quantity
+          - uom
       ProductDescription:
         type: KdeProductDescription
         description: "Product Description"

@@ -32,10 +32,10 @@
     </component>
     <component name="quantityAndUom" class="org.dddml.ffvtraceability.domain.KdeQuantityAndUom">
       <property name="quantity">
-        <column name="quantity_and_uom_quantity" sql-type="DECIMAL(30,2)" />
+        <column name="quantity" sql-type="DECIMAL(30,2)" />
       </property>
       <property name="uom">
-        <column name="quantity_and_uom_uom" sql-type="VARCHAR(50)" />
+        <column name="uom" sql-type="VARCHAR(50)" />
       </property>
     </component>
     <component name="productDescription" class="org.dddml.ffvtraceability.domain.KdeProductDescription">

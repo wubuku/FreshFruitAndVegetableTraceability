@@ -111,14 +111,18 @@ public class DomainErrorUtils {
             return null;
         }
 
-        if (e instanceof java.lang.reflect.UndeclaredThrowableException undeclaredThrowableException) {
+        if (e instanceof java.lang.reflect.UndeclaredThrowableException) {
+            java.lang.reflect.UndeclaredThrowableException undeclaredThrowableException = 
+                (java.lang.reflect.UndeclaredThrowableException) e;
 
             Throwable undeclaredThrowable = undeclaredThrowableException.getUndeclaredThrowable();
             if (undeclaredThrowable == null) {
                 return e;
             }
 
-            if (undeclaredThrowable instanceof java.lang.reflect.InvocationTargetException invocationTargetException) {
+            if (undeclaredThrowable instanceof java.lang.reflect.InvocationTargetException) {
+                java.lang.reflect.InvocationTargetException invocationTargetException = 
+                    (java.lang.reflect.InvocationTargetException) undeclaredThrowable;
 
                 Throwable targetException = invocationTargetException.getTargetException();
                 if (targetException instanceof DomainError) {
