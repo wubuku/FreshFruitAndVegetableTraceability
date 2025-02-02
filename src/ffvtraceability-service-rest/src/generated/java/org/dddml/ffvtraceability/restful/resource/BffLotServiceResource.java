@@ -113,6 +113,20 @@ public class BffLotServiceResource {
         
     }
 
+    @GetMapping("getPrimaryTlc")
+    public BffLotDto getPrimaryTlc(
+        @RequestParam(value = "gtin") String gtin,
+        @RequestParam(value = "gs1Batch") String gs1Batch
+    ) {
+        BffLotServiceCommands.GetPrimaryTlc getPrimaryTlc = new BffLotServiceCommands.GetPrimaryTlc();
+        getPrimaryTlc.setGtin(gtin);
+        getPrimaryTlc.setGs1Batch(gs1Batch);
+        
+        getPrimaryTlc.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffLotApplicationService.when(getPrimaryTlc);
+        
+    }
+
     @PostMapping("createPrimaryTlc")
     public String createPrimaryTlc(
         @RequestBody @Valid BffLotDto primaryTlc

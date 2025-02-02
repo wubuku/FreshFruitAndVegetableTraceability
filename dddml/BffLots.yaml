@@ -138,8 +138,21 @@ services:
       # 基于这个业务场景，我们将这种记录称为 "Primary" TLC (Traceability Lot Code)。
       # 它的主要作用之一是用于确定赋予 TLC GTIN/Batch 的“源头设施”。
       # -----------------------------------------------------------------------------
+      GetPrimaryTlc:
+        isQuery: true
+        restfulResourceName: "getPrimaryTlc"
+        parameters:
+          Gtin:
+            type: id
+            optional: false # is required
+          Gs1Batch:
+            type: id
+            optional: false # is required
+        result:
+          type: BffLotDto
+
       CreatePrimaryTlc:
-        # 创建“特殊”的 Traceability Lot Code (TLC)
+        # 创建“特殊”的 Primary Traceability Lot Code (TLC)
         httpMethod: POST
         restfulResourceName: "createPrimaryTlc"
         metadata:

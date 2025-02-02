@@ -172,6 +172,36 @@ public class BffLotServiceCommands {
 
     }
 
+    public static class GetPrimaryTlc extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Gtin
+         */
+        private String gtin;
+
+        public String getGtin() {
+            return gtin;
+        }
+
+        public void setGtin(String gtin) {
+            this.gtin = gtin;
+        }
+
+        /**
+         * Gs1 Batch
+         */
+        private String gs1Batch;
+
+        public String getGs1Batch() {
+            return gs1Batch;
+        }
+
+        public void setGs1Batch(String gs1Batch) {
+            this.gs1Batch = gs1Batch;
+        }
+
+    }
+
     public static class CreatePrimaryTlc extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**

@@ -22,6 +22,8 @@ public interface BffLotApplicationService {
 
     void when(BffLotServiceCommands.BatchAddLots c);
 
+    BffLotDto when(BffLotServiceCommands.GetPrimaryTlc c);
+
     String when(BffLotServiceCommands.CreatePrimaryTlc c);
 
     void when(BffLotServiceCommands.ConvertToPrimaryTlc c);

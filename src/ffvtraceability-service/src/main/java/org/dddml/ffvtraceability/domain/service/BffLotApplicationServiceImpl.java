@@ -150,6 +150,12 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     }
 
     @Override
+    public BffLotDto when(BffLotServiceCommands.GetPrimaryTlc c) {
+        return bffLotRepository.findPrimaryTlcByCaseGtinAndBatch(c.getGtin(), c.getGs1Batch())
+                .map(bffLotMapper::toBffLotDto).orElse(null);
+    }
+
+    @Override
     public String when(BffLotServiceCommands.CreatePrimaryTlc c) {
         BffLotDto lotDto = c.getPrimaryTlc();
         if (lotDto == null) {
