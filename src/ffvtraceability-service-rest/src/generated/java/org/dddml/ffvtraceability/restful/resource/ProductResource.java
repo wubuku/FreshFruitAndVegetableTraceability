@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class ProductResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private ProductApplicationService productApplicationService;
@@ -49,14 +61,14 @@ public class ProductResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<ProductState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ProductResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class ProductResource {
             }
             return dtoConverter.toProductStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class ProductResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<ProductState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ProductResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class ProductResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class ProductResource {
     @GetMapping("{productId}")
     @Transactional(readOnly = true)
     public ProductStateDto get(@PathVariable("productId") String productId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             String idObj = productId;
             ProductState state = productApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -145,18 +157,18 @@ public class ProductResource {
             }
             return dtoConverter.toProductStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -167,7 +179,7 @@ public class ProductResource {
             count = productApplicationService.getCount(c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -177,7 +189,7 @@ public class ProductResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchProductDto.CreateProductDto value,  HttpServletResponse response) {
-        try {
+        
             ProductCommand.CreateProduct cmd = value;//.toCreateProduct();
             if (cmd.getProductId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Product");
@@ -187,7 +199,7 @@ public class ProductResource {
             productApplicationService.when(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -197,7 +209,7 @@ public class ProductResource {
      */
     @PutMapping("{productId}")
     public void put(@PathVariable("productId") String productId, @RequestBody CreateOrMergePatchProductDto value) {
-        try {
+        
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 ProductCommand.MergePatchProduct cmd = (ProductCommand.MergePatchProduct) value.toSubclass();
@@ -213,7 +225,7 @@ public class ProductResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             productApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -223,19 +235,19 @@ public class ProductResource {
      */
     @PatchMapping("{productId}")
     public void patch(@PathVariable("productId") String productId, @RequestBody CreateOrMergePatchProductDto.MergePatchProductDto value) {
-        try {
+        
 
             ProductCommand.MergePatchProduct cmd = value;//.toMergePatchProduct();
             ProductResourceUtils.setNullIdOrThrowOnInconsistentIds(productId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             productApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             ProductMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -243,25 +255,25 @@ public class ProductResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{productId}/_events/{version}")
     @Transactional(readOnly = true)
     public ProductEvent getEvent(@PathVariable("productId") String productId, @PathVariable("version") long version) {
-        try {
+        
 
             String idObj = productId;
             //ProductStateEventDtoConverter dtoConverter = getProductStateEventDtoConverter();
             return productApplicationService.getEvent(idObj, version);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{productId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public ProductStateDto getHistoryState(@PathVariable("productId") String productId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
 
             String idObj = productId;
             ProductStateDto.DtoConverter dtoConverter = new ProductStateDto.DtoConverter();
@@ -272,7 +284,7 @@ public class ProductResource {
             }
             return dtoConverter.toProductStateDto(productApplicationService.getHistoryState(idObj, version));
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -282,7 +294,7 @@ public class ProductResource {
     @GetMapping("{productId}/GoodIdentifications/{goodIdentificationTypeId}")
     @Transactional(readOnly = true)
     public GoodIdentificationStateDto getGoodIdentification(@PathVariable("productId") String productId, @PathVariable("goodIdentificationTypeId") String goodIdentificationTypeId) {
-        try {
+        
 
             GoodIdentificationState state = productApplicationService.getGoodIdentification(productId, goodIdentificationTypeId);
             if (state == null) { return null; }
@@ -291,7 +303,7 @@ public class ProductResource {
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -304,7 +316,7 @@ public class ProductResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchGoodIdentificationDto.MergePatchGoodIdentificationDto body) {
-        try {
+        
             ProductCommand.MergePatchProduct mergePatchProduct = new CreateOrMergePatchProductDto.MergePatchProductDto();
             mergePatchProduct.setProductId(productId);
             mergePatchProduct.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -315,7 +327,7 @@ public class ProductResource {
             mergePatchProduct.getGoodIdentificationCommands().add(mergePatchGoodIdentification);
             mergePatchProduct.setRequesterId(SecurityContextUtil.getRequesterId());
             productApplicationService.when(mergePatchProduct);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -327,7 +339,7 @@ public class ProductResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
+        
             ProductCommand.MergePatchProduct mergePatchProduct = new CreateOrMergePatchProductDto.MergePatchProductDto();
             mergePatchProduct.setProductId(productId);
             mergePatchProduct.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -342,7 +354,7 @@ public class ProductResource {
             mergePatchProduct.getGoodIdentificationCommands().add(removeGoodIdentification);
             mergePatchProduct.setRequesterId(SecurityContextUtil.getRequesterId());
             productApplicationService.when(mergePatchProduct);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -355,10 +367,10 @@ public class ProductResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        try {
+        
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ProductResourceUtils.getGoodIdentificationFilterPropertyName(kv.getKey()) != null)
@@ -376,7 +388,7 @@ public class ProductResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toGoodIdentificationStateDtoArray(states);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -389,7 +401,7 @@ public class ProductResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchGoodIdentificationDto.CreateGoodIdentificationDto body) {
-        try {
+        
             ProductCommand.MergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
             mergePatchProduct.setProductId(productId);
             mergePatchProduct.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -399,7 +411,7 @@ public class ProductResource {
             mergePatchProduct.getGoodIdentificationCommands().add(createGoodIdentification);
             mergePatchProduct.setRequesterId(SecurityContextUtil.getRequesterId());
             productApplicationService.when(mergePatchProduct);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 

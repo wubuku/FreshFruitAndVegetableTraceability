@@ -45,10 +45,10 @@ public class BffFacilityLocationServiceResource {
         getFacilityLocations.setActive(active);
         getFacilityLocations.setOwnerPartyId(ownerPartyId);
         getFacilityLocations.setFacilityId(facilityId);
-        try {
+        
         getFacilityLocations.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffFacilityLocationApplicationService.when(getFacilityLocations);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 }

@@ -230,11 +230,7 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             return referenceDocuments;
         }
 
-        String shipmentId = receivingDocument.getDocumentId();
-        if (shipmentId == null) {
-            return referenceDocuments;
-        }
-
+        // 先处理 PO 引用文档
         String poId = null;
         if (receivingItem.getOrderId() != null) {
             poId = receivingItem.getOrderId();
@@ -243,22 +239,25 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
         }
         if (poId != null) {
             KdeReferenceDocument doc = new KdeReferenceDocument();
-            doc.setDocumentType("PO");
+            doc.setDocumentType("PO");  // 固定值，不会为 null
             doc.setDocumentNumber(poId);
             referenceDocuments.add(doc);
         }
-        // 总是添加 shipment Id？
-        {
+
+        // 再处理 Shipment 引用文档
+        String shipmentId = receivingDocument.getDocumentId();
+        if (shipmentId != null) {
             KdeReferenceDocument doc = new KdeReferenceDocument();
             ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
-            if (shipmentState != null) {
-                doc.setDocumentType(shipmentState.getShipmentTypeId());
-            } else {
-                doc.setDocumentType("SHIPMENT"); // 硬编码？
+            String documentType = "SHIPMENT";  // 默认值
+            if (shipmentState != null && shipmentState.getShipmentTypeId() != null) {
+                documentType = shipmentState.getShipmentTypeId();  // 只在非 null 时覆盖默认值
             }
+            doc.setDocumentType(documentType);  // documentType 永远不会为 null
             doc.setDocumentNumber(shipmentId);
             referenceDocuments.add(doc);
         }
+
         return referenceDocuments;
     }
 
@@ -326,7 +325,7 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
             if (qtyUomState != null) {
                 if (qtyUomState.getAbbreviation() != null) {
                     sb.append(qtyUomState.getAbbreviation());
-                    // NOTE: 这里在数量和“单位缩写”之间没有空格。
+                    // NOTE: 这里在数量和"单位缩写"之间没有空格。
                 } else if (qtyUomState.getUomName() != null) {
                     sb.append(" ").append(qtyUomState.getUomName());
                 } else if (qtyUomState.getDescription() != null) {
@@ -340,7 +339,7 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
         if (productState.getPiecesIncluded() != null && productState.getPiecesIncluded() != 1) {
             sb.append(" - ")
                     .append(productState.getPiecesIncluded())
-                    .append(" Pack"); // NOTE：这里“件”的描述硬编码为“Pack”。是否合适？
+                    .append(" Pack"); // NOTE：这里"件"的描述硬编码为"Pack"。是否合适？
         }
         pd.setPackagingSize(sb.toString());
 

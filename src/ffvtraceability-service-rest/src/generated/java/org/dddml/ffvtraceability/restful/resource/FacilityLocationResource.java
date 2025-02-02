@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class FacilityLocationResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private FacilityLocationApplicationService facilityLocationApplicationService;
@@ -49,14 +61,14 @@ public class FacilityLocationResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<FacilityLocationState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> FacilityLocationResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class FacilityLocationResource {
             }
             return dtoConverter.toFacilityLocationStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class FacilityLocationResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<FacilityLocationState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> FacilityLocationResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class FacilityLocationResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class FacilityLocationResource {
     @GetMapping("{facilityLocationId}")
     @Transactional(readOnly = true)
     public FacilityLocationStateDto get(@PathVariable("facilityLocationId") String facilityLocationId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             FacilityLocationId idObj = FacilityLocationResourceUtils.parseIdString(facilityLocationId);
             FacilityLocationState state = facilityLocationApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -145,18 +157,18 @@ public class FacilityLocationResource {
             }
             return dtoConverter.toFacilityLocationStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -167,7 +179,7 @@ public class FacilityLocationResource {
             count = facilityLocationApplicationService.getCount(c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -177,7 +189,7 @@ public class FacilityLocationResource {
      */
     @PostMapping @ResponseStatus(HttpStatus.CREATED)
     public FacilityLocationId post(@RequestBody CreateOrMergePatchFacilityLocationDto.CreateFacilityLocationDto value,  HttpServletResponse response) {
-        try {
+        
             FacilityLocationCommand.CreateFacilityLocation cmd = value;//.toCreateFacilityLocation();
             if (cmd.getFacilityLocationId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "FacilityLocation");
@@ -187,7 +199,7 @@ public class FacilityLocationResource {
             facilityLocationApplicationService.when(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -197,7 +209,7 @@ public class FacilityLocationResource {
      */
     @PutMapping("{facilityLocationId}")
     public void put(@PathVariable("facilityLocationId") String facilityLocationId, @RequestBody CreateOrMergePatchFacilityLocationDto value) {
-        try {
+        
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 FacilityLocationCommand.MergePatchFacilityLocation cmd = (FacilityLocationCommand.MergePatchFacilityLocation) value.toSubclass();
@@ -213,7 +225,7 @@ public class FacilityLocationResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityLocationApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -223,19 +235,19 @@ public class FacilityLocationResource {
      */
     @PatchMapping("{facilityLocationId}")
     public void patch(@PathVariable("facilityLocationId") String facilityLocationId, @RequestBody CreateOrMergePatchFacilityLocationDto.MergePatchFacilityLocationDto value) {
-        try {
+        
 
             FacilityLocationCommand.MergePatchFacilityLocation cmd = value;//.toMergePatchFacilityLocation();
             FacilityLocationResourceUtils.setNullIdOrThrowOnInconsistentIds(facilityLocationId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityLocationApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             FacilityLocationMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -243,7 +255,7 @@ public class FacilityLocationResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 

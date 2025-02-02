@@ -13,21 +13,41 @@ NC='\033[0m' # No Color
 
 echo "Starting smoke tests..."
 
-# Function to check HTTP response
+# Helper function to handle "already exists" errors
+handle_exists_error() {
+    local http_status=$1
+    local response=$2
+    local operation=$3
+    
+    if [ $http_status -eq 400 ] && echo "$response" | grep -q "exists"; then
+        echo -e "${GREEN}✓ $operation (already exists)${NC}"
+        return 0
+    fi
+    return 1
+}
+
+# Modified check_response function to use handle_exists_error
 check_response() {
     local curl_exit_code=$1
     local http_status=$2
     local operation=$3
+    local response=$4
     
     if [ $curl_exit_code -ne 0 ]; then
         echo -e "${RED}✗ $operation failed (curl error: $curl_exit_code)${NC}"
         exit 1
     fi
     
+    # Check for "already exists" case first
+    if handle_exists_error "$http_status" "$response" "$operation"; then
+        return 0
+    fi
+    
     if [[ $http_status -ge 200 && $http_status -lt 300 ]]; then
         echo -e "${GREEN}✓ $operation succeeded (HTTP Status: $http_status)${NC}"
     else
         echo -e "${RED}✗ $operation failed (HTTP Status: $http_status)${NC}"
+        echo "Error response: $response"
         exit 1
     fi
 }
@@ -50,7 +70,6 @@ curl -X 'GET' \
 # {"tenantId":"X","partyId":"FRESH_MART_DC","description":"Tenant X" ...}
 # 当前租户可以绑定到某个 party（业务实体），可以使用返回的 partyId 来访问当前租户所属的业务实体拥有的"设施"等。
 
-
 # 返回北美洲的州和省
 curl -X 'GET' \
   "${API_BASE_URL}/BffGeo/NorthAmericanStatesAndProvinces" \
@@ -62,21 +81,23 @@ echo -e "\n=== Testing Units of Measure ===\n"
 
 
 # Create KGM (Required by Raw Items)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "KGM",
   "uomTypeId": "WEIGHT_MEASURE",
   "abbreviation": "kg",
   "description": "Kilogram - The base unit of mass in the International System of Units (SI)",
   "gs1AI": "3100"
-}' | { read http_status; check_response $? "$http_status" "Create KGM unit"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create KGM unit" "$response_body"
 
 # Query Units of Measure
 echo "Querying Units of Measure..."
@@ -97,31 +118,32 @@ echo "$response"
 check_response $? "$http_code" "Query Units of Measure"
 
 # Create GRM
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "GRM",
   "uomTypeId": "WEIGHT_MEASURE",
   "abbreviation": "g",
   "description": "Gram - 1/1000 of a kilogram",
   "gs1AI": "3103"
-}' | { read http_status; check_response $? "$http_status" "Create GRM unit"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create GRM unit" "$response_body"
 
 # Create USD (Required by Suppliers)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "USD",
   "uomTypeId": "CURRENCY_MEASURE",
@@ -129,155 +151,162 @@ curl -X 'POST' \
   "numericCode": 840,
   "description": "United States Dollar - The official currency of the United States",
   "gs1AI": "3920"
-}' | { read http_status; check_response $? "$http_status" "Create USD unit"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create USD unit" "$response_body"
 
 # Create SQM (Required by Facilities)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "SQM",
   "uomTypeId": "AREA_MEASURE",
   "abbreviation": "m²",
   "description": "Square Meter - The measurement of area in the International System of Units (SI)",
   "gs1AI": "3340"
-}' | { read http_status; check_response $? "$http_status" "Create SQM unit"; }
-
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create SQM unit" "$response_body"
 
 # Create TNE (Metric Ton)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "TNE",
   "uomTypeId": "WEIGHT_MEASURE",
   "abbreviation": "t",
   "description": "Metric Ton - A unit of mass equal to 1,000 kilograms",
   "gs1AI": "3100"
-}' | { read http_status; check_response $? "$http_status" "Create TNE unit"; }
-# 注意：由于 GS1 标准中没有直接表示公吨的 AI，这里使用 3100（整数千克）。
-# 在生成 GS1 条码时，需要将公吨值乘以 1000 转换为千克。
-# 在读取 GS1 条码时，需要将千克值除以 1000 转换回公吨。
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create TNE unit" "$response_body"
 
 # Create LB (Pound)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "LB",
   "uomTypeId": "WEIGHT_MEASURE",
   "abbreviation": "lb",
   "description": "Pound - A unit of mass commonly used in North America",
   "gs1AI": "3200"
-}' | { read http_status; check_response $? "$http_status" "Create LB unit"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create LB unit" "$response_body"
 
 # Create OZ (Ounce)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "OZ",
   "uomTypeId": "WEIGHT_MEASURE",
   "abbreviation": "oz",
   "description": "Ounce - A unit of mass commonly used in North America",
   "gs1AI": "3560"
-}' | { read http_status; check_response $? "$http_status" "Create OZ unit"; }
-
-
-# <UomType description="Packaging Type" hasTable="N" uomTypeId="PACKAGE_TYPE_MEASURE"/>
-# GS1 AI：
-    # "applicationIdentifier": "37",
-    # "formatString": "N2+N..8",
-    # "label": "COUNT",
-    # "description": "Count of trade items or trade item pieces contained in a logistic unit",
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create OZ unit" "$response_body"
 
 # Create EA (Each)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "EA",
   "uomTypeId": "PACKAGE_TYPE_MEASURE",
   "abbreviation": "ea",
   "description": "Each - A single unit or piece",
   "gs1AI": "37"
-}' | { read http_status; check_response $? "$http_status" "Create EA unit"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create EA unit" "$response_body"
 
 # Create BX (Box)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "BX",
   "uomTypeId": "PACKAGE_TYPE_MEASURE",
   "abbreviation": "bx",
   "description": "Box - A container for packaging items",
   "gs1AI": "37"
-}' | { read http_status; check_response $? "$http_status" "Create BX unit"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create BX unit" "$response_body"
 
 # Create PLT (Pallet)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "PLT",
   "uomTypeId": "PACKAGE_TYPE_MEASURE",
   "abbreviation": "plt",
   "description": "Pallet - A flat transport structure to support goods",
   "gs1AI": "37"
-}' | { read http_status; check_response $? "$http_status" "Create PLT unit"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create PLT unit" "$response_body"
 
 # Create PK (Pack)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "uomId": "PK",
   "uomTypeId": "PACKAGE_TYPE_MEASURE",
   "abbreviation": "pk",
   "description": "Pack - A bundle or package of items",
   "gs1AI": "37"
-}' | { read http_status; check_response $? "$http_status" "Create PK unit"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create PK unit" "$response_body"
 
 
 
@@ -285,19 +314,21 @@ curl -X 'POST' \
 echo -e "\n=== Testing Documents ===\n"
 
 # Create document
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffDocuments" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "comments": "Quality certification document for organic vegetables batch #2024001", 
   "documentLocation": "https://example.com/docs/cert/2024001.pdf",
   "documentText": "Batch #2024001 passed QA inspections"
-}' | { read http_status; check_response $? "$http_status" "Create document"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create document" "$response_body"
 
 # Query documents
 echo "Querying Documents..."
@@ -321,14 +352,13 @@ check_response $? "$http_code" "Query documents"
 echo -e "\n=== Testing Suppliers ===\n"
 
 # Create supplier for source facility
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffSuppliers" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "supplierId": "SUPPLIER_001",
   "supplierName": "Vegetables Farm",
@@ -337,9 +367,10 @@ curl -X 'POST' \
   "externalId": "ORGANIC_FARM_01",
   "preferredCurrencyUomId": "USD",
   "description": "Organic Vegetables Farm - specializing in greenhouse vegetables with GLOBALG.A.P. certification"
-}' | { read http_status; check_response $? "$http_status" "Create source supplier"; }
-# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
-# todo 不过，前提是服务端需要把出错信息返回来（待完成）
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create source supplier" "$response_body"
 
 # Query Suppliers
 echo "Querying Suppliers..."
@@ -404,14 +435,13 @@ check_response $? "$http_code" "Query specific supplier"
 echo -e "\n=== Testing Facilities ===\n"
 
 # Create source facility
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "facilityId": "F001",
   "ownerPartyId": "SUPPLIER_001",
@@ -422,8 +452,10 @@ curl -X 'POST' \
   "active": "Y",
   "gln": "1234567890123",
   "ffrn": "12345678901"
-}' | { read http_status; check_response $? "$http_status" "Create source facility"; }
-# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create source facility" "$response_body"
 
 # Query Facilities
 echo "Querying Facilities..."
@@ -462,14 +494,13 @@ echo "$response"
 check_response $? "$http_code" "Query specific facility"
 
 # Create destination facility
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "facilityId": "DC_FRESH",
   "ownerPartyId": "FRESH_MART_DC",
@@ -480,19 +511,20 @@ curl -X 'POST' \
   "active": "Y",
   "gln": "1234567890124",
   "ffrn": "12345678902"
-}' | { read http_status; check_response $? "$http_status" "Create destination facility"; }
-# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create destination facility" "$response_body"
 
 
 # Create location for source facility
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities/F001/Locations" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "locationSeqId": "F001-WH01-A01-01",
   "locationTypeEnumId": "STORAGE",
@@ -503,8 +535,10 @@ curl -X 'POST' \
   "positionId": "01",
   "geoPointId": "GP001",
   "active": "Y"
-}' | { read http_status; check_response $? "$http_status" "Create location for source facility"; }
-# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create location for source facility" "$response_body"
 
 
 # Query Locations for F001
@@ -544,14 +578,13 @@ echo "$response"
 check_response $? "$http_code" "Query specific location"
 
 # Create location for destination facility
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities/DC_FRESH/Locations" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "locationSeqId": "DC_FRESH-WH01-A01",
   "locationTypeEnumId": "STORAGE",
@@ -559,8 +592,10 @@ curl -X 'POST' \
   "aisleId": "A01",
   "geoPointId": "GP002",
   "active": "Y"
-}' | { read http_status; check_response $? "$http_status" "Create location for destination facility"; }
-# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create location for destination facility" "$response_body"
 
 
 # Query Locations for DC_FRESH
@@ -585,14 +620,13 @@ check_response $? "$http_code" "Query locations for DC_FRESH"
 echo -e "\n=== Testing Raw Items ===\n"
 
 # Create raw item
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffRawItems" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "productId": "PROD001",
   "productName": "Organic Red Apple",
@@ -606,7 +640,10 @@ curl -X 'POST' \
   "piecesIncluded": 1,
   "statusId": "ACTIVE",
   "supplierId": "SUPPLIER_001"
-}' | { read http_status; check_response $? "$http_status" "Create raw item"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create raw item" "$response_body"
 
 # Query Raw Items
 echo "Querying Raw Items..."
@@ -645,14 +682,13 @@ echo "$response"
 check_response $? "$http_code" "Query raw items by product ID"
 
 # Create another raw item (Required by Receiving)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffRawItems" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "productId": "ORGANIC_TOMATO_01",
   "productName": "Organic Tomato",
@@ -663,27 +699,31 @@ curl -X 'POST' \
   "piecesIncluded": 1,
   "statusId": "ACTIVE",
   "supplierId": "SUPPLIER_001"
-}' | { read http_status; check_response $? "$http_status" "Create tomato raw item"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create tomato raw item" "$response_body"
 
 # Test Lots
 echo -e "\n=== Testing Lots ===\n"
 
 # Create lot (Required by Receiving)
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffLots" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "lotId": "LOT20240315A",
   "gs1Batch": "LOT20240315A",
   "quantity": 100,
   "expirationDate": "2034-12-18T08:53:18.475Z"
-}' | { read http_status; check_response $? "$http_status" "Create lot"; }
-# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create lot" "$response_body"
 
 
 # Query Lots
@@ -758,21 +798,22 @@ curl -X 'POST' \
 
 # Create another lot (Required by second receiving item)
 echo "Creating another lot..."
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffLots" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "lotId": "LOT20240315B",
   "gs1Batch": "LOT20240315B",
   "quantity": 100,
   "expirationDate": "2034-12-18T08:53:18.475Z"
-}' | { read http_status; check_response $? "$http_status" "Create second lot"; }
-# todo 上面的命令如果执行出错，而错误信息包含 `exists`，应该忽略错误，继续执行
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create second lot" "$response_body"
 
 
 # 测试查询订单列表
@@ -1047,46 +1088,33 @@ echo "$response"
 PRODUCT_ID=$(echo "$response" | jq -r '.productId')
 echo "Using Product ID: ${PRODUCT_ID}"
 
-# curl -X 'PUT' \
-#   "${API_BASE_URL}/QaInspections/${QA_INSPECTION_ID}/_commands/QaInspectionAction" \
-#   -H 'accept: */*' \
-#   -H "X-TenantID: X" \
-#   -H 'Content-Type: application/json' \
-#   -s \
-#   -w '%{http_code}\n' \
-#   -o /dev/null \
-#   -d '{
-#   "commandId": "RANDOM197972935792396296493",
-#   "value": "Approve",
-#   "version": 0
-# }' | { read http_status; check_response $? "$http_status" "Update QA inspection"; }
-
-
 # # Update QA Inspection status
 # echo "Updating QA Inspection..."
-# curl -X 'PUT' \
+# response=$(curl -X 'PUT' \
 #   "${API_BASE_URL}/BffQaInspections/${QA_INSPECTION_ID}" \
 #   -H 'accept: application/json' \
 #   -H 'Content-Type: application/json' \
 #   -H "X-TenantID: X" \
 #   -s \
-#   -w '%{http_code}\n' \
-#   -o /dev/null \
+#   -w '\n%{http_code}' \
 #   -d "{
 #   \"statusId\": \"APPROVED\",
 #   \"comments\": \"Additional verification required for temperature logs.\"
-# }" | { read http_status; check_response $? "$http_status" "Update QA inspection"; }
+# }")
+# http_status=$(echo "$response" | tail -n1)
+# response_body=$(echo "$response" | sed '$d')
+# check_response $? "$http_status" "Update QA inspection" "$response_body"
 
-# Update supplier business contact information
+
+# Update supplier business contact
 echo "Updating supplier business contact..."
-curl -X 'PUT' \
+response=$(curl -X 'PUT' \
   "${API_BASE_URL}/BffSuppliers/SUPPLIER_001/BusinessContact" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "businessName": "Fresh Organic Farms Office",
   "phoneNumber": "+1 415 555 0123",
@@ -1094,7 +1122,10 @@ curl -X 'PUT' \
   "city": "Menlo Park",
   "stateProvinceGeoId": "CA",
   "zipCode": "94025"
-}' | { read http_status; check_response $? "$http_status" "Update supplier business contact"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Update supplier business contact" "$response_body"
 
 
 # 更新之前出现过的所有 Facility 的联系方式
@@ -1103,14 +1134,13 @@ curl -X 'PUT' \
 echo "Updating facility business contacts..."
 
 # Update DC_FRESH facility contact
-curl -X 'PUT' \
+response=$(curl -X 'PUT' \
   "${API_BASE_URL}/BffFacilities/DC_FRESH/BusinessContact" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "businessName": "Fresh Mart Distribution Center",
   "phoneNumber": "+1 408 555 0123",
@@ -1121,17 +1151,19 @@ curl -X 'PUT' \
   "country": "USA",
   "email": "operations@freshmart-dc.example.com",
   "contactRole": "Distribution Center Manager"
-}' | { read http_status; check_response $? "$http_status" "Update DC_FRESH business contact"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Update DC_FRESH business contact" "$response_body"
 
 # Update F001 facility contact
-curl -X 'PUT' \
+response=$(curl -X 'PUT' \
   "${API_BASE_URL}/BffFacilities/F001/BusinessContact" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "businessName": "Fresh Produce Processing Center",
   "phoneNumber": "+1 831 555 0456",
@@ -1142,7 +1174,10 @@ curl -X 'PUT' \
   "country": "USA",
   "email": "operations@fresh-produce.example.com",
   "contactRole": "Processing Center Supervisor"
-}' | { read http_status; check_response $? "$http_status" "Update F001 business contact"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Update F001 business contact" "$response_body"
 
 
 
@@ -1170,15 +1205,21 @@ curl -X 'GET' \
 #   -H "X-TenantID: X"
 
 
-# # 查询“收货单”信息，并要求返回“收货行项”关联的“采购订单行项”的未履行数量。
-# # 注意设置参数 `includesOutstandingOrderQuantity=true`
-curl -X 'GET' \
+# 查询"收货单"信息，并要求返回"收货行项"关联的"采购订单行项"的未履行数量。
+# 注意设置参数 `includesOutstandingOrderQuantity=true`
+response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffReceipts/${RECEIVING_ID}?includesOutstandingOrderQuantity=true" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
-  -H "X-TenantID: X"
+  -H "X-TenantID: X" \
+  -s \
+  -w '\n%{http_code}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+echo "$response_body"
+check_response $? "$http_status" "Query receipt with outstanding quantity" "$response_body"
 
-# 查询“收货单”信息，并要求返回 QA 检验状态
+# 查询"收货单"信息，并要求返回 QA 检验状态
 # 注意设置参数 `derivesQaInspectionStatus=true`
 echo "Querying receiving document QA inspection status..."
 curl -X 'GET' \
@@ -1187,10 +1228,10 @@ curl -X 'GET' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X"
 
-# 查询收货单列表，并要求“连带”返回每个收货单的 QA 检验状态
+# 查询收货单列表，并要求"连带"返回每个收货单的 QA 检验状态
 # 注意设置参数 `derivesQaInspectionStatus=true`
 # 不建议滥用，可能会导致性能问题。
-# 也许后面可以考虑提供一个“批量查询收货单的 QA 检验状态”的接口，由前端组合使用。
+# 也许后面可以考虑提供一个"批量查询收货单的 QA 检验状态"的接口，由前端组合使用。
 curl -X 'GET' \
   "${API_BASE_URL}/BffReceipts?derivesQaInspectionStatus=true" \
   -H 'accept: application/json' \
@@ -1202,100 +1243,89 @@ curl -X 'GET' \
 echo -e "\n=== Creating Primary TLC ===\n"
 
 # 为 LOT20240315A (有机番茄) 创建 Primary TLC
+# todo 应该先检查是否已经存在，如果存在，则跳过。
 echo "Creating Primary TLC for organic tomatoes..."
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffLots/createPrimaryTlc" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "gs1Batch": "LOT20240315A",
   "quantity": 500,
   "expirationDate": "2034-12-18T08:53:18.475Z",
   "gtin": "0614141123453",
   "sourceFacilityId": "F001"
-}' | { read http_status; check_response $? "$http_status" "Create Primary TLC for tomatoes"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create Primary TLC for tomatoes" "$response_body"
 
 # 为 LOT20240315B (有机生菜) 创建 Primary TLC
+# todo 应该先检查是否已经存在，如果存在，则跳过。
 echo "Creating Primary TLC for organic lettuce..."
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffLots/createPrimaryTlc" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "gs1Batch": "LOT20240315B",
   "quantity": 290,
   "expirationDate": "2034-12-18T08:53:18.475Z",
   "gtin": "0614141123454",
   "sourceFacilityId": "F001"
-}' | { read http_status; check_response $? "$http_status" "Create Primary TLC for lettuce"; }
+}')
+
+# 从响应中分离出 HTTP 状态码和响应内容
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+
+check_response $? "$http_status" "Create Primary TLC for lettuce" "$response_body"
 
 
 # 触发生成 CTE receiving 事件
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffReceipts/${RECEIVING_ID}/synchronizeCteReceivingEvents" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
+  -s \
+  -w '\n%{http_code}' \
   -d '{
   "documentId": "${RECEIVING_ID}"
-}'
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Synchronize CTE receiving events" "$response_body"
 
 # 查询 CTE receiving 事件
 echo "Querying CTE receiving events..."
-curl -X 'GET' \
+response=$(curl -X 'GET' \
   "${API_BASE_URL}/ReceivingEvents?firstResult=0&maxResults=2147483647" \
   -H 'accept: application/json' \
-  -H "X-TenantID: X"
+  -H "X-TenantID: X" \
+  -s)
+echo "$response"
 
-# 输出类似：
-# [
-#   {
-#     "eventId": "11CNCH5KSXV0DBX1SA-11CNCH3HT0FF70RELK",
-#     "traceabilityLotCode": {
-#       "caseGtin": "0614141123454",
-#       "bestIfUsedByDate": "2034/12/18 08:53:18"
-#     },
-#     "quantityAndUom": {
-#       "quantity": 15,
-#       "uom": "Case"
-#     },
-#     "productDescription": {
-#       "productName": "Organic Lettuce",
-#       "packagingSize": "1kg",
-#       "packagingStyle": "Case"
-#     },
-#     "shipToLocation": {
-#       "businessName": "Fresh Mart Distribution Center",
-#       "phoneNumber": "+1 408 5550123",
-#       "physicalLocationAddress": "2800 Distribution Way",
-#       "city": "San Jose",
-#       "state": "California",
-#       "zipCode": "95134"
-#     },
-#     "shipFromLocation": {
-#       "businessName": "Fresh Produce Processing Center",
-#       "phoneNumber": "+1 831 5550456",
-#       "physicalLocationAddress": "1200 Agriculture Road",
-#       "city": "Salinas",
-#       "state": "California",
-#       "zipCode": "93901"
-#     },
-#     "receiveDate": "2025/1/12 14:26:21",
-#     "version": 0,
-#     "createdAt": "2025-02-01T09:40:23.523649Z",
-#     "referenceDocuments": [
-#       {
-#         "documentType": "PO",
-#         "documentNumber": "11CNCG1DDHF29WGVU2"
-#       }
-#     ]
-#   }
-# ]
+
+# response=$(curl -X 'PUT' \
+#   "${API_BASE_URL}/QaInspections/${QA_INSPECTION_ID}/_commands/QaInspectionAction" \
+#   -H 'accept: */*' \
+#   -H "X-TenantID: X" \
+#   -H 'Content-Type: application/json' \
+#   -s \
+#   -w '\n%{http_code}' \
+#   -d '{
+#   "commandId": "RANDOM197972935792396296493",
+#   "value": "Approve",
+#   "version": 0
+# }')
+# http_status=$(echo "$response" | tail -n1)
+# response_body=$(echo "$response" | sed '$d')
+# check_response $? "$http_status" "Update QA inspection" "$response_body"
+

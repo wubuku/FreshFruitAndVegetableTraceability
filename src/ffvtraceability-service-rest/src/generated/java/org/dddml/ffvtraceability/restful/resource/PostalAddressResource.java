@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class PostalAddressResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private ContactMechApplicationService contactMechApplicationService;
@@ -49,14 +61,14 @@ public class PostalAddressResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<ContactMechState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> PostalAddressResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class PostalAddressResource {
             }
             return dtoConverter.toPostalAddressStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class PostalAddressResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<ContactMechState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> PostalAddressResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class PostalAddressResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class PostalAddressResource {
     @GetMapping("{contactMechId}")
     @Transactional(readOnly = true)
     public PostalAddressStateDto get(@PathVariable("contactMechId") String contactMechId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             String idObj = contactMechId;
             ContactMechState state = contactMechApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -148,18 +160,18 @@ public class PostalAddressResource {
             }
             return dtoConverter.toPostalAddressStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -170,7 +182,7 @@ public class PostalAddressResource {
             count = contactMechApplicationService.getCount(PostalAddressState.class, c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -180,7 +192,7 @@ public class PostalAddressResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchContactMechDto.CreateContactMechDto value,  HttpServletResponse response) {
-        try {
+        
             value.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
             ContactMechCommand.CreateContactMech cmd = value;//.toCreateContactMech();
             if (cmd.getContactMechId() == null) {
@@ -191,7 +203,7 @@ public class PostalAddressResource {
             contactMechApplicationService.when(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -201,7 +213,7 @@ public class PostalAddressResource {
      */
     @PutMapping("{contactMechId}")
     public void put(@PathVariable("contactMechId") String contactMechId, @RequestBody CreateOrMergePatchContactMechDto value) {
-        try {
+        
             value.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
@@ -218,7 +230,7 @@ public class PostalAddressResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             contactMechApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -228,7 +240,7 @@ public class PostalAddressResource {
      */
     @PatchMapping("{contactMechId}")
     public void patch(@PathVariable("contactMechId") String contactMechId, @RequestBody CreateOrMergePatchContactMechDto.MergePatchContactMechDto value) {
-        try {
+        
 
             value.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
             ContactMechCommand.MergePatchContactMech cmd = value;//.toMergePatchContactMech();
@@ -236,12 +248,12 @@ public class PostalAddressResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             contactMechApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             ContactMechMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -249,25 +261,25 @@ public class PostalAddressResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{contactMechId}/_events/{version}")
     @Transactional(readOnly = true)
     public ContactMechEvent getEvent(@PathVariable("contactMechId") String contactMechId, @PathVariable("version") long version) {
-        try {
+        
 
             String idObj = contactMechId;
             //ContactMechStateEventDtoConverter dtoConverter = getContactMechStateEventDtoConverter();
             return contactMechApplicationService.getEvent(idObj, version);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{contactMechId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public PostalAddressStateDto getHistoryState(@PathVariable("contactMechId") String contactMechId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
 
             String idObj = contactMechId;
             PostalAddressStateDto.DtoConverter dtoConverter = new PostalAddressStateDto.DtoConverter();
@@ -278,7 +290,7 @@ public class PostalAddressResource {
             }
             return dtoConverter.toPostalAddressStateDto(contactMechApplicationService.getHistoryState(idObj, version));
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 

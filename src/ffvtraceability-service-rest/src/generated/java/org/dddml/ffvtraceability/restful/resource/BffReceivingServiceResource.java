@@ -50,10 +50,10 @@ public class BffReceivingServiceResource {
         getReceivingDocuments.setReceivedAtFrom(receivedAtFrom);
         getReceivingDocuments.setReceivedAtTo(receivedAtTo);
         getReceivingDocuments.setDerivesQaInspectionStatus(derivesQaInspectionStatus);
-        try {
+        
         getReceivingDocuments.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(getReceivingDocuments);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{documentId}")
@@ -70,10 +70,10 @@ public class BffReceivingServiceResource {
         getReceivingDocument.setIncludesOutstandingOrderQuantity(includesOutstandingOrderQuantity);
         getReceivingDocument.setIncludesOriginFacility(includesOriginFacility);
         getReceivingDocument.setIncludesDestinationFacility(includesDestinationFacility);
-        try {
+        
         getReceivingDocument.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(getReceivingDocument);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{documentId}/Items/{receiptId}")
@@ -84,10 +84,10 @@ public class BffReceivingServiceResource {
         BffReceivingServiceCommands.GetReceivingItem getReceivingItem = new BffReceivingServiceCommands.GetReceivingItem();
         getReceivingItem.setDocumentId(documentId);
         getReceivingItem.setReceiptId(receiptId);
-        try {
+        
         getReceivingItem.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(getReceivingItem);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping
@@ -96,10 +96,10 @@ public class BffReceivingServiceResource {
     ) {
         BffReceivingServiceCommands.CreateReceivingDocument createReceivingDocument = new BffReceivingServiceCommands.CreateReceivingDocument();
         createReceivingDocument.setReceivingDocument(receivingDocument);
-        try {
+        
         createReceivingDocument.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(createReceivingDocument);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{documentId}")
@@ -110,10 +110,10 @@ public class BffReceivingServiceResource {
         BffReceivingServiceCommands.UpdateReceivingDocument updateReceivingDocument = new BffReceivingServiceCommands.UpdateReceivingDocument();
         updateReceivingDocument.setDocumentId(documentId);
         updateReceivingDocument.setReceivingDocument(receivingDocument);
-        try {
+        
         updateReceivingDocument.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(updateReceivingDocument);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{documentId}/PrimaryOrderId")
@@ -124,10 +124,10 @@ public class BffReceivingServiceResource {
         BffReceivingServiceCommands.UpdateReceivingPrimaryOrderId updateReceivingPrimaryOrderId = new BffReceivingServiceCommands.UpdateReceivingPrimaryOrderId();
         updateReceivingPrimaryOrderId.setDocumentId(documentId);
         updateReceivingPrimaryOrderId.setPrimaryOrderId(primaryOrderId);
-        try {
+        
         updateReceivingPrimaryOrderId.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(updateReceivingPrimaryOrderId);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("{documentId}/SubmitReceivingDocument")
@@ -136,10 +136,10 @@ public class BffReceivingServiceResource {
         @RequestBody BffReceivingServiceCommands.SubmitReceivingDocument requestBody
     ) {
         requestBody.setDocumentId(documentId);
-        try {
+        
         requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(requestBody);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("{documentId}/ConfirmQaInspections")
@@ -148,10 +148,10 @@ public class BffReceivingServiceResource {
         @RequestBody BffReceivingServiceCommands.ConfirmQaInspections requestBody
     ) {
         requestBody.setDocumentId(documentId);
-        try {
+        
         requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(requestBody);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{documentId}/ReferenceDocuments")
@@ -162,10 +162,10 @@ public class BffReceivingServiceResource {
         BffReceivingServiceCommands.UpdateReceivingReferenceDocuments updateReceivingReferenceDocuments = new BffReceivingServiceCommands.UpdateReceivingReferenceDocuments();
         updateReceivingReferenceDocuments.setDocumentId(documentId);
         updateReceivingReferenceDocuments.setReferenceDocuments(referenceDocuments);
-        try {
+        
         updateReceivingReferenceDocuments.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(updateReceivingReferenceDocuments);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("{documentId}/Items")
@@ -176,10 +176,10 @@ public class BffReceivingServiceResource {
         BffReceivingServiceCommands.CreateReceivingItem createReceivingItem = new BffReceivingServiceCommands.CreateReceivingItem();
         createReceivingItem.setDocumentId(documentId);
         createReceivingItem.setReceivingItem(receivingItem);
-        try {
+        
         createReceivingItem.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffReceivingApplicationService.when(createReceivingItem);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @DeleteMapping("{documentId}/Items/{receiptId}")
@@ -190,10 +190,10 @@ public class BffReceivingServiceResource {
         BffReceivingServiceCommands.DeleteReceivingItem deleteReceivingItem = new BffReceivingServiceCommands.DeleteReceivingItem();
         deleteReceivingItem.setDocumentId(documentId);
         deleteReceivingItem.setReceiptId(receiptId);
-        try {
+        
         deleteReceivingItem.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(deleteReceivingItem);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{documentId}/Items/{receiptId}")
@@ -204,10 +204,10 @@ public class BffReceivingServiceResource {
     ) {
         requestBody.setDocumentId(documentId);
         requestBody.setReceiptId(receiptId);
-        try {
+        
         requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(requestBody);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("{documentId}/synchronizeCteReceivingEvents")
@@ -216,10 +216,10 @@ public class BffReceivingServiceResource {
         @RequestBody BffReceivingServiceCommands.SynchronizeCteReceivingEvents requestBody
     ) {
         requestBody.setDocumentId(documentId);
-        try {
+        
         requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
         bffReceivingApplicationService.when(requestBody);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 }

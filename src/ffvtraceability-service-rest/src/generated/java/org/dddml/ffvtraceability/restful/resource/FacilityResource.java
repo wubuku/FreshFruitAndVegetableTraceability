@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class FacilityResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private FacilityApplicationService facilityApplicationService;
@@ -49,14 +61,14 @@ public class FacilityResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<FacilityState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> FacilityResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class FacilityResource {
             }
             return dtoConverter.toFacilityStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class FacilityResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<FacilityState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> FacilityResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class FacilityResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class FacilityResource {
     @GetMapping("{facilityId}")
     @Transactional(readOnly = true)
     public FacilityStateDto get(@PathVariable("facilityId") String facilityId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             String idObj = facilityId;
             FacilityState state = facilityApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -145,18 +157,18 @@ public class FacilityResource {
             }
             return dtoConverter.toFacilityStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -167,7 +179,7 @@ public class FacilityResource {
             count = facilityApplicationService.getCount(c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -177,7 +189,7 @@ public class FacilityResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchFacilityDto.CreateFacilityDto value,  HttpServletResponse response) {
-        try {
+        
             FacilityCommand.CreateFacility cmd = value;//.toCreateFacility();
             if (cmd.getFacilityId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Facility");
@@ -187,7 +199,7 @@ public class FacilityResource {
             facilityApplicationService.when(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -197,7 +209,7 @@ public class FacilityResource {
      */
     @PutMapping("{facilityId}")
     public void put(@PathVariable("facilityId") String facilityId, @RequestBody CreateOrMergePatchFacilityDto value) {
-        try {
+        
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 FacilityCommand.MergePatchFacility cmd = (FacilityCommand.MergePatchFacility) value.toSubclass();
@@ -213,7 +225,7 @@ public class FacilityResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -223,19 +235,19 @@ public class FacilityResource {
      */
     @PatchMapping("{facilityId}")
     public void patch(@PathVariable("facilityId") String facilityId, @RequestBody CreateOrMergePatchFacilityDto.MergePatchFacilityDto value) {
-        try {
+        
 
             FacilityCommand.MergePatchFacility cmd = value;//.toMergePatchFacility();
             FacilityResourceUtils.setNullIdOrThrowOnInconsistentIds(facilityId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             FacilityMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -243,25 +255,25 @@ public class FacilityResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{facilityId}/_events/{version}")
     @Transactional(readOnly = true)
     public FacilityEvent getEvent(@PathVariable("facilityId") String facilityId, @PathVariable("version") long version) {
-        try {
+        
 
             String idObj = facilityId;
             //FacilityStateEventDtoConverter dtoConverter = getFacilityStateEventDtoConverter();
             return facilityApplicationService.getEvent(idObj, version);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{facilityId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public FacilityStateDto getHistoryState(@PathVariable("facilityId") String facilityId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
 
             String idObj = facilityId;
             FacilityStateDto.DtoConverter dtoConverter = new FacilityStateDto.DtoConverter();
@@ -272,7 +284,7 @@ public class FacilityResource {
             }
             return dtoConverter.toFacilityStateDto(facilityApplicationService.getHistoryState(idObj, version));
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -282,7 +294,7 @@ public class FacilityResource {
     @GetMapping("{facilityId}/FacilityIdentifications/{facilityIdentificationTypeId}")
     @Transactional(readOnly = true)
     public FacilityIdentificationStateDto getFacilityIdentification(@PathVariable("facilityId") String facilityId, @PathVariable("facilityIdentificationTypeId") String facilityIdentificationTypeId) {
-        try {
+        
 
             FacilityIdentificationState state = facilityApplicationService.getFacilityIdentification(facilityId, facilityIdentificationTypeId);
             if (state == null) { return null; }
@@ -291,7 +303,7 @@ public class FacilityResource {
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -304,7 +316,7 @@ public class FacilityResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchFacilityIdentificationDto.MergePatchFacilityIdentificationDto body) {
-        try {
+        
             FacilityCommand.MergePatchFacility mergePatchFacility = new CreateOrMergePatchFacilityDto.MergePatchFacilityDto();
             mergePatchFacility.setFacilityId(facilityId);
             mergePatchFacility.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -315,7 +327,7 @@ public class FacilityResource {
             mergePatchFacility.getFacilityIdentificationCommands().add(mergePatchFacilityIdentification);
             mergePatchFacility.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityApplicationService.when(mergePatchFacility);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -327,7 +339,7 @@ public class FacilityResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
+        
             FacilityCommand.MergePatchFacility mergePatchFacility = new CreateOrMergePatchFacilityDto.MergePatchFacilityDto();
             mergePatchFacility.setFacilityId(facilityId);
             mergePatchFacility.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -342,7 +354,7 @@ public class FacilityResource {
             mergePatchFacility.getFacilityIdentificationCommands().add(removeFacilityIdentification);
             mergePatchFacility.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityApplicationService.when(mergePatchFacility);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -355,10 +367,10 @@ public class FacilityResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        try {
+        
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> FacilityResourceUtils.getFacilityIdentificationFilterPropertyName(kv.getKey()) != null)
@@ -376,7 +388,7 @@ public class FacilityResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toFacilityIdentificationStateDtoArray(states);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -389,7 +401,7 @@ public class FacilityResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchFacilityIdentificationDto.CreateFacilityIdentificationDto body) {
-        try {
+        
             FacilityCommand.MergePatchFacility mergePatchFacility = new AbstractFacilityCommand.SimpleMergePatchFacility();
             mergePatchFacility.setFacilityId(facilityId);
             mergePatchFacility.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -399,7 +411,7 @@ public class FacilityResource {
             mergePatchFacility.getFacilityIdentificationCommands().add(createFacilityIdentification);
             mergePatchFacility.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityApplicationService.when(mergePatchFacility);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 

@@ -21,6 +21,14 @@ configuration:
     GGN: "^\\d{13}$"
     GLN: "^\\d{12}\\d$"
 
+  # ---------------------------------------------------------------------------
+  # Remove the hard coded exception handling logic
+  onRestfulMethodStart:
+    Java: ""
+  onRestfulMethodEnd:
+    Java: ""
+  # ---------------------------------------------------------------------------
+
   hibernate:
     hibernateTypes:
       StringList:

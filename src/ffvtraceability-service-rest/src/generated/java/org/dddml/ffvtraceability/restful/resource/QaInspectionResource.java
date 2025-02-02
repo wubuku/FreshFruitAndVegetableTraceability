@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class QaInspectionResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private QaInspectionApplicationService qaInspectionApplicationService;
@@ -49,14 +61,14 @@ public class QaInspectionResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<QaInspectionState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> QaInspectionResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class QaInspectionResource {
             }
             return dtoConverter.toQaInspectionStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class QaInspectionResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<QaInspectionState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> QaInspectionResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class QaInspectionResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class QaInspectionResource {
     @GetMapping("{qaInspectionId}")
     @Transactional(readOnly = true)
     public QaInspectionStateDto get(@PathVariable("qaInspectionId") String qaInspectionId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             String idObj = qaInspectionId;
             QaInspectionState state = qaInspectionApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -145,18 +157,18 @@ public class QaInspectionResource {
             }
             return dtoConverter.toQaInspectionStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -167,7 +179,7 @@ public class QaInspectionResource {
             count = qaInspectionApplicationService.getCount(c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -177,7 +189,7 @@ public class QaInspectionResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchQaInspectionDto.CreateQaInspectionDto value,  HttpServletResponse response) {
-        try {
+        
             QaInspectionCommand.CreateQaInspection cmd = value;//.toCreateQaInspection();
             if (cmd.getQaInspectionId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "QaInspection");
@@ -187,7 +199,7 @@ public class QaInspectionResource {
             qaInspectionApplicationService.when(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -197,7 +209,7 @@ public class QaInspectionResource {
      */
     @PutMapping("{qaInspectionId}")
     public void put(@PathVariable("qaInspectionId") String qaInspectionId, @RequestBody CreateOrMergePatchQaInspectionDto value) {
-        try {
+        
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 QaInspectionCommand.MergePatchQaInspection cmd = (QaInspectionCommand.MergePatchQaInspection) value.toSubclass();
@@ -213,7 +225,7 @@ public class QaInspectionResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             qaInspectionApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -223,19 +235,19 @@ public class QaInspectionResource {
      */
     @PatchMapping("{qaInspectionId}")
     public void patch(@PathVariable("qaInspectionId") String qaInspectionId, @RequestBody CreateOrMergePatchQaInspectionDto.MergePatchQaInspectionDto value) {
-        try {
+        
 
             QaInspectionCommand.MergePatchQaInspection cmd = value;//.toMergePatchQaInspection();
             QaInspectionResourceUtils.setNullIdOrThrowOnInconsistentIds(qaInspectionId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             qaInspectionApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             QaInspectionMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -243,25 +255,25 @@ public class QaInspectionResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{qaInspectionId}/_events/{version}")
     @Transactional(readOnly = true)
     public QaInspectionEvent getEvent(@PathVariable("qaInspectionId") String qaInspectionId, @PathVariable("version") long version) {
-        try {
+        
 
             String idObj = qaInspectionId;
             //QaInspectionStateEventDtoConverter dtoConverter = getQaInspectionStateEventDtoConverter();
             return qaInspectionApplicationService.getEvent(idObj, version);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{qaInspectionId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public QaInspectionStateDto getHistoryState(@PathVariable("qaInspectionId") String qaInspectionId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
 
             String idObj = qaInspectionId;
             QaInspectionStateDto.DtoConverter dtoConverter = new QaInspectionStateDto.DtoConverter();
@@ -272,7 +284,7 @@ public class QaInspectionResource {
             }
             return dtoConverter.toQaInspectionStateDto(qaInspectionApplicationService.getHistoryState(idObj, version));
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 

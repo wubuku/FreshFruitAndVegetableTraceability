@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class AttributeSetInstanceResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private AttributeSetInstanceApplicationService attributeSetInstanceApplicationService;
@@ -49,14 +61,14 @@ public class AttributeSetInstanceResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<AttributeSetInstanceState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> AttributeSetInstanceResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class AttributeSetInstanceResource {
             }
             return dtoConverter.toAttributeSetInstanceStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class AttributeSetInstanceResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<AttributeSetInstanceState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> AttributeSetInstanceResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class AttributeSetInstanceResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class AttributeSetInstanceResource {
     @GetMapping("{attributeSetInstanceId}")
     @Transactional(readOnly = true)
     public AttributeSetInstanceStateDto get(@PathVariable("attributeSetInstanceId") String attributeSetInstanceId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             String idObj = attributeSetInstanceId;
             AttributeSetInstanceState state = attributeSetInstanceApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -145,18 +157,18 @@ public class AttributeSetInstanceResource {
             }
             return dtoConverter.toAttributeSetInstanceStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -167,7 +179,7 @@ public class AttributeSetInstanceResource {
             count = attributeSetInstanceApplicationService.getCount(c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -177,13 +189,13 @@ public class AttributeSetInstanceResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchAttributeSetInstanceDto.CreateAttributeSetInstanceDto value,  HttpServletResponse response) {
-        try {
+        
             AttributeSetInstanceCommand.CreateAttributeSetInstance cmd = value;//.toCreateAttributeSetInstance();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             String idObj = attributeSetInstanceApplicationService.createWithoutId(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -193,20 +205,20 @@ public class AttributeSetInstanceResource {
      */
     @PutMapping("{attributeSetInstanceId}")
     public void put(@PathVariable("attributeSetInstanceId") String attributeSetInstanceId, @RequestBody CreateOrMergePatchAttributeSetInstanceDto.CreateAttributeSetInstanceDto value) {
-        try {
+        
 
             AttributeSetInstanceCommand.CreateAttributeSetInstance cmd = value;//.toCreateAttributeSetInstance();
             AttributeSetInstanceResourceUtils.setNullIdOrThrowOnInconsistentIds(attributeSetInstanceId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             attributeSetInstanceApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             AttributeSetInstanceMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -214,25 +226,25 @@ public class AttributeSetInstanceResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{attributeSetInstanceId}/_events/{version}")
     @Transactional(readOnly = true)
     public AttributeSetInstanceEvent getEvent(@PathVariable("attributeSetInstanceId") String attributeSetInstanceId, @PathVariable("version") long version) {
-        try {
+        
 
             String idObj = attributeSetInstanceId;
             //AttributeSetInstanceStateEventDtoConverter dtoConverter = getAttributeSetInstanceStateEventDtoConverter();
             return attributeSetInstanceApplicationService.getEvent(idObj, version);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{attributeSetInstanceId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public AttributeSetInstanceStateDto getHistoryState(@PathVariable("attributeSetInstanceId") String attributeSetInstanceId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
 
             String idObj = attributeSetInstanceId;
             AttributeSetInstanceStateDto.DtoConverter dtoConverter = new AttributeSetInstanceStateDto.DtoConverter();
@@ -243,7 +255,7 @@ public class AttributeSetInstanceResource {
             }
             return dtoConverter.toAttributeSetInstanceStateDto(attributeSetInstanceApplicationService.getHistoryState(idObj, version));
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
