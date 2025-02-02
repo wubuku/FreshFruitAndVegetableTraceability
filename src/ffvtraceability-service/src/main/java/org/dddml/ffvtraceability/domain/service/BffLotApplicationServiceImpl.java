@@ -156,6 +156,15 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     }
 
     @Override
+    public Page<BffLotDto> when(BffLotServiceCommands.GetAllPrimaryTlcs c) {
+        return PageUtils.toPage(
+                bffLotRepository.findAllPrimaryTlcs(
+                        PageRequest.of(c.getPage(), c.getSize()), c.getGtin(), c.getGs1Batch()
+                ), bffLotMapper::toBffLotDto
+        );
+    }
+
+    @Override
     public String when(BffLotServiceCommands.CreatePrimaryTlc c) {
         BffLotDto lotDto = c.getPrimaryTlc();
         if (lotDto == null) {

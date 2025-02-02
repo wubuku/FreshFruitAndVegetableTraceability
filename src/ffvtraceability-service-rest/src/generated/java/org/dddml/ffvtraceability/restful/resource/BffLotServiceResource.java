@@ -127,6 +127,24 @@ public class BffLotServiceResource {
         
     }
 
+    @GetMapping("getAllPrimaryTlcs")
+    public Page<BffLotDto> getAllPrimaryTlcs(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "gtin", required = false) String gtin,
+        @RequestParam(value = "gs1Batch", required = false) String gs1Batch
+    ) {
+        BffLotServiceCommands.GetAllPrimaryTlcs getAllPrimaryTlcs = new BffLotServiceCommands.GetAllPrimaryTlcs();
+        getAllPrimaryTlcs.setPage(page);
+        getAllPrimaryTlcs.setSize(size);
+        getAllPrimaryTlcs.setGtin(gtin);
+        getAllPrimaryTlcs.setGs1Batch(gs1Batch);
+        
+        getAllPrimaryTlcs.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffLotApplicationService.when(getAllPrimaryTlcs);
+        
+    }
+
     @PostMapping("createPrimaryTlc")
     public String createPrimaryTlc(
         @RequestBody @Valid BffLotDto primaryTlc

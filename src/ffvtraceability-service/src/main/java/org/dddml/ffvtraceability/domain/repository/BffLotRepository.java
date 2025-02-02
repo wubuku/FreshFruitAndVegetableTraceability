@@ -71,4 +71,23 @@ public interface BffLotRepository extends JpaRepository<AbstractLotState.SimpleL
     AND l.serial_number IS NULL
      */
 
+    @Query(value =
+            COMMON_SELECT +
+                    "FROM lot l " +
+                    "LEFT JOIN lot_identification li ON l.lot_id = li.lot_id " +
+                    "WHERE li.lot_identification_type_id = 'TLC_CASE_GTIN_BATCH' " +
+                    "    AND (:caseGtin IS NULL OR li.gtin = :caseGtin) " +
+                    "    AND (:caseBatch IS NULL OR li.gs1_batch = :caseBatch) " +
+                    "ORDER BY l.lot_id",
+            countQuery =
+                    "SELECT COUNT(*) " +
+                            "FROM lot l " +
+                            "LEFT JOIN lot_identification li ON l.lot_id = li.lot_id " +
+                            "WHERE li.lot_identification_type_id = 'TLC_CASE_GTIN_BATCH' " +
+                            "    AND (:caseGtin IS NULL OR li.gtin = :caseGtin) " +
+                            "    AND (:caseBatch IS NULL OR li.gs1_batch = :caseBatch)",
+            nativeQuery = true)
+    Page<BffLotProjection> findAllPrimaryTlcs(Pageable pageable,
+                                              @Param("caseGtin") String caseGtin,
+                                              @Param("caseBatch") String caseBatch);
 }

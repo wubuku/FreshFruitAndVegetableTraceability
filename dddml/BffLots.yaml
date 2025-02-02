@@ -151,6 +151,22 @@ services:
         result:
           type: BffLotDto
 
+      GetAllPrimaryTlcs:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        restfulResourceName: "getAllPrimaryTlcs"
+        parameters:
+          Gtin:
+            type: id
+            optional: true
+          Gs1Batch:
+            type: id
+            optional: true
+        result:
+          itemType: BffLotDto
+
       CreatePrimaryTlc:
         # 创建“特殊”的 Primary Traceability Lot Code (TLC)
         httpMethod: POST

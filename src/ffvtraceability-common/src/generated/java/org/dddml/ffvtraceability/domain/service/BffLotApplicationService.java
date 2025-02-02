@@ -24,6 +24,8 @@ public interface BffLotApplicationService {
 
     BffLotDto when(BffLotServiceCommands.GetPrimaryTlc c);
 
+    Page<BffLotDto> when(BffLotServiceCommands.GetAllPrimaryTlcs c);
+
     String when(BffLotServiceCommands.CreatePrimaryTlc c);
 
     void when(BffLotServiceCommands.ConvertToPrimaryTlc c);
