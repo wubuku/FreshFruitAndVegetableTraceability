@@ -1243,9 +1243,18 @@ curl -X 'GET' \
 echo -e "\n=== Creating Primary TLC ===\n"
 
 # 为 LOT20240315A (有机番茄) 创建 Primary TLC
-# todo 应该先检查是否已经存在，如果存在，则跳过。
-echo "Creating Primary TLC for organic tomatoes..."
-response=$(curl -X 'POST' \
+# 先检查是否已经存在，如果存在，则跳过。
+response=$(curl -X 'GET' \
+  "${API_BASE_URL}/BffLots/getPrimaryTlc?gtin=0614141123453&gs1Batch=LOT20240315A" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X" \
+  -s)
+echo "$response"
+if [ -n "$response" ]; then
+  echo "Primary TLC already exists, skipping creation."
+else
+  echo "Creating Primary TLC for organic tomatoes..."
+  response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffLots/createPrimaryTlc" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
@@ -1258,15 +1267,25 @@ response=$(curl -X 'POST' \
   "expirationDate": "2034-12-18T08:53:18.475Z",
   "gtin": "0614141123453",
   "sourceFacilityId": "F001"
-}')
-http_status=$(echo "$response" | tail -n1)
-response_body=$(echo "$response" | sed '$d')
-check_response $? "$http_status" "Create Primary TLC for tomatoes" "$response_body"
+  }')
+  http_status=$(echo "$response" | tail -n1)
+  response_body=$(echo "$response" | sed '$d')
+  check_response $? "$http_status" "Create Primary TLC for tomatoes" "$response_body"
+fi
 
 # 为 LOT20240315B (有机生菜) 创建 Primary TLC
-# todo 应该先检查是否已经存在，如果存在，则跳过。
-echo "Creating Primary TLC for organic lettuce..."
-response=$(curl -X 'POST' \
+# 先检查是否已经存在，如果存在，则跳过。
+response=$(curl -X 'GET' \
+  "${API_BASE_URL}/BffLots/getPrimaryTlc?gtin=0614141123454&gs1Batch=LOT20240315B" \
+  -H 'accept: application/json' \
+  -H "X-TenantID: X" \
+  -s)
+echo "$response"
+if [ -n "$response" ]; then
+  echo "Primary TLC already exists, skipping creation."
+else
+  echo "Creating Primary TLC for organic lettuce..."
+  response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffLots/createPrimaryTlc" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
@@ -1279,13 +1298,12 @@ response=$(curl -X 'POST' \
   "expirationDate": "2034-12-18T08:53:18.475Z",
   "gtin": "0614141123454",
   "sourceFacilityId": "F001"
-}')
-
-# 从响应中分离出 HTTP 状态码和响应内容
-http_status=$(echo "$response" | tail -n1)
-response_body=$(echo "$response" | sed '$d')
-
-check_response $? "$http_status" "Create Primary TLC for lettuce" "$response_body"
+  }')
+  # 从响应中分离出 HTTP 状态码和响应内容
+  http_status=$(echo "$response" | tail -n1)
+  response_body=$(echo "$response" | sed '$d')
+  check_response $? "$http_status" "Create Primary TLC for lettuce" "$response_body"
+fi
 
 
 # 触发生成 CTE receiving 事件
