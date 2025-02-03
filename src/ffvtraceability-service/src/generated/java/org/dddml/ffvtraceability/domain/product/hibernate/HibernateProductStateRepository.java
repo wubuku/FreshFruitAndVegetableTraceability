@@ -52,38 +52,13 @@ public class HibernateProductStateRepository implements ProductStateRepository {
 
     @Transactional(readOnly = true)
     public ProductState get(String id, boolean nullAllowed) {
-        return get(ProductState.class, id, nullAllowed);
-    }
-
-    @Transactional(readOnly = true)
-    public ProductState get(Class<? extends ProductState> type, String id, boolean nullAllowed) {
-        ProductState.SqlProductState state = (ProductState.SqlProductState)getEntityManager().find(AbstractProductState.class, id);
-        if (state != null && !type.isAssignableFrom(state.getClass())) {
-            throw new ClassCastException(String.format("state is NOT instance of %1$s", type.getName()));
-        }
+        ProductState.SqlProductState state = (ProductState.SqlProductState)getEntityManager().find(AbstractProductState.SimpleProductState.class, id);
         if (!nullAllowed && state == null) {
-            state = (ProductState.SqlProductState)newEmptyState(type);
+            state = new AbstractProductState.SimpleProductState();
             state.setProductId(id);
         }
-        return state;
-    }
-
-    private ProductState newEmptyState(Class<? extends ProductState> type) {
-        ProductState state = null;
-        Class<? extends AbstractProductState> clazz = null;
-        if (state != null) {
-            // do nothing.
-        }
-        else if (type.equals(ProductState.class)) {
-            clazz = AbstractProductState.SimpleProductState.class;
-        }
-        else {
-            throw new IllegalArgumentException("type");
-        }
-        try {
-            state = clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new IllegalArgumentException("type", e);
+        if (getReadOnlyProxyGenerator() != null && state != null) {
+            return (ProductState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{ProductState.SqlProductState.class, Saveable.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
         }
         return state;
     }
@@ -107,7 +82,7 @@ public class HibernateProductStateRepository implements ProductStateRepository {
     }
 
     public void merge(ProductState detached) {
-        ProductState persistent = getEntityManager().find(AbstractProductState.class, detached.getProductId());
+        ProductState persistent = getEntityManager().find(AbstractProductState.SimpleProductState.class, detached.getProductId());
         if (persistent != null) {
             merge(persistent, detached);
             entityManager.merge(persistent);

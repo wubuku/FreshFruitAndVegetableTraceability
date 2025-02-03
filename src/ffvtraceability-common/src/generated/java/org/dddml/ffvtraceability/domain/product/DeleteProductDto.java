@@ -17,21 +17,10 @@ public class DeleteProductDto extends AbstractProductCommandDto implements Produ
         return COMMAND_TYPE_DELETE;
     }
 
-    private String productTypeId;
-
-    public String getProductTypeId() {
-        return this.productTypeId;
-    }
-
-    public void setProductTypeId(String productTypeId) {
-        this.productTypeId = productTypeId;
-    }
-
     public ProductCommand.DeleteProduct toDeleteProduct()
     {
         AbstractProductCommand.SimpleDeleteProduct command = new AbstractProductCommand.SimpleDeleteProduct();
         ((AbstractProductCommandDto)this).copyTo(command);
-        command.setProductTypeId(this.getProductTypeId());
         return command;
     }
 }

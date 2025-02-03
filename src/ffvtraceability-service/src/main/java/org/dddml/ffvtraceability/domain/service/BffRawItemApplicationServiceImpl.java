@@ -113,7 +113,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         AbstractProductCommand.SimpleCreateProduct createProduct = new AbstractProductCommand.SimpleCreateProduct();
         createProduct.setProductId(rawItem.getProductId() != null ? rawItem.getProductId() : IdUtils.randomId());
         // (rawItem.getProductId()); // NOTE: ignore the productId from the client side?
-        // createProduct.setProductTypeId("PRODUCT");
+        createProduct.setProductTypeId(PRODUCT_TYPE_RAW_MATERIAL);
         createProduct.setProductName(rawItem.getProductName());
         createProduct.setSmallImageUrl(rawItem.getSmallImageUrl());
         createProduct.setMediumImageUrl(rawItem.getMediumImageUrl());
@@ -225,7 +225,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         BffRawItemDto rawItem = c.getRawItem();
         AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
         mergePatchProduct.setProductId(productId);
-        mergePatchProduct.setProductTypeId("PRODUCT"); // Hard code to "PRODUCT"?
+        mergePatchProduct.setProductTypeId(PRODUCT_TYPE_RAW_MATERIAL);
         mergePatchProduct.setVersion(productState.getVersion());
         mergePatchProduct.setProductName(rawItem.getProductName());
         mergePatchProduct.setDescription(rawItem.getDescription());
@@ -363,7 +363,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
 
         AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
         mergePatchProduct.setProductId(productId);
-        mergePatchProduct.setProductTypeId(ProductTypeId.PRODUCT);
+        mergePatchProduct.setProductTypeId(PRODUCT_TYPE_RAW_MATERIAL);
         mergePatchProduct.setVersion(productState.getVersion());
         mergePatchProduct.setActive(active ? INDICATOR_YES : INDICATOR_NO);
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());

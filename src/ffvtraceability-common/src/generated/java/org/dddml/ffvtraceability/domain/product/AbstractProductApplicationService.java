@@ -86,30 +86,6 @@ public abstract class AbstractProductApplicationService implements ProductApplic
         return getStateQueryRepository().getCount(filter);
     }
 
-    public Iterable<ProductState> getAll(Class<? extends ProductState> stateType, Integer firstResult, Integer maxResults) {
-        return getStateQueryRepository().getAll(stateType, firstResult, maxResults);
-    }
-
-    public Iterable<ProductState> get(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        return getStateQueryRepository().get(stateType, filter, orders, firstResult, maxResults);
-    }
-
-    public Iterable<ProductState> get(Class<? extends ProductState> stateType, Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        return getStateQueryRepository().get(stateType, filter, orders, firstResult, maxResults);
-    }
-
-    public Iterable<ProductState> getByProperty(Class<? extends ProductState> stateType, String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
-        return getStateQueryRepository().getByProperty(stateType, propertyName, propertyValue, orders, firstResult, maxResults);
-    }
-
-    public long getCount(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter) {
-        return getStateQueryRepository().getCount(stateType, filter);
-    }
-
-    public long getCount(Class<? extends ProductState> stateType, Criterion filter) {
-        return getStateQueryRepository().getCount(stateType, filter);
-    }
-
     public ProductEvent getEvent(String productId, long version) {
         ProductEvent e = (ProductEvent)getEventStore().getEvent(toEventStoreAggregateId(productId), version);
         if (e != null) {
@@ -145,8 +121,7 @@ public abstract class AbstractProductApplicationService implements ProductApplic
     protected void update(ProductCommand c, Consumer<ProductAggregate> action) {
         String aggregateId = c.getProductId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        Class<? extends ProductState> stateType = getStateType(c);
-        ProductState state = getStateRepository().get(stateType, aggregateId, false);
+        ProductState state = getStateRepository().get(aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);
         if (duplicate) { return; }
 
@@ -177,24 +152,6 @@ public abstract class AbstractProductApplicationService implements ProductApplic
 
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
         persist(eventStoreAggregateId, ((ProductEvent.SqlProductEvent)stateCreated).getProductEventId().getVersion(), aggregate, state);
-    }
-
-    protected Class<? extends ProductState> getStateType(ProductCommand c) {
-        Class<? extends ProductState> clazz = ProductState.class;
-        String discriminatorVal = null;
-        if (c instanceof ProductCommand.CreateOrMergePatchProduct) {
-            discriminatorVal = ((ProductCommand.CreateOrMergePatchProduct) c).getProductTypeId();
-        } else if (c instanceof ProductCommand.DeleteProduct) {
-            discriminatorVal = ((ProductCommand.DeleteProduct) c).getProductTypeId();
-        }
-        if (discriminatorVal != null) {
-            switch (discriminatorVal) {
-                case ProductTypeId.PRODUCT:
-                    clazz = ProductState.class;
-                    break;
-            }
-        }
-        return clazz;
     }
 
     protected boolean isDuplicateCommand(ProductCommand command, EventStoreAggregateId eventStoreAggregateId, ProductState state) {

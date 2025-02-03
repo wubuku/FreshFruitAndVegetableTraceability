@@ -30,22 +30,6 @@ public interface ProductStateQueryRepository {
 
     long getCount(Criterion filter);
 
-    Iterable<ProductState> getAll(Class<? extends ProductState> stateType, Integer firstResult, Integer maxResults);
-    
-    Iterable<ProductState> get(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults);
-
-    Iterable<ProductState> get(Class<? extends ProductState> stateType, Criterion filter, List<String> orders, Integer firstResult, Integer maxResults);
-
-    ProductState getFirst(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders);
-
-    ProductState getFirst(Class<? extends ProductState> stateType, Map.Entry<String, Object> keyValue, List<String> orders);
-
-    Iterable<ProductState> getByProperty(Class<? extends ProductState> stateType, String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults);
-
-    long getCount(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter);
-
-    long getCount(Class<? extends ProductState> stateType, Criterion filter);
-
     GoodIdentificationState getGoodIdentification(String productId, String goodIdentificationTypeId);
 
     Iterable<GoodIdentificationState> getGoodIdentifications(String productId, Criterion filter, List<String> orders);

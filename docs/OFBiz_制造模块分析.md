@@ -883,6 +883,426 @@ public static Map<String, Object> completeProductionRun(DispatchContext dctx, Ma
 }
 ```
 
+#### 4.1.1 创建生产订单
+
+关键处理代码：
+```java
+// From applications/manufacturing/src/main/java/org/apache/ofbiz/manufacturing/jobshopmgt/ProductionRunServices.java
+
+/**
+ * 创建生产订单
+ * 主要步骤:
+ * 1. 检查产品是否存在工艺路线关联
+ * 2. 检查产品是否有物料清单(BOM)
+ * 3. 检查工艺路线是否包含工序
+ * 4. 创建生产订单主记录(WorkEffort)
+ * 5. 创建生产订单与产品的关联(WorkEffortGoodStandard)
+ * 6. 对工艺路线中的每个工序:
+ *    - 创建生产订单工序(WorkEffort)
+ *    - 对于第一道工序,创建所有未关联工序的物料需求
+ *    - 对于每个工序,创建该工序关联的物料需求
+ */
+public static Map<String, Object> createProductionRun(DispatchContext ctx, Map<String, ? extends Object> context) {
+    // 1. 获取输入参数
+    String productId = (String) context.get("productId");
+    Timestamp startDate = (Timestamp) context.get("startDate"); 
+    BigDecimal quantity = (BigDecimal) context.get("pRQuantity");
+    String facilityId = (String) context.get("facilityId");
+    String routingId = (String) context.get("routingId");
+
+    // 2. 获取产品的工艺路线
+    Map<String, Object> routingResult = dispatcher.runSync("getProductRouting", 
+        UtilMisc.toMap("productId", productId, "workEffortId", routingId));
+    GenericValue routing = (GenericValue) routingResult.get("routing");
+    List<GenericValue> routingTasks = (List<GenericValue>) routingResult.get("tasks");
+
+    // 3. 获取物料清单
+    List<BOMNode> components = getManufacturingComponents(productId, quantity);
+
+    // 4. 创建生产订单主记录
+    String productionRunId = delegator.getNextSeqId("WorkEffort");
+    Map<String, Object> productionRunFields = UtilMisc.toMap(
+        "workEffortId", productionRunId,
+        "workEffortTypeId", "PROD_ORDER_HEADER",
+        "workEffortPurposeTypeId", "WEPT_PRODUCTION_RUN",
+        "currentStatusId", "PRUN_CREATED"
+        // ... 其他字段
+    );
+    GenericValue productionRun = delegator.create("WorkEffort", productionRunFields);
+
+    // 5. 创建生产订单工序
+    Timestamp taskStartDate = startDate;
+    boolean first = true;
+    for (GenericValue routingTask : routingTasks) {
+        // 5.1 创建工序记录
+        String taskId = delegator.getNextSeqId("WorkEffort");
+        Map<String, Object> taskFields = UtilMisc.toMap(
+            "workEffortId", taskId,
+            "workEffortTypeId", "PROD_ORDER_TASK",
+            "workEffortParentId", productionRunId,
+            // ... 其他字段
+        );
+        GenericValue task = delegator.create("WorkEffort", taskFields);
+
+        // 5.2 创建物料需求
+        for (BOMNode component : components) {
+            if (isComponentNeededForTask(component, routingTask, first)) {
+                createWorkEffortGoodStandard(taskId, component);
+            }
+        }
+        first = false;
+        taskStartDate = getNextTaskStartDate(taskStartDate, task);
+    }
+
+    return ServiceUtil.returnSuccess(productionRunId);
+}
+```
+
+方法 `getManufacturingComponents` 的实现：
+
+```java
+// From applications/manufacturing/src/main/java/org/apache/ofbiz/manufacturing/bom/BOMServices.java
+/**
+ * 获取生产所需的制造组件(物料清单)
+ * 主要功能:
+ * 1. 读取产品的物料清单(BOM)
+ * 2. 如果需要,进行配置
+ * 3. 返回所需的组件列表
+ */
+public static Map<String, Object> getManufacturingComponents(DispatchContext dctx, Map<String, ? extends Object> context) {
+    // 1. 基础参数准备
+    String productId = (String) context.get("productId");    // 产品ID
+    BigDecimal quantity = (BigDecimal) context.get("quantity") ?? BigDecimal.ONE;  // 生产数量
+    Boolean excludeWIPs = (Boolean) context.get("excludeWIPs") ?? Boolean.TRUE;    // 是否排除在制品
+    
+    // 2. 获取物料清单树
+    BOMTree tree = new BOMTree(
+        productId,                     // 产品
+        "MANUF_COMPONENT",            // BOM类型:制造组件
+        fromDate,                     // 生效日期
+        BOMTree.EXPLOSION_SINGLE_LEVEL, // 展开方式:单层
+        delegator, dispatcher, userLogin
+    );
+    
+    // 3. 设置根节点数量
+    tree.setRootQuantity(quantity);
+    
+    // 4. 获取组件列表
+    List<BOMNode> components = new LinkedList<>();
+    tree.print(components, excludeWIPs);  // 打印BOM树到组件列表
+    if (!components.isEmpty()) {
+        components.remove(0);  // 移除根节点(产品本身)
+    }
+    
+    // 5. 获取工艺路线
+    String workEffortId = null;
+    Map<String, Object> routingResult = dispatcher.runSync("getProductRouting", 
+        UtilMisc.toMap("productId", productId, "ignoreDefaultRouting", "Y"));
+    GenericValue routing = (GenericValue)routingResult.get("routing");
+    
+    // 6. 如果找不到工艺路线,尝试查找虚拟产品的工艺路线
+    if (routing == null) {
+        String virtualProductId = tree.getRoot().getProduct().getString("productId");
+        routingResult = dispatcher.runSync("getProductRouting", 
+            UtilMisc.toMap("productId", virtualProductId));
+        routing = (GenericValue)routingResult.get("routing");
+    }
+    
+    // 7. 准备返回结果
+    Map<String, Object> result = new HashMap<>();
+    result.put("components", components);  // 原始组件列表
+    
+    // 8. 转换为更易用的Map格式
+    List<Map<String, Object>> componentsMap = new LinkedList<>();
+    for (BOMNode node : components) {
+        componentsMap.add(UtilMisc.toMap(
+            "product", node.getProduct(),
+            "quantity", node.getQuantity()
+        ));
+    }
+    result.put("componentsMap", componentsMap);
+    
+    return result;
+}
+```
+
+使用了EXPLOSION_SINGLE_LEVEL进行单层展开。这样设计的原因是：
+1. 生产订单的特点：
+  - 生产订单关注的是直接需要的物料
+  - 每个物料可能有自己的生产订单
+  - 形成独立的生产层级管理
+2. 业务逻辑：
+  - 如果某个组件也需要生产，会创建另一个生产订单
+  - 这种方式让生产计划更灵活
+  - 可以分别管理不同层级的生产进度
+3. MRP的作用：
+  - 完整的多层展开是在MRP(物料需求计划)中进行的
+  - MRP会考虑所有层级的物料需求
+  - 生成相应的生产订单或采购建议
+
+
+#### 4.1.2 WIP(在制品)处理策略
+
+在OFBiz的制造模块中，WIP(Work In Process，在制品)有特殊的处理机制。让我们通过代码分析来理解这个机制：
+
+1. WIP的定义：
+```xml
+<!-- 在Product实体中 -->
+<field name="productTypeId" type="id">
+    <!-- 产品类型:
+         - WIP: Work In Process(在制品)
+         - FINISHED_GOOD: 成品
+         - RAW_MATERIAL: 原材料
+    -->
+</field>
+```
+
+2. BOM树的展开处理：
+```java
+public void print(List<BOMNode> arr, BigDecimal quantity, int depth, boolean excludeWIPs) {
+    // 1. 计算当前节点的实际需求数量
+    this.quantity = quantity.multiply(quantityMultiplier).multiply(scrapFactor);
+    
+    // 2. 将当前节点添加到列表
+    arr.add(this);
+    
+    // 3. 递归处理子节点
+    for (BOMNode childNode : childrenNodes) {
+        // 关键判断：是否跳过WIP类型的产品
+        if (excludeWIPs && "WIP".equals(childNode.getProduct().getString("productTypeId"))) {
+            continue;  // 跳过WIP节点
+        }
+        childNode.print(arr, this.quantity, depth + 1, excludeWIPs);
+    }
+}
+```
+
+3. 生产订单创建时的WIP处理：
+```java
+public Map<String, Object> createManufacturingOrder(...) {
+    // 如果当前产品是WIP或需要制造
+    if (isManufactured(ignoreSupplierProducts)) {
+        // 1. 先处理子节点的生产订单
+        for (BOMNode childNode : childrenNodes) {
+            Map<String, Object> childResult = childNode.createManufacturingOrder(...);
+            // 记录子生产订单ID和完成时间
+            childProductionRuns.add(childResult.get("productionRunId"));
+            updateEndDate(childResult.get("endDate"));
+        }
+        
+        // 2. 创建当前节点的生产订单
+        Map<String, Object> result = dispatcher.runSync("createProductionRun", ...);
+        
+        // 3. 建立生产订单之间的依赖关系
+        for (String childProductionRun : childProductionRuns) {
+            delegator.create("WorkEffortAssoc", 
+                UtilMisc.toMap(
+                    "workEffortIdFrom", childProductionRun,
+                    "workEffortIdTo", productionRunId, 
+                    "workEffortAssocTypeId", "WORK_EFF_PRECEDENCY"
+                )
+            );
+        }
+    }
+}
+```
+
+4. WIP的业务处理策略：
+
+   a. BOM展开策略：
+      - 创建生产订单时默认排除WIP(excludeWIPs=true)
+      - 使用单层展开(EXPLOSION_SINGLE_LEVEL)
+      - 为每个WIP创建独立的生产订单
+
+   b. 生产订单处理：
+      - WIP组件会创建独立的生产订单
+      - 通过WorkEffortAssoc建立订单间的依赖关系
+      - 确保按正确的顺序执行生产
+
+5. 实际应用示例：
+```
+产品：高级蛋糕
+├── 蛋糕胚(WIP)
+│   ├── 面粉(原料)
+│   ├── 鸡蛋(原料)
+│   └── 糖(原料)
+└── 奶油装饰(WIP)
+    ├── 奶油(原料)
+    └── 水果(原料)
+
+生成的生产订单：
+1. 生产订单A：制作蛋糕胚
+   - 领料：面粉、鸡蛋、糖
+   - 工序：和面、烘烤
+   
+2. 生产订单B：准备奶油装饰
+   - 领料：奶油、水果
+   - 工序：打发、切割
+   
+3. 生产订单C：最终组装
+   - 使用：蛋糕胚、奶油装饰
+   - 工序：组装、冷藏
+```
+
+6. 这种设计的优点：
+
+   a. 生产管理优势：
+      - 可以独立管理每个WIP的生产过程
+      - 便于跟踪和控制中间产品的质量
+      - 支持并行生产，提高效率
+
+   b. 库存管理优势：
+      - WIP可以独立库存管理
+      - 支持WIP的批次管理
+      - 可以设置WIP的安全库存
+
+   c. 计划排程优势：
+      - 可以灵活安排WIP的生产时间
+      - 支持多级生产的依赖关系
+      - 便于处理生产瓶颈
+
+7. 实施建议：
+   - 合理规划WIP节点，不要过度细分
+   - 考虑WIP的保质期和存储条件
+   - 设置适当的安全库存和提前期
+   - 注意WIP之间的产能平衡
+
+
+#### 4.1.3 物料分配策略
+
+在生产订单中，物料是如何分配给各个工序的？
+
+处理逻辑是：
+1. 如果BOM中的物料指定了routingWorkEffortId：
+   - 该物料只会分配给指定的工序
+   - 数量就是BOM中定义的数量
+2. 如果BOM中的物料没有指定routingWorkEffortId：
+   - 该物料会被分配到第一道工序
+   - 所有数量都分配给第一道工序
+   - 后续工序如果需要使用，从第一道工序领用
+
+
+BOM中的物料定义：
+
+```xml
+    <entity entity-name="ProductAssoc"
+            package-name="org.apache.ofbiz.product.product"
+            title="Product Association">
+      <field name="productId" type="id"></field>
+      <field name="productIdTo" type="id"></field>
+      <field name="productAssocTypeId" type="id"></field>
+      <field name="fromDate" type="date-time"></field>
+      <field name="thruDate" type="date-time"></field>
+      <field name="sequenceNum" type="numeric"></field>
+      <field name="reason" type="long-varchar"></field>
+      <field name="quantity" type="fixed-point"></field>
+      <field name="scrapFactor" type="fixed-point"></field>
+      <field name="instruction" type="long-varchar"></field>
+      <field name="routingWorkEffortId" type="id"></field>
+      <field name="estimateCalcMethod" type="id"></field>
+      <field name="recurrenceInfoId" type="id"></field>
+      <prim-key field="productId"/>
+      <prim-key field="productIdTo"/>
+      <prim-key field="productAssocTypeId"/>
+      <prim-key field="fromDate"/>
+    </entity>
+```
+
+
+数据示例：
+
+```xml
+<!-- ProductAssoc 实体中的 routingWorkEffortId 字段 -->
+    <ProductAssoc productId="FINAL_PRODUCT" 
+             productIdTo="RAW_MATERIAL" 
+             productAssocTypeId="MANUF_COMPONENT"
+             routingWorkEffortId="TASK_1"
+             quantity="1.0"/>
+
+<!-- From applications/datamodel/data/demo/AccountingDemoData.xml -->
+    <!-- Bill of materials definition: -->
+    <ProductAssoc productId="PROD_MANUF" productIdTo="MAT_A_COST" productAssocTypeId="MANUF_COMPONENT" fromDate="2005-12-31 00:01:00.0" sequenceNum="10" quantity="2.0"/>
+    <ProductAssoc productId="PROD_MANUF" productIdTo="MAT_B_COST" productAssocTypeId="MANUF_COMPONENT" fromDate="2005-12-31 00:01:00.0" sequenceNum="20" quantity="3.0"/>
+
+    <!-- Product Routing definition: -->
+    <!-- this routing is composed of one task -->
+    <!-- the task is executed in the fixed asset WORKCENTER_COST; the setup time is 10 minutes (600000 milliseconds); the unit task time is 5 minutes (300000 milliseconds) -->
+    <WorkEffort workEffortId="ROUTING_COST" workEffortTypeId="ROUTING" currentStatusId="ROU_ACTIVE" workEffortName="Demo Routing for Costing" description="Demo Routing for Costing" revisionNumber="1" quantityToProduce="0"/>
+    <WorkEffort workEffortId="TASK_COST" workEffortTypeId="ROU_TASK" workEffortPurposeTypeId="ROU_ASSEMBLING" currentStatusId="ROU_ACTIVE" workEffortName="Demo Routing Task for Costing" description="Demo Routing Task for Costing" revisionNumber="1" fixedAssetId="WORKCENTER_COST" estimatedMilliSeconds="300000" estimatedSetupMillis="600000"/>
+    <WorkEffortAssoc workEffortIdFrom="ROUTING_COST" workEffortIdTo="TASK_COST" workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10" fromDate="2005-12-31 00:01:00.0"/>
+    <WorkEffortGoodStandard workEffortId="ROUTING_COST" productId="PROD_MANUF" workEffortGoodStdTypeId="ROU_PROD_TEMPLATE" statusId="WEGS_CREATED" fromDate="2005-12-31 00:01:00.0"/>
+    <!-- Cost information for the task -->
+    <!-- This is the cost derived from fixed assets' usage; variableCost is per minute (perMilliSeconds=60000) -->
+    <CostComponentCalc costComponentCalcId="TASK_COST_CALC" description="Indirect cost (power supply)" currencyUomId="USD" fixedCost="1" variableCost="2" perMilliSecond="60000"/>
+    <WorkEffortCostCalc workEffortId="TASK_COST" costComponentTypeId="OTHER_COST" costComponentCalcId="TASK_COST_CALC" fromDate="2005-12-31 00:01:00.0"/>
+```
+
+物料分配逻辑：
+
+```java
+// 遍历工序
+for (GenericValue routingTask : routingTasks) {
+    // ...创建生产订单工序...
+    
+    // 处理物料需求
+    for (BOMNode node : components) {
+        GenericValue productAssoc = node.getProductAssoc();
+        String routingWorkEffortId = productAssoc.getString("routingWorkEffortId");
+        
+        // 如果物料指定了工序，且是当前工序
+        if (routingWorkEffortId != null && 
+            routingWorkEffortId.equals(routingTask.getString("workEffortId"))) {
+            createWorkEffortGoodStandard(taskId, node);
+        }
+        // 如果物料没有指定工序，且这是第一道工序
+        else if (routingWorkEffortId == null && first) {
+            createWorkEffortGoodStandard(taskId, node);
+        }
+    }
+}
+```
+
+处理策略：
+
+1. 集中领料模式：
+   - 所有未指定工序的物料默认在第一道工序领取
+   - 便于仓库集中发料
+   - 减少多次领料的管理成本
+
+2. 特殊需求处理：
+   - 某些物料必须在特定工序使用
+   - 可以通过`routingWorkEffortId`指定
+   - 比如：装饰工序专用的奶油
+
+3. 实际应用场景：
+```
+蛋糕生产示例：
+工序1(和面)：
+  - 面粉 10kg
+  - 鸡蛋 30个
+  - 糖 2kg
+工序2(烘烤)：
+  [使用工序1领取的原料]
+工序3(装饰)：
+  - 奶油 5kg (专门在这道工序领取)
+```
+
+注意事项：
+
+1. 默认行为：
+   - 物料在第一道工序全部领取
+   - 后续工序使用前序工序的物料
+
+2. 特殊情况：
+   - 通过`routingWorkEffortId`指定物料使用的工序
+   - 适用于必须在特定工序使用的物料
+
+3. 实施建议：
+   - 需要合理规划物料存放和转移
+   - 可能需要中间仓库或工序间缓存区
+   - 要考虑物料的保质期限制
+
+
 ### 4.2 BOM分解实现
 
 ```java
@@ -1561,13 +1981,86 @@ public static void processSafetyStock(String facilityId) {
 
 ### 5.3 多产品产出支持
 
-从数据模型而言，可以支持多产品产出的需求，但是我们还需要看代码实现的实际业务逻辑限制：
+WorkEffortGoodStandard 实体：
+
+```xml
+<!-- From applications/datamodel/entitydef/workeffort-entitymodel.xml -->
+    <entity entity-name="WorkEffortGoodStandard" package-name="org.apache.ofbiz.workeffort.workeffort" title="Work Effort Good Standard">
+        <field name="workEffortId" type="id"></field>
+        <field name="productId" type="id"></field>
+        <field name="workEffortGoodStdTypeId" type="id"></field>
+        <field name="fromDate" type="date-time"></field>
+        <field name="thruDate" type="date-time"></field>
+        <field name="statusId" type="id"></field>
+        <field name="estimatedQuantity" type="floating-point"></field>
+        <field name="estimatedCost" type="currency-amount"></field>
+        <prim-key field="workEffortId"/>
+        <prim-key field="productId"/>
+        <prim-key field="workEffortGoodStdTypeId"/>
+        <prim-key field="fromDate"/>
+        <relation type="one" fk-name="WKEFF_GDSTD_WEFF" rel-entity-name="WorkEffort">
+            <key-map field-name="workEffortId"/>
+        </relation>
+        <relation type="one" fk-name="WKEFF_GDSTD_TYPE" rel-entity-name="WorkEffortGoodStandardType">
+            <key-map field-name="workEffortGoodStdTypeId"/>
+        </relation>
+        <relation type="one" fk-name="WKEFF_GDSTD_PROD" rel-entity-name="Product">
+            <key-map field-name="productId"/>
+        </relation>
+        <relation type="one" fk-name="WKEFF_GDSTD_STTS" rel-entity-name="StatusItem">
+            <key-map field-name="statusId"/>
+        </relation>
+    </entity>
+```
+
+WorkEffortGoodStandardType 等实体的数据示例：
+
+```xml
+<!-- From applications/datamodel/data/seed/WorkEffortSeedData.xml -->
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="ROU_PROD_TEMPLATE" description="Product and Routing Association" hasTable="N"/>
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="PRUN_PROD_DELIV" description="Production Run and Product to Deliver Association" hasTable="N"/>
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="PRUNT_PROD_NEEDED" description="Production Run Task and Needed Product Association" hasTable="N"/>
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="PRUNT_PROD_DELIV" description="Production Run Task and Deliverable Product Association" hasTable="N"/>
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="GENERAL_SALES" description="Product to Represent General Sales of the WorkEffort" hasTable="N"/>
+
+    <WorkEffortAssocType description="Breakdown/Detail" hasTable="N" workEffortAssocTypeId="WORK_EFF_BREAKDOWN"/>
+    <WorkEffortAssocType description="Dependency" hasTable="N" workEffortAssocTypeId="WORK_EFF_DEPENDENCY"/>
+    <WorkEffortAssocType description="Concurrency" hasTable="N" parentTypeId="WORK_EFF_DEPENDENCY" workEffortAssocTypeId="WORK_EFF_CONCURRENCY"/>
+    <WorkEffortAssocType description="Precedency" hasTable="N" parentTypeId="WORK_EFF_DEPENDENCY" workEffortAssocTypeId="WORK_EFF_PRECEDENCY"/>
+    <WorkEffortAssocType description="Template of" hasTable="N" workEffortAssocTypeId="WORK_EFF_TEMPLATE"/>
+
+    <!-- For Routing definition, (workEffort Template) -->
+    <WorkEffortAssocType description="Routing and Routing Task Association" hasTable="N" workEffortAssocTypeId="ROUTING_COMPONENT"/>
+
+    <!-- Default routing -->
+    <!-- used when no explicit routing is associated to a product -->
+    <WorkEffort workEffortId="DEFAULT_ROUTING" workEffortTypeId="ROUTING" currentStatusId="ROU_ACTIVE" workEffortName="Default Routing" description="Default Routing" revisionNumber="1" quantityToProduce="0"/>
+    <WorkEffort workEffortId="DEFAULT_TASK" workEffortTypeId="ROU_TASK" workEffortPurposeTypeId="ROU_ASSEMBLING" currentStatusId="ROU_ACTIVE" workEffortName="Default Routing Task" description="Default Routing Task" revisionNumber="1" estimatedMilliSeconds="0" estimatedSetupMillis="0"/>
+    <WorkEffortAssoc workEffortIdFrom="DEFAULT_ROUTING" workEffortIdTo="DEFAULT_TASK" workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10" fromDate="2004-09-24 15:09:38.736"/>
+```
+
+
+
+```xml
+<!-- From applications/datamodel/data/demo/OrderDemoData.xml -->
+    <WorkEffort workEffortId="SCTASK01" workEffortTypeId="ROU_TASK" workEffortPurposeTypeId="ROU_ASSEMBLING" currentStatusId="ROU_ACTIVE" workEffortName="Stock out" description="Components" revisionNumber="1" fixedAssetId="DEMO_BOOK_GROUP" estimatedMilliSeconds="600000" estimatedSetupMillis="0"/>
+    <WorkEffort workEffortId="SCTASK02" workEffortTypeId="ROU_TASK" workEffortPurposeTypeId="ROU_ASSEMBLING" currentStatusId="ROU_ACTIVE" workEffortName="Preparation" description="Preparation" revisionNumber="1" fixedAssetId="DEMO_BOOK_GROUP" estimatedMilliSeconds="900000" estimatedSetupMillis="0"/>
+    <WorkEffort workEffortId="SCROUT01" workEffortTypeId="ROUTING" currentStatusId="ROU_ACTIVE" workEffortName="Pizza preparation" description="Scanning preparation" revisionNumber="1" quantityToProduce="0"/>
+    <WorkEffortGoodStandard workEffortId="SCROUT01" productId="CFSV1001" workEffortGoodStdTypeId="ROU_PROD_TEMPLATE" statusId="WEGS_CREATED" fromDate="2011-01-01 00:00:00.0"/>
+    <WorkEffortAssoc workEffortIdFrom="SCROUT01" workEffortIdTo="SCTASK01" workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10" fromDate="2011-01-01 00:00:00.0"/>
+    <WorkEffortAssoc workEffortIdFrom="SCROUT01" workEffortIdTo="SCTASK02" workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="20" fromDate="2011-01-01 00:00:00.0"/>
+```
+
+以上是数据模型。
+
+实际业务逻辑限制：
 1. 一个生产任务关联多个投入物料(PRUNT_PROD_NEEDED)
 2. 一个生产任务关联一个产出物料(PRUNT_PROD_DELIV)
 3. 一个工艺路线关联多个工序任务(ROUTING_COMPONENT)
-   
+
+代码实现：
 ```java
-// 伪代码：用于说明生产订单的产品关联处理
+// From applications/manufacturing/src/main/java/org/apache/ofbiz/manufacturing/jobshopmgt/ProductionRun.java
 public class ProductionRun {
     private GenericValue productionRun;  // WorkEffort实体
     private GenericValue productionRunProduct;  // 产出产品关联
@@ -2099,5 +2592,4 @@ if (stockTmp.compareTo(minimumStock) < 0) {
   * 使用专业的MES系统
   * 引入批次追踪系统
   * 部署质量管理系统
-
 

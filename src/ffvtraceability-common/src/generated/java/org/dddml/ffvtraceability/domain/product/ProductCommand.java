@@ -630,10 +630,6 @@ public interface ProductCommand extends Command {
     }
 
     interface DeleteProduct extends ProductCommand {
-
-        String getProductTypeId();
-
-        void setProductTypeId(String productTypeId);
     }
 
     interface CreateGoodIdentificationCommandCollection extends Iterable<GoodIdentificationCommand.CreateGoodIdentification> {

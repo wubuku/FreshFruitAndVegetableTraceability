@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-public interface BffRawItemRepository extends JpaRepository<AbstractProductState, String> {
+public interface BffRawItemRepository extends JpaRepository<AbstractProductState.SimpleProductState, String> {
 
     @Query(value = """
             SELECT

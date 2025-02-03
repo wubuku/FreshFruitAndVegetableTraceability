@@ -56,95 +56,54 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
 
     @Transactional(readOnly = true)
     public ProductState get(String id) {
-        ProductState state = (ProductState)getEntityManager().find(AbstractProductState.class, id);
+        ProductState state = (ProductState)getEntityManager().find(AbstractProductState.SimpleProductState.class, id);
         return state;
     }
 
     @Transactional(readOnly = true)
     public Iterable<ProductState> getAll(Integer firstResult, Integer maxResults) {
-        return getAll(ProductState.class, firstResult, maxResults);
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbstractProductState.SimpleProductState> cq = cb.createQuery(AbstractProductState.SimpleProductState.class);
+        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
+        cq.select(root);
+        addNotDeletedRestriction(cb, cq, root);
+        TypedQuery<AbstractProductState.SimpleProductState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(ProductState.class::cast).collect(Collectors.toList());
     }
-    
+
     @Transactional(readOnly = true)
     public Iterable<ProductState> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        return get(ProductState.class, filter, orders, firstResult, maxResults);
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbstractProductState.SimpleProductState> cq = cb.createQuery(AbstractProductState.SimpleProductState.class);
+        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
+        cq.select(root);
+        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
+        addNotDeletedRestriction(cb, cq, root);
+        TypedQuery<AbstractProductState.SimpleProductState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(ProductState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Iterable<ProductState> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        return get(ProductState.class, filter, orders, firstResult, maxResults);
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbstractProductState.SimpleProductState> cq = cb.createQuery(AbstractProductState.SimpleProductState.class);
+        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
+        cq.select(root);
+        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
+        addNotDeletedRestriction(cb, cq, root);
+        TypedQuery<AbstractProductState.SimpleProductState> query = em.createQuery(cq);
+        JpaUtils.applyPagination(query, firstResult, maxResults);
+        return query.getResultList().stream().map(ProductState.class::cast).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ProductState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
-        return getFirst(ProductState.class, filter, orders);
-    }
-
-    @Transactional(readOnly = true)
-    public ProductState getFirst(Map.Entry<String, Object> keyValue, List<String> orders) {
-        return getFirst(ProductState.class, keyValue, orders);
-    }
-
-    @Transactional(readOnly = true)
-    public Iterable<ProductState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
-        return getByProperty(ProductState.class, propertyName, propertyValue, orders, firstResult, maxResults);
-    }
-
-    @Transactional(readOnly = true)
-    public long getCount(Iterable<Map.Entry<String, Object>> filter) {
-        return getCount(ProductState.class, filter);
-    }
-
-    @Transactional(readOnly = true)
-    public long getCount(org.dddml.support.criterion.Criterion filter) {
-        return getCount(ProductState.class, filter);
-    }
-    // //////////////////////////////////////
-
-    @Transactional(readOnly = true)
-    public Iterable<ProductState> getAll(Class<? extends ProductState> stateType, Integer firstResult, Integer maxResults) {
-        EntityManager em = getEntityManager();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractProductState> cq = cb.createQuery(AbstractProductState.class);
-        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
-        cq.select(root);
-        addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractProductState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
-        return query.getResultList().stream().map(ProductState.class::cast).collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public Iterable<ProductState> get(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        EntityManager em = getEntityManager();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractProductState> cq = cb.createQuery(AbstractProductState.class);
-        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
-        cq.select(root);
-        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractProductState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
-        return query.getResultList().stream().map(ProductState.class::cast).collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public Iterable<ProductState> get(Class<? extends ProductState> stateType, org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
-        EntityManager em = getEntityManager();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<AbstractProductState> cq = cb.createQuery(AbstractProductState.class);
-        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
-        cq.select(root);
-        JpaUtils.criteriaAddFilterAndOrders(cb, cq, root, filter, orders);
-        addNotDeletedRestriction(cb, cq, root);
-        TypedQuery<AbstractProductState> query = em.createQuery(cq);
-        JpaUtils.applyPagination(query, firstResult, maxResults);
-        return query.getResultList().stream().map(ProductState.class::cast).collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public ProductState getFirst(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
-        List<ProductState> list = (List<ProductState>)get(stateType, filter, orders, 0, 1);
+        List<ProductState> list = (List<ProductState>)get(filter, orders, 0, 1);
         if (list == null || list.size() <= 0) {
             return null;
         }
@@ -152,14 +111,14 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public ProductState getFirst(Class<? extends ProductState> stateType, Map.Entry<String, Object> keyValue, List<String> orders) {
+    public ProductState getFirst(Map.Entry<String, Object> keyValue, List<String> orders) {
         List<Map.Entry<String, Object>> filter = new ArrayList<>();
         filter.add(keyValue);
-        return getFirst(stateType, filter, orders);
+        return getFirst(filter, orders);
     }
 
     @Transactional(readOnly = true)
-    public Iterable<ProductState> getByProperty(Class<? extends ProductState> stateType, String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
+    public Iterable<ProductState> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
         Map.Entry<String, Object> keyValue = new AbstractMap.SimpleEntry<>(propertyName, propertyValue);
         List<Map.Entry<String, Object>> filter = new ArrayList<>();
         filter.add(keyValue);
@@ -167,11 +126,11 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public long getCount(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter) {
+    public long getCount(Iterable<Map.Entry<String, Object>> filter) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
+        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);
@@ -181,11 +140,11 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public long getCount(Class<? extends ProductState> stateType, org.dddml.support.criterion.Criterion filter) {
+    public long getCount(org.dddml.support.criterion.Criterion filter) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<AbstractProductState> root = cq.from(AbstractProductState.class);
+        Root<AbstractProductState.SimpleProductState> root = cq.from(AbstractProductState.SimpleProductState.class);
         cq.select(cb.count(root));
         if (filter != null) {
             JpaUtils.criteriaAddFilter(cb, cq, root, filter);

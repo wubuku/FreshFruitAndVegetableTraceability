@@ -1797,16 +1797,6 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
         public String getCommandType() {
             return COMMAND_TYPE_DELETE;
         }
-
-        private String productTypeId;
-
-        public String getProductTypeId() {
-            return this.productTypeId;
-        }
-
-        public void setProductTypeId(String productTypeId) {
-            this.productTypeId = productTypeId;
-        }
     }
 
     

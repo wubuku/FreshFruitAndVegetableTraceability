@@ -2,9 +2,9 @@
   Product:
     reservedPropertyMetadata:
       noDeleted: true
-    discriminator: ProductTypeId
-    inheritanceMappingStrategy: tpch
-    discriminatorValue: "PRODUCT"
+    # discriminator: ProductTypeId
+    # inheritanceMappingStrategy: tpch
+    # discriminatorValue: "PRODUCT"
     # metadata:
     #   EventDatabaseTableName: PRODUCT_STATE_EVENT
     id:

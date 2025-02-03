@@ -32,18 +32,6 @@ public interface ProductApplicationService {
 
     long getCount(Criterion filter);
 
-    Iterable<ProductState> getAll(Class<? extends ProductState> stateType, Integer firstResult, Integer maxResults);
-
-    Iterable<ProductState> get(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults);
-
-    Iterable<ProductState> get(Class<? extends ProductState> stateType, Criterion filter, List<String> orders, Integer firstResult, Integer maxResults);
-
-    Iterable<ProductState> getByProperty(Class<? extends ProductState> stateType, String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults);
-
-    long getCount(Class<? extends ProductState> stateType, Iterable<Map.Entry<String, Object>> filter);
-
-    long getCount(Class<? extends ProductState> stateType, Criterion filter);
-
     ProductEvent getEvent(String productId, long version);
 
     ProductState getHistoryState(String productId, long version);

@@ -13,8 +13,6 @@ import org.dddml.ffvtraceability.domain.*;
 public interface ProductStateRepository {
     ProductState get(String id, boolean nullAllowed);
 
-    ProductState get(Class<? extends ProductState> type, String id, boolean nullAllowed);
-
     void save(ProductState state);
 
     void merge(ProductState detached);

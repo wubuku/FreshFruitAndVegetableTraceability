@@ -49,13 +49,6 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
     }
 
     protected ProductEvent map(ProductCommand.CreateProduct c) {
-        if(ProductTypeId.PRODUCT.equals(c.getProductTypeId())) {
-            return mapToProductEvent(c);
-        }
-        return mapToProductEvent(c);
-    }
-
-    protected ProductEvent mapToProductEvent(ProductCommand.CreateProduct c) {
         ProductEventId stateEventId = new ProductEventId(c.getProductId(), c.getVersion());
         ProductEvent.ProductStateCreated e = newProductStateCreated(stateEventId);
         e.setProductTypeId(c.getProductTypeId());
@@ -142,13 +135,6 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
     }
 
     protected ProductEvent map(ProductCommand.MergePatchProduct c) {
-        if(c.getProductTypeId().equals(ProductTypeId.PRODUCT)) {
-            return mapToProductEvent(c);
-        }
-        return mapToProductEvent(c);
-    }
-
-    protected ProductEvent mapToProductEvent(ProductCommand.MergePatchProduct c) {
         ProductEventId stateEventId = new ProductEventId(c.getProductId(), c.getVersion());
         ProductEvent.ProductStateMergePatched e = newProductStateMergePatched(stateEventId);
         e.setProductTypeId(c.getProductTypeId());

@@ -11,7 +11,7 @@
       </key-property>
     </composite-id>
     <version name="version" column="version" type="long" />
-    <many-to-one name="protectedProductState" class="org.dddml.ffvtraceability.domain.product.AbstractProductState" insert="false" update="false">
+    <many-to-one name="protectedProductState" class="org.dddml.ffvtraceability.domain.product.AbstractProductState$SimpleProductState" insert="false" update="false">
       <column name="PRODUCT_ID" />
     </many-to-one>
     <property name="idValue">
