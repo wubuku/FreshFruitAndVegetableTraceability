@@ -33,16 +33,12 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
     private BffQaInspectionMapper bffQaInspectionMapper;
 
     public static String getQaInspectionActionByStatusId(String statusId) {
-        switch (statusId) {
-            case STATUS_ID_APPROVED:
-                return "Approve";
-            case STATUS_ID_REJECTED:
-                return "Reject";
-            case STATUS_ID_ON_HOLD:
-                return "Hold";
-            default:
-                throw new IllegalArgumentException("Invalid statusId: " + statusId);
-        }
+        return switch (statusId) {
+            case STATUS_ID_APPROVED -> "Approve";
+            case STATUS_ID_REJECTED -> "Reject";
+            case STATUS_ID_ON_HOLD -> "Hold";
+            default -> throw new IllegalArgumentException("Invalid statusId: " + statusId);
+        };
     }
 
     @Transactional(readOnly = true)
