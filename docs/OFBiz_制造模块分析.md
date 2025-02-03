@@ -1040,8 +1040,208 @@ public static Map<String, Object> getManufacturingComponents(DispatchContext dct
   - MRP会考虑所有层级的物料需求
   - 生成相应的生产订单或采购建议
 
+#### 4.1.2 产品工艺路线获取
 
-#### 4.1.2 WIP(在制品)处理策略
+#### 4.1.2 产品工艺路线获取
+
+在OFBiz中，产品与工艺路线(Routing)的关联通过`getProductRouting`服务实现：
+
+```groovy
+Map getProductRouting() {
+    Map result = success()
+
+    // 1. 处理日期参数
+    Timestamp filterDate = parameters.applicableDate ?: UtilDateTime.nowTimestamp()
+
+    GenericValue routingGS = null
+    GenericValue routing = null
+    List tasks = null
+    Map lookupRouting = [
+        productId: parameters.productId,
+        workEffortGoodStdTypeId: 'ROU_PROD_TEMPLATE'
+    ]
+
+    // 2. 按workEffortId查找
+    if (parameters.workEffortId) {
+        lookupRouting.workEffortId = parameters.workEffortId
+        routingGS = from('WorkEffortGoodStandard')
+                .where(lookupRouting)
+                .filterByDate(filterDate)
+                .queryFirst()
+
+        // 2.1 如果没找到且是变体产品，查找虚拟产品的工艺路线
+        if (!routingGS) {
+            GenericValue virtualProductAssoc = from('ProductAssoc')
+                    .where(
+                        productIdTo: parameters.productId,
+                        productAssocTypeId: 'PRODUCT_VARIANT'
+                    )
+                    .filterByDate(filterDate)
+                    .queryFirst()
+            if (virtualProductAssoc) {
+                lookupRouting.productId = virtualProductAssoc.productId
+                routingGS = from('WorkEffortGoodStandard')
+                        .where(lookupRouting)
+                        .filterByDate(filterDate)
+                        .queryFirst()
+            }
+        }
+    }
+    // 3. 直接查找产品关联的工艺路线
+    else {
+        routingGS = from('WorkEffortGoodStandard')
+                .where(lookupRouting)
+                .filterByDate(filterDate)
+                .queryFirst()
+
+        // 3.1 同样尝试查找虚拟产品的工艺路线
+        if (!routingGS) {
+            GenericValue virtualProductAssoc = from('ProductAssoc')
+                    .where(
+                        productIdTo: parameters.productId,
+                        productAssocTypeId: 'PRODUCT_VARIANT'
+                    )
+                    .filterByDate(filterDate)
+                    .queryFirst()
+            if (virtualProductAssoc) {
+                lookupRouting.productId = virtualProductAssoc.productId
+                routingGS = from('WorkEffortGoodStandard')
+                        .where(lookupRouting)
+                        .filterByDate(filterDate)
+                        .queryFirst()
+            }
+        }
+    }
+
+    // 4. 获取工艺路线记录
+    if (routingGS) {
+        routing = from('WorkEffort')
+                .where(workEffortId: routingGS.workEffortId)
+                .queryOne()
+    }
+    // 5. 使用默认工艺路线
+    else if (!parameters.ignoreDefaultRouting || parameters.ignoreDefaultRouting == 'N') {
+        routing = from('WorkEffort')
+                .where(workEffortId: 'DEFAULT_ROUTING')
+                .queryOne()
+    }
+
+    // 6. 获取工序列表
+    if (routing) {
+        tasks = from('WorkEffortAssoc')
+                .where(
+                    workEffortIdFrom: routing.workEffortId,
+                    workEffortAssocTypeId: 'ROUTING_COMPONENT'
+                )
+                .orderBy('sequenceNum')
+                .filterByDate()
+                .queryList()
+    }
+
+    // 7. 返回结果
+    result.routing = routing
+    result.tasks = tasks
+    return result
+}
+```
+
+关键业务规则：
+
+1. 工艺路线查找优先级：
+   - 指定的工艺路线(workEffortId)
+   - 产品关联的工艺路线
+   - 虚拟产品的工艺路线
+   - 默认工艺路线(DEFAULT_ROUTING)
+
+2. 日期有效性：
+   ```groovy
+   // 支持指定日期或使用当前时间
+   Timestamp filterDate = parameters.applicableDate ?: UtilDateTime.nowTimestamp()
+   
+   // 查询时过滤有效期
+   from('WorkEffortGoodStandard')
+       .where(lookupRouting)
+       .filterByDate(filterDate)  // 确保在有效期内
+       .queryFirst()
+   ```
+
+3. 变体产品处理：
+   ```groovy
+   // 查找虚拟产品关联
+   GenericValue virtualProductAssoc = from('ProductAssoc')
+           .where(
+               productIdTo: parameters.productId,
+               productAssocTypeId: 'PRODUCT_VARIANT'
+           )
+           .filterByDate(filterDate)
+           .queryFirst()
+   ```
+
+4. 工序排序：
+   ```groovy
+   // 按序号获取工序列表
+   tasks = from('WorkEffortAssoc')
+           .where(
+               workEffortIdFrom: routing.workEffortId,
+               workEffortAssocTypeId: 'ROUTING_COMPONENT'
+           )
+           .orderBy('sequenceNum')  // 确保工序顺序正确
+           .filterByDate()
+           .queryList()
+   ```
+
+这种实现的优点：
+1. 代码简洁清晰，充分利用了Groovy的特性
+2. 查询条件和过滤逻辑集中处理
+3. 支持灵活的工艺路线继承机制
+4. 提供了默认工艺路线作为兜底方案
+
+在OFBiz中，虚拟产品和变体产品是一种父子关系。
+
+数据模型定义：
+
+```text
+<!-- ProductAssoc实体中定义了产品间的关联 -->
+<ProductAssoc 
+    productId="VIRTUAL_CHOCOLATE_CAKE"     <!-- 虚拟产品 -->
+    productIdTo="CHOC_CAKE_STANDARD"       <!-- 具体变体 -->
+    productAssocTypeId="PRODUCT_VARIANT"   <!-- 关联类型：产品变体 -->
+    fromDate="2024-01-01 00:00:00.0"/>
+```
+
+示例：
+
+```text
+虚拟产品：巧克力蛋糕(VIRTUAL_CHOCOLATE_CAKE)
+├── 变体1：标准款(CHOC_CAKE_STANDARD)
+│   ├── 特点：标准配方
+│   └── 价格：100元
+├── 变体2：豪华款(CHOC_CAKE_DELUXE)
+│   ├── 特点：双层夹心
+│   └── 价格：150元
+└── 变体3：迷你款(CHOC_CAKE_MINI)
+    ├── 特点：6寸小型
+    └── 价格：60元
+```
+
+这种设计的优点：
+1. 数据共享：
+   - 虚拟产品可以定义通用的工艺路线
+   - 所有变体都可以继承使用
+   - 减少数据重复维护
+2. 灵活性：
+   - 变体可以覆盖虚拟产品的工艺路线
+   - 可以定制特定变体的生产方式
+   - 支持产品族的差异化管理
+3. 维护性：
+   - 集中管理通用的工艺路线
+   - 便于工艺改进和更新
+   - 降低维护工作量
+
+这种虚拟产品和变体的设计，让系统能够既支持产品族的统一管理，又能处理具体变体的个性化需求。
+
+
+#### 4.1.3 WIP(在制品)处理策略
 
 在OFBiz的制造模块中，WIP(Work In Process，在制品)有特殊的处理机制。让我们通过代码分析来理解这个机制：
 
@@ -1168,7 +1368,7 @@ public Map<String, Object> createManufacturingOrder(...) {
    - 注意WIP之间的产能平衡
 
 
-#### 4.1.3 物料分配策略
+#### 4.1.4 物料分配策略
 
 在生产订单中，物料是如何分配给各个工序的？
 
