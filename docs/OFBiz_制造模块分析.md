@@ -599,6 +599,121 @@ graph TD
    - 记录工艺路线与工序的关系
 
 
+从 XML 数据模型以及示例来理解这些实体的关系：
+
+```xml
+<!-- From applications/datamodel/entitydef/workeffort-entitymodel.xml -->
+    <entity entity-name="WorkEffortGoodStandard" package-name="org.apache.ofbiz.workeffort.workeffort" title="Work Effort Good Standard">
+        <field name="workEffortId" type="id"></field>
+        <field name="productId" type="id"></field>
+        <field name="workEffortGoodStdTypeId" type="id"></field>
+        <field name="fromDate" type="date-time"></field>
+        <field name="thruDate" type="date-time"></field>
+        <field name="statusId" type="id"></field>
+        <field name="estimatedQuantity" type="floating-point"></field>
+        <field name="estimatedCost" type="currency-amount"></field>
+        <prim-key field="workEffortId"/>
+        <prim-key field="productId"/>
+        <prim-key field="workEffortGoodStdTypeId"/>
+        <prim-key field="fromDate"/>
+        <relation type="one" fk-name="WKEFF_GDSTD_WEFF" rel-entity-name="WorkEffort">
+            <key-map field-name="workEffortId"/>
+        </relation>
+        <relation type="one" fk-name="WKEFF_GDSTD_TYPE" rel-entity-name="WorkEffortGoodStandardType">
+            <key-map field-name="workEffortGoodStdTypeId"/>
+        </relation>
+        <relation type="one" fk-name="WKEFF_GDSTD_PROD" rel-entity-name="Product">
+            <key-map field-name="productId"/>
+        </relation>
+        <relation type="one" fk-name="WKEFF_GDSTD_STTS" rel-entity-name="StatusItem">
+            <key-map field-name="statusId"/>
+        </relation>
+    </entity>
+```
+
+**实体关系说明：**
+
+WorkEffortGoodStandard 实体记录了生产过程中产出产品的关联信息，包括所对应的成品、投入物料及其状态。
+
+1. **WorkEffortGoodStandard实体**
+   - 通过workEffortId关联到具体的生产活动(WorkEffort)
+   - 通过productId关联到具体的产品(Product)
+   - 通过workEffortGoodStdTypeId定义关联类型
+   - 使用estimatedQuantity和estimatedCost记录计划产量和成本
+
+2. **关联类型说明**
+
+下面的WorkEffortGoodStandardType和WorkEffortAssocType实体展示了系统如何定义和管理这些关系。
+
+WorkEffortGoodStandardType 等实体的 Seed Data：
+
+```xml
+<!-- From applications/datamodel/data/seed/WorkEffortSeedData.xml -->
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="ROU_PROD_TEMPLATE" description="Product and Routing Association" hasTable="N"/>
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="PRUN_PROD_DELIV" description="Production Run and Product to Deliver Association" hasTable="N"/>
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="PRUNT_PROD_NEEDED" description="Production Run Task and Needed Product Association" hasTable="N"/>
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="PRUNT_PROD_DELIV" description="Production Run Task and Deliverable Product Association" hasTable="N"/>
+    <WorkEffortGoodStandardType workEffortGoodStdTypeId="GENERAL_SALES" description="Product to Represent General Sales of the WorkEffort" hasTable="N"/>
+
+    <WorkEffortAssocType description="Breakdown/Detail" hasTable="N" workEffortAssocTypeId="WORK_EFF_BREAKDOWN"/>
+    <WorkEffortAssocType description="Dependency" hasTable="N" workEffortAssocTypeId="WORK_EFF_DEPENDENCY"/>
+    <WorkEffortAssocType description="Concurrency" hasTable="N" parentTypeId="WORK_EFF_DEPENDENCY" workEffortAssocTypeId="WORK_EFF_CONCURRENCY"/>
+    <WorkEffortAssocType description="Precedency" hasTable="N" parentTypeId="WORK_EFF_DEPENDENCY" workEffortAssocTypeId="WORK_EFF_PRECEDENCY"/>
+    <WorkEffortAssocType description="Template of" hasTable="N" workEffortAssocTypeId="WORK_EFF_TEMPLATE"/>
+
+    <!-- For Routing definition, (workEffort Template) -->
+    <WorkEffortAssocType description="Routing and Routing Task Association" hasTable="N" workEffortAssocTypeId="ROUTING_COMPONENT"/>
+
+    <!-- Default routing -->
+    <!-- Used when no explicit routing is associated to a product -->
+    <WorkEffort workEffortId="DEFAULT_ROUTING" workEffortTypeId="ROUTING" currentStatusId="ROU_ACTIVE" workEffortName="Default Routing" description="Default Routing" revisionNumber="1" quantityToProduce="0"/>
+    <WorkEffort workEffortId="DEFAULT_TASK" workEffortTypeId="ROU_TASK" workEffortPurposeTypeId="ROU_ASSEMBLING" currentStatusId="ROU_ACTIVE" workEffortName="Default Routing Task" description="Default Routing Task" revisionNumber="1" estimatedMilliSeconds="0" estimatedSetupMillis="0"/>
+    <WorkEffortAssoc workEffortIdFrom="DEFAULT_ROUTING" workEffortIdTo="DEFAULT_TASK" workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10" fromDate="2004-09-24 15:09:38.736"/>
+```
+
+另外一个 Demo 数据文件的片段：
+
+```xml
+<!-- From applications/datamodel/data/demo/OrderDemoData.xml -->
+    <WorkEffort workEffortId="SCTASK01" workEffortTypeId="ROU_TASK" workEffortPurposeTypeId="ROU_ASSEMBLING" currentStatusId="ROU_ACTIVE" 
+    workEffortName="Stock out" description="Components" revisionNumber="1" fixedAssetId="DEMO_BOOK_GROUP" estimatedMilliSeconds="600000" 
+    estimatedSetupMillis="0"/>
+    <WorkEffort workEffortId="SCTASK02" workEffortTypeId="ROU_TASK" workEffortPurposeTypeId="ROU_ASSEMBLING" currentStatusId="ROU_ACTIVE" 
+    workEffortName="Preparation" description="Preparation" revisionNumber="1" fixedAssetId="DEMO_BOOK_GROUP" estimatedMilliSeconds="900000" 
+    estimatedSetupMillis="0"/>
+    <WorkEffort workEffortId="SCROUT01" workEffortTypeId="ROUTING" currentStatusId="ROU_ACTIVE" workEffortName="Pizza preparation" 
+    description="Scanning preparation" revisionNumber="1" quantityToProduce="0"/>
+    <WorkEffortGoodStandard workEffortId="SCROUT01" productId="CFSV1001" workEffortGoodStdTypeId="ROU_PROD_TEMPLATE" statusId="WEGS_CREATED" 
+    fromDate="2011-01-01 00:00:00.0"/>
+    <WorkEffortAssoc workEffortIdFrom="SCROUT01" workEffortIdTo="SCTASK01" workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10" 
+    fromDate="2011-01-01 00:00:00.0"/>
+    <WorkEffortAssoc workEffortIdFrom="SCROUT01" workEffortIdTo="SCTASK02" workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="20" 
+    fromDate="2011-01-01 00:00:00.0"/>
+```
+
+**关联类型详细说明：**
+
+1. **产品关联类型(WorkEffortGoodStandardType)**
+   - `ROU_PROD_TEMPLATE`: 定义产品与其标准工艺路线的关联
+   - `PRUN_PROD_DELIV`: 生产运行与最终交付产品的关联
+   - `PRUNT_PROD_NEEDED`: 生产任务所需的原材料/组件关联
+   - `PRUNT_PROD_DELIV`: 生产任务产出的产品关联
+   - `GENERAL_SALES`: 用于一般销售场景的产品关联
+
+
+2. **工作任务关联类型(WorkEffortAssocType)**
+   - `WORK_EFF_BREAKDOWN`: 用于将复杂任务分解为子任务
+   - `WORK_EFF_DEPENDENCY`: 定义任务间的依赖关系
+     * `WORK_EFF_CONCURRENCY`: 可并行执行的任务
+     * `WORK_EFF_PRECEDENCY`: 需要按顺序执行的任务（先决条件）
+   - `WORK_EFF_TEMPLATE`: 用于定义可重用的任务模板
+   - `ROUTING_COMPONENT`: 工艺路线与具体工序任务的关联
+
+3. **默认工艺路线配置**
+   系统提供了默认工艺路线(`DEFAULT_ROUTING`)和默认任务(`DEFAULT_TASK`)，用于处理未指定具体工艺路线的产品生产场景。这确保了生产系统的鲁棒性。
+
+> 注：理论上这些模型可以通过一系列关联实体来表达复杂的生产关系，有能力支持实现多产品产出。
+
 ## 4. 核心业务流程
 
 在理解了基础概念和数据模型后，让我们来看看系统是如何处理实际业务的。作为新手，你可能会问：
@@ -1446,27 +1561,13 @@ public static void processSafetyStock(String facilityId) {
 
 ### 5.3 多产品产出支持
 
-数据模型分析：WorkEffortGoodStandard实体的关联关系：
-
-```xml
-<!-- From applications/datamodel/entitydef/workeffort-entitymodel.xml -->
-<entity-relationship type="one-to-many" title="Production Run Product">
-    <from-entity entity-name="WorkEffort"/>
-    <to-entity entity-name="WorkEffortGoodStandard"/>
-    <field-maps>
-        <field-map field-name="workEffortId"/>
-    </field-maps>
-</entity-relationship>
-```
-
-实际业务限制：
-1. 一个生产任务关联多个投入物料(PRUN_PROD_NEEDED)
-2. 一个生产任务关联一个产出物料(PRUN_PROD_DELIV)
-3. 一个工艺路线关联多个产品(ROUTING_COMPONENT)
-
-代码实现：
+从数据模型而言，可以支持多产品产出的需求，但是我们还需要看代码实现的实际业务逻辑限制：
+1. 一个生产任务关联多个投入物料(PRUNT_PROD_NEEDED)
+2. 一个生产任务关联一个产出物料(PRUNT_PROD_DELIV)
+3. 一个工艺路线关联多个工序任务(ROUTING_COMPONENT)
+   
 ```java
-// From applications/manufacturing/src/main/java/org/apache/ofbiz/manufacturing/jobshopmgt/ProductionRun.java
+// 伪代码：用于说明生产订单的产品关联处理
 public class ProductionRun {
     private GenericValue productionRun;  // WorkEffort实体
     private GenericValue productionRunProduct;  // 产出产品关联
@@ -1474,67 +1575,68 @@ public class ProductionRun {
     private List<GenericValue> productionRunComponents;  // 投入物料清单
     private List<GenericValue> productionRunRoutingTasks;  // 生产工序任务
     private Delegator delegator;
-    
-    // 构造函数
-    public ProductionRun(String productionRunId, Delegator delegator) throws GenericEntityException {
-        this.delegator = delegator;
-        this.productionRun = EntityQuery.use(delegator)
-            .from("WorkEffort")
-            .where("workEffortId", productionRunId)
-            .queryOne();
-    }
-    
-    public GenericValue getProductionRunProduct() {
-        if (productionRunProduct == null) {
-            try {
-                // 使用queryFirst()获取唯一产出产品 - 体现了单一产品的设计假设
-                productionRunProduct = EntityQuery.use(delegator)
-                    .from("WorkEffortGoodStandard")
-                    .where("workEffortId", productionRun.getString("workEffortId"),
-                           "workEffortGoodStdTypeId", "PRUN_PROD_DELIV")
-                    .queryFirst();  // 注意：这里假定只有一个产出产品
-                 
-                if (productionRunProduct != null) {
-                    productProduced = productionRunProduct.getRelatedOne("Product", false);
+
+    /**
+     * get the Product GenericValue corresponding to the productProduced.
+     *     In the same time this method read the quantity property from SGBD
+     * @return the productProduced related object
+     **/
+    public GenericValue getProductProduced() {
+        if (exist()) {
+            if (productProduced == null) {
+                try {
+                    List<GenericValue> productionRunProducts = productionRun.getRelated("WorkEffortGoodStandard",
+                            UtilMisc.toMap("workEffortGoodStdTypeId", "PRUN_PROD_DELIV"), null, false);
+                    this.productionRunProduct = EntityUtil.getFirst(productionRunProducts);
+                    quantity = productionRunProduct.getBigDecimal("estimatedQuantity");
+                    productProduced = productionRunProduct.getRelatedOne("Product", true);
+                } catch (GenericEntityException e) {
+                    Debug.logWarning(e.getMessage(), MODULE);
                 }
-            } catch (GenericEntityException e) {
-                Debug.logError(e, MODULE);
             }
+            return productProduced;
         }
-        return productionRunProduct;
+        return null;
     }
     
     // 获取生产订单的投入物料清单
     public List<GenericValue> getProductionRunComponents() {
-        if (productionRunComponents == null) {
-            try {
-                productionRunComponents = EntityQuery.use(delegator)
-                    .from("WorkEffortGoodStandard")
-                    .where("workEffortId", productionRun.getString("workEffortId"),
-                           "workEffortGoodStdTypeId", "PRUN_PROD_NEEDED")
-                    .queryList();
-            } catch (GenericEntityException e) {
-                Debug.logError(e, MODULE);
+        if (exist()) {
+            if (productionRunComponents == null) {
+                if (productionRunRoutingTasks == null) this.getProductionRunRoutingTasks();
+                if (productionRunRoutingTasks != null) {
+                    try {
+                        productionRunComponents = new LinkedList<>();
+                        GenericValue routingTask;
+                        for (GenericValue productionRunRoutingTask : productionRunRoutingTasks) {
+                            routingTask = productionRunRoutingTask;
+                            productionRunComponents.addAll(routingTask.getRelated("WorkEffortGoodStandard",
+                                    UtilMisc.toMap("workEffortGoodStdTypeId", "PRUNT_PROD_NEEDED"), null, false));
+                        }
+                    } catch (GenericEntityException e) {
+                        Debug.logWarning(e.getMessage(), MODULE);
+                    }
+                }
             }
+            return productionRunComponents;
         }
-        return productionRunComponents;
+        return null;
     }
 
     // 获取生产订单的工序任务
     public List<GenericValue> getProductionRunRoutingTasks() {
-        if (productionRunRoutingTasks == null) {
-            try {
-                productionRunRoutingTasks = EntityQuery.use(delegator)
-                    .from("WorkEffort")
-                    .where("workEffortParentId", productionRun.getString("workEffortId"),
-                           "workEffortTypeId", "PROD_ORDER_TASK")
-                    .orderBy("sequenceNum")
-                    .queryList();
-            } catch (GenericEntityException e) {
-                Debug.logError(e, MODULE);
+        if (exist()) {
+            if (productionRunRoutingTasks == null) {
+                try {
+                    productionRunRoutingTasks = productionRun.getRelated("ChildWorkEffort",
+                            UtilMisc.toMap("workEffortTypeId", "PROD_ORDER_TASK"), UtilMisc.toList("priority"), false);
+                } catch (GenericEntityException e) {
+                    Debug.logWarning(e.getMessage(), MODULE);
+                }
             }
+            return productionRunRoutingTasks;
         }
-        return productionRunRoutingTasks;
+        return null;
     }
 }
 ```
@@ -1983,46 +2085,12 @@ if (stockTmp.compareTo(minimumStock) < 0) {
 #### 8.5 改进建议
 
 1. 数据模型改进
-- 增加WIP批次记录能力
+- 增加 WIP 批次记录能力
 - 建立批次流转关系表
 - 添加质量检验记录关联
-- 保持WIP类型不变，通过扩展实现批次追踪
+- 保持 WIP 类型不变，通过扩展实现批次追踪
 
-2. 功能扩展建议
-```java
-// 新增WIP批次追踪实体
-public class WIPTraceability {
-    // 在工序级别记录批次关系
-    String processId;
-    String inputBatchId;
-    String outputBatchId;
-    // ...
-}
-
-// 建议增加的实体
-public class WIPBatch {
-    String wipBatchId;        // WIP批次号
-    String workEffortId;      // 工序ID
-    String previousBatchId;   // 上道工序批次
-    String nextBatchId;       // 下道工序批次
-    BigDecimal quantity;      // 数量
-    String status;            // 状态
-    Date productionDate;      // 生产日期
-}
-
-// 批次流转记录
-public class BatchTransformation {
-    String transformId;       // 转化记录ID
-    String sourceBatchId;     // 来源批次
-    String targetBatchId;     // 目标批次
-    String workEffortId;      // 相关工序
-    String transformType;     // 转化类型(合批/分批等)
-    BigDecimal quantity;      // 数量
-    Date transformDate;       // 转化日期
-}
-```
-
-3. 实施建议
+2. 实施建议
 - 在系统升级时添加批次追溯模块
 - 增加条码或RFID等自动化采集手段
 - 开发专门的批次追溯查询界面
@@ -2031,4 +2099,5 @@ public class BatchTransformation {
   * 使用专业的MES系统
   * 引入批次追踪系统
   * 部署质量管理系统
+
 
