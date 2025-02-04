@@ -1042,8 +1042,6 @@ public static Map<String, Object> getManufacturingComponents(DispatchContext dct
 
 #### 4.1.2 产品工艺路线获取
 
-#### 4.1.2 产品工艺路线获取
-
 在OFBiz中，产品与工艺路线(Routing)的关联通过`getProductRouting`服务实现：
 
 ```groovy
