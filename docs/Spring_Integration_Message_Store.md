@@ -1203,23 +1203,477 @@ public class RegionManager {
 
 ## 4. JdbcMessageStore vs JdbcChannelMessageStore
 
-### 4.1 JdbcMessageStore
-- **主要用途**：
-  - 聚合器模式（Aggregator Pattern）
-  - Claim Check 模式
-- **特点**：
-  - 更通用的实现
-  - 支持消息分组
-  - 适合需要临时存储和关联多个消息的场景
+### 4.1 基本概念对比
 
-### 4.2 JdbcChannelMessageStore
-- **主要用途**：专门用于消息通道（Message Channel）的持久化
-- **特点**：
-  - 针对消息通道优化
-  - 更好的扩展性
-  - 支持优先级队列
-  - 支持 FIFO 语义
+1. **JdbcMessageStore**
+- 主要用途：存储消息组(Message Group)相关的消息
+- 典型场景：
+  - Aggregator 模式：收集多条相关消息进行聚合
+  - Resequencer 模式：对消息重新排序
+  - Claim Check 模式：临时存储大型消息负载
+- 核心特点：
+  - 支持消息分组管理
+  - 提供消息关联查询
+  - 维护消息顺序
+  - 支持消息过期清理
 
+2. **JdbcChannelMessageStore**
+- 主要用途：为消息通道(Message Channel)提供持久化支持
+- 典型场景：
+  - 队列通道(QueueChannel)的消息持久化
+  - 优先级消息队列实现
+  - 消息临时存储
+- 核心特点：
+  - 针对通道场景优化
+  - 支持 FIFO 队列语义
+  - 支持消息优先级
+  - 更轻量级的实现
+
+### 4.2 实现细节对比
+
+1. **数据库表结构**
+
+JdbcMessageStore:
+```sql
+-- 消息组表
+CREATE TABLE INT_MESSAGE_GROUP (
+    GROUP_KEY CHAR(36),       -- 消息组标识
+    REGION VARCHAR(100),      -- 区域标识
+    COMPLETE BOOLEAN,         -- 组是否完成
+    LAST_RELEASED_SEQUENCE INT,  -- 最后释放的序号
+    CREATED_DATE TIMESTAMP,   -- 创建时间
+    UPDATED_DATE TIMESTAMP    -- 更新时间
+);
+
+-- 消息表
+CREATE TABLE INT_MESSAGE (
+    MESSAGE_ID CHAR(36),      -- 消息ID
+    GROUP_KEY CHAR(36),       -- 所属消息组
+    REGION VARCHAR(100),      -- 区域标识
+    CREATED_DATE TIMESTAMP,   -- 创建时间
+    MESSAGE_BYTES BLOB        -- 消息内容
+);
+
+-- 消息关系表
+CREATE TABLE INT_GROUP_TO_MESSAGE (
+    GROUP_KEY CHAR(36),       -- 消息组标识
+    MESSAGE_ID CHAR(36),      -- 消息ID
+    REGION VARCHAR(100)       -- 区域标识
+);
+```
+
+JdbcChannelMessageStore:
+```sql
+CREATE TABLE INT_CHANNEL_MESSAGE (
+    MESSAGE_ID CHAR(36),      -- 消息ID
+    CHANNEL_NAME VARCHAR(100),-- 通道名称
+    CREATED_DATE TIMESTAMP,   -- 创建时间
+    PRIORITY INT,             -- 优先级
+    MESSAGE_BYTES BLOB        -- 消息内容
+);
+```
+
+2. **使用示例对比**
+
+JdbcMessageStore 示例(聚合器场景):
+```java
+@Configuration
+public class AggregatorConfig {
+    @Bean
+    public MessageGroupStore messageStore(DataSource dataSource) {
+        JdbcMessageStore store = new JdbcMessageStore(dataSource);
+        store.setRegion("ORDER_AGGREGATION");
+        return store;
+    }
+    
+    @Bean
+    public IntegrationFlow aggregatorFlow(MessageGroupStore messageStore) {
+        return IntegrationFlows.from("inputChannel")
+            .aggregate(aggregator -> aggregator
+                .messageStore(messageStore)
+                .correlationStrategy(msg -> 
+                    msg.getHeaders().get("orderId"))
+                .releaseStrategy(group -> 
+                    group.size() >= 3)  // 收集3条消息后释放
+                .expireGroupsUponCompletion(true))
+            .handle(msg -> processAggregatedOrder(msg))
+            .get();
+    }
+}
+```
+
+JdbcChannelMessageStore 示例(持久化队列):
+```java
+@Configuration
+public class ChannelConfig {
+    @Bean
+    public MessageChannel persistentChannel(DataSource dataSource) {
+        JdbcChannelMessageStore messageStore = 
+            new JdbcChannelMessageStore(dataSource);
+        messageStore.setChannelMessageStoreQueryProvider(
+            new MySqlChannelMessageStoreQueryProvider()); // 使用MySQL优化查询
+            
+        return MessageChannels
+            .queue("orderChannel", messageStore)
+            .capacity(1000)  // 设置容量
+            .priority(true)  // 启用优先级
+            .get();
+    }
+}
+```
+
+### 4.3 性能考虑
+
+1. **JdbcMessageStore**
+- 优点：
+  - 支持复杂的消息关联查询
+  - 适合需要消息分组的场景
+- 缺点：
+  - 涉及多表操作，性能较低
+  - 数据库负载较大
+- 建议：
+  - 设置合适的消息过期时间
+  - 定期清理已完成的消息组
+  - 适当设置索引优化查询
+
+2. **JdbcChannelMessageStore**
+- 优点：
+  - 单表操作，性能较好
+  - 实现简单，维护成本低
+- 缺点：
+  - 不支持复杂的消息关联
+  - 功能相对简单
+- 建议：
+  - 使用批量操作提升性能
+  - 配置合适的消息清理策略
+  - 监控队列大小避免积压
+
+### 4.4 选择建议
+
+1. **使用 JdbcMessageStore 的场景**
+- 需要处理相关消息的聚合操作
+- 需要对消息进行重新排序
+- 需要临时存储大型消息
+- 需要跟踪消息组的处理状态
+
+2. **使用 JdbcChannelMessageStore 的场景**
+- 简单的消息队列需求
+- 需要持久化的点对点通信
+- 优先级消息处理
+- 临时消息存储，且无需消息关联
+
+3. **注意事项**
+- 两种存储都不适合高并发场景
+- 需要考虑数据库性能影响
+- 建议配置监控和告警机制
+- 实现合适的清理策略
+
+### 4.5 监控建议
+
+```java
+@Configuration
+public class MessageStoreMonitorConfig {
+    @Bean
+    public HealthIndicator messageStoreHealth(
+            JdbcMessageStore messageStore,
+            JdbcChannelMessageStore channelMessageStore) {
+        return () -> {
+            Map<String, Object> details = new HashMap<>();
+            
+            // 监控消息组数量
+            details.put("messageGroupCount", 
+                messageStore.getMessageGroupCount());
+                
+            // 监控通道消息数量
+            details.put("channelMessageCount",
+                channelMessageStore.getMessageCount("mainChannel"));
+                
+            // 检查数据库连接
+            try {
+                messageStore.getMessageGroupCount();
+                return Health.up()
+                    .withDetails(details)
+                    .build();
+            } catch (Exception e) {
+                return Health.down()
+                    .withDetails(details)
+                    .withException(e)
+                    .build();
+            }
+        };
+    }
+    
+    @Scheduled(fixedRate = 60000) // 每分钟执行
+    public void checkMessageStoreMetrics() {
+        // 检查消息组过期情况
+        int expiredGroups = messageStore
+            .getMessageGroupCount("EXPIRED");
+        if (expiredGroups > 100) {
+            log.warn("Too many expired message groups: {}", 
+                expiredGroups);
+        }
+        
+        // 检查通道消息积压
+        int queueSize = channelMessageStore
+            .getMessageCount("mainChannel");
+        if (queueSize > 1000) {
+            log.warn("Channel queue size too large: {}", 
+                queueSize);
+        }
+    }
+}
+```
+
+### 4.6 高并发场景的替代方案
+
+> 重要：JdbcMessageStore 和 JdbcChannelMessageStore 主要面向中小规模系统，在高并发场景下可能遇到性能瓶颈。Spring 官方推荐以下替代方案：
+
+#### 消息聚合场景 (替代 JdbcMessageStore)
+
+Spring 官方推荐：
+- 使用 Apache Kafka + KStream 进行消息聚合
+- 使用 Redis
+- 在特定场景下使用 MongoDB MessageStore
+
+```java
+// Kafka Streams 聚合示例
+@Configuration
+public class KafkaStreamsConfig {
+    @Bean
+    public KStream<String, Event> orderAggregation(StreamsBuilder streamsBuilder) {
+        return streamsBuilder
+            .stream("input-topic")
+            .groupByKey()
+            .windowedBy(TimeWindows.of(Duration.ofMinutes(5)))
+            .aggregate(
+                ArrayList::new,
+                (key, value, aggregate) -> {
+                    aggregate.add(value);
+                    return aggregate;
+                },
+                Materialized.as("order-store")
+            )
+            .filter((key, value) -> value.size() >= 3)  // 收集3条消息
+            .mapValues(this::processAggregatedOrder);
+    }
+}
+
+// Redis MessageStore 示例
+@Configuration
+public class RedisMessageStoreConfig {
+    @Bean
+    public MessageGroupStore redisMessageStore(RedisTemplate<String, Message<?>> redisTemplate) {
+        RedisMessageStore messageStore = new RedisMessageStore(redisTemplate);
+        messageStore.setExpireGroupsUponCompletion(true);
+        messageStore.setGroupTimeout(300000); // 5分钟超时
+        return messageStore;
+    }
+}
+```
+
+#### 消息通道场景 (替代 JdbcChannelMessageStore)
+
+Spring 官方推荐：
+- 使用 RabbitMQ 作为消息通道
+- 使用 Apache Kafka 作为消息通道
+- 使用 Redis pub/sub 机制
+
+```java
+// RabbitMQ 通道示例
+@Configuration
+public class RabbitChannelConfig {
+    @Bean
+    public MessageChannel orderChannel(ConnectionFactory connectionFactory) {
+        return MessageChannels
+            .rabbit(connectionFactory)
+            .bindings(b -> b
+                .exchange("orders")
+                .queue("order-processing")
+                .routingKey("new-order"))
+            .get();
+    }
+}
+
+// Kafka 通道示例
+@Configuration
+public class KafkaChannelConfig {
+    @Bean
+    public MessageChannel orderChannel(
+            ConsumerFactory<String, String> consumerFactory,
+            ProducerFactory<String, String> producerFactory) {
+        return MessageChannels
+            .kafka(consumerFactory, producerFactory, "orders")
+            .get();
+    }
+}
+```
+
+3. **性能对比**
+
+| 方案 | 并发处理能力 | 延迟 | 持久化 | 事务支持 |
+|-----|------------|-----|--------|---------|
+| JdbcMessageStore | 百级/秒 | 较高 | 是 | 强 |
+| Kafka | 十万级/秒 | 较低 | 是 | 最终一致性 |
+| RabbitMQ | 万级/秒 | 低 | 是 | 支持 |
+| Redis | 万级/秒 | 极低 | 可选 | 有限 |
+
+4. **选择建议**
+
+- **对事务强依赖**：
+  - RabbitMQ（支持事务和发布确认）
+  - 使用事务性发件箱模式 + Kafka
+
+- **要求超高吞吐**：
+  - Kafka（适合日志、监控数据等场景）
+  - Redis（适合实时性要求高的场景）
+
+- **需要消息分组和聚合**：
+  - Kafka Streams（大规模数据聚合）
+  - Redis（中等规模，实时性要求高）
+
+5. **迁移策略**
+
+如果已经使用了 JdbcMessageStore 但需要提升性能，可以采用以下迁移策略：
+
+```java
+@Configuration
+public class HybridMessageStoreConfig {
+    @Bean
+    public MessageGroupStore hybridMessageStore(
+            JdbcMessageStore jdbcMessageStore,
+            RedisMessageStore redisMessageStore) {
+        return new CompositeMessageGroupStore(
+            message -> {
+                // 根据消息特征选择存储实现
+                if (isHighThroughput(message)) {
+                    return redisMessageStore;
+                }
+                return jdbcMessageStore;
+            });
+    }
+    
+    private boolean isHighThroughput(Message<?> message) {
+        return message.getHeaders()
+            .get("throughput", String.class)
+            .equals("high");
+    }
+}
+```
+
+这种方式允许：
+- 渐进式迁移
+- 根据消息特征选择存储
+- 新旧系统共存
+- 平滑切换
+
+#### Kafka Streams vs Redis 方案对比
+
+1. **Kafka Streams (KStream)**
+- 是 Kafka 提供的流处理库，专门用于实时数据处理和转换
+- 主要特点：
+  - 原生支持流式聚合
+  - 支持时间窗口处理
+  - 支持状态管理
+  - 可以水平扩展
+  - 容错和恢复机制
+  - 与 Kafka 深度集成
+
+```java
+// KStream 聚合示例 - 更详细的实现
+@Configuration
+public class KafkaStreamsAggregationConfig {
+    @Bean
+    public KStream<String, OrderEvent> orderAggregation(StreamsBuilder streamsBuilder) {
+        return streamsBuilder
+            .stream("order-events")  // 从Kafka主题读取订单事件
+            .groupByKey()  // 按订单ID分组
+            .windowedBy(TimeWindows.of(Duration.ofMinutes(5)))  // 5分钟时间窗口
+            .aggregate(
+                // 初始化聚合器
+                () -> new OrderAggregate(),
+                // 聚合逻辑
+                (orderId, event, aggregate) -> {
+                    aggregate.addEvent(event);
+                    return aggregate;
+                },
+                // 状态存储配置
+                Materialized.<String, OrderAggregate>as("order-aggregates")
+                    .withRetention(Duration.ofHours(24))  // 保留24小时
+            )
+            .filter((key, aggregate) -> aggregate.isComplete())  // 聚合完成的订单
+            .mapValues(OrderAggregate::processOrder);  // 处理完整订单
+    }
+}
+```
+
+2. **Redis 方案**
+- 使用 Redis 作为消息存储和聚合的中间件
+- 主要特点：
+  - 内存数据库，性能高
+  - 支持数据结构丰富
+  - 原子操作支持
+  - 过期机制
+  - 集群支持
+  - 持久化可选
+
+```java
+@Configuration
+public class RedisAggregationConfig {
+    @Bean
+    public MessageGroupStore redisMessageStore(RedisTemplate<String, Message<?>> redisTemplate) {
+        RedisMessageStore store = new RedisMessageStore(redisTemplate);
+        
+        // 配置过期时间
+        store.setExpireGroupsUponCompletion(true);
+        store.setGroupTimeout(300000); // 5分钟超时
+        
+        return store;
+    }
+    
+    @Bean
+    public IntegrationFlow redisAggregationFlow(MessageGroupStore redisMessageStore) {
+        return IntegrationFlows.from("orderEvents")
+            .aggregate(aggregator -> aggregator
+                .messageStore(redisMessageStore)
+                .correlationStrategy(msg -> 
+                    msg.getHeaders().get("orderId"))
+                .releaseStrategy(group -> 
+                    group.size() >= 3)
+                .expireGroupsUponCompletion(true))
+            .handle(msg -> processOrder(msg))
+            .get();
+    }
+}
+```
+
+3. **方案对比**
+
+| 特性 | Kafka Streams | Redis 方案 |
+|-----|--------------|-----------|
+| 数据持久性 | 强（基于Kafka） | 可选（可配置持久化） |
+| 扩展性 | 非常好（水平扩展） | 好（集群模式） |
+| 性能 | 高（批处理优化） | 极高（内存操作） |
+| 实时性 | 亚秒级 | 毫秒级 |
+| 状态管理 | 内置支持 | 需要自行实现 |
+| 容错能力 | 强（自动恢复） | 需要额外配置 |
+| 使用复杂度 | 较高 | 相对简单 |
+| 资源消耗 | 较大 | 相对较小 |
+
+4. **选择建议**
+
+使用 Kafka Streams 的场景：
+- 大规模数据处理（每秒数万条以上）
+- 需要复杂的流处理逻辑
+- 需要时间窗口处理
+- 对数据持久性要求高
+- 已经使用了 Kafka 生态
+
+使用 Redis 方案的场景：
+- 中等规模数据处理（每秒数千条）
+- 简单的聚合逻辑
+- 对实时性要求极高
+- 资源受限的环境
+- 需要快速开发和部署
 
 ## 5. 最佳实践
 
@@ -1306,7 +1760,14 @@ class IntegrationFlowTest {
 
 ## 7. 使用 JdbcChannelMessageStore 替代消息中间件
 
-在某些特定场景下，我们可以使用 JdbcChannelMessageStore 来替代专业的消息中间件（如 Kafka）。这种方案适用于性能要求不高、规模较小的系统。
+> 重要提示：
+> 1. JdbcChannelMessageStore 是一个轻量级的消息存储方案，主要用于特定场景下替代专业消息中间件
+> 2. 在选择使用之前，请评估以下因素：
+>    - 消息吞吐量要求（建议低于每秒数百条）
+>    - 实时性要求（存在轮询延迟）
+>    - 数据库负载情况
+>    - 是否需要跨数据中心通信
+> 3. 如果您的系统是关键业务系统或需要高吞吐量，建议使用专业的消息中间件（如 Kafka、RabbitMQ）
 
 ### 7.1 实现点对点通道
 
@@ -1314,11 +1775,25 @@ class IntegrationFlowTest {
 @Configuration
 public class JdbcChannelConfig {
     @Bean
-    public MessageChannel pointToPointChannel(JdbcChannelMessageStore messageStore) {
+    public MessageChannel pointToPointChannel(
+            JdbcChannelMessageStore messageStore,
+            DataSource dataSource) {
+        // 配置数据库连接池
+        if (dataSource instanceof HikariDataSource) {
+            HikariDataSource hikari = (HikariDataSource) dataSource;
+            hikari.setMaximumPoolSize(10);
+            hikari.setMinimumIdle(5);
+            hikari.setIdleTimeout(300000); // 5分钟
+        }
+        
+        // 配置消息存储
+        messageStore.setRegion("POINT_TO_POINT");
+        messageStore.setUseTemporaryQueue(true);  // 使用临时队列提高性能
+        
         return MessageChannels
-            .queue("pointToPointChannel", messageStore) // 使用队列通道
-            .capacity(1000)  // 设置容量
-            .datatype(String.class)  // 指定数据类型
+            .queue("pointToPointChannel", messageStore)
+            .capacity(1000)
+            .datatype(String.class)
             .get();
     }
 
@@ -1338,6 +1813,8 @@ public class JdbcChannelConfig {
 ```
 
 ### 7.2 实现发布订阅通道
+
+> 注意：在这个实现中，publishSubscribe 通道本身是内存实现，只有订阅者通道使用了 JDBC 存储。这意味着在系统崩溃时可能会丢失正在广播的消息。如果需要完全可靠的消息广播，建议使用专业的消息中间件。
 
 ```java
 @Configuration 
@@ -1406,20 +1883,88 @@ public class FaultTolerantConfig {
                     .fixedRate(5000)
                     .errorHandler(t -> {
                         log.error("处理失败", t);
-                        // 错误处理逻辑
+                        meterRegistry.counter("message.process.error").increment();
                     })
                     .maxMessagesPerPoll(10)
-                    .transactional() // 添加事务支持
-                ))
+                    .transactional()
+                    .advice(retryAdvice())))
             .handle(msg -> {
                 try {
                     return process(msg);
                 } catch (Exception e) {
-                    // 处理失败的消息会保留在数据库中
-                    // 下次轮询时会重试
+                    log.error("处理失败，将进行重试", e);
                     throw e;
                 }
             })
+            .get();
+    }
+
+    @Bean
+    public RetryOperationsInterceptor retryAdvice() {
+        RetryTemplate template = new RetryTemplate();
+        
+        // 配置重试策略
+        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        backOffPolicy.setInitialInterval(1000);
+        backOffPolicy.setMultiplier(2.0);
+        backOffPolicy.setMaxInterval(10000);
+        template.setBackOffPolicy(backOffPolicy);
+        
+        // 设置最大重试次数
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(3);
+        template.setRetryPolicy(retryPolicy);
+        
+        return RetryInterceptorBuilder.stateless()
+            .retryOperations(template)
+            .build();
+    }
+
+    @Bean
+    public MessageChannel deadLetterChannel(JdbcChannelMessageStore messageStore) {
+        return MessageChannels
+            .queue("deadLetterQueue", messageStore)
+            .get();
+    }
+
+    @Bean
+    public IntegrationFlow deadLetterFlow() {
+        return IntegrationFlows
+            .from(deadLetterChannel())
+            .handle(message -> {
+                // 记录死信消息
+                log.error("Message moved to dead letter queue: {}", message);
+                // 发送告警通知
+                notifyOperators(message);
+            })
+            .get();
+    }
+
+    // 修改原有的 reliableFlow，添加死信队列处理
+    @Bean
+    public IntegrationFlow reliableFlow(
+            JdbcChannelMessageStore messageStore,
+            MessageChannel deadLetterChannel) {
+        return IntegrationFlows
+            .from("inputChannel",
+                c -> c.poller(Pollers
+                    .fixedRate(5000)
+                    .errorHandler(t -> {
+                        log.error("处理失败", t);
+                        meterRegistry.counter("message.process.error").increment();
+                    })
+                    .maxMessagesPerPoll(10)
+                    .transactional()
+                    .advice(retryAdvice())))
+            .handle(msg -> {
+                try {
+                    return process(msg);
+                } catch (Exception e) {
+                    log.error("处理失败，将进行重试", e);
+                    throw e;
+                }
+            })
+            .handle(new ErrorMessageSendingHandler(deadLetterChannel))
             .get();
     }
 }
@@ -1797,12 +2342,12 @@ public class StatefulJdbcChannelMessageStore extends JdbcChannelMessageStore {
                 message.getHeaders().getId(),
                 MessageRegions.PENDING);
                 
-            // 3. 删除原记录
-            jdbcTemplate.update(
-                "DELETE FROM int_channel_message " +
-                "WHERE message_id = ? AND region = ?",
-                message.getHeaders().getId(),
-                MessageRegions.PENDING);
+                // 3. 删除原记录
+                jdbcTemplate.update(
+                    "DELETE FROM int_channel_message " +
+                    "WHERE message_id = ? AND region = ?",
+                    message.getHeaders().getId(),
+                    MessageRegions.PENDING);
         }
         
         return message;
@@ -1833,12 +2378,12 @@ public class StatefulJdbcChannelMessageStore extends JdbcChannelMessageStore {
             message.getHeaders().getId(),
             fromRegion);
             
-        // 删除原状态记录
-        jdbcTemplate.update(
-            "DELETE FROM int_channel_message " +
-            "WHERE message_id = ? AND region = ?",
-            message.getHeaders().getId(),
-            fromRegion);
+            // 删除原状态记录
+            jdbcTemplate.update(
+                "DELETE FROM int_channel_message " +
+                "WHERE message_id = ? AND region = ?",
+                message.getHeaders().getId(),
+                fromRegion);
     }
 }
 ```
@@ -1986,3 +2531,95 @@ public class AtomicMessageDistributionConfig {
 - 事务时间可能较长，需要合理设置事务超时时间
 - 应避免在事务中进行远程调用或耗时操作
 - 考虑添加死信队列机制处理始终失败的消息
+
+### 7.11 监控与运维
+
+```java
+@Configuration
+public class MonitoringConfig {
+    @Bean
+    public MeterRegistry meterRegistry() {
+        return new SimpleMeterRegistry();
+    }
+    
+    @Bean
+    public IntegrationFlow monitoredFlow(
+            MessageChannel inputChannel,
+            MeterRegistry meterRegistry) {
+        return IntegrationFlows
+            .from(inputChannel)
+            .handle(msg -> {
+                // 记录处理时间
+                meterRegistry.timer("message.processing.time")
+                    .record(() -> process(msg));
+                    
+                // 记录处理成功率
+                meterRegistry.counter("message.processed").increment();
+            })
+            .get();
+    }
+    
+    // 监控消息积压
+    @Scheduled(fixedRate = 60000) // 每分钟执行一次
+    public void monitorQueueSize() {
+        Arrays.asList("subscriber1", "subscriber2")
+            .forEach(subscriber -> {
+                int queueSize = messageStore.getMessageCount(subscriber);
+                meterRegistry.gauge("message.queue.size", 
+                    Tags.of("subscriber", subscriber), 
+                    queueSize);
+                    
+                if (queueSize > 1000) { // 积压告警阈值
+                    log.warn("Queue size exceeds threshold for {}: {}", 
+                        subscriber, queueSize);
+                    // 触发告警通知
+                }
+            });
+    }
+    
+    @Bean
+    public HealthIndicator messageStoreHealth(
+            JdbcChannelMessageStore messageStore) {
+        return () -> {
+            try {
+                messageStore.getMessageCount("test");
+                return Health.up()
+                    .withDetail("queueSize", 
+                        messageStore.getMessageCount("production"))
+                    .build();
+            } catch (Exception e) {
+                return Health.down()
+                    .withException(e)
+                    .build();
+            }
+        };
+    }
+
+    @Scheduled(fixedRate = 60000)
+    public void monitorMessageProcessing() {
+        // 监控消息处理延迟
+        long avgProcessingTime = meterRegistry.timer("message.processing.time")
+            .mean(TimeUnit.MILLISECONDS);
+        if (avgProcessingTime > 1000) { // 超过1秒告警
+            log.warn("Message processing time too high: {}ms", avgProcessingTime);
+        }
+
+        // 监控失败率
+        double errorRate = meterRegistry.counter("message.process.error").count() /
+                         meterRegistry.counter("message.processed").count();
+        if (errorRate > 0.01) { // 失败率超过1%告警
+            log.warn("High error rate detected: {}%", errorRate * 100);
+        }
+
+        // 监控数据库连接池
+        if (dataSource instanceof HikariDataSource) {
+            HikariDataSource hikari = (HikariDataSource) dataSource;
+            meterRegistry.gauge("db.connections.active",
+                hikari.getHikariPoolMXBean().getActiveConnections());
+            meterRegistry.gauge("db.connections.idle",
+                hikari.getHikariPoolMXBean().getIdleConnections());
+        }
+    }
+}
+```
+
