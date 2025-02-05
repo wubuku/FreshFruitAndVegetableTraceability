@@ -2336,52 +2336,203 @@ public class ProductionRun {
 
 ### 6.1 与库存系统集成
 
-```java
-// 伪代码：用于说明生产订单与库存系统的集成逻辑
-// 实际实现分散在多个服务中，此处简化展示主要流程
-public class ProductionRunInventoryServices {
-    
-    // 1. 生产订单发料
-    public static Map<String, Object> issueProductionRunComponents(DispatchContext dctx, Map<String, ? extends Object> context) {
-        try {
-            String workEffortId = (String) context.get("workEffortId");
-            List<GenericValue> components = getProductionRunComponents(workEffortId);
+生产管理系统与库存系统的集成主要体现在物料发料和产品入库两个环节。
+
+#### 6.1.1 库存处理相关实体
+
+1. 核心实体：
+```xml
+<!-- 工单库存分配 -->
+<entity entity-name="WorkEffortInventoryAssign">
+    <field name="workEffortId" type="id"/>        <!-- 工单ID -->
+    <field name="inventoryItemId" type="id"/>     <!-- 库存项ID -->
+    <field name="statusId" type="id"/>            <!-- 分配状态:WEGS_CREATED/WEGS_COMPLETED -->
+    <field name="quantity" type="floating-point"/> <!-- 分配数量 -->
+    <field name="reasonEnumId" type="id"/>        <!-- 原因枚举 -->
+    <field name="description" type="description"/> <!-- 描述 -->
+    <relation type="one" rel-entity-name="WorkEffort"/>
+    <relation type="one" rel-entity-name="InventoryItem"/>
+</entity>
+
+<!-- 库存明细 -->
+<entity entity-name="InventoryItemDetail">
+    <field name="inventoryItemId" type="id"/>     <!-- 库存项ID -->
+    <field name="inventoryItemDetailSeqId" type="id"/> <!-- 明细序号 -->
+    <field name="availableToPromiseDiff" type="fixed-point"/>  <!-- ATP变化量 -->
+    <field name="quantityOnHandDiff" type="fixed-point"/>      <!-- 实际库存变化量 -->
+    <field name="workEffortId" type="id"/>        <!-- 关联工单ID -->
+    <field name="reasonEnumId" type="id"/>        <!-- 变动原因 -->
+    <field name="description" type="description"/> <!-- 变动说明 -->
+</entity>
+```
+
+2. 数量字段类型选择：
+- WorkEffortInventoryAssign.quantity 使用 floating-point：
+  * 用于计划/分配数量
+  * 需要频繁计算(如MRP运算)
+  * 允许计算误差
+  * 性能要求高
+
+- InventoryItemDetail 使用 fixed-point：
+  * 用于实际库存变动
+  * 需要精确记账
+  * 不允许有误差
+  * 用于财务核算
+
+#### 6.1.2 生产工单的库存处理流程
+
+1. 工单状态与库存操作的对应关系：
+```
+PRUN_CREATED   (创建) -> 创建工单,但未分配物料
+PRUN_SCHEDULED (排产) -> 创建 WorkEffortInventoryAssign 记录,分配物料
+PRUN_DOC_PRINTED (打印工单) -> 准备物料
+PRUN_RUNNING (开始生产) -> 创建 InventoryItemDetail 记录,实际扣减库存
+PRUN_COMPLETED (完工) -> 创建产品入库记录
+```
+
+2. 发料服务实现：
+```groovy
+// applications/manufacturing/src/main/groovy/org/apache/ofbiz/manufacturing/jobshopmgt/ProductionRunServicesScript.groovy
+
+def issueProductionRunComponents() {
+    try {
+        GenericValue productionRun = from("WorkEffort")
+            .where("workEffortId", workEffortId)
+            .queryOne()
             
-            for (GenericValue component : components) {
-                // 检查库存可用性
-                if (!isInventoryAvailable(component)) {
-                    return ServiceUtil.returnError("Insufficient inventory for component: " + 
-                        component.getString("productId"));
+        // 检查工单状态
+        if (!"PRUN_RUNNING".equals(productionRun.getString("currentStatusId"))) {
+            return error("工单状态不正确")
+        }
+        
+        // 获取分配记录并执行发料
+        List<GenericValue> assignments = from("WorkEffortInventoryAssign")
+            .where("workEffortId", workEffortId)
+            .queryList()
+            
+        // 使用事务控制
+        boolean beganTransaction = false
+        try {
+            beganTransaction = TransactionUtil.begin()
+            
+            for (GenericValue assignment : assignments) {
+                // 检查库存是否充足
+                if (!isInventoryAvailable(assignment)) {
+                    TransactionUtil.rollback(beganTransaction)
+                    return error("物料库存不足")
                 }
-                // 执行库存发料
-                issueInventoryToProduction(component);
+                
+                // 创建库存明细记录
+                Map createDetailCtx = [
+                    inventoryItemId: assignment.inventoryItemId,
+                    workEffortId: workEffortId,
+                    availableToPromiseDiff: -assignment.quantity,
+                    quantityOnHandDiff: -assignment.quantity,
+                    reasonEnumId: "IID_PRODUCTION_RUN",
+                    description: "Production Run Component Issue"
+                ]
+                runService("createInventoryItemDetail", createDetailCtx)
+                
+                // 更新分配状态
+                assignment.statusId = "WEGS_COMPLETED"
+                assignment.store()
             }
-            return ServiceUtil.returnSuccess();
-        } catch (Exception e) {
-            return ServiceUtil.returnError("Error issuing components: " + e.getMessage());
-        }
-    }
-    
-    // 2. 生产完工入库
-    public static Map<String, Object> productionRunProductReceive(DispatchContext dctx, Map<String, ? extends Object> context) {
-        try {
-            String workEffortId = (String) context.get("workEffortId");
-            GenericValue product = getProductionRunProduct(workEffortId);
-            BigDecimal quantity = (BigDecimal) context.get("quantity");
             
-            // 创建库存收货记录
-            Map<String, Object> receiveCtx = UtilMisc.toMap(
-                "productId", product.getString("productId"),
-                "facilityId", context.get("facilityId"),
-                "quantityAccepted", quantity,
-                "workEffortId", workEffortId);
-            
-            return dispatcher.runSync("receiveInventoryProduct", receiveCtx);
+            TransactionUtil.commit(beganTransaction)
+            return success()
         } catch (Exception e) {
-            return ServiceUtil.returnError("Error receiving product: " + e.getMessage());
+            TransactionUtil.rollback(beganTransaction)
+            throw e
         }
+    } catch (Exception e) {
+        return error(e.getMessage())
     }
 }
+```
+
+3. 入库服务实现：
+```groovy
+def receiveProductionRunProduct() {
+    try {
+        // 检查工单状态
+        GenericValue productionRun = from("WorkEffort")
+            .where("workEffortId", workEffortId)
+            .queryOne()
+            
+        if (!"PRUN_COMPLETED".equals(productionRun.getString("currentStatusId"))) {
+            return error("工单未完工")
+        }
+        
+        // 使用事务控制
+        boolean beganTransaction = false
+        try {
+            beganTransaction = TransactionUtil.begin()
+            
+            // 创建产品库存记录
+            Map createInventoryCtx = [
+                productId: getProductionRunProduct(workEffortId),
+                facilityId: parameters.facilityId,
+                unitCost: getProductionCost(workEffortId),  // 计算生产成本
+                quantityOnHand: parameters.quantity,
+                availableToPromise: parameters.quantity,
+                statusId: "INV_AVAILABLE",
+                workEffortId: workEffortId
+            ]
+            
+            GenericValue inventoryItem = runService("createInventoryItem", createInventoryCtx)
+            
+            // 创建库存明细
+            Map createDetailCtx = [
+                inventoryItemId: inventoryItem.inventoryItemId,
+                workEffortId: workEffortId,
+                availableToPromiseDiff: parameters.quantity,
+                quantityOnHandDiff: parameters.quantity,
+                reasonEnumId: "IID_PRODUCTION_RUN",
+                description: "Production Run Product Receipt"
+            ]
+            runService("createInventoryItemDetail", createDetailCtx)
+            
+            TransactionUtil.commit(beganTransaction)
+            return success()
+        } catch (Exception e) {
+            TransactionUtil.rollback(beganTransaction)
+            throw e
+        }
+    } catch (Exception e) {
+        return error(e.getMessage())
+    }
+}
+```
+
+#### 6.1.3 库存处理机制的特点
+
+1. 分离设计：
+- 物料分配与实际发料分离
+- 计划数量与实际数量分离
+- 库存锁定与库存消耗分离
+
+2. 批次管理：
+- 支持按批次发料
+- 记录产品批次信息
+- 可追溯物料批次关系
+
+3. 事务一致性保证：
+- 使用数据库事务确保库存操作的原子性
+- 状态检查确保业务逻辑正确性
+- 错误处理机制保证数据完整性
+
+4. 性能优化考虑：
+- 批量处理库存事务
+- 异步更新统计数据
+- 使用缓存减少数据库访问
+
+5. 追溯路径：
+```
+InventoryItem(原料批次)
+-> WorkEffortInventoryAssign  // 分配记录
+-> WorkEffort(生产工单)
+-> WorkEffortInventoryProduced // 产出记录  
+-> InventoryItem(产品批次)
 ```
 
 ### 6.2 与销售系统集成
