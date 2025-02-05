@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -76,7 +78,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
             receiptId = receiptId.trim();
         }
         if (receiptId == null || receiptId.isEmpty()) {
-            throw new IllegalArgumentException("ReceiptId不能为空");
+            throw new IllegalArgumentException("ReceiptId can't be null");
         }
         ShipmentReceiptState shipmentReceiptState = shipmentReceiptApplicationService.get(receiptId);
         if (shipmentReceiptState == null) {
@@ -86,7 +88,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
         if (qaInspectionId != null) {
             qaInspectionId = qaInspectionId.trim();
             if (qaInspectionApplicationService.get(qaInspectionId) != null) {
-                throw new IllegalArgumentException("QaInspectionId为" + qaInspectionId + "的记录已经存在");
+                throw new IllegalArgumentException("QaInspectionId 为 " + qaInspectionId + " 的记录已经存在");
             }
         } else {
             qaInspectionId = receiptId;//IdUtils.randomId();
@@ -157,7 +159,22 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
         if (c.getQaInspections() == null) {
             return;
         }
-
+        //确保前端传过来的质检数组中的ReceiptId不能相互重复
+        List<String> receiptIds = new ArrayList<>();
+        Arrays.stream(c.getQaInspections()).forEach(bffQaInspectionDto -> {
+            String receiptId = bffQaInspectionDto.getReceiptId();
+            if (receiptId != null) {
+                receiptId = receiptId.trim();
+                bffQaInspectionDto.setReceiptId(receiptId);
+            }
+            if (receiptId == null || receiptId.isEmpty()) {
+                throw new IllegalArgumentException("ReceiptId can't be null");
+            }
+            if (receiptIds.contains(receiptId)) {
+                throw new IllegalArgumentException("重复的ReceiptId");
+            }
+            receiptIds.add(receiptId);
+        });
         for (BffQaInspectionDto qaInspection : c.getQaInspections()) {
             // 创建 CreateQaInspection 命令
             BffQaInspectionServiceCommands.CreateQaInspection createCommand =
@@ -174,32 +191,67 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
     @Override
     @Transactional
     public void when(BffQaInspectionServiceCommands.BatchAddOrUpdateQaInspections c) {
+        //NOTE：这个方法既能同时批量添加又能批量修改，还能批量部分修改部分添加
+        //所以我们设定：如果提供了qaInspectionId为修改，而没有提供qaInspectionId，提供了receiptId则为添加
+        List<BffQaInspectionDto> needToAdded = new ArrayList<>();
+        List<BffQaInspectionDto> needToUpdated = new ArrayList<>();
         for (BffQaInspectionDto qaInspection : c.getQaInspections()) {
-            if (qaInspection.getQaInspectionId() == null) {
-                throw new IllegalArgumentException("QaInspectionId 不能为空");
+            String qaInspectionId = qaInspection.getQaInspectionId();
+            if (qaInspectionId != null) {
+                qaInspectionId = qaInspectionId.trim();
+                qaInspection.setQaInspectionId(qaInspectionId);
             }
-            QaInspectionState qaInspectionState = qaInspectionApplicationService.get(qaInspection.getQaInspectionId());
-            if (qaInspectionState != null) {
-                // 创建 UpdateQaInspection 命令
-                BffQaInspectionServiceCommands.UpdateQaInspection updateCommand =
-                        new BffQaInspectionServiceCommands.UpdateQaInspection();
-                // 设置质检信息
-                updateCommand.setQaInspection(qaInspection);
-                updateCommand.setRequesterId(c.getRequesterId());
-                updateCommand.setCommandId(UUID.randomUUID().toString());
-                // 调用已有的更新方法
-                when(updateCommand);
+            String receiptId = qaInspection.getReceiptId();
+            if (receiptId != null) {
+                receiptId = receiptId.trim();
+                qaInspection.setReceiptId(receiptId);
+            }
+            //有qaInspectionId->修改/无有qaInspectionId有receiptId->添加
+            if (qaInspectionId != null && !qaInspectionId.isEmpty()) {
+                needToUpdated.add(qaInspection);
+            } else if (receiptId != null && !receiptId.isEmpty()) {
+                needToAdded.add(qaInspection);
             } else {
-                // 创建 CreateQaInspection 命令
-                BffQaInspectionServiceCommands.CreateQaInspection createCommand =
-                        new BffQaInspectionServiceCommands.CreateQaInspection();
-                // 设置质检信息
-                createCommand.setQaInspection(qaInspection);
-                createCommand.setRequesterId(c.getRequesterId());
-                createCommand.setCommandId(UUID.randomUUID().toString());
-                // 调用已有的创建方法
-                when(createCommand);
+                throw new IllegalArgumentException("QaInspectionId and ReceiptId can't both be null.");
             }
+        }
+        //修改
+        List<String> qaInspectionIds = new ArrayList<>();
+        needToUpdated.forEach(bffQaInspectionDto -> {
+            if (qaInspectionIds.contains(bffQaInspectionDto.getQaInspectionId())) {
+                throw new IllegalArgumentException("Duplicate QaInspectionId:" + bffQaInspectionDto.getQaInspectionId());
+            }
+            qaInspectionIds.add(bffQaInspectionDto.getQaInspectionId());
+        });
+        for (BffQaInspectionDto qaInspection : needToUpdated) {
+            // 创建 UpdateQaInspection 命令
+            BffQaInspectionServiceCommands.UpdateQaInspection updateCommand =
+                    new BffQaInspectionServiceCommands.UpdateQaInspection();
+            // 设置质检信息
+            updateCommand.setQaInspection(qaInspection);
+            updateCommand.setRequesterId(c.getRequesterId());
+            updateCommand.setCommandId(UUID.randomUUID().toString());
+            // 调用已有的更新方法
+            when(updateCommand);
+        }
+        //添加
+        List<String> receiptIds = new ArrayList<>();
+        needToAdded.forEach(bffQaInspectionDto -> {
+            if (receiptIds.contains(bffQaInspectionDto.getReceiptId())) {
+                throw new IllegalArgumentException("Duplicate receiptId:" + bffQaInspectionDto.getReceiptId());
+            }
+            receiptIds.add(bffQaInspectionDto.getReceiptId());
+        });
+        for (BffQaInspectionDto qaInspection : needToAdded) {
+            // 创建 CreateQaInspection 命令
+            BffQaInspectionServiceCommands.CreateQaInspection createCommand =
+                    new BffQaInspectionServiceCommands.CreateQaInspection();
+            // 设置质检信息
+            createCommand.setQaInspection(qaInspection);
+            createCommand.setRequesterId(c.getRequesterId());
+            createCommand.setCommandId(UUID.randomUUID().toString());
+            // 调用已有的创建方法
+            when(createCommand);
         }
     }
 }
