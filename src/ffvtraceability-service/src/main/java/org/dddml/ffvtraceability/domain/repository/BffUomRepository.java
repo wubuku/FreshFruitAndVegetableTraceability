@@ -26,6 +26,7 @@ public interface BffUomRepository extends JpaRepository<AbstractUomState.SimpleU
                     SELECT COUNT(*)
                     FROM uom u
                     WHERE (:active IS NULL OR u.active = :active)
+                        AND (:uomTypeId IS NULL OR u.uom_type_id = :uomTypeId)
                     """,
             nativeQuery = true)
     Page<BffUomProjection> findAllUnitsOfMeasure(Pageable pageable,
