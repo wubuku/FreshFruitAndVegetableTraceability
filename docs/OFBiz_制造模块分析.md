@@ -2924,21 +2924,138 @@ if (stockTmp.compareTo(minimumStock) < 0) {
   * 增加系统复杂度和负担
   * 可能影响MRP计算准确性
 
-#### 8.5 改进建议
+#### 8.5 基于 InventoryItemDetail 的批次追溯方案
 
-1. 数据模型改进
-- 增加 WIP 批次记录能力
-- 建立批次流转关系表
-- 添加质量检验记录关联
-- 保持 WIP 类型不变，通过扩展实现批次追踪
+通过分析代码库中的实际实现，我们发现可以考虑通过以下方式来简化实现批次追溯：
 
-2. 实施建议
-- 在系统升级时添加批次追溯模块
-- 增加条码或RFID等自动化采集手段
-- 开发专门的批次追溯查询界面
-- 添加质量检验记录的关联功能
-- 对于严格的批次追踪需求，考虑：
-  * 使用专业的MES系统
-  * 引入批次追踪系统
-  * 部署质量管理系统
+##### 8.5.1 WIP批次追溯方案
+
+针对WIP产品的批次追溯，我们可以继续使用现有的实体模型，但采用特殊的 InventoryItemType：
+
+1. 数据模型设计
+```xml
+<!-- 1. 添加新的库存类型 -->
+<InventoryItemType inventoryItemTypeId="WIP_BATCH" description="WIP Batch for Tracing" hasTable="N"/>
+
+<!-- 2. WIP批次库存项示例 -->
+<InventoryItem inventoryItemId="WIP_BATCH_001" 
+    inventoryItemTypeId="WIP_BATCH"
+    productId="WIP_PRODUCT_001"
+    lotId="LOT_001"
+    quantityOnHand="0"
+    availableToPromise="0"
+    statusId="INV_WIP_TRACE"/>
+    <!-- 使用专门的状态？ -->
+```
+
+2. 实现思路
+- 保持产品的WIP类型不变
+- 使用简化的库存记录方式
+- 仅关注批次相关字段
+
+
+3. 关键服务实现
+```java
+// 伪代码：用于说明WIP批次追踪的基本逻辑
+public class WipBatchTraceServices {
+    
+    // 创建WIP批次记录
+    public static Map<String, Object> createWipBatch(DispatchContext dctx, Map<String, ? extends Object> context) {
+        try {
+            // 1. 创建简化的InventoryItem记录
+            Map<String, Object> createCtx = UtilMisc.toMap(
+                "inventoryItemTypeId", "WIP_BATCH",
+                "productId", context.get("productId"),
+                "lotId", context.get("lotId"),
+                "facilityId", context.get("facilityId"),
+                "quantityOnHand", BigDecimal.ZERO,     // 不关注数量
+                "availableToPromise", BigDecimal.ZERO,
+                "statusId", "INV_TRACE_ON"
+            );
+            
+            GenericValue wipBatch = delegator.makeValue("InventoryItem", createCtx);
+            wipBatch.create();
+            
+            // 2. 建立与工序的关联（用于标识批次属于哪个工序）
+            Map<String, Object> assignCtx = UtilMisc.toMap(
+                "workEffortId", context.get("workEffortId"),
+                "inventoryItemId", wipBatch.getString("inventoryItemId"),
+                "quantity", BigDecimal.ONE  // 使用1表示批次关联
+            );
+            
+            runService("createWorkEffortInventoryAssign", assignCtx);
+            
+            // 1.3 记录批次产出（用于追踪批次产生的来源）
+            Map<String, Object> prodCtx = UtilMisc.toMap(
+                "wipBatchId", wipBatch.getString("inventoryItemId"),
+                "workEffortId", context.get("workEffortId")
+            );
+            recordWipProduction(dctx, prodCtx);
+            
+            return ServiceUtil.returnSuccess();
+        } catch (Exception e) {
+            return ServiceUtil.returnError(e.getMessage());
+        }
+    }
+    
+    // 2. 记录WIP批次的消耗
+    public static Map<String, Object> recordWipConsumption(DispatchContext dctx, Map<String, ? extends Object> context) {
+        try {
+            // 创建库存明细记录（消耗）
+            Map<String, Object> createDetailCtx = UtilMisc.toMap(
+                "inventoryItemId", context.get("wipBatchId"),  // 被消耗的WIP批次
+                "workEffortId", context.get("workEffortId"),   // 消耗发生的工序
+                "availableToPromiseDiff", BigDecimal.ZERO,     // 不影响ATP
+                "quantityOnHandDiff", BigDecimal.ONE.negate(), // -1表示批次被消耗
+                "reasonEnumId", "WIP_CONSUMED",                // 新增的原因类型
+                "description", "WIP batch consumed"
+            );
+            
+            return dispatcher.runSync("createInventoryItemDetail", createDetailCtx);
+        } catch (Exception e) {
+            return ServiceUtil.returnError(e.getMessage());
+        }
+    }
+    
+    // 3. 记录WIP批次的产出
+    private static Map<String, Object> recordWipProduction(DispatchContext dctx, Map<String, ? extends Object> context) {
+        try {
+            // 创建库存明细记录（产出）
+            Map<String, Object> createDetailCtx = UtilMisc.toMap(
+                "inventoryItemId", context.get("wipBatchId"),  // 产出的WIP批次
+                "workEffortId", context.get("workEffortId"),   // 产出的工序
+                "availableToPromiseDiff", BigDecimal.ZERO,     // 不影响ATP
+                "quantityOnHandDiff", BigDecimal.ONE,          // +1表示批次被产出
+                "reasonEnumId", "WIP_PRODUCED",                // 新增的原因类型
+                "description", "WIP batch produced"
+            );
+            
+            return dispatcher.runSync("createInventoryItemDetail", createDetailCtx);
+        } catch (Exception e) {
+            return ServiceUtil.returnError(e.getMessage());
+        }
+    }
+}
+```
+
+4. 方案优势
+- 保持现有模型：
+  * 继续使用WIP产品类型的优势
+  * 不影响现有MRP计算逻辑
+  * 复用已有的实体关系
+- 简化处理：
+  * 不需要处理复杂的库存计算
+  * 不涉及成本核算问题
+  * 仅关注批次追踪需求
+- 灵活性：
+  * 可以按需启用批次追踪
+  * 不影响其他业务流程
+  * 易于扩展和定制
+
+##### 8.5.2 常规产品批次追溯方案
+
+对于非 WIP 产品，我们似乎也可以直接利用 InventoryItemDetail 实体来实现完整的批次追溯……
+
+这种组合方案既保持了系统的简洁性，又满足了不同场景下的批次追溯需求。通过合理使用现有实体模型，可以用最小的改动实现完整的批次追溯功能。
+
 
