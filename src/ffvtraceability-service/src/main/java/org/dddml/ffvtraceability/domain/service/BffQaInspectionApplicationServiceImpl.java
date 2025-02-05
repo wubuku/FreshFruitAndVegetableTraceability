@@ -9,7 +9,6 @@ import org.dddml.ffvtraceability.domain.repository.BffQaInspectionProjection;
 import org.dddml.ffvtraceability.domain.repository.BffQaInspectionRepository;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState;
-import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,7 +89,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
                 throw new IllegalArgumentException("QaInspectionId为" + qaInspectionId + "的记录已经存在");
             }
         } else {
-            qaInspectionId = IdUtils.randomId();
+            qaInspectionId = receiptId;//IdUtils.randomId();
         }
 //        if (inspectionDto.getReceiptId() != null && !inspectionDto.getReceiptId().isEmpty()) {
 //            if (inspectionDto.getQaInspectionId() != null
@@ -138,6 +137,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
 
         AbstractQaInspectionCommand.SimpleMergePatchQaInspection mergePatchQaInspection =
                 new AbstractQaInspectionCommand.SimpleMergePatchQaInspection();
+        //这里并没有修改mergePatchQaInspection.setReceiptId();
         mergePatchQaInspection.setQaInspectionId(c.getQaInspectionId());
         mergePatchQaInspection.setVersion(qaInspectionState.getVersion());
         mergePatchQaInspection.setComments(c.getQaInspection().getComments());
@@ -175,33 +175,30 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
     @Transactional
     public void when(BffQaInspectionServiceCommands.BatchAddOrUpdateQaInspections c) {
         for (BffQaInspectionDto qaInspection : c.getQaInspections()) {
-            boolean exists = false;
-            if (qaInspection.getQaInspectionId() != null) {
-                QaInspectionState qaInspectionState = qaInspectionApplicationService.get(qaInspection.getQaInspectionId());
-                if (qaInspectionState != null) {
-                    exists = true;
-                }
-                if (exists) {
-                    // 创建 UpdateQaInspection 命令
-                    BffQaInspectionServiceCommands.UpdateQaInspection updateCommand =
-                            new BffQaInspectionServiceCommands.UpdateQaInspection();
-                    // 设置质检信息
-                    updateCommand.setQaInspection(qaInspection);
-                    updateCommand.setRequesterId(c.getRequesterId());
-                    updateCommand.setCommandId(UUID.randomUUID().toString());
-                    // 调用已有的更新方法
-                    when(updateCommand);
-                } else {
-                    // 创建 CreateQaInspection 命令
-                    BffQaInspectionServiceCommands.CreateQaInspection createCommand =
-                            new BffQaInspectionServiceCommands.CreateQaInspection();
-                    // 设置质检信息
-                    createCommand.setQaInspection(qaInspection);
-                    createCommand.setRequesterId(c.getRequesterId());
-                    createCommand.setCommandId(UUID.randomUUID().toString());
-                    // 调用已有的创建方法
-                    when(createCommand);
-                }
+            if (qaInspection.getQaInspectionId() == null) {
+                throw new IllegalArgumentException("QaInspectionId 不能为空");
+            }
+            QaInspectionState qaInspectionState = qaInspectionApplicationService.get(qaInspection.getQaInspectionId());
+            if (qaInspectionState != null) {
+                // 创建 UpdateQaInspection 命令
+                BffQaInspectionServiceCommands.UpdateQaInspection updateCommand =
+                        new BffQaInspectionServiceCommands.UpdateQaInspection();
+                // 设置质检信息
+                updateCommand.setQaInspection(qaInspection);
+                updateCommand.setRequesterId(c.getRequesterId());
+                updateCommand.setCommandId(UUID.randomUUID().toString());
+                // 调用已有的更新方法
+                when(updateCommand);
+            } else {
+                // 创建 CreateQaInspection 命令
+                BffQaInspectionServiceCommands.CreateQaInspection createCommand =
+                        new BffQaInspectionServiceCommands.CreateQaInspection();
+                // 设置质检信息
+                createCommand.setQaInspection(qaInspection);
+                createCommand.setRequesterId(c.getRequesterId());
+                createCommand.setCommandId(UUID.randomUUID().toString());
+                // 调用已有的创建方法
+                when(createCommand);
             }
         }
     }
