@@ -99,7 +99,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     public Page<BffReceivingDocumentDto> when(BffReceivingServiceCommands.GetReceivingDocuments c) {
         int offset = c.getPage() * c.getSize();
         long totalElements = bffReceivingRepository.countTotalShipments(
-                c.getDocumentIdOrItem(), c.getSupplierId(), c.getFacilityId(),
+                c.getDocumentIdOrItem(), c.getFacilityId(), c.getSupplierId(),
                 c.getReceivedAtFrom(), //c.getReceivedAtFrom() != null ? c.getReceivedAtFrom().toInstant() : null,
                 c.getReceivedAtTo() //c.getReceivedAtTo() != null ? c.getReceivedAtTo().toInstant() : null
         );
@@ -107,7 +107,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         List<BffReceivingDocumentItemProjection> projections =
                 bffReceivingRepository.findAllReceivingDocumentsWithItems(
                         offset, c.getSize(),
-                        c.getDocumentIdOrItem(), c.getSupplierId(),c.getFacilityId(),
+                        c.getDocumentIdOrItem(), c.getFacilityId(), c.getSupplierId(),
                         c.getReceivedAtFrom(), //c.getReceivedAtFrom() != null ? c.getReceivedAtFrom().toInstant() : null,
                         c.getReceivedAtTo() //c.getReceivedAtTo() != null ? c.getReceivedAtTo().toInstant() : null
                 );

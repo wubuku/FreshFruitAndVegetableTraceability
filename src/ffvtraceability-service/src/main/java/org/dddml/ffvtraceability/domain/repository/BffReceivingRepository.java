@@ -96,8 +96,8 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                     OR s.shipment_id LIKE CONCAT(:documentIdOrItem, '%')
                     OR sr.product_id LIKE CONCAT(:documentIdOrItem, '%')
                     OR gi.id_value LIKE CONCAT(:documentIdOrItem, '%'))
-                    AND (:supplierId IS NULL OR s.party_id_from = :supplierId)
                     AND (:facilityId IS NULL OR s.destination_facility_id = :facilityId)
+                    AND (:supplierId IS NULL OR s.party_id_from = :supplierId)
                     AND (CAST(:receivedAtFrom AS timestamptz) IS NULL OR s.created_at >= :receivedAtFrom)
                     AND (CAST(:receivedAtTo AS timestamptz) IS NULL OR s.created_at <= :receivedAtTo)
                 ORDER BY s.created_at DESC
@@ -113,8 +113,8 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             @Param("offset") int offset,
             @Param("pageSize") int pageSize,
             @Param("documentIdOrItem") String documentIdOrItem,
-            @Param("supplierId") String supplierId,
             @Param("facilityId") String facilityId,
+            @Param("supplierId") String supplierId,
             @Param("receivedAtFrom") OffsetDateTime receivedAtFrom,
             @Param("receivedAtTo") OffsetDateTime receivedAtTo
     );
@@ -135,14 +135,14 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                   s.shipment_id LIKE CONCAT(:documentIdOrItem, '%') OR
                   sr.product_id LIKE CONCAT(:documentIdOrItem, '%') OR
                   gi.id_value LIKE CONCAT(:documentIdOrItem, '%'))
-                  AND (:supplierId IS NULL OR s.party_id_from = :supplierId)
                   AND (:facilityId IS NULL OR s.destination_facility_id = :facilityId)
+                  AND (:supplierId IS NULL OR s.party_id_from = :supplierId)
                   AND (CAST(:receivedAtFrom AS timestamptz) IS NULL OR s.created_at >= :receivedAtFrom)
                   AND (CAST(:receivedAtTo AS timestamptz) IS NULL OR s.created_at <= :receivedAtTo)
             """, nativeQuery = true)
     long countTotalShipments(@Param("documentIdOrItem") String documentIdOrItem,
-                             @Param("supplierId") String supplierId,
                              @Param("facilityId") String facilityId,
+                             @Param("supplierId") String supplierId,
                              @Param("receivedAtFrom") OffsetDateTime receivedAtFrom,
                              @Param("receivedAtTo") OffsetDateTime receivedAtTo
     );
