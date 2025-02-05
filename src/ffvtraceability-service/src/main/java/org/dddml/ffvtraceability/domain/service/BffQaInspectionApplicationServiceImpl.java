@@ -9,6 +9,7 @@ import org.dddml.ffvtraceability.domain.repository.BffQaInspectionProjection;
 import org.dddml.ffvtraceability.domain.repository.BffQaInspectionRepository;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState;
+import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,7 +90,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
                 throw new IllegalArgumentException("QaInspectionId为" + qaInspectionId + "的记录已经存在");
             }
         } else {
-            qaInspectionId = receiptId;//IdUtils.randomId();
+            qaInspectionId = IdUtils.randomId();
         }
 //        if (inspectionDto.getReceiptId() != null && !inspectionDto.getReceiptId().isEmpty()) {
 //            if (inspectionDto.getQaInspectionId() != null
@@ -117,7 +118,6 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
         createQaInspection.setReceiptId(c.getQaInspection().getReceiptId());
         createQaInspection.setCommandId(c.getCommandId() != null ? c.getCommandId() : createQaInspection.getQaInspectionId());
         createQaInspection.setRequesterId(c.getRequesterId());
-        //createQaInspection.setInspectionFacilityId(); // Not used yet.
         //createQaInspection.setInspectionFacilityId(); // Not used yet.
 
         qaInspectionApplicationService.when(createQaInspection);
