@@ -82,13 +82,13 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
         }
         ShipmentReceiptState shipmentReceiptState = shipmentReceiptApplicationService.get(receiptId);
         if (shipmentReceiptState == null) {
-            throw new IllegalArgumentException("ReceiptId为" + receiptId + "的收货信息不存在");
+            throw new IllegalArgumentException(String.format("The receipt information with ReceiptId %s does not exist.", receiptId));
         }
         String qaInspectionId = inspectionDto.getQaInspectionId();
         if (qaInspectionId != null) {
             qaInspectionId = qaInspectionId.trim();
             if (qaInspectionApplicationService.get(qaInspectionId) != null) {
-                throw new IllegalArgumentException("QaInspectionId 为 " + qaInspectionId + " 的记录已经存在");
+                throw new IllegalArgumentException(String.format("A record with QaInspectionId %s already exists", qaInspectionId));
             }
         } else {
             qaInspectionId = receiptId;//IdUtils.randomId();
@@ -171,7 +171,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
                 throw new IllegalArgumentException("ReceiptId can't be null");
             }
             if (receiptIds.contains(receiptId)) {
-                throw new IllegalArgumentException("重复的ReceiptId");
+                throw new IllegalArgumentException("Duplicate receiptId:" + receiptId);
             }
             receiptIds.add(receiptId);
         });
