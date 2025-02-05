@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class StatusTypeResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private StatusTypeApplicationService statusTypeApplicationService;
@@ -61,14 +49,14 @@ public class StatusTypeResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<StatusTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> StatusTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class StatusTypeResource {
             }
             return dtoConverter.toStatusTypeStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class StatusTypeResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<StatusTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> StatusTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class StatusTypeResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class StatusTypeResource {
     @GetMapping("{statusTypeId}")
     @Transactional(readOnly = true)
     public StatusTypeStateDto get(@PathVariable("statusTypeId") String statusTypeId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = statusTypeId;
             StatusTypeState state = statusTypeApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class StatusTypeResource {
             }
             return dtoConverter.toStatusTypeStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class StatusTypeResource {
             count = statusTypeApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class StatusTypeResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchStatusTypeDto.CreateStatusTypeDto value,  HttpServletResponse response) {
-        
+        try {
             StatusTypeCommand.CreateStatusType cmd = value;//.toCreateStatusType();
             if (cmd.getStatusTypeId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "StatusType");
@@ -199,7 +187,7 @@ public class StatusTypeResource {
             statusTypeApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class StatusTypeResource {
      */
     @PutMapping("{statusTypeId}")
     public void put(@PathVariable("statusTypeId") String statusTypeId, @RequestBody CreateOrMergePatchStatusTypeDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 StatusTypeCommand.MergePatchStatusType cmd = (StatusTypeCommand.MergePatchStatusType) value.toSubclass();
@@ -225,7 +213,7 @@ public class StatusTypeResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             statusTypeApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,19 +223,19 @@ public class StatusTypeResource {
      */
     @PatchMapping("{statusTypeId}")
     public void patch(@PathVariable("statusTypeId") String statusTypeId, @RequestBody CreateOrMergePatchStatusTypeDto.MergePatchStatusTypeDto value) {
-        
+        try {
 
             StatusTypeCommand.MergePatchStatusType cmd = value;//.toMergePatchStatusType();
             StatusTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(statusTypeId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             statusTypeApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             StatusTypeMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -255,7 +243,7 @@ public class StatusTypeResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class ShipmentBoxTypeResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private ShipmentBoxTypeApplicationService shipmentBoxTypeApplicationService;
@@ -61,14 +49,14 @@ public class ShipmentBoxTypeResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<ShipmentBoxTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ShipmentBoxTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class ShipmentBoxTypeResource {
             }
             return dtoConverter.toShipmentBoxTypeStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class ShipmentBoxTypeResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<ShipmentBoxTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ShipmentBoxTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class ShipmentBoxTypeResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class ShipmentBoxTypeResource {
     @GetMapping("{shipmentBoxTypeId}")
     @Transactional(readOnly = true)
     public ShipmentBoxTypeStateDto get(@PathVariable("shipmentBoxTypeId") String shipmentBoxTypeId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = shipmentBoxTypeId;
             ShipmentBoxTypeState state = shipmentBoxTypeApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class ShipmentBoxTypeResource {
             }
             return dtoConverter.toShipmentBoxTypeStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class ShipmentBoxTypeResource {
             count = shipmentBoxTypeApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class ShipmentBoxTypeResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchShipmentBoxTypeDto.CreateShipmentBoxTypeDto value,  HttpServletResponse response) {
-        
+        try {
             ShipmentBoxTypeCommand.CreateShipmentBoxType cmd = value;//.toCreateShipmentBoxType();
             if (cmd.getShipmentBoxTypeId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ShipmentBoxType");
@@ -199,7 +187,7 @@ public class ShipmentBoxTypeResource {
             shipmentBoxTypeApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class ShipmentBoxTypeResource {
      */
     @PutMapping("{shipmentBoxTypeId}")
     public void put(@PathVariable("shipmentBoxTypeId") String shipmentBoxTypeId, @RequestBody CreateOrMergePatchShipmentBoxTypeDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 ShipmentBoxTypeCommand.MergePatchShipmentBoxType cmd = (ShipmentBoxTypeCommand.MergePatchShipmentBoxType) value.toSubclass();
@@ -225,7 +213,7 @@ public class ShipmentBoxTypeResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentBoxTypeApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,19 +223,19 @@ public class ShipmentBoxTypeResource {
      */
     @PatchMapping("{shipmentBoxTypeId}")
     public void patch(@PathVariable("shipmentBoxTypeId") String shipmentBoxTypeId, @RequestBody CreateOrMergePatchShipmentBoxTypeDto.MergePatchShipmentBoxTypeDto value) {
-        
+        try {
 
             ShipmentBoxTypeCommand.MergePatchShipmentBoxType cmd = value;//.toMergePatchShipmentBoxType();
             ShipmentBoxTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(shipmentBoxTypeId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentBoxTypeApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             ShipmentBoxTypeMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -255,25 +243,25 @@ public class ShipmentBoxTypeResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{shipmentBoxTypeId}/_events/{version}")
     @Transactional(readOnly = true)
     public ShipmentBoxTypeEvent getEvent(@PathVariable("shipmentBoxTypeId") String shipmentBoxTypeId, @PathVariable("version") long version) {
-        
+        try {
 
             String idObj = shipmentBoxTypeId;
             //ShipmentBoxTypeStateEventDtoConverter dtoConverter = getShipmentBoxTypeStateEventDtoConverter();
             return shipmentBoxTypeApplicationService.getEvent(idObj, version);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{shipmentBoxTypeId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public ShipmentBoxTypeStateDto getHistoryState(@PathVariable("shipmentBoxTypeId") String shipmentBoxTypeId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
 
             String idObj = shipmentBoxTypeId;
             ShipmentBoxTypeStateDto.DtoConverter dtoConverter = new ShipmentBoxTypeStateDto.DtoConverter();
@@ -284,7 +272,7 @@ public class ShipmentBoxTypeResource {
             }
             return dtoConverter.toShipmentBoxTypeStateDto(shipmentBoxTypeApplicationService.getHistoryState(idObj, version));
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

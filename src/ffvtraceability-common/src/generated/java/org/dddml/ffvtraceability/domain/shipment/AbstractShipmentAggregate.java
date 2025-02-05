@@ -182,7 +182,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected ShipmentItemEvent.ShipmentItemStateCreated mapCreate(ShipmentItemCommand.CreateShipmentItem c, ShipmentCommand outerCommand, Long version, ShipmentState outerState) {
@@ -233,7 +233,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected ShipmentPackageEvent.ShipmentPackageStateCreated mapCreate(ShipmentPackageCommand.CreateShipmentPackage c, ShipmentCommand outerCommand, Long version, ShipmentState outerState) {
@@ -318,7 +318,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected ShipmentPackageContentEvent.ShipmentPackageContentStateCreated mapCreate(ShipmentPackageContentCommand.CreateShipmentPackageContent c, ShipmentPackageCommand outerCommand, Long version, ShipmentPackageState outerState) {

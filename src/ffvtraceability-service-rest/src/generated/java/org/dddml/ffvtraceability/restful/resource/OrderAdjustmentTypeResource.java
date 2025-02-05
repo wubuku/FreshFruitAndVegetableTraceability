@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class OrderAdjustmentTypeResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private OrderAdjustmentTypeApplicationService orderAdjustmentTypeApplicationService;
@@ -61,14 +49,14 @@ public class OrderAdjustmentTypeResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<OrderAdjustmentTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderAdjustmentTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class OrderAdjustmentTypeResource {
             }
             return dtoConverter.toOrderAdjustmentTypeStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class OrderAdjustmentTypeResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<OrderAdjustmentTypeState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderAdjustmentTypeResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class OrderAdjustmentTypeResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class OrderAdjustmentTypeResource {
     @GetMapping("{orderAdjustmentTypeId}")
     @Transactional(readOnly = true)
     public OrderAdjustmentTypeStateDto get(@PathVariable("orderAdjustmentTypeId") String orderAdjustmentTypeId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = orderAdjustmentTypeId;
             OrderAdjustmentTypeState state = orderAdjustmentTypeApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class OrderAdjustmentTypeResource {
             }
             return dtoConverter.toOrderAdjustmentTypeStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class OrderAdjustmentTypeResource {
             count = orderAdjustmentTypeApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class OrderAdjustmentTypeResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchOrderAdjustmentTypeDto.CreateOrderAdjustmentTypeDto value,  HttpServletResponse response) {
-        
+        try {
             OrderAdjustmentTypeCommand.CreateOrderAdjustmentType cmd = value;//.toCreateOrderAdjustmentType();
             if (cmd.getOrderAdjustmentTypeId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "OrderAdjustmentType");
@@ -199,7 +187,7 @@ public class OrderAdjustmentTypeResource {
             orderAdjustmentTypeApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class OrderAdjustmentTypeResource {
      */
     @PutMapping("{orderAdjustmentTypeId}")
     public void put(@PathVariable("orderAdjustmentTypeId") String orderAdjustmentTypeId, @RequestBody CreateOrMergePatchOrderAdjustmentTypeDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 OrderAdjustmentTypeCommand.MergePatchOrderAdjustmentType cmd = (OrderAdjustmentTypeCommand.MergePatchOrderAdjustmentType) value.toSubclass();
@@ -225,7 +213,7 @@ public class OrderAdjustmentTypeResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderAdjustmentTypeApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,19 +223,19 @@ public class OrderAdjustmentTypeResource {
      */
     @PatchMapping("{orderAdjustmentTypeId}")
     public void patch(@PathVariable("orderAdjustmentTypeId") String orderAdjustmentTypeId, @RequestBody CreateOrMergePatchOrderAdjustmentTypeDto.MergePatchOrderAdjustmentTypeDto value) {
-        
+        try {
 
             OrderAdjustmentTypeCommand.MergePatchOrderAdjustmentType cmd = value;//.toMergePatchOrderAdjustmentType();
             OrderAdjustmentTypeResourceUtils.setNullIdOrThrowOnInconsistentIds(orderAdjustmentTypeId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderAdjustmentTypeApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             OrderAdjustmentTypeMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -255,7 +243,7 @@ public class OrderAdjustmentTypeResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

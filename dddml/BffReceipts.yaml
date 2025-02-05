@@ -129,6 +129,9 @@ services:
         parameters:
           DocumentIdOrItem:
             type: id
+          FacilityId:
+            type: id
+            optional: true # NOT required
           SupplierId:
             type: id
             optional: true # NOT required

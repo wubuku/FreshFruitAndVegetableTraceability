@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class PartyRoleResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private PartyRoleApplicationService partyRoleApplicationService;
@@ -61,14 +49,14 @@ public class PartyRoleResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<PartyRoleState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> PartyRoleResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class PartyRoleResource {
             }
             return dtoConverter.toPartyRoleStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class PartyRoleResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<PartyRoleState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> PartyRoleResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class PartyRoleResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class PartyRoleResource {
     @GetMapping("{partyRoleId}")
     @Transactional(readOnly = true)
     public PartyRoleStateDto get(@PathVariable("partyRoleId") String partyRoleId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             PartyRoleId idObj = PartyRoleResourceUtils.parseIdString(partyRoleId);
             PartyRoleState state = partyRoleApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class PartyRoleResource {
             }
             return dtoConverter.toPartyRoleStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class PartyRoleResource {
             count = partyRoleApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class PartyRoleResource {
      */
     @PostMapping @ResponseStatus(HttpStatus.CREATED)
     public PartyRoleId post(@RequestBody CreateOrMergePatchPartyRoleDto.CreatePartyRoleDto value,  HttpServletResponse response) {
-        
+        try {
             PartyRoleCommand.CreatePartyRole cmd = value;//.toCreatePartyRole();
             if (cmd.getPartyRoleId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "PartyRole");
@@ -199,7 +187,7 @@ public class PartyRoleResource {
             partyRoleApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class PartyRoleResource {
      */
     @PutMapping("{partyRoleId}")
     public void put(@PathVariable("partyRoleId") String partyRoleId, @RequestBody CreateOrMergePatchPartyRoleDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 PartyRoleCommand.MergePatchPartyRole cmd = (PartyRoleCommand.MergePatchPartyRole) value.toSubclass();
@@ -225,7 +213,7 @@ public class PartyRoleResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             partyRoleApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,19 +223,19 @@ public class PartyRoleResource {
      */
     @PatchMapping("{partyRoleId}")
     public void patch(@PathVariable("partyRoleId") String partyRoleId, @RequestBody CreateOrMergePatchPartyRoleDto.MergePatchPartyRoleDto value) {
-        
+        try {
 
             PartyRoleCommand.MergePatchPartyRole cmd = value;//.toMergePatchPartyRole();
             PartyRoleResourceUtils.setNullIdOrThrowOnInconsistentIds(partyRoleId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             partyRoleApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             PartyRoleMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -255,25 +243,25 @@ public class PartyRoleResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{partyRoleId}/_events/{version}")
     @Transactional(readOnly = true)
     public PartyRoleEvent getEvent(@PathVariable("partyRoleId") String partyRoleId, @PathVariable("version") long version) {
-        
+        try {
 
             PartyRoleId idObj = PartyRoleResourceUtils.parseIdString(partyRoleId);
             //PartyRoleStateEventDtoConverter dtoConverter = getPartyRoleStateEventDtoConverter();
             return partyRoleApplicationService.getEvent(idObj, version);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{partyRoleId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public PartyRoleStateDto getHistoryState(@PathVariable("partyRoleId") String partyRoleId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
 
             PartyRoleId idObj = PartyRoleResourceUtils.parseIdString(partyRoleId);
             PartyRoleStateDto.DtoConverter dtoConverter = new PartyRoleStateDto.DtoConverter();
@@ -284,7 +272,7 @@ public class PartyRoleResource {
             }
             return dtoConverter.toPartyRoleStateDto(partyRoleApplicationService.getHistoryState(idObj, version));
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

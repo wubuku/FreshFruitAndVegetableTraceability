@@ -33,18 +33,6 @@ import org.slf4j.LoggerFactory;
 public class OrderHeaderResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private OrderApplicationService orderApplicationService;
@@ -62,14 +50,14 @@ public class OrderHeaderResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<OrderHeaderState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderHeaderResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -90,7 +78,7 @@ public class OrderHeaderResource {
             }
             return dtoConverter.toOrderHeaderStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -104,13 +92,13 @@ public class OrderHeaderResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<OrderHeaderState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderHeaderResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -135,7 +123,7 @@ public class OrderHeaderResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -145,7 +133,7 @@ public class OrderHeaderResource {
     @GetMapping("{orderId}")
     @Transactional(readOnly = true)
     public OrderHeaderStateDto get(@PathVariable("orderId") String orderId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = orderId;
             OrderHeaderState state = orderApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -158,18 +146,18 @@ public class OrderHeaderResource {
             }
             return dtoConverter.toOrderHeaderStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -180,7 +168,7 @@ public class OrderHeaderResource {
             count = orderApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -190,7 +178,7 @@ public class OrderHeaderResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchOrderDto.CreateOrderDto value,  HttpServletResponse response) {
-        
+        try {
             OrderCommand.CreateOrder cmd = value;//.toCreateOrder();
             if (cmd.getOrderId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Order");
@@ -200,7 +188,7 @@ public class OrderHeaderResource {
             orderApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -210,7 +198,7 @@ public class OrderHeaderResource {
      */
     @PutMapping("{orderId}")
     public void put(@PathVariable("orderId") String orderId, @RequestBody CreateOrMergePatchOrderDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 OrderCommand.MergePatchOrder cmd = (OrderCommand.MergePatchOrder) value.toSubclass();
@@ -226,7 +214,7 @@ public class OrderHeaderResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -236,19 +224,19 @@ public class OrderHeaderResource {
      */
     @PatchMapping("{orderId}")
     public void patch(@PathVariable("orderId") String orderId, @RequestBody CreateOrMergePatchOrderDto.MergePatchOrderDto value) {
-        
+        try {
 
             OrderCommand.MergePatchOrder cmd = value;//.toMergePatchOrder();
             OrderHeaderResourceUtils.setNullIdOrThrowOnInconsistentIds(orderId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             OrderHeaderMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -256,25 +244,25 @@ public class OrderHeaderResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{orderId}/_events/{version}")
     @Transactional(readOnly = true)
     public OrderEvent getEvent(@PathVariable("orderId") String orderId, @PathVariable("version") long version) {
-        
+        try {
 
             String idObj = orderId;
             //OrderStateEventDtoConverter dtoConverter = getOrderStateEventDtoConverter();
             return orderApplicationService.getEvent(idObj, version);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{orderId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public OrderHeaderStateDto getHistoryState(@PathVariable("orderId") String orderId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
 
             String idObj = orderId;
             OrderHeaderStateDto.DtoConverter dtoConverter = new OrderHeaderStateDto.DtoConverter();
@@ -285,7 +273,7 @@ public class OrderHeaderResource {
             }
             return dtoConverter.toOrderHeaderStateDto(orderApplicationService.getHistoryState(idObj, version));
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -295,16 +283,16 @@ public class OrderHeaderResource {
     @GetMapping("{orderId}/OrderRoles/{partyRoleId}")
     @Transactional(readOnly = true)
     public OrderRoleStateDto getOrderRole(@PathVariable("orderId") String orderId, @PathVariable("partyRoleId") String partyRoleId) {
-        
+        try {
 
-            OrderRoleState state = orderApplicationService.getOrderRole(orderId, deserializeJsonArgument(partyRoleId, PartyRoleId.class));
+            OrderRoleState state = orderApplicationService.getOrderRole(orderId, new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             if (state == null) { return null; }
             OrderRoleStateDto.DtoConverter dtoConverter = new OrderRoleStateDto.DtoConverter();
             OrderRoleStateDto stateDto = dtoConverter.toOrderRoleStateDto(state);
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -317,18 +305,18 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderRoleDto.MergePatchOrderRoleDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { mergePatchOrder.setVersion(version); }
             mergePatchOrder.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             OrderRoleCommand.MergePatchOrderRole mergePatchOrderRole = body;//.toMergePatchOrderRole();
-            mergePatchOrderRole.setPartyRoleId(deserializeJsonArgument(partyRoleId, PartyRoleId.class));
+            mergePatchOrderRole.setPartyRoleId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             mergePatchOrder.getOrderRoleCommands().add(mergePatchOrderRole);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -340,7 +328,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -351,11 +339,11 @@ public class OrderHeaderResource {
             }
             mergePatchOrder.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             OrderRoleCommand.RemoveOrderRole removeOrderRole = new RemoveOrderRoleDto();
-            removeOrderRole.setPartyRoleId(deserializeJsonArgument(partyRoleId, PartyRoleId.class));
+            removeOrderRole.setPartyRoleId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             mergePatchOrder.getOrderRoleCommands().add(removeOrderRole);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -368,10 +356,10 @@ public class OrderHeaderResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        
+        try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderHeaderResourceUtils.getOrderRoleFilterPropertyName(kv.getKey()) != null)
@@ -389,7 +377,7 @@ public class OrderHeaderResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toOrderRoleStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -402,7 +390,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderRoleDto.CreateOrderRoleDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -412,7 +400,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderRoleCommands().add(createOrderRole);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -422,7 +410,7 @@ public class OrderHeaderResource {
     @GetMapping("{orderId}/OrderContactMeches/{contactMechPurposeTypeId}")
     @Transactional(readOnly = true)
     public OrderContactMechStateDto getOrderContactMech(@PathVariable("orderId") String orderId, @PathVariable("contactMechPurposeTypeId") String contactMechPurposeTypeId) {
-        
+        try {
 
             OrderContactMechState state = orderApplicationService.getOrderContactMech(orderId, contactMechPurposeTypeId);
             if (state == null) { return null; }
@@ -431,7 +419,7 @@ public class OrderHeaderResource {
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -444,7 +432,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderContactMechDto.MergePatchOrderContactMechDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -455,7 +443,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderContactMechCommands().add(mergePatchOrderContactMech);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -467,7 +455,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -482,7 +470,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderContactMechCommands().add(removeOrderContactMech);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -495,10 +483,10 @@ public class OrderHeaderResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        
+        try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderHeaderResourceUtils.getOrderContactMechFilterPropertyName(kv.getKey()) != null)
@@ -516,7 +504,7 @@ public class OrderHeaderResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toOrderContactMechStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -529,7 +517,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderContactMechDto.CreateOrderContactMechDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -539,7 +527,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderContactMechCommands().add(createOrderContactMech);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -549,7 +537,7 @@ public class OrderHeaderResource {
     @GetMapping("{orderId}/OrderItems/{orderItemSeqId}")
     @Transactional(readOnly = true)
     public OrderItemStateDto getOrderItem(@PathVariable("orderId") String orderId, @PathVariable("orderItemSeqId") String orderItemSeqId) {
-        
+        try {
 
             OrderItemState state = orderApplicationService.getOrderItem(orderId, orderItemSeqId);
             if (state == null) { return null; }
@@ -558,7 +546,7 @@ public class OrderHeaderResource {
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -571,7 +559,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderItemDto.MergePatchOrderItemDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -582,7 +570,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderItemCommands().add(mergePatchOrderItem);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -594,7 +582,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -609,7 +597,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderItemCommands().add(removeOrderItem);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -622,10 +610,10 @@ public class OrderHeaderResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        
+        try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderHeaderResourceUtils.getOrderItemFilterPropertyName(kv.getKey()) != null)
@@ -643,7 +631,7 @@ public class OrderHeaderResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toOrderItemStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -656,7 +644,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderItemDto.CreateOrderItemDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -666,7 +654,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderItemCommands().add(createOrderItem);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -676,7 +664,7 @@ public class OrderHeaderResource {
     @GetMapping("{orderId}/OrderAdjustments/{orderAdjustmentId}")
     @Transactional(readOnly = true)
     public OrderAdjustmentStateDto getOrderAdjustment(@PathVariable("orderId") String orderId, @PathVariable("orderAdjustmentId") String orderAdjustmentId) {
-        
+        try {
 
             OrderAdjustmentState state = orderApplicationService.getOrderAdjustment(orderId, orderAdjustmentId);
             if (state == null) { return null; }
@@ -685,7 +673,7 @@ public class OrderHeaderResource {
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -698,7 +686,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderAdjustmentDto.MergePatchOrderAdjustmentDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -709,7 +697,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderAdjustmentCommands().add(mergePatchOrderAdjustment);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -721,7 +709,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -736,7 +724,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderAdjustmentCommands().add(removeOrderAdjustment);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -749,10 +737,10 @@ public class OrderHeaderResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        
+        try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderHeaderResourceUtils.getOrderAdjustmentFilterPropertyName(kv.getKey()) != null)
@@ -770,7 +758,7 @@ public class OrderHeaderResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toOrderAdjustmentStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -783,7 +771,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderAdjustmentDto.CreateOrderAdjustmentDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -793,7 +781,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderAdjustmentCommands().add(createOrderAdjustment);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -803,7 +791,7 @@ public class OrderHeaderResource {
     @GetMapping("{orderId}/OrderShipGroups/{shipGroupSeqId}")
     @Transactional(readOnly = true)
     public OrderShipGroupStateDto getOrderShipGroup(@PathVariable("orderId") String orderId, @PathVariable("shipGroupSeqId") String shipGroupSeqId) {
-        
+        try {
 
             OrderShipGroupState state = orderApplicationService.getOrderShipGroup(orderId, shipGroupSeqId);
             if (state == null) { return null; }
@@ -812,7 +800,7 @@ public class OrderHeaderResource {
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -825,7 +813,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderShipGroupDto.MergePatchOrderShipGroupDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -836,7 +824,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderShipGroupCommands().add(mergePatchOrderShipGroup);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -848,7 +836,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -863,7 +851,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderShipGroupCommands().add(removeOrderShipGroup);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -876,10 +864,10 @@ public class OrderHeaderResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        
+        try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderHeaderResourceUtils.getOrderShipGroupFilterPropertyName(kv.getKey()) != null)
@@ -897,7 +885,7 @@ public class OrderHeaderResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toOrderShipGroupStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -910,7 +898,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderShipGroupDto.CreateOrderShipGroupDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -920,7 +908,7 @@ public class OrderHeaderResource {
             mergePatchOrder.getOrderShipGroupCommands().add(createOrderShipGroup);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -930,7 +918,7 @@ public class OrderHeaderResource {
     @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{orderItemSeqId}")
     @Transactional(readOnly = true)
     public OrderItemShipGroupAssociationStateDto getOrderItemShipGroupAssociation(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") String orderShipGroupShipGroupSeqId, @PathVariable("orderItemSeqId") String orderItemSeqId) {
-        
+        try {
 
             OrderItemShipGroupAssociationState state = orderApplicationService.getOrderItemShipGroupAssociation(orderId, orderShipGroupShipGroupSeqId, orderItemSeqId);
             if (state == null) { return null; }
@@ -939,7 +927,7 @@ public class OrderHeaderResource {
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -952,7 +940,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderItemShipGroupAssociationDto.MergePatchOrderItemShipGroupAssociationDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -966,7 +954,7 @@ public class OrderHeaderResource {
             mergePatchOrderShipGroup.getOrderItemShipGroupAssociationCommands().add(mergePatchOrderItemShipGroupAssociation);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -978,7 +966,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -996,7 +984,7 @@ public class OrderHeaderResource {
             mergePatchOrderShipGroup.getOrderItemShipGroupAssociationCommands().add(removeOrderItemShipGroupAssociation);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -1009,10 +997,10 @@ public class OrderHeaderResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        
+        try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderHeaderResourceUtils.getOrderItemShipGroupAssociationFilterPropertyName(kv.getKey()) != null)
@@ -1030,7 +1018,7 @@ public class OrderHeaderResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toOrderItemShipGroupAssociationStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -1043,7 +1031,7 @@ public class OrderHeaderResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchOrderItemShipGroupAssociationDto.CreateOrderItemShipGroupAssociationDto body) {
-        
+        try {
             OrderCommand.MergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
             mergePatchOrder.setOrderId(orderId);
             mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -1056,7 +1044,7 @@ public class OrderHeaderResource {
             mergePatchOrderShipGroup.getOrderItemShipGroupAssociationCommands().add(createOrderItemShipGroupAssociation);
             mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(mergePatchOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

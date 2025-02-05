@@ -101,7 +101,7 @@ public abstract class AbstractFacilityContactMechAggregate extends AbstractAggre
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected FacilityContactMechPurposeEvent.FacilityContactMechPurposeStateCreated mapCreate(FacilityContactMechPurposeCommand.CreateFacilityContactMechPurpose c, FacilityContactMechCommand outerCommand, Long version, FacilityContactMechState outerState) {

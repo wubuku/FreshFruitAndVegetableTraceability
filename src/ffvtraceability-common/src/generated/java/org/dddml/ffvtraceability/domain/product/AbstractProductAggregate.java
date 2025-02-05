@@ -306,7 +306,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         if (remove != null) {
             return mapRemove(remove, outerCommand, version, outerState);
         }
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected GoodIdentificationEvent.GoodIdentificationStateCreated mapCreate(GoodIdentificationCommand.CreateGoodIdentification c, ProductCommand outerCommand, Long version, ProductState outerState) {

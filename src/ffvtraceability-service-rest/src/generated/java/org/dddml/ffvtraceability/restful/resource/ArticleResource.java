@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class ArticleResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private ArticleApplicationService articleApplicationService;
@@ -61,14 +49,14 @@ public class ArticleResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<ArticleState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ArticleResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class ArticleResource {
             }
             return dtoConverter.toArticleStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class ArticleResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<ArticleState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ArticleResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class ArticleResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class ArticleResource {
     @GetMapping("{articleId}")
     @Transactional(readOnly = true)
     public ArticleStateDto get(@PathVariable("articleId") Long articleId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             Long idObj = articleId;
             ArticleState state = articleApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class ArticleResource {
             }
             return dtoConverter.toArticleStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class ArticleResource {
             count = articleApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,13 +177,13 @@ public class ArticleResource {
      */
     @PostMapping @ResponseStatus(HttpStatus.CREATED)
     public Long post(@RequestBody CreateOrMergePatchArticleDto.CreateArticleDto value,  HttpServletResponse response) {
-        
+        try {
             ArticleCommand.CreateArticle cmd = value;//.toCreateArticle();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             Long idObj = articleApplicationService.createWithoutId(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -205,7 +193,7 @@ public class ArticleResource {
      */
     @PutMapping("{articleId}")
     public void put(@PathVariable("articleId") Long articleId, @RequestBody CreateOrMergePatchArticleDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 ArticleCommand.MergePatchArticle cmd = (ArticleCommand.MergePatchArticle) value.toSubclass();
@@ -215,7 +203,7 @@ public class ArticleResource {
                 return;
             }
             throw DomainError.named("unsupportedOperation", "Unsupported HTTP PUT to create, aggregate Id %1$s", articleId);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -225,21 +213,21 @@ public class ArticleResource {
      */
     @PatchMapping("{articleId}")
     public void patch(@PathVariable("articleId") Long articleId, @RequestBody CreateOrMergePatchArticleDto.MergePatchArticleDto value) {
-        
+        try {
 
             ArticleCommand.MergePatchArticle cmd = value;//.toMergePatchArticle();
             ArticleResourceUtils.setNullIdOrThrowOnInconsistentIds(articleId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
     @PreAuthorize("hasAnyAuthority('ARTICLE_UPDATE-BODY')")
     @PutMapping("{articleId}/_commands/UpdateBody")
     public void updateBody(@PathVariable("articleId") Long articleId, @RequestBody ArticleCommands.UpdateBody content) {
-        
+        try {
 
             ArticleCommands.UpdateBody cmd = content;//.toUpdateBody();
             Long idObj = articleId;
@@ -251,12 +239,12 @@ public class ArticleResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             ArticleMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -264,25 +252,25 @@ public class ArticleResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{articleId}/_events/{version}")
     @Transactional(readOnly = true)
     public ArticleEvent getEvent(@PathVariable("articleId") Long articleId, @PathVariable("version") long version) {
-        
+        try {
 
             Long idObj = articleId;
             //ArticleStateEventDtoConverter dtoConverter = getArticleStateEventDtoConverter();
             return articleApplicationService.getEvent(idObj, version);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{articleId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public ArticleStateDto getHistoryState(@PathVariable("articleId") Long articleId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
 
             Long idObj = articleId;
             ArticleStateDto.DtoConverter dtoConverter = new ArticleStateDto.DtoConverter();
@@ -293,7 +281,7 @@ public class ArticleResource {
             }
             return dtoConverter.toArticleStateDto(articleApplicationService.getHistoryState(idObj, version));
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -303,7 +291,7 @@ public class ArticleResource {
     @GetMapping("{articleId}/Comments/{commentSeqId}")
     @Transactional(readOnly = true)
     public CommentStateDto getComment(@PathVariable("articleId") Long articleId, @PathVariable("commentSeqId") Long commentSeqId) {
-        
+        try {
 
             CommentState state = articleApplicationService.getComment(articleId, commentSeqId);
             if (state == null) { return null; }
@@ -312,7 +300,7 @@ public class ArticleResource {
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -325,7 +313,7 @@ public class ArticleResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchCommentDto.MergePatchCommentDto body) {
-        
+        try {
             ArticleCommand.MergePatchArticle mergePatchArticle = new CreateOrMergePatchArticleDto.MergePatchArticleDto();
             mergePatchArticle.setArticleId(articleId);
             mergePatchArticle.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -336,7 +324,7 @@ public class ArticleResource {
             mergePatchArticle.getCommentCommands().add(mergePatchComment);
             mergePatchArticle.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(mergePatchArticle);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -348,7 +336,7 @@ public class ArticleResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
             ArticleCommand.MergePatchArticle mergePatchArticle = new CreateOrMergePatchArticleDto.MergePatchArticleDto();
             mergePatchArticle.setArticleId(articleId);
             mergePatchArticle.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -363,7 +351,7 @@ public class ArticleResource {
             mergePatchArticle.getCommentCommands().add(removeComment);
             mergePatchArticle.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(mergePatchArticle);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -376,10 +364,10 @@ public class ArticleResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        
+        try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ArticleResourceUtils.getCommentFilterPropertyName(kv.getKey()) != null)
@@ -397,7 +385,7 @@ public class ArticleResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toCommentStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -410,7 +398,7 @@ public class ArticleResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchCommentDto.CreateCommentDto body) {
-        
+        try {
             ArticleCommand.MergePatchArticle mergePatchArticle = new AbstractArticleCommand.SimpleMergePatchArticle();
             mergePatchArticle.setArticleId(articleId);
             mergePatchArticle.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -420,7 +408,7 @@ public class ArticleResource {
             mergePatchArticle.getCommentCommands().add(createComment);
             mergePatchArticle.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(mergePatchArticle);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

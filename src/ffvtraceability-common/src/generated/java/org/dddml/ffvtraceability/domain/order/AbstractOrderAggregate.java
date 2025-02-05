@@ -228,7 +228,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected OrderRoleEvent.OrderRoleStateCreated mapCreate(OrderRoleCommand.CreateOrderRole c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
@@ -270,7 +270,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected OrderContactMechEvent.OrderContactMechStateCreated mapCreate(OrderContactMechCommand.CreateOrderContactMech c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
@@ -319,7 +319,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         if (remove != null) {
             return mapRemove(remove, outerCommand, version, outerState);
         }
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected OrderItemEvent.OrderItemStateCreated mapCreate(OrderItemCommand.CreateOrderItem c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
@@ -499,7 +499,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected OrderAdjustmentEvent.OrderAdjustmentStateCreated mapCreate(OrderAdjustmentCommand.CreateOrderAdjustment c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
@@ -631,7 +631,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected OrderShipGroupEvent.OrderShipGroupStateCreated mapCreate(OrderShipGroupCommand.CreateOrderShipGroup c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
@@ -755,7 +755,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateCreated mapCreate(OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation c, OrderShipGroupCommand outerCommand, Long version, OrderShipGroupState outerState) {

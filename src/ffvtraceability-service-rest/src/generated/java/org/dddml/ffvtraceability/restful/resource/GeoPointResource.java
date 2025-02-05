@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class GeoPointResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private GeoPointApplicationService geoPointApplicationService;
@@ -61,14 +49,14 @@ public class GeoPointResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<GeoPointState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> GeoPointResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class GeoPointResource {
             }
             return dtoConverter.toGeoPointStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class GeoPointResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<GeoPointState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> GeoPointResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class GeoPointResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class GeoPointResource {
     @GetMapping("{geoPointId}")
     @Transactional(readOnly = true)
     public GeoPointStateDto get(@PathVariable("geoPointId") String geoPointId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = geoPointId;
             GeoPointState state = geoPointApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class GeoPointResource {
             }
             return dtoConverter.toGeoPointStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class GeoPointResource {
             count = geoPointApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class GeoPointResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchGeoPointDto.CreateGeoPointDto value,  HttpServletResponse response) {
-        
+        try {
             GeoPointCommand.CreateGeoPoint cmd = value;//.toCreateGeoPoint();
             if (cmd.getGeoPointId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "GeoPoint");
@@ -199,7 +187,7 @@ public class GeoPointResource {
             geoPointApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class GeoPointResource {
      */
     @PutMapping("{geoPointId}")
     public void put(@PathVariable("geoPointId") String geoPointId, @RequestBody CreateOrMergePatchGeoPointDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 GeoPointCommand.MergePatchGeoPoint cmd = (GeoPointCommand.MergePatchGeoPoint) value.toSubclass();
@@ -225,7 +213,7 @@ public class GeoPointResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             geoPointApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,19 +223,19 @@ public class GeoPointResource {
      */
     @PatchMapping("{geoPointId}")
     public void patch(@PathVariable("geoPointId") String geoPointId, @RequestBody CreateOrMergePatchGeoPointDto.MergePatchGeoPointDto value) {
-        
+        try {
 
             GeoPointCommand.MergePatchGeoPoint cmd = value;//.toMergePatchGeoPoint();
             GeoPointResourceUtils.setNullIdOrThrowOnInconsistentIds(geoPointId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             geoPointApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             GeoPointMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -255,7 +243,7 @@ public class GeoPointResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

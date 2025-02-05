@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class ProductCategoryResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private ProductCategoryApplicationService productCategoryApplicationService;
@@ -61,14 +49,14 @@ public class ProductCategoryResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<ProductCategoryState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ProductCategoryResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class ProductCategoryResource {
             }
             return dtoConverter.toProductCategoryStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class ProductCategoryResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<ProductCategoryState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ProductCategoryResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class ProductCategoryResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class ProductCategoryResource {
     @GetMapping("{productCategoryId}")
     @Transactional(readOnly = true)
     public ProductCategoryStateDto get(@PathVariable("productCategoryId") String productCategoryId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = productCategoryId;
             ProductCategoryState state = productCategoryApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class ProductCategoryResource {
             }
             return dtoConverter.toProductCategoryStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class ProductCategoryResource {
             count = productCategoryApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class ProductCategoryResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchProductCategoryDto.CreateProductCategoryDto value,  HttpServletResponse response) {
-        
+        try {
             ProductCategoryCommand.CreateProductCategory cmd = value;//.toCreateProductCategory();
             if (cmd.getProductCategoryId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ProductCategory");
@@ -199,7 +187,7 @@ public class ProductCategoryResource {
             productCategoryApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class ProductCategoryResource {
      */
     @PutMapping("{productCategoryId}")
     public void put(@PathVariable("productCategoryId") String productCategoryId, @RequestBody CreateOrMergePatchProductCategoryDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 ProductCategoryCommand.MergePatchProductCategory cmd = (ProductCategoryCommand.MergePatchProductCategory) value.toSubclass();
@@ -225,7 +213,7 @@ public class ProductCategoryResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             productCategoryApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,19 +223,19 @@ public class ProductCategoryResource {
      */
     @PatchMapping("{productCategoryId}")
     public void patch(@PathVariable("productCategoryId") String productCategoryId, @RequestBody CreateOrMergePatchProductCategoryDto.MergePatchProductCategoryDto value) {
-        
+        try {
 
             ProductCategoryCommand.MergePatchProductCategory cmd = value;//.toMergePatchProductCategory();
             ProductCategoryResourceUtils.setNullIdOrThrowOnInconsistentIds(productCategoryId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             productCategoryApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             ProductCategoryMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -255,25 +243,25 @@ public class ProductCategoryResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{productCategoryId}/_events/{version}")
     @Transactional(readOnly = true)
     public ProductCategoryEvent getEvent(@PathVariable("productCategoryId") String productCategoryId, @PathVariable("version") long version) {
-        
+        try {
 
             String idObj = productCategoryId;
             //ProductCategoryStateEventDtoConverter dtoConverter = getProductCategoryStateEventDtoConverter();
             return productCategoryApplicationService.getEvent(idObj, version);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{productCategoryId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public ProductCategoryStateDto getHistoryState(@PathVariable("productCategoryId") String productCategoryId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
 
             String idObj = productCategoryId;
             ProductCategoryStateDto.DtoConverter dtoConverter = new ProductCategoryStateDto.DtoConverter();
@@ -284,21 +272,21 @@ public class ProductCategoryResource {
             }
             return dtoConverter.toProductCategoryStateDto(productCategoryApplicationService.getHistoryState(idObj, version));
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{productCategoryId}/ChildProductCategories")
     @Transactional(readOnly = true)
     public ProductCategoryStateDto[] getChildProductCategories(String productCategoryId)
     {
-        
+        try {
             String idObj = productCategoryId;
             Iterable<ProductCategoryState> states = productCategoryApplicationService.getChildProductCategories(idObj);
             if (states == null) { return null; }
             ProductCategoryStateDto.DtoConverter dtoConverter = new ProductCategoryStateDto.DtoConverter();
             dtoConverter.setAllFieldsReturned(true);
             return dtoConverter.toProductCategoryStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

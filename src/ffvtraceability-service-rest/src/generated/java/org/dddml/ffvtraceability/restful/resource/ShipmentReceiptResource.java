@@ -34,18 +34,6 @@ import org.slf4j.LoggerFactory;
 public class ShipmentReceiptResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private ShipmentReceiptApplicationService shipmentReceiptApplicationService;
@@ -63,14 +51,14 @@ public class ShipmentReceiptResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<ShipmentReceiptState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ShipmentReceiptResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -91,7 +79,7 @@ public class ShipmentReceiptResource {
             }
             return dtoConverter.toShipmentReceiptStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -105,13 +93,13 @@ public class ShipmentReceiptResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<ShipmentReceiptState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ShipmentReceiptResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -136,7 +124,7 @@ public class ShipmentReceiptResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -146,7 +134,7 @@ public class ShipmentReceiptResource {
     @GetMapping("{receiptId}")
     @Transactional(readOnly = true)
     public ShipmentReceiptStateDto get(@PathVariable("receiptId") String receiptId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = receiptId;
             ShipmentReceiptState state = shipmentReceiptApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -159,18 +147,18 @@ public class ShipmentReceiptResource {
             }
             return dtoConverter.toShipmentReceiptStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -181,7 +169,7 @@ public class ShipmentReceiptResource {
             count = shipmentReceiptApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -191,7 +179,7 @@ public class ShipmentReceiptResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchShipmentReceiptDto.CreateShipmentReceiptDto value,  HttpServletResponse response) {
-        
+        try {
             ShipmentReceiptCommand.CreateShipmentReceipt cmd = value;//.toCreateShipmentReceipt();
             if (cmd.getReceiptId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ShipmentReceipt");
@@ -201,7 +189,7 @@ public class ShipmentReceiptResource {
             shipmentReceiptApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -211,7 +199,7 @@ public class ShipmentReceiptResource {
      */
     @PutMapping("{receiptId}")
     public void put(@PathVariable("receiptId") String receiptId, @RequestBody CreateOrMergePatchShipmentReceiptDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 ShipmentReceiptCommand.MergePatchShipmentReceipt cmd = (ShipmentReceiptCommand.MergePatchShipmentReceipt) value.toSubclass();
@@ -227,7 +215,7 @@ public class ShipmentReceiptResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -237,14 +225,14 @@ public class ShipmentReceiptResource {
      */
     @PatchMapping("{receiptId}")
     public void patch(@PathVariable("receiptId") String receiptId, @RequestBody CreateOrMergePatchShipmentReceiptDto.MergePatchShipmentReceiptDto value) {
-        
+        try {
 
             ShipmentReceiptCommand.MergePatchShipmentReceipt cmd = value;//.toMergePatchShipmentReceipt();
             ShipmentReceiptResourceUtils.setNullIdOrThrowOnInconsistentIds(receiptId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -256,7 +244,7 @@ public class ShipmentReceiptResource {
                        @NotNull @RequestParam(value = "commandId", required = false) String commandId,
                        @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
 
             ShipmentReceiptCommand.DeleteShipmentReceipt deleteCmd = new DeleteShipmentReceiptDto();
 
@@ -267,12 +255,12 @@ public class ShipmentReceiptResource {
             deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(deleteCmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             ShipmentReceiptMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -280,25 +268,25 @@ public class ShipmentReceiptResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{receiptId}/_events/{version}")
     @Transactional(readOnly = true)
     public ShipmentReceiptEvent getEvent(@PathVariable("receiptId") String receiptId, @PathVariable("version") long version) {
-        
+        try {
 
             String idObj = receiptId;
             //ShipmentReceiptStateEventDtoConverter dtoConverter = getShipmentReceiptStateEventDtoConverter();
             return shipmentReceiptApplicationService.getEvent(idObj, version);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{receiptId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public ShipmentReceiptStateDto getHistoryState(@PathVariable("receiptId") String receiptId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
 
             String idObj = receiptId;
             ShipmentReceiptStateDto.DtoConverter dtoConverter = new ShipmentReceiptStateDto.DtoConverter();
@@ -309,7 +297,7 @@ public class ShipmentReceiptResource {
             }
             return dtoConverter.toShipmentReceiptStateDto(shipmentReceiptApplicationService.getHistoryState(idObj, version));
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -319,16 +307,16 @@ public class ShipmentReceiptResource {
     @GetMapping("{receiptId}/ShipmentReceiptRoles/{partyRoleId}")
     @Transactional(readOnly = true)
     public ShipmentReceiptRoleStateDto getShipmentReceiptRole(@PathVariable("receiptId") String receiptId, @PathVariable("partyRoleId") String partyRoleId) {
-        
+        try {
 
-            ShipmentReceiptRoleState state = shipmentReceiptApplicationService.getShipmentReceiptRole(receiptId, deserializeJsonArgument(partyRoleId, PartyRoleId.class));
+            ShipmentReceiptRoleState state = shipmentReceiptApplicationService.getShipmentReceiptRole(receiptId, new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             if (state == null) { return null; }
             ShipmentReceiptRoleStateDto.DtoConverter dtoConverter = new ShipmentReceiptRoleStateDto.DtoConverter();
             ShipmentReceiptRoleStateDto stateDto = dtoConverter.toShipmentReceiptRoleStateDto(state);
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -341,18 +329,18 @@ public class ShipmentReceiptResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchShipmentReceiptRoleDto.MergePatchShipmentReceiptRoleDto body) {
-        
+        try {
             ShipmentReceiptCommand.MergePatchShipmentReceipt mergePatchShipmentReceipt = new CreateOrMergePatchShipmentReceiptDto.MergePatchShipmentReceiptDto();
             mergePatchShipmentReceipt.setReceiptId(receiptId);
             mergePatchShipmentReceipt.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { mergePatchShipmentReceipt.setVersion(version); }
             mergePatchShipmentReceipt.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             ShipmentReceiptRoleCommand.MergePatchShipmentReceiptRole mergePatchShipmentReceiptRole = body;//.toMergePatchShipmentReceiptRole();
-            mergePatchShipmentReceiptRole.setPartyRoleId(deserializeJsonArgument(partyRoleId, PartyRoleId.class));
+            mergePatchShipmentReceiptRole.setPartyRoleId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             mergePatchShipmentReceipt.getShipmentReceiptRoleCommands().add(mergePatchShipmentReceiptRole);
             mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -364,7 +352,7 @@ public class ShipmentReceiptResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
             ShipmentReceiptCommand.MergePatchShipmentReceipt mergePatchShipmentReceipt = new CreateOrMergePatchShipmentReceiptDto.MergePatchShipmentReceiptDto();
             mergePatchShipmentReceipt.setReceiptId(receiptId);
             mergePatchShipmentReceipt.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -375,11 +363,11 @@ public class ShipmentReceiptResource {
             }
             mergePatchShipmentReceipt.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             ShipmentReceiptRoleCommand.RemoveShipmentReceiptRole removeShipmentReceiptRole = new RemoveShipmentReceiptRoleDto();
-            removeShipmentReceiptRole.setPartyRoleId(deserializeJsonArgument(partyRoleId, PartyRoleId.class));
+            removeShipmentReceiptRole.setPartyRoleId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(partyRoleId, PartyRoleId.class));
             mergePatchShipmentReceipt.getShipmentReceiptRoleCommands().add(removeShipmentReceiptRole);
             mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -392,10 +380,10 @@ public class ShipmentReceiptResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        
+        try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ShipmentReceiptResourceUtils.getShipmentReceiptRoleFilterPropertyName(kv.getKey()) != null)
@@ -413,7 +401,7 @@ public class ShipmentReceiptResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toShipmentReceiptRoleStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -426,7 +414,7 @@ public class ShipmentReceiptResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchShipmentReceiptRoleDto.CreateShipmentReceiptRoleDto body) {
-        
+        try {
             ShipmentReceiptCommand.MergePatchShipmentReceipt mergePatchShipmentReceipt = new AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt();
             mergePatchShipmentReceipt.setReceiptId(receiptId);
             mergePatchShipmentReceipt.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -436,7 +424,7 @@ public class ShipmentReceiptResource {
             mergePatchShipmentReceipt.getShipmentReceiptRoleCommands().add(createShipmentReceiptRole);
             mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -446,16 +434,16 @@ public class ShipmentReceiptResource {
     @GetMapping("{receiptId}/ShipmentReceiptOrderAllocations/{orderItemId}")
     @Transactional(readOnly = true)
     public ShipmentReceiptOrderAllocationStateDto getShipmentReceiptOrderAllocation(@PathVariable("receiptId") String receiptId, @PathVariable("orderItemId") String orderItemId) {
-        
+        try {
 
-            ShipmentReceiptOrderAllocationState state = shipmentReceiptApplicationService.getShipmentReceiptOrderAllocation(receiptId, deserializeJsonArgument(orderItemId, OrderItemId.class));
+            ShipmentReceiptOrderAllocationState state = shipmentReceiptApplicationService.getShipmentReceiptOrderAllocation(receiptId, new com.fasterxml.jackson.databind.ObjectMapper().readValue(orderItemId, OrderItemId.class));
             if (state == null) { return null; }
             ShipmentReceiptOrderAllocationStateDto.DtoConverter dtoConverter = new ShipmentReceiptOrderAllocationStateDto.DtoConverter();
             ShipmentReceiptOrderAllocationStateDto stateDto = dtoConverter.toShipmentReceiptOrderAllocationStateDto(state);
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -468,18 +456,18 @@ public class ShipmentReceiptResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchShipmentReceiptOrderAllocationDto.MergePatchShipmentReceiptOrderAllocationDto body) {
-        
+        try {
             ShipmentReceiptCommand.MergePatchShipmentReceipt mergePatchShipmentReceipt = new CreateOrMergePatchShipmentReceiptDto.MergePatchShipmentReceiptDto();
             mergePatchShipmentReceipt.setReceiptId(receiptId);
             mergePatchShipmentReceipt.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { mergePatchShipmentReceipt.setVersion(version); }
             mergePatchShipmentReceipt.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             ShipmentReceiptOrderAllocationCommand.MergePatchShipmentReceiptOrderAllocation mergePatchShipmentReceiptOrderAllocation = body;//.toMergePatchShipmentReceiptOrderAllocation();
-            mergePatchShipmentReceiptOrderAllocation.setOrderItemId(deserializeJsonArgument(orderItemId, OrderItemId.class));
+            mergePatchShipmentReceiptOrderAllocation.setOrderItemId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(orderItemId, OrderItemId.class));
             mergePatchShipmentReceipt.getShipmentReceiptOrderAllocationCommands().add(mergePatchShipmentReceiptOrderAllocation);
             mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -491,7 +479,7 @@ public class ShipmentReceiptResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
             ShipmentReceiptCommand.MergePatchShipmentReceipt mergePatchShipmentReceipt = new CreateOrMergePatchShipmentReceiptDto.MergePatchShipmentReceiptDto();
             mergePatchShipmentReceipt.setReceiptId(receiptId);
             mergePatchShipmentReceipt.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -502,11 +490,11 @@ public class ShipmentReceiptResource {
             }
             mergePatchShipmentReceipt.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             ShipmentReceiptOrderAllocationCommand.RemoveShipmentReceiptOrderAllocation removeShipmentReceiptOrderAllocation = new RemoveShipmentReceiptOrderAllocationDto();
-            removeShipmentReceiptOrderAllocation.setOrderItemId(deserializeJsonArgument(orderItemId, OrderItemId.class));
+            removeShipmentReceiptOrderAllocation.setOrderItemId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(orderItemId, OrderItemId.class));
             mergePatchShipmentReceipt.getShipmentReceiptOrderAllocationCommands().add(removeShipmentReceiptOrderAllocation);
             mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -519,10 +507,10 @@ public class ShipmentReceiptResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        
+        try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ShipmentReceiptResourceUtils.getShipmentReceiptOrderAllocationFilterPropertyName(kv.getKey()) != null)
@@ -540,7 +528,7 @@ public class ShipmentReceiptResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toShipmentReceiptOrderAllocationStateDtoArray(states);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -553,7 +541,7 @@ public class ShipmentReceiptResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchShipmentReceiptOrderAllocationDto.CreateShipmentReceiptOrderAllocationDto body) {
-        
+        try {
             ShipmentReceiptCommand.MergePatchShipmentReceipt mergePatchShipmentReceipt = new AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt();
             mergePatchShipmentReceipt.setReceiptId(receiptId);
             mergePatchShipmentReceipt.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -563,7 +551,7 @@ public class ShipmentReceiptResource {
             mergePatchShipmentReceipt.getShipmentReceiptOrderAllocationCommands().add(createShipmentReceiptOrderAllocation);
             mergePatchShipmentReceipt.setRequesterId(SecurityContextUtil.getRequesterId());
             shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

@@ -48,6 +48,19 @@ public class BffReceivingServiceCommands {
         }
 
         /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
          * Supplier Id
          */
         private String supplierId;

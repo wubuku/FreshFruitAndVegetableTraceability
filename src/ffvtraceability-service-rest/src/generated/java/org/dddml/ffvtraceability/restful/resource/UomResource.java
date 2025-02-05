@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class UomResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private UomApplicationService uomApplicationService;
@@ -61,14 +49,14 @@ public class UomResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<UomState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> UomResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class UomResource {
             }
             return dtoConverter.toUomStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class UomResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<UomState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> UomResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class UomResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class UomResource {
     @GetMapping("{uomId}")
     @Transactional(readOnly = true)
     public UomStateDto get(@PathVariable("uomId") String uomId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = uomId;
             UomState state = uomApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class UomResource {
             }
             return dtoConverter.toUomStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class UomResource {
             count = uomApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class UomResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchUomDto.CreateUomDto value,  HttpServletResponse response) {
-        
+        try {
             UomCommand.CreateUom cmd = value;//.toCreateUom();
             if (cmd.getUomId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Uom");
@@ -199,7 +187,7 @@ public class UomResource {
             uomApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class UomResource {
      */
     @PutMapping("{uomId}")
     public void put(@PathVariable("uomId") String uomId, @RequestBody CreateOrMergePatchUomDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 UomCommand.MergePatchUom cmd = (UomCommand.MergePatchUom) value.toSubclass();
@@ -225,7 +213,7 @@ public class UomResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             uomApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,19 +223,19 @@ public class UomResource {
      */
     @PatchMapping("{uomId}")
     public void patch(@PathVariable("uomId") String uomId, @RequestBody CreateOrMergePatchUomDto.MergePatchUomDto value) {
-        
+        try {
 
             UomCommand.MergePatchUom cmd = value;//.toMergePatchUom();
             UomResourceUtils.setNullIdOrThrowOnInconsistentIds(uomId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             uomApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             UomMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -255,25 +243,25 @@ public class UomResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{uomId}/_events/{version}")
     @Transactional(readOnly = true)
     public UomEvent getEvent(@PathVariable("uomId") String uomId, @PathVariable("version") long version) {
-        
+        try {
 
             String idObj = uomId;
             //UomStateEventDtoConverter dtoConverter = getUomStateEventDtoConverter();
             return uomApplicationService.getEvent(idObj, version);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{uomId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public UomStateDto getHistoryState(@PathVariable("uomId") String uomId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
 
             String idObj = uomId;
             UomStateDto.DtoConverter dtoConverter = new UomStateDto.DtoConverter();
@@ -284,7 +272,7 @@ public class UomResource {
             }
             return dtoConverter.toUomStateDto(uomApplicationService.getHistoryState(idObj, version));
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

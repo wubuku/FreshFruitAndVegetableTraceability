@@ -39,10 +39,10 @@ public class BffDocumentServiceResource {
         BffDocumentServiceCommands.GetDocuments getDocuments = new BffDocumentServiceCommands.GetDocuments();
         getDocuments.setPage(page);
         getDocuments.setSize(size);
-        
+        try {
         getDocuments.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffDocumentApplicationService.when(getDocuments);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{documentId}")
@@ -51,10 +51,10 @@ public class BffDocumentServiceResource {
     ) {
         BffDocumentServiceCommands.GetDocument getDocument = new BffDocumentServiceCommands.GetDocument();
         getDocument.setDocumentId(documentId);
-        
+        try {
         getDocument.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffDocumentApplicationService.when(getDocument);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping
@@ -63,10 +63,10 @@ public class BffDocumentServiceResource {
     ) {
         BffDocumentServiceCommands.CreateDocument createDocument = new BffDocumentServiceCommands.CreateDocument();
         createDocument.setDocument(document);
-        
+        try {
         createDocument.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffDocumentApplicationService.when(createDocument);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PutMapping("{documentId}")
@@ -77,10 +77,10 @@ public class BffDocumentServiceResource {
         BffDocumentServiceCommands.UpdateDocument updateDocument = new BffDocumentServiceCommands.UpdateDocument();
         updateDocument.setDocumentId(documentId);
         updateDocument.setDocument(document);
-        
+        try {
         updateDocument.setRequesterId(SecurityContextUtil.getRequesterId());
         bffDocumentApplicationService.when(updateDocument);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 }

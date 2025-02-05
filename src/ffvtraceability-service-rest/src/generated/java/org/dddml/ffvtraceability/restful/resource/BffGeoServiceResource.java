@@ -35,20 +35,20 @@ public class BffGeoServiceResource {
     public BffGeoDto[] getAllNorthAmericanStatesAndProvinces(
     ) {
         BffGeoServiceCommands.GetAllNorthAmericanStatesAndProvinces getAllNorthAmericanStatesAndProvinces = new BffGeoServiceCommands.GetAllNorthAmericanStatesAndProvinces();
-        
+        try {
         getAllNorthAmericanStatesAndProvinces.setRequesterId(SecurityContextUtil.getRequesterId());
         return java.util.stream.StreamSupport.stream((bffGeoApplicationService.when(getAllNorthAmericanStatesAndProvinces)).spliterator(), false).collect(java.util.stream.Collectors.toList()).toArray(new BffGeoDto[0]);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("Countries")
     public BffGeoDto[] getCountries(
     ) {
         BffGeoServiceCommands.GetCountries getCountries = new BffGeoServiceCommands.GetCountries();
-        
+        try {
         getCountries.setRequesterId(SecurityContextUtil.getRequesterId());
         return java.util.stream.StreamSupport.stream((bffGeoApplicationService.when(getCountries)).spliterator(), false).collect(java.util.stream.Collectors.toList()).toArray(new BffGeoDto[0]);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("StatesAndProvinces")
@@ -57,10 +57,10 @@ public class BffGeoServiceResource {
     ) {
         BffGeoServiceCommands.GetStatesAndProvinces getStatesAndProvinces = new BffGeoServiceCommands.GetStatesAndProvinces();
         getStatesAndProvinces.setCountryId(countryId);
-        
+        try {
         getStatesAndProvinces.setRequesterId(SecurityContextUtil.getRequesterId());
         return java.util.stream.StreamSupport.stream((bffGeoApplicationService.when(getStatesAndProvinces)).spliterator(), false).collect(java.util.stream.Collectors.toList()).toArray(new BffGeoDto[0]);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 }

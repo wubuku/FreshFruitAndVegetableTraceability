@@ -580,7 +580,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected PartyIdentificationEvent.PartyIdentificationStateCreated mapCreate(PartyIdentificationCommand.CreatePartyIdentification c, PartyCommand outerCommand, Long version, PartyState outerState) {

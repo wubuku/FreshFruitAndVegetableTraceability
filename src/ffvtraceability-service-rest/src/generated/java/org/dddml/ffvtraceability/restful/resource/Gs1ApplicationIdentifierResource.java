@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class Gs1ApplicationIdentifierResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private Gs1ApplicationIdentifierApplicationService gs1ApplicationIdentifierApplicationService;
@@ -61,14 +49,14 @@ public class Gs1ApplicationIdentifierResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<Gs1ApplicationIdentifierState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> Gs1ApplicationIdentifierResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class Gs1ApplicationIdentifierResource {
             }
             return dtoConverter.toGs1ApplicationIdentifierStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class Gs1ApplicationIdentifierResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<Gs1ApplicationIdentifierState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> Gs1ApplicationIdentifierResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class Gs1ApplicationIdentifierResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class Gs1ApplicationIdentifierResource {
     @GetMapping("{applicationIdentifier}")
     @Transactional(readOnly = true)
     public Gs1ApplicationIdentifierStateDto get(@PathVariable("applicationIdentifier") String applicationIdentifier, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = applicationIdentifier;
             Gs1ApplicationIdentifierState state = gs1ApplicationIdentifierApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class Gs1ApplicationIdentifierResource {
             }
             return dtoConverter.toGs1ApplicationIdentifierStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class Gs1ApplicationIdentifierResource {
             count = gs1ApplicationIdentifierApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class Gs1ApplicationIdentifierResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchGs1ApplicationIdentifierDto.CreateGs1ApplicationIdentifierDto value,  HttpServletResponse response) {
-        
+        try {
             Gs1ApplicationIdentifierCommand.CreateGs1ApplicationIdentifier cmd = value;//.toCreateGs1ApplicationIdentifier();
             if (cmd.getApplicationIdentifier() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Gs1ApplicationIdentifier");
@@ -199,7 +187,7 @@ public class Gs1ApplicationIdentifierResource {
             gs1ApplicationIdentifierApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class Gs1ApplicationIdentifierResource {
      */
     @PutMapping("{applicationIdentifier}")
     public void put(@PathVariable("applicationIdentifier") String applicationIdentifier, @RequestBody CreateOrMergePatchGs1ApplicationIdentifierDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 Gs1ApplicationIdentifierCommand.MergePatchGs1ApplicationIdentifier cmd = (Gs1ApplicationIdentifierCommand.MergePatchGs1ApplicationIdentifier) value.toSubclass();
@@ -225,7 +213,7 @@ public class Gs1ApplicationIdentifierResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             gs1ApplicationIdentifierApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,19 +223,19 @@ public class Gs1ApplicationIdentifierResource {
      */
     @PatchMapping("{applicationIdentifier}")
     public void patch(@PathVariable("applicationIdentifier") String applicationIdentifier, @RequestBody CreateOrMergePatchGs1ApplicationIdentifierDto.MergePatchGs1ApplicationIdentifierDto value) {
-        
+        try {
 
             Gs1ApplicationIdentifierCommand.MergePatchGs1ApplicationIdentifier cmd = value;//.toMergePatchGs1ApplicationIdentifier();
             Gs1ApplicationIdentifierResourceUtils.setNullIdOrThrowOnInconsistentIds(applicationIdentifier, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             gs1ApplicationIdentifierApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             Gs1ApplicationIdentifierMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -255,7 +243,7 @@ public class Gs1ApplicationIdentifierResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

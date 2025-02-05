@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class ShippingDocumentResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private ShippingDocumentApplicationService shippingDocumentApplicationService;
@@ -61,14 +49,14 @@ public class ShippingDocumentResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<ShippingDocumentState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ShippingDocumentResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class ShippingDocumentResource {
             }
             return dtoConverter.toShippingDocumentStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class ShippingDocumentResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<ShippingDocumentState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ShippingDocumentResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class ShippingDocumentResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class ShippingDocumentResource {
     @GetMapping("{documentId}")
     @Transactional(readOnly = true)
     public ShippingDocumentStateDto get(@PathVariable("documentId") String documentId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             String idObj = documentId;
             ShippingDocumentState state = shippingDocumentApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class ShippingDocumentResource {
             }
             return dtoConverter.toShippingDocumentStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class ShippingDocumentResource {
             count = shippingDocumentApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class ShippingDocumentResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchShippingDocumentDto.CreateShippingDocumentDto value,  HttpServletResponse response) {
-        
+        try {
             ShippingDocumentCommand.CreateShippingDocument cmd = value;//.toCreateShippingDocument();
             if (cmd.getDocumentId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "ShippingDocument");
@@ -199,7 +187,7 @@ public class ShippingDocumentResource {
             shippingDocumentApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class ShippingDocumentResource {
      */
     @PutMapping("{documentId}")
     public void put(@PathVariable("documentId") String documentId, @RequestBody CreateOrMergePatchShippingDocumentDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 ShippingDocumentCommand.MergePatchShippingDocument cmd = (ShippingDocumentCommand.MergePatchShippingDocument) value.toSubclass();
@@ -225,7 +213,7 @@ public class ShippingDocumentResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             shippingDocumentApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,14 +223,14 @@ public class ShippingDocumentResource {
      */
     @PatchMapping("{documentId}")
     public void patch(@PathVariable("documentId") String documentId, @RequestBody CreateOrMergePatchShippingDocumentDto.MergePatchShippingDocumentDto value) {
-        
+        try {
 
             ShippingDocumentCommand.MergePatchShippingDocument cmd = value;//.toMergePatchShippingDocument();
             ShippingDocumentResourceUtils.setNullIdOrThrowOnInconsistentIds(documentId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             shippingDocumentApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -254,7 +242,7 @@ public class ShippingDocumentResource {
                        @NotNull @RequestParam(value = "commandId", required = false) String commandId,
                        @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        
+        try {
 
             ShippingDocumentCommand.DeleteShippingDocument deleteCmd = new DeleteShippingDocumentDto();
 
@@ -265,12 +253,12 @@ public class ShippingDocumentResource {
             deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
             shippingDocumentApplicationService.when(deleteCmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             ShippingDocumentMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -278,25 +266,25 @@ public class ShippingDocumentResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{documentId}/_events/{version}")
     @Transactional(readOnly = true)
     public ShippingDocumentEvent getEvent(@PathVariable("documentId") String documentId, @PathVariable("version") long version) {
-        
+        try {
 
             String idObj = documentId;
             //ShippingDocumentStateEventDtoConverter dtoConverter = getShippingDocumentStateEventDtoConverter();
             return shippingDocumentApplicationService.getEvent(idObj, version);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{documentId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public ShippingDocumentStateDto getHistoryState(@PathVariable("documentId") String documentId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
 
             String idObj = documentId;
             ShippingDocumentStateDto.DtoConverter dtoConverter = new ShippingDocumentStateDto.DtoConverter();
@@ -307,7 +295,7 @@ public class ShippingDocumentResource {
             }
             return dtoConverter.toShippingDocumentStateDto(shippingDocumentApplicationService.getHistoryState(idObj, version));
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 

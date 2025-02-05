@@ -48,10 +48,10 @@ public class BffPurchaseOrderServiceResource {
         getPurchaseOrders.setSupplierId(supplierId);
         getPurchaseOrders.setOrderDateFrom(orderDateFrom);
         getPurchaseOrders.setOrderDateTo(orderDateTo);
-        
+        try {
         getPurchaseOrders.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(getPurchaseOrders);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{orderId}")
@@ -62,10 +62,10 @@ public class BffPurchaseOrderServiceResource {
         BffPurchaseOrderServiceCommands.GetPurchaseOrder getPurchaseOrder = new BffPurchaseOrderServiceCommands.GetPurchaseOrder();
         getPurchaseOrder.setOrderId(orderId);
         getPurchaseOrder.setIncludesItemFulfillments(includesItemFulfillments);
-        
+        try {
         getPurchaseOrder.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(getPurchaseOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{orderId}/Items/{orderItemSeqId}")
@@ -78,10 +78,10 @@ public class BffPurchaseOrderServiceResource {
         getPurchaseOrderItem.setOrderId(orderId);
         getPurchaseOrderItem.setOrderItemSeqId(orderItemSeqId);
         getPurchaseOrderItem.setIncludesFulfillments(includesFulfillments);
-        
+        try {
         getPurchaseOrderItem.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(getPurchaseOrderItem);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{orderId}/Items/{orderItemSeqId}/OutstandingQuantity")
@@ -92,10 +92,10 @@ public class BffPurchaseOrderServiceResource {
         BffPurchaseOrderServiceCommands.GetPurchaseOrderItemOutstandingQuantity getPurchaseOrderItemOutstandingQuantity = new BffPurchaseOrderServiceCommands.GetPurchaseOrderItemOutstandingQuantity();
         getPurchaseOrderItemOutstandingQuantity.setOrderId(orderId);
         getPurchaseOrderItemOutstandingQuantity.setOrderItemSeqId(orderItemSeqId);
-        
+        try {
         getPurchaseOrderItemOutstandingQuantity.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(getPurchaseOrderItemOutstandingQuantity);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{orderId}/getOutstandingQuantityByProduct")
@@ -106,10 +106,10 @@ public class BffPurchaseOrderServiceResource {
         BffPurchaseOrderServiceCommands.GetPurchaseOrderProductOutstandingQuantityByProductId getPurchaseOrderProductOutstandingQuantityByProductId = new BffPurchaseOrderServiceCommands.GetPurchaseOrderProductOutstandingQuantityByProductId();
         getPurchaseOrderProductOutstandingQuantityByProductId.setOrderId(orderId);
         getPurchaseOrderProductOutstandingQuantityByProductId.setProductId(productId);
-        
+        try {
         getPurchaseOrderProductOutstandingQuantityByProductId.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(getPurchaseOrderProductOutstandingQuantityByProductId);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping
@@ -118,10 +118,10 @@ public class BffPurchaseOrderServiceResource {
     ) {
         BffPurchaseOrderServiceCommands.CreatePurchaseOrder createPurchaseOrder = new BffPurchaseOrderServiceCommands.CreatePurchaseOrder();
         createPurchaseOrder.setPurchaseOrder(purchaseOrder);
-        
+        try {
         createPurchaseOrder.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(createPurchaseOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PutMapping("{orderId}")
@@ -132,10 +132,10 @@ public class BffPurchaseOrderServiceResource {
         BffPurchaseOrderServiceCommands.UpdatePurchaseOrder updatePurchaseOrder = new BffPurchaseOrderServiceCommands.UpdatePurchaseOrder();
         updatePurchaseOrder.setOrderId(orderId);
         updatePurchaseOrder.setPurchaseOrder(purchaseOrder);
-        
+        try {
         updatePurchaseOrder.setRequesterId(SecurityContextUtil.getRequesterId());
         bffPurchaseOrderApplicationService.when(updatePurchaseOrder);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping("{orderId}/recalculateFulfillmentStatus")
@@ -144,10 +144,10 @@ public class BffPurchaseOrderServiceResource {
         @RequestBody BffPurchaseOrderServiceCommands.RecalculateFulfillmentStatus requestBody
     ) {
         requestBody.setOrderId(orderId);
-        
+        try {
         requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(requestBody);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping("{orderId}/Items")
@@ -158,10 +158,10 @@ public class BffPurchaseOrderServiceResource {
         BffPurchaseOrderServiceCommands.CreatePurchaseOrderItem createPurchaseOrderItem = new BffPurchaseOrderServiceCommands.CreatePurchaseOrderItem();
         createPurchaseOrderItem.setOrderId(orderId);
         createPurchaseOrderItem.setPurchaseOrderItem(purchaseOrderItem);
-        
+        try {
         createPurchaseOrderItem.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffPurchaseOrderApplicationService.when(createPurchaseOrderItem);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @DeleteMapping("{orderId}/Items/{orderItemSeqId}")
@@ -172,10 +172,10 @@ public class BffPurchaseOrderServiceResource {
         BffPurchaseOrderServiceCommands.DeletePurchaseOrderItem deletePurchaseOrderItem = new BffPurchaseOrderServiceCommands.DeletePurchaseOrderItem();
         deletePurchaseOrderItem.setOrderId(orderId);
         deletePurchaseOrderItem.setOrderItemSeqId(orderItemSeqId);
-        
+        try {
         deletePurchaseOrderItem.setRequesterId(SecurityContextUtil.getRequesterId());
         bffPurchaseOrderApplicationService.when(deletePurchaseOrderItem);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PutMapping("{orderId}/Items/{orderItemSeqId}")
@@ -186,10 +186,10 @@ public class BffPurchaseOrderServiceResource {
     ) {
         requestBody.setOrderId(orderId);
         requestBody.setOrderItemSeqId(orderItemSeqId);
-        
+        try {
         requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
         bffPurchaseOrderApplicationService.when(requestBody);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 }

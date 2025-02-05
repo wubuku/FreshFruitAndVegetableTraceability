@@ -43,10 +43,10 @@ public class BffUomServiceResource {
         getUnitsOfMeasure.setSize(size);
         getUnitsOfMeasure.setActive(active);
         getUnitsOfMeasure.setUomTypeId(uomTypeId);
-        
+        try {
         getUnitsOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffUomApplicationService.when(getUnitsOfMeasure);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{uomId}")
@@ -55,10 +55,10 @@ public class BffUomServiceResource {
     ) {
         BffUomServiceCommands.GetUnitOfMeasure getUnitOfMeasure = new BffUomServiceCommands.GetUnitOfMeasure();
         getUnitOfMeasure.setUomId(uomId);
-        
+        try {
         getUnitOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffUomApplicationService.when(getUnitOfMeasure);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping
@@ -67,10 +67,10 @@ public class BffUomServiceResource {
     ) {
         BffUomServiceCommands.CreateUnitOfMeasure createUnitOfMeasure = new BffUomServiceCommands.CreateUnitOfMeasure();
         createUnitOfMeasure.setUom(uom);
-        
+        try {
         createUnitOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffUomApplicationService.when(createUnitOfMeasure);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PutMapping("{uomId}")
@@ -81,10 +81,10 @@ public class BffUomServiceResource {
         BffUomServiceCommands.UpdateUnitOfMeasure updateUnitOfMeasure = new BffUomServiceCommands.UpdateUnitOfMeasure();
         updateUnitOfMeasure.setUomId(uomId);
         updateUnitOfMeasure.setUom(uom);
-        
+        try {
         updateUnitOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
         bffUomApplicationService.when(updateUnitOfMeasure);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PutMapping("{uomId}/active")
@@ -95,10 +95,10 @@ public class BffUomServiceResource {
         BffUomServiceCommands.ActivateUnitOfMeasure activateUnitOfMeasure = new BffUomServiceCommands.ActivateUnitOfMeasure();
         activateUnitOfMeasure.setUomId(uomId);
         activateUnitOfMeasure.setActive(active);
-        
+        try {
         activateUnitOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
         bffUomApplicationService.when(activateUnitOfMeasure);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @PostMapping("batchAddUnitsOfMeasure")
@@ -107,10 +107,10 @@ public class BffUomServiceResource {
     ) {
         BffUomServiceCommands.BatchAddUnitsOfMeasure batchAddUnitsOfMeasure = new BffUomServiceCommands.BatchAddUnitsOfMeasure();
         batchAddUnitsOfMeasure.setUnitsOfMeasure(unitsOfMeasure);
-        
+        try {
         batchAddUnitsOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
         bffUomApplicationService.when(batchAddUnitsOfMeasure);
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 }

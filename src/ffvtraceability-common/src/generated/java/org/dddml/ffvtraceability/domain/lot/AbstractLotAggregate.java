@@ -128,7 +128,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
+        throw new UnsupportedOperationException();
     }
 
     protected LotIdentificationEvent.LotIdentificationStateCreated mapCreate(LotIdentificationCommand.CreateLotIdentification c, LotCommand outerCommand, Long version, LotState outerState) {

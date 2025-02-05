@@ -97,6 +97,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                     OR sr.product_id LIKE CONCAT(:documentIdOrItem, '%')
                     OR gi.id_value LIKE CONCAT(:documentIdOrItem, '%'))
                     AND (:supplierId IS NULL OR s.party_id_from = :supplierId)
+                    AND (:facilityId IS NULL OR s.destination_facility_id = :facilityId)
                     AND (CAST(:receivedAtFrom AS timestamptz) IS NULL OR s.created_at >= :receivedAtFrom)
                     AND (CAST(:receivedAtTo AS timestamptz) IS NULL OR s.created_at <= :receivedAtTo)
                 ORDER BY s.created_at DESC
@@ -113,6 +114,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             @Param("pageSize") int pageSize,
             @Param("documentIdOrItem") String documentIdOrItem,
             @Param("supplierId") String supplierId,
+            @Param("facilityId") String facilityId,
             @Param("receivedAtFrom") OffsetDateTime receivedAtFrom,
             @Param("receivedAtTo") OffsetDateTime receivedAtTo
     );
@@ -134,11 +136,13 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                   sr.product_id LIKE CONCAT(:documentIdOrItem, '%') OR
                   gi.id_value LIKE CONCAT(:documentIdOrItem, '%'))
                   AND (:supplierId IS NULL OR s.party_id_from = :supplierId)
+                  AND (:facilityId IS NULL OR s.destination_facility_id = :facilityId)
                   AND (CAST(:receivedAtFrom AS timestamptz) IS NULL OR s.created_at >= :receivedAtFrom)
                   AND (CAST(:receivedAtTo AS timestamptz) IS NULL OR s.created_at <= :receivedAtTo)
             """, nativeQuery = true)
     long countTotalShipments(@Param("documentIdOrItem") String documentIdOrItem,
                              @Param("supplierId") String supplierId,
+                             @Param("facilityId") String facilityId,
                              @Param("receivedAtFrom") OffsetDateTime receivedAtFrom,
                              @Param("receivedAtTo") OffsetDateTime receivedAtTo
     );
@@ -167,7 +171,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 sr.datetime_received as datetimeReceived
             FROM shipment s
             """ + RECEIPT_JOIN + COMMON_JOINS + """
-            WHERE sr.shipment_id = :documentId 
+            WHERE sr.shipment_id = :documentId
                 AND sr.receipt_id = :receiptId
             """, nativeQuery = true)
     BffReceivingDocumentItemProjection findReceivingItem(
@@ -197,7 +201,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
     List<BffReceivingDocumentItemProjection> findReceivingItemsByOrderId(@Param("orderId") String orderId);
 
     @Query(value = """
-            SELECT 
+            SELECT
                 oa.receipt_id as receiptId,
                 oa.quantity_allocated as allocatedQuantity,
                 sr1.datetime_received as receivedAt,

@@ -32,18 +32,6 @@ import org.slf4j.LoggerFactory;
 public class SupplierProductResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static CriterionDto deserializeCriterionDto(String filter) {
-        return deserializeJsonArgument(filter, CriterionDto.class);
-    }
-
-    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
-        try {
-            return new ObjectMapper().readValue(s, aClass);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
 
     @Autowired
     private SupplierProductApplicationService supplierProductApplicationService;
@@ -61,14 +49,14 @@ public class SupplierProductResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<SupplierProductState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> SupplierProductResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -89,7 +77,7 @@ public class SupplierProductResource {
             }
             return dtoConverter.toSupplierProductStateDtoArray(states);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -103,13 +91,13 @@ public class SupplierProductResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<SupplierProductState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> SupplierProductResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -134,7 +122,7 @@ public class SupplierProductResource {
             statePage.setNumber(page);
             return statePage;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     /**
@@ -144,7 +132,7 @@ public class SupplierProductResource {
     @GetMapping("{supplierProductTenantizedId}")
     @Transactional(readOnly = true)
     public SupplierProductStateDto get(@PathVariable("supplierProductTenantizedId") String supplierProductTenantizedId, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
             SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductTenantizedId);
             SupplierProductState state = supplierProductApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -157,18 +145,18 @@ public class SupplierProductResource {
             }
             return dtoConverter.toSupplierProductStateDto(state);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        
+        try {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = deserializeCriterionDto(filter);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -179,7 +167,7 @@ public class SupplierProductResource {
             count = supplierProductApplicationService.getCount(c);
             return count;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -189,7 +177,7 @@ public class SupplierProductResource {
      */
     @PostMapping @ResponseStatus(HttpStatus.CREATED)
     public SupplierProductAssocId post(@RequestBody CreateOrMergePatchSupplierProductDto.CreateSupplierProductDto value,  HttpServletResponse response) {
-        
+        try {
             SupplierProductCommand.CreateSupplierProduct cmd = value;//.toCreateSupplierProduct();
             if (cmd.getSupplierProductAssocId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "SupplierProduct");
@@ -199,7 +187,7 @@ public class SupplierProductResource {
             supplierProductApplicationService.when(cmd);
 
             return idObj;
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -209,7 +197,7 @@ public class SupplierProductResource {
      */
     @PutMapping("{supplierProductTenantizedId}")
     public void put(@PathVariable("supplierProductTenantizedId") String supplierProductTenantizedId, @RequestBody CreateOrMergePatchSupplierProductDto value) {
-        
+        try {
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 SupplierProductCommand.MergePatchSupplierProduct cmd = (SupplierProductCommand.MergePatchSupplierProduct) value.toSubclass();
@@ -225,7 +213,7 @@ public class SupplierProductResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             supplierProductApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
@@ -235,20 +223,20 @@ public class SupplierProductResource {
      */
     @PatchMapping("{supplierProductTenantizedId}")
     public void patch(@PathVariable("supplierProductTenantizedId") String supplierProductTenantizedId, @RequestBody CreateOrMergePatchSupplierProductDto.MergePatchSupplierProductDto value) {
-        
+        try {
 
             SupplierProductCommand.MergePatchSupplierProduct cmd = value;//.toMergePatchSupplierProduct();
             SupplierProductResourceUtils.setNullIdOrThrowOnInconsistentIds(supplierProductTenantizedId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             supplierProductApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
     @PutMapping("{supplierProductAssocId}/_commands/UpdateAvailableThruDate")
     public void updateAvailableThruDate(@PathVariable("supplierProductAssocId") String supplierProductAssocId, @RequestBody SupplierProductCommands.UpdateAvailableThruDate content) {
-        
+        try {
 
             SupplierProductCommands.UpdateAvailableThruDate cmd = content;//.toUpdateAvailableThruDate();
             SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductAssocId);
@@ -260,13 +248,13 @@ public class SupplierProductResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             supplierProductApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
     @PutMapping("{supplierProductAssocId}/_commands/Disable")
     public void disable(@PathVariable("supplierProductAssocId") String supplierProductAssocId, @RequestBody SupplierProductCommands.Disable content) {
-        
+        try {
 
             SupplierProductCommands.Disable cmd = content;//.toDisable();
             SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductAssocId);
@@ -278,12 +266,12 @@ public class SupplierProductResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             supplierProductApplicationService.when(cmd);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        
+        try {
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             SupplierProductMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -291,25 +279,25 @@ public class SupplierProductResource {
             });
             return filtering;
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{supplierProductAssocId}/_events/{version}")
     @Transactional(readOnly = true)
     public SupplierProductEvent getEvent(@PathVariable("supplierProductAssocId") String supplierProductAssocId, @PathVariable("version") long version) {
-        
+        try {
 
             SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductAssocId);
             //SupplierProductStateEventDtoConverter dtoConverter = getSupplierProductStateEventDtoConverter();
             return supplierProductApplicationService.getEvent(idObj, version);
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
     @GetMapping("{supplierProductAssocId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public SupplierProductStateDto getHistoryState(@PathVariable("supplierProductAssocId") String supplierProductAssocId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        
+        try {
 
             SupplierProductAssocId idObj = SupplierProductResourceUtils.parseIdString(supplierProductAssocId);
             SupplierProductStateDto.DtoConverter dtoConverter = new SupplierProductStateDto.DtoConverter();
@@ -320,7 +308,7 @@ public class SupplierProductResource {
             }
             return dtoConverter.toSupplierProductStateDto(supplierProductApplicationService.getHistoryState(idObj, version));
 
-        
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
 
