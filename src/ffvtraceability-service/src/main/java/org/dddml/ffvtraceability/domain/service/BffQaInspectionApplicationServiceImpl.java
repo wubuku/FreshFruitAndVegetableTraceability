@@ -7,7 +7,8 @@ import org.dddml.ffvtraceability.domain.qainspection.QaInspectionApplicationServ
 import org.dddml.ffvtraceability.domain.qainspection.QaInspectionState;
 import org.dddml.ffvtraceability.domain.repository.BffQaInspectionProjection;
 import org.dddml.ffvtraceability.domain.repository.BffQaInspectionRepository;
-import org.dddml.ffvtraceability.domain.util.IdUtils;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,8 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
     private BffQaInspectionRepository bffQaInspectionRepository;
     @Autowired
     private BffQaInspectionMapper bffQaInspectionMapper;
+    @Autowired
+    private ShipmentReceiptApplicationService shipmentReceiptApplicationService;
 
     public static String getQaInspectionActionByStatusId(String statusId) {
         return switch (statusId) {
@@ -65,27 +68,48 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
     @Transactional
     @Override
     public String when(BffQaInspectionServiceCommands.CreateQaInspection c) {
-        // NOTE: 当 ReceiptId 不为空时，要求 QaInspectionId 要么为 null，要么必须等于 ReceiptId？
+        // NOTE: ReceiptId 不能为空，如果 QaInspectionId为 null，那么使之等于 ReceiptId
         //（按照当前的场景，这样做可以简化后续的处理逻辑）
         BffQaInspectionDto inspectionDto = c.getQaInspection();
-        if (inspectionDto.getReceiptId() != null && !inspectionDto.getReceiptId().isEmpty()) {
-            if (inspectionDto.getQaInspectionId() != null
-                    && !inspectionDto.getQaInspectionId().equals(inspectionDto.getReceiptId())) {
-                throw new IllegalArgumentException("When receiptId is not empty, qaInspectionId must be null or equal to receiptId. ReceiptId: "
-                        + inspectionDto.getReceiptId() + ", QaInspectionId: " + inspectionDto.getQaInspectionId());
-            }
+        String receiptId = inspectionDto.getReceiptId();
+        if (receiptId != null) {
+            receiptId = receiptId.trim();
         }
+        if (receiptId == null || receiptId.isEmpty()) {
+            throw new IllegalArgumentException("ReceiptId不能为空");
+        }
+        ShipmentReceiptState shipmentReceiptState = shipmentReceiptApplicationService.get(receiptId);
+        if (shipmentReceiptState == null) {
+            throw new IllegalArgumentException("ReceiptId为" + receiptId + "的收货信息不存在");
+        }
+        String qaInspectionId = inspectionDto.getQaInspectionId();
+        if (qaInspectionId != null) {
+            qaInspectionId = qaInspectionId.trim();
+            if (qaInspectionApplicationService.get(qaInspectionId) != null) {
+                throw new IllegalArgumentException("QaInspectionId为" + qaInspectionId + "的记录已经存在");
+            }
+        } else {
+            qaInspectionId = receiptId;//IdUtils.randomId();
+        }
+//        if (inspectionDto.getReceiptId() != null && !inspectionDto.getReceiptId().isEmpty()) {
+//            if (inspectionDto.getQaInspectionId() != null
+//                    && !inspectionDto.getQaInspectionId().equals(inspectionDto.getReceiptId())) {
+//                throw new IllegalArgumentException("When receiptId is not empty, qaInspectionId must be null or equal to receiptId. ReceiptId: "
+//                        + inspectionDto.getReceiptId() + ", QaInspectionId: " + inspectionDto.getQaInspectionId());
+//            }
+//        }
 
         if (!AVAILABLE_STATUS_IDS.contains(c.getQaInspection().getStatusId())) {
             throw new IllegalArgumentException("Invalid statusId: " + c.getQaInspection().getStatusId());
         }
         AbstractQaInspectionCommand.SimpleCreateQaInspection createQaInspection = new AbstractQaInspectionCommand.SimpleCreateQaInspection();
-        createQaInspection.setQaInspectionId(
-                c.getQaInspection().getQaInspectionId() != null ? c.getQaInspection().getQaInspectionId()
-                        : (c.getQaInspection().getReceiptId() != null ? c.getQaInspection().getReceiptId()
-                        : IdUtils.randomId()
-                )
-        );
+//        createQaInspection.setQaInspectionId(
+//                c.getQaInspection().getQaInspectionId() != null ? c.getQaInspection().getQaInspectionId()
+//                        : (c.getQaInspection().getReceiptId() != null ? c.getQaInspection().getReceiptId()
+//                        : IdUtils.randomId()
+//                )
+//        );
+        createQaInspection.setQaInspectionId(qaInspectionId);
         createQaInspection.setComments(c.getQaInspection().getComments());
         createQaInspection.setQaInspectionAction(getQaInspectionActionByStatusId(c.getQaInspection().getStatusId()));
         createQaInspection.setInspectedBy(c.getRequesterId());
