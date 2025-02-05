@@ -2970,7 +2970,7 @@ public class WipBatchTraceServices {
                 "facilityId", context.get("facilityId"),
                 "quantityOnHand", BigDecimal.ZERO,     // 不关注数量
                 "availableToPromise", BigDecimal.ZERO,
-                "statusId", "INV_TRACE_ON"
+                "statusId", "INV_WIP_TRACE"
             );
             
             GenericValue wipBatch = delegator.makeValue("InventoryItem", createCtx);
@@ -3054,8 +3054,38 @@ public class WipBatchTraceServices {
 
 ##### 8.5.2 常规产品批次追溯方案
 
-对于非 WIP 产品，我们似乎也可以直接利用 InventoryItemDetail 实体来实现完整的批次追溯……
+对于非 WIP 产品，我们可以直接利用 InventoryItemDetail 中的 quantityOnHandDiff 来实现批次追溯：
 
-这种组合方案既保持了系统的简洁性，又满足了不同场景下的批次追溯需求。通过合理使用现有实体模型，可以用最小的改动实现完整的批次追溯功能。
+1. 追溯数据记录
+- workEffortId 自然关联到生产工序
+- quantityOnHandDiff < 0 表示物料被消耗
+- quantityOnHandDiff > 0 表示物料被产出
+
+2. 追溯路径查询
+- 向上追溯：通过 workEffortId 找到工序，查询该工序下 quantityOnHandDiff < 0 的记录找到原料批次
+- 向下追溯：通过 workEffortId 找到工序，查询该工序下 quantityOnHandDiff > 0 的记录找到产品批次
+
+3. 实现优势
+- 利用现有数据，无需额外记录
+- 通过正负值自然区分流向
+- 查询简单直观
+- 支持任意层级的追溯
+
+##### 8.5.3 方案总结  
+
+通过分析现有代码实现，我们发现：
+
+1. 对于非 WIP 产品：
+- OFBiz 已经使用 InventoryItemDetail 完整记录了批次流转
+- 通过 workEffortId 关联生产工序
+- 使用 quantityOnHandDiff 的正负值区分流向
+- 无需修改即可实现批次追溯
+
+2. 对于 WIP 产品：
+- 需要通过 8.5.1 节描述的方案进行扩展
+- 采用相同的数据记录模式，保持一致性
+- 不影响现有的 MRP 和成本核算
+
+这种方案既充分利用了现有功能，又通过最小的扩展实现了完整的批次追溯能力。特别是对于非 WIP 产品，可以直接基于现有的 InventoryItemDetail 记录实现追溯，无需任何修改。
 
 
