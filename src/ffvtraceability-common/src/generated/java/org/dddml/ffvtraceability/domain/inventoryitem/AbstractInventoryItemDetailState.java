@@ -260,6 +260,26 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
         this.description = description;
     }
 
+    private String inventoryItemAttributeHash;
+
+    public String getInventoryItemAttributeHash() {
+        return this.inventoryItemAttributeHash;
+    }
+
+    public void setInventoryItemAttributeHash(String inventoryItemAttributeHash) {
+        this.inventoryItemAttributeHash = inventoryItemAttributeHash;
+    }
+
+    private String inventoryItemEntrySourceHash;
+
+    public String getInventoryItemEntrySourceHash() {
+        return this.inventoryItemEntrySourceHash;
+    }
+
+    public void setInventoryItemEntrySourceHash(String inventoryItemEntrySourceHash) {
+        this.inventoryItemEntrySourceHash = inventoryItemEntrySourceHash;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -401,6 +421,8 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
         this.setPhysicalInventoryId(e.getPhysicalInventoryId());
         this.setReasonEnumId(e.getReasonEnumId());
         this.setDescription(e.getDescription());
+        this.setInventoryItemAttributeHash(e.getInventoryItemAttributeHash());
+        this.setInventoryItemEntrySourceHash(e.getInventoryItemEntrySourceHash());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -431,6 +453,8 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
         this.setPhysicalInventoryId(s.getPhysicalInventoryId());
         this.setReasonEnumId(s.getReasonEnumId());
         this.setDescription(s.getDescription());
+        this.setInventoryItemAttributeHash(s.getInventoryItemAttributeHash());
+        this.setInventoryItemEntrySourceHash(s.getInventoryItemEntrySourceHash());
     }
 
     public void save() {

@@ -9684,6 +9684,7 @@ public class M {
             "unitCost",
             "currencyUomId",
             "fixedAssetId",
+            "inventoryItemAttributeHash",
             "version",
             "createdBy",
             "createdAt",
@@ -9718,6 +9719,7 @@ public class M {
             "String",
             "OffsetDateTime",
             "java.math.BigDecimal",
+            "String",
             "String",
             "String",
             "Long",
@@ -9793,6 +9795,8 @@ public class M {
         aliasMap.put("CurrencyUomId", "currencyUomId");
         aliasMap.put("fixedAssetId", "fixedAssetId");
         aliasMap.put("FixedAssetId", "fixedAssetId");
+        aliasMap.put("inventoryItemAttributeHash", "inventoryItemAttributeHash");
+        aliasMap.put("InventoryItemAttributeHash", "inventoryItemAttributeHash");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -9854,6 +9858,8 @@ public class M {
             "physicalInventoryId",
             "reasonEnumId",
             "description",
+            "inventoryItemAttributeHash",
+            "inventoryItemEntrySourceHash",
             "version",
             "createdBy",
             "createdAt",
@@ -9873,6 +9879,8 @@ public class M {
             "java.math.BigDecimal",
             "java.math.BigDecimal",
             "java.math.BigDecimal",
+            "String",
+            "String",
             "String",
             "String",
             "String",
@@ -9954,6 +9962,10 @@ public class M {
         aliasMap.put("ReasonEnumId", "reasonEnumId");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
+        aliasMap.put("inventoryItemAttributeHash", "inventoryItemAttributeHash");
+        aliasMap.put("InventoryItemAttributeHash", "inventoryItemAttributeHash");
+        aliasMap.put("inventoryItemEntrySourceHash", "inventoryItemEntrySourceHash");
+        aliasMap.put("InventoryItemEntrySourceHash", "inventoryItemEntrySourceHash");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

@@ -148,6 +148,10 @@ public interface InventoryItemCommand extends Command {
 
         void setFixedAssetId(String fixedAssetId);
 
+        String getInventoryItemAttributeHash();
+
+        void setInventoryItemAttributeHash(String inventoryItemAttributeHash);
+
     }
 
     interface CreateInventoryItem extends CreateOrMergePatchInventoryItem {
@@ -257,6 +261,10 @@ public interface InventoryItemCommand extends Command {
         Boolean getIsPropertyFixedAssetIdRemoved();
 
         void setIsPropertyFixedAssetIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyInventoryItemAttributeHashRemoved();
+
+        void setIsPropertyInventoryItemAttributeHashRemoved(Boolean removed);
 
 
         InventoryItemDetailCommandCollection getInventoryItemDetailCommands();

@@ -38,7 +38,7 @@ public class HibernateInventoryItemStateRepository implements InventoryItemState
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("InventoryItemId", "InventoryItemTypeId", "ProductId", "PartyId", "OwnerPartyId", "StatusId", "DatetimeReceived", "DatetimeManufactured", "ExpireDate", "FacilityId", "ContainerId", "LotId", "UomId", "BinNumber", "LocationSeqId", "Comments", "QuantityOnHandTotal", "AvailableToPromiseTotal", "AccountingQuantityTotal", "SerialNumber", "SoftIdentifier", "ActivationNumber", "ActivationValidThru", "UnitCost", "CurrencyUomId", "FixedAssetId", "Details", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("InventoryItemId", "InventoryItemTypeId", "ProductId", "PartyId", "OwnerPartyId", "StatusId", "DatetimeReceived", "DatetimeManufactured", "ExpireDate", "FacilityId", "ContainerId", "LotId", "UomId", "BinNumber", "LocationSeqId", "Comments", "QuantityOnHandTotal", "AvailableToPromiseTotal", "AccountingQuantityTotal", "SerialNumber", "SoftIdentifier", "ActivationNumber", "ActivationValidThru", "UnitCost", "CurrencyUomId", "FixedAssetId", "InventoryItemAttributeHash", "Details", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

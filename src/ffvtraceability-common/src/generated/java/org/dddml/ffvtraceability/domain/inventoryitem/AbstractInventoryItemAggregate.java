@@ -76,6 +76,7 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         e.setUnitCost(c.getUnitCost());
         e.setCurrencyUomId(c.getCurrencyUomId());
         e.setFixedAssetId(c.getFixedAssetId());
+        e.setInventoryItemAttributeHash(c.getInventoryItemAttributeHash());
         ((AbstractInventoryItemEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -117,6 +118,7 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         e.setUnitCost(c.getUnitCost());
         e.setCurrencyUomId(c.getCurrencyUomId());
         e.setFixedAssetId(c.getFixedAssetId());
+        e.setInventoryItemAttributeHash(c.getInventoryItemAttributeHash());
         e.setIsPropertyInventoryItemTypeIdRemoved(c.getIsPropertyInventoryItemTypeIdRemoved());
         e.setIsPropertyProductIdRemoved(c.getIsPropertyProductIdRemoved());
         e.setIsPropertyPartyIdRemoved(c.getIsPropertyPartyIdRemoved());
@@ -142,6 +144,7 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         e.setIsPropertyUnitCostRemoved(c.getIsPropertyUnitCostRemoved());
         e.setIsPropertyCurrencyUomIdRemoved(c.getIsPropertyCurrencyUomIdRemoved());
         e.setIsPropertyFixedAssetIdRemoved(c.getIsPropertyFixedAssetIdRemoved());
+        e.setIsPropertyInventoryItemAttributeHashRemoved(c.getIsPropertyInventoryItemAttributeHashRemoved());
         ((AbstractInventoryItemEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -191,6 +194,8 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         e.setPhysicalInventoryId(c.getPhysicalInventoryId());
         e.setReasonEnumId(c.getReasonEnumId());
         e.setDescription(c.getDescription());
+        e.setInventoryItemAttributeHash(c.getInventoryItemAttributeHash());
+        e.setInventoryItemEntrySourceHash(c.getInventoryItemEntrySourceHash());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
 

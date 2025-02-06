@@ -339,6 +339,18 @@ public abstract class AbstractInventoryItemCommand extends AbstractCommand imple
             this.fixedAssetId = fixedAssetId;
         }
 
+        private String inventoryItemAttributeHash;
+
+        public String getInventoryItemAttributeHash()
+        {
+            return this.inventoryItemAttributeHash;
+        }
+
+        public void setInventoryItemAttributeHash(String inventoryItemAttributeHash)
+        {
+            this.inventoryItemAttributeHash = inventoryItemAttributeHash;
+        }
+
         public InventoryItemDetailCommand.CreateInventoryItemDetail newCreateInventoryItemDetail()
         {
             AbstractInventoryItemDetailCommand.SimpleCreateInventoryItemDetail c = new AbstractInventoryItemDetailCommand.SimpleCreateInventoryItemDetail();
@@ -673,6 +685,18 @@ public abstract class AbstractInventoryItemCommand extends AbstractCommand imple
         public void setIsPropertyFixedAssetIdRemoved(Boolean removed)
         {
             this.isPropertyFixedAssetIdRemoved = removed;
+        }
+
+        private Boolean isPropertyInventoryItemAttributeHashRemoved;
+
+        public Boolean getIsPropertyInventoryItemAttributeHashRemoved()
+        {
+            return this.isPropertyInventoryItemAttributeHashRemoved;
+        }
+
+        public void setIsPropertyInventoryItemAttributeHashRemoved(Boolean removed)
+        {
+            this.isPropertyInventoryItemAttributeHashRemoved = removed;
         }
 
 

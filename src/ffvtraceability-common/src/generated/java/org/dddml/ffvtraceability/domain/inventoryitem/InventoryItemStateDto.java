@@ -326,6 +326,18 @@ public class InventoryItemStateDto {
         this.fixedAssetId = fixedAssetId;
     }
 
+    private String inventoryItemAttributeHash;
+
+    public String getInventoryItemAttributeHash()
+    {
+        return this.inventoryItemAttributeHash;
+    }
+
+    public void setInventoryItemAttributeHash(String inventoryItemAttributeHash)
+    {
+        this.inventoryItemAttributeHash = inventoryItemAttributeHash;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -504,6 +516,9 @@ public class InventoryItemStateDto {
             }
             if (returnedFieldsContains("FixedAssetId")) {
                 dto.setFixedAssetId(state.getFixedAssetId());
+            }
+            if (returnedFieldsContains("InventoryItemAttributeHash")) {
+                dto.setInventoryItemAttributeHash(state.getInventoryItemAttributeHash());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

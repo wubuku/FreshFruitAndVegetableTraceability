@@ -296,6 +296,26 @@ public abstract class AbstractInventoryItemDetailEvent extends AbstractEvent imp
             this.getInventoryItemDetailState().setDescription(description);
         }
 
+        public String getInventoryItemAttributeHash()
+        {
+            return this.getInventoryItemDetailState().getInventoryItemAttributeHash();
+        }
+
+        public void setInventoryItemAttributeHash(String inventoryItemAttributeHash)
+        {
+            this.getInventoryItemDetailState().setInventoryItemAttributeHash(inventoryItemAttributeHash);
+        }
+
+        public String getInventoryItemEntrySourceHash()
+        {
+            return this.getInventoryItemDetailState().getInventoryItemEntrySourceHash();
+        }
+
+        public void setInventoryItemEntrySourceHash(String inventoryItemEntrySourceHash)
+        {
+            this.getInventoryItemDetailState().setInventoryItemEntrySourceHash(inventoryItemEntrySourceHash);
+        }
+
         protected AbstractInventoryItemDetailStateEvent(InventoryItemDetailEventId eventId) {
             super(eventId);
         }

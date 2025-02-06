@@ -274,6 +274,16 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         this.fixedAssetId = fixedAssetId;
     }
 
+    private String inventoryItemAttributeHash;
+
+    public String getInventoryItemAttributeHash() {
+        return this.inventoryItemAttributeHash;
+    }
+
+    public void setInventoryItemAttributeHash(String inventoryItemAttributeHash) {
+        this.inventoryItemAttributeHash = inventoryItemAttributeHash;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -454,6 +464,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         this.setUnitCost(e.getUnitCost());
         this.setCurrencyUomId(e.getCurrencyUomId());
         this.setFixedAssetId(e.getFixedAssetId());
+        this.setInventoryItemAttributeHash(e.getInventoryItemAttributeHash());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -493,6 +504,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         this.setUnitCost(s.getUnitCost());
         this.setCurrencyUomId(s.getCurrencyUomId());
         this.setFixedAssetId(s.getFixedAssetId());
+        this.setInventoryItemAttributeHash(s.getInventoryItemAttributeHash());
 
         if (s.getDetails() != null) {
             Iterable<InventoryItemDetailState> iterable;
@@ -708,6 +720,13 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
             }
         } else {
             this.setFixedAssetId(e.getFixedAssetId());
+        }
+        if (e.getInventoryItemAttributeHash() == null) {
+            if (e.getIsPropertyInventoryItemAttributeHashRemoved() != null && e.getIsPropertyInventoryItemAttributeHashRemoved()) {
+                this.setInventoryItemAttributeHash(null);
+            }
+        } else {
+            this.setInventoryItemAttributeHash(e.getInventoryItemAttributeHash());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

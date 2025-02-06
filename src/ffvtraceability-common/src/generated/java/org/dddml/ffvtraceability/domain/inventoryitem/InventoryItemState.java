@@ -69,6 +69,8 @@ public interface InventoryItemState
 
     String getFixedAssetId();
 
+    String getInventoryItemAttributeHash();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -133,6 +135,8 @@ public interface InventoryItemState
         void setCurrencyUomId(String currencyUomId);
 
         void setFixedAssetId(String fixedAssetId);
+
+        void setInventoryItemAttributeHash(String inventoryItemAttributeHash);
 
         void setVersion(Long version);
 

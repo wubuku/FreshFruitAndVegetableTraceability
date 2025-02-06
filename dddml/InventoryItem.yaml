@@ -57,6 +57,9 @@ aggregates:
         type: id
       FixedAssetId:
         type: id
+      # ------------------------------------------------------------
+      InventoryItemAttributeHash:
+        type: HashHex
       Details:
         itemType: InventoryItemDetail
 
@@ -113,6 +116,12 @@ aggregates:
             type: id
           Description:
             type: description
+          # ------------------------------------------------------------
+          InventoryItemAttributeHash:
+            # AttributeSetInstanceId
+            type: HashHex
+          InventoryItemEntrySourceHash:
+            type: HashHex
 
   InventoryItemType:
     id:
@@ -129,4 +138,3 @@ aggregates:
         type: indicator
       Description:
         type: description
-

@@ -59,6 +59,10 @@ public interface InventoryItemDetailState
 
     String getDescription();
 
+    String getInventoryItemAttributeHash();
+
+    String getInventoryItemEntrySourceHash();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -115,6 +119,10 @@ public interface InventoryItemDetailState
         void setReasonEnumId(String reasonEnumId);
 
         void setDescription(String description);
+
+        void setInventoryItemAttributeHash(String inventoryItemAttributeHash);
+
+        void setInventoryItemEntrySourceHash(String inventoryItemEntrySourceHash);
 
         void setVersion(Long version);
 

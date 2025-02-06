@@ -99,6 +99,9 @@
       <property name="fixedAssetId">
         <column name="fixed_asset_id" sql-type="VARCHAR(20)" />
       </property>
+      <property name="inventoryItemAttributeHash">
+        <column name="inventory_item_attribute_hash" sql-type="VARCHAR(64)" />
+      </property>
       <subclass name="AbstractInventoryItemEvent$SimpleInventoryItemStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractInventoryItemEvent$SimpleInventoryItemStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyInventoryItemTypeIdRemoved" column="is_property_inventory_item_type_id_removed" />
@@ -126,6 +129,7 @@
         <property name="isPropertyUnitCostRemoved" column="is_property_unit_cost_removed" />
         <property name="isPropertyCurrencyUomIdRemoved" column="is_property_currency_uom_id_removed" />
         <property name="isPropertyFixedAssetIdRemoved" column="is_property_fixed_asset_id_removed" />
+        <property name="isPropertyInventoryItemAttributeHashRemoved" column="is_property_inventory_item_attribute_hash_removed" />
       </subclass>
     </subclass>
   </class>

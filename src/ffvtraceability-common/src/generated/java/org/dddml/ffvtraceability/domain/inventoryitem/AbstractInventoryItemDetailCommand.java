@@ -279,6 +279,30 @@ public abstract class AbstractInventoryItemDetailCommand extends AbstractCommand
             this.description = description;
         }
 
+        private String inventoryItemAttributeHash;
+
+        public String getInventoryItemAttributeHash()
+        {
+            return this.inventoryItemAttributeHash;
+        }
+
+        public void setInventoryItemAttributeHash(String inventoryItemAttributeHash)
+        {
+            this.inventoryItemAttributeHash = inventoryItemAttributeHash;
+        }
+
+        private String inventoryItemEntrySourceHash;
+
+        public String getInventoryItemEntrySourceHash()
+        {
+            return this.inventoryItemEntrySourceHash;
+        }
+
+        public void setInventoryItemEntrySourceHash(String inventoryItemEntrySourceHash)
+        {
+            this.inventoryItemEntrySourceHash = inventoryItemEntrySourceHash;
+        }
+
     }
 
     public static abstract class AbstractCreateInventoryItemDetail extends AbstractCreateOrMergePatchInventoryItemDetail implements CreateInventoryItemDetail

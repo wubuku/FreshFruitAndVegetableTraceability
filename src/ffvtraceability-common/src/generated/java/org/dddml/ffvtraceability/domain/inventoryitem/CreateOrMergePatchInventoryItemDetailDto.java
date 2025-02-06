@@ -310,6 +310,36 @@ public class CreateOrMergePatchInventoryItemDetailDto extends AbstractInventoryI
         this.description = description;
     }
 
+    /**
+     * Inventory Item Attribute Hash
+     */
+    private String inventoryItemAttributeHash;
+
+    public String getInventoryItemAttributeHash()
+    {
+        return this.inventoryItemAttributeHash;
+    }
+
+    public void setInventoryItemAttributeHash(String inventoryItemAttributeHash)
+    {
+        this.inventoryItemAttributeHash = inventoryItemAttributeHash;
+    }
+
+    /**
+     * Inventory Item Entry Source Hash
+     */
+    private String inventoryItemEntrySourceHash;
+
+    public String getInventoryItemEntrySourceHash()
+    {
+        return this.inventoryItemEntrySourceHash;
+    }
+
+    public void setInventoryItemEntrySourceHash(String inventoryItemEntrySourceHash)
+    {
+        this.inventoryItemEntrySourceHash = inventoryItemEntrySourceHash;
+    }
+
 
     private Boolean isPropertyEffectiveDateRemoved;
 
@@ -551,6 +581,30 @@ public class CreateOrMergePatchInventoryItemDetailDto extends AbstractInventoryI
         this.isPropertyDescriptionRemoved = removed;
     }
 
+    private Boolean isPropertyInventoryItemAttributeHashRemoved;
+
+    public Boolean getIsPropertyInventoryItemAttributeHashRemoved()
+    {
+        return this.isPropertyInventoryItemAttributeHashRemoved;
+    }
+
+    public void setIsPropertyInventoryItemAttributeHashRemoved(Boolean removed)
+    {
+        this.isPropertyInventoryItemAttributeHashRemoved = removed;
+    }
+
+    private Boolean isPropertyInventoryItemEntrySourceHashRemoved;
+
+    public Boolean getIsPropertyInventoryItemEntrySourceHashRemoved()
+    {
+        return this.isPropertyInventoryItemEntrySourceHashRemoved;
+    }
+
+    public void setIsPropertyInventoryItemEntrySourceHashRemoved(Boolean removed)
+    {
+        this.isPropertyInventoryItemEntrySourceHashRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchInventoryItemDetail command)
     {
         ((AbstractInventoryItemDetailCommandDto) this).copyTo(command);
@@ -574,6 +628,8 @@ public class CreateOrMergePatchInventoryItemDetailDto extends AbstractInventoryI
         command.setPhysicalInventoryId(this.getPhysicalInventoryId());
         command.setReasonEnumId(this.getReasonEnumId());
         command.setDescription(this.getDescription());
+        command.setInventoryItemAttributeHash(this.getInventoryItemAttributeHash());
+        command.setInventoryItemEntrySourceHash(this.getInventoryItemEntrySourceHash());
     }
 
     public InventoryItemDetailCommand toCommand()

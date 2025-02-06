@@ -385,6 +385,21 @@ public class CreateOrMergePatchInventoryItemDto extends AbstractInventoryItemCom
         this.fixedAssetId = fixedAssetId;
     }
 
+    /**
+     * Inventory Item Attribute Hash
+     */
+    private String inventoryItemAttributeHash;
+
+    public String getInventoryItemAttributeHash()
+    {
+        return this.inventoryItemAttributeHash;
+    }
+
+    public void setInventoryItemAttributeHash(String inventoryItemAttributeHash)
+    {
+        this.inventoryItemAttributeHash = inventoryItemAttributeHash;
+    }
+
 
     private CreateOrMergePatchInventoryItemDetailDto[] details = new CreateOrMergePatchInventoryItemDetailDto[0];
 
@@ -698,6 +713,18 @@ public class CreateOrMergePatchInventoryItemDto extends AbstractInventoryItemCom
         this.isPropertyFixedAssetIdRemoved = removed;
     }
 
+    private Boolean isPropertyInventoryItemAttributeHashRemoved;
+
+    public Boolean getIsPropertyInventoryItemAttributeHashRemoved()
+    {
+        return this.isPropertyInventoryItemAttributeHashRemoved;
+    }
+
+    public void setIsPropertyInventoryItemAttributeHashRemoved(Boolean removed)
+    {
+        this.isPropertyInventoryItemAttributeHashRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchInventoryItem command)
     {
         ((AbstractInventoryItemCommandDto) this).copyTo(command);
@@ -726,6 +753,7 @@ public class CreateOrMergePatchInventoryItemDto extends AbstractInventoryItemCom
         command.setUnitCost(this.getUnitCost());
         command.setCurrencyUomId(this.getCurrencyUomId());
         command.setFixedAssetId(this.getFixedAssetId());
+        command.setInventoryItemAttributeHash(this.getInventoryItemAttributeHash());
     }
 
     public InventoryItemCommand toCommand()
@@ -816,6 +844,7 @@ public class CreateOrMergePatchInventoryItemDto extends AbstractInventoryItemCom
         command.setIsPropertyUnitCostRemoved(this.getIsPropertyUnitCostRemoved());
         command.setIsPropertyCurrencyUomIdRemoved(this.getIsPropertyCurrencyUomIdRemoved());
         command.setIsPropertyFixedAssetIdRemoved(this.getIsPropertyFixedAssetIdRemoved());
+        command.setIsPropertyInventoryItemAttributeHashRemoved(this.getIsPropertyInventoryItemAttributeHashRemoved());
     }
 
     public static class CreateInventoryItemDto extends CreateOrMergePatchInventoryItemDto implements InventoryItemCommand.CreateInventoryItem

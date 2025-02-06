@@ -121,6 +121,14 @@ public interface InventoryItemDetailEvent extends Event {
 
         void setDescription(String description);
 
+        String getInventoryItemAttributeHash();
+
+        void setInventoryItemAttributeHash(String inventoryItemAttributeHash);
+
+        String getInventoryItemEntrySourceHash();
+
+        void setInventoryItemEntrySourceHash(String inventoryItemEntrySourceHash);
+
     }
 
     interface InventoryItemDetailStateCreated extends InventoryItemDetailStateEvent

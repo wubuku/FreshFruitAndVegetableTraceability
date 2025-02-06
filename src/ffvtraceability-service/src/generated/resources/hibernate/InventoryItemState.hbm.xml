@@ -88,6 +88,9 @@
     <property name="fixedAssetId">
       <column name="fixed_asset_id" sql-type="VARCHAR(20)" />
     </property>
+    <property name="inventoryItemAttributeHash">
+      <column name="inventory_item_attribute_hash" sql-type="VARCHAR(64)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

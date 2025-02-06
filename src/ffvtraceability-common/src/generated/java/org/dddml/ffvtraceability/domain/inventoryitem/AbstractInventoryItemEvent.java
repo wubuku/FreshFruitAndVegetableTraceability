@@ -449,6 +449,18 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
             this.fixedAssetId = fixedAssetId;
         }
 
+        private String inventoryItemAttributeHash;
+
+        public String getInventoryItemAttributeHash()
+        {
+            return this.inventoryItemAttributeHash;
+        }
+
+        public void setInventoryItemAttributeHash(String inventoryItemAttributeHash)
+        {
+            this.inventoryItemAttributeHash = inventoryItemAttributeHash;
+        }
+
         protected AbstractInventoryItemStateEvent(InventoryItemEventId eventId) {
             super(eventId);
         }
@@ -781,6 +793,16 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
 
         public void setIsPropertyFixedAssetIdRemoved(Boolean removed) {
             this.isPropertyFixedAssetIdRemoved = removed;
+        }
+
+        private Boolean isPropertyInventoryItemAttributeHashRemoved;
+
+        public Boolean getIsPropertyInventoryItemAttributeHashRemoved() {
+            return this.isPropertyInventoryItemAttributeHashRemoved;
+        }
+
+        public void setIsPropertyInventoryItemAttributeHashRemoved(Boolean removed) {
+            this.isPropertyInventoryItemAttributeHashRemoved = removed;
         }
 
 

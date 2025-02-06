@@ -141,6 +141,10 @@ public interface InventoryItemEvent extends Event {
 
         void setFixedAssetId(String fixedAssetId);
 
+        String getInventoryItemAttributeHash();
+
+        void setInventoryItemAttributeHash(String inventoryItemAttributeHash);
+
     }
 
     interface InventoryItemStateCreated extends InventoryItemStateEvent
@@ -256,6 +260,10 @@ public interface InventoryItemEvent extends Event {
         Boolean getIsPropertyFixedAssetIdRemoved();
 
         void setIsPropertyFixedAssetIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyInventoryItemAttributeHashRemoved();
+
+        void setIsPropertyInventoryItemAttributeHashRemoved(Boolean removed);
 
 
         Iterable<InventoryItemDetailEvent> getInventoryItemDetailEvents();
