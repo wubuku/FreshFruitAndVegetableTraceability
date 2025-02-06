@@ -82,21 +82,21 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                     AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
                 ORDER BY sp.product_id, sp.available_from_date DESC
             ) party ON party.product_id = p.product_id
-            WHERE p.product_type_id = 'PRODUCT'
+            WHERE p.product_type_id = 'RAW_MATERIAL'
                 AND (:active IS NULL OR p.active = :active)
             ORDER BY p.created_at DESC
             """,
             countQuery = """
                     SELECT COUNT(*)
                     FROM product p
-                    WHERE p.product_type_id = 'PRODUCT'
+                    WHERE p.product_type_id = 'RAW_MATERIAL'
                         AND (:active IS NULL OR p.active = :active)
                     """,
             nativeQuery = true)
     Page<BffRawItemProjection> findAllRawItems(Pageable pageable, @Param("active") String active);
     //String tenantId
     //todo AND p.tenant_id = :tenantId
-    //todo WHERE p.product_type_id = 'PRODUCT' ??? 这个地方应该过滤出“原材料”类型的产品？
+    //todo WHERE p.product_type_id = 'RAW_MATERIAL' ??? 这个地方应该过滤出“原材料”类型的产品？
 
 
     // NOTE: 这个查询保证了每个产品只返回一个供应商：
