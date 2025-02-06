@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class FacilityContactMechResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private FacilityContactMechApplicationService facilityContactMechApplicationService;
@@ -49,14 +61,14 @@ public class FacilityContactMechResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<FacilityContactMechState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> FacilityContactMechResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class FacilityContactMechResource {
             }
             return dtoConverter.toFacilityContactMechStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class FacilityContactMechResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<FacilityContactMechState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> FacilityContactMechResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class FacilityContactMechResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class FacilityContactMechResource {
     @GetMapping("{facilityContactMechId}")
     @Transactional(readOnly = true)
     public FacilityContactMechStateDto get(@PathVariable("facilityContactMechId") String facilityContactMechId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             FacilityContactMechId idObj = FacilityContactMechResourceUtils.parseIdString(facilityContactMechId);
             FacilityContactMechState state = facilityContactMechApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -145,18 +157,18 @@ public class FacilityContactMechResource {
             }
             return dtoConverter.toFacilityContactMechStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -167,7 +179,7 @@ public class FacilityContactMechResource {
             count = facilityContactMechApplicationService.getCount(c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -177,7 +189,7 @@ public class FacilityContactMechResource {
      */
     @PostMapping @ResponseStatus(HttpStatus.CREATED)
     public FacilityContactMechId post(@RequestBody CreateOrMergePatchFacilityContactMechDto.CreateFacilityContactMechDto value,  HttpServletResponse response) {
-        try {
+        
             FacilityContactMechCommand.CreateFacilityContactMech cmd = value;//.toCreateFacilityContactMech();
             if (cmd.getFacilityContactMechId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "FacilityContactMech");
@@ -187,7 +199,7 @@ public class FacilityContactMechResource {
             facilityContactMechApplicationService.when(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -197,7 +209,7 @@ public class FacilityContactMechResource {
      */
     @PutMapping("{facilityContactMechId}")
     public void put(@PathVariable("facilityContactMechId") String facilityContactMechId, @RequestBody CreateOrMergePatchFacilityContactMechDto value) {
-        try {
+        
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 FacilityContactMechCommand.MergePatchFacilityContactMech cmd = (FacilityContactMechCommand.MergePatchFacilityContactMech) value.toSubclass();
@@ -213,7 +225,7 @@ public class FacilityContactMechResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityContactMechApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -223,19 +235,19 @@ public class FacilityContactMechResource {
      */
     @PatchMapping("{facilityContactMechId}")
     public void patch(@PathVariable("facilityContactMechId") String facilityContactMechId, @RequestBody CreateOrMergePatchFacilityContactMechDto.MergePatchFacilityContactMechDto value) {
-        try {
+        
 
             FacilityContactMechCommand.MergePatchFacilityContactMech cmd = value;//.toMergePatchFacilityContactMech();
             FacilityContactMechResourceUtils.setNullIdOrThrowOnInconsistentIds(facilityContactMechId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityContactMechApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             FacilityContactMechMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -243,25 +255,25 @@ public class FacilityContactMechResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{facilityContactMechId}/_events/{version}")
     @Transactional(readOnly = true)
     public FacilityContactMechEvent getEvent(@PathVariable("facilityContactMechId") String facilityContactMechId, @PathVariable("version") long version) {
-        try {
+        
 
             FacilityContactMechId idObj = FacilityContactMechResourceUtils.parseIdString(facilityContactMechId);
             //FacilityContactMechStateEventDtoConverter dtoConverter = getFacilityContactMechStateEventDtoConverter();
             return facilityContactMechApplicationService.getEvent(idObj, version);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{facilityContactMechId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public FacilityContactMechStateDto getHistoryState(@PathVariable("facilityContactMechId") String facilityContactMechId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
 
             FacilityContactMechId idObj = FacilityContactMechResourceUtils.parseIdString(facilityContactMechId);
             FacilityContactMechStateDto.DtoConverter dtoConverter = new FacilityContactMechStateDto.DtoConverter();
@@ -272,7 +284,7 @@ public class FacilityContactMechResource {
             }
             return dtoConverter.toFacilityContactMechStateDto(facilityContactMechApplicationService.getHistoryState(idObj, version));
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -282,16 +294,16 @@ public class FacilityContactMechResource {
     @GetMapping("{facilityContactMechId}/FacilityContactMechPurposes/{contactMechPurposeTypeId}")
     @Transactional(readOnly = true)
     public FacilityContactMechPurposeStateDto getFacilityContactMechPurpose(@PathVariable("facilityContactMechId") String facilityContactMechId, @PathVariable("contactMechPurposeTypeId") String contactMechPurposeTypeId) {
-        try {
+        
 
-            FacilityContactMechPurposeState state = facilityContactMechApplicationService.getFacilityContactMechPurpose(new com.fasterxml.jackson.databind.ObjectMapper().readValue(facilityContactMechId, FacilityContactMechId.class), contactMechPurposeTypeId);
+            FacilityContactMechPurposeState state = facilityContactMechApplicationService.getFacilityContactMechPurpose(deserializeJsonArgument(facilityContactMechId, FacilityContactMechId.class), contactMechPurposeTypeId);
             if (state == null) { return null; }
             FacilityContactMechPurposeStateDto.DtoConverter dtoConverter = new FacilityContactMechPurposeStateDto.DtoConverter();
             FacilityContactMechPurposeStateDto stateDto = dtoConverter.toFacilityContactMechPurposeStateDto(state);
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -304,9 +316,9 @@ public class FacilityContactMechResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchFacilityContactMechPurposeDto.MergePatchFacilityContactMechPurposeDto body) {
-        try {
+        
             FacilityContactMechCommand.MergePatchFacilityContactMech mergePatchFacilityContactMech = new CreateOrMergePatchFacilityContactMechDto.MergePatchFacilityContactMechDto();
-            mergePatchFacilityContactMech.setFacilityContactMechId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(facilityContactMechId, FacilityContactMechId.class));
+            mergePatchFacilityContactMech.setFacilityContactMechId(deserializeJsonArgument(facilityContactMechId, FacilityContactMechId.class));
             mergePatchFacilityContactMech.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { mergePatchFacilityContactMech.setVersion(version); }
             mergePatchFacilityContactMech.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
@@ -315,7 +327,7 @@ public class FacilityContactMechResource {
             mergePatchFacilityContactMech.getFacilityContactMechPurposeCommands().add(mergePatchFacilityContactMechPurpose);
             mergePatchFacilityContactMech.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityContactMechApplicationService.when(mergePatchFacilityContactMech);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -327,14 +339,14 @@ public class FacilityContactMechResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
+        
             FacilityContactMechCommand.MergePatchFacilityContactMech mergePatchFacilityContactMech = new CreateOrMergePatchFacilityContactMechDto.MergePatchFacilityContactMechDto();
-            mergePatchFacilityContactMech.setFacilityContactMechId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(facilityContactMechId, FacilityContactMechId.class));
+            mergePatchFacilityContactMech.setFacilityContactMechId(deserializeJsonArgument(facilityContactMechId, FacilityContactMechId.class));
             mergePatchFacilityContactMech.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { 
                 mergePatchFacilityContactMech.setVersion(version); 
             } else {
-                mergePatchFacilityContactMech.setVersion(facilityContactMechApplicationService.get(new com.fasterxml.jackson.databind.ObjectMapper().readValue(facilityContactMechId, FacilityContactMechId.class)).getVersion());
+                mergePatchFacilityContactMech.setVersion(facilityContactMechApplicationService.get(deserializeJsonArgument(facilityContactMechId, FacilityContactMechId.class)).getVersion());
             }
             mergePatchFacilityContactMech.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
             FacilityContactMechPurposeCommand.RemoveFacilityContactMechPurpose removeFacilityContactMechPurpose = new RemoveFacilityContactMechPurposeDto();
@@ -342,7 +354,7 @@ public class FacilityContactMechResource {
             mergePatchFacilityContactMech.getFacilityContactMechPurposeCommands().add(removeFacilityContactMechPurpose);
             mergePatchFacilityContactMech.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityContactMechApplicationService.when(mergePatchFacilityContactMech);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -355,10 +367,10 @@ public class FacilityContactMechResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        try {
+        
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> FacilityContactMechResourceUtils.getFacilityContactMechPurposeFilterPropertyName(kv.getKey()) != null)
@@ -366,7 +378,7 @@ public class FacilityContactMechResource {
             }
             Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
                 n -> (FacilityContactMechPurposeMetadata.aliasMap.containsKey(n) ? FacilityContactMechPurposeMetadata.aliasMap.get(n) : n));
-            Iterable<FacilityContactMechPurposeState> states = facilityContactMechApplicationService.getFacilityContactMechPurposes(new com.fasterxml.jackson.databind.ObjectMapper().readValue(facilityContactMechId, FacilityContactMechId.class), c,
+            Iterable<FacilityContactMechPurposeState> states = facilityContactMechApplicationService.getFacilityContactMechPurposes(deserializeJsonArgument(facilityContactMechId, FacilityContactMechId.class), c,
                     FacilityContactMechResourceUtils.getFacilityContactMechPurposeQuerySorts(request.getParameterMap()));
             if (states == null) { return null; }
             FacilityContactMechPurposeStateDto.DtoConverter dtoConverter = new FacilityContactMechPurposeStateDto.DtoConverter();
@@ -376,7 +388,7 @@ public class FacilityContactMechResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toFacilityContactMechPurposeStateDtoArray(states);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -389,9 +401,9 @@ public class FacilityContactMechResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchFacilityContactMechPurposeDto.CreateFacilityContactMechPurposeDto body) {
-        try {
+        
             FacilityContactMechCommand.MergePatchFacilityContactMech mergePatchFacilityContactMech = new AbstractFacilityContactMechCommand.SimpleMergePatchFacilityContactMech();
-            mergePatchFacilityContactMech.setFacilityContactMechId(new com.fasterxml.jackson.databind.ObjectMapper().readValue(facilityContactMechId, FacilityContactMechId.class));
+            mergePatchFacilityContactMech.setFacilityContactMechId(deserializeJsonArgument(facilityContactMechId, FacilityContactMechId.class));
             mergePatchFacilityContactMech.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
             if (version != null) { mergePatchFacilityContactMech.setVersion(version); }
             mergePatchFacilityContactMech.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
@@ -399,7 +411,7 @@ public class FacilityContactMechResource {
             mergePatchFacilityContactMech.getFacilityContactMechPurposeCommands().add(createFacilityContactMechPurpose);
             mergePatchFacilityContactMech.setRequesterId(SecurityContextUtil.getRequesterId());
             facilityContactMechApplicationService.when(mergePatchFacilityContactMech);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 

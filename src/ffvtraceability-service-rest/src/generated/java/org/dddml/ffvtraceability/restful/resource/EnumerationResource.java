@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class EnumerationResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private EnumerationApplicationService enumerationApplicationService;
@@ -49,14 +61,14 @@ public class EnumerationResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<EnumerationState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> EnumerationResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class EnumerationResource {
             }
             return dtoConverter.toEnumerationStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class EnumerationResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<EnumerationState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> EnumerationResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class EnumerationResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class EnumerationResource {
     @GetMapping("{enumId}")
     @Transactional(readOnly = true)
     public EnumerationStateDto get(@PathVariable("enumId") String enumId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             String idObj = enumId;
             EnumerationState state = enumerationApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -145,18 +157,18 @@ public class EnumerationResource {
             }
             return dtoConverter.toEnumerationStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -167,7 +179,7 @@ public class EnumerationResource {
             count = enumerationApplicationService.getCount(c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -177,7 +189,7 @@ public class EnumerationResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchEnumerationDto.CreateEnumerationDto value,  HttpServletResponse response) {
-        try {
+        
             EnumerationCommand.CreateEnumeration cmd = value;//.toCreateEnumeration();
             if (cmd.getEnumId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Enumeration");
@@ -187,7 +199,7 @@ public class EnumerationResource {
             enumerationApplicationService.when(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -197,7 +209,7 @@ public class EnumerationResource {
      */
     @PutMapping("{enumId}")
     public void put(@PathVariable("enumId") String enumId, @RequestBody CreateOrMergePatchEnumerationDto value) {
-        try {
+        
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 EnumerationCommand.MergePatchEnumeration cmd = (EnumerationCommand.MergePatchEnumeration) value.toSubclass();
@@ -213,7 +225,7 @@ public class EnumerationResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             enumerationApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -223,19 +235,19 @@ public class EnumerationResource {
      */
     @PatchMapping("{enumId}")
     public void patch(@PathVariable("enumId") String enumId, @RequestBody CreateOrMergePatchEnumerationDto.MergePatchEnumerationDto value) {
-        try {
+        
 
             EnumerationCommand.MergePatchEnumeration cmd = value;//.toMergePatchEnumeration();
             EnumerationResourceUtils.setNullIdOrThrowOnInconsistentIds(enumId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             enumerationApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             EnumerationMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -243,7 +255,7 @@ public class EnumerationResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 

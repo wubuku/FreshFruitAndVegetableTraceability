@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class PartyResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private PartyApplicationService partyApplicationService;
@@ -49,14 +61,14 @@ public class PartyResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<PartyState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> PartyResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class PartyResource {
             }
             return dtoConverter.toPartyStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class PartyResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<PartyState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> PartyResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class PartyResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class PartyResource {
     @GetMapping("{partyId}")
     @Transactional(readOnly = true)
     public PartyStateDto get(@PathVariable("partyId") String partyId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             String idObj = partyId;
             PartyState state = partyApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -145,18 +157,18 @@ public class PartyResource {
             }
             return dtoConverter.toPartyStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -167,7 +179,7 @@ public class PartyResource {
             count = partyApplicationService.getCount(c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -177,7 +189,7 @@ public class PartyResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchPartyDto.CreatePartyDto value,  HttpServletResponse response) {
-        try {
+        
             PartyCommand.CreateParty cmd = value;//.toCreateParty();
             if (cmd.getPartyId() == null) {
                 throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Party");
@@ -187,7 +199,7 @@ public class PartyResource {
             partyApplicationService.when(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -197,7 +209,7 @@ public class PartyResource {
      */
     @PutMapping("{partyId}")
     public void put(@PathVariable("partyId") String partyId, @RequestBody CreateOrMergePatchPartyDto value) {
-        try {
+        
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
                 PartyCommand.MergePatchParty cmd = (PartyCommand.MergePatchParty) value.toSubclass();
@@ -213,7 +225,7 @@ public class PartyResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             partyApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -223,19 +235,19 @@ public class PartyResource {
      */
     @PatchMapping("{partyId}")
     public void patch(@PathVariable("partyId") String partyId, @RequestBody CreateOrMergePatchPartyDto.MergePatchPartyDto value) {
-        try {
+        
 
             PartyCommand.MergePatchParty cmd = value;//.toMergePatchParty();
             PartyResourceUtils.setNullIdOrThrowOnInconsistentIds(partyId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             partyApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             PartyMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -243,25 +255,25 @@ public class PartyResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{partyId}/_events/{version}")
     @Transactional(readOnly = true)
     public PartyEvent getEvent(@PathVariable("partyId") String partyId, @PathVariable("version") long version) {
-        try {
+        
 
             String idObj = partyId;
             //PartyStateEventDtoConverter dtoConverter = getPartyStateEventDtoConverter();
             return partyApplicationService.getEvent(idObj, version);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{partyId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public PartyStateDto getHistoryState(@PathVariable("partyId") String partyId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
 
             String idObj = partyId;
             PartyStateDto.DtoConverter dtoConverter = new PartyStateDto.DtoConverter();
@@ -272,7 +284,7 @@ public class PartyResource {
             }
             return dtoConverter.toPartyStateDto(partyApplicationService.getHistoryState(idObj, version));
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -282,7 +294,7 @@ public class PartyResource {
     @GetMapping("{partyId}/PartyIdentifications/{partyIdentificationTypeId}")
     @Transactional(readOnly = true)
     public PartyIdentificationStateDto getPartyIdentification(@PathVariable("partyId") String partyId, @PathVariable("partyIdentificationTypeId") String partyIdentificationTypeId) {
-        try {
+        
 
             PartyIdentificationState state = partyApplicationService.getPartyIdentification(partyId, partyIdentificationTypeId);
             if (state == null) { return null; }
@@ -291,7 +303,7 @@ public class PartyResource {
             dtoConverter.setAllFieldsReturned(true);
             return stateDto;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -304,7 +316,7 @@ public class PartyResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchPartyIdentificationDto.MergePatchPartyIdentificationDto body) {
-        try {
+        
             PartyCommand.MergePatchParty mergePatchParty = new CreateOrMergePatchPartyDto.MergePatchPartyDto();
             mergePatchParty.setPartyId(partyId);
             mergePatchParty.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -315,7 +327,7 @@ public class PartyResource {
             mergePatchParty.getPartyIdentificationCommands().add(mergePatchPartyIdentification);
             mergePatchParty.setRequesterId(SecurityContextUtil.getRequesterId());
             partyApplicationService.when(mergePatchParty);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -327,7 +339,7 @@ public class PartyResource {
                        @RequestParam(value = "commandId", required = false) String commandId,
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
+        
             PartyCommand.MergePatchParty mergePatchParty = new CreateOrMergePatchPartyDto.MergePatchPartyDto();
             mergePatchParty.setPartyId(partyId);
             mergePatchParty.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -342,7 +354,7 @@ public class PartyResource {
             mergePatchParty.getPartyIdentificationCommands().add(removePartyIdentification);
             mergePatchParty.setRequesterId(SecurityContextUtil.getRequesterId());
             partyApplicationService.when(mergePatchParty);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -355,10 +367,10 @@ public class PartyResource {
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
                      HttpServletRequest request) {
-        try {
+        
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> PartyResourceUtils.getPartyIdentificationFilterPropertyName(kv.getKey()) != null)
@@ -376,7 +388,7 @@ public class PartyResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toPartyIdentificationStateDtoArray(states);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -389,7 +401,7 @@ public class PartyResource {
                        @RequestParam(value = "version", required = false) Long version,
                        @RequestParam(value = "requesterId", required = false) String requesterId,
                        @RequestBody CreateOrMergePatchPartyIdentificationDto.CreatePartyIdentificationDto body) {
-        try {
+        
             PartyCommand.MergePatchParty mergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
             mergePatchParty.setPartyId(partyId);
             mergePatchParty.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
@@ -399,7 +411,7 @@ public class PartyResource {
             mergePatchParty.getPartyIdentificationCommands().add(createPartyIdentification);
             mergePatchParty.setRequesterId(SecurityContextUtil.getRequesterId());
             partyApplicationService.when(mergePatchParty);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 

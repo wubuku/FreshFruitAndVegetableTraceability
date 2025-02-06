@@ -21,6 +21,7 @@ public class BffFacilityLocationMapperImpl implements BffFacilityLocationMapper 
         BffFacilityLocationDto bffFacilityLocationDto = new BffFacilityLocationDto();
 
         bffFacilityLocationDto.setFacilityId( bffFacilityLocationProjection.getFacilityId() );
+        bffFacilityLocationDto.setFacilityName( bffFacilityLocationProjection.getFacilityName() );
         bffFacilityLocationDto.setLocationSeqId( bffFacilityLocationProjection.getLocationSeqId() );
         bffFacilityLocationDto.setLocationTypeEnumId( bffFacilityLocationProjection.getLocationTypeEnumId() );
         bffFacilityLocationDto.setAreaId( bffFacilityLocationProjection.getAreaId() );

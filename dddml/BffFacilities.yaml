@@ -77,6 +77,8 @@ valueObjects:
     properties:
       FacilityId:
         type: id
+      FacilityName:
+        type: name
         # 可以用于查询出“所有设施的所有位置”
       LocationSeqId:
         type: id-long

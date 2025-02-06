@@ -43,10 +43,10 @@ public class BffShipmentBoxTypeServiceResource {
         getShipmentBoxTypes.setSize(size);
         getShipmentBoxTypes.setActive(active);
         getShipmentBoxTypes.setShipmentBoxTypeId(shipmentBoxTypeId);
-        try {
+        
         getShipmentBoxTypes.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffShipmentBoxTypeApplicationService.when(getShipmentBoxTypes);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{shipmentBoxTypeId}")
@@ -55,10 +55,10 @@ public class BffShipmentBoxTypeServiceResource {
     ) {
         BffShipmentBoxTypeServiceCommands.GetShipmentBoxType getShipmentBoxType = new BffShipmentBoxTypeServiceCommands.GetShipmentBoxType();
         getShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeId);
-        try {
+        
         getShipmentBoxType.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffShipmentBoxTypeApplicationService.when(getShipmentBoxType);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping
@@ -67,10 +67,10 @@ public class BffShipmentBoxTypeServiceResource {
     ) {
         BffShipmentBoxTypeServiceCommands.CreateShipmentBoxType createShipmentBoxType = new BffShipmentBoxTypeServiceCommands.CreateShipmentBoxType();
         createShipmentBoxType.setShipmentBoxType(shipmentBoxType);
-        try {
+        
         createShipmentBoxType.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffShipmentBoxTypeApplicationService.when(createShipmentBoxType);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{shipmentBoxTypeId}")
@@ -81,10 +81,10 @@ public class BffShipmentBoxTypeServiceResource {
         BffShipmentBoxTypeServiceCommands.UpdateShipmentBoxType updateShipmentBoxType = new BffShipmentBoxTypeServiceCommands.UpdateShipmentBoxType();
         updateShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeId);
         updateShipmentBoxType.setShipmentBoxType(shipmentBoxType);
-        try {
+        
         updateShipmentBoxType.setRequesterId(SecurityContextUtil.getRequesterId());
         bffShipmentBoxTypeApplicationService.when(updateShipmentBoxType);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{shipmentBoxTypeId}/active")
@@ -95,10 +95,10 @@ public class BffShipmentBoxTypeServiceResource {
         BffShipmentBoxTypeServiceCommands.ActivateShipmentBoxType activateShipmentBoxType = new BffShipmentBoxTypeServiceCommands.ActivateShipmentBoxType();
         activateShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeId);
         activateShipmentBoxType.setActive(active);
-        try {
+        
         activateShipmentBoxType.setRequesterId(SecurityContextUtil.getRequesterId());
         bffShipmentBoxTypeApplicationService.when(activateShipmentBoxType);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("batchAddShipmentBoxTypes")
@@ -107,10 +107,10 @@ public class BffShipmentBoxTypeServiceResource {
     ) {
         BffShipmentBoxTypeServiceCommands.BatchAddShipmentBoxTypes batchAddShipmentBoxTypes = new BffShipmentBoxTypeServiceCommands.BatchAddShipmentBoxTypes();
         batchAddShipmentBoxTypes.setShipmentBoxTypes(shipmentBoxTypes);
-        try {
+        
         batchAddShipmentBoxTypes.setRequesterId(SecurityContextUtil.getRequesterId());
         bffShipmentBoxTypeApplicationService.when(batchAddShipmentBoxTypes);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 }

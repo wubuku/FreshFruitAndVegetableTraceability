@@ -41,10 +41,10 @@ public class BffSupplierServiceResource {
         getSuppliers.setPage(page);
         getSuppliers.setSize(size);
         getSuppliers.setActive(active);
-        try {
+        
         getSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffSupplierApplicationService.when(getSuppliers);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{supplierId}")
@@ -55,10 +55,10 @@ public class BffSupplierServiceResource {
         BffSupplierServiceCommands.GetSupplier getSupplier = new BffSupplierServiceCommands.GetSupplier();
         getSupplier.setSupplierId(supplierId);
         getSupplier.setIncludesFacilities(includesFacilities);
-        try {
+        
         getSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffSupplierApplicationService.when(getSupplier);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping
@@ -67,10 +67,10 @@ public class BffSupplierServiceResource {
     ) {
         BffSupplierServiceCommands.CreateSupplier createSupplier = new BffSupplierServiceCommands.CreateSupplier();
         createSupplier.setSupplier(supplier);
-        try {
+        
         createSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffSupplierApplicationService.when(createSupplier);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{supplierId}")
@@ -81,10 +81,10 @@ public class BffSupplierServiceResource {
         BffSupplierServiceCommands.UpdateSupplier updateSupplier = new BffSupplierServiceCommands.UpdateSupplier();
         updateSupplier.setSupplierId(supplierId);
         updateSupplier.setSupplier(supplier);
-        try {
+        
         updateSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
         bffSupplierApplicationService.when(updateSupplier);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{supplierId}/active")
@@ -95,10 +95,10 @@ public class BffSupplierServiceResource {
         BffSupplierServiceCommands.ActivateSupplier activateSupplier = new BffSupplierServiceCommands.ActivateSupplier();
         activateSupplier.setSupplierId(supplierId);
         activateSupplier.setActive(active);
-        try {
+        
         activateSupplier.setRequesterId(SecurityContextUtil.getRequesterId());
         bffSupplierApplicationService.when(activateSupplier);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{supplierId}/BusinessContact")
@@ -109,10 +109,10 @@ public class BffSupplierServiceResource {
         BffSupplierServiceCommands.UpdateBusinessContact updateBusinessContact = new BffSupplierServiceCommands.UpdateBusinessContact();
         updateBusinessContact.setSupplierId(supplierId);
         updateBusinessContact.setBusinessContact(businessContact);
-        try {
+        
         updateBusinessContact.setRequesterId(SecurityContextUtil.getRequesterId());
         bffSupplierApplicationService.when(updateBusinessContact);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("batchAddSuppliers")
@@ -121,10 +121,10 @@ public class BffSupplierServiceResource {
     ) {
         BffSupplierServiceCommands.BatchAddSuppliers batchAddSuppliers = new BffSupplierServiceCommands.BatchAddSuppliers();
         batchAddSuppliers.setSuppliers(suppliers);
-        try {
+        
         batchAddSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
         bffSupplierApplicationService.when(batchAddSuppliers);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("batchActivateSuppliers")
@@ -133,10 +133,10 @@ public class BffSupplierServiceResource {
     ) {
         BffSupplierServiceCommands.BatchActivateSuppliers batchActivateSuppliers = new BffSupplierServiceCommands.BatchActivateSuppliers();
         batchActivateSuppliers.setSupplierIds(supplierIds);
-        try {
+        
         batchActivateSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
         bffSupplierApplicationService.when(batchActivateSuppliers);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("batchDeactivateSuppliers")
@@ -145,10 +145,10 @@ public class BffSupplierServiceResource {
     ) {
         BffSupplierServiceCommands.BatchDeactivateSuppliers batchDeactivateSuppliers = new BffSupplierServiceCommands.BatchDeactivateSuppliers();
         batchDeactivateSuppliers.setSupplierIds(supplierIds);
-        try {
+        
         batchDeactivateSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
         bffSupplierApplicationService.when(batchDeactivateSuppliers);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 }

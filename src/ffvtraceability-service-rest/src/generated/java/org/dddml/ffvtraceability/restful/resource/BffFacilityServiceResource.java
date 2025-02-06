@@ -43,10 +43,10 @@ public class BffFacilityServiceResource {
         getFacilities.setSize(size);
         getFacilities.setActive(active);
         getFacilities.setOwnerPartyId(ownerPartyId);
-        try {
+        
         getFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffFacilityApplicationService.when(getFacilities);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{facilityId}")
@@ -55,10 +55,10 @@ public class BffFacilityServiceResource {
     ) {
         BffFacilityServiceCommands.GetFacility getFacility = new BffFacilityServiceCommands.GetFacility();
         getFacility.setFacilityId(facilityId);
-        try {
+        
         getFacility.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffFacilityApplicationService.when(getFacility);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping
@@ -67,10 +67,10 @@ public class BffFacilityServiceResource {
     ) {
         BffFacilityServiceCommands.CreateFacility createFacility = new BffFacilityServiceCommands.CreateFacility();
         createFacility.setFacility(facility);
-        try {
+        
         createFacility.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffFacilityApplicationService.when(createFacility);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("batchAddFacilities")
@@ -79,10 +79,10 @@ public class BffFacilityServiceResource {
     ) {
         BffFacilityServiceCommands.BatchAddFacilities batchAddFacilities = new BffFacilityServiceCommands.BatchAddFacilities();
         batchAddFacilities.setFacilities(facilities);
-        try {
+        
         batchAddFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(batchAddFacilities);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{facilityId}")
@@ -93,10 +93,10 @@ public class BffFacilityServiceResource {
         BffFacilityServiceCommands.UpdateFacility updateFacility = new BffFacilityServiceCommands.UpdateFacility();
         updateFacility.setFacilityId(facilityId);
         updateFacility.setFacility(facility);
-        try {
+        
         updateFacility.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(updateFacility);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{facilityId}/active")
@@ -107,10 +107,10 @@ public class BffFacilityServiceResource {
         BffFacilityServiceCommands.ActivateFacility activateFacility = new BffFacilityServiceCommands.ActivateFacility();
         activateFacility.setFacilityId(facilityId);
         activateFacility.setActive(active);
-        try {
+        
         activateFacility.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(activateFacility);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("batchActivateFacilities")
@@ -119,10 +119,10 @@ public class BffFacilityServiceResource {
     ) {
         BffFacilityServiceCommands.BatchActivateFacilities batchActivateFacilities = new BffFacilityServiceCommands.BatchActivateFacilities();
         batchActivateFacilities.setFacilityIds(facilityIds);
-        try {
+        
         batchActivateFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(batchActivateFacilities);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("batchDeactivateFacilities")
@@ -131,10 +131,10 @@ public class BffFacilityServiceResource {
     ) {
         BffFacilityServiceCommands.BatchDeactivateFacilities batchDeactivateFacilities = new BffFacilityServiceCommands.BatchDeactivateFacilities();
         batchDeactivateFacilities.setFacilityIds(facilityIds);
-        try {
+        
         batchDeactivateFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(batchDeactivateFacilities);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{facilityId}/Locations")
@@ -145,10 +145,10 @@ public class BffFacilityServiceResource {
         BffFacilityServiceCommands.GetFacilityLocations getFacilityLocations = new BffFacilityServiceCommands.GetFacilityLocations();
         getFacilityLocations.setFacilityId(facilityId);
         getFacilityLocations.setActive(active);
-        try {
+        
         getFacilityLocations.setRequesterId(SecurityContextUtil.getRequesterId());
         return java.util.stream.StreamSupport.stream((bffFacilityApplicationService.when(getFacilityLocations)).spliterator(), false).collect(java.util.stream.Collectors.toList()).toArray(new BffFacilityLocationDto[0]);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{facilityId}/Locations/{locationSeqId}")
@@ -159,10 +159,10 @@ public class BffFacilityServiceResource {
         BffFacilityServiceCommands.GetFacilityLocation getFacilityLocation = new BffFacilityServiceCommands.GetFacilityLocation();
         getFacilityLocation.setFacilityId(facilityId);
         getFacilityLocation.setLocationSeqId(locationSeqId);
-        try {
+        
         getFacilityLocation.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffFacilityApplicationService.when(getFacilityLocation);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("{facilityId}/Locations")
@@ -173,10 +173,10 @@ public class BffFacilityServiceResource {
         BffFacilityServiceCommands.CreateFacilityLocation createFacilityLocation = new BffFacilityServiceCommands.CreateFacilityLocation();
         createFacilityLocation.setFacilityId(facilityId);
         createFacilityLocation.setFacilityLocation(facilityLocation);
-        try {
+        
         createFacilityLocation.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(createFacilityLocation);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("{facilityId}/Locations/batchAddFacilityLocations")
@@ -187,10 +187,10 @@ public class BffFacilityServiceResource {
         BffFacilityServiceCommands.BatchAddFacilityLocations batchAddFacilityLocations = new BffFacilityServiceCommands.BatchAddFacilityLocations();
         batchAddFacilityLocations.setFacilityId(facilityId);
         batchAddFacilityLocations.setFacilityLocations(facilityLocations);
-        try {
+        
         batchAddFacilityLocations.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(batchAddFacilityLocations);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{facilityId}/Locations/{locationSeqId}")
@@ -203,10 +203,10 @@ public class BffFacilityServiceResource {
         updateFacilityLocation.setFacilityId(facilityId);
         updateFacilityLocation.setLocationSeqId(locationSeqId);
         updateFacilityLocation.setFacilityLocation(facilityLocation);
-        try {
+        
         updateFacilityLocation.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(updateFacilityLocation);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{facilityId}/Locations/{locationSeqId}/active")
@@ -219,10 +219,10 @@ public class BffFacilityServiceResource {
         activateFacilityLocation.setFacilityId(facilityId);
         activateFacilityLocation.setLocationSeqId(locationSeqId);
         activateFacilityLocation.setActive(active);
-        try {
+        
         activateFacilityLocation.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(activateFacilityLocation);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{facilityId}/Locations/batchDeactivateLocations")
@@ -233,10 +233,10 @@ public class BffFacilityServiceResource {
         BffFacilityServiceCommands.BatchDeactivateLocations batchDeactivateLocations = new BffFacilityServiceCommands.BatchDeactivateLocations();
         batchDeactivateLocations.setFacilityId(facilityId);
         batchDeactivateLocations.setLocationSeqIds(locationSeqIds);
-        try {
+        
         batchDeactivateLocations.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(batchDeactivateLocations);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{facilityId}/Locations/batchActivateLocations")
@@ -247,10 +247,10 @@ public class BffFacilityServiceResource {
         BffFacilityServiceCommands.BatchActivateLocations batchActivateLocations = new BffFacilityServiceCommands.BatchActivateLocations();
         batchActivateLocations.setFacilityId(facilityId);
         batchActivateLocations.setLocationSeqIds(locationSeqIds);
-        try {
+        
         batchActivateLocations.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(batchActivateLocations);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{facilityId}/BusinessContact")
@@ -261,10 +261,10 @@ public class BffFacilityServiceResource {
         BffFacilityServiceCommands.UpdateBusinessContact updateBusinessContact = new BffFacilityServiceCommands.UpdateBusinessContact();
         updateBusinessContact.setFacilityId(facilityId);
         updateBusinessContact.setBusinessContact(businessContact);
-        try {
+        
         updateBusinessContact.setRequesterId(SecurityContextUtil.getRequesterId());
         bffFacilityApplicationService.when(updateBusinessContact);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 }

@@ -39,10 +39,10 @@ public class BffQaInspectionServiceResource {
         BffQaInspectionServiceCommands.GetQaInspections getQaInspections = new BffQaInspectionServiceCommands.GetQaInspections();
         getQaInspections.setReceivingDocumentId(receivingDocumentId);
         getQaInspections.setReceiptId(receiptId);
-        try {
+        
         getQaInspections.setRequesterId(SecurityContextUtil.getRequesterId());
         return java.util.stream.StreamSupport.stream((bffQaInspectionApplicationService.when(getQaInspections)).spliterator(), false).collect(java.util.stream.Collectors.toList()).toArray(new BffQaInspectionDto[0]);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{qaInspectionId}")
@@ -51,10 +51,10 @@ public class BffQaInspectionServiceResource {
     ) {
         BffQaInspectionServiceCommands.GetQaInspection getQaInspection = new BffQaInspectionServiceCommands.GetQaInspection();
         getQaInspection.setQaInspectionId(qaInspectionId);
-        try {
+        
         getQaInspection.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffQaInspectionApplicationService.when(getQaInspection);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping
@@ -63,10 +63,10 @@ public class BffQaInspectionServiceResource {
     ) {
         BffQaInspectionServiceCommands.CreateQaInspection createQaInspection = new BffQaInspectionServiceCommands.CreateQaInspection();
         createQaInspection.setQaInspection(qaInspection);
-        try {
+        
         createQaInspection.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffQaInspectionApplicationService.when(createQaInspection);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{qaInspectionId}")
@@ -77,10 +77,10 @@ public class BffQaInspectionServiceResource {
         BffQaInspectionServiceCommands.UpdateQaInspection updateQaInspection = new BffQaInspectionServiceCommands.UpdateQaInspection();
         updateQaInspection.setQaInspectionId(qaInspectionId);
         updateQaInspection.setQaInspection(qaInspection);
-        try {
+        
         updateQaInspection.setRequesterId(SecurityContextUtil.getRequesterId());
         bffQaInspectionApplicationService.when(updateQaInspection);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("batchAddQaInspections")
@@ -89,10 +89,10 @@ public class BffQaInspectionServiceResource {
     ) {
         BffQaInspectionServiceCommands.BatchAddQaInspections batchAddQaInspections = new BffQaInspectionServiceCommands.BatchAddQaInspections();
         batchAddQaInspections.setQaInspections(qaInspections);
-        try {
+        
         batchAddQaInspections.setRequesterId(SecurityContextUtil.getRequesterId());
         bffQaInspectionApplicationService.when(batchAddQaInspections);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("batchAddOrUpdateQaInspections")
@@ -101,10 +101,10 @@ public class BffQaInspectionServiceResource {
     ) {
         BffQaInspectionServiceCommands.BatchAddOrUpdateQaInspections batchAddOrUpdateQaInspections = new BffQaInspectionServiceCommands.BatchAddOrUpdateQaInspections();
         batchAddOrUpdateQaInspections.setQaInspections(qaInspections);
-        try {
+        
         batchAddOrUpdateQaInspections.setRequesterId(SecurityContextUtil.getRequesterId());
         bffQaInspectionApplicationService.when(batchAddOrUpdateQaInspections);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 }

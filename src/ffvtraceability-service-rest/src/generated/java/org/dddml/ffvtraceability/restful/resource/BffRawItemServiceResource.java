@@ -41,10 +41,10 @@ public class BffRawItemServiceResource {
         getRawItems.setPage(page);
         getRawItems.setSize(size);
         getRawItems.setActive(active);
-        try {
+        
         getRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffRawItemApplicationService.when(getRawItems);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{productId}")
@@ -53,10 +53,10 @@ public class BffRawItemServiceResource {
     ) {
         BffRawItemServiceCommands.GetRawItem getRawItem = new BffRawItemServiceCommands.GetRawItem();
         getRawItem.setProductId(productId);
-        try {
+        
         getRawItem.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffRawItemApplicationService.when(getRawItem);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping
@@ -65,10 +65,10 @@ public class BffRawItemServiceResource {
     ) {
         BffRawItemServiceCommands.CreateRawItem createRawItem = new BffRawItemServiceCommands.CreateRawItem();
         createRawItem.setRawItem(rawItem);
-        try {
+        
         createRawItem.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffRawItemApplicationService.when(createRawItem);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{productId}")
@@ -79,10 +79,10 @@ public class BffRawItemServiceResource {
         BffRawItemServiceCommands.UpdateRawItem updateRawItem = new BffRawItemServiceCommands.UpdateRawItem();
         updateRawItem.setProductId(productId);
         updateRawItem.setRawItem(rawItem);
-        try {
+        
         updateRawItem.setRequesterId(SecurityContextUtil.getRequesterId());
         bffRawItemApplicationService.when(updateRawItem);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("{productId}/active")
@@ -93,10 +93,10 @@ public class BffRawItemServiceResource {
         BffRawItemServiceCommands.ActivateRawItem activateRawItem = new BffRawItemServiceCommands.ActivateRawItem();
         activateRawItem.setProductId(productId);
         activateRawItem.setActive(active);
-        try {
+        
         activateRawItem.setRequesterId(SecurityContextUtil.getRequesterId());
         bffRawItemApplicationService.when(activateRawItem);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PostMapping("batchAddRawItems")
@@ -105,10 +105,10 @@ public class BffRawItemServiceResource {
     ) {
         BffRawItemServiceCommands.BatchAddRawItems batchAddRawItems = new BffRawItemServiceCommands.BatchAddRawItems();
         batchAddRawItems.setRawItems(rawItems);
-        try {
+        
         batchAddRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
         bffRawItemApplicationService.when(batchAddRawItems);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("batchActivateRawItems")
@@ -117,10 +117,10 @@ public class BffRawItemServiceResource {
     ) {
         BffRawItemServiceCommands.BatchActivateRawItems batchActivateRawItems = new BffRawItemServiceCommands.BatchActivateRawItems();
         batchActivateRawItems.setProductIds(productIds);
-        try {
+        
         batchActivateRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
         bffRawItemApplicationService.when(batchActivateRawItems);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @PutMapping("batchDeactivateRawItems")
@@ -129,10 +129,10 @@ public class BffRawItemServiceResource {
     ) {
         BffRawItemServiceCommands.BatchDeactivateRawItems batchDeactivateRawItems = new BffRawItemServiceCommands.BatchDeactivateRawItems();
         batchDeactivateRawItems.setProductIds(productIds);
-        try {
+        
         batchDeactivateRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
         bffRawItemApplicationService.when(batchDeactivateRawItems);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 }

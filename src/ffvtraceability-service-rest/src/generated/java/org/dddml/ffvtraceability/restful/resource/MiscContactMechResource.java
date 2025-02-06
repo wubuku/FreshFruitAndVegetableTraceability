@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class MiscContactMechResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static CriterionDto deserializeCriterionDto(String filter) {
+        return deserializeJsonArgument(filter, CriterionDto.class);
+    }
+
+    private static <T> T deserializeJsonArgument(String s, Class<T> aClass) {
+        try {
+            return new ObjectMapper().readValue(s, aClass);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Autowired
     private ContactMechApplicationService contactMechApplicationService;
@@ -49,14 +61,14 @@ public class MiscContactMechResource {
                     @RequestParam(value = "firstResult", defaultValue = "0") Integer firstResult,
                     @RequestParam(value = "maxResults", defaultValue = "2147483647") Integer maxResults,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
         if (firstResult < 0) { firstResult = 0; }
         if (maxResults == null || maxResults < 1) { maxResults = Integer.MAX_VALUE; }
 
             Iterable<ContactMechState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> MiscContactMechResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -77,7 +89,7 @@ public class MiscContactMechResource {
             }
             return dtoConverter.toMiscContactMechStateDtoArray(states);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -91,13 +103,13 @@ public class MiscContactMechResource {
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                     @RequestParam(value = "size", defaultValue = "20") Integer size,
                     @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             Integer firstResult = (page == null ? 0 : page) * (size == null ? 20 : size);
             Integer maxResults = (size == null ? 20 : size);
             Iterable<ContactMechState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> MiscContactMechResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -122,7 +134,7 @@ public class MiscContactMechResource {
             statePage.setNumber(page);
             return statePage;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     /**
@@ -132,7 +144,7 @@ public class MiscContactMechResource {
     @GetMapping("{contactMechId}")
     @Transactional(readOnly = true)
     public MiscContactMechStateDto get(@PathVariable("contactMechId") String contactMechId, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
             String idObj = contactMechId;
             ContactMechState state = contactMechApplicationService.get(idObj);
             if (state == null) { return null; }
@@ -148,18 +160,18 @@ public class MiscContactMechResource {
             }
             return dtoConverter.toMiscContactMechStateDto(state);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_count")
     @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
-        try {
+        
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
+                criterion = deserializeCriterionDto(filter);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -170,7 +182,7 @@ public class MiscContactMechResource {
             count = contactMechApplicationService.getCount(MiscContactMechState.class, c);
             return count;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -180,7 +192,7 @@ public class MiscContactMechResource {
      */
     @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
     public String post(@RequestBody CreateOrMergePatchContactMechDto.CreateContactMechDto value,  HttpServletResponse response) {
-        try {
+        
             value.setContactMechTypeId(ContactMechTypeId.MISC_CONTACT_MECH);
             ContactMechCommand.CreateContactMech cmd = value;//.toCreateContactMech();
             if (cmd.getContactMechId() == null) {
@@ -191,7 +203,7 @@ public class MiscContactMechResource {
             contactMechApplicationService.when(cmd);
 
             return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -201,7 +213,7 @@ public class MiscContactMechResource {
      */
     @PutMapping("{contactMechId}")
     public void put(@PathVariable("contactMechId") String contactMechId, @RequestBody CreateOrMergePatchContactMechDto value) {
-        try {
+        
             value.setContactMechTypeId(ContactMechTypeId.MISC_CONTACT_MECH);
             if (value.getVersion() != null) {
                 value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
@@ -218,7 +230,7 @@ public class MiscContactMechResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             contactMechApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 
@@ -228,7 +240,7 @@ public class MiscContactMechResource {
      */
     @PatchMapping("{contactMechId}")
     public void patch(@PathVariable("contactMechId") String contactMechId, @RequestBody CreateOrMergePatchContactMechDto.MergePatchContactMechDto value) {
-        try {
+        
 
             value.setContactMechTypeId(ContactMechTypeId.MISC_CONTACT_MECH);
             ContactMechCommand.MergePatchContactMech cmd = value;//.toMergePatchContactMech();
@@ -236,12 +248,12 @@ public class MiscContactMechResource {
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             contactMechApplicationService.when(cmd);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
-        try {
+        
 
             List<PropertyMetadataDto> filtering = new ArrayList<>();
             ContactMechMetadata.propertyTypeMap.forEach((key, value) -> {
@@ -249,25 +261,25 @@ public class MiscContactMechResource {
             });
             return filtering;
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{contactMechId}/_events/{version}")
     @Transactional(readOnly = true)
     public ContactMechEvent getEvent(@PathVariable("contactMechId") String contactMechId, @PathVariable("version") long version) {
-        try {
+        
 
             String idObj = contactMechId;
             //ContactMechStateEventDtoConverter dtoConverter = getContactMechStateEventDtoConverter();
             return contactMechApplicationService.getEvent(idObj, version);
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
     @GetMapping("{contactMechId}/_historyStates/{version}")
     @Transactional(readOnly = true)
     public MiscContactMechStateDto getHistoryState(@PathVariable("contactMechId") String contactMechId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
-        try {
+        
 
             String idObj = contactMechId;
             MiscContactMechStateDto.DtoConverter dtoConverter = new MiscContactMechStateDto.DtoConverter();
@@ -278,7 +290,7 @@ public class MiscContactMechResource {
             }
             return dtoConverter.toMiscContactMechStateDto(contactMechApplicationService.getHistoryState(idObj, version));
 
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+        
     }
 
 

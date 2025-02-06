@@ -41,6 +41,8 @@ public interface BffFacilityLocationRepository extends JpaRepository<
             SELECT 
                 fl.location_seq_id as locationSeqId,
                 fl.location_type_enum_id as locationTypeEnumId,
+               fl.facility_id AS facilityId,
+               f.facility_name AS facilityName,
                 fl.area_id as areaId,
                 fl.aisle_id as aisleId,
                 fl.section_id as sectionId,
@@ -53,6 +55,7 @@ public interface BffFacilityLocationRepository extends JpaRepository<
                 fl.location_name as locationName,
                 fl.active as active
             FROM facility_location fl
+            left join facility f ON fl.facility_id = f.facility_id
             WHERE (:active IS NULL OR fl.active = :active)
             ORDER BY fl.location_seq_id
             """,

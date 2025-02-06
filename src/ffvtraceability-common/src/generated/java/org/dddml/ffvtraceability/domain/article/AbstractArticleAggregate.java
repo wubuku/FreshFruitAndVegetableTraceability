@@ -104,7 +104,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
     }
 
     protected CommentEvent.CommentStateCreated mapCreate(CommentCommand.CreateComment c, ArticleCommand outerCommand, Long version, ArticleState outerState) {
