@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.workeffort">
+  <class name="AbstractWorkEffortEvent" table="work_effort_event" abstract="true">
+    <composite-id name="workEffortEventId" class="org.dddml.ffvtraceability.domain.workeffort.WorkEffortEventId">
+      <key-property name="workEffortId">
+        <column name="work_effort_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractWorkEffortEvent$WorkEffortLobEvent" discriminator-value="WorkEffortLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractWorkEffortEvent$AbstractWorkEffortStateEvent" abstract="true">
+      <property name="workEffortTypeId">
+        <column name="work_effort_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="currentStatusId">
+        <column name="current_status_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="lastStatusUpdate">
+        <column name="last_status_update" sql-type="timestamptz" />
+      </property>
+      <property name="workEffortPurposeTypeId">
+        <column name="work_effort_purpose_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="workEffortParentId">
+        <column name="work_effort_parent_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="scopeEnumId">
+        <column name="scope_enum_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="priority">
+        <column name="priority" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="percentComplete">
+        <column name="percent_complete" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="workEffortName">
+        <column name="work_effort_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="showAsEnumId">
+        <column name="show_as_enum_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="sendNotificationEmail">
+        <column name="send_notification_email" sql-type="CHAR(1)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="locationDesc">
+        <column name="location_desc" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="estimatedStartDate">
+        <column name="estimated_start_date" sql-type="timestamptz" />
+      </property>
+      <property name="estimatedCompletionDate">
+        <column name="estimated_completion_date" sql-type="timestamptz" />
+      </property>
+      <property name="actualStartDate">
+        <column name="actual_start_date" sql-type="timestamptz" />
+      </property>
+      <property name="actualCompletionDate">
+        <column name="actual_completion_date" sql-type="timestamptz" />
+      </property>
+      <property name="estimatedMilliSeconds">
+        <column name="estimated_milli_seconds" sql-type="FLOAT8" />
+      </property>
+      <property name="estimatedSetupMillis">
+        <column name="estimated_setup_millis" sql-type="FLOAT8" />
+      </property>
+      <property name="estimateCalcMethod">
+        <column name="estimate_calc_method" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="actualMilliSeconds">
+        <column name="actual_milli_seconds" sql-type="FLOAT8" />
+      </property>
+      <property name="actualSetupMillis">
+        <column name="actual_setup_millis" sql-type="FLOAT8" />
+      </property>
+      <property name="totalMilliSecondsAllowed">
+        <column name="total_milli_seconds_allowed" sql-type="FLOAT8" />
+      </property>
+      <property name="totalMoneyAllowed">
+        <column name="total_money_allowed" sql-type="DECIMAL(18,2)" />
+      </property>
+      <property name="moneyUomId">
+        <column name="money_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="specialTerms">
+        <column name="special_terms" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="timeTransparency">
+        <column name="time_transparency" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="universalId">
+        <column name="universal_id" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="sourceReferenceId">
+        <column name="source_reference_id" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="fixedAssetId">
+        <column name="fixed_asset_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="facilityId">
+        <column name="facility_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="infoUrl">
+        <column name="info_url" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="recurrenceInfoId">
+        <column name="recurrence_info_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="tempExprId">
+        <column name="temp_expr_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="runtimeDataId">
+        <column name="runtime_data_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="noteId">
+        <column name="note_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="serviceLoaderName">
+        <column name="service_loader_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="quantityToProduce">
+        <column name="quantity_to_produce" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="quantityProduced">
+        <column name="quantity_produced" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="quantityRejected">
+        <column name="quantity_rejected" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="reservPersons">
+        <column name="reserv_persons" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="reserv2ndPPPerc">
+        <column name="reserv2nd_pp_perc" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="reservNthPPPerc">
+        <column name="reserv_nth_pp_perc" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="accommodationMapId">
+        <column name="accommodation_map_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="accommodationSpotId">
+        <column name="accommodation_spot_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="revisionNumber">
+        <column name="revision_number" sql-type="DECIMAL(20,0)" />
+      </property>
+      <subclass name="AbstractWorkEffortEvent$SimpleWorkEffortStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractWorkEffortEvent$SimpleWorkEffortStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyWorkEffortTypeIdRemoved" column="is_property_work_effort_type_id_removed" />
+        <property name="isPropertyCurrentStatusIdRemoved" column="is_property_current_status_id_removed" />
+        <property name="isPropertyLastStatusUpdateRemoved" column="is_property_last_status_update_removed" />
+        <property name="isPropertyWorkEffortPurposeTypeIdRemoved" column="is_property_work_effort_purpose_type_id_removed" />
+        <property name="isPropertyWorkEffortParentIdRemoved" column="is_property_work_effort_parent_id_removed" />
+        <property name="isPropertyScopeEnumIdRemoved" column="is_property_scope_enum_id_removed" />
+        <property name="isPropertyPriorityRemoved" column="is_property_priority_removed" />
+        <property name="isPropertyPercentCompleteRemoved" column="is_property_percent_complete_removed" />
+        <property name="isPropertyWorkEffortNameRemoved" column="is_property_work_effort_name_removed" />
+        <property name="isPropertyShowAsEnumIdRemoved" column="is_property_show_as_enum_id_removed" />
+        <property name="isPropertySendNotificationEmailRemoved" column="is_property_send_notification_email_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+        <property name="isPropertyLocationDescRemoved" column="is_property_location_desc_removed" />
+        <property name="isPropertyEstimatedStartDateRemoved" column="is_property_estimated_start_date_removed" />
+        <property name="isPropertyEstimatedCompletionDateRemoved" column="is_property_estimated_completion_date_removed" />
+        <property name="isPropertyActualStartDateRemoved" column="is_property_actual_start_date_removed" />
+        <property name="isPropertyActualCompletionDateRemoved" column="is_property_actual_completion_date_removed" />
+        <property name="isPropertyEstimatedMilliSecondsRemoved" column="is_property_estimated_milli_seconds_removed" />
+        <property name="isPropertyEstimatedSetupMillisRemoved" column="is_property_estimated_setup_millis_removed" />
+        <property name="isPropertyEstimateCalcMethodRemoved" column="is_property_estimate_calc_method_removed" />
+        <property name="isPropertyActualMilliSecondsRemoved" column="is_property_actual_milli_seconds_removed" />
+        <property name="isPropertyActualSetupMillisRemoved" column="is_property_actual_setup_millis_removed" />
+        <property name="isPropertyTotalMilliSecondsAllowedRemoved" column="is_property_total_milli_seconds_allowed_removed" />
+        <property name="isPropertyTotalMoneyAllowedRemoved" column="is_property_total_money_allowed_removed" />
+        <property name="isPropertyMoneyUomIdRemoved" column="is_property_money_uom_id_removed" />
+        <property name="isPropertySpecialTermsRemoved" column="is_property_special_terms_removed" />
+        <property name="isPropertyTimeTransparencyRemoved" column="is_property_time_transparency_removed" />
+        <property name="isPropertyUniversalIdRemoved" column="is_property_universal_id_removed" />
+        <property name="isPropertySourceReferenceIdRemoved" column="is_property_source_reference_id_removed" />
+        <property name="isPropertyFixedAssetIdRemoved" column="is_property_fixed_asset_id_removed" />
+        <property name="isPropertyFacilityIdRemoved" column="is_property_facility_id_removed" />
+        <property name="isPropertyInfoUrlRemoved" column="is_property_info_url_removed" />
+        <property name="isPropertyRecurrenceInfoIdRemoved" column="is_property_recurrence_info_id_removed" />
+        <property name="isPropertyTempExprIdRemoved" column="is_property_temp_expr_id_removed" />
+        <property name="isPropertyRuntimeDataIdRemoved" column="is_property_runtime_data_id_removed" />
+        <property name="isPropertyNoteIdRemoved" column="is_property_note_id_removed" />
+        <property name="isPropertyServiceLoaderNameRemoved" column="is_property_service_loader_name_removed" />
+        <property name="isPropertyQuantityToProduceRemoved" column="is_property_quantity_to_produce_removed" />
+        <property name="isPropertyQuantityProducedRemoved" column="is_property_quantity_produced_removed" />
+        <property name="isPropertyQuantityRejectedRemoved" column="is_property_quantity_rejected_removed" />
+        <property name="isPropertyReservPersonsRemoved" column="is_property_reserv_persons_removed" />
+        <property name="isPropertyReserv2ndPPPercRemoved" column="is_property_reserv2nd_pp_perc_removed" />
+        <property name="isPropertyReservNthPPPercRemoved" column="is_property_reserv_nth_pp_perc_removed" />
+        <property name="isPropertyAccommodationMapIdRemoved" column="is_property_accommodation_map_id_removed" />
+        <property name="isPropertyAccommodationSpotIdRemoved" column="is_property_accommodation_spot_id_removed" />
+        <property name="isPropertyRevisionNumberRemoved" column="is_property_revision_number_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.workeffortgoodstandard">
+  <class name="org.dddml.ffvtraceability.domain.workeffortgoodstandard.AbstractWorkEffortGoodStandardState$SimpleWorkEffortGoodStandardState" table="work_effort_good_standard">
+    <composite-id name="workEffortGoodStandardId" class="org.dddml.ffvtraceability.domain.workeffortgoodstandard.WorkEffortGoodStandardId">
+      <key-property name="workEffortId">
+        <column name="WORK_EFFORT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="productId">
+        <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortGoodStdTypeId">
+        <column name="WORK_EFFORT_GOOD_STD_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="fromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <property name="thruDate">
+      <column name="thru_date" sql-type="timestamptz" />
+    </property>
+    <property name="statusId">
+      <column name="status_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="estimatedQuantity">
+      <column name="estimated_quantity" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="estimatedCost">
+      <column name="estimated_cost" sql-type="DECIMAL(18,2)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
+  </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
+</hibernate-mapping>

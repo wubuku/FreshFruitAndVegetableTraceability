@@ -1,0 +1,80 @@
+aggregates:
+  ProductAssoc:
+    id:
+      name: ProductAssocId
+      type: ProductAssocId
+      columnNames:
+        - PRODUCT_ID
+        - PRODUCT_ID_TO
+        - PRODUCT_ASSOC_TYPE_ID
+        - FROM_DATE
+    reservedPropertyMetadata:
+      noActive: true
+      noDeleted: true
+    properties:
+      ThruDate:
+        type: date-time
+      SequenceNum:
+        type: numeric
+      Reason:
+        type: long-varchar
+      Quantity:
+        type: fixed-point
+      ScrapFactor:
+        type: fixed-point
+      Instruction:
+        type: long-varchar
+      RoutingWorkEffortId:
+        type: id
+      EstimateCalcMethod:
+        type: id
+      RecurrenceInfoId:
+        type: id
+    references:
+      ProductAssocType:
+        type: ProductAssocType
+        properties:
+          - ProductAssocId.ProductAssocTypeId
+        foreignKeyName: PROD_ASSOC_TYPE
+      WorkEffort:
+        description: Routing
+        type: WorkEffort
+        properties:
+          - RoutingWorkEffortId
+        foreignKeyName: PROD_ASSOC_RTWE
+
+    valueObjects:
+      ProductAssocId:
+        properties:
+          ProductId:
+            type: id
+          ProductIdTo:
+            type: id
+          ProductAssocTypeId:
+            type: id
+          FromDate:
+            type: date-time
+
+  ProductAssocType:
+    id:
+      name: ProductAssocTypeId
+      type: id
+    metadata:
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+    references:
+      ParentTypeId:
+        description: Parent
+        type: ProductAssocType
+        properties:
+          - ParentTypeId
+        foreignKeyName: PROD_ASSOC_TYPEPAR
+

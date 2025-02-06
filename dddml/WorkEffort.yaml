@@ -1,0 +1,220 @@
+﻿aggregates:
+  WorkEffort:
+    id:
+      name: WorkEffortId
+      type: id
+    properties:
+      WorkEffortTypeId:
+        type: id
+      CurrentStatusId:
+        type: id
+      LastStatusUpdate:
+        type: date-time
+      WorkEffortPurposeTypeId:
+        type: id
+      WorkEffortParentId:
+        description: The primary parent (or the like); it should be one of the parent WorkEfforts already setup in WorkEffortAssoc
+        type: id
+      ScopeEnumId:
+        type: id
+      Priority:
+        type: numeric
+      PercentComplete:
+        type: numeric
+      WorkEffortName:
+        type: name
+      ShowAsEnumId:
+        type: id
+      SendNotificationEmail:
+        type: indicator
+      Description:
+        type: description
+      LocationDesc:
+        type: description
+      EstimatedStartDate:
+        type: date-time
+      EstimatedCompletionDate:
+        type: date-time
+      ActualStartDate:
+        type: date-time
+      ActualCompletionDate:
+        type: date-time
+      EstimatedMilliSeconds:
+        type: floating-point
+      EstimatedSetupMillis:
+        type: floating-point
+      EstimateCalcMethod:
+        type: id
+      ActualMilliSeconds:
+        type: floating-point
+      ActualSetupMillis:
+        type: floating-point
+      TotalMilliSecondsAllowed:
+        type: floating-point
+      TotalMoneyAllowed:
+        type: currency-amount
+      MoneyUomId:
+        type: id
+      SpecialTerms:
+        type: long-varchar
+      TimeTransparency:
+        description: Deprecated - use the availabilityStatusId field in the assignment entities instead
+        type: numeric
+      UniversalId:
+        type: short-varchar
+      SourceReferenceId:
+        type: id-long
+      FixedAssetId:
+        description: Deprecated - use the WorkEffortFixedAssetAssign entity instead
+        type: id
+      FacilityId:
+        type: id
+      InfoUrl:
+        type: long-varchar
+      RecurrenceInfoId:
+        description: Deprecated - use the tempExprId field instead
+        type: id
+      TempExprId:
+        type: id
+      RuntimeDataId:
+        type: id
+      NoteId:
+        type: id
+      ServiceLoaderName:
+        type: name
+      QuantityToProduce:
+        type: fixed-point
+      QuantityProduced:
+        type: fixed-point
+      QuantityRejected:
+        type: fixed-point
+      ReservPersons:
+        description: the number of persons renting the attached asset
+        type: fixed-point
+      Reserv2ndPPPerc:
+        description: "reservationSecondPersonPricePercentage: percentage of the end price for the 2nd person renting this asset connected to the workEffort"
+        type: fixed-point
+      ReservNthPPPerc:
+        description: "reservationNthPersonPricePercentage: percentage of the end price for the Nth (2+) person renting this asset connected to the workEffort"
+        type: fixed-point
+      AccommodationMapId:
+        type: id
+      AccommodationSpotId:
+        type: id
+      RevisionNumber:
+        type: numeric
+
+  WorkEffortAssoc:
+    id:
+      name: WorkEffortAssocId
+      type: WorkEffortAssocId
+      columnNames:
+        - WORK_EFFORT_ID_FROM
+        - WORK_EFFORT_ID_TO
+        - WORK_EFFORT_ASSOC_TYPE_ID
+        - FROM_DATE
+    reservedPropertyMetadata:
+      noActive: true
+      noDeleted: true
+    properties:
+      SequenceNum:
+        type: numeric
+      ThruDate:
+        type: date-time
+    references:
+      WorkEffortAssocType:
+        type: WorkEffortAssocType
+        properties:
+          - WorkEffortAssocId.WorkEffortAssocTypeId
+        foreignKeyName: WK_EFFRTASSC_TYP
+      WorkEffortIdFrom:
+        description: From
+        type: WorkEffort
+        properties:
+          - WorkEffortAssocId.WorkEffortIdFrom
+        foreignKeyName: WK_EFFRTASSC_FWE
+      WorkEffortIdTo:
+        description: To
+        type: WorkEffort
+        properties:
+          - WorkEffortAssocId.WorkEffortIdTo
+        foreignKeyName: WK_EFFRTASSC_TWE
+
+    valueObjects:
+      WorkEffortAssocId:
+        properties:
+          WorkEffortIdFrom:
+            type: id
+          WorkEffortIdTo:
+            type: id
+          WorkEffortAssocTypeId:
+            type: id
+          FromDate:
+            type: date-time
+
+  WorkEffortType:
+    id:
+      name: WorkEffortTypeId
+      type: id
+    metadata:
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+    references:
+      ParentTypeId:
+        description: Parent
+        type: WorkEffortType
+        properties:
+          - ParentTypeId
+        foreignKeyName: WK_EFFRT_TYPE_PAR
+
+  WorkEffortPurposeType:
+    id:
+      name: WorkEffortPurposeTypeId
+      type: id
+    metadata:
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    properties:
+      ParentTypeId:
+        type: id
+      Description:
+        type: description
+    references:
+      ParentTypeId:
+        description: Parent
+        type: WorkEffortPurposeType
+        properties:
+          - ParentTypeId
+        foreignKeyName: WK_EFFRT_PTYPE_PAR
+
+  WorkEffortAssocType:
+    id:
+      name: WorkEffortAssocTypeId
+      type: id
+    metadata:
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+    references:
+      ParentTypeId:
+        description: Parent
+        type: WorkEffortAssocType
+        properties:
+          - ParentTypeId
+        foreignKeyName: WK_EFFRTASSC_TPAR

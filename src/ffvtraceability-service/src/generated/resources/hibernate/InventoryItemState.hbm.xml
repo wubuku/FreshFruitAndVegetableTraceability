@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.inventoryitem">
+  <class name="org.dddml.ffvtraceability.domain.inventoryitem.AbstractInventoryItemState$SimpleInventoryItemState" table="inventory_item">
+    <id name="inventoryItemId" length="60">
+      <column name="inventory_item_id" sql-type="VARCHAR(60)" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <set name="protectedDetails" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="INVENTORY_ITEM_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.inventoryitem.AbstractInventoryItemDetailState$SimpleInventoryItemDetailState" />
+    </set>
+    <property name="inventoryItemTypeId">
+      <column name="inventory_item_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="productId">
+      <column name="product_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="partyId">
+      <column name="party_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="ownerPartyId">
+      <column name="owner_party_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="statusId">
+      <column name="status_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="datetimeReceived">
+      <column name="datetime_received" sql-type="timestamptz" />
+    </property>
+    <property name="datetimeManufactured">
+      <column name="datetime_manufactured" sql-type="timestamptz" />
+    </property>
+    <property name="expireDate">
+      <column name="expire_date" sql-type="timestamptz" />
+    </property>
+    <property name="facilityId">
+      <column name="facility_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="containerId">
+      <column name="container_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="lotId">
+      <column name="lot_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="uomId">
+      <column name="uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="binNumber">
+      <column name="bin_number" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="locationSeqId">
+      <column name="location_seq_id" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="comments">
+      <column name="comments" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="quantityOnHandTotal">
+      <column name="quantity_on_hand_total" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="availableToPromiseTotal">
+      <column name="available_to_promise_total" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="accountingQuantityTotal">
+      <column name="accounting_quantity_total" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="serialNumber">
+      <column name="serial_number" sql-type="VARCHAR(250)" />
+    </property>
+    <property name="softIdentifier">
+      <column name="soft_identifier" sql-type="VARCHAR(250)" />
+    </property>
+    <property name="activationNumber">
+      <column name="activation_number" sql-type="VARCHAR(250)" />
+    </property>
+    <property name="activationValidThru">
+      <column name="activation_valid_thru" sql-type="timestamptz" />
+    </property>
+    <property name="unitCost">
+      <column name="unit_cost" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="currencyUomId">
+      <column name="currency_uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="fixedAssetId">
+      <column name="fixed_asset_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
+  </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
+</hibernate-mapping>

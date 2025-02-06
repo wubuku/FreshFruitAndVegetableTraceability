@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.workeffortinventoryassign">
+  <class name="AbstractWorkEffortInventoryAssignEvent" table="work_effort_inventory_assign_event" abstract="true">
+    <composite-id name="workEffortInventoryAssignEventId" class="org.dddml.ffvtraceability.domain.workeffortinventoryassign.WorkEffortInventoryAssignEventId">
+      <key-property name="workEffortInventoryAssignIdWorkEffortId">
+        <column name="WORK_EFFORT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortInventoryAssignIdInventoryItemId">
+        <column name="INVENTORY_ITEM_ID" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractWorkEffortInventoryAssignEvent$WorkEffortInventoryAssignLobEvent" discriminator-value="WorkEffortInventoryAssignLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractWorkEffortInventoryAssignEvent$AbstractWorkEffortInventoryAssignStateEvent" abstract="true">
+      <property name="statusId">
+        <column name="status_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="quantity">
+        <column name="quantity" sql-type="FLOAT8" />
+      </property>
+      <subclass name="AbstractWorkEffortInventoryAssignEvent$SimpleWorkEffortInventoryAssignStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractWorkEffortInventoryAssignEvent$SimpleWorkEffortInventoryAssignStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

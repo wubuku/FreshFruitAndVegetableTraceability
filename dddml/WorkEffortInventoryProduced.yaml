@@ -1,0 +1,26 @@
+aggregates:
+  WorkEffortInventoryProduced:
+    immutable: true
+    id:
+      name: WorkEffortInventoryProducedId
+      type: WorkEffortInventoryProducedId
+      columnNames:
+        - WORK_EFFORT_ID
+        - INVENTORY_ITEM_ID
+    # properties:
+    #   Quantity:
+    #     type: fixed-point
+    references:
+      WorkEffort:
+        type: WorkEffort
+        properties:
+          - WorkEffortInventoryProducedId.WorkEffortId
+        foreignKeyName: WKEFF_INVPD_WEFF
+
+    valueObjects:
+      WorkEffortInventoryProducedId:
+        properties:
+          WorkEffortId:
+            type: id
+          InventoryItemId:
+            type: id-long

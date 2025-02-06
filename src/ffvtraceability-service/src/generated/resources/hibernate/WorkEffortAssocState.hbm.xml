@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.workeffortassoc">
+  <class name="org.dddml.ffvtraceability.domain.workeffortassoc.AbstractWorkEffortAssocState$SimpleWorkEffortAssocState" table="work_effort_assoc">
+    <composite-id name="workEffortAssocId" class="org.dddml.ffvtraceability.domain.workeffortassoc.WorkEffortAssocId">
+      <key-property name="workEffortIdFrom">
+        <column name="WORK_EFFORT_ID_FROM" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortIdTo">
+        <column name="WORK_EFFORT_ID_TO" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortAssocTypeId">
+        <column name="WORK_EFFORT_ASSOC_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="fromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <property name="sequenceNum">
+      <column name="sequence_num" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="thruDate">
+      <column name="thru_date" sql-type="timestamptz" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
+  </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
+</hibernate-mapping>

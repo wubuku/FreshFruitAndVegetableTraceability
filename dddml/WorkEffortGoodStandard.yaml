@@ -1,0 +1,75 @@
+aggregates:
+  WorkEffortGoodStandard:
+    id:
+      name: WorkEffortGoodStandardId
+      type: WorkEffortGoodStandardId
+      columnNames:
+        - WORK_EFFORT_ID
+        - PRODUCT_ID
+        - WORK_EFFORT_GOOD_STD_TYPE_ID
+        - FROM_DATE
+    reservedPropertyMetadata:
+      noActive: true
+      noDeleted: true
+    properties:
+      ThruDate:
+        type: date-time
+      StatusId:
+        type: id
+      EstimatedQuantity:
+        type: fixed-point
+      EstimatedCost:
+        type: currency-amount
+      # ---------------------------
+      # EstimatedLotId:
+      #   type: id-long-ne
+    references:
+      WorkEffort:
+        type: WorkEffort
+        properties:
+          - WorkEffortGoodStandardId.WorkEffortId
+        foreignKeyName: WKEFF_GDSTD_WEFF
+      WorkEffortGoodStandardType:
+        type: WorkEffortGoodStandardType
+        properties:
+          - WorkEffortGoodStandardId.WorkEffortGoodStdTypeId
+        foreignKeyName: WKEFF_GDSTD_TYPE
+
+    valueObjects:
+      WorkEffortGoodStandardId:
+        properties:
+          WorkEffortId:
+            name: WorkEffortId
+            type: id
+          ProductId:
+            name: ProductId
+            type: id
+          WorkEffortGoodStdTypeId:
+            name: WorkEffortGoodStdTypeId
+            type: id
+          FromDate:
+            name: FromDate
+            type: date-time
+
+  WorkEffortGoodStandardType:
+    id:
+      name: WorkEffortGoodStdTypeId
+      type: id
+    metadata:
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+    references:
+      ParentTypeId:
+        description: Parent
+        type: WorkEffortGoodStandardType
+        properties:
+          - ParentTypeId
+        foreignKeyName: WKEFF_GDSTD_TPAR

@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.inventoryitem">
+  <class name="AbstractInventoryItemEvent" table="inventory_item_event" abstract="true">
+    <composite-id name="inventoryItemEventId" class="org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemEventId">
+      <key-property name="inventoryItemId">
+        <column name="inventory_item_id" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractInventoryItemEvent$InventoryItemLobEvent" discriminator-value="InventoryItemLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractInventoryItemEvent$AbstractInventoryItemStateEvent" abstract="true">
+      <property name="inventoryItemTypeId">
+        <column name="inventory_item_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="productId">
+        <column name="product_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="partyId">
+        <column name="party_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="ownerPartyId">
+        <column name="owner_party_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="statusId">
+        <column name="status_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="datetimeReceived">
+        <column name="datetime_received" sql-type="timestamptz" />
+      </property>
+      <property name="datetimeManufactured">
+        <column name="datetime_manufactured" sql-type="timestamptz" />
+      </property>
+      <property name="expireDate">
+        <column name="expire_date" sql-type="timestamptz" />
+      </property>
+      <property name="facilityId">
+        <column name="facility_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="containerId">
+        <column name="container_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="lotId">
+        <column name="lot_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="uomId">
+        <column name="uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="binNumber">
+        <column name="bin_number" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="locationSeqId">
+        <column name="location_seq_id" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="comments">
+        <column name="comments" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="quantityOnHandTotal">
+        <column name="quantity_on_hand_total" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="availableToPromiseTotal">
+        <column name="available_to_promise_total" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="accountingQuantityTotal">
+        <column name="accounting_quantity_total" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="serialNumber">
+        <column name="serial_number" sql-type="VARCHAR(250)" />
+      </property>
+      <property name="softIdentifier">
+        <column name="soft_identifier" sql-type="VARCHAR(250)" />
+      </property>
+      <property name="activationNumber">
+        <column name="activation_number" sql-type="VARCHAR(250)" />
+      </property>
+      <property name="activationValidThru">
+        <column name="activation_valid_thru" sql-type="timestamptz" />
+      </property>
+      <property name="unitCost">
+        <column name="unit_cost" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="currencyUomId">
+        <column name="currency_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="fixedAssetId">
+        <column name="fixed_asset_id" sql-type="VARCHAR(20)" />
+      </property>
+      <subclass name="AbstractInventoryItemEvent$SimpleInventoryItemStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractInventoryItemEvent$SimpleInventoryItemStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyInventoryItemTypeIdRemoved" column="is_property_inventory_item_type_id_removed" />
+        <property name="isPropertyProductIdRemoved" column="is_property_product_id_removed" />
+        <property name="isPropertyPartyIdRemoved" column="is_property_party_id_removed" />
+        <property name="isPropertyOwnerPartyIdRemoved" column="is_property_owner_party_id_removed" />
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyDatetimeReceivedRemoved" column="is_property_datetime_received_removed" />
+        <property name="isPropertyDatetimeManufacturedRemoved" column="is_property_datetime_manufactured_removed" />
+        <property name="isPropertyExpireDateRemoved" column="is_property_expire_date_removed" />
+        <property name="isPropertyFacilityIdRemoved" column="is_property_facility_id_removed" />
+        <property name="isPropertyContainerIdRemoved" column="is_property_container_id_removed" />
+        <property name="isPropertyLotIdRemoved" column="is_property_lot_id_removed" />
+        <property name="isPropertyUomIdRemoved" column="is_property_uom_id_removed" />
+        <property name="isPropertyBinNumberRemoved" column="is_property_bin_number_removed" />
+        <property name="isPropertyLocationSeqIdRemoved" column="is_property_location_seq_id_removed" />
+        <property name="isPropertyCommentsRemoved" column="is_property_comments_removed" />
+        <property name="isPropertyQuantityOnHandTotalRemoved" column="is_property_quantity_on_hand_total_removed" />
+        <property name="isPropertyAvailableToPromiseTotalRemoved" column="is_property_available_to_promise_total_removed" />
+        <property name="isPropertyAccountingQuantityTotalRemoved" column="is_property_accounting_quantity_total_removed" />
+        <property name="isPropertySerialNumberRemoved" column="is_property_serial_number_removed" />
+        <property name="isPropertySoftIdentifierRemoved" column="is_property_soft_identifier_removed" />
+        <property name="isPropertyActivationNumberRemoved" column="is_property_activation_number_removed" />
+        <property name="isPropertyActivationValidThruRemoved" column="is_property_activation_valid_thru_removed" />
+        <property name="isPropertyUnitCostRemoved" column="is_property_unit_cost_removed" />
+        <property name="isPropertyCurrencyUomIdRemoved" column="is_property_currency_uom_id_removed" />
+        <property name="isPropertyFixedAssetIdRemoved" column="is_property_fixed_asset_id_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

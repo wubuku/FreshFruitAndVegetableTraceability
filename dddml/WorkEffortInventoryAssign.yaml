@@ -1,0 +1,21 @@
+aggregates:
+  WorkEffortInventoryAssign:
+    id:
+      name: WorkEffortInventoryAssignId
+      type: WorkEffortInventoryAssignId
+      columnNames:
+        - WORK_EFFORT_ID
+        - INVENTORY_ITEM_ID
+    properties:
+      StatusId:
+        type: id
+      Quantity:
+        type: floating-point
+
+    valueObjects:
+      WorkEffortInventoryAssignId:
+        properties:
+          WorkEffortId:
+            type: id
+          InventoryItemId:
+            type: id-long

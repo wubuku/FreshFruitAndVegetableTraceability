@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.workeffortgoodstandardtype">
+  <class name="org.dddml.ffvtraceability.domain.workeffortgoodstandardtype.AbstractWorkEffortGoodStandardTypeState$SimpleWorkEffortGoodStandardTypeState" table="work_effort_good_standard_type">
+    <id name="workEffortGoodStdTypeId" length="20">
+      <column name="work_effort_good_std_type_id" sql-type="VARCHAR(20)" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <property name="parentTypeId">
+      <column name="parent_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="hasTable">
+      <column name="has_table" sql-type="CHAR(1)" />
+    </property>
+    <property name="description">
+      <column name="description" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="commandId" column="command_id" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
+  </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
+</hibernate-mapping>

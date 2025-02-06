@@ -1,0 +1,132 @@
+aggregates:
+  InventoryItem:
+    id:
+      name: InventoryItemId
+      type: id-long
+    properties:
+      InventoryItemTypeId:
+        type: id
+      ProductId:
+        type: id
+      PartyId:
+        type: id
+      OwnerPartyId:
+        description: The owner of the inventory item.
+        type: id
+      StatusId:
+        type: id
+      DatetimeReceived:
+        type: date-time
+      DatetimeManufactured:
+        type: date-time
+      ExpireDate:
+        type: date-time
+      FacilityId:
+        type: id
+      ContainerId:
+        type: id
+      LotId:
+        type: id
+      UomId:
+        type: id
+      BinNumber:
+        type: id
+      LocationSeqId:
+        type: id-long
+      Comments:
+        type: comment
+      QuantityOnHandTotal:
+        type: fixed-point
+      AvailableToPromiseTotal:
+        type: fixed-point
+      AccountingQuantityTotal:
+        type: fixed-point
+      SerialNumber:
+        type: id-vlong #value
+      SoftIdentifier:
+        type: id-vlong #value
+      ActivationNumber:
+        type: id-vlong #value
+      ActivationValidThru:
+        type: date-time
+      UnitCost:
+        description: Higher precision in case it is a calculated number
+        type: fixed-point
+      CurrencyUomId:
+        description: The currency Uom of the unit cost.
+        type: id
+      FixedAssetId:
+        type: id
+      Details:
+        itemType: InventoryItemDetail
+
+    entities:
+      InventoryItemDetail:
+        immutable: true
+        id:
+          name: InventoryItemDetailSeqId
+          type: id-long
+        globalId:
+          name: InventoryItemDetailId
+          type: InventoryItemDetailId
+          columnNames:
+            - INVENTORY_ITEM_ID
+            - INVENTORY_ITEM_DETAIL_SEQ_ID
+        properties:
+          EffectiveDate:
+            type: date-time
+          QuantityOnHandDiff:
+            type: fixed-point
+          AvailableToPromiseDiff:
+            type: fixed-point
+          AccountingQuantityDiff:
+            type: fixed-point
+          UnitCost:
+            type: fixed-point
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id
+          ShipGroupSeqId:
+            type: id
+          ShipmentId:
+            type: id
+          ShipmentItemSeqId:
+            type: id
+          ReturnId:
+            type: id
+          ReturnItemSeqId:
+            type: id
+          WorkEffortId:
+            type: id
+          FixedAssetId:
+            type: id
+          MaintHistSeqId:
+            type: id
+          ItemIssuanceId:
+            type: id
+          ReceiptId:
+            type: id
+          PhysicalInventoryId:
+            type: id
+          ReasonEnumId:
+            type: id
+          Description:
+            type: description
+
+  InventoryItemType:
+    id:
+      name: InventoryItemTypeId
+      type: id
+    metadata:
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+    properties:
+      ParentTypeId:
+        type: id
+      HasTable:
+        type: indicator
+      Description:
+        type: description
+

@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.workeffort">
+  <class name="org.dddml.ffvtraceability.domain.workeffort.AbstractWorkEffortState$SimpleWorkEffortState" table="work_effort">
+    <id name="workEffortId" length="20">
+      <column name="work_effort_id" sql-type="VARCHAR(20)" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <property name="workEffortTypeId">
+      <column name="work_effort_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="currentStatusId">
+      <column name="current_status_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="lastStatusUpdate">
+      <column name="last_status_update" sql-type="timestamptz" />
+    </property>
+    <property name="workEffortPurposeTypeId">
+      <column name="work_effort_purpose_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="workEffortParentId">
+      <column name="work_effort_parent_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="scopeEnumId">
+      <column name="scope_enum_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="priority">
+      <column name="priority" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="percentComplete">
+      <column name="percent_complete" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="workEffortName">
+      <column name="work_effort_name" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="showAsEnumId">
+      <column name="show_as_enum_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="sendNotificationEmail">
+      <column name="send_notification_email" sql-type="CHAR(1)" />
+    </property>
+    <property name="description">
+      <column name="description" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="locationDesc">
+      <column name="location_desc" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="estimatedStartDate">
+      <column name="estimated_start_date" sql-type="timestamptz" />
+    </property>
+    <property name="estimatedCompletionDate">
+      <column name="estimated_completion_date" sql-type="timestamptz" />
+    </property>
+    <property name="actualStartDate">
+      <column name="actual_start_date" sql-type="timestamptz" />
+    </property>
+    <property name="actualCompletionDate">
+      <column name="actual_completion_date" sql-type="timestamptz" />
+    </property>
+    <property name="estimatedMilliSeconds">
+      <column name="estimated_milli_seconds" sql-type="FLOAT8" />
+    </property>
+    <property name="estimatedSetupMillis">
+      <column name="estimated_setup_millis" sql-type="FLOAT8" />
+    </property>
+    <property name="estimateCalcMethod">
+      <column name="estimate_calc_method" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="actualMilliSeconds">
+      <column name="actual_milli_seconds" sql-type="FLOAT8" />
+    </property>
+    <property name="actualSetupMillis">
+      <column name="actual_setup_millis" sql-type="FLOAT8" />
+    </property>
+    <property name="totalMilliSecondsAllowed">
+      <column name="total_milli_seconds_allowed" sql-type="FLOAT8" />
+    </property>
+    <property name="totalMoneyAllowed">
+      <column name="total_money_allowed" sql-type="DECIMAL(18,2)" />
+    </property>
+    <property name="moneyUomId">
+      <column name="money_uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="specialTerms">
+      <column name="special_terms" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="timeTransparency">
+      <column name="time_transparency" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="universalId">
+      <column name="universal_id" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="sourceReferenceId">
+      <column name="source_reference_id" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="fixedAssetId">
+      <column name="fixed_asset_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="facilityId">
+      <column name="facility_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="infoUrl">
+      <column name="info_url" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="recurrenceInfoId">
+      <column name="recurrence_info_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="tempExprId">
+      <column name="temp_expr_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="runtimeDataId">
+      <column name="runtime_data_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="noteId">
+      <column name="note_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="serviceLoaderName">
+      <column name="service_loader_name" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="quantityToProduce">
+      <column name="quantity_to_produce" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="quantityProduced">
+      <column name="quantity_produced" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="quantityRejected">
+      <column name="quantity_rejected" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="reservPersons">
+      <column name="reserv_persons" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="reserv2ndPPPerc">
+      <column name="reserv2nd_pp_perc" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="reservNthPPPerc">
+      <column name="reserv_nth_pp_perc" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="accommodationMapId">
+      <column name="accommodation_map_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="accommodationSpotId">
+      <column name="accommodation_spot_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="revisionNumber">
+      <column name="revision_number" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
+  </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
+</hibernate-mapping>

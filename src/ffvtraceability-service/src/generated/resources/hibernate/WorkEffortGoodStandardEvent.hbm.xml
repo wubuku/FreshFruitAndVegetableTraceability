@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.workeffortgoodstandard">
+  <class name="AbstractWorkEffortGoodStandardEvent" table="work_effort_good_standard_event" abstract="true">
+    <composite-id name="workEffortGoodStandardEventId" class="org.dddml.ffvtraceability.domain.workeffortgoodstandard.WorkEffortGoodStandardEventId">
+      <key-property name="workEffortGoodStandardIdWorkEffortId">
+        <column name="WORK_EFFORT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortGoodStandardIdProductId">
+        <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortGoodStandardIdWorkEffortGoodStdTypeId">
+        <column name="WORK_EFFORT_GOOD_STD_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortGoodStandardIdFromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractWorkEffortGoodStandardEvent$WorkEffortGoodStandardLobEvent" discriminator-value="WorkEffortGoodStandardLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractWorkEffortGoodStandardEvent$AbstractWorkEffortGoodStandardStateEvent" abstract="true">
+      <property name="thruDate">
+        <column name="thru_date" sql-type="timestamptz" />
+      </property>
+      <property name="statusId">
+        <column name="status_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="estimatedQuantity">
+        <column name="estimated_quantity" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="estimatedCost">
+        <column name="estimated_cost" sql-type="DECIMAL(18,2)" />
+      </property>
+      <subclass name="AbstractWorkEffortGoodStandardEvent$SimpleWorkEffortGoodStandardStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractWorkEffortGoodStandardEvent$SimpleWorkEffortGoodStandardStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyThruDateRemoved" column="is_property_thru_date_removed" />
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyEstimatedQuantityRemoved" column="is_property_estimated_quantity_removed" />
+        <property name="isPropertyEstimatedCostRemoved" column="is_property_estimated_cost_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

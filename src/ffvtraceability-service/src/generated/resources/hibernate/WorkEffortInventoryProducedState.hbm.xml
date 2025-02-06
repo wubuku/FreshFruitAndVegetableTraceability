@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.workeffortinventoryproduced">
+  <class name="org.dddml.ffvtraceability.domain.workeffortinventoryproduced.AbstractWorkEffortInventoryProducedState$SimpleWorkEffortInventoryProducedState" mutable="false" table="work_effort_inventory_produced">
+    <cache usage="read-only" />
+    <composite-id name="workEffortInventoryProducedId" class="org.dddml.ffvtraceability.domain.workeffortinventoryproduced.WorkEffortInventoryProducedId">
+      <key-property name="workEffortId">
+        <column name="WORK_EFFORT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="inventoryItemId">
+        <column name="INVENTORY_ITEM_ID" sql-type="VARCHAR(60)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="commandId" column="command_id" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
+  </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
+</hibernate-mapping>

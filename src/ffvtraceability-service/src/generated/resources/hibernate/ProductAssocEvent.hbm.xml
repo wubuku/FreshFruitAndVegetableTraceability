@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.productassoc">
+  <class name="AbstractProductAssocEvent" table="product_assoc_event" abstract="true">
+    <composite-id name="productAssocEventId" class="org.dddml.ffvtraceability.domain.productassoc.ProductAssocEventId">
+      <key-property name="productAssocIdProductId">
+        <column name="PRODUCT_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="productAssocIdProductIdTo">
+        <column name="PRODUCT_ID_TO" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="productAssocIdProductAssocTypeId">
+        <column name="PRODUCT_ASSOC_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="productAssocIdFromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractProductAssocEvent$ProductAssocLobEvent" discriminator-value="ProductAssocLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractProductAssocEvent$AbstractProductAssocStateEvent" abstract="true">
+      <property name="thruDate">
+        <column name="thru_date" sql-type="timestamptz" />
+      </property>
+      <property name="sequenceNum">
+        <column name="sequence_num" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="reason">
+        <column name="reason" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="quantity">
+        <column name="quantity" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="scrapFactor">
+        <column name="scrap_factor" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="instruction">
+        <column name="instruction" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="routingWorkEffortId">
+        <column name="routing_work_effort_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="estimateCalcMethod">
+        <column name="estimate_calc_method" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="recurrenceInfoId">
+        <column name="recurrence_info_id" sql-type="VARCHAR(20)" />
+      </property>
+      <subclass name="AbstractProductAssocEvent$SimpleProductAssocStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractProductAssocEvent$SimpleProductAssocStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyThruDateRemoved" column="is_property_thru_date_removed" />
+        <property name="isPropertySequenceNumRemoved" column="is_property_sequence_num_removed" />
+        <property name="isPropertyReasonRemoved" column="is_property_reason_removed" />
+        <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed" />
+        <property name="isPropertyScrapFactorRemoved" column="is_property_scrap_factor_removed" />
+        <property name="isPropertyInstructionRemoved" column="is_property_instruction_removed" />
+        <property name="isPropertyRoutingWorkEffortIdRemoved" column="is_property_routing_work_effort_id_removed" />
+        <property name="isPropertyEstimateCalcMethodRemoved" column="is_property_estimate_calc_method_removed" />
+        <property name="isPropertyRecurrenceInfoIdRemoved" column="is_property_recurrence_info_id_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

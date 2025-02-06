@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.inventoryitem">
+  <class name="org.dddml.ffvtraceability.domain.inventoryitem.AbstractInventoryItemDetailState$SimpleInventoryItemDetailState" mutable="false" table="inventory_item_detail">
+    <cache usage="read-only" />
+    <composite-id name="inventoryItemDetailId" class="org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemDetailId">
+      <key-property name="inventoryItemId">
+        <column name="INVENTORY_ITEM_ID" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="inventoryItemDetailSeqId">
+        <column name="INVENTORY_ITEM_DETAIL_SEQ_ID" sql-type="VARCHAR(60)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <many-to-one name="protectedInventoryItemState" class="org.dddml.ffvtraceability.domain.inventoryitem.AbstractInventoryItemState$SimpleInventoryItemState" insert="false" update="false">
+      <column name="INVENTORY_ITEM_ID" />
+    </many-to-one>
+    <property name="effectiveDate">
+      <column name="effective_date" sql-type="timestamptz" />
+    </property>
+    <property name="quantityOnHandDiff">
+      <column name="quantity_on_hand_diff" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="availableToPromiseDiff">
+      <column name="available_to_promise_diff" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="accountingQuantityDiff">
+      <column name="accounting_quantity_diff" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="unitCost">
+      <column name="unit_cost" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="orderId">
+      <column name="order_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="orderItemSeqId">
+      <column name="order_item_seq_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="shipGroupSeqId">
+      <column name="ship_group_seq_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="shipmentId">
+      <column name="shipment_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="shipmentItemSeqId">
+      <column name="shipment_item_seq_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="returnId">
+      <column name="return_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="returnItemSeqId">
+      <column name="return_item_seq_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="workEffortId">
+      <column name="work_effort_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="fixedAssetId">
+      <column name="fixed_asset_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="maintHistSeqId">
+      <column name="maint_hist_seq_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="itemIssuanceId">
+      <column name="item_issuance_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="receiptId">
+      <column name="receipt_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="physicalInventoryId">
+      <column name="physical_inventory_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="reasonEnumId">
+      <column name="reason_enum_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="description">
+      <column name="description" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="commandId" column="command_id" />
+  </class>
+</hibernate-mapping>

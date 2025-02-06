@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.workeffortassoc">
+  <class name="AbstractWorkEffortAssocEvent" table="work_effort_assoc_event" abstract="true">
+    <composite-id name="workEffortAssocEventId" class="org.dddml.ffvtraceability.domain.workeffortassoc.WorkEffortAssocEventId">
+      <key-property name="workEffortAssocIdWorkEffortIdFrom">
+        <column name="WORK_EFFORT_ID_FROM" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortAssocIdWorkEffortIdTo">
+        <column name="WORK_EFFORT_ID_TO" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortAssocIdWorkEffortAssocTypeId">
+        <column name="WORK_EFFORT_ASSOC_TYPE_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="workEffortAssocIdFromDate">
+        <column name="FROM_DATE" sql-type="timestamptz" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractWorkEffortAssocEvent$WorkEffortAssocLobEvent" discriminator-value="WorkEffortAssocLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractWorkEffortAssocEvent$AbstractWorkEffortAssocStateEvent" abstract="true">
+      <property name="sequenceNum">
+        <column name="sequence_num" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="thruDate">
+        <column name="thru_date" sql-type="timestamptz" />
+      </property>
+      <subclass name="AbstractWorkEffortAssocEvent$SimpleWorkEffortAssocStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractWorkEffortAssocEvent$SimpleWorkEffortAssocStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertySequenceNumRemoved" column="is_property_sequence_num_removed" />
+        <property name="isPropertyThruDateRemoved" column="is_property_thru_date_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>
