@@ -39,13 +39,20 @@ public class HibernateInventoryItemDetailEventDao implements InventoryItemDetail
     @Transactional(readOnly = true)
     @Override
     public Iterable<InventoryItemDetailEvent> findByInventoryItemEventId(InventoryItemEventId inventoryItemEventId) {
-//        Criteria criteria = getCurrentSession().createCriteria(AbstractInventoryItemDetailState.class);
-//        Junction partIdCondition = Restrictions.conjunction()
-//            .add(Restrictions.eq("inventoryItemDetailId.inventoryItemId", inventoryItemEventId.getInventoryItemId()))
-//            ;
-//        return (Iterable<InventoryItemDetailEvent>) criteria.add(partIdCondition).list()
-//                .stream().map(s -> new AbstractInventoryItemDetailEvent.SimpleInventoryItemDetailStateCreated((InventoryItemDetailState)s)).collect(java.util.stream.Collectors.toList());
-        return null;//todo
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<InventoryItemDetailState> cq = cb.createQuery(InventoryItemDetailState.class);
+        Root<InventoryItemDetailState> root = cq.from(InventoryItemDetailState.class);
+        cq.select(root);
+
+        java.util.List<Predicate> predicates = new java.util.ArrayList<>();
+        predicates.add(cb.equal(root.get("inventoryItemDetailId").get("inventoryItemId"), inventoryItemEventId.getInventoryItemId()));
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
+
+        return em.createQuery(cq).getResultList()
+                .stream()
+                .map(s -> new AbstractInventoryItemDetailEvent.SimpleInventoryItemDetailStateCreated(s))
+                .collect(java.util.stream.Collectors.toList());
     }
 
 }
