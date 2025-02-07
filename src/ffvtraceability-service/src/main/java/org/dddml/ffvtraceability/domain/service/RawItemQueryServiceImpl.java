@@ -27,14 +27,13 @@ public class RawItemQueryServiceImpl implements RawItemQueryService {
     @Override
     @Cacheable(value = "BffRawItems", key = "#productId", unless = "#result == null")
     @Transactional(readOnly = true)
-    public BffRawItemDto findRawItemUseCache(String productId) {
-        return findRawItem(productId);
+    public BffRawItemDto getRawItem(String productId) {
+        return getRawItemWithoutCache(productId);
     }
-
 
     @Override
     @Transactional(readOnly = true)
-    public BffRawItemDto findRawItem(String productId) {
+    public BffRawItemDto getRawItemWithoutCache(String productId) {
         ProductState productState = productApplicationService.get(productId);
         if (productState != null) {
             BffRawItemDto dto = bffRawItemMapper.toBffRawItemDto(productState);

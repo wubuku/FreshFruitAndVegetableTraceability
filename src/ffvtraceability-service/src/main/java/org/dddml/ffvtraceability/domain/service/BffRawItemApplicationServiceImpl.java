@@ -80,7 +80,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Override
     @Transactional(readOnly = true)
     public BffRawItemDto when(BffRawItemServiceCommands.GetRawItem c) {
-        return rawItemQueryService.findRawItem(c.getProductId());
+        return rawItemQueryService.getRawItemWithoutCache(c.getProductId());
     }
 
     @Override

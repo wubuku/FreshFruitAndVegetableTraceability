@@ -20,15 +20,15 @@ public class BffGeoMapperImpl implements BffGeoMapper {
 
         BffGeoDto bffGeoDto = new BffGeoDto();
 
-        bffGeoDto.setAbbreviation( bffGeoProjection.getAbbreviation() );
-        bffGeoDto.setGeoCode( bffGeoProjection.getGeoCode() );
         bffGeoDto.setGeoId( bffGeoProjection.getGeoId() );
-        bffGeoDto.setGeoName( bffGeoProjection.getGeoName() );
-        bffGeoDto.setGeoSecCode( bffGeoProjection.getGeoSecCode() );
         bffGeoDto.setGeoTypeId( bffGeoProjection.getGeoTypeId() );
-        bffGeoDto.setParentGeoId( bffGeoProjection.getParentGeoId() );
-        bffGeoDto.setSequenceNumber( bffGeoProjection.getSequenceNumber() );
+        bffGeoDto.setGeoName( bffGeoProjection.getGeoName() );
+        bffGeoDto.setGeoCode( bffGeoProjection.getGeoCode() );
+        bffGeoDto.setGeoSecCode( bffGeoProjection.getGeoSecCode() );
+        bffGeoDto.setAbbreviation( bffGeoProjection.getAbbreviation() );
         bffGeoDto.setWellKnownText( bffGeoProjection.getWellKnownText() );
+        bffGeoDto.setSequenceNumber( bffGeoProjection.getSequenceNumber() );
+        bffGeoDto.setParentGeoId( bffGeoProjection.getParentGeoId() );
 
         return bffGeoDto;
     }
@@ -42,13 +42,13 @@ public class BffGeoMapperImpl implements BffGeoMapper {
         AbstractGeoCommand.SimpleCreateGeo simpleCreateGeo = new AbstractGeoCommand.SimpleCreateGeo();
 
         simpleCreateGeo.setGeoId( bffGeoDto.getGeoId() );
-        simpleCreateGeo.setAbbreviation( bffGeoDto.getAbbreviation() );
-        simpleCreateGeo.setGeoCode( bffGeoDto.getGeoCode() );
-        simpleCreateGeo.setGeoName( bffGeoDto.getGeoName() );
-        simpleCreateGeo.setGeoSecCode( bffGeoDto.getGeoSecCode() );
         simpleCreateGeo.setGeoTypeId( bffGeoDto.getGeoTypeId() );
-        simpleCreateGeo.setSequenceNumber( bffGeoDto.getSequenceNumber() );
+        simpleCreateGeo.setGeoName( bffGeoDto.getGeoName() );
+        simpleCreateGeo.setGeoCode( bffGeoDto.getGeoCode() );
+        simpleCreateGeo.setGeoSecCode( bffGeoDto.getGeoSecCode() );
+        simpleCreateGeo.setAbbreviation( bffGeoDto.getAbbreviation() );
         simpleCreateGeo.setWellKnownText( bffGeoDto.getWellKnownText() );
+        simpleCreateGeo.setSequenceNumber( bffGeoDto.getSequenceNumber() );
 
         return simpleCreateGeo;
     }
@@ -62,13 +62,13 @@ public class BffGeoMapperImpl implements BffGeoMapper {
         AbstractGeoCommand.SimpleMergePatchGeo simpleMergePatchGeo = new AbstractGeoCommand.SimpleMergePatchGeo();
 
         simpleMergePatchGeo.setGeoId( bffGeoDto.getGeoId() );
-        simpleMergePatchGeo.setAbbreviation( bffGeoDto.getAbbreviation() );
-        simpleMergePatchGeo.setGeoCode( bffGeoDto.getGeoCode() );
-        simpleMergePatchGeo.setGeoName( bffGeoDto.getGeoName() );
-        simpleMergePatchGeo.setGeoSecCode( bffGeoDto.getGeoSecCode() );
         simpleMergePatchGeo.setGeoTypeId( bffGeoDto.getGeoTypeId() );
-        simpleMergePatchGeo.setSequenceNumber( bffGeoDto.getSequenceNumber() );
+        simpleMergePatchGeo.setGeoName( bffGeoDto.getGeoName() );
+        simpleMergePatchGeo.setGeoCode( bffGeoDto.getGeoCode() );
+        simpleMergePatchGeo.setGeoSecCode( bffGeoDto.getGeoSecCode() );
+        simpleMergePatchGeo.setAbbreviation( bffGeoDto.getAbbreviation() );
         simpleMergePatchGeo.setWellKnownText( bffGeoDto.getWellKnownText() );
+        simpleMergePatchGeo.setSequenceNumber( bffGeoDto.getSequenceNumber() );
 
         return simpleMergePatchGeo;
     }

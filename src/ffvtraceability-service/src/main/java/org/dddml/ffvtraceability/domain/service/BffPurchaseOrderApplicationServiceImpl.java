@@ -94,7 +94,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
             purchaseOrders.forEach(po -> {
                 if (po.getOrderItems() != null) {
                     po.getOrderItems().forEach(item -> {
-                        item.setProduct(rawItemQueryService.findRawItemUseCache(item.getProductId()));
+                        item.setProduct(rawItemQueryService.getRawItem(item.getProductId()));
                     });
                 }
             });
@@ -137,7 +137,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         }
         if (c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
             order.getOrderItems().forEach(orderItem -> {
-                orderItem.setProduct(rawItemQueryService.findRawItemUseCache(orderItem.getProductId()));
+                orderItem.setProduct(rawItemQueryService.getRawItem(orderItem.getProductId()));
             });
         }
         return order;
@@ -162,7 +162,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
             );
         }
         if (orderItem != null && c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
-            orderItem.setProduct(rawItemQueryService.findRawItemUseCache(orderItem.getProductId()));
+            orderItem.setProduct(rawItemQueryService.getRawItem(orderItem.getProductId()));
         }
         return orderItem;
     }

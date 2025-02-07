@@ -21,12 +21,12 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         BffSupplierDto bffSupplierDto = new BffSupplierDto();
 
-        bffSupplierDto.setDescription( partyState.getDescription() );
-        bffSupplierDto.setEmail( partyState.getEmail() );
         bffSupplierDto.setExternalId( partyState.getExternalId() );
         bffSupplierDto.setPreferredCurrencyUomId( partyState.getPreferredCurrencyUomId() );
+        bffSupplierDto.setDescription( partyState.getDescription() );
         bffSupplierDto.setStatusId( partyState.getStatusId() );
         bffSupplierDto.setTelephone( partyState.getTelephone() );
+        bffSupplierDto.setEmail( partyState.getEmail() );
         bffSupplierDto.setWebSite( partyState.getWebSite() );
 
         bffSupplierDto.setActive( PARTY_STATUS_ACTIVE.equals(partyState.getStatusId()) || partyState.getStatusId() == null ? "Y" : "N" );
@@ -42,25 +42,25 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         BffSupplierDto bffSupplierDto = new BffSupplierDto();
 
-        bffSupplierDto.setBankAccountInformation( bffSupplierProjection.getBankAccountInformation() );
-        bffSupplierDto.setCertificationCodes( bffSupplierProjection.getCertificationCodes() );
-        bffSupplierDto.setDescription( bffSupplierProjection.getDescription() );
-        bffSupplierDto.setEmail( bffSupplierProjection.getEmail() );
-        bffSupplierDto.setExternalId( bffSupplierProjection.getExternalId() );
-        bffSupplierDto.setGgn( bffSupplierProjection.getGgn() );
-        bffSupplierDto.setGln( bffSupplierProjection.getGln() );
-        bffSupplierDto.setGs1CompanyPrefix( bffSupplierProjection.getGs1CompanyPrefix() );
-        bffSupplierDto.setInternalId( bffSupplierProjection.getInternalId() );
-        bffSupplierDto.setPreferredCurrencyUomId( bffSupplierProjection.getPreferredCurrencyUomId() );
-        bffSupplierDto.setStatusId( bffSupplierProjection.getStatusId() );
         bffSupplierDto.setSupplierId( bffSupplierProjection.getSupplierId() );
         bffSupplierDto.setSupplierName( bffSupplierProjection.getSupplierName() );
-        bffSupplierDto.setSupplierProductTypeDescription( bffSupplierProjection.getSupplierProductTypeDescription() );
+        bffSupplierDto.setGgn( bffSupplierProjection.getGgn() );
+        bffSupplierDto.setGln( bffSupplierProjection.getGln() );
+        bffSupplierDto.setExternalId( bffSupplierProjection.getExternalId() );
+        bffSupplierDto.setPreferredCurrencyUomId( bffSupplierProjection.getPreferredCurrencyUomId() );
+        bffSupplierDto.setDescription( bffSupplierProjection.getDescription() );
+        bffSupplierDto.setStatusId( bffSupplierProjection.getStatusId() );
         bffSupplierDto.setSupplierShortName( bffSupplierProjection.getSupplierShortName() );
-        bffSupplierDto.setSupplierTypeEnumId( bffSupplierProjection.getSupplierTypeEnumId() );
         bffSupplierDto.setTaxId( bffSupplierProjection.getTaxId() );
-        bffSupplierDto.setTelephone( bffSupplierProjection.getTelephone() );
+        bffSupplierDto.setGs1CompanyPrefix( bffSupplierProjection.getGs1CompanyPrefix() );
+        bffSupplierDto.setInternalId( bffSupplierProjection.getInternalId() );
         bffSupplierDto.setTpaNumber( bffSupplierProjection.getTpaNumber() );
+        bffSupplierDto.setSupplierTypeEnumId( bffSupplierProjection.getSupplierTypeEnumId() );
+        bffSupplierDto.setSupplierProductTypeDescription( bffSupplierProjection.getSupplierProductTypeDescription() );
+        bffSupplierDto.setCertificationCodes( bffSupplierProjection.getCertificationCodes() );
+        bffSupplierDto.setBankAccountInformation( bffSupplierProjection.getBankAccountInformation() );
+        bffSupplierDto.setTelephone( bffSupplierProjection.getTelephone() );
+        bffSupplierDto.setEmail( bffSupplierProjection.getEmail() );
         bffSupplierDto.setWebSite( bffSupplierProjection.getWebSite() );
 
         bffSupplierDto.setActive( PARTY_STATUS_ACTIVE.equals(bffSupplierProjection.getStatusId()) || bffSupplierProjection.getStatusId() == null? "Y" : "N" );
@@ -76,13 +76,13 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         AbstractPartyCommand.SimpleCreateParty simpleCreateParty = new AbstractPartyCommand.SimpleCreateParty();
 
-        simpleCreateParty.setDescription( bffSupplierDto.getDescription() );
-        simpleCreateParty.setEmail( bffSupplierDto.getEmail() );
         simpleCreateParty.setExternalId( bffSupplierDto.getExternalId() );
         simpleCreateParty.setPreferredCurrencyUomId( bffSupplierDto.getPreferredCurrencyUomId() );
+        simpleCreateParty.setDescription( bffSupplierDto.getDescription() );
         simpleCreateParty.setStatusId( bffSupplierDto.getStatusId() );
-        simpleCreateParty.setTelephone( bffSupplierDto.getTelephone() );
+        simpleCreateParty.setEmail( bffSupplierDto.getEmail() );
         simpleCreateParty.setWebSite( bffSupplierDto.getWebSite() );
+        simpleCreateParty.setTelephone( bffSupplierDto.getTelephone() );
 
         return simpleCreateParty;
     }
@@ -95,13 +95,13 @@ public class BffSupplierMapperImpl implements BffSupplierMapper {
 
         AbstractPartyCommand.SimpleMergePatchParty simpleMergePatchParty = new AbstractPartyCommand.SimpleMergePatchParty();
 
-        simpleMergePatchParty.setDescription( bffSupplierDto.getDescription() );
-        simpleMergePatchParty.setEmail( bffSupplierDto.getEmail() );
         simpleMergePatchParty.setExternalId( bffSupplierDto.getExternalId() );
         simpleMergePatchParty.setPreferredCurrencyUomId( bffSupplierDto.getPreferredCurrencyUomId() );
+        simpleMergePatchParty.setDescription( bffSupplierDto.getDescription() );
         simpleMergePatchParty.setStatusId( bffSupplierDto.getStatusId() );
-        simpleMergePatchParty.setTelephone( bffSupplierDto.getTelephone() );
+        simpleMergePatchParty.setEmail( bffSupplierDto.getEmail() );
         simpleMergePatchParty.setWebSite( bffSupplierDto.getWebSite() );
+        simpleMergePatchParty.setTelephone( bffSupplierDto.getTelephone() );
 
         return simpleMergePatchParty;
     }
