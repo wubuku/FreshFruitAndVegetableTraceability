@@ -19,6 +19,17 @@ under the License.
 -->
 
 <entity-engine-xml>
+    <!-- <GoodIdentificationType description="ISBN" goodIdentificationTypeId="ISBN" hasTable="N"/>
+    <GoodIdentificationType description="Manufacturer (Model) Number" goodIdentificationTypeId="MANUFACTURER_ID_NO" hasTable="N"/>
+    <GoodIdentificationType description="Model Year" goodIdentificationTypeId="MODEL_YEAR" hasTable="N"/>
+    <GoodIdentificationType description="Other" goodIdentificationTypeId="OTHER_ID" hasTable="N"/>
+    <GoodIdentificationType description="SKU" goodIdentificationTypeId="SKU" hasTable="N"/>
+    <GoodIdentificationType description="UPCA" goodIdentificationTypeId="UPCA" hasTable="N"/>
+    <GoodIdentificationType description="UPCE" goodIdentificationTypeId="UPCE" hasTable="N"/>
+    <GoodIdentificationType description="EAN" goodIdentificationTypeId="EAN" hasTable="N"/>
+    <GoodIdentificationType description="Library of Congress" goodIdentificationTypeId="LOC" hasTable="N"/>
+    <GoodIdentificationType description="Harmonized System Codes (HS Code)" goodIdentificationTypeId="HS_CODE" hasTable="N"/> -->
+
     <ProductType description="Fixed Asset Usage" isPhysical="Y" isDigital="N" hasTable="N" productTypeId="ASSET_USAGE"/>
     <ProductType description="Service" isPhysical="N" isDigital="N" hasTable="N" productTypeId="SERVICE"/>
     <ProductType description="Good" isPhysical="Y" isDigital="N" hasTable="N" productTypeId="GOOD"/>
@@ -37,4 +48,142 @@ under the License.
     <ProductType description="Service a product using inventory" isPhysical="Y" isDigital="N" hasTable="N" productTypeId="SERVICE_PRODUCT"/>
     <ProductType description="Configurable Service using inventory" isPhysical="Y" isDigital="N" hasTable="N" parentTypeId="SERVICE_PRODUCT" productTypeId="AGGREGATED_SERVICE"/>
     <ProductType description="Configurable Service Configuration" isPhysical="Y" isDigital="N" hasTable="N" parentTypeId="AGGREGATED" productTypeId="AGGREGATEDSERV_CONF"/>
+
+
+    <ProductAssocType description="Also Bought" hasTable="N" productAssocTypeId="ALSO_BOUGHT"/>
+    <ProductAssocType description="Upgrade or Up-Sell" hasTable="N" productAssocTypeId="PRODUCT_UPGRADE"/>
+    <ProductAssocType description="Complementary or Cross-Sell" hasTable="N" productAssocTypeId="PRODUCT_COMPLEMENT"/>
+    <ProductAssocType description="Incompatible" hasTable="N" productAssocTypeId="PRODUCT_INCOMPATABLE"/>
+    <ProductAssocType description="New Version, Replacement" hasTable="N" productAssocTypeId="PRODUCT_OBSOLESCENCE"/>
+    <ProductAssocType description="Actual Product Component" hasTable="N" productAssocTypeId="PRODUCT_COMPONENT"/>
+    <ProductAssocType description="Equivalent or Substitute" hasTable="N" productAssocTypeId="PRODUCT_SUBSTITUTE"/>
+    <ProductAssocType description="Product Variant" hasTable="N" productAssocTypeId="PRODUCT_VARIANT"/>
+    <ProductAssocType description="Unique Item" hasTable="N" productAssocTypeId="UNIQUE_ITEM"/>
+    <ProductAssocType description="Accessory" hasTable="N" productAssocTypeId="PRODUCT_ACCESSORY"/>
+    <ProductAssocType description="Refurbished Equivalent" hasTable="N" productAssocTypeId="PRODUCT_REFURB"/>
+    <ProductAssocType description="Repair Service" hasTable="N" productAssocTypeId="PRODUCT_REPAIR_SRV"/>
+    <ProductAssocType description="Auto Reorder (needs recurrenceInfoId)" hasTable="N" productAssocTypeId="PRODUCT_AUTORO"/>
+
+    <ProductAssocType description="Revision" hasTable="N" productAssocTypeId="PRODUCT_REVISION"/>
+    <ProductAssocType description="Manufacturing Bill of Materials" hasTable="N" parentTypeId="PRODUCT_COMPONENT" productAssocTypeId="MANUF_COMPONENT"/>
+    <ProductAssocType description="Engineering Bill of Materials" hasTable="N" parentTypeId="PRODUCT_COMPONENT" productAssocTypeId="ENGINEER_COMPONENT"/>
+    <ProductAssocType description="Product Manufactured As" hasTable="N" productAssocTypeId="PRODUCT_MANUFACTURED"/>
+    <ProductAssocType description="Configurable product instance" hasTable="N" productAssocTypeId="PRODUCT_CONF"/>
+    <ProductAssocType description="Alternative Packaging" hasTable="N" productAssocTypeId="ALTERNATIVE_PACKAGE"/>
+
+
+    <!-- <ProductPriceType description="List Price" productPriceTypeId="LIST_PRICE"/>
+    <ProductPriceType description="Default Price" productPriceTypeId="DEFAULT_PRICE"/>
+    <ProductPriceType description="Average Cost" productPriceTypeId="AVERAGE_COST"/>
+    <ProductPriceType description="Minimum Price" productPriceTypeId="MINIMUM_PRICE"/>
+    <ProductPriceType description="Maximum Price" productPriceTypeId="MAXIMUM_PRICE"/>
+    <ProductPriceType description="Promotional Price" productPriceTypeId="PROMO_PRICE"/>
+    <ProductPriceType description="Competitive Price" productPriceTypeId="COMPETITIVE_PRICE"/>
+    <ProductPriceType description="Wholesale Price" productPriceTypeId="WHOLESALE_PRICE"/>
+    <ProductPriceType description="Special Promo Price" productPriceTypeId="SPECIAL_PROMO_PRICE"/>
+    <ProductPriceType description="Box Price" productPriceTypeId="BOX_PRICE"/>
+    <ProductPriceType description="Minimum Order Price" productPriceTypeId="MINIMUM_ORDER_PRICE"/>
+    <ProductPriceType description="Shipping Allowance Price" productPriceTypeId="SHIPPING_ALLOWANCE"/> -->
+
+    <FacilityType description="Building" facilityTypeId="BUILDING" hasTable="N"/>
+    <FacilityType description="Floor" facilityTypeId="FLOOR" hasTable="N"/>
+    <FacilityType description="Office" facilityTypeId="OFFICE" hasTable="N"/>
+    <FacilityType description="Call Center" facilityTypeId="CALL_CENTER" hasTable="N"/>
+    <FacilityType description="Plant" facilityTypeId="PLANT" hasTable="N"/>
+    <FacilityType description="Room" facilityTypeId="ROOM" hasTable="N"/>
+    <FacilityType description="Retail Store" facilityTypeId="RETAIL_STORE" hasTable="N"/>
+    <FacilityType description="Warehouse" facilityTypeId="WAREHOUSE" hasTable="N"/>
+
+    <!-- <FacilityAssocType facilityAssocTypeId="BACKUP_WAREHOUSE" description="Facility that serves another facility in terms of inventory"/>
+
+    <FacilityGroupType description="Management Structure" facilityGroupTypeId="MGMT_STRUCTURE"/>
+    <FacilityGroupType description="Pricing Group" facilityGroupTypeId="PRICING_GROUP"/>
+
+    <FacilityGroup facilityGroupName="Not Applicable" description="Not Applicable" facilityGroupId="_NA_"/> -->
+
+    <InventoryItemType description="Serialized" hasTable="N" inventoryItemTypeId="SERIALIZED_INV_ITEM"/>
+    <InventoryItemType description="Non-Serialized" hasTable="N" inventoryItemTypeId="NON_SERIAL_INV_ITEM"/>
+
+    <!-- inventory item status -->
+    <StatusType description="Inventory Item" hasTable="N" statusTypeId="INVENTORY_ITEM_STTS"/>
+    <StatusType description="Serialized Inventory Item" hasTable="N" parentTypeId="INVENTORY_ITEM_STTS" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusType description="Non-Serialized Inventory Item" hasTable="N" parentTypeId="INVENTORY_ITEM_STTS" statusTypeId="INV_NON_SER_STTS"/>
+    <StatusItem description="On Order" sequenceId="01" statusCode="ON_ORDER" statusId="INV_ON_ORDER" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="Available" sequenceId="02" statusCode="AVAILABLE" statusId="INV_AVAILABLE" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="Promised" sequenceId="03" statusCode="PROMISED" statusId="INV_PROMISED" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="Delivered" sequenceId="04" statusCode="DELIVERED" statusId="INV_DELIVERED" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="Activated" sequenceId="05" statusCode="ACTIVATED" statusId="INV_ACTIVATED" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="Deactivated" sequenceId="06" statusCode="DEACTIVATED" statusId="INV_DEACTIVATED" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="On Hold" sequenceId="07" statusCode="ON_HOLD" statusId="INV_ON_HOLD" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="Being Transfered" sequenceId="10" statusCode="BEING_TRANSFERED" statusId="INV_BEING_TRANSFERED" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="Being Transfered (Promised)" sequenceId="11" statusCode="BEING_TRANS_PRM" statusId="INV_BEING_TRANS_PRM" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="Returned" sequenceId="20" statusCode="RETURNED" statusId="INV_RETURNED" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="Defective" sequenceId="21" statusCode="DEFECTIVE" statusId="INV_DEFECTIVE" statusTypeId="INV_SERIALIZED_STTS"/>
+    <StatusItem description="On Hold (Non-Serialized)" sequenceId="01" statusCode="ON_HOLD_NS" statusId="INV_NS_ON_HOLD" statusTypeId="INV_NON_SER_STTS"/>
+    <StatusItem description="Defective (Non-Serialized)" sequenceId="02" statusCode="DEFECTIVE_NS" statusId="INV_NS_DEFECTIVE" statusTypeId="INV_NON_SER_STTS"/>
+    <StatusItem description="Returned (Non-Serialized)" sequenceId="02" statusCode="RETURNED_NS" statusId="INV_NS_RETURNED" statusTypeId="INV_NON_SER_STTS"/>
+    <!-- <StatusValidChange statusId="INV_ON_ORDER" statusIdTo="INV_AVAILABLE" transitionName="Order Arrived"/>
+    <StatusValidChange statusId="INV_AVAILABLE" statusIdTo="INV_PROMISED" transitionName="Promise"/>
+    <StatusValidChange statusId="INV_AVAILABLE" statusIdTo="INV_ON_HOLD" transitionName="Hold"/>
+    <StatusValidChange statusId="INV_AVAILABLE" statusIdTo="INV_DEFECTIVE" transitionName="Mark As Defective"/>
+    <StatusValidChange statusId="INV_AVAILABLE" statusIdTo="INV_BEING_TRANSFERED" transitionName="Being Transfered"/>
+    <StatusValidChange statusId="INV_ON_HOLD" statusIdTo="INV_AVAILABLE" transitionName="Release Hold"/>
+    <StatusValidChange statusId="INV_ON_HOLD" statusIdTo="INV_DEFECTIVE" transitionName="Mark Held Defective"/>
+    <StatusValidChange statusId="INV_BEING_TRANSFERED" statusIdTo="INV_AVAILABLE" transitionName="Transfer Complete"/>
+    <StatusValidChange statusId="INV_PROMISED" statusIdTo="INV_AVAILABLE" transitionName="Cancel Promise"/>
+    <StatusValidChange statusId="INV_PROMISED" statusIdTo="INV_DELIVERED" transitionName="Deliver"/>
+    <StatusValidChange statusId="INV_PROMISED" statusIdTo="INV_DEFECTIVE" transitionName="Mark As Defective"/>
+    <StatusValidChange statusId="INV_PROMISED" statusIdTo="INV_BEING_TRANS_PRM" transitionName="Being Transfered (Promised)"/>
+    <StatusValidChange statusId="INV_BEING_TRANS_PRM" statusIdTo="INV_PROMISED" transitionName="Transfer Complete (Promised)"/>
+    <StatusValidChange statusId="INV_DELIVERED" statusIdTo="INV_RETURNED" transitionName="Return Status Pending"/>
+    <StatusValidChange statusId="INV_RETURNED" statusIdTo="INV_AVAILABLE" transitionName="Make Return Available"/>
+    <StatusValidChange statusId="INV_RETURNED" statusIdTo="INV_ON_HOLD" transitionName="Make Return Held"/>
+    <StatusValidChange statusId="INV_RETURNED" statusIdTo="INV_DEFECTIVE" transitionName="Mark Return Defective"/>
+    <StatusValidChange statusId="INV_DELIVERED" statusIdTo="INV_ACTIVATED" transitionName="Activate"/>
+    <StatusValidChange statusId="INV_ACTIVATED" statusIdTo="INV_DEACTIVATED" transitionName="Deactivate"/>
+    <StatusValidChange statusId="INV_ACTIVATED" statusIdTo="INV_RETURNED" transitionName="Return Status Pending"/>
+    <StatusValidChange statusId="INV_DEACTIVATED" statusIdTo="INV_ON_HOLD" transitionName="Hold Inactive"/>
+    <StatusValidChange statusId="INV_DEACTIVATED" statusIdTo="INV_RETURNED" transitionName="Return Inactive"/>
+    <StatusValidChange statusId="INV_NS_RETURNED" statusIdTo="INV_NS_ON_HOLD" transitionName="Make Return Held"/>
+    <StatusValidChange statusId="INV_NS_RETURNED" statusIdTo="INV_NS_DEFECTIVE" transitionName="Mark Return Defective"/> -->
+
+    <!-- inventory transfer status -->
+    <StatusType description="Inventory Transfer" hasTable="N" statusTypeId="INVENTORY_XFER_STTS"/>
+    <StatusItem description="Requested" sequenceId="01" statusCode="REQUESTED" statusId="IXF_REQUESTED" statusTypeId="INVENTORY_XFER_STTS"/>
+    <StatusItem description="Scheduled" sequenceId="02" statusCode="SCHEDULED" statusId="IXF_SCHEDULED" statusTypeId="INVENTORY_XFER_STTS"/>
+    <StatusItem description="En-Route" sequenceId="03" statusCode="EN_ROUTE" statusId="IXF_EN_ROUTE" statusTypeId="INVENTORY_XFER_STTS"/>
+    <StatusItem description="Complete" sequenceId="04" statusCode="COMPLETE" statusId="IXF_COMPLETE" statusTypeId="INVENTORY_XFER_STTS"/>
+    <StatusItem description="Cancelled" sequenceId="99" statusCode="CANCELLED" statusId="IXF_CANCELLED" statusTypeId="INVENTORY_XFER_STTS"/>
+    <!-- <StatusValidChange statusId="IXF_REQUESTED" statusIdTo="IXF_SCHEDULED" transitionName="Inventory Request Scheduled"/>
+    <StatusValidChange statusId="IXF_REQUESTED" statusIdTo="IXF_EN_ROUTE" transitionName="Inventory Request In Route"/>
+    <StatusValidChange statusId="IXF_REQUESTED" statusIdTo="IXF_COMPLETE" transitionName="Inventory Request Completed"/>
+    <StatusValidChange statusId="IXF_REQUESTED" statusIdTo="IXF_CANCELLED" transitionName="Inventory Request Cancelled"/>
+    <StatusValidChange statusId="IXF_SCHEDULED" statusIdTo="IXF_EN_ROUTE" transitionName="Scheduled Inventory In Route"/>
+    <StatusValidChange statusId="IXF_SCHEDULED" statusIdTo="IXF_COMPLETE" transitionName="Scheduled Inventory Completed"/>
+    <StatusValidChange statusId="IXF_SCHEDULED" statusIdTo="IXF_CANCELLED" transitionName="Scheduled Inventory Cancelled"/>
+    <StatusValidChange statusId="IXF_EN_ROUTE" statusIdTo="IXF_COMPLETE" transitionName="In Route Transfer Completed"/> -->
+
+    <!-- <VarianceReason varianceReasonId="VAR_LOST" description="Lost"/>
+    <VarianceReason varianceReasonId="VAR_STOLEN" description="Stolen"/>
+    <VarianceReason varianceReasonId="VAR_FOUND" description="Found"/>
+    <VarianceReason varianceReasonId="VAR_DAMAGED" description="Damaged"/>
+    <VarianceReason varianceReasonId="VAR_INTEGR" description="Integration"/>
+    <VarianceReason varianceReasonId="VAR_SAMPLE" description="Sample (Giveaway)"/>
+    <VarianceReason varianceReasonId="VAR_MISSHIP_ORDERED" description="Mis-shipped Item Ordered (+)"/>
+    <VarianceReason varianceReasonId="VAR_MISSHIP_SHIPPED" description="Mis-shipped Item Shipped (-)"/> -->
+
+
+    <ShipmentType description="Incoming" hasTable="N" shipmentTypeId="INCOMING_SHIPMENT"/>
+    <ShipmentType description="Outgoing" hasTable="N" shipmentTypeId="OUTGOING_SHIPMENT"/>
+    <ShipmentType description="Sales Return" hasTable="N" parentTypeId="INCOMING_SHIPMENT" shipmentTypeId="SALES_RETURN"/>
+    <ShipmentType description="Sales Shipment" hasTable="N" parentTypeId="OUTGOING_SHIPMENT" shipmentTypeId="SALES_SHIPMENT"/>
+    <ShipmentType description="Purchase Shipment" hasTable="N" parentTypeId="INCOMING_SHIPMENT" shipmentTypeId="PURCHASE_SHIPMENT"/>
+    <ShipmentType description="Purchase Return" hasTable="N" parentTypeId="OUTGOING_SHIPMENT" shipmentTypeId="PURCHASE_RETURN"/>
+    <ShipmentType description="Drop Shipment" hasTable="N" shipmentTypeId="DROP_SHIPMENT"/>
+    <ShipmentType description="Transfer" hasTable="N" shipmentTypeId="TRANSFER"/>
+
+    <!-- <RejectionReason rejectionId="SRJ_DAMAGED" description="Damaged"/>
+    <RejectionReason rejectionId="SRJ_NOT_ORDERED" description="Not Ordered"/>
+    <RejectionReason rejectionId="SRJ_OVER_SHIPPED" description="Over Shipped"/> -->
+
 </entity-engine-xml>

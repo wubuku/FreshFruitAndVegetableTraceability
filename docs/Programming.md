@@ -95,9 +95,15 @@ java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1
 ### Initialize data
 
 ```shell
+# 使用 JSON 文件初始化数据
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*.json" --json
 
+# 使用 XML 文件初始化数据
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*.xml" --xml
+# 初始化 WorkEffortSeedData.xml 数据
+java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/WorkEffortSeedData.xml" --xml
+# 使用通配符初始化 Seed 数据
+java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*SeedData.xml" --xml
 ```
 
 ### Run service

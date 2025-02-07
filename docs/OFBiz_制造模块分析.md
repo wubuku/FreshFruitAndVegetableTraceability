@@ -1198,14 +1198,19 @@ Map getProductRouting() {
 
 数据模型定义：
 
-```text
+```xml
 <!-- ProductAssoc实体中定义了产品间的关联 -->
 <ProductAssoc 
-    productId="VIRTUAL_CHOCOLATE_CAKE"     <!-- 虚拟产品 -->
-    productIdTo="CHOC_CAKE_STANDARD"       <!-- 具体变体 -->
-    productAssocTypeId="PRODUCT_VARIANT"   <!-- 关联类型：产品变体 -->
+    productId="VIRTUAL_CHOCOLATE_CAKE"
+    productIdTo="CHOC_CAKE_STANDARD"
+    productAssocTypeId="PRODUCT_VARIANT"
     fromDate="2024-01-01 00:00:00.0"/>
 ```
+
+说明：
+- VIRTUAL_CHOCOLATE_CAKE 是虚拟产品
+- CHOC_CAKE_STANDARD 是具体变体
+- PRODUCT_VARIANT 是关联类型：产品变体
 
 示例：
 
