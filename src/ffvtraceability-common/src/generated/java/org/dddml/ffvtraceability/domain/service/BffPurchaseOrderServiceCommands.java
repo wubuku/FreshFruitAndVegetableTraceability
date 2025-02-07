@@ -86,6 +86,19 @@ public class BffPurchaseOrderServiceCommands {
             this.orderDateTo = orderDateTo;
         }
 
+        /**
+         * Includes Product Details
+         */
+        private Boolean includesProductDetails;
+
+        public Boolean getIncludesProductDetails() {
+            return includesProductDetails;
+        }
+
+        public void setIncludesProductDetails(Boolean includesProductDetails) {
+            this.includesProductDetails = includesProductDetails;
+        }
+
     }
 
     public static class GetPurchaseOrder extends org.dddml.ffvtraceability.domain.AbstractCommand {
@@ -114,6 +127,19 @@ public class BffPurchaseOrderServiceCommands {
 
         public void setIncludesItemFulfillments(Boolean includesItemFulfillments) {
             this.includesItemFulfillments = includesItemFulfillments;
+        }
+
+        /**
+         * Includes Product Details
+         */
+        private Boolean includesProductDetails;
+
+        public Boolean getIncludesProductDetails() {
+            return includesProductDetails;
+        }
+
+        public void setIncludesProductDetails(Boolean includesProductDetails) {
+            this.includesProductDetails = includesProductDetails;
         }
 
     }
@@ -157,6 +183,19 @@ public class BffPurchaseOrderServiceCommands {
 
         public void setIncludesFulfillments(Boolean includesFulfillments) {
             this.includesFulfillments = includesFulfillments;
+        }
+
+        /**
+         * Includes Product Details
+         */
+        private Boolean includesProductDetails;
+
+        public Boolean getIncludesProductDetails() {
+            return includesProductDetails;
+        }
+
+        public void setIncludesProductDetails(Boolean includesProductDetails) {
+            this.includesProductDetails = includesProductDetails;
         }
 
     }

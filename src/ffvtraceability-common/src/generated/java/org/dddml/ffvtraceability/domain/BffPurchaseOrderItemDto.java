@@ -85,6 +85,18 @@ public class BffPurchaseOrderItemDto implements Serializable {
         this.gtin = gtin;
     }
 
+    private BffRawItemDto product = new BffRawItemDto();
+
+    public BffRawItemDto getProduct()
+    {
+        return this.product;
+    }
+
+    public void setProduct(BffRawItemDto product)
+    {
+        this.product = product;
+    }
+
     private java.math.BigDecimal quantity;
 
     public java.math.BigDecimal getQuantity()
@@ -231,7 +243,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
     {
     }
 
-    public BffPurchaseOrderItemDto(String orderItemSeqId, String externalId, String productId, String supplierProductId, String productName, String gtin, java.math.BigDecimal quantity, java.math.BigDecimal cancelQuantity, java.math.BigDecimal selectedAmount, java.math.BigDecimal unitPrice, String itemDescription, String comments, String statusId, String syncStatusId, String fulfillmentStatusId, OffsetDateTime estimatedShipDate, OffsetDateTime estimatedDeliveryDate, java.util.List<BffPurchaseOrderFulfillmentDto> fulfillments)
+    public BffPurchaseOrderItemDto(String orderItemSeqId, String externalId, String productId, String supplierProductId, String productName, String gtin, BffRawItemDto product, java.math.BigDecimal quantity, java.math.BigDecimal cancelQuantity, java.math.BigDecimal selectedAmount, java.math.BigDecimal unitPrice, String itemDescription, String comments, String statusId, String syncStatusId, String fulfillmentStatusId, OffsetDateTime estimatedShipDate, OffsetDateTime estimatedDeliveryDate, java.util.List<BffPurchaseOrderFulfillmentDto> fulfillments)
     {
         this.orderItemSeqId = orderItemSeqId;
         this.externalId = externalId;
@@ -239,6 +251,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
         this.supplierProductId = supplierProductId;
         this.productName = productName;
         this.gtin = gtin;
+        this.product = product;
         this.quantity = quantity;
         this.cancelQuantity = cancelQuantity;
         this.selectedAmount = selectedAmount;
@@ -271,6 +284,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
             && (supplierProductId == other.supplierProductId || (supplierProductId != null && supplierProductId.equals(other.supplierProductId)))
             && (productName == other.productName || (productName != null && productName.equals(other.productName)))
             && (gtin == other.gtin || (gtin != null && gtin.equals(other.gtin)))
+            && (product == other.product || (product != null && product.equals(other.product)))
             && (quantity == other.quantity || (quantity != null && quantity.equals(other.quantity)))
             && (cancelQuantity == other.cancelQuantity || (cancelQuantity != null && cancelQuantity.equals(other.cancelQuantity)))
             && (selectedAmount == other.selectedAmount || (selectedAmount != null && selectedAmount.equals(other.selectedAmount)))
@@ -307,6 +321,9 @@ public class BffPurchaseOrderItemDto implements Serializable {
         }
         if (this.gtin != null) {
             hash += 13 * this.gtin.hashCode();
+        }
+        if (this.product != null) {
+            hash += 13 * this.product.hashCode();
         }
         if (this.quantity != null) {
             hash += 13 * this.quantity.hashCode();
@@ -356,6 +373,7 @@ public class BffPurchaseOrderItemDto implements Serializable {
                 ", supplierProductId=" + '\'' + supplierProductId + '\'' +
                 ", productName=" + '\'' + productName + '\'' +
                 ", gtin=" + '\'' + gtin + '\'' +
+                ", product=" + product +
                 ", quantity=" + quantity +
                 ", cancelQuantity=" + cancelQuantity +
                 ", selectedAmount=" + selectedAmount +

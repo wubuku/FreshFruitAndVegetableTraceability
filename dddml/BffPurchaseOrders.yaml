@@ -89,7 +89,6 @@ valueObjects:
         type: id
       SupplierProductId:
         type: id-long
-
       ProductName:
         type: name
       # AttributeSetInstanceId:
@@ -97,7 +96,8 @@ valueObjects:
       Gtin:
         description: "GTIN (Global Trade Item Number)"
         type: id
-
+      Product:
+        type: BffRawItemDto
       # ProductFeatureId:
       #   type: id
       # ProdCatalogId:
@@ -205,6 +205,9 @@ services:
           OrderDateTo:
             type: date-time
             optional: true # NOT required
+          IncludesProductDetails:
+            type: bool
+            optional: true # NOT required
         result:
           itemType: BffPurchaseOrderDto
 
@@ -219,6 +222,9 @@ services:
             type: id
           IncludesItemFulfillments:
             # 是否包含行项的履行状态
+            type: bool
+            optional: true # NOT required
+          IncludesProductDetails:
             type: bool
             optional: true # NOT required
 
@@ -239,6 +245,9 @@ services:
             type: id
           IncludesFulfillments:
             # 是否包含（当前行项的）履行状态
+            type: bool
+            optional: true # NOT required
+          IncludesProductDetails:
             type: bool
             optional: true # NOT required
 
