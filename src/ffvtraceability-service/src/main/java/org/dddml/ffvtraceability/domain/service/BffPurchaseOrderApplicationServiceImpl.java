@@ -41,6 +41,8 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     private ShipmentReceiptApplicationService shipmentReceiptApplicationService;
     @Autowired
     private PurchaseOrderFulfillmentService purchaseOrderFulfillmentService;
+    @Autowired
+    private BffRawItemApplicationService rawItemApplicationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -86,6 +88,18 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
                 })
                 .collect(Collectors.toList());
 
+        if (c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
+            BffRawItemServiceCommands.GetRawItem getRawItem = new BffRawItemServiceCommands.GetRawItem();
+            getRawItem.setRequesterId(c.getRequesterId());
+            purchaseOrders.forEach(po -> {
+                if (po.getOrderItems() != null) {
+                    po.getOrderItems().forEach(item -> {
+                        getRawItem.setProductId(item.getProductId());
+                        item.setProduct(rawItemApplicationService.when(getRawItem));
+                    });
+                }
+            });
+        }
         return Page.builder(purchaseOrders)
                 .totalElements(totalElements)
                 .size(c.getSize())
@@ -122,7 +136,14 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
                 );
             }
         }
-
+        if (c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
+            BffRawItemServiceCommands.GetRawItem getRawItem = new BffRawItemServiceCommands.GetRawItem();
+            getRawItem.setRequesterId(c.getRequesterId());
+            order.getOrderItems().forEach(orderItem -> {
+                getRawItem.setProductId(orderItem.getProductId());
+                orderItem.setProduct(rawItemApplicationService.when(getRawItem));
+            });
+        }
         return order;
     }
 
@@ -135,7 +156,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
             return null;
         }
         BffPurchaseOrderItemDto orderItem = bffPurchaseOrderMapper.toBffPurchaseOrderItemDto(projection);
-        if (c.getIncludesFulfillments() != null && c.getIncludesFulfillments()) {
+        if (orderItem != null && c.getIncludesFulfillments() != null && c.getIncludesFulfillments()) {
             orderItem.setFulfillments(
                     bffReceivingRepository.findPurchaseOrderItemFulfillments(
                                     c.getOrderId(), c.getOrderItemSeqId()
@@ -143,6 +164,12 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
                             .map(bffPurchaseOrderMapper::toBffPurchaseOrderFulfillmentDto)
                             .collect(Collectors.toList())
             );
+        }
+        if (orderItem != null && c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
+            BffRawItemServiceCommands.GetRawItem getRawItem = new BffRawItemServiceCommands.GetRawItem();
+            getRawItem.setProductId(orderItem.getProductId());
+            getRawItem.setRequesterId(c.getRequesterId());
+            orderItem.setProduct(rawItemApplicationService.when(getRawItem));
         }
         return orderItem;
     }
