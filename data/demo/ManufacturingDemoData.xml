@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <!-- 1. 产品类型定义 -->
+    <!-- <ProductType productTypeId="RAW_MATERIAL" description="原材料" />
+    <ProductType productTypeId="WIP" description="半成品" />
+    <ProductType productTypeId="FINISHED_GOOD" description="成品" /> -->
+    <!-- 已在其他文件中定义 -->
+
+    <!-- 2. 产品数据 -->
+    <!-- 2.1 原材料 -->
+    <Product productId="RAW_FLOUR" productTypeId="RAW_MATERIAL"
+        productName="Cake Flour" description="Standard Cake Flour"
+        internalName="CAKE_FLOUR" quantityUomId="GRM" />  <!-- 标准蛋糕专用面粉 -->
+    <Product productId="RAW_EGG" productTypeId="RAW_MATERIAL"
+        productName="Fresh Eggs" description="Fresh Chicken Eggs"
+        internalName="FRESH_EGG" quantityUomId="PCE" />  <!-- 新鲜鸡蛋 -->
+    <Product productId="RAW_SUGAR" productTypeId="RAW_MATERIAL"
+        productName="White Sugar" description="Refined White Sugar"
+        internalName="WHITE_SUGAR" quantityUomId="GRM" />  <!-- 精制白砂糖 -->
+    <Product productId="RAW_MILK" productTypeId="RAW_MATERIAL"
+        productName="Whole Milk" description="Fresh Whole Milk"
+        internalName="WHOLE_MILK" quantityUomId="MLT" />  <!-- 全脂牛奶 -->
+    <Product productId="RAW_CHOC" productTypeId="RAW_MATERIAL"
+        productName="Dark Chocolate" description="Premium Dark Chocolate"
+        internalName="DARK_CHOCOLATE" quantityUomId="GRM" />  <!-- 黑巧克力 -->
+    <Product productId="RAW_CREAM" productTypeId="RAW_MATERIAL"
+        productName="Whipping Cream" description="Fresh Whipping Cream"
+        internalName="WHIPPING_CREAM" quantityUomId="MLT" />  <!-- 淡奶油 -->
+    <Product productId="RAW_FRUIT" productTypeId="RAW_MATERIAL"
+        productName="Mixed Fruits" description="Mixed Berries (Strawberry/Blueberry)"
+        internalName="MIXED_FRUIT" quantityUomId="GRM" />  <!-- 混合水果(草莓/蓝莓) -->
+
+    <!-- 2.2 半成品 -->
+    <Product productId="WIP_CAKE_BASE" productTypeId="WIP"
+        productName="Cake Base" description="Standard Cake Base"
+        internalName="CAKE_BASE" quantityUomId="PCE" />  <!-- 标准蛋糕胚 -->
+    <Product productId="WIP_CREAM_FILL" productTypeId="WIP"
+        productName="Cream Filling" description="Whipped Cream Filling"
+        internalName="CREAM_FILLING" quantityUomId="PCE" />  <!-- 打发奶油夹心 -->
+    <Product productId="WIP_CHOC_SAUCE" productTypeId="WIP"
+        productName="Chocolate Sauce" description="Chocolate Sauce"
+        internalName="CHOCOLATE_SAUCE" quantityUomId="PCE" />  <!-- 巧克力酱 -->
+
+    <!-- 2.3 成品 -->
+    <Product productId="CHOC_CAKE_VIRTUAL" productTypeId="FINISHED_GOOD"
+        productName="Chocolate Cake" description="Chocolate Cake (Virtual Product)"
+        internalName="CHOCOLATE_CAKE" isVirtual="Y" quantityUomId="PCE" />  <!-- 巧克力蛋糕(虚拟产品) -->
+    <Product productId="CHOC_CAKE_STD" productTypeId="FINISHED_GOOD"
+        productName="Standard Chocolate Cake" description="Standard Chocolate Cake"
+        internalName="STANDARD_CHOC_CAKE" isVariant="Y" quantityUomId="PCE" />  <!-- 标准款巧克力蛋糕 -->
+    <Product productId="CHOC_CAKE_DLX" productTypeId="FINISHED_GOOD"
+        productName="Deluxe Chocolate Cake" description="Deluxe Chocolate Cake"
+        internalName="DELUXE_CHOC_CAKE" isVariant="Y" quantityUomId="PCE" />  <!-- 豪华款巧克力蛋糕 -->
+    <Product productId="CHOC_CAKE_MINI" productTypeId="FINISHED_GOOD"
+        productName="Mini Chocolate Cake" description="Mini Chocolate Cake"
+        internalName="MINI_CHOC_CAKE" isVariant="Y" quantityUomId="PCE" />  <!-- 迷你款巧克力蛋糕 -->
+
+    <!-- 3. 产品关联 -->
+    <!-- 3.1 虚拟产品与变体关联 -->
+    <ProductAssoc productId="CHOC_CAKE_VIRTUAL" productIdTo="CHOC_CAKE_STD"
+        productAssocTypeId="PRODUCT_VARIANT" fromDate="2024-01-01 00:00:00" />
+    <ProductAssoc productId="CHOC_CAKE_VIRTUAL" productIdTo="CHOC_CAKE_DLX"
+        productAssocTypeId="PRODUCT_VARIANT" fromDate="2024-01-01 00:00:00" />
+    <ProductAssoc productId="CHOC_CAKE_VIRTUAL" productIdTo="CHOC_CAKE_MINI"
+        productAssocTypeId="PRODUCT_VARIANT" fromDate="2024-01-01 00:00:00" />
+
+    <!-- 3.2 BOM关联 -->
+    <!-- 蛋糕胚配方 -->
+    <ProductAssoc productId="WIP_CAKE_BASE" productIdTo="RAW_FLOUR"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="500.0" sequenceNum="1" />
+    <ProductAssoc productId="WIP_CAKE_BASE" productIdTo="RAW_EGG"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="4" sequenceNum="2" />
+    <ProductAssoc productId="WIP_CAKE_BASE" productIdTo="RAW_SUGAR"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="200.0" sequenceNum="3" />
+    <ProductAssoc productId="WIP_CAKE_BASE" productIdTo="RAW_MILK"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="250.0" sequenceNum="4" />
+
+    <!-- 奶油夹心配方 -->
+    <ProductAssoc productId="WIP_CREAM_FILL" productIdTo="RAW_CREAM"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="500.0" sequenceNum="1" />
+    <ProductAssoc productId="WIP_CREAM_FILL" productIdTo="RAW_SUGAR"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="100.0" sequenceNum="2" />
+
+    <!-- 巧克力酱配方 -->
+    <ProductAssoc productId="WIP_CHOC_SAUCE" productIdTo="RAW_CHOC"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="300.0" sequenceNum="1" />
+    <ProductAssoc productId="WIP_CHOC_SAUCE" productIdTo="RAW_MILK"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="100.0" sequenceNum="2" />
+
+    <!-- 标准蛋糕配方 -->
+    <ProductAssoc productId="CHOC_CAKE_STD" productIdTo="WIP_CAKE_BASE"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="1" sequenceNum="1" />
+    <ProductAssoc productId="CHOC_CAKE_STD" productIdTo="WIP_CREAM_FILL"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="1" sequenceNum="2" />
+
+    <!-- 豪华蛋糕配方 -->
+    <ProductAssoc productId="CHOC_CAKE_DLX" productIdTo="WIP_CAKE_BASE"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="2" sequenceNum="1" />
+    <ProductAssoc productId="CHOC_CAKE_DLX" productIdTo="WIP_CREAM_FILL"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="2" sequenceNum="2" />
+    <ProductAssoc productId="CHOC_CAKE_DLX" productIdTo="WIP_CHOC_SAUCE"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="1" sequenceNum="3" />
+    <ProductAssoc productId="CHOC_CAKE_DLX" productIdTo="RAW_FRUIT"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="200.0" sequenceNum="4" />
+
+    <!-- 迷你蛋糕配方 -->
+    <ProductAssoc productId="CHOC_CAKE_MINI" productIdTo="WIP_CAKE_BASE"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="0.5" sequenceNum="1" />
+    <ProductAssoc productId="CHOC_CAKE_MINI" productIdTo="WIP_CREAM_FILL"
+        productAssocTypeId="MANUF_COMPONENT" fromDate="2024-01-01 00:00:00"
+        quantity="0.3" sequenceNum="2" />
+
+    <!-- 4. 工艺路线数据 -->
+    <!-- 4.1 蛋糕胚工艺路线 -->
+    <WorkEffort workEffortId="ROUTE_CAKE_BASE" workEffortTypeId="ROUTING"
+        currentStatusId="ROU_ACTIVE" workEffortName="Cake Base Production Process"
+        description="Standard Cake Base Manufacturing Route" />  <!-- 标准蛋糕胚生产工艺路线 -->
+
+    <WorkEffort workEffortId="TASK_CAKE_MIX" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_CAKE_BASE" workEffortName="Mixing"
+        description="Ingredients Mixing Process" estimatedMilliSeconds="1800000"
+        estimatedSetupMillis="300000" />  <!-- 原料混合搅拌 -->
+    <WorkEffort workEffortId="TASK_CAKE_BAKE" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_CAKE_BASE" workEffortName="Baking"
+        description="Cake Baking Process" estimatedMilliSeconds="2700000"
+        estimatedSetupMillis="600000" />  <!-- 蛋糕烘烤 -->
+    <WorkEffort workEffortId="TASK_CAKE_COOL" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_CAKE_BASE" workEffortName="Cooling"
+        description="Cake Cooling Process" estimatedMilliSeconds="3600000"
+        estimatedSetupMillis="0" />  <!-- 蛋糕冷却 -->
+
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_CAKE_BASE" workEffortIdTo="TASK_CAKE_MIX"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10"
+        fromDate="2024-01-01 00:00:00" />
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_CAKE_BASE" workEffortIdTo="TASK_CAKE_BAKE"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="20"
+        fromDate="2024-01-01 00:00:00" />
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_CAKE_BASE" workEffortIdTo="TASK_CAKE_COOL"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="30"
+        fromDate="2024-01-01 00:00:00" />
+
+    <!-- 4.2 奶油夹心工艺路线 -->
+    <WorkEffort workEffortId="ROUTE_CREAM" workEffortTypeId="ROUTING"
+        currentStatusId="ROU_ACTIVE" workEffortName="Cream Filling Production Process"
+        description="Cream Filling Manufacturing Route" />  <!-- 奶油夹心制作工艺路线 -->
+
+    <WorkEffort workEffortId="TASK_CREAM_WHIP" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_CREAM" workEffortName="Whipping"
+        description="Cream Whipping Process" estimatedMilliSeconds="900000"
+        estimatedSetupMillis="300000" />  <!-- 奶油打发 -->
+    <WorkEffort workEffortId="TASK_CREAM_FLAVOR" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_CREAM" workEffortName="Flavoring"
+        description="Cream Flavoring Process" estimatedMilliSeconds="600000"
+        estimatedSetupMillis="300000" />  <!-- 奶油调味 -->
+
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_CREAM" workEffortIdTo="TASK_CREAM_WHIP"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10"
+        fromDate="2024-01-01 00:00:00" />
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_CREAM" workEffortIdTo="TASK_CREAM_FLAVOR"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="20"
+        fromDate="2024-01-01 00:00:00" />
+
+    <!-- 4.3 巧克力酱工艺路线 -->
+    <WorkEffort workEffortId="ROUTE_CHOC" workEffortTypeId="ROUTING"
+        currentStatusId="ROU_ACTIVE" workEffortName="Chocolate Sauce Production Process"
+        description="Chocolate Sauce Manufacturing Route" />  <!-- 巧克力酱制作工艺路线 -->
+
+    <WorkEffort workEffortId="TASK_CHOC_MELT" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_CHOC" workEffortName="Melting"
+        description="Chocolate Melting Process" estimatedMilliSeconds="1200000"
+        estimatedSetupMillis="300000" />  <!-- 巧克力融化 -->
+    <WorkEffort workEffortId="TASK_CHOC_TEMP" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_CHOC" workEffortName="Tempering"
+        description="Chocolate Tempering Process" estimatedMilliSeconds="1800000"
+        estimatedSetupMillis="300000" />  <!-- 巧克力调温 -->
+
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_CHOC" workEffortIdTo="TASK_CHOC_MELT"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10"
+        fromDate="2024-01-01 00:00:00" />
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_CHOC" workEffortIdTo="TASK_CHOC_TEMP"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="20"
+        fromDate="2024-01-01 00:00:00" />
+
+    <!-- 4.4 成品组装工艺路线 -->
+    <WorkEffort workEffortId="ROUTE_ASSEMBLY" workEffortTypeId="ROUTING"
+        currentStatusId="ROU_ACTIVE" workEffortName="Cake Assembly Process"
+        description="Final Cake Assembly Route" />  <!-- 蛋糕最终组装工艺路线 -->
+
+    <WorkEffort workEffortId="TASK_CAKE_SLICE" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_ASSEMBLY" workEffortName="Slicing"
+        description="Cake Base Slicing" estimatedMilliSeconds="600000"
+        estimatedSetupMillis="300000" />  <!-- 蛋糕胚切片 -->
+    <WorkEffort workEffortId="TASK_CAKE_FILL" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_ASSEMBLY" workEffortName="Filling"
+        description="Cream Filling Process" estimatedMilliSeconds="900000"
+        estimatedSetupMillis="300000" />  <!-- 夹心处理 -->
+    <WorkEffort workEffortId="TASK_CAKE_DECOR" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_ASSEMBLY" workEffortName="Decorating"
+        description="Surface Decoration" estimatedMilliSeconds="1800000"
+        estimatedSetupMillis="600000" />  <!-- 表面装饰 -->
+    <WorkEffort workEffortId="TASK_CAKE_CHILL" workEffortTypeId="ROU_TASK"
+        workEffortParentId="ROUTE_ASSEMBLY" workEffortName="Chilling"
+        description="Final Chilling Process" estimatedMilliSeconds="7200000"
+        estimatedSetupMillis="300000" />  <!-- 最终冷藏 -->
+
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_ASSEMBLY" workEffortIdTo="TASK_CAKE_SLICE"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10"
+        fromDate="2024-01-01 00:00:00" />
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_ASSEMBLY" workEffortIdTo="TASK_CAKE_FILL"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="20"
+        fromDate="2024-01-01 00:00:00" />
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_ASSEMBLY" workEffortIdTo="TASK_CAKE_DECOR"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="30"
+        fromDate="2024-01-01 00:00:00" />
+    <WorkEffortAssoc workEffortIdFrom="ROUTE_ASSEMBLY" workEffortIdTo="TASK_CAKE_CHILL"
+        workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="40"
+        fromDate="2024-01-01 00:00:00" />
+
+</entity-engine-xml>

@@ -79,6 +79,32 @@ public class XmlEntityDataTool {
                     }
                 });
 
+        final Converter<String, LocalDateTime> localDateTimeConverter = new Converter() {
+            @Override
+            public Object convert(Object source) {
+                if (source != null) {
+                    String dateStr = (String) source;
+                    // Try different datetime formats in sequence
+                    DateTimeFormatter[] formatters = {
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                    };
+
+                    for (DateTimeFormatter formatter : formatters) {
+                        try {
+                            return LocalDateTime.parse(dateStr, formatter);
+                        } catch (Exception ex) {
+                            continue;
+                        }
+                    }
+                    throw new IllegalArgumentException("Unable to parse datetime string: " + dateStr);
+                }
+                return null;
+            }
+        };
+        defaultConversionService.addConverter(String.class, LocalDateTime.class, localDateTimeConverter);
+
         defaultConversionService.addConverter(String.class, OffsetDateTime.class,
                 new Converter() {
                     @Override
@@ -90,12 +116,8 @@ public class XmlEntityDataTool {
                                     // First try to parse ISO format (e.g. "2024-03-21T15:30:00Z" or "2024-03-21T15:30:00+08:00")
                                     return OffsetDateTime.parse(dateStr);
                                 } catch (Exception e) {
-                                    // If ISO format fails, try custom format "yyyy-MM-dd HH:mm:ss.SSS"
-                                    // Supports format like "2004-09-24 15:09:38.736" and converts to OffsetDateTime using system default timezone
-                                    LocalDateTime localDateTime = LocalDateTime.parse(
-                                            dateStr,
-                                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                                    );
+                                    // Convert to LocalDateTime first, then to OffsetDateTime
+                                    LocalDateTime localDateTime = localDateTimeConverter.convert(dateStr);
                                     return localDateTime.atOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
                                 }
                             } catch (Exception e) {
