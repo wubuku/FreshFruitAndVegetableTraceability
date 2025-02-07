@@ -57,23 +57,23 @@
         type: id
       SpecialTerms:
         type: long-varchar
-      TimeTransparency:
-        description: Deprecated - use the availabilityStatusId field in the assignment entities instead
-        type: numeric
+      # TimeTransparency:
+      #   description: Deprecated - use the availabilityStatusId field in the assignment entities instead
+      #   type: numeric
       UniversalId:
         type: short-varchar
       SourceReferenceId:
         type: id-long
-      FixedAssetId:
-        description: Deprecated - use the WorkEffortFixedAssetAssign entity instead
-        type: id
+      # FixedAssetId:
+      #   description: Deprecated - use the WorkEffortFixedAssetAssign entity instead
+      #   type: id
       FacilityId:
         type: id
       InfoUrl:
         type: long-varchar
-      RecurrenceInfoId:
-        description: Deprecated - use the tempExprId field instead
-        type: id
+      # RecurrenceInfoId:
+      #   description: Deprecated - use the tempExprId field instead
+      #   type: id
       TempExprId:
         type: id
       RuntimeDataId:
