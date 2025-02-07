@@ -73,7 +73,7 @@ valueObjects:
         StatusId: ItemStatusId
         SyncStatusId: ItemSyncStatusId
         FulfillmentStatusId: ItemFulfillmentStatusId
-
+      NoFlattenedProperties: true
     properties:
       OrderItemSeqId:
         type: id

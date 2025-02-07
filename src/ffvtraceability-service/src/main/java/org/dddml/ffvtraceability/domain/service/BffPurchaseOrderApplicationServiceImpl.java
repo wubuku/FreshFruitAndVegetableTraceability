@@ -43,6 +43,8 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     private PurchaseOrderFulfillmentService purchaseOrderFulfillmentService;
     @Autowired
     private BffRawItemApplicationService rawItemApplicationService;
+    @Autowired
+    private RawItemQueryService rawItemQueryService;
 
     @Override
     @Transactional(readOnly = true)
@@ -89,13 +91,10 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
                 .collect(Collectors.toList());
 
         if (c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
-            BffRawItemServiceCommands.GetRawItem getRawItem = new BffRawItemServiceCommands.GetRawItem();
-            getRawItem.setRequesterId(c.getRequesterId());
             purchaseOrders.forEach(po -> {
                 if (po.getOrderItems() != null) {
                     po.getOrderItems().forEach(item -> {
-                        getRawItem.setProductId(item.getProductId());
-                        item.setProduct(rawItemApplicationService.when(getRawItem));
+                        item.setProduct(rawItemQueryService.findRawItem(item.getProductId()));
                     });
                 }
             });
@@ -137,11 +136,8 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
             }
         }
         if (c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
-            BffRawItemServiceCommands.GetRawItem getRawItem = new BffRawItemServiceCommands.GetRawItem();
-            getRawItem.setRequesterId(c.getRequesterId());
             order.getOrderItems().forEach(orderItem -> {
-                getRawItem.setProductId(orderItem.getProductId());
-                orderItem.setProduct(rawItemApplicationService.when(getRawItem));
+                orderItem.setProduct(rawItemQueryService.findRawItem(orderItem.getProductId()));
             });
         }
         return order;
@@ -166,10 +162,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
             );
         }
         if (orderItem != null && c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
-            BffRawItemServiceCommands.GetRawItem getRawItem = new BffRawItemServiceCommands.GetRawItem();
-            getRawItem.setProductId(orderItem.getProductId());
-            getRawItem.setRequesterId(c.getRequesterId());
-            orderItem.setProduct(rawItemApplicationService.when(getRawItem));
+            orderItem.setProduct(rawItemQueryService.findRawItem(orderItem.getProductId()));
         }
         return orderItem;
     }
