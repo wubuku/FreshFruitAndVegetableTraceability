@@ -222,7 +222,14 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         String productId = c.getProductId();
         ProductState productState = productApplicationService.get(productId);
         if (productState == null) {
-            throw new IllegalArgumentException("Raw item not found: " + productId);
+            throw new IllegalArgumentException("Product not found: " + productId);
+        }
+        String supplierId = c.getRawItem().getSupplierId();
+        if (supplierId == null || supplierId.isBlank()) {
+            throw new IllegalArgumentException("Supplier can't be null");
+        }
+        if (partyApplicationService.get(supplierId) == null) {
+            throw new IllegalArgumentException("SupplierId is not valid.");
         }
         BffRawItemDto rawItem = c.getRawItem();
         AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
@@ -286,27 +293,26 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE, rawItem.getHsCode());
 
         productApplicationService.when(mergePatchProduct);
-        if (rawItem.getSupplierId() != null) {//TODO 如果更新的时候不提供SupplierId,但是原来有呢？
-            // 这里不需要使用完整的 ID 全等匹配查询
-            BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.findSupplierProductAssociation(
-                    productId,
-                    rawItem.getSupplierId(),
-                    DEFAULT_CURRENCY_UOM_ID,
-                    BigDecimal.ZERO,
-                    OffsetDateTime.now());
-            SupplierProductAssocId supplierProductAssocId;
-            if (existingAssoc == null) {
-                createSupplierProduct(productId, rawItem.getSupplierId(), c);
-            } else {
-                supplierProductAssocId = bffSupplierProductAssocIdMapper.toSupplierProductAssocId(existingAssoc);
-                AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct = new AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct();
-                mergePatchSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
-                mergePatchSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
-                mergePatchSupplierProduct.setVersion(existingAssoc.getVersion());
-                mergePatchSupplierProduct.setCommandId(UUID.randomUUID().toString());
-                mergePatchSupplierProduct.setRequesterId(c.getRequesterId());
-                supplierProductApplicationService.when(mergePatchSupplierProduct);
-            }
+
+        // 这里不需要使用完整的 ID 全等匹配查询
+        BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.findSupplierProductAssociation(
+                productId,
+                supplierId,
+                DEFAULT_CURRENCY_UOM_ID,
+                BigDecimal.ZERO,
+                OffsetDateTime.now());
+        SupplierProductAssocId supplierProductAssocId;
+        if (existingAssoc == null) {
+            createSupplierProduct(productId, supplierId, c);
+        } else {
+            supplierProductAssocId = bffSupplierProductAssocIdMapper.toSupplierProductAssocId(existingAssoc);
+            AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct = new AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct();
+            mergePatchSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
+            mergePatchSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
+            mergePatchSupplierProduct.setVersion(existingAssoc.getVersion());
+            mergePatchSupplierProduct.setCommandId(UUID.randomUUID().toString());
+            mergePatchSupplierProduct.setRequesterId(c.getRequesterId());
+            supplierProductApplicationService.when(mergePatchSupplierProduct);
         }
     }
 
