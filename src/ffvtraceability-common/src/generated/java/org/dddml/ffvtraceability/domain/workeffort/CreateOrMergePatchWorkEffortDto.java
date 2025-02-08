@@ -401,21 +401,6 @@ public class CreateOrMergePatchWorkEffortDto extends AbstractWorkEffortCommandDt
     }
 
     /**
-     * Deprecated - use the availabilityStatusId field in the assignment entities instead
-     */
-    private Long timeTransparency;
-
-    public Long getTimeTransparency()
-    {
-        return this.timeTransparency;
-    }
-
-    public void setTimeTransparency(Long timeTransparency)
-    {
-        this.timeTransparency = timeTransparency;
-    }
-
-    /**
      * Universal Id
      */
     private String universalId;
@@ -446,21 +431,6 @@ public class CreateOrMergePatchWorkEffortDto extends AbstractWorkEffortCommandDt
     }
 
     /**
-     * Deprecated - use the WorkEffortFixedAssetAssign entity instead
-     */
-    private String fixedAssetId;
-
-    public String getFixedAssetId()
-    {
-        return this.fixedAssetId;
-    }
-
-    public void setFixedAssetId(String fixedAssetId)
-    {
-        this.fixedAssetId = fixedAssetId;
-    }
-
-    /**
      * Facility Id
      */
     private String facilityId;
@@ -488,21 +458,6 @@ public class CreateOrMergePatchWorkEffortDto extends AbstractWorkEffortCommandDt
     public void setInfoUrl(String infoUrl)
     {
         this.infoUrl = infoUrl;
-    }
-
-    /**
-     * Deprecated - use the tempExprId field instead
-     */
-    private String recurrenceInfoId;
-
-    public String getRecurrenceInfoId()
-    {
-        return this.recurrenceInfoId;
-    }
-
-    public void setRecurrenceInfoId(String recurrenceInfoId)
-    {
-        this.recurrenceInfoId = recurrenceInfoId;
     }
 
     /**
@@ -1013,18 +968,6 @@ public class CreateOrMergePatchWorkEffortDto extends AbstractWorkEffortCommandDt
         this.isPropertySpecialTermsRemoved = removed;
     }
 
-    private Boolean isPropertyTimeTransparencyRemoved;
-
-    public Boolean getIsPropertyTimeTransparencyRemoved()
-    {
-        return this.isPropertyTimeTransparencyRemoved;
-    }
-
-    public void setIsPropertyTimeTransparencyRemoved(Boolean removed)
-    {
-        this.isPropertyTimeTransparencyRemoved = removed;
-    }
-
     private Boolean isPropertyUniversalIdRemoved;
 
     public Boolean getIsPropertyUniversalIdRemoved()
@@ -1049,18 +992,6 @@ public class CreateOrMergePatchWorkEffortDto extends AbstractWorkEffortCommandDt
         this.isPropertySourceReferenceIdRemoved = removed;
     }
 
-    private Boolean isPropertyFixedAssetIdRemoved;
-
-    public Boolean getIsPropertyFixedAssetIdRemoved()
-    {
-        return this.isPropertyFixedAssetIdRemoved;
-    }
-
-    public void setIsPropertyFixedAssetIdRemoved(Boolean removed)
-    {
-        this.isPropertyFixedAssetIdRemoved = removed;
-    }
-
     private Boolean isPropertyFacilityIdRemoved;
 
     public Boolean getIsPropertyFacilityIdRemoved()
@@ -1083,18 +1014,6 @@ public class CreateOrMergePatchWorkEffortDto extends AbstractWorkEffortCommandDt
     public void setIsPropertyInfoUrlRemoved(Boolean removed)
     {
         this.isPropertyInfoUrlRemoved = removed;
-    }
-
-    private Boolean isPropertyRecurrenceInfoIdRemoved;
-
-    public Boolean getIsPropertyRecurrenceInfoIdRemoved()
-    {
-        return this.isPropertyRecurrenceInfoIdRemoved;
-    }
-
-    public void setIsPropertyRecurrenceInfoIdRemoved(Boolean removed)
-    {
-        this.isPropertyRecurrenceInfoIdRemoved = removed;
     }
 
     private Boolean isPropertyTempExprIdRemoved;
@@ -1282,13 +1201,10 @@ public class CreateOrMergePatchWorkEffortDto extends AbstractWorkEffortCommandDt
         command.setTotalMoneyAllowed(this.getTotalMoneyAllowed());
         command.setMoneyUomId(this.getMoneyUomId());
         command.setSpecialTerms(this.getSpecialTerms());
-        command.setTimeTransparency(this.getTimeTransparency());
         command.setUniversalId(this.getUniversalId());
         command.setSourceReferenceId(this.getSourceReferenceId());
-        command.setFixedAssetId(this.getFixedAssetId());
         command.setFacilityId(this.getFacilityId());
         command.setInfoUrl(this.getInfoUrl());
-        command.setRecurrenceInfoId(this.getRecurrenceInfoId());
         command.setTempExprId(this.getTempExprId());
         command.setRuntimeDataId(this.getRuntimeDataId());
         command.setNoteId(this.getNoteId());
@@ -1372,13 +1288,10 @@ public class CreateOrMergePatchWorkEffortDto extends AbstractWorkEffortCommandDt
         command.setIsPropertyTotalMoneyAllowedRemoved(this.getIsPropertyTotalMoneyAllowedRemoved());
         command.setIsPropertyMoneyUomIdRemoved(this.getIsPropertyMoneyUomIdRemoved());
         command.setIsPropertySpecialTermsRemoved(this.getIsPropertySpecialTermsRemoved());
-        command.setIsPropertyTimeTransparencyRemoved(this.getIsPropertyTimeTransparencyRemoved());
         command.setIsPropertyUniversalIdRemoved(this.getIsPropertyUniversalIdRemoved());
         command.setIsPropertySourceReferenceIdRemoved(this.getIsPropertySourceReferenceIdRemoved());
-        command.setIsPropertyFixedAssetIdRemoved(this.getIsPropertyFixedAssetIdRemoved());
         command.setIsPropertyFacilityIdRemoved(this.getIsPropertyFacilityIdRemoved());
         command.setIsPropertyInfoUrlRemoved(this.getIsPropertyInfoUrlRemoved());
-        command.setIsPropertyRecurrenceInfoIdRemoved(this.getIsPropertyRecurrenceInfoIdRemoved());
         command.setIsPropertyTempExprIdRemoved(this.getIsPropertyTempExprIdRemoved());
         command.setIsPropertyRuntimeDataIdRemoved(this.getIsPropertyRuntimeDataIdRemoved());
         command.setIsPropertyNoteIdRemoved(this.getIsPropertyNoteIdRemoved());

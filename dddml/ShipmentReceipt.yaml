@@ -4,6 +4,9 @@
       noDeleted: false
       deleted:
         name: Deleted
+    eventImplements:
+      - OrderFulfillmentSyncable
+      - CteSyncable
     id:
       name: ReceiptId
       type: id-long

@@ -351,18 +351,6 @@ public abstract class AbstractWorkEffortCommand extends AbstractCommand implemen
             this.specialTerms = specialTerms;
         }
 
-        private Long timeTransparency;
-
-        public Long getTimeTransparency()
-        {
-            return this.timeTransparency;
-        }
-
-        public void setTimeTransparency(Long timeTransparency)
-        {
-            this.timeTransparency = timeTransparency;
-        }
-
         private String universalId;
 
         public String getUniversalId()
@@ -387,18 +375,6 @@ public abstract class AbstractWorkEffortCommand extends AbstractCommand implemen
             this.sourceReferenceId = sourceReferenceId;
         }
 
-        private String fixedAssetId;
-
-        public String getFixedAssetId()
-        {
-            return this.fixedAssetId;
-        }
-
-        public void setFixedAssetId(String fixedAssetId)
-        {
-            this.fixedAssetId = fixedAssetId;
-        }
-
         private String facilityId;
 
         public String getFacilityId()
@@ -421,18 +397,6 @@ public abstract class AbstractWorkEffortCommand extends AbstractCommand implemen
         public void setInfoUrl(String infoUrl)
         {
             this.infoUrl = infoUrl;
-        }
-
-        private String recurrenceInfoId;
-
-        public String getRecurrenceInfoId()
-        {
-            return this.recurrenceInfoId;
-        }
-
-        public void setRecurrenceInfoId(String recurrenceInfoId)
-        {
-            this.recurrenceInfoId = recurrenceInfoId;
         }
 
         private String tempExprId;
@@ -921,18 +885,6 @@ public abstract class AbstractWorkEffortCommand extends AbstractCommand implemen
             this.isPropertySpecialTermsRemoved = removed;
         }
 
-        private Boolean isPropertyTimeTransparencyRemoved;
-
-        public Boolean getIsPropertyTimeTransparencyRemoved()
-        {
-            return this.isPropertyTimeTransparencyRemoved;
-        }
-
-        public void setIsPropertyTimeTransparencyRemoved(Boolean removed)
-        {
-            this.isPropertyTimeTransparencyRemoved = removed;
-        }
-
         private Boolean isPropertyUniversalIdRemoved;
 
         public Boolean getIsPropertyUniversalIdRemoved()
@@ -957,18 +909,6 @@ public abstract class AbstractWorkEffortCommand extends AbstractCommand implemen
             this.isPropertySourceReferenceIdRemoved = removed;
         }
 
-        private Boolean isPropertyFixedAssetIdRemoved;
-
-        public Boolean getIsPropertyFixedAssetIdRemoved()
-        {
-            return this.isPropertyFixedAssetIdRemoved;
-        }
-
-        public void setIsPropertyFixedAssetIdRemoved(Boolean removed)
-        {
-            this.isPropertyFixedAssetIdRemoved = removed;
-        }
-
         private Boolean isPropertyFacilityIdRemoved;
 
         public Boolean getIsPropertyFacilityIdRemoved()
@@ -991,18 +931,6 @@ public abstract class AbstractWorkEffortCommand extends AbstractCommand implemen
         public void setIsPropertyInfoUrlRemoved(Boolean removed)
         {
             this.isPropertyInfoUrlRemoved = removed;
-        }
-
-        private Boolean isPropertyRecurrenceInfoIdRemoved;
-
-        public Boolean getIsPropertyRecurrenceInfoIdRemoved()
-        {
-            return this.isPropertyRecurrenceInfoIdRemoved;
-        }
-
-        public void setIsPropertyRecurrenceInfoIdRemoved(Boolean removed)
-        {
-            this.isPropertyRecurrenceInfoIdRemoved = removed;
         }
 
         private Boolean isPropertyTempExprIdRemoved;

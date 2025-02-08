@@ -1,0 +1,14 @@
+superObjects:
+  CteSyncable:
+    description: "Marks an object that needs to be synchronized to CTE"
+    properties:
+      CteSyncStatusId:
+        type: id
+        description: "Synchronization status to CTE"
+
+  OrderFulfillmentSyncable:
+    description: "Marks an object that needs to be synchronized to order fulfillment status"
+    properties:
+      OrderFulfillmentSyncStatusId:
+        type: id
+        description: "Synchronization status to order fulfillment status"

@@ -102,26 +102,17 @@
       <property name="specialTerms">
         <column name="special_terms" sql-type="VARCHAR(255)" />
       </property>
-      <property name="timeTransparency">
-        <column name="time_transparency" sql-type="DECIMAL(20,0)" />
-      </property>
       <property name="universalId">
         <column name="universal_id" sql-type="VARCHAR(60)" />
       </property>
       <property name="sourceReferenceId">
         <column name="source_reference_id" sql-type="VARCHAR(60)" />
       </property>
-      <property name="fixedAssetId">
-        <column name="fixed_asset_id" sql-type="VARCHAR(20)" />
-      </property>
       <property name="facilityId">
         <column name="facility_id" sql-type="VARCHAR(20)" />
       </property>
       <property name="infoUrl">
         <column name="info_url" sql-type="VARCHAR(255)" />
-      </property>
-      <property name="recurrenceInfoId">
-        <column name="recurrence_info_id" sql-type="VARCHAR(20)" />
       </property>
       <property name="tempExprId">
         <column name="temp_expr_id" sql-type="VARCHAR(20)" />
@@ -190,13 +181,10 @@
         <property name="isPropertyTotalMoneyAllowedRemoved" column="is_property_total_money_allowed_removed" />
         <property name="isPropertyMoneyUomIdRemoved" column="is_property_money_uom_id_removed" />
         <property name="isPropertySpecialTermsRemoved" column="is_property_special_terms_removed" />
-        <property name="isPropertyTimeTransparencyRemoved" column="is_property_time_transparency_removed" />
         <property name="isPropertyUniversalIdRemoved" column="is_property_universal_id_removed" />
         <property name="isPropertySourceReferenceIdRemoved" column="is_property_source_reference_id_removed" />
-        <property name="isPropertyFixedAssetIdRemoved" column="is_property_fixed_asset_id_removed" />
         <property name="isPropertyFacilityIdRemoved" column="is_property_facility_id_removed" />
         <property name="isPropertyInfoUrlRemoved" column="is_property_info_url_removed" />
-        <property name="isPropertyRecurrenceInfoIdRemoved" column="is_property_recurrence_info_id_removed" />
         <property name="isPropertyTempExprIdRemoved" column="is_property_temp_expr_id_removed" />
         <property name="isPropertyRuntimeDataIdRemoved" column="is_property_runtime_data_id_removed" />
         <property name="isPropertyNoteIdRemoved" column="is_property_note_id_removed" />

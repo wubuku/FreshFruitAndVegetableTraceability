@@ -145,10 +145,6 @@ public interface WorkEffortEvent extends Event {
 
         void setSpecialTerms(String specialTerms);
 
-        Long getTimeTransparency();
-
-        void setTimeTransparency(Long timeTransparency);
-
         String getUniversalId();
 
         void setUniversalId(String universalId);
@@ -157,10 +153,6 @@ public interface WorkEffortEvent extends Event {
 
         void setSourceReferenceId(String sourceReferenceId);
 
-        String getFixedAssetId();
-
-        void setFixedAssetId(String fixedAssetId);
-
         String getFacilityId();
 
         void setFacilityId(String facilityId);
@@ -168,10 +160,6 @@ public interface WorkEffortEvent extends Event {
         String getInfoUrl();
 
         void setInfoUrl(String infoUrl);
-
-        String getRecurrenceInfoId();
-
-        void setRecurrenceInfoId(String recurrenceInfoId);
 
         String getTempExprId();
 
@@ -339,10 +327,6 @@ public interface WorkEffortEvent extends Event {
 
         void setIsPropertySpecialTermsRemoved(Boolean removed);
 
-        Boolean getIsPropertyTimeTransparencyRemoved();
-
-        void setIsPropertyTimeTransparencyRemoved(Boolean removed);
-
         Boolean getIsPropertyUniversalIdRemoved();
 
         void setIsPropertyUniversalIdRemoved(Boolean removed);
@@ -351,10 +335,6 @@ public interface WorkEffortEvent extends Event {
 
         void setIsPropertySourceReferenceIdRemoved(Boolean removed);
 
-        Boolean getIsPropertyFixedAssetIdRemoved();
-
-        void setIsPropertyFixedAssetIdRemoved(Boolean removed);
-
         Boolean getIsPropertyFacilityIdRemoved();
 
         void setIsPropertyFacilityIdRemoved(Boolean removed);
@@ -362,10 +342,6 @@ public interface WorkEffortEvent extends Event {
         Boolean getIsPropertyInfoUrlRemoved();
 
         void setIsPropertyInfoUrlRemoved(Boolean removed);
-
-        Boolean getIsPropertyRecurrenceInfoIdRemoved();
-
-        void setIsPropertyRecurrenceInfoIdRemoved(Boolean removed);
 
         Boolean getIsPropertyTempExprIdRemoved();
 

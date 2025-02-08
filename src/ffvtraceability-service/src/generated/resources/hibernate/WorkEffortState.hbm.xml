@@ -85,26 +85,17 @@
     <property name="specialTerms">
       <column name="special_terms" sql-type="VARCHAR(255)" />
     </property>
-    <property name="timeTransparency">
-      <column name="time_transparency" sql-type="DECIMAL(20,0)" />
-    </property>
     <property name="universalId">
       <column name="universal_id" sql-type="VARCHAR(60)" />
     </property>
     <property name="sourceReferenceId">
       <column name="source_reference_id" sql-type="VARCHAR(60)" />
     </property>
-    <property name="fixedAssetId">
-      <column name="fixed_asset_id" sql-type="VARCHAR(20)" />
-    </property>
     <property name="facilityId">
       <column name="facility_id" sql-type="VARCHAR(20)" />
     </property>
     <property name="infoUrl">
       <column name="info_url" sql-type="VARCHAR(255)" />
-    </property>
-    <property name="recurrenceInfoId">
-      <column name="recurrence_info_id" sql-type="VARCHAR(20)" />
     </property>
     <property name="tempExprId">
       <column name="temp_expr_id" sql-type="VARCHAR(20)" />

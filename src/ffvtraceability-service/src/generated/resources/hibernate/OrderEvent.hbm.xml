@@ -14,6 +14,9 @@
     <property name="createdBy" column="created_by" />
     <property name="createdAt" column="created_at" />
     <property name="commandId" column="command_id" />
+    <property name="orderFulfillmentSyncStatusId">
+      <column name="order_fulfillment_sync_status_id" sql-type="VARCHAR(20)" />
+    </property>
     <property name="commandType" column="command_type" length="50" />
     <subclass name="AbstractOrderEvent$OrderLobEvent" discriminator-value="OrderLobEvent">
       <property name="dynamicProperties">

@@ -338,18 +338,6 @@ public class WorkEffortStateDto {
         this.specialTerms = specialTerms;
     }
 
-    private Long timeTransparency;
-
-    public Long getTimeTransparency()
-    {
-        return this.timeTransparency;
-    }
-
-    public void setTimeTransparency(Long timeTransparency)
-    {
-        this.timeTransparency = timeTransparency;
-    }
-
     private String universalId;
 
     public String getUniversalId()
@@ -374,18 +362,6 @@ public class WorkEffortStateDto {
         this.sourceReferenceId = sourceReferenceId;
     }
 
-    private String fixedAssetId;
-
-    public String getFixedAssetId()
-    {
-        return this.fixedAssetId;
-    }
-
-    public void setFixedAssetId(String fixedAssetId)
-    {
-        this.fixedAssetId = fixedAssetId;
-    }
-
     private String facilityId;
 
     public String getFacilityId()
@@ -408,18 +384,6 @@ public class WorkEffortStateDto {
     public void setInfoUrl(String infoUrl)
     {
         this.infoUrl = infoUrl;
-    }
-
-    private String recurrenceInfoId;
-
-    public String getRecurrenceInfoId()
-    {
-        return this.recurrenceInfoId;
-    }
-
-    public void setRecurrenceInfoId(String recurrenceInfoId)
-    {
-        this.recurrenceInfoId = recurrenceInfoId;
     }
 
     private String tempExprId;
@@ -748,26 +712,17 @@ public class WorkEffortStateDto {
             if (returnedFieldsContains("SpecialTerms")) {
                 dto.setSpecialTerms(state.getSpecialTerms());
             }
-            if (returnedFieldsContains("TimeTransparency")) {
-                dto.setTimeTransparency(state.getTimeTransparency());
-            }
             if (returnedFieldsContains("UniversalId")) {
                 dto.setUniversalId(state.getUniversalId());
             }
             if (returnedFieldsContains("SourceReferenceId")) {
                 dto.setSourceReferenceId(state.getSourceReferenceId());
             }
-            if (returnedFieldsContains("FixedAssetId")) {
-                dto.setFixedAssetId(state.getFixedAssetId());
-            }
             if (returnedFieldsContains("FacilityId")) {
                 dto.setFacilityId(state.getFacilityId());
             }
             if (returnedFieldsContains("InfoUrl")) {
                 dto.setInfoUrl(state.getInfoUrl());
-            }
-            if (returnedFieldsContains("RecurrenceInfoId")) {
-                dto.setRecurrenceInfoId(state.getRecurrenceInfoId());
             }
             if (returnedFieldsContains("TempExprId")) {
                 dto.setTempExprId(state.getTempExprId());

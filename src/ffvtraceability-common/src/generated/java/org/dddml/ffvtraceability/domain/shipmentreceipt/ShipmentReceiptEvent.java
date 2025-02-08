@@ -12,7 +12,7 @@ import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.Event;
 
-public interface ShipmentReceiptEvent extends Event {
+public interface ShipmentReceiptEvent extends Event, OrderFulfillmentSyncable, CteSyncable {
 
     interface SqlShipmentReceiptEvent extends ShipmentReceiptEvent {
         ShipmentReceiptEventId getShipmentReceiptEventId();
