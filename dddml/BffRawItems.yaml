@@ -29,7 +29,7 @@ valueObjects:
       QuantityIncluded:
         description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
         type: fixed-point
-        # 一件（piece）的数量（以“主计量单位”计算）
+        # 一件（piece/can）的数量（以“主计量单位”计算）是 12oz，即 12oz/can，一个包装6罐装的话就是12*6=72oz
       PiecesIncluded:
         type: numeric
         # 一个包装内包含的“件数”，如果包装内没有“分件”，则该值设置为 1（可以把 null 看作 1）
