@@ -72,28 +72,33 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             ) ii ON ii.product_id = p.product_id
                         
             LEFT JOIN (
-                SELECT DISTINCT ON (sp.product_id)
+                SELECT DISTINCT ON (sp.product_id,sp.party_id)
                     sp.product_id,
                     sp.party_id,
                     COALESCE(o.organization_name, o.last_name) as supplier_name
                 FROM supplier_product sp
-                JOIN party o ON o.party_id = sp.party_id
+                left JOIN party o ON o.party_id = sp.party_id
                 WHERE sp.available_from_date <= CURRENT_TIMESTAMP
                     AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
-                ORDER BY sp.product_id, sp.available_from_date DESC
+                ORDER BY sp.product_id,sp.party_id, sp.available_from_date DESC
             ) party ON party.product_id = p.product_id
             WHERE p.product_type_id = 'RAW_MATERIAL'
+                And (:supplierId is null or party.party_id = :supplierId)
                 AND (:active IS NULL OR p.active = :active)
             ORDER BY p.created_at DESC
             """,
             countQuery = """
                     SELECT COUNT(*)
                     FROM product p
+                    left join supplier_product sp on p.product_id = sp.product_id
                     WHERE p.product_type_id = 'RAW_MATERIAL'
+                        AND (:supplierId is null or sp.party_id = :supplierId)
                         AND (:active IS NULL OR p.active = :active)
                     """,
             nativeQuery = true)
-    Page<BffRawItemProjection> findAllRawItems(Pageable pageable, @Param("active") String active);
+    Page<BffRawItemProjection> findAllRawItems(Pageable pageable,
+                                               @Param("supplierId") String supplierId,
+                                               @Param("active") String active);
     //String tenantId
     //todo AND p.tenant_id = :tenantId
     //todo WHERE p.product_type_id = 'RAW_MATERIAL' ??? 这个地方应该过滤出“原材料”类型的产品？

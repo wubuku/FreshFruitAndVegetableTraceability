@@ -73,7 +73,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Transactional(readOnly = true)
     public Page<BffRawItemDto> when(BffRawItemServiceCommands.GetRawItems c) {
         return PageUtils.toPage(
-                bffRawItemRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize()), c.getActive()),
+                bffRawItemRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize()), c.getSupplierId(), c.getActive()),
                 bffRawItemMapper::toBffRawItemDto);
     }
 
@@ -86,6 +86,25 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Override
     @Transactional
     public String when(BffRawItemServiceCommands.CreateRawItem c) {
+        BffRawItemDto rawItem = c.getRawItem();
+        if (rawItem == null) {
+            throw new IllegalArgumentException("Product can't be null");
+        }
+        if (rawItem.getProductId() != null) {
+            rawItem.setProductId(rawItem.getProductId().trim());
+            if (!rawItem.getProductId().isEmpty()) {
+                if (productApplicationService.get(rawItem.getProductId()) != null) {
+                    throw new IllegalArgumentException("The product already exists:" + rawItem.getProductId());
+                }
+            }
+        }
+        String supplierId = rawItem.getSupplierId();
+        if (supplierId == null || supplierId.isBlank()) {
+            throw new IllegalArgumentException("Supplier can't be null");
+        }
+        if (partyApplicationService.get(supplierId) == null) {
+            throw new IllegalArgumentException("SupplierId is not valid.");
+        }
         // if (uomApplicationService.get(c.getRawItem().getQuantityUomId()) == null) {
         // throw new IllegalArgumentException("QuantityUomId is not valid.");
         // }
@@ -93,7 +112,6 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         // partyApplicationService.get(c.getRawItem().getSupplierId()) == null) {
         // throw new IllegalArgumentException("SupplierId is not valid.");
         // }
-        BffRawItemDto rawItem = c.getRawItem();
         AbstractProductCommand.SimpleCreateProduct createProduct = new AbstractProductCommand.SimpleCreateProduct();
         createProduct.setProductId(rawItem.getProductId() != null ? rawItem.getProductId() : IdUtils.randomId());
         // (rawItem.getProductId()); // NOTE: ignore the productId from the client side?
