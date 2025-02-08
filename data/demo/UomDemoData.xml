@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <!-- Weight Measures -->
+    <Uom uomId="GRM" abbreviation="g" description="Gram - 1/1000 of a kilogram"
+        uomTypeId="WEIGHT_MEASURE" numericCode="3103" />
+    <Uom uomId="KGM" abbreviation="kg"
+        description="Kilogram - The base unit of mass in the International System of Units (SI)"
+        uomTypeId="WEIGHT_MEASURE" numericCode="3100" />
+
+    <!-- Volume Measures -->
+    <Uom uomId="MLT" abbreviation="ml" description="Milliliter"
+        uomTypeId="VOLUME_MEASURE" numericCode="3103" />
+    <Uom uomId="LTR" abbreviation="L" description="Liter"
+        uomTypeId="VOLUME_MEASURE" numericCode="3100" />
+
+    <!-- Quantity Measures -->
+    <Uom uomId="PCE" abbreviation="pc" description="Piece - A single unit"
+        uomTypeId="QUANTITY_MEASURE" numericCode="1000" />
+    <Uom uomId="PKG" abbreviation="pkg" description="Package"
+        uomTypeId="QUANTITY_MEASURE" numericCode="1002" />
+</entity-engine-xml>

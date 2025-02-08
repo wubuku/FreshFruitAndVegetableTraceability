@@ -152,10 +152,6 @@ public interface WorkEffortCommand extends Command {
 
         void setSpecialTerms(String specialTerms);
 
-        Long getTimeTransparency();
-
-        void setTimeTransparency(Long timeTransparency);
-
         String getUniversalId();
 
         void setUniversalId(String universalId);
@@ -164,10 +160,6 @@ public interface WorkEffortCommand extends Command {
 
         void setSourceReferenceId(String sourceReferenceId);
 
-        String getFixedAssetId();
-
-        void setFixedAssetId(String fixedAssetId);
-
         String getFacilityId();
 
         void setFacilityId(String facilityId);
@@ -175,10 +167,6 @@ public interface WorkEffortCommand extends Command {
         String getInfoUrl();
 
         void setInfoUrl(String infoUrl);
-
-        String getRecurrenceInfoId();
-
-        void setRecurrenceInfoId(String recurrenceInfoId);
 
         String getTempExprId();
 
@@ -342,10 +330,6 @@ public interface WorkEffortCommand extends Command {
 
         void setIsPropertySpecialTermsRemoved(Boolean removed);
 
-        Boolean getIsPropertyTimeTransparencyRemoved();
-
-        void setIsPropertyTimeTransparencyRemoved(Boolean removed);
-
         Boolean getIsPropertyUniversalIdRemoved();
 
         void setIsPropertyUniversalIdRemoved(Boolean removed);
@@ -354,10 +338,6 @@ public interface WorkEffortCommand extends Command {
 
         void setIsPropertySourceReferenceIdRemoved(Boolean removed);
 
-        Boolean getIsPropertyFixedAssetIdRemoved();
-
-        void setIsPropertyFixedAssetIdRemoved(Boolean removed);
-
         Boolean getIsPropertyFacilityIdRemoved();
 
         void setIsPropertyFacilityIdRemoved(Boolean removed);
@@ -365,10 +345,6 @@ public interface WorkEffortCommand extends Command {
         Boolean getIsPropertyInfoUrlRemoved();
 
         void setIsPropertyInfoUrlRemoved(Boolean removed);
-
-        Boolean getIsPropertyRecurrenceInfoIdRemoved();
-
-        void setIsPropertyRecurrenceInfoIdRemoved(Boolean removed);
 
         Boolean getIsPropertyTempExprIdRemoved();
 

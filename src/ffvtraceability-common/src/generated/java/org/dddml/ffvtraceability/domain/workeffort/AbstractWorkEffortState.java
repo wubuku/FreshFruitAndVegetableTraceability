@@ -284,16 +284,6 @@ public abstract class AbstractWorkEffortState implements WorkEffortState.SqlWork
         this.specialTerms = specialTerms;
     }
 
-    private Long timeTransparency;
-
-    public Long getTimeTransparency() {
-        return this.timeTransparency;
-    }
-
-    public void setTimeTransparency(Long timeTransparency) {
-        this.timeTransparency = timeTransparency;
-    }
-
     private String universalId;
 
     public String getUniversalId() {
@@ -314,16 +304,6 @@ public abstract class AbstractWorkEffortState implements WorkEffortState.SqlWork
         this.sourceReferenceId = sourceReferenceId;
     }
 
-    private String fixedAssetId;
-
-    public String getFixedAssetId() {
-        return this.fixedAssetId;
-    }
-
-    public void setFixedAssetId(String fixedAssetId) {
-        this.fixedAssetId = fixedAssetId;
-    }
-
     private String facilityId;
 
     public String getFacilityId() {
@@ -342,16 +322,6 @@ public abstract class AbstractWorkEffortState implements WorkEffortState.SqlWork
 
     public void setInfoUrl(String infoUrl) {
         this.infoUrl = infoUrl;
-    }
-
-    private String recurrenceInfoId;
-
-    public String getRecurrenceInfoId() {
-        return this.recurrenceInfoId;
-    }
-
-    public void setRecurrenceInfoId(String recurrenceInfoId) {
-        this.recurrenceInfoId = recurrenceInfoId;
     }
 
     private String tempExprId;
@@ -644,13 +614,10 @@ public abstract class AbstractWorkEffortState implements WorkEffortState.SqlWork
         this.setTotalMoneyAllowed(e.getTotalMoneyAllowed());
         this.setMoneyUomId(e.getMoneyUomId());
         this.setSpecialTerms(e.getSpecialTerms());
-        this.setTimeTransparency(e.getTimeTransparency());
         this.setUniversalId(e.getUniversalId());
         this.setSourceReferenceId(e.getSourceReferenceId());
-        this.setFixedAssetId(e.getFixedAssetId());
         this.setFacilityId(e.getFacilityId());
         this.setInfoUrl(e.getInfoUrl());
-        this.setRecurrenceInfoId(e.getRecurrenceInfoId());
         this.setTempExprId(e.getTempExprId());
         this.setRuntimeDataId(e.getRuntimeDataId());
         this.setNoteId(e.getNoteId());
@@ -700,13 +667,10 @@ public abstract class AbstractWorkEffortState implements WorkEffortState.SqlWork
         this.setTotalMoneyAllowed(s.getTotalMoneyAllowed());
         this.setMoneyUomId(s.getMoneyUomId());
         this.setSpecialTerms(s.getSpecialTerms());
-        this.setTimeTransparency(s.getTimeTransparency());
         this.setUniversalId(s.getUniversalId());
         this.setSourceReferenceId(s.getSourceReferenceId());
-        this.setFixedAssetId(s.getFixedAssetId());
         this.setFacilityId(s.getFacilityId());
         this.setInfoUrl(s.getInfoUrl());
-        this.setRecurrenceInfoId(s.getRecurrenceInfoId());
         this.setTempExprId(s.getTempExprId());
         this.setRuntimeDataId(s.getRuntimeDataId());
         this.setNoteId(s.getNoteId());
@@ -907,13 +871,6 @@ public abstract class AbstractWorkEffortState implements WorkEffortState.SqlWork
         } else {
             this.setSpecialTerms(e.getSpecialTerms());
         }
-        if (e.getTimeTransparency() == null) {
-            if (e.getIsPropertyTimeTransparencyRemoved() != null && e.getIsPropertyTimeTransparencyRemoved()) {
-                this.setTimeTransparency(null);
-            }
-        } else {
-            this.setTimeTransparency(e.getTimeTransparency());
-        }
         if (e.getUniversalId() == null) {
             if (e.getIsPropertyUniversalIdRemoved() != null && e.getIsPropertyUniversalIdRemoved()) {
                 this.setUniversalId(null);
@@ -928,13 +885,6 @@ public abstract class AbstractWorkEffortState implements WorkEffortState.SqlWork
         } else {
             this.setSourceReferenceId(e.getSourceReferenceId());
         }
-        if (e.getFixedAssetId() == null) {
-            if (e.getIsPropertyFixedAssetIdRemoved() != null && e.getIsPropertyFixedAssetIdRemoved()) {
-                this.setFixedAssetId(null);
-            }
-        } else {
-            this.setFixedAssetId(e.getFixedAssetId());
-        }
         if (e.getFacilityId() == null) {
             if (e.getIsPropertyFacilityIdRemoved() != null && e.getIsPropertyFacilityIdRemoved()) {
                 this.setFacilityId(null);
@@ -948,13 +898,6 @@ public abstract class AbstractWorkEffortState implements WorkEffortState.SqlWork
             }
         } else {
             this.setInfoUrl(e.getInfoUrl());
-        }
-        if (e.getRecurrenceInfoId() == null) {
-            if (e.getIsPropertyRecurrenceInfoIdRemoved() != null && e.getIsPropertyRecurrenceInfoIdRemoved()) {
-                this.setRecurrenceInfoId(null);
-            }
-        } else {
-            this.setRecurrenceInfoId(e.getRecurrenceInfoId());
         }
         if (e.getTempExprId() == null) {
             if (e.getIsPropertyTempExprIdRemoved() != null && e.getIsPropertyTempExprIdRemoved()) {

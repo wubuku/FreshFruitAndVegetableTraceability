@@ -12,7 +12,7 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.domain.AbstractEvent;
 
-public abstract class AbstractOrderEvent extends AbstractEvent implements OrderEvent.SqlOrderEvent {
+public abstract class AbstractOrderEvent extends AbstractEvent implements OrderEvent.SqlOrderEvent, OrderFulfillmentSyncable.MutableOrderFulfillmentSyncable {
     private OrderEventId orderEventId = new OrderEventId();
 
     public OrderEventId getOrderEventId() {
@@ -43,6 +43,16 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
     
     public void setVersion(Long version) {
         getOrderEventId().setVersion(version);
+    }
+
+    private String orderFulfillmentSyncStatusId;
+
+    public String getOrderFulfillmentSyncStatusId() {
+        return this.orderFulfillmentSyncStatusId;
+    }
+    
+    public void setOrderFulfillmentSyncStatusId(String orderFulfillmentSyncStatusId) {
+        this.orderFulfillmentSyncStatusId = orderFulfillmentSyncStatusId;
     }
 
     private String createdBy;

@@ -71,19 +71,13 @@ public interface WorkEffortState
 
     String getSpecialTerms();
 
-    Long getTimeTransparency();
-
     String getUniversalId();
 
     String getSourceReferenceId();
 
-    String getFixedAssetId();
-
     String getFacilityId();
 
     String getInfoUrl();
-
-    String getRecurrenceInfoId();
 
     String getTempExprId();
 
@@ -176,19 +170,13 @@ public interface WorkEffortState
 
         void setSpecialTerms(String specialTerms);
 
-        void setTimeTransparency(Long timeTransparency);
-
         void setUniversalId(String universalId);
 
         void setSourceReferenceId(String sourceReferenceId);
 
-        void setFixedAssetId(String fixedAssetId);
-
         void setFacilityId(String facilityId);
 
         void setInfoUrl(String infoUrl);
-
-        void setRecurrenceInfoId(String recurrenceInfoId);
 
         void setTempExprId(String tempExprId);
 

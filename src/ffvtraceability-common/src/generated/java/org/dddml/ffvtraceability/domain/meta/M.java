@@ -8436,13 +8436,10 @@ public class M {
             "totalMoneyAllowed",
             "moneyUomId",
             "specialTerms",
-            "timeTransparency",
             "universalId",
             "sourceReferenceId",
-            "fixedAssetId",
             "facilityId",
             "infoUrl",
-            "recurrenceInfoId",
             "tempExprId",
             "runtimeDataId",
             "noteId",
@@ -8491,9 +8488,6 @@ public class M {
             "Double",
             "Double",
             "java.math.BigDecimal",
-            "String",
-            "String",
-            "Long",
             "String",
             "String",
             "String",
@@ -8588,20 +8582,14 @@ public class M {
         aliasMap.put("MoneyUomId", "moneyUomId");
         aliasMap.put("specialTerms", "specialTerms");
         aliasMap.put("SpecialTerms", "specialTerms");
-        aliasMap.put("timeTransparency", "timeTransparency");
-        aliasMap.put("TimeTransparency", "timeTransparency");
         aliasMap.put("universalId", "universalId");
         aliasMap.put("UniversalId", "universalId");
         aliasMap.put("sourceReferenceId", "sourceReferenceId");
         aliasMap.put("SourceReferenceId", "sourceReferenceId");
-        aliasMap.put("fixedAssetId", "fixedAssetId");
-        aliasMap.put("FixedAssetId", "fixedAssetId");
         aliasMap.put("facilityId", "facilityId");
         aliasMap.put("FacilityId", "facilityId");
         aliasMap.put("infoUrl", "infoUrl");
         aliasMap.put("InfoUrl", "infoUrl");
-        aliasMap.put("recurrenceInfoId", "recurrenceInfoId");
-        aliasMap.put("RecurrenceInfoId", "recurrenceInfoId");
         aliasMap.put("tempExprId", "tempExprId");
         aliasMap.put("TempExprId", "tempExprId");
         aliasMap.put("runtimeDataId", "runtimeDataId");

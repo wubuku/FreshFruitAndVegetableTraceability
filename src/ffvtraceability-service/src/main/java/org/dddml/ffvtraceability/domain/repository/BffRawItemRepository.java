@@ -110,7 +110,7 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 sp.party_id as partyId,
                 sp.currency_uom_id as currencyUomId,
                 sp.minimum_order_quantity as minimumOrderQuantity,
-                sp.available_from_date as availableFromDateInstant,
+                sp.available_from_date as availableFromDate,
                 sp.version as version
             FROM supplier_product sp
             WHERE sp.product_id = :productId

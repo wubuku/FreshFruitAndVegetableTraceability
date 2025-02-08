@@ -20,12 +20,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.Instant;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class XmlEntityDataTool {
@@ -72,6 +74,55 @@ public class XmlEntityDataTool {
                     public Object convert(Object source) {
                         if (source != null) {
                             return OffsetDateTime.ofInstant(Instant.ofEpochMilli((Long) source), ZoneOffset.UTC);
+                        }
+                        return null;
+                    }
+                });
+
+        final Converter<String, LocalDateTime> localDateTimeConverter = new Converter() {
+            @Override
+            public Object convert(Object source) {
+                if (source != null) {
+                    String dateStr = (String) source;
+                    // Try different datetime formats in sequence
+                    DateTimeFormatter[] formatters = {
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                    };
+
+                    for (DateTimeFormatter formatter : formatters) {
+                        try {
+                            return LocalDateTime.parse(dateStr, formatter);
+                        } catch (Exception ex) {
+                            continue;
+                        }
+                    }
+                    throw new IllegalArgumentException("Unable to parse datetime string: " + dateStr);
+                }
+                return null;
+            }
+        };
+        defaultConversionService.addConverter(String.class, LocalDateTime.class, localDateTimeConverter);
+
+        defaultConversionService.addConverter(String.class, OffsetDateTime.class,
+                new Converter() {
+                    @Override
+                    public Object convert(Object source) {
+                        if (source != null) {
+                            String dateStr = (String) source;
+                            try {
+                                try {
+                                    // First try to parse ISO format (e.g. "2024-03-21T15:30:00Z" or "2024-03-21T15:30:00+08:00")
+                                    return OffsetDateTime.parse(dateStr);
+                                } catch (Exception e) {
+                                    // Convert to LocalDateTime first, then to OffsetDateTime
+                                    LocalDateTime localDateTime = localDateTimeConverter.convert(dateStr);
+                                    return localDateTime.atOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+                                }
+                            } catch (Exception e) {
+                                throw new IllegalArgumentException("Unable to parse datetime string: " + dateStr, e);
+                            }
                         }
                         return null;
                     }
@@ -177,8 +228,8 @@ public class XmlEntityDataTool {
             propertySetter.invoke(obj, convertAttributeValue(attrVal, propertyType));
         } catch (Exception e) {
             throw new RuntimeException(String.format(
-                "Failed to set property '%1$s' with value '%2$s' for object '%3$s'.",
-                attrName, attrVal, obj.getClass().getName()
+                    "Failed to set property '%1$s' with value '%2$s' for object '%3$s'.",
+                    attrName, attrVal, obj.getClass().getName()
             ), e);
         }
     }

@@ -11,7 +11,7 @@ import org.dddml.ffvtraceability.domain.partyrole.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.Event;
 
-public interface OrderEvent extends Event {
+public interface OrderEvent extends Event, OrderFulfillmentSyncable {
 
     interface SqlOrderEvent extends OrderEvent {
         OrderEventId getOrderEventId();

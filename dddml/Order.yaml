@@ -4,6 +4,8 @@
     # 聚合根（实体）的名称，这里它不同于聚合名称
     # metadata: {}
     # reservedPropertyMetadata: {}
+    eventImplements:
+      - OrderFulfillmentSyncable
     id:
       name: OrderId
       type: id

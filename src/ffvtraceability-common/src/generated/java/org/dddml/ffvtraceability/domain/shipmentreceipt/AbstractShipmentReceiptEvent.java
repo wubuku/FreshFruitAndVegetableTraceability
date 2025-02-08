@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.dddml.ffvtraceability.domain.AbstractEvent;
 
-public abstract class AbstractShipmentReceiptEvent extends AbstractEvent implements ShipmentReceiptEvent.SqlShipmentReceiptEvent {
+public abstract class AbstractShipmentReceiptEvent extends AbstractEvent implements ShipmentReceiptEvent.SqlShipmentReceiptEvent, OrderFulfillmentSyncable.MutableOrderFulfillmentSyncable, CteSyncable.MutableCteSyncable {
     private ShipmentReceiptEventId shipmentReceiptEventId = new ShipmentReceiptEventId();
 
     public ShipmentReceiptEventId getShipmentReceiptEventId() {
@@ -44,6 +44,26 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
     
     public void setVersion(Long version) {
         getShipmentReceiptEventId().setVersion(version);
+    }
+
+    private String orderFulfillmentSyncStatusId;
+
+    public String getOrderFulfillmentSyncStatusId() {
+        return this.orderFulfillmentSyncStatusId;
+    }
+    
+    public void setOrderFulfillmentSyncStatusId(String orderFulfillmentSyncStatusId) {
+        this.orderFulfillmentSyncStatusId = orderFulfillmentSyncStatusId;
+    }
+
+    private String cteSyncStatusId;
+
+    public String getCteSyncStatusId() {
+        return this.cteSyncStatusId;
+    }
+    
+    public void setCteSyncStatusId(String cteSyncStatusId) {
+        this.cteSyncStatusId = cteSyncStatusId;
     }
 
     private String createdBy;

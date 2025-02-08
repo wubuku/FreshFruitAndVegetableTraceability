@@ -19,11 +19,11 @@ public class BffSupplierProductAssocIdMapperImpl implements BffSupplierProductAs
 
         SupplierProductAssocId supplierProductAssocId = new SupplierProductAssocId();
 
-        supplierProductAssocId.setAvailableFromDate( instantToOffsetDateTime( supplierProductAssocProjection.getAvailableFromDateInstant() ) );
         supplierProductAssocId.setProductId( supplierProductAssocProjection.getProductId() );
         supplierProductAssocId.setPartyId( supplierProductAssocProjection.getPartyId() );
         supplierProductAssocId.setCurrencyUomId( supplierProductAssocProjection.getCurrencyUomId() );
         supplierProductAssocId.setMinimumOrderQuantity( supplierProductAssocProjection.getMinimumOrderQuantity() );
+        supplierProductAssocId.setAvailableFromDate( instantToOffsetDateTime( supplierProductAssocProjection.getAvailableFromDate() ) );
 
         return supplierProductAssocId;
     }

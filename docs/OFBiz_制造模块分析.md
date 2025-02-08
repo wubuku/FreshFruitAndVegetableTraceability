@@ -671,6 +671,13 @@ WorkEffortGoodStandardType 等实体的 Seed Data：
     <WorkEffortAssoc workEffortIdFrom="DEFAULT_ROUTING" workEffortIdTo="DEFAULT_TASK" workEffortAssocTypeId="ROUTING_COMPONENT" sequenceNum="10" fromDate="2004-09-24 15:09:38.736"/>
 ```
 
+关于 `quantityToProduce`：
+- 从 OFBiz 的示例数据看，工艺路线的 `quantityToProduce` 都设为 0
+- 实际生产数量应该由具体的生产订单(Production Run)决定
+- 工艺路线只是一个模板，定义了生产流程和工序
+- 具体要生产多少，应该在创建生产订单时指定
+- BOM 中的 `quantity` 字段已经定义了原料的相对用量比例
+
 另外一个 Demo 数据文件的片段：
 
 ```xml

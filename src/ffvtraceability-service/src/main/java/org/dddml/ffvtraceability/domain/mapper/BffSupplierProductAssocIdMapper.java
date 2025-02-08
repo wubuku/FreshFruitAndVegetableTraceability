@@ -18,6 +18,5 @@ public interface BffSupplierProductAssocIdMapper {
         return instant != null ? instant.atOffset(ZoneOffset.UTC) : null;
     }
 
-    @Mapping(source = "availableFromDateInstant", target = "availableFromDate")
     SupplierProductAssocId toSupplierProductAssocId(BffSupplierProductAssocProjection supplierProductAssocProjection);
 }
