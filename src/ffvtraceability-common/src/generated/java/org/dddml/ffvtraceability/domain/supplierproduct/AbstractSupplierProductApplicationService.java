@@ -148,7 +148,7 @@ public abstract class AbstractSupplierProductApplicationService implements Suppl
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, SupplierProductAggregate aggregate, SupplierProductState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

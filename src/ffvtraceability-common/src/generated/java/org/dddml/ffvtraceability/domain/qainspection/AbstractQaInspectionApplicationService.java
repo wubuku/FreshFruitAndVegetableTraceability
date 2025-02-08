@@ -140,7 +140,7 @@ public abstract class AbstractQaInspectionApplicationService implements QaInspec
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, QaInspectionAggregate aggregate, QaInspectionState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

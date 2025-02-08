@@ -136,7 +136,7 @@ public abstract class AbstractShipmentBoxTypeApplicationService implements Shipm
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, ShipmentBoxTypeAggregate aggregate, ShipmentBoxTypeState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

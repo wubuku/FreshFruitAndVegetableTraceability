@@ -136,7 +136,7 @@ public abstract class AbstractProductAssocApplicationService implements ProductA
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, ProductAssocAggregate aggregate, ProductAssocState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

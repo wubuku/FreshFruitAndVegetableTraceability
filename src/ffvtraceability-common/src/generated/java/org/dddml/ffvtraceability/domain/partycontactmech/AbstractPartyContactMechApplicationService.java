@@ -144,7 +144,7 @@ public abstract class AbstractPartyContactMechApplicationService implements Part
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, PartyContactMechAggregate aggregate, PartyContactMechState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

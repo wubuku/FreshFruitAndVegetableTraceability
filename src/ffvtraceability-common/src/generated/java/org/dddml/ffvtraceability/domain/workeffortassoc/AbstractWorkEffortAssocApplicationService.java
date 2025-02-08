@@ -136,7 +136,7 @@ public abstract class AbstractWorkEffortAssocApplicationService implements WorkE
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, WorkEffortAssocAggregate aggregate, WorkEffortAssocState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

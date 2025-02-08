@@ -158,7 +158,7 @@ public abstract class AbstractAttributeSetInstanceApplicationService implements 
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, AttributeSetInstanceAggregate aggregate, AttributeSetInstanceState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 if (ep != null) {

@@ -168,7 +168,7 @@ public abstract class AbstractShipmentApplicationService implements ShipmentAppl
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, ShipmentAggregate aggregate, ShipmentState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

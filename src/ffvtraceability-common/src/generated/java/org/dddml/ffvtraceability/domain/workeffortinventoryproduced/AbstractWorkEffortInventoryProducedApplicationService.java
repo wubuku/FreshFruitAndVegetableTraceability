@@ -132,7 +132,7 @@ public abstract class AbstractWorkEffortInventoryProducedApplicationService impl
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, WorkEffortInventoryProducedAggregate aggregate, WorkEffortInventoryProducedState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 if (ep != null) {

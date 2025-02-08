@@ -136,7 +136,7 @@ public abstract class AbstractUomTypeApplicationService implements UomTypeApplic
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, UomTypeAggregate aggregate, UomTypeState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

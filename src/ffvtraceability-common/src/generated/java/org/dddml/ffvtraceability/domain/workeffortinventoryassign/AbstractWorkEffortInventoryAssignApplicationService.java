@@ -136,7 +136,7 @@ public abstract class AbstractWorkEffortInventoryAssignApplicationService implem
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, WorkEffortInventoryAssignAggregate aggregate, WorkEffortInventoryAssignState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

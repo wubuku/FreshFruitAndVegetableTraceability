@@ -140,7 +140,7 @@ public abstract class AbstractShippingDocumentApplicationService implements Ship
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, ShippingDocumentAggregate aggregate, ShippingDocumentState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

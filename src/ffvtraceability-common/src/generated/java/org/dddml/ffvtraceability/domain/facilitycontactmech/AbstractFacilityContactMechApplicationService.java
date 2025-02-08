@@ -144,7 +144,7 @@ public abstract class AbstractFacilityContactMechApplicationService implements F
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, FacilityContactMechAggregate aggregate, FacilityContactMechState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

@@ -158,7 +158,7 @@ public abstract class AbstractShipmentReceiptApplicationService implements Shipm
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, ShipmentReceiptAggregate aggregate, ShipmentReceiptState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

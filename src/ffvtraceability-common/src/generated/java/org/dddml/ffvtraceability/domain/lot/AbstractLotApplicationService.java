@@ -144,7 +144,7 @@ public abstract class AbstractLotApplicationService implements LotApplicationSer
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, LotAggregate aggregate, LotState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

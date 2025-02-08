@@ -144,7 +144,7 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, InventoryItemAggregate aggregate, InventoryItemState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

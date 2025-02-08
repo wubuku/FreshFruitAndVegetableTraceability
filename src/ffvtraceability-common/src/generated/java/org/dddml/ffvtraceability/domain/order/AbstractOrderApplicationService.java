@@ -185,7 +185,7 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, OrderAggregate aggregate, OrderHeaderState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

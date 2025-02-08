@@ -136,7 +136,7 @@ public abstract class AbstractPartyRoleApplicationService implements PartyRoleAp
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, PartyRoleAggregate aggregate, PartyRoleState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 

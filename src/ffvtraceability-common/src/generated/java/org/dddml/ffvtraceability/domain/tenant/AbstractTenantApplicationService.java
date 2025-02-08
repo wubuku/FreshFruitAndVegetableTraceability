@@ -136,7 +136,7 @@ public abstract class AbstractTenantApplicationService implements TenantApplicat
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, TenantAggregate aggregate, TenantState state) {
-            final DomainEventPublisher ep = getDomainEventPublisher();
+        final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 
