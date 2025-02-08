@@ -132,10 +132,27 @@ public abstract class AbstractFacilityContactMechApplicationService implements F
 
     }
 
+    private DomainEventPublisher domainEventPublisher;
+
+    public void setDomainEventPublisher(DomainEventPublisher domainEventPublisher) {
+        this.domainEventPublisher = domainEventPublisher;
+    }
+
+    public DomainEventPublisher getDomainEventPublisher() {
+        if (domainEventPublisher != null) { return domainEventPublisher; }
+        return ApplicationContext.current.get(DomainEventPublisher.class);
+    }
+
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, FacilityContactMechAggregate aggregate, FacilityContactMechState state) {
+            final DomainEventPublisher ep = getDomainEventPublisher();
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
                 getStateRepository().save(state); 
+                if (ep != null) {
+                    ep.publish(org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechAggregate.class,
+                        eventStoreAggregateId.getId(),
+                        (List<Event>)events);
+                }
             });
         if (aggregateEventListener != null) {
             aggregateEventListener.eventAppended(new AggregateEvent<>(aggregate, state, aggregate.getChanges()));

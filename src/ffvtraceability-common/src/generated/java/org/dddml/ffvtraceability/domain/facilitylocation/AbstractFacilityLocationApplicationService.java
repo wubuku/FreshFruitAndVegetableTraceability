@@ -196,6 +196,17 @@ public abstract class AbstractFacilityLocationApplicationService implements Faci
 
     }
 
+    private DomainEventPublisher domainEventPublisher;
+
+    public void setDomainEventPublisher(DomainEventPublisher domainEventPublisher) {
+        this.domainEventPublisher = domainEventPublisher;
+    }
+
+    public DomainEventPublisher getDomainEventPublisher() {
+        if (domainEventPublisher != null) { return domainEventPublisher; }
+        return ApplicationContext.current.get(DomainEventPublisher.class);
+    }
+
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, FacilityLocationState state) {
         getStateRepository().save(state);
     }

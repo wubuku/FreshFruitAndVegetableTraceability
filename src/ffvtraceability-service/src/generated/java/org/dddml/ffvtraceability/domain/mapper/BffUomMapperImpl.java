@@ -21,14 +21,14 @@ public class BffUomMapperImpl implements BffUomMapper {
 
         BffUomDto bffUomDto = new BffUomDto();
 
+        bffUomDto.setUomId( bffUomProjection.getUomId() );
+        bffUomDto.setUomTypeId( bffUomProjection.getUomTypeId() );
         bffUomDto.setAbbreviation( bffUomProjection.getAbbreviation() );
-        bffUomDto.setActive( bffUomProjection.getActive() );
+        bffUomDto.setNumericCode( bffUomProjection.getNumericCode() );
         bffUomDto.setDescription( bffUomProjection.getDescription() );
         bffUomDto.setGs1AI( bffUomProjection.getGs1AI() );
-        bffUomDto.setNumericCode( bffUomProjection.getNumericCode() );
-        bffUomDto.setUomId( bffUomProjection.getUomId() );
+        bffUomDto.setActive( bffUomProjection.getActive() );
         bffUomDto.setUomName( bffUomProjection.getUomName() );
-        bffUomDto.setUomTypeId( bffUomProjection.getUomTypeId() );
 
         return bffUomDto;
     }
@@ -41,14 +41,14 @@ public class BffUomMapperImpl implements BffUomMapper {
 
         BffUomDto bffUomDto = new BffUomDto();
 
+        bffUomDto.setUomId( uomState.getUomId() );
+        bffUomDto.setUomTypeId( uomState.getUomTypeId() );
         bffUomDto.setAbbreviation( uomState.getAbbreviation() );
-        bffUomDto.setActive( uomState.getActive() );
+        bffUomDto.setNumericCode( uomState.getNumericCode() );
         bffUomDto.setDescription( uomState.getDescription() );
         bffUomDto.setGs1AI( uomState.getGs1AI() );
-        bffUomDto.setNumericCode( uomState.getNumericCode() );
-        bffUomDto.setUomId( uomState.getUomId() );
+        bffUomDto.setActive( uomState.getActive() );
         bffUomDto.setUomName( uomState.getUomName() );
-        bffUomDto.setUomTypeId( uomState.getUomTypeId() );
 
         return bffUomDto;
     }
@@ -62,13 +62,13 @@ public class BffUomMapperImpl implements BffUomMapper {
         AbstractUomCommand.SimpleCreateUom simpleCreateUom = new AbstractUomCommand.SimpleCreateUom();
 
         simpleCreateUom.setUomId( bffUomDto.getUomId() );
-        simpleCreateUom.setAbbreviation( bffUomDto.getAbbreviation() );
-        simpleCreateUom.setActive( bffUomDto.getActive() );
-        simpleCreateUom.setDescription( bffUomDto.getDescription() );
-        simpleCreateUom.setGs1AI( bffUomDto.getGs1AI() );
-        simpleCreateUom.setNumericCode( bffUomDto.getNumericCode() );
-        simpleCreateUom.setUomName( bffUomDto.getUomName() );
         simpleCreateUom.setUomTypeId( bffUomDto.getUomTypeId() );
+        simpleCreateUom.setAbbreviation( bffUomDto.getAbbreviation() );
+        simpleCreateUom.setNumericCode( bffUomDto.getNumericCode() );
+        simpleCreateUom.setGs1AI( bffUomDto.getGs1AI() );
+        simpleCreateUom.setDescription( bffUomDto.getDescription() );
+        simpleCreateUom.setActive( bffUomDto.getActive() );
+        simpleCreateUom.setUomName( bffUomDto.getUomName() );
 
         return simpleCreateUom;
     }
@@ -82,13 +82,13 @@ public class BffUomMapperImpl implements BffUomMapper {
         AbstractUomCommand.SimpleMergePatchUom simpleMergePatchUom = new AbstractUomCommand.SimpleMergePatchUom();
 
         simpleMergePatchUom.setUomId( bffUomDto.getUomId() );
-        simpleMergePatchUom.setAbbreviation( bffUomDto.getAbbreviation() );
-        simpleMergePatchUom.setActive( bffUomDto.getActive() );
-        simpleMergePatchUom.setDescription( bffUomDto.getDescription() );
-        simpleMergePatchUom.setGs1AI( bffUomDto.getGs1AI() );
-        simpleMergePatchUom.setNumericCode( bffUomDto.getNumericCode() );
-        simpleMergePatchUom.setUomName( bffUomDto.getUomName() );
         simpleMergePatchUom.setUomTypeId( bffUomDto.getUomTypeId() );
+        simpleMergePatchUom.setAbbreviation( bffUomDto.getAbbreviation() );
+        simpleMergePatchUom.setNumericCode( bffUomDto.getNumericCode() );
+        simpleMergePatchUom.setGs1AI( bffUomDto.getGs1AI() );
+        simpleMergePatchUom.setDescription( bffUomDto.getDescription() );
+        simpleMergePatchUom.setActive( bffUomDto.getActive() );
+        simpleMergePatchUom.setUomName( bffUomDto.getUomName() );
 
         return simpleMergePatchUom;
     }

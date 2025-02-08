@@ -33,50 +33,30 @@ public class M {
     static {
         Map<String, String> typeToAggMap = new HashMap<>();
 
-        typeToAggMap.put("AttributeSetInstance", "AttributeSetInstance");
         typeToAggMap.put("Article", "Article");
         typeToAggMap.put("Comment", "Article");
-        typeToAggMap.put("ContactMech", "ContactMech");
-        typeToAggMap.put("MiscContactMech", "ContactMech");
-        typeToAggMap.put("PostalAddress", "ContactMech");
-        typeToAggMap.put("TelecomNumber", "ContactMech");
-        typeToAggMap.put("ContactMechPurposeType", "ContactMechPurposeType");
         typeToAggMap.put("ShippingEvent", "ShippingEvent");
         typeToAggMap.put("ReceivingEvent", "ReceivingEvent");
         typeToAggMap.put("TransformationEvent", "TransformationEvent");
-        typeToAggMap.put("Document", "Document");
-        typeToAggMap.put("Enumeration", "Enumeration");
-        typeToAggMap.put("EnumerationType", "EnumerationType");
+        typeToAggMap.put("Gs1ApplicationIdentifier", "Gs1ApplicationIdentifier");
+        typeToAggMap.put("AttributeSetInstance", "AttributeSetInstance");
+        typeToAggMap.put("StatusItem", "StatusItem");
+        typeToAggMap.put("StatusType", "StatusType");
+        typeToAggMap.put("Uom", "Uom");
+        typeToAggMap.put("UomType", "UomType");
         typeToAggMap.put("Facility", "Facility");
         typeToAggMap.put("FacilityIdentification", "Facility");
         typeToAggMap.put("FacilityIdentificationType", "FacilityIdentificationType");
         typeToAggMap.put("FacilityType", "FacilityType");
-        typeToAggMap.put("FacilityContactMech", "FacilityContactMech");
-        typeToAggMap.put("FacilityContactMechPurpose", "FacilityContactMech");
         typeToAggMap.put("FacilityLocation", "FacilityLocation");
         typeToAggMap.put("Geo", "Geo");
         typeToAggMap.put("GeoType", "GeoType");
         typeToAggMap.put("GeoAssoc", "GeoAssoc");
         typeToAggMap.put("GeoAssocType", "GeoAssocType");
-        typeToAggMap.put("GeoPoint", "GeoPoint");
-        typeToAggMap.put("Gs1ApplicationIdentifier", "Gs1ApplicationIdentifier");
-        typeToAggMap.put("InventoryItem", "InventoryItem");
-        typeToAggMap.put("InventoryItemDetail", "InventoryItem");
-        typeToAggMap.put("InventoryItemType", "InventoryItemType");
         typeToAggMap.put("Lot", "Lot");
         typeToAggMap.put("LotIdentification", "Lot");
         typeToAggMap.put("LotType", "LotType");
         typeToAggMap.put("LotIdentificationType", "LotIdentificationType");
-        typeToAggMap.put("OrderHeader", "Order");
-        typeToAggMap.put("OrderRole", "Order");
-        typeToAggMap.put("OrderContactMech", "Order");
-        typeToAggMap.put("OrderItem", "Order");
-        typeToAggMap.put("OrderAdjustment", "Order");
-        typeToAggMap.put("OrderShipGroup", "Order");
-        typeToAggMap.put("OrderItemShipGroupAssociation", "Order");
-        typeToAggMap.put("OrderAdjustmentType", "OrderAdjustmentType");
-        typeToAggMap.put("OrderType", "OrderType");
-        typeToAggMap.put("OrderItemType", "OrderItemType");
         typeToAggMap.put("Party", "Party");
         typeToAggMap.put("Person", "Party");
         typeToAggMap.put("Organization", "Party");
@@ -87,34 +67,49 @@ public class M {
         typeToAggMap.put("Family", "Party");
         typeToAggMap.put("PartyIdentification", "Party");
         typeToAggMap.put("PartyIdentificationType", "PartyIdentificationType");
-        typeToAggMap.put("PartyContactMech", "PartyContactMech");
-        typeToAggMap.put("PartyContactMechPurpose", "PartyContactMech");
-        typeToAggMap.put("PartyRole", "PartyRole");
         typeToAggMap.put("Product", "Product");
         typeToAggMap.put("GoodIdentification", "Product");
         typeToAggMap.put("ProductType", "ProductType");
-        typeToAggMap.put("ProductAssoc", "ProductAssoc");
-        typeToAggMap.put("ProductAssocType", "ProductAssocType");
         typeToAggMap.put("ProductCategory", "ProductCategory");
         typeToAggMap.put("ProductCategoryType", "ProductCategoryType");
-        typeToAggMap.put("QaInspection", "QaInspection");
+        typeToAggMap.put("SupplierProduct", "SupplierProduct");
+        typeToAggMap.put("Document", "Document");
+        typeToAggMap.put("GeoPoint", "GeoPoint");
+        typeToAggMap.put("PartyRole", "PartyRole");
         typeToAggMap.put("RoleType", "RoleType");
+        typeToAggMap.put("OrderHeader", "Order");
+        typeToAggMap.put("OrderRole", "Order");
+        typeToAggMap.put("OrderContactMech", "Order");
+        typeToAggMap.put("OrderItem", "Order");
+        typeToAggMap.put("OrderAdjustment", "Order");
+        typeToAggMap.put("OrderShipGroup", "Order");
+        typeToAggMap.put("OrderItemShipGroupAssociation", "Order");
+        typeToAggMap.put("OrderAdjustmentType", "OrderAdjustmentType");
+        typeToAggMap.put("OrderType", "OrderType");
+        typeToAggMap.put("OrderItemType", "OrderItemType");
         typeToAggMap.put("Shipment", "Shipment");
         typeToAggMap.put("ShipmentItem", "Shipment");
         typeToAggMap.put("ShipmentPackage", "Shipment");
         typeToAggMap.put("ShipmentPackageContent", "Shipment");
         typeToAggMap.put("ShipmentType", "ShipmentType");
-        typeToAggMap.put("ShipmentBoxType", "ShipmentBoxType");
+        typeToAggMap.put("ShippingDocument", "ShippingDocument");
         typeToAggMap.put("ShipmentReceipt", "ShipmentReceipt");
         typeToAggMap.put("ShipmentReceiptRole", "ShipmentReceipt");
         typeToAggMap.put("ShipmentReceiptOrderAllocation", "ShipmentReceipt");
-        typeToAggMap.put("ShippingDocument", "ShippingDocument");
-        typeToAggMap.put("StatusItem", "StatusItem");
-        typeToAggMap.put("StatusType", "StatusType");
-        typeToAggMap.put("SupplierProduct", "SupplierProduct");
+        typeToAggMap.put("QaInspection", "QaInspection");
+        typeToAggMap.put("ContactMech", "ContactMech");
+        typeToAggMap.put("MiscContactMech", "ContactMech");
+        typeToAggMap.put("PostalAddress", "ContactMech");
+        typeToAggMap.put("TelecomNumber", "ContactMech");
+        typeToAggMap.put("ContactMechPurposeType", "ContactMechPurposeType");
+        typeToAggMap.put("PartyContactMech", "PartyContactMech");
+        typeToAggMap.put("PartyContactMechPurpose", "PartyContactMech");
+        typeToAggMap.put("FacilityContactMech", "FacilityContactMech");
+        typeToAggMap.put("FacilityContactMechPurpose", "FacilityContactMech");
         typeToAggMap.put("Tenant", "Tenant");
-        typeToAggMap.put("Uom", "Uom");
-        typeToAggMap.put("UomType", "UomType");
+        typeToAggMap.put("ShipmentBoxType", "ShipmentBoxType");
+        typeToAggMap.put("Enumeration", "Enumeration");
+        typeToAggMap.put("EnumerationType", "EnumerationType");
         typeToAggMap.put("WorkEffort", "WorkEffort");
         typeToAggMap.put("WorkEffortAssoc", "WorkEffortAssoc");
         typeToAggMap.put("WorkEffortType", "WorkEffortType");
@@ -124,6 +119,11 @@ public class M {
         typeToAggMap.put("WorkEffortGoodStandardType", "WorkEffortGoodStandardType");
         typeToAggMap.put("WorkEffortInventoryAssign", "WorkEffortInventoryAssign");
         typeToAggMap.put("WorkEffortInventoryProduced", "WorkEffortInventoryProduced");
+        typeToAggMap.put("ProductAssoc", "ProductAssoc");
+        typeToAggMap.put("ProductAssocType", "ProductAssocType");
+        typeToAggMap.put("InventoryItem", "InventoryItem");
+        typeToAggMap.put("InventoryItemDetail", "InventoryItem");
+        typeToAggMap.put("InventoryItemType", "InventoryItemType");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -165,29 +165,6 @@ public class M {
         clsMap.put("java.time.OffsetDateTime", java.time.OffsetDateTime.class);
         clsMap.put("boolean", Boolean.class);
         clsMap.put("integer", Integer.class);
-        clsMap.put("CteEventId", String.class);
-        clsMap.put("GTIN", String.class);
-        clsMap.put("SSCC", String.class);
-        clsMap.put("FFRN", String.class);
-        clsMap.put("GLN", String.class);
-        clsMap.put("GGN", String.class);
-        clsMap.put("KdeDate", String.class);
-        clsMap.put("KdeBatch", String.class);
-        clsMap.put("KdeSerialNumber", String.class);
-        clsMap.put("KdeQuantity", java.math.BigDecimal.class);
-        clsMap.put("KdeUom", String.class);
-        clsMap.put("KdeProductName", String.class);
-        clsMap.put("KdePackagingSize", String.class);
-        clsMap.put("KdePackagingStyle", String.class);
-        clsMap.put("KdeBusinessName", String.class);
-        clsMap.put("KdePhoneNumber", String.class);
-        clsMap.put("KdePhysicalLocationAddress", String.class);
-        clsMap.put("KdeCity", String.class);
-        clsMap.put("KdeState", String.class);
-        clsMap.put("KdeZipCode", String.class);
-        clsMap.put("KdeUrl", String.class);
-        clsMap.put("KdeDocumentType", String.class);
-        clsMap.put("KdeDocumentNumber", String.class);
         clsMap.put("blob", java.sql.Blob.class);
         clsMap.put("java.sql.Blob", java.sql.Blob.class);
         clsMap.put("byte-array", byte[].class);
@@ -222,6 +199,29 @@ public class M {
         clsMap.put("id-long-ne", String.class);
         clsMap.put("id-vlong-ne", String.class);
         clsMap.put("tel-number", String.class);
+        clsMap.put("GTIN", String.class);
+        clsMap.put("SSCC", String.class);
+        clsMap.put("FFRN", String.class);
+        clsMap.put("GLN", String.class);
+        clsMap.put("GGN", String.class);
+        clsMap.put("KdeDate", String.class);
+        clsMap.put("KdeBatch", String.class);
+        clsMap.put("KdeSerialNumber", String.class);
+        clsMap.put("KdeQuantity", java.math.BigDecimal.class);
+        clsMap.put("KdeUom", String.class);
+        clsMap.put("KdeProductName", String.class);
+        clsMap.put("KdePackagingSize", String.class);
+        clsMap.put("KdePackagingStyle", String.class);
+        clsMap.put("KdeBusinessName", String.class);
+        clsMap.put("KdePhoneNumber", String.class);
+        clsMap.put("KdePhysicalLocationAddress", String.class);
+        clsMap.put("KdeCity", String.class);
+        clsMap.put("KdeState", String.class);
+        clsMap.put("KdeZipCode", String.class);
+        clsMap.put("KdeUrl", String.class);
+        clsMap.put("KdeDocumentType", String.class);
+        clsMap.put("KdeDocumentNumber", String.class);
+        clsMap.put("CteEventId", String.class);
         clsMap.put("StringList", java.util.List.class);
         clsMap.put("java.util.List<String>", java.util.List.class);
         clsMap.put("java.util.List", java.util.List.class);
@@ -238,87 +238,6 @@ public class M {
 
     private BoundedContextMetadata() {
     }
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class AttributeSetInstanceMetadata {
-
-    private AttributeSetInstanceMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "attributeSetInstanceId",
-            "attributes",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "org.dddml.ffvtraceability.domain.ConsistentEqualityMap",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("attributeSetInstanceId", "attributeSetInstanceId");
-        aliasMap.put("AttributeSetInstanceId", "attributeSetInstanceId");
-        aliasMap.put("attributes", "attributes");
-        aliasMap.put("Attributes", "attributes");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
   }
 
 
@@ -495,268 +414,6 @@ public class M {
         aliasMap.put("ArticleCommentId.ArticleId", "articleCommentId.articleId");
         aliasMap.put("articleCommentId.commentSeqId", "articleCommentId.commentSeqId");
         aliasMap.put("ArticleCommentId.CommentSeqId", "articleCommentId.commentSeqId");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class ContactMechMetadata {
-
-    private ContactMechMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "contactMechId",
-            "contactMechTypeId",
-            "infoString",
-            "askForName",
-            "email",
-            "askForRole",
-            "toName",
-            "attnName",
-            "address1",
-            "address2",
-            "directions",
-            "city",
-            "postalCode",
-            "postalCodeExt",
-            "countryGeoId",
-            "stateProvinceGeoId",
-            "prefectureGeoId",
-            "countyGeoId",
-            "townGeoId",
-            "assocTelecomContactMechId",
-            "postalCodeGeoId",
-            "geoPointId",
-            "countryCode",
-            "areaCode",
-            "contactNumber",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("contactMechId", "contactMechId");
-        aliasMap.put("ContactMechId", "contactMechId");
-        aliasMap.put("contactMechTypeId", "contactMechTypeId");
-        aliasMap.put("ContactMechTypeId", "contactMechTypeId");
-        aliasMap.put("infoString", "infoString");
-        aliasMap.put("InfoString", "infoString");
-        aliasMap.put("askForName", "askForName");
-        aliasMap.put("AskForName", "askForName");
-        aliasMap.put("email", "email");
-        aliasMap.put("Email", "email");
-        aliasMap.put("askForRole", "askForRole");
-        aliasMap.put("AskForRole", "askForRole");
-        aliasMap.put("toName", "toName");
-        aliasMap.put("ToName", "toName");
-        aliasMap.put("attnName", "attnName");
-        aliasMap.put("AttnName", "attnName");
-        aliasMap.put("address1", "address1");
-        aliasMap.put("Address1", "address1");
-        aliasMap.put("address2", "address2");
-        aliasMap.put("Address2", "address2");
-        aliasMap.put("directions", "directions");
-        aliasMap.put("Directions", "directions");
-        aliasMap.put("city", "city");
-        aliasMap.put("City", "city");
-        aliasMap.put("postalCode", "postalCode");
-        aliasMap.put("PostalCode", "postalCode");
-        aliasMap.put("postalCodeExt", "postalCodeExt");
-        aliasMap.put("PostalCodeExt", "postalCodeExt");
-        aliasMap.put("countryGeoId", "countryGeoId");
-        aliasMap.put("CountryGeoId", "countryGeoId");
-        aliasMap.put("stateProvinceGeoId", "stateProvinceGeoId");
-        aliasMap.put("StateProvinceGeoId", "stateProvinceGeoId");
-        aliasMap.put("prefectureGeoId", "prefectureGeoId");
-        aliasMap.put("PrefectureGeoId", "prefectureGeoId");
-        aliasMap.put("countyGeoId", "countyGeoId");
-        aliasMap.put("CountyGeoId", "countyGeoId");
-        aliasMap.put("townGeoId", "townGeoId");
-        aliasMap.put("TownGeoId", "townGeoId");
-        aliasMap.put("assocTelecomContactMechId", "assocTelecomContactMechId");
-        aliasMap.put("AssocTelecomContactMechId", "assocTelecomContactMechId");
-        aliasMap.put("postalCodeGeoId", "postalCodeGeoId");
-        aliasMap.put("PostalCodeGeoId", "postalCodeGeoId");
-        aliasMap.put("geoPointId", "geoPointId");
-        aliasMap.put("GeoPointId", "geoPointId");
-        aliasMap.put("countryCode", "countryCode");
-        aliasMap.put("CountryCode", "countryCode");
-        aliasMap.put("areaCode", "areaCode");
-        aliasMap.put("AreaCode", "areaCode");
-        aliasMap.put("contactNumber", "contactNumber");
-        aliasMap.put("ContactNumber", "contactNumber");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class ContactMechPurposeTypeMetadata {
-
-    private ContactMechPurposeTypeMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "contactMechPurposeTypeId",
-            "parentTypeId",
-            "hasTable",
-            "description",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("contactMechPurposeTypeId", "contactMechPurposeTypeId");
-        aliasMap.put("ContactMechPurposeTypeId", "contactMechPurposeTypeId");
-        aliasMap.put("parentTypeId", "parentTypeId");
-        aliasMap.put("ParentTypeId", "parentTypeId");
-        aliasMap.put("hasTable", "hasTable");
-        aliasMap.put("HasTable", "hasTable");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
     }
 
     private static void initPropertyTypeMap() {
@@ -1444,9 +1101,9 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class DocumentMetadata {
+  public static class Gs1ApplicationIdentifierMetadata {
 
-    private DocumentMetadata() {
+    private Gs1ApplicationIdentifierMetadata() {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
@@ -1460,11 +1117,21 @@ public class M {
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
-            "documentId",
-            "documentTypeId",
-            "comments",
-            "documentLocation",
-            "documentText",
+            "applicationIdentifier",
+            "formatString",
+            "label",
+            "description",
+            "fnc1required",
+            "regex",
+            "note",
+            "title",
+            "separatorRequired",
+            "gs1DigitalLinkPrimaryKey",
+            "gs1DigitalLinkQualifiers",
+            "excludes",
+            "requires",
+            "start",
+            "end",
             "version",
             "createdBy",
             "createdAt",
@@ -1478,6 +1145,16 @@ public class M {
             "String",
             "String",
             "String",
+            "String",
+            "Boolean",
+            "String",
+            "String",
+            "String",
+            "Boolean",
+            "Boolean",
+            "java.util.List<Object>",
+            "java.util.List<Object>",
+            "java.util.List<Object>",
             "String",
             "String",
             "Long",
@@ -1501,16 +1178,36 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("documentId", "documentId");
-        aliasMap.put("DocumentId", "documentId");
-        aliasMap.put("documentTypeId", "documentTypeId");
-        aliasMap.put("DocumentTypeId", "documentTypeId");
-        aliasMap.put("comments", "comments");
-        aliasMap.put("Comments", "comments");
-        aliasMap.put("documentLocation", "documentLocation");
-        aliasMap.put("DocumentLocation", "documentLocation");
-        aliasMap.put("documentText", "documentText");
-        aliasMap.put("DocumentText", "documentText");
+        aliasMap.put("applicationIdentifier", "applicationIdentifier");
+        aliasMap.put("ApplicationIdentifier", "applicationIdentifier");
+        aliasMap.put("formatString", "formatString");
+        aliasMap.put("FormatString", "formatString");
+        aliasMap.put("label", "label");
+        aliasMap.put("Label", "label");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("fnc1required", "fnc1required");
+        aliasMap.put("Fnc1required", "fnc1required");
+        aliasMap.put("regex", "regex");
+        aliasMap.put("Regex", "regex");
+        aliasMap.put("note", "note");
+        aliasMap.put("Note", "note");
+        aliasMap.put("title", "title");
+        aliasMap.put("Title", "title");
+        aliasMap.put("separatorRequired", "separatorRequired");
+        aliasMap.put("SeparatorRequired", "separatorRequired");
+        aliasMap.put("gs1DigitalLinkPrimaryKey", "gs1DigitalLinkPrimaryKey");
+        aliasMap.put("Gs1DigitalLinkPrimaryKey", "gs1DigitalLinkPrimaryKey");
+        aliasMap.put("gs1DigitalLinkQualifiers", "gs1DigitalLinkQualifiers");
+        aliasMap.put("Gs1DigitalLinkQualifiers", "gs1DigitalLinkQualifiers");
+        aliasMap.put("excludes", "excludes");
+        aliasMap.put("Excludes", "excludes");
+        aliasMap.put("requires", "requires");
+        aliasMap.put("Requires", "requires");
+        aliasMap.put("start", "start");
+        aliasMap.put("Start", "start");
+        aliasMap.put("end", "end");
+        aliasMap.put("End", "end");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -1537,9 +1234,9 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class EnumerationMetadata {
+  public static class AttributeSetInstanceMetadata {
 
-    private EnumerationMetadata() {
+    private AttributeSetInstanceMetadata() {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
@@ -1553,9 +1250,90 @@ public class M {
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
-            "enumId",
-            "enumTypeId",
-            "enumCode",
+            "attributeSetInstanceId",
+            "attributes",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "org.dddml.ffvtraceability.domain.ConsistentEqualityMap",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("attributeSetInstanceId", "attributeSetInstanceId");
+        aliasMap.put("AttributeSetInstanceId", "attributeSetInstanceId");
+        aliasMap.put("attributes", "attributes");
+        aliasMap.put("Attributes", "attributes");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class StatusItemMetadata {
+
+    private StatusItemMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "statusId",
+            "statusTypeId",
+            "statusCode",
             "sequenceId",
             "description",
             "version",
@@ -1594,12 +1372,12 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("enumId", "enumId");
-        aliasMap.put("EnumId", "enumId");
-        aliasMap.put("enumTypeId", "enumTypeId");
-        aliasMap.put("EnumTypeId", "enumTypeId");
-        aliasMap.put("enumCode", "enumCode");
-        aliasMap.put("EnumCode", "enumCode");
+        aliasMap.put("statusId", "statusId");
+        aliasMap.put("StatusId", "statusId");
+        aliasMap.put("statusTypeId", "statusTypeId");
+        aliasMap.put("StatusTypeId", "statusTypeId");
+        aliasMap.put("statusCode", "statusCode");
+        aliasMap.put("StatusCode", "statusCode");
         aliasMap.put("sequenceId", "sequenceId");
         aliasMap.put("SequenceId", "sequenceId");
         aliasMap.put("description", "description");
@@ -1630,9 +1408,9 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class EnumerationTypeMetadata {
+  public static class StatusTypeMetadata {
 
-    private EnumerationTypeMetadata() {
+    private StatusTypeMetadata() {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
@@ -1646,7 +1424,7 @@ public class M {
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
-            "enumTypeId",
+            "statusTypeId",
             "parentTypeId",
             "hasTable",
             "description",
@@ -1685,8 +1463,202 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("enumTypeId", "enumTypeId");
-        aliasMap.put("EnumTypeId", "enumTypeId");
+        aliasMap.put("statusTypeId", "statusTypeId");
+        aliasMap.put("StatusTypeId", "statusTypeId");
+        aliasMap.put("parentTypeId", "parentTypeId");
+        aliasMap.put("ParentTypeId", "parentTypeId");
+        aliasMap.put("hasTable", "hasTable");
+        aliasMap.put("HasTable", "hasTable");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class UomMetadata {
+
+    private UomMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "uomId",
+            "uomTypeId",
+            "abbreviation",
+            "numericCode",
+            "gs1AI",
+            "description",
+            "active",
+            "uomName",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("uomId", "uomId");
+        aliasMap.put("UomId", "uomId");
+        aliasMap.put("uomTypeId", "uomTypeId");
+        aliasMap.put("UomTypeId", "uomTypeId");
+        aliasMap.put("abbreviation", "abbreviation");
+        aliasMap.put("Abbreviation", "abbreviation");
+        aliasMap.put("numericCode", "numericCode");
+        aliasMap.put("NumericCode", "numericCode");
+        aliasMap.put("gs1AI", "gs1AI");
+        aliasMap.put("Gs1AI", "gs1AI");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("uomName", "uomName");
+        aliasMap.put("UomName", "uomName");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class UomTypeMetadata {
+
+    private UomTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "uomTypeId",
+            "parentTypeId",
+            "hasTable",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("uomTypeId", "uomTypeId");
+        aliasMap.put("UomTypeId", "uomTypeId");
         aliasMap.put("parentTypeId", "parentTypeId");
         aliasMap.put("ParentTypeId", "parentTypeId");
         aliasMap.put("hasTable", "hasTable");
@@ -2129,232 +2101,6 @@ public class M {
         aliasMap.put("__Active__", "__Active__");
         aliasMap.put("__Deleted__", "__Deleted__");
         aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class FacilityContactMechMetadata {
-
-    private FacilityContactMechMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String URL_ID_FIELD_SEPARATOR = ",";
-
-    public static final TextFormatter<org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId> URL_ID_TEXT_FORMATTER =
-                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId>(org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId.class, URL_ID_FIELD_SEPARATOR) {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    };
-
-    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId.class;
-
-    public static final String[] propertyNames = new String[] {
-            "thruDate",
-            "extension",
-            "comments",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-            "facilityContactMechId.facilityId",
-            "facilityContactMechId.contactMechId",
-            "facilityContactMechId.fromDate",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "OffsetDateTime",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-            "String",
-            "String",
-            "OffsetDateTime",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("thruDate", "thruDate");
-        aliasMap.put("ThruDate", "thruDate");
-        aliasMap.put("extension", "extension");
-        aliasMap.put("Extension", "extension");
-        aliasMap.put("comments", "comments");
-        aliasMap.put("Comments", "comments");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("facilityContactMechId.facilityId", "facilityContactMechId.facilityId");
-        aliasMap.put("FacilityContactMechId.FacilityId", "facilityContactMechId.facilityId");
-        aliasMap.put("facilityContactMechId.contactMechId", "facilityContactMechId.contactMechId");
-        aliasMap.put("FacilityContactMechId.ContactMechId", "facilityContactMechId.contactMechId");
-        aliasMap.put("facilityContactMechId.fromDate", "facilityContactMechId.fromDate");
-        aliasMap.put("FacilityContactMechId.FromDate", "facilityContactMechId.fromDate");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class FacilityContactMechPurposeMetadata {
-
-    private FacilityContactMechPurposeMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String[] propertyNames = new String[] {
-            "contactMechPurposeTypeId",
-            "thruDate",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-            "facilityContactMechPurposeId.facilityContactMechIdFacilityId",
-            "facilityContactMechPurposeId.facilityContactMechIdContactMechId",
-            "facilityContactMechPurposeId.facilityContactMechIdFromDate",
-            "facilityContactMechPurposeId.contactMechPurposeTypeId",
-            "facilityContactMechId.facilityId",
-            "facilityContactMechId.contactMechId",
-            "facilityContactMechId.fromDate",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "OffsetDateTime",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-            "String",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "String",
-            "String",
-            "OffsetDateTime",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("contactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
-        aliasMap.put("ContactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
-        aliasMap.put("thruDate", "thruDate");
-        aliasMap.put("ThruDate", "thruDate");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("facilityContactMechPurposeId.facilityContactMechIdFacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
-        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechIdFacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
-        aliasMap.put("facilityContactMechPurposeId.facilityContactMechId.facilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
-        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechId.FacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
-        aliasMap.put("facilityContactMechPurposeId.facilityContactMechIdContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
-        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechIdContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
-        aliasMap.put("facilityContactMechPurposeId.facilityContactMechId.contactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
-        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechId.ContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
-        aliasMap.put("facilityContactMechPurposeId.facilityContactMechIdFromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
-        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechIdFromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
-        aliasMap.put("facilityContactMechPurposeId.facilityContactMechId.fromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
-        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechId.FromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
-        aliasMap.put("facilityContactMechPurposeId.contactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
-        aliasMap.put("FacilityContactMechPurposeId.ContactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
-        aliasMap.put("facilityContactMechId.facilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
-        aliasMap.put("FacilityContactMechId.FacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
-        aliasMap.put("facilityContactMechId.facilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
-        aliasMap.put("FacilityContactMechId.FacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
-        aliasMap.put("facilityContactMechId.contactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
-        aliasMap.put("FacilityContactMechId.ContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
-        aliasMap.put("facilityContactMechId.contactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
-        aliasMap.put("FacilityContactMechId.ContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
-        aliasMap.put("facilityContactMechId.fromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
-        aliasMap.put("FacilityContactMechId.FromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
-        aliasMap.put("facilityContactMechId.fromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
-        aliasMap.put("FacilityContactMechId.FromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
     }
 
     private static void initPropertyTypeMap() {
@@ -2876,689 +2622,6 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class GeoPointMetadata {
-
-    private GeoPointMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "geoPointId",
-            "geoPointTypeEnumId",
-            "description",
-            "latitude",
-            "longitude",
-            "elevation",
-            "elevationUomId",
-            "information",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("geoPointId", "geoPointId");
-        aliasMap.put("GeoPointId", "geoPointId");
-        aliasMap.put("geoPointTypeEnumId", "geoPointTypeEnumId");
-        aliasMap.put("GeoPointTypeEnumId", "geoPointTypeEnumId");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("latitude", "latitude");
-        aliasMap.put("Latitude", "latitude");
-        aliasMap.put("longitude", "longitude");
-        aliasMap.put("Longitude", "longitude");
-        aliasMap.put("elevation", "elevation");
-        aliasMap.put("Elevation", "elevation");
-        aliasMap.put("elevationUomId", "elevationUomId");
-        aliasMap.put("ElevationUomId", "elevationUomId");
-        aliasMap.put("information", "information");
-        aliasMap.put("Information", "information");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class Gs1ApplicationIdentifierMetadata {
-
-    private Gs1ApplicationIdentifierMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "applicationIdentifier",
-            "formatString",
-            "label",
-            "description",
-            "fnc1required",
-            "regex",
-            "note",
-            "title",
-            "separatorRequired",
-            "gs1DigitalLinkPrimaryKey",
-            "gs1DigitalLinkQualifiers",
-            "excludes",
-            "requires",
-            "start",
-            "end",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "Boolean",
-            "String",
-            "String",
-            "String",
-            "Boolean",
-            "Boolean",
-            "java.util.List<Object>",
-            "java.util.List<Object>",
-            "java.util.List<Object>",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("applicationIdentifier", "applicationIdentifier");
-        aliasMap.put("ApplicationIdentifier", "applicationIdentifier");
-        aliasMap.put("formatString", "formatString");
-        aliasMap.put("FormatString", "formatString");
-        aliasMap.put("label", "label");
-        aliasMap.put("Label", "label");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("fnc1required", "fnc1required");
-        aliasMap.put("Fnc1required", "fnc1required");
-        aliasMap.put("regex", "regex");
-        aliasMap.put("Regex", "regex");
-        aliasMap.put("note", "note");
-        aliasMap.put("Note", "note");
-        aliasMap.put("title", "title");
-        aliasMap.put("Title", "title");
-        aliasMap.put("separatorRequired", "separatorRequired");
-        aliasMap.put("SeparatorRequired", "separatorRequired");
-        aliasMap.put("gs1DigitalLinkPrimaryKey", "gs1DigitalLinkPrimaryKey");
-        aliasMap.put("Gs1DigitalLinkPrimaryKey", "gs1DigitalLinkPrimaryKey");
-        aliasMap.put("gs1DigitalLinkQualifiers", "gs1DigitalLinkQualifiers");
-        aliasMap.put("Gs1DigitalLinkQualifiers", "gs1DigitalLinkQualifiers");
-        aliasMap.put("excludes", "excludes");
-        aliasMap.put("Excludes", "excludes");
-        aliasMap.put("requires", "requires");
-        aliasMap.put("Requires", "requires");
-        aliasMap.put("start", "start");
-        aliasMap.put("Start", "start");
-        aliasMap.put("end", "end");
-        aliasMap.put("End", "end");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class InventoryItemMetadata {
-
-    private InventoryItemMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "inventoryItemId",
-            "inventoryItemTypeId",
-            "productId",
-            "partyId",
-            "ownerPartyId",
-            "statusId",
-            "datetimeReceived",
-            "datetimeManufactured",
-            "expireDate",
-            "facilityId",
-            "containerId",
-            "lotId",
-            "uomId",
-            "binNumber",
-            "locationSeqId",
-            "comments",
-            "quantityOnHandTotal",
-            "availableToPromiseTotal",
-            "accountingQuantityTotal",
-            "serialNumber",
-            "softIdentifier",
-            "activationNumber",
-            "activationValidThru",
-            "unitCost",
-            "currencyUomId",
-            "fixedAssetId",
-            "inventoryItemAttributeHash",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "OffsetDateTime",
-            "OffsetDateTime",
-            "OffsetDateTime",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "String",
-            "String",
-            "OffsetDateTime",
-            "java.math.BigDecimal",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("inventoryItemId", "inventoryItemId");
-        aliasMap.put("InventoryItemId", "inventoryItemId");
-        aliasMap.put("inventoryItemTypeId", "inventoryItemTypeId");
-        aliasMap.put("InventoryItemTypeId", "inventoryItemTypeId");
-        aliasMap.put("productId", "productId");
-        aliasMap.put("ProductId", "productId");
-        aliasMap.put("partyId", "partyId");
-        aliasMap.put("PartyId", "partyId");
-        aliasMap.put("ownerPartyId", "ownerPartyId");
-        aliasMap.put("OwnerPartyId", "ownerPartyId");
-        aliasMap.put("statusId", "statusId");
-        aliasMap.put("StatusId", "statusId");
-        aliasMap.put("datetimeReceived", "datetimeReceived");
-        aliasMap.put("DatetimeReceived", "datetimeReceived");
-        aliasMap.put("datetimeManufactured", "datetimeManufactured");
-        aliasMap.put("DatetimeManufactured", "datetimeManufactured");
-        aliasMap.put("expireDate", "expireDate");
-        aliasMap.put("ExpireDate", "expireDate");
-        aliasMap.put("facilityId", "facilityId");
-        aliasMap.put("FacilityId", "facilityId");
-        aliasMap.put("containerId", "containerId");
-        aliasMap.put("ContainerId", "containerId");
-        aliasMap.put("lotId", "lotId");
-        aliasMap.put("LotId", "lotId");
-        aliasMap.put("uomId", "uomId");
-        aliasMap.put("UomId", "uomId");
-        aliasMap.put("binNumber", "binNumber");
-        aliasMap.put("BinNumber", "binNumber");
-        aliasMap.put("locationSeqId", "locationSeqId");
-        aliasMap.put("LocationSeqId", "locationSeqId");
-        aliasMap.put("comments", "comments");
-        aliasMap.put("Comments", "comments");
-        aliasMap.put("quantityOnHandTotal", "quantityOnHandTotal");
-        aliasMap.put("QuantityOnHandTotal", "quantityOnHandTotal");
-        aliasMap.put("availableToPromiseTotal", "availableToPromiseTotal");
-        aliasMap.put("AvailableToPromiseTotal", "availableToPromiseTotal");
-        aliasMap.put("accountingQuantityTotal", "accountingQuantityTotal");
-        aliasMap.put("AccountingQuantityTotal", "accountingQuantityTotal");
-        aliasMap.put("serialNumber", "serialNumber");
-        aliasMap.put("SerialNumber", "serialNumber");
-        aliasMap.put("softIdentifier", "softIdentifier");
-        aliasMap.put("SoftIdentifier", "softIdentifier");
-        aliasMap.put("activationNumber", "activationNumber");
-        aliasMap.put("ActivationNumber", "activationNumber");
-        aliasMap.put("activationValidThru", "activationValidThru");
-        aliasMap.put("ActivationValidThru", "activationValidThru");
-        aliasMap.put("unitCost", "unitCost");
-        aliasMap.put("UnitCost", "unitCost");
-        aliasMap.put("currencyUomId", "currencyUomId");
-        aliasMap.put("CurrencyUomId", "currencyUomId");
-        aliasMap.put("fixedAssetId", "fixedAssetId");
-        aliasMap.put("FixedAssetId", "fixedAssetId");
-        aliasMap.put("inventoryItemAttributeHash", "inventoryItemAttributeHash");
-        aliasMap.put("InventoryItemAttributeHash", "inventoryItemAttributeHash");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class InventoryItemDetailMetadata {
-
-    private InventoryItemDetailMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String[] propertyNames = new String[] {
-            "inventoryItemDetailSeqId",
-            "effectiveDate",
-            "quantityOnHandDiff",
-            "availableToPromiseDiff",
-            "accountingQuantityDiff",
-            "unitCost",
-            "orderId",
-            "orderItemSeqId",
-            "shipGroupSeqId",
-            "shipmentId",
-            "shipmentItemSeqId",
-            "returnId",
-            "returnItemSeqId",
-            "workEffortId",
-            "fixedAssetId",
-            "maintHistSeqId",
-            "itemIssuanceId",
-            "receiptId",
-            "physicalInventoryId",
-            "reasonEnumId",
-            "description",
-            "inventoryItemAttributeHash",
-            "inventoryItemEntrySourceHash",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-            "inventoryItemId",
-            "inventoryItemDetailId.inventoryItemId",
-            "inventoryItemDetailId.inventoryItemDetailSeqId",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "OffsetDateTime",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-            "String",
-            "String",
-            "String",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("inventoryItemDetailSeqId", "inventoryItemDetailId.inventoryItemDetailSeqId");
-        aliasMap.put("InventoryItemDetailSeqId", "inventoryItemDetailId.inventoryItemDetailSeqId");
-        aliasMap.put("effectiveDate", "effectiveDate");
-        aliasMap.put("EffectiveDate", "effectiveDate");
-        aliasMap.put("quantityOnHandDiff", "quantityOnHandDiff");
-        aliasMap.put("QuantityOnHandDiff", "quantityOnHandDiff");
-        aliasMap.put("availableToPromiseDiff", "availableToPromiseDiff");
-        aliasMap.put("AvailableToPromiseDiff", "availableToPromiseDiff");
-        aliasMap.put("accountingQuantityDiff", "accountingQuantityDiff");
-        aliasMap.put("AccountingQuantityDiff", "accountingQuantityDiff");
-        aliasMap.put("unitCost", "unitCost");
-        aliasMap.put("UnitCost", "unitCost");
-        aliasMap.put("orderId", "orderId");
-        aliasMap.put("OrderId", "orderId");
-        aliasMap.put("orderItemSeqId", "orderItemSeqId");
-        aliasMap.put("OrderItemSeqId", "orderItemSeqId");
-        aliasMap.put("shipGroupSeqId", "shipGroupSeqId");
-        aliasMap.put("ShipGroupSeqId", "shipGroupSeqId");
-        aliasMap.put("shipmentId", "shipmentId");
-        aliasMap.put("ShipmentId", "shipmentId");
-        aliasMap.put("shipmentItemSeqId", "shipmentItemSeqId");
-        aliasMap.put("ShipmentItemSeqId", "shipmentItemSeqId");
-        aliasMap.put("returnId", "returnId");
-        aliasMap.put("ReturnId", "returnId");
-        aliasMap.put("returnItemSeqId", "returnItemSeqId");
-        aliasMap.put("ReturnItemSeqId", "returnItemSeqId");
-        aliasMap.put("workEffortId", "workEffortId");
-        aliasMap.put("WorkEffortId", "workEffortId");
-        aliasMap.put("fixedAssetId", "fixedAssetId");
-        aliasMap.put("FixedAssetId", "fixedAssetId");
-        aliasMap.put("maintHistSeqId", "maintHistSeqId");
-        aliasMap.put("MaintHistSeqId", "maintHistSeqId");
-        aliasMap.put("itemIssuanceId", "itemIssuanceId");
-        aliasMap.put("ItemIssuanceId", "itemIssuanceId");
-        aliasMap.put("receiptId", "receiptId");
-        aliasMap.put("ReceiptId", "receiptId");
-        aliasMap.put("physicalInventoryId", "physicalInventoryId");
-        aliasMap.put("PhysicalInventoryId", "physicalInventoryId");
-        aliasMap.put("reasonEnumId", "reasonEnumId");
-        aliasMap.put("ReasonEnumId", "reasonEnumId");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("inventoryItemAttributeHash", "inventoryItemAttributeHash");
-        aliasMap.put("InventoryItemAttributeHash", "inventoryItemAttributeHash");
-        aliasMap.put("inventoryItemEntrySourceHash", "inventoryItemEntrySourceHash");
-        aliasMap.put("InventoryItemEntrySourceHash", "inventoryItemEntrySourceHash");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("inventoryItemId", "inventoryItemDetailId.inventoryItemId");
-        aliasMap.put("InventoryItemId", "inventoryItemDetailId.inventoryItemId");
-        aliasMap.put("inventoryItemDetailId.inventoryItemId", "inventoryItemDetailId.inventoryItemId");
-        aliasMap.put("InventoryItemDetailId.InventoryItemId", "inventoryItemDetailId.inventoryItemId");
-        aliasMap.put("inventoryItemDetailId.inventoryItemDetailSeqId", "inventoryItemDetailId.inventoryItemDetailSeqId");
-        aliasMap.put("InventoryItemDetailId.InventoryItemDetailSeqId", "inventoryItemDetailId.inventoryItemDetailSeqId");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class InventoryItemTypeMetadata {
-
-    private InventoryItemTypeMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "inventoryItemTypeId",
-            "parentTypeId",
-            "hasTable",
-            "description",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("inventoryItemTypeId", "inventoryItemTypeId");
-        aliasMap.put("InventoryItemTypeId", "inventoryItemTypeId");
-        aliasMap.put("parentTypeId", "parentTypeId");
-        aliasMap.put("ParentTypeId", "parentTypeId");
-        aliasMap.put("hasTable", "hasTable");
-        aliasMap.put("HasTable", "hasTable");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
   public static class LotMetadata {
 
     private LotMetadata() {
@@ -3917,6 +2980,1711 @@ public class M {
     private static void initAliasMap() {
         aliasMap.put("lotIdentificationTypeId", "lotIdentificationTypeId");
         aliasMap.put("LotIdentificationTypeId", "lotIdentificationTypeId");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class PartyMetadata {
+
+    private PartyMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "partyId",
+            "partyTypeId",
+            "primaryRoleTypeId",
+            "externalId",
+            "preferredCurrencyUomId",
+            "description",
+            "statusId",
+            "email",
+            "webSite",
+            "telephone",
+            "salutation",
+            "firstName",
+            "middleName",
+            "lastName",
+            "personalTitle",
+            "nickname",
+            "gender",
+            "birthDate",
+            "deceasedDate",
+            "socialSecurityNumber",
+            "passportNumber",
+            "passportExpireDate",
+            "existingCustomer",
+            "organizationName",
+            "familyName",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "java.sql.Date",
+            "java.sql.Date",
+            "String",
+            "String",
+            "java.sql.Date",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("partyId", "partyId");
+        aliasMap.put("PartyId", "partyId");
+        aliasMap.put("partyTypeId", "partyTypeId");
+        aliasMap.put("PartyTypeId", "partyTypeId");
+        aliasMap.put("primaryRoleTypeId", "primaryRoleTypeId");
+        aliasMap.put("PrimaryRoleTypeId", "primaryRoleTypeId");
+        aliasMap.put("externalId", "externalId");
+        aliasMap.put("ExternalId", "externalId");
+        aliasMap.put("preferredCurrencyUomId", "preferredCurrencyUomId");
+        aliasMap.put("PreferredCurrencyUomId", "preferredCurrencyUomId");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("statusId", "statusId");
+        aliasMap.put("StatusId", "statusId");
+        aliasMap.put("email", "email");
+        aliasMap.put("Email", "email");
+        aliasMap.put("webSite", "webSite");
+        aliasMap.put("WebSite", "webSite");
+        aliasMap.put("telephone", "telephone");
+        aliasMap.put("Telephone", "telephone");
+        aliasMap.put("salutation", "salutation");
+        aliasMap.put("Salutation", "salutation");
+        aliasMap.put("firstName", "firstName");
+        aliasMap.put("FirstName", "firstName");
+        aliasMap.put("middleName", "middleName");
+        aliasMap.put("MiddleName", "middleName");
+        aliasMap.put("lastName", "lastName");
+        aliasMap.put("LastName", "lastName");
+        aliasMap.put("personalTitle", "personalTitle");
+        aliasMap.put("PersonalTitle", "personalTitle");
+        aliasMap.put("nickname", "nickname");
+        aliasMap.put("Nickname", "nickname");
+        aliasMap.put("gender", "gender");
+        aliasMap.put("Gender", "gender");
+        aliasMap.put("birthDate", "birthDate");
+        aliasMap.put("BirthDate", "birthDate");
+        aliasMap.put("deceasedDate", "deceasedDate");
+        aliasMap.put("DeceasedDate", "deceasedDate");
+        aliasMap.put("socialSecurityNumber", "socialSecurityNumber");
+        aliasMap.put("SocialSecurityNumber", "socialSecurityNumber");
+        aliasMap.put("passportNumber", "passportNumber");
+        aliasMap.put("PassportNumber", "passportNumber");
+        aliasMap.put("passportExpireDate", "passportExpireDate");
+        aliasMap.put("PassportExpireDate", "passportExpireDate");
+        aliasMap.put("existingCustomer", "existingCustomer");
+        aliasMap.put("ExistingCustomer", "existingCustomer");
+        aliasMap.put("organizationName", "organizationName");
+        aliasMap.put("OrganizationName", "organizationName");
+        aliasMap.put("familyName", "familyName");
+        aliasMap.put("FamilyName", "familyName");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class PartyIdentificationMetadata {
+
+    private PartyIdentificationMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "partyIdentificationTypeId",
+            "idValue",
+            "verified",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "partyId",
+            "partyIdentificationId.partyId",
+            "partyIdentificationId.partyIdentificationTypeId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("partyIdentificationTypeId", "partyIdentificationId.partyIdentificationTypeId");
+        aliasMap.put("PartyIdentificationTypeId", "partyIdentificationId.partyIdentificationTypeId");
+        aliasMap.put("idValue", "idValue");
+        aliasMap.put("IdValue", "idValue");
+        aliasMap.put("verified", "verified");
+        aliasMap.put("Verified", "verified");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("partyId", "partyIdentificationId.partyId");
+        aliasMap.put("PartyId", "partyIdentificationId.partyId");
+        aliasMap.put("partyIdentificationId.partyId", "partyIdentificationId.partyId");
+        aliasMap.put("PartyIdentificationId.PartyId", "partyIdentificationId.partyId");
+        aliasMap.put("partyIdentificationId.partyIdentificationTypeId", "partyIdentificationId.partyIdentificationTypeId");
+        aliasMap.put("PartyIdentificationId.PartyIdentificationTypeId", "partyIdentificationId.partyIdentificationTypeId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class PartyIdentificationTypeMetadata {
+
+    private PartyIdentificationTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "partyIdentificationTypeId",
+            "parentTypeId",
+            "hasTable",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("partyIdentificationTypeId", "partyIdentificationTypeId");
+        aliasMap.put("PartyIdentificationTypeId", "partyIdentificationTypeId");
+        aliasMap.put("parentTypeId", "parentTypeId");
+        aliasMap.put("ParentTypeId", "parentTypeId");
+        aliasMap.put("hasTable", "hasTable");
+        aliasMap.put("HasTable", "hasTable");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ProductMetadata {
+
+    private ProductMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "productId",
+            "productTypeId",
+            "primaryProductCategoryId",
+            "manufacturerPartyId",
+            "facilityId",
+            "introductionDate",
+            "releaseDate",
+            "supportDiscontinuationDate",
+            "salesDiscontinuationDate",
+            "salesDiscWhenNotAvail",
+            "internalName",
+            "brandName",
+            "comments",
+            "productName",
+            "description",
+            "longDescription",
+            "priceDetailText",
+            "smallImageUrl",
+            "mediumImageUrl",
+            "largeImageUrl",
+            "detailImageUrl",
+            "originalImageUrl",
+            "detailScreen",
+            "inventoryMessage",
+            "quantityUomId",
+            "quantityIncluded",
+            "piecesIncluded",
+            "requireAmount",
+            "fixedAmount",
+            "amountUomTypeId",
+            "weightUomId",
+            "shippingWeight",
+            "productWeight",
+            "heightUomId",
+            "productHeight",
+            "shippingHeight",
+            "widthUomId",
+            "productWidth",
+            "shippingWidth",
+            "depthUomId",
+            "productDepth",
+            "shippingDepth",
+            "diameterUomId",
+            "productDiameter",
+            "productRating",
+            "ratingTypeEnum",
+            "returnable",
+            "taxable",
+            "chargeShipping",
+            "autoCreateKeywords",
+            "includeInPromotions",
+            "isVirtual",
+            "isVariant",
+            "virtualVariantMethodEnum",
+            "originGeoId",
+            "requirementMethodEnumId",
+            "billOfMaterialLevel",
+            "inShippingBox",
+            "defaultShipmentBoxTypeId",
+            "lotIdFilledIn",
+            "orderDecimalQuantity",
+            "active",
+            "caseUomId",
+            "produceVariety",
+            "organicCertifications",
+            "materialCompositionDescription",
+            "countryOfOrigin",
+            "shelfLifeDescription",
+            "handlingInstructions",
+            "storageConditions",
+            "certificationCodes",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "OffsetDateTime",
+            "OffsetDateTime",
+            "OffsetDateTime",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "Long",
+            "String",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("productId", "productId");
+        aliasMap.put("ProductId", "productId");
+        aliasMap.put("productTypeId", "productTypeId");
+        aliasMap.put("ProductTypeId", "productTypeId");
+        aliasMap.put("primaryProductCategoryId", "primaryProductCategoryId");
+        aliasMap.put("PrimaryProductCategoryId", "primaryProductCategoryId");
+        aliasMap.put("manufacturerPartyId", "manufacturerPartyId");
+        aliasMap.put("ManufacturerPartyId", "manufacturerPartyId");
+        aliasMap.put("facilityId", "facilityId");
+        aliasMap.put("FacilityId", "facilityId");
+        aliasMap.put("introductionDate", "introductionDate");
+        aliasMap.put("IntroductionDate", "introductionDate");
+        aliasMap.put("releaseDate", "releaseDate");
+        aliasMap.put("ReleaseDate", "releaseDate");
+        aliasMap.put("supportDiscontinuationDate", "supportDiscontinuationDate");
+        aliasMap.put("SupportDiscontinuationDate", "supportDiscontinuationDate");
+        aliasMap.put("salesDiscontinuationDate", "salesDiscontinuationDate");
+        aliasMap.put("SalesDiscontinuationDate", "salesDiscontinuationDate");
+        aliasMap.put("salesDiscWhenNotAvail", "salesDiscWhenNotAvail");
+        aliasMap.put("SalesDiscWhenNotAvail", "salesDiscWhenNotAvail");
+        aliasMap.put("internalName", "internalName");
+        aliasMap.put("InternalName", "internalName");
+        aliasMap.put("brandName", "brandName");
+        aliasMap.put("BrandName", "brandName");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("productName", "productName");
+        aliasMap.put("ProductName", "productName");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("longDescription", "longDescription");
+        aliasMap.put("LongDescription", "longDescription");
+        aliasMap.put("priceDetailText", "priceDetailText");
+        aliasMap.put("PriceDetailText", "priceDetailText");
+        aliasMap.put("smallImageUrl", "smallImageUrl");
+        aliasMap.put("SmallImageUrl", "smallImageUrl");
+        aliasMap.put("mediumImageUrl", "mediumImageUrl");
+        aliasMap.put("MediumImageUrl", "mediumImageUrl");
+        aliasMap.put("largeImageUrl", "largeImageUrl");
+        aliasMap.put("LargeImageUrl", "largeImageUrl");
+        aliasMap.put("detailImageUrl", "detailImageUrl");
+        aliasMap.put("DetailImageUrl", "detailImageUrl");
+        aliasMap.put("originalImageUrl", "originalImageUrl");
+        aliasMap.put("OriginalImageUrl", "originalImageUrl");
+        aliasMap.put("detailScreen", "detailScreen");
+        aliasMap.put("DetailScreen", "detailScreen");
+        aliasMap.put("inventoryMessage", "inventoryMessage");
+        aliasMap.put("InventoryMessage", "inventoryMessage");
+        aliasMap.put("quantityUomId", "quantityUomId");
+        aliasMap.put("QuantityUomId", "quantityUomId");
+        aliasMap.put("quantityIncluded", "quantityIncluded");
+        aliasMap.put("QuantityIncluded", "quantityIncluded");
+        aliasMap.put("piecesIncluded", "piecesIncluded");
+        aliasMap.put("PiecesIncluded", "piecesIncluded");
+        aliasMap.put("requireAmount", "requireAmount");
+        aliasMap.put("RequireAmount", "requireAmount");
+        aliasMap.put("fixedAmount", "fixedAmount");
+        aliasMap.put("FixedAmount", "fixedAmount");
+        aliasMap.put("amountUomTypeId", "amountUomTypeId");
+        aliasMap.put("AmountUomTypeId", "amountUomTypeId");
+        aliasMap.put("weightUomId", "weightUomId");
+        aliasMap.put("WeightUomId", "weightUomId");
+        aliasMap.put("shippingWeight", "shippingWeight");
+        aliasMap.put("ShippingWeight", "shippingWeight");
+        aliasMap.put("productWeight", "productWeight");
+        aliasMap.put("ProductWeight", "productWeight");
+        aliasMap.put("heightUomId", "heightUomId");
+        aliasMap.put("HeightUomId", "heightUomId");
+        aliasMap.put("productHeight", "productHeight");
+        aliasMap.put("ProductHeight", "productHeight");
+        aliasMap.put("shippingHeight", "shippingHeight");
+        aliasMap.put("ShippingHeight", "shippingHeight");
+        aliasMap.put("widthUomId", "widthUomId");
+        aliasMap.put("WidthUomId", "widthUomId");
+        aliasMap.put("productWidth", "productWidth");
+        aliasMap.put("ProductWidth", "productWidth");
+        aliasMap.put("shippingWidth", "shippingWidth");
+        aliasMap.put("ShippingWidth", "shippingWidth");
+        aliasMap.put("depthUomId", "depthUomId");
+        aliasMap.put("DepthUomId", "depthUomId");
+        aliasMap.put("productDepth", "productDepth");
+        aliasMap.put("ProductDepth", "productDepth");
+        aliasMap.put("shippingDepth", "shippingDepth");
+        aliasMap.put("ShippingDepth", "shippingDepth");
+        aliasMap.put("diameterUomId", "diameterUomId");
+        aliasMap.put("DiameterUomId", "diameterUomId");
+        aliasMap.put("productDiameter", "productDiameter");
+        aliasMap.put("ProductDiameter", "productDiameter");
+        aliasMap.put("productRating", "productRating");
+        aliasMap.put("ProductRating", "productRating");
+        aliasMap.put("ratingTypeEnum", "ratingTypeEnum");
+        aliasMap.put("RatingTypeEnum", "ratingTypeEnum");
+        aliasMap.put("returnable", "returnable");
+        aliasMap.put("Returnable", "returnable");
+        aliasMap.put("taxable", "taxable");
+        aliasMap.put("Taxable", "taxable");
+        aliasMap.put("chargeShipping", "chargeShipping");
+        aliasMap.put("ChargeShipping", "chargeShipping");
+        aliasMap.put("autoCreateKeywords", "autoCreateKeywords");
+        aliasMap.put("AutoCreateKeywords", "autoCreateKeywords");
+        aliasMap.put("includeInPromotions", "includeInPromotions");
+        aliasMap.put("IncludeInPromotions", "includeInPromotions");
+        aliasMap.put("isVirtual", "isVirtual");
+        aliasMap.put("IsVirtual", "isVirtual");
+        aliasMap.put("isVariant", "isVariant");
+        aliasMap.put("IsVariant", "isVariant");
+        aliasMap.put("virtualVariantMethodEnum", "virtualVariantMethodEnum");
+        aliasMap.put("VirtualVariantMethodEnum", "virtualVariantMethodEnum");
+        aliasMap.put("originGeoId", "originGeoId");
+        aliasMap.put("OriginGeoId", "originGeoId");
+        aliasMap.put("requirementMethodEnumId", "requirementMethodEnumId");
+        aliasMap.put("RequirementMethodEnumId", "requirementMethodEnumId");
+        aliasMap.put("billOfMaterialLevel", "billOfMaterialLevel");
+        aliasMap.put("BillOfMaterialLevel", "billOfMaterialLevel");
+        aliasMap.put("inShippingBox", "inShippingBox");
+        aliasMap.put("InShippingBox", "inShippingBox");
+        aliasMap.put("defaultShipmentBoxTypeId", "defaultShipmentBoxTypeId");
+        aliasMap.put("DefaultShipmentBoxTypeId", "defaultShipmentBoxTypeId");
+        aliasMap.put("lotIdFilledIn", "lotIdFilledIn");
+        aliasMap.put("LotIdFilledIn", "lotIdFilledIn");
+        aliasMap.put("orderDecimalQuantity", "orderDecimalQuantity");
+        aliasMap.put("OrderDecimalQuantity", "orderDecimalQuantity");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("caseUomId", "caseUomId");
+        aliasMap.put("CaseUomId", "caseUomId");
+        aliasMap.put("produceVariety", "produceVariety");
+        aliasMap.put("ProduceVariety", "produceVariety");
+        aliasMap.put("organicCertifications", "organicCertifications");
+        aliasMap.put("OrganicCertifications", "organicCertifications");
+        aliasMap.put("materialCompositionDescription", "materialCompositionDescription");
+        aliasMap.put("MaterialCompositionDescription", "materialCompositionDescription");
+        aliasMap.put("countryOfOrigin", "countryOfOrigin");
+        aliasMap.put("CountryOfOrigin", "countryOfOrigin");
+        aliasMap.put("shelfLifeDescription", "shelfLifeDescription");
+        aliasMap.put("ShelfLifeDescription", "shelfLifeDescription");
+        aliasMap.put("handlingInstructions", "handlingInstructions");
+        aliasMap.put("HandlingInstructions", "handlingInstructions");
+        aliasMap.put("storageConditions", "storageConditions");
+        aliasMap.put("StorageConditions", "storageConditions");
+        aliasMap.put("certificationCodes", "certificationCodes");
+        aliasMap.put("CertificationCodes", "certificationCodes");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class GoodIdentificationMetadata {
+
+    private GoodIdentificationMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "goodIdentificationTypeId",
+            "idValue",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "productId",
+            "goodIdentificationId.productId",
+            "goodIdentificationId.goodIdentificationTypeId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("goodIdentificationTypeId", "goodIdentificationId.goodIdentificationTypeId");
+        aliasMap.put("GoodIdentificationTypeId", "goodIdentificationId.goodIdentificationTypeId");
+        aliasMap.put("idValue", "idValue");
+        aliasMap.put("IdValue", "idValue");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("productId", "goodIdentificationId.productId");
+        aliasMap.put("ProductId", "goodIdentificationId.productId");
+        aliasMap.put("goodIdentificationId.productId", "goodIdentificationId.productId");
+        aliasMap.put("GoodIdentificationId.ProductId", "goodIdentificationId.productId");
+        aliasMap.put("goodIdentificationId.goodIdentificationTypeId", "goodIdentificationId.goodIdentificationTypeId");
+        aliasMap.put("GoodIdentificationId.GoodIdentificationTypeId", "goodIdentificationId.goodIdentificationTypeId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ProductTypeMetadata {
+
+    private ProductTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "productTypeId",
+            "parentTypeId",
+            "isPhysical",
+            "isDigital",
+            "hasTable",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("productTypeId", "productTypeId");
+        aliasMap.put("ProductTypeId", "productTypeId");
+        aliasMap.put("parentTypeId", "parentTypeId");
+        aliasMap.put("ParentTypeId", "parentTypeId");
+        aliasMap.put("isPhysical", "isPhysical");
+        aliasMap.put("IsPhysical", "isPhysical");
+        aliasMap.put("isDigital", "isDigital");
+        aliasMap.put("IsDigital", "isDigital");
+        aliasMap.put("hasTable", "hasTable");
+        aliasMap.put("HasTable", "hasTable");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ProductCategoryMetadata {
+
+    private ProductCategoryMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "productCategoryId",
+            "productCategoryTypeId",
+            "primaryParentCategoryId",
+            "categoryName",
+            "description",
+            "categoryImageUrl",
+            "detailScreen",
+            "showInSelect",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Boolean",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("productCategoryId", "productCategoryId");
+        aliasMap.put("ProductCategoryId", "productCategoryId");
+        aliasMap.put("productCategoryTypeId", "productCategoryTypeId");
+        aliasMap.put("ProductCategoryTypeId", "productCategoryTypeId");
+        aliasMap.put("primaryParentCategoryId", "primaryParentCategoryId");
+        aliasMap.put("PrimaryParentCategoryId", "primaryParentCategoryId");
+        aliasMap.put("categoryName", "categoryName");
+        aliasMap.put("CategoryName", "categoryName");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("categoryImageUrl", "categoryImageUrl");
+        aliasMap.put("CategoryImageUrl", "categoryImageUrl");
+        aliasMap.put("detailScreen", "detailScreen");
+        aliasMap.put("DetailScreen", "detailScreen");
+        aliasMap.put("showInSelect", "showInSelect");
+        aliasMap.put("ShowInSelect", "showInSelect");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ProductCategoryTypeMetadata {
+
+    private ProductCategoryTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "productCategoryTypeId",
+            "parentTypeId",
+            "hasTable",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("productCategoryTypeId", "productCategoryTypeId");
+        aliasMap.put("ProductCategoryTypeId", "productCategoryTypeId");
+        aliasMap.put("parentTypeId", "parentTypeId");
+        aliasMap.put("ParentTypeId", "parentTypeId");
+        aliasMap.put("hasTable", "hasTable");
+        aliasMap.put("HasTable", "hasTable");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class SupplierProductMetadata {
+
+    private SupplierProductMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String URL_ID_FIELD_SEPARATOR = ",";
+
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId>(org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId.class, URL_ID_FIELD_SEPARATOR) {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    };
+
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId.class;
+
+    public static final String[] propertyNames = new String[] {
+            "availableThruDate",
+            "supplierPrefOrderId",
+            "supplierRatingTypeId",
+            "standardLeadTimeDays",
+            "orderQtyIncrements",
+            "unitsIncluded",
+            "quantityUomId",
+            "agreementId",
+            "agreementItemSeqId",
+            "lastPrice",
+            "shippingPrice",
+            "supplierProductId",
+            "supplierProductName",
+            "canDropShip",
+            "comments",
+            "taxInPrice",
+            "taxAmount",
+            "taxPercentage",
+            "limitQuantityPerCustomer",
+            "limitQuantityPerOrder",
+            "productPriceTypeId",
+            "shipmentMethodTypeId",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "supplierProductTenantizedId.tenantId",
+            "supplierProductTenantizedId.supplierProductAssocIdProductId",
+            "supplierProductTenantizedId.supplierProductAssocIdPartyId",
+            "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId",
+            "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity",
+            "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "OffsetDateTime",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "OffsetDateTime",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("availableThruDate", "availableThruDate");
+        aliasMap.put("AvailableThruDate", "availableThruDate");
+        aliasMap.put("supplierPrefOrderId", "supplierPrefOrderId");
+        aliasMap.put("SupplierPrefOrderId", "supplierPrefOrderId");
+        aliasMap.put("supplierRatingTypeId", "supplierRatingTypeId");
+        aliasMap.put("SupplierRatingTypeId", "supplierRatingTypeId");
+        aliasMap.put("standardLeadTimeDays", "standardLeadTimeDays");
+        aliasMap.put("StandardLeadTimeDays", "standardLeadTimeDays");
+        aliasMap.put("orderQtyIncrements", "orderQtyIncrements");
+        aliasMap.put("OrderQtyIncrements", "orderQtyIncrements");
+        aliasMap.put("unitsIncluded", "unitsIncluded");
+        aliasMap.put("UnitsIncluded", "unitsIncluded");
+        aliasMap.put("quantityUomId", "quantityUomId");
+        aliasMap.put("QuantityUomId", "quantityUomId");
+        aliasMap.put("agreementId", "agreementId");
+        aliasMap.put("AgreementId", "agreementId");
+        aliasMap.put("agreementItemSeqId", "agreementItemSeqId");
+        aliasMap.put("AgreementItemSeqId", "agreementItemSeqId");
+        aliasMap.put("lastPrice", "lastPrice");
+        aliasMap.put("LastPrice", "lastPrice");
+        aliasMap.put("shippingPrice", "shippingPrice");
+        aliasMap.put("ShippingPrice", "shippingPrice");
+        aliasMap.put("supplierProductId", "supplierProductId");
+        aliasMap.put("SupplierProductId", "supplierProductId");
+        aliasMap.put("supplierProductName", "supplierProductName");
+        aliasMap.put("SupplierProductName", "supplierProductName");
+        aliasMap.put("canDropShip", "canDropShip");
+        aliasMap.put("CanDropShip", "canDropShip");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("taxInPrice", "taxInPrice");
+        aliasMap.put("TaxInPrice", "taxInPrice");
+        aliasMap.put("taxAmount", "taxAmount");
+        aliasMap.put("TaxAmount", "taxAmount");
+        aliasMap.put("taxPercentage", "taxPercentage");
+        aliasMap.put("TaxPercentage", "taxPercentage");
+        aliasMap.put("limitQuantityPerCustomer", "limitQuantityPerCustomer");
+        aliasMap.put("LimitQuantityPerCustomer", "limitQuantityPerCustomer");
+        aliasMap.put("limitQuantityPerOrder", "limitQuantityPerOrder");
+        aliasMap.put("LimitQuantityPerOrder", "limitQuantityPerOrder");
+        aliasMap.put("productPriceTypeId", "productPriceTypeId");
+        aliasMap.put("ProductPriceTypeId", "productPriceTypeId");
+        aliasMap.put("shipmentMethodTypeId", "shipmentMethodTypeId");
+        aliasMap.put("ShipmentMethodTypeId", "shipmentMethodTypeId");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("supplierProductTenantizedId.tenantId", "supplierProductTenantizedId.tenantId");
+        aliasMap.put("SupplierProductTenantizedId.TenantId", "supplierProductTenantizedId.tenantId");
+        aliasMap.put("tenantId", "supplierProductTenantizedId.tenantId");
+        aliasMap.put("TenantId", "supplierProductTenantizedId.tenantId");
+        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdProductId", "supplierProductTenantizedId.supplierProductAssocIdProductId");
+        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdProductId", "supplierProductTenantizedId.supplierProductAssocIdProductId");
+        aliasMap.put("supplierProductAssocId.productId", "supplierProductTenantizedId.supplierProductAssocIdProductId");
+        aliasMap.put("SupplierProductAssocId.ProductId", "supplierProductTenantizedId.supplierProductAssocIdProductId");
+        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdPartyId", "supplierProductTenantizedId.supplierProductAssocIdPartyId");
+        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdPartyId", "supplierProductTenantizedId.supplierProductAssocIdPartyId");
+        aliasMap.put("supplierProductAssocId.partyId", "supplierProductTenantizedId.supplierProductAssocIdPartyId");
+        aliasMap.put("SupplierProductAssocId.PartyId", "supplierProductTenantizedId.supplierProductAssocIdPartyId");
+        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId", "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId");
+        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdCurrencyUomId", "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId");
+        aliasMap.put("supplierProductAssocId.currencyUomId", "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId");
+        aliasMap.put("SupplierProductAssocId.CurrencyUomId", "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId");
+        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity", "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity");
+        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdMinimumOrderQuantity", "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity");
+        aliasMap.put("supplierProductAssocId.minimumOrderQuantity", "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity");
+        aliasMap.put("SupplierProductAssocId.MinimumOrderQuantity", "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity");
+        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
+        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdAvailableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
+        aliasMap.put("supplierProductAssocId.availableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
+        aliasMap.put("SupplierProductAssocId.AvailableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class DocumentMetadata {
+
+    private DocumentMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "documentId",
+            "documentTypeId",
+            "comments",
+            "documentLocation",
+            "documentText",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("documentId", "documentId");
+        aliasMap.put("DocumentId", "documentId");
+        aliasMap.put("documentTypeId", "documentTypeId");
+        aliasMap.put("DocumentTypeId", "documentTypeId");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("documentLocation", "documentLocation");
+        aliasMap.put("DocumentLocation", "documentLocation");
+        aliasMap.put("documentText", "documentText");
+        aliasMap.put("DocumentText", "documentText");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class GeoPointMetadata {
+
+    private GeoPointMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "geoPointId",
+            "geoPointTypeEnumId",
+            "description",
+            "latitude",
+            "longitude",
+            "elevation",
+            "elevationUomId",
+            "information",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("geoPointId", "geoPointId");
+        aliasMap.put("GeoPointId", "geoPointId");
+        aliasMap.put("geoPointTypeEnumId", "geoPointTypeEnumId");
+        aliasMap.put("GeoPointTypeEnumId", "geoPointTypeEnumId");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("latitude", "latitude");
+        aliasMap.put("Latitude", "latitude");
+        aliasMap.put("longitude", "longitude");
+        aliasMap.put("Longitude", "longitude");
+        aliasMap.put("elevation", "elevation");
+        aliasMap.put("Elevation", "elevation");
+        aliasMap.put("elevationUomId", "elevationUomId");
+        aliasMap.put("ElevationUomId", "elevationUomId");
+        aliasMap.put("information", "information");
+        aliasMap.put("Information", "information");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class PartyRoleMetadata {
+
+    private PartyRoleMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String URL_ID_FIELD_SEPARATOR = ",";
+
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.partyrole.PartyRoleId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.partyrole.PartyRoleId>(org.dddml.ffvtraceability.domain.partyrole.PartyRoleId.class, URL_ID_FIELD_SEPARATOR) {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    };
+
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partyrole.PartyRoleId.class;
+
+    public static final String[] propertyNames = new String[] {
+            "supplierShortName",
+            "tpaNumber",
+            "certificationCodes",
+            "bankAccountInformation",
+            "supplierTypeEnumId",
+            "supplierProductTypeDescription",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "partyRoleId.partyId",
+            "partyRoleId.roleTypeId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("supplierShortName", "supplierShortName");
+        aliasMap.put("SupplierShortName", "supplierShortName");
+        aliasMap.put("tpaNumber", "tpaNumber");
+        aliasMap.put("TpaNumber", "tpaNumber");
+        aliasMap.put("certificationCodes", "certificationCodes");
+        aliasMap.put("CertificationCodes", "certificationCodes");
+        aliasMap.put("bankAccountInformation", "bankAccountInformation");
+        aliasMap.put("BankAccountInformation", "bankAccountInformation");
+        aliasMap.put("supplierTypeEnumId", "supplierTypeEnumId");
+        aliasMap.put("SupplierTypeEnumId", "supplierTypeEnumId");
+        aliasMap.put("supplierProductTypeDescription", "supplierProductTypeDescription");
+        aliasMap.put("SupplierProductTypeDescription", "supplierProductTypeDescription");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("partyRoleId.partyId", "partyRoleId.partyId");
+        aliasMap.put("PartyRoleId.PartyId", "partyRoleId.partyId");
+        aliasMap.put("partyRoleId.roleTypeId", "partyRoleId.roleTypeId");
+        aliasMap.put("PartyRoleId.RoleTypeId", "partyRoleId.roleTypeId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class RoleTypeMetadata {
+
+    private RoleTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "roleTypeId",
+            "parentTypeId",
+            "hasTable",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("roleTypeId", "roleTypeId");
+        aliasMap.put("RoleTypeId", "roleTypeId");
+        aliasMap.put("parentTypeId", "parentTypeId");
+        aliasMap.put("ParentTypeId", "parentTypeId");
+        aliasMap.put("hasTable", "hasTable");
+        aliasMap.put("HasTable", "hasTable");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
         aliasMap.put("version", "version");
@@ -5339,1881 +6107,6 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class PartyMetadata {
-
-    private PartyMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "partyId",
-            "partyTypeId",
-            "primaryRoleTypeId",
-            "externalId",
-            "preferredCurrencyUomId",
-            "description",
-            "statusId",
-            "email",
-            "webSite",
-            "telephone",
-            "salutation",
-            "firstName",
-            "middleName",
-            "lastName",
-            "personalTitle",
-            "nickname",
-            "gender",
-            "birthDate",
-            "deceasedDate",
-            "socialSecurityNumber",
-            "passportNumber",
-            "passportExpireDate",
-            "existingCustomer",
-            "organizationName",
-            "familyName",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "java.sql.Date",
-            "java.sql.Date",
-            "String",
-            "String",
-            "java.sql.Date",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("partyId", "partyId");
-        aliasMap.put("PartyId", "partyId");
-        aliasMap.put("partyTypeId", "partyTypeId");
-        aliasMap.put("PartyTypeId", "partyTypeId");
-        aliasMap.put("primaryRoleTypeId", "primaryRoleTypeId");
-        aliasMap.put("PrimaryRoleTypeId", "primaryRoleTypeId");
-        aliasMap.put("externalId", "externalId");
-        aliasMap.put("ExternalId", "externalId");
-        aliasMap.put("preferredCurrencyUomId", "preferredCurrencyUomId");
-        aliasMap.put("PreferredCurrencyUomId", "preferredCurrencyUomId");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("statusId", "statusId");
-        aliasMap.put("StatusId", "statusId");
-        aliasMap.put("email", "email");
-        aliasMap.put("Email", "email");
-        aliasMap.put("webSite", "webSite");
-        aliasMap.put("WebSite", "webSite");
-        aliasMap.put("telephone", "telephone");
-        aliasMap.put("Telephone", "telephone");
-        aliasMap.put("salutation", "salutation");
-        aliasMap.put("Salutation", "salutation");
-        aliasMap.put("firstName", "firstName");
-        aliasMap.put("FirstName", "firstName");
-        aliasMap.put("middleName", "middleName");
-        aliasMap.put("MiddleName", "middleName");
-        aliasMap.put("lastName", "lastName");
-        aliasMap.put("LastName", "lastName");
-        aliasMap.put("personalTitle", "personalTitle");
-        aliasMap.put("PersonalTitle", "personalTitle");
-        aliasMap.put("nickname", "nickname");
-        aliasMap.put("Nickname", "nickname");
-        aliasMap.put("gender", "gender");
-        aliasMap.put("Gender", "gender");
-        aliasMap.put("birthDate", "birthDate");
-        aliasMap.put("BirthDate", "birthDate");
-        aliasMap.put("deceasedDate", "deceasedDate");
-        aliasMap.put("DeceasedDate", "deceasedDate");
-        aliasMap.put("socialSecurityNumber", "socialSecurityNumber");
-        aliasMap.put("SocialSecurityNumber", "socialSecurityNumber");
-        aliasMap.put("passportNumber", "passportNumber");
-        aliasMap.put("PassportNumber", "passportNumber");
-        aliasMap.put("passportExpireDate", "passportExpireDate");
-        aliasMap.put("PassportExpireDate", "passportExpireDate");
-        aliasMap.put("existingCustomer", "existingCustomer");
-        aliasMap.put("ExistingCustomer", "existingCustomer");
-        aliasMap.put("organizationName", "organizationName");
-        aliasMap.put("OrganizationName", "organizationName");
-        aliasMap.put("familyName", "familyName");
-        aliasMap.put("FamilyName", "familyName");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class PartyIdentificationMetadata {
-
-    private PartyIdentificationMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String[] propertyNames = new String[] {
-            "partyIdentificationTypeId",
-            "idValue",
-            "verified",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-            "partyId",
-            "partyIdentificationId.partyId",
-            "partyIdentificationId.partyIdentificationTypeId",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-            "String",
-            "String",
-            "String",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("partyIdentificationTypeId", "partyIdentificationId.partyIdentificationTypeId");
-        aliasMap.put("PartyIdentificationTypeId", "partyIdentificationId.partyIdentificationTypeId");
-        aliasMap.put("idValue", "idValue");
-        aliasMap.put("IdValue", "idValue");
-        aliasMap.put("verified", "verified");
-        aliasMap.put("Verified", "verified");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("partyId", "partyIdentificationId.partyId");
-        aliasMap.put("PartyId", "partyIdentificationId.partyId");
-        aliasMap.put("partyIdentificationId.partyId", "partyIdentificationId.partyId");
-        aliasMap.put("PartyIdentificationId.PartyId", "partyIdentificationId.partyId");
-        aliasMap.put("partyIdentificationId.partyIdentificationTypeId", "partyIdentificationId.partyIdentificationTypeId");
-        aliasMap.put("PartyIdentificationId.PartyIdentificationTypeId", "partyIdentificationId.partyIdentificationTypeId");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class PartyIdentificationTypeMetadata {
-
-    private PartyIdentificationTypeMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "partyIdentificationTypeId",
-            "parentTypeId",
-            "hasTable",
-            "description",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("partyIdentificationTypeId", "partyIdentificationTypeId");
-        aliasMap.put("PartyIdentificationTypeId", "partyIdentificationTypeId");
-        aliasMap.put("parentTypeId", "parentTypeId");
-        aliasMap.put("ParentTypeId", "parentTypeId");
-        aliasMap.put("hasTable", "hasTable");
-        aliasMap.put("HasTable", "hasTable");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class PartyContactMechMetadata {
-
-    private PartyContactMechMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String URL_ID_FIELD_SEPARATOR = ",";
-
-    public static final TextFormatter<org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId> URL_ID_TEXT_FORMATTER =
-                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId>(org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId.class, URL_ID_FIELD_SEPARATOR) {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    };
-
-    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId.class;
-
-    public static final String[] propertyNames = new String[] {
-            "thruDate",
-            "roleTypeId",
-            "allowSolicitation",
-            "extension",
-            "verified",
-            "comments",
-            "yearsWithContactMech",
-            "monthsWithContactMech",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-            "partyContactMechId.partyId",
-            "partyContactMechId.contactMechId",
-            "partyContactMechId.fromDate",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "OffsetDateTime",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "Long",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-            "String",
-            "String",
-            "OffsetDateTime",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("thruDate", "thruDate");
-        aliasMap.put("ThruDate", "thruDate");
-        aliasMap.put("roleTypeId", "roleTypeId");
-        aliasMap.put("RoleTypeId", "roleTypeId");
-        aliasMap.put("allowSolicitation", "allowSolicitation");
-        aliasMap.put("AllowSolicitation", "allowSolicitation");
-        aliasMap.put("extension", "extension");
-        aliasMap.put("Extension", "extension");
-        aliasMap.put("verified", "verified");
-        aliasMap.put("Verified", "verified");
-        aliasMap.put("comments", "comments");
-        aliasMap.put("Comments", "comments");
-        aliasMap.put("yearsWithContactMech", "yearsWithContactMech");
-        aliasMap.put("YearsWithContactMech", "yearsWithContactMech");
-        aliasMap.put("monthsWithContactMech", "monthsWithContactMech");
-        aliasMap.put("MonthsWithContactMech", "monthsWithContactMech");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("partyContactMechId.partyId", "partyContactMechId.partyId");
-        aliasMap.put("PartyContactMechId.PartyId", "partyContactMechId.partyId");
-        aliasMap.put("partyContactMechId.contactMechId", "partyContactMechId.contactMechId");
-        aliasMap.put("PartyContactMechId.ContactMechId", "partyContactMechId.contactMechId");
-        aliasMap.put("partyContactMechId.fromDate", "partyContactMechId.fromDate");
-        aliasMap.put("PartyContactMechId.FromDate", "partyContactMechId.fromDate");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class PartyContactMechPurposeMetadata {
-
-    private PartyContactMechPurposeMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String[] propertyNames = new String[] {
-            "contactMechPurposeTypeId",
-            "thruDate",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-            "partyContactMechPurposeId.partyContactMechIdPartyId",
-            "partyContactMechPurposeId.partyContactMechIdContactMechId",
-            "partyContactMechPurposeId.partyContactMechIdFromDate",
-            "partyContactMechPurposeId.contactMechPurposeTypeId",
-            "partyContactMechId.partyId",
-            "partyContactMechId.contactMechId",
-            "partyContactMechId.fromDate",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "OffsetDateTime",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-            "String",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "String",
-            "String",
-            "OffsetDateTime",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("contactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
-        aliasMap.put("ContactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
-        aliasMap.put("thruDate", "thruDate");
-        aliasMap.put("ThruDate", "thruDate");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("partyContactMechPurposeId.partyContactMechIdPartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
-        aliasMap.put("PartyContactMechPurposeId.PartyContactMechIdPartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
-        aliasMap.put("partyContactMechPurposeId.partyContactMechId.partyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
-        aliasMap.put("PartyContactMechPurposeId.PartyContactMechId.PartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
-        aliasMap.put("partyContactMechPurposeId.partyContactMechIdContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
-        aliasMap.put("PartyContactMechPurposeId.PartyContactMechIdContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
-        aliasMap.put("partyContactMechPurposeId.partyContactMechId.contactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
-        aliasMap.put("PartyContactMechPurposeId.PartyContactMechId.ContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
-        aliasMap.put("partyContactMechPurposeId.partyContactMechIdFromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
-        aliasMap.put("PartyContactMechPurposeId.PartyContactMechIdFromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
-        aliasMap.put("partyContactMechPurposeId.partyContactMechId.fromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
-        aliasMap.put("PartyContactMechPurposeId.PartyContactMechId.FromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
-        aliasMap.put("partyContactMechPurposeId.contactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
-        aliasMap.put("PartyContactMechPurposeId.ContactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
-        aliasMap.put("partyContactMechId.partyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
-        aliasMap.put("PartyContactMechId.PartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
-        aliasMap.put("partyContactMechId.partyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
-        aliasMap.put("PartyContactMechId.PartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
-        aliasMap.put("partyContactMechId.contactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
-        aliasMap.put("PartyContactMechId.ContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
-        aliasMap.put("partyContactMechId.contactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
-        aliasMap.put("PartyContactMechId.ContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
-        aliasMap.put("partyContactMechId.fromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
-        aliasMap.put("PartyContactMechId.FromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
-        aliasMap.put("partyContactMechId.fromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
-        aliasMap.put("PartyContactMechId.FromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class PartyRoleMetadata {
-
-    private PartyRoleMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String URL_ID_FIELD_SEPARATOR = ",";
-
-    public static final TextFormatter<org.dddml.ffvtraceability.domain.partyrole.PartyRoleId> URL_ID_TEXT_FORMATTER =
-                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.partyrole.PartyRoleId>(org.dddml.ffvtraceability.domain.partyrole.PartyRoleId.class, URL_ID_FIELD_SEPARATOR) {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    };
-
-    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partyrole.PartyRoleId.class;
-
-    public static final String[] propertyNames = new String[] {
-            "supplierShortName",
-            "tpaNumber",
-            "certificationCodes",
-            "bankAccountInformation",
-            "supplierTypeEnumId",
-            "supplierProductTypeDescription",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-            "partyRoleId.partyId",
-            "partyRoleId.roleTypeId",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-            "String",
-            "String",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("supplierShortName", "supplierShortName");
-        aliasMap.put("SupplierShortName", "supplierShortName");
-        aliasMap.put("tpaNumber", "tpaNumber");
-        aliasMap.put("TpaNumber", "tpaNumber");
-        aliasMap.put("certificationCodes", "certificationCodes");
-        aliasMap.put("CertificationCodes", "certificationCodes");
-        aliasMap.put("bankAccountInformation", "bankAccountInformation");
-        aliasMap.put("BankAccountInformation", "bankAccountInformation");
-        aliasMap.put("supplierTypeEnumId", "supplierTypeEnumId");
-        aliasMap.put("SupplierTypeEnumId", "supplierTypeEnumId");
-        aliasMap.put("supplierProductTypeDescription", "supplierProductTypeDescription");
-        aliasMap.put("SupplierProductTypeDescription", "supplierProductTypeDescription");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("partyRoleId.partyId", "partyRoleId.partyId");
-        aliasMap.put("PartyRoleId.PartyId", "partyRoleId.partyId");
-        aliasMap.put("partyRoleId.roleTypeId", "partyRoleId.roleTypeId");
-        aliasMap.put("PartyRoleId.RoleTypeId", "partyRoleId.roleTypeId");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class ProductMetadata {
-
-    private ProductMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "productId",
-            "productTypeId",
-            "primaryProductCategoryId",
-            "manufacturerPartyId",
-            "facilityId",
-            "introductionDate",
-            "releaseDate",
-            "supportDiscontinuationDate",
-            "salesDiscontinuationDate",
-            "salesDiscWhenNotAvail",
-            "internalName",
-            "brandName",
-            "comments",
-            "productName",
-            "description",
-            "longDescription",
-            "priceDetailText",
-            "smallImageUrl",
-            "mediumImageUrl",
-            "largeImageUrl",
-            "detailImageUrl",
-            "originalImageUrl",
-            "detailScreen",
-            "inventoryMessage",
-            "quantityUomId",
-            "quantityIncluded",
-            "piecesIncluded",
-            "requireAmount",
-            "fixedAmount",
-            "amountUomTypeId",
-            "weightUomId",
-            "shippingWeight",
-            "productWeight",
-            "heightUomId",
-            "productHeight",
-            "shippingHeight",
-            "widthUomId",
-            "productWidth",
-            "shippingWidth",
-            "depthUomId",
-            "productDepth",
-            "shippingDepth",
-            "diameterUomId",
-            "productDiameter",
-            "productRating",
-            "ratingTypeEnum",
-            "returnable",
-            "taxable",
-            "chargeShipping",
-            "autoCreateKeywords",
-            "includeInPromotions",
-            "isVirtual",
-            "isVariant",
-            "virtualVariantMethodEnum",
-            "originGeoId",
-            "requirementMethodEnumId",
-            "billOfMaterialLevel",
-            "inShippingBox",
-            "defaultShipmentBoxTypeId",
-            "lotIdFilledIn",
-            "orderDecimalQuantity",
-            "active",
-            "caseUomId",
-            "produceVariety",
-            "organicCertifications",
-            "materialCompositionDescription",
-            "countryOfOrigin",
-            "shelfLifeDescription",
-            "handlingInstructions",
-            "storageConditions",
-            "certificationCodes",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "OffsetDateTime",
-            "OffsetDateTime",
-            "OffsetDateTime",
-            "OffsetDateTime",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "java.math.BigDecimal",
-            "Long",
-            "String",
-            "java.math.BigDecimal",
-            "String",
-            "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("productId", "productId");
-        aliasMap.put("ProductId", "productId");
-        aliasMap.put("productTypeId", "productTypeId");
-        aliasMap.put("ProductTypeId", "productTypeId");
-        aliasMap.put("primaryProductCategoryId", "primaryProductCategoryId");
-        aliasMap.put("PrimaryProductCategoryId", "primaryProductCategoryId");
-        aliasMap.put("manufacturerPartyId", "manufacturerPartyId");
-        aliasMap.put("ManufacturerPartyId", "manufacturerPartyId");
-        aliasMap.put("facilityId", "facilityId");
-        aliasMap.put("FacilityId", "facilityId");
-        aliasMap.put("introductionDate", "introductionDate");
-        aliasMap.put("IntroductionDate", "introductionDate");
-        aliasMap.put("releaseDate", "releaseDate");
-        aliasMap.put("ReleaseDate", "releaseDate");
-        aliasMap.put("supportDiscontinuationDate", "supportDiscontinuationDate");
-        aliasMap.put("SupportDiscontinuationDate", "supportDiscontinuationDate");
-        aliasMap.put("salesDiscontinuationDate", "salesDiscontinuationDate");
-        aliasMap.put("SalesDiscontinuationDate", "salesDiscontinuationDate");
-        aliasMap.put("salesDiscWhenNotAvail", "salesDiscWhenNotAvail");
-        aliasMap.put("SalesDiscWhenNotAvail", "salesDiscWhenNotAvail");
-        aliasMap.put("internalName", "internalName");
-        aliasMap.put("InternalName", "internalName");
-        aliasMap.put("brandName", "brandName");
-        aliasMap.put("BrandName", "brandName");
-        aliasMap.put("comments", "comments");
-        aliasMap.put("Comments", "comments");
-        aliasMap.put("productName", "productName");
-        aliasMap.put("ProductName", "productName");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("longDescription", "longDescription");
-        aliasMap.put("LongDescription", "longDescription");
-        aliasMap.put("priceDetailText", "priceDetailText");
-        aliasMap.put("PriceDetailText", "priceDetailText");
-        aliasMap.put("smallImageUrl", "smallImageUrl");
-        aliasMap.put("SmallImageUrl", "smallImageUrl");
-        aliasMap.put("mediumImageUrl", "mediumImageUrl");
-        aliasMap.put("MediumImageUrl", "mediumImageUrl");
-        aliasMap.put("largeImageUrl", "largeImageUrl");
-        aliasMap.put("LargeImageUrl", "largeImageUrl");
-        aliasMap.put("detailImageUrl", "detailImageUrl");
-        aliasMap.put("DetailImageUrl", "detailImageUrl");
-        aliasMap.put("originalImageUrl", "originalImageUrl");
-        aliasMap.put("OriginalImageUrl", "originalImageUrl");
-        aliasMap.put("detailScreen", "detailScreen");
-        aliasMap.put("DetailScreen", "detailScreen");
-        aliasMap.put("inventoryMessage", "inventoryMessage");
-        aliasMap.put("InventoryMessage", "inventoryMessage");
-        aliasMap.put("quantityUomId", "quantityUomId");
-        aliasMap.put("QuantityUomId", "quantityUomId");
-        aliasMap.put("quantityIncluded", "quantityIncluded");
-        aliasMap.put("QuantityIncluded", "quantityIncluded");
-        aliasMap.put("piecesIncluded", "piecesIncluded");
-        aliasMap.put("PiecesIncluded", "piecesIncluded");
-        aliasMap.put("requireAmount", "requireAmount");
-        aliasMap.put("RequireAmount", "requireAmount");
-        aliasMap.put("fixedAmount", "fixedAmount");
-        aliasMap.put("FixedAmount", "fixedAmount");
-        aliasMap.put("amountUomTypeId", "amountUomTypeId");
-        aliasMap.put("AmountUomTypeId", "amountUomTypeId");
-        aliasMap.put("weightUomId", "weightUomId");
-        aliasMap.put("WeightUomId", "weightUomId");
-        aliasMap.put("shippingWeight", "shippingWeight");
-        aliasMap.put("ShippingWeight", "shippingWeight");
-        aliasMap.put("productWeight", "productWeight");
-        aliasMap.put("ProductWeight", "productWeight");
-        aliasMap.put("heightUomId", "heightUomId");
-        aliasMap.put("HeightUomId", "heightUomId");
-        aliasMap.put("productHeight", "productHeight");
-        aliasMap.put("ProductHeight", "productHeight");
-        aliasMap.put("shippingHeight", "shippingHeight");
-        aliasMap.put("ShippingHeight", "shippingHeight");
-        aliasMap.put("widthUomId", "widthUomId");
-        aliasMap.put("WidthUomId", "widthUomId");
-        aliasMap.put("productWidth", "productWidth");
-        aliasMap.put("ProductWidth", "productWidth");
-        aliasMap.put("shippingWidth", "shippingWidth");
-        aliasMap.put("ShippingWidth", "shippingWidth");
-        aliasMap.put("depthUomId", "depthUomId");
-        aliasMap.put("DepthUomId", "depthUomId");
-        aliasMap.put("productDepth", "productDepth");
-        aliasMap.put("ProductDepth", "productDepth");
-        aliasMap.put("shippingDepth", "shippingDepth");
-        aliasMap.put("ShippingDepth", "shippingDepth");
-        aliasMap.put("diameterUomId", "diameterUomId");
-        aliasMap.put("DiameterUomId", "diameterUomId");
-        aliasMap.put("productDiameter", "productDiameter");
-        aliasMap.put("ProductDiameter", "productDiameter");
-        aliasMap.put("productRating", "productRating");
-        aliasMap.put("ProductRating", "productRating");
-        aliasMap.put("ratingTypeEnum", "ratingTypeEnum");
-        aliasMap.put("RatingTypeEnum", "ratingTypeEnum");
-        aliasMap.put("returnable", "returnable");
-        aliasMap.put("Returnable", "returnable");
-        aliasMap.put("taxable", "taxable");
-        aliasMap.put("Taxable", "taxable");
-        aliasMap.put("chargeShipping", "chargeShipping");
-        aliasMap.put("ChargeShipping", "chargeShipping");
-        aliasMap.put("autoCreateKeywords", "autoCreateKeywords");
-        aliasMap.put("AutoCreateKeywords", "autoCreateKeywords");
-        aliasMap.put("includeInPromotions", "includeInPromotions");
-        aliasMap.put("IncludeInPromotions", "includeInPromotions");
-        aliasMap.put("isVirtual", "isVirtual");
-        aliasMap.put("IsVirtual", "isVirtual");
-        aliasMap.put("isVariant", "isVariant");
-        aliasMap.put("IsVariant", "isVariant");
-        aliasMap.put("virtualVariantMethodEnum", "virtualVariantMethodEnum");
-        aliasMap.put("VirtualVariantMethodEnum", "virtualVariantMethodEnum");
-        aliasMap.put("originGeoId", "originGeoId");
-        aliasMap.put("OriginGeoId", "originGeoId");
-        aliasMap.put("requirementMethodEnumId", "requirementMethodEnumId");
-        aliasMap.put("RequirementMethodEnumId", "requirementMethodEnumId");
-        aliasMap.put("billOfMaterialLevel", "billOfMaterialLevel");
-        aliasMap.put("BillOfMaterialLevel", "billOfMaterialLevel");
-        aliasMap.put("inShippingBox", "inShippingBox");
-        aliasMap.put("InShippingBox", "inShippingBox");
-        aliasMap.put("defaultShipmentBoxTypeId", "defaultShipmentBoxTypeId");
-        aliasMap.put("DefaultShipmentBoxTypeId", "defaultShipmentBoxTypeId");
-        aliasMap.put("lotIdFilledIn", "lotIdFilledIn");
-        aliasMap.put("LotIdFilledIn", "lotIdFilledIn");
-        aliasMap.put("orderDecimalQuantity", "orderDecimalQuantity");
-        aliasMap.put("OrderDecimalQuantity", "orderDecimalQuantity");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
-        aliasMap.put("caseUomId", "caseUomId");
-        aliasMap.put("CaseUomId", "caseUomId");
-        aliasMap.put("produceVariety", "produceVariety");
-        aliasMap.put("ProduceVariety", "produceVariety");
-        aliasMap.put("organicCertifications", "organicCertifications");
-        aliasMap.put("OrganicCertifications", "organicCertifications");
-        aliasMap.put("materialCompositionDescription", "materialCompositionDescription");
-        aliasMap.put("MaterialCompositionDescription", "materialCompositionDescription");
-        aliasMap.put("countryOfOrigin", "countryOfOrigin");
-        aliasMap.put("CountryOfOrigin", "countryOfOrigin");
-        aliasMap.put("shelfLifeDescription", "shelfLifeDescription");
-        aliasMap.put("ShelfLifeDescription", "shelfLifeDescription");
-        aliasMap.put("handlingInstructions", "handlingInstructions");
-        aliasMap.put("HandlingInstructions", "handlingInstructions");
-        aliasMap.put("storageConditions", "storageConditions");
-        aliasMap.put("StorageConditions", "storageConditions");
-        aliasMap.put("certificationCodes", "certificationCodes");
-        aliasMap.put("CertificationCodes", "certificationCodes");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class GoodIdentificationMetadata {
-
-    private GoodIdentificationMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String[] propertyNames = new String[] {
-            "goodIdentificationTypeId",
-            "idValue",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-            "productId",
-            "goodIdentificationId.productId",
-            "goodIdentificationId.goodIdentificationTypeId",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-            "String",
-            "String",
-            "String",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("goodIdentificationTypeId", "goodIdentificationId.goodIdentificationTypeId");
-        aliasMap.put("GoodIdentificationTypeId", "goodIdentificationId.goodIdentificationTypeId");
-        aliasMap.put("idValue", "idValue");
-        aliasMap.put("IdValue", "idValue");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("productId", "goodIdentificationId.productId");
-        aliasMap.put("ProductId", "goodIdentificationId.productId");
-        aliasMap.put("goodIdentificationId.productId", "goodIdentificationId.productId");
-        aliasMap.put("GoodIdentificationId.ProductId", "goodIdentificationId.productId");
-        aliasMap.put("goodIdentificationId.goodIdentificationTypeId", "goodIdentificationId.goodIdentificationTypeId");
-        aliasMap.put("GoodIdentificationId.GoodIdentificationTypeId", "goodIdentificationId.goodIdentificationTypeId");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class ProductTypeMetadata {
-
-    private ProductTypeMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "productTypeId",
-            "parentTypeId",
-            "isPhysical",
-            "isDigital",
-            "hasTable",
-            "description",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("productTypeId", "productTypeId");
-        aliasMap.put("ProductTypeId", "productTypeId");
-        aliasMap.put("parentTypeId", "parentTypeId");
-        aliasMap.put("ParentTypeId", "parentTypeId");
-        aliasMap.put("isPhysical", "isPhysical");
-        aliasMap.put("IsPhysical", "isPhysical");
-        aliasMap.put("isDigital", "isDigital");
-        aliasMap.put("IsDigital", "isDigital");
-        aliasMap.put("hasTable", "hasTable");
-        aliasMap.put("HasTable", "hasTable");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class ProductAssocMetadata {
-
-    private ProductAssocMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String URL_ID_FIELD_SEPARATOR = ",";
-
-    public static final TextFormatter<org.dddml.ffvtraceability.domain.productassoc.ProductAssocId> URL_ID_TEXT_FORMATTER =
-                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.productassoc.ProductAssocId>(org.dddml.ffvtraceability.domain.productassoc.ProductAssocId.class, URL_ID_FIELD_SEPARATOR) {
-                        @Override
-                        protected Class<?> getClassByTypeName(String type) {
-                            return BoundedContextMetadata.CLASS_MAP.get(type);
-                        }
-                    };
-
-    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.productassoc.ProductAssocId.class;
-
-    public static final String[] propertyNames = new String[] {
-            "thruDate",
-            "sequenceNum",
-            "reason",
-            "quantity",
-            "scrapFactor",
-            "instruction",
-            "routingWorkEffortId",
-            "estimateCalcMethod",
-            "recurrenceInfoId",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-            "productAssocId.productId",
-            "productAssocId.productIdTo",
-            "productAssocId.productAssocTypeId",
-            "productAssocId.fromDate",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "OffsetDateTime",
-            "Long",
-            "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-            "String",
-            "String",
-            "String",
-            "OffsetDateTime",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("thruDate", "thruDate");
-        aliasMap.put("ThruDate", "thruDate");
-        aliasMap.put("sequenceNum", "sequenceNum");
-        aliasMap.put("SequenceNum", "sequenceNum");
-        aliasMap.put("reason", "reason");
-        aliasMap.put("Reason", "reason");
-        aliasMap.put("quantity", "quantity");
-        aliasMap.put("Quantity", "quantity");
-        aliasMap.put("scrapFactor", "scrapFactor");
-        aliasMap.put("ScrapFactor", "scrapFactor");
-        aliasMap.put("instruction", "instruction");
-        aliasMap.put("Instruction", "instruction");
-        aliasMap.put("routingWorkEffortId", "routingWorkEffortId");
-        aliasMap.put("RoutingWorkEffortId", "routingWorkEffortId");
-        aliasMap.put("estimateCalcMethod", "estimateCalcMethod");
-        aliasMap.put("EstimateCalcMethod", "estimateCalcMethod");
-        aliasMap.put("recurrenceInfoId", "recurrenceInfoId");
-        aliasMap.put("RecurrenceInfoId", "recurrenceInfoId");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("productAssocId.productId", "productAssocId.productId");
-        aliasMap.put("ProductAssocId.ProductId", "productAssocId.productId");
-        aliasMap.put("productAssocId.productIdTo", "productAssocId.productIdTo");
-        aliasMap.put("ProductAssocId.ProductIdTo", "productAssocId.productIdTo");
-        aliasMap.put("productAssocId.productAssocTypeId", "productAssocId.productAssocTypeId");
-        aliasMap.put("ProductAssocId.ProductAssocTypeId", "productAssocId.productAssocTypeId");
-        aliasMap.put("productAssocId.fromDate", "productAssocId.fromDate");
-        aliasMap.put("ProductAssocId.FromDate", "productAssocId.fromDate");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class ProductAssocTypeMetadata {
-
-    private ProductAssocTypeMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "productAssocTypeId",
-            "parentTypeId",
-            "hasTable",
-            "description",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("productAssocTypeId", "productAssocTypeId");
-        aliasMap.put("ProductAssocTypeId", "productAssocTypeId");
-        aliasMap.put("parentTypeId", "parentTypeId");
-        aliasMap.put("ParentTypeId", "parentTypeId");
-        aliasMap.put("hasTable", "hasTable");
-        aliasMap.put("HasTable", "hasTable");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class ProductCategoryMetadata {
-
-    private ProductCategoryMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "productCategoryId",
-            "productCategoryTypeId",
-            "primaryParentCategoryId",
-            "categoryName",
-            "description",
-            "categoryImageUrl",
-            "detailScreen",
-            "showInSelect",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Boolean",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("productCategoryId", "productCategoryId");
-        aliasMap.put("ProductCategoryId", "productCategoryId");
-        aliasMap.put("productCategoryTypeId", "productCategoryTypeId");
-        aliasMap.put("ProductCategoryTypeId", "productCategoryTypeId");
-        aliasMap.put("primaryParentCategoryId", "primaryParentCategoryId");
-        aliasMap.put("PrimaryParentCategoryId", "primaryParentCategoryId");
-        aliasMap.put("categoryName", "categoryName");
-        aliasMap.put("CategoryName", "categoryName");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("categoryImageUrl", "categoryImageUrl");
-        aliasMap.put("CategoryImageUrl", "categoryImageUrl");
-        aliasMap.put("detailScreen", "detailScreen");
-        aliasMap.put("DetailScreen", "detailScreen");
-        aliasMap.put("showInSelect", "showInSelect");
-        aliasMap.put("ShowInSelect", "showInSelect");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class ProductCategoryTypeMetadata {
-
-    private ProductCategoryTypeMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "productCategoryTypeId",
-            "parentTypeId",
-            "hasTable",
-            "description",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("productCategoryTypeId", "productCategoryTypeId");
-        aliasMap.put("ProductCategoryTypeId", "productCategoryTypeId");
-        aliasMap.put("parentTypeId", "parentTypeId");
-        aliasMap.put("ParentTypeId", "parentTypeId");
-        aliasMap.put("hasTable", "hasTable");
-        aliasMap.put("HasTable", "hasTable");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class QaInspectionMetadata {
-
-    private QaInspectionMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "qaInspectionId",
-            "receiptId",
-            "statusId",
-            "inspectionTypeId",
-            "comments",
-            "inspectionFacilityId",
-            "inspectedBy",
-            "inspectedAt",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "OffsetDateTime",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("qaInspectionId", "qaInspectionId");
-        aliasMap.put("QaInspectionId", "qaInspectionId");
-        aliasMap.put("receiptId", "receiptId");
-        aliasMap.put("ReceiptId", "receiptId");
-        aliasMap.put("statusId", "statusId");
-        aliasMap.put("StatusId", "statusId");
-        aliasMap.put("inspectionTypeId", "inspectionTypeId");
-        aliasMap.put("InspectionTypeId", "inspectionTypeId");
-        aliasMap.put("comments", "comments");
-        aliasMap.put("Comments", "comments");
-        aliasMap.put("inspectionFacilityId", "inspectionFacilityId");
-        aliasMap.put("InspectionFacilityId", "inspectionFacilityId");
-        aliasMap.put("inspectedBy", "inspectedBy");
-        aliasMap.put("InspectedBy", "inspectedBy");
-        aliasMap.put("inspectedAt", "inspectedAt");
-        aliasMap.put("InspectedAt", "inspectedAt");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class RoleTypeMetadata {
-
-    private RoleTypeMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "roleTypeId",
-            "parentTypeId",
-            "hasTable",
-            "description",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("roleTypeId", "roleTypeId");
-        aliasMap.put("RoleTypeId", "roleTypeId");
-        aliasMap.put("parentTypeId", "parentTypeId");
-        aliasMap.put("ParentTypeId", "parentTypeId");
-        aliasMap.put("hasTable", "hasTable");
-        aliasMap.put("HasTable", "hasTable");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
   public static class ShipmentMetadata {
 
     private ShipmentMetadata() {
@@ -7813,14 +6706,14 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class ShipmentBoxTypeMetadata {
+  public static class ShippingDocumentMetadata {
 
-    private ShipmentBoxTypeMetadata() {
+    private ShippingDocumentMetadata() {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
     public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
@@ -7829,34 +6722,24 @@ public class M {
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
-            "shipmentBoxTypeId",
+            "documentId",
+            "shipmentId",
+            "shipmentItemSeqId",
+            "shipmentPackageSeqId",
             "description",
-            "dimensionUomId",
-            "boxLength",
-            "boxWidth",
-            "boxHeight",
-            "weightUomId",
-            "boxWeight",
-            "active",
-            "boxTypeName",
             "version",
             "createdBy",
             "createdAt",
             "updatedBy",
             "updatedAt",
             "__Active__",
-            "__Deleted__",
+            "deleted",
     };
 
     public static final String[] propertyTypes = new String[] {
             "String",
             "String",
             "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "java.math.BigDecimal",
             "String",
             "String",
             "Long",
@@ -7880,26 +6763,16 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("shipmentBoxTypeId", "shipmentBoxTypeId");
-        aliasMap.put("ShipmentBoxTypeId", "shipmentBoxTypeId");
+        aliasMap.put("documentId", "documentId");
+        aliasMap.put("DocumentId", "documentId");
+        aliasMap.put("shipmentId", "shipmentId");
+        aliasMap.put("ShipmentId", "shipmentId");
+        aliasMap.put("shipmentItemSeqId", "shipmentItemSeqId");
+        aliasMap.put("ShipmentItemSeqId", "shipmentItemSeqId");
+        aliasMap.put("shipmentPackageSeqId", "shipmentPackageSeqId");
+        aliasMap.put("ShipmentPackageSeqId", "shipmentPackageSeqId");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
-        aliasMap.put("dimensionUomId", "dimensionUomId");
-        aliasMap.put("DimensionUomId", "dimensionUomId");
-        aliasMap.put("boxLength", "boxLength");
-        aliasMap.put("BoxLength", "boxLength");
-        aliasMap.put("boxWidth", "boxWidth");
-        aliasMap.put("BoxWidth", "boxWidth");
-        aliasMap.put("boxHeight", "boxHeight");
-        aliasMap.put("BoxHeight", "boxHeight");
-        aliasMap.put("weightUomId", "weightUomId");
-        aliasMap.put("WeightUomId", "weightUomId");
-        aliasMap.put("boxWeight", "boxWeight");
-        aliasMap.put("BoxWeight", "boxWeight");
-        aliasMap.put("active", "active");
-        aliasMap.put("Active", "active");
-        aliasMap.put("boxTypeName", "boxTypeName");
-        aliasMap.put("BoxTypeName", "boxTypeName");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -7912,8 +6785,8 @@ public class M {
         aliasMap.put("UpdatedAt", "updatedAt");
         aliasMap.put("__Active__", "__Active__");
         aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
     }
 
     private static void initPropertyTypeMap() {
@@ -8289,102 +7162,9 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class ShippingDocumentMetadata {
+  public static class QaInspectionMetadata {
 
-    private ShippingDocumentMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "deleted";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "documentId",
-            "shipmentId",
-            "shipmentItemSeqId",
-            "shipmentPackageSeqId",
-            "description",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "deleted",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("documentId", "documentId");
-        aliasMap.put("DocumentId", "documentId");
-        aliasMap.put("shipmentId", "shipmentId");
-        aliasMap.put("ShipmentId", "shipmentId");
-        aliasMap.put("shipmentItemSeqId", "shipmentItemSeqId");
-        aliasMap.put("ShipmentItemSeqId", "shipmentItemSeqId");
-        aliasMap.put("shipmentPackageSeqId", "shipmentPackageSeqId");
-        aliasMap.put("ShipmentPackageSeqId", "shipmentPackageSeqId");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("deleted", "deleted");
-        aliasMap.put("Deleted", "deleted");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class StatusItemMetadata {
-
-    private StatusItemMetadata() {
+    private QaInspectionMetadata() {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
@@ -8398,11 +7178,14 @@ public class M {
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
+            "qaInspectionId",
+            "receiptId",
             "statusId",
-            "statusTypeId",
-            "statusCode",
-            "sequenceId",
-            "description",
+            "inspectionTypeId",
+            "comments",
+            "inspectionFacilityId",
+            "inspectedBy",
+            "inspectedAt",
             "version",
             "createdBy",
             "createdAt",
@@ -8418,6 +7201,9 @@ public class M {
             "String",
             "String",
             "String",
+            "String",
+            "String",
+            "OffsetDateTime",
             "Long",
             "String",
             "OffsetDateTime",
@@ -8439,16 +7225,22 @@ public class M {
     }
 
     private static void initAliasMap() {
+        aliasMap.put("qaInspectionId", "qaInspectionId");
+        aliasMap.put("QaInspectionId", "qaInspectionId");
+        aliasMap.put("receiptId", "receiptId");
+        aliasMap.put("ReceiptId", "receiptId");
         aliasMap.put("statusId", "statusId");
         aliasMap.put("StatusId", "statusId");
-        aliasMap.put("statusTypeId", "statusTypeId");
-        aliasMap.put("StatusTypeId", "statusTypeId");
-        aliasMap.put("statusCode", "statusCode");
-        aliasMap.put("StatusCode", "statusCode");
-        aliasMap.put("sequenceId", "sequenceId");
-        aliasMap.put("SequenceId", "sequenceId");
-        aliasMap.put("description", "description");
-        aliasMap.put("Description", "description");
+        aliasMap.put("inspectionTypeId", "inspectionTypeId");
+        aliasMap.put("InspectionTypeId", "inspectionTypeId");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("inspectionFacilityId", "inspectionFacilityId");
+        aliasMap.put("InspectionFacilityId", "inspectionFacilityId");
+        aliasMap.put("inspectedBy", "inspectedBy");
+        aliasMap.put("InspectedBy", "inspectedBy");
+        aliasMap.put("inspectedAt", "inspectedAt");
+        aliasMap.put("InspectedAt", "inspectedAt");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -8475,9 +7267,9 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class StatusTypeMetadata {
+  public static class ContactMechMetadata {
 
-    private StatusTypeMetadata() {
+    private ContactMechMetadata() {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
@@ -8491,7 +7283,180 @@ public class M {
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
-            "statusTypeId",
+            "contactMechId",
+            "contactMechTypeId",
+            "infoString",
+            "askForName",
+            "email",
+            "askForRole",
+            "toName",
+            "attnName",
+            "address1",
+            "address2",
+            "directions",
+            "city",
+            "postalCode",
+            "postalCodeExt",
+            "countryGeoId",
+            "stateProvinceGeoId",
+            "prefectureGeoId",
+            "countyGeoId",
+            "townGeoId",
+            "assocTelecomContactMechId",
+            "postalCodeGeoId",
+            "geoPointId",
+            "countryCode",
+            "areaCode",
+            "contactNumber",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("contactMechId", "contactMechId");
+        aliasMap.put("ContactMechId", "contactMechId");
+        aliasMap.put("contactMechTypeId", "contactMechTypeId");
+        aliasMap.put("ContactMechTypeId", "contactMechTypeId");
+        aliasMap.put("infoString", "infoString");
+        aliasMap.put("InfoString", "infoString");
+        aliasMap.put("askForName", "askForName");
+        aliasMap.put("AskForName", "askForName");
+        aliasMap.put("email", "email");
+        aliasMap.put("Email", "email");
+        aliasMap.put("askForRole", "askForRole");
+        aliasMap.put("AskForRole", "askForRole");
+        aliasMap.put("toName", "toName");
+        aliasMap.put("ToName", "toName");
+        aliasMap.put("attnName", "attnName");
+        aliasMap.put("AttnName", "attnName");
+        aliasMap.put("address1", "address1");
+        aliasMap.put("Address1", "address1");
+        aliasMap.put("address2", "address2");
+        aliasMap.put("Address2", "address2");
+        aliasMap.put("directions", "directions");
+        aliasMap.put("Directions", "directions");
+        aliasMap.put("city", "city");
+        aliasMap.put("City", "city");
+        aliasMap.put("postalCode", "postalCode");
+        aliasMap.put("PostalCode", "postalCode");
+        aliasMap.put("postalCodeExt", "postalCodeExt");
+        aliasMap.put("PostalCodeExt", "postalCodeExt");
+        aliasMap.put("countryGeoId", "countryGeoId");
+        aliasMap.put("CountryGeoId", "countryGeoId");
+        aliasMap.put("stateProvinceGeoId", "stateProvinceGeoId");
+        aliasMap.put("StateProvinceGeoId", "stateProvinceGeoId");
+        aliasMap.put("prefectureGeoId", "prefectureGeoId");
+        aliasMap.put("PrefectureGeoId", "prefectureGeoId");
+        aliasMap.put("countyGeoId", "countyGeoId");
+        aliasMap.put("CountyGeoId", "countyGeoId");
+        aliasMap.put("townGeoId", "townGeoId");
+        aliasMap.put("TownGeoId", "townGeoId");
+        aliasMap.put("assocTelecomContactMechId", "assocTelecomContactMechId");
+        aliasMap.put("AssocTelecomContactMechId", "assocTelecomContactMechId");
+        aliasMap.put("postalCodeGeoId", "postalCodeGeoId");
+        aliasMap.put("PostalCodeGeoId", "postalCodeGeoId");
+        aliasMap.put("geoPointId", "geoPointId");
+        aliasMap.put("GeoPointId", "geoPointId");
+        aliasMap.put("countryCode", "countryCode");
+        aliasMap.put("CountryCode", "countryCode");
+        aliasMap.put("areaCode", "areaCode");
+        aliasMap.put("AreaCode", "areaCode");
+        aliasMap.put("contactNumber", "contactNumber");
+        aliasMap.put("ContactNumber", "contactNumber");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ContactMechPurposeTypeMetadata {
+
+    private ContactMechPurposeTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "contactMechPurposeTypeId",
             "parentTypeId",
             "hasTable",
             "description",
@@ -8530,8 +7495,8 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("statusTypeId", "statusTypeId");
-        aliasMap.put("StatusTypeId", "statusTypeId");
+        aliasMap.put("contactMechPurposeTypeId", "contactMechPurposeTypeId");
+        aliasMap.put("ContactMechPurposeTypeId", "contactMechPurposeTypeId");
         aliasMap.put("parentTypeId", "parentTypeId");
         aliasMap.put("ParentTypeId", "parentTypeId");
         aliasMap.put("hasTable", "hasTable");
@@ -8564,9 +7529,9 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class SupplierProductMetadata {
+  public static class PartyContactMechMetadata {
 
-    private SupplierProductMetadata() {
+    private PartyContactMechMetadata() {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
@@ -8579,39 +7544,25 @@ public class M {
 
     public static final String URL_ID_FIELD_SEPARATOR = ",";
 
-    public static final TextFormatter<org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId> URL_ID_TEXT_FORMATTER =
-                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId>(org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId.class, URL_ID_FIELD_SEPARATOR) {
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId>(org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId.class, URL_ID_FIELD_SEPARATOR) {
                         @Override
                         protected Class<?> getClassByTypeName(String type) {
                             return BoundedContextMetadata.CLASS_MAP.get(type);
                         }
                     };
 
-    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId.class;
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId.class;
 
     public static final String[] propertyNames = new String[] {
-            "availableThruDate",
-            "supplierPrefOrderId",
-            "supplierRatingTypeId",
-            "standardLeadTimeDays",
-            "orderQtyIncrements",
-            "unitsIncluded",
-            "quantityUomId",
-            "agreementId",
-            "agreementItemSeqId",
-            "lastPrice",
-            "shippingPrice",
-            "supplierProductId",
-            "supplierProductName",
-            "canDropShip",
+            "thruDate",
+            "roleTypeId",
+            "allowSolicitation",
+            "extension",
+            "verified",
             "comments",
-            "taxInPrice",
-            "taxAmount",
-            "taxPercentage",
-            "limitQuantityPerCustomer",
-            "limitQuantityPerOrder",
-            "productPriceTypeId",
-            "shipmentMethodTypeId",
+            "yearsWithContactMech",
+            "monthsWithContactMech",
             "version",
             "createdBy",
             "createdAt",
@@ -8619,37 +7570,20 @@ public class M {
             "updatedAt",
             "__Active__",
             "__Deleted__",
-            "supplierProductTenantizedId.tenantId",
-            "supplierProductTenantizedId.supplierProductAssocIdProductId",
-            "supplierProductTenantizedId.supplierProductAssocIdPartyId",
-            "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId",
-            "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity",
-            "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate",
+            "partyContactMechId.partyId",
+            "partyContactMechId.contactMechId",
+            "partyContactMechId.fromDate",
     };
 
     public static final String[] propertyTypes = new String[] {
             "OffsetDateTime",
             "String",
             "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
             "String",
             "String",
             "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "java.math.BigDecimal",
-            "String",
-            "String",
+            "Long",
+            "Long",
             "Long",
             "String",
             "OffsetDateTime",
@@ -8659,9 +7593,6 @@ public class M {
             "Boolean",
             "String",
             "String",
-            "String",
-            "String",
-            "java.math.BigDecimal",
             "OffsetDateTime",
     };
 
@@ -8677,50 +7608,22 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("availableThruDate", "availableThruDate");
-        aliasMap.put("AvailableThruDate", "availableThruDate");
-        aliasMap.put("supplierPrefOrderId", "supplierPrefOrderId");
-        aliasMap.put("SupplierPrefOrderId", "supplierPrefOrderId");
-        aliasMap.put("supplierRatingTypeId", "supplierRatingTypeId");
-        aliasMap.put("SupplierRatingTypeId", "supplierRatingTypeId");
-        aliasMap.put("standardLeadTimeDays", "standardLeadTimeDays");
-        aliasMap.put("StandardLeadTimeDays", "standardLeadTimeDays");
-        aliasMap.put("orderQtyIncrements", "orderQtyIncrements");
-        aliasMap.put("OrderQtyIncrements", "orderQtyIncrements");
-        aliasMap.put("unitsIncluded", "unitsIncluded");
-        aliasMap.put("UnitsIncluded", "unitsIncluded");
-        aliasMap.put("quantityUomId", "quantityUomId");
-        aliasMap.put("QuantityUomId", "quantityUomId");
-        aliasMap.put("agreementId", "agreementId");
-        aliasMap.put("AgreementId", "agreementId");
-        aliasMap.put("agreementItemSeqId", "agreementItemSeqId");
-        aliasMap.put("AgreementItemSeqId", "agreementItemSeqId");
-        aliasMap.put("lastPrice", "lastPrice");
-        aliasMap.put("LastPrice", "lastPrice");
-        aliasMap.put("shippingPrice", "shippingPrice");
-        aliasMap.put("ShippingPrice", "shippingPrice");
-        aliasMap.put("supplierProductId", "supplierProductId");
-        aliasMap.put("SupplierProductId", "supplierProductId");
-        aliasMap.put("supplierProductName", "supplierProductName");
-        aliasMap.put("SupplierProductName", "supplierProductName");
-        aliasMap.put("canDropShip", "canDropShip");
-        aliasMap.put("CanDropShip", "canDropShip");
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("roleTypeId", "roleTypeId");
+        aliasMap.put("RoleTypeId", "roleTypeId");
+        aliasMap.put("allowSolicitation", "allowSolicitation");
+        aliasMap.put("AllowSolicitation", "allowSolicitation");
+        aliasMap.put("extension", "extension");
+        aliasMap.put("Extension", "extension");
+        aliasMap.put("verified", "verified");
+        aliasMap.put("Verified", "verified");
         aliasMap.put("comments", "comments");
         aliasMap.put("Comments", "comments");
-        aliasMap.put("taxInPrice", "taxInPrice");
-        aliasMap.put("TaxInPrice", "taxInPrice");
-        aliasMap.put("taxAmount", "taxAmount");
-        aliasMap.put("TaxAmount", "taxAmount");
-        aliasMap.put("taxPercentage", "taxPercentage");
-        aliasMap.put("TaxPercentage", "taxPercentage");
-        aliasMap.put("limitQuantityPerCustomer", "limitQuantityPerCustomer");
-        aliasMap.put("LimitQuantityPerCustomer", "limitQuantityPerCustomer");
-        aliasMap.put("limitQuantityPerOrder", "limitQuantityPerOrder");
-        aliasMap.put("LimitQuantityPerOrder", "limitQuantityPerOrder");
-        aliasMap.put("productPriceTypeId", "productPriceTypeId");
-        aliasMap.put("ProductPriceTypeId", "productPriceTypeId");
-        aliasMap.put("shipmentMethodTypeId", "shipmentMethodTypeId");
-        aliasMap.put("ShipmentMethodTypeId", "shipmentMethodTypeId");
+        aliasMap.put("yearsWithContactMech", "yearsWithContactMech");
+        aliasMap.put("YearsWithContactMech", "yearsWithContactMech");
+        aliasMap.put("monthsWithContactMech", "monthsWithContactMech");
+        aliasMap.put("MonthsWithContactMech", "monthsWithContactMech");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -8735,30 +7638,357 @@ public class M {
         aliasMap.put("__Active__", "__Active__");
         aliasMap.put("__Deleted__", "__Deleted__");
         aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("supplierProductTenantizedId.tenantId", "supplierProductTenantizedId.tenantId");
-        aliasMap.put("SupplierProductTenantizedId.TenantId", "supplierProductTenantizedId.tenantId");
-        aliasMap.put("tenantId", "supplierProductTenantizedId.tenantId");
-        aliasMap.put("TenantId", "supplierProductTenantizedId.tenantId");
-        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdProductId", "supplierProductTenantizedId.supplierProductAssocIdProductId");
-        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdProductId", "supplierProductTenantizedId.supplierProductAssocIdProductId");
-        aliasMap.put("supplierProductAssocId.productId", "supplierProductTenantizedId.supplierProductAssocIdProductId");
-        aliasMap.put("SupplierProductAssocId.ProductId", "supplierProductTenantizedId.supplierProductAssocIdProductId");
-        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdPartyId", "supplierProductTenantizedId.supplierProductAssocIdPartyId");
-        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdPartyId", "supplierProductTenantizedId.supplierProductAssocIdPartyId");
-        aliasMap.put("supplierProductAssocId.partyId", "supplierProductTenantizedId.supplierProductAssocIdPartyId");
-        aliasMap.put("SupplierProductAssocId.PartyId", "supplierProductTenantizedId.supplierProductAssocIdPartyId");
-        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId", "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId");
-        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdCurrencyUomId", "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId");
-        aliasMap.put("supplierProductAssocId.currencyUomId", "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId");
-        aliasMap.put("SupplierProductAssocId.CurrencyUomId", "supplierProductTenantizedId.supplierProductAssocIdCurrencyUomId");
-        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity", "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity");
-        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdMinimumOrderQuantity", "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity");
-        aliasMap.put("supplierProductAssocId.minimumOrderQuantity", "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity");
-        aliasMap.put("SupplierProductAssocId.MinimumOrderQuantity", "supplierProductTenantizedId.supplierProductAssocIdMinimumOrderQuantity");
-        aliasMap.put("supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
-        aliasMap.put("SupplierProductTenantizedId.SupplierProductAssocIdAvailableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
-        aliasMap.put("supplierProductAssocId.availableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
-        aliasMap.put("SupplierProductAssocId.AvailableFromDate", "supplierProductTenantizedId.supplierProductAssocIdAvailableFromDate");
+        aliasMap.put("partyContactMechId.partyId", "partyContactMechId.partyId");
+        aliasMap.put("PartyContactMechId.PartyId", "partyContactMechId.partyId");
+        aliasMap.put("partyContactMechId.contactMechId", "partyContactMechId.contactMechId");
+        aliasMap.put("PartyContactMechId.ContactMechId", "partyContactMechId.contactMechId");
+        aliasMap.put("partyContactMechId.fromDate", "partyContactMechId.fromDate");
+        aliasMap.put("PartyContactMechId.FromDate", "partyContactMechId.fromDate");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class PartyContactMechPurposeMetadata {
+
+    private PartyContactMechPurposeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "contactMechPurposeTypeId",
+            "thruDate",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "partyContactMechPurposeId.partyContactMechIdPartyId",
+            "partyContactMechPurposeId.partyContactMechIdContactMechId",
+            "partyContactMechPurposeId.partyContactMechIdFromDate",
+            "partyContactMechPurposeId.contactMechPurposeTypeId",
+            "partyContactMechId.partyId",
+            "partyContactMechId.contactMechId",
+            "partyContactMechId.fromDate",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "OffsetDateTime",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("contactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("ContactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechIdPartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechIdPartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechId.partyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechId.PartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechIdContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechIdContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechId.contactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechId.ContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechIdFromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechIdFromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
+        aliasMap.put("partyContactMechPurposeId.partyContactMechId.fromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
+        aliasMap.put("PartyContactMechPurposeId.PartyContactMechId.FromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
+        aliasMap.put("partyContactMechPurposeId.contactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("PartyContactMechPurposeId.ContactMechPurposeTypeId", "partyContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("partyContactMechId.partyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
+        aliasMap.put("PartyContactMechId.PartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
+        aliasMap.put("partyContactMechId.partyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
+        aliasMap.put("PartyContactMechId.PartyId", "partyContactMechPurposeId.partyContactMechIdPartyId");
+        aliasMap.put("partyContactMechId.contactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
+        aliasMap.put("PartyContactMechId.ContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
+        aliasMap.put("partyContactMechId.contactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
+        aliasMap.put("PartyContactMechId.ContactMechId", "partyContactMechPurposeId.partyContactMechIdContactMechId");
+        aliasMap.put("partyContactMechId.fromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
+        aliasMap.put("PartyContactMechId.FromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
+        aliasMap.put("partyContactMechId.fromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
+        aliasMap.put("PartyContactMechId.FromDate", "partyContactMechPurposeId.partyContactMechIdFromDate");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class FacilityContactMechMetadata {
+
+    private FacilityContactMechMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String URL_ID_FIELD_SEPARATOR = ",";
+
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId>(org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId.class, URL_ID_FIELD_SEPARATOR) {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    };
+
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId.class;
+
+    public static final String[] propertyNames = new String[] {
+            "thruDate",
+            "extension",
+            "comments",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "facilityContactMechId.facilityId",
+            "facilityContactMechId.contactMechId",
+            "facilityContactMechId.fromDate",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "OffsetDateTime",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "OffsetDateTime",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("extension", "extension");
+        aliasMap.put("Extension", "extension");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("facilityContactMechId.facilityId", "facilityContactMechId.facilityId");
+        aliasMap.put("FacilityContactMechId.FacilityId", "facilityContactMechId.facilityId");
+        aliasMap.put("facilityContactMechId.contactMechId", "facilityContactMechId.contactMechId");
+        aliasMap.put("FacilityContactMechId.ContactMechId", "facilityContactMechId.contactMechId");
+        aliasMap.put("facilityContactMechId.fromDate", "facilityContactMechId.fromDate");
+        aliasMap.put("FacilityContactMechId.FromDate", "facilityContactMechId.fromDate");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class FacilityContactMechPurposeMetadata {
+
+    private FacilityContactMechPurposeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "contactMechPurposeTypeId",
+            "thruDate",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "facilityContactMechPurposeId.facilityContactMechIdFacilityId",
+            "facilityContactMechPurposeId.facilityContactMechIdContactMechId",
+            "facilityContactMechPurposeId.facilityContactMechIdFromDate",
+            "facilityContactMechPurposeId.contactMechPurposeTypeId",
+            "facilityContactMechId.facilityId",
+            "facilityContactMechId.contactMechId",
+            "facilityContactMechId.fromDate",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "OffsetDateTime",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("contactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("ContactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechIdFacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechIdFacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechId.facilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechId.FacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechIdContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechIdContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechId.contactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechId.ContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechIdFromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechIdFromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("facilityContactMechPurposeId.facilityContactMechId.fromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("FacilityContactMechPurposeId.FacilityContactMechId.FromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("facilityContactMechPurposeId.contactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("FacilityContactMechPurposeId.ContactMechPurposeTypeId", "facilityContactMechPurposeId.contactMechPurposeTypeId");
+        aliasMap.put("facilityContactMechId.facilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("FacilityContactMechId.FacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("facilityContactMechId.facilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("FacilityContactMechId.FacilityId", "facilityContactMechPurposeId.facilityContactMechIdFacilityId");
+        aliasMap.put("facilityContactMechId.contactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("FacilityContactMechId.ContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("facilityContactMechId.contactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("FacilityContactMechId.ContactMechId", "facilityContactMechPurposeId.facilityContactMechIdContactMechId");
+        aliasMap.put("facilityContactMechId.fromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("FacilityContactMechId.FromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("facilityContactMechId.fromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
+        aliasMap.put("FacilityContactMechId.FromDate", "facilityContactMechPurposeId.facilityContactMechIdFromDate");
     }
 
     private static void initPropertyTypeMap() {
@@ -8868,9 +8098,9 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class UomMetadata {
+  public static class ShipmentBoxTypeMetadata {
 
-    private UomMetadata() {
+    private ShipmentBoxTypeMetadata() {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
@@ -8884,14 +8114,16 @@ public class M {
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
-            "uomId",
-            "uomTypeId",
-            "abbreviation",
-            "numericCode",
-            "gs1AI",
+            "shipmentBoxTypeId",
             "description",
+            "dimensionUomId",
+            "boxLength",
+            "boxWidth",
+            "boxHeight",
+            "weightUomId",
+            "boxWeight",
             "active",
-            "uomName",
+            "boxTypeName",
             "version",
             "createdBy",
             "createdAt",
@@ -8905,9 +8137,11 @@ public class M {
             "String",
             "String",
             "String",
-            "Long",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
             "String",
-            "String",
+            "java.math.BigDecimal",
             "String",
             "String",
             "Long",
@@ -8931,22 +8165,26 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("uomId", "uomId");
-        aliasMap.put("UomId", "uomId");
-        aliasMap.put("uomTypeId", "uomTypeId");
-        aliasMap.put("UomTypeId", "uomTypeId");
-        aliasMap.put("abbreviation", "abbreviation");
-        aliasMap.put("Abbreviation", "abbreviation");
-        aliasMap.put("numericCode", "numericCode");
-        aliasMap.put("NumericCode", "numericCode");
-        aliasMap.put("gs1AI", "gs1AI");
-        aliasMap.put("Gs1AI", "gs1AI");
+        aliasMap.put("shipmentBoxTypeId", "shipmentBoxTypeId");
+        aliasMap.put("ShipmentBoxTypeId", "shipmentBoxTypeId");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
+        aliasMap.put("dimensionUomId", "dimensionUomId");
+        aliasMap.put("DimensionUomId", "dimensionUomId");
+        aliasMap.put("boxLength", "boxLength");
+        aliasMap.put("BoxLength", "boxLength");
+        aliasMap.put("boxWidth", "boxWidth");
+        aliasMap.put("BoxWidth", "boxWidth");
+        aliasMap.put("boxHeight", "boxHeight");
+        aliasMap.put("BoxHeight", "boxHeight");
+        aliasMap.put("weightUomId", "weightUomId");
+        aliasMap.put("WeightUomId", "weightUomId");
+        aliasMap.put("boxWeight", "boxWeight");
+        aliasMap.put("BoxWeight", "boxWeight");
         aliasMap.put("active", "active");
         aliasMap.put("Active", "active");
-        aliasMap.put("uomName", "uomName");
-        aliasMap.put("UomName", "uomName");
+        aliasMap.put("boxTypeName", "boxTypeName");
+        aliasMap.put("BoxTypeName", "boxTypeName");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");
@@ -8973,9 +8211,9 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
-  public static class UomTypeMetadata {
+  public static class EnumerationMetadata {
 
-    private UomTypeMetadata() {
+    private EnumerationMetadata() {
     }
 
     public static final String PROPERTY_NAME_VERSION      = "version";
@@ -8989,7 +8227,100 @@ public class M {
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
-            "uomTypeId",
+            "enumId",
+            "enumTypeId",
+            "enumCode",
+            "sequenceId",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("enumId", "enumId");
+        aliasMap.put("EnumId", "enumId");
+        aliasMap.put("enumTypeId", "enumTypeId");
+        aliasMap.put("EnumTypeId", "enumTypeId");
+        aliasMap.put("enumCode", "enumCode");
+        aliasMap.put("EnumCode", "enumCode");
+        aliasMap.put("sequenceId", "sequenceId");
+        aliasMap.put("SequenceId", "sequenceId");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class EnumerationTypeMetadata {
+
+    private EnumerationTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "enumTypeId",
             "parentTypeId",
             "hasTable",
             "description",
@@ -9028,8 +8359,8 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("uomTypeId", "uomTypeId");
-        aliasMap.put("UomTypeId", "uomTypeId");
+        aliasMap.put("enumTypeId", "enumTypeId");
+        aliasMap.put("EnumTypeId", "enumTypeId");
         aliasMap.put("parentTypeId", "parentTypeId");
         aliasMap.put("ParentTypeId", "parentTypeId");
         aliasMap.put("hasTable", "hasTable");
@@ -10063,6 +9394,675 @@ public class M {
         aliasMap.put("WorkEffortInventoryProducedId.WorkEffortId", "workEffortInventoryProducedId.workEffortId");
         aliasMap.put("workEffortInventoryProducedId.inventoryItemId", "workEffortInventoryProducedId.inventoryItemId");
         aliasMap.put("WorkEffortInventoryProducedId.InventoryItemId", "workEffortInventoryProducedId.inventoryItemId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ProductAssocMetadata {
+
+    private ProductAssocMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String URL_ID_FIELD_SEPARATOR = ",";
+
+    public static final TextFormatter<org.dddml.ffvtraceability.domain.productassoc.ProductAssocId> URL_ID_TEXT_FORMATTER =
+                    new AbstractValueObjectTextFormatter<org.dddml.ffvtraceability.domain.productassoc.ProductAssocId>(org.dddml.ffvtraceability.domain.productassoc.ProductAssocId.class, URL_ID_FIELD_SEPARATOR) {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    };
+
+    public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.productassoc.ProductAssocId.class;
+
+    public static final String[] propertyNames = new String[] {
+            "thruDate",
+            "sequenceNum",
+            "reason",
+            "quantity",
+            "scrapFactor",
+            "instruction",
+            "routingWorkEffortId",
+            "estimateCalcMethod",
+            "recurrenceInfoId",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "productAssocId.productId",
+            "productAssocId.productIdTo",
+            "productAssocId.productAssocTypeId",
+            "productAssocId.fromDate",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "OffsetDateTime",
+            "Long",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("thruDate", "thruDate");
+        aliasMap.put("ThruDate", "thruDate");
+        aliasMap.put("sequenceNum", "sequenceNum");
+        aliasMap.put("SequenceNum", "sequenceNum");
+        aliasMap.put("reason", "reason");
+        aliasMap.put("Reason", "reason");
+        aliasMap.put("quantity", "quantity");
+        aliasMap.put("Quantity", "quantity");
+        aliasMap.put("scrapFactor", "scrapFactor");
+        aliasMap.put("ScrapFactor", "scrapFactor");
+        aliasMap.put("instruction", "instruction");
+        aliasMap.put("Instruction", "instruction");
+        aliasMap.put("routingWorkEffortId", "routingWorkEffortId");
+        aliasMap.put("RoutingWorkEffortId", "routingWorkEffortId");
+        aliasMap.put("estimateCalcMethod", "estimateCalcMethod");
+        aliasMap.put("EstimateCalcMethod", "estimateCalcMethod");
+        aliasMap.put("recurrenceInfoId", "recurrenceInfoId");
+        aliasMap.put("RecurrenceInfoId", "recurrenceInfoId");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("productAssocId.productId", "productAssocId.productId");
+        aliasMap.put("ProductAssocId.ProductId", "productAssocId.productId");
+        aliasMap.put("productAssocId.productIdTo", "productAssocId.productIdTo");
+        aliasMap.put("ProductAssocId.ProductIdTo", "productAssocId.productIdTo");
+        aliasMap.put("productAssocId.productAssocTypeId", "productAssocId.productAssocTypeId");
+        aliasMap.put("ProductAssocId.ProductAssocTypeId", "productAssocId.productAssocTypeId");
+        aliasMap.put("productAssocId.fromDate", "productAssocId.fromDate");
+        aliasMap.put("ProductAssocId.FromDate", "productAssocId.fromDate");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class ProductAssocTypeMetadata {
+
+    private ProductAssocTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "productAssocTypeId",
+            "parentTypeId",
+            "hasTable",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("productAssocTypeId", "productAssocTypeId");
+        aliasMap.put("ProductAssocTypeId", "productAssocTypeId");
+        aliasMap.put("parentTypeId", "parentTypeId");
+        aliasMap.put("ParentTypeId", "parentTypeId");
+        aliasMap.put("hasTable", "hasTable");
+        aliasMap.put("HasTable", "hasTable");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class InventoryItemMetadata {
+
+    private InventoryItemMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "inventoryItemId",
+            "inventoryItemTypeId",
+            "productId",
+            "partyId",
+            "ownerPartyId",
+            "statusId",
+            "datetimeReceived",
+            "datetimeManufactured",
+            "expireDate",
+            "facilityId",
+            "containerId",
+            "lotId",
+            "uomId",
+            "binNumber",
+            "locationSeqId",
+            "comments",
+            "quantityOnHandTotal",
+            "availableToPromiseTotal",
+            "accountingQuantityTotal",
+            "serialNumber",
+            "softIdentifier",
+            "activationNumber",
+            "activationValidThru",
+            "unitCost",
+            "currencyUomId",
+            "fixedAssetId",
+            "inventoryItemAttributeHash",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "OffsetDateTime",
+            "OffsetDateTime",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "OffsetDateTime",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("inventoryItemId", "inventoryItemId");
+        aliasMap.put("InventoryItemId", "inventoryItemId");
+        aliasMap.put("inventoryItemTypeId", "inventoryItemTypeId");
+        aliasMap.put("InventoryItemTypeId", "inventoryItemTypeId");
+        aliasMap.put("productId", "productId");
+        aliasMap.put("ProductId", "productId");
+        aliasMap.put("partyId", "partyId");
+        aliasMap.put("PartyId", "partyId");
+        aliasMap.put("ownerPartyId", "ownerPartyId");
+        aliasMap.put("OwnerPartyId", "ownerPartyId");
+        aliasMap.put("statusId", "statusId");
+        aliasMap.put("StatusId", "statusId");
+        aliasMap.put("datetimeReceived", "datetimeReceived");
+        aliasMap.put("DatetimeReceived", "datetimeReceived");
+        aliasMap.put("datetimeManufactured", "datetimeManufactured");
+        aliasMap.put("DatetimeManufactured", "datetimeManufactured");
+        aliasMap.put("expireDate", "expireDate");
+        aliasMap.put("ExpireDate", "expireDate");
+        aliasMap.put("facilityId", "facilityId");
+        aliasMap.put("FacilityId", "facilityId");
+        aliasMap.put("containerId", "containerId");
+        aliasMap.put("ContainerId", "containerId");
+        aliasMap.put("lotId", "lotId");
+        aliasMap.put("LotId", "lotId");
+        aliasMap.put("uomId", "uomId");
+        aliasMap.put("UomId", "uomId");
+        aliasMap.put("binNumber", "binNumber");
+        aliasMap.put("BinNumber", "binNumber");
+        aliasMap.put("locationSeqId", "locationSeqId");
+        aliasMap.put("LocationSeqId", "locationSeqId");
+        aliasMap.put("comments", "comments");
+        aliasMap.put("Comments", "comments");
+        aliasMap.put("quantityOnHandTotal", "quantityOnHandTotal");
+        aliasMap.put("QuantityOnHandTotal", "quantityOnHandTotal");
+        aliasMap.put("availableToPromiseTotal", "availableToPromiseTotal");
+        aliasMap.put("AvailableToPromiseTotal", "availableToPromiseTotal");
+        aliasMap.put("accountingQuantityTotal", "accountingQuantityTotal");
+        aliasMap.put("AccountingQuantityTotal", "accountingQuantityTotal");
+        aliasMap.put("serialNumber", "serialNumber");
+        aliasMap.put("SerialNumber", "serialNumber");
+        aliasMap.put("softIdentifier", "softIdentifier");
+        aliasMap.put("SoftIdentifier", "softIdentifier");
+        aliasMap.put("activationNumber", "activationNumber");
+        aliasMap.put("ActivationNumber", "activationNumber");
+        aliasMap.put("activationValidThru", "activationValidThru");
+        aliasMap.put("ActivationValidThru", "activationValidThru");
+        aliasMap.put("unitCost", "unitCost");
+        aliasMap.put("UnitCost", "unitCost");
+        aliasMap.put("currencyUomId", "currencyUomId");
+        aliasMap.put("CurrencyUomId", "currencyUomId");
+        aliasMap.put("fixedAssetId", "fixedAssetId");
+        aliasMap.put("FixedAssetId", "fixedAssetId");
+        aliasMap.put("inventoryItemAttributeHash", "inventoryItemAttributeHash");
+        aliasMap.put("InventoryItemAttributeHash", "inventoryItemAttributeHash");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class InventoryItemDetailMetadata {
+
+    private InventoryItemDetailMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "inventoryItemDetailSeqId",
+            "effectiveDate",
+            "quantityOnHandDiff",
+            "availableToPromiseDiff",
+            "accountingQuantityDiff",
+            "unitCost",
+            "orderId",
+            "orderItemSeqId",
+            "shipGroupSeqId",
+            "shipmentId",
+            "shipmentItemSeqId",
+            "returnId",
+            "returnItemSeqId",
+            "workEffortId",
+            "fixedAssetId",
+            "maintHistSeqId",
+            "itemIssuanceId",
+            "receiptId",
+            "physicalInventoryId",
+            "reasonEnumId",
+            "description",
+            "inventoryItemAttributeHash",
+            "inventoryItemEntrySourceHash",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+            "inventoryItemId",
+            "inventoryItemDetailId.inventoryItemId",
+            "inventoryItemDetailId.inventoryItemDetailSeqId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "OffsetDateTime",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("inventoryItemDetailSeqId", "inventoryItemDetailId.inventoryItemDetailSeqId");
+        aliasMap.put("InventoryItemDetailSeqId", "inventoryItemDetailId.inventoryItemDetailSeqId");
+        aliasMap.put("effectiveDate", "effectiveDate");
+        aliasMap.put("EffectiveDate", "effectiveDate");
+        aliasMap.put("quantityOnHandDiff", "quantityOnHandDiff");
+        aliasMap.put("QuantityOnHandDiff", "quantityOnHandDiff");
+        aliasMap.put("availableToPromiseDiff", "availableToPromiseDiff");
+        aliasMap.put("AvailableToPromiseDiff", "availableToPromiseDiff");
+        aliasMap.put("accountingQuantityDiff", "accountingQuantityDiff");
+        aliasMap.put("AccountingQuantityDiff", "accountingQuantityDiff");
+        aliasMap.put("unitCost", "unitCost");
+        aliasMap.put("UnitCost", "unitCost");
+        aliasMap.put("orderId", "orderId");
+        aliasMap.put("OrderId", "orderId");
+        aliasMap.put("orderItemSeqId", "orderItemSeqId");
+        aliasMap.put("OrderItemSeqId", "orderItemSeqId");
+        aliasMap.put("shipGroupSeqId", "shipGroupSeqId");
+        aliasMap.put("ShipGroupSeqId", "shipGroupSeqId");
+        aliasMap.put("shipmentId", "shipmentId");
+        aliasMap.put("ShipmentId", "shipmentId");
+        aliasMap.put("shipmentItemSeqId", "shipmentItemSeqId");
+        aliasMap.put("ShipmentItemSeqId", "shipmentItemSeqId");
+        aliasMap.put("returnId", "returnId");
+        aliasMap.put("ReturnId", "returnId");
+        aliasMap.put("returnItemSeqId", "returnItemSeqId");
+        aliasMap.put("ReturnItemSeqId", "returnItemSeqId");
+        aliasMap.put("workEffortId", "workEffortId");
+        aliasMap.put("WorkEffortId", "workEffortId");
+        aliasMap.put("fixedAssetId", "fixedAssetId");
+        aliasMap.put("FixedAssetId", "fixedAssetId");
+        aliasMap.put("maintHistSeqId", "maintHistSeqId");
+        aliasMap.put("MaintHistSeqId", "maintHistSeqId");
+        aliasMap.put("itemIssuanceId", "itemIssuanceId");
+        aliasMap.put("ItemIssuanceId", "itemIssuanceId");
+        aliasMap.put("receiptId", "receiptId");
+        aliasMap.put("ReceiptId", "receiptId");
+        aliasMap.put("physicalInventoryId", "physicalInventoryId");
+        aliasMap.put("PhysicalInventoryId", "physicalInventoryId");
+        aliasMap.put("reasonEnumId", "reasonEnumId");
+        aliasMap.put("ReasonEnumId", "reasonEnumId");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("inventoryItemAttributeHash", "inventoryItemAttributeHash");
+        aliasMap.put("InventoryItemAttributeHash", "inventoryItemAttributeHash");
+        aliasMap.put("inventoryItemEntrySourceHash", "inventoryItemEntrySourceHash");
+        aliasMap.put("InventoryItemEntrySourceHash", "inventoryItemEntrySourceHash");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("inventoryItemId", "inventoryItemDetailId.inventoryItemId");
+        aliasMap.put("InventoryItemId", "inventoryItemDetailId.inventoryItemId");
+        aliasMap.put("inventoryItemDetailId.inventoryItemId", "inventoryItemDetailId.inventoryItemId");
+        aliasMap.put("InventoryItemDetailId.InventoryItemId", "inventoryItemDetailId.inventoryItemId");
+        aliasMap.put("inventoryItemDetailId.inventoryItemDetailSeqId", "inventoryItemDetailId.inventoryItemDetailSeqId");
+        aliasMap.put("InventoryItemDetailId.InventoryItemDetailSeqId", "inventoryItemDetailId.inventoryItemDetailSeqId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class InventoryItemTypeMetadata {
+
+    private InventoryItemTypeMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
+    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final Class ID_CLASS = String.class;
+
+    public static final String[] propertyNames = new String[] {
+            "inventoryItemTypeId",
+            "parentTypeId",
+            "hasTable",
+            "description",
+            "version",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "__Active__",
+            "__Deleted__",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
+            "String",
+            "OffsetDateTime",
+            "String",
+            "OffsetDateTime",
+            "Boolean",
+            "Boolean",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static void initAliasMap() {
+        aliasMap.put("inventoryItemTypeId", "inventoryItemTypeId");
+        aliasMap.put("InventoryItemTypeId", "inventoryItemTypeId");
+        aliasMap.put("parentTypeId", "parentTypeId");
+        aliasMap.put("ParentTypeId", "parentTypeId");
+        aliasMap.put("hasTable", "hasTable");
+        aliasMap.put("HasTable", "hasTable");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("version", "version");
+        aliasMap.put("Version", "version");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Active__", "__Active__");
+        aliasMap.put("__Deleted__", "__Deleted__");
+        aliasMap.put("__Deleted__", "__Deleted__");
     }
 
     private static void initPropertyTypeMap() {

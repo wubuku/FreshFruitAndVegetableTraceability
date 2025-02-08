@@ -81,6 +81,7 @@ echo -e "\n=== Testing Units of Measure ===\n"
 
 
 # Create KGM (Required by Raw Items)
+echo "Creating KGM unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -118,6 +119,7 @@ echo "$response"
 check_response $? "$http_code" "Query Units of Measure"
 
 # Create GRM
+echo "Creating GRM unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -137,6 +139,7 @@ response_body=$(echo "$response" | sed '$d')
 check_response $? "$http_status" "Create GRM unit" "$response_body"
 
 # Create USD (Required by Suppliers)
+echo "Creating USD unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -157,6 +160,7 @@ response_body=$(echo "$response" | sed '$d')
 check_response $? "$http_status" "Create USD unit" "$response_body"
 
 # Create SQM (Required by Facilities)
+echo "Creating SQM unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -176,6 +180,7 @@ response_body=$(echo "$response" | sed '$d')
 check_response $? "$http_status" "Create SQM unit" "$response_body"
 
 # Create TNE (Metric Ton)
+echo "Creating TNE unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -195,6 +200,7 @@ response_body=$(echo "$response" | sed '$d')
 check_response $? "$http_status" "Create TNE unit" "$response_body"
 
 # Create LB (Pound)
+echo "Creating LB unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -214,6 +220,7 @@ response_body=$(echo "$response" | sed '$d')
 check_response $? "$http_status" "Create LB unit" "$response_body"
 
 # Create OZ (Ounce)
+echo "Creating OZ unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -233,6 +240,7 @@ response_body=$(echo "$response" | sed '$d')
 check_response $? "$http_status" "Create OZ unit" "$response_body"
 
 # Create EA (Each)
+echo "Creating EA unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -252,6 +260,7 @@ response_body=$(echo "$response" | sed '$d')
 check_response $? "$http_status" "Create EA unit" "$response_body"
 
 # Create BX (Box)
+echo "Creating BX unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -271,6 +280,7 @@ response_body=$(echo "$response" | sed '$d')
 check_response $? "$http_status" "Create BX unit" "$response_body"
 
 # Create PLT (Pallet)
+echo "Creating PLT unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -290,6 +300,7 @@ response_body=$(echo "$response" | sed '$d')
 check_response $? "$http_status" "Create PLT unit" "$response_body"
 
 # Create PK (Pack)
+echo "Creating PK unit..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffUnitsOfMeasure" \
   -H 'accept: application/json' \
@@ -435,6 +446,7 @@ check_response $? "$http_code" "Query specific supplier"
 echo -e "\n=== Testing Facilities ===\n"
 
 # Create source facility
+echo "Creating source facility..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities" \
   -H 'accept: application/json' \
@@ -494,6 +506,7 @@ echo "$response"
 check_response $? "$http_code" "Query specific facility"
 
 # Create destination facility
+echo "Creating destination facility..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities" \
   -H 'accept: application/json' \
@@ -518,6 +531,7 @@ check_response $? "$http_status" "Create destination facility" "$response_body"
 
 
 # Create location for source facility
+echo "Creating location for source facility..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities/F001/Locations" \
   -H 'accept: */*' \
@@ -578,6 +592,7 @@ echo "$response"
 check_response $? "$http_code" "Query specific location"
 
 # Create location for destination facility
+echo "Creating location for destination facility..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffFacilities/DC_FRESH/Locations" \
   -H 'accept: */*' \
@@ -620,6 +635,7 @@ check_response $? "$http_code" "Query locations for DC_FRESH"
 echo -e "\n=== Testing Raw Items ===\n"
 
 # Create raw item
+echo "Creating raw item..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffRawItems" \
   -H 'accept: */*' \
@@ -707,7 +723,8 @@ check_response $? "$http_status" "Create tomato raw item" "$response_body"
 # Test Lots
 echo -e "\n=== Testing Lots ===\n"
 
-# Create lot (Required by Receiving)
+# Create lot
+echo "Creating lot..."
 response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffLots" \
   -H 'accept: application/json' \
@@ -754,14 +771,13 @@ echo -e "\n=== Creating Additional Raw Items ===\n"
 
 # Create organic lettuce
 echo "Creating organic lettuce raw item..."
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffRawItems" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "productId": "ORGANIC_LETTUCE_01",
   "productName": "Organic Lettuce",
@@ -772,18 +788,20 @@ curl -X 'POST' \
   "piecesIncluded": 1,
   "statusId": "ACTIVE",
   "supplierId": "SUPPLIER_001"
-}' | { read http_status; check_response $? "$http_status" "Create lettuce raw item"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create lettuce raw item" "$response_body"
 
 # Create organic cucumber
 echo "Creating organic cucumber raw item..."
-curl -X 'POST' \
+response=$(curl -X 'POST' \
   "${API_BASE_URL}/BffRawItems" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}\n' \
-  -o /dev/null \
+  -w '\n%{http_code}' \
   -d '{
   "productId": "ORGANIC_CUCUMBER_01",
   "productName": "Organic Cucumber",
@@ -794,7 +812,10 @@ curl -X 'POST' \
   "piecesIncluded": 1,
   "statusId": "ACTIVE",
   "supplierId": "SUPPLIER_001"
-}' | { read http_status; check_response $? "$http_status" "Create cucumber raw item"; }
+}')
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+check_response $? "$http_status" "Create cucumber raw item" "$response_body"
 
 # Create another lot (Required by second receiving item)
 echo "Creating another lot..."

@@ -124,6 +124,17 @@ public abstract class AbstractWorkEffortTypeApplicationService implements WorkEf
 
     }
 
+    private DomainEventPublisher domainEventPublisher;
+
+    public void setDomainEventPublisher(DomainEventPublisher domainEventPublisher) {
+        this.domainEventPublisher = domainEventPublisher;
+    }
+
+    public DomainEventPublisher getDomainEventPublisher() {
+        if (domainEventPublisher != null) { return domainEventPublisher; }
+        return ApplicationContext.current.get(DomainEventPublisher.class);
+    }
+
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, WorkEffortTypeState state) {
         getStateRepository().save(state);
     }

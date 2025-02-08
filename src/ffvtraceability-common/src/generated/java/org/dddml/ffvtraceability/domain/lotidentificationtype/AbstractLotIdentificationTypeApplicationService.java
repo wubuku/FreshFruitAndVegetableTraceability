@@ -108,6 +108,17 @@ public abstract class AbstractLotIdentificationTypeApplicationService implements
 
     }
 
+    private DomainEventPublisher domainEventPublisher;
+
+    public void setDomainEventPublisher(DomainEventPublisher domainEventPublisher) {
+        this.domainEventPublisher = domainEventPublisher;
+    }
+
+    public DomainEventPublisher getDomainEventPublisher() {
+        if (domainEventPublisher != null) { return domainEventPublisher; }
+        return ApplicationContext.current.get(DomainEventPublisher.class);
+    }
+
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, LotIdentificationTypeState state) {
         getStateRepository().save(state);
     }

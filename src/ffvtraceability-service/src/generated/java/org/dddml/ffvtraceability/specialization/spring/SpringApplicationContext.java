@@ -10,6 +10,7 @@ import org.dddml.ffvtraceability.specialization.ApplicationContext;
 import org.dddml.ffvtraceability.specialization.ClobConverter;
 import org.dddml.ffvtraceability.specialization.TypeConverter;
 import org.dddml.ffvtraceability.specialization.json.JacksonClobConverter;
+import org.springframework.beans.factory.ObjectProvider;
 
 /**
  * Created by Yang on 2016/7/28.
@@ -51,7 +52,8 @@ public class SpringApplicationContext extends ApplicationContext {
 
     @Override
     public <T> T get(final Class<T> type) {
-        return innerApplicationContext.getBean(type);
+        ObjectProvider<T> provider = innerApplicationContext.getBeanProvider(type);
+        return provider.getIfAvailable();
     }
 
     @Override

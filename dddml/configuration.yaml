@@ -9,6 +9,7 @@ configuration:
     SpringSecurityEnabled: true
     JpaProjectionInterfaceSubPackageName: "repository"
     JakartaValidationEnabled: true
+    DomainEventPublishingEnabled: true
   multiTenancy:
     discriminatorBasedMultiTenancyEnabled: true
 

@@ -14,6 +14,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    ProblemDetail handleIllegalArgumentException(IllegalArgumentException ex) {
+        logger.info(ex.getMessage(), ex);
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     ProblemDetail handleAllExceptions(Exception ex) {
         logger.info(ex.getMessage(), ex);

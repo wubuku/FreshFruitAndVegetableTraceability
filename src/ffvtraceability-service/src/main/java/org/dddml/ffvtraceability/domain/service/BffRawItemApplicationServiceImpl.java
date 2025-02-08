@@ -94,7 +94,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             rawItem.setProductId(rawItem.getProductId().trim());
             if (!rawItem.getProductId().isEmpty()) {
                 if (productApplicationService.get(rawItem.getProductId()) != null) {
-                    throw new IllegalArgumentException("The product already exists:" + rawItem.getProductId());
+                    throw new IllegalArgumentException("The product already exists: " + rawItem.getProductId());
                 }
             }
         }

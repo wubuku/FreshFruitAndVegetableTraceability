@@ -9,7 +9,7 @@ public class SpringUtils {
 
     public static Object getAopTarget(Object obj) {
         if (obj instanceof Advised) {
-            Object target = null;
+            Object target;
             try {
                 target = ((Advised) obj).getTargetSource().getTarget();
             } catch (Exception e) {
@@ -17,7 +17,8 @@ public class SpringUtils {
             }
             return target;
         }
-        return null;//throw new IllegalArgumentException("The argument is NOT Advised object.");
+        //throw new IllegalArgumentException("The argument is NOT Advised object.");
+        return null;
     }
 
 }
