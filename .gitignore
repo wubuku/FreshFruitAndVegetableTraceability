@@ -17,3 +17,8 @@ src/ffvtraceability-auth-server/__TEMP__.md
 .vscode/settings.json
 .vscode/settings.json
 .vscode/settings.json
+src/ffvtraceability-common/src/generated/java/org/dddml/ffvtraceability/specialization/AbstractPropertyCommand.java
+src/ffvtraceability-common/src/generated/java/org/dddml/ffvtraceability/specialization/PropertyCommand.java
+src/ffvtraceability-service/src/main/java/org/dddml/ffvtraceability/tool/hibernate/Hello.java
+src/ffvtraceability-service/src/main/resources/hibernate/Hello.hbm.xml
+src/ffvtraceability-service-rest/src/main/resources/application-test.yml
