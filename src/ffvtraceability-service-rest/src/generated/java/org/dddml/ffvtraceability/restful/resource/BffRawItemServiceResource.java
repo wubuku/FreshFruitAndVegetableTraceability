@@ -35,11 +35,13 @@ public class BffRawItemServiceResource {
     public Page<BffRawItemDto> getRawItems(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "supplierId", required = false) String supplierId,
         @RequestParam(value = "active", required = false) String active
     ) {
         BffRawItemServiceCommands.GetRawItems getRawItems = new BffRawItemServiceCommands.GetRawItems();
         getRawItems.setPage(page);
         getRawItems.setSize(size);
+        getRawItems.setSupplierId(supplierId);
         getRawItems.setActive(active);
         
         getRawItems.setRequesterId(SecurityContextUtil.getRequesterId());

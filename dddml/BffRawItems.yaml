@@ -132,6 +132,8 @@ services:
         isQuery: true
         #httpMethod: GET
         parameters:
+          SupplierId:
+            type: id
           Active:
             type: indicator
         result:
