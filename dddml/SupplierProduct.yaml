@@ -99,8 +99,8 @@
       SupplierProductAssocId:
         metadata:
           JpaProjectionInterfaceName: SupplierProductAssocIdProjection
-          JpaProjectionPropertyAliases:
-            AvailableFromDate: AvailableFromDateInstant
+          #JpaProjectionPropertyAliases:
+          #  AvailableFromDate: AvailableFromDate
           JpaProjectionPropertyTypes:
             AvailableFromDate: java.time.Instant
 

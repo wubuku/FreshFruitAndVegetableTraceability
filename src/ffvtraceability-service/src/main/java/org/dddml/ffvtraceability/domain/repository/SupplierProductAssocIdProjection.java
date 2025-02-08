@@ -17,6 +17,6 @@ public interface SupplierProductAssocIdProjection {
 
     java.math.BigDecimal getMinimumOrderQuantity();
 
-    java.time.Instant getAvailableFromDateInstant();
+    java.time.Instant getAvailableFromDate();
 }
 
