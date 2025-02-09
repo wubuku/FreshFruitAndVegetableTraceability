@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -183,6 +184,17 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     @Transactional
     public String when(BffPurchaseOrderServiceCommands.CreatePurchaseOrder c) {
         BffPurchaseOrderDto purchaseOrder = c.getPurchaseOrder();
+        if (purchaseOrder == null) {
+            throw new IllegalArgumentException("Purchase order can't be null");
+        }
+        String orderId = purchaseOrder.getOrderId();
+        if (orderId != null) {
+            orderId = orderId.trim();
+            purchaseOrder.setOrderId(orderId);
+            if (orderApplicationService.get(orderId) != null) {
+                throw new IllegalArgumentException("The purchase order already exists:" + orderId);
+            }
+        }
         // Create order header
         AbstractOrderCommand.SimpleCreateOrder createOrder = new AbstractOrderCommand.SimpleCreateOrder();
         createOrder.setOrderId(purchaseOrder.getOrderId() != null ? purchaseOrder.getOrderId() : IdUtils.randomId());
@@ -337,9 +349,11 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         mergePatchOrder.setOriginFacilityId(purchaseOrder.getOriginFacilityId());
         mergePatchOrder.setMemo(purchaseOrder.getMemo());
 
+        List<String> orderItemSeqIds = new ArrayList<>();
         if (purchaseOrder.getOrderItems() != null) {
             for (BffPurchaseOrderItemDto item : purchaseOrder.getOrderItems()) {
-                if (item.getOrderItemSeqId() != null) {
+                if (item.getOrderItemSeqId() != null && !item.getOrderItemSeqId().isBlank()) {
+                    orderItemSeqIds.add(item.getOrderItemSeqId());
                     orderHeaderState.getOrderItems().stream().filter(x ->
                             item.getOrderItemSeqId().equals(x.getOrderItemSeqId())
                     ).findFirst().ifPresentOrElse(orderItemState -> {
@@ -360,6 +374,15 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
                 }
             }
         }
+        //原来存在的行项目，在这次前端传过来的行项中不存在
+        orderHeaderState.getOrderItems().forEach(orderItemState -> {
+            if (!orderItemSeqIds.contains(orderItemState.getOrderItemSeqId())) {
+                OrderItemCommand.RemoveOrderItem removeOrderItem = mergePatchOrder.newRemoveOrderItem();
+                removeOrderItem.setOrderItemSeqId(orderItemState.getOrderItemSeqId());
+                removeOrderItem.setRequesterId(c.getRequesterId());
+                mergePatchOrder.getOrderItemCommands().add(removeOrderItem);
+            }
+        });
 
         mergePatchOrder.setCommandId(c.getCommandId() != null ?
                 c.getCommandId() : IdUtils.randomId());
