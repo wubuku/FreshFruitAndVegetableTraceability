@@ -22,6 +22,17 @@ public interface ShipmentReceiptEvent extends Event, OrderFulfillmentSyncable, C
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface UpdateOrderAllocationEvent extends ShipmentReceiptEvent {
+        java.math.BigDecimal getUnallocatedQuantity();
+
+        void setUnallocatedQuantity(java.math.BigDecimal value);
+
+        OrderItemQuantityAllocationValue[] getOrderItemAllocations();
+
+        void setOrderItemAllocations(OrderItemQuantityAllocationValue[] value);
+
+    }
+
     String getReceiptId();
 
     //void setReceiptId(String receiptId);

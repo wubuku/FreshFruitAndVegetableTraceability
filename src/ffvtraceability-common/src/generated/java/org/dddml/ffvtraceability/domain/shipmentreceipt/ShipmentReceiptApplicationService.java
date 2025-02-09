@@ -22,6 +22,8 @@ public interface ShipmentReceiptApplicationService {
 
     void when(ShipmentReceiptCommand.DeleteShipmentReceipt c);
 
+    void when(ShipmentReceiptCommands.UpdateOrderAllocation c);
+
     ShipmentReceiptState get(String id);
 
     Iterable<ShipmentReceiptState> getAll(Integer firstResult, Integer maxResults);

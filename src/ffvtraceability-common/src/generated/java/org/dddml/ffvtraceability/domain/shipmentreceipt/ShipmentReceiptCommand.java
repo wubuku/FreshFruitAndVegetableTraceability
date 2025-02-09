@@ -47,6 +47,8 @@ public interface ShipmentReceiptCommand extends Command {
             return false;
         if (c.getCommandType() != null) {
             String commandType = c.getCommandType();
+            if (commandType.equals("UpdateOrderAllocation"))
+                return false;
         }
 
         if (c.getVersion().equals(ShipmentReceiptState.VERSION_NULL))

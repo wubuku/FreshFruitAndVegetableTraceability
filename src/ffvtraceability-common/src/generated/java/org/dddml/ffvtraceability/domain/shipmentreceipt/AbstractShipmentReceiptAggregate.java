@@ -370,6 +370,46 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
             super(state);
         }
 
+        @Override
+        public void updateOrderAllocation(java.math.BigDecimal unallocatedQuantity, OrderItemQuantityAllocationValue[] orderItemAllocations, Long version, String commandId, String requesterId, ShipmentReceiptCommands.UpdateOrderAllocation c) {
+            java.util.function.Supplier<ShipmentReceiptEvent.UpdateOrderAllocationEvent> eventFactory = () -> newUpdateOrderAllocationEvent(unallocatedQuantity, orderItemAllocations, version, commandId, requesterId);
+            ShipmentReceiptEvent.UpdateOrderAllocationEvent e;
+            try {
+                e = verifyUpdateOrderAllocation(eventFactory, unallocatedQuantity, orderItemAllocations, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        protected ShipmentReceiptEvent.UpdateOrderAllocationEvent verifyUpdateOrderAllocation(java.util.function.Supplier<ShipmentReceiptEvent.UpdateOrderAllocationEvent> eventFactory, java.math.BigDecimal unallocatedQuantity, OrderItemQuantityAllocationValue[] orderItemAllocations, ShipmentReceiptCommands.UpdateOrderAllocation c) {
+            java.math.BigDecimal UnallocatedQuantity = unallocatedQuantity;
+            OrderItemQuantityAllocationValue[] OrderItemAllocations = orderItemAllocations;
+
+            ShipmentReceiptEvent.UpdateOrderAllocationEvent e = (ShipmentReceiptEvent.UpdateOrderAllocationEvent) ApplicationContext.current.get(IUpdateOrderAllocationLogic.class).verify(
+                    eventFactory, getState(), unallocatedQuantity, orderItemAllocations, VerificationContext.of(c));
+
+            return e;
+        }
+
+        protected AbstractShipmentReceiptEvent.UpdateOrderAllocationEvent newUpdateOrderAllocationEvent(java.math.BigDecimal unallocatedQuantity, OrderItemQuantityAllocationValue[] orderItemAllocations, Long version, String commandId, String requesterId) {
+            ShipmentReceiptEventId eventId = new ShipmentReceiptEventId(getState().getReceiptId(), version);
+            AbstractShipmentReceiptEvent.UpdateOrderAllocationEvent e = new AbstractShipmentReceiptEvent.UpdateOrderAllocationEvent();
+
+            e.getDynamicProperties().put("unallocatedQuantity", unallocatedQuantity);
+            e.getDynamicProperties().put("orderItemAllocations", orderItemAllocations);
+            e.setOrderFulfillmentSyncStatusId(null);
+            e.setCteSyncStatusId(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+            e.setShipmentReceiptEventId(eventId);
+            return e;
+        }
+
     }
 
 }

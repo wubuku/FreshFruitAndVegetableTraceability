@@ -24,6 +24,8 @@ public interface ShipmentReceiptAggregate {
 
     void delete(ShipmentReceiptCommand.DeleteShipmentReceipt c);
 
+    void updateOrderAllocation(java.math.BigDecimal unallocatedQuantity, OrderItemQuantityAllocationValue[] orderItemAllocations, Long version, String commandId, String requesterId, ShipmentReceiptCommands.UpdateOrderAllocation c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

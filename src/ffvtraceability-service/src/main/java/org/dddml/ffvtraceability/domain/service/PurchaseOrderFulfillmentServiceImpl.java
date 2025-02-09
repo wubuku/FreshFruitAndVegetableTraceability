@@ -1,10 +1,13 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.Command;
+import org.dddml.ffvtraceability.domain.OrderItemQuantityAllocationValue;
 import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingDocumentItemProjection;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
-import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptCommands;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -228,55 +231,29 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
         allReceiptIds.addAll(allocationsByReceiptId.keySet());
 
         for (String receiptId : allReceiptIds) {
-            BigDecimal unallocatedQuantity = unallocatedFulfillmentQuantities.getOrDefault(receiptId, BigDecimal.ZERO);
-            List<QuantityAllocationService.AllocationResult<OrderItemId, String>> allocations =
-                    allocationsByReceiptId.getOrDefault(receiptId, Collections.emptyList());
 
             ShipmentReceiptState receiptState = shipmentReceiptApplicationService.get(receiptId);
             if (receiptState == null) {
                 throw new IllegalArgumentException("Receipt not found: " + receiptId);
             }
 
-            AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt mergePatchReceipt =
-                    new AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt();
-            mergePatchReceipt.setReceiptId(receiptId);
-            mergePatchReceipt.setQuantityUnallocated(unallocatedQuantity);
+            BigDecimal unallocatedQuantity = unallocatedFulfillmentQuantities.getOrDefault(receiptId, BigDecimal.ZERO);
+            List<QuantityAllocationService.AllocationResult<OrderItemId, String>> allocations =
+                    allocationsByReceiptId.getOrDefault(receiptId, Collections.emptyList());
+            ShipmentReceiptCommands.UpdateOrderAllocation updateOrderAllocation = new ShipmentReceiptCommands.UpdateOrderAllocation();
+            updateOrderAllocation.setReceiptId(receiptId);
+            updateOrderAllocation.setUnallocatedQuantity(unallocatedQuantity);
+            updateOrderAllocation.setVersion(receiptState.getVersion());
+            OrderItemQuantityAllocationValue[] alValues = allocations.stream().map(x -> new OrderItemQuantityAllocationValue(
+                    x.getDemandItemId().getOrderId(),
+                    x.getDemandItemId().getOrderItemSeqId(),
+                    x.getAllocatedQuantity()
+            )).toArray(OrderItemQuantityAllocationValue[]::new);
 
-            for (QuantityAllocationService.AllocationResult<OrderItemId, String> allocation : allocations) {
-                OrderItemId orderItemId = allocation.getDemandItemId();
-                ShipmentReceiptOrderAllocationState allocationState = receiptState.getOrderAllocations().get(orderItemId);
-                if (allocationState == null) {
-                    ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation
-                            createAllocation = mergePatchReceipt.newCreateShipmentReceiptOrderAllocation();
-                    createAllocation.setOrderItemId(orderItemId);
-                    createAllocation.setQuantityAllocated(allocation.getAllocatedQuantity());
-                    mergePatchReceipt.getShipmentReceiptOrderAllocationCommands().add(createAllocation);
-                } else {
-                    ShipmentReceiptOrderAllocationCommand.MergePatchShipmentReceiptOrderAllocation
-                            mergePatchAllocation = mergePatchReceipt.newMergePatchShipmentReceiptOrderAllocation();
-                    mergePatchAllocation.setOrderItemId(orderItemId);
-                    mergePatchAllocation.setQuantityAllocated(allocation.getAllocatedQuantity());
-                    mergePatchReceipt.getShipmentReceiptOrderAllocationCommands().add(mergePatchAllocation);
-                }
-            }
-
-            Set<OrderItemId> oldOrderItemIds = receiptState.getOrderAllocations().stream()
-                    .map(ShipmentReceiptOrderAllocationState::getOrderItemId).collect(Collectors.toSet());
-            Set<OrderItemId> newOrderItemIds = allocations.stream()
-                    .map(QuantityAllocationService.AllocationResult::getDemandItemId).collect(Collectors.toSet());
-            oldOrderItemIds.removeAll(newOrderItemIds);
-
-            for (OrderItemId orderItemId : oldOrderItemIds) {
-                ShipmentReceiptOrderAllocationCommand.RemoveShipmentReceiptOrderAllocation removeAllocation =
-                        mergePatchReceipt.newRemoveShipmentReceiptOrderAllocation();
-                removeAllocation.setOrderItemId(orderItemId);
-                mergePatchReceipt.getShipmentReceiptOrderAllocationCommands().add(removeAllocation);
-            }
-
-            mergePatchReceipt.setVersion(receiptState.getVersion());
-            mergePatchReceipt.setRequesterId(c.getRequesterId());
-            mergePatchReceipt.setCommandId(UUID.randomUUID().toString());
-            shipmentReceiptApplicationService.when(mergePatchReceipt);
+            updateOrderAllocation.setOrderItemAllocations(alValues);
+            updateOrderAllocation.setCommandId(c.getCommandId());
+            updateOrderAllocation.setRequesterId(c.getRequesterId());
+            shipmentReceiptApplicationService.when(updateOrderAllocation);
         }
     }
 

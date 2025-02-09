@@ -396,6 +396,8 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
             when((ShipmentReceiptStateMergePatched) e);
         } else if (e instanceof ShipmentReceiptStateDeleted) {
             when((ShipmentReceiptStateDeleted) e);
+        } else if (e instanceof AbstractShipmentReceiptEvent.UpdateOrderAllocationEvent) {
+            when((AbstractShipmentReceiptEvent.UpdateOrderAllocationEvent)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -709,6 +711,31 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
             ((ShipmentReceiptOrderAllocationState.MutableShipmentReceiptOrderAllocationState)innerState).mutate(innerE);
             //e.addShipmentReceiptOrderAllocationEvent(innerE);
         }
+    }
+
+    public void when(AbstractShipmentReceiptEvent.UpdateOrderAllocationEvent e) {
+        throwOnWrongEvent(e);
+
+        java.math.BigDecimal unallocatedQuantity = e.getUnallocatedQuantity();
+        java.math.BigDecimal UnallocatedQuantity = unallocatedQuantity;
+        OrderItemQuantityAllocationValue[] orderItemAllocations = e.getOrderItemAllocations();
+        OrderItemQuantityAllocationValue[] OrderItemAllocations = orderItemAllocations;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        ShipmentReceiptState updatedShipmentReceiptState = ApplicationContext.current.get(IUpdateOrderAllocationLogic.class).mutate(
+                this, unallocatedQuantity, orderItemAllocations, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+
+
+        if (this != updatedShipmentReceiptState) { merge(updatedShipmentReceiptState); } //else do nothing
+
     }
 
     public void save() {

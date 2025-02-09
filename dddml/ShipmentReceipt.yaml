@@ -83,7 +83,6 @@
       ShipmentReceiptRoles:
         itemType: ShipmentReceiptRole
 
-
     references:
       # RejectionReason:
       #   displayName: RejectionReason
@@ -139,7 +138,6 @@
         # columnName: ROLE_TYPE_ID
         # type: id
 
-
       ShipmentReceiptOrderAllocation:
         id:
           name: OrderItemId
@@ -164,4 +162,25 @@
           #   # - 如果 ShipmentReceipt 的 OrderItem 以及 OrderItemSeqId 不为 null，则 IsOrderItemAutoAllocated 为 true；
           #   # - 否则为 false
           #   type: indicator
+
+    methods:
+      UpdateOrderAllocation:
+        isInternal: true
+        parameters:
+          UnallocatedQuantity:
+            type: fixed-point
+          OrderItemAllocations:
+            itemType: OrderItemQuantityAllocationValue
+
+
+valueObjects:
+  OrderItemQuantityAllocationValue:
+    # TODO: 把这个值对象移动到独立的文件？
+    properties:
+      OrderId:
+        type: id
+      OrderItemSeqId:
+        type: id
+      QuantityAllocated:
+        type: fixed-point
 

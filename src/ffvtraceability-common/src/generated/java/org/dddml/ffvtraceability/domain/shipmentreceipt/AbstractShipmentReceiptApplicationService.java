@@ -63,6 +63,10 @@ public abstract class AbstractShipmentReceiptApplicationService implements Shipm
         update(c, ar -> ar.delete(c));
     }
 
+    public void when(ShipmentReceiptCommands.UpdateOrderAllocation c) {
+        update(c, ar -> ar.updateOrderAllocation(c.getUnallocatedQuantity(), c.getOrderItemAllocations(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public ShipmentReceiptState get(String id) {
         ShipmentReceiptState state = getStateRepository().get(id, true);
         return state;
