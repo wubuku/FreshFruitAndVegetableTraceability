@@ -135,6 +135,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createProduct.setStorageConditions(rawItem.getStorageConditions());
         createProduct.setMaterialCompositionDescription(rawItem.getMaterialCompositionDescription());
         createProduct.setCertificationCodes(rawItem.getCertificationCodes());
+        createProduct.setIndividualsPerPackage(rawItem.getIndividualsPerPackage());
 
 
         // Weight related fields
@@ -279,6 +280,9 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             mergePatchProduct.setDiameterUomId(rawItem.getDiameterUomId());
         if (rawItem.getProductDiameter() != null)
             mergePatchProduct.setProductDiameter(rawItem.getProductDiameter());
+        if (rawItem.getIndividualsPerPackage() != null) {
+            mergePatchProduct.setIndividualsPerPackage(rawItem.getIndividualsPerPackage());
+        }
         mergePatchProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(rawItem.getActive()));
 
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());

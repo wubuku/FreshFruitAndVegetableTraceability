@@ -68,6 +68,7 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 p.storage_conditions as storageConditions,
                 p.material_composition_description as materialCompositionDescription,
                 p.active as active,
+                p.individuals_per_package as individualsPerPackage,
                 gi.id_value as gtin,
                 ii.id_value as internalId,
                 priority_party.party_id as supplierId,
