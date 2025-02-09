@@ -3452,6 +3452,7 @@ public class M {
             "handlingInstructions",
             "storageConditions",
             "certificationCodes",
+            "individualsPerPackage",
             "version",
             "createdBy",
             "createdAt",
@@ -3533,6 +3534,7 @@ public class M {
             "String",
             "String",
             "String",
+            "Long",
             "Long",
             "String",
             "OffsetDateTime",
@@ -3696,6 +3698,8 @@ public class M {
         aliasMap.put("StorageConditions", "storageConditions");
         aliasMap.put("certificationCodes", "certificationCodes");
         aliasMap.put("CertificationCodes", "certificationCodes");
+        aliasMap.put("individualsPerPackage", "individualsPerPackage");
+        aliasMap.put("IndividualsPerPackage", "individualsPerPackage");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

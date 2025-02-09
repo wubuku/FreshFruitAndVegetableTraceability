@@ -234,6 +234,9 @@
       <property name="certificationCodes">
         <column name="certification_codes" sql-type="VARCHAR(255)" />
       </property>
+      <property name="individualsPerPackage">
+        <column name="individuals_per_package" sql-type="DECIMAL(20,0)" />
+      </property>
       <subclass name="AbstractProductEvent$SimpleProductStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractProductEvent$SimpleProductStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyProductTypeIdRemoved" column="is_property_product_type_id_removed" />
@@ -306,6 +309,7 @@
         <property name="isPropertyHandlingInstructionsRemoved" column="is_property_handling_instructions_removed" />
         <property name="isPropertyStorageConditionsRemoved" column="is_property_storage_conditions_removed" />
         <property name="isPropertyCertificationCodesRemoved" column="is_property_certification_codes_removed" />
+        <property name="isPropertyIndividualsPerPackageRemoved" column="is_property_individuals_per_package_removed" />
       </subclass>
     </subclass>
   </class>

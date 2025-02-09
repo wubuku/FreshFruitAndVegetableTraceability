@@ -997,6 +997,18 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
             this.certificationCodes = certificationCodes;
         }
 
+        private Long individualsPerPackage;
+
+        public Long getIndividualsPerPackage()
+        {
+            return this.individualsPerPackage;
+        }
+
+        public void setIndividualsPerPackage(Long individualsPerPackage)
+        {
+            this.individualsPerPackage = individualsPerPackage;
+        }
+
         protected AbstractProductStateEvent(ProductEventId eventId) {
             super(eventId);
         }
@@ -1779,6 +1791,16 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
         public void setIsPropertyCertificationCodesRemoved(Boolean removed) {
             this.isPropertyCertificationCodesRemoved = removed;
+        }
+
+        private Boolean isPropertyIndividualsPerPackageRemoved;
+
+        public Boolean getIsPropertyIndividualsPerPackageRemoved() {
+            return this.isPropertyIndividualsPerPackageRemoved;
+        }
+
+        public void setIsPropertyIndividualsPerPackageRemoved(Boolean removed) {
+            this.isPropertyIndividualsPerPackageRemoved = removed;
         }
 
 

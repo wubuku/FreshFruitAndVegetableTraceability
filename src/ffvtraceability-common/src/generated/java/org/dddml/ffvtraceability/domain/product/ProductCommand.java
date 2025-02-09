@@ -328,6 +328,10 @@ public interface ProductCommand extends Command {
 
         void setCertificationCodes(String certificationCodes);
 
+        Long getIndividualsPerPackage();
+
+        void setIndividualsPerPackage(Long individualsPerPackage);
+
     }
 
     interface CreateProduct extends CreateOrMergePatchProduct {
@@ -617,6 +621,10 @@ public interface ProductCommand extends Command {
         Boolean getIsPropertyCertificationCodesRemoved();
 
         void setIsPropertyCertificationCodesRemoved(Boolean removed);
+
+        Boolean getIsPropertyIndividualsPerPackageRemoved();
+
+        void setIsPropertyIndividualsPerPackageRemoved(Boolean removed);
 
 
         GoodIdentificationCommandCollection getGoodIdentificationCommands();

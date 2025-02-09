@@ -159,6 +159,8 @@ public interface ProductState
 
     String getCertificationCodes();
 
+    Long getIndividualsPerPackage();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -313,6 +315,8 @@ public interface ProductState
         void setStorageConditions(String storageConditions);
 
         void setCertificationCodes(String certificationCodes);
+
+        void setIndividualsPerPackage(Long individualsPerPackage);
 
         void setVersion(Long version);
 

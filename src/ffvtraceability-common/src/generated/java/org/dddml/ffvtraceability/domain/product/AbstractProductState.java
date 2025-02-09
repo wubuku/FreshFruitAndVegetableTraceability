@@ -724,6 +724,16 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.certificationCodes = certificationCodes;
     }
 
+    private Long individualsPerPackage;
+
+    public Long getIndividualsPerPackage() {
+        return this.individualsPerPackage;
+    }
+
+    public void setIndividualsPerPackage(Long individualsPerPackage) {
+        this.individualsPerPackage = individualsPerPackage;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -949,6 +959,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setHandlingInstructions(e.getHandlingInstructions());
         this.setStorageConditions(e.getStorageConditions());
         this.setCertificationCodes(e.getCertificationCodes());
+        this.setIndividualsPerPackage(e.getIndividualsPerPackage());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -1033,6 +1044,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setHandlingInstructions(s.getHandlingInstructions());
         this.setStorageConditions(s.getStorageConditions());
         this.setCertificationCodes(s.getCertificationCodes());
+        this.setIndividualsPerPackage(s.getIndividualsPerPackage());
 
         if (s.getGoodIdentifications() != null) {
             Iterable<GoodIdentificationState> iterable;
@@ -1563,6 +1575,13 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             }
         } else {
             this.setCertificationCodes(e.getCertificationCodes());
+        }
+        if (e.getIndividualsPerPackage() == null) {
+            if (e.getIsPropertyIndividualsPerPackageRemoved() != null && e.getIsPropertyIndividualsPerPackageRemoved()) {
+                this.setIndividualsPerPackage(null);
+            }
+        } else {
+            this.setIndividualsPerPackage(e.getIndividualsPerPackage());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

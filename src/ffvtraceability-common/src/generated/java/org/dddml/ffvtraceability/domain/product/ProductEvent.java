@@ -321,6 +321,10 @@ public interface ProductEvent extends Event {
 
         void setCertificationCodes(String certificationCodes);
 
+        Long getIndividualsPerPackage();
+
+        void setIndividualsPerPackage(Long individualsPerPackage);
+
     }
 
     interface ProductStateCreated extends ProductStateEvent
@@ -616,6 +620,10 @@ public interface ProductEvent extends Event {
         Boolean getIsPropertyCertificationCodesRemoved();
 
         void setIsPropertyCertificationCodesRemoved(Boolean removed);
+
+        Boolean getIsPropertyIndividualsPerPackageRemoved();
+
+        void setIsPropertyIndividualsPerPackageRemoved(Boolean removed);
 
 
         Iterable<GoodIdentificationEvent> getGoodIdentificationEvents();

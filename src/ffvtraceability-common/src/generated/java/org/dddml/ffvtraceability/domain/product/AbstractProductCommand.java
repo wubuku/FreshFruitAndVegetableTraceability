@@ -879,6 +879,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
             this.certificationCodes = certificationCodes;
         }
 
+        private Long individualsPerPackage;
+
+        public Long getIndividualsPerPackage()
+        {
+            return this.individualsPerPackage;
+        }
+
+        public void setIndividualsPerPackage(Long individualsPerPackage)
+        {
+            this.individualsPerPackage = individualsPerPackage;
+        }
+
         public GoodIdentificationCommand.CreateGoodIdentification newCreateGoodIdentification()
         {
             AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification c = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
@@ -1769,6 +1781,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
         public void setIsPropertyCertificationCodesRemoved(Boolean removed)
         {
             this.isPropertyCertificationCodesRemoved = removed;
+        }
+
+        private Boolean isPropertyIndividualsPerPackageRemoved;
+
+        public Boolean getIsPropertyIndividualsPerPackageRemoved()
+        {
+            return this.isPropertyIndividualsPerPackageRemoved;
+        }
+
+        public void setIsPropertyIndividualsPerPackageRemoved(Boolean removed)
+        {
+            this.isPropertyIndividualsPerPackageRemoved = removed;
         }
 
 

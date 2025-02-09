@@ -866,6 +866,18 @@ public class ProductStateDto {
         this.certificationCodes = certificationCodes;
     }
 
+    private Long individualsPerPackage;
+
+    public Long getIndividualsPerPackage()
+    {
+        return this.individualsPerPackage;
+    }
+
+    public void setIndividualsPerPackage(Long individualsPerPackage)
+    {
+        this.individualsPerPackage = individualsPerPackage;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -1179,6 +1191,9 @@ public class ProductStateDto {
             }
             if (returnedFieldsContains("CertificationCodes")) {
                 dto.setCertificationCodes(state.getCertificationCodes());
+            }
+            if (returnedFieldsContains("IndividualsPerPackage")) {
+                dto.setIndividualsPerPackage(state.getIndividualsPerPackage());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

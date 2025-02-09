@@ -1060,6 +1060,21 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         this.certificationCodes = certificationCodes;
     }
 
+    /**
+     * Number of individual units in one package (for products counted by individual pieces, e.g., fruits, eggs)
+     */
+    private Long individualsPerPackage;
+
+    public Long getIndividualsPerPackage()
+    {
+        return this.individualsPerPackage;
+    }
+
+    public void setIndividualsPerPackage(Long individualsPerPackage)
+    {
+        this.individualsPerPackage = individualsPerPackage;
+    }
+
 
     private CreateOrMergePatchGoodIdentificationDto[] goodIdentifications = new CreateOrMergePatchGoodIdentificationDto[0];
 
@@ -1913,6 +1928,18 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         this.isPropertyCertificationCodesRemoved = removed;
     }
 
+    private Boolean isPropertyIndividualsPerPackageRemoved;
+
+    public Boolean getIsPropertyIndividualsPerPackageRemoved()
+    {
+        return this.isPropertyIndividualsPerPackageRemoved;
+    }
+
+    public void setIsPropertyIndividualsPerPackageRemoved(Boolean removed)
+    {
+        this.isPropertyIndividualsPerPackageRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchProduct command)
     {
         ((AbstractProductCommandDto) this).copyTo(command);
@@ -1986,6 +2013,7 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setHandlingInstructions(this.getHandlingInstructions());
         command.setStorageConditions(this.getStorageConditions());
         command.setCertificationCodes(this.getCertificationCodes());
+        command.setIndividualsPerPackage(this.getIndividualsPerPackage());
     }
 
     public ProductCommand toCommand()
@@ -2121,6 +2149,7 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setIsPropertyHandlingInstructionsRemoved(this.getIsPropertyHandlingInstructionsRemoved());
         command.setIsPropertyStorageConditionsRemoved(this.getIsPropertyStorageConditionsRemoved());
         command.setIsPropertyCertificationCodesRemoved(this.getIsPropertyCertificationCodesRemoved());
+        command.setIsPropertyIndividualsPerPackageRemoved(this.getIsPropertyIndividualsPerPackageRemoved());
     }
 
     public static class CreateProductDto extends CreateOrMergePatchProductDto implements ProductCommand.CreateProduct

@@ -118,7 +118,9 @@ valueObjects:
         type: description
       CertificationCodes:
         type: description
-
+      IndividualsPerPackage:
+        description: Number of individual units in one package (for products counted by individual pieces, e.g., fruits, eggs)
+        type: numeric
 
 
 services:

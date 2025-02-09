@@ -223,6 +223,9 @@
     <property name="certificationCodes">
       <column name="certification_codes" sql-type="VARCHAR(255)" />
     </property>
+    <property name="individualsPerPackage">
+      <column name="individuals_per_package" sql-type="DECIMAL(20,0)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>
