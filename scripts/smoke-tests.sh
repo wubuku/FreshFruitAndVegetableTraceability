@@ -1067,18 +1067,26 @@ http_code=$(curl -X 'GET' \
 echo "$response"
 check_response $? "$http_code" "Query QA inspections"
 
+# 控制是否重新计算订单 fulfillmentStatus 的开关
+# 默认为 true，可以通过环境变量覆盖
+RECALCULATE_FULFILLMENT=${RECALCULATE_FULFILLMENT:-true}
 
-# 重新计算订单的 fulfillmentStatus
-echo "Recalculating fulfillment status..."
-# 捕获 输出 FULFILLMENT_STATUS
-FULFILLMENT_STATUS=$(curl -X 'POST' \
-  "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}/recalculateFulfillmentStatus" \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -H "X-TenantID: X" \
-  -s \
-  -d '{}' | tr -d '"')
-echo "Order ${ORDER_ID}, fulfillment status: ${FULFILLMENT_STATUS}"
+if [ "$RECALCULATE_FULFILLMENT" = true ]; then
+    echo "Recalculating order fulfillment status..."
+    # 捕获输出 FULFILLMENT_STATUS
+    FULFILLMENT_STATUS=$(curl -X 'POST' \
+      "${API_BASE_URL}/BffPurchaseOrders/${ORDER_ID}/recalculateFulfillmentStatus" \
+      -H 'accept: application/json' \
+      -H 'Content-Type: application/json' \
+      -H "X-TenantID: X" \
+      -s \
+      -d '{}' | tr -d '"')
+    echo "Order ${ORDER_ID}, fulfillment status: ${FULFILLMENT_STATUS}"
+else
+    echo "Skipping fulfillment status recalculation..."
+    # Sleep 15 秒以等待系统处理
+    sleep 15
+fi
 
 # 查询订单，包含行项的履行状态。注意参数 includesItemFulfillments=true
 echo "Querying order item fulfillments..."
@@ -1091,6 +1099,7 @@ response=$(curl -X 'GET' \
 echo "$response"
 # 输出类似：
 # {"orderId":"11CMNR3KCJRZ4PXE95","orderName":"Organic Produce Order","orderDate":"2025-01-12T13:12:53.591547Z","originFacilityId":"F001","memo":"Weekly organic produce order","supplierId":"SUPPLIER_001","supplierName":"Vegetables Farm","createdAt":"2025-01-12T13:12:53.599303Z","orderItems":[{"orderItemSeqId":"2" ...
+# exit 0
 
 # 查询订单行项，包含（当前行项的）履行状态。注意参数 includesFulfillments=true
 # 提取 orderItems 中的 orderItemSeqId

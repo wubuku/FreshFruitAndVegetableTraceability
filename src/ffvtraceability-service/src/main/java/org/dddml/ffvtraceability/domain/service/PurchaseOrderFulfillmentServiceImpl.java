@@ -251,10 +251,10 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
             )).toArray(OrderItemQuantityAllocationValue[]::new);
 
             updateOrderAllocation.setOrderItemAllocations(alValues);
-            updateOrderAllocation.setCommandId(c.getCommandId());
+            updateOrderAllocation.setCommandId(UUID.randomUUID().toString());//
             updateOrderAllocation.setRequesterId(c.getRequesterId());
             shipmentReceiptApplicationService.when(updateOrderAllocation);
-        }
+        } // end for
     }
 
     private String calculateFulfillmentStatus(
