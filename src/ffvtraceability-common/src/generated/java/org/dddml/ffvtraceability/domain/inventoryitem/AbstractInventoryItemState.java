@@ -358,13 +358,13 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         this.protectedDetails = protectedDetails;
     }
 
-    private EntityStateCollection<String, InventoryItemDetailState> details;
+    private EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState> details;
 
-    public EntityStateCollection<String, InventoryItemDetailState> getDetails() {
+    public EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState> getDetails() {
         return this.details;
     }
 
-    public void setDetails(EntityStateCollection<String, InventoryItemDetailState> details) {
+    public void setDetails(EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState> details) {
         this.details = details;
     }
 
@@ -470,7 +470,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         this.setCreatedAt(e.getCreatedAt());
 
         for (InventoryItemDetailEvent.InventoryItemDetailStateCreated innerEvent : e.getInventoryItemDetailEvents()) {
-            InventoryItemDetailState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(((InventoryItemDetailEvent.SqlInventoryItemDetailEvent)innerEvent).getInventoryItemDetailEventId().getInventoryItemDetailSeqId());
+            InventoryItemDetailState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(((InventoryItemDetailEvent.SqlInventoryItemDetailEvent)innerEvent).getInventoryItemDetailEventId().getInventoryItemDetailSeqId());
             ((InventoryItemDetailState.SqlInventoryItemDetailState)innerState).mutate(innerEvent);
         }
     }
@@ -515,7 +515,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
             }
             if (iterable != null) {
                 for (InventoryItemDetailState ss : iterable) {
-                    InventoryItemDetailState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(ss.getInventoryItemDetailSeqId());
+                    InventoryItemDetailState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(ss.getInventoryItemDetailSeqId());
                     ((AbstractInventoryItemDetailState) thisInnerState).merge(ss);
                 }
             }
@@ -524,8 +524,8 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
             if (s.getDetails() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getDetails()).getRemovedStates() != null) {
                     for (InventoryItemDetailState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, InventoryItemDetailState>)s.getDetails()).getRemovedStates()) {
-                        InventoryItemDetailState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(ss.getInventoryItemDetailSeqId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getDetails()).removeState(thisInnerState);
+                        InventoryItemDetailState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(ss.getInventoryItemDetailSeqId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getDetails()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -533,8 +533,8 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
                     Set<String> removedStateIds = new HashSet<>(this.getDetails().stream().map(i -> i.getInventoryItemDetailSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getDetails().forEach(i -> removedStateIds.remove(i.getInventoryItemDetailSeqId()));
                     for (String i : removedStateIds) {
-                        InventoryItemDetailState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getDetails()).removeState(thisInnerState);
+                        InventoryItemDetailState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getDetails()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -733,7 +733,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         this.setUpdatedAt(e.getCreatedAt());
 
         for (InventoryItemDetailEvent innerEvent : e.getInventoryItemDetailEvents()) {
-            InventoryItemDetailState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(((InventoryItemDetailEvent.SqlInventoryItemDetailEvent)innerEvent).getInventoryItemDetailEventId().getInventoryItemDetailSeqId());
+            InventoryItemDetailState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(((InventoryItemDetailEvent.SqlInventoryItemDetailEvent)innerEvent).getInventoryItemDetailEventId().getInventoryItemDetailSeqId());
             ((InventoryItemDetailState.SqlInventoryItemDetailState)innerState).mutate(innerEvent);
         }
     }
@@ -782,7 +782,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
     }
 
 
-    class SimpleInventoryItemDetailStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, InventoryItemDetailState>, Collection<InventoryItemDetailState> {
+    class SimpleInventoryItemDetailStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>, Collection<InventoryItemDetailState> {
 
         @Override
         public InventoryItemDetailState get(String inventoryItemDetailSeqId) {

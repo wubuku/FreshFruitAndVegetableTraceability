@@ -48,6 +48,18 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof PartyContactMechEvent) {
+            PartyContactMechEvent ee = (PartyContactMechEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected PartyContactMechEvent map(PartyContactMechCommand.CreatePartyContactMech c) {
         PartyContactMechEventId stateEventId = new PartyContactMechEventId(c.getPartyContactMechId(), c.getVersion());
         PartyContactMechEvent.PartyContactMechStateCreated e = newPartyContactMechStateCreated(stateEventId);
@@ -123,7 +135,7 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         PartyContactMechPurposeEventId stateEventId = new PartyContactMechPurposeEventId(outerState.getPartyContactMechId(), c.getContactMechPurposeTypeId(), version);
         PartyContactMechPurposeEvent.PartyContactMechPurposeStateCreated e = newPartyContactMechPurposeStateCreated(stateEventId);
-        PartyContactMechPurposeState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>)outerState.getPartyContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
+        PartyContactMechPurposeState s = ((EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState>)outerState.getPartyContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
 
         e.setThruDate(c.getThruDate());
         e.setCreatedBy(c.getRequesterId());
@@ -137,7 +149,7 @@ public abstract class AbstractPartyContactMechAggregate extends AbstractAggregat
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         PartyContactMechPurposeEventId stateEventId = new PartyContactMechPurposeEventId(outerState.getPartyContactMechId(), c.getContactMechPurposeTypeId(), version);
         PartyContactMechPurposeEvent.PartyContactMechPurposeStateMergePatched e = newPartyContactMechPurposeStateMergePatched(stateEventId);
-        PartyContactMechPurposeState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>)outerState.getPartyContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
+        PartyContactMechPurposeState s = ((EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState>)outerState.getPartyContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
 
         e.setThruDate(c.getThruDate());
         e.setIsPropertyThruDateRemoved(c.getIsPropertyThruDateRemoved());

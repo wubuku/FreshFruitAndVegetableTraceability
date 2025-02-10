@@ -35,6 +35,8 @@ public interface OrderAdjustmentTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableOrderAdjustmentTypeState extends OrderAdjustmentTypeState {
@@ -55,6 +57,8 @@ public interface OrderAdjustmentTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

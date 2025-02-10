@@ -43,6 +43,18 @@ public abstract class AbstractAttributeSetInstanceAggregate extends AbstractAggr
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof AttributeSetInstanceEvent) {
+            AttributeSetInstanceEvent ee = (AttributeSetInstanceEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected AttributeSetInstanceEvent map(AttributeSetInstanceCommand.CreateAttributeSetInstance c) {
         AttributeSetInstanceEventId stateEventId = new AttributeSetInstanceEventId(c.getAttributeSetInstanceId(), c.getVersion());
         AttributeSetInstanceEvent.AttributeSetInstanceStateCreated e = newAttributeSetInstanceStateCreated(stateEventId);

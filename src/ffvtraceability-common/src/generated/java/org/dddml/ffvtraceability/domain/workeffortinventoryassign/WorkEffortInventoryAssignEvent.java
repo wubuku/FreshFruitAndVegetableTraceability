@@ -40,6 +40,10 @@ public interface WorkEffortInventoryAssignEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface WorkEffortInventoryAssignStateEvent extends WorkEffortInventoryAssignEvent {
         String getStatusId();
 

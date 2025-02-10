@@ -57,6 +57,8 @@ public interface Gs1ApplicationIdentifierState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     List<Gs1AppIdComponent> getComponents();
 
     String getCommandId();
@@ -101,6 +103,8 @@ public interface Gs1ApplicationIdentifierState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setComponents(List<Gs1AppIdComponent> components);
 

@@ -35,6 +35,8 @@ public interface ContactMechState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     interface MutableContactMechState extends ContactMechState {
         void setContactMechId(String contactMechId);
 
@@ -53,6 +55,8 @@ public interface ContactMechState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
 
         void mutate(Event e);

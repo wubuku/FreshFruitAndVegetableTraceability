@@ -40,6 +40,10 @@ public interface ContactMechEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface ContactMechStateEvent extends ContactMechEvent {
         String getContactMechTypeId();
 

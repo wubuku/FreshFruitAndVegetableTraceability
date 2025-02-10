@@ -31,6 +31,8 @@ public interface AttributeSetInstanceState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableAttributeSetInstanceState extends AttributeSetInstanceState {
@@ -47,6 +49,8 @@ public interface AttributeSetInstanceState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

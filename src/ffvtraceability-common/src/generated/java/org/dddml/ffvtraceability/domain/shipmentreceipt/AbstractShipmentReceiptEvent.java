@@ -66,6 +66,16 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
         this.cteSyncStatusId = cteSyncStatusId;
     }
 
+    private String tenantId;
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     private String createdBy;
 
     public String getCreatedBy() {

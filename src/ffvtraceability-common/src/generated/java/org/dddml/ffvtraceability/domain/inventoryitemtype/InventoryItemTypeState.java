@@ -35,6 +35,8 @@ public interface InventoryItemTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableInventoryItemTypeState extends InventoryItemTypeState {
@@ -55,6 +57,8 @@ public interface InventoryItemTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

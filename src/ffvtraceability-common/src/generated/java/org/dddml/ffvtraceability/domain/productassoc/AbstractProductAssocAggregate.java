@@ -48,6 +48,18 @@ public abstract class AbstractProductAssocAggregate extends AbstractAggregate im
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof ProductAssocEvent) {
+            ProductAssocEvent ee = (ProductAssocEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected ProductAssocEvent map(ProductAssocCommand.CreateProductAssoc c) {
         ProductAssocEventId stateEventId = new ProductAssocEventId(c.getProductAssocId(), c.getVersion());
         ProductAssocEvent.ProductAssocStateCreated e = newProductAssocStateCreated(stateEventId);

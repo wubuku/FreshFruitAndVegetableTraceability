@@ -44,6 +44,16 @@ public abstract class AbstractShipmentEvent extends AbstractEvent implements Shi
         getShipmentEventId().setVersion(version);
     }
 
+    private String tenantId;
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     private String createdBy;
 
     public String getCreatedBy() {

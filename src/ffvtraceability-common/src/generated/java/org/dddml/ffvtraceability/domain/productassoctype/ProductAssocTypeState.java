@@ -35,6 +35,8 @@ public interface ProductAssocTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableProductAssocTypeState extends ProductAssocTypeState {
@@ -55,6 +57,8 @@ public interface ProductAssocTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

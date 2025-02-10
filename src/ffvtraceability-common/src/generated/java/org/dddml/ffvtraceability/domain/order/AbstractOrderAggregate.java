@@ -49,6 +49,18 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof OrderEvent) {
+            OrderEvent ee = (OrderEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected OrderEvent map(OrderCommand.CreateOrder c) {
         OrderEventId stateEventId = new OrderEventId(c.getOrderId(), c.getVersion());
         OrderEvent.OrderStateCreated e = newOrderStateCreated(stateEventId);
@@ -235,7 +247,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderRoleEventId stateEventId = new OrderRoleEventId(outerState.getOrderId(), c.getPartyRoleId(), version);
         OrderRoleEvent.OrderRoleStateCreated e = newOrderRoleStateCreated(stateEventId);
-        OrderRoleState s = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, OrderRoleState>)outerState.getOrderRoles()).getOrAddDefault(c.getPartyRoleId());
+        OrderRoleState s = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState>)outerState.getOrderRoles()).getOrAddDefault(c.getPartyRoleId());
 
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -248,7 +260,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderRoleEventId stateEventId = new OrderRoleEventId(outerState.getOrderId(), c.getPartyRoleId(), version);
         OrderRoleEvent.OrderRoleStateMergePatched e = newOrderRoleStateMergePatched(stateEventId);
-        OrderRoleState s = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, OrderRoleState>)outerState.getOrderRoles()).getOrAddDefault(c.getPartyRoleId());
+        OrderRoleState s = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState>)outerState.getOrderRoles()).getOrAddDefault(c.getPartyRoleId());
 
 
         e.setCreatedBy(c.getRequesterId());
@@ -277,7 +289,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderContactMechEventId stateEventId = new OrderContactMechEventId(outerState.getOrderId(), c.getContactMechPurposeTypeId(), version);
         OrderContactMechEvent.OrderContactMechStateCreated e = newOrderContactMechStateCreated(stateEventId);
-        OrderContactMechState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderContactMechState>)outerState.getOrderContactMechanisms()).getOrAddDefault(c.getContactMechPurposeTypeId());
+        OrderContactMechState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState>)outerState.getOrderContactMechanisms()).getOrAddDefault(c.getContactMechPurposeTypeId());
 
         e.setContactMechId(c.getContactMechId());
         e.setCreatedBy(c.getRequesterId());
@@ -291,7 +303,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderContactMechEventId stateEventId = new OrderContactMechEventId(outerState.getOrderId(), c.getContactMechPurposeTypeId(), version);
         OrderContactMechEvent.OrderContactMechStateMergePatched e = newOrderContactMechStateMergePatched(stateEventId);
-        OrderContactMechState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderContactMechState>)outerState.getOrderContactMechanisms()).getOrAddDefault(c.getContactMechPurposeTypeId());
+        OrderContactMechState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState>)outerState.getOrderContactMechanisms()).getOrAddDefault(c.getContactMechPurposeTypeId());
 
         e.setContactMechId(c.getContactMechId());
         e.setIsPropertyContactMechIdRemoved(c.getIsPropertyContactMechIdRemoved());
@@ -326,7 +338,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderItemEventId stateEventId = new OrderItemEventId(outerState.getOrderId(), c.getOrderItemSeqId(), version);
         OrderItemEvent.OrderItemStateCreated e = newOrderItemStateCreated(stateEventId);
-        OrderItemState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)outerState.getOrderItems()).getOrAddDefault(c.getOrderItemSeqId());
+        OrderItemState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderItemState>)outerState.getOrderItems()).getOrAddDefault(c.getOrderItemSeqId());
 
         e.setExternalId(c.getExternalId());
         e.setOrderItemTypeId(c.getOrderItemTypeId());
@@ -381,7 +393,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderItemEventId stateEventId = new OrderItemEventId(outerState.getOrderId(), c.getOrderItemSeqId(), version);
         OrderItemEvent.OrderItemStateMergePatched e = newOrderItemStateMergePatched(stateEventId);
-        OrderItemState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)outerState.getOrderItems()).getOrAddDefault(c.getOrderItemSeqId());
+        OrderItemState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderItemState>)outerState.getOrderItems()).getOrAddDefault(c.getOrderItemSeqId());
 
         e.setExternalId(c.getExternalId());
         e.setOrderItemTypeId(c.getOrderItemTypeId());
@@ -506,7 +518,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderAdjustmentEventId stateEventId = new OrderAdjustmentEventId(outerState.getOrderId(), c.getOrderAdjustmentId(), version);
         OrderAdjustmentEvent.OrderAdjustmentStateCreated e = newOrderAdjustmentStateCreated(stateEventId);
-        OrderAdjustmentState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>)outerState.getOrderAdjustments()).getOrAddDefault(c.getOrderAdjustmentId());
+        OrderAdjustmentState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState>)outerState.getOrderAdjustments()).getOrAddDefault(c.getOrderAdjustmentId());
 
         e.setOrderAdjustmentTypeId(c.getOrderAdjustmentTypeId());
         e.setOrderItemSeqId(c.getOrderItemSeqId());
@@ -549,7 +561,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderAdjustmentEventId stateEventId = new OrderAdjustmentEventId(outerState.getOrderId(), c.getOrderAdjustmentId(), version);
         OrderAdjustmentEvent.OrderAdjustmentStateMergePatched e = newOrderAdjustmentStateMergePatched(stateEventId);
-        OrderAdjustmentState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>)outerState.getOrderAdjustments()).getOrAddDefault(c.getOrderAdjustmentId());
+        OrderAdjustmentState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState>)outerState.getOrderAdjustments()).getOrAddDefault(c.getOrderAdjustmentId());
 
         e.setOrderAdjustmentTypeId(c.getOrderAdjustmentTypeId());
         e.setOrderItemSeqId(c.getOrderItemSeqId());
@@ -638,7 +650,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderShipGroupEventId stateEventId = new OrderShipGroupEventId(outerState.getOrderId(), c.getShipGroupSeqId(), version);
         OrderShipGroupEvent.OrderShipGroupStateCreated e = newOrderShipGroupStateCreated(stateEventId);
-        OrderShipGroupState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderShipGroupState>)outerState.getOrderShipGroups()).getOrAddDefault(c.getShipGroupSeqId());
+        OrderShipGroupState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState>)outerState.getOrderShipGroups()).getOrAddDefault(c.getShipGroupSeqId());
 
         e.setShipmentMethodTypeId(c.getShipmentMethodTypeId());
         e.setSupplierPartyId(c.getSupplierPartyId());
@@ -681,7 +693,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderShipGroupEventId stateEventId = new OrderShipGroupEventId(outerState.getOrderId(), c.getShipGroupSeqId(), version);
         OrderShipGroupEvent.OrderShipGroupStateMergePatched e = newOrderShipGroupStateMergePatched(stateEventId);
-        OrderShipGroupState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderShipGroupState>)outerState.getOrderShipGroups()).getOrAddDefault(c.getShipGroupSeqId());
+        OrderShipGroupState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState>)outerState.getOrderShipGroups()).getOrAddDefault(c.getShipGroupSeqId());
 
         e.setShipmentMethodTypeId(c.getShipmentMethodTypeId());
         e.setSupplierPartyId(c.getSupplierPartyId());
@@ -762,7 +774,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderItemShipGroupAssociationEventId stateEventId = new OrderItemShipGroupAssociationEventId(outerState.getOrderId(), outerState.getShipGroupSeqId(), c.getOrderItemSeqId(), version);
         OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateCreated e = newOrderItemShipGroupAssociationStateCreated(stateEventId);
-        OrderItemShipGroupAssociationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)outerState.getOrderItemShipGroupAssociations()).getOrAddDefault(c.getOrderItemSeqId());
+        OrderItemShipGroupAssociationState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderItemShipGroupAssociationState>)outerState.getOrderItemShipGroupAssociations()).getOrAddDefault(c.getOrderItemSeqId());
 
         e.setQuantity(c.getQuantity());
         e.setCancelQuantity(c.getCancelQuantity());
@@ -777,7 +789,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         OrderItemShipGroupAssociationEventId stateEventId = new OrderItemShipGroupAssociationEventId(outerState.getOrderId(), outerState.getShipGroupSeqId(), c.getOrderItemSeqId(), version);
         OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateMergePatched e = newOrderItemShipGroupAssociationStateMergePatched(stateEventId);
-        OrderItemShipGroupAssociationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)outerState.getOrderItemShipGroupAssociations()).getOrAddDefault(c.getOrderItemSeqId());
+        OrderItemShipGroupAssociationState s = ((EntityStateCollection.MutableEntityStateCollection<String, OrderItemShipGroupAssociationState>)outerState.getOrderItemShipGroupAssociations()).getOrAddDefault(c.getOrderItemSeqId());
 
         e.setQuantity(c.getQuantity());
         e.setCancelQuantity(c.getCancelQuantity());

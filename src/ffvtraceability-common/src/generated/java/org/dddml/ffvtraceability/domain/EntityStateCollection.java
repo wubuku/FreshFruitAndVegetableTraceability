@@ -25,7 +25,7 @@ public interface EntityStateCollection<TId, TState> extends Iterable<TState> {
 
     Stream<TState> stream();
 
-    interface ModifiableEntityStateCollection<TId, TState> extends EntityStateCollection<TId, TState> {
+    interface MutableEntityStateCollection<TId, TState> extends EntityStateCollection<TId, TState> {
 
         /**
          * Get existed entity state or add new default entity state.
@@ -37,9 +37,20 @@ public interface EntityStateCollection<TId, TState> extends Iterable<TState> {
         boolean add(TState e);
 
         boolean removeState(TState state);
+
+        default <TMutableState extends TState> TMutableState getOrAddMutableState(TId entityId) {
+            return (TMutableState) getOrAddDefault(entityId);
+        }
+
+        default boolean removeById(TId entityId) {
+            TState s = get(entityId);
+            if (s == null) { return false; }
+            return removeState(s);
+        }
+
     }
 
-    interface RemovalLoggedEntityStateCollection<TId, TState> extends ModifiableEntityStateCollection<TId, TState> {
+    interface RemovalLoggedEntityStateCollection<TId, TState> extends MutableEntityStateCollection<TId, TState> {
         Collection<TState> getRemovedStates();
     }
 }

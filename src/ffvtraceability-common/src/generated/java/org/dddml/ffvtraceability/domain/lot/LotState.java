@@ -53,6 +53,8 @@ public interface LotState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     EntityStateCollection<String, LotIdentificationState> getLotIdentifications();
 
     interface MutableLotState extends LotState {
@@ -91,6 +93,10 @@ public interface LotState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState> getLotIdentifications();
 
 
         void mutate(Event e);

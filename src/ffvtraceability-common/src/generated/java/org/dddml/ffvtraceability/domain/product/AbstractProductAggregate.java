@@ -48,6 +48,18 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof ProductEvent) {
+            ProductEvent ee = (ProductEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected ProductEvent map(ProductCommand.CreateProduct c) {
         ProductEventId stateEventId = new ProductEventId(c.getProductId(), c.getVersion());
         ProductEvent.ProductStateCreated e = newProductStateCreated(stateEventId);
@@ -316,7 +328,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         GoodIdentificationEventId stateEventId = new GoodIdentificationEventId(outerState.getProductId(), c.getGoodIdentificationTypeId(), version);
         GoodIdentificationEvent.GoodIdentificationStateCreated e = newGoodIdentificationStateCreated(stateEventId);
-        GoodIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, GoodIdentificationState>)outerState.getGoodIdentifications()).getOrAddDefault(c.getGoodIdentificationTypeId());
+        GoodIdentificationState s = ((EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState>)outerState.getGoodIdentifications()).getOrAddDefault(c.getGoodIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
         e.setCreatedBy(c.getRequesterId());
@@ -330,7 +342,7 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         GoodIdentificationEventId stateEventId = new GoodIdentificationEventId(outerState.getProductId(), c.getGoodIdentificationTypeId(), version);
         GoodIdentificationEvent.GoodIdentificationStateMergePatched e = newGoodIdentificationStateMergePatched(stateEventId);
-        GoodIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, GoodIdentificationState>)outerState.getGoodIdentifications()).getOrAddDefault(c.getGoodIdentificationTypeId());
+        GoodIdentificationState s = ((EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState>)outerState.getGoodIdentifications()).getOrAddDefault(c.getGoodIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
         e.setIsPropertyIdValueRemoved(c.getIsPropertyIdValueRemoved());

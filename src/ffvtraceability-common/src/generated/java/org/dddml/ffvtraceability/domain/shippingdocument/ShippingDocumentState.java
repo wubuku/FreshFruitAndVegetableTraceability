@@ -39,6 +39,8 @@ public interface ShippingDocumentState
 
     Boolean getDeleted();
 
+    String getTenantId();
+
     interface MutableShippingDocumentState extends ShippingDocumentState {
         void setDocumentId(String documentId);
 
@@ -61,6 +63,8 @@ public interface ShippingDocumentState
         void setUpdatedAt(OffsetDateTime updatedAt);
 
         void setDeleted(Boolean deleted);
+
+        void setTenantId(String tenantId);
 
 
         void mutate(Event e);

@@ -40,6 +40,10 @@ public interface WorkEffortEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface WorkEffortStateEvent extends WorkEffortEvent {
         String getWorkEffortTypeId();
 

@@ -40,6 +40,10 @@ public interface FacilityContactMechEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface FacilityContactMechStateEvent extends FacilityContactMechEvent {
         OffsetDateTime getThruDate();
 

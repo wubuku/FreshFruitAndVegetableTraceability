@@ -48,6 +48,18 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof FacilityEvent) {
+            FacilityEvent ee = (FacilityEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected FacilityEvent map(FacilityCommand.CreateFacility c) {
         FacilityEventId stateEventId = new FacilityEventId(c.getFacilityId(), c.getVersion());
         FacilityEvent.FacilityStateCreated e = newFacilityStateCreated(stateEventId);
@@ -162,7 +174,7 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         FacilityIdentificationEventId stateEventId = new FacilityIdentificationEventId(outerState.getFacilityId(), c.getFacilityIdentificationTypeId(), version);
         FacilityIdentificationEvent.FacilityIdentificationStateCreated e = newFacilityIdentificationStateCreated(stateEventId);
-        FacilityIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)outerState.getFacilityIdentifications()).getOrAddDefault(c.getFacilityIdentificationTypeId());
+        FacilityIdentificationState s = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState>)outerState.getFacilityIdentifications()).getOrAddDefault(c.getFacilityIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
         e.setCreatedBy(c.getRequesterId());
@@ -176,7 +188,7 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         FacilityIdentificationEventId stateEventId = new FacilityIdentificationEventId(outerState.getFacilityId(), c.getFacilityIdentificationTypeId(), version);
         FacilityIdentificationEvent.FacilityIdentificationStateMergePatched e = newFacilityIdentificationStateMergePatched(stateEventId);
-        FacilityIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)outerState.getFacilityIdentifications()).getOrAddDefault(c.getFacilityIdentificationTypeId());
+        FacilityIdentificationState s = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState>)outerState.getFacilityIdentifications()).getOrAddDefault(c.getFacilityIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
         e.setIsPropertyIdValueRemoved(c.getIsPropertyIdValueRemoved());

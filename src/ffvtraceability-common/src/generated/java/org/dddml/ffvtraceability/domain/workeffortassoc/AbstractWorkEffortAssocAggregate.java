@@ -48,6 +48,18 @@ public abstract class AbstractWorkEffortAssocAggregate extends AbstractAggregate
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof WorkEffortAssocEvent) {
+            WorkEffortAssocEvent ee = (WorkEffortAssocEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected WorkEffortAssocEvent map(WorkEffortAssocCommand.CreateWorkEffortAssoc c) {
         WorkEffortAssocEventId stateEventId = new WorkEffortAssocEventId(c.getWorkEffortAssocId(), c.getVersion());
         WorkEffortAssocEvent.WorkEffortAssocStateCreated e = newWorkEffortAssocStateCreated(stateEventId);

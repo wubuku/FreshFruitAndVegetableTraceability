@@ -35,6 +35,8 @@ public interface WorkEffortGoodStandardTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableWorkEffortGoodStandardTypeState extends WorkEffortGoodStandardTypeState {
@@ -55,6 +57,8 @@ public interface WorkEffortGoodStandardTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

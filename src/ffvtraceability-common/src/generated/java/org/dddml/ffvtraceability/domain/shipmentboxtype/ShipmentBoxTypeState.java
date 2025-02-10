@@ -47,6 +47,8 @@ public interface ShipmentBoxTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     interface MutableShipmentBoxTypeState extends ShipmentBoxTypeState {
         void setShipmentBoxTypeId(String shipmentBoxTypeId);
 
@@ -77,6 +79,8 @@ public interface ShipmentBoxTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
 
         void mutate(Event e);

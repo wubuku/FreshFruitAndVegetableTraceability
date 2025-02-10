@@ -48,6 +48,18 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof InventoryItemEvent) {
+            InventoryItemEvent ee = (InventoryItemEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected InventoryItemEvent map(InventoryItemCommand.CreateInventoryItem c) {
         InventoryItemEventId stateEventId = new InventoryItemEventId(c.getInventoryItemId(), c.getVersion());
         InventoryItemEvent.InventoryItemStateCreated e = newInventoryItemStateCreated(stateEventId);
@@ -172,7 +184,7 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         InventoryItemDetailEventId stateEventId = new InventoryItemDetailEventId(outerState.getInventoryItemId(), c.getInventoryItemDetailSeqId(), version);
         InventoryItemDetailEvent.InventoryItemDetailStateCreated e = newInventoryItemDetailStateCreated(stateEventId);
-        InventoryItemDetailState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, InventoryItemDetailState>)outerState.getDetails()).getOrAddDefault(c.getInventoryItemDetailSeqId());
+        InventoryItemDetailState s = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)outerState.getDetails()).getOrAddDefault(c.getInventoryItemDetailSeqId());
 
         e.setEffectiveDate(c.getEffectiveDate());
         e.setQuantityOnHandDiff(c.getQuantityOnHandDiff());

@@ -43,6 +43,8 @@ public interface UomState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     interface MutableUomState extends UomState {
         void setUomId(String uomId);
 
@@ -69,6 +71,8 @@ public interface UomState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
 
         void mutate(Event e);

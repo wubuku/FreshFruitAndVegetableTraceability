@@ -300,13 +300,13 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.protectedShipmentReceiptRoles = protectedShipmentReceiptRoles;
     }
 
-    private EntityStateCollection<PartyRoleId, ShipmentReceiptRoleState> shipmentReceiptRoles;
+    private EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState> shipmentReceiptRoles;
 
-    public EntityStateCollection<PartyRoleId, ShipmentReceiptRoleState> getShipmentReceiptRoles() {
+    public EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState> getShipmentReceiptRoles() {
         return this.shipmentReceiptRoles;
     }
 
-    public void setShipmentReceiptRoles(EntityStateCollection<PartyRoleId, ShipmentReceiptRoleState> shipmentReceiptRoles) {
+    public void setShipmentReceiptRoles(EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState> shipmentReceiptRoles) {
         this.shipmentReceiptRoles = shipmentReceiptRoles;
     }
 
@@ -320,13 +320,13 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.protectedOrderAllocations = protectedOrderAllocations;
     }
 
-    private EntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> orderAllocations;
+    private EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> orderAllocations;
 
-    public EntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> getOrderAllocations() {
+    public EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> getOrderAllocations() {
         return this.orderAllocations;
     }
 
-    public void setOrderAllocations(EntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> orderAllocations) {
+    public void setOrderAllocations(EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> orderAllocations) {
         this.orderAllocations = orderAllocations;
     }
 
@@ -432,11 +432,11 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setCreatedAt(e.getCreatedAt());
 
         for (ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateCreated innerEvent : e.getShipmentReceiptRoleEvents()) {
-            ShipmentReceiptRoleState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)innerEvent).getShipmentReceiptRoleEventId().getPartyRoleId());
+            ShipmentReceiptRoleState innerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)innerEvent).getShipmentReceiptRoleEventId().getPartyRoleId());
             ((ShipmentReceiptRoleState.SqlShipmentReceiptRoleState)innerState).mutate(innerEvent);
         }
         for (ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated innerEvent : e.getShipmentReceiptOrderAllocationEvents()) {
-            ShipmentReceiptOrderAllocationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)innerEvent).getShipmentReceiptOrderAllocationEventId().getOrderItemId());
+            ShipmentReceiptOrderAllocationState innerState = ((EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)innerEvent).getShipmentReceiptOrderAllocationEventId().getOrderItemId());
             ((ShipmentReceiptOrderAllocationState.SqlShipmentReceiptOrderAllocationState)innerState).mutate(innerEvent);
         }
     }
@@ -474,7 +474,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
             }
             if (iterable != null) {
                 for (ShipmentReceiptRoleState ss : iterable) {
-                    ShipmentReceiptRoleState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(ss.getPartyRoleId());
+                    ShipmentReceiptRoleState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(ss.getPartyRoleId());
                     ((AbstractShipmentReceiptRoleState) thisInnerState).merge(ss);
                 }
             }
@@ -483,8 +483,8 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
             if (s.getShipmentReceiptRoles() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getShipmentReceiptRoles()).getRemovedStates() != null) {
                     for (ShipmentReceiptRoleState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)s.getShipmentReceiptRoles()).getRemovedStates()) {
-                        ShipmentReceiptRoleState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(ss.getPartyRoleId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(thisInnerState);
+                        ShipmentReceiptRoleState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(ss.getPartyRoleId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -492,8 +492,8 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
                     Set<PartyRoleId> removedStateIds = new HashSet<>(this.getShipmentReceiptRoles().stream().map(i -> i.getPartyRoleId()).collect(java.util.stream.Collectors.toList()));
                     s.getShipmentReceiptRoles().forEach(i -> removedStateIds.remove(i.getPartyRoleId()));
                     for (PartyRoleId i : removedStateIds) {
-                        ShipmentReceiptRoleState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(thisInnerState);
+                        ShipmentReceiptRoleState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -510,7 +510,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
             }
             if (iterable != null) {
                 for (ShipmentReceiptOrderAllocationState ss : iterable) {
-                    ShipmentReceiptOrderAllocationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(ss.getOrderItemId());
+                    ShipmentReceiptOrderAllocationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(ss.getOrderItemId());
                     ((AbstractShipmentReceiptOrderAllocationState) thisInnerState).merge(ss);
                 }
             }
@@ -519,8 +519,8 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
             if (s.getOrderAllocations() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getOrderAllocations()).getRemovedStates() != null) {
                     for (ShipmentReceiptOrderAllocationState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)s.getOrderAllocations()).getRemovedStates()) {
-                        ShipmentReceiptOrderAllocationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(ss.getOrderItemId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAllocations()).removeState(thisInnerState);
+                        ShipmentReceiptOrderAllocationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(ss.getOrderItemId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderAllocations()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -528,8 +528,8 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
                     Set<OrderItemId> removedStateIds = new HashSet<>(this.getOrderAllocations().stream().map(i -> i.getOrderItemId()).collect(java.util.stream.Collectors.toList()));
                     s.getOrderAllocations().forEach(i -> removedStateIds.remove(i.getOrderItemId()));
                     for (OrderItemId i : removedStateIds) {
-                        ShipmentReceiptOrderAllocationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAllocations()).removeState(thisInnerState);
+                        ShipmentReceiptOrderAllocationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderAllocations()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -679,15 +679,15 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setUpdatedAt(e.getCreatedAt());
 
         for (ShipmentReceiptRoleEvent innerEvent : e.getShipmentReceiptRoleEvents()) {
-            ShipmentReceiptRoleState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)innerEvent).getShipmentReceiptRoleEventId().getPartyRoleId());
+            ShipmentReceiptRoleState innerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)this.getShipmentReceiptRoles()).getOrAddDefault(((ShipmentReceiptRoleEvent.SqlShipmentReceiptRoleEvent)innerEvent).getShipmentReceiptRoleEventId().getPartyRoleId());
             ((ShipmentReceiptRoleState.SqlShipmentReceiptRoleState)innerState).mutate(innerEvent);
         }
         for (ShipmentReceiptOrderAllocationEvent innerEvent : e.getShipmentReceiptOrderAllocationEvents()) {
-            ShipmentReceiptOrderAllocationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)innerEvent).getShipmentReceiptOrderAllocationEventId().getOrderItemId());
+            ShipmentReceiptOrderAllocationState innerState = ((EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)this.getOrderAllocations()).getOrAddDefault(((ShipmentReceiptOrderAllocationEvent.SqlShipmentReceiptOrderAllocationEvent)innerEvent).getShipmentReceiptOrderAllocationEventId().getOrderItemId());
             ((ShipmentReceiptOrderAllocationState.SqlShipmentReceiptOrderAllocationState)innerState).mutate(innerEvent);
             if (innerEvent instanceof ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved) {
                 //ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved removed = (ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAllocations()).removeState(innerState);
+                ((EntityStateCollection.MutableEntityStateCollection)this.getOrderAllocations()).removeState(innerState);
             }
         }
     }
@@ -700,10 +700,10 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setUpdatedAt(e.getCreatedAt());
 
         for (ShipmentReceiptRoleState innerState : this.getShipmentReceiptRoles()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(innerState);
+            ((EntityStateCollection.MutableEntityStateCollection)this.getShipmentReceiptRoles()).removeState(innerState);
         }
         for (ShipmentReceiptOrderAllocationState innerState : this.getOrderAllocations()) {
-            ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAllocations()).removeState(innerState);
+            ((EntityStateCollection.MutableEntityStateCollection)this.getOrderAllocations()).removeState(innerState);
         
             ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateRemoved innerE = e.newShipmentReceiptOrderAllocationStateRemoved(innerState.getOrderItemId());
             innerE.setCreatedAt(e.getCreatedAt());
@@ -785,7 +785,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
     }
 
 
-    class SimpleShipmentReceiptRoleStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>, Collection<ShipmentReceiptRoleState> {
+    class SimpleShipmentReceiptRoleStateCollection implements EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>, Collection<ShipmentReceiptRoleState> {
 
         @Override
         public ShipmentReceiptRoleState get(PartyRoleId partyRoleId) {
@@ -906,7 +906,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         }
     }
 
-    class SimpleShipmentReceiptOrderAllocationStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>, Collection<ShipmentReceiptOrderAllocationState> {
+    class SimpleShipmentReceiptOrderAllocationStateCollection implements EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>, Collection<ShipmentReceiptOrderAllocationState> {
 
         @Override
         public ShipmentReceiptOrderAllocationState get(OrderItemId orderItemId) {

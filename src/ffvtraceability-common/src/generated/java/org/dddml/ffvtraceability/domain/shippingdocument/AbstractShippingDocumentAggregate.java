@@ -53,6 +53,18 @@ public abstract class AbstractShippingDocumentAggregate extends AbstractAggregat
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof ShippingDocumentEvent) {
+            ShippingDocumentEvent ee = (ShippingDocumentEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected ShippingDocumentEvent map(ShippingDocumentCommand.CreateShippingDocument c) {
         ShippingDocumentEventId stateEventId = new ShippingDocumentEventId(c.getDocumentId(), c.getVersion());
         ShippingDocumentEvent.ShippingDocumentStateCreated e = newShippingDocumentStateCreated(stateEventId);

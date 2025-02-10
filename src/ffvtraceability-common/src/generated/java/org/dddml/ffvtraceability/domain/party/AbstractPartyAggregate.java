@@ -48,6 +48,18 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof PartyEvent) {
+            PartyEvent ee = (PartyEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected PartyEvent map(PartyCommand.CreateParty c) {
         if(PartyTypeId.PARTY.equals(c.getPartyTypeId())) {
             return mapToPartyEvent(c);
@@ -587,7 +599,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         PartyIdentificationEventId stateEventId = new PartyIdentificationEventId(outerState.getPartyId(), c.getPartyIdentificationTypeId(), version);
         PartyIdentificationEvent.PartyIdentificationStateCreated e = newPartyIdentificationStateCreated(stateEventId);
-        PartyIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyIdentificationState>)outerState.getPartyIdentifications()).getOrAddDefault(c.getPartyIdentificationTypeId());
+        PartyIdentificationState s = ((EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState>)outerState.getPartyIdentifications()).getOrAddDefault(c.getPartyIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
         e.setVerified(c.getVerified());
@@ -602,7 +614,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         PartyIdentificationEventId stateEventId = new PartyIdentificationEventId(outerState.getPartyId(), c.getPartyIdentificationTypeId(), version);
         PartyIdentificationEvent.PartyIdentificationStateMergePatched e = newPartyIdentificationStateMergePatched(stateEventId);
-        PartyIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyIdentificationState>)outerState.getPartyIdentifications()).getOrAddDefault(c.getPartyIdentificationTypeId());
+        PartyIdentificationState s = ((EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState>)outerState.getPartyIdentifications()).getOrAddDefault(c.getPartyIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
         e.setVerified(c.getVerified());

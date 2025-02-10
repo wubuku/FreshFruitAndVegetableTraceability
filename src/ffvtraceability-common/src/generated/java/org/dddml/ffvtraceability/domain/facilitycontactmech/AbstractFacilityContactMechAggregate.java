@@ -48,6 +48,18 @@ public abstract class AbstractFacilityContactMechAggregate extends AbstractAggre
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof FacilityContactMechEvent) {
+            FacilityContactMechEvent ee = (FacilityContactMechEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected FacilityContactMechEvent map(FacilityContactMechCommand.CreateFacilityContactMech c) {
         FacilityContactMechEventId stateEventId = new FacilityContactMechEventId(c.getFacilityContactMechId(), c.getVersion());
         FacilityContactMechEvent.FacilityContactMechStateCreated e = newFacilityContactMechStateCreated(stateEventId);
@@ -108,7 +120,7 @@ public abstract class AbstractFacilityContactMechAggregate extends AbstractAggre
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         FacilityContactMechPurposeEventId stateEventId = new FacilityContactMechPurposeEventId(outerState.getFacilityContactMechId(), c.getContactMechPurposeTypeId(), version);
         FacilityContactMechPurposeEvent.FacilityContactMechPurposeStateCreated e = newFacilityContactMechPurposeStateCreated(stateEventId);
-        FacilityContactMechPurposeState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityContactMechPurposeState>)outerState.getFacilityContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
+        FacilityContactMechPurposeState s = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState>)outerState.getFacilityContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
 
         e.setThruDate(c.getThruDate());
         e.setCreatedBy(c.getRequesterId());
@@ -122,7 +134,7 @@ public abstract class AbstractFacilityContactMechAggregate extends AbstractAggre
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         FacilityContactMechPurposeEventId stateEventId = new FacilityContactMechPurposeEventId(outerState.getFacilityContactMechId(), c.getContactMechPurposeTypeId(), version);
         FacilityContactMechPurposeEvent.FacilityContactMechPurposeStateMergePatched e = newFacilityContactMechPurposeStateMergePatched(stateEventId);
-        FacilityContactMechPurposeState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityContactMechPurposeState>)outerState.getFacilityContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
+        FacilityContactMechPurposeState s = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState>)outerState.getFacilityContactMechPurposes()).getOrAddDefault(c.getContactMechPurposeTypeId());
 
         e.setThruDate(c.getThruDate());
         e.setIsPropertyThruDateRemoved(c.getIsPropertyThruDateRemoved());

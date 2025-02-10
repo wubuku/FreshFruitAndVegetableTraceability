@@ -35,6 +35,8 @@ public interface OrderItemTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableOrderItemTypeState extends OrderItemTypeState {
@@ -55,6 +57,8 @@ public interface OrderItemTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

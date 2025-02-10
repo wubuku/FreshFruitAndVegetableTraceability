@@ -138,13 +138,13 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.protectedComments = protectedComments;
     }
 
-    private EntityStateCollection<Long, CommentState> comments;
+    private EntityStateCollection.MutableEntityStateCollection<Long, CommentState> comments;
 
-    public EntityStateCollection<Long, CommentState> getComments() {
+    public EntityStateCollection.MutableEntityStateCollection<Long, CommentState> getComments() {
         return this.comments;
     }
 
-    public void setComments(EntityStateCollection<Long, CommentState> comments) {
+    public void setComments(EntityStateCollection.MutableEntityStateCollection<Long, CommentState> comments) {
         this.comments = comments;
     }
 
@@ -230,7 +230,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setCreatedAt(e.getCreatedAt());
 
         for (CommentEvent.CommentStateCreated innerEvent : e.getCommentEvents()) {
-            CommentState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(((CommentEvent.SqlCommentEvent)innerEvent).getCommentEventId().getCommentSeqId());
+            CommentState innerState = ((EntityStateCollection.MutableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(((CommentEvent.SqlCommentEvent)innerEvent).getCommentEventId().getCommentSeqId());
             ((CommentState.SqlCommentState)innerState).mutate(innerEvent);
         }
     }
@@ -253,7 +253,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
             }
             if (iterable != null) {
                 for (CommentState ss : iterable) {
-                    CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
+                    CommentState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
                     ((AbstractCommentState) thisInnerState).merge(ss);
                 }
             }
@@ -262,8 +262,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
             if (s.getComments() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getComments()).getRemovedStates() != null) {
                     for (CommentState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<Long, CommentState>)s.getComments()).getRemovedStates()) {
-                        CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getComments()).removeState(thisInnerState);
+                        CommentState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getComments()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -271,8 +271,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
                     Set<Long> removedStateIds = new HashSet<>(this.getComments().stream().map(i -> i.getCommentSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getComments().forEach(i -> removedStateIds.remove(i.getCommentSeqId()));
                     for (Long i : removedStateIds) {
-                        CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getComments()).removeState(thisInnerState);
+                        CommentState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getComments()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -317,7 +317,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedAt(e.getCreatedAt());
 
         for (CommentEvent innerEvent : e.getCommentEvents()) {
-            CommentState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(((CommentEvent.SqlCommentEvent)innerEvent).getCommentEventId().getCommentSeqId());
+            CommentState innerState = ((EntityStateCollection.MutableEntityStateCollection<Long, CommentState>)this.getComments()).getOrAddDefault(((CommentEvent.SqlCommentEvent)innerEvent).getCommentEventId().getCommentSeqId());
             ((CommentState.SqlCommentState)innerState).mutate(innerEvent);
         }
     }
@@ -389,7 +389,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
     }
 
 
-    class SimpleCommentStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<Long, CommentState>, Collection<CommentState> {
+    class SimpleCommentStateCollection implements EntityStateCollection.MutableEntityStateCollection<Long, CommentState>, Collection<CommentState> {
 
         @Override
         public CommentState get(Long commentSeqId) {

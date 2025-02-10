@@ -44,6 +44,16 @@ public abstract class AbstractUomTypeEvent extends AbstractEvent implements UomT
         getUomTypeEventId().setVersion(version);
     }
 
+    private String tenantId;
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     private String createdBy;
 
     public String getCreatedBy() {

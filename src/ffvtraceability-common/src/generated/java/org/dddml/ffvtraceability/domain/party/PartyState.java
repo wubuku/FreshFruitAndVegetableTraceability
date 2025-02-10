@@ -47,6 +47,8 @@ public interface PartyState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     EntityStateCollection<String, PartyIdentificationState> getPartyIdentifications();
 
     interface MutablePartyState extends PartyState {
@@ -79,6 +81,10 @@ public interface PartyState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState> getPartyIdentifications();
 
 
         void mutate(Event e);

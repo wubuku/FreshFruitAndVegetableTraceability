@@ -71,6 +71,8 @@ public interface FacilityState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     EntityStateCollection<String, FacilityIdentificationState> getFacilityIdentifications();
 
     interface MutableFacilityState extends FacilityState {
@@ -127,6 +129,10 @@ public interface FacilityState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState> getFacilityIdentifications();
 
 
         void mutate(Event e);

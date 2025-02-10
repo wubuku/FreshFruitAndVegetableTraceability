@@ -171,6 +171,8 @@ public interface ProductState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     EntityStateCollection<String, GoodIdentificationState> getGoodIdentifications();
 
     interface MutableProductState extends ProductState {
@@ -327,6 +329,10 @@ public interface ProductState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState> getGoodIdentifications();
 
 
         void mutate(Event e);

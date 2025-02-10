@@ -43,6 +43,8 @@ public interface GeoPointState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableGeoPointState extends GeoPointState {
@@ -71,6 +73,8 @@ public interface GeoPointState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

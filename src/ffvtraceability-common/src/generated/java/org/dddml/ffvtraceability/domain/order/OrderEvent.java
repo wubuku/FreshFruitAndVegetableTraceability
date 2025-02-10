@@ -41,6 +41,10 @@ public interface OrderEvent extends Event, OrderFulfillmentSyncable {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface OrderStateEvent extends OrderEvent {
         String getOrderTypeId();
 

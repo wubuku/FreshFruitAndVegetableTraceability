@@ -48,6 +48,18 @@ public abstract class AbstractProductCategoryAggregate extends AbstractAggregate
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof ProductCategoryEvent) {
+            ProductCategoryEvent ee = (ProductCategoryEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected ProductCategoryEvent map(ProductCategoryCommand.CreateProductCategory c) {
         ProductCategoryEventId stateEventId = new ProductCategoryEventId(c.getProductCategoryId(), c.getVersion());
         ProductCategoryEvent.ProductCategoryStateCreated e = newProductCategoryStateCreated(stateEventId);

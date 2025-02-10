@@ -35,6 +35,8 @@ public interface StatusTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableStatusTypeState extends StatusTypeState {
@@ -55,6 +57,8 @@ public interface StatusTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

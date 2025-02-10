@@ -48,6 +48,18 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof LotEvent) {
+            LotEvent ee = (LotEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected LotEvent map(LotCommand.CreateLot c) {
         LotEventId stateEventId = new LotEventId(c.getLotId(), c.getVersion());
         LotEvent.LotStateCreated e = newLotStateCreated(stateEventId);
@@ -135,7 +147,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         LotIdentificationEventId stateEventId = new LotIdentificationEventId(outerState.getLotId(), c.getLotIdentificationTypeId(), version);
         LotIdentificationEvent.LotIdentificationStateCreated e = newLotIdentificationStateCreated(stateEventId);
-        LotIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)outerState.getLotIdentifications()).getOrAddDefault(c.getLotIdentificationTypeId());
+        LotIdentificationState s = ((EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState>)outerState.getLotIdentifications()).getOrAddDefault(c.getLotIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
         e.setGtin(c.getGtin());
@@ -151,7 +163,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         LotIdentificationEventId stateEventId = new LotIdentificationEventId(outerState.getLotId(), c.getLotIdentificationTypeId(), version);
         LotIdentificationEvent.LotIdentificationStateMergePatched e = newLotIdentificationStateMergePatched(stateEventId);
-        LotIdentificationState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)outerState.getLotIdentifications()).getOrAddDefault(c.getLotIdentificationTypeId());
+        LotIdentificationState s = ((EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState>)outerState.getLotIdentifications()).getOrAddDefault(c.getLotIdentificationTypeId());
 
         e.setIdValue(c.getIdValue());
         e.setGtin(c.getGtin());

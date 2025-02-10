@@ -37,6 +37,8 @@ public interface DocumentState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     interface MutableDocumentState extends DocumentState {
         void setDocumentId(String documentId);
 
@@ -57,6 +59,8 @@ public interface DocumentState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
 
         void mutate(Event e);

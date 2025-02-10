@@ -55,6 +55,18 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof ShipmentReceiptEvent) {
+            ShipmentReceiptEvent ee = (ShipmentReceiptEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected ShipmentReceiptEvent map(ShipmentReceiptCommand.CreateShipmentReceipt c) {
         ShipmentReceiptEventId stateEventId = new ShipmentReceiptEventId(c.getReceiptId(), c.getVersion());
         ShipmentReceiptEvent.ShipmentReceiptStateCreated e = newShipmentReceiptStateCreated(stateEventId);
@@ -184,7 +196,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentReceiptRoleEventId stateEventId = new ShipmentReceiptRoleEventId(outerState.getReceiptId(), c.getPartyRoleId(), version);
         ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateCreated e = newShipmentReceiptRoleStateCreated(stateEventId);
-        ShipmentReceiptRoleState s = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)outerState.getShipmentReceiptRoles()).getOrAddDefault(c.getPartyRoleId());
+        ShipmentReceiptRoleState s = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)outerState.getShipmentReceiptRoles()).getOrAddDefault(c.getPartyRoleId());
 
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -197,7 +209,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentReceiptRoleEventId stateEventId = new ShipmentReceiptRoleEventId(outerState.getReceiptId(), c.getPartyRoleId(), version);
         ShipmentReceiptRoleEvent.ShipmentReceiptRoleStateMergePatched e = newShipmentReceiptRoleStateMergePatched(stateEventId);
-        ShipmentReceiptRoleState s = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)outerState.getShipmentReceiptRoles()).getOrAddDefault(c.getPartyRoleId());
+        ShipmentReceiptRoleState s = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState>)outerState.getShipmentReceiptRoles()).getOrAddDefault(c.getPartyRoleId());
 
 
         e.setCreatedBy(c.getRequesterId());
@@ -230,7 +242,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentReceiptOrderAllocationEventId stateEventId = new ShipmentReceiptOrderAllocationEventId(outerState.getReceiptId(), c.getOrderItemId(), version);
         ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateCreated e = newShipmentReceiptOrderAllocationStateCreated(stateEventId);
-        ShipmentReceiptOrderAllocationState s = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)outerState.getOrderAllocations()).getOrAddDefault(c.getOrderItemId());
+        ShipmentReceiptOrderAllocationState s = ((EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)outerState.getOrderAllocations()).getOrAddDefault(c.getOrderItemId());
 
         e.setQuantityAllocated(c.getQuantityAllocated());
         e.setCreatedBy(c.getRequesterId());
@@ -244,7 +256,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentReceiptOrderAllocationEventId stateEventId = new ShipmentReceiptOrderAllocationEventId(outerState.getReceiptId(), c.getOrderItemId(), version);
         ShipmentReceiptOrderAllocationEvent.ShipmentReceiptOrderAllocationStateMergePatched e = newShipmentReceiptOrderAllocationStateMergePatched(stateEventId);
-        ShipmentReceiptOrderAllocationState s = ((EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)outerState.getOrderAllocations()).getOrAddDefault(c.getOrderItemId());
+        ShipmentReceiptOrderAllocationState s = ((EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>)outerState.getOrderAllocations()).getOrAddDefault(c.getOrderItemId());
 
         e.setQuantityAllocated(c.getQuantityAllocated());
         e.setIsPropertyQuantityAllocatedRemoved(c.getIsPropertyQuantityAllocatedRemoved());

@@ -45,6 +45,8 @@ public interface TransformationEventState extends CriticalTrackingEvent
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     Set<KdeReferenceDocument> getReferenceDocuments();
 
     String getCommandId();
@@ -77,6 +79,8 @@ public interface TransformationEventState extends CriticalTrackingEvent
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setReferenceDocuments(Set<KdeReferenceDocument> referenceDocuments);
 

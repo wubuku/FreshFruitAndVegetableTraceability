@@ -53,6 +53,10 @@ public interface ShipmentReceiptEvent extends Event, OrderFulfillmentSyncable, C
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface ShipmentReceiptStateEvent extends ShipmentReceiptEvent {
         String getProductId();
 

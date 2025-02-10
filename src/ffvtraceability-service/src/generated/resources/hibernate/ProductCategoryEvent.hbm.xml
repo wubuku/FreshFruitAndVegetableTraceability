@@ -15,6 +15,7 @@
     <property name="createdAt" column="created_at" />
     <property name="commandId" column="command_id" />
     <property name="commandType" column="command_type" length="50" />
+    <property name="tenantId" column="tenant_id" length="12" />
     <subclass name="AbstractProductCategoryEvent$ProductCategoryLobEvent" discriminator-value="ProductCategoryLobEvent">
       <property name="dynamicProperties">
         <column name="dynamic_properties" sql-type="json" />

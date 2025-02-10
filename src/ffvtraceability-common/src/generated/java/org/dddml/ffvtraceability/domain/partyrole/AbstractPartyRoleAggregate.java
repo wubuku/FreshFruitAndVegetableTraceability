@@ -48,6 +48,18 @@ public abstract class AbstractPartyRoleAggregate extends AbstractAggregate imple
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof PartyRoleEvent) {
+            PartyRoleEvent ee = (PartyRoleEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected PartyRoleEvent map(PartyRoleCommand.CreatePartyRole c) {
         PartyRoleEventId stateEventId = new PartyRoleEventId(c.getPartyRoleId(), c.getVersion());
         PartyRoleEvent.PartyRoleStateCreated e = newPartyRoleStateCreated(stateEventId);

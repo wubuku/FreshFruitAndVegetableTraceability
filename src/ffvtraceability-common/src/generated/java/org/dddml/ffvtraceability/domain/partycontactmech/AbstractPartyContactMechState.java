@@ -178,13 +178,13 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
         this.protectedPartyContactMechPurposes = protectedPartyContactMechPurposes;
     }
 
-    private EntityStateCollection<String, PartyContactMechPurposeState> partyContactMechPurposes;
+    private EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState> partyContactMechPurposes;
 
-    public EntityStateCollection<String, PartyContactMechPurposeState> getPartyContactMechPurposes() {
+    public EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState> getPartyContactMechPurposes() {
         return this.partyContactMechPurposes;
     }
 
-    public void setPartyContactMechPurposes(EntityStateCollection<String, PartyContactMechPurposeState> partyContactMechPurposes) {
+    public void setPartyContactMechPurposes(EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState> partyContactMechPurposes) {
         this.partyContactMechPurposes = partyContactMechPurposes;
     }
 
@@ -272,7 +272,7 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
         this.setCreatedAt(e.getCreatedAt());
 
         for (PartyContactMechPurposeEvent.PartyContactMechPurposeStateCreated innerEvent : e.getPartyContactMechPurposeEvents()) {
-            PartyContactMechPurposeState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(((PartyContactMechPurposeEvent.SqlPartyContactMechPurposeEvent)innerEvent).getPartyContactMechPurposeEventId().getContactMechPurposeTypeId());
+            PartyContactMechPurposeState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(((PartyContactMechPurposeEvent.SqlPartyContactMechPurposeEvent)innerEvent).getPartyContactMechPurposeEventId().getContactMechPurposeTypeId());
             ((PartyContactMechPurposeState.SqlPartyContactMechPurposeState)innerState).mutate(innerEvent);
         }
     }
@@ -299,7 +299,7 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
             }
             if (iterable != null) {
                 for (PartyContactMechPurposeState ss : iterable) {
-                    PartyContactMechPurposeState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(ss.getContactMechPurposeTypeId());
+                    PartyContactMechPurposeState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(ss.getContactMechPurposeTypeId());
                     ((AbstractPartyContactMechPurposeState) thisInnerState).merge(ss);
                 }
             }
@@ -308,8 +308,8 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
             if (s.getPartyContactMechPurposes() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getPartyContactMechPurposes()).getRemovedStates() != null) {
                     for (PartyContactMechPurposeState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, PartyContactMechPurposeState>)s.getPartyContactMechPurposes()).getRemovedStates()) {
-                        PartyContactMechPurposeState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(ss.getContactMechPurposeTypeId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getPartyContactMechPurposes()).removeState(thisInnerState);
+                        PartyContactMechPurposeState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(ss.getContactMechPurposeTypeId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getPartyContactMechPurposes()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -317,8 +317,8 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
                     Set<String> removedStateIds = new HashSet<>(this.getPartyContactMechPurposes().stream().map(i -> i.getContactMechPurposeTypeId()).collect(java.util.stream.Collectors.toList()));
                     s.getPartyContactMechPurposes().forEach(i -> removedStateIds.remove(i.getContactMechPurposeTypeId()));
                     for (String i : removedStateIds) {
-                        PartyContactMechPurposeState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getPartyContactMechPurposes()).removeState(thisInnerState);
+                        PartyContactMechPurposeState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getPartyContactMechPurposes()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -391,7 +391,7 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
         this.setUpdatedAt(e.getCreatedAt());
 
         for (PartyContactMechPurposeEvent innerEvent : e.getPartyContactMechPurposeEvents()) {
-            PartyContactMechPurposeState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(((PartyContactMechPurposeEvent.SqlPartyContactMechPurposeEvent)innerEvent).getPartyContactMechPurposeEventId().getContactMechPurposeTypeId());
+            PartyContactMechPurposeState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState>)this.getPartyContactMechPurposes()).getOrAddDefault(((PartyContactMechPurposeEvent.SqlPartyContactMechPurposeEvent)innerEvent).getPartyContactMechPurposeEventId().getContactMechPurposeTypeId());
             ((PartyContactMechPurposeState.SqlPartyContactMechPurposeState)innerState).mutate(innerEvent);
         }
     }
@@ -440,7 +440,7 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
     }
 
 
-    class SimplePartyContactMechPurposeStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, PartyContactMechPurposeState>, Collection<PartyContactMechPurposeState> {
+    class SimplePartyContactMechPurposeStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState>, Collection<PartyContactMechPurposeState> {
 
         @Override
         public PartyContactMechPurposeState get(String contactMechPurposeTypeId) {

@@ -35,6 +35,8 @@ public interface WorkEffortTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableWorkEffortTypeState extends WorkEffortTypeState {
@@ -55,6 +57,8 @@ public interface WorkEffortTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

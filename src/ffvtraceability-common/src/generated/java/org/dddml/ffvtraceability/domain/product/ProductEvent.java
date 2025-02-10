@@ -40,6 +40,10 @@ public interface ProductEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface ProductStateEvent extends ProductEvent {
         String getProductTypeId();
 

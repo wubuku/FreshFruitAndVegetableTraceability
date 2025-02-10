@@ -47,6 +47,10 @@ public interface QaInspectionEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface QaInspectionStateEvent extends QaInspectionEvent {
         String getReceiptId();
 

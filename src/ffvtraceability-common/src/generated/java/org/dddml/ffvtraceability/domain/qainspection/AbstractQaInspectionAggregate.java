@@ -48,6 +48,18 @@ public abstract class AbstractQaInspectionAggregate extends AbstractAggregate im
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof QaInspectionEvent) {
+            QaInspectionEvent ee = (QaInspectionEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected QaInspectionEvent map(QaInspectionCommand.CreateQaInspection c) {
         QaInspectionEventId stateEventId = new QaInspectionEventId(c.getQaInspectionId(), c.getVersion());
         QaInspectionEvent.QaInspectionStateCreated e = newQaInspectionStateCreated(stateEventId);

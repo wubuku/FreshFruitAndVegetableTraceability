@@ -48,6 +48,18 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof ContactMechEvent) {
+            ContactMechEvent ee = (ContactMechEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected ContactMechEvent map(ContactMechCommand.CreateContactMech c) {
         if(ContactMechTypeId.MISC_CONTACT_MECH.equals(c.getContactMechTypeId())) {
             return mapToMiscContactMechEvent(c);

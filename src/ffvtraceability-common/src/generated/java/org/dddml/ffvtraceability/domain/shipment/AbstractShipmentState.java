@@ -358,13 +358,13 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.protectedShipmentItems = protectedShipmentItems;
     }
 
-    private EntityStateCollection<String, ShipmentItemState> shipmentItems;
+    private EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState> shipmentItems;
 
-    public EntityStateCollection<String, ShipmentItemState> getShipmentItems() {
+    public EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState> getShipmentItems() {
         return this.shipmentItems;
     }
 
-    public void setShipmentItems(EntityStateCollection<String, ShipmentItemState> shipmentItems) {
+    public void setShipmentItems(EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState> shipmentItems) {
         this.shipmentItems = shipmentItems;
     }
 
@@ -378,13 +378,13 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.protectedShipmentPackages = protectedShipmentPackages;
     }
 
-    private EntityStateCollection<String, ShipmentPackageState> shipmentPackages;
+    private EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState> shipmentPackages;
 
-    public EntityStateCollection<String, ShipmentPackageState> getShipmentPackages() {
+    public EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState> getShipmentPackages() {
         return this.shipmentPackages;
     }
 
-    public void setShipmentPackages(EntityStateCollection<String, ShipmentPackageState> shipmentPackages) {
+    public void setShipmentPackages(EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState> shipmentPackages) {
         this.shipmentPackages = shipmentPackages;
     }
 
@@ -495,11 +495,11 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.setCreatedAt(e.getCreatedAt());
 
         for (ShipmentItemEvent.ShipmentItemStateCreated innerEvent : e.getShipmentItemEvents()) {
-            ShipmentItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(((ShipmentItemEvent.SqlShipmentItemEvent)innerEvent).getShipmentItemEventId().getShipmentItemSeqId());
+            ShipmentItemState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(((ShipmentItemEvent.SqlShipmentItemEvent)innerEvent).getShipmentItemEventId().getShipmentItemSeqId());
             ((ShipmentItemState.SqlShipmentItemState)innerState).mutate(innerEvent);
         }
         for (ShipmentPackageEvent.ShipmentPackageStateCreated innerEvent : e.getShipmentPackageEvents()) {
-            ShipmentPackageState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(((ShipmentPackageEvent.SqlShipmentPackageEvent)innerEvent).getShipmentPackageEventId().getShipmentPackageSeqId());
+            ShipmentPackageState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(((ShipmentPackageEvent.SqlShipmentPackageEvent)innerEvent).getShipmentPackageEventId().getShipmentPackageSeqId());
             ((ShipmentPackageState.SqlShipmentPackageState)innerState).mutate(innerEvent);
         }
     }
@@ -544,7 +544,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
             }
             if (iterable != null) {
                 for (ShipmentItemState ss : iterable) {
-                    ShipmentItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(ss.getShipmentItemSeqId());
+                    ShipmentItemState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(ss.getShipmentItemSeqId());
                     ((AbstractShipmentItemState) thisInnerState).merge(ss);
                 }
             }
@@ -553,8 +553,8 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
             if (s.getShipmentItems() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getShipmentItems()).getRemovedStates() != null) {
                     for (ShipmentItemState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, ShipmentItemState>)s.getShipmentItems()).getRemovedStates()) {
-                        ShipmentItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(ss.getShipmentItemSeqId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentItems()).removeState(thisInnerState);
+                        ShipmentItemState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(ss.getShipmentItemSeqId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getShipmentItems()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -562,8 +562,8 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
                     Set<String> removedStateIds = new HashSet<>(this.getShipmentItems().stream().map(i -> i.getShipmentItemSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getShipmentItems().forEach(i -> removedStateIds.remove(i.getShipmentItemSeqId()));
                     for (String i : removedStateIds) {
-                        ShipmentItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentItems()).removeState(thisInnerState);
+                        ShipmentItemState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getShipmentItems()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -580,7 +580,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
             }
             if (iterable != null) {
                 for (ShipmentPackageState ss : iterable) {
-                    ShipmentPackageState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(ss.getShipmentPackageSeqId());
+                    ShipmentPackageState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(ss.getShipmentPackageSeqId());
                     ((AbstractShipmentPackageState) thisInnerState).merge(ss);
                 }
             }
@@ -589,8 +589,8 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
             if (s.getShipmentPackages() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getShipmentPackages()).getRemovedStates() != null) {
                     for (ShipmentPackageState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, ShipmentPackageState>)s.getShipmentPackages()).getRemovedStates()) {
-                        ShipmentPackageState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(ss.getShipmentPackageSeqId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentPackages()).removeState(thisInnerState);
+                        ShipmentPackageState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(ss.getShipmentPackageSeqId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getShipmentPackages()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -598,8 +598,8 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
                     Set<String> removedStateIds = new HashSet<>(this.getShipmentPackages().stream().map(i -> i.getShipmentPackageSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getShipmentPackages().forEach(i -> removedStateIds.remove(i.getShipmentPackageSeqId()));
                     for (String i : removedStateIds) {
-                        ShipmentPackageState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getShipmentPackages()).removeState(thisInnerState);
+                        ShipmentPackageState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getShipmentPackages()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -798,11 +798,11 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.setUpdatedAt(e.getCreatedAt());
 
         for (ShipmentItemEvent innerEvent : e.getShipmentItemEvents()) {
-            ShipmentItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(((ShipmentItemEvent.SqlShipmentItemEvent)innerEvent).getShipmentItemEventId().getShipmentItemSeqId());
+            ShipmentItemState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState>)this.getShipmentItems()).getOrAddDefault(((ShipmentItemEvent.SqlShipmentItemEvent)innerEvent).getShipmentItemEventId().getShipmentItemSeqId());
             ((ShipmentItemState.SqlShipmentItemState)innerState).mutate(innerEvent);
         }
         for (ShipmentPackageEvent innerEvent : e.getShipmentPackageEvents()) {
-            ShipmentPackageState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(((ShipmentPackageEvent.SqlShipmentPackageEvent)innerEvent).getShipmentPackageEventId().getShipmentPackageSeqId());
+            ShipmentPackageState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState>)this.getShipmentPackages()).getOrAddDefault(((ShipmentPackageEvent.SqlShipmentPackageEvent)innerEvent).getShipmentPackageEventId().getShipmentPackageSeqId());
             ((ShipmentPackageState.SqlShipmentPackageState)innerState).mutate(innerEvent);
         }
     }
@@ -900,7 +900,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
     }
 
 
-    class SimpleShipmentItemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentItemState>, Collection<ShipmentItemState> {
+    class SimpleShipmentItemStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState>, Collection<ShipmentItemState> {
 
         @Override
         public ShipmentItemState get(String shipmentItemSeqId) {
@@ -1021,7 +1021,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         }
     }
 
-    class SimpleShipmentPackageStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>, Collection<ShipmentPackageState> {
+    class SimpleShipmentPackageStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState>, Collection<ShipmentPackageState> {
 
         @Override
         public ShipmentPackageState get(String shipmentPackageSeqId) {

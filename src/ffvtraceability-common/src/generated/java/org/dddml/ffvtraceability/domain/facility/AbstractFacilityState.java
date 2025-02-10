@@ -308,13 +308,13 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         this.protectedFacilityIdentifications = protectedFacilityIdentifications;
     }
 
-    private EntityStateCollection<String, FacilityIdentificationState> facilityIdentifications;
+    private EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState> facilityIdentifications;
 
-    public EntityStateCollection<String, FacilityIdentificationState> getFacilityIdentifications() {
+    public EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState> getFacilityIdentifications() {
         return this.facilityIdentifications;
     }
 
-    public void setFacilityIdentifications(EntityStateCollection<String, FacilityIdentificationState> facilityIdentifications) {
+    public void setFacilityIdentifications(EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState> facilityIdentifications) {
         this.facilityIdentifications = facilityIdentifications;
     }
 
@@ -415,7 +415,7 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         this.setCreatedAt(e.getCreatedAt());
 
         for (FacilityIdentificationEvent.FacilityIdentificationStateCreated innerEvent : e.getFacilityIdentificationEvents()) {
-            FacilityIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)innerEvent).getFacilityIdentificationEventId().getFacilityIdentificationTypeId());
+            FacilityIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)innerEvent).getFacilityIdentificationEventId().getFacilityIdentificationTypeId());
             ((FacilityIdentificationState.SqlFacilityIdentificationState)innerState).mutate(innerEvent);
         }
     }
@@ -455,7 +455,7 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
             }
             if (iterable != null) {
                 for (FacilityIdentificationState ss : iterable) {
-                    FacilityIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(ss.getFacilityIdentificationTypeId());
+                    FacilityIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(ss.getFacilityIdentificationTypeId());
                     ((AbstractFacilityIdentificationState) thisInnerState).merge(ss);
                 }
             }
@@ -464,8 +464,8 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
             if (s.getFacilityIdentifications() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getFacilityIdentifications()).getRemovedStates() != null) {
                     for (FacilityIdentificationState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, FacilityIdentificationState>)s.getFacilityIdentifications()).getRemovedStates()) {
-                        FacilityIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(ss.getFacilityIdentificationTypeId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getFacilityIdentifications()).removeState(thisInnerState);
+                        FacilityIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(ss.getFacilityIdentificationTypeId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getFacilityIdentifications()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -473,8 +473,8 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
                     Set<String> removedStateIds = new HashSet<>(this.getFacilityIdentifications().stream().map(i -> i.getFacilityIdentificationTypeId()).collect(java.util.stream.Collectors.toList()));
                     s.getFacilityIdentifications().forEach(i -> removedStateIds.remove(i.getFacilityIdentificationTypeId()));
                     for (String i : removedStateIds) {
-                        FacilityIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getFacilityIdentifications()).removeState(thisInnerState);
+                        FacilityIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getFacilityIdentifications()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -638,7 +638,7 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         this.setUpdatedAt(e.getCreatedAt());
 
         for (FacilityIdentificationEvent innerEvent : e.getFacilityIdentificationEvents()) {
-            FacilityIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)innerEvent).getFacilityIdentificationEventId().getFacilityIdentificationTypeId());
+            FacilityIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)innerEvent).getFacilityIdentificationEventId().getFacilityIdentificationTypeId());
             ((FacilityIdentificationState.SqlFacilityIdentificationState)innerState).mutate(innerEvent);
         }
     }
@@ -687,7 +687,7 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
     }
 
 
-    class SimpleFacilityIdentificationStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, FacilityIdentificationState>, Collection<FacilityIdentificationState> {
+    class SimpleFacilityIdentificationStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState>, Collection<FacilityIdentificationState> {
 
         @Override
         public FacilityIdentificationState get(String facilityIdentificationTypeId) {

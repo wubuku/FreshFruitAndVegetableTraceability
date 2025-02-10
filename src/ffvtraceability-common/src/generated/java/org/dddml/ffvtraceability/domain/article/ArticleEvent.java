@@ -47,6 +47,10 @@ public interface ArticleEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface ArticleStateEvent extends ArticleEvent {
         String getTitle();
 

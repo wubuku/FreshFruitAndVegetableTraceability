@@ -35,6 +35,8 @@ public interface ProductCategoryTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableProductCategoryTypeState extends ProductCategoryTypeState {
@@ -55,6 +57,8 @@ public interface ProductCategoryTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

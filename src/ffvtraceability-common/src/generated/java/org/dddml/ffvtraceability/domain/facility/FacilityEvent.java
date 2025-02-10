@@ -40,6 +40,10 @@ public interface FacilityEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface FacilityStateEvent extends FacilityEvent {
         String getFacilityTypeId();
 

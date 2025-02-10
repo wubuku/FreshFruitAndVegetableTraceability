@@ -48,6 +48,18 @@ public abstract class AbstractUomAggregate extends AbstractAggregate implements 
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof UomEvent) {
+            UomEvent ee = (UomEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected UomEvent map(UomCommand.CreateUom c) {
         UomEventId stateEventId = new UomEventId(c.getUomId(), c.getVersion());
         UomEvent.UomStateCreated e = newUomStateCreated(stateEventId);

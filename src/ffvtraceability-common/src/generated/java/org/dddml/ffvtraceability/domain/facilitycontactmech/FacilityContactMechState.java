@@ -35,6 +35,8 @@ public interface FacilityContactMechState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     EntityStateCollection<String, FacilityContactMechPurposeState> getFacilityContactMechPurposes();
 
     interface MutableFacilityContactMechState extends FacilityContactMechState {
@@ -55,6 +57,10 @@ public interface FacilityContactMechState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState> getFacilityContactMechPurposes();
 
 
         void mutate(Event e);

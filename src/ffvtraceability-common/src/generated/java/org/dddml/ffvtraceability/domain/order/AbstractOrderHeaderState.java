@@ -389,13 +389,13 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.protectedOrderRoles = protectedOrderRoles;
     }
 
-    private EntityStateCollection<PartyRoleId, OrderRoleState> orderRoles;
+    private EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState> orderRoles;
 
-    public EntityStateCollection<PartyRoleId, OrderRoleState> getOrderRoles() {
+    public EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState> getOrderRoles() {
         return this.orderRoles;
     }
 
-    public void setOrderRoles(EntityStateCollection<PartyRoleId, OrderRoleState> orderRoles) {
+    public void setOrderRoles(EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState> orderRoles) {
         this.orderRoles = orderRoles;
     }
 
@@ -409,13 +409,13 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.protectedOrderContactMechanisms = protectedOrderContactMechanisms;
     }
 
-    private EntityStateCollection<String, OrderContactMechState> orderContactMechanisms;
+    private EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState> orderContactMechanisms;
 
-    public EntityStateCollection<String, OrderContactMechState> getOrderContactMechanisms() {
+    public EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState> getOrderContactMechanisms() {
         return this.orderContactMechanisms;
     }
 
-    public void setOrderContactMechanisms(EntityStateCollection<String, OrderContactMechState> orderContactMechanisms) {
+    public void setOrderContactMechanisms(EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState> orderContactMechanisms) {
         this.orderContactMechanisms = orderContactMechanisms;
     }
 
@@ -429,13 +429,13 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.protectedOrderItems = protectedOrderItems;
     }
 
-    private EntityStateCollection<String, OrderItemState> orderItems;
+    private EntityStateCollection.MutableEntityStateCollection<String, OrderItemState> orderItems;
 
-    public EntityStateCollection<String, OrderItemState> getOrderItems() {
+    public EntityStateCollection.MutableEntityStateCollection<String, OrderItemState> getOrderItems() {
         return this.orderItems;
     }
 
-    public void setOrderItems(EntityStateCollection<String, OrderItemState> orderItems) {
+    public void setOrderItems(EntityStateCollection.MutableEntityStateCollection<String, OrderItemState> orderItems) {
         this.orderItems = orderItems;
     }
 
@@ -449,13 +449,13 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.protectedOrderAdjustments = protectedOrderAdjustments;
     }
 
-    private EntityStateCollection<String, OrderAdjustmentState> orderAdjustments;
+    private EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState> orderAdjustments;
 
-    public EntityStateCollection<String, OrderAdjustmentState> getOrderAdjustments() {
+    public EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState> getOrderAdjustments() {
         return this.orderAdjustments;
     }
 
-    public void setOrderAdjustments(EntityStateCollection<String, OrderAdjustmentState> orderAdjustments) {
+    public void setOrderAdjustments(EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState> orderAdjustments) {
         this.orderAdjustments = orderAdjustments;
     }
 
@@ -469,13 +469,13 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.protectedOrderShipGroups = protectedOrderShipGroups;
     }
 
-    private EntityStateCollection<String, OrderShipGroupState> orderShipGroups;
+    private EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState> orderShipGroups;
 
-    public EntityStateCollection<String, OrderShipGroupState> getOrderShipGroups() {
+    public EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState> getOrderShipGroups() {
         return this.orderShipGroups;
     }
 
-    public void setOrderShipGroups(EntityStateCollection<String, OrderShipGroupState> orderShipGroups) {
+    public void setOrderShipGroups(EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState> orderShipGroups) {
         this.orderShipGroups = orderShipGroups;
     }
 
@@ -588,23 +588,23 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setCreatedAt(e.getCreatedAt());
 
         for (OrderRoleEvent.OrderRoleStateCreated innerEvent : e.getOrderRoleEvents()) {
-            OrderRoleState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(((OrderRoleEvent.SqlOrderRoleEvent)innerEvent).getOrderRoleEventId().getPartyRoleId());
+            OrderRoleState innerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(((OrderRoleEvent.SqlOrderRoleEvent)innerEvent).getOrderRoleEventId().getPartyRoleId());
             ((OrderRoleState.SqlOrderRoleState)innerState).mutate(innerEvent);
         }
         for (OrderContactMechEvent.OrderContactMechStateCreated innerEvent : e.getOrderContactMechEvents()) {
-            OrderContactMechState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(((OrderContactMechEvent.SqlOrderContactMechEvent)innerEvent).getOrderContactMechEventId().getContactMechPurposeTypeId());
+            OrderContactMechState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(((OrderContactMechEvent.SqlOrderContactMechEvent)innerEvent).getOrderContactMechEventId().getContactMechPurposeTypeId());
             ((OrderContactMechState.SqlOrderContactMechState)innerState).mutate(innerEvent);
         }
         for (OrderItemEvent.OrderItemStateCreated innerEvent : e.getOrderItemEvents()) {
-            OrderItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(((OrderItemEvent.SqlOrderItemEvent)innerEvent).getOrderItemEventId().getOrderItemSeqId());
+            OrderItemState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(((OrderItemEvent.SqlOrderItemEvent)innerEvent).getOrderItemEventId().getOrderItemSeqId());
             ((OrderItemState.SqlOrderItemState)innerState).mutate(innerEvent);
         }
         for (OrderAdjustmentEvent.OrderAdjustmentStateCreated innerEvent : e.getOrderAdjustmentEvents()) {
-            OrderAdjustmentState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(((OrderAdjustmentEvent.SqlOrderAdjustmentEvent)innerEvent).getOrderAdjustmentEventId().getOrderAdjustmentId());
+            OrderAdjustmentState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(((OrderAdjustmentEvent.SqlOrderAdjustmentEvent)innerEvent).getOrderAdjustmentEventId().getOrderAdjustmentId());
             ((OrderAdjustmentState.SqlOrderAdjustmentState)innerState).mutate(innerEvent);
         }
         for (OrderShipGroupEvent.OrderShipGroupStateCreated innerEvent : e.getOrderShipGroupEvents()) {
-            OrderShipGroupState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(((OrderShipGroupEvent.SqlOrderShipGroupEvent)innerEvent).getOrderShipGroupEventId().getShipGroupSeqId());
+            OrderShipGroupState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(((OrderShipGroupEvent.SqlOrderShipGroupEvent)innerEvent).getOrderShipGroupEventId().getShipGroupSeqId());
             ((OrderShipGroupState.SqlOrderShipGroupState)innerState).mutate(innerEvent);
         }
     }
@@ -652,7 +652,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             }
             if (iterable != null) {
                 for (OrderRoleState ss : iterable) {
-                    OrderRoleState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(ss.getPartyRoleId());
+                    OrderRoleState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(ss.getPartyRoleId());
                     ((AbstractOrderRoleState) thisInnerState).merge(ss);
                 }
             }
@@ -661,8 +661,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             if (s.getOrderRoles() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getOrderRoles()).getRemovedStates() != null) {
                     for (OrderRoleState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<PartyRoleId, OrderRoleState>)s.getOrderRoles()).getRemovedStates()) {
-                        OrderRoleState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(ss.getPartyRoleId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderRoles()).removeState(thisInnerState);
+                        OrderRoleState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(ss.getPartyRoleId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderRoles()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -670,8 +670,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                     Set<PartyRoleId> removedStateIds = new HashSet<>(this.getOrderRoles().stream().map(i -> i.getPartyRoleId()).collect(java.util.stream.Collectors.toList()));
                     s.getOrderRoles().forEach(i -> removedStateIds.remove(i.getPartyRoleId()));
                     for (PartyRoleId i : removedStateIds) {
-                        OrderRoleState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderRoles()).removeState(thisInnerState);
+                        OrderRoleState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderRoles()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -688,7 +688,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             }
             if (iterable != null) {
                 for (OrderContactMechState ss : iterable) {
-                    OrderContactMechState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(ss.getContactMechPurposeTypeId());
+                    OrderContactMechState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(ss.getContactMechPurposeTypeId());
                     ((AbstractOrderContactMechState) thisInnerState).merge(ss);
                 }
             }
@@ -697,8 +697,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             if (s.getOrderContactMechanisms() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getOrderContactMechanisms()).getRemovedStates() != null) {
                     for (OrderContactMechState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, OrderContactMechState>)s.getOrderContactMechanisms()).getRemovedStates()) {
-                        OrderContactMechState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(ss.getContactMechPurposeTypeId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderContactMechanisms()).removeState(thisInnerState);
+                        OrderContactMechState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(ss.getContactMechPurposeTypeId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderContactMechanisms()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -706,8 +706,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                     Set<String> removedStateIds = new HashSet<>(this.getOrderContactMechanisms().stream().map(i -> i.getContactMechPurposeTypeId()).collect(java.util.stream.Collectors.toList()));
                     s.getOrderContactMechanisms().forEach(i -> removedStateIds.remove(i.getContactMechPurposeTypeId()));
                     for (String i : removedStateIds) {
-                        OrderContactMechState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderContactMechanisms()).removeState(thisInnerState);
+                        OrderContactMechState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderContactMechanisms()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -724,7 +724,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             }
             if (iterable != null) {
                 for (OrderItemState ss : iterable) {
-                    OrderItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(ss.getOrderItemSeqId());
+                    OrderItemState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(ss.getOrderItemSeqId());
                     ((AbstractOrderItemState) thisInnerState).merge(ss);
                 }
             }
@@ -733,8 +733,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             if (s.getOrderItems() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getOrderItems()).getRemovedStates() != null) {
                     for (OrderItemState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, OrderItemState>)s.getOrderItems()).getRemovedStates()) {
-                        OrderItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(ss.getOrderItemSeqId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItems()).removeState(thisInnerState);
+                        OrderItemState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(ss.getOrderItemSeqId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderItems()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -742,8 +742,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                     Set<String> removedStateIds = new HashSet<>(this.getOrderItems().stream().map(i -> i.getOrderItemSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getOrderItems().forEach(i -> removedStateIds.remove(i.getOrderItemSeqId()));
                     for (String i : removedStateIds) {
-                        OrderItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItems()).removeState(thisInnerState);
+                        OrderItemState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderItems()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -760,7 +760,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             }
             if (iterable != null) {
                 for (OrderAdjustmentState ss : iterable) {
-                    OrderAdjustmentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(ss.getOrderAdjustmentId());
+                    OrderAdjustmentState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(ss.getOrderAdjustmentId());
                     ((AbstractOrderAdjustmentState) thisInnerState).merge(ss);
                 }
             }
@@ -769,8 +769,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             if (s.getOrderAdjustments() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getOrderAdjustments()).getRemovedStates() != null) {
                     for (OrderAdjustmentState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, OrderAdjustmentState>)s.getOrderAdjustments()).getRemovedStates()) {
-                        OrderAdjustmentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(ss.getOrderAdjustmentId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAdjustments()).removeState(thisInnerState);
+                        OrderAdjustmentState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(ss.getOrderAdjustmentId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderAdjustments()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -778,8 +778,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                     Set<String> removedStateIds = new HashSet<>(this.getOrderAdjustments().stream().map(i -> i.getOrderAdjustmentId()).collect(java.util.stream.Collectors.toList()));
                     s.getOrderAdjustments().forEach(i -> removedStateIds.remove(i.getOrderAdjustmentId()));
                     for (String i : removedStateIds) {
-                        OrderAdjustmentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderAdjustments()).removeState(thisInnerState);
+                        OrderAdjustmentState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderAdjustments()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -796,7 +796,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             }
             if (iterable != null) {
                 for (OrderShipGroupState ss : iterable) {
-                    OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(ss.getShipGroupSeqId());
+                    OrderShipGroupState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(ss.getShipGroupSeqId());
                     ((AbstractOrderShipGroupState) thisInnerState).merge(ss);
                 }
             }
@@ -805,8 +805,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             if (s.getOrderShipGroups() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getOrderShipGroups()).getRemovedStates() != null) {
                     for (OrderShipGroupState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, OrderShipGroupState>)s.getOrderShipGroups()).getRemovedStates()) {
-                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(ss.getShipGroupSeqId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderShipGroups()).removeState(thisInnerState);
+                        OrderShipGroupState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(ss.getShipGroupSeqId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderShipGroups()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -814,8 +814,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                     Set<String> removedStateIds = new HashSet<>(this.getOrderShipGroups().stream().map(i -> i.getShipGroupSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getOrderShipGroups().forEach(i -> removedStateIds.remove(i.getShipGroupSeqId()));
                     for (String i : removedStateIds) {
-                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderShipGroups()).removeState(thisInnerState);
+                        OrderShipGroupState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getOrderShipGroups()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -1035,27 +1035,27 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setUpdatedAt(e.getCreatedAt());
 
         for (OrderRoleEvent innerEvent : e.getOrderRoleEvents()) {
-            OrderRoleState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(((OrderRoleEvent.SqlOrderRoleEvent)innerEvent).getOrderRoleEventId().getPartyRoleId());
+            OrderRoleState innerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(((OrderRoleEvent.SqlOrderRoleEvent)innerEvent).getOrderRoleEventId().getPartyRoleId());
             ((OrderRoleState.SqlOrderRoleState)innerState).mutate(innerEvent);
         }
         for (OrderContactMechEvent innerEvent : e.getOrderContactMechEvents()) {
-            OrderContactMechState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(((OrderContactMechEvent.SqlOrderContactMechEvent)innerEvent).getOrderContactMechEventId().getContactMechPurposeTypeId());
+            OrderContactMechState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(((OrderContactMechEvent.SqlOrderContactMechEvent)innerEvent).getOrderContactMechEventId().getContactMechPurposeTypeId());
             ((OrderContactMechState.SqlOrderContactMechState)innerState).mutate(innerEvent);
         }
         for (OrderItemEvent innerEvent : e.getOrderItemEvents()) {
-            OrderItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(((OrderItemEvent.SqlOrderItemEvent)innerEvent).getOrderItemEventId().getOrderItemSeqId());
+            OrderItemState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderItemState>)this.getOrderItems()).getOrAddDefault(((OrderItemEvent.SqlOrderItemEvent)innerEvent).getOrderItemEventId().getOrderItemSeqId());
             ((OrderItemState.SqlOrderItemState)innerState).mutate(innerEvent);
             if (innerEvent instanceof OrderItemEvent.OrderItemStateRemoved) {
                 //OrderItemEvent.OrderItemStateRemoved removed = (OrderItemEvent.OrderItemStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItems()).removeState(innerState);
+                ((EntityStateCollection.MutableEntityStateCollection)this.getOrderItems()).removeState(innerState);
             }
         }
         for (OrderAdjustmentEvent innerEvent : e.getOrderAdjustmentEvents()) {
-            OrderAdjustmentState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(((OrderAdjustmentEvent.SqlOrderAdjustmentEvent)innerEvent).getOrderAdjustmentEventId().getOrderAdjustmentId());
+            OrderAdjustmentState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState>)this.getOrderAdjustments()).getOrAddDefault(((OrderAdjustmentEvent.SqlOrderAdjustmentEvent)innerEvent).getOrderAdjustmentEventId().getOrderAdjustmentId());
             ((OrderAdjustmentState.SqlOrderAdjustmentState)innerState).mutate(innerEvent);
         }
         for (OrderShipGroupEvent innerEvent : e.getOrderShipGroupEvents()) {
-            OrderShipGroupState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(((OrderShipGroupEvent.SqlOrderShipGroupEvent)innerEvent).getOrderShipGroupEventId().getShipGroupSeqId());
+            OrderShipGroupState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(((OrderShipGroupEvent.SqlOrderShipGroupEvent)innerEvent).getOrderShipGroupEventId().getShipGroupSeqId());
             ((OrderShipGroupState.SqlOrderShipGroupState)innerState).mutate(innerEvent);
         }
     }
@@ -1116,7 +1116,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
     }
 
 
-    class SimpleOrderRoleStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<PartyRoleId, OrderRoleState>, Collection<OrderRoleState> {
+    class SimpleOrderRoleStateCollection implements EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState>, Collection<OrderRoleState> {
 
         @Override
         public OrderRoleState get(PartyRoleId partyRoleId) {
@@ -1237,7 +1237,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         }
     }
 
-    class SimpleOrderContactMechStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderContactMechState>, Collection<OrderContactMechState> {
+    class SimpleOrderContactMechStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState>, Collection<OrderContactMechState> {
 
         @Override
         public OrderContactMechState get(String contactMechPurposeTypeId) {
@@ -1358,7 +1358,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         }
     }
 
-    class SimpleOrderItemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>, Collection<OrderItemState> {
+    class SimpleOrderItemStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, OrderItemState>, Collection<OrderItemState> {
 
         @Override
         public OrderItemState get(String orderItemSeqId) {
@@ -1479,7 +1479,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         }
     }
 
-    class SimpleOrderAdjustmentStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderAdjustmentState>, Collection<OrderAdjustmentState> {
+    class SimpleOrderAdjustmentStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState>, Collection<OrderAdjustmentState> {
 
         @Override
         public OrderAdjustmentState get(String orderAdjustmentId) {
@@ -1600,7 +1600,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         }
     }
 
-    class SimpleOrderShipGroupStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderShipGroupState>, Collection<OrderShipGroupState> {
+    class SimpleOrderShipGroupStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState>, Collection<OrderShipGroupState> {
 
         @Override
         public OrderShipGroupState get(String shipGroupSeqId) {

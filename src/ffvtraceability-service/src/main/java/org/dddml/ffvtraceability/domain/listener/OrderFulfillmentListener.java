@@ -6,7 +6,10 @@ import org.dddml.ffvtraceability.domain.order.OrderAggregate;
 import org.dddml.ffvtraceability.domain.service.PurchaseOrderFulfillmentService;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentState;
-import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptAggregate;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptEvent;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState;
 import org.dddml.ffvtraceability.specialization.Event;
 import org.dddml.ffvtraceability.specialization.SpringDomainEventPublisher;
 import org.slf4j.Logger;
@@ -66,25 +69,28 @@ public class OrderFulfillmentListener {
                 logger.error("Sleep interrupted while waiting for Shipment Receipt to be saved to the database.", ex);
                 continue;
             }
-            AbstractShipmentReceiptEvent srEvent = (AbstractShipmentReceiptEvent) e;
+            ShipmentReceiptEvent srEvent = (ShipmentReceiptEvent) e;
             receiptId = srEvent.getReceiptId();
-            //TODO: Get tenantId from event!
-            String tenantId = "X"; // !!! HARDCODED !!!
+            String tenantId = srEvent.getTenantId();
             TenantContext.setTenantId(tenantId);
-            AbstractShipmentReceiptState shipmentReceiptState = (AbstractShipmentReceiptState) shipmentReceiptApplicationService.get(receiptId);
-            if (shipmentReceiptState == null) {
-                continue;
+            try {
+                ShipmentReceiptState shipmentReceiptState = shipmentReceiptApplicationService.get(receiptId);
+                if (shipmentReceiptState == null) {
+                    continue;
+                }
+                String orderId = shipmentReceiptState.getOrderId();
+                if (orderId == null && shipmentReceiptState.getShipmentId() != null) {
+                    ShipmentState shipmentState = shipmentApplicationService.get(shipmentReceiptState.getShipmentId());
+                    orderId = shipmentState.getPrimaryOrderId();
+                }
+                if (orderId == null || orderId.trim().isEmpty()) {
+                    continue;
+                }
+                // Check if a purchase order???
+                purchaseOrderFulfillmentService.allocateAndUpdateFulfillmentStatus(orderId, new TempCommand());
+            } finally {
+                TenantContext.setTenantId(null);
             }
-            String orderId = shipmentReceiptState.getOrderId();
-            if (orderId == null && shipmentReceiptState.getShipmentId() != null) {
-                ShipmentState shipmentState = shipmentApplicationService.get(shipmentReceiptState.getShipmentId());
-                orderId = shipmentState.getPrimaryOrderId();
-            }
-            if (orderId == null || orderId.trim().isEmpty()) {
-                continue;
-            }
-            // Check if a purchase order???
-            purchaseOrderFulfillmentService.allocateAndUpdateFulfillmentStatus(orderId, new TempCommand());
         } // end for
     }
 

@@ -40,6 +40,10 @@ public interface InventoryItemEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface InventoryItemStateEvent extends InventoryItemEvent {
         String getInventoryItemTypeId();
 

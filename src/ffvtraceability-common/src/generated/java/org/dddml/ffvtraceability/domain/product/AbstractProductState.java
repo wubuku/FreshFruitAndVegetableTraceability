@@ -808,13 +808,13 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.protectedGoodIdentifications = protectedGoodIdentifications;
     }
 
-    private EntityStateCollection<String, GoodIdentificationState> goodIdentifications;
+    private EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState> goodIdentifications;
 
-    public EntityStateCollection<String, GoodIdentificationState> getGoodIdentifications() {
+    public EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState> getGoodIdentifications() {
         return this.goodIdentifications;
     }
 
-    public void setGoodIdentifications(EntityStateCollection<String, GoodIdentificationState> goodIdentifications) {
+    public void setGoodIdentifications(EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState> goodIdentifications) {
         this.goodIdentifications = goodIdentifications;
     }
 
@@ -965,7 +965,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setCreatedAt(e.getCreatedAt());
 
         for (GoodIdentificationEvent.GoodIdentificationStateCreated innerEvent : e.getGoodIdentificationEvents()) {
-            GoodIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(((GoodIdentificationEvent.SqlGoodIdentificationEvent)innerEvent).getGoodIdentificationEventId().getGoodIdentificationTypeId());
+            GoodIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(((GoodIdentificationEvent.SqlGoodIdentificationEvent)innerEvent).getGoodIdentificationEventId().getGoodIdentificationTypeId());
             ((GoodIdentificationState.SqlGoodIdentificationState)innerState).mutate(innerEvent);
         }
     }
@@ -1055,7 +1055,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             }
             if (iterable != null) {
                 for (GoodIdentificationState ss : iterable) {
-                    GoodIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(ss.getGoodIdentificationTypeId());
+                    GoodIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(ss.getGoodIdentificationTypeId());
                     ((AbstractGoodIdentificationState) thisInnerState).merge(ss);
                 }
             }
@@ -1064,8 +1064,8 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             if (s.getGoodIdentifications() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getGoodIdentifications()).getRemovedStates() != null) {
                     for (GoodIdentificationState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, GoodIdentificationState>)s.getGoodIdentifications()).getRemovedStates()) {
-                        GoodIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(ss.getGoodIdentificationTypeId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getGoodIdentifications()).removeState(thisInnerState);
+                        GoodIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(ss.getGoodIdentificationTypeId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getGoodIdentifications()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -1073,8 +1073,8 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
                     Set<String> removedStateIds = new HashSet<>(this.getGoodIdentifications().stream().map(i -> i.getGoodIdentificationTypeId()).collect(java.util.stream.Collectors.toList()));
                     s.getGoodIdentifications().forEach(i -> removedStateIds.remove(i.getGoodIdentificationTypeId()));
                     for (String i : removedStateIds) {
-                        GoodIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getGoodIdentifications()).removeState(thisInnerState);
+                        GoodIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getGoodIdentifications()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -1588,11 +1588,11 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setUpdatedAt(e.getCreatedAt());
 
         for (GoodIdentificationEvent innerEvent : e.getGoodIdentificationEvents()) {
-            GoodIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(((GoodIdentificationEvent.SqlGoodIdentificationEvent)innerEvent).getGoodIdentificationEventId().getGoodIdentificationTypeId());
+            GoodIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState>)this.getGoodIdentifications()).getOrAddDefault(((GoodIdentificationEvent.SqlGoodIdentificationEvent)innerEvent).getGoodIdentificationEventId().getGoodIdentificationTypeId());
             ((GoodIdentificationState.SqlGoodIdentificationState)innerState).mutate(innerEvent);
             if (innerEvent instanceof GoodIdentificationEvent.GoodIdentificationStateRemoved) {
                 //GoodIdentificationEvent.GoodIdentificationStateRemoved removed = (GoodIdentificationEvent.GoodIdentificationStateRemoved)innerEvent;
-                ((EntityStateCollection.ModifiableEntityStateCollection)this.getGoodIdentifications()).removeState(innerState);
+                ((EntityStateCollection.MutableEntityStateCollection)this.getGoodIdentifications()).removeState(innerState);
             }
         }
     }
@@ -1641,7 +1641,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
     }
 
 
-    class SimpleGoodIdentificationStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, GoodIdentificationState>, Collection<GoodIdentificationState> {
+    class SimpleGoodIdentificationStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, GoodIdentificationState>, Collection<GoodIdentificationState> {
 
         @Override
         public GoodIdentificationState get(String goodIdentificationTypeId) {

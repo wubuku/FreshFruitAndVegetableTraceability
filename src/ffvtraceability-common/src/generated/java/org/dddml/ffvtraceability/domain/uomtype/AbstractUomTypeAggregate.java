@@ -48,6 +48,18 @@ public abstract class AbstractUomTypeAggregate extends AbstractAggregate impleme
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof UomTypeEvent) {
+            UomTypeEvent ee = (UomTypeEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected UomTypeEvent map(UomTypeCommand.CreateUomType c) {
         UomTypeEventId stateEventId = new UomTypeEventId(c.getUomTypeId(), c.getVersion());
         UomTypeEvent.UomTypeStateCreated e = newUomTypeStateCreated(stateEventId);

@@ -218,13 +218,13 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.protectedLotIdentifications = protectedLotIdentifications;
     }
 
-    private EntityStateCollection<String, LotIdentificationState> lotIdentifications;
+    private EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState> lotIdentifications;
 
-    public EntityStateCollection<String, LotIdentificationState> getLotIdentifications() {
+    public EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState> getLotIdentifications() {
         return this.lotIdentifications;
     }
 
-    public void setLotIdentifications(EntityStateCollection<String, LotIdentificationState> lotIdentifications) {
+    public void setLotIdentifications(EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState> lotIdentifications) {
         this.lotIdentifications = lotIdentifications;
     }
 
@@ -316,7 +316,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.setCreatedAt(e.getCreatedAt());
 
         for (LotIdentificationEvent.LotIdentificationStateCreated innerEvent : e.getLotIdentificationEvents()) {
-            LotIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(((LotIdentificationEvent.SqlLotIdentificationEvent)innerEvent).getLotIdentificationEventId().getLotIdentificationTypeId());
+            LotIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(((LotIdentificationEvent.SqlLotIdentificationEvent)innerEvent).getLotIdentificationEventId().getLotIdentificationTypeId());
             ((LotIdentificationState.SqlLotIdentificationState)innerState).mutate(innerEvent);
         }
     }
@@ -347,7 +347,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
             }
             if (iterable != null) {
                 for (LotIdentificationState ss : iterable) {
-                    LotIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(ss.getLotIdentificationTypeId());
+                    LotIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(ss.getLotIdentificationTypeId());
                     ((AbstractLotIdentificationState) thisInnerState).merge(ss);
                 }
             }
@@ -356,8 +356,8 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
             if (s.getLotIdentifications() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getLotIdentifications()).getRemovedStates() != null) {
                     for (LotIdentificationState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, LotIdentificationState>)s.getLotIdentifications()).getRemovedStates()) {
-                        LotIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(ss.getLotIdentificationTypeId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getLotIdentifications()).removeState(thisInnerState);
+                        LotIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(ss.getLotIdentificationTypeId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getLotIdentifications()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -365,8 +365,8 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
                     Set<String> removedStateIds = new HashSet<>(this.getLotIdentifications().stream().map(i -> i.getLotIdentificationTypeId()).collect(java.util.stream.Collectors.toList()));
                     s.getLotIdentifications().forEach(i -> removedStateIds.remove(i.getLotIdentificationTypeId()));
                     for (String i : removedStateIds) {
-                        LotIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getLotIdentifications()).removeState(thisInnerState);
+                        LotIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getLotIdentifications()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -467,7 +467,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.setUpdatedAt(e.getCreatedAt());
 
         for (LotIdentificationEvent innerEvent : e.getLotIdentificationEvents()) {
-            LotIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(((LotIdentificationEvent.SqlLotIdentificationEvent)innerEvent).getLotIdentificationEventId().getLotIdentificationTypeId());
+            LotIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState>)this.getLotIdentifications()).getOrAddDefault(((LotIdentificationEvent.SqlLotIdentificationEvent)innerEvent).getLotIdentificationEventId().getLotIdentificationTypeId());
             ((LotIdentificationState.SqlLotIdentificationState)innerState).mutate(innerEvent);
         }
     }
@@ -516,7 +516,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
     }
 
 
-    class SimpleLotIdentificationStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, LotIdentificationState>, Collection<LotIdentificationState> {
+    class SimpleLotIdentificationStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, LotIdentificationState>, Collection<LotIdentificationState> {
 
         @Override
         public LotIdentificationState get(String lotIdentificationTypeId) {

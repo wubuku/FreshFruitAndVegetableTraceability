@@ -35,6 +35,8 @@ public interface PartyIdentificationTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutablePartyIdentificationTypeState extends PartyIdentificationTypeState {
@@ -55,6 +57,8 @@ public interface PartyIdentificationTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

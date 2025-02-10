@@ -40,6 +40,10 @@ public interface WorkEffortGoodStandardEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface WorkEffortGoodStandardStateEvent extends WorkEffortGoodStandardEvent {
         OffsetDateTime getThruDate();
 

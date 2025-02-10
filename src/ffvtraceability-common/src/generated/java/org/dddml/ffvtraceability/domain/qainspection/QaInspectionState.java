@@ -43,6 +43,8 @@ public interface QaInspectionState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     interface MutableQaInspectionState extends QaInspectionState {
         void setQaInspectionId(String qaInspectionId);
 
@@ -69,6 +71,8 @@ public interface QaInspectionState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
 
         void mutate(Event e);

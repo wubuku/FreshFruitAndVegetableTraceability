@@ -128,13 +128,13 @@ public abstract class AbstractFacilityContactMechState implements FacilityContac
         this.protectedFacilityContactMechPurposes = protectedFacilityContactMechPurposes;
     }
 
-    private EntityStateCollection<String, FacilityContactMechPurposeState> facilityContactMechPurposes;
+    private EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState> facilityContactMechPurposes;
 
-    public EntityStateCollection<String, FacilityContactMechPurposeState> getFacilityContactMechPurposes() {
+    public EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState> getFacilityContactMechPurposes() {
         return this.facilityContactMechPurposes;
     }
 
-    public void setFacilityContactMechPurposes(EntityStateCollection<String, FacilityContactMechPurposeState> facilityContactMechPurposes) {
+    public void setFacilityContactMechPurposes(EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState> facilityContactMechPurposes) {
         this.facilityContactMechPurposes = facilityContactMechPurposes;
     }
 
@@ -217,7 +217,7 @@ public abstract class AbstractFacilityContactMechState implements FacilityContac
         this.setCreatedAt(e.getCreatedAt());
 
         for (FacilityContactMechPurposeEvent.FacilityContactMechPurposeStateCreated innerEvent : e.getFacilityContactMechPurposeEvents()) {
-            FacilityContactMechPurposeState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(((FacilityContactMechPurposeEvent.SqlFacilityContactMechPurposeEvent)innerEvent).getFacilityContactMechPurposeEventId().getContactMechPurposeTypeId());
+            FacilityContactMechPurposeState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(((FacilityContactMechPurposeEvent.SqlFacilityContactMechPurposeEvent)innerEvent).getFacilityContactMechPurposeEventId().getContactMechPurposeTypeId());
             ((FacilityContactMechPurposeState.SqlFacilityContactMechPurposeState)innerState).mutate(innerEvent);
         }
     }
@@ -239,7 +239,7 @@ public abstract class AbstractFacilityContactMechState implements FacilityContac
             }
             if (iterable != null) {
                 for (FacilityContactMechPurposeState ss : iterable) {
-                    FacilityContactMechPurposeState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(ss.getContactMechPurposeTypeId());
+                    FacilityContactMechPurposeState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(ss.getContactMechPurposeTypeId());
                     ((AbstractFacilityContactMechPurposeState) thisInnerState).merge(ss);
                 }
             }
@@ -248,8 +248,8 @@ public abstract class AbstractFacilityContactMechState implements FacilityContac
             if (s.getFacilityContactMechPurposes() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getFacilityContactMechPurposes()).getRemovedStates() != null) {
                     for (FacilityContactMechPurposeState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, FacilityContactMechPurposeState>)s.getFacilityContactMechPurposes()).getRemovedStates()) {
-                        FacilityContactMechPurposeState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(ss.getContactMechPurposeTypeId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getFacilityContactMechPurposes()).removeState(thisInnerState);
+                        FacilityContactMechPurposeState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(ss.getContactMechPurposeTypeId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getFacilityContactMechPurposes()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -257,8 +257,8 @@ public abstract class AbstractFacilityContactMechState implements FacilityContac
                     Set<String> removedStateIds = new HashSet<>(this.getFacilityContactMechPurposes().stream().map(i -> i.getContactMechPurposeTypeId()).collect(java.util.stream.Collectors.toList()));
                     s.getFacilityContactMechPurposes().forEach(i -> removedStateIds.remove(i.getContactMechPurposeTypeId()));
                     for (String i : removedStateIds) {
-                        FacilityContactMechPurposeState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getFacilityContactMechPurposes()).removeState(thisInnerState);
+                        FacilityContactMechPurposeState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getFacilityContactMechPurposes()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -296,7 +296,7 @@ public abstract class AbstractFacilityContactMechState implements FacilityContac
         this.setUpdatedAt(e.getCreatedAt());
 
         for (FacilityContactMechPurposeEvent innerEvent : e.getFacilityContactMechPurposeEvents()) {
-            FacilityContactMechPurposeState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(((FacilityContactMechPurposeEvent.SqlFacilityContactMechPurposeEvent)innerEvent).getFacilityContactMechPurposeEventId().getContactMechPurposeTypeId());
+            FacilityContactMechPurposeState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState>)this.getFacilityContactMechPurposes()).getOrAddDefault(((FacilityContactMechPurposeEvent.SqlFacilityContactMechPurposeEvent)innerEvent).getFacilityContactMechPurposeEventId().getContactMechPurposeTypeId());
             ((FacilityContactMechPurposeState.SqlFacilityContactMechPurposeState)innerState).mutate(innerEvent);
         }
     }
@@ -345,7 +345,7 @@ public abstract class AbstractFacilityContactMechState implements FacilityContac
     }
 
 
-    class SimpleFacilityContactMechPurposeStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, FacilityContactMechPurposeState>, Collection<FacilityContactMechPurposeState> {
+    class SimpleFacilityContactMechPurposeStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, FacilityContactMechPurposeState>, Collection<FacilityContactMechPurposeState> {
 
         @Override
         public FacilityContactMechPurposeState get(String contactMechPurposeTypeId) {

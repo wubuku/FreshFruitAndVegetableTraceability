@@ -81,6 +81,8 @@ public interface ShipmentState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     EntityStateCollection<String, ShipmentItemState> getShipmentItems();
 
     EntityStateCollection<String, ShipmentPackageState> getShipmentPackages();
@@ -149,6 +151,12 @@ public interface ShipmentState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState> getShipmentItems();
+
+        EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState> getShipmentPackages();
 
 
         void mutate(Event e);

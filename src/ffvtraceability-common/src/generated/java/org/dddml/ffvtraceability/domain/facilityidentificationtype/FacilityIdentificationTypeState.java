@@ -31,6 +31,8 @@ public interface FacilityIdentificationTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableFacilityIdentificationTypeState extends FacilityIdentificationTypeState {
@@ -47,6 +49,8 @@ public interface FacilityIdentificationTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

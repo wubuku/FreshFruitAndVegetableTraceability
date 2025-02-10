@@ -48,6 +48,18 @@ public abstract class AbstractWorkEffortGoodStandardAggregate extends AbstractAg
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof WorkEffortGoodStandardEvent) {
+            WorkEffortGoodStandardEvent ee = (WorkEffortGoodStandardEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected WorkEffortGoodStandardEvent map(WorkEffortGoodStandardCommand.CreateWorkEffortGoodStandard c) {
         WorkEffortGoodStandardEventId stateEventId = new WorkEffortGoodStandardEventId(c.getWorkEffortGoodStandardId(), c.getVersion());
         WorkEffortGoodStandardEvent.WorkEffortGoodStandardStateCreated e = newWorkEffortGoodStandardStateCreated(stateEventId);

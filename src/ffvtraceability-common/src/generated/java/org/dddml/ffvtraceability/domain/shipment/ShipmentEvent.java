@@ -54,6 +54,10 @@ public interface ShipmentEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface ShipmentStateEvent extends ShipmentEvent {
         String getShipmentTypeId();
 

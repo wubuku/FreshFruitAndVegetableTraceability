@@ -88,6 +88,8 @@ public interface OrderHeaderState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     EntityStateCollection<PartyRoleId, OrderRoleState> getOrderRoles();
 
     EntityStateCollection<String, OrderContactMechState> getOrderContactMechanisms();
@@ -168,6 +170,18 @@ public interface OrderHeaderState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState> getOrderRoles();
+
+        EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState> getOrderContactMechanisms();
+
+        EntityStateCollection.MutableEntityStateCollection<String, OrderItemState> getOrderItems();
+
+        EntityStateCollection.MutableEntityStateCollection<String, OrderAdjustmentState> getOrderAdjustments();
+
+        EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState> getOrderShipGroups();
 
 
         void mutate(Event e);

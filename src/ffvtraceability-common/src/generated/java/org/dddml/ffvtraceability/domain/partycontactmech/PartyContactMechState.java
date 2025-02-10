@@ -45,6 +45,8 @@ public interface PartyContactMechState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     EntityStateCollection<String, PartyContactMechPurposeState> getPartyContactMechPurposes();
 
     interface MutablePartyContactMechState extends PartyContactMechState {
@@ -75,6 +77,10 @@ public interface PartyContactMechState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<String, PartyContactMechPurposeState> getPartyContactMechPurposes();
 
 
         void mutate(Event e);

@@ -48,6 +48,18 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof ArticleEvent) {
+            ArticleEvent ee = (ArticleEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected ArticleEvent map(ArticleCommand.CreateArticle c) {
         ArticleEventId stateEventId = new ArticleEventId(c.getArticleId(), c.getVersion());
         ArticleEvent.ArticleStateCreated e = newArticleStateCreated(stateEventId);
@@ -111,7 +123,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         CommentEventId stateEventId = new CommentEventId(outerState.getArticleId(), c.getCommentSeqId(), version);
         CommentEvent.CommentStateCreated e = newCommentStateCreated(stateEventId);
-        CommentState s = ((EntityStateCollection.ModifiableEntityStateCollection<Long, CommentState>)outerState.getComments()).getOrAddDefault(c.getCommentSeqId());
+        CommentState s = ((EntityStateCollection.MutableEntityStateCollection<Long, CommentState>)outerState.getComments()).getOrAddDefault(c.getCommentSeqId());
 
         e.setCommenter(c.getCommenter());
         e.setBody(c.getBody());
@@ -126,7 +138,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         CommentEventId stateEventId = new CommentEventId(outerState.getArticleId(), c.getCommentSeqId(), version);
         CommentEvent.CommentStateMergePatched e = newCommentStateMergePatched(stateEventId);
-        CommentState s = ((EntityStateCollection.ModifiableEntityStateCollection<Long, CommentState>)outerState.getComments()).getOrAddDefault(c.getCommentSeqId());
+        CommentState s = ((EntityStateCollection.MutableEntityStateCollection<Long, CommentState>)outerState.getComments()).getOrAddDefault(c.getCommentSeqId());
 
         e.setCommenter(c.getCommenter());
         e.setBody(c.getBody());

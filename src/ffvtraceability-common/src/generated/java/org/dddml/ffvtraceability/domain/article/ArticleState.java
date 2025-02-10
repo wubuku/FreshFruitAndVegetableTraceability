@@ -35,6 +35,8 @@ public interface ArticleState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     Set<String> getTags();
 
     EntityStateCollection<Long, CommentState> getComments();
@@ -57,6 +59,10 @@ public interface ArticleState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<Long, CommentState> getComments();
 
         void setTags(Set<String> tags);
 

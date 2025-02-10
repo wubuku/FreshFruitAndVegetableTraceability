@@ -31,6 +31,8 @@ public interface GeoAssocTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableGeoAssocTypeState extends GeoAssocTypeState {
@@ -47,6 +49,8 @@ public interface GeoAssocTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

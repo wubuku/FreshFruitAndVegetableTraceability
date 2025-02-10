@@ -49,6 +49,16 @@ public abstract class AbstractWorkEffortInventoryProducedEvent extends AbstractE
         getWorkEffortInventoryProducedEventId().setVersion(version);
     }
 
+    private String tenantId;
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     public String getCreatedBy() {
         return this.state.getCreatedBy();
     }

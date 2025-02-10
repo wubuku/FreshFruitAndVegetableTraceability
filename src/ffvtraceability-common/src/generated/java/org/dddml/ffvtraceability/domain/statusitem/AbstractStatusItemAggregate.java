@@ -48,6 +48,18 @@ public abstract class AbstractStatusItemAggregate extends AbstractAggregate impl
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof StatusItemEvent) {
+            StatusItemEvent ee = (StatusItemEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected StatusItemEvent map(StatusItemCommand.CreateStatusItem c) {
         StatusItemEventId stateEventId = new StatusItemEventId(c.getStatusId(), c.getVersion());
         StatusItemEvent.StatusItemStateCreated e = newStatusItemStateCreated(stateEventId);

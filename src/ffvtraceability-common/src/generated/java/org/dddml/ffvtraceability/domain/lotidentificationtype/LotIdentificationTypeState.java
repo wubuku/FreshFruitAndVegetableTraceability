@@ -31,6 +31,8 @@ public interface LotIdentificationTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableLotIdentificationTypeState extends LotIdentificationTypeState {
@@ -47,6 +49,8 @@ public interface LotIdentificationTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

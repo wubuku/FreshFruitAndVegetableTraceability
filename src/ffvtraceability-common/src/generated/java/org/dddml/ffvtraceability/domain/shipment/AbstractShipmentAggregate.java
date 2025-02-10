@@ -48,6 +48,18 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof ShipmentEvent) {
+            ShipmentEvent ee = (ShipmentEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected ShipmentEvent map(ShipmentCommand.CreateShipment c) {
         ShipmentEventId stateEventId = new ShipmentEventId(c.getShipmentId(), c.getVersion());
         ShipmentEvent.ShipmentStateCreated e = newShipmentStateCreated(stateEventId);
@@ -189,7 +201,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentItemEventId stateEventId = new ShipmentItemEventId(outerState.getShipmentId(), c.getShipmentItemSeqId(), version);
         ShipmentItemEvent.ShipmentItemStateCreated e = newShipmentItemStateCreated(stateEventId);
-        ShipmentItemState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentItemState>)outerState.getShipmentItems()).getOrAddDefault(c.getShipmentItemSeqId());
+        ShipmentItemState s = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState>)outerState.getShipmentItems()).getOrAddDefault(c.getShipmentItemSeqId());
 
         e.setProductId(c.getProductId());
         e.setQuantity(c.getQuantity());
@@ -205,7 +217,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentItemEventId stateEventId = new ShipmentItemEventId(outerState.getShipmentId(), c.getShipmentItemSeqId(), version);
         ShipmentItemEvent.ShipmentItemStateMergePatched e = newShipmentItemStateMergePatched(stateEventId);
-        ShipmentItemState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentItemState>)outerState.getShipmentItems()).getOrAddDefault(c.getShipmentItemSeqId());
+        ShipmentItemState s = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentItemState>)outerState.getShipmentItems()).getOrAddDefault(c.getShipmentItemSeqId());
 
         e.setProductId(c.getProductId());
         e.setQuantity(c.getQuantity());
@@ -240,7 +252,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentPackageEventId stateEventId = new ShipmentPackageEventId(outerState.getShipmentId(), c.getShipmentPackageSeqId(), version);
         ShipmentPackageEvent.ShipmentPackageStateCreated e = newShipmentPackageStateCreated(stateEventId);
-        ShipmentPackageState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>)outerState.getShipmentPackages()).getOrAddDefault(c.getShipmentPackageSeqId());
+        ShipmentPackageState s = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState>)outerState.getShipmentPackages()).getOrAddDefault(c.getShipmentPackageSeqId());
 
         e.setShipmentBoxTypeId(c.getShipmentBoxTypeId());
         e.setDateCreated(c.getDateCreated());
@@ -270,7 +282,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentPackageEventId stateEventId = new ShipmentPackageEventId(outerState.getShipmentId(), c.getShipmentPackageSeqId(), version);
         ShipmentPackageEvent.ShipmentPackageStateMergePatched e = newShipmentPackageStateMergePatched(stateEventId);
-        ShipmentPackageState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageState>)outerState.getShipmentPackages()).getOrAddDefault(c.getShipmentPackageSeqId());
+        ShipmentPackageState s = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageState>)outerState.getShipmentPackages()).getOrAddDefault(c.getShipmentPackageSeqId());
 
         e.setShipmentBoxTypeId(c.getShipmentBoxTypeId());
         e.setDateCreated(c.getDateCreated());
@@ -325,7 +337,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentPackageContentEventId stateEventId = new ShipmentPackageContentEventId(outerState.getShipmentId(), outerState.getShipmentPackageSeqId(), c.getShipmentItemSeqId(), version);
         ShipmentPackageContentEvent.ShipmentPackageContentStateCreated e = newShipmentPackageContentStateCreated(stateEventId);
-        ShipmentPackageContentState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageContentState>)outerState.getShipmentPackageContents()).getOrAddDefault(c.getShipmentItemSeqId());
+        ShipmentPackageContentState s = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageContentState>)outerState.getShipmentPackageContents()).getOrAddDefault(c.getShipmentItemSeqId());
 
         e.setQuantity(c.getQuantity());
         e.setSubProductId(c.getSubProductId());
@@ -341,7 +353,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
         ShipmentPackageContentEventId stateEventId = new ShipmentPackageContentEventId(outerState.getShipmentId(), outerState.getShipmentPackageSeqId(), c.getShipmentItemSeqId(), version);
         ShipmentPackageContentEvent.ShipmentPackageContentStateMergePatched e = newShipmentPackageContentStateMergePatched(stateEventId);
-        ShipmentPackageContentState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, ShipmentPackageContentState>)outerState.getShipmentPackageContents()).getOrAddDefault(c.getShipmentItemSeqId());
+        ShipmentPackageContentState s = ((EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageContentState>)outerState.getShipmentPackageContents()).getOrAddDefault(c.getShipmentItemSeqId());
 
         e.setQuantity(c.getQuantity());
         e.setSubProductId(c.getSubProductId());

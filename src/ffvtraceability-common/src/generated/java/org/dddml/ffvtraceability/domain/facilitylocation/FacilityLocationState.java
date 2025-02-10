@@ -53,6 +53,8 @@ public interface FacilityLocationState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableFacilityLocationState extends FacilityLocationState {
@@ -91,6 +93,8 @@ public interface FacilityLocationState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

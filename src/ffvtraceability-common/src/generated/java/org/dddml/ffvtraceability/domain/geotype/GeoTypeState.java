@@ -35,6 +35,8 @@ public interface GeoTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableGeoTypeState extends GeoTypeState {
@@ -55,6 +57,8 @@ public interface GeoTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

@@ -188,13 +188,13 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
         this.protectedPartyIdentifications = protectedPartyIdentifications;
     }
 
-    private EntityStateCollection<String, PartyIdentificationState> partyIdentifications;
+    private EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState> partyIdentifications;
 
-    public EntityStateCollection<String, PartyIdentificationState> getPartyIdentifications() {
+    public EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState> getPartyIdentifications() {
         return this.partyIdentifications;
     }
 
-    public void setPartyIdentifications(EntityStateCollection<String, PartyIdentificationState> partyIdentifications) {
+    public void setPartyIdentifications(EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState> partyIdentifications) {
         this.partyIdentifications = partyIdentifications;
     }
 
@@ -283,7 +283,7 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
         this.setCreatedAt(e.getCreatedAt());
 
         for (PartyIdentificationEvent.PartyIdentificationStateCreated innerEvent : e.getPartyIdentificationEvents()) {
-            PartyIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(((PartyIdentificationEvent.SqlPartyIdentificationEvent)innerEvent).getPartyIdentificationEventId().getPartyIdentificationTypeId());
+            PartyIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(((PartyIdentificationEvent.SqlPartyIdentificationEvent)innerEvent).getPartyIdentificationEventId().getPartyIdentificationTypeId());
             ((PartyIdentificationState.SqlPartyIdentificationState)innerState).mutate(innerEvent);
         }
     }
@@ -311,7 +311,7 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
             }
             if (iterable != null) {
                 for (PartyIdentificationState ss : iterable) {
-                    PartyIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(ss.getPartyIdentificationTypeId());
+                    PartyIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(ss.getPartyIdentificationTypeId());
                     ((AbstractPartyIdentificationState) thisInnerState).merge(ss);
                 }
             }
@@ -320,8 +320,8 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
             if (s.getPartyIdentifications() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getPartyIdentifications()).getRemovedStates() != null) {
                     for (PartyIdentificationState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, PartyIdentificationState>)s.getPartyIdentifications()).getRemovedStates()) {
-                        PartyIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(ss.getPartyIdentificationTypeId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getPartyIdentifications()).removeState(thisInnerState);
+                        PartyIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(ss.getPartyIdentificationTypeId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getPartyIdentifications()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -329,8 +329,8 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
                     Set<String> removedStateIds = new HashSet<>(this.getPartyIdentifications().stream().map(i -> i.getPartyIdentificationTypeId()).collect(java.util.stream.Collectors.toList()));
                     s.getPartyIdentifications().forEach(i -> removedStateIds.remove(i.getPartyIdentificationTypeId()));
                     for (String i : removedStateIds) {
-                        PartyIdentificationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getPartyIdentifications()).removeState(thisInnerState);
+                        PartyIdentificationState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getPartyIdentifications()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -410,7 +410,7 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
         this.setUpdatedAt(e.getCreatedAt());
 
         for (PartyIdentificationEvent innerEvent : e.getPartyIdentificationEvents()) {
-            PartyIdentificationState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(((PartyIdentificationEvent.SqlPartyIdentificationEvent)innerEvent).getPartyIdentificationEventId().getPartyIdentificationTypeId());
+            PartyIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(((PartyIdentificationEvent.SqlPartyIdentificationEvent)innerEvent).getPartyIdentificationEventId().getPartyIdentificationTypeId());
             ((PartyIdentificationState.SqlPartyIdentificationState)innerState).mutate(innerEvent);
         }
     }
@@ -459,7 +459,7 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
     }
 
 
-    class SimplePartyIdentificationStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, PartyIdentificationState>, Collection<PartyIdentificationState> {
+    class SimplePartyIdentificationStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState>, Collection<PartyIdentificationState> {
 
         @Override
         public PartyIdentificationState get(String partyIdentificationTypeId) {

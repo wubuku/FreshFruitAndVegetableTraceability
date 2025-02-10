@@ -48,6 +48,18 @@ public abstract class AbstractDocumentAggregate extends AbstractAggregate implem
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof DocumentEvent) {
+            DocumentEvent ee = (DocumentEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected DocumentEvent map(DocumentCommand.CreateDocument c) {
         if(DocumentTypeId.DOCUMENT.equals(c.getDocumentTypeId())) {
             return mapToDocumentEvent(c);

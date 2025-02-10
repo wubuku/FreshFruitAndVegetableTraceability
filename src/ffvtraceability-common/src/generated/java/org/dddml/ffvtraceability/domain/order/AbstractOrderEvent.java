@@ -55,6 +55,16 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         this.orderFulfillmentSyncStatusId = orderFulfillmentSyncStatusId;
     }
 
+    private String tenantId;
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     private String createdBy;
 
     public String getCreatedBy() {

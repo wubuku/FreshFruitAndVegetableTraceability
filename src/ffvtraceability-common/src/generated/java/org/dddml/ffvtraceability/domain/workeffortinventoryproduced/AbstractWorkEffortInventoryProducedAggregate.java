@@ -43,6 +43,18 @@ public abstract class AbstractWorkEffortInventoryProducedAggregate extends Abstr
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof WorkEffortInventoryProducedEvent) {
+            WorkEffortInventoryProducedEvent ee = (WorkEffortInventoryProducedEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected WorkEffortInventoryProducedEvent map(WorkEffortInventoryProducedCommand.CreateWorkEffortInventoryProduced c) {
         WorkEffortInventoryProducedEventId stateEventId = new WorkEffortInventoryProducedEventId(c.getWorkEffortInventoryProducedId(), c.getVersion());
         WorkEffortInventoryProducedEvent.WorkEffortInventoryProducedStateCreated e = newWorkEffortInventoryProducedStateCreated(stateEventId);

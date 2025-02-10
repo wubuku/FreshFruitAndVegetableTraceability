@@ -40,6 +40,10 @@ public interface PartyEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface PartyStateEvent extends PartyEvent {
         String getPartyTypeId();
 

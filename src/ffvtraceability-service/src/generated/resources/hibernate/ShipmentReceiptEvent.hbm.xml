@@ -21,6 +21,7 @@
       <column name="cte_sync_status_id" sql-type="VARCHAR(20)" />
     </property>
     <property name="commandType" column="command_type" length="50" />
+    <property name="tenantId" column="tenant_id" length="12" />
     <subclass name="AbstractShipmentReceiptEvent$ShipmentReceiptLobEvent" discriminator-value="ShipmentReceiptLobEvent">
       <property name="dynamicProperties">
         <column name="dynamic_properties" sql-type="json" />

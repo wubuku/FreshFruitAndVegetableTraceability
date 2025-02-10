@@ -41,6 +41,8 @@ public interface PartyRoleState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     interface MutablePartyRoleState extends PartyRoleState {
         void setPartyRoleId(PartyRoleId partyRoleId);
 
@@ -65,6 +67,8 @@ public interface PartyRoleState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
 
         void mutate(Event e);

@@ -33,6 +33,8 @@ public interface WorkEffortInventoryAssignState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     interface MutableWorkEffortInventoryAssignState extends WorkEffortInventoryAssignState {
         void setWorkEffortInventoryAssignId(WorkEffortInventoryAssignId workEffortInventoryAssignId);
 
@@ -49,6 +51,8 @@ public interface WorkEffortInventoryAssignState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
 
         void mutate(Event e);

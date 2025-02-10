@@ -81,6 +81,8 @@ public interface InventoryItemState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     EntityStateCollection<String, InventoryItemDetailState> getDetails();
 
     interface MutableInventoryItemState extends InventoryItemState {
@@ -147,6 +149,10 @@ public interface InventoryItemState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState> getDetails();
 
 
         void mutate(Event e);

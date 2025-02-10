@@ -84,6 +84,8 @@ public interface ShipmentPackageState
 
         void setShipmentId(String shipmentId);
 
+        EntityStateCollection.MutableEntityStateCollection<String, ShipmentPackageContentState> getShipmentPackageContents();
+
 
         void mutate(Event e);
 

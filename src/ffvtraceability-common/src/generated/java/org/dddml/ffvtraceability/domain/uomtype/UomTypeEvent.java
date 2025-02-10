@@ -40,6 +40,10 @@ public interface UomTypeEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface UomTypeStateEvent extends UomTypeEvent {
         String getParentTypeId();
 

@@ -48,6 +48,18 @@ public abstract class AbstractShipmentBoxTypeAggregate extends AbstractAggregate
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof ShipmentBoxTypeEvent) {
+            ShipmentBoxTypeEvent ee = (ShipmentBoxTypeEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected ShipmentBoxTypeEvent map(ShipmentBoxTypeCommand.CreateShipmentBoxType c) {
         ShipmentBoxTypeEventId stateEventId = new ShipmentBoxTypeEventId(c.getShipmentBoxTypeId(), c.getVersion());
         ShipmentBoxTypeEvent.ShipmentBoxTypeStateCreated e = newShipmentBoxTypeStateCreated(stateEventId);

@@ -48,6 +48,18 @@ public abstract class AbstractWorkEffortInventoryAssignAggregate extends Abstrac
         changes.add(e);
     }
 
+    @Override
+    protected void onApplying(Event e) {
+        if (state.getVersion() == null) {
+            state.setTenantId(TenantContext.getTenantId());
+        }
+        if (e instanceof WorkEffortInventoryAssignEvent) {
+            WorkEffortInventoryAssignEvent ee = (WorkEffortInventoryAssignEvent) e;
+            ee.setTenantId(state.getTenantId());
+        }
+        super.onApplying(e);
+    }
+
     protected WorkEffortInventoryAssignEvent map(WorkEffortInventoryAssignCommand.CreateWorkEffortInventoryAssign c) {
         WorkEffortInventoryAssignEventId stateEventId = new WorkEffortInventoryAssignEventId(c.getWorkEffortInventoryAssignId(), c.getVersion());
         WorkEffortInventoryAssignEvent.WorkEffortInventoryAssignStateCreated e = newWorkEffortInventoryAssignStateCreated(stateEventId);

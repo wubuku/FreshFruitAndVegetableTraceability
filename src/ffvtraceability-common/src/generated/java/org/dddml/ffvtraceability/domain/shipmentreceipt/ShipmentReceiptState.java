@@ -71,6 +71,8 @@ public interface ShipmentReceiptState
 
     Boolean getDeleted();
 
+    String getTenantId();
+
     EntityStateCollection<PartyRoleId, ShipmentReceiptRoleState> getShipmentReceiptRoles();
 
     EntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> getOrderAllocations();
@@ -127,6 +129,12 @@ public interface ShipmentReceiptState
         void setUpdatedAt(OffsetDateTime updatedAt);
 
         void setDeleted(Boolean deleted);
+
+        void setTenantId(String tenantId);
+
+        EntityStateCollection.MutableEntityStateCollection<PartyRoleId, ShipmentReceiptRoleState> getShipmentReceiptRoles();
+
+        EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState> getOrderAllocations();
 
 
         void mutate(Event e);

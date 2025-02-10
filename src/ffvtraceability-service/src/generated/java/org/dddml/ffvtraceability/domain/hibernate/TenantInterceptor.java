@@ -35,31 +35,6 @@ public class TenantInterceptor extends EmptyInterceptor {
         return setTenantId(entity, id, state, propertyNames, types, entityTypeName);
     }
 
-    @Override
-    public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
-        String entityTypeName = getStateObjectTypeName(entity);
-        log.info("onDelete: entityTypeName={}", entityTypeName);
-        if (entityTypeName == null || !TenantSupport.hasTenantIdProperty(entityTypeName)) {
-            return;
-        }
-        log.debug("[delete] Updating entity: type={}, id={}, currentTenantId={}",
-                entity.getClass().getSimpleName(), id, TenantContext.getTenantId());
-        setTenantId(entity, id, state, propertyNames, types, entityTypeName);
-    }
-
-    @Override
-    public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState,
-            String[] propertyNames, Type[] types) {
-        String entityTypeName = getStateObjectTypeName(entity);
-        log.info("onFlushDirty: entityTypeName={}", entityTypeName);
-        if (entityTypeName == null || !TenantSupport.hasTenantIdProperty(entityTypeName)) {
-            return false;
-        }
-        log.debug("[flush-dirty] Updating entity: type={}, id={}, currentTenantId={}",
-                entity.getClass().getSimpleName(), id, TenantContext.getTenantId());
-        return setTenantId(entity, id, currentState, propertyNames, types, entityTypeName);
-    }
-
     private static boolean setTenantId(Object entity, Serializable id, Object[] state, String[] propertyNames,
             Type[] types, String entityTypeName) {
         String currentTenantId = TenantContext.getTenantId();
@@ -89,12 +64,11 @@ public class TenantInterceptor extends EmptyInterceptor {
 
         for (int i = 0; i < propertyNames.length; i++) {
             if (tenantIdPropertyName.equals(propertyNames[i])) {
-                if (!currentTenantId.equals(state[i])) {
+                if (state[i] == null) {
                     state[i] = currentTenantId;
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             }
         }
         return false;

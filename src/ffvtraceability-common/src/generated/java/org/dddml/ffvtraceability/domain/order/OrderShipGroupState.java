@@ -136,6 +136,8 @@ public interface OrderShipGroupState
 
         void setOrderId(String orderId);
 
+        EntityStateCollection.MutableEntityStateCollection<String, OrderItemShipGroupAssociationState> getOrderItemShipGroupAssociations();
+
 
         void mutate(Event e);
 

@@ -40,6 +40,10 @@ public interface ShippingDocumentEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface ShippingDocumentStateEvent extends ShippingDocumentEvent {
         String getShipmentId();
 

@@ -40,6 +40,10 @@ public interface AttributeSetInstanceEvent extends Event {
 
     void setCommandId(String commandId);
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     interface AttributeSetInstanceStateEvent extends AttributeSetInstanceEvent {
         org.dddml.ffvtraceability.domain.ConsistentEqualityMap getAttributes();
 

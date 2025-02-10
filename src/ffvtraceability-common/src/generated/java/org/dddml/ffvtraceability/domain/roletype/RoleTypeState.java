@@ -35,6 +35,8 @@ public interface RoleTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableRoleTypeState extends RoleTypeState {
@@ -55,6 +57,8 @@ public interface RoleTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

@@ -35,6 +35,8 @@ public interface ContactMechPurposeTypeState
 
     OffsetDateTime getUpdatedAt();
 
+    String getTenantId();
+
     String getCommandId();
 
     interface MutableContactMechPurposeTypeState extends ContactMechPurposeTypeState {
@@ -55,6 +57,8 @@ public interface ContactMechPurposeTypeState
         void setUpdatedBy(String updatedBy);
 
         void setUpdatedAt(OffsetDateTime updatedAt);
+
+        void setTenantId(String tenantId);
 
         void setCommandId(String commandId);
 

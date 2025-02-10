@@ -63,12 +63,12 @@ public class UpdateOrderAllocationLogic implements IUpdateOrderAllocationLogic {
 
         s.setQuantityUnallocated(unallocatedQuantity);
 
-        EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>
-                allocationStates = (EntityStateCollection.ModifiableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>) s.getOrderAllocations();
+        EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>
+                allocationStates = s.getOrderAllocations();
         for (OrderItemQuantityAllocationValue allocation : orderItemAllocations) {
             OrderItemId orderItemId = new OrderItemId(allocation.getOrderId(), allocation.getOrderItemSeqId());
             ShipmentReceiptOrderAllocationState.MutableShipmentReceiptOrderAllocationState allocationState
-                    = (ShipmentReceiptOrderAllocationState.MutableShipmentReceiptOrderAllocationState) allocationStates.getOrAddDefault(orderItemId);
+                    = allocationStates.getOrAddMutableState(orderItemId);
             allocationState.setOrderItemId(orderItemId);
             allocationState.setQuantityAllocated(allocation.getQuantityAllocated());
         }
@@ -80,7 +80,7 @@ public class UpdateOrderAllocationLogic implements IUpdateOrderAllocationLogic {
         oldOrderItemIds.removeAll(newOrderItemIds);
 
         for (OrderItemId orderItemId : oldOrderItemIds) {
-            allocationStates.removeState(s.getOrderAllocations().get(orderItemId));
+            allocationStates.removeById(orderItemId);
         }
 
         return s; // Return the updated state
