@@ -21,6 +21,13 @@ public interface OrderEvent extends Event, OrderFulfillmentSyncable {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface FulfillmentStatusUpdated extends OrderEvent {
+        OrderItemQuantityAllocationValue[] getOrderItemAllocations();
+
+        void setOrderItemAllocations(OrderItemQuantityAllocationValue[] value);
+
+    }
+
     String getOrderId();
 
     //void setOrderId(String orderId);

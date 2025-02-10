@@ -312,6 +312,27 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
+    public static class FulfillmentStatusUpdated extends OrderLobEvent implements OrderEvent.FulfillmentStatusUpdated {
+
+        @Override
+        public String getEventType() {
+            return "FulfillmentStatusUpdated";
+        }
+
+        public OrderItemQuantityAllocationValue[] getOrderItemAllocations() {
+            Object val = getDynamicProperties().get("orderItemAllocations");
+            if (val instanceof OrderItemQuantityAllocationValue[]) {
+                return (OrderItemQuantityAllocationValue[]) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, OrderItemQuantityAllocationValue[].class);
+        }
+
+        public void setOrderItemAllocations(OrderItemQuantityAllocationValue[] value) {
+            getDynamicProperties().put("orderItemAllocations", value);
+        }
+
+    }
+
 
     public static abstract class AbstractOrderStateEvent extends AbstractOrderEvent implements OrderEvent.OrderStateEvent {
         private String orderTypeId;

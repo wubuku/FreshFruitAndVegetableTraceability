@@ -1,0 +1,11 @@
+
+valueObjects:
+  OrderItemQuantityAllocationValue:
+    properties:
+      OrderId:
+        type: id
+      OrderItemSeqId:
+        type: id
+      QuantityAllocated:
+        type: fixed-point
+

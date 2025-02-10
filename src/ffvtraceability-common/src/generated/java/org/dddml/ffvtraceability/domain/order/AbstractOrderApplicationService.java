@@ -58,6 +58,10 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
         update(c, ar -> ar.mergePatch(c));
     }
 
+    public void when(OrderCommands.UpdateFulfillmentStatus c) {
+        update(c, ar -> ar.updateFulfillmentStatus(c.getOrderItemAllocations(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public OrderHeaderState get(String id) {
         OrderHeaderState state = getStateRepository().get(id, true);
         return state;

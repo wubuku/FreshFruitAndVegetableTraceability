@@ -506,6 +506,16 @@
               CancelQuantity:
                 type: fixed-point
 
+    methods:
+      UpdateFulfillmentStatus:
+        isInternal: true
+        parameters:
+          OrderItemAllocations:
+            itemType: OrderItemQuantityAllocationValue
+        event:
+          name: FulfillmentStatusUpdated
+
+
   OrderAdjustmentType:
     metadata:
       NoEventSourcing: true

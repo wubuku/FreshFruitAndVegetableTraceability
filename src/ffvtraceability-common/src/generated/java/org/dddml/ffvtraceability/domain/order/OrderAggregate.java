@@ -21,6 +21,8 @@ public interface OrderAggregate {
 
     void mergePatch(OrderCommand.MergePatchOrder c);
 
+    void updateFulfillmentStatus(OrderItemQuantityAllocationValue[] orderItemAllocations, Long version, String commandId, String requesterId, OrderCommands.UpdateFulfillmentStatus c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

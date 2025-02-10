@@ -41,6 +41,8 @@ public interface OrderCommand extends Command {
             return false;
         if (c.getCommandType() != null) {
             String commandType = c.getCommandType();
+            if (commandType.equals("UpdateFulfillmentStatus"))
+                return false;
         }
 
         if (c.getVersion().equals(OrderHeaderState.VERSION_NULL))

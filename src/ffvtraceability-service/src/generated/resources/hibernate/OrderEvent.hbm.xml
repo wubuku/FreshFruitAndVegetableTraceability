@@ -26,6 +26,7 @@
           <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
         </type>
       </property>
+      <subclass name="AbstractOrderEvent$FulfillmentStatusUpdated" discriminator-value="FulfillmentStatusUpdated" />
     </subclass>
     <subclass name="AbstractOrderEvent$AbstractOrderStateEvent" abstract="true">
       <property name="orderTypeId">

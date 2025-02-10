@@ -546,6 +546,8 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             when((OrderStateCreated) e);
         } else if (e instanceof OrderStateMergePatched) {
             when((OrderStateMergePatched) e);
+        } else if (e instanceof AbstractOrderEvent.FulfillmentStatusUpdated) {
+            when((AbstractOrderEvent.FulfillmentStatusUpdated)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -1058,6 +1060,29 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
             OrderShipGroupState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(((OrderShipGroupEvent.SqlOrderShipGroupEvent)innerEvent).getOrderShipGroupEventId().getShipGroupSeqId());
             ((OrderShipGroupState.SqlOrderShipGroupState)innerState).mutate(innerEvent);
         }
+    }
+
+    public void when(AbstractOrderEvent.FulfillmentStatusUpdated e) {
+        throwOnWrongEvent(e);
+
+        OrderItemQuantityAllocationValue[] orderItemAllocations = e.getOrderItemAllocations();
+        OrderItemQuantityAllocationValue[] OrderItemAllocations = orderItemAllocations;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        OrderHeaderState updatedOrderHeaderState = ApplicationContext.current.get(IUpdateFulfillmentStatusLogic.class).mutate(
+                this, orderItemAllocations, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+
+
+        if (this != updatedOrderHeaderState) { merge(updatedOrderHeaderState); } //else do nothing
+
     }
 
     public void save() {

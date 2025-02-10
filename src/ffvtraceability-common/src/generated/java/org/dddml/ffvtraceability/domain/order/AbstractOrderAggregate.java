@@ -1003,6 +1003,43 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             super(state);
         }
 
+        @Override
+        public void updateFulfillmentStatus(OrderItemQuantityAllocationValue[] orderItemAllocations, Long version, String commandId, String requesterId, OrderCommands.UpdateFulfillmentStatus c) {
+            java.util.function.Supplier<OrderEvent.FulfillmentStatusUpdated> eventFactory = () -> newFulfillmentStatusUpdated(orderItemAllocations, version, commandId, requesterId);
+            OrderEvent.FulfillmentStatusUpdated e;
+            try {
+                e = verifyUpdateFulfillmentStatus(eventFactory, orderItemAllocations, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        protected OrderEvent.FulfillmentStatusUpdated verifyUpdateFulfillmentStatus(java.util.function.Supplier<OrderEvent.FulfillmentStatusUpdated> eventFactory, OrderItemQuantityAllocationValue[] orderItemAllocations, OrderCommands.UpdateFulfillmentStatus c) {
+            OrderItemQuantityAllocationValue[] OrderItemAllocations = orderItemAllocations;
+
+            OrderEvent.FulfillmentStatusUpdated e = (OrderEvent.FulfillmentStatusUpdated) ApplicationContext.current.get(IUpdateFulfillmentStatusLogic.class).verify(
+                    eventFactory, getState(), orderItemAllocations, VerificationContext.of(c));
+
+            return e;
+        }
+
+        protected AbstractOrderEvent.FulfillmentStatusUpdated newFulfillmentStatusUpdated(OrderItemQuantityAllocationValue[] orderItemAllocations, Long version, String commandId, String requesterId) {
+            OrderEventId eventId = new OrderEventId(getState().getOrderId(), version);
+            AbstractOrderEvent.FulfillmentStatusUpdated e = new AbstractOrderEvent.FulfillmentStatusUpdated();
+
+            e.getDynamicProperties().put("orderItemAllocations", orderItemAllocations);
+            e.setOrderFulfillmentSyncStatusId(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+            e.setOrderEventId(eventId);
+            return e;
+        }
+
     }
 
 }

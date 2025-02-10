@@ -53,7 +53,24 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
         // 更新收货单的分配信息
         updateReceiptAllocations(allocationResult, c);
         // 计算并返回履行状态
-        String result = calculateFulfillmentStatus(orderHeaderState, allocationResult.getTotalAllocatedQuantities(), c);
+        OrderCommands.UpdateFulfillmentStatus updateFulfillmentStatus = new OrderCommands.UpdateFulfillmentStatus();
+        updateFulfillmentStatus.setOrderId(orderId);
+
+        Map<OrderItemId, BigDecimal> allocatedQuantities = allocationResult.getTotalAllocatedQuantities();
+        OrderItemQuantityAllocationValue[] orderItemQuantityAllocations = allocatedQuantities.entrySet().stream()
+            .map(entry -> new OrderItemQuantityAllocationValue(
+                entry.getKey().getOrderId(),
+                entry.getKey().getOrderItemSeqId(),
+                entry.getValue()
+            ))
+            .toArray(OrderItemQuantityAllocationValue[]::new);
+            
+        updateFulfillmentStatus.setOrderItemAllocations(orderItemQuantityAllocations);
+        updateFulfillmentStatus.setVersion(orderHeaderState.getVersion());
+        updateFulfillmentStatus.setCommandId(c.getCommandId());
+        updateFulfillmentStatus.setRequesterId(c.getRequesterId());
+        orderApplicationService.when(updateFulfillmentStatus);
+        String result = orderHeaderState.getFulfillmentStatusId();
         logger.info("Completed processing order {} with version {}", orderId, orderHeaderState.getVersion());
         return result;
     }
@@ -262,85 +279,6 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
             updateOrderAllocation.setRequesterId(c.getRequesterId());
             shipmentReceiptApplicationService.when(updateOrderAllocation);
         } // end for
-    }
-
-    private String calculateFulfillmentStatus(
-            OrderHeaderState orderHeaderState,
-            Map<OrderItemId, BigDecimal> totalAllocatedQuantities,
-            Command c
-    ) {
-        AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
-        mergePatchOrder.setOrderId(orderHeaderState.getOrderId());
-        mergePatchOrder.setVersion(orderHeaderState.getVersion());
-
-        boolean allFulfilled = true;
-        boolean anyFulfilled = false;
-
-        // 遍历订单项并更新它们的履行状态
-        for (OrderItemState orderItem : orderHeaderState.getOrderItems()) {
-            OrderItemId itemId = new OrderItemId(orderHeaderState.getOrderId(), orderItem.getOrderItemSeqId());
-            BigDecimal totalAllocated = totalAllocatedQuantities.getOrDefault(itemId, BigDecimal.ZERO);
-            BigDecimal demandQuantity = orderItem.getQuantity();
-            // 更新订单项的履行状态
-            updateOrderItemFulfillmentStatus(mergePatchOrder, orderItem, totalAllocated, demandQuantity);
-            // 更新整体履行状态标志
-            if (totalAllocated.compareTo(demandQuantity) < 0) {
-                allFulfilled = false;
-            }
-            if (totalAllocated.compareTo(BigDecimal.ZERO) > 0) {
-                anyFulfilled = true;
-            }
-        }
-        // 确定整体履行状态
-        String fulfillmentStatusId = determineFulfillmentStatus(allFulfilled, anyFulfilled);
-        // 更新订单并返回状态
-        return updateOrderFulfillmentStatus(mergePatchOrder, fulfillmentStatusId, c);
-    }
-
-    private void updateOrderItemFulfillmentStatus(
-            AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder,
-            OrderItemState orderItem,
-            BigDecimal totalAllocated,
-            BigDecimal demandQuantity
-    ) {
-        OrderItemCommand.MergePatchOrderItem mergePatchOrderItem = mergePatchOrder.newMergePatchOrderItem();
-        mergePatchOrderItem.setOrderItemSeqId(orderItem.getOrderItemSeqId());
-        mergePatchOrderItem.setFulfillmentStatusId(
-                calculateItemFulfillmentStatus(totalAllocated, demandQuantity)
-        );
-        mergePatchOrder.getOrderItemCommands().add(mergePatchOrderItem);
-    }
-
-    private String calculateItemFulfillmentStatus(BigDecimal totalAllocated, BigDecimal demandQuantity) {
-        if (totalAllocated.compareTo(demandQuantity) >= 0) {
-            return FULFILLMENT_STATUS_FULFILLED;
-        } else if (totalAllocated.compareTo(BigDecimal.ZERO) > 0) {
-            return FULFILLMENT_STATUS_PARTIALLY_FULFILLED;
-        } else {
-            return FULFILLMENT_STATUS_NOT_FULFILLED;
-        }
-    }
-
-    private String determineFulfillmentStatus(boolean allFulfilled, boolean anyFulfilled) {
-        if (allFulfilled) {
-            return FULFILLMENT_STATUS_FULFILLED;
-        } else if (anyFulfilled) {
-            return FULFILLMENT_STATUS_PARTIALLY_FULFILLED;
-        } else {
-            return FULFILLMENT_STATUS_NOT_FULFILLED;
-        }
-    }
-
-    private String updateOrderFulfillmentStatus(
-            AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder,
-            String fulfillmentStatusId,
-            Command c
-    ) {
-        mergePatchOrder.setFulfillmentStatusId(fulfillmentStatusId);
-        mergePatchOrder.setCommandId(UUID.randomUUID().toString());
-        mergePatchOrder.setRequesterId(c.getRequesterId());
-        orderApplicationService.when(mergePatchOrder);
-        return fulfillmentStatusId;
     }
 
     private Map<OrderItemId, BigDecimal> calculateTotalAllocatedQuantities(

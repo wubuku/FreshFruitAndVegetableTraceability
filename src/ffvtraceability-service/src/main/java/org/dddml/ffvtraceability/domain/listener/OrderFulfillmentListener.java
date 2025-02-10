@@ -5,6 +5,7 @@ import jakarta.annotation.PreDestroy;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.TenantContext;
 import org.dddml.ffvtraceability.domain.order.OrderAggregate;
+import org.dddml.ffvtraceability.domain.order.OrderEvent;
 import org.dddml.ffvtraceability.domain.service.PurchaseOrderFulfillmentService;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
 import org.dddml.ffvtraceability.domain.shipment.ShipmentState;
@@ -111,9 +112,13 @@ public class OrderFulfillmentListener {
     @EventListener
     @Async("asyncEventExecutor")
     public void handleOrderEvents(SpringDomainEventPublisher.AggregateEventEnvelope<OrderAggregate> eventEnvelope) {
-        //
-        //todo System.out.println("Event received: " + eventEnvelope);
-        //
+        for (Event e : eventEnvelope.getDomainEvents()) {
+            if (e instanceof OrderEvent.FulfillmentStatusUpdated) {
+                continue;
+            }
+            OrderEvent orderEvent = (OrderEvent) e;
+            queueOrderForProcessing(orderEvent.getOrderId(), orderEvent.getTenantId());
+        }
     }
 
     @EventListener

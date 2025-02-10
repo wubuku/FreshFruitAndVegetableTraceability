@@ -179,15 +179,3 @@
               # 记录之前的 OrderId。
               type: id
 
-
-valueObjects:
-  OrderItemQuantityAllocationValue:
-    # TODO: 把这个值对象移动到独立的文件？
-    properties:
-      OrderId:
-        type: id
-      OrderItemSeqId:
-        type: id
-      QuantityAllocated:
-        type: fixed-point
-
