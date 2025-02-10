@@ -29,7 +29,7 @@
           <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
         </type>
       </property>
-      <subclass name="AbstractShipmentReceiptEvent$UpdateOrderAllocationEvent" discriminator-value="UpdateOrderAllocationEvent" />
+      <subclass name="AbstractShipmentReceiptEvent$OrderAllocationUpdated" discriminator-value="OrderAllocationUpdated" />
     </subclass>
     <subclass name="AbstractShipmentReceiptEvent$AbstractShipmentReceiptStateEvent" abstract="true">
       <property name="productId">

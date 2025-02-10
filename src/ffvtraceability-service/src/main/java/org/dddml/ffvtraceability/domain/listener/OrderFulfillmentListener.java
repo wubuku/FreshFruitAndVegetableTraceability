@@ -19,6 +19,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
@@ -45,53 +46,86 @@ public class OrderFulfillmentListener {
     @EventListener
     @Async("asyncEventExecutor")
     public void handleShipmentReceiptEvents(SpringDomainEventPublisher.AggregateEventEnvelope<ShipmentReceiptAggregate> eventEnvelope) {
+        logger.info("Received ShipmentReceipt events envelope: {}", eventEnvelope);
         if (eventEnvelope.getDomainEvents() == null) {
+            logger.warn("No domain events found in envelope");
             return;
         }
         for (Event e : eventEnvelope.getDomainEvents()) {
             String receiptId;
+            String previousOrderId = null;
             if (e instanceof ShipmentReceiptEvent.ShipmentReceiptStateCreated) {
-                //ShipmentReceiptEvent.ShipmentReceiptStateCreated srCreated = (ShipmentReceiptEvent.ShipmentReceiptStateCreated) e;
+                logger.info("Processing ShipmentReceiptStateCreated event: {}", e);
             } else if (e instanceof ShipmentReceiptEvent.ShipmentReceiptStateMergePatched) {
-                //ShipmentReceiptEvent.ShipmentReceiptStateMergePatched srMergePatched = (ShipmentReceiptEvent.ShipmentReceiptStateMergePatched) e;
+                logger.info("Processing ShipmentReceiptStateMergePatched event: {}", e);
             } else if (e instanceof ShipmentReceiptEvent.ShipmentReceiptStateDeleted) {
-                //ShipmentReceiptEvent.ShipmentReceiptStateDeleted srDeleted = (ShipmentReceiptEvent.ShipmentReceiptStateDeleted) e;
+                logger.info("Processing ShipmentReceiptStateDeleted event: {}", e);
+            } else if (e instanceof ShipmentReceiptEvent.OrderAllocationUpdated) {
+                logger.info("Skipping OrderAllocationUpdated event: {}", e);
+                continue;
             } else {
+                logger.info("Skipping unknown event type: {}", e.getClass().getName());
                 continue;
             }
-            //
-            // NOTE: Get some sleep and wait for the Shipment Receipt to be saved to the database.
-            //
+
             try {
+                logger.info("Waiting {}ms for database update...", RECEIPT_PROCESSING_DELAY_MS);
                 Thread.sleep(RECEIPT_PROCESSING_DELAY_MS);
             } catch (InterruptedException ex) {
-                //throw new RuntimeException(ex);
                 logger.error("Sleep interrupted while waiting for Shipment Receipt to be saved to the database.", ex);
                 continue;
             }
+
             ShipmentReceiptEvent srEvent = (ShipmentReceiptEvent) e;
             receiptId = srEvent.getReceiptId();
             String tenantId = srEvent.getTenantId();
+            logger.info("Processing receipt ID: {}, tenant ID: {}", receiptId, tenantId);
+
             TenantContext.setTenantId(tenantId);
             try {
+                logger.info("Fetching ShipmentReceiptState for receipt ID: {}", receiptId);
                 ShipmentReceiptState shipmentReceiptState = shipmentReceiptApplicationService.get(receiptId);
                 if (shipmentReceiptState == null) {
+                    logger.warn("ShipmentReceiptState not found for receipt ID: {}", receiptId);
                     continue;
                 }
+                logger.info("Found ShipmentReceiptState: {}", shipmentReceiptState);
+
                 String orderId = shipmentReceiptState.getOrderId();
+                logger.info("Initial orderId from receipt: {}", orderId);
+
                 if (orderId == null && shipmentReceiptState.getShipmentId() != null) {
-                    ShipmentState shipmentState = shipmentApplicationService.get(shipmentReceiptState.getShipmentId());
-                    orderId = shipmentState.getPrimaryOrderId();
+                    String shipmentId = shipmentReceiptState.getShipmentId();
+                    logger.info("Fetching ShipmentState for shipment ID: {}", shipmentId);
+                    ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
+                    if (shipmentState != null) {
+                        orderId = shipmentState.getPrimaryOrderId();
+                        logger.info("Found orderId from shipment: {}", orderId);
+                    } else {
+                        logger.warn("ShipmentState not found for shipment ID: {}", shipmentId);
+                    }
                 }
+
                 if (orderId == null || orderId.trim().isEmpty()) {
+                    logger.warn("No valid orderId found, skipping processing");
                     continue;
                 }
-                // Check if a purchase order???
+
+                if (previousOrderId != null && !orderId.equals(previousOrderId)) {
+                    logger.info("Receipt reassigned from order {} to {}", previousOrderId, orderId);
+                    logger.info("Processing previous order allocation for orderId: {}", previousOrderId);
+                    purchaseOrderFulfillmentService.allocateAndUpdateFulfillmentStatus(previousOrderId, new TempCommand());
+                    continue;
+                }
+
+                logger.info("Processing order allocation for orderId: {}", orderId);
                 purchaseOrderFulfillmentService.allocateAndUpdateFulfillmentStatus(orderId, new TempCommand());
+            } catch (Exception ex) {
+                logger.error("Error processing ShipmentReceipt event", ex);
             } finally {
                 TenantContext.setTenantId(null);
             }
-        } // end for
+        }
     }
 
     static class TempCommand implements Command {
@@ -124,7 +158,7 @@ public class OrderFulfillmentListener {
 
         @Override
         public Map<String, Object> getCommandContext() {
-            return Map.of();
+            return Collections.emptyMap();
         }
 
     }

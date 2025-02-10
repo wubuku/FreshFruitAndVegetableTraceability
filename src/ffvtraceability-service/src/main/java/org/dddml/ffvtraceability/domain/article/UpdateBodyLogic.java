@@ -36,9 +36,7 @@ public class UpdateBodyLogic implements IUpdateBodyLogic {
 
     /**
      * Performs the state mutation operation of Article.UpdateBody command.
-     * Creates a mutable copy of the state, updates it with the new body text,
-     * and returns the new state.
-     * 
+     *
      * @param articleState The current immutable state of the Article
      * @param body The new body text to be set
      * @param mutationContext The context that provides functionality including creating mutable state

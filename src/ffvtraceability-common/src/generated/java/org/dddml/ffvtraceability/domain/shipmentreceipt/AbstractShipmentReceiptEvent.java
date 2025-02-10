@@ -221,11 +221,11 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
 
     }
 
-    public static class UpdateOrderAllocationEvent extends ShipmentReceiptLobEvent implements ShipmentReceiptEvent.UpdateOrderAllocationEvent {
+    public static class OrderAllocationUpdated extends ShipmentReceiptLobEvent implements ShipmentReceiptEvent.OrderAllocationUpdated {
 
         @Override
         public String getEventType() {
-            return "UpdateOrderAllocationEvent";
+            return "OrderAllocationUpdated";
         }
 
         public java.math.BigDecimal getUnallocatedQuantity() {
@@ -250,6 +250,18 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
 
         public void setOrderItemAllocations(OrderItemQuantityAllocationValue[] value) {
             getDynamicProperties().put("orderItemAllocations", value);
+        }
+
+        public String getPreviousOrderId() {
+            Object val = getDynamicProperties().get("previousOrderId");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setPreviousOrderId(String value) {
+            getDynamicProperties().put("previousOrderId", value);
         }
 
     }

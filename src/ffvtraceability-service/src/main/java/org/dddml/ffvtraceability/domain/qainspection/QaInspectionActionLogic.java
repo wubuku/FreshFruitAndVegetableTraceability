@@ -38,9 +38,7 @@ public class QaInspectionActionLogic implements IQaInspectionActionLogic {
 
     /**
      * Performs the state mutation operation of QaInspection.QaInspectionAction command.
-     * Creates a mutable copy of the state, updates it with the new body text,
-     * and returns the new state.
-     * 
+     *
      * @param qaInspectionState The current immutable state of the QaInspection
      * @param value 
      * @param mutationContext The context that provides functionality including creating mutable state

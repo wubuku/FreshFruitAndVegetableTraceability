@@ -38,9 +38,7 @@ public class ShipmentQaActionLogic implements IShipmentQaActionLogic {
 
     /**
      * Performs the state mutation operation of Shipment.ShipmentQaAction command.
-     * Creates a mutable copy of the state, updates it with the new body text,
-     * and returns the new state.
-     * 
+     *
      * @param shipmentState The current immutable state of the Shipment
      * @param value 
      * @param mutationContext The context that provides functionality including creating mutable state

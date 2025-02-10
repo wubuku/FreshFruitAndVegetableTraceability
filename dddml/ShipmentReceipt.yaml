@@ -171,6 +171,13 @@
             type: fixed-point
           OrderItemAllocations:
             itemType: OrderItemQuantityAllocationValue
+        event:
+          name: OrderAllocationUpdated
+          properties:
+            PreviousOrderId:
+              # 更新“分配”信息时，可能会将某个 ShipmentReceipt 匹配到新的 Order（OrderId）。
+              # 记录之前的 OrderId。
+              type: id
 
 
 valueObjects:

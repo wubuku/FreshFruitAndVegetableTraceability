@@ -8,8 +8,11 @@ package org.dddml.ffvtraceability.domain.shipmentreceipt;
 import org.dddml.ffvtraceability.domain.EntityStateCollection;
 import org.dddml.ffvtraceability.domain.OrderItemQuantityAllocationValue;
 import org.dddml.ffvtraceability.domain.order.OrderItemId;
+import org.dddml.ffvtraceability.domain.shipment.ShipmentApplicationService;
+import org.dddml.ffvtraceability.domain.shipment.ShipmentState;
 import org.dddml.ffvtraceability.specialization.MutationContext;
 import org.dddml.ffvtraceability.specialization.VerificationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -22,6 +25,9 @@ import java.util.stream.Collectors;
  */
 @Component("(shipmentReceipt_UpdateOrderAllocation)")
 public class UpdateOrderAllocationLogic implements IUpdateOrderAllocationLogic {
+    @Autowired
+    private ShipmentApplicationService shipmentApplicationService;
+
     /**
      * Verifies the ShipmentReceipt.UpdateOrderAllocation command by performing validation logic
      * before the state mutation. Creates and returns an event.
@@ -33,21 +39,26 @@ public class UpdateOrderAllocationLogic implements IUpdateOrderAllocationLogic {
      * @param verificationContext  The context information for the verification process
      * @return An event that will be applied to the current state to update the ShipmentReceipt
      */
-    public ShipmentReceiptEvent.UpdateOrderAllocationEvent verify(
-            java.util.function.Supplier<ShipmentReceiptEvent.UpdateOrderAllocationEvent> eventFactory,
+    public ShipmentReceiptEvent.OrderAllocationUpdated verify(
+            java.util.function.Supplier<ShipmentReceiptEvent.OrderAllocationUpdated> eventFactory,
             ShipmentReceiptState shipmentReceiptState,
             java.math.BigDecimal unallocatedQuantity,
             OrderItemQuantityAllocationValue[] orderItemAllocations,
             VerificationContext verificationContext) {
-        ShipmentReceiptEvent.UpdateOrderAllocationEvent e = eventFactory.get();
-        // TODO: ?
+        ShipmentReceiptEvent.OrderAllocationUpdated e = eventFactory.get();
+        String orderId = shipmentReceiptState.getOrderId();
+        if (orderId == null && shipmentReceiptState.getShipmentId() != null) {
+            ShipmentState shipmentState = shipmentApplicationService.get(shipmentReceiptState.getShipmentId());
+            if (shipmentState != null) {
+                orderId = shipmentState.getPrimaryOrderId();
+            }
+        }
+        e.setPreviousOrderId(orderId);
         return e;
     }
 
     /**
      * Performs the state mutation operation of ShipmentReceipt.UpdateOrderAllocation command.
-     * Creates a mutable copy of the state, updates it with the new body text,
-     * and returns the new state.
      *
      * @param shipmentReceiptState The current immutable state of the ShipmentReceipt
      * @param unallocatedQuantity
@@ -58,9 +69,9 @@ public class UpdateOrderAllocationLogic implements IUpdateOrderAllocationLogic {
     public ShipmentReceiptState mutate(ShipmentReceiptState shipmentReceiptState,
                                        java.math.BigDecimal unallocatedQuantity,
                                        OrderItemQuantityAllocationValue[] orderItemAllocations,
+                                       String previousOrderId,
                                        MutationContext<ShipmentReceiptState, ShipmentReceiptState.MutableShipmentReceiptState> mutationContext) {
         ShipmentReceiptState.MutableShipmentReceiptState s = mutationContext.createMutableState(shipmentReceiptState);
-
         s.setQuantityUnallocated(unallocatedQuantity);
 
         EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>

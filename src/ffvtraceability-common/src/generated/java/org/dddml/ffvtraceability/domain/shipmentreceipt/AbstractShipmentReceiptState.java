@@ -396,8 +396,8 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
             when((ShipmentReceiptStateMergePatched) e);
         } else if (e instanceof ShipmentReceiptStateDeleted) {
             when((ShipmentReceiptStateDeleted) e);
-        } else if (e instanceof AbstractShipmentReceiptEvent.UpdateOrderAllocationEvent) {
-            when((AbstractShipmentReceiptEvent.UpdateOrderAllocationEvent)e);
+        } else if (e instanceof AbstractShipmentReceiptEvent.OrderAllocationUpdated) {
+            when((AbstractShipmentReceiptEvent.OrderAllocationUpdated)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -713,13 +713,15 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         }
     }
 
-    public void when(AbstractShipmentReceiptEvent.UpdateOrderAllocationEvent e) {
+    public void when(AbstractShipmentReceiptEvent.OrderAllocationUpdated e) {
         throwOnWrongEvent(e);
 
         java.math.BigDecimal unallocatedQuantity = e.getUnallocatedQuantity();
         java.math.BigDecimal UnallocatedQuantity = unallocatedQuantity;
         OrderItemQuantityAllocationValue[] orderItemAllocations = e.getOrderItemAllocations();
         OrderItemQuantityAllocationValue[] OrderItemAllocations = orderItemAllocations;
+        String previousOrderId = e.getPreviousOrderId();
+        String PreviousOrderId = previousOrderId;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -731,7 +733,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setUpdatedAt(e.getCreatedAt());
 
         ShipmentReceiptState updatedShipmentReceiptState = ApplicationContext.current.get(IUpdateOrderAllocationLogic.class).mutate(
-                this, unallocatedQuantity, orderItemAllocations, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, unallocatedQuantity, orderItemAllocations, previousOrderId, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
 
         if (this != updatedShipmentReceiptState) { merge(updatedShipmentReceiptState); } //else do nothing

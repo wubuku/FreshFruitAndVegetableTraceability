@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.domain.OrderItemQuantityAllocationValue;
 
 public interface IUpdateOrderAllocationLogic {
 
-    ShipmentReceiptEvent.UpdateOrderAllocationEvent verify(java.util.function.Supplier<ShipmentReceiptEvent.UpdateOrderAllocationEvent> eventFactory, ShipmentReceiptState shipmentReceiptState, java.math.BigDecimal unallocatedQuantity, OrderItemQuantityAllocationValue[] orderItemAllocations, VerificationContext verificationContext);
+    ShipmentReceiptEvent.OrderAllocationUpdated verify(java.util.function.Supplier<ShipmentReceiptEvent.OrderAllocationUpdated> eventFactory, ShipmentReceiptState shipmentReceiptState, java.math.BigDecimal unallocatedQuantity, OrderItemQuantityAllocationValue[] orderItemAllocations, VerificationContext verificationContext);
 
-    ShipmentReceiptState mutate(ShipmentReceiptState shipmentReceiptState, java.math.BigDecimal unallocatedQuantity, OrderItemQuantityAllocationValue[] orderItemAllocations, MutationContext<ShipmentReceiptState, ShipmentReceiptState.MutableShipmentReceiptState> mutationContext);
+    ShipmentReceiptState mutate(ShipmentReceiptState shipmentReceiptState, java.math.BigDecimal unallocatedQuantity, OrderItemQuantityAllocationValue[] orderItemAllocations, String previousOrderId, MutationContext<ShipmentReceiptState, ShipmentReceiptState.MutableShipmentReceiptState> mutationContext);
 }

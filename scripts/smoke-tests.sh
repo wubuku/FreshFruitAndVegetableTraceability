@@ -1010,16 +1010,18 @@ curl -X 'POST' \
 
 # Query Receipts
 echo "Querying Receipts..."
-http_code=$(curl -X 'GET' \
+response=$(curl -X 'GET' \
   "${API_BASE_URL}/BffReceipts?page=0&size=20&documentIdOrItem=ORGANIC_TOMATO_01" \
   -H 'accept: application/json' \
   -H "X-TenantID: X" \
   -s \
-  -w '%{http_code}' \
-  -o /dev/null)
+  -w '\n%{http_code}')
 
-echo "$response"
-check_response $? "$http_code" "Query receipts"
+http_status=$(echo "$response" | tail -n1)
+response_body=$(echo "$response" | sed '$d')
+
+echo "$response_body"
+check_response $? "$http_status" "Query receipts"
 
 echo -e "\n${GREEN}All smoke tests completed successfully!${NC}"
 
@@ -1027,8 +1029,24 @@ echo -e "\n${GREEN}All smoke tests completed successfully!${NC}"
 echo -e "\n=== Testing QA Inspections ===\n"
 
 # 从上一个查询结果中提取 receivingDocumentId 和 receiptId
-RECEIVING_DOC_ID=$(echo "$response" | jq -r '.content[0].documentId')
-RECEIPT_ID=$(echo "$response" | jq -r '.content[0].receivingItems[0].receiptId')
+if [ -z "$response_body" ]; then
+    echo -e "${RED}ERROR: No response data from receipts query${NC}"
+    exit 1
+fi
+
+RECEIVING_DOC_ID=$(echo "$response_body" | jq -r '.content[0].documentId')
+RECEIPT_ID=$(echo "$response_body" | jq -r '.content[0].receivingItems[0].receiptId')
+
+if [ -z "$RECEIVING_DOC_ID" ] || [ "$RECEIVING_DOC_ID" = "null" ]; then
+    echo -e "${RED}ERROR: Failed to extract Receiving Document ID${NC}"
+    exit 1
+fi
+
+if [ -z "$RECEIPT_ID" ] || [ "$RECEIPT_ID" = "null" ]; then
+    echo -e "${RED}ERROR: Failed to extract Receipt ID${NC}"
+    exit 1
+fi
+
 echo "Using Receiving Document ID: ${RECEIVING_DOC_ID}"
 echo "Using Receipt ID: ${RECEIPT_ID}"
 
