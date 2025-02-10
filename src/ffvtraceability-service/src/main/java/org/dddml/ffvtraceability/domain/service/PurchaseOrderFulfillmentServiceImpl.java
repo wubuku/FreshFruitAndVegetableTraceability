@@ -8,6 +8,8 @@ import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptCommands;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import static org.dddml.ffvtraceability.domain.constants.BffOrderConstants.*;
 @Service
 @Transactional
 public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfillmentService {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private OrderApplicationService orderApplicationService;
@@ -37,6 +40,8 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
     @Override
     public String allocateAndUpdateFulfillmentStatus(String orderId, Command c) {
         OrderHeaderState orderHeaderState = getAndValidateOrder(orderId);
+        logger.info("Processing order {} with version {}", orderId, orderHeaderState.getVersion());
+
         // 计算需求和履行数量
         Map<OrderItemId, BigDecimal> demandQuantities = calculateDemandQuantities(orderHeaderState);
         List<BffReceivingDocumentItemProjection> receivingItems = bffReceivingRepository.findReceivingItemsByOrderId(orderId);
@@ -48,7 +53,9 @@ public class PurchaseOrderFulfillmentServiceImpl implements PurchaseOrderFulfill
         // 更新收货单的分配信息
         updateReceiptAllocations(allocationResult, c);
         // 计算并返回履行状态
-        return calculateFulfillmentStatus(orderHeaderState, allocationResult.getTotalAllocatedQuantities(), c);
+        String result = calculateFulfillmentStatus(orderHeaderState, allocationResult.getTotalAllocatedQuantities(), c);
+        logger.info("Completed processing order {} with version {}", orderId, orderHeaderState.getVersion());
+        return result;
     }
 
     private Map<OrderItemId, BigDecimal> calculateDemandQuantities(OrderHeaderState orderHeaderState) {
