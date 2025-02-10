@@ -335,24 +335,25 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (shipmentState == null) {
             throw new IllegalArgumentException("Shipment (receiving document) not found: " + shipmentId);
         }
-        String originFacilityId = receivingDocumentDto.getOriginFacilityId();
-        if (originFacilityId == null || originFacilityId.isEmpty()) {
-            //如果它是null，后面的new FacilityLocationId就得出问题
-            throw new IllegalArgumentException("Original Facility can't be null");
-        }
 
         AbstractShipmentCommand.SimpleMergePatchShipment mergePatchShipment =
                 new AbstractShipmentCommand.SimpleMergePatchShipment();
         mergePatchShipment.setShipmentId(shipmentId);
         mergePatchShipment.setVersion(shipmentState.getVersion());
         mergePatchShipment.setPrimaryOrderId(receivingDocumentDto.getPrimaryOrderId());
-        mergePatchShipment.setOriginFacilityId(originFacilityId);
         // todo: More fields to update?
         mergePatchShipment.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchShipment.setRequesterId(c.getRequesterId());
         shipmentApplicationService.when(mergePatchShipment);
-
+        //当不指定receivingItems的时候，我们认为不修改它的行项。
+        //当指定receivingItems，即便是空数组（注意不是null），那么就按你最新指定的行项来重新确定行项。
         if (receivingDocumentDto.getReceivingItems() != null) {
+            String originFacilityId = receivingDocumentDto.getOriginFacilityId();
+            mergePatchShipment.setOriginFacilityId(originFacilityId);
+            if (originFacilityId == null || originFacilityId.isEmpty()) {
+                //如果它是null，后面的new FacilityLocationId就得出问题
+                throw new IllegalArgumentException("Original Facility can't be null");
+            }
             for (BffReceivingItemDto itemDto : receivingDocumentDto.getReceivingItems()) {
                 // validate facility location
                 FacilityLocationState fl = facilityLocationApplicationService.get(new FacilityLocationId(originFacilityId, itemDto.getLocationSeqId()));
