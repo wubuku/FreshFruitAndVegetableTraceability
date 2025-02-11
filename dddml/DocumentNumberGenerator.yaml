@@ -1,0 +1,44 @@
+aggregates:
+  DocumentNumberGenerator:
+    metadata:
+      NoEventSourcing: true
+    reservedPropertyMetadata:
+      noDeleted: true
+      noActive: true
+    id:
+      name: GeneratorId
+      type: id
+    properties:
+      Prefix:
+        type: id
+        description: Document number prefix, e.g. ASN
+      DateFormat:
+        type: id
+        description: Date format pattern, e.g. yyyyMMdd
+      TimeZoneId:
+        type: id-long
+        description: Time zone ID, e.g. Asia/Shanghai
+      SequenceLength:
+        type: numeric
+        description: Length of the sequence number part, e.g. 5 means 5 digits
+      LastGeneratedDate:
+        type: id
+        description: The date when the last number was generated
+      CurrentSequence:
+        type: numeric
+        description: Current sequence number
+      Description:
+        type: description
+
+    methods:
+      GenerateNextNumber:
+        description: Generate and return the next document number while updating the generator state
+        result:
+          type: id-long
+
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
+      Delete:
+        isInternal: true

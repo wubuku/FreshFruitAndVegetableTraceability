@@ -29,6 +29,7 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
         bffReceivingDocumentDto.setOriginFacilityId( documentItemProjection.getOriginFacilityId() );
         bffReceivingDocumentDto.setOriginFacilityName( documentItemProjection.getOriginFacilityName() );
         bffReceivingDocumentDto.setDestinationFacilityId( documentItemProjection.getDestinationFacilityId() );
+        bffReceivingDocumentDto.setDestinationFacilityName( documentItemProjection.getDestinationFacilityName() );
         bffReceivingDocumentDto.setPrimaryOrderId( documentItemProjection.getPrimaryOrderId() );
         bffReceivingDocumentDto.setPrimaryReturnId( documentItemProjection.getPrimaryReturnId() );
         bffReceivingDocumentDto.setPrimaryShipGroupSeqId( documentItemProjection.getPrimaryShipGroupSeqId() );

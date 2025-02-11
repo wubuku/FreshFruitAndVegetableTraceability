@@ -191,6 +191,9 @@ import org.dddml.ffvtraceability.domain.inventoryitem.hibernate.*;
 import org.dddml.ffvtraceability.domain.inventoryitemtype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.inventoryitemtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.documentnumbergenerator.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.documentnumbergenerator.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -1126,6 +1129,20 @@ public class AggregatesHibernateConfig {
         AbstractInventoryItemTypeApplicationService.SimpleInventoryItemTypeApplicationService applicationService = new AbstractInventoryItemTypeApplicationService.SimpleInventoryItemTypeApplicationService(
                 inventoryItemTypeStateRepository,
                 inventoryItemTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractDocumentNumberGeneratorApplicationService.SimpleDocumentNumberGeneratorApplicationService documentNumberGeneratorApplicationService(
+            DocumentNumberGeneratorStateRepository documentNumberGeneratorStateRepository,
+            DocumentNumberGeneratorStateQueryRepository documentNumberGeneratorStateQueryRepository
+    ) {
+        AbstractDocumentNumberGeneratorApplicationService.SimpleDocumentNumberGeneratorApplicationService applicationService = new AbstractDocumentNumberGeneratorApplicationService.SimpleDocumentNumberGeneratorApplicationService(
+                documentNumberGeneratorStateRepository,
+                documentNumberGeneratorStateQueryRepository
         );
         return applicationService;
     }

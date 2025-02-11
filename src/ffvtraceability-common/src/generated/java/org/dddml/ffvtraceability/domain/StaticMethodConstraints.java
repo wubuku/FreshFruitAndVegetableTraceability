@@ -72,6 +72,7 @@ import org.dddml.ffvtraceability.domain.productassoc.*;
 import org.dddml.ffvtraceability.domain.productassoctype.*;
 import org.dddml.ffvtraceability.domain.inventoryitem.*;
 import org.dddml.ffvtraceability.domain.inventoryitemtype.*;
+import org.dddml.ffvtraceability.domain.documentnumbergenerator.*;
 
 public class StaticMethodConstraints {
 

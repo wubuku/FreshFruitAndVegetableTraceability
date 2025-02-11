@@ -25,6 +25,8 @@ public interface BffReceivingDocumentProjection {
 
     String getDestinationFacilityId();
 
+    String getDestinationFacilityName();
+
     String getPrimaryOrderId();
 
     String getPrimaryReturnId();

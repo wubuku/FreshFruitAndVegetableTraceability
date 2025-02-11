@@ -106,6 +106,18 @@ public class BffReceivingDocumentDto implements Serializable {
         this.destinationFacilityId = destinationFacilityId;
     }
 
+    private String destinationFacilityName;
+
+    public String getDestinationFacilityName()
+    {
+        return this.destinationFacilityName;
+    }
+
+    public void setDestinationFacilityName(String destinationFacilityName)
+    {
+        this.destinationFacilityName = destinationFacilityName;
+    }
+
     private String primaryOrderId;
 
     public String getPrimaryOrderId()
@@ -546,7 +558,7 @@ public class BffReceivingDocumentDto implements Serializable {
     {
     }
 
-    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String partyNameFrom, String originFacilityId, String originFacilityName, String destinationFacilityId, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, String qaStatusId, String qaInspectionStatusId, OffsetDateTime createdAt, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<BffDocumentDto> referenceDocuments, BffFacilityDto originFacility, BffFacilityDto destinationFacility)
+    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String partyNameFrom, String originFacilityId, String originFacilityName, String destinationFacilityId, String destinationFacilityName, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, String qaStatusId, String qaInspectionStatusId, OffsetDateTime createdAt, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<BffDocumentDto> referenceDocuments, BffFacilityDto originFacility, BffFacilityDto destinationFacility)
     {
         this.documentId = documentId;
         this.statusId = statusId;
@@ -556,6 +568,7 @@ public class BffReceivingDocumentDto implements Serializable {
         this.originFacilityId = originFacilityId;
         this.originFacilityName = originFacilityName;
         this.destinationFacilityId = destinationFacilityId;
+        this.destinationFacilityName = destinationFacilityName;
         this.primaryOrderId = primaryOrderId;
         this.primaryReturnId = primaryReturnId;
         this.primaryShipGroupSeqId = primaryShipGroupSeqId;
@@ -588,6 +601,7 @@ public class BffReceivingDocumentDto implements Serializable {
             && (originFacilityId == other.originFacilityId || (originFacilityId != null && originFacilityId.equals(other.originFacilityId)))
             && (originFacilityName == other.originFacilityName || (originFacilityName != null && originFacilityName.equals(other.originFacilityName)))
             && (destinationFacilityId == other.destinationFacilityId || (destinationFacilityId != null && destinationFacilityId.equals(other.destinationFacilityId)))
+            && (destinationFacilityName == other.destinationFacilityName || (destinationFacilityName != null && destinationFacilityName.equals(other.destinationFacilityName)))
             && (primaryOrderId == other.primaryOrderId || (primaryOrderId != null && primaryOrderId.equals(other.primaryOrderId)))
             && (primaryReturnId == other.primaryReturnId || (primaryReturnId != null && primaryReturnId.equals(other.primaryReturnId)))
             && (primaryShipGroupSeqId == other.primaryShipGroupSeqId || (primaryShipGroupSeqId != null && primaryShipGroupSeqId.equals(other.primaryShipGroupSeqId)))
@@ -628,6 +642,9 @@ public class BffReceivingDocumentDto implements Serializable {
         }
         if (this.destinationFacilityId != null) {
             hash += 13 * this.destinationFacilityId.hashCode();
+        }
+        if (this.destinationFacilityName != null) {
+            hash += 13 * this.destinationFacilityName.hashCode();
         }
         if (this.primaryOrderId != null) {
             hash += 13 * this.primaryOrderId.hashCode();
@@ -673,6 +690,7 @@ public class BffReceivingDocumentDto implements Serializable {
                 ", originFacilityId=" + '\'' + originFacilityId + '\'' +
                 ", originFacilityName=" + '\'' + originFacilityName + '\'' +
                 ", destinationFacilityId=" + '\'' + destinationFacilityId + '\'' +
+                ", destinationFacilityName=" + '\'' + destinationFacilityName + '\'' +
                 ", primaryOrderId=" + '\'' + primaryOrderId + '\'' +
                 ", primaryReturnId=" + '\'' + primaryReturnId + '\'' +
                 ", primaryShipGroupSeqId=" + '\'' + primaryShipGroupSeqId + '\'' +
