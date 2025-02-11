@@ -55,7 +55,7 @@ mkdir -p ~/minio/data
 ```bash
 docker run -d \
   --name minio \
-  -p 9002:9002 \
+  -p 9002:9000 \
   -p 9001:9001 \
   -e "MINIO_ROOT_USER=admin" \
   -e "MINIO_ROOT_PASSWORD=password123" \
