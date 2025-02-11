@@ -1,9 +1,9 @@
 package org.dddml.ffvtraceability.domain.listener;
 
 import jakarta.annotation.PreDestroy;
-import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.TenantContext;
 import org.dddml.ffvtraceability.domain.common.DelayedProcessingQueue;
+import org.dddml.ffvtraceability.domain.common.TempCommand;
 import org.dddml.ffvtraceability.domain.order.OrderAggregate;
 import org.dddml.ffvtraceability.domain.order.OrderEvent;
 import org.dddml.ffvtraceability.domain.service.PurchaseOrderFulfillmentService;
@@ -24,16 +24,13 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 @Component
 public class OrderFulfillmentListener {
     private static final long RECEIPT_PROCESSING_DELAY_MS = 5000L;
-    private static final long ORDER_PROCESSING_DELAY_MS = 5000L;
+    private static final long FULFILLMENT_PROCESSING_DELAY_MS = 5000L;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final DelayedProcessingQueue<String, String, DelayedOrderId> orderQueue;
@@ -49,12 +46,12 @@ public class OrderFulfillmentListener {
 
     @Autowired
     public OrderFulfillmentListener(
-            @Qualifier("orderProcessingExecutor") TaskExecutor taskExecutor
+            @Qualifier("eventProcessingExecutor") TaskExecutor taskExecutor
     ) {
         this.orderQueue = new DelayedProcessingQueue<>(
                 taskExecutor,
                 this::processOrder,
-                "Order"
+                "OrderFulfillment"
         );
     }
 
@@ -65,10 +62,11 @@ public class OrderFulfillmentListener {
 
     private void processOrder(String orderId, String tenantId) {
         try {
-            logger.info("Processing delayed order allocation for orderId: {}", orderId);
+            logger.info("Processing delayed order fulfillment for orderId: {}", orderId);
             TenantContext.setTenantId(tenantId);
+            // 不需要等待？反正进入延迟队列后还有会有等待时间？
             purchaseOrderFulfillmentService.allocateAndUpdateFulfillmentStatus(
-                    orderId, new TempCommand());
+                    orderId, new TempCommand("OrderFulfilmentProcessing"));
         } catch (Exception ex) {
             logger.error("Error processing delayed order: {}", orderId, ex);
         } finally {
@@ -83,7 +81,7 @@ public class OrderFulfillmentListener {
         orderQueue.queueItemForProcessing(
                 orderId,
                 tenantId,
-                new DelayedOrderId(orderId, tenantId, ORDER_PROCESSING_DELAY_MS)
+                new DelayedOrderId(orderId, tenantId, FULFILLMENT_PROCESSING_DELAY_MS)
         );
     }
 
@@ -217,41 +215,6 @@ public class OrderFulfillmentListener {
         public String getContext() {
             return tenantId;
         }
-    }
-
-    static class TempCommand implements Command {
-        @Override
-        public String getCommandType() {
-            return "TempCommand";
-        }
-
-        @Override
-        public void setCommandType(String commandType) {
-        }
-
-        @Override
-        public String getCommandId() {
-            return UUID.randomUUID().toString();
-        }
-
-        @Override
-        public void setCommandId(String commandId) {
-        }
-
-        @Override
-        public String getRequesterId() {
-            return OrderFulfillmentListener.class.getName();
-        }
-
-        @Override
-        public void setRequesterId(String requesterId) {
-        }
-
-        @Override
-        public Map<String, Object> getCommandContext() {
-            return Collections.emptyMap();
-        }
-
     }
 
 }
