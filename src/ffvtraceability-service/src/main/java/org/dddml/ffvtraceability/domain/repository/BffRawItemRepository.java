@@ -16,10 +16,11 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             SELECT DISTINCT ON (sp.product_id)
                 sp.product_id,
                 sp.party_id,
-                COALESCE(o.organization_name, o.last_name) as supplier_name,
+                COALESCE(pr.supplier_short_name,o.organization_name, o.last_name) as supplier_name,
                 sp.available_from_date
             FROM supplier_product sp
             LEFT JOIN party o ON o.party_id = sp.party_id
+            left join party_role pr on o.party_id= pr.party_id
             WHERE sp.available_from_date <= CURRENT_TIMESTAMP
                 AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
             ORDER BY sp.product_id, sp.available_from_date DESC
@@ -142,4 +143,12 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             @Param("minimumOrderQuantity") BigDecimal minimumOrderQuantity,
             @Param("currentTime") OffsetDateTime currentTime);
 
+
+    @Query(value = """
+            SELECT product_id, party_id, supplier_name FROM (
+            """ + PRIORITY_SUPPLIER_SUBQUERY + """
+            ) WHERE product_id = :productId
+            """, nativeQuery = true)
+    BffSupplierProductAssocProjection findSupplierProductAssociationByProductId(
+            @Param("productId") String productId);
 }

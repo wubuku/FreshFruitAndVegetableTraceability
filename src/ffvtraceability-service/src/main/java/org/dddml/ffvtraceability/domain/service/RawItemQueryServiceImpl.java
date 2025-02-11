@@ -5,6 +5,8 @@ import org.dddml.ffvtraceability.domain.mapper.BffRawItemMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffShipmentBoxTypeMapper;
 import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
 import org.dddml.ffvtraceability.domain.product.ProductState;
+import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
+import org.dddml.ffvtraceability.domain.repository.BffSupplierProductAssocProjection;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,6 +23,8 @@ public class RawItemQueryServiceImpl implements RawItemQueryService {
     private BffRawItemMapper bffRawItemMapper;
     @Autowired
     private BffShipmentBoxTypeMapper bffShipmentBoxTypeMapper;
+    @Autowired
+    private BffRawItemRepository bffRawItemRepository;
     @Autowired
     private ShipmentBoxTypeApplicationService shipmentBoxTypeApplicationService;
 
@@ -50,6 +54,12 @@ public class RawItemQueryServiceImpl implements RawItemQueryService {
                 // 连带返回默认的发货箱类型信息？
                 dto.setDefaultShipmentBoxType(bffShipmentBoxTypeMapper.toBffShipmentBoxTypeDto(
                         shipmentBoxTypeApplicationService.get(dto.getDefaultShipmentBoxTypeId())));
+            }
+            BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.
+                    findSupplierProductAssociationByProductId(productId);
+            if (existingAssoc != null) {
+                dto.setSupplierId(existingAssoc.getPartyId());
+                dto.setSupplierName(existingAssoc.getSupplierName());
             }
             return dto;
         }
