@@ -145,7 +145,7 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
 
 
     @Query(value = """
-            SELECT product_id, party_id, supplier_name FROM (
+            SELECT product_id, party_id as supplierId, supplier_name as supplierName FROM (
             """ + PRIORITY_SUPPLIER_SUBQUERY + """
             ) WHERE product_id = :productId
             """, nativeQuery = true)
