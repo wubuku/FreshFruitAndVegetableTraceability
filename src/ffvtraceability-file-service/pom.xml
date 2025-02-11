@@ -88,16 +88,17 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!-- <configuration>
+                <configuration>
                     <mainClass>org.dddml.ffvtraceability.fileservice.FileServiceApplication</mainClass>
                     <layout>JAR</layout>
-                    <excludes>
+                    <skip>false</skip>
+                    <!-- <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
-                    </excludes>
-                </configuration> -->
+                    </excludes> -->
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
