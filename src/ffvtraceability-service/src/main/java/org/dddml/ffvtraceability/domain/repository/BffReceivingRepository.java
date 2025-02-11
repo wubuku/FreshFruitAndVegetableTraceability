@@ -24,6 +24,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 s.origin_facility_id as originFacilityId,
                 f.facility_name as originFacilityName,
                 s.destination_facility_id as destinationFacilityId,
+                d.facility_name as destinationFacilityName,
                 s.primary_order_id as primaryOrderId,
                 s.created_at as createdAt,
                 sr.receipt_id as receiptId,
@@ -51,6 +52,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
     String COMMON_JOINS = """
             LEFT JOIN party p ON s.party_id_from = p.party_id
             LEFT JOIN facility f ON s.origin_facility_id = f.facility_id
+            left join facility d on s.destination_facility_id = d.facility_id
             LEFT JOIN product prod ON sr.product_id = prod.product_id
             LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
                 AND gi.good_identification_type_id = 'GTIN'
