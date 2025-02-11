@@ -1,9 +1,9 @@
 package org.dddml.ffvtraceability.domain.listener;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.TenantContext;
+import org.dddml.ffvtraceability.domain.common.DelayedProcessingQueue;
 import org.dddml.ffvtraceability.domain.order.OrderAggregate;
 import org.dddml.ffvtraceability.domain.order.OrderEvent;
 import org.dddml.ffvtraceability.domain.service.PurchaseOrderFulfillmentService;
@@ -24,8 +24,9 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.concurrent.DelayQueue;
+import java.util.Collections;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
@@ -35,13 +36,7 @@ public class OrderFulfillmentListener {
     private static final long ORDER_PROCESSING_DELAY_MS = 5000L;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final DelayQueue<DelayedOrderId> orderProcessingQueue = new DelayQueue<>();
-    private final Set<String> queuedOrderIds = new HashSet<>();
-    private volatile boolean isRunning = true;
-
-    @Autowired
-    @Qualifier("orderProcessingExecutor")
-    private TaskExecutor taskExecutor;
+    private final DelayedProcessingQueue<String, String, DelayedOrderId> orderQueue;
 
     @Autowired
     private ShipmentReceiptApplicationService shipmentReceiptApplicationService;
@@ -52,61 +47,44 @@ public class OrderFulfillmentListener {
     @Autowired
     private PurchaseOrderFulfillmentService purchaseOrderFulfillmentService;
 
-    @PostConstruct
-    public void init() {
-        taskExecutor.execute(this::processDelayedOrders);
+    @Autowired
+    public OrderFulfillmentListener(
+            @Qualifier("orderProcessingExecutor") TaskExecutor taskExecutor
+    ) {
+        this.orderQueue = new DelayedProcessingQueue<>(
+                taskExecutor,
+                this::processOrder,
+                "Order"
+        );
     }
 
     @PreDestroy
     public void shutdown() {
-        isRunning = false;
+        orderQueue.close();
     }
 
-    private void processDelayedOrders() {
-        while (isRunning) {
-            try {
-                DelayedOrderId delayedOrderId = orderProcessingQueue.poll(1, TimeUnit.SECONDS);
-                if (delayedOrderId == null) {
-                    continue;
-                }
-                String orderId = delayedOrderId.getOrderId();
-                String tenantId = delayedOrderId.getTenantId();
-                synchronized (queuedOrderIds) {
-                    queuedOrderIds.remove(orderId);
-                }
-                try {
-                    logger.info("Processing delayed order allocation for orderId: {}", orderId);
-                    TenantContext.setTenantId(tenantId);
-                    purchaseOrderFulfillmentService.allocateAndUpdateFulfillmentStatus(
-                            orderId, new TempCommand());
-                } catch (Exception ex) {
-                    logger.error("Error processing delayed order: {}", orderId, ex);
-                } finally {
-                    TenantContext.setTenantId(null);
-                }
-            } catch (InterruptedException e) {
-                logger.warn("Order processing interrupted", e);
-                Thread.currentThread().interrupt();
-                break;
-            }
+    private void processOrder(String orderId, String tenantId) {
+        try {
+            logger.info("Processing delayed order allocation for orderId: {}", orderId);
+            TenantContext.setTenantId(tenantId);
+            purchaseOrderFulfillmentService.allocateAndUpdateFulfillmentStatus(
+                    orderId, new TempCommand());
+        } catch (Exception ex) {
+            logger.error("Error processing delayed order: {}", orderId, ex);
+        } finally {
+            TenantContext.setTenantId(null);
         }
-        logger.info("Order processing thread shutting down");
     }
 
     private void queueOrderForProcessing(String orderId, String tenantId) {
         if (orderId == null || orderId.trim().isEmpty()) {
             return;
         }
-        synchronized (queuedOrderIds) {
-            if (queuedOrderIds.contains(orderId)) {
-                orderProcessingQueue.removeIf(
-                        delayed -> delayed.getOrderId().equals(orderId));
-            }
-            queuedOrderIds.add(orderId);
-            orderProcessingQueue.offer(
-                    new DelayedOrderId(orderId, tenantId, ORDER_PROCESSING_DELAY_MS));
-            logger.debug("Queued orderId: {} for delayed processing", orderId);
-        }
+        orderQueue.queueItemForProcessing(
+                orderId,
+                tenantId,
+                new DelayedOrderId(orderId, tenantId, ORDER_PROCESSING_DELAY_MS)
+        );
     }
 
     @EventListener
@@ -171,7 +149,7 @@ public class OrderFulfillmentListener {
                 logger.info("Found ShipmentReceiptState: {}", shipmentReceiptState);
 
                 String orderId = shipmentReceiptState.getOrderId();
-                logger.info("Initial orderId from receipt: {}", orderId);
+                logger.info("Initial orderId from ShipmentReceipt: {}", orderId);
 
                 if (orderId == null && shipmentReceiptState.getShipmentId() != null) {
                     String shipmentId = shipmentReceiptState.getShipmentId();
@@ -207,7 +185,7 @@ public class OrderFulfillmentListener {
         }
     }
 
-    private static class DelayedOrderId implements Delayed {
+    private static class DelayedOrderId implements DelayedProcessingQueue.DelayedItem<String, String> {
         private final String orderId;
         private final String tenantId;
         private final long expiryTime;
@@ -230,11 +208,13 @@ public class OrderFulfillmentListener {
                     other.getDelay(TimeUnit.MILLISECONDS));
         }
 
-        public String getOrderId() {
+        @Override
+        public String getId() {
             return orderId;
         }
 
-        public String getTenantId() {
+        @Override
+        public String getContext() {
             return tenantId;
         }
     }
