@@ -99,11 +99,17 @@ java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*.json" --json
 
 # 使用 XML 文件初始化数据
+# 初始化 data 目录下的所有 XML 数据
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*.xml" --xml
-# 初始化 WorkEffortSeedData.xml 数据
-java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/WorkEffortSeedData.xml" --xml
+
 # 使用通配符初始化 Seed 数据
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*SeedData.xml" --xml
+
+# 初始化 WorkEffortSeedData.xml 数据
+java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/WorkEffortSeedData.xml" --xml
+
+# 初始化 DocumentNumberGeneratorData.xml 数据
+java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/DocumentNumberGeneratorData.xml" --xml
 ```
 
 ### Run service
@@ -377,7 +383,24 @@ curl -X 'GET' \
   -H 'accept: application/json'
 ```
 
+#### 测试单号生成器
 
+注意，要先在数据库中初始化单号生成器，否则会报错。（参考上面的“初始化数据”一节。）
+
+使用 curl 测试：
+
+```shell
+curl -X 'POST' \
+  'http://localhost:1023/api/DocumentNumberGenerators/X-ASN/_commands/GenerateNextNumber' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H "X-TenantID: X" \
+  -d "{}"
+
+  # -d "{
+  #   \"commandId\": \"$(uuidgen)\"
+  # }"
+```
 
 #### 测试“文档”
 

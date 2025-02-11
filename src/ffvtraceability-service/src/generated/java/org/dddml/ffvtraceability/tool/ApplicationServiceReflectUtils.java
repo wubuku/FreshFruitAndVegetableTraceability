@@ -77,6 +77,19 @@ public class ApplicationServiceReflectUtils {
     private static Object getApplicationService(String aggregateName) {
         String appSrvName = aggregateName.substring(0, 1).toLowerCase() + aggregateName.substring(1) + "ApplicationService";
         Object appSrv = ApplicationContext.current.get(appSrvName);
+        if (appSrv == null) {
+            // Try with "Impl" suffix
+            String implName = appSrvName + "Impl";
+            appSrv = ApplicationContext.current.get(implName);
+            
+            if (appSrv == null) {
+                throw new IllegalStateException(
+                    String.format("Application service not found in context. Tried both '%s' and '%s'. " +
+                                "Please ensure the service is properly registered in Spring context.", 
+                                appSrvName, implName)
+                );
+            }
+        }
         return appSrv;
     }
 

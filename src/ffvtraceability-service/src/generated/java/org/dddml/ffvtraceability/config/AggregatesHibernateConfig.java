@@ -1135,17 +1135,5 @@ public class AggregatesHibernateConfig {
 
 
 
-    @Bean
-    public AbstractDocumentNumberGeneratorApplicationService.SimpleDocumentNumberGeneratorApplicationService documentNumberGeneratorApplicationService(
-            DocumentNumberGeneratorStateRepository documentNumberGeneratorStateRepository,
-            DocumentNumberGeneratorStateQueryRepository documentNumberGeneratorStateQueryRepository
-    ) {
-        AbstractDocumentNumberGeneratorApplicationService.SimpleDocumentNumberGeneratorApplicationService applicationService = new AbstractDocumentNumberGeneratorApplicationService.SimpleDocumentNumberGeneratorApplicationService(
-                documentNumberGeneratorStateRepository,
-                documentNumberGeneratorStateQueryRepository
-        );
-        return applicationService;
-    }
-
 
 }

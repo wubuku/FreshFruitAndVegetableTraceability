@@ -2,6 +2,8 @@ aggregates:
   DocumentNumberGenerator:
     metadata:
       NoEventSourcing: true
+      # JavaAggregateApplicationServiceImplementClassName: DocumentNumberGeneratorApplicationServiceImpl
+      NoAggregateApplicationServiceSpringConfig: true
     reservedPropertyMetadata:
       noDeleted: true
       noActive: true
@@ -32,6 +34,7 @@ aggregates:
 
     methods:
       GenerateNextNumber:
+        httpMethod: POST
         description: Generate and return the next document number while updating the generator state
         result:
           type: id-long
