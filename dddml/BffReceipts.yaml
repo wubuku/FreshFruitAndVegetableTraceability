@@ -23,6 +23,8 @@ valueObjects:
         type: name
       DestinationFacilityId:
         type: id
+      DestinationFacilityName:
+        type: name
       PrimaryOrderId:
         type: id
       PrimaryReturnId:
