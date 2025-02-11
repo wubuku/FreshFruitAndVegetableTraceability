@@ -58,7 +58,7 @@ public class RawItemQueryServiceImpl implements RawItemQueryService {
             BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.
                     findSupplierProductAssociationByProductId(productId);
             if (existingAssoc != null) {
-                dto.setSupplierId(existingAssoc.getPartyId());
+                dto.setSupplierId(existingAssoc.getSupplierId());
                 dto.setSupplierName(existingAssoc.getSupplierName());
             }
             return dto;
