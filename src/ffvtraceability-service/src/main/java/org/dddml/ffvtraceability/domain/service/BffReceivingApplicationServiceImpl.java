@@ -662,7 +662,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
     private void updateReceivingItem(String receiptId,
                                      ShipmentReceiptState shipmentReceiptState,
-                                     BffReceivingServiceCommands.UpdateReceivingItem c,
+                                     BffReceivingServiceCommands.UpdateReceivingItem receivingItem,
                                      boolean randomCmdId
     ) {
         AbstractShipmentReceiptCommand.SimpleMergePatchShipmentReceipt mergePatchShipmentReceipt =
@@ -671,19 +671,18 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         mergePatchShipmentReceipt.setVersion(shipmentReceiptState.getVersion());
 
         // 设置更新的字段
-        BffReceivingServiceCommands.UpdateReceivingItem item = c;
         //mergePatchShipmentReceipt.setProductId(item.getProductId()); // 不能更新 product Id？
-        mergePatchShipmentReceipt.setLotId(item.getLotId());
-        mergePatchShipmentReceipt.setLocationSeqId(item.getLocationSeqId());
-        mergePatchShipmentReceipt.setQuantityAccepted(item.getQuantityAccepted());
-        mergePatchShipmentReceipt.setQuantityRejected(item.getQuantityRejected());
-        mergePatchShipmentReceipt.setCasesAccepted(item.getCasesAccepted());
-        mergePatchShipmentReceipt.setCasesRejected(item.getCasesRejected());
-        mergePatchShipmentReceipt.setItemDescription(item.getItemDescription());
+        mergePatchShipmentReceipt.setLotId(receivingItem.getLotId());
+        mergePatchShipmentReceipt.setLocationSeqId(receivingItem.getLocationSeqId());
+        mergePatchShipmentReceipt.setQuantityAccepted(receivingItem.getQuantityAccepted());
+        mergePatchShipmentReceipt.setQuantityRejected(receivingItem.getQuantityRejected());
+        mergePatchShipmentReceipt.setCasesAccepted(receivingItem.getCasesAccepted());
+        mergePatchShipmentReceipt.setCasesRejected(receivingItem.getCasesRejected());
+        mergePatchShipmentReceipt.setItemDescription(receivingItem.getItemDescription());
 
         mergePatchShipmentReceipt.setCommandId(randomCmdId ? UUID.randomUUID().toString() :
-                (c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString()));
-        mergePatchShipmentReceipt.setRequesterId(c.getRequesterId());
+                (receivingItem.getCommandId() != null ? receivingItem.getCommandId() : UUID.randomUUID().toString()));
+        mergePatchShipmentReceipt.setRequesterId(receivingItem.getRequesterId());
 
         shipmentReceiptApplicationService.when(mergePatchShipmentReceipt);
     }
