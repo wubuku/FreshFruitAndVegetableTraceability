@@ -11,8 +11,9 @@ public class TaskExecutorConfig {
     @Bean(name = "orderProcessingExecutor")
     public TaskExecutor orderProcessingExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(1);
-        executor.setMaxPoolSize(1);
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(4);
+        executor.setQueueCapacity(50);
         executor.setThreadNamePrefix("order-processing-");
         executor.initialize();
         return executor;
