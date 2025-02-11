@@ -55,12 +55,17 @@ mkdir -p ~/minio/data
 ```bash
 docker run -d \
   --name minio \
-  -p 9000:9000 \
+  -p 9002:9000 \
   -p 9001:9001 \
   -e "MINIO_ROOT_USER=admin" \
   -e "MINIO_ROOT_PASSWORD=password123" \
   -v ~/minio/data:/data \
   minio/minio server /data --console-address ":9001"
+```
+
+删除容器 minio 
+```bash
+docker rm -f minio
 ```
 
 4. 验证 MinIO 是否正常运行：

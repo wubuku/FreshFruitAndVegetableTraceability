@@ -65,7 +65,7 @@ storage:
     public-bucket: flex-api-public
   
   minio:
-    endpoint: http://localhost:9000
-    access-key: sR0M20dawA1y4SRBnz9p
-    secret-key: c5pyo789dmbfdI8GDspnRZkbrg8XDwzUVhULCCYS
+    endpoint: http://localhost:9002
+    access-key: 2D9TwWDVmUQPB9TARDmf
+    secret-key: nT2X0hxdI5UbnJdo5kSV88jnmGUFEYA4Ddww1Kbf
     bucket: my-bucket

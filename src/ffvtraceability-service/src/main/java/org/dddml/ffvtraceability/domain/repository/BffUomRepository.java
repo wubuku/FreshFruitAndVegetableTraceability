@@ -20,7 +20,7 @@ public interface BffUomRepository extends JpaRepository<AbstractUomState.SimpleU
             FROM uom u
             WHERE (:active IS NULL OR u.active = :active)
                 AND (:uomTypeId IS NULL OR u.uom_type_id = :uomTypeId)
-            ORDER BY u.created_at DESC
+            ORDER BY u.numeric_code ASC
             """,
             countQuery = """
                     SELECT COUNT(*)
