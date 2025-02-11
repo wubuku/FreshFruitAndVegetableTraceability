@@ -63,6 +63,11 @@ docker run -d \
   minio/minio server /data --console-address ":9001"
 ```
 
+删除容器 minio 
+```bash
+docker rm -f minio
+```
+
 4. 验证 MinIO 是否正常运行：
    - 访问 http://localhost:9001
    - 使用以下凭据登录：
