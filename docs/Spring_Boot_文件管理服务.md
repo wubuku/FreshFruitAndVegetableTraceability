@@ -74,10 +74,9 @@ docker run -d \
     2. 点击左侧菜单的 "Buckets"
     3. 点击 "Create Bucket"，创建名为 "my-bucket" 的 bucket
     4. 在 Buckets 列表中点击 "my-bucket"
-    5. 点击 "Access Policy" 标签页
-    6. 选择 "Add Policy"，然后：
-       - 选择 "Custom"
-       - 在编辑器中输入以下策略：
+    5. 点击 "Access Policy" 的编辑图标
+    6. 在 "Add Policy" 下拉列表中选择 "Custom"
+    7. 在编辑器中输入以下策略：
        ```json
        {
          "Version": "2012-10-17",
@@ -93,12 +92,20 @@ docker run -d \
          ]
        }
        ```
-    7. 点击 "Add" 保存策略。
+    6. 点击 "Set" 按钮保存策略。
         这个配置将允许任何人访问 my-bucket 中 public/ 目录下的文件，
-        与应用程序中的公开访问机制相匹配。或者，使用预设选项：
-          - 选择 "Prefix" 输入 "public/"
-          - 选择 "Access" 为 "readonly"
-          - 点击 "Add"
+        与应用程序中的公开访问机制相匹配。
+
+6. 或者可以使用预设选项来配置 bucket 的匿名访问策略：
+    1. 在 "Anonymous" 页签中，点击 "Add Access Rule" 按钮
+    2. 在 "Prefix" 栏中输入 "public/"
+    3. 在 "Access" 下拉列表中选择 "readonly"
+    4.  点击 "Save" 按钮保存匿名访问策略。
+
+7. 获取 Access Keys
+
+可以在控制台左边栏的 "Access Keys" 页签中创建 Access Key。
+
 
 ### 4. 项目依赖配置
 
