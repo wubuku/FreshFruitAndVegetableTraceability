@@ -14,7 +14,7 @@ public class EntityClassUtils {
         BOUNDED_CONTEXT_DOMAIN_PACKAGE = getBoundedContextDomainPackage();
     }
 
-    static Class<?> getEntityInitializationClass(String entityName, boolean preferCommandClass) {
+    static Class<?> getEntityInitializationClass(String entityName, boolean preferCommandClass) throws ClassNotFoundException {
         String[] names = getEntityInitializationClassNames(entityName, preferCommandClass);
         Class<?> entityClass = null;
         for (String n : names) {
@@ -26,6 +26,11 @@ public class EntityClassUtils {
             if (entityClass != null) {
                 break;
             }
+        }
+        if (entityClass == null) {
+            throw new ClassNotFoundException(String.format(
+                    "No initialization class found for entity '%s'. Tried: %s",
+                    entityName, String.join(", ", names)));
         }
         return entityClass;
     }
@@ -44,8 +49,24 @@ public class EntityClassUtils {
         return entityClasses;
     }
 
+    static Class<?> getEntityStateClass(String entityName) throws ClassNotFoundException {
+        String name = getEntityStateClassName(entityName);
+        return Class.forName(name);
+    }
 
-    static protected String[] getEntityInitializationClassNames(String entityName, boolean preferCommandClass) {
+    static String getEntityStateClassName(String entityName) {
+        String aggregateName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP
+                .get(entityName);
+        if (aggregateName == null) {
+            throw new IllegalArgumentException(String.format("Aggregate name not found for entity name: %s", entityName));
+        }
+        String packageClassPath = aggregateName.toLowerCase();
+        return String.format(
+                "%1$s.%2$s.Abstract%3$sState$Simple%4$sState",
+                BOUNDED_CONTEXT_DOMAIN_PACKAGE, packageClassPath, entityName, entityName);
+    }
+
+    static String[] getEntityInitializationClassNames(String entityName, boolean preferCommandClass) {
         String aggregateName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP
                 .get(entityName);
         if (aggregateName == null) {

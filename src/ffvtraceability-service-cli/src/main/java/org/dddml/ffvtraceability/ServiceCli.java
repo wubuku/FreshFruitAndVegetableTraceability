@@ -1,7 +1,9 @@
 package org.dddml.ffvtraceability;
 
+import jakarta.persistence.EntityManager;
 import org.dddml.ffvtraceability.domain.TenantContext;
 import org.dddml.ffvtraceability.domain.TenantSupport;
+import org.dddml.ffvtraceability.specialization.ApplicationContext;
 import org.dddml.ffvtraceability.specialization.DomainError;
 import org.dddml.ffvtraceability.tool.ApplicationServiceReflectUtils;
 import org.dddml.ffvtraceability.tool.JsonEntityDataTool;
@@ -117,6 +119,9 @@ public class ServiceCli {
         if (initDataSubcommand.xml) {
             createEntitiesFromXmlData(initDataSubcommand.dataLocationPattern);
         }
+        if (initDataSubcommand.xmlState) {
+            initEntityStateFromXmlData(initDataSubcommand.dataLocationPattern);
+        }
         if (initDataSubcommand.json) {
             createEntitiesFromJsonData(initDataSubcommand.dataLocationPattern);
         }
@@ -127,8 +132,49 @@ public class ServiceCli {
         if (dataLocationPattern != null) {
             pathPattern = dataLocationPattern;
         }
-        Map<String, List<Object>> allData = XmlEntityDataTool.deserializeAllGroupByEntityName(pathPattern);
+        Map<String, List<Object>> allData = XmlEntityDataTool.deserializeGroupByEntityName(pathPattern);
         initializeEntities(allData);
+    }
+
+    public static void initEntityStateFromXmlData(String dataLocationPattern) {
+        String pathPattern = XmlEntityDataTool.DEFAULT_XML_DATA_LOCATION_PATTERN;
+        if (dataLocationPattern != null) {
+            pathPattern = dataLocationPattern;
+        }
+        List<Object> allData = XmlEntityDataTool.deserializeAllState(pathPattern);
+        org.springframework.transaction.PlatformTransactionManager transactionManager =
+                ApplicationContext.current.get(org.springframework.transaction.PlatformTransactionManager.class);
+
+        org.springframework.transaction.support.TransactionTemplate transactionTemplate =
+                new org.springframework.transaction.support.TransactionTemplate(transactionManager);
+
+        allData.forEach(entity -> {
+            try {
+                transactionTemplate.execute(status -> {
+                    try {
+                        EntityManager em = ApplicationContext.current.get(EntityManager.class);
+                        em.persist(entity);
+                        return null;
+                    } catch (jakarta.persistence.EntityExistsException e) {
+                        System.out.printf("Info: Entity already exists, skipping: %s%n", entity);
+                        status.setRollbackOnly();
+                        return null;
+                    } catch (jakarta.persistence.PersistenceException e) {
+                        if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
+                            System.out.printf("Info: Entity already exists (constraint violation), skipping: %s%n", entity);
+                            status.setRollbackOnly();
+                            return null;
+                        }
+                        throw e;
+                    }
+                });
+            } catch (Exception e) {
+                if (!(e instanceof jakarta.persistence.EntityExistsException) &&
+                        !(e.getCause() instanceof org.hibernate.exception.ConstraintViolationException)) {
+                    throw new RuntimeException("Failed to persist entity", e);
+                }
+            }
+        });
     }
 
     public static void createEntitiesFromJsonData(String jsonDataLocationPattern) {
@@ -234,15 +280,23 @@ public class ServiceCli {
                 "--dataLocationPattern"}, required = true, description = "File path pattern to locate data files. " +
                 "Use Spring Resource Patterns like 'file:{PATH_TO}/*.json' or 'classpath*:/data/*.json' to specify multiple files.")
         String dataLocationPattern;
+
         @CommandLine.Option(names = {"-x",
                 "--xml"}, required = false, description = "Use XML files for data initialization. " +
                 "If specified, the tool will look for XML files matching the data location pattern.")
         boolean xml;
+
+        @CommandLine.Option(names = {
+                "--xml-state"}, required = false, description = "Use XML state files for data initialization. " +
+                "If specified, the tool will look for XML files matching the data location pattern.")
+        boolean xmlState;
+
         @CommandLine.Option(names = {"-j",
                 "--json"}, required = false, description = "Use JSON files for data initialization. " +
                 "If specified, the tool will look for JSON files matching the data location pattern. " +
                 "The JSON file name must match '{EntityName}Data.json'.")
         boolean json;
+
         @Mixin
         private DatabaseOptions databaseOptions = new DatabaseOptions();
 
