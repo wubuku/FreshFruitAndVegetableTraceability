@@ -29,6 +29,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
@@ -142,19 +143,16 @@ public class XmlEntityDataTool {
 
     // only for test.
     public static void _main(String[] args) {
-
         List<Object> entityInstList = null;
         Map<String, List<Object>> entityInstGroupByEntityName = null;
         try {
             entityInstList = deserializeAll(DEFAULT_XML_DATA_LOCATION_PATTERN);
-            entityInstGroupByEntityName = deserializeAllGroupByEntityName(DEFAULT_XML_DATA_LOCATION_PATTERN);
+            entityInstGroupByEntityName = deserializeGroupByEntityName(DEFAULT_XML_DATA_LOCATION_PATTERN);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
         System.out.println(entityInstList.size());
         for (Object obj : entityInstList) {
-            //String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(obj);
-            //System.out.println(jsonString);
             System.out.println(obj);
         }
         int count = 0;
@@ -172,7 +170,13 @@ public class XmlEntityDataTool {
         System.exit(0);
     }
 
-    public static Map<String, List<Object>> deserializeAllGroupByEntityName(String xmlDataLocationPattern) {
+    /**
+     * Groups deserialized objects by their entity names after deserializing XML data with type inference.
+     *
+     * @param xmlDataLocationPattern The pattern to locate XML data files
+     * @return A map where keys are entity names and values are lists of corresponding objects
+     */
+    public static Map<String, List<Object>> deserializeGroupByEntityName(String xmlDataLocationPattern) {
         Map<String, List<Object>> entityObjListMap = new HashMap<>();
         deserializeAll(xmlDataLocationPattern, (e, d) -> {
             List<Object> objList = entityObjListMap.getOrDefault(e.getNodeName(), null);
@@ -185,15 +189,56 @@ public class XmlEntityDataTool {
         return entityObjListMap;
     }
 
+    /**
+     * Deserializes XML data into objects by inferring their types from entity names.
+     * For each entity in XML, it tries to find and use the most appropriate Java class
+     * from available initialization classes.
+     *
+     * @param xmlDataLocationPattern The pattern to locate XML data files
+     * @return A list of deserialized objects
+     */
     public static List<Object> deserializeAll(String xmlDataLocationPattern) {
         List<Object> objList = new ArrayList<>();
         deserializeAll(xmlDataLocationPattern, (e, d) -> objList.add(d));
         return objList;
     }
 
+    public static List<Object> deserializeAllState(String xmlDataLocationPattern) {
+        List<Object> objList = new ArrayList<>();
+        deserializeAllState(xmlDataLocationPattern, (e, d) -> objList.add(d));
+        return objList;
+    }
+
+    public static void deserializeAllState(String xmlDataLocationPattern, BiConsumer<Node, Object> action) {
+        XmlEntityDataTool deserializer = new XmlEntityDataTool();
+        try {
+            for (final Resource resource : resourcePatternResolver.getResources(xmlDataLocationPattern)) {
+                deserializer.deserialize(resource.getInputStream(),
+                        (entityName) -> {
+                            try {
+                                return Collections.singletonList(EntityClassUtils.getEntityStateClass(entityName));
+                            } catch (ClassNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                        },
+                        action
+                );
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * Deserializes XML data into objects by inferring their types, with custom handling through an action.
+     * For each entity in XML, it attempts to find the most appropriate Java class for deserialization.
+     *
+     * @param xmlDataLocationPattern The pattern to locate XML data files
+     * @param action                 BiConsumer to handle each deserialized object along with its XML node
+     */
     public static void deserializeAll(String xmlDataLocationPattern, BiConsumer<Node, Object> action) {
         XmlEntityDataTool deserializer = new XmlEntityDataTool();
-        List<Object> objList = new ArrayList<>();
         try {
             for (final Resource resource : resourcePatternResolver.getResources(xmlDataLocationPattern)) {
                 deserializer.deserialize(resource.getInputStream(), action);
@@ -281,8 +326,11 @@ public class XmlEntityDataTool {
                 }
             }
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+            String errorDetail = e instanceof NoSuchFieldException ?
+                    String.format("Field '%s' not found in metadata class", e.getMessage()) :
+                    e.getMessage();
             System.out.printf("Info: Failed to process ID_PROPERTY_NAME for aggregate '%s': %s%n",
-                    superEntityName, e.getMessage());
+                    superEntityName, errorDetail);
         }
 
         for (final PropertyDescriptor propertyDescriptor : propertyDescriptors) {
@@ -456,7 +504,26 @@ public class XmlEntityDataTool {
         return Arrays.stream(thisClassNames).limit(thisClassNames.length - 2).reduce((x, y) -> x + "." + y).get();
     }
 
+    /**
+     * Core deserialization method that processes a single XML input stream with type inference.
+     * For each entity in the XML, it:
+     * 1. Determines possible Java classes based on the entity name
+     * 2. Attempts deserialization with each class until successful
+     * 3. Handles the result through the provided action
+     *
+     * @param xmlInputStream The input stream containing XML data
+     * @param action         BiConsumer to handle each deserialized object along with its XML node
+     */
     public void deserialize(InputStream xmlInputStream, BiConsumer<Node, Object> action) {
+        deserialize(xmlInputStream, (entityName) ->
+                EntityClassUtils.getEntityInitializationClasses(entityName, false), action);
+    }
+
+    void deserialize(
+            InputStream xmlInputStream,
+            Function<String, List<Class<?>>> beanClassProvider,
+            BiConsumer<Node, Object> action
+    ) {
         Map<Class<?>, Map<String, PropertySetter>> propSetterMapCache = new HashMap<>();
         try {
             Document doc = parseXmlDocument(xmlInputStream);
@@ -483,8 +550,7 @@ public class XmlEntityDataTool {
                     String nodeValue = item.getNodeValue();
                     attrMap.put(attributeName, nodeValue);
                 }
-
-                List<Class<?>> beanClasses = EntityClassUtils.getEntityInitializationClasses(entityName, false);
+                List<Class<?>> beanClasses = beanClassProvider.apply(entityName);
                 if (beanClasses.isEmpty()) {
                     throw new ClassNotFoundException(String.format("No suitable initialization class found for entity: %s", entityName));
                 }

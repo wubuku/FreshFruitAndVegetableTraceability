@@ -41,7 +41,7 @@ public class InitEntityXmlData {
         if (xmlDataLocationPattern != null) {
             pathPattern = xmlDataLocationPattern;
         }
-        Map<String, List<Object>> allData = XmlEntityDataTool.deserializeAllGroupByEntityName(pathPattern);
+        Map<String, List<Object>> allData = XmlEntityDataTool.deserializeGroupByEntityName(pathPattern);
         for (Map.Entry<String, List<Object>> kv : allData.entrySet()) {
             for (Object e : kv.getValue()) {
                 try {

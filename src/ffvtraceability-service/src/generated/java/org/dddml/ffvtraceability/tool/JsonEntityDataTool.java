@@ -1,6 +1,5 @@
 package org.dddml.ffvtraceability.tool;
 
-import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -8,6 +7,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,16 +15,12 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-
 public class JsonEntityDataTool {
 
     public static final String DEFAULT_JSON_DATA_LOCATION_PATTERN = "classpath*:/data/*.json";
-
+    static final String UTF8_BOM = "\uFEFF";
     private final static ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-
     private final static String DATA_FILE_SUFFIX = "Data.json";
-
     private final static String CREATION_COOMMANDS_FILE_SUFFIX = "CreationCommands.json";
 
     public static Map<String, List<Object>> deserializeAllGroupByEntityName(String jsonDataLocationPattern) {
@@ -41,7 +37,6 @@ public class JsonEntityDataTool {
     }
 
     static void deserializeAll(String jsonDataLocationPattern, BiConsumer<String, Object> action) {
-        List<Object> objList = new ArrayList<>();
         try {
             for (final Resource resource : resourcePatternResolver.getResources(jsonDataLocationPattern)) {
                 String filename = resource.getFilename();
@@ -56,7 +51,7 @@ public class JsonEntityDataTool {
                 if (entityName != null) {
                     String jsonString = readUtf8TextFile(resource.getInputStream());
                     String finalEntityName = entityName;
-                    deserialize(entityName, isCommandData, jsonString, (item) -> action.accept(finalEntityName, item));
+                    deserialize(entityName, jsonString, (item) -> action.accept(finalEntityName, item));
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -64,9 +59,9 @@ public class JsonEntityDataTool {
         }
     }
 
-    public static void deserialize(String entityName, boolean isCommandData, String jsonString, Consumer<Object> action)
+    public static void deserialize(String entityName, String jsonString, Consumer<Object> action)
             throws ClassNotFoundException, IOException {
-        Class itemClass = null;
+        Class itemClass;
         itemClass = EntityClassUtils.getEntityInitializationClass(entityName, true);
         readJsonArrayAndConsumeItem(jsonString, itemClass, action);
     }
@@ -86,8 +81,6 @@ public class JsonEntityDataTool {
         }
     }
 
-    static final String UTF8_BOM = "\uFEFF";
-
     static String readUtf8TextFile(String path) throws IOException {
         File fileDir = new File(path);
         InputStream inputStream = new FileInputStream(fileDir);
@@ -96,7 +89,7 @@ public class JsonEntityDataTool {
 
     private static String readUtf8TextFile(InputStream inputStream) throws IOException {
         StringBuilder sb = new StringBuilder();
-        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF8"));
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         String str;
         boolean firstLine = true;
         while ((str = in.readLine()) != null) {
