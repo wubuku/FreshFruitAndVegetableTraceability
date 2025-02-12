@@ -209,33 +209,41 @@ public class XmlEntityDataTool {
         return db.parse(xmlInputStream);
     }
 
-    private static void setProperty(Object obj, Map<String, PropertySetter> setterMap, String attrName, Object attrVal) throws InvocationTargetException, IllegalAccessException {
-        Object attribute = null;
+    private static void setProperty(String entityName, Object obj, Map<String, PropertySetter> setterMap, String attrName, Object attrVal) throws InvocationTargetException, IllegalAccessException {
         PropertySetter propertySetter = setterMap.get(attrName);
         Set<String> ignorableNames = Arrays.stream(new String[]{
                 "createdDate", "createdBy", "createdAt"
         }).collect(Collectors.toSet());
+
         if (propertySetter == null) {
             if (ignorableNames.contains(attrName)) {
                 return;
             }
             throw new NullPointerException(String.format(
-                    "Property setter NOT found. Attribute name: '%1$s', object type: '%2$s' ",
-                    attrName, obj.getClass().getName()));
+                    "Property setter not found for entity '%s'. Property name: '%s', Object type: '%s'",
+                    entityName, attrName, obj.getClass().getName()));
         }
+
         Class propertyType = propertySetter.getPropertyType();
         try {
             propertySetter.invoke(obj, convertAttributeValue(attrVal, propertyType));
         } catch (Exception e) {
             throw new RuntimeException(String.format(
-                    "Failed to set property '%1$s' with value '%2$s' for object '%3$s'.",
-                    attrName, attrVal, obj.getClass().getName()
+                    "Failed to set property '%s' for entity '%s'. Value: '%s', Expected type: '%s', Error: %s",
+                    attrName, entityName, attrVal, propertyType.getSimpleName(), e.getMessage()
             ), e);
         }
     }
 
     private static Object convertAttributeValue(Object attributeVal, Class<?> type) {
-        return defaultConversionService.convert(attributeVal, type);
+        try {
+            return defaultConversionService.convert(attributeVal, type);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(String.format(
+                    "Failed to convert value '%s' to type '%s'. Error: %s",
+                    attributeVal, type.getSimpleName(), e.getMessage()
+            ), e);
+        }
     }
 
     private static String getCreatedAtPropertyName(String entityName) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
@@ -275,6 +283,7 @@ public class XmlEntityDataTool {
                 }
             });
             String superEntityName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP.get(entityName);
+            // NOTE: Hardcoded HERE???
             if (propertyDescriptor.getName().equalsIgnoreCase(superEntityName + "Id")) {
                 addPropertyPropertySetter(setterMap, propertyDescriptor);
             } else if (propertyDescriptor.getName().equalsIgnoreCase(superEntityName + "EventId")) {
@@ -294,16 +303,20 @@ public class XmlEntityDataTool {
                     public void invoke(Object b, Object pVal) throws InvocationTargetException, IllegalAccessException {
                         Object pref = propertyDescriptor.getReadMethod().invoke(b);
                         if (pref == null) {
-                            //throw new RuntimeException(String.format("The parent property '%1$s' is null.", propertyDescriptor.getName()));
                             try {
                                 pref = propertyType.newInstance();
                                 propertyDescriptor.getWriteMethod().invoke(b, pref);
                             } catch (InstantiationException e) {
-                                throw new RuntimeException(e);
+                                throw new RuntimeException(String.format(
+                                        "Failed to create instance of type '%s' for property '%s'. Error: %s",
+                                        propertyType.getSimpleName(), propertyDescriptor.getName(), e.getMessage()
+                                ), e);
                             }
                         }
                         if (ppDescriptor.getWriteMethod() == null) {
-                            throw new RuntimeException(String.format("CANNOT get WriteMethod for property '%1$s'.", ppDescriptor.getName()));
+                            throw new IllegalStateException(String.format(
+                                    "No setter method found for property '%s' in type '%s'",
+                                    ppDescriptor.getName(), propertyType.getSimpleName()));
                         }
                         ppDescriptor.getWriteMethod().invoke(pref, pVal);
                     }
@@ -327,7 +340,9 @@ public class XmlEntityDataTool {
             Document doc = parseXmlDocument(xmlInputStream);
             Element docElement = doc.getDocumentElement();
             if (!XML_ROOT_NODE_NAME.equals(docElement.getNodeName())) {
-                return;
+                throw new IllegalArgumentException(String.format(
+                        "Invalid XML root node. Expected '%s' but found '%s'",
+                        XML_ROOT_NODE_NAME, docElement.getNodeName()));
             }
             NodeList childNodes = docElement.getChildNodes();
 
@@ -348,10 +363,11 @@ public class XmlEntityDataTool {
                 }
                 action.accept(entityDataNode, convertEntityData(propSetterMapCache, entityName, attrMap));
             }
-        } catch (ParserConfigurationException | IOException | SAXException |
-                 IllegalAccessException | IntrospectionException | InstantiationException | NoSuchFieldException |
-                 InvocationTargetException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(String.format(
+                    "Failed to deserialize XML data. Error: %s",
+                    e.getMessage()
+            ), e);
         }
     }
 
@@ -382,7 +398,7 @@ public class XmlEntityDataTool {
             propSetterMapCache.put(entityName, setterMap);
         }
         for (Map.Entry<String, Object> kv : attrMap.entrySet()) {
-            setProperty(beanInst, setterMap, kv.getKey(), kv.getValue());
+            setProperty(entityName, beanInst, setterMap, kv.getKey(), kv.getValue());
         }
 
         return beanInst;

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <!-- 在 ManufacturingDemoData.xml 文件中，已经包含了一些原材料、WIP、成品的产品测试数据 -->
+    <!-- 在 ManufacturingDemoData.xml 文件中，还包含了一些工艺路线、工序等测试数据 -->
+
+    <!-- 我们在这些测试数据的基础上，创建更多的测试数据，来测试批次追踪功能 -->
+
+    <!-- 创建一些批次信息，这些批次将会被原材料、WIP、成品的库存单元（InventoryItem）所引用 -->
+    <!-- 关于批次实体的定义，请参考 `dddml/Lot.yaml` 文件 -->
+    <!-- 注意，用于原材料的批次，它的字段 `Gtin`（GTIN） 和 `Gs1Batch`（GS1 Batch）应该有值 -->
+    <Lot lotId="FLOUR_LOT_001"
+        quantity="1000.0" expirationDate="2024-06-30 23:59:59"
+        gtin="30012345000011" gs1Batch="FL24001" active="Y" />
+
+    <Lot lotId="EGG_LOT_001"
+        quantity="100" expirationDate="2024-02-15 23:59:59"
+        gtin="30012345000028" gs1Batch="EG24001" active="Y" />
+
+    <Lot lotId="SUGAR_LOT_001"
+        quantity="1000.0" expirationDate="2024-12-31 23:59:59"
+        gtin="30012345000035" gs1Batch="SU24001" active="Y" />
+
+    <Lot lotId="MILK_LOT_001"
+        quantity="2000.0" expirationDate="2024-02-28 23:59:59"
+        gtin="30012345000042" gs1Batch="ML24001" active="Y" />
+
+    <!-- 用于 WIP 的批次，对它的字段 `Gtin`（GTIN） 和 `Gs1Batch`（GS1 Batch）是否有值没有要求 -->
+    <Lot lotId="CAKE_BASE_LOT_001"
+        quantity="10.0" expirationDate="2024-01-05 23:59:59" active="Y" />
+
+    <!-- 注意，用于成品的批次，它的字段 `Gtin`（GTIN） 和 `Gs1Batch`（GS1 Batch）应该有值 -->
+
+    <!-- 创建一些原材料的库存单元 -->
+    <InventoryItem inventoryItemId="FLOUR_INV_001" inventoryItemTypeId="NON_SERIAL_INV_ITEM"
+        productId="RAW_FLOUR" lotId="FLOUR_LOT_001" facilityId="BAKERY_001"
+        quantityOnHandTotal="1000.0" availableToPromiseTotal="1000.0" />
+
+    <InventoryItem inventoryItemId="EGG_INV_001" inventoryItemTypeId="NON_SERIAL_INV_ITEM"
+        productId="RAW_EGG" lotId="EGG_LOT_001" facilityId="BAKERY_001"
+        quantityOnHandTotal="100" availableToPromiseTotal="100" />
+
+    <InventoryItem inventoryItemId="SUGAR_INV_001" inventoryItemTypeId="NON_SERIAL_INV_ITEM"
+        productId="RAW_SUGAR" lotId="SUGAR_LOT_001" facilityId="BAKERY_001"
+        quantityOnHandTotal="1000.0" availableToPromiseTotal="1000.0" />
+
+    <InventoryItem inventoryItemId="MILK_INV_001" inventoryItemTypeId="NON_SERIAL_INV_ITEM"
+        productId="RAW_MILK" lotId="MILK_LOT_001" facilityId="BAKERY_001"
+        quantityOnHandTotal="2000.0" availableToPromiseTotal="2000.0" />
+
+    <!-- 创建一些 WIP 的库存单元 -->
+    <InventoryItem inventoryItemId="CAKE_BASE_INV_001" inventoryItemTypeId="NON_SERIAL_INV_ITEM"
+        productId="WIP_CAKE_BASE" lotId="CAKE_BASE_LOT_001" facilityId="BAKERY_001"
+        quantityOnHandTotal="10.0" availableToPromiseTotal="10.0" />
+
+    <!-- 可以先不用创建成品的库存单元，让我们一步步来 -->
+
+    <!-- 为了测试批次追溯，似乎我们并不需要真正创建生产运行任务（Production Run Task）的实例 -->
+    <!-- 我们只需要使用相同的生产运行任务的 ID（Production Run Id），来关联相关的表示投入和产出的库存单元明细（InventoryItemDetail） -->
+    <!-- 让我们一步步来，先只是创建一道工序相关的测试数据看看 -->
+    <!-- 创建一些 InventoryItemDetail，表示一道工序投入的原材料 -->
+    <InventoryItemDetail inventoryItemId="FLOUR_INV_001" inventoryItemDetailSeqId="00001"
+        workEffortId="PROD_RUN_01" availableToPromiseDiff="-500.0" quantityOnHandDiff="-500.0"
+        effectiveDate="2024-01-01 09:00:00" description="Production Run Component Issue" />
+
+    <InventoryItemDetail inventoryItemId="EGG_INV_001" inventoryItemDetailSeqId="00001"
+        workEffortId="PROD_RUN_01" availableToPromiseDiff="-4" quantityOnHandDiff="-4"
+        effectiveDate="2024-01-01 09:00:00" description="Production Run Component Issue" />
+
+    <InventoryItemDetail inventoryItemId="SUGAR_INV_001" inventoryItemDetailSeqId="00001"
+        workEffortId="PROD_RUN_01" availableToPromiseDiff="-200.0" quantityOnHandDiff="-200.0"
+        effectiveDate="2024-01-01 09:00:00" description="Production Run Component Issue" />
+
+    <InventoryItemDetail inventoryItemId="MILK_INV_001" inventoryItemDetailSeqId="00001"
+        workEffortId="PROD_RUN_01" availableToPromiseDiff="-250.0" quantityOnHandDiff="-250.0"
+        effectiveDate="2024-01-01 09:00:00" description="Production Run Component Issue" />
+
+    <!-- 创建一些 InventoryItemDetail，表示一道工序产出的 WIP -->
+    <InventoryItemDetail inventoryItemId="CAKE_BASE_INV_001" inventoryItemDetailSeqId="00001"
+        workEffortId="PROD_RUN_01" availableToPromiseDiff="1.0" quantityOnHandDiff="1.0"
+        effectiveDate="2024-01-01 10:30:00" description="Production Run Product Receipt" />
+
+    <!-- 库存单元明细实体的定义如下 -->
+    <!-- 
+    <entity entity-name="InventoryItemDetail"
+            package-name="org.apache.ofbiz.product.inventory"
+            title="Inventory Item Detail">
+      <field name="inventoryItemId" type="id"></field>
+      <field name="inventoryItemDetailSeqId" type="id"></field>
+      <field name="effectiveDate" type="date-time"></field>
+      <field name="quantityOnHandDiff" type="fixed-point"></field>
+      <field name="availableToPromiseDiff" type="fixed-point"></field>
+      <field name="accountingQuantityDiff" type="fixed-point"></field>
+      <field name="unitCost" type="fixed-point"></field>
+      <field name="orderId" type="id"></field>
+      <field name="orderItemSeqId" type="id"></field>
+      <field name="shipGroupSeqId" type="id"></field>
+      <field name="shipmentId" type="id"></field>
+      <field name="shipmentItemSeqId" type="id"></field>
+      <field name="returnId" type="id"></field>
+      <field name="returnItemSeqId" type="id"></field>
+      <field name="workEffortId" type="id"></field>
+      <field name="fixedAssetId" type="id"></field>
+      <field name="maintHistSeqId" type="id"></field>
+      <field name="itemIssuanceId" type="id"></field>
+      <field name="receiptId" type="id"></field>
+      <field name="physicalInventoryId" type="id"></field>
+      <field name="reasonEnumId" type="id"></field>
+      <field name="description" type="description"></field>
+      <prim-key field="inventoryItemId"/>
+      <prim-key field="inventoryItemDetailSeqId"/>
+    </entity> 
+  -->
+
+    <!-- 更多参考内容见：`docs/实体模型设计.md` 文件 -->
+    <!-- 更多参考内容见：`docs/OFBiz_制造模块分析.md` 文件，特别是 `8.2 基于 InventoryItemDetail 的批次追溯方案` 部分 -->
+
+</entity-engine-xml>
