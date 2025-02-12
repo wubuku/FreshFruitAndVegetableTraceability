@@ -312,34 +312,30 @@ public class XmlEntityDataTool {
         PropertyDescriptor[] propertyDescriptors = info.getPropertyDescriptors();
 
         String superEntityName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP.get(entityName);
-        String idPropertyName = null;
+
+        // Collect all ID property names that need special handling
+        List<String> specialIdPropertyNames = new ArrayList<>();
+        // 1. Add the entity's primary ID property
         try {
             Class<?> metadataClazz = getAggregateMetadataClass(superEntityName);
-            // Get ID_PROPERTY_NAME field value
             Field idPropertyNameField = metadataClazz.getField("ID_PROPERTY_NAME");
-            idPropertyName = (String) idPropertyNameField.get(null);
-            // Find property descriptor for the ID property
-            for (PropertyDescriptor pd : propertyDescriptors) {
-                if (pd.getName().equals(idPropertyName)) {
-                    addNestedIdPropertySetters(setterMap, pd);
-                    break;
-                }
-            }
+            String idPropertyName = (String) idPropertyNameField.get(null);
+            specialIdPropertyNames.add(idPropertyName);
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-            String errorDetail = e instanceof NoSuchFieldException ?
-                    String.format("Field '%s' not found in metadata class", e.getMessage()) :
-                    e.getMessage();
-            System.out.printf("Info: Failed to process ID_PROPERTY_NAME for aggregate '%s': %s%n",
-                    superEntityName, errorDetail);
+            System.out.printf("Info: Failed to get ID_PROPERTY_NAME for aggregate '%s': %s%n",
+                    superEntityName, e.getMessage());
         }
+        // 2. Add EntityId and EventId properties (NOTE: Hardcoded here!)
+        specialIdPropertyNames.add(superEntityName + "Id");
+        specialIdPropertyNames.add(superEntityName + "EventId");
 
+        // Process all properties
         for (final PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-            if (idPropertyName != null && idPropertyName.equals(propertyDescriptor.getName())) {
-                continue;
-            }
-            // Only add property if it has both getter and setter
+            String propertyName = propertyDescriptor.getName();
+
+            // Basic property handling: add properties that have both getter and setter
             if (propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getReadMethod() != null) {
-                setterMap.put(propertyDescriptor.getName(), new PropertySetter() {
+                setterMap.put(propertyName, new PropertySetter() {
                     @Override
                     public void invoke(Object b, Object pVal) throws InvocationTargetException, IllegalAccessException {
                         propertyDescriptor.getWriteMethod().invoke(b, pVal);
@@ -352,84 +348,98 @@ public class XmlEntityDataTool {
                 });
             }
 
-            // Add setters for nested properties of Id and EventId
-            if (propertyDescriptor.getName().equalsIgnoreCase(superEntityName + "Id")) {
-                addNestedIdPropertySetters(setterMap, propertyDescriptor);
-            } else if (propertyDescriptor.getName().equalsIgnoreCase(superEntityName + "EventId")) {
+            // Special ID property handling: add nested property setters for all special ID properties
+            if (specialIdPropertyNames.stream()
+                    .anyMatch(idName -> idName.equalsIgnoreCase(propertyName))) {
                 addNestedIdPropertySetters(setterMap, propertyDescriptor);
             }
+        }
 
-            // Check aliasMap mappings
-            Map<String, String> aliasMap = getEntityAliasMap(entityName);
-            if (aliasMap.containsKey(propertyDescriptor.getName())) {
-                String propertyPath = aliasMap.get(propertyDescriptor.getName());
-                if (!setterMap.containsKey(propertyPath)) { // Only add if not already exists
-                    String[] propertyNames = propertyPath.split("\\.");
-                    if (propertyNames.length == 1) {
-                        // For simple property, verify setter exists at build time
-                        String setterMethodName = "set" + propertyPath.substring(0, 1).toUpperCase() +
-                                propertyPath.substring(1);
-                        try {
-                            final Method setter = beanClass.getMethod(setterMethodName, propertyDescriptor.getPropertyType());
-                            // Only add if setter is found
-                            setterMap.put(propertyPath, new PropertySetter() {
-                                @Override
-                                public void invoke(Object beanObj, Object propertyVal)
-                                        throws InvocationTargetException, IllegalAccessException {
-                                    setter.invoke(beanObj, propertyVal);
-                                }
+        return setterMap;
+    }
 
-                                @Override
-                                public Class getPropertyType() {
-                                    return propertyDescriptor.getPropertyType();
-                                }
-                            });
-                        } catch (NoSuchMethodException e) {
-                            System.out.printf("Warning: Setter method '%s(%s)' not found in class '%s' for mapped property '%s'. This property will be ignored.%n",
-                                    setterMethodName,
-                                    propertyDescriptor.getPropertyType().getSimpleName(),
-                                    beanClass.getName(),
-                                    propertyPath);
+    private static void addPropertySetter(
+            String entityName, Class beanClass,
+            String propertyName,
+            Map<String, PropertySetter> setterMap
+    ) {
+        Map<String, String> aliasMap = getEntityAliasMap(entityName);
+        if (aliasMap.containsKey(propertyName)) {
+            String propertyPath = aliasMap.get(propertyName);
+            if (!setterMap.containsKey(propertyPath)) { // Only add if not already exists
+                String[] propertyNames = propertyPath.split("\\.");
+                if (propertyNames.length == 1) {
+                    try {
+                        // Get property descriptor for the property path
+                        BeanInfo beanInfo = Introspector.getBeanInfo(beanClass);
+                        PropertyDescriptor propertyDescriptor = null;
+                        for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
+                            if (pd.getName().equals(propertyPath)) {
+                                propertyDescriptor = pd;
+                                break;
+                            }
                         }
-                    } else {
-                        // For nested properties, keep runtime check due to complexity
+
+                        if (propertyDescriptor == null || propertyDescriptor.getWriteMethod() == null) {
+                            //String setterMethodName = "set" + propertyPath.substring(0, 1).toUpperCase() + propertyPath.substring(1);
+                            System.out.printf("Warning: Property descriptor or setter not found for '%s' in class '%s'%n",
+                                    propertyPath, beanClass.getName());
+                            return;
+                        }
+
+                        final PropertyDescriptor finalPropertyDescriptor = propertyDescriptor;
                         setterMap.put(propertyPath, new PropertySetter() {
                             @Override
                             public void invoke(Object beanObj, Object propertyVal)
                                     throws InvocationTargetException, IllegalAccessException {
-                                try {
-                                    // Get the parent object of the last property
-                                    Object parentObj = PropertyPathUtils.getNestedPropertyParent(
-                                            beanObj, propertyNames, propertyNames.length - 1);
-
-                                    // Set the value of the final property
-                                    String finalPropertyName = propertyNames[propertyNames.length - 1];
-                                    String setterMethodName = "set" + finalPropertyName.substring(0, 1).toUpperCase() +
-                                            finalPropertyName.substring(1);
-                                    Method setter = parentObj.getClass().getMethod(setterMethodName, propertyVal.getClass());
-                                    setter.invoke(parentObj, propertyVal);
-                                } catch (Exception e) {
-                                    throw new RuntimeException(String.format(
-                                            "Failed to set nested property '%s': %s", propertyPath, e.getMessage()), e);
-                                }
+                                finalPropertyDescriptor.getWriteMethod().invoke(beanObj, propertyVal);
                             }
 
                             @Override
                             public Class getPropertyType() {
-                                try {
-                                    return PropertyPathUtils.getPropertyType(beanClass, propertyNames);
-                                } catch (Exception e) {
-                                    throw new RuntimeException(String.format(
-                                            "Failed to determine property type for '%s': %s",
-                                            propertyPath, e.getMessage()), e);
-                                }
+                                return finalPropertyDescriptor.getPropertyType();
                             }
                         });
+                    } catch (IntrospectionException e) {
+                        System.out.printf("Warning: Failed to introspect property '%s' in class '%s': %s%n",
+                                propertyPath, beanClass.getName(), e.getMessage());
                     }
+                } else {
+                    // For nested properties, keep runtime check due to complexity
+                    setterMap.put(propertyPath, new PropertySetter() {
+                        @Override
+                        public void invoke(Object beanObj, Object propertyVal) {
+                            try {
+                                // Get the parent object of the last property
+                                Object parentObj = PropertyPathUtils.getNestedPropertyParent(
+                                        beanObj, propertyNames, propertyNames.length - 1);
+
+                                // Set the value of the final property
+                                String finalPropertyName = propertyNames[propertyNames.length - 1];
+                                String setterMethodName = "set" + finalPropertyName.substring(0, 1).toUpperCase() +
+                                        finalPropertyName.substring(1);
+                                Method setter = parentObj.getClass().getMethod(setterMethodName, propertyVal.getClass());
+                                setter.invoke(parentObj, propertyVal);
+                            } catch (Exception e) {
+                                throw new RuntimeException(String.format(
+                                        "Failed to set nested property '%s': %s", propertyPath, e.getMessage()), e);
+                            }
+                        }
+
+                        @Override
+                        public Class getPropertyType() {
+                            try {
+                                return PropertyPathUtils.getPropertyType(beanClass, propertyNames);
+                            } catch (Exception e) {
+                                throw new RuntimeException(String.format(
+                                        "Failed to determine property type for '%s': %s",
+                                        propertyPath, e.getMessage()), e);
+                            }
+                        }
+                    });
                 }
             }
         }
-        return setterMap;
     }
 
     private static void addNestedIdPropertySetters(Map<String, PropertySetter> setterMap, PropertyDescriptor idPropertyDescriptor) throws IntrospectionException {
@@ -564,6 +574,11 @@ public class XmlEntityDataTool {
                             setterMap = buildPropertySetterMap(entityName, beanClass);
                             propSetterMapCache.put(beanClass, setterMap);
                         }
+                        for (String attrName : attrMap.keySet()) {
+                            if (!setterMap.containsKey(attrName)) {
+                                addPropertySetter(entityName, beanClass, attrName, setterMap);
+                            }
+                        }
                         action.accept(entityDataNode, convertEntityData(beanClass, setterMap, entityName, attrMap));
                         success = true;
                         break;
@@ -588,12 +603,12 @@ public class XmlEntityDataTool {
         }
     }
 
-    protected Object convertEntityData(
+    Object convertEntityData(
             Class<?> beanClass,
             Map<String, PropertySetter> setterMap,
             String entityName,
             Map<String, Object> attrMap
-    ) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, NoSuchFieldException, InvocationTargetException, InstantiationException {
+    ) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InvocationTargetException, InstantiationException {
         String createdAtPropName = getCreatedAtPropertyName(entityName);
         if (!attrMap.containsKey(createdAtPropName)) {
             attrMap.put(createdAtPropName, Long.valueOf(System.currentTimeMillis())); // NOTE: Is this OK?

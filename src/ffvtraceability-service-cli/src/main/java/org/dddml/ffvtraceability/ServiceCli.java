@@ -22,6 +22,7 @@ import picocli.CommandLine.Mixin;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SpringBootApplication
 public class ServiceCli {
@@ -148,6 +149,7 @@ public class ServiceCli {
         org.springframework.transaction.support.TransactionTemplate transactionTemplate =
                 new org.springframework.transaction.support.TransactionTemplate(transactionManager);
 
+        AtomicBoolean constraintViolationOccurred = new AtomicBoolean(false);
         allData.forEach(entity -> {
             try {
                 transactionTemplate.execute(status -> {
@@ -157,11 +159,13 @@ public class ServiceCli {
                         return null;
                     } catch (jakarta.persistence.EntityExistsException e) {
                         System.out.printf("Info: Entity already exists, skipping: %s%n", entity);
+                        constraintViolationOccurred.set(true);
                         status.setRollbackOnly();
                         return null;
                     } catch (jakarta.persistence.PersistenceException e) {
                         if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
                             System.out.printf("Info: Entity already exists (constraint violation), skipping: %s%n", entity);
+                            constraintViolationOccurred.set(true);
                             status.setRollbackOnly();
                             return null;
                         }
@@ -173,8 +177,15 @@ public class ServiceCli {
                         !(e.getCause() instanceof org.hibernate.exception.ConstraintViolationException)) {
                     throw new RuntimeException("Failed to persist entity", e);
                 }
+                constraintViolationOccurred.set(true);
             }
         });
+
+        if (!constraintViolationOccurred.get()) {
+            System.out.println("All entity data initialized successfully.");
+        } else {
+            System.out.println("Entity data initialization completed with constraint violations.");
+        }
     }
 
     public static void createEntitiesFromJsonData(String jsonDataLocationPattern) {

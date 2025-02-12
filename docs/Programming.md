@@ -110,7 +110,11 @@ java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1
 
 # 初始化 DocumentNumberGeneratorData.xml 数据
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/DocumentNumberGeneratorData.xml" --xml
+
+# 绕过实体创建命令的调用，直接将初始化数据写入实体的状态表（一般仅应用用于测试）
+java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/demo/LotTracingTestData.xml" --xml-state
 ```
+
 
 ### Run service
 
