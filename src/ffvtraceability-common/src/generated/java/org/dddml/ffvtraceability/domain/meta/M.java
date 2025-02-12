@@ -256,6 +256,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "articleId";
+
     public static final Class ID_CLASS = Long.class;
 
     public static final String[] propertyNames = new String[] {
@@ -439,6 +441,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "eventId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -677,6 +681,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "eventId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -914,6 +920,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "eventId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -1115,6 +1123,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "applicationIdentifier";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -1248,6 +1258,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "attributeSetInstanceId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -1328,6 +1340,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "statusId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -1422,6 +1436,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "statusTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -1510,6 +1526,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "uomId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -1616,6 +1634,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "uomTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -1704,6 +1724,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "facilityId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -1957,6 +1979,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "facilityIdentificationTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -2037,6 +2061,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "facilityTypeId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -2268,6 +2294,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "geoId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -2372,6 +2400,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "geoTypeId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -2559,6 +2589,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "geoAssocTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -2639,6 +2671,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "lotId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -2864,6 +2898,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "lotTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -2945,6 +2981,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "lotIdentificationTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -3025,6 +3063,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "partyId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -3294,6 +3334,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "partyIdentificationTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -3382,6 +3424,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "productId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -3835,6 +3879,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "productTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -3931,6 +3977,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "productCategoryId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -4036,6 +4084,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "productCategoryTypeId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -4335,6 +4385,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "documentId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -4427,6 +4479,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "geoPointId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -4650,6 +4704,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "roleTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -4738,6 +4794,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "orderId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -5866,6 +5924,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "orderAdjustmentTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -5954,6 +6014,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "orderTypeId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -6044,6 +6106,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "orderItemTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -6132,6 +6196,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "shipmentId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -6643,6 +6709,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "shipmentTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -6731,6 +6799,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "documentId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -6824,6 +6894,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "receiptId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -7188,6 +7260,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "qaInspectionId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -7292,6 +7366,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "contactMechId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -7465,6 +7541,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "contactMechPurposeTypeId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -8031,6 +8109,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "tenantId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -8127,6 +8207,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "shipmentBoxTypeId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -8241,6 +8323,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "enumId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -8334,6 +8418,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "enumTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -8422,6 +8508,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "workEffortId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -8781,6 +8869,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "workEffortTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -8870,6 +8960,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "workEffortPurposeTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -8954,6 +9046,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "workEffortAssocTypeId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -9160,6 +9254,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "workEffortGoodStdTypeId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -9581,6 +9677,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "productAssocTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -9669,6 +9767,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "inventoryItemId";
 
     public static final Class ID_CLASS = String.class;
 
@@ -10026,6 +10126,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "inventoryItemTypeId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -10114,6 +10216,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "generatorId";
 
     public static final Class ID_CLASS = String.class;
 
