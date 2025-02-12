@@ -59,6 +59,19 @@ public class BffFacilityServiceCommands {
             this.ownerPartyId = ownerPartyId;
         }
 
+        /**
+         * Included Business Contacts
+         */
+        private Boolean includedBusinessContacts;
+
+        public Boolean getIncludedBusinessContacts() {
+            return includedBusinessContacts;
+        }
+
+        public void setIncludedBusinessContacts(Boolean includedBusinessContacts) {
+            this.includedBusinessContacts = includedBusinessContacts;
+        }
+
     }
 
     public static class GetFacility extends org.dddml.ffvtraceability.domain.AbstractCommand {

@@ -36,13 +36,15 @@ public class BffFacilityServiceResource {
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "active", required = false) String active,
-        @RequestParam(value = "ownerPartyId", required = false) String ownerPartyId
+        @RequestParam(value = "ownerPartyId", required = false) String ownerPartyId,
+        @RequestParam(value = "includedBusinessContacts", required = false) Boolean includedBusinessContacts
     ) {
         BffFacilityServiceCommands.GetFacilities getFacilities = new BffFacilityServiceCommands.GetFacilities();
         getFacilities.setPage(page);
         getFacilities.setSize(size);
         getFacilities.setActive(active);
         getFacilities.setOwnerPartyId(ownerPartyId);
+        getFacilities.setIncludedBusinessContacts(includedBusinessContacts);
         
         getFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffFacilityApplicationService.when(getFacilities);

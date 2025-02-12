@@ -108,9 +108,11 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 bffFacilityRepository.findAllFacilities(PageRequest.of(c.getPage(), c.getSize()),
                         c.getActive(), c.getOwnerPartyId()),
                 bffFacilityMapper::toBffFacilityDto);
-        page.getContent().forEach(dto -> {
-            enrichBusinessContactDetails(dto, dto.getFacilityId());
-        });
+        if (c.getIncludedBusinessContacts() != null && c.getIncludedBusinessContacts()) {
+            page.getContent().forEach(dto -> {
+                enrichBusinessContactDetails(dto, dto.getFacilityId());
+            });
+        }
         return page;
     }
 
