@@ -4,6 +4,8 @@ import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
+import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorApplicationService;
+import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorCommands;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationState;
@@ -51,6 +53,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     private CteReceivingEventSynchronizationService cteReceivingEventSynchronizationService;
     @Autowired
     private BffOrderRepository bffOrderRepository;
+    @Autowired
+    private DocumentNumberGeneratorApplicationService documentNumberGeneratorApplicationService;
 
     @Autowired
     private BffFacilityRepository bffFacilityRepository;
@@ -263,7 +267,11 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         }
         // NOTE: 将"BFF 文档 Id"映射到 Shipment Id
         AbstractShipmentCommand.SimpleCreateShipment createShipment = new AbstractShipmentCommand.SimpleCreateShipment();
-        createShipment.setShipmentId(c.getReceivingDocument().getDocumentId() != null ? c.getReceivingDocument().getDocumentId() : IdUtils.randomId());
+        DocumentNumberGeneratorCommands.GenerateNextNumber generateNextNumber = new DocumentNumberGeneratorCommands.GenerateNextNumber();
+        generateNextNumber.setGeneratorId("RECEIVING");
+        generateNextNumber.setRequesterId(c.getRequesterId());
+        createShipment.setShipmentId(c.getReceivingDocument().getDocumentId() != null ? c.getReceivingDocument().getDocumentId()
+                : documentNumberGeneratorApplicationService.when(generateNextNumber));
         createShipment.setPartyIdTo(c.getReceivingDocument().getPartyIdTo());
         createShipment.setPartyIdFrom(c.getReceivingDocument().getPartyIdFrom());
         createShipment.setOriginFacilityId(c.getReceivingDocument().getOriginFacilityId());
@@ -348,17 +356,20 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         //当不指定receivingItems的时候，我们认为不修改它的行项。
         //当指定receivingItems，即便是空数组（注意不是null），那么就按你最新指定的行项来重新确定行项。
         if (receivingDocumentDto.getReceivingItems() != null) {
-            String originFacilityId = receivingDocumentDto.getOriginFacilityId();
-            mergePatchShipment.setOriginFacilityId(originFacilityId);
-            if (originFacilityId == null || originFacilityId.isEmpty()) {
+            //String originFacilityId = receivingDocumentDto.getOriginFacilityId();
+            String destinationFacilityId = receivingDocumentDto.getDestinationFacilityId();
+            //mergePatchShipment.setOriginFacilityId(originFacilityId);
+            mergePatchShipment.setDestinationFacilityId(destinationFacilityId);
+            if (destinationFacilityId == null || destinationFacilityId.isEmpty()) {
                 //如果它是null，后面的new FacilityLocationId就得出问题
-                throw new IllegalArgumentException("Original Facility can't be null");
+                throw new IllegalArgumentException("Destination Facility can't be null");
             }
             for (BffReceivingItemDto itemDto : receivingDocumentDto.getReceivingItems()) {
                 // validate facility location
-                FacilityLocationState fl = facilityLocationApplicationService.get(new FacilityLocationId(originFacilityId, itemDto.getLocationSeqId()));
+
+                FacilityLocationState fl = facilityLocationApplicationService.get(new FacilityLocationId(destinationFacilityId, itemDto.getLocationSeqId()));
                 if (fl == null) {
-                    throw new IllegalArgumentException("Location not found: " + originFacilityId + "/" + itemDto.getLocationSeqId());
+                    throw new IllegalArgumentException("Location not found: " + destinationFacilityId + "/" + itemDto.getLocationSeqId());
                 }
                 //shipmentState.getShipmentItems()
                 boolean isNewItem = true;
