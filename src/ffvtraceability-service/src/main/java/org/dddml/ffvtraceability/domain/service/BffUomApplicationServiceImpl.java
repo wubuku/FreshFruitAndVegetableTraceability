@@ -35,10 +35,15 @@ public class BffUomApplicationServiceImpl implements BffUomApplicationService {
     @Override
     @Transactional(readOnly = true)
     public Page<BffUomDto> when(BffUomServiceCommands.GetUnitsOfMeasure c) {
+        if ("CURRENCY_MEASURE".equals(c.getUomTypeId())) {
+            return PageUtils.toPage(
+                    bffUomRepository.findAllCurrencies(
+                            PageRequest.of(c.getPage(), c.getSize()), c.getActive()),
+                    bffUomMapper::toBffUomDto
+            );
+        }
         return PageUtils.toPage(
-                bffUomRepository.findAllUnitsOfMeasure(
-                        PageRequest.of(c.getPage(), c.getSize()), c.getActive(), c.getUomTypeId()
-                ),
+                bffUomRepository.findAllUnitsOfMeasure(PageRequest.of(c.getPage(), c.getSize()), c.getActive(), c.getUomTypeId()),
                 bffUomMapper::toBffUomDto
         );
     }
