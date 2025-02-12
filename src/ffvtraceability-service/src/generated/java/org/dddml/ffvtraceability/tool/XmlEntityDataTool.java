@@ -488,7 +488,9 @@ public class XmlEntityDataTool {
                 if (beanClasses.isEmpty()) {
                     throw new ClassNotFoundException(String.format("No suitable initialization class found for entity: %s", entityName));
                 }
+
                 RuntimeException lastException = null;
+                boolean success = false;
                 for (Class<?> beanClass : beanClasses) {
                     try {
                         Map<String, PropertySetter> setterMap = propSetterMapCache.getOrDefault(beanClass, null);
@@ -497,6 +499,8 @@ public class XmlEntityDataTool {
                             propSetterMapCache.put(beanClass, setterMap);
                         }
                         action.accept(entityDataNode, convertEntityData(beanClass, setterMap, entityName, attrMap));
+                        success = true;
+                        break;
                     } catch (RuntimeException e) {
                         lastException = e;
                         System.out.printf("Info: Failed to initialize entity using class '%s': %s%n",
@@ -504,9 +508,11 @@ public class XmlEntityDataTool {
                     }
                 }
 
-                throw new RuntimeException(String.format(
-                        "Failed to initialize entity '%s' with any available class. Last error: %s",
-                        entityName, lastException.getMessage()), lastException);
+                if (!success) {
+                    throw new RuntimeException(String.format(
+                            "Failed to initialize entity '%s' with any available class. Last error: %s",
+                            entityName, lastException.getMessage()), lastException);
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(String.format(
