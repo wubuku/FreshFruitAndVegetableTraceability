@@ -129,6 +129,10 @@ services:
             type: indicator
           OwnerPartyId:
             type: id
+          IncludedBusinessContacts:
+            # 是否包含设施的BusinessContacts
+            type: bool
+            optional: true # NOT required
         result:
           itemType: BffFacilityDto
 
