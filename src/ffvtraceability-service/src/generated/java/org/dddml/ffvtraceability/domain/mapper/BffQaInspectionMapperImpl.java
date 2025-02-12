@@ -20,19 +20,19 @@ public class BffQaInspectionMapperImpl implements BffQaInspectionMapper {
 
         BffQaInspectionDto bffQaInspectionDto = new BffQaInspectionDto();
 
+        bffQaInspectionDto.setComments( bffQaInspectionProjection.getComments() );
+        bffQaInspectionDto.setCreatedAt( instantToOffsetDateTime( bffQaInspectionProjection.getCreatedAt() ) );
+        bffQaInspectionDto.setCreatedBy( bffQaInspectionProjection.getCreatedBy() );
+        bffQaInspectionDto.setInspectedAt( instantToOffsetDateTime( bffQaInspectionProjection.getInspectedAt() ) );
+        bffQaInspectionDto.setInspectedBy( bffQaInspectionProjection.getInspectedBy() );
+        bffQaInspectionDto.setInspectionFacilityId( bffQaInspectionProjection.getInspectionFacilityId() );
+        bffQaInspectionDto.setInspectionTypeId( bffQaInspectionProjection.getInspectionTypeId() );
+        bffQaInspectionDto.setLotId( bffQaInspectionProjection.getLotId() );
+        bffQaInspectionDto.setProductId( bffQaInspectionProjection.getProductId() );
         bffQaInspectionDto.setQaInspectionId( bffQaInspectionProjection.getQaInspectionId() );
         bffQaInspectionDto.setReceiptId( bffQaInspectionProjection.getReceiptId() );
         bffQaInspectionDto.setStatusId( bffQaInspectionProjection.getStatusId() );
-        bffQaInspectionDto.setInspectionTypeId( bffQaInspectionProjection.getInspectionTypeId() );
-        bffQaInspectionDto.setProductId( bffQaInspectionProjection.getProductId() );
-        bffQaInspectionDto.setLotId( bffQaInspectionProjection.getLotId() );
         bffQaInspectionDto.setSupplierId( bffQaInspectionProjection.getSupplierId() );
-        bffQaInspectionDto.setComments( bffQaInspectionProjection.getComments() );
-        bffQaInspectionDto.setInspectionFacilityId( bffQaInspectionProjection.getInspectionFacilityId() );
-        bffQaInspectionDto.setInspectedBy( bffQaInspectionProjection.getInspectedBy() );
-        bffQaInspectionDto.setCreatedBy( bffQaInspectionProjection.getCreatedBy() );
-        bffQaInspectionDto.setInspectedAt( instantToOffsetDateTime( bffQaInspectionProjection.getInspectedAt() ) );
-        bffQaInspectionDto.setCreatedAt( instantToOffsetDateTime( bffQaInspectionProjection.getCreatedAt() ) );
         bffQaInspectionDto.setUpdatedAt( instantToOffsetDateTime( bffQaInspectionProjection.getUpdatedAt() ) );
 
         return bffQaInspectionDto;
@@ -46,16 +46,16 @@ public class BffQaInspectionMapperImpl implements BffQaInspectionMapper {
 
         BffQaInspectionDto bffQaInspectionDto = new BffQaInspectionDto();
 
+        bffQaInspectionDto.setComments( qaInspectionState.getComments() );
+        bffQaInspectionDto.setCreatedAt( qaInspectionState.getCreatedAt() );
+        bffQaInspectionDto.setCreatedBy( qaInspectionState.getCreatedBy() );
+        bffQaInspectionDto.setInspectedAt( qaInspectionState.getInspectedAt() );
+        bffQaInspectionDto.setInspectedBy( qaInspectionState.getInspectedBy() );
+        bffQaInspectionDto.setInspectionFacilityId( qaInspectionState.getInspectionFacilityId() );
+        bffQaInspectionDto.setInspectionTypeId( qaInspectionState.getInspectionTypeId() );
         bffQaInspectionDto.setQaInspectionId( qaInspectionState.getQaInspectionId() );
         bffQaInspectionDto.setReceiptId( qaInspectionState.getReceiptId() );
         bffQaInspectionDto.setStatusId( qaInspectionState.getStatusId() );
-        bffQaInspectionDto.setInspectionTypeId( qaInspectionState.getInspectionTypeId() );
-        bffQaInspectionDto.setComments( qaInspectionState.getComments() );
-        bffQaInspectionDto.setInspectionFacilityId( qaInspectionState.getInspectionFacilityId() );
-        bffQaInspectionDto.setInspectedBy( qaInspectionState.getInspectedBy() );
-        bffQaInspectionDto.setCreatedBy( qaInspectionState.getCreatedBy() );
-        bffQaInspectionDto.setInspectedAt( qaInspectionState.getInspectedAt() );
-        bffQaInspectionDto.setCreatedAt( qaInspectionState.getCreatedAt() );
         bffQaInspectionDto.setUpdatedAt( qaInspectionState.getUpdatedAt() );
 
         return bffQaInspectionDto;
