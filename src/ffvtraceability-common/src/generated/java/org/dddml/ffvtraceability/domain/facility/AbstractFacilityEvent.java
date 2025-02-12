@@ -136,6 +136,10 @@ public abstract class AbstractFacilityEvent extends AbstractEvent implements Fac
         return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateMergePatched(newFacilityIdentificationEventId(facilityIdentificationTypeId));
     }
 
+    public FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(String facilityIdentificationTypeId) {
+        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateRemoved(newFacilityIdentificationEventId(facilityIdentificationTypeId));
+    }
+
 
     public abstract String getEventType();
 

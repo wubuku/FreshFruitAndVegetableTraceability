@@ -151,7 +151,7 @@ public abstract class AbstractWorkEffortGoodStandardApplicationService implement
         }
     }
 
-    public void initialize(WorkEffortGoodStandardEvent.WorkEffortGoodStandardStateCreated stateCreated) {
+    void initialize(WorkEffortGoodStandardEvent.WorkEffortGoodStandardStateCreated stateCreated) {
         WorkEffortGoodStandardId aggregateId = ((WorkEffortGoodStandardEvent.SqlWorkEffortGoodStandardEvent)stateCreated).getWorkEffortGoodStandardEventId().getWorkEffortGoodStandardId();
         WorkEffortGoodStandardState.SqlWorkEffortGoodStandardState state = new AbstractWorkEffortGoodStandardState.SimpleWorkEffortGoodStandardState();
         state.setWorkEffortGoodStandardId(aggregateId);

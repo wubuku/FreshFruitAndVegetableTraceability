@@ -640,6 +640,10 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
         for (FacilityIdentificationEvent innerEvent : e.getFacilityIdentificationEvents()) {
             FacilityIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, FacilityIdentificationState>)this.getFacilityIdentifications()).getOrAddDefault(((FacilityIdentificationEvent.SqlFacilityIdentificationEvent)innerEvent).getFacilityIdentificationEventId().getFacilityIdentificationTypeId());
             ((FacilityIdentificationState.SqlFacilityIdentificationState)innerState).mutate(innerEvent);
+            if (innerEvent instanceof FacilityIdentificationEvent.FacilityIdentificationStateRemoved) {
+                //FacilityIdentificationEvent.FacilityIdentificationStateRemoved removed = (FacilityIdentificationEvent.FacilityIdentificationStateRemoved)innerEvent;
+                ((EntityStateCollection.MutableEntityStateCollection)this.getFacilityIdentifications()).removeState(innerState);
+            }
         }
     }
 

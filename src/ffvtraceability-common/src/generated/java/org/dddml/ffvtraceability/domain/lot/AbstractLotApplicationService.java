@@ -159,7 +159,7 @@ public abstract class AbstractLotApplicationService implements LotApplicationSer
         }
     }
 
-    public void initialize(LotEvent.LotStateCreated stateCreated) {
+    void initialize(LotEvent.LotStateCreated stateCreated) {
         String aggregateId = ((LotEvent.SqlLotEvent)stateCreated).getLotEventId().getLotId();
         LotState.SqlLotState state = new AbstractLotState.SimpleLotState();
         state.setLotId(aggregateId);

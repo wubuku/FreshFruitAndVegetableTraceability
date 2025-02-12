@@ -15,7 +15,7 @@ public class ApplicationServiceReflectUtils {
     public static Object invokeApplicationServiceGetMethod(String entityName, Object id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String aggregateName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP.get(entityName);
         Object appSvr = getApplicationService(aggregateName);
-        Class appSrvClass = appSvr.getClass();
+        Class<?> appSrvClass = appSvr.getClass();
         Method m = findMethod(appSrvClass, "get", id.getClass());
         if (m == null) {
             throw new NoSuchMethodException(String.format("Method 'get(%s)' not found in class hierarchy of %s",
@@ -30,7 +30,6 @@ public class ApplicationServiceReflectUtils {
             method.setAccessible(true);
             return method;
         } catch (NoSuchMethodException e) {
-            // 如果在当前类中没找到，并且父类不是null，就在父类中查找
             Class<?> superClass = clazz.getSuperclass();
             if (superClass != null) {
                 return findMethod(superClass, methodName, parameterTypes);
@@ -70,14 +69,12 @@ public class ApplicationServiceReflectUtils {
                         entityName, appSrvClass.getName(), aggregateName));
             }
             if (m.getParameters()[0].getType().isAssignableFrom(e.getClass())) {
-                Method convMethod = null;
-                try {
-                    convMethod = e.getClass().getDeclaredMethod(String.format("toCreate%1$s", entityName));
-                    convMethod.setAccessible(true);
-                } catch (NoSuchMethodException ex) {
-                    throw new RuntimeException(String.format("Method 'toCreate%s()' not found in %s",
+                Method convMethod = findMethod(e.getClass(), String.format("toCreate%1$s", entityName));
+                if (convMethod == null) {
+                    throw new RuntimeException(String.format("Method 'toCreate%s()' not found in class hierarchy of %s",
                             entityName, e.getClass().getName()));
                 }
+                convMethod.setAccessible(true);
                 try {
                     arg = convMethod.invoke(e);
                 } catch (IllegalAccessException | InvocationTargetException ex) {

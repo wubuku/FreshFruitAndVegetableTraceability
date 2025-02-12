@@ -163,7 +163,7 @@ public abstract class AbstractSupplierProductApplicationService implements Suppl
         }
     }
 
-    public void initialize(SupplierProductEvent.SupplierProductStateCreated stateCreated) {
+    void initialize(SupplierProductEvent.SupplierProductStateCreated stateCreated) {
         SupplierProductTenantizedId aggregateId = ((SupplierProductEvent.SqlSupplierProductEvent)stateCreated).getSupplierProductEventId().getSupplierProductTenantizedId();
         SupplierProductState.SqlSupplierProductState state = new AbstractSupplierProductState.SimpleSupplierProductState();
         state.setSupplierProductTenantizedId(aggregateId);

@@ -72,6 +72,8 @@
 
     entities:
       FacilityIdentification:
+        reservedPropertyMetadata:
+          noDeleted: false # Removable
         id:
           name: FacilityIdentificationTypeId
           type: id

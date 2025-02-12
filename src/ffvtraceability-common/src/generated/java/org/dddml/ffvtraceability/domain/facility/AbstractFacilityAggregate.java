@@ -167,6 +167,10 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
+        FacilityIdentificationCommand.RemoveFacilityIdentification remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((FacilityIdentificationCommand.RemoveFacilityIdentification)c) : null;
+        if (remove != null) {
+            return mapRemove(remove, outerCommand, version, outerState);
+        }
         throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
     }
 
@@ -199,6 +203,18 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
+
+    protected FacilityIdentificationEvent.FacilityIdentificationStateRemoved mapRemove(FacilityIdentificationCommand.RemoveFacilityIdentification c, FacilityCommand outerCommand, Long version, FacilityState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        FacilityIdentificationEventId stateEventId = new FacilityIdentificationEventId(outerState.getFacilityId(), c.getFacilityIdentificationTypeId(), version);
+        FacilityIdentificationEvent.FacilityIdentificationStateRemoved e = newFacilityIdentificationStateRemoved(stateEventId);
+
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(IRemove... ////////////////////////////
 
     protected void throwOnInconsistentCommands(FacilityCommand command, FacilityIdentificationCommand innerCommand) {
         AbstractFacilityCommand properties = command instanceof AbstractFacilityCommand ? (AbstractFacilityCommand) command : null;
@@ -252,6 +268,10 @@ public abstract class AbstractFacilityAggregate extends AbstractAggregate implem
 
     protected FacilityIdentificationEvent.FacilityIdentificationStateMergePatched newFacilityIdentificationStateMergePatched(FacilityIdentificationEventId stateEventId) {
         return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateMergePatched(stateEventId);
+    }
+
+    protected FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(FacilityIdentificationEventId stateEventId) {
+        return new AbstractFacilityIdentificationEvent.SimpleFacilityIdentificationStateRemoved(stateEventId);
     }
 
 

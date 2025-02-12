@@ -146,7 +146,7 @@ public abstract class AbstractWorkEffortInventoryProducedApplicationService impl
         }
     }
 
-    public void initialize(WorkEffortInventoryProducedEvent.WorkEffortInventoryProducedStateCreated stateCreated) {
+    void initialize(WorkEffortInventoryProducedEvent.WorkEffortInventoryProducedStateCreated stateCreated) {
         WorkEffortInventoryProducedId aggregateId = ((WorkEffortInventoryProducedEvent.SqlWorkEffortInventoryProducedEvent)stateCreated).getWorkEffortInventoryProducedEventId().getWorkEffortInventoryProducedId();
         WorkEffortInventoryProducedState.SqlWorkEffortInventoryProducedState state = new AbstractWorkEffortInventoryProducedState.SimpleWorkEffortInventoryProducedState();
         state.setWorkEffortInventoryProducedId(aggregateId);

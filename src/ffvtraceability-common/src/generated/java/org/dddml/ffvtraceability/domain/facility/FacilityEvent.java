@@ -238,6 +238,8 @@ public interface FacilityEvent extends Event {
 
         FacilityIdentificationEvent.FacilityIdentificationStateMergePatched newFacilityIdentificationStateMergePatched(String facilityIdentificationTypeId);
 
+        FacilityIdentificationEvent.FacilityIdentificationStateRemoved newFacilityIdentificationStateRemoved(String facilityIdentificationTypeId);
+
 
     }
 

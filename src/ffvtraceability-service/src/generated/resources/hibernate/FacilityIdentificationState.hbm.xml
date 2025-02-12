@@ -23,6 +23,9 @@
     <property name="updatedBy">
       <column name="updated_by" />
     </property>
+    <property name="__Deleted__">
+      <column name="deleted" />
+    </property>
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
   </class>

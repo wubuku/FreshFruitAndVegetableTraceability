@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <!--
+        ProductId:
+        columnName: PRODUCT_ID
+        type: id-ne
+        PartyId:
+        columnName: PARTY_ID
+        type: id-ne
+        CurrencyUomId:
+        columnName: CURRENCY_UOM_ID
+        type: id
+        MinimumOrderQuantity:
+        columnName: MINIMUM_ORDER_QUANTITY
+        type: fixed-point
+        AvailableFromDate:
+        columnName: AVAILABLE_FROM_DATE
+        type: date-time
+    -->
+    <SupplierProduct productId="RAW_FLOUR" partyId="SUPPLIER_001" currencyUomId="USD"
+        minimumOrderQuantity="100" availableFromDate="2024-01-01 00:00:00" />
+
+</entity-engine-xml>

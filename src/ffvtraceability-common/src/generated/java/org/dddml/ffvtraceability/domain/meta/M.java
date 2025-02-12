@@ -2137,6 +2137,8 @@ public class M {
                         }
                     };
 
+    public static final String ID_PROPERTY_NAME = "facilityLocationId";
+
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId.class;
 
     public static final String[] propertyNames = new String[] {
@@ -2469,6 +2471,8 @@ public class M {
                             return BoundedContextMetadata.CLASS_MAP.get(type);
                         }
                     };
+
+    public static final String ID_PROPERTY_NAME = "geoAssocId";
 
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.geoassoc.GeoAssocId.class;
 
@@ -4132,6 +4136,8 @@ public class M {
                         }
                     };
 
+    public static final String ID_PROPERTY_NAME = "supplierProductAssocId";
+
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId.class;
 
     public static final String[] propertyNames = new String[] {
@@ -4536,6 +4542,8 @@ public class M {
                             return BoundedContextMetadata.CLASS_MAP.get(type);
                         }
                     };
+
+    public static final String ID_PROPERTY_NAME = "partyRoleId";
 
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partyrole.PartyRoleId.class;
 
@@ -7557,6 +7565,8 @@ public class M {
                         }
                     };
 
+    public static final String ID_PROPERTY_NAME = "partyContactMechId";
+
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partycontactmech.PartyContactMechId.class;
 
     public static final String[] propertyNames = new String[] {
@@ -7802,6 +7812,8 @@ public class M {
                             return BoundedContextMetadata.CLASS_MAP.get(type);
                         }
                     };
+
+    public static final String ID_PROPERTY_NAME = "facilityContactMechId";
 
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechId.class;
 
@@ -8670,6 +8682,8 @@ public class M {
                         }
                     };
 
+    public static final String ID_PROPERTY_NAME = "workEffortAssocId";
+
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.workeffortassoc.WorkEffortAssocId.class;
 
     public static final String[] propertyNames = new String[] {
@@ -9040,6 +9054,8 @@ public class M {
                         }
                     };
 
+    public static final String ID_PROPERTY_NAME = "workEffortGoodStandardId";
+
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.workeffortgoodstandard.WorkEffortGoodStandardId.class;
 
     public static final String[] propertyNames = new String[] {
@@ -9244,6 +9260,8 @@ public class M {
                         }
                     };
 
+    public static final String ID_PROPERTY_NAME = "workEffortInventoryAssignId";
+
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.workeffortinventoryassign.WorkEffortInventoryAssignId.class;
 
     public static final String[] propertyNames = new String[] {
@@ -9343,6 +9361,8 @@ public class M {
                         }
                     };
 
+    public static final String ID_PROPERTY_NAME = "workEffortInventoryProducedId";
+
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.workeffortinventoryproduced.WorkEffortInventoryProducedId.class;
 
     public static final String[] propertyNames = new String[] {
@@ -9433,6 +9453,8 @@ public class M {
                             return BoundedContextMetadata.CLASS_MAP.get(type);
                         }
                     };
+
+    public static final String ID_PROPERTY_NAME = "productAssocId";
 
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.productassoc.ProductAssocId.class;
 

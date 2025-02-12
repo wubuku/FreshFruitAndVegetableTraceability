@@ -75,9 +75,9 @@
         effectiveDate="2024-01-01 09:00:00" description="Production Run Component Issue" />
 
     <!-- 创建一些 InventoryItemDetail，表示一道工序产出的 WIP -->
-    <InventoryItemDetail inventoryItemId="CAKE_BASE_INV_001" inventoryItemDetailSeqId="00001"
+    <!-- <InventoryItemDetail inventoryItemId="CAKE_BASE_INV_001" inventoryItemDetailSeqId="00001"
         workEffortId="PROD_RUN_01" availableToPromiseDiff="1.0" quantityOnHandDiff="1.0"
-        effectiveDate="2024-01-01 10:30:00" description="Production Run Product Receipt" />
+        effectiveDate="2024-01-01 10:30:00" description="Production Run Product Receipt" /> -->
 
     <!-- 库存单元明细实体的定义如下 -->
     <!-- 

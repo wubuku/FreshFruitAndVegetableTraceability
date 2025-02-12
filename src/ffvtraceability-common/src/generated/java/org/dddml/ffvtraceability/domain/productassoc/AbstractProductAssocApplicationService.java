@@ -151,7 +151,7 @@ public abstract class AbstractProductAssocApplicationService implements ProductA
         }
     }
 
-    public void initialize(ProductAssocEvent.ProductAssocStateCreated stateCreated) {
+    void initialize(ProductAssocEvent.ProductAssocStateCreated stateCreated) {
         ProductAssocId aggregateId = ((ProductAssocEvent.SqlProductAssocEvent)stateCreated).getProductAssocEventId().getProductAssocId();
         ProductAssocState.SqlProductAssocState state = new AbstractProductAssocState.SimpleProductAssocState();
         state.setProductAssocId(aggregateId);

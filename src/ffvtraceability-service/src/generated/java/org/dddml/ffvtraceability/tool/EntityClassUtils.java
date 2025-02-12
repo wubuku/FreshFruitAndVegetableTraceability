@@ -5,6 +5,7 @@ import org.dddml.ffvtraceability.domain.meta.M.BoundedContextMetadata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class EntityClassUtils {
     private final static String BOUNDED_CONTEXT_DOMAIN_PACKAGE;
@@ -20,7 +21,7 @@ public class EntityClassUtils {
             try {
                 entityClass = Class.forName(n);
             } catch (ClassNotFoundException e) {
-                // e.printStackTrace();
+                System.out.printf("Info: Class not found: %s%n", n);
             }
             if (entityClass != null) {
                 break;
@@ -28,6 +29,21 @@ public class EntityClassUtils {
         }
         return entityClass;
     }
+
+    static List<Class<?>> getEntityInitializationClasses(String entityName, boolean preferCommandClass) {
+        String[] names = getEntityInitializationClassNames(entityName, preferCommandClass);
+        List<Class<?>> entityClasses = new ArrayList<>();
+        for (String n : names) {
+            try {
+                Class<?> entityClass = Class.forName(n);
+                entityClasses.add(entityClass);
+            } catch (ClassNotFoundException e) {
+                System.out.printf("Info: Class not found: %s%n", n);
+            }
+        }
+        return entityClasses;
+    }
+
 
     static protected String[] getEntityInitializationClassNames(String entityName, boolean preferCommandClass) {
         String aggregateName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP

@@ -159,7 +159,7 @@ public abstract class AbstractFacilityApplicationService implements FacilityAppl
         }
     }
 
-    public void initialize(FacilityEvent.FacilityStateCreated stateCreated) {
+    void initialize(FacilityEvent.FacilityStateCreated stateCreated) {
         String aggregateId = ((FacilityEvent.SqlFacilityEvent)stateCreated).getFacilityEventId().getFacilityId();
         FacilityState.SqlFacilityState state = new AbstractFacilityState.SimpleFacilityState();
         state.setFacilityId(aggregateId);

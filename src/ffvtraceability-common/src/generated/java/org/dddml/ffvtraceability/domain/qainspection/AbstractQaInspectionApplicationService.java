@@ -155,7 +155,7 @@ public abstract class AbstractQaInspectionApplicationService implements QaInspec
         }
     }
 
-    public void initialize(QaInspectionEvent.QaInspectionStateCreated stateCreated) {
+    void initialize(QaInspectionEvent.QaInspectionStateCreated stateCreated) {
         String aggregateId = ((QaInspectionEvent.SqlQaInspectionEvent)stateCreated).getQaInspectionEventId().getQaInspectionId();
         QaInspectionState.SqlQaInspectionState state = new AbstractQaInspectionState.SimpleQaInspectionState();
         state.setQaInspectionId(aggregateId);

@@ -159,7 +159,7 @@ public abstract class AbstractProductApplicationService implements ProductApplic
         }
     }
 
-    public void initialize(ProductEvent.ProductStateCreated stateCreated) {
+    void initialize(ProductEvent.ProductStateCreated stateCreated) {
         String aggregateId = ((ProductEvent.SqlProductEvent)stateCreated).getProductEventId().getProductId();
         ProductState.SqlProductState state = new AbstractProductState.SimpleProductState();
         state.setProductId(aggregateId);

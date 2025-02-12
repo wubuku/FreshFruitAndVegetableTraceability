@@ -120,6 +120,16 @@ public abstract class AbstractFacilityIdentificationState implements FacilityIde
         this.updatedAt = updatedAt;
     }
 
+    private Boolean __Deleted__;
+
+    public Boolean get__Deleted__() {
+        return this.__Deleted__;
+    }
+
+    public void set__Deleted__(Boolean __Deleted__) {
+        this.__Deleted__ = __Deleted__;
+    }
+
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -175,6 +185,8 @@ public abstract class AbstractFacilityIdentificationState implements FacilityIde
             when((FacilityIdentificationStateCreated) e);
         } else if (e instanceof FacilityIdentificationStateMergePatched) {
             when((FacilityIdentificationStateMergePatched) e);
+        } else if (e instanceof FacilityIdentificationStateRemoved) {
+            when((FacilityIdentificationStateRemoved) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -184,6 +196,8 @@ public abstract class AbstractFacilityIdentificationState implements FacilityIde
         throwOnWrongEvent(e);
 
         this.setIdValue(e.getIdValue());
+
+        this.set__Deleted__(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -208,6 +222,15 @@ public abstract class AbstractFacilityIdentificationState implements FacilityIde
             this.setIdValue(e.getIdValue());
         }
 
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+    }
+
+    public void when(FacilityIdentificationStateRemoved e) {
+        throwOnWrongEvent(e);
+
+        this.set__Deleted__(true);
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
