@@ -104,10 +104,14 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     @Override
     @Transactional(readOnly = true)
     public Page<BffFacilityDto> when(BffFacilityServiceCommands.GetFacilities c) {
-        return PageUtils.toPage(
+        var page = PageUtils.toPage(
                 bffFacilityRepository.findAllFacilities(PageRequest.of(c.getPage(), c.getSize()),
                         c.getActive(), c.getOwnerPartyId()),
                 bffFacilityMapper::toBffFacilityDto);
+        page.getContent().forEach(dto -> {
+            enrichBusinessContactDetails(dto, dto.getFacilityId());
+        });
+        return page;
     }
 
     @Override
