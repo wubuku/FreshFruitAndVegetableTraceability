@@ -77,6 +77,8 @@ valueObjects:
         type: id
       LocationSeqId:
         type: id-long
+      LocationName:
+        type: name
       ItemDescription:
         type: description
       QuantityAccepted:
