@@ -159,7 +159,7 @@ public abstract class AbstractPartyContactMechApplicationService implements Part
         }
     }
 
-    void initialize(PartyContactMechEvent.PartyContactMechStateCreated stateCreated) {
+    public void initialize(PartyContactMechEvent.PartyContactMechStateCreated stateCreated) {
         PartyContactMechId aggregateId = ((PartyContactMechEvent.SqlPartyContactMechEvent)stateCreated).getPartyContactMechEventId().getPartyContactMechId();
         PartyContactMechState.SqlPartyContactMechState state = new AbstractPartyContactMechState.SimplePartyContactMechState();
         state.setPartyContactMechId(aggregateId);

@@ -151,7 +151,7 @@ public abstract class AbstractShipmentBoxTypeApplicationService implements Shipm
         }
     }
 
-    void initialize(ShipmentBoxTypeEvent.ShipmentBoxTypeStateCreated stateCreated) {
+    public void initialize(ShipmentBoxTypeEvent.ShipmentBoxTypeStateCreated stateCreated) {
         String aggregateId = ((ShipmentBoxTypeEvent.SqlShipmentBoxTypeEvent)stateCreated).getShipmentBoxTypeEventId().getShipmentBoxTypeId();
         ShipmentBoxTypeState.SqlShipmentBoxTypeState state = new AbstractShipmentBoxTypeState.SimpleShipmentBoxTypeState();
         state.setShipmentBoxTypeId(aggregateId);

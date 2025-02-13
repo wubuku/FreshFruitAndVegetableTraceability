@@ -155,7 +155,7 @@ public abstract class AbstractShippingDocumentApplicationService implements Ship
         }
     }
 
-    void initialize(ShippingDocumentEvent.ShippingDocumentStateCreated stateCreated) {
+    public void initialize(ShippingDocumentEvent.ShippingDocumentStateCreated stateCreated) {
         String aggregateId = ((ShippingDocumentEvent.SqlShippingDocumentEvent)stateCreated).getShippingDocumentEventId().getDocumentId();
         ShippingDocumentState.SqlShippingDocumentState state = new AbstractShippingDocumentState.SimpleShippingDocumentState();
         state.setDocumentId(aggregateId);

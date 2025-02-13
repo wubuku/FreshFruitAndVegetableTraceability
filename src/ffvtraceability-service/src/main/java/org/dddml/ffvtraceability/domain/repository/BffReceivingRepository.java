@@ -33,6 +33,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 gi.id_value as gtin,
                 sr.lot_id as lotId,
                 sr.location_seq_id as locationSeqId,
+                fl.location_name as locationName,
                 sr.item_description as itemDescription,
                 sr.quantity_accepted as quantityAccepted,
                 sr.quantity_rejected as quantityRejected,
@@ -53,6 +54,8 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             LEFT JOIN party p ON s.party_id_from = p.party_id
             LEFT JOIN facility f ON s.origin_facility_id = f.facility_id
             left join facility d on s.destination_facility_id = d.facility_id
+            left join facility_location fl on sr.location_seq_id = fl.location_seq_id 
+                                           and s.destination_facility_id= fl.facility_id
             LEFT JOIN product prod ON sr.product_id = prod.product_id
             LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
                 AND gi.good_identification_type_id = 'GTIN'

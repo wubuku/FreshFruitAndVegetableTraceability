@@ -53,6 +53,7 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
         bffReceivingItemDto.setDeleted( documentItemProjection.getDeleted() );
         bffReceivingItemDto.setGtin( documentItemProjection.getGtin() );
         bffReceivingItemDto.setItemDescription( documentItemProjection.getItemDescription() );
+        bffReceivingItemDto.setLocationName( documentItemProjection.getLocationName() );
         bffReceivingItemDto.setLocationSeqId( documentItemProjection.getLocationSeqId() );
         bffReceivingItemDto.setLotId( documentItemProjection.getLotId() );
         bffReceivingItemDto.setOrderId( documentItemProjection.getOrderId() );

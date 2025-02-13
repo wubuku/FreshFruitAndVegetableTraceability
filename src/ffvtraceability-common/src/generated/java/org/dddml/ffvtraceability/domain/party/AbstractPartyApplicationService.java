@@ -184,7 +184,7 @@ public abstract class AbstractPartyApplicationService implements PartyApplicatio
         }
     }
 
-    void initialize(PartyEvent.PartyStateCreated stateCreated) {
+    public void initialize(PartyEvent.PartyStateCreated stateCreated) {
         String aggregateId = ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getPartyId();
         PartyState.SqlPartyState state = new AbstractPartyState.SimplePartyState();
         state.setPartyId(aggregateId);
@@ -196,7 +196,7 @@ public abstract class AbstractPartyApplicationService implements PartyApplicatio
         persist(eventStoreAggregateId, ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(PersonEvent.PersonStateCreated stateCreated) {
+    public void initialize(PersonEvent.PersonStateCreated stateCreated) {
         String aggregateId = ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getPartyId();
         PersonState.SqlPersonState state = new AbstractPersonState.SimplePersonState();
         state.setPartyId(aggregateId);
@@ -208,7 +208,7 @@ public abstract class AbstractPartyApplicationService implements PartyApplicatio
         persist(eventStoreAggregateId, ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(OrganizationEvent.OrganizationStateCreated stateCreated) {
+    public void initialize(OrganizationEvent.OrganizationStateCreated stateCreated) {
         String aggregateId = ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getPartyId();
         OrganizationState.SqlOrganizationState state = new AbstractOrganizationState.SimpleOrganizationState();
         state.setPartyId(aggregateId);
@@ -220,7 +220,7 @@ public abstract class AbstractPartyApplicationService implements PartyApplicatio
         persist(eventStoreAggregateId, ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(LegalOrganizationEvent.LegalOrganizationStateCreated stateCreated) {
+    public void initialize(LegalOrganizationEvent.LegalOrganizationStateCreated stateCreated) {
         String aggregateId = ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getPartyId();
         LegalOrganizationState.SqlLegalOrganizationState state = new AbstractLegalOrganizationState.SimpleLegalOrganizationState();
         state.setPartyId(aggregateId);
@@ -232,7 +232,7 @@ public abstract class AbstractPartyApplicationService implements PartyApplicatio
         persist(eventStoreAggregateId, ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(CompanyEvent.CompanyStateCreated stateCreated) {
+    public void initialize(CompanyEvent.CompanyStateCreated stateCreated) {
         String aggregateId = ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getPartyId();
         CompanyState.SqlCompanyState state = new AbstractCompanyState.SimpleCompanyState();
         state.setPartyId(aggregateId);
@@ -244,7 +244,7 @@ public abstract class AbstractPartyApplicationService implements PartyApplicatio
         persist(eventStoreAggregateId, ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(DepartmentEvent.DepartmentStateCreated stateCreated) {
+    public void initialize(DepartmentEvent.DepartmentStateCreated stateCreated) {
         String aggregateId = ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getPartyId();
         DepartmentState.SqlDepartmentState state = new AbstractDepartmentState.SimpleDepartmentState();
         state.setPartyId(aggregateId);
@@ -256,7 +256,7 @@ public abstract class AbstractPartyApplicationService implements PartyApplicatio
         persist(eventStoreAggregateId, ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(FamilyEvent.FamilyStateCreated stateCreated) {
+    public void initialize(FamilyEvent.FamilyStateCreated stateCreated) {
         String aggregateId = ((PartyEvent.SqlPartyEvent)stateCreated).getPartyEventId().getPartyId();
         FamilyState.SqlFamilyState state = new AbstractFamilyState.SimpleFamilyState();
         state.setPartyId(aggregateId);

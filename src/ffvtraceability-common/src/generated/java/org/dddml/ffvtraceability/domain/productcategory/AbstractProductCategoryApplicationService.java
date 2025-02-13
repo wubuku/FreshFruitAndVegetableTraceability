@@ -156,7 +156,7 @@ public abstract class AbstractProductCategoryApplicationService implements Produ
         }
     }
 
-    void initialize(ProductCategoryEvent.ProductCategoryStateCreated stateCreated) {
+    public void initialize(ProductCategoryEvent.ProductCategoryStateCreated stateCreated) {
         String aggregateId = ((ProductCategoryEvent.SqlProductCategoryEvent)stateCreated).getProductCategoryEventId().getProductCategoryId();
         ProductCategoryState.SqlProductCategoryState state = new AbstractProductCategoryState.SimpleProductCategoryState();
         state.setProductCategoryId(aggregateId);

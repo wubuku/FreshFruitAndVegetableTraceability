@@ -176,7 +176,7 @@ public abstract class AbstractContactMechApplicationService implements ContactMe
         }
     }
 
-    void initialize(MiscContactMechEvent.MiscContactMechStateCreated stateCreated) {
+    public void initialize(MiscContactMechEvent.MiscContactMechStateCreated stateCreated) {
         String aggregateId = ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getContactMechId();
         MiscContactMechState.SqlMiscContactMechState state = new AbstractMiscContactMechState.SimpleMiscContactMechState();
         state.setContactMechId(aggregateId);
@@ -188,7 +188,7 @@ public abstract class AbstractContactMechApplicationService implements ContactMe
         persist(eventStoreAggregateId, ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(PostalAddressEvent.PostalAddressStateCreated stateCreated) {
+    public void initialize(PostalAddressEvent.PostalAddressStateCreated stateCreated) {
         String aggregateId = ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getContactMechId();
         PostalAddressState.SqlPostalAddressState state = new AbstractPostalAddressState.SimplePostalAddressState();
         state.setContactMechId(aggregateId);
@@ -200,7 +200,7 @@ public abstract class AbstractContactMechApplicationService implements ContactMe
         persist(eventStoreAggregateId, ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(TelecomNumberEvent.TelecomNumberStateCreated stateCreated) {
+    public void initialize(TelecomNumberEvent.TelecomNumberStateCreated stateCreated) {
         String aggregateId = ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getContactMechId();
         TelecomNumberState.SqlTelecomNumberState state = new AbstractTelecomNumberState.SimpleTelecomNumberState();
         state.setContactMechId(aggregateId);

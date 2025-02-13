@@ -159,7 +159,7 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
         }
     }
 
-    void initialize(InventoryItemEvent.InventoryItemStateCreated stateCreated) {
+    public void initialize(InventoryItemEvent.InventoryItemStateCreated stateCreated) {
         String aggregateId = ((InventoryItemEvent.SqlInventoryItemEvent)stateCreated).getInventoryItemEventId().getInventoryItemId();
         InventoryItemState.SqlInventoryItemState state = new AbstractInventoryItemState.SimpleInventoryItemState();
         state.setInventoryItemId(aggregateId);

@@ -151,7 +151,7 @@ public abstract class AbstractUomApplicationService implements UomApplicationSer
         }
     }
 
-    void initialize(UomEvent.UomStateCreated stateCreated) {
+    public void initialize(UomEvent.UomStateCreated stateCreated) {
         String aggregateId = ((UomEvent.SqlUomEvent)stateCreated).getUomEventId().getUomId();
         UomState.SqlUomState state = new AbstractUomState.SimpleUomState();
         state.setUomId(aggregateId);

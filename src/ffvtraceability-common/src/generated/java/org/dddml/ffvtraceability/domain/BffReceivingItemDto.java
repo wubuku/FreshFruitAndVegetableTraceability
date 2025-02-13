@@ -84,6 +84,18 @@ public class BffReceivingItemDto implements Serializable {
         this.locationSeqId = locationSeqId;
     }
 
+    private String locationName;
+
+    public String getLocationName()
+    {
+        return this.locationName;
+    }
+
+    public void setLocationName(String locationName)
+    {
+        this.locationName = locationName;
+    }
+
     private String itemDescription;
 
     public String getItemDescription()
@@ -286,7 +298,7 @@ public class BffReceivingItemDto implements Serializable {
     {
     }
 
-    public BffReceivingItemDto(String receiptId, String productId, String productName, String gtin, String lotId, String locationSeqId, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity, String qaInspectionStatusId, Boolean deleted)
+    public BffReceivingItemDto(String receiptId, String productId, String productName, String gtin, String lotId, String locationSeqId, String locationName, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity, String qaInspectionStatusId, Boolean deleted)
     {
         this.receiptId = receiptId;
         this.productId = productId;
@@ -294,6 +306,7 @@ public class BffReceivingItemDto implements Serializable {
         this.gtin = gtin;
         this.lotId = lotId;
         this.locationSeqId = locationSeqId;
+        this.locationName = locationName;
         this.itemDescription = itemDescription;
         this.quantityAccepted = quantityAccepted;
         this.quantityRejected = quantityRejected;
@@ -330,6 +343,7 @@ public class BffReceivingItemDto implements Serializable {
             && (gtin == other.gtin || (gtin != null && gtin.equals(other.gtin)))
             && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
             && (locationSeqId == other.locationSeqId || (locationSeqId != null && locationSeqId.equals(other.locationSeqId)))
+            && (locationName == other.locationName || (locationName != null && locationName.equals(other.locationName)))
             && (itemDescription == other.itemDescription || (itemDescription != null && itemDescription.equals(other.itemDescription)))
             && (quantityAccepted == other.quantityAccepted || (quantityAccepted != null && quantityAccepted.equals(other.quantityAccepted)))
             && (quantityRejected == other.quantityRejected || (quantityRejected != null && quantityRejected.equals(other.quantityRejected)))
@@ -370,6 +384,9 @@ public class BffReceivingItemDto implements Serializable {
         }
         if (this.locationSeqId != null) {
             hash += 13 * this.locationSeqId.hashCode();
+        }
+        if (this.locationName != null) {
+            hash += 13 * this.locationName.hashCode();
         }
         if (this.itemDescription != null) {
             hash += 13 * this.itemDescription.hashCode();
@@ -431,6 +448,7 @@ public class BffReceivingItemDto implements Serializable {
                 ", gtin=" + '\'' + gtin + '\'' +
                 ", lotId=" + '\'' + lotId + '\'' +
                 ", locationSeqId=" + '\'' + locationSeqId + '\'' +
+                ", locationName=" + '\'' + locationName + '\'' +
                 ", itemDescription=" + '\'' + itemDescription + '\'' +
                 ", quantityAccepted=" + quantityAccepted +
                 ", quantityRejected=" + quantityRejected +

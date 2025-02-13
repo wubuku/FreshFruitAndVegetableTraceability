@@ -176,7 +176,7 @@ public abstract class AbstractDocumentApplicationService implements DocumentAppl
         }
     }
 
-    void initialize(DocumentEvent.DocumentStateCreated stateCreated) {
+    public void initialize(DocumentEvent.DocumentStateCreated stateCreated) {
         String aggregateId = ((DocumentEvent.SqlDocumentEvent)stateCreated).getDocumentEventId().getDocumentId();
         DocumentState.SqlDocumentState state = new AbstractDocumentState.SimpleDocumentState();
         state.setDocumentId(aggregateId);

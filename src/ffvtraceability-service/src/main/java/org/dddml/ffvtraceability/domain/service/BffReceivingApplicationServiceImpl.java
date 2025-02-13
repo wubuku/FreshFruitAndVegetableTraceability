@@ -226,6 +226,10 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         ) {
             receivingDocument.setOriginFacility(getBffFacilityDto(receivingDocument.getOriginFacilityId()));
         }
+        if (c.getIncludesDestinationFacility() != null && c.getIncludesDestinationFacility()
+                && receivingDocument.getDestinationFacilityId() != null) {
+            receivingDocument.setDestinationFacility(getBffFacilityDto(receivingDocument.getDestinationFacilityId()));
+        }
         return receivingDocument;
     }
 
