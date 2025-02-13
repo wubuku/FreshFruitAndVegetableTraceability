@@ -16,10 +16,8 @@ public interface LotTracingRepository extends JpaRepository<AbstractLotState.Sim
             FROM inventory_item ii_output
                 JOIN inventory_item_detail iid_output 
                     ON ii_output.inventory_item_id = iid_output.inventory_item_id
-                JOIN work_effort we 
-                    ON iid_output.work_effort_id = we.work_effort_id
-                JOIN inventory_item_detail iid_input 
-                    ON we.work_effort_id = iid_input.work_effort_id
+                JOIN inventory_item_detail iid_input
+                    ON iid_output.work_effort_id = iid_input.work_effort_id
                 JOIN inventory_item ii_input 
                     ON iid_input.inventory_item_id = ii_input.inventory_item_id
             WHERE iid_output.quantity_on_hand_diff > 0
@@ -33,7 +31,7 @@ public interface LotTracingRepository extends JpaRepository<AbstractLotState.Sim
             SELECT DISTINCT
                 ii_input.product_id as productId,
                 ii_input.lot_id as lotId,
-                we.work_effort_id as workEffortId
+                iid_input.work_effort_id as workEffortId
             """ + TRACING_CHAIN + """
                 AND ii_output.product_id = :productId 
                 AND ii_output.lot_id = :lotId
@@ -49,7 +47,7 @@ public interface LotTracingRepository extends JpaRepository<AbstractLotState.Sim
             SELECT DISTINCT
                 ii_output.product_id as productId,
                 ii_output.lot_id as lotId,
-                we.work_effort_id as workEffortId
+                iid_output.work_effort_id as workEffortId
             """ + TRACING_CHAIN + """
                 AND ii_input.product_id = :productId 
                 AND ii_input.lot_id = :lotId
@@ -68,4 +66,4 @@ public interface LotTracingRepository extends JpaRepository<AbstractLotState.Sim
 
         String getWorkEffortId();
     }
-} 
+}
