@@ -177,7 +177,7 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         }
     }
 
-    void initialize(ArticleEvent.ArticleStateCreated stateCreated) {
+    public void initialize(ArticleEvent.ArticleStateCreated stateCreated) {
         Long aggregateId = ((ArticleEvent.SqlArticleEvent)stateCreated).getArticleEventId().getArticleId();
         ArticleState.SqlArticleState state = new AbstractArticleState.SimpleArticleState();
         state.setArticleId(aggregateId);

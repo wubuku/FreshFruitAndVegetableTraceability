@@ -159,7 +159,7 @@ public abstract class AbstractFacilityContactMechApplicationService implements F
         }
     }
 
-    void initialize(FacilityContactMechEvent.FacilityContactMechStateCreated stateCreated) {
+    public void initialize(FacilityContactMechEvent.FacilityContactMechStateCreated stateCreated) {
         FacilityContactMechId aggregateId = ((FacilityContactMechEvent.SqlFacilityContactMechEvent)stateCreated).getFacilityContactMechEventId().getFacilityContactMechId();
         FacilityContactMechState.SqlFacilityContactMechState state = new AbstractFacilityContactMechState.SimpleFacilityContactMechState();
         state.setFacilityContactMechId(aggregateId);

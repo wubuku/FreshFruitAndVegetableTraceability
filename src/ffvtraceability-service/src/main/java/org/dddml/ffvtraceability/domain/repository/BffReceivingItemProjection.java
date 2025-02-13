@@ -20,6 +20,8 @@ public interface BffReceivingItemProjection {
 
     String getLocationSeqId();
 
+    String getLocationName();
+
     String getItemDescription();
 
     java.math.BigDecimal getQuantityAccepted();

@@ -151,7 +151,7 @@ public abstract class AbstractPartyRoleApplicationService implements PartyRoleAp
         }
     }
 
-    void initialize(PartyRoleEvent.PartyRoleStateCreated stateCreated) {
+    public void initialize(PartyRoleEvent.PartyRoleStateCreated stateCreated) {
         PartyRoleId aggregateId = ((PartyRoleEvent.SqlPartyRoleEvent)stateCreated).getPartyRoleEventId().getPartyRoleId();
         PartyRoleState.SqlPartyRoleState state = new AbstractPartyRoleState.SimplePartyRoleState();
         state.setPartyRoleId(aggregateId);

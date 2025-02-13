@@ -151,7 +151,7 @@ public abstract class AbstractTenantApplicationService implements TenantApplicat
         }
     }
 
-    void initialize(TenantEvent.TenantStateCreated stateCreated) {
+    public void initialize(TenantEvent.TenantStateCreated stateCreated) {
         String aggregateId = ((TenantEvent.SqlTenantEvent)stateCreated).getTenantEventId().getTenantId();
         TenantState.SqlTenantState state = new AbstractTenantState.SimpleTenantState();
         state.setTenantId(aggregateId);

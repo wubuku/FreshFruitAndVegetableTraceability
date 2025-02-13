@@ -151,7 +151,7 @@ public abstract class AbstractWorkEffortApplicationService implements WorkEffort
         }
     }
 
-    void initialize(WorkEffortEvent.WorkEffortStateCreated stateCreated) {
+    public void initialize(WorkEffortEvent.WorkEffortStateCreated stateCreated) {
         String aggregateId = ((WorkEffortEvent.SqlWorkEffortEvent)stateCreated).getWorkEffortEventId().getWorkEffortId();
         WorkEffortState.SqlWorkEffortState state = new AbstractWorkEffortState.SimpleWorkEffortState();
         state.setWorkEffortId(aggregateId);
