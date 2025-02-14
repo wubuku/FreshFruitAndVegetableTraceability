@@ -4,7 +4,6 @@ import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffFacilityDto;
 import org.dddml.ffvtraceability.domain.BffFacilityLocationDto;
 import org.dddml.ffvtraceability.domain.Command;
-import org.dddml.ffvtraceability.domain.contactmech.AbstractContactMechCommand;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
 import org.dddml.ffvtraceability.domain.facility.*;
 import org.dddml.ffvtraceability.domain.facilitycontactmech.AbstractFacilityContactMechCommand;
@@ -69,43 +68,6 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     private BffBusinessContactService bffBusinessContactService;
     @Autowired
     private BffBusinessContactMapper bffBusinessContactMapper;
-
-//    static BffBusinessContactDto getBusinessContact(
-//            BffFacilityContactMechRepository bffFacilityContactMechRepository,
-//            String facilityId) {
-//        var businessContact = bffFacilityContactMechRepository.findFacilityContactByFacilityId(facilityId);
-//        return businessContact.orElse(null);
-
-    //        AtomicReference<BffBusinessContactDto> bc = new AtomicReference<>();
-//        bffFacilityContactMechRepository.findFacilityCurrentPostalAddressByFacilityId(facilityId).ifPresent(x -> {
-//            bc.set(new BffBusinessContactDto());
-//            bc.get().setBusinessName(x.getToName());
-//            bc.get().setPhysicalLocationAddress(x.getAddress1());
-//            bc.get().setCity(x.getCity());
-//            bc.get().setState(x.getStateProvinceGeoName());
-//            bc.get().setStateProvinceGeoId(x.getStateProvinceGeoId());
-//            bc.get().setCountryGeoId(x.getCountryGeoId());
-//            bc.get().setCountry(x.getCountryGeoName());
-//            bc.get().setZipCode(x.getPostalCode());
-//        });
-//
-//        bffFacilityContactMechRepository.findFacilityCurrentTelecomNumberByFacilityId(facilityId).ifPresent(x -> {
-//            if (bc.get() == null) {
-//                bc.set(new BffBusinessContactDto());
-//            }
-//            bc.get().setPhoneNumber(
-//                    TelecomNumberUtil.format(x.getCountryCode(), x.getAreaCode(), x.getContactNumber()));
-//        });
-//
-//        bffFacilityContactMechRepository.findFacilityCurrentMisContactMechByFacilityId(facilityId).ifPresent(x -> {
-//            if (bc.get() == null) {
-//                bc.set(new BffBusinessContactDto());
-//            }
-//            bc.get().setEmail(x.getEmail());
-//            bc.get().setContactRole(x.getAskForRole());
-//        });
-//        return bc.get();
-//    }
 
     @Override
     @Transactional(readOnly = true)
@@ -216,28 +178,10 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         facilityApplicationService.when(createFacility);
 
         if (facility.getBusinessContacts() != null && !facility.getBusinessContacts().isEmpty()) {
-            AbstractContactMechCommand.SimpleCreateMiscContactMech createMiscContactMech = new AbstractContactMechCommand.SimpleCreateMiscContactMech();
-            createFacilityBusinessContact(createFacility.getFacilityId(), facility.getBusinessContacts().get(0), c);
+            String contactMechId = bffBusinessContactService.createMiscContact(facility.getBusinessContacts().get(0), c);
+            createFacilityContactMechAssociation(createFacility.getFacilityId(), contactMechId, "-PE", c);
         }
         return createFacility.getFacilityId();
-    }
-
-
-    private void createFacilityBusinessContact(
-            String facilityId, BffBusinessContactDto bizContact, Command c) {
-//        if (bizContact.getPhysicalLocationAddress() != null
-//                && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
-//            String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
-//            createFacilityContactMechAssociation(facilityId, contactMechId, "-PP", c);
-//        }
-//        if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
-//            String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
-//            createFacilityContactMechAssociation(facilityId, contactMechId, "-PT", c);
-//        }
-//        if (bizContact.getEmail() != null && !bizContact.getEmail().trim().isEmpty()) {
-        String contactMechId = bffBusinessContactService.createMiscContact(bizContact, c);
-        createFacilityContactMechAssociation(facilityId, contactMechId, "-PE", c);
-//        }
     }
 
     private void addFacilityIdentification(
