@@ -161,6 +161,8 @@ public interface ProductState
 
     Long getIndividualsPerPackage();
 
+    String getDimensionsDescription();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -319,6 +321,8 @@ public interface ProductState
         void setCertificationCodes(String certificationCodes);
 
         void setIndividualsPerPackage(Long individualsPerPackage);
+
+        void setDimensionsDescription(String dimensionsDescription);
 
         void setVersion(Long version);
 

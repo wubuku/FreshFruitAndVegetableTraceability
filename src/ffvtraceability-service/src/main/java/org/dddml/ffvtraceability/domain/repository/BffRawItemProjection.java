@@ -94,6 +94,8 @@ public interface BffRawItemProjection {
 
     Long getIndividualsPerPackage();
 
+    String getDimensionsDescription();
+
     String getDefaultShipmentBoxTypeShipmentBoxTypeId();
 
     String getDefaultShipmentBoxTypeDescription();

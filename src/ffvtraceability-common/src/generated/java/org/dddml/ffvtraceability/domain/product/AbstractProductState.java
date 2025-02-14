@@ -734,6 +734,16 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.individualsPerPackage = individualsPerPackage;
     }
 
+    private String dimensionsDescription;
+
+    public String getDimensionsDescription() {
+        return this.dimensionsDescription;
+    }
+
+    public void setDimensionsDescription(String dimensionsDescription) {
+        this.dimensionsDescription = dimensionsDescription;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -960,6 +970,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setStorageConditions(e.getStorageConditions());
         this.setCertificationCodes(e.getCertificationCodes());
         this.setIndividualsPerPackage(e.getIndividualsPerPackage());
+        this.setDimensionsDescription(e.getDimensionsDescription());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -1045,6 +1056,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setStorageConditions(s.getStorageConditions());
         this.setCertificationCodes(s.getCertificationCodes());
         this.setIndividualsPerPackage(s.getIndividualsPerPackage());
+        this.setDimensionsDescription(s.getDimensionsDescription());
 
         if (s.getGoodIdentifications() != null) {
             Iterable<GoodIdentificationState> iterable;
@@ -1582,6 +1594,13 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             }
         } else {
             this.setIndividualsPerPackage(e.getIndividualsPerPackage());
+        }
+        if (e.getDimensionsDescription() == null) {
+            if (e.getIsPropertyDimensionsDescriptionRemoved() != null && e.getIsPropertyDimensionsDescriptionRemoved()) {
+                this.setDimensionsDescription(null);
+            }
+        } else {
+            this.setDimensionsDescription(e.getDimensionsDescription());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

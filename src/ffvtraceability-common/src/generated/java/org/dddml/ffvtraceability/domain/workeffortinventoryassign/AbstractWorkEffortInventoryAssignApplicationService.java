@@ -151,7 +151,7 @@ public abstract class AbstractWorkEffortInventoryAssignApplicationService implem
         }
     }
 
-    public void initialize(WorkEffortInventoryAssignEvent.WorkEffortInventoryAssignStateCreated stateCreated) {
+    void initialize(WorkEffortInventoryAssignEvent.WorkEffortInventoryAssignStateCreated stateCreated) {
         WorkEffortInventoryAssignId aggregateId = ((WorkEffortInventoryAssignEvent.SqlWorkEffortInventoryAssignEvent)stateCreated).getWorkEffortInventoryAssignEventId().getWorkEffortInventoryAssignId();
         WorkEffortInventoryAssignState.SqlWorkEffortInventoryAssignState state = new AbstractWorkEffortInventoryAssignState.SimpleWorkEffortInventoryAssignState();
         state.setWorkEffortInventoryAssignId(aggregateId);

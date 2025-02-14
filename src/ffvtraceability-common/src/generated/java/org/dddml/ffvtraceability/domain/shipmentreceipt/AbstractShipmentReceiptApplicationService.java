@@ -177,7 +177,7 @@ public abstract class AbstractShipmentReceiptApplicationService implements Shipm
         }
     }
 
-    public void initialize(ShipmentReceiptEvent.ShipmentReceiptStateCreated stateCreated) {
+    void initialize(ShipmentReceiptEvent.ShipmentReceiptStateCreated stateCreated) {
         String aggregateId = ((ShipmentReceiptEvent.SqlShipmentReceiptEvent)stateCreated).getShipmentReceiptEventId().getReceiptId();
         ShipmentReceiptState.SqlShipmentReceiptState state = new AbstractShipmentReceiptState.SimpleShipmentReceiptState();
         state.setReceiptId(aggregateId);

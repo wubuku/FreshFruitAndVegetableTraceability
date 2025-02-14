@@ -172,7 +172,7 @@ public abstract class AbstractAttributeSetInstanceApplicationService implements 
         }
     }
 
-    public void initialize(AttributeSetInstanceEvent.AttributeSetInstanceStateCreated stateCreated) {
+    void initialize(AttributeSetInstanceEvent.AttributeSetInstanceStateCreated stateCreated) {
         String aggregateId = ((AttributeSetInstanceEvent.SqlAttributeSetInstanceEvent)stateCreated).getAttributeSetInstanceEventId().getAttributeSetInstanceId();
         AttributeSetInstanceState.SqlAttributeSetInstanceState state = new AbstractAttributeSetInstanceState.SimpleAttributeSetInstanceState();
         state.setAttributeSetInstanceId(aggregateId);

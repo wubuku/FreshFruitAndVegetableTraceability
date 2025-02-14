@@ -329,6 +329,10 @@ public interface ProductEvent extends Event {
 
         void setIndividualsPerPackage(Long individualsPerPackage);
 
+        String getDimensionsDescription();
+
+        void setDimensionsDescription(String dimensionsDescription);
+
     }
 
     interface ProductStateCreated extends ProductStateEvent
@@ -628,6 +632,10 @@ public interface ProductEvent extends Event {
         Boolean getIsPropertyIndividualsPerPackageRemoved();
 
         void setIsPropertyIndividualsPerPackageRemoved(Boolean removed);
+
+        Boolean getIsPropertyDimensionsDescriptionRemoved();
+
+        void setIsPropertyDimensionsDescriptionRemoved(Boolean removed);
 
 
         Iterable<GoodIdentificationEvent> getGoodIdentificationEvents();

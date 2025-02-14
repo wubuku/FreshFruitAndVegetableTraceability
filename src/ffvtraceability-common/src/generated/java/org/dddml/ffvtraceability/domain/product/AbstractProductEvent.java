@@ -1019,6 +1019,18 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
             this.individualsPerPackage = individualsPerPackage;
         }
 
+        private String dimensionsDescription;
+
+        public String getDimensionsDescription()
+        {
+            return this.dimensionsDescription;
+        }
+
+        public void setDimensionsDescription(String dimensionsDescription)
+        {
+            this.dimensionsDescription = dimensionsDescription;
+        }
+
         protected AbstractProductStateEvent(ProductEventId eventId) {
             super(eventId);
         }
@@ -1811,6 +1823,16 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
         public void setIsPropertyIndividualsPerPackageRemoved(Boolean removed) {
             this.isPropertyIndividualsPerPackageRemoved = removed;
+        }
+
+        private Boolean isPropertyDimensionsDescriptionRemoved;
+
+        public Boolean getIsPropertyDimensionsDescriptionRemoved() {
+            return this.isPropertyDimensionsDescriptionRemoved;
+        }
+
+        public void setIsPropertyDimensionsDescriptionRemoved(Boolean removed) {
+            this.isPropertyDimensionsDescriptionRemoved = removed;
         }
 
 

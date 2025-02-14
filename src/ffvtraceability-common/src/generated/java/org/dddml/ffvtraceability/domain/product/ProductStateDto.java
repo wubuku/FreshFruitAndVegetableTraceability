@@ -878,6 +878,18 @@ public class ProductStateDto {
         this.individualsPerPackage = individualsPerPackage;
     }
 
+    private String dimensionsDescription;
+
+    public String getDimensionsDescription()
+    {
+        return this.dimensionsDescription;
+    }
+
+    public void setDimensionsDescription(String dimensionsDescription)
+    {
+        this.dimensionsDescription = dimensionsDescription;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -1194,6 +1206,9 @@ public class ProductStateDto {
             }
             if (returnedFieldsContains("IndividualsPerPackage")) {
                 dto.setIndividualsPerPackage(state.getIndividualsPerPackage());
+            }
+            if (returnedFieldsContains("DimensionsDescription")) {
+                dto.setDimensionsDescription(state.getDimensionsDescription());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

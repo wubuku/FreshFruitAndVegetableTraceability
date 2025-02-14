@@ -332,6 +332,10 @@ public interface ProductCommand extends Command {
 
         void setIndividualsPerPackage(Long individualsPerPackage);
 
+        String getDimensionsDescription();
+
+        void setDimensionsDescription(String dimensionsDescription);
+
     }
 
     interface CreateProduct extends CreateOrMergePatchProduct {
@@ -625,6 +629,10 @@ public interface ProductCommand extends Command {
         Boolean getIsPropertyIndividualsPerPackageRemoved();
 
         void setIsPropertyIndividualsPerPackageRemoved(Boolean removed);
+
+        Boolean getIsPropertyDimensionsDescriptionRemoved();
+
+        void setIsPropertyDimensionsDescriptionRemoved(Boolean removed);
 
 
         GoodIdentificationCommandCollection getGoodIdentificationCommands();

@@ -891,6 +891,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
             this.individualsPerPackage = individualsPerPackage;
         }
 
+        private String dimensionsDescription;
+
+        public String getDimensionsDescription()
+        {
+            return this.dimensionsDescription;
+        }
+
+        public void setDimensionsDescription(String dimensionsDescription)
+        {
+            this.dimensionsDescription = dimensionsDescription;
+        }
+
         public GoodIdentificationCommand.CreateGoodIdentification newCreateGoodIdentification()
         {
             AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification c = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
@@ -1793,6 +1805,18 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
         public void setIsPropertyIndividualsPerPackageRemoved(Boolean removed)
         {
             this.isPropertyIndividualsPerPackageRemoved = removed;
+        }
+
+        private Boolean isPropertyDimensionsDescriptionRemoved;
+
+        public Boolean getIsPropertyDimensionsDescriptionRemoved()
+        {
+            return this.isPropertyDimensionsDescriptionRemoved;
+        }
+
+        public void setIsPropertyDimensionsDescriptionRemoved(Boolean removed)
+        {
+            this.isPropertyDimensionsDescriptionRemoved = removed;
         }
 
 

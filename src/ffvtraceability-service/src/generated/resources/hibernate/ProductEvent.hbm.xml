@@ -238,6 +238,9 @@
       <property name="individualsPerPackage">
         <column name="individuals_per_package" sql-type="DECIMAL(20,0)" />
       </property>
+      <property name="dimensionsDescription">
+        <column name="dimensions_description" sql-type="VARCHAR(255)" />
+      </property>
       <subclass name="AbstractProductEvent$SimpleProductStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractProductEvent$SimpleProductStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyProductTypeIdRemoved" column="is_property_product_type_id_removed" />
@@ -311,6 +314,7 @@
         <property name="isPropertyStorageConditionsRemoved" column="is_property_storage_conditions_removed" />
         <property name="isPropertyCertificationCodesRemoved" column="is_property_certification_codes_removed" />
         <property name="isPropertyIndividualsPerPackageRemoved" column="is_property_individuals_per_package_removed" />
+        <property name="isPropertyDimensionsDescriptionRemoved" column="is_property_dimensions_description_removed" />
       </subclass>
     </subclass>
   </class>

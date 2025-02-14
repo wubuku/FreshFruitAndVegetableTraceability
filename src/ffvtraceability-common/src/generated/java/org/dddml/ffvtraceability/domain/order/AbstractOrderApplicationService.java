@@ -204,7 +204,7 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
         }
     }
 
-    public void initialize(OrderEvent.OrderStateCreated stateCreated) {
+    void initialize(OrderEvent.OrderStateCreated stateCreated) {
         String aggregateId = ((OrderEvent.SqlOrderEvent)stateCreated).getOrderEventId().getOrderId();
         OrderHeaderState.SqlOrderHeaderState state = new AbstractOrderHeaderState.SimpleOrderHeaderState();
         state.setOrderId(aggregateId);
