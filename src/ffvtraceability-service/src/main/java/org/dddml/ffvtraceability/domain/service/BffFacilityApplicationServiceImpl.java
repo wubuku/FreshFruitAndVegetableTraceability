@@ -229,11 +229,9 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 c.getFacility().getInternalId());
 
         facilityApplicationService.when(mergePatchFacility);
-
-        updateOrCreateFacilityBusinessContact(facilityId, c.getFacility().getBusinessContacts().get(0), c);
-//        if (c.getFacility().getBusinessContacts() != null && !c.getFacility().getBusinessContacts().isEmpty()) {
-//            updateOrCreateFacilityBusinessContact(facilityId, c.getFacility().getBusinessContacts().get(0), c);
-//        }
+        if (c.getFacility().getBusinessContacts() != null && !c.getFacility().getBusinessContacts().isEmpty()) {
+            updateOrCreateFacilityBusinessContact(facilityId, c.getFacility().getBusinessContacts().get(0), c);
+        }
     }
 
     private void updateFacilityIdentification(
@@ -545,37 +543,6 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 updateOrCreateFacilityContactMechAssociation(facilityId, contactMechId, ContactMechTypeId.MISC_CONTACT_MECH, "-PE", c);
             }
         }
-        /*
-        // 处理邮政地址
-        if (bizContact.getStateProvinceGeoId() != null && bizContact.getStateProvinceGeoId().isEmpty()) {
-            Optional<BffBusinessContactRepository.PostalAddressProjection> pa = bffBusinessContactRepository
-                    .findOnePostalAddressByBusinessInfo(
-                            bizContact.getBusinessName(), bizContact.getZipCode(),
-                            bizContact.getStateProvinceGeoId(), bizContact.getCity(), bizContact.getPhysicalLocationAddress());
-            if (pa.isPresent()) {
-                updateOrCreateFacilityContactMechAssociation(facilityId, pa.get().getContactMechId(),
-                        ContactMechTypeId.POSTAL_ADDRESS, "-PP", c);
-            } else {
-                // 创建新的邮政地址
-                String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
-                createFacilityContactMechAssociation(facilityId, contactMechId, "-PP", c);
-            }
-        }
-
-        // 处理电话号码
-        TelecomNumberUtil.TelecomNumberDto tn = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
-        Optional<BffBusinessContactRepository.TelecomNumberProjection> telecomNumber = bffBusinessContactRepository
-                .findOneTelecomNumberByPhoneInfo(
-                        tn.getCountryCode(), tn.getAreaCode(), tn.getContactNumber());
-
-        if (telecomNumber.isPresent()) {
-            String tnContactMechId = telecomNumber.get().getContactMechId();
-            updateOrCreateFacilityContactMechAssociation(facilityId, tnContactMechId, ContactMechTypeId.TELECOM_NUMBER,
-                    "-PT", c);
-        } else {
-            String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
-            createFacilityContactMechAssociation(facilityId, contactMechId, "-PT", c);
-        }*/
     }
 
     private void updateOrCreateFacilityContactMechAssociation(
@@ -592,7 +559,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             OffsetDateTime fromDate = OffsetDateTime.ofInstant(pcmIdPrj.get().getFromDate(), ZoneOffset.UTC);
             FacilityContactMechState pcm = facilityContactMechApplicationService.get(new FacilityContactMechId(
                     facilityId, contactMechId, fromDate));
-            if (pcm == null) {//FIXME 感觉这里永远不会是null
+            if (pcm == null) {
                 createFacilityContactMechAssociation(facilityId, contactMechId, commandIdSuffix, c);
             } else {
                 AbstractFacilityContactMechCommand.SimpleMergePatchFacilityContactMech mergePatchFacilityContactMech = new AbstractFacilityContactMechCommand.SimpleMergePatchFacilityContactMech();
