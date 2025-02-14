@@ -4,9 +4,7 @@ import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffFacilityDto;
 import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.Command;
-import org.dddml.ffvtraceability.domain.contactmech.ContactMechApplicationService;
-import org.dddml.ffvtraceability.domain.contactmech.ContactMechStateRepository;
-import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
+import org.dddml.ffvtraceability.domain.contactmech.*;
 import org.dddml.ffvtraceability.domain.mapper.BffBusinessContactMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
@@ -23,7 +21,6 @@ import org.dddml.ffvtraceability.domain.repository.*;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
-import org.dddml.ffvtraceability.domain.util.TelecomNumberUtil;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +51,10 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     @Autowired
     private BffSupplierMapper bffSupplierMapper;
     @Autowired
+    private BffGeoRepository bffGeoRepository;
+    @Autowired
+    private BffBusinessContactMapper bffBusinessContactMapper;
+    @Autowired
     private BffSupplierRepository bffSupplierRepository;
     @Autowired
     private ContactMechStateRepository contactMechStateRepository;
@@ -77,8 +78,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     private ContactMechApplicationService contactMechApplicationService;
     @Autowired
     private BffFacilityApplicationService bffFacilityApplicationService;
-    @Autowired
-    private BffBusinessContactMapper bffBusinessContactMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -101,7 +100,9 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             return null;
         }
         BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(projection.get());
-        enrichSupplierBusinessContactDetails(dto, c.getSupplierId());
+        bffPartyContactMechRepository.findPartyContactByPartyId(c.getSupplierId()).ifPresent(contact -> {
+            dto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContactDto(contact)));
+        });
         if (c.getIncludesFacilities() != null && c.getIncludesFacilities()) {
             enrichFacilityDetails(dto, c.getSupplierId());
         }
@@ -115,54 +116,12 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             facilityProjections.forEach(bffFacilityProjection -> {
                 BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(bffFacilityProjection);
                 bffFacilityContactMechRepository.findFacilityContactByFacilityId(bffFacilityDto.getFacilityId())
-                        .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContactDto(contact))));
-                //enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
+                        .ifPresent(contact -> bffFacilityDto.setBusinessContacts(
+                                Collections.singletonList(bffBusinessContactMapper.toBffBusinessContactDto(contact))));
                 facilityDtos.add(bffFacilityDto);
             });
             dto.setFacilities(facilityDtos);
         }
-    }
-
-//    private void enrichFacilityBusinessContactDetails(BffFacilityDto dto, String facilityId) {
-//        BffBusinessContactDto facilityContact = BffFacilityApplicationServiceImpl.getBusinessContact(
-//                bffFacilityContactMechRepository, facilityId
-//        );
-//        if (facilityContact != null) {
-//            dto.setBusinessContacts(Collections.singletonList(facilityContact));
-//        }
-//    }
-
-    private void enrichSupplierBusinessContactDetails(BffSupplierDto dto, String supplierId) {
-
-        bffPartyContactMechRepository.findPartyCurrentPostalAddressByPartyId(supplierId).ifPresent(x -> {
-            BffBusinessContactDto bc = new BffBusinessContactDto();
-            bc.setBusinessName(x.getToName());
-            bc.setPhysicalLocationAddress(x.getAddress1());
-            bc.setCity(x.getCity());
-            bc.setStateProvinceGeoId(x.getStateProvinceGeoId());
-            bc.setCountryGeoId(x.getCountryGeoId());
-            bc.setState(x.getStateProvinceGeoName());
-            bc.setCountry(x.getCountryGeoName());
-            bc.setZipCode(x.getPostalCode());
-            dto.setBusinessContacts(Collections.singletonList(bc));
-        });
-
-        bffPartyContactMechRepository.findPartyCurrentTelecomNumberByPartyId(supplierId).ifPresent(x -> {
-            if (dto.getBusinessContacts() == null) {
-                dto.setBusinessContacts(Collections.singletonList(new BffBusinessContactDto()));
-            }
-            dto.getBusinessContacts().get(0).setPhoneNumber(
-                    TelecomNumberUtil.format(x.getCountryCode(), x.getAreaCode(), x.getContactNumber())
-            );
-        });
-
-        bffPartyContactMechRepository.findPartyCurrentMisContactMechByPartyId(supplierId).ifPresent(x -> {
-            if (dto.getBusinessContacts() == null) {
-                dto.setBusinessContacts(Collections.singletonList(new BffBusinessContactDto()));
-            }
-            dto.getBusinessContacts().get(0).setEmail(x.getEmail());
-            dto.getBusinessContacts().get(0).setContactRole(x.getAskForRole());
-        });
     }
 
     @Override
@@ -171,7 +130,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         String partyId = createSupplierParty(c.getSupplier(), c);
         //联系方式
         if (c.getSupplier().getBusinessContacts() != null && !c.getSupplier().getBusinessContacts().isEmpty()) {
-            createPartyBusinessContact(partyId, c.getSupplier().getBusinessContacts().get(0), c);
+            String contactMechId = bffBusinessContactService.createMiscContact(c.getSupplier().getBusinessContacts().get(0), c);
+            createPartyContactMechAssociation(partyId, contactMechId, "-PE", c);
         }
         //设施
         if (c.getSupplier().getFacilities() != null && !c.getSupplier().getFacilities().isEmpty()) {
@@ -488,7 +448,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         for (BffSupplierDto supplierDto : c.getSuppliers()) {
             String partyId = createSupplierParty(supplierDto, c);
             if (supplierDto.getBusinessContacts() != null && !supplierDto.getBusinessContacts().isEmpty()) {
-                createPartyBusinessContact(partyId, supplierDto.getBusinessContacts().get(0), c);
+                String contactMechId = bffBusinessContactService.createMiscContact(supplierDto.getBusinessContacts().get(0), c);
+                createPartyContactMechAssociation(partyId, contactMechId, "-PE", c);
             }
             //设施
             if (supplierDto.getFacilities() != null && !supplierDto.getFacilities().isEmpty()) {
@@ -544,61 +505,44 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     }
 
     private void updateOrCreatePartyBusinessContact(String partyId, BffBusinessContactDto bizContact, Command c) {
-        // 处理邮政地址
-        Optional<BffBusinessContactRepository.PostalAddressProjection> pa = bffBusinessContactRepository.findOnePostalAddressByBusinessInfo(
-                bizContact.getBusinessName(), bizContact.getZipCode(),
-                bizContact.getState(), bizContact.getCity(), bizContact.getPhysicalLocationAddress()
-        );
-        if (pa.isPresent()) {
-            updateOrCreatePartyContactMechAssociation(partyId, pa.get().getContactMechId(), ContactMechTypeId.POSTAL_ADDRESS, "-PP", c);
-        } else {
-            // 创建新的邮政地址
-            String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
-            createPartyContactMechAssociation(partyId, contactMechId, "-PP", c);
-            //handlePartyContactMechAssociation(partyId, createPostalAddress.getContactMechId(), "-PP", c);
-        }
-
-        // 处理电话号码
-        TelecomNumberUtil.TelecomNumberDto tn = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
-        Optional<BffBusinessContactRepository.TelecomNumberProjection> telecomNumber = bffBusinessContactRepository.findOneTelecomNumberByPhoneInfo(
-                tn.getCountryCode(), tn.getAreaCode(), tn.getContactNumber());
-
-        String tnContactMechId;
-        if (telecomNumber.isPresent()) {
-            tnContactMechId = telecomNumber.get().getContactMechId();
-            updateOrCreatePartyContactMechAssociation(partyId, tnContactMechId, ContactMechTypeId.TELECOM_NUMBER, "-PT", c);
-        } else {
-            String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
-            createPartyContactMechAssociation(partyId, contactMechId, "-PT", c);
-            //handlePartyContactMechAssociation(partyId, createTelecomNumber.getContactMechId(), "-PT", c);
-        }
-        // 处理Email等
-        Optional<BffBusinessContactRepository.MiscContactMechProjection> miscContactMech = bffBusinessContactRepository.findOneMiscContactMechByInfo(
-                bizContact.getEmail(), bizContact.getContactRole());
-
-        if (miscContactMech.isPresent()) {
-            updateOrCreatePartyContactMechAssociation(partyId, miscContactMech.get().getContactMechId(), ContactMechTypeId.MISC_CONTACT_MECH, "-PE", c);
-        } else {
+        var optional = bffPartyContactMechRepository.findPartyContactByPartyId(partyId);
+        if (optional.isEmpty()) {
             String contactMechId = bffBusinessContactService.createMiscContact(bizContact, c);
             createPartyContactMechAssociation(partyId, contactMechId, "-PE", c);
-        }
-    }
+        } else {
+            String contactMechId = optional.get().getContactMechId();
+            Optional<AbstractContactMechState> state = bffBusinessContactRepository.findById(contactMechId);
+            if (state.isPresent()) {
+                ContactMechCommand.MergePatchContactMech mergePatchContactMech
+                        = new AbstractContactMechCommand.SimpleMergePatchMiscContactMech();
+                mergePatchContactMech.setVersion(state.get().getVersion());
+                mergePatchContactMech.setToName(bizContact.getBusinessName());
+                mergePatchContactMech.setContactMechId(contactMechId);
+                if (bizContact.getStateProvinceGeoId() != null) {
+                    Optional<BffGeoRepository.StateProvinceProjection> stateProvince
+                            = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());
+                    if (stateProvince.isEmpty()) {
+                        throw new IllegalArgumentException(String.format("State or province not found: %s", bizContact.getStateProvinceGeoId()));
+                    }
+                    mergePatchContactMech.setCountryGeoId(stateProvince.get().getParentGeoId());
+                    mergePatchContactMech.setStateProvinceGeoId(stateProvince.get().getGeoId());
+                } else {
+                    mergePatchContactMech.setCountryGeoId(bizContact.getCountryGeoId());
+                }
+                mergePatchContactMech.setCity(bizContact.getCity());
+                mergePatchContactMech.setAddress1(bizContact.getPhysicalLocationAddress());
+                mergePatchContactMech.setPostalCode(bizContact.getZipCode());
+                mergePatchContactMech.setTelecomContactNumber(bizContact.getPhoneNumber());
 
-    private void createPartyBusinessContact(
-            String partyId, BffBusinessContactDto bizContact, Command c
-    ) {
-        if (bizContact.getPhysicalLocationAddress() != null && !bizContact.getPhysicalLocationAddress().trim().isEmpty()) {
-            String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
-            createPartyContactMechAssociation(partyId, contactMechId, "-PP", c);
-        }
+                mergePatchContactMech.setEmail(bizContact.getEmail());
+                mergePatchContactMech.setAskForRole(bizContact.getContactRole());
+                mergePatchContactMech.setAskForName(bizContact.getBusinessName());
+                mergePatchContactMech.setPhysicalLocationAddress(bizContact.getPhysicalLocationAddress());
 
-        if (bizContact.getPhoneNumber() != null && !bizContact.getPhoneNumber().trim().isEmpty()) {
-            String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
-            createPartyContactMechAssociation(partyId, contactMechId, "-PT", c);
-        }
-        if (bizContact.getEmail() != null && !bizContact.getEmail().trim().isEmpty()) {
-            String contactMechId = bffBusinessContactService.createMiscContact(bizContact, c);
-            createPartyContactMechAssociation(partyId, contactMechId, "-PE", c);
+                contactMechApplicationService.when(mergePatchContactMech);
+
+                updateOrCreatePartyContactMechAssociation(partyId, contactMechId, ContactMechTypeId.MISC_CONTACT_MECH, "-PE", c);
+            }
         }
     }
 
@@ -611,7 +555,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     ) {
         Optional<BffPartyContactMechRepository.PartyContactMechIdProjection> pcmIdPrj = bffPartyContactMechRepository
                 .findPartyCurrentContactMechByContactMechType(partyId, contactMechTypeId);
-        if (!pcmIdPrj.isPresent()) {
+        if (pcmIdPrj.isEmpty()) {
             createPartyContactMechAssociation(partyId, contactMechId, commandIdSuffix, c);
         } else {
             OffsetDateTime fromDate = OffsetDateTime.ofInstant(pcmIdPrj.get().getFromDate(), ZoneOffset.UTC);
