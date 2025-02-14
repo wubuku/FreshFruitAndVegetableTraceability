@@ -356,18 +356,17 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 new AbstractShipmentCommand.SimpleMergePatchShipment();
         mergePatchShipment.setShipmentId(shipmentId);
         mergePatchShipment.setVersion(shipmentState.getVersion());
+        mergePatchShipment.setPartyIdFrom(receivingDocumentDto.getPartyIdFrom());
         mergePatchShipment.setPrimaryOrderId(receivingDocumentDto.getPrimaryOrderId());
         // todo: More fields to update?
         mergePatchShipment.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchShipment.setRequesterId(c.getRequesterId());
+        String destinationFacilityId = receivingDocumentDto.getDestinationFacilityId();
+        mergePatchShipment.setDestinationFacilityId(destinationFacilityId);
         shipmentApplicationService.when(mergePatchShipment);
         //当不指定receivingItems的时候，我们认为不修改它的行项。
         //当指定receivingItems，即便是空数组（注意不是null），那么就按你最新指定的行项来重新确定行项。
         if (receivingDocumentDto.getReceivingItems() != null) {
-            //String originFacilityId = receivingDocumentDto.getOriginFacilityId();
-            String destinationFacilityId = receivingDocumentDto.getDestinationFacilityId();
-            //mergePatchShipment.setOriginFacilityId(originFacilityId);
-            mergePatchShipment.setDestinationFacilityId(destinationFacilityId);
             if (destinationFacilityId == null || destinationFacilityId.isEmpty()) {
                 //如果它是null，后面的new FacilityLocationId就得出问题
                 throw new IllegalArgumentException("Destination Facility can't be null");
