@@ -34,11 +34,51 @@
       <property name="askForName">
         <column name="ask_for_name" sql-type="VARCHAR(100)" />
       </property>
+      <property name="address1">
+        <column name="address1" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="address2">
+        <column name="address2" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="directions">
+        <column name="directions" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="city">
+        <column name="city" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="postalCode">
+        <column name="postal_code" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="postalCodeExt">
+        <column name="postal_code_ext" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="countryGeoId">
+        <column name="country_geo_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="stateProvinceGeoId">
+        <column name="state_province_geo_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="postalCodeGeoId">
+        <column name="postal_code_geo_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="geoPointId">
+        <column name="geo_point_id" sql-type="VARCHAR(20)" />
+      </property>
       <subclass name="AbstractContactMechEvent$AbstractContactMechStateCreated" abstract="true" discriminator-value="Created"></subclass>
       <subclass name="AbstractContactMechEvent$AbstractContactMechStateMergePatched" abstract="true" discriminator-value="MergePatched">
         <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
         <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
         <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
+        <property name="isPropertyAddress1Removed" column="is_property_address1_removed" />
+        <property name="isPropertyAddress2Removed" column="is_property_address2_removed" />
+        <property name="isPropertyDirectionsRemoved" column="is_property_directions_removed" />
+        <property name="isPropertyCityRemoved" column="is_property_city_removed" />
+        <property name="isPropertyPostalCodeRemoved" column="is_property_postal_code_removed" />
+        <property name="isPropertyPostalCodeExtRemoved" column="is_property_postal_code_ext_removed" />
+        <property name="isPropertyCountryGeoIdRemoved" column="is_property_country_geo_id_removed" />
+        <property name="isPropertyStateProvinceGeoIdRemoved" column="is_property_state_province_geo_id_removed" />
+        <property name="isPropertyPostalCodeGeoIdRemoved" column="is_property_postal_code_geo_id_removed" />
+        <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
       </subclass>
       <subclass name="AbstractMiscContactMechEvent$AbstractMiscContactMechStateEvent" abstract="true">
         <property name="email">
@@ -47,13 +87,39 @@
         <property name="askForRole">
           <column name="ask_for_role" sql-type="VARCHAR(100)" />
         </property>
+        <property name="telecomCountryCode">
+          <column name="telecom_country_code" sql-type="VARCHAR(10)" />
+        </property>
+        <property name="telecomAreaCode">
+          <column name="telecom_area_code" sql-type="VARCHAR(10)" />
+        </property>
+        <property name="telecomContactNumber">
+          <column name="telecom_contact_number" sql-type="VARCHAR(60)" />
+        </property>
+        <property name="physicalLocationAddress">
+          <column name="physical_location_address" sql-type="VARCHAR(255)" />
+        </property>
         <subclass name="AbstractMiscContactMechEvent$SimpleMiscContactMechStateCreated" discriminator-value="MiscContactMechCreated"></subclass>
         <subclass name="AbstractMiscContactMechEvent$SimpleMiscContactMechStateMergePatched" discriminator-value="MiscContactMechMergePatched">
           <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
           <property name="isPropertyAskForRoleRemoved" column="is_property_ask_for_role_removed" />
+          <property name="isPropertyTelecomCountryCodeRemoved" column="is_property_telecom_country_code_removed" />
+          <property name="isPropertyTelecomAreaCodeRemoved" column="is_property_telecom_area_code_removed" />
+          <property name="isPropertyTelecomContactNumberRemoved" column="is_property_telecom_contact_number_removed" />
+          <property name="isPropertyPhysicalLocationAddressRemoved" column="is_property_physical_location_address_removed" />
           <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
           <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
           <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
+          <property name="isPropertyAddress1Removed" column="is_property_address1_removed" />
+          <property name="isPropertyAddress2Removed" column="is_property_address2_removed" />
+          <property name="isPropertyDirectionsRemoved" column="is_property_directions_removed" />
+          <property name="isPropertyCityRemoved" column="is_property_city_removed" />
+          <property name="isPropertyPostalCodeRemoved" column="is_property_postal_code_removed" />
+          <property name="isPropertyPostalCodeExtRemoved" column="is_property_postal_code_ext_removed" />
+          <property name="isPropertyCountryGeoIdRemoved" column="is_property_country_geo_id_removed" />
+          <property name="isPropertyStateProvinceGeoIdRemoved" column="is_property_state_province_geo_id_removed" />
+          <property name="isPropertyPostalCodeGeoIdRemoved" column="is_property_postal_code_geo_id_removed" />
+          <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
         </subclass>
       </subclass>
       <subclass name="AbstractPostalAddressEvent$AbstractPostalAddressStateEvent" abstract="true">
@@ -62,30 +128,6 @@
         </property>
         <property name="attnName">
           <column name="attn_name" sql-type="VARCHAR(100)" />
-        </property>
-        <property name="address1">
-          <column name="address1" sql-type="VARCHAR(255)" />
-        </property>
-        <property name="address2">
-          <column name="address2" sql-type="VARCHAR(255)" />
-        </property>
-        <property name="directions">
-          <column name="directions" sql-type="VARCHAR(255)" />
-        </property>
-        <property name="city">
-          <column name="city" sql-type="VARCHAR(100)" />
-        </property>
-        <property name="postalCode">
-          <column name="postal_code" sql-type="VARCHAR(60)" />
-        </property>
-        <property name="postalCodeExt">
-          <column name="postal_code_ext" sql-type="VARCHAR(60)" />
-        </property>
-        <property name="countryGeoId">
-          <column name="country_geo_id" sql-type="VARCHAR(20)" />
-        </property>
-        <property name="stateProvinceGeoId">
-          <column name="state_province_geo_id" sql-type="VARCHAR(20)" />
         </property>
         <property name="prefectureGeoId">
           <column name="prefecture_geo_id" sql-type="VARCHAR(20)" />
@@ -99,16 +141,17 @@
         <property name="assocTelecomContactMechId">
           <column name="assoc_telecom_contact_mech_id" sql-type="VARCHAR(20)" />
         </property>
-        <property name="postalCodeGeoId">
-          <column name="postal_code_geo_id" sql-type="VARCHAR(20)" />
-        </property>
-        <property name="geoPointId">
-          <column name="geo_point_id" sql-type="VARCHAR(20)" />
-        </property>
         <subclass name="AbstractPostalAddressEvent$SimplePostalAddressStateCreated" discriminator-value="PostalAddressCreated"></subclass>
         <subclass name="AbstractPostalAddressEvent$SimplePostalAddressStateMergePatched" discriminator-value="PostalAddressMergePatched">
           <property name="isPropertyToNameRemoved" column="is_property_to_name_removed" />
           <property name="isPropertyAttnNameRemoved" column="is_property_attn_name_removed" />
+          <property name="isPropertyPrefectureGeoIdRemoved" column="is_property_prefecture_geo_id_removed" />
+          <property name="isPropertyCountyGeoIdRemoved" column="is_property_county_geo_id_removed" />
+          <property name="isPropertyTownGeoIdRemoved" column="is_property_town_geo_id_removed" />
+          <property name="isPropertyAssocTelecomContactMechIdRemoved" column="is_property_assoc_telecom_contact_mech_id_removed" />
+          <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
+          <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
+          <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
           <property name="isPropertyAddress1Removed" column="is_property_address1_removed" />
           <property name="isPropertyAddress2Removed" column="is_property_address2_removed" />
           <property name="isPropertyDirectionsRemoved" column="is_property_directions_removed" />
@@ -117,15 +160,8 @@
           <property name="isPropertyPostalCodeExtRemoved" column="is_property_postal_code_ext_removed" />
           <property name="isPropertyCountryGeoIdRemoved" column="is_property_country_geo_id_removed" />
           <property name="isPropertyStateProvinceGeoIdRemoved" column="is_property_state_province_geo_id_removed" />
-          <property name="isPropertyPrefectureGeoIdRemoved" column="is_property_prefecture_geo_id_removed" />
-          <property name="isPropertyCountyGeoIdRemoved" column="is_property_county_geo_id_removed" />
-          <property name="isPropertyTownGeoIdRemoved" column="is_property_town_geo_id_removed" />
-          <property name="isPropertyAssocTelecomContactMechIdRemoved" column="is_property_assoc_telecom_contact_mech_id_removed" />
           <property name="isPropertyPostalCodeGeoIdRemoved" column="is_property_postal_code_geo_id_removed" />
           <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
-          <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
-          <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
-          <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
         </subclass>
       </subclass>
       <subclass name="AbstractTelecomNumberEvent$AbstractTelecomNumberStateEvent" abstract="true">
@@ -146,6 +182,16 @@
           <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
           <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
           <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
+          <property name="isPropertyAddress1Removed" column="is_property_address1_removed" />
+          <property name="isPropertyAddress2Removed" column="is_property_address2_removed" />
+          <property name="isPropertyDirectionsRemoved" column="is_property_directions_removed" />
+          <property name="isPropertyCityRemoved" column="is_property_city_removed" />
+          <property name="isPropertyPostalCodeRemoved" column="is_property_postal_code_removed" />
+          <property name="isPropertyPostalCodeExtRemoved" column="is_property_postal_code_ext_removed" />
+          <property name="isPropertyCountryGeoIdRemoved" column="is_property_country_geo_id_removed" />
+          <property name="isPropertyStateProvinceGeoIdRemoved" column="is_property_state_province_geo_id_removed" />
+          <property name="isPropertyPostalCodeGeoIdRemoved" column="is_property_postal_code_geo_id_removed" />
+          <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
         </subclass>
       </subclass>
     </subclass>

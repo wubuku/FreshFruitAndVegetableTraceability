@@ -75,54 +75,6 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
             this.askForName = askForName;
         }
 
-        private String email;
-
-        public String getEmail()
-        {
-            return this.email;
-        }
-
-        public void setEmail(String email)
-        {
-            this.email = email;
-        }
-
-        private String askForRole;
-
-        public String getAskForRole()
-        {
-            return this.askForRole;
-        }
-
-        public void setAskForRole(String askForRole)
-        {
-            this.askForRole = askForRole;
-        }
-
-        private String toName;
-
-        public String getToName()
-        {
-            return this.toName;
-        }
-
-        public void setToName(String toName)
-        {
-            this.toName = toName;
-        }
-
-        private String attnName;
-
-        public String getAttnName()
-        {
-            return this.attnName;
-        }
-
-        public void setAttnName(String attnName)
-        {
-            this.attnName = attnName;
-        }
-
         private String address1;
 
         public String getAddress1()
@@ -219,6 +171,126 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
             this.stateProvinceGeoId = stateProvinceGeoId;
         }
 
+        private String postalCodeGeoId;
+
+        public String getPostalCodeGeoId()
+        {
+            return this.postalCodeGeoId;
+        }
+
+        public void setPostalCodeGeoId(String postalCodeGeoId)
+        {
+            this.postalCodeGeoId = postalCodeGeoId;
+        }
+
+        private String geoPointId;
+
+        public String getGeoPointId()
+        {
+            return this.geoPointId;
+        }
+
+        public void setGeoPointId(String geoPointId)
+        {
+            this.geoPointId = geoPointId;
+        }
+
+        private String email;
+
+        public String getEmail()
+        {
+            return this.email;
+        }
+
+        public void setEmail(String email)
+        {
+            this.email = email;
+        }
+
+        private String askForRole;
+
+        public String getAskForRole()
+        {
+            return this.askForRole;
+        }
+
+        public void setAskForRole(String askForRole)
+        {
+            this.askForRole = askForRole;
+        }
+
+        private String telecomCountryCode;
+
+        public String getTelecomCountryCode()
+        {
+            return this.telecomCountryCode;
+        }
+
+        public void setTelecomCountryCode(String telecomCountryCode)
+        {
+            this.telecomCountryCode = telecomCountryCode;
+        }
+
+        private String telecomAreaCode;
+
+        public String getTelecomAreaCode()
+        {
+            return this.telecomAreaCode;
+        }
+
+        public void setTelecomAreaCode(String telecomAreaCode)
+        {
+            this.telecomAreaCode = telecomAreaCode;
+        }
+
+        private String telecomContactNumber;
+
+        public String getTelecomContactNumber()
+        {
+            return this.telecomContactNumber;
+        }
+
+        public void setTelecomContactNumber(String telecomContactNumber)
+        {
+            this.telecomContactNumber = telecomContactNumber;
+        }
+
+        private String physicalLocationAddress;
+
+        public String getPhysicalLocationAddress()
+        {
+            return this.physicalLocationAddress;
+        }
+
+        public void setPhysicalLocationAddress(String physicalLocationAddress)
+        {
+            this.physicalLocationAddress = physicalLocationAddress;
+        }
+
+        private String toName;
+
+        public String getToName()
+        {
+            return this.toName;
+        }
+
+        public void setToName(String toName)
+        {
+            this.toName = toName;
+        }
+
+        private String attnName;
+
+        public String getAttnName()
+        {
+            return this.attnName;
+        }
+
+        public void setAttnName(String attnName)
+        {
+            this.attnName = attnName;
+        }
+
         private String prefectureGeoId;
 
         public String getPrefectureGeoId()
@@ -265,30 +337,6 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
         public void setAssocTelecomContactMechId(String assocTelecomContactMechId)
         {
             this.assocTelecomContactMechId = assocTelecomContactMechId;
-        }
-
-        private String postalCodeGeoId;
-
-        public String getPostalCodeGeoId()
-        {
-            return this.postalCodeGeoId;
-        }
-
-        public void setPostalCodeGeoId(String postalCodeGeoId)
-        {
-            this.postalCodeGeoId = postalCodeGeoId;
-        }
-
-        private String geoPointId;
-
-        public String getGeoPointId()
-        {
-            return this.geoPointId;
-        }
-
-        public void setGeoPointId(String geoPointId)
-        {
-            this.geoPointId = geoPointId;
         }
 
         private String countryCode;
@@ -379,54 +427,6 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
         public void setIsPropertyAskForNameRemoved(Boolean removed)
         {
             this.isPropertyAskForNameRemoved = removed;
-        }
-
-        private Boolean isPropertyEmailRemoved;
-
-        public Boolean getIsPropertyEmailRemoved()
-        {
-            return this.isPropertyEmailRemoved;
-        }
-
-        public void setIsPropertyEmailRemoved(Boolean removed)
-        {
-            this.isPropertyEmailRemoved = removed;
-        }
-
-        private Boolean isPropertyAskForRoleRemoved;
-
-        public Boolean getIsPropertyAskForRoleRemoved()
-        {
-            return this.isPropertyAskForRoleRemoved;
-        }
-
-        public void setIsPropertyAskForRoleRemoved(Boolean removed)
-        {
-            this.isPropertyAskForRoleRemoved = removed;
-        }
-
-        private Boolean isPropertyToNameRemoved;
-
-        public Boolean getIsPropertyToNameRemoved()
-        {
-            return this.isPropertyToNameRemoved;
-        }
-
-        public void setIsPropertyToNameRemoved(Boolean removed)
-        {
-            this.isPropertyToNameRemoved = removed;
-        }
-
-        private Boolean isPropertyAttnNameRemoved;
-
-        public Boolean getIsPropertyAttnNameRemoved()
-        {
-            return this.isPropertyAttnNameRemoved;
-        }
-
-        public void setIsPropertyAttnNameRemoved(Boolean removed)
-        {
-            this.isPropertyAttnNameRemoved = removed;
         }
 
         private Boolean isPropertyAddress1Removed;
@@ -525,6 +525,126 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
             this.isPropertyStateProvinceGeoIdRemoved = removed;
         }
 
+        private Boolean isPropertyPostalCodeGeoIdRemoved;
+
+        public Boolean getIsPropertyPostalCodeGeoIdRemoved()
+        {
+            return this.isPropertyPostalCodeGeoIdRemoved;
+        }
+
+        public void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed)
+        {
+            this.isPropertyPostalCodeGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyGeoPointIdRemoved;
+
+        public Boolean getIsPropertyGeoPointIdRemoved()
+        {
+            return this.isPropertyGeoPointIdRemoved;
+        }
+
+        public void setIsPropertyGeoPointIdRemoved(Boolean removed)
+        {
+            this.isPropertyGeoPointIdRemoved = removed;
+        }
+
+        private Boolean isPropertyEmailRemoved;
+
+        public Boolean getIsPropertyEmailRemoved()
+        {
+            return this.isPropertyEmailRemoved;
+        }
+
+        public void setIsPropertyEmailRemoved(Boolean removed)
+        {
+            this.isPropertyEmailRemoved = removed;
+        }
+
+        private Boolean isPropertyAskForRoleRemoved;
+
+        public Boolean getIsPropertyAskForRoleRemoved()
+        {
+            return this.isPropertyAskForRoleRemoved;
+        }
+
+        public void setIsPropertyAskForRoleRemoved(Boolean removed)
+        {
+            this.isPropertyAskForRoleRemoved = removed;
+        }
+
+        private Boolean isPropertyTelecomCountryCodeRemoved;
+
+        public Boolean getIsPropertyTelecomCountryCodeRemoved()
+        {
+            return this.isPropertyTelecomCountryCodeRemoved;
+        }
+
+        public void setIsPropertyTelecomCountryCodeRemoved(Boolean removed)
+        {
+            this.isPropertyTelecomCountryCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyTelecomAreaCodeRemoved;
+
+        public Boolean getIsPropertyTelecomAreaCodeRemoved()
+        {
+            return this.isPropertyTelecomAreaCodeRemoved;
+        }
+
+        public void setIsPropertyTelecomAreaCodeRemoved(Boolean removed)
+        {
+            this.isPropertyTelecomAreaCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyTelecomContactNumberRemoved;
+
+        public Boolean getIsPropertyTelecomContactNumberRemoved()
+        {
+            return this.isPropertyTelecomContactNumberRemoved;
+        }
+
+        public void setIsPropertyTelecomContactNumberRemoved(Boolean removed)
+        {
+            this.isPropertyTelecomContactNumberRemoved = removed;
+        }
+
+        private Boolean isPropertyPhysicalLocationAddressRemoved;
+
+        public Boolean getIsPropertyPhysicalLocationAddressRemoved()
+        {
+            return this.isPropertyPhysicalLocationAddressRemoved;
+        }
+
+        public void setIsPropertyPhysicalLocationAddressRemoved(Boolean removed)
+        {
+            this.isPropertyPhysicalLocationAddressRemoved = removed;
+        }
+
+        private Boolean isPropertyToNameRemoved;
+
+        public Boolean getIsPropertyToNameRemoved()
+        {
+            return this.isPropertyToNameRemoved;
+        }
+
+        public void setIsPropertyToNameRemoved(Boolean removed)
+        {
+            this.isPropertyToNameRemoved = removed;
+        }
+
+        private Boolean isPropertyAttnNameRemoved;
+
+        public Boolean getIsPropertyAttnNameRemoved()
+        {
+            return this.isPropertyAttnNameRemoved;
+        }
+
+        public void setIsPropertyAttnNameRemoved(Boolean removed)
+        {
+            this.isPropertyAttnNameRemoved = removed;
+        }
+
         private Boolean isPropertyPrefectureGeoIdRemoved;
 
         public Boolean getIsPropertyPrefectureGeoIdRemoved()
@@ -571,30 +691,6 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
         public void setIsPropertyAssocTelecomContactMechIdRemoved(Boolean removed)
         {
             this.isPropertyAssocTelecomContactMechIdRemoved = removed;
-        }
-
-        private Boolean isPropertyPostalCodeGeoIdRemoved;
-
-        public Boolean getIsPropertyPostalCodeGeoIdRemoved()
-        {
-            return this.isPropertyPostalCodeGeoIdRemoved;
-        }
-
-        public void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed)
-        {
-            this.isPropertyPostalCodeGeoIdRemoved = removed;
-        }
-
-        private Boolean isPropertyGeoPointIdRemoved;
-
-        public Boolean getIsPropertyGeoPointIdRemoved()
-        {
-            return this.isPropertyGeoPointIdRemoved;
-        }
-
-        public void setIsPropertyGeoPointIdRemoved(Boolean removed)
-        {
-            this.isPropertyGeoPointIdRemoved = removed;
         }
 
         private Boolean isPropertyCountryCodeRemoved;

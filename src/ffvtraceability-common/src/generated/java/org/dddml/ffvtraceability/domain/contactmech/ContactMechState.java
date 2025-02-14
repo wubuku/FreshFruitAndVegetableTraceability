@@ -25,6 +25,26 @@ public interface ContactMechState
 
     String getAskForName();
 
+    String getAddress1();
+
+    String getAddress2();
+
+    String getDirections();
+
+    String getCity();
+
+    String getPostalCode();
+
+    String getPostalCodeExt();
+
+    String getCountryGeoId();
+
+    String getStateProvinceGeoId();
+
+    String getPostalCodeGeoId();
+
+    String getGeoPointId();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -45,6 +65,26 @@ public interface ContactMechState
         void setInfoString(String infoString);
 
         void setAskForName(String askForName);
+
+        void setAddress1(String address1);
+
+        void setAddress2(String address2);
+
+        void setDirections(String directions);
+
+        void setCity(String city);
+
+        void setPostalCode(String postalCode);
+
+        void setPostalCodeExt(String postalCodeExt);
+
+        void setCountryGeoId(String countryGeoId);
+
+        void setStateProvinceGeoId(String stateProvinceGeoId);
+
+        void setPostalCodeGeoId(String postalCodeGeoId);
+
+        void setGeoPointId(String geoPointId);
 
         void setVersion(Long version);
 

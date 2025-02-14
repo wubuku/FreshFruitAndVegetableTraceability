@@ -62,54 +62,6 @@ public class ContactMechStateDto {
         this.askForName = askForName;
     }
 
-    private String email;
-
-    public String getEmail()
-    {
-        return this.email;
-    }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
-
-    private String askForRole;
-
-    public String getAskForRole()
-    {
-        return this.askForRole;
-    }
-
-    public void setAskForRole(String askForRole)
-    {
-        this.askForRole = askForRole;
-    }
-
-    private String toName;
-
-    public String getToName()
-    {
-        return this.toName;
-    }
-
-    public void setToName(String toName)
-    {
-        this.toName = toName;
-    }
-
-    private String attnName;
-
-    public String getAttnName()
-    {
-        return this.attnName;
-    }
-
-    public void setAttnName(String attnName)
-    {
-        this.attnName = attnName;
-    }
-
     private String address1;
 
     public String getAddress1()
@@ -206,6 +158,126 @@ public class ContactMechStateDto {
         this.stateProvinceGeoId = stateProvinceGeoId;
     }
 
+    private String postalCodeGeoId;
+
+    public String getPostalCodeGeoId()
+    {
+        return this.postalCodeGeoId;
+    }
+
+    public void setPostalCodeGeoId(String postalCodeGeoId)
+    {
+        this.postalCodeGeoId = postalCodeGeoId;
+    }
+
+    private String geoPointId;
+
+    public String getGeoPointId()
+    {
+        return this.geoPointId;
+    }
+
+    public void setGeoPointId(String geoPointId)
+    {
+        this.geoPointId = geoPointId;
+    }
+
+    private String email;
+
+    public String getEmail()
+    {
+        return this.email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    private String askForRole;
+
+    public String getAskForRole()
+    {
+        return this.askForRole;
+    }
+
+    public void setAskForRole(String askForRole)
+    {
+        this.askForRole = askForRole;
+    }
+
+    private String telecomCountryCode;
+
+    public String getTelecomCountryCode()
+    {
+        return this.telecomCountryCode;
+    }
+
+    public void setTelecomCountryCode(String telecomCountryCode)
+    {
+        this.telecomCountryCode = telecomCountryCode;
+    }
+
+    private String telecomAreaCode;
+
+    public String getTelecomAreaCode()
+    {
+        return this.telecomAreaCode;
+    }
+
+    public void setTelecomAreaCode(String telecomAreaCode)
+    {
+        this.telecomAreaCode = telecomAreaCode;
+    }
+
+    private String telecomContactNumber;
+
+    public String getTelecomContactNumber()
+    {
+        return this.telecomContactNumber;
+    }
+
+    public void setTelecomContactNumber(String telecomContactNumber)
+    {
+        this.telecomContactNumber = telecomContactNumber;
+    }
+
+    private String physicalLocationAddress;
+
+    public String getPhysicalLocationAddress()
+    {
+        return this.physicalLocationAddress;
+    }
+
+    public void setPhysicalLocationAddress(String physicalLocationAddress)
+    {
+        this.physicalLocationAddress = physicalLocationAddress;
+    }
+
+    private String toName;
+
+    public String getToName()
+    {
+        return this.toName;
+    }
+
+    public void setToName(String toName)
+    {
+        this.toName = toName;
+    }
+
+    private String attnName;
+
+    public String getAttnName()
+    {
+        return this.attnName;
+    }
+
+    public void setAttnName(String attnName)
+    {
+        this.attnName = attnName;
+    }
+
     private String prefectureGeoId;
 
     public String getPrefectureGeoId()
@@ -252,30 +324,6 @@ public class ContactMechStateDto {
     public void setAssocTelecomContactMechId(String assocTelecomContactMechId)
     {
         this.assocTelecomContactMechId = assocTelecomContactMechId;
-    }
-
-    private String postalCodeGeoId;
-
-    public String getPostalCodeGeoId()
-    {
-        return this.postalCodeGeoId;
-    }
-
-    public void setPostalCodeGeoId(String postalCodeGeoId)
-    {
-        this.postalCodeGeoId = postalCodeGeoId;
-    }
-
-    private String geoPointId;
-
-    public String getGeoPointId()
-    {
-        return this.geoPointId;
-    }
-
-    public void setGeoPointId(String geoPointId)
-    {
-        this.geoPointId = geoPointId;
     }
 
     private String countryCode;
@@ -415,6 +463,36 @@ public class ContactMechStateDto {
             if (returnedFieldsContains("AskForName")) {
                 dto.setAskForName(state.getAskForName());
             }
+            if (returnedFieldsContains("Address1")) {
+                dto.setAddress1(state.getAddress1());
+            }
+            if (returnedFieldsContains("Address2")) {
+                dto.setAddress2(state.getAddress2());
+            }
+            if (returnedFieldsContains("Directions")) {
+                dto.setDirections(state.getDirections());
+            }
+            if (returnedFieldsContains("City")) {
+                dto.setCity(state.getCity());
+            }
+            if (returnedFieldsContains("PostalCode")) {
+                dto.setPostalCode(state.getPostalCode());
+            }
+            if (returnedFieldsContains("PostalCodeExt")) {
+                dto.setPostalCodeExt(state.getPostalCodeExt());
+            }
+            if (returnedFieldsContains("CountryGeoId")) {
+                dto.setCountryGeoId(state.getCountryGeoId());
+            }
+            if (returnedFieldsContains("StateProvinceGeoId")) {
+                dto.setStateProvinceGeoId(state.getStateProvinceGeoId());
+            }
+            if (returnedFieldsContains("PostalCodeGeoId")) {
+                dto.setPostalCodeGeoId(state.getPostalCodeGeoId());
+            }
+            if (returnedFieldsContains("GeoPointId")) {
+                dto.setGeoPointId(state.getGeoPointId());
+            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }
@@ -441,6 +519,18 @@ public class ContactMechStateDto {
             if (returnedFieldsContains("AskForRole")) {
                 dto.setAskForRole(ss.getAskForRole());
             }
+            if (returnedFieldsContains("TelecomCountryCode")) {
+                dto.setTelecomCountryCode(ss.getTelecomCountryCode());
+            }
+            if (returnedFieldsContains("TelecomAreaCode")) {
+                dto.setTelecomAreaCode(ss.getTelecomAreaCode());
+            }
+            if (returnedFieldsContains("TelecomContactNumber")) {
+                dto.setTelecomContactNumber(ss.getTelecomContactNumber());
+            }
+            if (returnedFieldsContains("PhysicalLocationAddress")) {
+                dto.setPhysicalLocationAddress(ss.getPhysicalLocationAddress());
+            }
           }
           // ////////////////
 
@@ -454,30 +544,6 @@ public class ContactMechStateDto {
             if (returnedFieldsContains("AttnName")) {
                 dto.setAttnName(ss.getAttnName());
             }
-            if (returnedFieldsContains("Address1")) {
-                dto.setAddress1(ss.getAddress1());
-            }
-            if (returnedFieldsContains("Address2")) {
-                dto.setAddress2(ss.getAddress2());
-            }
-            if (returnedFieldsContains("Directions")) {
-                dto.setDirections(ss.getDirections());
-            }
-            if (returnedFieldsContains("City")) {
-                dto.setCity(ss.getCity());
-            }
-            if (returnedFieldsContains("PostalCode")) {
-                dto.setPostalCode(ss.getPostalCode());
-            }
-            if (returnedFieldsContains("PostalCodeExt")) {
-                dto.setPostalCodeExt(ss.getPostalCodeExt());
-            }
-            if (returnedFieldsContains("CountryGeoId")) {
-                dto.setCountryGeoId(ss.getCountryGeoId());
-            }
-            if (returnedFieldsContains("StateProvinceGeoId")) {
-                dto.setStateProvinceGeoId(ss.getStateProvinceGeoId());
-            }
             if (returnedFieldsContains("PrefectureGeoId")) {
                 dto.setPrefectureGeoId(ss.getPrefectureGeoId());
             }
@@ -489,12 +555,6 @@ public class ContactMechStateDto {
             }
             if (returnedFieldsContains("AssocTelecomContactMechId")) {
                 dto.setAssocTelecomContactMechId(ss.getAssocTelecomContactMechId());
-            }
-            if (returnedFieldsContains("PostalCodeGeoId")) {
-                dto.setPostalCodeGeoId(ss.getPostalCodeGeoId());
-            }
-            if (returnedFieldsContains("GeoPointId")) {
-                dto.setGeoPointId(ss.getGeoPointId());
             }
           }
           // ////////////////

@@ -59,6 +59,46 @@ public interface TelecomNumberEvent extends ContactMechEvent {
 
         void setIsPropertyAskForNameRemoved(Boolean removed);
 
+        Boolean getIsPropertyAddress1Removed();
+
+        void setIsPropertyAddress1Removed(Boolean removed);
+
+        Boolean getIsPropertyAddress2Removed();
+
+        void setIsPropertyAddress2Removed(Boolean removed);
+
+        Boolean getIsPropertyDirectionsRemoved();
+
+        void setIsPropertyDirectionsRemoved(Boolean removed);
+
+        Boolean getIsPropertyCityRemoved();
+
+        void setIsPropertyCityRemoved(Boolean removed);
+
+        Boolean getIsPropertyPostalCodeRemoved();
+
+        void setIsPropertyPostalCodeRemoved(Boolean removed);
+
+        Boolean getIsPropertyPostalCodeExtRemoved();
+
+        void setIsPropertyPostalCodeExtRemoved(Boolean removed);
+
+        Boolean getIsPropertyCountryGeoIdRemoved();
+
+        void setIsPropertyCountryGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyStateProvinceGeoIdRemoved();
+
+        void setIsPropertyStateProvinceGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyPostalCodeGeoIdRemoved();
+
+        void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyGeoPointIdRemoved();
+
+        void setIsPropertyGeoPointIdRemoved(Boolean removed);
+
 
 
     }

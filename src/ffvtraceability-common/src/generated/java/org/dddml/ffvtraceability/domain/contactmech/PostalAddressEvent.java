@@ -21,38 +21,6 @@ public interface PostalAddressEvent extends ContactMechEvent {
 
         void setAttnName(String attnName);
 
-        String getAddress1();
-
-        void setAddress1(String address1);
-
-        String getAddress2();
-
-        void setAddress2(String address2);
-
-        String getDirections();
-
-        void setDirections(String directions);
-
-        String getCity();
-
-        void setCity(String city);
-
-        String getPostalCode();
-
-        void setPostalCode(String postalCode);
-
-        String getPostalCodeExt();
-
-        void setPostalCodeExt(String postalCodeExt);
-
-        String getCountryGeoId();
-
-        void setCountryGeoId(String countryGeoId);
-
-        String getStateProvinceGeoId();
-
-        void setStateProvinceGeoId(String stateProvinceGeoId);
-
         String getPrefectureGeoId();
 
         void setPrefectureGeoId(String prefectureGeoId);
@@ -68,14 +36,6 @@ public interface PostalAddressEvent extends ContactMechEvent {
         String getAssocTelecomContactMechId();
 
         void setAssocTelecomContactMechId(String assocTelecomContactMechId);
-
-        String getPostalCodeGeoId();
-
-        void setPostalCodeGeoId(String postalCodeGeoId);
-
-        String getGeoPointId();
-
-        void setGeoPointId(String geoPointId);
 
     }
 
@@ -94,6 +54,34 @@ public interface PostalAddressEvent extends ContactMechEvent {
         Boolean getIsPropertyAttnNameRemoved();
 
         void setIsPropertyAttnNameRemoved(Boolean removed);
+
+        Boolean getIsPropertyPrefectureGeoIdRemoved();
+
+        void setIsPropertyPrefectureGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyCountyGeoIdRemoved();
+
+        void setIsPropertyCountyGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyTownGeoIdRemoved();
+
+        void setIsPropertyTownGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyAssocTelecomContactMechIdRemoved();
+
+        void setIsPropertyAssocTelecomContactMechIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyContactMechTypeIdRemoved();
+
+        void setIsPropertyContactMechTypeIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyInfoStringRemoved();
+
+        void setIsPropertyInfoStringRemoved(Boolean removed);
+
+        Boolean getIsPropertyAskForNameRemoved();
+
+        void setIsPropertyAskForNameRemoved(Boolean removed);
 
         Boolean getIsPropertyAddress1Removed();
 
@@ -127,22 +115,6 @@ public interface PostalAddressEvent extends ContactMechEvent {
 
         void setIsPropertyStateProvinceGeoIdRemoved(Boolean removed);
 
-        Boolean getIsPropertyPrefectureGeoIdRemoved();
-
-        void setIsPropertyPrefectureGeoIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyCountyGeoIdRemoved();
-
-        void setIsPropertyCountyGeoIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyTownGeoIdRemoved();
-
-        void setIsPropertyTownGeoIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyAssocTelecomContactMechIdRemoved();
-
-        void setIsPropertyAssocTelecomContactMechIdRemoved(Boolean removed);
-
         Boolean getIsPropertyPostalCodeGeoIdRemoved();
 
         void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed);
@@ -150,18 +122,6 @@ public interface PostalAddressEvent extends ContactMechEvent {
         Boolean getIsPropertyGeoPointIdRemoved();
 
         void setIsPropertyGeoPointIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyContactMechTypeIdRemoved();
-
-        void setIsPropertyContactMechTypeIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyInfoStringRemoved();
-
-        void setIsPropertyInfoStringRemoved(Boolean removed);
-
-        Boolean getIsPropertyAskForNameRemoved();
-
-        void setIsPropertyAskForNameRemoved(Boolean removed);
 
 
 

@@ -175,6 +175,106 @@ public abstract class AbstractTelecomNumberEvent extends AbstractContactMechEven
             this.isPropertyAskForNameRemoved = removed;
         }
 
+        private Boolean isPropertyAddress1Removed;
+
+        public Boolean getIsPropertyAddress1Removed() {
+            return this.isPropertyAddress1Removed;
+        }
+
+        public void setIsPropertyAddress1Removed(Boolean removed) {
+            this.isPropertyAddress1Removed = removed;
+        }
+
+        private Boolean isPropertyAddress2Removed;
+
+        public Boolean getIsPropertyAddress2Removed() {
+            return this.isPropertyAddress2Removed;
+        }
+
+        public void setIsPropertyAddress2Removed(Boolean removed) {
+            this.isPropertyAddress2Removed = removed;
+        }
+
+        private Boolean isPropertyDirectionsRemoved;
+
+        public Boolean getIsPropertyDirectionsRemoved() {
+            return this.isPropertyDirectionsRemoved;
+        }
+
+        public void setIsPropertyDirectionsRemoved(Boolean removed) {
+            this.isPropertyDirectionsRemoved = removed;
+        }
+
+        private Boolean isPropertyCityRemoved;
+
+        public Boolean getIsPropertyCityRemoved() {
+            return this.isPropertyCityRemoved;
+        }
+
+        public void setIsPropertyCityRemoved(Boolean removed) {
+            this.isPropertyCityRemoved = removed;
+        }
+
+        private Boolean isPropertyPostalCodeRemoved;
+
+        public Boolean getIsPropertyPostalCodeRemoved() {
+            return this.isPropertyPostalCodeRemoved;
+        }
+
+        public void setIsPropertyPostalCodeRemoved(Boolean removed) {
+            this.isPropertyPostalCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyPostalCodeExtRemoved;
+
+        public Boolean getIsPropertyPostalCodeExtRemoved() {
+            return this.isPropertyPostalCodeExtRemoved;
+        }
+
+        public void setIsPropertyPostalCodeExtRemoved(Boolean removed) {
+            this.isPropertyPostalCodeExtRemoved = removed;
+        }
+
+        private Boolean isPropertyCountryGeoIdRemoved;
+
+        public Boolean getIsPropertyCountryGeoIdRemoved() {
+            return this.isPropertyCountryGeoIdRemoved;
+        }
+
+        public void setIsPropertyCountryGeoIdRemoved(Boolean removed) {
+            this.isPropertyCountryGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyStateProvinceGeoIdRemoved;
+
+        public Boolean getIsPropertyStateProvinceGeoIdRemoved() {
+            return this.isPropertyStateProvinceGeoIdRemoved;
+        }
+
+        public void setIsPropertyStateProvinceGeoIdRemoved(Boolean removed) {
+            this.isPropertyStateProvinceGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyPostalCodeGeoIdRemoved;
+
+        public Boolean getIsPropertyPostalCodeGeoIdRemoved() {
+            return this.isPropertyPostalCodeGeoIdRemoved;
+        }
+
+        public void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed) {
+            this.isPropertyPostalCodeGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyGeoPointIdRemoved;
+
+        public Boolean getIsPropertyGeoPointIdRemoved() {
+            return this.isPropertyGeoPointIdRemoved;
+        }
+
+        public void setIsPropertyGeoPointIdRemoved(Boolean removed) {
+            this.isPropertyGeoPointIdRemoved = removed;
+        }
+
 
     }
 

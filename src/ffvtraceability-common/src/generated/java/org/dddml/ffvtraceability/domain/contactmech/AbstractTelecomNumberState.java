@@ -87,6 +87,16 @@ public abstract class AbstractTelecomNumberState extends AbstractContactMechStat
         this.setContactMechTypeId(e.getContactMechTypeId());
         this.setInfoString(e.getInfoString());
         this.setAskForName(e.getAskForName());
+        this.setAddress1(e.getAddress1());
+        this.setAddress2(e.getAddress2());
+        this.setDirections(e.getDirections());
+        this.setCity(e.getCity());
+        this.setPostalCode(e.getPostalCode());
+        this.setPostalCodeExt(e.getPostalCodeExt());
+        this.setCountryGeoId(e.getCountryGeoId());
+        this.setStateProvinceGeoId(e.getStateProvinceGeoId());
+        this.setPostalCodeGeoId(e.getPostalCodeGeoId());
+        this.setGeoPointId(e.getGeoPointId());
         this.setCountryCode(e.getCountryCode());
         this.setAreaCode(e.getAreaCode());
         this.setContactNumber(e.getContactNumber());
@@ -108,6 +118,16 @@ public abstract class AbstractTelecomNumberState extends AbstractContactMechStat
         this.setContactMechTypeId(s.getContactMechTypeId());
         this.setInfoString(s.getInfoString());
         this.setAskForName(s.getAskForName());
+        this.setAddress1(s.getAddress1());
+        this.setAddress2(s.getAddress2());
+        this.setDirections(s.getDirections());
+        this.setCity(s.getCity());
+        this.setPostalCode(s.getPostalCode());
+        this.setPostalCodeExt(s.getPostalCodeExt());
+        this.setCountryGeoId(s.getCountryGeoId());
+        this.setStateProvinceGeoId(s.getStateProvinceGeoId());
+        this.setPostalCodeGeoId(s.getPostalCodeGeoId());
+        this.setGeoPointId(s.getGeoPointId());
         this.setCountryCode(s.getCountryCode());
         this.setAreaCode(s.getAreaCode());
         this.setContactNumber(s.getContactNumber());
@@ -136,6 +156,76 @@ public abstract class AbstractTelecomNumberState extends AbstractContactMechStat
             }
         } else {
             this.setAskForName(e.getAskForName());
+        }
+        if (e.getAddress1() == null) {
+            if (e.getIsPropertyAddress1Removed() != null && e.getIsPropertyAddress1Removed()) {
+                this.setAddress1(null);
+            }
+        } else {
+            this.setAddress1(e.getAddress1());
+        }
+        if (e.getAddress2() == null) {
+            if (e.getIsPropertyAddress2Removed() != null && e.getIsPropertyAddress2Removed()) {
+                this.setAddress2(null);
+            }
+        } else {
+            this.setAddress2(e.getAddress2());
+        }
+        if (e.getDirections() == null) {
+            if (e.getIsPropertyDirectionsRemoved() != null && e.getIsPropertyDirectionsRemoved()) {
+                this.setDirections(null);
+            }
+        } else {
+            this.setDirections(e.getDirections());
+        }
+        if (e.getCity() == null) {
+            if (e.getIsPropertyCityRemoved() != null && e.getIsPropertyCityRemoved()) {
+                this.setCity(null);
+            }
+        } else {
+            this.setCity(e.getCity());
+        }
+        if (e.getPostalCode() == null) {
+            if (e.getIsPropertyPostalCodeRemoved() != null && e.getIsPropertyPostalCodeRemoved()) {
+                this.setPostalCode(null);
+            }
+        } else {
+            this.setPostalCode(e.getPostalCode());
+        }
+        if (e.getPostalCodeExt() == null) {
+            if (e.getIsPropertyPostalCodeExtRemoved() != null && e.getIsPropertyPostalCodeExtRemoved()) {
+                this.setPostalCodeExt(null);
+            }
+        } else {
+            this.setPostalCodeExt(e.getPostalCodeExt());
+        }
+        if (e.getCountryGeoId() == null) {
+            if (e.getIsPropertyCountryGeoIdRemoved() != null && e.getIsPropertyCountryGeoIdRemoved()) {
+                this.setCountryGeoId(null);
+            }
+        } else {
+            this.setCountryGeoId(e.getCountryGeoId());
+        }
+        if (e.getStateProvinceGeoId() == null) {
+            if (e.getIsPropertyStateProvinceGeoIdRemoved() != null && e.getIsPropertyStateProvinceGeoIdRemoved()) {
+                this.setStateProvinceGeoId(null);
+            }
+        } else {
+            this.setStateProvinceGeoId(e.getStateProvinceGeoId());
+        }
+        if (e.getPostalCodeGeoId() == null) {
+            if (e.getIsPropertyPostalCodeGeoIdRemoved() != null && e.getIsPropertyPostalCodeGeoIdRemoved()) {
+                this.setPostalCodeGeoId(null);
+            }
+        } else {
+            this.setPostalCodeGeoId(e.getPostalCodeGeoId());
+        }
+        if (e.getGeoPointId() == null) {
+            if (e.getIsPropertyGeoPointIdRemoved() != null && e.getIsPropertyGeoPointIdRemoved()) {
+                this.setGeoPointId(null);
+            }
+        } else {
+            this.setGeoPointId(e.getGeoPointId());
         }
         if (e.getCountryCode() == null) {
             if (e.getIsPropertyCountryCodeRemoved() != null && e.getIsPropertyCountryCodeRemoved()) {

@@ -60,22 +60,6 @@ public interface ContactMechCommand extends Command {
 
         void setAskForName(String askForName);
 
-        String getEmail();
-
-        void setEmail(String email);
-
-        String getAskForRole();
-
-        void setAskForRole(String askForRole);
-
-        String getToName();
-
-        void setToName(String toName);
-
-        String getAttnName();
-
-        void setAttnName(String attnName);
-
         String getAddress1();
 
         void setAddress1(String address1);
@@ -108,6 +92,46 @@ public interface ContactMechCommand extends Command {
 
         void setStateProvinceGeoId(String stateProvinceGeoId);
 
+        String getPostalCodeGeoId();
+
+        void setPostalCodeGeoId(String postalCodeGeoId);
+
+        String getGeoPointId();
+
+        void setGeoPointId(String geoPointId);
+
+        String getEmail();
+
+        void setEmail(String email);
+
+        String getAskForRole();
+
+        void setAskForRole(String askForRole);
+
+        String getTelecomCountryCode();
+
+        void setTelecomCountryCode(String telecomCountryCode);
+
+        String getTelecomAreaCode();
+
+        void setTelecomAreaCode(String telecomAreaCode);
+
+        String getTelecomContactNumber();
+
+        void setTelecomContactNumber(String telecomContactNumber);
+
+        String getPhysicalLocationAddress();
+
+        void setPhysicalLocationAddress(String physicalLocationAddress);
+
+        String getToName();
+
+        void setToName(String toName);
+
+        String getAttnName();
+
+        void setAttnName(String attnName);
+
         String getPrefectureGeoId();
 
         void setPrefectureGeoId(String prefectureGeoId);
@@ -123,14 +147,6 @@ public interface ContactMechCommand extends Command {
         String getAssocTelecomContactMechId();
 
         void setAssocTelecomContactMechId(String assocTelecomContactMechId);
-
-        String getPostalCodeGeoId();
-
-        void setPostalCodeGeoId(String postalCodeGeoId);
-
-        String getGeoPointId();
-
-        void setGeoPointId(String geoPointId);
 
         String getCountryCode();
 
@@ -161,22 +177,6 @@ public interface ContactMechCommand extends Command {
         Boolean getIsPropertyAskForNameRemoved();
 
         void setIsPropertyAskForNameRemoved(Boolean removed);
-
-        Boolean getIsPropertyEmailRemoved();
-
-        void setIsPropertyEmailRemoved(Boolean removed);
-
-        Boolean getIsPropertyAskForRoleRemoved();
-
-        void setIsPropertyAskForRoleRemoved(Boolean removed);
-
-        Boolean getIsPropertyToNameRemoved();
-
-        void setIsPropertyToNameRemoved(Boolean removed);
-
-        Boolean getIsPropertyAttnNameRemoved();
-
-        void setIsPropertyAttnNameRemoved(Boolean removed);
 
         Boolean getIsPropertyAddress1Removed();
 
@@ -210,6 +210,46 @@ public interface ContactMechCommand extends Command {
 
         void setIsPropertyStateProvinceGeoIdRemoved(Boolean removed);
 
+        Boolean getIsPropertyPostalCodeGeoIdRemoved();
+
+        void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyGeoPointIdRemoved();
+
+        void setIsPropertyGeoPointIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyEmailRemoved();
+
+        void setIsPropertyEmailRemoved(Boolean removed);
+
+        Boolean getIsPropertyAskForRoleRemoved();
+
+        void setIsPropertyAskForRoleRemoved(Boolean removed);
+
+        Boolean getIsPropertyTelecomCountryCodeRemoved();
+
+        void setIsPropertyTelecomCountryCodeRemoved(Boolean removed);
+
+        Boolean getIsPropertyTelecomAreaCodeRemoved();
+
+        void setIsPropertyTelecomAreaCodeRemoved(Boolean removed);
+
+        Boolean getIsPropertyTelecomContactNumberRemoved();
+
+        void setIsPropertyTelecomContactNumberRemoved(Boolean removed);
+
+        Boolean getIsPropertyPhysicalLocationAddressRemoved();
+
+        void setIsPropertyPhysicalLocationAddressRemoved(Boolean removed);
+
+        Boolean getIsPropertyToNameRemoved();
+
+        void setIsPropertyToNameRemoved(Boolean removed);
+
+        Boolean getIsPropertyAttnNameRemoved();
+
+        void setIsPropertyAttnNameRemoved(Boolean removed);
+
         Boolean getIsPropertyPrefectureGeoIdRemoved();
 
         void setIsPropertyPrefectureGeoIdRemoved(Boolean removed);
@@ -225,14 +265,6 @@ public interface ContactMechCommand extends Command {
         Boolean getIsPropertyAssocTelecomContactMechIdRemoved();
 
         void setIsPropertyAssocTelecomContactMechIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyPostalCodeGeoIdRemoved();
-
-        void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyGeoPointIdRemoved();
-
-        void setIsPropertyGeoPointIdRemoved(Boolean removed);
 
         Boolean getIsPropertyCountryCodeRemoved();
 

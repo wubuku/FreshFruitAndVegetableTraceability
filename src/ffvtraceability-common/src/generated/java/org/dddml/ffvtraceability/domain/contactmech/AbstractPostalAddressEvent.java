@@ -67,102 +67,6 @@ public abstract class AbstractPostalAddressEvent extends AbstractContactMechEven
             this.attnName = attnName;
         }
 
-        private String address1;
-
-        public String getAddress1()
-        {
-            return this.address1;
-        }
-
-        public void setAddress1(String address1)
-        {
-            this.address1 = address1;
-        }
-
-        private String address2;
-
-        public String getAddress2()
-        {
-            return this.address2;
-        }
-
-        public void setAddress2(String address2)
-        {
-            this.address2 = address2;
-        }
-
-        private String directions;
-
-        public String getDirections()
-        {
-            return this.directions;
-        }
-
-        public void setDirections(String directions)
-        {
-            this.directions = directions;
-        }
-
-        private String city;
-
-        public String getCity()
-        {
-            return this.city;
-        }
-
-        public void setCity(String city)
-        {
-            this.city = city;
-        }
-
-        private String postalCode;
-
-        public String getPostalCode()
-        {
-            return this.postalCode;
-        }
-
-        public void setPostalCode(String postalCode)
-        {
-            this.postalCode = postalCode;
-        }
-
-        private String postalCodeExt;
-
-        public String getPostalCodeExt()
-        {
-            return this.postalCodeExt;
-        }
-
-        public void setPostalCodeExt(String postalCodeExt)
-        {
-            this.postalCodeExt = postalCodeExt;
-        }
-
-        private String countryGeoId;
-
-        public String getCountryGeoId()
-        {
-            return this.countryGeoId;
-        }
-
-        public void setCountryGeoId(String countryGeoId)
-        {
-            this.countryGeoId = countryGeoId;
-        }
-
-        private String stateProvinceGeoId;
-
-        public String getStateProvinceGeoId()
-        {
-            return this.stateProvinceGeoId;
-        }
-
-        public void setStateProvinceGeoId(String stateProvinceGeoId)
-        {
-            this.stateProvinceGeoId = stateProvinceGeoId;
-        }
-
         private String prefectureGeoId;
 
         public String getPrefectureGeoId()
@@ -209,30 +113,6 @@ public abstract class AbstractPostalAddressEvent extends AbstractContactMechEven
         public void setAssocTelecomContactMechId(String assocTelecomContactMechId)
         {
             this.assocTelecomContactMechId = assocTelecomContactMechId;
-        }
-
-        private String postalCodeGeoId;
-
-        public String getPostalCodeGeoId()
-        {
-            return this.postalCodeGeoId;
-        }
-
-        public void setPostalCodeGeoId(String postalCodeGeoId)
-        {
-            this.postalCodeGeoId = postalCodeGeoId;
-        }
-
-        private String geoPointId;
-
-        public String getGeoPointId()
-        {
-            return this.geoPointId;
-        }
-
-        public void setGeoPointId(String geoPointId)
-        {
-            this.geoPointId = geoPointId;
         }
 
         protected AbstractPostalAddressStateEvent(ContactMechEventId eventId) {
@@ -289,6 +169,76 @@ public abstract class AbstractPostalAddressEvent extends AbstractContactMechEven
 
         public void setIsPropertyAttnNameRemoved(Boolean removed) {
             this.isPropertyAttnNameRemoved = removed;
+        }
+
+        private Boolean isPropertyPrefectureGeoIdRemoved;
+
+        public Boolean getIsPropertyPrefectureGeoIdRemoved() {
+            return this.isPropertyPrefectureGeoIdRemoved;
+        }
+
+        public void setIsPropertyPrefectureGeoIdRemoved(Boolean removed) {
+            this.isPropertyPrefectureGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyCountyGeoIdRemoved;
+
+        public Boolean getIsPropertyCountyGeoIdRemoved() {
+            return this.isPropertyCountyGeoIdRemoved;
+        }
+
+        public void setIsPropertyCountyGeoIdRemoved(Boolean removed) {
+            this.isPropertyCountyGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyTownGeoIdRemoved;
+
+        public Boolean getIsPropertyTownGeoIdRemoved() {
+            return this.isPropertyTownGeoIdRemoved;
+        }
+
+        public void setIsPropertyTownGeoIdRemoved(Boolean removed) {
+            this.isPropertyTownGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyAssocTelecomContactMechIdRemoved;
+
+        public Boolean getIsPropertyAssocTelecomContactMechIdRemoved() {
+            return this.isPropertyAssocTelecomContactMechIdRemoved;
+        }
+
+        public void setIsPropertyAssocTelecomContactMechIdRemoved(Boolean removed) {
+            this.isPropertyAssocTelecomContactMechIdRemoved = removed;
+        }
+
+        private Boolean isPropertyContactMechTypeIdRemoved;
+
+        public Boolean getIsPropertyContactMechTypeIdRemoved() {
+            return this.isPropertyContactMechTypeIdRemoved;
+        }
+
+        public void setIsPropertyContactMechTypeIdRemoved(Boolean removed) {
+            this.isPropertyContactMechTypeIdRemoved = removed;
+        }
+
+        private Boolean isPropertyInfoStringRemoved;
+
+        public Boolean getIsPropertyInfoStringRemoved() {
+            return this.isPropertyInfoStringRemoved;
+        }
+
+        public void setIsPropertyInfoStringRemoved(Boolean removed) {
+            this.isPropertyInfoStringRemoved = removed;
+        }
+
+        private Boolean isPropertyAskForNameRemoved;
+
+        public Boolean getIsPropertyAskForNameRemoved() {
+            return this.isPropertyAskForNameRemoved;
+        }
+
+        public void setIsPropertyAskForNameRemoved(Boolean removed) {
+            this.isPropertyAskForNameRemoved = removed;
         }
 
         private Boolean isPropertyAddress1Removed;
@@ -371,46 +321,6 @@ public abstract class AbstractPostalAddressEvent extends AbstractContactMechEven
             this.isPropertyStateProvinceGeoIdRemoved = removed;
         }
 
-        private Boolean isPropertyPrefectureGeoIdRemoved;
-
-        public Boolean getIsPropertyPrefectureGeoIdRemoved() {
-            return this.isPropertyPrefectureGeoIdRemoved;
-        }
-
-        public void setIsPropertyPrefectureGeoIdRemoved(Boolean removed) {
-            this.isPropertyPrefectureGeoIdRemoved = removed;
-        }
-
-        private Boolean isPropertyCountyGeoIdRemoved;
-
-        public Boolean getIsPropertyCountyGeoIdRemoved() {
-            return this.isPropertyCountyGeoIdRemoved;
-        }
-
-        public void setIsPropertyCountyGeoIdRemoved(Boolean removed) {
-            this.isPropertyCountyGeoIdRemoved = removed;
-        }
-
-        private Boolean isPropertyTownGeoIdRemoved;
-
-        public Boolean getIsPropertyTownGeoIdRemoved() {
-            return this.isPropertyTownGeoIdRemoved;
-        }
-
-        public void setIsPropertyTownGeoIdRemoved(Boolean removed) {
-            this.isPropertyTownGeoIdRemoved = removed;
-        }
-
-        private Boolean isPropertyAssocTelecomContactMechIdRemoved;
-
-        public Boolean getIsPropertyAssocTelecomContactMechIdRemoved() {
-            return this.isPropertyAssocTelecomContactMechIdRemoved;
-        }
-
-        public void setIsPropertyAssocTelecomContactMechIdRemoved(Boolean removed) {
-            this.isPropertyAssocTelecomContactMechIdRemoved = removed;
-        }
-
         private Boolean isPropertyPostalCodeGeoIdRemoved;
 
         public Boolean getIsPropertyPostalCodeGeoIdRemoved() {
@@ -429,36 +339,6 @@ public abstract class AbstractPostalAddressEvent extends AbstractContactMechEven
 
         public void setIsPropertyGeoPointIdRemoved(Boolean removed) {
             this.isPropertyGeoPointIdRemoved = removed;
-        }
-
-        private Boolean isPropertyContactMechTypeIdRemoved;
-
-        public Boolean getIsPropertyContactMechTypeIdRemoved() {
-            return this.isPropertyContactMechTypeIdRemoved;
-        }
-
-        public void setIsPropertyContactMechTypeIdRemoved(Boolean removed) {
-            this.isPropertyContactMechTypeIdRemoved = removed;
-        }
-
-        private Boolean isPropertyInfoStringRemoved;
-
-        public Boolean getIsPropertyInfoStringRemoved() {
-            return this.isPropertyInfoStringRemoved;
-        }
-
-        public void setIsPropertyInfoStringRemoved(Boolean removed) {
-            this.isPropertyInfoStringRemoved = removed;
-        }
-
-        private Boolean isPropertyAskForNameRemoved;
-
-        public Boolean getIsPropertyAskForNameRemoved() {
-            return this.isPropertyAskForNameRemoved;
-        }
-
-        public void setIsPropertyAskForNameRemoved(Boolean removed) {
-            this.isPropertyAskForNameRemoved = removed;
         }
 
 

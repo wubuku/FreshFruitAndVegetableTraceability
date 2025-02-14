@@ -42,7 +42,7 @@ public class HibernateMiscContactMechStateQueryRepository implements MiscContact
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ContactMechId", "ContactMechTypeId", "InfoString", "AskForName", "Email", "AskForRole", "ToName", "AttnName", "Address1", "Address2", "Directions", "City", "PostalCode", "PostalCodeExt", "CountryGeoId", "StateProvinceGeoId", "PrefectureGeoId", "CountyGeoId", "TownGeoId", "AssocTelecomContactMechId", "PostalCodeGeoId", "GeoPointId", "CountryCode", "AreaCode", "ContactNumber", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ContactMechId", "ContactMechTypeId", "InfoString", "AskForName", "Address1", "Address2", "Directions", "City", "PostalCode", "PostalCodeExt", "CountryGeoId", "StateProvinceGeoId", "PostalCodeGeoId", "GeoPointId", "Email", "AskForRole", "TelecomCountryCode", "TelecomAreaCode", "TelecomContactNumber", "PhysicalLocationAddress", "ToName", "AttnName", "PrefectureGeoId", "CountyGeoId", "TownGeoId", "AssocTelecomContactMechId", "CountryCode", "AreaCode", "ContactNumber", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

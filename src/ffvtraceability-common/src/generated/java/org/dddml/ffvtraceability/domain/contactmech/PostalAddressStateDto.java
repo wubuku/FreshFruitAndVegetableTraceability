@@ -55,6 +55,36 @@ public class PostalAddressStateDto extends ContactMechStateDto {
             if (returnedFieldsContains("AskForName")) {
                 dto.setAskForName(state.getAskForName());
             }
+            if (returnedFieldsContains("Address1")) {
+                dto.setAddress1(state.getAddress1());
+            }
+            if (returnedFieldsContains("Address2")) {
+                dto.setAddress2(state.getAddress2());
+            }
+            if (returnedFieldsContains("Directions")) {
+                dto.setDirections(state.getDirections());
+            }
+            if (returnedFieldsContains("City")) {
+                dto.setCity(state.getCity());
+            }
+            if (returnedFieldsContains("PostalCode")) {
+                dto.setPostalCode(state.getPostalCode());
+            }
+            if (returnedFieldsContains("PostalCodeExt")) {
+                dto.setPostalCodeExt(state.getPostalCodeExt());
+            }
+            if (returnedFieldsContains("CountryGeoId")) {
+                dto.setCountryGeoId(state.getCountryGeoId());
+            }
+            if (returnedFieldsContains("StateProvinceGeoId")) {
+                dto.setStateProvinceGeoId(state.getStateProvinceGeoId());
+            }
+            if (returnedFieldsContains("PostalCodeGeoId")) {
+                dto.setPostalCodeGeoId(state.getPostalCodeGeoId());
+            }
+            if (returnedFieldsContains("GeoPointId")) {
+                dto.setGeoPointId(state.getGeoPointId());
+            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }
@@ -81,30 +111,6 @@ public class PostalAddressStateDto extends ContactMechStateDto {
             if (returnedFieldsContains("AttnName")) {
                 dto.setAttnName(ss.getAttnName());
             }
-            if (returnedFieldsContains("Address1")) {
-                dto.setAddress1(ss.getAddress1());
-            }
-            if (returnedFieldsContains("Address2")) {
-                dto.setAddress2(ss.getAddress2());
-            }
-            if (returnedFieldsContains("Directions")) {
-                dto.setDirections(ss.getDirections());
-            }
-            if (returnedFieldsContains("City")) {
-                dto.setCity(ss.getCity());
-            }
-            if (returnedFieldsContains("PostalCode")) {
-                dto.setPostalCode(ss.getPostalCode());
-            }
-            if (returnedFieldsContains("PostalCodeExt")) {
-                dto.setPostalCodeExt(ss.getPostalCodeExt());
-            }
-            if (returnedFieldsContains("CountryGeoId")) {
-                dto.setCountryGeoId(ss.getCountryGeoId());
-            }
-            if (returnedFieldsContains("StateProvinceGeoId")) {
-                dto.setStateProvinceGeoId(ss.getStateProvinceGeoId());
-            }
             if (returnedFieldsContains("PrefectureGeoId")) {
                 dto.setPrefectureGeoId(ss.getPrefectureGeoId());
             }
@@ -116,12 +122,6 @@ public class PostalAddressStateDto extends ContactMechStateDto {
             }
             if (returnedFieldsContains("AssocTelecomContactMechId")) {
                 dto.setAssocTelecomContactMechId(ss.getAssocTelecomContactMechId());
-            }
-            if (returnedFieldsContains("PostalCodeGeoId")) {
-                dto.setPostalCodeGeoId(ss.getPostalCodeGeoId());
-            }
-            if (returnedFieldsContains("GeoPointId")) {
-                dto.setGeoPointId(ss.getGeoPointId());
             }
           }
           // ////////////////

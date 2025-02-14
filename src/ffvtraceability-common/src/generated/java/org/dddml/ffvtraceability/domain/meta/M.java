@@ -7380,10 +7380,6 @@ public class M {
             "contactMechTypeId",
             "infoString",
             "askForName",
-            "email",
-            "askForRole",
-            "toName",
-            "attnName",
             "address1",
             "address2",
             "directions",
@@ -7392,12 +7388,20 @@ public class M {
             "postalCodeExt",
             "countryGeoId",
             "stateProvinceGeoId",
+            "postalCodeGeoId",
+            "geoPointId",
+            "email",
+            "askForRole",
+            "telecomCountryCode",
+            "telecomAreaCode",
+            "telecomContactNumber",
+            "physicalLocationAddress",
+            "toName",
+            "attnName",
             "prefectureGeoId",
             "countyGeoId",
             "townGeoId",
             "assocTelecomContactMechId",
-            "postalCodeGeoId",
-            "geoPointId",
             "countryCode",
             "areaCode",
             "contactNumber",
@@ -7411,6 +7415,10 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
+            "String",
             "String",
             "String",
             "String",
@@ -7465,14 +7473,6 @@ public class M {
         aliasMap.put("InfoString", "infoString");
         aliasMap.put("askForName", "askForName");
         aliasMap.put("AskForName", "askForName");
-        aliasMap.put("email", "email");
-        aliasMap.put("Email", "email");
-        aliasMap.put("askForRole", "askForRole");
-        aliasMap.put("AskForRole", "askForRole");
-        aliasMap.put("toName", "toName");
-        aliasMap.put("ToName", "toName");
-        aliasMap.put("attnName", "attnName");
-        aliasMap.put("AttnName", "attnName");
         aliasMap.put("address1", "address1");
         aliasMap.put("Address1", "address1");
         aliasMap.put("address2", "address2");
@@ -7489,6 +7489,26 @@ public class M {
         aliasMap.put("CountryGeoId", "countryGeoId");
         aliasMap.put("stateProvinceGeoId", "stateProvinceGeoId");
         aliasMap.put("StateProvinceGeoId", "stateProvinceGeoId");
+        aliasMap.put("postalCodeGeoId", "postalCodeGeoId");
+        aliasMap.put("PostalCodeGeoId", "postalCodeGeoId");
+        aliasMap.put("geoPointId", "geoPointId");
+        aliasMap.put("GeoPointId", "geoPointId");
+        aliasMap.put("email", "email");
+        aliasMap.put("Email", "email");
+        aliasMap.put("askForRole", "askForRole");
+        aliasMap.put("AskForRole", "askForRole");
+        aliasMap.put("telecomCountryCode", "telecomCountryCode");
+        aliasMap.put("TelecomCountryCode", "telecomCountryCode");
+        aliasMap.put("telecomAreaCode", "telecomAreaCode");
+        aliasMap.put("TelecomAreaCode", "telecomAreaCode");
+        aliasMap.put("telecomContactNumber", "telecomContactNumber");
+        aliasMap.put("TelecomContactNumber", "telecomContactNumber");
+        aliasMap.put("physicalLocationAddress", "physicalLocationAddress");
+        aliasMap.put("PhysicalLocationAddress", "physicalLocationAddress");
+        aliasMap.put("toName", "toName");
+        aliasMap.put("ToName", "toName");
+        aliasMap.put("attnName", "attnName");
+        aliasMap.put("AttnName", "attnName");
         aliasMap.put("prefectureGeoId", "prefectureGeoId");
         aliasMap.put("PrefectureGeoId", "prefectureGeoId");
         aliasMap.put("countyGeoId", "countyGeoId");
@@ -7497,10 +7517,6 @@ public class M {
         aliasMap.put("TownGeoId", "townGeoId");
         aliasMap.put("assocTelecomContactMechId", "assocTelecomContactMechId");
         aliasMap.put("AssocTelecomContactMechId", "assocTelecomContactMechId");
-        aliasMap.put("postalCodeGeoId", "postalCodeGeoId");
-        aliasMap.put("PostalCodeGeoId", "postalCodeGeoId");
-        aliasMap.put("geoPointId", "geoPointId");
-        aliasMap.put("GeoPointId", "geoPointId");
         aliasMap.put("countryCode", "countryCode");
         aliasMap.put("CountryCode", "countryCode");
         aliasMap.put("areaCode", "areaCode");

@@ -67,6 +67,54 @@ public abstract class AbstractMiscContactMechEvent extends AbstractContactMechEv
             this.askForRole = askForRole;
         }
 
+        private String telecomCountryCode;
+
+        public String getTelecomCountryCode()
+        {
+            return this.telecomCountryCode;
+        }
+
+        public void setTelecomCountryCode(String telecomCountryCode)
+        {
+            this.telecomCountryCode = telecomCountryCode;
+        }
+
+        private String telecomAreaCode;
+
+        public String getTelecomAreaCode()
+        {
+            return this.telecomAreaCode;
+        }
+
+        public void setTelecomAreaCode(String telecomAreaCode)
+        {
+            this.telecomAreaCode = telecomAreaCode;
+        }
+
+        private String telecomContactNumber;
+
+        public String getTelecomContactNumber()
+        {
+            return this.telecomContactNumber;
+        }
+
+        public void setTelecomContactNumber(String telecomContactNumber)
+        {
+            this.telecomContactNumber = telecomContactNumber;
+        }
+
+        private String physicalLocationAddress;
+
+        public String getPhysicalLocationAddress()
+        {
+            return this.physicalLocationAddress;
+        }
+
+        public void setPhysicalLocationAddress(String physicalLocationAddress)
+        {
+            this.physicalLocationAddress = physicalLocationAddress;
+        }
+
         protected AbstractMiscContactMechStateEvent(ContactMechEventId eventId) {
             super(eventId);
         }
@@ -123,6 +171,46 @@ public abstract class AbstractMiscContactMechEvent extends AbstractContactMechEv
             this.isPropertyAskForRoleRemoved = removed;
         }
 
+        private Boolean isPropertyTelecomCountryCodeRemoved;
+
+        public Boolean getIsPropertyTelecomCountryCodeRemoved() {
+            return this.isPropertyTelecomCountryCodeRemoved;
+        }
+
+        public void setIsPropertyTelecomCountryCodeRemoved(Boolean removed) {
+            this.isPropertyTelecomCountryCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyTelecomAreaCodeRemoved;
+
+        public Boolean getIsPropertyTelecomAreaCodeRemoved() {
+            return this.isPropertyTelecomAreaCodeRemoved;
+        }
+
+        public void setIsPropertyTelecomAreaCodeRemoved(Boolean removed) {
+            this.isPropertyTelecomAreaCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyTelecomContactNumberRemoved;
+
+        public Boolean getIsPropertyTelecomContactNumberRemoved() {
+            return this.isPropertyTelecomContactNumberRemoved;
+        }
+
+        public void setIsPropertyTelecomContactNumberRemoved(Boolean removed) {
+            this.isPropertyTelecomContactNumberRemoved = removed;
+        }
+
+        private Boolean isPropertyPhysicalLocationAddressRemoved;
+
+        public Boolean getIsPropertyPhysicalLocationAddressRemoved() {
+            return this.isPropertyPhysicalLocationAddressRemoved;
+        }
+
+        public void setIsPropertyPhysicalLocationAddressRemoved(Boolean removed) {
+            this.isPropertyPhysicalLocationAddressRemoved = removed;
+        }
+
         private Boolean isPropertyContactMechTypeIdRemoved;
 
         public Boolean getIsPropertyContactMechTypeIdRemoved() {
@@ -151,6 +239,106 @@ public abstract class AbstractMiscContactMechEvent extends AbstractContactMechEv
 
         public void setIsPropertyAskForNameRemoved(Boolean removed) {
             this.isPropertyAskForNameRemoved = removed;
+        }
+
+        private Boolean isPropertyAddress1Removed;
+
+        public Boolean getIsPropertyAddress1Removed() {
+            return this.isPropertyAddress1Removed;
+        }
+
+        public void setIsPropertyAddress1Removed(Boolean removed) {
+            this.isPropertyAddress1Removed = removed;
+        }
+
+        private Boolean isPropertyAddress2Removed;
+
+        public Boolean getIsPropertyAddress2Removed() {
+            return this.isPropertyAddress2Removed;
+        }
+
+        public void setIsPropertyAddress2Removed(Boolean removed) {
+            this.isPropertyAddress2Removed = removed;
+        }
+
+        private Boolean isPropertyDirectionsRemoved;
+
+        public Boolean getIsPropertyDirectionsRemoved() {
+            return this.isPropertyDirectionsRemoved;
+        }
+
+        public void setIsPropertyDirectionsRemoved(Boolean removed) {
+            this.isPropertyDirectionsRemoved = removed;
+        }
+
+        private Boolean isPropertyCityRemoved;
+
+        public Boolean getIsPropertyCityRemoved() {
+            return this.isPropertyCityRemoved;
+        }
+
+        public void setIsPropertyCityRemoved(Boolean removed) {
+            this.isPropertyCityRemoved = removed;
+        }
+
+        private Boolean isPropertyPostalCodeRemoved;
+
+        public Boolean getIsPropertyPostalCodeRemoved() {
+            return this.isPropertyPostalCodeRemoved;
+        }
+
+        public void setIsPropertyPostalCodeRemoved(Boolean removed) {
+            this.isPropertyPostalCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyPostalCodeExtRemoved;
+
+        public Boolean getIsPropertyPostalCodeExtRemoved() {
+            return this.isPropertyPostalCodeExtRemoved;
+        }
+
+        public void setIsPropertyPostalCodeExtRemoved(Boolean removed) {
+            this.isPropertyPostalCodeExtRemoved = removed;
+        }
+
+        private Boolean isPropertyCountryGeoIdRemoved;
+
+        public Boolean getIsPropertyCountryGeoIdRemoved() {
+            return this.isPropertyCountryGeoIdRemoved;
+        }
+
+        public void setIsPropertyCountryGeoIdRemoved(Boolean removed) {
+            this.isPropertyCountryGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyStateProvinceGeoIdRemoved;
+
+        public Boolean getIsPropertyStateProvinceGeoIdRemoved() {
+            return this.isPropertyStateProvinceGeoIdRemoved;
+        }
+
+        public void setIsPropertyStateProvinceGeoIdRemoved(Boolean removed) {
+            this.isPropertyStateProvinceGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyPostalCodeGeoIdRemoved;
+
+        public Boolean getIsPropertyPostalCodeGeoIdRemoved() {
+            return this.isPropertyPostalCodeGeoIdRemoved;
+        }
+
+        public void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed) {
+            this.isPropertyPostalCodeGeoIdRemoved = removed;
+        }
+
+        private Boolean isPropertyGeoPointIdRemoved;
+
+        public Boolean getIsPropertyGeoPointIdRemoved() {
+            return this.isPropertyGeoPointIdRemoved;
+        }
+
+        public void setIsPropertyGeoPointIdRemoved(Boolean removed) {
+            this.isPropertyGeoPointIdRemoved = removed;
         }
 
 

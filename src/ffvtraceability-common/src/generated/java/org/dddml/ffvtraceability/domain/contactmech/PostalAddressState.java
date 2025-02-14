@@ -17,22 +17,6 @@ public interface PostalAddressState extends ContactMechState
 
     String getAttnName();
 
-    String getAddress1();
-
-    String getAddress2();
-
-    String getDirections();
-
-    String getCity();
-
-    String getPostalCode();
-
-    String getPostalCodeExt();
-
-    String getCountryGeoId();
-
-    String getStateProvinceGeoId();
-
     String getPrefectureGeoId();
 
     String getCountyGeoId();
@@ -41,30 +25,10 @@ public interface PostalAddressState extends ContactMechState
 
     String getAssocTelecomContactMechId();
 
-    String getPostalCodeGeoId();
-
-    String getGeoPointId();
-
     interface MutablePostalAddressState extends PostalAddressState, ContactMechState.MutableContactMechState {
         void setToName(String toName);
 
         void setAttnName(String attnName);
-
-        void setAddress1(String address1);
-
-        void setAddress2(String address2);
-
-        void setDirections(String directions);
-
-        void setCity(String city);
-
-        void setPostalCode(String postalCode);
-
-        void setPostalCodeExt(String postalCodeExt);
-
-        void setCountryGeoId(String countryGeoId);
-
-        void setStateProvinceGeoId(String stateProvinceGeoId);
 
         void setPrefectureGeoId(String prefectureGeoId);
 
@@ -73,10 +37,6 @@ public interface PostalAddressState extends ContactMechState
         void setTownGeoId(String townGeoId);
 
         void setAssocTelecomContactMechId(String assocTelecomContactMechId);
-
-        void setPostalCodeGeoId(String postalCodeGeoId);
-
-        void setGeoPointId(String geoPointId);
 
         //void when(PostalAddressEvent.PostalAddressStateCreated e);
 

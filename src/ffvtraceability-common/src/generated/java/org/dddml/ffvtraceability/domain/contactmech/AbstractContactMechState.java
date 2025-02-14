@@ -54,6 +54,106 @@ public abstract class AbstractContactMechState implements ContactMechState.SqlCo
         this.askForName = askForName;
     }
 
+    private String address1;
+
+    public String getAddress1() {
+        return this.address1;
+    }
+
+    public void setAddress1(String address1) {
+        this.address1 = address1;
+    }
+
+    private String address2;
+
+    public String getAddress2() {
+        return this.address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
+    private String directions;
+
+    public String getDirections() {
+        return this.directions;
+    }
+
+    public void setDirections(String directions) {
+        this.directions = directions;
+    }
+
+    private String city;
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    private String postalCode;
+
+    public String getPostalCode() {
+        return this.postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    private String postalCodeExt;
+
+    public String getPostalCodeExt() {
+        return this.postalCodeExt;
+    }
+
+    public void setPostalCodeExt(String postalCodeExt) {
+        this.postalCodeExt = postalCodeExt;
+    }
+
+    private String countryGeoId;
+
+    public String getCountryGeoId() {
+        return this.countryGeoId;
+    }
+
+    public void setCountryGeoId(String countryGeoId) {
+        this.countryGeoId = countryGeoId;
+    }
+
+    private String stateProvinceGeoId;
+
+    public String getStateProvinceGeoId() {
+        return this.stateProvinceGeoId;
+    }
+
+    public void setStateProvinceGeoId(String stateProvinceGeoId) {
+        this.stateProvinceGeoId = stateProvinceGeoId;
+    }
+
+    private String postalCodeGeoId;
+
+    public String getPostalCodeGeoId() {
+        return this.postalCodeGeoId;
+    }
+
+    public void setPostalCodeGeoId(String postalCodeGeoId) {
+        this.postalCodeGeoId = postalCodeGeoId;
+    }
+
+    private String geoPointId;
+
+    public String getGeoPointId() {
+        return this.geoPointId;
+    }
+
+    public void setGeoPointId(String geoPointId) {
+        this.geoPointId = geoPointId;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -191,6 +291,16 @@ public abstract class AbstractContactMechState implements ContactMechState.SqlCo
         this.setContactMechTypeId(e.getContactMechTypeId());
         this.setInfoString(e.getInfoString());
         this.setAskForName(e.getAskForName());
+        this.setAddress1(e.getAddress1());
+        this.setAddress2(e.getAddress2());
+        this.setDirections(e.getDirections());
+        this.setCity(e.getCity());
+        this.setPostalCode(e.getPostalCode());
+        this.setPostalCodeExt(e.getPostalCodeExt());
+        this.setCountryGeoId(e.getCountryGeoId());
+        this.setStateProvinceGeoId(e.getStateProvinceGeoId());
+        this.setPostalCodeGeoId(e.getPostalCodeGeoId());
+        this.setGeoPointId(e.getGeoPointId());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -204,6 +314,16 @@ public abstract class AbstractContactMechState implements ContactMechState.SqlCo
         this.setContactMechTypeId(s.getContactMechTypeId());
         this.setInfoString(s.getInfoString());
         this.setAskForName(s.getAskForName());
+        this.setAddress1(s.getAddress1());
+        this.setAddress2(s.getAddress2());
+        this.setDirections(s.getDirections());
+        this.setCity(s.getCity());
+        this.setPostalCode(s.getPostalCode());
+        this.setPostalCodeExt(s.getPostalCodeExt());
+        this.setCountryGeoId(s.getCountryGeoId());
+        this.setStateProvinceGeoId(s.getStateProvinceGeoId());
+        this.setPostalCodeGeoId(s.getPostalCodeGeoId());
+        this.setGeoPointId(s.getGeoPointId());
     }
 
     public void when(ContactMechStateMergePatched e) {
@@ -229,6 +349,76 @@ public abstract class AbstractContactMechState implements ContactMechState.SqlCo
             }
         } else {
             this.setAskForName(e.getAskForName());
+        }
+        if (e.getAddress1() == null) {
+            if (e.getIsPropertyAddress1Removed() != null && e.getIsPropertyAddress1Removed()) {
+                this.setAddress1(null);
+            }
+        } else {
+            this.setAddress1(e.getAddress1());
+        }
+        if (e.getAddress2() == null) {
+            if (e.getIsPropertyAddress2Removed() != null && e.getIsPropertyAddress2Removed()) {
+                this.setAddress2(null);
+            }
+        } else {
+            this.setAddress2(e.getAddress2());
+        }
+        if (e.getDirections() == null) {
+            if (e.getIsPropertyDirectionsRemoved() != null && e.getIsPropertyDirectionsRemoved()) {
+                this.setDirections(null);
+            }
+        } else {
+            this.setDirections(e.getDirections());
+        }
+        if (e.getCity() == null) {
+            if (e.getIsPropertyCityRemoved() != null && e.getIsPropertyCityRemoved()) {
+                this.setCity(null);
+            }
+        } else {
+            this.setCity(e.getCity());
+        }
+        if (e.getPostalCode() == null) {
+            if (e.getIsPropertyPostalCodeRemoved() != null && e.getIsPropertyPostalCodeRemoved()) {
+                this.setPostalCode(null);
+            }
+        } else {
+            this.setPostalCode(e.getPostalCode());
+        }
+        if (e.getPostalCodeExt() == null) {
+            if (e.getIsPropertyPostalCodeExtRemoved() != null && e.getIsPropertyPostalCodeExtRemoved()) {
+                this.setPostalCodeExt(null);
+            }
+        } else {
+            this.setPostalCodeExt(e.getPostalCodeExt());
+        }
+        if (e.getCountryGeoId() == null) {
+            if (e.getIsPropertyCountryGeoIdRemoved() != null && e.getIsPropertyCountryGeoIdRemoved()) {
+                this.setCountryGeoId(null);
+            }
+        } else {
+            this.setCountryGeoId(e.getCountryGeoId());
+        }
+        if (e.getStateProvinceGeoId() == null) {
+            if (e.getIsPropertyStateProvinceGeoIdRemoved() != null && e.getIsPropertyStateProvinceGeoIdRemoved()) {
+                this.setStateProvinceGeoId(null);
+            }
+        } else {
+            this.setStateProvinceGeoId(e.getStateProvinceGeoId());
+        }
+        if (e.getPostalCodeGeoId() == null) {
+            if (e.getIsPropertyPostalCodeGeoIdRemoved() != null && e.getIsPropertyPostalCodeGeoIdRemoved()) {
+                this.setPostalCodeGeoId(null);
+            }
+        } else {
+            this.setPostalCodeGeoId(e.getPostalCodeGeoId());
+        }
+        if (e.getGeoPointId() == null) {
+            if (e.getIsPropertyGeoPointIdRemoved() != null && e.getIsPropertyGeoPointIdRemoved()) {
+                this.setGeoPointId(null);
+            }
+        } else {
+            this.setGeoPointId(e.getGeoPointId());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

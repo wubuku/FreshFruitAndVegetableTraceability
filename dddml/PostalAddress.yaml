@@ -15,27 +15,28 @@
         description: "Attention Name"
         type: name
         # 主要收件人（组织）内的具体接收个人
-      Address1:
-        type: long-varchar
-      Address2:
-        type: long-varchar
-      Directions:
-        type: long-varchar
+      # Address1:
+      #   type: long-varchar
+      # Address2:
+      #   type: long-varchar
+      # Directions:
+      #   type: long-varchar
 
-      City:
-        type: name
-      PostalCode:
-        type: short-varchar
-      PostalCodeExt:
-        type: short-varchar
+      # City:
+      #   type: name
+      # PostalCode:
+      #   type: short-varchar
+      # PostalCodeExt:
+      #   type: short-varchar
 
-      CountryGeoId:
-        type: id
+      # CountryGeoId:
+      #   type: id
         
-      # ---------------------------------
-      # 省/州 Id
-      StateProvinceGeoId:
-        type: id
+      # # ---------------------------------
+      # # 省/州 Id
+      # StateProvinceGeoId:
+      #   type: id
+
       # 地级市/地区 Id
       PrefectureGeoId:
         type: id
@@ -50,8 +51,8 @@
         type: id
       # ---------------------------------
       
-      PostalCodeGeoId:
-        type: id
-        
-      GeoPointId:
-        type: id
+      # PostalCodeGeoId:
+      #   type: id
+
+      # GeoPointId:
+      #   type: id

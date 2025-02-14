@@ -55,6 +55,36 @@ public class MiscContactMechStateDto extends ContactMechStateDto {
             if (returnedFieldsContains("AskForName")) {
                 dto.setAskForName(state.getAskForName());
             }
+            if (returnedFieldsContains("Address1")) {
+                dto.setAddress1(state.getAddress1());
+            }
+            if (returnedFieldsContains("Address2")) {
+                dto.setAddress2(state.getAddress2());
+            }
+            if (returnedFieldsContains("Directions")) {
+                dto.setDirections(state.getDirections());
+            }
+            if (returnedFieldsContains("City")) {
+                dto.setCity(state.getCity());
+            }
+            if (returnedFieldsContains("PostalCode")) {
+                dto.setPostalCode(state.getPostalCode());
+            }
+            if (returnedFieldsContains("PostalCodeExt")) {
+                dto.setPostalCodeExt(state.getPostalCodeExt());
+            }
+            if (returnedFieldsContains("CountryGeoId")) {
+                dto.setCountryGeoId(state.getCountryGeoId());
+            }
+            if (returnedFieldsContains("StateProvinceGeoId")) {
+                dto.setStateProvinceGeoId(state.getStateProvinceGeoId());
+            }
+            if (returnedFieldsContains("PostalCodeGeoId")) {
+                dto.setPostalCodeGeoId(state.getPostalCodeGeoId());
+            }
+            if (returnedFieldsContains("GeoPointId")) {
+                dto.setGeoPointId(state.getGeoPointId());
+            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }
@@ -80,6 +110,18 @@ public class MiscContactMechStateDto extends ContactMechStateDto {
             }
             if (returnedFieldsContains("AskForRole")) {
                 dto.setAskForRole(ss.getAskForRole());
+            }
+            if (returnedFieldsContains("TelecomCountryCode")) {
+                dto.setTelecomCountryCode(ss.getTelecomCountryCode());
+            }
+            if (returnedFieldsContains("TelecomAreaCode")) {
+                dto.setTelecomAreaCode(ss.getTelecomAreaCode());
+            }
+            if (returnedFieldsContains("TelecomContactNumber")) {
+                dto.setTelecomContactNumber(ss.getTelecomContactNumber());
+            }
+            if (returnedFieldsContains("PhysicalLocationAddress")) {
+                dto.setPhysicalLocationAddress(ss.getPhysicalLocationAddress());
             }
           }
           // ////////////////

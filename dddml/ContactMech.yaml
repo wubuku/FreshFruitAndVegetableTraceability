@@ -19,6 +19,28 @@
       AskForName:
         type: name
         # 请求接洽者名字
+        # BusinessName
+      Address1:
+        type: long-varchar
+      Address2:
+        type: long-varchar
+      Directions:
+        type: long-varchar
+      City:
+        type: name
+      PostalCode:
+        type: short-varchar
+      PostalCodeExt:
+        type: short-varchar
+      CountryGeoId:
+        type: id        
+      # 省/州 Id
+      StateProvinceGeoId:
+        type: id
+      PostalCodeGeoId:
+        type: id
+      GeoPointId:
+        type: id
 
     subtypes:
       MiscContactMech:
@@ -31,6 +53,14 @@
           AskForRole:
             # 请求接洽者角色
             type: name
+          TelecomCountryCode:
+            type: very-short
+          TelecomAreaCode:
+            type: very-short
+          TelecomContactNumber:
+            type: short-varchar
+          PhysicalLocationAddress:
+            type: long-varchar
 
 
   ContactMechPurposeType:

@@ -17,10 +17,26 @@ public interface MiscContactMechState extends ContactMechState
 
     String getAskForRole();
 
+    String getTelecomCountryCode();
+
+    String getTelecomAreaCode();
+
+    String getTelecomContactNumber();
+
+    String getPhysicalLocationAddress();
+
     interface MutableMiscContactMechState extends MiscContactMechState, ContactMechState.MutableContactMechState {
         void setEmail(String email);
 
         void setAskForRole(String askForRole);
+
+        void setTelecomCountryCode(String telecomCountryCode);
+
+        void setTelecomAreaCode(String telecomAreaCode);
+
+        void setTelecomContactNumber(String telecomContactNumber);
+
+        void setPhysicalLocationAddress(String physicalLocationAddress);
 
         //void when(MiscContactMechEvent.MiscContactMechStateCreated e);
 

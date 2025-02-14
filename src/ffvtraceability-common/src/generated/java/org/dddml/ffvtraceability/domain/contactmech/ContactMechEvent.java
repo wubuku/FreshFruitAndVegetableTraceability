@@ -57,6 +57,46 @@ public interface ContactMechEvent extends Event {
 
         void setAskForName(String askForName);
 
+        String getAddress1();
+
+        void setAddress1(String address1);
+
+        String getAddress2();
+
+        void setAddress2(String address2);
+
+        String getDirections();
+
+        void setDirections(String directions);
+
+        String getCity();
+
+        void setCity(String city);
+
+        String getPostalCode();
+
+        void setPostalCode(String postalCode);
+
+        String getPostalCodeExt();
+
+        void setPostalCodeExt(String postalCodeExt);
+
+        String getCountryGeoId();
+
+        void setCountryGeoId(String countryGeoId);
+
+        String getStateProvinceGeoId();
+
+        void setStateProvinceGeoId(String stateProvinceGeoId);
+
+        String getPostalCodeGeoId();
+
+        void setPostalCodeGeoId(String postalCodeGeoId);
+
+        String getGeoPointId();
+
+        void setGeoPointId(String geoPointId);
+
     }
 
     interface ContactMechStateCreated extends ContactMechStateEvent
@@ -78,6 +118,46 @@ public interface ContactMechEvent extends Event {
         Boolean getIsPropertyAskForNameRemoved();
 
         void setIsPropertyAskForNameRemoved(Boolean removed);
+
+        Boolean getIsPropertyAddress1Removed();
+
+        void setIsPropertyAddress1Removed(Boolean removed);
+
+        Boolean getIsPropertyAddress2Removed();
+
+        void setIsPropertyAddress2Removed(Boolean removed);
+
+        Boolean getIsPropertyDirectionsRemoved();
+
+        void setIsPropertyDirectionsRemoved(Boolean removed);
+
+        Boolean getIsPropertyCityRemoved();
+
+        void setIsPropertyCityRemoved(Boolean removed);
+
+        Boolean getIsPropertyPostalCodeRemoved();
+
+        void setIsPropertyPostalCodeRemoved(Boolean removed);
+
+        Boolean getIsPropertyPostalCodeExtRemoved();
+
+        void setIsPropertyPostalCodeExtRemoved(Boolean removed);
+
+        Boolean getIsPropertyCountryGeoIdRemoved();
+
+        void setIsPropertyCountryGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyStateProvinceGeoIdRemoved();
+
+        void setIsPropertyStateProvinceGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyPostalCodeGeoIdRemoved();
+
+        void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyGeoPointIdRemoved();
+
+        void setIsPropertyGeoPointIdRemoved(Boolean removed);
 
 
 

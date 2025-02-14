@@ -56,66 +56,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     }
 
     /**
-     * Email
-     */
-    private String email;
-
-    public String getEmail()
-    {
-        return this.email;
-    }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
-
-    /**
-     * Ask For Role
-     */
-    private String askForRole;
-
-    public String getAskForRole()
-    {
-        return this.askForRole;
-    }
-
-    public void setAskForRole(String askForRole)
-    {
-        this.askForRole = askForRole;
-    }
-
-    /**
-     * To Name
-     */
-    private String toName;
-
-    public String getToName()
-    {
-        return this.toName;
-    }
-
-    public void setToName(String toName)
-    {
-        this.toName = toName;
-    }
-
-    /**
-     * Attention Name
-     */
-    private String attnName;
-
-    public String getAttnName()
-    {
-        return this.attnName;
-    }
-
-    public void setAttnName(String attnName)
-    {
-        this.attnName = attnName;
-    }
-
-    /**
      * Address1
      */
     private String address1;
@@ -236,6 +176,156 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     }
 
     /**
+     * Postal Code Geo Id
+     */
+    private String postalCodeGeoId;
+
+    public String getPostalCodeGeoId()
+    {
+        return this.postalCodeGeoId;
+    }
+
+    public void setPostalCodeGeoId(String postalCodeGeoId)
+    {
+        this.postalCodeGeoId = postalCodeGeoId;
+    }
+
+    /**
+     * Geo Point Id
+     */
+    private String geoPointId;
+
+    public String getGeoPointId()
+    {
+        return this.geoPointId;
+    }
+
+    public void setGeoPointId(String geoPointId)
+    {
+        this.geoPointId = geoPointId;
+    }
+
+    /**
+     * Email
+     */
+    private String email;
+
+    public String getEmail()
+    {
+        return this.email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    /**
+     * Ask For Role
+     */
+    private String askForRole;
+
+    public String getAskForRole()
+    {
+        return this.askForRole;
+    }
+
+    public void setAskForRole(String askForRole)
+    {
+        this.askForRole = askForRole;
+    }
+
+    /**
+     * Telecom Country Code
+     */
+    private String telecomCountryCode;
+
+    public String getTelecomCountryCode()
+    {
+        return this.telecomCountryCode;
+    }
+
+    public void setTelecomCountryCode(String telecomCountryCode)
+    {
+        this.telecomCountryCode = telecomCountryCode;
+    }
+
+    /**
+     * Telecom Area Code
+     */
+    private String telecomAreaCode;
+
+    public String getTelecomAreaCode()
+    {
+        return this.telecomAreaCode;
+    }
+
+    public void setTelecomAreaCode(String telecomAreaCode)
+    {
+        this.telecomAreaCode = telecomAreaCode;
+    }
+
+    /**
+     * Telecom Contact Number
+     */
+    private String telecomContactNumber;
+
+    public String getTelecomContactNumber()
+    {
+        return this.telecomContactNumber;
+    }
+
+    public void setTelecomContactNumber(String telecomContactNumber)
+    {
+        this.telecomContactNumber = telecomContactNumber;
+    }
+
+    /**
+     * Physical Location Address
+     */
+    private String physicalLocationAddress;
+
+    public String getPhysicalLocationAddress()
+    {
+        return this.physicalLocationAddress;
+    }
+
+    public void setPhysicalLocationAddress(String physicalLocationAddress)
+    {
+        this.physicalLocationAddress = physicalLocationAddress;
+    }
+
+    /**
+     * To Name
+     */
+    private String toName;
+
+    public String getToName()
+    {
+        return this.toName;
+    }
+
+    public void setToName(String toName)
+    {
+        this.toName = toName;
+    }
+
+    /**
+     * Attention Name
+     */
+    private String attnName;
+
+    public String getAttnName()
+    {
+        return this.attnName;
+    }
+
+    public void setAttnName(String attnName)
+    {
+        this.attnName = attnName;
+    }
+
+    /**
      * Prefecture Geo Id
      */
     private String prefectureGeoId;
@@ -293,36 +383,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     public void setAssocTelecomContactMechId(String assocTelecomContactMechId)
     {
         this.assocTelecomContactMechId = assocTelecomContactMechId;
-    }
-
-    /**
-     * Postal Code Geo Id
-     */
-    private String postalCodeGeoId;
-
-    public String getPostalCodeGeoId()
-    {
-        return this.postalCodeGeoId;
-    }
-
-    public void setPostalCodeGeoId(String postalCodeGeoId)
-    {
-        this.postalCodeGeoId = postalCodeGeoId;
-    }
-
-    /**
-     * Geo Point Id
-     */
-    private String geoPointId;
-
-    public String getGeoPointId()
-    {
-        return this.geoPointId;
-    }
-
-    public void setGeoPointId(String geoPointId)
-    {
-        this.geoPointId = geoPointId;
     }
 
     /**
@@ -405,54 +465,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     public void setIsPropertyAskForNameRemoved(Boolean removed)
     {
         this.isPropertyAskForNameRemoved = removed;
-    }
-
-    private Boolean isPropertyEmailRemoved;
-
-    public Boolean getIsPropertyEmailRemoved()
-    {
-        return this.isPropertyEmailRemoved;
-    }
-
-    public void setIsPropertyEmailRemoved(Boolean removed)
-    {
-        this.isPropertyEmailRemoved = removed;
-    }
-
-    private Boolean isPropertyAskForRoleRemoved;
-
-    public Boolean getIsPropertyAskForRoleRemoved()
-    {
-        return this.isPropertyAskForRoleRemoved;
-    }
-
-    public void setIsPropertyAskForRoleRemoved(Boolean removed)
-    {
-        this.isPropertyAskForRoleRemoved = removed;
-    }
-
-    private Boolean isPropertyToNameRemoved;
-
-    public Boolean getIsPropertyToNameRemoved()
-    {
-        return this.isPropertyToNameRemoved;
-    }
-
-    public void setIsPropertyToNameRemoved(Boolean removed)
-    {
-        this.isPropertyToNameRemoved = removed;
-    }
-
-    private Boolean isPropertyAttnNameRemoved;
-
-    public Boolean getIsPropertyAttnNameRemoved()
-    {
-        return this.isPropertyAttnNameRemoved;
-    }
-
-    public void setIsPropertyAttnNameRemoved(Boolean removed)
-    {
-        this.isPropertyAttnNameRemoved = removed;
     }
 
     private Boolean isPropertyAddress1Removed;
@@ -551,6 +563,126 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         this.isPropertyStateProvinceGeoIdRemoved = removed;
     }
 
+    private Boolean isPropertyPostalCodeGeoIdRemoved;
+
+    public Boolean getIsPropertyPostalCodeGeoIdRemoved()
+    {
+        return this.isPropertyPostalCodeGeoIdRemoved;
+    }
+
+    public void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed)
+    {
+        this.isPropertyPostalCodeGeoIdRemoved = removed;
+    }
+
+    private Boolean isPropertyGeoPointIdRemoved;
+
+    public Boolean getIsPropertyGeoPointIdRemoved()
+    {
+        return this.isPropertyGeoPointIdRemoved;
+    }
+
+    public void setIsPropertyGeoPointIdRemoved(Boolean removed)
+    {
+        this.isPropertyGeoPointIdRemoved = removed;
+    }
+
+    private Boolean isPropertyEmailRemoved;
+
+    public Boolean getIsPropertyEmailRemoved()
+    {
+        return this.isPropertyEmailRemoved;
+    }
+
+    public void setIsPropertyEmailRemoved(Boolean removed)
+    {
+        this.isPropertyEmailRemoved = removed;
+    }
+
+    private Boolean isPropertyAskForRoleRemoved;
+
+    public Boolean getIsPropertyAskForRoleRemoved()
+    {
+        return this.isPropertyAskForRoleRemoved;
+    }
+
+    public void setIsPropertyAskForRoleRemoved(Boolean removed)
+    {
+        this.isPropertyAskForRoleRemoved = removed;
+    }
+
+    private Boolean isPropertyTelecomCountryCodeRemoved;
+
+    public Boolean getIsPropertyTelecomCountryCodeRemoved()
+    {
+        return this.isPropertyTelecomCountryCodeRemoved;
+    }
+
+    public void setIsPropertyTelecomCountryCodeRemoved(Boolean removed)
+    {
+        this.isPropertyTelecomCountryCodeRemoved = removed;
+    }
+
+    private Boolean isPropertyTelecomAreaCodeRemoved;
+
+    public Boolean getIsPropertyTelecomAreaCodeRemoved()
+    {
+        return this.isPropertyTelecomAreaCodeRemoved;
+    }
+
+    public void setIsPropertyTelecomAreaCodeRemoved(Boolean removed)
+    {
+        this.isPropertyTelecomAreaCodeRemoved = removed;
+    }
+
+    private Boolean isPropertyTelecomContactNumberRemoved;
+
+    public Boolean getIsPropertyTelecomContactNumberRemoved()
+    {
+        return this.isPropertyTelecomContactNumberRemoved;
+    }
+
+    public void setIsPropertyTelecomContactNumberRemoved(Boolean removed)
+    {
+        this.isPropertyTelecomContactNumberRemoved = removed;
+    }
+
+    private Boolean isPropertyPhysicalLocationAddressRemoved;
+
+    public Boolean getIsPropertyPhysicalLocationAddressRemoved()
+    {
+        return this.isPropertyPhysicalLocationAddressRemoved;
+    }
+
+    public void setIsPropertyPhysicalLocationAddressRemoved(Boolean removed)
+    {
+        this.isPropertyPhysicalLocationAddressRemoved = removed;
+    }
+
+    private Boolean isPropertyToNameRemoved;
+
+    public Boolean getIsPropertyToNameRemoved()
+    {
+        return this.isPropertyToNameRemoved;
+    }
+
+    public void setIsPropertyToNameRemoved(Boolean removed)
+    {
+        this.isPropertyToNameRemoved = removed;
+    }
+
+    private Boolean isPropertyAttnNameRemoved;
+
+    public Boolean getIsPropertyAttnNameRemoved()
+    {
+        return this.isPropertyAttnNameRemoved;
+    }
+
+    public void setIsPropertyAttnNameRemoved(Boolean removed)
+    {
+        this.isPropertyAttnNameRemoved = removed;
+    }
+
     private Boolean isPropertyPrefectureGeoIdRemoved;
 
     public Boolean getIsPropertyPrefectureGeoIdRemoved()
@@ -599,30 +731,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         this.isPropertyAssocTelecomContactMechIdRemoved = removed;
     }
 
-    private Boolean isPropertyPostalCodeGeoIdRemoved;
-
-    public Boolean getIsPropertyPostalCodeGeoIdRemoved()
-    {
-        return this.isPropertyPostalCodeGeoIdRemoved;
-    }
-
-    public void setIsPropertyPostalCodeGeoIdRemoved(Boolean removed)
-    {
-        this.isPropertyPostalCodeGeoIdRemoved = removed;
-    }
-
-    private Boolean isPropertyGeoPointIdRemoved;
-
-    public Boolean getIsPropertyGeoPointIdRemoved()
-    {
-        return this.isPropertyGeoPointIdRemoved;
-    }
-
-    public void setIsPropertyGeoPointIdRemoved(Boolean removed)
-    {
-        this.isPropertyGeoPointIdRemoved = removed;
-    }
-
     private Boolean isPropertyCountryCodeRemoved;
 
     public Boolean getIsPropertyCountryCodeRemoved()
@@ -665,10 +773,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setContactMechTypeId(this.getContactMechTypeId());
         command.setInfoString(this.getInfoString());
         command.setAskForName(this.getAskForName());
-        command.setEmail(this.getEmail());
-        command.setAskForRole(this.getAskForRole());
-        command.setToName(this.getToName());
-        command.setAttnName(this.getAttnName());
         command.setAddress1(this.getAddress1());
         command.setAddress2(this.getAddress2());
         command.setDirections(this.getDirections());
@@ -677,12 +781,20 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setPostalCodeExt(this.getPostalCodeExt());
         command.setCountryGeoId(this.getCountryGeoId());
         command.setStateProvinceGeoId(this.getStateProvinceGeoId());
+        command.setPostalCodeGeoId(this.getPostalCodeGeoId());
+        command.setGeoPointId(this.getGeoPointId());
+        command.setEmail(this.getEmail());
+        command.setAskForRole(this.getAskForRole());
+        command.setTelecomCountryCode(this.getTelecomCountryCode());
+        command.setTelecomAreaCode(this.getTelecomAreaCode());
+        command.setTelecomContactNumber(this.getTelecomContactNumber());
+        command.setPhysicalLocationAddress(this.getPhysicalLocationAddress());
+        command.setToName(this.getToName());
+        command.setAttnName(this.getAttnName());
         command.setPrefectureGeoId(this.getPrefectureGeoId());
         command.setCountyGeoId(this.getCountyGeoId());
         command.setTownGeoId(this.getTownGeoId());
         command.setAssocTelecomContactMechId(this.getAssocTelecomContactMechId());
-        command.setPostalCodeGeoId(this.getPostalCodeGeoId());
-        command.setGeoPointId(this.getGeoPointId());
         command.setCountryCode(this.getCountryCode());
         command.setAreaCode(this.getAreaCode());
         command.setContactNumber(this.getContactNumber());
@@ -733,10 +845,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setIsPropertyContactMechTypeIdRemoved(this.getIsPropertyContactMechTypeIdRemoved());
         command.setIsPropertyInfoStringRemoved(this.getIsPropertyInfoStringRemoved());
         command.setIsPropertyAskForNameRemoved(this.getIsPropertyAskForNameRemoved());
-        command.setIsPropertyEmailRemoved(this.getIsPropertyEmailRemoved());
-        command.setIsPropertyAskForRoleRemoved(this.getIsPropertyAskForRoleRemoved());
-        command.setIsPropertyToNameRemoved(this.getIsPropertyToNameRemoved());
-        command.setIsPropertyAttnNameRemoved(this.getIsPropertyAttnNameRemoved());
         command.setIsPropertyAddress1Removed(this.getIsPropertyAddress1Removed());
         command.setIsPropertyAddress2Removed(this.getIsPropertyAddress2Removed());
         command.setIsPropertyDirectionsRemoved(this.getIsPropertyDirectionsRemoved());
@@ -745,12 +853,20 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setIsPropertyPostalCodeExtRemoved(this.getIsPropertyPostalCodeExtRemoved());
         command.setIsPropertyCountryGeoIdRemoved(this.getIsPropertyCountryGeoIdRemoved());
         command.setIsPropertyStateProvinceGeoIdRemoved(this.getIsPropertyStateProvinceGeoIdRemoved());
+        command.setIsPropertyPostalCodeGeoIdRemoved(this.getIsPropertyPostalCodeGeoIdRemoved());
+        command.setIsPropertyGeoPointIdRemoved(this.getIsPropertyGeoPointIdRemoved());
+        command.setIsPropertyEmailRemoved(this.getIsPropertyEmailRemoved());
+        command.setIsPropertyAskForRoleRemoved(this.getIsPropertyAskForRoleRemoved());
+        command.setIsPropertyTelecomCountryCodeRemoved(this.getIsPropertyTelecomCountryCodeRemoved());
+        command.setIsPropertyTelecomAreaCodeRemoved(this.getIsPropertyTelecomAreaCodeRemoved());
+        command.setIsPropertyTelecomContactNumberRemoved(this.getIsPropertyTelecomContactNumberRemoved());
+        command.setIsPropertyPhysicalLocationAddressRemoved(this.getIsPropertyPhysicalLocationAddressRemoved());
+        command.setIsPropertyToNameRemoved(this.getIsPropertyToNameRemoved());
+        command.setIsPropertyAttnNameRemoved(this.getIsPropertyAttnNameRemoved());
         command.setIsPropertyPrefectureGeoIdRemoved(this.getIsPropertyPrefectureGeoIdRemoved());
         command.setIsPropertyCountyGeoIdRemoved(this.getIsPropertyCountyGeoIdRemoved());
         command.setIsPropertyTownGeoIdRemoved(this.getIsPropertyTownGeoIdRemoved());
         command.setIsPropertyAssocTelecomContactMechIdRemoved(this.getIsPropertyAssocTelecomContactMechIdRemoved());
-        command.setIsPropertyPostalCodeGeoIdRemoved(this.getIsPropertyPostalCodeGeoIdRemoved());
-        command.setIsPropertyGeoPointIdRemoved(this.getIsPropertyGeoPointIdRemoved());
         command.setIsPropertyCountryCodeRemoved(this.getIsPropertyCountryCodeRemoved());
         command.setIsPropertyAreaCodeRemoved(this.getIsPropertyAreaCodeRemoved());
         command.setIsPropertyContactNumberRemoved(this.getIsPropertyContactNumberRemoved());
