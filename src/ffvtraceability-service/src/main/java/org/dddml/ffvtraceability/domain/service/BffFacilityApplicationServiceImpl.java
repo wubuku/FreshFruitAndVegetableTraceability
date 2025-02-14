@@ -4,7 +4,7 @@ import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.BffFacilityDto;
 import org.dddml.ffvtraceability.domain.BffFacilityLocationDto;
 import org.dddml.ffvtraceability.domain.Command;
-import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
+import org.dddml.ffvtraceability.domain.contactmech.*;
 import org.dddml.ffvtraceability.domain.facility.*;
 import org.dddml.ffvtraceability.domain.facilitycontactmech.AbstractFacilityContactMechCommand;
 import org.dddml.ffvtraceability.domain.facilitycontactmech.FacilityContactMechApplicationService;
@@ -20,7 +20,6 @@ import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.repository.*;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
-import org.dddml.ffvtraceability.domain.util.TelecomNumberUtil;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -68,6 +67,8 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     private BffBusinessContactService bffBusinessContactService;
     @Autowired
     private BffBusinessContactMapper bffBusinessContactMapper;
+    @Autowired
+    private ContactMechApplicationService contactMechApplicationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -229,9 +230,10 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
 
         facilityApplicationService.when(mergePatchFacility);
 
-        if (c.getFacility().getBusinessContacts() != null && !c.getFacility().getBusinessContacts().isEmpty()) {
-            updateOrCreateFacilityBusinessContact(facilityId, c.getFacility().getBusinessContacts().get(0), c);
-        }
+        updateOrCreateFacilityBusinessContact(facilityId, c.getFacility().getBusinessContacts().get(0), c);
+//        if (c.getFacility().getBusinessContacts() != null && !c.getFacility().getBusinessContacts().isEmpty()) {
+//            updateOrCreateFacilityBusinessContact(facilityId, c.getFacility().getBusinessContacts().get(0), c);
+//        }
     }
 
     private void updateFacilityIdentification(
@@ -503,6 +505,47 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     }
 
     private void updateOrCreateFacilityBusinessContact(String facilityId, BffBusinessContactDto bizContact, Command c) {
+
+        var optional = bffFacilityContactMechRepository.findFacilityContactByFacilityId(facilityId);
+        if (optional.isEmpty()) {//添加
+            String contactMechId = bffBusinessContactService.createMiscContact(bizContact, c);
+            createFacilityContactMechAssociation(facilityId, contactMechId, "-PE", c);
+        } else {//更新
+            String contactMechId = optional.get().getContactMechId();
+            Optional<AbstractContactMechState> state = bffBusinessContactRepository.findById(contactMechId);
+            if (state.isPresent()) {
+                ContactMechCommand.MergePatchContactMech mergePatchContactMech
+                        = new AbstractContactMechCommand.SimpleMergePatchMiscContactMech();
+                mergePatchContactMech.setVersion(state.get().getVersion());
+                mergePatchContactMech.setToName(bizContact.getBusinessName());
+                mergePatchContactMech.setContactMechId(contactMechId);
+                if (bizContact.getStateProvinceGeoId() != null) {
+                    Optional<BffGeoRepository.StateProvinceProjection> stateProvince
+                            = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());
+                    if (stateProvince.isEmpty()) {
+                        throw new IllegalArgumentException(String.format("State or province not found: %s", bizContact.getStateProvinceGeoId()));
+                    }
+                    mergePatchContactMech.setCountryGeoId(stateProvince.get().getParentGeoId());
+                    mergePatchContactMech.setStateProvinceGeoId(stateProvince.get().getGeoId());
+                } else {
+                    mergePatchContactMech.setCountryGeoId(bizContact.getCountryGeoId());
+                }
+                mergePatchContactMech.setCity(bizContact.getCity());
+                mergePatchContactMech.setAddress1(bizContact.getPhysicalLocationAddress());
+                mergePatchContactMech.setPostalCode(bizContact.getZipCode());
+                mergePatchContactMech.setTelecomContactNumber(bizContact.getPhoneNumber());
+
+                mergePatchContactMech.setEmail(bizContact.getEmail());
+                mergePatchContactMech.setAskForRole(bizContact.getContactRole());
+                mergePatchContactMech.setAskForName(bizContact.getBusinessName());
+                mergePatchContactMech.setPhysicalLocationAddress(bizContact.getPhysicalLocationAddress());
+
+                contactMechApplicationService.when(mergePatchContactMech);
+
+                updateOrCreateFacilityContactMechAssociation(facilityId, contactMechId, ContactMechTypeId.MISC_CONTACT_MECH, "-PE", c);
+            }
+        }
+        /*
         // 处理邮政地址
         if (bizContact.getStateProvinceGeoId() != null && bizContact.getStateProvinceGeoId().isEmpty()) {
             Optional<BffBusinessContactRepository.PostalAddressProjection> pa = bffBusinessContactRepository
@@ -532,7 +575,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         } else {
             String contactMechId = bffBusinessContactService.createTelecomNumber(bizContact, c);
             createFacilityContactMechAssociation(facilityId, contactMechId, "-PT", c);
-        }
+        }*/
     }
 
     private void updateOrCreateFacilityContactMechAssociation(
@@ -549,7 +592,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             OffsetDateTime fromDate = OffsetDateTime.ofInstant(pcmIdPrj.get().getFromDate(), ZoneOffset.UTC);
             FacilityContactMechState pcm = facilityContactMechApplicationService.get(new FacilityContactMechId(
                     facilityId, contactMechId, fromDate));
-            if (pcm == null) {
+            if (pcm == null) {//FIXME 感觉这里永远不会是null
                 createFacilityContactMechAssociation(facilityId, contactMechId, commandIdSuffix, c);
             } else {
                 AbstractFacilityContactMechCommand.SimpleMergePatchFacilityContactMech mergePatchFacilityContactMech = new AbstractFacilityContactMechCommand.SimpleMergePatchFacilityContactMech();

@@ -2,10 +2,10 @@ package org.dddml.ffvtraceability.domain.mapper;
 
 
 import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
-import org.dddml.ffvtraceability.domain.repository.BffBusinessContactProjection;
+import org.dddml.ffvtraceability.domain.repository.BffFacilityContactMechRepository;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface BffBusinessContactMapper {
-    BffBusinessContactDto toBffBusinessContactDto(BffBusinessContactProjection projection);
+    BffBusinessContactDto toBffBusinessContactDto(BffFacilityContactMechRepository.BffBusinessContactProjectionExt projection);
 }

@@ -33,7 +33,7 @@ public class BffBusinessContactServiceImpl implements BffBusinessContactService 
         Optional<BffGeoRepository.StateProvinceProjection> stateProvince
                 = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());
         if (!stateProvince.isPresent()) {
-            throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
+            throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getStateProvinceGeoId()));
         }
         AbstractContactMechCommand.SimpleCreatePostalAddress createPostalAddress = newCreatePostalAddress(bizContact, stateProvince.get());
         createPostalAddress.setCommandId(c.getCommandId() != null ? c.getCommandId() + "-P" : UUID.randomUUID().toString());
@@ -62,17 +62,15 @@ public class BffBusinessContactServiceImpl implements BffBusinessContactService 
     }
 
     private AbstractContactMechCommand.SimpleCreateMiscContactMech newCreateMiscContactMech(BffBusinessContactDto bizContact) {
-
         AbstractContactMechCommand.SimpleCreateMiscContactMech createMiscContactMech = new AbstractContactMechCommand.SimpleCreateMiscContactMech();
         createMiscContactMech.setContactMechId(IdUtils.randomId());
-
 
         createMiscContactMech.setToName(bizContact.getBusinessName());
         if (bizContact.getStateProvinceGeoId() != null) {
             Optional<BffGeoRepository.StateProvinceProjection> stateProvince
                     = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());
             if (stateProvince.isEmpty()) {
-                throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
+                throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getStateProvinceGeoId()));
             }
             createMiscContactMech.setCountryGeoId(stateProvince.get().getParentGeoId());
             createMiscContactMech.setStateProvinceGeoId(stateProvince.get().getGeoId());

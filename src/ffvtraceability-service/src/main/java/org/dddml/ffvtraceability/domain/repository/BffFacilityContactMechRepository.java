@@ -65,7 +65,7 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
             ORDER BY pcm.facility_id, pcm.from_date DESC
             LIMIT 1
             """, nativeQuery = true)
-    Optional<BffBusinessContactProjection> findFacilityContactByFacilityId(@Param("facilityId") String facilityId);
+    Optional<BffBusinessContactProjectionExt> findFacilityContactByFacilityId(@Param("facilityId") String facilityId);
 
     @Query(value = """
             SELECT DISTINCT ON (pcm.facility_id)
@@ -128,13 +128,16 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
             @Param("contactMechTypeId") String contactMechTypeId
     );
 
-
     interface FacilityContactMechIdProjection {
         String getFacilityId();
 
         String getContactMechId();
 
         Instant getFromDate();
+    }
+
+    interface BffBusinessContactProjectionExt extends BffBusinessContactProjection, FacilityContactMechIdProjection {
+
     }
 
 
