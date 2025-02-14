@@ -68,6 +68,8 @@ valueObjects:
         type: id
       ProductName:
         type: name
+      SmallImageUrl:
+        type: url
       # AttributeSetInstanceId:
       #   type: HashHex
       Gtin:
