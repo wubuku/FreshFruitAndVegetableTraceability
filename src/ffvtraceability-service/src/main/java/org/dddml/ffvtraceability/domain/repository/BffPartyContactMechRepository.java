@@ -39,7 +39,7 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
     );
 
     @Query(value = """
-            SELECT DISTINCT ON (pcm.facility_id)
+            SELECT DISTINCT ON (pcm.party_id)
                 pcm.party_id as partyId,
                 pcm.contact_mech_id as contactMechId,
                 pcm.from_date as fromDate,
