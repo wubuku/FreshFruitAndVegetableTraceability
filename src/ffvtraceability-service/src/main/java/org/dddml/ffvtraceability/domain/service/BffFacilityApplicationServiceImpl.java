@@ -540,17 +540,19 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
 
     private void updateOrCreateFacilityBusinessContact(String facilityId, BffBusinessContactDto bizContact, Command c) {
         // 处理邮政地址
-        Optional<BffBusinessContactRepository.PostalAddressProjection> pa = bffBusinessContactRepository
-                .findOnePostalAddressByBusinessInfo(
-                        bizContact.getBusinessName(), bizContact.getZipCode(),
-                        bizContact.getState(), bizContact.getCity(), bizContact.getPhysicalLocationAddress());
-        if (pa.isPresent()) {
-            updateOrCreateFacilityContactMechAssociation(facilityId, pa.get().getContactMechId(),
-                    ContactMechTypeId.POSTAL_ADDRESS, "-PP", c);
-        } else {
-            // 创建新的邮政地址
-            String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
-            createFacilityContactMechAssociation(facilityId, contactMechId, "-PP", c);
+        if (bizContact.getStateProvinceGeoId() != null && bizContact.getStateProvinceGeoId().isEmpty()) {
+            Optional<BffBusinessContactRepository.PostalAddressProjection> pa = bffBusinessContactRepository
+                    .findOnePostalAddressByBusinessInfo(
+                            bizContact.getBusinessName(), bizContact.getZipCode(),
+                            bizContact.getStateProvinceGeoId(), bizContact.getCity(), bizContact.getPhysicalLocationAddress());
+            if (pa.isPresent()) {
+                updateOrCreateFacilityContactMechAssociation(facilityId, pa.get().getContactMechId(),
+                        ContactMechTypeId.POSTAL_ADDRESS, "-PP", c);
+            } else {
+                // 创建新的邮政地址
+                String contactMechId = bffBusinessContactService.createPostalAddress(bizContact, c);
+                createFacilityContactMechAssociation(facilityId, contactMechId, "-PP", c);
+            }
         }
 
         // 处理电话号码

@@ -30,6 +30,7 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setDepthUomId( bffRawItem.getDepthUomId() );
         bffRawItemDto.setDescription( bffRawItem.getDescription() );
         bffRawItemDto.setDiameterUomId( bffRawItem.getDiameterUomId() );
+        bffRawItemDto.setDimensionsDescription( bffRawItem.getDimensionsDescription() );
         bffRawItemDto.setGtin( bffRawItem.getGtin() );
         bffRawItemDto.setHandlingInstructions( bffRawItem.getHandlingInstructions() );
         bffRawItemDto.setHeightUomId( bffRawItem.getHeightUomId() );
@@ -85,6 +86,7 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         bffRawItemDto.setDepthUomId( productState.getDepthUomId() );
         bffRawItemDto.setDescription( productState.getDescription() );
         bffRawItemDto.setDiameterUomId( productState.getDiameterUomId() );
+        bffRawItemDto.setDimensionsDescription( productState.getDimensionsDescription() );
         bffRawItemDto.setHandlingInstructions( productState.getHandlingInstructions() );
         bffRawItemDto.setHeightUomId( productState.getHeightUomId() );
         bffRawItemDto.setIndividualsPerPackage( productState.getIndividualsPerPackage() );
@@ -135,6 +137,7 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         simpleCreateProduct.setDepthUomId( bffRawItemDto.getDepthUomId() );
         simpleCreateProduct.setDescription( bffRawItemDto.getDescription() );
         simpleCreateProduct.setDiameterUomId( bffRawItemDto.getDiameterUomId() );
+        simpleCreateProduct.setDimensionsDescription( bffRawItemDto.getDimensionsDescription() );
         simpleCreateProduct.setHandlingInstructions( bffRawItemDto.getHandlingInstructions() );
         simpleCreateProduct.setHeightUomId( bffRawItemDto.getHeightUomId() );
         simpleCreateProduct.setIndividualsPerPackage( bffRawItemDto.getIndividualsPerPackage() );
@@ -184,6 +187,7 @@ public class BffRawItemMapperImpl implements BffRawItemMapper {
         simpleMergePatchProduct.setDepthUomId( bffRawItemDto.getDepthUomId() );
         simpleMergePatchProduct.setDescription( bffRawItemDto.getDescription() );
         simpleMergePatchProduct.setDiameterUomId( bffRawItemDto.getDiameterUomId() );
+        simpleMergePatchProduct.setDimensionsDescription( bffRawItemDto.getDimensionsDescription() );
         simpleMergePatchProduct.setHandlingInstructions( bffRawItemDto.getHandlingInstructions() );
         simpleMergePatchProduct.setHeightUomId( bffRawItemDto.getHeightUomId() );
         simpleMergePatchProduct.setIndividualsPerPackage( bffRawItemDto.getIndividualsPerPackage() );

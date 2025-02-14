@@ -137,6 +137,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createProduct.setCertificationCodes(rawItem.getCertificationCodes());
         createProduct.setIndividualsPerPackage(rawItem.getIndividualsPerPackage());
         createProduct.setCaseUomId(rawItem.getCaseUomId());
+        createProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
 
 
         // Weight related fields
@@ -243,6 +244,18 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         mergePatchProduct.setSmallImageUrl(rawItem.getSmallImageUrl());
         mergePatchProduct.setMediumImageUrl(rawItem.getMediumImageUrl());
         mergePatchProduct.setLargeImageUrl(rawItem.getLargeImageUrl());
+        mergePatchProduct.setBrandName(rawItem.getBrandName());
+        mergePatchProduct.setProduceVariety(rawItem.getProduceVariety());
+        mergePatchProduct.setOrganicCertifications(rawItem.getOrganicCertifications());
+        mergePatchProduct.setMaterialCompositionDescription(rawItem.getMaterialCompositionDescription());
+        mergePatchProduct.setCountryOfOrigin(rawItem.getCountryOfOrigin());
+        mergePatchProduct.setCertificationCodes(rawItem.getCertificationCodes());
+        mergePatchProduct.setShelfLifeDescription(rawItem.getShelfLifeDescription());
+        mergePatchProduct.setHandlingInstructions(rawItem.getHandlingInstructions());
+        mergePatchProduct.setStorageConditions(rawItem.getStorageConditions());
+        mergePatchProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
+
+
         if (rawItem.getCaseUomId() != null) {
             mergePatchProduct.setCaseUomId(rawItem.getCaseUomId());
         }
