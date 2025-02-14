@@ -14,6 +14,8 @@ public interface BffReceivingItemProjection {
 
     String getProductName();
 
+    String getSmallImageUrl();
+
     String getGtin();
 
     String getLotId();

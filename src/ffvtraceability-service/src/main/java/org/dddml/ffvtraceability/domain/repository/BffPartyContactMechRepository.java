@@ -65,7 +65,7 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
             ORDER BY pcm.party_id, pcm.from_date DESC
             LIMIT 1
             """, nativeQuery = true)
-    Optional<BffBusinessContactProjectionExt> findPartyContactByPartyId(@Param("partyId") String partyId);
+    Optional<BffPartyBusinessContactProjection> findPartyContactByPartyId(@Param("partyId") String partyId);
 
     @Query(value = """
             SELECT DISTINCT ON (pcm.party_id)
@@ -127,8 +127,6 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
             @Param("contactMechTypeId") String contactMechTypeId
     );
 
-    interface BffBusinessContactProjectionExt extends BffBusinessContactProjection, PartyContactMechIdProjection {
-    }
 
     interface PartyContactMechIdProjection {
         String getPartyId();
@@ -136,6 +134,9 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
         String getContactMechId();
 
         Instant getFromDate();
+    }
+
+    interface BffPartyBusinessContactProjection extends BffBusinessContactProjection, PartyContactMechIdProjection {
     }
 
     interface PartyMiscContactMechProjection extends PartyContactMechIdProjection {
