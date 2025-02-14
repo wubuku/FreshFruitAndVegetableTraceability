@@ -9,6 +9,7 @@ import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGe
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationState;
+import org.dddml.ffvtraceability.domain.mapper.BffBusinessContactMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
 import org.dddml.ffvtraceability.domain.repository.*;
@@ -64,6 +65,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     private BffFacilityContactMechRepository bffFacilityContactMechRepository;
     @Autowired
     private FacilityLocationApplicationService facilityLocationApplicationService;
+    @Autowired
+    private BffBusinessContactMapper bffBusinessContactMapper;
 
     static BffReceivingDocumentDto getReceivingDocument(
             BffReceivingRepository bffReceivingRepository,
@@ -240,7 +243,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         }
         BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(facilityProjection.get());
         bffFacilityContactMechRepository.findFacilityContactByFacilityId(facilityId)
-                .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(contact)));
+                .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContact(contact))));
         //enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
         return bffFacilityDto;
     }

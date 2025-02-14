@@ -7,6 +7,7 @@ import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechApplicationService;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechStateRepository;
 import org.dddml.ffvtraceability.domain.contactmech.ContactMechTypeId;
+import org.dddml.ffvtraceability.domain.mapper.BffBusinessContactMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierMapper;
 import org.dddml.ffvtraceability.domain.party.*;
@@ -76,6 +77,8 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
     private ContactMechApplicationService contactMechApplicationService;
     @Autowired
     private BffFacilityApplicationService bffFacilityApplicationService;
+    @Autowired
+    private BffBusinessContactMapper bffBusinessContactMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -112,7 +115,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             facilityProjections.forEach(bffFacilityProjection -> {
                 BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(bffFacilityProjection);
                 bffFacilityContactMechRepository.findFacilityContactByFacilityId(bffFacilityDto.getFacilityId())
-                        .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(contact)));
+                        .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContact(contact))));
                 //enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
                 facilityDtos.add(bffFacilityDto);
             });

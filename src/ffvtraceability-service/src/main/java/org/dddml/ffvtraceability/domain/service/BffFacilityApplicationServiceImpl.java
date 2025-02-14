@@ -15,6 +15,7 @@ import org.dddml.ffvtraceability.domain.facilitylocation.AbstractFacilityLocatio
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationState;
+import org.dddml.ffvtraceability.domain.mapper.BffBusinessContactMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityLocationMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.repository.*;
@@ -66,6 +67,8 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     private BffFacilityContactMechRepository bffFacilityContactMechRepository;
     @Autowired
     private BffBusinessContactService bffBusinessContactService;
+    @Autowired
+    private BffBusinessContactMapper bffBusinessContactMapper;
 
 //    static BffBusinessContactDto getBusinessContact(
 //            BffFacilityContactMechRepository bffFacilityContactMechRepository,
@@ -73,7 +76,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
 //        var businessContact = bffFacilityContactMechRepository.findFacilityContactByFacilityId(facilityId);
 //        return businessContact.orElse(null);
 
-//        AtomicReference<BffBusinessContactDto> bc = new AtomicReference<>();
+    //        AtomicReference<BffBusinessContactDto> bc = new AtomicReference<>();
 //        bffFacilityContactMechRepository.findFacilityCurrentPostalAddressByFacilityId(facilityId).ifPresent(x -> {
 //            bc.set(new BffBusinessContactDto());
 //            bc.get().setBusinessName(x.getToName());
@@ -114,7 +117,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         if (c.getIncludedBusinessContacts() != null && c.getIncludedBusinessContacts()) {
             page.getContent().forEach(dto -> {
                 bffFacilityContactMechRepository.findFacilityContactByFacilityId(dto.getFacilityId())
-                        .ifPresent(contact -> dto.setBusinessContacts(Collections.singletonList(contact)));
+                        .ifPresent(contact -> dto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContact(contact))));
             });
         }
         return page;
@@ -138,7 +141,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             }
         });
         bffFacilityContactMechRepository.findFacilityContactByFacilityId(c.getFacilityId())
-                .ifPresent(contact -> dto.setBusinessContacts(Collections.singletonList(contact)));
+                .ifPresent(contact -> dto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContact(contact))));
         return dto;
     }
 

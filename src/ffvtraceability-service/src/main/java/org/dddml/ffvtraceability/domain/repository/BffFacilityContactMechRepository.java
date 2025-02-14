@@ -1,6 +1,5 @@
 package org.dddml.ffvtraceability.domain.repository;
 
-import org.dddml.ffvtraceability.domain.BffBusinessContactDto;
 import org.dddml.ffvtraceability.domain.contactmech.AbstractContactMechState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -38,6 +37,7 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
     Optional<FacilityPostalAddressProjection> findFacilityCurrentPostalAddressByFacilityId(
             @Param("facilityId") String facilityId
     );
+
     @Query(value = """
             SELECT DISTINCT ON (pcm.facility_id)
                 pcm.facility_id as facilityId,
@@ -65,7 +65,7 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
             ORDER BY pcm.facility_id, pcm.from_date DESC
             LIMIT 1
             """, nativeQuery = true)
-    Optional<BffBusinessContactDto> findFacilityContactByFacilityId(@Param("facilityId") String facilityId);
+    Optional<BffBusinessContactProjection> findFacilityContactByFacilityId(@Param("facilityId") String facilityId);
 
     @Query(value = """
             SELECT DISTINCT ON (pcm.facility_id)

@@ -5,6 +5,7 @@ import org.dddml.ffvtraceability.domain.constants.BffLotConstants;
 import org.dddml.ffvtraceability.domain.lot.LotApplicationService;
 import org.dddml.ffvtraceability.domain.lot.LotIdentificationState;
 import org.dddml.ffvtraceability.domain.lot.LotState;
+import org.dddml.ffvtraceability.domain.mapper.BffBusinessContactMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
 import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
 import org.dddml.ffvtraceability.domain.product.ProductState;
@@ -78,6 +79,8 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
 
     @Autowired
     private BffLotRepository bffLotRepository;
+    @Autowired
+    private BffBusinessContactMapper bffBusinessContactMapper;
 
     public static String formatKdeProductDescription(KdeProductDescription pd) {
         String sb = pd.getProductName() +
@@ -362,7 +365,7 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
         if (x.isEmpty()) {
             return ld; // NOTE: return an empty object?
         }
-        BffBusinessContactDto facilityContact = x.get();
+        BffBusinessContactDto facilityContact = bffBusinessContactMapper.toBffBusinessContact(x.get());
         ld.setBusinessName(facilityContact.getBusinessName());
         ld.setState(facilityContact.getState());
         ld.setCity(facilityContact.getCity());
