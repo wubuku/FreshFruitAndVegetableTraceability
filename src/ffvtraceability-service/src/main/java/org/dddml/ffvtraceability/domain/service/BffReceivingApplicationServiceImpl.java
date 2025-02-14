@@ -239,18 +239,22 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             return null;
         }
         BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(facilityProjection.get());
-        enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
+        bffFacilityContactMechRepository.findFacilityContactByFacilityId(facilityId)
+                .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(contact)));
+        //enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
         return bffFacilityDto;
     }
 
-    private void enrichFacilityBusinessContactDetails(BffFacilityDto dto, String facilityId) {
-        BffBusinessContactDto facilityContact = BffFacilityApplicationServiceImpl.getBusinessContact(
-                bffFacilityContactMechRepository, facilityId
-        );
-        if (facilityContact != null) {
-            dto.setBusinessContacts(Collections.singletonList(facilityContact));
-        }
-    }
+//    private void enrichFacilityBusinessContactDetails(BffFacilityDto dto, String facilityId) {
+//        BffBusinessContactDto facilityContact = BffFacilityApplicationServiceImpl.getBusinessContact(
+//                bffFacilityContactMechRepository, facilityId
+//        );
+//        if (facilityContact != null) {
+//            dto.setBusinessContacts(Collections.singletonList(facilityContact));
+//        }
+//        bffFacilityContactMechRepository.findFacilityContactByFacilityId(facilityId)
+//                .ifPresent(contact -> dto.setBusinessContacts(Collections.singletonList(contact)));
+//    }
 
     @Override
     @Transactional(readOnly = true)

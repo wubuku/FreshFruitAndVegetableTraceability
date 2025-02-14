@@ -111,21 +111,23 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             List<BffFacilityDto> facilityDtos = new ArrayList<>();
             facilityProjections.forEach(bffFacilityProjection -> {
                 BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(bffFacilityProjection);
-                enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
+                bffFacilityContactMechRepository.findFacilityContactByFacilityId(bffFacilityDto.getFacilityId())
+                        .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(contact)));
+                //enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
                 facilityDtos.add(bffFacilityDto);
             });
             dto.setFacilities(facilityDtos);
         }
     }
 
-    private void enrichFacilityBusinessContactDetails(BffFacilityDto dto, String facilityId) {
-        BffBusinessContactDto facilityContact = BffFacilityApplicationServiceImpl.getBusinessContact(
-                bffFacilityContactMechRepository, facilityId
-        );
-        if (facilityContact != null) {
-            dto.setBusinessContacts(Collections.singletonList(facilityContact));
-        }
-    }
+//    private void enrichFacilityBusinessContactDetails(BffFacilityDto dto, String facilityId) {
+//        BffBusinessContactDto facilityContact = BffFacilityApplicationServiceImpl.getBusinessContact(
+//                bffFacilityContactMechRepository, facilityId
+//        );
+//        if (facilityContact != null) {
+//            dto.setBusinessContacts(Collections.singletonList(facilityContact));
+//        }
+//    }
 
     private void enrichSupplierBusinessContactDetails(BffSupplierDto dto, String supplierId) {
 

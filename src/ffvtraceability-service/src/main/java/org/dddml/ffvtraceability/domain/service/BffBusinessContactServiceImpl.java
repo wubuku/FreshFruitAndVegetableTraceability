@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Service
 public class BffBusinessContactServiceImpl implements BffBusinessContactService {
-    private static final String ERROR_STATE_NOT_FOUND = "State not found: %s";
+    private static final String ERROR_STATE_NOT_FOUND = "State or province not found: %s";
 
     @Autowired
     private ContactMechApplicationService contactMechApplicationService;
@@ -64,10 +64,36 @@ public class BffBusinessContactServiceImpl implements BffBusinessContactService 
     private AbstractContactMechCommand.SimpleCreateMiscContactMech newCreateMiscContactMech(BffBusinessContactDto bizContact) {
 
         AbstractContactMechCommand.SimpleCreateMiscContactMech createMiscContactMech = new AbstractContactMechCommand.SimpleCreateMiscContactMech();
+        createMiscContactMech.setContactMechId(IdUtils.randomId());
+
+
+        createMiscContactMech.setToName(bizContact.getBusinessName());
+        if (bizContact.getStateProvinceGeoId() != null) {
+            Optional<BffGeoRepository.StateProvinceProjection> stateProvince
+                    = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());
+            if (stateProvince.isEmpty()) {
+                throw new IllegalArgumentException(String.format(ERROR_STATE_NOT_FOUND, bizContact.getState()));
+            }
+            createMiscContactMech.setCountryGeoId(stateProvince.get().getParentGeoId());
+            createMiscContactMech.setStateProvinceGeoId(stateProvince.get().getGeoId());
+        } else {
+            createMiscContactMech.setCountryGeoId(bizContact.getCountryGeoId());
+        }
+        createMiscContactMech.setCity(bizContact.getCity());
+        createMiscContactMech.setAddress1(bizContact.getPhysicalLocationAddress());
+        createMiscContactMech.setPostalCode(bizContact.getZipCode());
+
+
+//        TelecomNumberUtil.TelecomNumberDto telecomNumberDto = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
+//        createMiscContactMech.setTelecomCountryCode(telecomNumberDto.getCountryCode());
+//        createMiscContactMech.setTelecomAreaCode(telecomNumberDto.getAreaCode());
+//        createMiscContactMech.setTelecomContactNumber(telecomNumberDto.getContactNumber());
+        createMiscContactMech.setTelecomContactNumber(bizContact.getPhoneNumber());
+
         createMiscContactMech.setEmail(bizContact.getEmail());
         createMiscContactMech.setAskForRole(bizContact.getContactRole());
         createMiscContactMech.setAskForName(bizContact.getBusinessName());
-        createMiscContactMech.setContactMechId(IdUtils.randomId());
+        createMiscContactMech.setPhysicalLocationAddress(bizContact.getPhysicalLocationAddress());
         return createMiscContactMech;
     }
 
