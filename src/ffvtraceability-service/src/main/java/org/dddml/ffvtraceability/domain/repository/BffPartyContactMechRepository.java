@@ -62,7 +62,7 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
             AND pa.contact_mech_type_id = 'MISC_CONTACT_MECH'
             AND pcm.from_date <= CURRENT_TIMESTAMP
             AND (pcm.thru_date IS NULL OR pcm.thru_date > CURRENT_TIMESTAMP)
-            ORDER BY pcm.facility_id, pcm.from_date DESC
+            ORDER BY pcm.party_id, pcm.from_date DESC
             LIMIT 1
             """, nativeQuery = true)
     Optional<BffBusinessContactProjectionExt> findPartyContactByPartyId(@Param("partyId") String partyId);
