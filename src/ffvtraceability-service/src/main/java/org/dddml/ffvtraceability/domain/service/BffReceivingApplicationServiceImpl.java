@@ -243,7 +243,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         }
         BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(facilityProjection.get());
         bffFacilityContactMechRepository.findFacilityContactByFacilityId(facilityId)
-                .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContact(contact))));
+                .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContactDto(contact))));
         //enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
         return bffFacilityDto;
     }

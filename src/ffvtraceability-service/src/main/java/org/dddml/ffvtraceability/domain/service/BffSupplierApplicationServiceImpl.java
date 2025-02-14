@@ -115,7 +115,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             facilityProjections.forEach(bffFacilityProjection -> {
                 BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(bffFacilityProjection);
                 bffFacilityContactMechRepository.findFacilityContactByFacilityId(bffFacilityDto.getFacilityId())
-                        .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContact(contact))));
+                        .ifPresent(contact -> bffFacilityDto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContactDto(contact))));
                 //enrichFacilityBusinessContactDetails(bffFacilityDto, bffFacilityDto.getFacilityId());
                 facilityDtos.add(bffFacilityDto);
             });

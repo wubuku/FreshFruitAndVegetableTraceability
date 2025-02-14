@@ -117,7 +117,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         if (c.getIncludedBusinessContacts() != null && c.getIncludedBusinessContacts()) {
             page.getContent().forEach(dto -> {
                 bffFacilityContactMechRepository.findFacilityContactByFacilityId(dto.getFacilityId())
-                        .ifPresent(contact -> dto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContact(contact))));
+                        .ifPresent(contact -> dto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContactDto(contact))));
             });
         }
         return page;
@@ -141,7 +141,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             }
         });
         bffFacilityContactMechRepository.findFacilityContactByFacilityId(c.getFacilityId())
-                .ifPresent(contact -> dto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContact(contact))));
+                .ifPresent(contact -> dto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContactDto(contact))));
         return dto;
     }
 

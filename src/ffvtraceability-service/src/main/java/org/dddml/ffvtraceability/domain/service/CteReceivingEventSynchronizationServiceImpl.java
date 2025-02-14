@@ -365,7 +365,7 @@ public class CteReceivingEventSynchronizationServiceImpl implements CteReceiving
         if (x.isEmpty()) {
             return ld; // NOTE: return an empty object?
         }
-        BffBusinessContactDto facilityContact = bffBusinessContactMapper.toBffBusinessContact(x.get());
+        BffBusinessContactDto facilityContact = bffBusinessContactMapper.toBffBusinessContactDto(x.get());
         ld.setBusinessName(facilityContact.getBusinessName());
         ld.setState(facilityContact.getState());
         ld.setCity(facilityContact.getCity());
