@@ -136,9 +136,25 @@ http://localhost:1023/api/swagger-ui/index.html
 
 ### Run tests
 
+运行测试：
+
 ```shell
+mvn clean && mvn package -Dmaven.test.skip=true
+# 构建依赖模块并运行 ffvtraceability-service-rest 模块的测试
 mvn -pl ffvtraceability-service-rest -am test
 ```
+
+运行 Spring Boot 集成测试：
+
+```shell
+mvn clean install -DskipTests
+mvn -pl ffvtraceability-service-rest test \
+    -Dtest=LotTracingServiceTest
+```
+
+两种命令行方式都可以成功，但是依赖解析路径不同：
+- 第一种，所有依赖都在 target/classes 目录下可用。
+- 第二种，Maven 可以从本地仓库找到依赖。
 
 
 ### 多租户支持

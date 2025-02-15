@@ -154,4 +154,44 @@ class LotTracingServiceTest {
         );
         assertThat(outputTree.getChildren()).isEmpty();
     }
+
+    @Test
+    void shouldPrintOutputTreeForMilk() {
+        // 追溯牛奶批次被用于生产的所有产品批次（树形结构）
+        TracingTree tree = lotTracingService.findOutputLotsAsTree(
+                "RAW_MILK", "MILK_LOT_001"
+        );
+
+        System.out.println("\n=== Output Tree for Milk ===");
+        System.out.println(tree.print());
+
+        // 验证直接产品 - 蛋糕胚和巧克力酱
+        List<TracingTree> level1 = tree.getChildren();
+        assertThat(level1)
+                .extracting(t -> t.getNode().getLotId())
+                .contains("CAKE_BASE_LOT_001", "CHOC_SAUCE_LOT_001");
+
+        // 验证间接产品 - 巧克力蛋糕
+        // 从蛋糕胚追溯
+        List<TracingTree> cakeBaseOutputs = level1.stream()
+                .filter(t -> t.getNode().getLotId().equals("CAKE_BASE_LOT_001"))
+                .findFirst()
+                .map(TracingTree::getChildren)
+                .orElse(Collections.emptyList());
+
+        assertThat(cakeBaseOutputs)
+                .extracting(t -> t.getNode().getLotId())
+                .contains("CHOC_CAKE_LOT_001");
+
+        // 从巧克力酱追溯
+        List<TracingTree> chocSauceOutputs = level1.stream()
+                .filter(t -> t.getNode().getLotId().equals("CHOC_SAUCE_LOT_001"))
+                .findFirst()
+                .map(TracingTree::getChildren)
+                .orElse(Collections.emptyList());
+
+        assertThat(chocSauceOutputs)
+                .extracting(t -> t.getNode().getLotId())
+                .contains("CHOC_CAKE_LOT_001");
+    }
 } 
