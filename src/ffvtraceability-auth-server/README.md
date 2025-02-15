@@ -272,6 +272,74 @@ INSERT INTO permissions (permission_id, description) VALUES
 
 
 
+## 授权码流程测试脚本解析
+
+脚本见代码库根目录下的 `src/ffvtraceability-auth-server/scripts/test.sh`。
+
+### 1. PKCE 参数生成
+```bash
+# 生成 code_verifier (随机字符串)
+code_verifier=$(openssl rand -base64 32 | tr -d /=+ | cut -c -43)
+echo "🔑 Code Verifier: $code_verifier"
+
+# 生成 code_challenge (base64url-encode(sha256(code_verifier)))
+code_challenge=$(printf "%s" "$code_verifier" | openssl sha256 -binary | base64url_encode)
+echo "🔒 Code Challenge: $code_challenge"
+```
+
+### 2. 用户登录流程
+```bash
+# 获取登录页面和 CSRF token
+csrf_token=$(curl -c cookies.txt -b cookies.txt -s http://localhost:9000/login | 
+    sed -n 's/.*name="_csrf" type="hidden" value="\([^"]*\).*/\1/p')
+
+# 执行登录请求
+curl -X POST http://localhost:9000/login \
+    -c cookies.txt -b cookies.txt \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "username=admin" \
+    -d "password=admin" \
+    -d "_csrf=$encoded_csrf_token"
+```
+
+### 3. 授权请求
+```bash
+auth_page=$(curl -s \
+    -c cookies.txt -b cookies.txt \
+    "http://localhost:9000/oauth2/authorize?\
+client_id=ffv-client&\
+response_type=code&\
+scope=openid%20read%20write&\
+redirect_uri=${encoded_redirect_uri}&\
+code_challenge=${code_challenge}&\
+code_challenge_method=S256")
+```
+
+### 4. 用户授权确认
+```bash
+if echo "$auth_page" | grep -q "Consent required"; then
+    curl -s \
+        -c cookies.txt -b cookies.txt \
+        "http://localhost:9000/oauth2/authorize" \
+        -d "client_id=ffv-client" \
+        -d "state=$state" \
+        -d "scope=read" \
+        -d "scope=write" \
+        -d "scope=openid"
+fi
+```
+
+### 5. 交换访问令牌
+```bash
+curl -X POST "http://localhost:9000/oauth2/token" \
+    -H "Authorization: Basic $(echo -n 'ffv-client:secret' | base64)" \
+    -d "grant_type=authorization_code" \
+    -d "code=$encoded_auth_code" \
+    -d "redirect_uri=$encoded_redirect_uri" \
+    -d "code_verifier=$encoded_code_verifier"
+```
+
+
 ## 更多参考信息
 
 见：`docs/OAuth2_授权码流程与安全实践详解.md`

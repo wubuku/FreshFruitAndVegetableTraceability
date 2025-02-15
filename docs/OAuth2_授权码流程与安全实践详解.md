@@ -8,11 +8,22 @@
    - 当你的应用需要访问第三方服务（如：使用GitHub登录）
    - 当你的系统包含多个应用，需要统一的认证方案
    - 当你需要让用户安全地授权，而不是直接共享密码
+   - 当你需要实现职责分离：
+     * 认证（Authentication）：验证用户身份
+     * 授权（Authorization）：控制资源访问权限
+   - 当你需要更好的灵活性：
+     * 支持多种认证方式（密码、社交账号、证书等）
+     * 可以为不同客户端设置不同的权限
+     * 支持单点登录（SSO）
 
 2. 为什么要使用授权码流程？
    - 它是最安全的 OAuth2 授权流程
    - 适用于各种类型的应用（Web、移动端、桌面端）
    - 支持长期访问（通过刷新令牌）
+   - 提供了完善的安全保障：
+     * 避免直接将用户凭证传递给第三方应用
+     * 访问令牌有限的作用域和生命周期
+     * 可以随时撤销访问权限而不需要更改密码
 
 3. 本文相关内容包括：
    - OAuth2 授权码流程的工作原理
@@ -51,9 +62,43 @@ PKCE 是一种动态证明机制，通过以下步骤防止授权码被截获：
    - 将结果进行 Base64URL 编码
    - code_challenge_method 设置为 "S256"
 
+PKCE 的完整流程：
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant AuthServer
+    participant Attacker
+    
+    Note over Client: 1. 生成 code_verifier<br/>(随机字符串)
+    Note over Client: 2. 计算 code_challenge<br/>(code_verifier 的 SHA256 哈希)
+    Client->>AuthServer: 3. 授权请求 + code_challenge
+    AuthServer->>Client: 4. 授权码
+    Note over Attacker: 5. 即使截获授权码也无法使用
+    Client->>AuthServer: 6. 令牌请求 + 授权码 + code_verifier
+    AuthServer->>Client: 7. 访问令牌
+```
+
 PKCE 通过这种方式确保：
 - 只有原始发起授权请求的客户端才能使用授权码
 - 即使授权码被截获，没有 code_verifier 也无法使用
+
+防止授权码拦截的原理：
+
+1. **verifier 保密性**
+   - 只有原始客户端持有
+   - 从不在传输过程中明文传递
+   - 攻击者无法获取
+
+2. **密码学保证**
+   - challenge 基于单向哈希
+   - 无法从 challenge 反推 verifier
+   - 确保了 verifier 的唯一性
+
+3. **绑定验证**
+   - 服务器存储 challenge
+   - 验证 verifier 的哈希值
+   - 确保请求来自原始客户端
 
 #### 关于 PKCE 的误解
 
@@ -72,6 +117,23 @@ PKCE 通过这种方式确保：
        &code_challenge=xxx        # PKCE challenge
        &code_challenge_method=S256
    ```
+
+3. 另一个常见误解是认为"使用了 PKCE 后，在公共客户端中使用 client secret 是安全的"。这个理解也是错误的：
+   - PKCE 只能确保授权码不被截获
+   - 但无法防止应用身份被冒充
+   - 一旦 client secret 泄露，攻击者可以：
+     ```
+     1. 使用 client secret 注册自己的恶意应用
+     2. 发布到应用商店
+     3. 诱导用户下载使用
+     4. 获得用户授权（因为使用了合法的凭证）
+     ```
+
+这就是为什么 OAuth 2.1 草案明确规定：
+1. 公共客户端必须使用 PKCE
+2. 公共客户端不得使用 client secret
+
+这两个要求是相辅相成的，不是互相替代的关系。安全的实现需要正确理解和使用每一层安全机制。
 
 ### 0.3 授权码流程是如何工作的？
 
@@ -601,3 +663,27 @@ public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
 2. 重定向 URI 验证
 3. 授权服务器的多重验证
 4. 平台特定的安全特性
+
+### 3.5 OAuth2 的优势总结
+
+相比直接使用用户名/密码认证，OAuth2 提供了以下优势：
+
+1. 标准化
+   - 工业标准，有完善的安全考虑
+   - 大量现成的客户端实现库
+   - 便于与其他系统集成
+
+2. 安全性
+   - 避免直接将用户凭证传递给第三方应用
+   - 访问令牌有限的作用域和生命周期
+   - 可以随时撤销访问权限而不需要更改密码
+
+3. 灵活性
+   - 支持多种认证方式（密码、社交账号、证书等）
+   - 可以为不同客户端设置不同的权限
+   - 支持单点登录（SSO）
+
+4. 职责分离
+   - 认证（Authentication）：验证用户身份
+   - 授权（Authorization）：控制资源访问权限
+   - 清晰的概念分离有助于系统设计和维护
