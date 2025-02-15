@@ -428,6 +428,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         mergePatchLocation.setVersion(locationState.getVersion());
         mergePatchLocation.setLocationTypeEnumId(c.getFacilityLocation().getLocationTypeEnumId());
         mergePatchLocation.setAreaId(c.getFacilityLocation().getAreaId());
+        mergePatchLocation.setDescription(c.getFacilityLocation().getDescription());
         mergePatchLocation.setAisleId(c.getFacilityLocation().getAisleId());
         mergePatchLocation.setSectionId(c.getFacilityLocation().getSectionId());
         mergePatchLocation.setLevelId(c.getFacilityLocation().getLevelId());
