@@ -253,6 +253,16 @@ public abstract class AbstractFamilyEvent extends AbstractInformalOrganizationEv
             this.isPropertyStatusIdRemoved = removed;
         }
 
+        private Boolean isPropertyShortDescriptionRemoved;
+
+        public Boolean getIsPropertyShortDescriptionRemoved() {
+            return this.isPropertyShortDescriptionRemoved;
+        }
+
+        public void setIsPropertyShortDescriptionRemoved(Boolean removed) {
+            this.isPropertyShortDescriptionRemoved = removed;
+        }
+
         private Boolean isPropertyEmailRemoved;
 
         public Boolean getIsPropertyEmailRemoved() {

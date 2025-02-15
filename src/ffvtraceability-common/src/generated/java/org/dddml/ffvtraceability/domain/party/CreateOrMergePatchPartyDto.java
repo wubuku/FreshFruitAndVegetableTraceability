@@ -101,6 +101,21 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
     }
 
     /**
+     * Short Description
+     */
+    private String shortDescription;
+
+    public String getShortDescription()
+    {
+        return this.shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription)
+    {
+        this.shortDescription = shortDescription;
+    }
+
+    /**
      * Email
      */
     private String email;
@@ -455,6 +470,18 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         this.isPropertyStatusIdRemoved = removed;
     }
 
+    private Boolean isPropertyShortDescriptionRemoved;
+
+    public Boolean getIsPropertyShortDescriptionRemoved()
+    {
+        return this.isPropertyShortDescriptionRemoved;
+    }
+
+    public void setIsPropertyShortDescriptionRemoved(Boolean removed)
+    {
+        this.isPropertyShortDescriptionRemoved = removed;
+    }
+
     private Boolean isPropertyEmailRemoved;
 
     public Boolean getIsPropertyEmailRemoved()
@@ -680,6 +707,7 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         command.setPreferredCurrencyUomId(this.getPreferredCurrencyUomId());
         command.setDescription(this.getDescription());
         command.setStatusId(this.getStatusId());
+        command.setShortDescription(this.getShortDescription());
         command.setEmail(this.getEmail());
         command.setWebSite(this.getWebSite());
         command.setTelephone(this.getTelephone());
@@ -769,6 +797,7 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
         command.setIsPropertyPreferredCurrencyUomIdRemoved(this.getIsPropertyPreferredCurrencyUomIdRemoved());
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
         command.setIsPropertyStatusIdRemoved(this.getIsPropertyStatusIdRemoved());
+        command.setIsPropertyShortDescriptionRemoved(this.getIsPropertyShortDescriptionRemoved());
         command.setIsPropertyEmailRemoved(this.getIsPropertyEmailRemoved());
         command.setIsPropertyWebSiteRemoved(this.getIsPropertyWebSiteRemoved());
         command.setIsPropertyTelephoneRemoved(this.getIsPropertyTelephoneRemoved());

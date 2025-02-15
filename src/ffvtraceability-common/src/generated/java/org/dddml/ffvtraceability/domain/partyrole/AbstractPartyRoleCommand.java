@@ -39,18 +39,6 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
 
     public static abstract class AbstractCreateOrMergePatchPartyRole extends AbstractPartyRoleCommand implements CreateOrMergePatchPartyRole
     {
-        private String supplierShortName;
-
-        public String getSupplierShortName()
-        {
-            return this.supplierShortName;
-        }
-
-        public void setSupplierShortName(String supplierShortName)
-        {
-            this.supplierShortName = supplierShortName;
-        }
-
         private String tpaNumber;
 
         public String getTpaNumber()
@@ -127,18 +115,6 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_MERGE_PATCH;
-        }
-
-        private Boolean isPropertySupplierShortNameRemoved;
-
-        public Boolean getIsPropertySupplierShortNameRemoved()
-        {
-            return this.isPropertySupplierShortNameRemoved;
-        }
-
-        public void setIsPropertySupplierShortNameRemoved(Boolean removed)
-        {
-            this.isPropertySupplierShortNameRemoved = removed;
         }
 
         private Boolean isPropertyTpaNumberRemoved;

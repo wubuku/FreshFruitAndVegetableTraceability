@@ -28,9 +28,6 @@
       </property>
     </subclass>
     <subclass name="AbstractPartyRoleEvent$AbstractPartyRoleStateEvent" abstract="true">
-      <property name="supplierShortName">
-        <column name="supplier_short_name" sql-type="VARCHAR(100)" />
-      </property>
       <property name="tpaNumber">
         <column name="tpa_number" sql-type="VARCHAR(100)" />
       </property>
@@ -48,7 +45,6 @@
       </property>
       <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractPartyRoleEvent$SimplePartyRoleStateMergePatched" discriminator-value="MergePatched">
-        <property name="isPropertySupplierShortNameRemoved" column="is_property_supplier_short_name_removed" />
         <property name="isPropertyTpaNumberRemoved" column="is_property_tpa_number_removed" />
         <property name="isPropertyCertificationCodesRemoved" column="is_property_certification_codes_removed" />
         <property name="isPropertyBankAccountInformationRemoved" column="is_property_bank_account_information_removed" />

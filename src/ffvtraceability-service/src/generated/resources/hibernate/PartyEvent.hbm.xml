@@ -43,6 +43,9 @@
       <property name="statusId">
         <column name="STATUS_ID" sql-type="VARCHAR(20)" />
       </property>
+      <property name="shortDescription">
+        <column name="short_description" sql-type="VARCHAR(100)" />
+      </property>
       <property name="email">
         <column name="email" sql-type="VARCHAR(20)" />
       </property>
@@ -60,6 +63,7 @@
         <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
         <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyShortDescriptionRemoved" column="is_property_short_description_removed" />
         <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
         <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
         <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
@@ -125,6 +129,7 @@
           <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
           <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
           <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+          <property name="isPropertyShortDescriptionRemoved" column="is_property_short_description_removed" />
           <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
           <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
           <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
@@ -143,6 +148,7 @@
           <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
           <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
           <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+          <property name="isPropertyShortDescriptionRemoved" column="is_property_short_description_removed" />
           <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
           <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
           <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
@@ -157,6 +163,7 @@
             <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
             <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
             <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+            <property name="isPropertyShortDescriptionRemoved" column="is_property_short_description_removed" />
             <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
             <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
             <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
@@ -171,6 +178,7 @@
               <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
               <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
               <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+              <property name="isPropertyShortDescriptionRemoved" column="is_property_short_description_removed" />
               <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
               <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
               <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
@@ -187,6 +195,7 @@
             <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
             <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
             <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+            <property name="isPropertyShortDescriptionRemoved" column="is_property_short_description_removed" />
             <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
             <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
             <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />
@@ -207,6 +216,7 @@
               <property name="isPropertyPreferredCurrencyUomIdRemoved" column="is_property_preferred_currency_uom_id_removed" />
               <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
               <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+              <property name="isPropertyShortDescriptionRemoved" column="is_property_short_description_removed" />
               <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
               <property name="isPropertyWebSiteRemoved" column="is_property_web_site_removed" />
               <property name="isPropertyTelephoneRemoved" column="is_property_telephone_removed" />

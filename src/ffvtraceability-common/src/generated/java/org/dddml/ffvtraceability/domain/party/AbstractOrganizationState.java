@@ -70,6 +70,7 @@ public abstract class AbstractOrganizationState extends AbstractPartyState imple
         this.setPreferredCurrencyUomId(e.getPreferredCurrencyUomId());
         this.setDescription(e.getDescription());
         this.setStatusId(e.getStatusId());
+        this.setShortDescription(e.getShortDescription());
         this.setEmail(e.getEmail());
         this.setWebSite(e.getWebSite());
         this.setTelephone(e.getTelephone());
@@ -99,6 +100,7 @@ public abstract class AbstractOrganizationState extends AbstractPartyState imple
         this.setPreferredCurrencyUomId(s.getPreferredCurrencyUomId());
         this.setDescription(s.getDescription());
         this.setStatusId(s.getStatusId());
+        this.setShortDescription(s.getShortDescription());
         this.setEmail(s.getEmail());
         this.setWebSite(s.getWebSite());
         this.setTelephone(s.getTelephone());
@@ -185,6 +187,13 @@ public abstract class AbstractOrganizationState extends AbstractPartyState imple
             }
         } else {
             this.setStatusId(e.getStatusId());
+        }
+        if (e.getShortDescription() == null) {
+            if (e.getIsPropertyShortDescriptionRemoved() != null && e.getIsPropertyShortDescriptionRemoved()) {
+                this.setShortDescription(null);
+            }
+        } else {
+            this.setShortDescription(e.getShortDescription());
         }
         if (e.getEmail() == null) {
             if (e.getIsPropertyEmailRemoved() != null && e.getIsPropertyEmailRemoved()) {

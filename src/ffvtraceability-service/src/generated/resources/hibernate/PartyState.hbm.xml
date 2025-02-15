@@ -29,6 +29,9 @@
     <property name="statusId">
       <column name="STATUS_ID" sql-type="VARCHAR(20)" />
     </property>
+    <property name="shortDescription">
+      <column name="short_description" sql-type="VARCHAR(100)" />
+    </property>
     <property name="email">
       <column name="email" sql-type="VARCHAR(20)" />
     </property>

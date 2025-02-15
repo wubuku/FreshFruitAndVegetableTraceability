@@ -3076,6 +3076,7 @@ public class M {
             "preferredCurrencyUomId",
             "description",
             "statusId",
+            "shortDescription",
             "email",
             "webSite",
             "telephone",
@@ -3104,6 +3105,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
             "String",
             "String",
             "String",
@@ -3164,6 +3166,8 @@ public class M {
         aliasMap.put("Description", "description");
         aliasMap.put("statusId", "statusId");
         aliasMap.put("StatusId", "statusId");
+        aliasMap.put("shortDescription", "shortDescription");
+        aliasMap.put("ShortDescription", "shortDescription");
         aliasMap.put("email", "email");
         aliasMap.put("Email", "email");
         aliasMap.put("webSite", "webSite");
@@ -4606,7 +4610,6 @@ public class M {
     public static final Class ID_CLASS = org.dddml.ffvtraceability.domain.partyrole.PartyRoleId.class;
 
     public static final String[] propertyNames = new String[] {
-            "supplierShortName",
             "tpaNumber",
             "certificationCodes",
             "bankAccountInformation",
@@ -4624,7 +4627,6 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
-            "String",
             "String",
             "String",
             "String",
@@ -4653,8 +4655,6 @@ public class M {
     }
 
     private static void initAliasMap() {
-        aliasMap.put("supplierShortName", "supplierShortName");
-        aliasMap.put("SupplierShortName", "supplierShortName");
         aliasMap.put("tpaNumber", "tpaNumber");
         aliasMap.put("TpaNumber", "tpaNumber");
         aliasMap.put("certificationCodes", "certificationCodes");

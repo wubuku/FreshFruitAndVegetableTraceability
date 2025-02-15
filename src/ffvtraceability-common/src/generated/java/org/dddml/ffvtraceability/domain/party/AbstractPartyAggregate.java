@@ -94,6 +94,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -119,6 +120,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -157,6 +159,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -183,6 +186,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -209,6 +213,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -235,6 +240,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -261,6 +267,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -313,6 +320,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -322,6 +330,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyShortDescriptionRemoved(c.getIsPropertyShortDescriptionRemoved());
         e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
         e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
         e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
@@ -347,6 +356,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -382,6 +392,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyShortDescriptionRemoved(c.getIsPropertyShortDescriptionRemoved());
         e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
         e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
         e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
@@ -407,6 +418,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -418,6 +430,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyShortDescriptionRemoved(c.getIsPropertyShortDescriptionRemoved());
         e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
         e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
         e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
@@ -443,6 +456,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -454,6 +468,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyShortDescriptionRemoved(c.getIsPropertyShortDescriptionRemoved());
         e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
         e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
         e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
@@ -479,6 +494,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -490,6 +506,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyShortDescriptionRemoved(c.getIsPropertyShortDescriptionRemoved());
         e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
         e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
         e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
@@ -515,6 +532,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -526,6 +544,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyShortDescriptionRemoved(c.getIsPropertyShortDescriptionRemoved());
         e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
         e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
         e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());
@@ -551,6 +570,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setPreferredCurrencyUomId(c.getPreferredCurrencyUomId());
         e.setDescription(c.getDescription());
         e.setStatusId(c.getStatusId());
+        e.setShortDescription(c.getShortDescription());
         e.setEmail(c.getEmail());
         e.setWebSite(c.getWebSite());
         e.setTelephone(c.getTelephone());
@@ -564,6 +584,7 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         e.setIsPropertyPreferredCurrencyUomIdRemoved(c.getIsPropertyPreferredCurrencyUomIdRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyStatusIdRemoved(c.getIsPropertyStatusIdRemoved());
+        e.setIsPropertyShortDescriptionRemoved(c.getIsPropertyShortDescriptionRemoved());
         e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
         e.setIsPropertyWebSiteRemoved(c.getIsPropertyWebSiteRemoved());
         e.setIsPropertyTelephoneRemoved(c.getIsPropertyTelephoneRemoved());

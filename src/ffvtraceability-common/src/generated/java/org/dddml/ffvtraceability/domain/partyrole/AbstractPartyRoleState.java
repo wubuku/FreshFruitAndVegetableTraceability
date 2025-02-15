@@ -24,16 +24,6 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         this.partyRoleId = partyRoleId;
     }
 
-    private String supplierShortName;
-
-    public String getSupplierShortName() {
-        return this.supplierShortName;
-    }
-
-    public void setSupplierShortName(String supplierShortName) {
-        this.supplierShortName = supplierShortName;
-    }
-
     private String tpaNumber;
 
     public String getTpaNumber() {
@@ -218,7 +208,6 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
     public void when(PartyRoleStateCreated e) {
         throwOnWrongEvent(e);
 
-        this.setSupplierShortName(e.getSupplierShortName());
         this.setTpaNumber(e.getTpaNumber());
         this.setCertificationCodes(e.getCertificationCodes());
         this.setBankAccountInformation(e.getBankAccountInformation());
@@ -234,7 +223,6 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         if (s == this) {
             return;
         }
-        this.setSupplierShortName(s.getSupplierShortName());
         this.setTpaNumber(s.getTpaNumber());
         this.setCertificationCodes(s.getCertificationCodes());
         this.setBankAccountInformation(s.getBankAccountInformation());
@@ -245,13 +233,6 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
     public void when(PartyRoleStateMergePatched e) {
         throwOnWrongEvent(e);
 
-        if (e.getSupplierShortName() == null) {
-            if (e.getIsPropertySupplierShortNameRemoved() != null && e.getIsPropertySupplierShortNameRemoved()) {
-                this.setSupplierShortName(null);
-            }
-        } else {
-            this.setSupplierShortName(e.getSupplierShortName());
-        }
         if (e.getTpaNumber() == null) {
             if (e.getIsPropertyTpaNumberRemoved() != null && e.getIsPropertyTpaNumberRemoved()) {
                 this.setTpaNumber(null);

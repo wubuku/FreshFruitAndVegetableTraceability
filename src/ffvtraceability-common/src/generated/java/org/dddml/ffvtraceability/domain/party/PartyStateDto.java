@@ -98,6 +98,18 @@ public class PartyStateDto {
         this.statusId = statusId;
     }
 
+    private String shortDescription;
+
+    public String getShortDescription()
+    {
+        return this.shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription)
+    {
+        this.shortDescription = shortDescription;
+    }
+
     private String email;
 
     public String getEmail()
@@ -435,6 +447,9 @@ public class PartyStateDto {
             }
             if (returnedFieldsContains("StatusId")) {
                 dto.setStatusId(state.getStatusId());
+            }
+            if (returnedFieldsContains("ShortDescription")) {
+                dto.setShortDescription(state.getShortDescription());
             }
             if (returnedFieldsContains("Email")) {
                 dto.setEmail(state.getEmail());

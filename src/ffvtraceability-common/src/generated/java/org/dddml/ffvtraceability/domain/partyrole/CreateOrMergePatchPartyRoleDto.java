@@ -11,21 +11,6 @@ import org.dddml.ffvtraceability.domain.*;
 public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto implements PartyRoleCommand.CreateOrMergePatchPartyRole {
 
     /**
-     * Supplier Short Name
-     */
-    private String supplierShortName;
-
-    public String getSupplierShortName()
-    {
-        return this.supplierShortName;
-    }
-
-    public void setSupplierShortName(String supplierShortName)
-    {
-        this.supplierShortName = supplierShortName;
-    }
-
-    /**
      * Trade Partner Agreement Number
      */
     private String tpaNumber;
@@ -101,18 +86,6 @@ public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto 
     }
 
 
-    private Boolean isPropertySupplierShortNameRemoved;
-
-    public Boolean getIsPropertySupplierShortNameRemoved()
-    {
-        return this.isPropertySupplierShortNameRemoved;
-    }
-
-    public void setIsPropertySupplierShortNameRemoved(Boolean removed)
-    {
-        this.isPropertySupplierShortNameRemoved = removed;
-    }
-
     private Boolean isPropertyTpaNumberRemoved;
 
     public Boolean getIsPropertyTpaNumberRemoved()
@@ -176,7 +149,6 @@ public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto 
     public void copyTo(CreateOrMergePatchPartyRole command)
     {
         ((AbstractPartyRoleCommandDto) this).copyTo(command);
-        command.setSupplierShortName(this.getSupplierShortName());
         command.setTpaNumber(this.getTpaNumber());
         command.setCertificationCodes(this.getCertificationCodes());
         command.setBankAccountInformation(this.getBankAccountInformation());
@@ -226,7 +198,6 @@ public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto 
     public void copyTo(MergePatchPartyRole command)
     {
         copyTo((CreateOrMergePatchPartyRole) command);
-        command.setIsPropertySupplierShortNameRemoved(this.getIsPropertySupplierShortNameRemoved());
         command.setIsPropertyTpaNumberRemoved(this.getIsPropertyTpaNumberRemoved());
         command.setIsPropertyCertificationCodesRemoved(this.getIsPropertyCertificationCodesRemoved());
         command.setIsPropertyBankAccountInformationRemoved(this.getIsPropertyBankAccountInformationRemoved());

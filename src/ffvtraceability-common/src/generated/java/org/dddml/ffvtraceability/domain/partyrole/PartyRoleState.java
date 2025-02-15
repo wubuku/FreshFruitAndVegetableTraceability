@@ -19,8 +19,6 @@ public interface PartyRoleState
 
     PartyRoleId getPartyRoleId();
 
-    String getSupplierShortName();
-
     String getTpaNumber();
 
     String getCertificationCodes();
@@ -45,8 +43,6 @@ public interface PartyRoleState
 
     interface MutablePartyRoleState extends PartyRoleState {
         void setPartyRoleId(PartyRoleId partyRoleId);
-
-        void setSupplierShortName(String supplierShortName);
 
         void setTpaNumber(String tpaNumber);
 

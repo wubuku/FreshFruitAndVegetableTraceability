@@ -84,6 +84,16 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
         this.statusId = statusId;
     }
 
+    private String shortDescription;
+
+    public String getShortDescription() {
+        return this.shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
     private String email;
 
     public String getEmail() {
@@ -275,6 +285,7 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
         this.setPreferredCurrencyUomId(e.getPreferredCurrencyUomId());
         this.setDescription(e.getDescription());
         this.setStatusId(e.getStatusId());
+        this.setShortDescription(e.getShortDescription());
         this.setEmail(e.getEmail());
         this.setWebSite(e.getWebSite());
         this.setTelephone(e.getTelephone());
@@ -298,6 +309,7 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
         this.setPreferredCurrencyUomId(s.getPreferredCurrencyUomId());
         this.setDescription(s.getDescription());
         this.setStatusId(s.getStatusId());
+        this.setShortDescription(s.getShortDescription());
         this.setEmail(s.getEmail());
         this.setWebSite(s.getWebSite());
         this.setTelephone(s.getTelephone());
@@ -383,6 +395,13 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
             }
         } else {
             this.setStatusId(e.getStatusId());
+        }
+        if (e.getShortDescription() == null) {
+            if (e.getIsPropertyShortDescriptionRemoved() != null && e.getIsPropertyShortDescriptionRemoved()) {
+                this.setShortDescription(null);
+            }
+        } else {
+            this.setShortDescription(e.getShortDescription());
         }
         if (e.getEmail() == null) {
             if (e.getIsPropertyEmailRemoved() != null && e.getIsPropertyEmailRemoved()) {

@@ -69,6 +69,10 @@ public interface PartyEvent extends Event {
 
         void setStatusId(String statusId);
 
+        String getShortDescription();
+
+        void setShortDescription(String shortDescription);
+
         String getEmail();
 
         void setEmail(String email);
@@ -120,6 +124,10 @@ public interface PartyEvent extends Event {
         Boolean getIsPropertyStatusIdRemoved();
 
         void setIsPropertyStatusIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyShortDescriptionRemoved();
+
+        void setIsPropertyShortDescriptionRemoved(Boolean removed);
 
         Boolean getIsPropertyEmailRemoved();
 

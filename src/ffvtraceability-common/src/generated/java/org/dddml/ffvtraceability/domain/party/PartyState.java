@@ -31,6 +31,8 @@ public interface PartyState
 
     String getStatusId();
 
+    String getShortDescription();
+
     String getEmail();
 
     String getWebSite();
@@ -65,6 +67,8 @@ public interface PartyState
         void setDescription(String description);
 
         void setStatusId(String statusId);
+
+        void setShortDescription(String shortDescription);
 
         void setEmail(String email);
 

@@ -111,6 +111,18 @@ public abstract class AbstractPartyCommand extends AbstractCommand implements Pa
             this.statusId = statusId;
         }
 
+        private String shortDescription;
+
+        public String getShortDescription()
+        {
+            return this.shortDescription;
+        }
+
+        public void setShortDescription(String shortDescription)
+        {
+            this.shortDescription = shortDescription;
+        }
+
         private String email;
 
         public String getEmail()
@@ -449,6 +461,18 @@ public abstract class AbstractPartyCommand extends AbstractCommand implements Pa
         public void setIsPropertyStatusIdRemoved(Boolean removed)
         {
             this.isPropertyStatusIdRemoved = removed;
+        }
+
+        private Boolean isPropertyShortDescriptionRemoved;
+
+        public Boolean getIsPropertyShortDescriptionRemoved()
+        {
+            return this.isPropertyShortDescriptionRemoved;
+        }
+
+        public void setIsPropertyShortDescriptionRemoved(Boolean removed)
+        {
+            this.isPropertyShortDescriptionRemoved = removed;
         }
 
         private Boolean isPropertyEmailRemoved;

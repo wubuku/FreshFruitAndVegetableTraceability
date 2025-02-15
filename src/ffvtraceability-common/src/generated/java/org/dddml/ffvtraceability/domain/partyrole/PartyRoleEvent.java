@@ -45,10 +45,6 @@ public interface PartyRoleEvent extends Event {
     void setTenantId(String tenantId);
 
     interface PartyRoleStateEvent extends PartyRoleEvent {
-        String getSupplierShortName();
-
-        void setSupplierShortName(String supplierShortName);
-
         String getTpaNumber();
 
         void setTpaNumber(String tpaNumber);
@@ -79,10 +75,6 @@ public interface PartyRoleEvent extends Event {
 
     interface PartyRoleStateMergePatched extends PartyRoleStateEvent
     {
-        Boolean getIsPropertySupplierShortNameRemoved();
-
-        void setIsPropertySupplierShortNameRemoved(Boolean removed);
-
         Boolean getIsPropertyTpaNumberRemoved();
 
         void setIsPropertyTpaNumberRemoved(Boolean removed);

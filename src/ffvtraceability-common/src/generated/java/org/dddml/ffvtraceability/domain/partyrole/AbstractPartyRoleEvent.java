@@ -129,18 +129,6 @@ public abstract class AbstractPartyRoleEvent extends AbstractEvent implements Pa
 
 
     public static abstract class AbstractPartyRoleStateEvent extends AbstractPartyRoleEvent implements PartyRoleEvent.PartyRoleStateEvent {
-        private String supplierShortName;
-
-        public String getSupplierShortName()
-        {
-            return this.supplierShortName;
-        }
-
-        public void setSupplierShortName(String supplierShortName)
-        {
-            this.supplierShortName = supplierShortName;
-        }
-
         private String tpaNumber;
 
         public String getTpaNumber()
@@ -235,16 +223,6 @@ public abstract class AbstractPartyRoleEvent extends AbstractEvent implements Pa
 
         public String getEventType() {
             return StateEventType.MERGE_PATCHED;
-        }
-
-        private Boolean isPropertySupplierShortNameRemoved;
-
-        public Boolean getIsPropertySupplierShortNameRemoved() {
-            return this.isPropertySupplierShortNameRemoved;
-        }
-
-        public void setIsPropertySupplierShortNameRemoved(Boolean removed) {
-            this.isPropertySupplierShortNameRemoved = removed;
         }
 
         private Boolean isPropertyTpaNumberRemoved;

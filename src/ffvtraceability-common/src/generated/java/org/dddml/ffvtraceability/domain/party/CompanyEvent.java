@@ -57,6 +57,10 @@ public interface CompanyEvent extends LegalOrganizationEvent {
 
         void setIsPropertyStatusIdRemoved(Boolean removed);
 
+        Boolean getIsPropertyShortDescriptionRemoved();
+
+        void setIsPropertyShortDescriptionRemoved(Boolean removed);
+
         Boolean getIsPropertyEmailRemoved();
 
         void setIsPropertyEmailRemoved(Boolean removed);

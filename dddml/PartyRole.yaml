@@ -10,9 +10,8 @@
     properties:
       # ------------------------------------------------------------
       # 当 RoleTypeId 为 "SUPPLIER" 时，我们使用这些属性：
-      SupplierShortName:
-        # 供应商的缩写名称
-        type: name
+      # SupplierShortName:
+      #   type: name
       TpaNumber:
         description: "Trade Partner Agreement Number"
         type: name

@@ -64,6 +64,9 @@ public class DepartmentStateDto extends OrganizationStateDto {
             if (returnedFieldsContains("StatusId")) {
                 dto.setStatusId(state.getStatusId());
             }
+            if (returnedFieldsContains("ShortDescription")) {
+                dto.setShortDescription(state.getShortDescription());
+            }
             if (returnedFieldsContains("Email")) {
                 dto.setEmail(state.getEmail());
             }
