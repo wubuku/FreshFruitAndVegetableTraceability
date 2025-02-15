@@ -173,6 +173,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         mergePatchParty.setOrganizationName(bffSupplier.getSupplierName());
         mergePatchParty.setVersion(partyState.getVersion());// 乐观锁
         mergePatchParty.setRequesterId(c.getRequesterId());
+        mergePatchParty.setShortDescription(bffSupplier.getSupplierShortName());
         mergePatchParty.setExternalId(bffSupplier.getExternalId());
         mergePatchParty.setDescription(bffSupplier.getDescription());
         mergePatchParty.setWebSite(bffSupplier.getWebSite());
@@ -212,7 +213,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             simpleMergePatchPartyRole.setRequesterId(c.getRequesterId());
             simpleMergePatchPartyRole.setBankAccountInformation(bffSupplier.getBankAccountInformation());
             simpleMergePatchPartyRole.setCertificationCodes(bffSupplier.getCertificationCodes());
-            simpleMergePatchPartyRole.setSupplierShortName(bffSupplier.getSupplierShortName());
             simpleMergePatchPartyRole.setTpaNumber(bffSupplier.getTpaNumber());
             simpleMergePatchPartyRole.setSupplierProductTypeDescription(bffSupplier.getSupplierProductTypeDescription());
             simpleMergePatchPartyRole.setSupplierTypeEnumId(bffSupplier.getSupplierTypeEnumId());
@@ -225,7 +225,6 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             createPartyRole.setRequesterId(c.getRequesterId());
             createPartyRole.setBankAccountInformation(bffSupplier.getBankAccountInformation());
             createPartyRole.setCertificationCodes(bffSupplier.getCertificationCodes());
-            createPartyRole.setSupplierShortName(bffSupplier.getSupplierShortName());
             createPartyRole.setTpaNumber(bffSupplier.getTpaNumber());
             createPartyRole.setSupplierProductTypeDescription(bffSupplier.getSupplierProductTypeDescription());
             createPartyRole.setSupplierTypeEnumId(bffSupplier.getSupplierTypeEnumId());
@@ -384,6 +383,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         } else {
             createParty.setPartyId(IdUtils.randomId());
         }
+        createParty.setShortDescription(supplier.getSupplierShortName());
         createParty.setOrganizationName(supplier.getSupplierName());
         createParty.setExternalId(supplier.getExternalId());
         createParty.setDescription(supplier.getDescription());
@@ -422,7 +422,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         createPartyRole.setRequesterId(c.getRequesterId());
         createPartyRole.setBankAccountInformation(supplier.getBankAccountInformation());
         createPartyRole.setCertificationCodes(supplier.getCertificationCodes());
-        createPartyRole.setSupplierShortName(supplier.getSupplierShortName());
+        //createPartyRole.setSupplierShortName(supplier.getSupplierShortName());
         createPartyRole.setTpaNumber(supplier.getTpaNumber());
         createPartyRole.setSupplierProductTypeDescription(supplier.getSupplierProductTypeDescription());
         createPartyRole.setSupplierTypeEnumId(supplier.getSupplierTypeEnumId());
