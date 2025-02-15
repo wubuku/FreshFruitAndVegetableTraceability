@@ -16,7 +16,7 @@ public class LotTracingService {
     }
 
     /**
-     * 递归查询所有投入的原材料批次
+     * 递归查询所有投入的原材料批次（平面列表形式）
      */
     @Transactional(readOnly = true)
     public List<TracingNode> findAllInputLots(String productId, String lotId) {
@@ -43,7 +43,33 @@ public class LotTracingService {
     }
 
     /**
-     * 递归查询所有产出的成品批次
+     * 递归查询所有投入的原材料批次（树形结构）
+     */
+    @Transactional(readOnly = true)
+    public TracingTree findInputLotsAsTree(String productId, String lotId) {
+        TracingTree root = new TracingTree(new TracingNode(productId, lotId, null));
+        findInputLotsRecursivelyAsTree(productId, lotId, root);
+        return root;
+    }
+
+    private void findInputLotsRecursivelyAsTree(String productId, String lotId, TracingTree parent) {
+        List<LotTracingRepository.LotTracingNodeProjection> inputLots =
+                lotTracingRepository.findInputLots(productId, lotId);
+
+        for (LotTracingRepository.LotTracingNodeProjection lot : inputLots) {
+            TracingNode node = new TracingNode(
+                    lot.getProductId(),
+                    lot.getLotId(),
+                    lot.getWorkEffortId()
+            );
+
+            TracingTree child = parent.addChild(node);
+            findInputLotsRecursivelyAsTree(lot.getProductId(), lot.getLotId(), child);
+        }
+    }
+
+    /**
+     * 递归查询所有产出的成品批次（平面列表形式）
      */
     @Transactional(readOnly = true)
     public List<TracingNode> findAllOutputLots(String productId, String lotId) {
@@ -66,6 +92,32 @@ public class LotTracingService {
             if (result.add(node)) { // 如果是新的节点才继续递归
                 findOutputLotsRecursively(lot.getProductId(), lot.getLotId(), result);
             }
+        }
+    }
+
+    /**
+     * 递归查询所有产出的成品批次（树形结构）
+     */
+    @Transactional(readOnly = true)
+    public TracingTree findOutputLotsAsTree(String productId, String lotId) {
+        TracingTree root = new TracingTree(new TracingNode(productId, lotId, null));
+        findOutputLotsRecursivelyAsTree(productId, lotId, root);
+        return root;
+    }
+
+    private void findOutputLotsRecursivelyAsTree(String productId, String lotId, TracingTree parent) {
+        List<LotTracingRepository.LotTracingNodeProjection> outputLots =
+                lotTracingRepository.findOutputLots(productId, lotId);
+
+        for (LotTracingRepository.LotTracingNodeProjection lot : outputLots) {
+            TracingNode node = new TracingNode(
+                    lot.getProductId(),
+                    lot.getLotId(),
+                    lot.getWorkEffortId()
+            );
+
+            TracingTree child = parent.addChild(node);
+            findOutputLotsRecursivelyAsTree(lot.getProductId(), lot.getLotId(), child);
         }
     }
 
@@ -107,6 +159,58 @@ public class LotTracingService {
         @Override
         public int hashCode() {
             return Objects.hash(productId, lotId);
+        }
+    }
+
+    /**
+     * 表示追溯树
+     */
+    public static class TracingTree {
+        private final TracingNode node;
+        private final List<TracingTree> children = new ArrayList<>();
+
+        public TracingTree(TracingNode node) {
+            this.node = node;
+        }
+
+        public TracingTree addChild(TracingNode childNode) {
+            TracingTree child = new TracingTree(childNode);
+            children.add(child);
+            return child;
+        }
+
+        public TracingNode getNode() {
+            return node;
+        }
+
+        public List<TracingTree> getChildren() {
+            return Collections.unmodifiableList(children);
+        }
+
+        /**
+         * 以树形结构打印追溯结果
+         */
+        public String print() {
+            StringBuilder sb = new StringBuilder();
+            print(sb, "", true);
+            return sb.toString();
+        }
+
+        private void print(StringBuilder sb, String prefix, boolean isTail) {
+            sb.append(prefix)
+                    .append(isTail ? "└── " : "├── ")
+                    .append(node.getLotId())
+                    .append(" (").append(node.getProductId()).append(")")
+                    .append(node.getWorkEffortId() != null ? " [" + node.getWorkEffortId() + "]" : "")
+                    .append("\n");
+
+            for (int i = 0; i < children.size(); i++) {
+                children.get(i).print(
+                        sb,
+                        prefix + (isTail ? "    " : "│   "),
+                        i == children.size() - 1
+                );
+            }
         }
     }
 }
