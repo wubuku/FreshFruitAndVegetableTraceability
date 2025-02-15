@@ -21,16 +21,16 @@ public class BffShipmentBoxTypeMapperImpl implements BffShipmentBoxTypeMapper {
 
         BffShipmentBoxTypeDto bffShipmentBoxTypeDto = new BffShipmentBoxTypeDto();
 
-        bffShipmentBoxTypeDto.setActive( bffShipmentBoxTypeProjection.getActive() );
-        bffShipmentBoxTypeDto.setBoxHeight( bffShipmentBoxTypeProjection.getBoxHeight() );
-        bffShipmentBoxTypeDto.setBoxLength( bffShipmentBoxTypeProjection.getBoxLength() );
-        bffShipmentBoxTypeDto.setBoxTypeName( bffShipmentBoxTypeProjection.getBoxTypeName() );
-        bffShipmentBoxTypeDto.setBoxWeight( bffShipmentBoxTypeProjection.getBoxWeight() );
-        bffShipmentBoxTypeDto.setBoxWidth( bffShipmentBoxTypeProjection.getBoxWidth() );
+        bffShipmentBoxTypeDto.setShipmentBoxTypeId( bffShipmentBoxTypeProjection.getShipmentBoxTypeId() );
         bffShipmentBoxTypeDto.setDescription( bffShipmentBoxTypeProjection.getDescription() );
         bffShipmentBoxTypeDto.setDimensionUomId( bffShipmentBoxTypeProjection.getDimensionUomId() );
-        bffShipmentBoxTypeDto.setShipmentBoxTypeId( bffShipmentBoxTypeProjection.getShipmentBoxTypeId() );
+        bffShipmentBoxTypeDto.setBoxLength( bffShipmentBoxTypeProjection.getBoxLength() );
+        bffShipmentBoxTypeDto.setBoxWidth( bffShipmentBoxTypeProjection.getBoxWidth() );
+        bffShipmentBoxTypeDto.setBoxHeight( bffShipmentBoxTypeProjection.getBoxHeight() );
         bffShipmentBoxTypeDto.setWeightUomId( bffShipmentBoxTypeProjection.getWeightUomId() );
+        bffShipmentBoxTypeDto.setBoxWeight( bffShipmentBoxTypeProjection.getBoxWeight() );
+        bffShipmentBoxTypeDto.setActive( bffShipmentBoxTypeProjection.getActive() );
+        bffShipmentBoxTypeDto.setBoxTypeName( bffShipmentBoxTypeProjection.getBoxTypeName() );
 
         return bffShipmentBoxTypeDto;
     }
@@ -43,16 +43,16 @@ public class BffShipmentBoxTypeMapperImpl implements BffShipmentBoxTypeMapper {
 
         BffShipmentBoxTypeDto bffShipmentBoxTypeDto = new BffShipmentBoxTypeDto();
 
-        bffShipmentBoxTypeDto.setActive( shipmentBoxTypeState.getActive() );
-        bffShipmentBoxTypeDto.setBoxHeight( shipmentBoxTypeState.getBoxHeight() );
-        bffShipmentBoxTypeDto.setBoxLength( shipmentBoxTypeState.getBoxLength() );
-        bffShipmentBoxTypeDto.setBoxTypeName( shipmentBoxTypeState.getBoxTypeName() );
-        bffShipmentBoxTypeDto.setBoxWeight( shipmentBoxTypeState.getBoxWeight() );
-        bffShipmentBoxTypeDto.setBoxWidth( shipmentBoxTypeState.getBoxWidth() );
+        bffShipmentBoxTypeDto.setShipmentBoxTypeId( shipmentBoxTypeState.getShipmentBoxTypeId() );
         bffShipmentBoxTypeDto.setDescription( shipmentBoxTypeState.getDescription() );
         bffShipmentBoxTypeDto.setDimensionUomId( shipmentBoxTypeState.getDimensionUomId() );
-        bffShipmentBoxTypeDto.setShipmentBoxTypeId( shipmentBoxTypeState.getShipmentBoxTypeId() );
+        bffShipmentBoxTypeDto.setBoxLength( shipmentBoxTypeState.getBoxLength() );
+        bffShipmentBoxTypeDto.setBoxWidth( shipmentBoxTypeState.getBoxWidth() );
+        bffShipmentBoxTypeDto.setBoxHeight( shipmentBoxTypeState.getBoxHeight() );
         bffShipmentBoxTypeDto.setWeightUomId( shipmentBoxTypeState.getWeightUomId() );
+        bffShipmentBoxTypeDto.setBoxWeight( shipmentBoxTypeState.getBoxWeight() );
+        bffShipmentBoxTypeDto.setActive( shipmentBoxTypeState.getActive() );
+        bffShipmentBoxTypeDto.setBoxTypeName( shipmentBoxTypeState.getBoxTypeName() );
 
         return bffShipmentBoxTypeDto;
     }
@@ -66,15 +66,15 @@ public class BffShipmentBoxTypeMapperImpl implements BffShipmentBoxTypeMapper {
         AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType simpleCreateShipmentBoxType = new AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType();
 
         simpleCreateShipmentBoxType.setShipmentBoxTypeId( bffShipmentBoxTypeDto.getShipmentBoxTypeId() );
-        simpleCreateShipmentBoxType.setActive( bffShipmentBoxTypeDto.getActive() );
-        simpleCreateShipmentBoxType.setBoxHeight( bffShipmentBoxTypeDto.getBoxHeight() );
-        simpleCreateShipmentBoxType.setBoxLength( bffShipmentBoxTypeDto.getBoxLength() );
-        simpleCreateShipmentBoxType.setBoxTypeName( bffShipmentBoxTypeDto.getBoxTypeName() );
-        simpleCreateShipmentBoxType.setBoxWeight( bffShipmentBoxTypeDto.getBoxWeight() );
-        simpleCreateShipmentBoxType.setBoxWidth( bffShipmentBoxTypeDto.getBoxWidth() );
         simpleCreateShipmentBoxType.setDescription( bffShipmentBoxTypeDto.getDescription() );
         simpleCreateShipmentBoxType.setDimensionUomId( bffShipmentBoxTypeDto.getDimensionUomId() );
+        simpleCreateShipmentBoxType.setBoxLength( bffShipmentBoxTypeDto.getBoxLength() );
+        simpleCreateShipmentBoxType.setBoxWidth( bffShipmentBoxTypeDto.getBoxWidth() );
+        simpleCreateShipmentBoxType.setBoxHeight( bffShipmentBoxTypeDto.getBoxHeight() );
         simpleCreateShipmentBoxType.setWeightUomId( bffShipmentBoxTypeDto.getWeightUomId() );
+        simpleCreateShipmentBoxType.setBoxWeight( bffShipmentBoxTypeDto.getBoxWeight() );
+        simpleCreateShipmentBoxType.setActive( bffShipmentBoxTypeDto.getActive() );
+        simpleCreateShipmentBoxType.setBoxTypeName( bffShipmentBoxTypeDto.getBoxTypeName() );
 
         return simpleCreateShipmentBoxType;
     }
@@ -88,15 +88,15 @@ public class BffShipmentBoxTypeMapperImpl implements BffShipmentBoxTypeMapper {
         AbstractShipmentBoxTypeCommand.SimpleMergePatchShipmentBoxType simpleMergePatchShipmentBoxType = new AbstractShipmentBoxTypeCommand.SimpleMergePatchShipmentBoxType();
 
         simpleMergePatchShipmentBoxType.setShipmentBoxTypeId( bffShipmentBoxTypeDto.getShipmentBoxTypeId() );
-        simpleMergePatchShipmentBoxType.setActive( bffShipmentBoxTypeDto.getActive() );
-        simpleMergePatchShipmentBoxType.setBoxHeight( bffShipmentBoxTypeDto.getBoxHeight() );
-        simpleMergePatchShipmentBoxType.setBoxLength( bffShipmentBoxTypeDto.getBoxLength() );
-        simpleMergePatchShipmentBoxType.setBoxTypeName( bffShipmentBoxTypeDto.getBoxTypeName() );
-        simpleMergePatchShipmentBoxType.setBoxWeight( bffShipmentBoxTypeDto.getBoxWeight() );
-        simpleMergePatchShipmentBoxType.setBoxWidth( bffShipmentBoxTypeDto.getBoxWidth() );
         simpleMergePatchShipmentBoxType.setDescription( bffShipmentBoxTypeDto.getDescription() );
         simpleMergePatchShipmentBoxType.setDimensionUomId( bffShipmentBoxTypeDto.getDimensionUomId() );
+        simpleMergePatchShipmentBoxType.setBoxLength( bffShipmentBoxTypeDto.getBoxLength() );
+        simpleMergePatchShipmentBoxType.setBoxWidth( bffShipmentBoxTypeDto.getBoxWidth() );
+        simpleMergePatchShipmentBoxType.setBoxHeight( bffShipmentBoxTypeDto.getBoxHeight() );
         simpleMergePatchShipmentBoxType.setWeightUomId( bffShipmentBoxTypeDto.getWeightUomId() );
+        simpleMergePatchShipmentBoxType.setBoxWeight( bffShipmentBoxTypeDto.getBoxWeight() );
+        simpleMergePatchShipmentBoxType.setActive( bffShipmentBoxTypeDto.getActive() );
+        simpleMergePatchShipmentBoxType.setBoxTypeName( bffShipmentBoxTypeDto.getBoxTypeName() );
 
         return simpleMergePatchShipmentBoxType;
     }
