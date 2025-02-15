@@ -162,4 +162,85 @@
         workEffortId="PROD_RUN_04" availableToPromiseDiff="1.0" quantityOnHandDiff="1.0"
         effectiveDate="2024-01-01 17:30:00" description="Production Run Product Receipt" />
 
+
+    <!-- 
+        粗放式生产管理的测试数据
+        - WIP批次号格式: WIP_20240102 (表示2024年1月2日生产的所有WIP)
+        - 成品批次号格式: FG_20240102 (表示2024年1月2日生产的所有成品)
+    -->
+
+    <!-- 1. 批次数据 -->
+    <!-- 1.1 原材料批次 - 复用之前的批次 -->
+    <!-- 1.2 WIP批次 - 使用日期作为批次标识 -->
+    <Lot lotId="WIP_20240102"
+        active="Y" />  <!-- 注意：这里不设置数量和过期时间 -->
+
+    <!-- 1.3 成品批次 -->
+    <Lot lotId="FG_20240102"
+        gtin="30012345000202" gs1Batch="FG24002"
+        sourceFacilityId="BAKERY_001" active="Y" />
+    <!-- 注意：成品批次按理说应该有 GTIN 和 GS1 Batch -->
+
+    <!-- 2. 库存单元数据 -->
+    <!-- 2.1 原材料库存单元 - 复用之前的库存单元 -->
+
+    <!-- 2.2 WIP库存单元 -->
+    <InventoryItem inventoryItemId="SIMPLE_CAKE_BASE_INV_001"
+        inventoryItemTypeId="NON_SERIAL_INV_ITEM"
+        productId="WIP_CAKE_BASE" lotId="WIP_20240102" facilityId="BAKERY_001"
+        quantityOnHandTotal="10.0" availableToPromiseTotal="10.0" />
+
+    <!-- 2.3 成品库存单元 -->
+    <InventoryItem inventoryItemId="SIMPLE_CAKE_INV_001" inventoryItemTypeId="NON_SERIAL_INV_ITEM"
+        productId="CHOC_CAKE_STD" lotId="FG_20240102" facilityId="BAKERY_001"
+        quantityOnHandTotal="5.0" availableToPromiseTotal="5.0" />
+
+    <!-- 3. 生产过程的库存单元明细 -->
+    <!-- 3.1 简单蛋糕胚生产过程 (PROD_RUN_05) -->
+    <!-- 投料时间：09:00，产出时间：10:30 -->
+    <InventoryItemDetail inventoryItemId="FLOUR_INV_001" inventoryItemDetailSeqId="00002"
+        workEffortId="PROD_RUN_05" availableToPromiseDiff="-500.0" quantityOnHandDiff="-500.0"
+        effectiveDate="2024-01-02 09:00:00" description="Production Run Component Issue" />
+
+    <InventoryItemDetail inventoryItemId="EGG_INV_001" inventoryItemDetailSeqId="00002"
+        workEffortId="PROD_RUN_05" availableToPromiseDiff="-4" quantityOnHandDiff="-4"
+        effectiveDate="2024-01-02 09:00:00" description="Production Run Component Issue" />
+
+    <InventoryItemDetail inventoryItemId="SUGAR_INV_001" inventoryItemDetailSeqId="00003"
+        workEffortId="PROD_RUN_05" availableToPromiseDiff="-200.0" quantityOnHandDiff="-200.0"
+        effectiveDate="2024-01-02 09:00:00" description="Production Run Component Issue" />
+
+    <InventoryItemDetail inventoryItemId="MILK_INV_001" inventoryItemDetailSeqId="00003"
+        workEffortId="PROD_RUN_05" availableToPromiseDiff="-250.0" quantityOnHandDiff="-250.0"
+        effectiveDate="2024-01-02 09:00:00" description="Production Run Component Issue" />
+
+    <InventoryItemDetail inventoryItemId="SIMPLE_CAKE_BASE_INV_001" inventoryItemDetailSeqId="00001"
+        workEffortId="PROD_RUN_05" availableToPromiseDiff="1.0" quantityOnHandDiff="1.0"
+        effectiveDate="2024-01-02 10:30:00" description="Production Run Product Receipt" />
+
+    <!-- 3.2 简单蛋糕组装过程 (PROD_RUN_06) -->
+    <!-- 组装时间：11:00，产出时间：12:30 -->
+    <InventoryItemDetail inventoryItemId="SIMPLE_CAKE_BASE_INV_001" inventoryItemDetailSeqId="00002"
+        workEffortId="PROD_RUN_06" availableToPromiseDiff="-1.0" quantityOnHandDiff="-1.0"
+        effectiveDate="2024-01-02 11:00:00" description="Production Run Component Issue" />
+
+    <InventoryItemDetail inventoryItemId="SIMPLE_CAKE_INV_001" inventoryItemDetailSeqId="00001"
+        workEffortId="PROD_RUN_06" availableToPromiseDiff="1.0" quantityOnHandDiff="1.0"
+        effectiveDate="2024-01-02 12:30:00" description="Production Run Product Receipt" />
+
+    <!-- 4. 生产任务数据 -->
+    <!-- 4.1 简单蛋糕胚生产任务 -->
+    <WorkEffort workEffortId="PROD_RUN_05" workEffortTypeId="PROD_ORDER_TASK"
+        currentStatusId="PRUN_COMPLETED" workEffortName="Simple Cake Base Production"
+        description="Production of Simple Cake Base" estimatedStartDate="2024-01-02 09:00:00"
+        estimatedCompletionDate="2024-01-02 10:30:00" actualStartDate="2024-01-02 09:00:00"
+        actualCompletionDate="2024-01-02 10:30:00" />
+
+    <!-- 4.2 简单蛋糕组装任务 -->
+    <WorkEffort workEffortId="PROD_RUN_06" workEffortTypeId="PROD_ORDER_TASK"
+        currentStatusId="PRUN_COMPLETED" workEffortName="Simple Cake Assembly"
+        description="Assembly of Simple Cake" estimatedStartDate="2024-01-02 11:00:00"
+        estimatedCompletionDate="2024-01-02 12:30:00" actualStartDate="2024-01-02 11:00:00"
+        actualCompletionDate="2024-01-02 12:30:00" />
+
 </entity-engine-xml>
