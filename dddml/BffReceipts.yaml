@@ -70,6 +70,14 @@ valueObjects:
         type: name
       SmallImageUrl:
         type: url
+      QuantityUomId:
+        type: id
+      CaseUomId:
+        type: id
+        # 用于描述“包装类型”的单位 Id。比如 EA、BX(Box)、PLT(Pallet)、PK(Pack)
+      InternalId:
+        # 内部编码
+        type: id
       # AttributeSetInstanceId:
       #   type: HashHex
       Gtin:

@@ -31,7 +31,10 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 sr.product_id as productId,
                 prod.product_name as productName,
                 prod.small_image_url as smallImageUrl,
+                prod.quantity_uom_id as quantityUomId,
+                prod.case_uom_id as caseUomId,
                 gi.id_value as gtin,
+                ii.id_value as internalId,
                 sr.lot_id as lotId,
                 sr.location_seq_id as locationSeqId,
                 fl.location_name as locationName,
@@ -60,6 +63,8 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             LEFT JOIN product prod ON sr.product_id = prod.product_id
             LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
                 AND gi.good_identification_type_id = 'GTIN'
+            LEFT JOIN good_identification ii ON prod.product_id = ii.product_id 
+                 AND ii.good_identification_type_id = 'INTERNAL_ID'
             """;
 
     String RECEIPT_JOIN = """
@@ -98,6 +103,8 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 LEFT JOIN product prod ON sr.product_id = prod.product_id
                 LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
                     AND gi.good_identification_type_id = 'GTIN'
+                LEFT JOIN good_identification ii ON prod.product_id = ii.product_id 
+                    AND ii.good_identification_type_id = 'INTERNAL_ID'
                 WHERE (:documentIdOrItem IS NULL 
                     OR s.shipment_id LIKE CONCAT(:documentIdOrItem, '%')
                     OR sr.product_id LIKE CONCAT(:documentIdOrItem, '%')

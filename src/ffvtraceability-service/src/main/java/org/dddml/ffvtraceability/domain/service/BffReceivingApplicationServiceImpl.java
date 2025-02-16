@@ -106,17 +106,22 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     public Page<BffReceivingDocumentDto> when(BffReceivingServiceCommands.GetReceivingDocuments c) {
         int offset = c.getPage() * c.getSize();
         long totalElements = bffReceivingRepository.countTotalShipments(
-                c.getDocumentIdOrItem(), c.getFacilityId(), c.getSupplierId(),
-                c.getReceivedAtFrom(), //c.getReceivedAtFrom() != null ? c.getReceivedAtFrom().toInstant() : null,
-                c.getReceivedAtTo() //c.getReceivedAtTo() != null ? c.getReceivedAtTo().toInstant() : null
+                c.getDocumentIdOrItem(),
+                c.getFacilityId(),
+                c.getSupplierId(),
+                c.getReceivedAtFrom(),
+                c.getReceivedAtTo()
         );
 
         List<BffReceivingDocumentItemProjection> projections =
                 bffReceivingRepository.findAllReceivingDocumentsWithItems(
-                        offset, c.getSize(),
-                        c.getDocumentIdOrItem(), c.getFacilityId(), c.getSupplierId(),
-                        c.getReceivedAtFrom(), //c.getReceivedAtFrom() != null ? c.getReceivedAtFrom().toInstant() : null,
-                        c.getReceivedAtTo() //c.getReceivedAtTo() != null ? c.getReceivedAtTo().toInstant() : null
+                        offset,
+                        c.getSize(),
+                        c.getDocumentIdOrItem(),
+                        c.getFacilityId(),
+                        c.getSupplierId(),
+                        c.getReceivedAtFrom(),
+                        c.getReceivedAtTo()
                 );
 
         // 获取所有 Shipment IDs 以查询关联文档
