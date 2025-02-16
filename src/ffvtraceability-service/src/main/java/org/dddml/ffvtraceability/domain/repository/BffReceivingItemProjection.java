@@ -16,6 +16,12 @@ public interface BffReceivingItemProjection {
 
     String getSmallImageUrl();
 
+    String getQuantityUomId();
+
+    String getCaseUomId();
+
+    String getInternalId();
+
     String getGtin();
 
     String getLotId();
