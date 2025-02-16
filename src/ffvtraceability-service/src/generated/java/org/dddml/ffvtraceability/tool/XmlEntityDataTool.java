@@ -285,16 +285,28 @@ public class XmlEntityDataTool {
         }
     }
 
-    private static String getCreatedAtPropertyName(String entityName) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        Class<?> metadataClazz = getAggregateMetadataClass(entityName);
-        Object fieldVal = metadataClazz.getField("PROPERTY_NAME_CREATED_AT").get(null);
-        return (String) fieldVal;
+    private static String getCreatedAtPropertyName(String entityName) {
+        try {
+            Class<?> metadataClazz = getAggregateMetadataClass(entityName);
+            Object fieldVal = metadataClazz.getField("PROPERTY_NAME_CREATED_AT").get(null);
+            return (String) fieldVal;
+        } catch (Exception e) {
+            System.out.printf("Warning: Failed to get PROPERTY_NAME_CREATED_AT for entity '%s': %s%n",
+                    entityName, e.getMessage());
+            return null;
+        }
     }
 
-    private static String getVersionPropertyName(String entityName) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        Class<?> metadataClazz = getAggregateMetadataClass(entityName);
-        Object fieldVal = metadataClazz.getField("PROPERTY_NAME_VERSION").get(null);
-        return (String) fieldVal;
+    private static String getVersionPropertyName(String entityName) {
+        try {
+            Class<?> metadataClazz = getAggregateMetadataClass(entityName);
+            Object fieldVal = metadataClazz.getField("PROPERTY_NAME_VERSION").get(null);
+            return (String) fieldVal;
+        } catch (Exception e) {
+            System.out.printf("Warning: Failed to get PROPERTY_NAME_VERSION for entity '%s': %s%n",
+                    entityName, e.getMessage());
+            return null;
+        }
     }
 
     private static Class<?> getAggregateMetadataClass(String entityName) throws ClassNotFoundException {
@@ -314,20 +326,7 @@ public class XmlEntityDataTool {
         String superEntityName = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP.get(entityName);
 
         // Collect all ID property names that need special handling
-        List<String> specialIdPropertyNames = new ArrayList<>();
-        // 1. Add the entity's primary ID property
-        try {
-            Class<?> metadataClazz = getAggregateMetadataClass(superEntityName);
-            Field idPropertyNameField = metadataClazz.getField("ID_PROPERTY_NAME");
-            String idPropertyName = (String) idPropertyNameField.get(null);
-            specialIdPropertyNames.add(idPropertyName);
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-            System.out.printf("Info: Failed to get ID_PROPERTY_NAME for aggregate '%s': %s%n",
-                    superEntityName, e.getMessage());
-        }
-        // 2. Add EntityId and EventId properties (NOTE: Hardcoded here!)
-        specialIdPropertyNames.add(superEntityName + "Id");
-        specialIdPropertyNames.add(superEntityName + "EventId");
+        Set<String> specialIdPropertyNames = collectSpecialIdPropertyNames(superEntityName, propertyDescriptors);
 
         // Process all properties
         for (final PropertyDescriptor propertyDescriptor : propertyDescriptors) {
@@ -349,13 +348,79 @@ public class XmlEntityDataTool {
             }
 
             // Special ID property handling: add nested property setters for all special ID properties
-            if (specialIdPropertyNames.stream()
-                    .anyMatch(idName -> idName.equalsIgnoreCase(propertyName))) {
+            if (specialIdPropertyNames.contains(propertyName)) {
                 addNestedIdPropertySetters(setterMap, propertyDescriptor);
             }
         }
 
         return setterMap;
+    }
+
+    private static Set<String> collectSpecialIdPropertyNames(String superEntityName, PropertyDescriptor[] propertyDescriptors) {
+        Set<String> specialIdPropertyNames = new HashSet<>();
+
+        // 1. Add the entity's primary ID property
+        String primaryIdPropertyName = null;
+        try {
+            Class<?> metadataClazz = getAggregateMetadataClass(superEntityName);
+            Field idPropertyNameField = metadataClazz.getField("ID_PROPERTY_NAME");
+            primaryIdPropertyName = (String) idPropertyNameField.get(null);
+
+            // Find the property descriptor for the ID property
+            PropertyDescriptor idPropertyDescriptor = null;
+            for (PropertyDescriptor pd : propertyDescriptors) {
+                if (pd.getName().equals(primaryIdPropertyName)) {
+                    idPropertyDescriptor = pd;
+                    break;
+                }
+            }
+
+            // Only add to specialIdPropertyNames if the ID property type is a complex type
+            if (idPropertyDescriptor != null) {
+                Class<?> idPropertyType = idPropertyDescriptor.getPropertyType();
+                if (!isSimpleType(idPropertyType)) {
+                    specialIdPropertyNames.add(primaryIdPropertyName);
+                }
+            }
+        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+            System.out.printf("Info: Failed to get ID_PROPERTY_NAME for aggregate '%s': %s%n",
+                    superEntityName, e.getMessage());
+        }
+
+        // 2. Add EntityId and EventId properties if they are complex types and not already added
+        String[] potentialIdProps = {superEntityName + "Id", superEntityName + "EventId"};
+        for (String propName : potentialIdProps) {
+            // Skip if this property name is the same as the primary ID property
+            if (propName.equals(primaryIdPropertyName)) {
+                continue;
+            }
+
+            for (PropertyDescriptor pd : propertyDescriptors) {
+                if (pd.getName().equals(propName)) {
+                    Class<?> propType = pd.getPropertyType();
+                    if (!isSimpleType(propType)) {
+                        specialIdPropertyNames.add(propName);
+                    }
+                    break;
+                }
+            }
+        }
+
+        return specialIdPropertyNames;
+    }
+
+    private static boolean isSimpleType(Class<?> type) {
+        return type.isPrimitive()
+                || type == String.class
+                || type == Boolean.class
+                || type == Character.class
+                || Number.class.isAssignableFrom(type)
+                || type == java.util.Date.class
+                || type == java.sql.Date.class
+                || type == java.sql.Timestamp.class
+                || type.isEnum()
+                // NOTE: Add more types as needed.
+                ;
     }
 
     private static void addPropertySetter(
@@ -381,7 +446,6 @@ public class XmlEntityDataTool {
                         }
 
                         if (propertyDescriptor == null || propertyDescriptor.getWriteMethod() == null) {
-                            //String setterMethodName = "set" + propertyPath.substring(0, 1).toUpperCase() + propertyPath.substring(1);
                             System.out.printf("Warning: Property descriptor or setter not found for '%s' in class '%s'%n",
                                     propertyPath, beanClass.getName());
                             return;
@@ -608,23 +672,26 @@ public class XmlEntityDataTool {
             Map<String, PropertySetter> setterMap,
             String entityName,
             Map<String, Object> attrMap
-    ) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InvocationTargetException, InstantiationException {
+    ) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
         String createdAtPropName = getCreatedAtPropertyName(entityName);
-        if (!attrMap.containsKey(createdAtPropName)) {
+        if (createdAtPropName != null && !attrMap.containsKey(createdAtPropName)) {
             attrMap.put(createdAtPropName, Long.valueOf(System.currentTimeMillis())); // NOTE: Is this OK?
         }
         if (autoSetVersionProperty()) {
             String versionPropName = getVersionPropertyName(entityName);
-            if (!attrMap.containsKey(versionPropName)) {
+            if (versionPropName != null && !attrMap.containsKey(versionPropName)) {
                 attrMap.put(versionPropName, -1L);
             }
         }
-        Object beanInst = beanClass.newInstance();
-
+        Object beanInst = beanClass.getDeclaredConstructor().newInstance();
         for (Map.Entry<String, Object> kv : attrMap.entrySet()) {
             setProperty(entityName, beanInst, setterMap, kv.getKey(), kv.getValue());
         }
         return beanInst;
+    }
+
+    protected boolean autoSetVersionProperty() {
+        return true;
     }
 
     //	private static String toCamelCase(String s) {
@@ -635,10 +702,6 @@ public class XmlEntityDataTool {
     //					.append(Character.toLowerCase(s.charAt(0)))
     //					.append(s.substring(1)).toString();
     //	}
-
-    protected boolean autoSetVersionProperty() {
-        return true;
-    }
 
     interface PropertySetter {
         void invoke(Object beanObj, Object propertyVal) throws InvocationTargetException, IllegalAccessException;
