@@ -81,6 +81,33 @@ public class BffReceivingItemDto implements Serializable {
         this.caseUomId = caseUomId;
     }
 
+    /**
+     * If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+     */
+    private java.math.BigDecimal quantityIncluded;
+
+    public java.math.BigDecimal getQuantityIncluded()
+    {
+        return this.quantityIncluded;
+    }
+
+    public void setQuantityIncluded(java.math.BigDecimal quantityIncluded)
+    {
+        this.quantityIncluded = quantityIncluded;
+    }
+
+    private Long piecesIncluded;
+
+    public Long getPiecesIncluded()
+    {
+        return this.piecesIncluded;
+    }
+
+    public void setPiecesIncluded(Long piecesIncluded)
+    {
+        this.piecesIncluded = piecesIncluded;
+    }
+
     private String internalId;
 
     public String getInternalId()
@@ -346,7 +373,7 @@ public class BffReceivingItemDto implements Serializable {
     {
     }
 
-    public BffReceivingItemDto(String receiptId, String productId, String productName, String smallImageUrl, String quantityUomId, String caseUomId, String internalId, String gtin, String lotId, String locationSeqId, String locationName, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity, String qaInspectionStatusId, Boolean deleted)
+    public BffReceivingItemDto(String receiptId, String productId, String productName, String smallImageUrl, String quantityUomId, String caseUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String internalId, String gtin, String lotId, String locationSeqId, String locationName, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity, String qaInspectionStatusId, Boolean deleted)
     {
         this.receiptId = receiptId;
         this.productId = productId;
@@ -354,6 +381,8 @@ public class BffReceivingItemDto implements Serializable {
         this.smallImageUrl = smallImageUrl;
         this.quantityUomId = quantityUomId;
         this.caseUomId = caseUomId;
+        this.quantityIncluded = quantityIncluded;
+        this.piecesIncluded = piecesIncluded;
         this.internalId = internalId;
         this.gtin = gtin;
         this.lotId = lotId;
@@ -395,6 +424,8 @@ public class BffReceivingItemDto implements Serializable {
             && (smallImageUrl == other.smallImageUrl || (smallImageUrl != null && smallImageUrl.equals(other.smallImageUrl)))
             && (quantityUomId == other.quantityUomId || (quantityUomId != null && quantityUomId.equals(other.quantityUomId)))
             && (caseUomId == other.caseUomId || (caseUomId != null && caseUomId.equals(other.caseUomId)))
+            && (quantityIncluded == other.quantityIncluded || (quantityIncluded != null && quantityIncluded.equals(other.quantityIncluded)))
+            && (piecesIncluded == other.piecesIncluded || (piecesIncluded != null && piecesIncluded.equals(other.piecesIncluded)))
             && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
             && (gtin == other.gtin || (gtin != null && gtin.equals(other.gtin)))
             && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
@@ -440,6 +471,12 @@ public class BffReceivingItemDto implements Serializable {
         }
         if (this.caseUomId != null) {
             hash += 13 * this.caseUomId.hashCode();
+        }
+        if (this.quantityIncluded != null) {
+            hash += 13 * this.quantityIncluded.hashCode();
+        }
+        if (this.piecesIncluded != null) {
+            hash += 13 * this.piecesIncluded.hashCode();
         }
         if (this.internalId != null) {
             hash += 13 * this.internalId.hashCode();
@@ -516,6 +553,8 @@ public class BffReceivingItemDto implements Serializable {
                 ", smallImageUrl=" + '\'' + smallImageUrl + '\'' +
                 ", quantityUomId=" + '\'' + quantityUomId + '\'' +
                 ", caseUomId=" + '\'' + caseUomId + '\'' +
+                ", quantityIncluded=" + quantityIncluded +
+                ", piecesIncluded=" + piecesIncluded +
                 ", internalId=" + '\'' + internalId + '\'' +
                 ", gtin=" + '\'' + gtin + '\'' +
                 ", lotId=" + '\'' + lotId + '\'' +

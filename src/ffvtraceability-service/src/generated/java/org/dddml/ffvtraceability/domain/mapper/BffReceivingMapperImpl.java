@@ -54,6 +54,8 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
         bffReceivingItemDto.setSmallImageUrl( documentItemProjection.getSmallImageUrl() );
         bffReceivingItemDto.setQuantityUomId( documentItemProjection.getQuantityUomId() );
         bffReceivingItemDto.setCaseUomId( documentItemProjection.getCaseUomId() );
+        bffReceivingItemDto.setQuantityIncluded( documentItemProjection.getQuantityIncluded() );
+        bffReceivingItemDto.setPiecesIncluded( documentItemProjection.getPiecesIncluded() );
         bffReceivingItemDto.setInternalId( documentItemProjection.getInternalId() );
         bffReceivingItemDto.setGtin( documentItemProjection.getGtin() );
         bffReceivingItemDto.setLotId( documentItemProjection.getLotId() );

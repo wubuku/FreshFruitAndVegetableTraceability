@@ -20,6 +20,10 @@ public interface BffReceivingItemProjection {
 
     String getCaseUomId();
 
+    java.math.BigDecimal getQuantityIncluded();
+
+    Long getPiecesIncluded();
+
     String getInternalId();
 
     String getGtin();
