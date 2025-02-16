@@ -21,7 +21,7 @@ public class JsonEntityDataTool {
     static final String UTF8_BOM = "\uFEFF";
     private final static ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
     private final static String DATA_FILE_SUFFIX = "Data.json";
-    private final static String CREATION_COOMMANDS_FILE_SUFFIX = "CreationCommands.json";
+    private final static String CREATION_COMMANDS_FILE_SUFFIX = "CreationCommands.json";
 
     public static Map<String, List<Object>> deserializeAllGroupByEntityName(String jsonDataLocationPattern) {
         Map<String, List<Object>> entityObjListMap = new HashMap<>();
@@ -44,8 +44,8 @@ public class JsonEntityDataTool {
                 boolean isCommandData = false;
                 if (filename.endsWith(DATA_FILE_SUFFIX)) {
                     entityName = filename.substring(0, filename.length() - DATA_FILE_SUFFIX.length());
-                } else if (filename.endsWith(CREATION_COOMMANDS_FILE_SUFFIX)) {
-                    entityName = filename.substring(0, filename.length() - CREATION_COOMMANDS_FILE_SUFFIX.length());
+                } else if (filename.endsWith(CREATION_COMMANDS_FILE_SUFFIX)) {
+                    entityName = filename.substring(0, filename.length() - CREATION_COMMANDS_FILE_SUFFIX.length());
                     isCommandData = true;
                 }
                 if (entityName != null) {
@@ -81,7 +81,7 @@ public class JsonEntityDataTool {
         }
     }
 
-    static String readUtf8TextFile(String path) throws IOException {
+    public static String readUtf8TextFile(String path) throws IOException {
         File fileDir = new File(path);
         InputStream inputStream = new FileInputStream(fileDir);
         return readUtf8TextFile(inputStream);
