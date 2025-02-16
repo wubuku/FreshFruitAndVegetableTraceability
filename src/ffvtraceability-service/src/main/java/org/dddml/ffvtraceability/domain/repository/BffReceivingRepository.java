@@ -33,6 +33,8 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 prod.small_image_url as smallImageUrl,
                 prod.quantity_uom_id as quantityUomId,
                 prod.case_uom_id as caseUomId,
+                prod.quantity_included as quantityIncluded,
+                prod.pieces_included as piecesIncluded,
                 gi.id_value as gtin,
                 ii.id_value as internalId,
                 sr.lot_id as lotId,
