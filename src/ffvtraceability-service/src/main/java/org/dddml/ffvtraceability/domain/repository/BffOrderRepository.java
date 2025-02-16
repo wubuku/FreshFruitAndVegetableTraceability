@@ -43,7 +43,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                 oi.sync_status_id as itemSyncStatusId,
                 oi.fulfillment_status_id as itemFulfillmentStatusId,
                 orole.party_id as supplierId,
-                COALESCE(p.organization_name, p.last_name) as supplierName
+                COALESCE(p.short_description,p.organization_name, p.last_name) as supplierName
             """;
 
     String COMMON_JOINS = """
