@@ -290,6 +290,19 @@ services:
             type: id
 
 
+      CreateReceivingReferenceDocument:
+        httpMethod: POST
+        restfulResourceName: "{DocumentId}/ReferenceDocument"
+        metadata:
+          RestfulPathVariable: DocumentId
+          HttpRequestBody: ReferenceDocument
+        parameters:
+          DocumentId:
+            type: id
+          ReferenceDocument:
+            type: BffDocumentDto
+
+
       UpdateReceivingReferenceDocuments:
         # 更新收货单的关联文档
         # 这个方法采用整体更新的方式。即如果之前“已关联”的文档的 Id 不在传入的文档列表中，则移除收货单和这些文档的关联关系。
