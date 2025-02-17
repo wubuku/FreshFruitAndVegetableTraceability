@@ -292,7 +292,7 @@ services:
 
       CreateReceivingReferenceDocument:
         httpMethod: POST
-        restfulResourceName: "{DocumentId}/ReferenceDocument"
+        restfulResourceName: "{DocumentId}/ReferenceDocuments"
         metadata:
           RestfulPathVariable: DocumentId
           HttpRequestBody: ReferenceDocument
@@ -301,6 +301,17 @@ services:
             type: id
           ReferenceDocument:
             type: BffDocumentDto
+
+      RemoveReceivingReferenceDocument:
+        httpMethod: DELETE
+        restfulResourceName: "{DocumentId}/ReferenceDocuments/{ReferenceDocumentId}"
+        metadata:
+          RestfulPathVariable: DocumentId,ReferenceDocumentId
+        parameters:
+          DocumentId:
+            type: id
+          ReferenceDocumentId:
+            type: id
 
 
       UpdateReceivingReferenceDocuments:
