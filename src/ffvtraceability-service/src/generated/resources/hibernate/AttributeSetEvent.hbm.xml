@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.attributeset">
+  <class name="AbstractAttributeSetEvent" table="attribute_set_event" abstract="true">
+    <composite-id name="attributeSetEventId" class="org.dddml.ffvtraceability.domain.attributeset.AttributeSetEventId">
+      <key-property name="attributeSetId">
+        <column name="attribute_set_id" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <subclass name="AbstractAttributeSetEvent$AttributeSetLobEvent" discriminator-value="AttributeSetLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractAttributeSetEvent$AbstractAttributeSetStateEvent" abstract="true">
+      <property name="attributeSetName">
+        <column name="attribute_set_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractAttributeSetEvent$SimpleAttributeSetStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractAttributeSetEvent$SimpleAttributeSetStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyAttributeSetNameRemoved" column="is_property_attribute_set_name_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>
