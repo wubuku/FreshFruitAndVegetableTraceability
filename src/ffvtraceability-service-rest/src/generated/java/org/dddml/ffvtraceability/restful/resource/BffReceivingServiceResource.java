@@ -157,7 +157,7 @@ public class BffReceivingServiceResource {
     }
 
     @PostMapping("{documentId}/ReferenceDocuments")
-    public void createReceivingReferenceDocument(
+    public String createReceivingReferenceDocument(
         @PathVariable("documentId") String documentId,
         @RequestBody BffDocumentDto referenceDocument
     ) {
@@ -166,7 +166,7 @@ public class BffReceivingServiceResource {
         createReceivingReferenceDocument.setReferenceDocument(referenceDocument);
         
         createReceivingReferenceDocument.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffReceivingApplicationService.when(createReceivingReferenceDocument);
+        return bffReceivingApplicationService.when(createReceivingReferenceDocument);
         
     }
 

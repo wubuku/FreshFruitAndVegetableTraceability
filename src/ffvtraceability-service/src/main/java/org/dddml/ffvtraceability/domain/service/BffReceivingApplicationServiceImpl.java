@@ -542,8 +542,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     }
 
     @Override
-    public void when(BffReceivingServiceCommands.CreateReceivingReferenceDocument c) {
-        //todo
+    public String when(BffReceivingServiceCommands.CreateReceivingReferenceDocument c) {
+        return null;//todo
     }
 
     @Override

@@ -27,7 +27,7 @@ public interface BffReceivingApplicationService {
 
     void when(BffReceivingServiceCommands.ConfirmQaInspections c);
 
-    void when(BffReceivingServiceCommands.CreateReceivingReferenceDocument c);
+    String when(BffReceivingServiceCommands.CreateReceivingReferenceDocument c);
 
     void when(BffReceivingServiceCommands.RemoveReceivingReferenceDocument c);
 

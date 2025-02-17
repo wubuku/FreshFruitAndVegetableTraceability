@@ -304,6 +304,9 @@ services:
             # 传入的 BffDocumentDto 对象中：
             # * 可传入一个已保存的文档实体的 Id，表示创建收货单和此文档的关联关系；
             # * 也可以让 Id 为 null，传入文档 Id 外的其他属性，此时自动创建一个文档实体，以及它和收货单的关联关系。
+        result:
+          type: id # ReferenceDocumentId
+
 
       RemoveReceivingReferenceDocument:
         httpMethod: DELETE
