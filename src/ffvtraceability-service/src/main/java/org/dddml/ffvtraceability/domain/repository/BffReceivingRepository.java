@@ -38,6 +38,8 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 prod.pieces_included as piecesIncluded,
                 gi.id_value as gtin,
                 ii.id_value as internalId,
+                qi.inspected_by as inspectedBy,
+                qi.comments as comments,
                 sr.lot_id as lotId,
                 sr.location_seq_id as locationSeqId,
                 fl.location_name as locationName,
@@ -64,6 +66,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             left join facility_location fl on sr.location_seq_id = fl.location_seq_id 
                                            and s.destination_facility_id= fl.facility_id
             LEFT JOIN product prod ON sr.product_id = prod.product_id
+            left join qa_inspection qi on qi.receipt_id = sr.receipt_id
             LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
                 AND gi.good_identification_type_id = 'GTIN'
             LEFT JOIN good_identification ii ON prod.product_id = ii.product_id 

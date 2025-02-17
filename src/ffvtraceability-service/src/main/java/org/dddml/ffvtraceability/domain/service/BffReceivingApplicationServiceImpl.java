@@ -572,7 +572,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
         AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
                 new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
-        deleteCommand.setDocumentId(c.getDocumentId());
+        deleteCommand.setDocumentId(c.getReferenceDocumentId());
         shippingDocumentApplicationService.when(deleteCommand);
         
     }

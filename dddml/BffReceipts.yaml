@@ -133,6 +133,11 @@ valueObjects:
       OutstandingOrderQuantity:
         # 对应的订单（PO）的未完成的数量
         type: fixed-point
+      InspectedBy:
+        # 检验员ID。InspectedBy 和 createdBy 可以不是一回事？
+        type: id-vlong
+      Comments:
+        type: comment
       QaInspectionStatusId:
         type: id
         # 收货行项的 QA 信息

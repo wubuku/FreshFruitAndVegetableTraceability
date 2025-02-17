@@ -62,6 +62,10 @@ public interface BffReceivingItemProjection {
 
     java.math.BigDecimal getOutstandingOrderQuantity();
 
+    String getInspectedBy();
+
+    String getComments();
+
     String getQaInspectionStatusId();
 
     Boolean getDeleted();
