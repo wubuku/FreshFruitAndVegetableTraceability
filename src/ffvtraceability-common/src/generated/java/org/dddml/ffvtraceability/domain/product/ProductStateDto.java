@@ -890,6 +890,30 @@ public class ProductStateDto {
         this.dimensionsDescription = dimensionsDescription;
     }
 
+    private String defaultShelfLifeUomId;
+
+    public String getDefaultShelfLifeUomId()
+    {
+        return this.defaultShelfLifeUomId;
+    }
+
+    public void setDefaultShelfLifeUomId(String defaultShelfLifeUomId)
+    {
+        this.defaultShelfLifeUomId = defaultShelfLifeUomId;
+    }
+
+    private java.math.BigDecimal defaultShelfLife;
+
+    public java.math.BigDecimal getDefaultShelfLife()
+    {
+        return this.defaultShelfLife;
+    }
+
+    public void setDefaultShelfLife(java.math.BigDecimal defaultShelfLife)
+    {
+        this.defaultShelfLife = defaultShelfLife;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -1209,6 +1233,12 @@ public class ProductStateDto {
             }
             if (returnedFieldsContains("DimensionsDescription")) {
                 dto.setDimensionsDescription(state.getDimensionsDescription());
+            }
+            if (returnedFieldsContains("DefaultShelfLifeUomId")) {
+                dto.setDefaultShelfLifeUomId(state.getDefaultShelfLifeUomId());
+            }
+            if (returnedFieldsContains("DefaultShelfLife")) {
+                dto.setDefaultShelfLife(state.getDefaultShelfLife());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

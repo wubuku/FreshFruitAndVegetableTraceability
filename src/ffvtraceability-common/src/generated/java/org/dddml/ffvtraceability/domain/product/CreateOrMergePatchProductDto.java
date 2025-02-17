@@ -1090,6 +1090,36 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         this.dimensionsDescription = dimensionsDescription;
     }
 
+    /**
+     * Default Shelf Life Uom Id
+     */
+    private String defaultShelfLifeUomId;
+
+    public String getDefaultShelfLifeUomId()
+    {
+        return this.defaultShelfLifeUomId;
+    }
+
+    public void setDefaultShelfLifeUomId(String defaultShelfLifeUomId)
+    {
+        this.defaultShelfLifeUomId = defaultShelfLifeUomId;
+    }
+
+    /**
+     * Default Shelf Life
+     */
+    private java.math.BigDecimal defaultShelfLife;
+
+    public java.math.BigDecimal getDefaultShelfLife()
+    {
+        return this.defaultShelfLife;
+    }
+
+    public void setDefaultShelfLife(java.math.BigDecimal defaultShelfLife)
+    {
+        this.defaultShelfLife = defaultShelfLife;
+    }
+
 
     private CreateOrMergePatchGoodIdentificationDto[] goodIdentifications = new CreateOrMergePatchGoodIdentificationDto[0];
 
@@ -1967,6 +1997,30 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         this.isPropertyDimensionsDescriptionRemoved = removed;
     }
 
+    private Boolean isPropertyDefaultShelfLifeUomIdRemoved;
+
+    public Boolean getIsPropertyDefaultShelfLifeUomIdRemoved()
+    {
+        return this.isPropertyDefaultShelfLifeUomIdRemoved;
+    }
+
+    public void setIsPropertyDefaultShelfLifeUomIdRemoved(Boolean removed)
+    {
+        this.isPropertyDefaultShelfLifeUomIdRemoved = removed;
+    }
+
+    private Boolean isPropertyDefaultShelfLifeRemoved;
+
+    public Boolean getIsPropertyDefaultShelfLifeRemoved()
+    {
+        return this.isPropertyDefaultShelfLifeRemoved;
+    }
+
+    public void setIsPropertyDefaultShelfLifeRemoved(Boolean removed)
+    {
+        this.isPropertyDefaultShelfLifeRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchProduct command)
     {
         ((AbstractProductCommandDto) this).copyTo(command);
@@ -2042,6 +2096,8 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setCertificationCodes(this.getCertificationCodes());
         command.setIndividualsPerPackage(this.getIndividualsPerPackage());
         command.setDimensionsDescription(this.getDimensionsDescription());
+        command.setDefaultShelfLifeUomId(this.getDefaultShelfLifeUomId());
+        command.setDefaultShelfLife(this.getDefaultShelfLife());
     }
 
     public ProductCommand toCommand()
@@ -2179,6 +2235,8 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
         command.setIsPropertyCertificationCodesRemoved(this.getIsPropertyCertificationCodesRemoved());
         command.setIsPropertyIndividualsPerPackageRemoved(this.getIsPropertyIndividualsPerPackageRemoved());
         command.setIsPropertyDimensionsDescriptionRemoved(this.getIsPropertyDimensionsDescriptionRemoved());
+        command.setIsPropertyDefaultShelfLifeUomIdRemoved(this.getIsPropertyDefaultShelfLifeUomIdRemoved());
+        command.setIsPropertyDefaultShelfLifeRemoved(this.getIsPropertyDefaultShelfLifeRemoved());
     }
 
     public static class CreateProductDto extends CreateOrMergePatchProductDto implements ProductCommand.CreateProduct

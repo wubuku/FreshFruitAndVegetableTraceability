@@ -903,6 +903,30 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
             this.dimensionsDescription = dimensionsDescription;
         }
 
+        private String defaultShelfLifeUomId;
+
+        public String getDefaultShelfLifeUomId()
+        {
+            return this.defaultShelfLifeUomId;
+        }
+
+        public void setDefaultShelfLifeUomId(String defaultShelfLifeUomId)
+        {
+            this.defaultShelfLifeUomId = defaultShelfLifeUomId;
+        }
+
+        private java.math.BigDecimal defaultShelfLife;
+
+        public java.math.BigDecimal getDefaultShelfLife()
+        {
+            return this.defaultShelfLife;
+        }
+
+        public void setDefaultShelfLife(java.math.BigDecimal defaultShelfLife)
+        {
+            this.defaultShelfLife = defaultShelfLife;
+        }
+
         public GoodIdentificationCommand.CreateGoodIdentification newCreateGoodIdentification()
         {
             AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification c = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
@@ -1817,6 +1841,30 @@ public abstract class AbstractProductCommand extends AbstractCommand implements 
         public void setIsPropertyDimensionsDescriptionRemoved(Boolean removed)
         {
             this.isPropertyDimensionsDescriptionRemoved = removed;
+        }
+
+        private Boolean isPropertyDefaultShelfLifeUomIdRemoved;
+
+        public Boolean getIsPropertyDefaultShelfLifeUomIdRemoved()
+        {
+            return this.isPropertyDefaultShelfLifeUomIdRemoved;
+        }
+
+        public void setIsPropertyDefaultShelfLifeUomIdRemoved(Boolean removed)
+        {
+            this.isPropertyDefaultShelfLifeUomIdRemoved = removed;
+        }
+
+        private Boolean isPropertyDefaultShelfLifeRemoved;
+
+        public Boolean getIsPropertyDefaultShelfLifeRemoved()
+        {
+            return this.isPropertyDefaultShelfLifeRemoved;
+        }
+
+        public void setIsPropertyDefaultShelfLifeRemoved(Boolean removed)
+        {
+            this.isPropertyDefaultShelfLifeRemoved = removed;
         }
 
 

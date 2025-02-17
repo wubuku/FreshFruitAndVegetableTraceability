@@ -241,6 +241,12 @@
       <property name="dimensionsDescription">
         <column name="dimensions_description" sql-type="VARCHAR(255)" />
       </property>
+      <property name="defaultShelfLifeUomId">
+        <column name="default_shelf_life_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="defaultShelfLife">
+        <column name="default_shelf_life" sql-type="DECIMAL(18,6)" />
+      </property>
       <subclass name="AbstractProductEvent$SimpleProductStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractProductEvent$SimpleProductStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyProductTypeIdRemoved" column="is_property_product_type_id_removed" />
@@ -315,6 +321,8 @@
         <property name="isPropertyCertificationCodesRemoved" column="is_property_certification_codes_removed" />
         <property name="isPropertyIndividualsPerPackageRemoved" column="is_property_individuals_per_package_removed" />
         <property name="isPropertyDimensionsDescriptionRemoved" column="is_property_dimensions_description_removed" />
+        <property name="isPropertyDefaultShelfLifeUomIdRemoved" column="is_property_default_shelf_life_uom_id_removed" />
+        <property name="isPropertyDefaultShelfLifeRemoved" column="is_property_default_shelf_life_removed" />
       </subclass>
     </subclass>
   </class>

@@ -156,6 +156,34 @@ public class BffReceivingServiceResource {
         
     }
 
+    @PostMapping("{documentId}/ReferenceDocuments")
+    public void createReceivingReferenceDocument(
+        @PathVariable("documentId") String documentId,
+        @RequestBody BffDocumentDto referenceDocument
+    ) {
+        BffReceivingServiceCommands.CreateReceivingReferenceDocument createReceivingReferenceDocument = new BffReceivingServiceCommands.CreateReceivingReferenceDocument();
+        createReceivingReferenceDocument.setDocumentId(documentId);
+        createReceivingReferenceDocument.setReferenceDocument(referenceDocument);
+        
+        createReceivingReferenceDocument.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(createReceivingReferenceDocument);
+        
+    }
+
+    @DeleteMapping("{documentId}/ReferenceDocuments/{referenceDocumentId}")
+    public void removeReceivingReferenceDocument(
+        @PathVariable("documentId") String documentId,
+        @PathVariable("referenceDocumentId") String referenceDocumentId
+    ) {
+        BffReceivingServiceCommands.RemoveReceivingReferenceDocument removeReceivingReferenceDocument = new BffReceivingServiceCommands.RemoveReceivingReferenceDocument();
+        removeReceivingReferenceDocument.setDocumentId(documentId);
+        removeReceivingReferenceDocument.setReferenceDocumentId(referenceDocumentId);
+        
+        removeReceivingReferenceDocument.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(removeReceivingReferenceDocument);
+        
+    }
+
     @PutMapping("{documentId}/ReferenceDocuments")
     public void updateReceivingReferenceDocuments(
         @PathVariable("documentId") String documentId,

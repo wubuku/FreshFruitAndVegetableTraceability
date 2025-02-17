@@ -243,6 +243,10 @@
         type: numeric
       DimensionsDescription:
         type: description
+      DefaultShelfLifeUomId:
+        type: id
+      DefaultShelfLife:
+        type: fixed-point
 
       # # -------------------------------------------------------------------
       # # 产品属性集 Id.

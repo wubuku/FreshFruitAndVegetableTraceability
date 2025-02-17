@@ -135,6 +135,8 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setCertificationCodes(c.getCertificationCodes());
         e.setIndividualsPerPackage(c.getIndividualsPerPackage());
         e.setDimensionsDescription(c.getDimensionsDescription());
+        e.setDefaultShelfLifeUomId(c.getDefaultShelfLifeUomId());
+        e.setDefaultShelfLife(c.getDefaultShelfLife());
         ((AbstractProductEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -223,6 +225,8 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setCertificationCodes(c.getCertificationCodes());
         e.setIndividualsPerPackage(c.getIndividualsPerPackage());
         e.setDimensionsDescription(c.getDimensionsDescription());
+        e.setDefaultShelfLifeUomId(c.getDefaultShelfLifeUomId());
+        e.setDefaultShelfLife(c.getDefaultShelfLife());
         e.setIsPropertyProductTypeIdRemoved(c.getIsPropertyProductTypeIdRemoved());
         e.setIsPropertyPrimaryProductCategoryIdRemoved(c.getIsPropertyPrimaryProductCategoryIdRemoved());
         e.setIsPropertyManufacturerPartyIdRemoved(c.getIsPropertyManufacturerPartyIdRemoved());
@@ -295,6 +299,8 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         e.setIsPropertyCertificationCodesRemoved(c.getIsPropertyCertificationCodesRemoved());
         e.setIsPropertyIndividualsPerPackageRemoved(c.getIsPropertyIndividualsPerPackageRemoved());
         e.setIsPropertyDimensionsDescriptionRemoved(c.getIsPropertyDimensionsDescriptionRemoved());
+        e.setIsPropertyDefaultShelfLifeUomIdRemoved(c.getIsPropertyDefaultShelfLifeUomIdRemoved());
+        e.setIsPropertyDefaultShelfLifeRemoved(c.getIsPropertyDefaultShelfLifeRemoved());
         ((AbstractProductEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

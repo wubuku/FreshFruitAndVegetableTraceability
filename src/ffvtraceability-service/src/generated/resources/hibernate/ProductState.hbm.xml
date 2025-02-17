@@ -229,6 +229,12 @@
     <property name="dimensionsDescription">
       <column name="dimensions_description" sql-type="VARCHAR(255)" />
     </property>
+    <property name="defaultShelfLifeUomId">
+      <column name="default_shelf_life_uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="defaultShelfLife">
+      <column name="default_shelf_life" sql-type="DECIMAL(18,6)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

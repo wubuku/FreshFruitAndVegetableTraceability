@@ -336,6 +336,14 @@ public interface ProductCommand extends Command {
 
         void setDimensionsDescription(String dimensionsDescription);
 
+        String getDefaultShelfLifeUomId();
+
+        void setDefaultShelfLifeUomId(String defaultShelfLifeUomId);
+
+        java.math.BigDecimal getDefaultShelfLife();
+
+        void setDefaultShelfLife(java.math.BigDecimal defaultShelfLife);
+
     }
 
     interface CreateProduct extends CreateOrMergePatchProduct {
@@ -633,6 +641,14 @@ public interface ProductCommand extends Command {
         Boolean getIsPropertyDimensionsDescriptionRemoved();
 
         void setIsPropertyDimensionsDescriptionRemoved(Boolean removed);
+
+        Boolean getIsPropertyDefaultShelfLifeUomIdRemoved();
+
+        void setIsPropertyDefaultShelfLifeUomIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyDefaultShelfLifeRemoved();
+
+        void setIsPropertyDefaultShelfLifeRemoved(Boolean removed);
 
 
         GoodIdentificationCommandCollection getGoodIdentificationCommands();

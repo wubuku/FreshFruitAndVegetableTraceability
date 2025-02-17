@@ -542,6 +542,16 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     }
 
     @Override
+    public void when(BffReceivingServiceCommands.CreateReceivingReferenceDocument c) {
+        //todo
+    }
+
+    @Override
+    public void when(BffReceivingServiceCommands.RemoveReceivingReferenceDocument c) {
+        //todo
+    }
+
+    @Override
     @Transactional
     public void when(BffReceivingServiceCommands.UpdateReceivingReferenceDocuments c) {
         String shipmentId = c.getDocumentId();

@@ -163,6 +163,10 @@ public interface ProductState
 
     String getDimensionsDescription();
 
+    String getDefaultShelfLifeUomId();
+
+    java.math.BigDecimal getDefaultShelfLife();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -323,6 +327,10 @@ public interface ProductState
         void setIndividualsPerPackage(Long individualsPerPackage);
 
         void setDimensionsDescription(String dimensionsDescription);
+
+        void setDefaultShelfLifeUomId(String defaultShelfLifeUomId);
+
+        void setDefaultShelfLife(java.math.BigDecimal defaultShelfLife);
 
         void setVersion(Long version);
 

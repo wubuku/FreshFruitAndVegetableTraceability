@@ -744,6 +744,26 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.dimensionsDescription = dimensionsDescription;
     }
 
+    private String defaultShelfLifeUomId;
+
+    public String getDefaultShelfLifeUomId() {
+        return this.defaultShelfLifeUomId;
+    }
+
+    public void setDefaultShelfLifeUomId(String defaultShelfLifeUomId) {
+        this.defaultShelfLifeUomId = defaultShelfLifeUomId;
+    }
+
+    private java.math.BigDecimal defaultShelfLife;
+
+    public java.math.BigDecimal getDefaultShelfLife() {
+        return this.defaultShelfLife;
+    }
+
+    public void setDefaultShelfLife(java.math.BigDecimal defaultShelfLife) {
+        this.defaultShelfLife = defaultShelfLife;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -971,6 +991,8 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setCertificationCodes(e.getCertificationCodes());
         this.setIndividualsPerPackage(e.getIndividualsPerPackage());
         this.setDimensionsDescription(e.getDimensionsDescription());
+        this.setDefaultShelfLifeUomId(e.getDefaultShelfLifeUomId());
+        this.setDefaultShelfLife(e.getDefaultShelfLife());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -1057,6 +1079,8 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setCertificationCodes(s.getCertificationCodes());
         this.setIndividualsPerPackage(s.getIndividualsPerPackage());
         this.setDimensionsDescription(s.getDimensionsDescription());
+        this.setDefaultShelfLifeUomId(s.getDefaultShelfLifeUomId());
+        this.setDefaultShelfLife(s.getDefaultShelfLife());
 
         if (s.getGoodIdentifications() != null) {
             Iterable<GoodIdentificationState> iterable;
@@ -1601,6 +1625,20 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             }
         } else {
             this.setDimensionsDescription(e.getDimensionsDescription());
+        }
+        if (e.getDefaultShelfLifeUomId() == null) {
+            if (e.getIsPropertyDefaultShelfLifeUomIdRemoved() != null && e.getIsPropertyDefaultShelfLifeUomIdRemoved()) {
+                this.setDefaultShelfLifeUomId(null);
+            }
+        } else {
+            this.setDefaultShelfLifeUomId(e.getDefaultShelfLifeUomId());
+        }
+        if (e.getDefaultShelfLife() == null) {
+            if (e.getIsPropertyDefaultShelfLifeRemoved() != null && e.getIsPropertyDefaultShelfLifeRemoved()) {
+                this.setDefaultShelfLife(null);
+            }
+        } else {
+            this.setDefaultShelfLife(e.getDefaultShelfLife());
         }
 
         this.setUpdatedBy(e.getCreatedBy());
