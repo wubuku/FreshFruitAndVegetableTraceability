@@ -36,6 +36,7 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
         bffReceivingDocumentDto.setQaStatusId( documentItemProjection.getQaStatusId() );
         bffReceivingDocumentDto.setQaInspectionStatusId( documentItemProjection.getQaInspectionStatusId() );
         bffReceivingDocumentDto.setCreatedAt( instantToOffsetDateTime( documentItemProjection.getCreatedAt() ) );
+        bffReceivingDocumentDto.setCreatedBy( documentItemProjection.getCreatedBy() );
 
         return bffReceivingDocumentDto;
     }

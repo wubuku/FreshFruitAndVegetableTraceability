@@ -38,6 +38,8 @@ public interface BffReceivingDocumentProjection {
     String getQaInspectionStatusId();
 
     java.time.Instant getCreatedAt();
+    String getCreatedBy();
+
     String getOriginFacilityFacilityId();
 
     String getOriginFacilityFacilityTypeId();
