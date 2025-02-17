@@ -93,7 +93,6 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         Long version = c.getVersion();
-
         return e;
     }
 
@@ -156,19 +155,8 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         Long version = c.getVersion();
-        for (InventoryItemDetailCommand innerCommand : c.getInventoryItemDetailCommands()) {
-            throwOnInconsistentCommands(c, innerCommand);
-            InventoryItemDetailEvent innerEvent = map(innerCommand, c, version, this.state);
-            e.addInventoryItemDetailEvent(innerEvent);
-        }
 
         return e;
-    }
-
-
-    protected InventoryItemDetailEvent map(InventoryItemDetailCommand c, InventoryItemCommand outerCommand, Long version, InventoryItemState outerState) {
-
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
     }
 
     protected void throwOnInconsistentCommands(InventoryItemCommand command, InventoryItemDetailCommand innerCommand) {

@@ -155,7 +155,6 @@ public interface InventoryItemCommand extends Command {
     }
 
     interface CreateInventoryItem extends CreateOrMergePatchInventoryItem {
-
     }
 
     interface MergePatchInventoryItem extends CreateOrMergePatchInventoryItem {
@@ -264,21 +263,9 @@ public interface InventoryItemCommand extends Command {
         void setIsPropertyInventoryItemAttributeHashRemoved(Boolean removed);
 
 
-        InventoryItemDetailCommandCollection getInventoryItemDetailCommands();
-
-
     }
 
     interface DeleteInventoryItem extends InventoryItemCommand {
-    }
-
-
-    interface InventoryItemDetailCommandCollection extends Iterable<InventoryItemDetailCommand> {
-        void add(InventoryItemDetailCommand c);
-
-        void remove(InventoryItemDetailCommand c);
-
-        void clear();
     }
 
 }

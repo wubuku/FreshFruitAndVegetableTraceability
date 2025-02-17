@@ -472,7 +472,7 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
         }
     }
 
-    public static abstract class AbstractInventoryItemStateCreated extends AbstractInventoryItemStateEvent implements InventoryItemEvent.InventoryItemStateCreated, Saveable
+    public static abstract class AbstractInventoryItemStateCreated extends AbstractInventoryItemStateEvent implements InventoryItemEvent.InventoryItemStateCreated
     {
         public AbstractInventoryItemStateCreated() {
             this(new InventoryItemEventId());
@@ -486,13 +486,10 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
             return StateEventType.CREATED;
         }
 
-        public void save()
-        {
-        }
     }
 
 
-    public static abstract class AbstractInventoryItemStateMergePatched extends AbstractInventoryItemStateEvent implements InventoryItemEvent.InventoryItemStateMergePatched, Saveable
+    public static abstract class AbstractInventoryItemStateMergePatched extends AbstractInventoryItemStateEvent implements InventoryItemEvent.InventoryItemStateMergePatched
     {
         public AbstractInventoryItemStateMergePatched() {
             this(new InventoryItemEventId());
@@ -809,12 +806,6 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
             this.inventoryItemDetailEvents.put(((InventoryItemDetailEvent.SqlInventoryItemDetailEvent)e).getInventoryItemDetailEventId(), e);
         }
 
-        public void save()
-        {
-            for (InventoryItemDetailEvent e : this.getInventoryItemDetailEvents()) {
-                getInventoryItemDetailEventDao().save(e);
-            }
-        }
     }
 
 

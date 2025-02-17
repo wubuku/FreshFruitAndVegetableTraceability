@@ -360,7 +360,6 @@ public abstract class AbstractInventoryItemCommand extends AbstractCommand imple
             return COMMAND_TYPE_CREATE;
         }
 
-
     }
 
     public static abstract class AbstractMergePatchInventoryItem extends AbstractCreateOrMergePatchInventoryItem implements MergePatchInventoryItem
@@ -683,13 +682,6 @@ public abstract class AbstractInventoryItemCommand extends AbstractCommand imple
         }
 
 
-        private InventoryItemDetailCommandCollection inventoryItemDetailCommands = new SimpleInventoryItemDetailCommandCollection();
-
-        public InventoryItemDetailCommandCollection getInventoryItemDetailCommands()
-        {
-            return this.inventoryItemDetailCommands;
-        }
-
     }
 
     public static class SimpleCreateInventoryItem extends AbstractCreateInventoryItem
@@ -710,28 +702,7 @@ public abstract class AbstractInventoryItemCommand extends AbstractCommand imple
         }
     }
 
-
-    public static class SimpleInventoryItemDetailCommandCollection implements InventoryItemDetailCommandCollection {
-        private List<InventoryItemDetailCommand> innerCommands = new ArrayList<InventoryItemDetailCommand>();
-
-        public void add(InventoryItemDetailCommand c) {
-            innerCommands.add(c);
-        }
-
-        public void remove(InventoryItemDetailCommand c) {
-            innerCommands.remove(c);
-        }
-
-        public void clear() {
-            innerCommands.clear();
-        }
-
-        @Override
-        public Iterator<InventoryItemDetailCommand> iterator() {
-            return innerCommands.iterator();
-        }
-    }
-
+    
 
 }
 

@@ -728,10 +728,6 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        for (InventoryItemDetailEvent innerEvent : e.getInventoryItemDetailEvents()) {
-            InventoryItemDetailState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(((InventoryItemDetailEvent.SqlInventoryItemDetailEvent)innerEvent).getInventoryItemDetailEventId().getInventoryItemDetailSeqId());
-            ((InventoryItemDetailState.SqlInventoryItemDetailState)innerState).mutate(innerEvent);
-        }
     }
 
     public void save() {

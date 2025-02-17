@@ -153,7 +153,6 @@ public interface InventoryItemEvent extends Event {
 
     interface InventoryItemStateCreated extends InventoryItemStateEvent
     {
-
     
     }
 
@@ -265,9 +264,6 @@ public interface InventoryItemEvent extends Event {
         void setIsPropertyInventoryItemAttributeHashRemoved(Boolean removed);
 
 
-        Iterable<InventoryItemDetailEvent> getInventoryItemDetailEvents();
-        
-        void addInventoryItemDetailEvent(InventoryItemDetailEvent e);
 
     }
 
