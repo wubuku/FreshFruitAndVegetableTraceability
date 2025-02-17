@@ -543,12 +543,38 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
     @Override
     public String when(BffReceivingServiceCommands.CreateReceivingReferenceDocument c) {
-        return null;//todo
+        String shipmentId = c.getDocumentId();
+        if (shipmentId == null || shipmentId.isBlank()) {
+            throw new IllegalArgumentException("Shipment Id can't be null");
+        }
+        var referenceDocument = c.getReferenceDocument();
+        String refDocumentId;
+        if (referenceDocument.getDocumentId() == null) {
+            refDocumentId = createReferenceDocument(referenceDocument, c);
+        } else {
+            refDocumentId = referenceDocument.getDocumentId();
+            DocumentState d = documentApplicationService.get(refDocumentId);
+            if (d == null) {
+                throw new IllegalArgumentException("Document not found: " + refDocumentId);
+            }
+            // 这里每个"文档 Id"都只能与一个 Shipment 关联。判断"关联"是否已经存在，如果存在则报错。
+            ShippingDocumentState sd = shippingDocumentApplicationService.get(refDocumentId);
+            if (sd != null) {
+                throw new IllegalArgumentException("Document already associated with a shipment: " + refDocumentId);
+            }
+        }
+        createShippingDocument(shipmentId, refDocumentId, c);
+        return refDocumentId;
     }
 
     @Override
     public void when(BffReceivingServiceCommands.RemoveReceivingReferenceDocument c) {
-        //todo
+
+        AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
+                new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
+        deleteCommand.setDocumentId(c.getDocumentId());
+        shippingDocumentApplicationService.when(deleteCommand);
+        
     }
 
     @Override
