@@ -44,7 +44,9 @@ valueObjects:
         type: id
       # ReceivedAt:
       #   type: date-time
-      #   # 目前使用 CreatedAt 作为 ReceivedAt。有必要区分吗？
+      #   # 目前使用 CreatedAt 作为前端显示的 ReceivedAt。
+      #   # 在底层我们使用 Shipment 来实现“收货单”，理论上 Shipment 并没有 ReceivedAt 这个属性。
+      #   # 并且，每一个“收货行项” 的 ReceivedAt 是可以不同的。
       ReceivingItems:
         itemType: BffReceivingItemDto
         isList: true
