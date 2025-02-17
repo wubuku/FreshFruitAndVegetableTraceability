@@ -8,7 +8,7 @@ package org.dddml.ffvtraceability.domain.inventoryitem;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
-public class CreateOrMergePatchInventoryItemDetailDto extends AbstractInventoryItemDetailCommandDto implements InventoryItemDetailCommand.CreateOrMergePatchInventoryItemDetail {
+public class CreateOrMergePatchInventoryItemDetailDto extends AbstractInventoryItemDetailCommandDto {
 
     /**
      * Effective Date

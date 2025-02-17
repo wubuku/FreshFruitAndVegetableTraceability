@@ -486,6 +486,9 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
             return StateEventType.CREATED;
         }
 
+        public void save()
+        {
+        }
     }
 
 
