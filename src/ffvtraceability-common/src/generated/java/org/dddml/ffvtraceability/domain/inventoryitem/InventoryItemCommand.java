@@ -155,9 +155,6 @@ public interface InventoryItemCommand extends Command {
     }
 
     interface CreateInventoryItem extends CreateOrMergePatchInventoryItem {
-        CreateInventoryItemDetailCommandCollection getCreateInventoryItemDetailCommands();
-
-        InventoryItemDetailCommand.CreateInventoryItemDetail newCreateInventoryItemDetail();
 
     }
 
@@ -269,20 +266,12 @@ public interface InventoryItemCommand extends Command {
 
         InventoryItemDetailCommandCollection getInventoryItemDetailCommands();
 
-        InventoryItemDetailCommand.CreateInventoryItemDetail newCreateInventoryItemDetail();
 
     }
 
     interface DeleteInventoryItem extends InventoryItemCommand {
     }
 
-    interface CreateInventoryItemDetailCommandCollection extends Iterable<InventoryItemDetailCommand.CreateInventoryItemDetail> {
-        void add(InventoryItemDetailCommand.CreateInventoryItemDetail c);
-
-        void remove(InventoryItemDetailCommand.CreateInventoryItemDetail c);
-
-        void clear();
-    }
 
     interface InventoryItemDetailCommandCollection extends Iterable<InventoryItemDetailCommand> {
         void add(InventoryItemDetailCommand c);

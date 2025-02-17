@@ -128,10 +128,6 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
         }
     }
 
-    public InventoryItemDetailEvent.InventoryItemDetailStateCreated newInventoryItemDetailStateCreated(String inventoryItemDetailSeqId) {
-        return new AbstractInventoryItemDetailEvent.SimpleInventoryItemDetailStateCreated(newInventoryItemDetailEventId(inventoryItemDetailSeqId));
-    }
-
 
     public abstract String getEventType();
 
@@ -490,54 +486,6 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
             return StateEventType.CREATED;
         }
 
-        private Map<InventoryItemDetailEventId, InventoryItemDetailEvent.InventoryItemDetailStateCreated> inventoryItemDetailEvents = new HashMap<InventoryItemDetailEventId, InventoryItemDetailEvent.InventoryItemDetailStateCreated>();
-        
-        private Iterable<InventoryItemDetailEvent.InventoryItemDetailStateCreated> readOnlyInventoryItemDetailEvents;
-
-        public Iterable<InventoryItemDetailEvent.InventoryItemDetailStateCreated> getInventoryItemDetailEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.inventoryItemDetailEvents.values();
-            }
-            else
-            {
-                if (readOnlyInventoryItemDetailEvents != null) { return readOnlyInventoryItemDetailEvents; }
-                InventoryItemDetailEventDao eventDao = getInventoryItemDetailEventDao();
-                List<InventoryItemDetailEvent.InventoryItemDetailStateCreated> eL = new ArrayList<InventoryItemDetailEvent.InventoryItemDetailStateCreated>();
-                for (InventoryItemDetailEvent e : eventDao.findByInventoryItemEventId(this.getInventoryItemEventId()))
-                {
-                    ((InventoryItemDetailEvent.SqlInventoryItemDetailEvent)e).setEventReadOnly(true);
-                    eL.add((InventoryItemDetailEvent.InventoryItemDetailStateCreated)e);
-                }
-                return (readOnlyInventoryItemDetailEvents = eL);
-            }
-        }
-
-        public void setInventoryItemDetailEvents(Iterable<InventoryItemDetailEvent.InventoryItemDetailStateCreated> es)
-        {
-            if (es != null)
-            {
-                for (InventoryItemDetailEvent.InventoryItemDetailStateCreated e : es)
-                {
-                    addInventoryItemDetailEvent(e);
-                }
-            }
-            else { this.inventoryItemDetailEvents.clear(); }
-        }
-        
-        public void addInventoryItemDetailEvent(InventoryItemDetailEvent.InventoryItemDetailStateCreated e)
-        {
-            throwOnInconsistentEventIds((InventoryItemDetailEvent.SqlInventoryItemDetailEvent)e);
-            this.inventoryItemDetailEvents.put(((InventoryItemDetailEvent.SqlInventoryItemDetailEvent)e).getInventoryItemDetailEventId(), e);
-        }
-
-        public void save()
-        {
-            for (InventoryItemDetailEvent.InventoryItemDetailStateCreated e : this.getInventoryItemDetailEvents()) {
-                getInventoryItemDetailEventDao().save(e);
-            }
-        }
     }
 
 

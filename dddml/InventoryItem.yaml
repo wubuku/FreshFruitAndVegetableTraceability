@@ -63,9 +63,18 @@ aggregates:
       Details:
         itemType: InventoryItemDetail
 
+    methods:
+      Create:
+        isInternal: true
+      MergePatch:
+        isInternal: true
+
+
     entities:
       InventoryItemDetail:
         immutable: true
+        metadata:
+          GeneratingCrUDCommandsDisabled: true
         id:
           name: InventoryItemDetailSeqId
           type: id-long
@@ -122,6 +131,7 @@ aggregates:
             type: HashHex
           InventoryItemEntrySourceHash:
             type: HashHex
+
 
   InventoryItemType:
     id:

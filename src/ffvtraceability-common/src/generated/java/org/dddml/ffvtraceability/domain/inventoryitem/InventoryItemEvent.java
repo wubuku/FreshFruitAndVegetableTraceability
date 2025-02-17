@@ -153,11 +153,6 @@ public interface InventoryItemEvent extends Event {
 
     interface InventoryItemStateCreated extends InventoryItemStateEvent
     {
-        Iterable<InventoryItemDetailEvent.InventoryItemDetailStateCreated> getInventoryItemDetailEvents();
-        
-        void addInventoryItemDetailEvent(InventoryItemDetailEvent.InventoryItemDetailStateCreated e);
-
-        InventoryItemDetailEvent.InventoryItemDetailStateCreated newInventoryItemDetailStateCreated(String inventoryItemDetailSeqId);
 
     
     }
@@ -273,9 +268,6 @@ public interface InventoryItemEvent extends Event {
         Iterable<InventoryItemDetailEvent> getInventoryItemDetailEvents();
         
         void addInventoryItemDetailEvent(InventoryItemDetailEvent e);
-
-        InventoryItemDetailEvent.InventoryItemDetailStateCreated newInventoryItemDetailStateCreated(String inventoryItemDetailSeqId);
-
 
     }
 
