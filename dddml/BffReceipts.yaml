@@ -40,6 +40,8 @@ valueObjects:
         # Inspected, Partially Inspected, Pending Inspection
       CreatedAt:
         type: date-time
+      CreatedBy:
+        type: id
       # ReceivedAt:
       #   type: date-time
       #   # 目前使用 CreatedAt 作为 ReceivedAt。有必要区分吗？

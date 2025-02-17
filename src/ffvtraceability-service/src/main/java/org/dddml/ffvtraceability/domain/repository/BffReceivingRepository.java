@@ -27,6 +27,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 d.facility_name as destinationFacilityName,
                 s.primary_order_id as primaryOrderId,
                 s.created_at as createdAt,
+                s.created_by as createdBy,
                 sr.receipt_id as receiptId,
                 sr.product_id as productId,
                 prod.product_name as productName,
