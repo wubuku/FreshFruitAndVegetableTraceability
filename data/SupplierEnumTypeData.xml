@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-engine-xml>
 
-    <!--Enumeration enumId="MANUFACTURER" enumTypeId="SUPPLIER_TYPE_ENUM"
+    <!--Enumeration
+    enumId="MANUFACTURER" enumTypeId="SUPPLIER_TYPE_ENUM"
         description="Manufacturer - Equipment, packaging materials and processing facilities"/>
     <Enumeration enumId="FARM" enumTypeId="SUPPLIER_TYPE_ENUM" 
         description="Farm - Planting bases, orchards, and greenhouse facilities"/>
@@ -11,14 +12,24 @@
         description="Retailer - Supermarkets and fresh food stores"/>
     <Enumeration enumId="COOPERATIVE" enumTypeId="SUPPLIER_TYPE_ENUM" 
         description="Cooperative - Farmers' professional cooperatives and production-sales alliances"/ -->
-    <Enumeration enumId="Raw Material Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
-    <Enumeration enumId="Pre-Processed Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
-    <Enumeration enumId="Ingredient &amp; Additive Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
-    <Enumeration enumId="Logistics &amp; Storage Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
-    <Enumeration enumId="Equipment &amp; Service Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
-    <Enumeration enumId="Special Category Suppliers" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
-    <Enumeration enumId="3rd Party" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
-    <Enumeration enumId="Regulator" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
-    <Enumeration enumId="Other" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
+
+    <Enumeration enumId="SUPP_RAW_MATERIAL" enumTypeId="SUPPLIER_TYPE_ENUM"
+        description="Raw Material Supplier" />
+    <Enumeration enumId="SUPP_PRE_PROCESS" enumTypeId="SUPPLIER_TYPE_ENUM"
+        description="Pre-Processed Supplier" />
+    <Enumeration enumId="SUPP_INGREDIENT" enumTypeId="SUPPLIER_TYPE_ENUM"
+        description="Ingredient &amp; Additive Supplier" />
+    <Enumeration enumId="SUPP_LOGISTICS" enumTypeId="SUPPLIER_TYPE_ENUM"
+        description="Logistics &amp; Storage Supplier" />
+    <Enumeration enumId="SUPP_EQUIPMENT_SRV" enumTypeId="SUPPLIER_TYPE_ENUM"
+        description="Equipment &amp; Service Supplier" />
+    <Enumeration enumId="SUPP_SPECIAL_CAT" enumTypeId="SUPPLIER_TYPE_ENUM"
+        description="Special Category Suppliers" />
+    <Enumeration enumId="SUPP_THIRD_PARTY" enumTypeId="SUPPLIER_TYPE_ENUM"
+        description="3rd Party" />
+    <Enumeration enumId="SUPP_REGULATOR" enumTypeId="SUPPLIER_TYPE_ENUM"
+        description="Regulator" />
+    <Enumeration enumId="SUPP_OTHER" enumTypeId="SUPPLIER_TYPE_ENUM"
+        description="Other" />
 
 </entity-engine-xml>

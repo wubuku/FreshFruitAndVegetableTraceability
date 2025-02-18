@@ -155,7 +155,6 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         Long version = c.getVersion();
-
         return e;
     }
 
