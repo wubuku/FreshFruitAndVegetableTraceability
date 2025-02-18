@@ -85,7 +85,7 @@
             - FACILITY_IDENTIFICATION_TYPE_ID
         properties:
           IdValue:
-            type: id
+            type: id-long
 
 
   FacilityIdentificationType:
