@@ -572,10 +572,21 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Override
     public void when(BffReceivingServiceCommands.RemoveReceivingReferenceDocument c) {
         if (c.getReferenceDocumentId() != null && !c.getReferenceDocumentId().isBlank()) {
-            AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
-                    new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
-            deleteCommand.setDocumentId(c.getReferenceDocumentId());
-            shippingDocumentApplicationService.when(deleteCommand);
+            ShippingDocumentState shippingDocumentState = shippingDocumentApplicationService.get(c.getReferenceDocumentId());
+            if (shippingDocumentState != null) {
+                AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
+                        new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
+                deleteCommand.setDocumentId(c.getReferenceDocumentId());
+                deleteCommand.setVersion(shippingDocumentState.getVersion());
+                shippingDocumentApplicationService.when(deleteCommand);
+            }
+//            DocumentState documentState=documentApplicationService.get(c.getReferenceDocumentId());
+//            if(documentState!=null){
+//                AbstractDocumentCommand.SimpleDeleteDocument deleteDocument=new AbstractDocumentCommand.SimpleDeleteDocument();
+//                deleteDocument.setDocumentId(c.getReferenceDocumentId());
+//                deleteDocument.setVersion(documentState.getVersion());
+//                documentApplicationService.when(deleteDocument);
+//            }
         }
     }
 
