@@ -18,7 +18,6 @@ aggregates:
       # ImageData:
       #   type: object
 
-
 #   DocumentAssociation:
 #     # TODO: remove this entity
 #     id:
