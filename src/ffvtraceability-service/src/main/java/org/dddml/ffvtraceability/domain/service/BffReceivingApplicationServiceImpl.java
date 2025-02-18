@@ -1,6 +1,7 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.constants.BffReceivingConstants;
 import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
@@ -453,6 +454,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         AbstractDocumentCommand.SimpleCreateDocument createDocument = new AbstractDocumentCommand.SimpleCreateDocument();
         createDocument.setDocumentId(IdUtils.randomId());
         createDocument.setDocumentLocation(referenceDocument.getDocumentLocation());
+        createDocument.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC);
         createDocument.setDocumentText(referenceDocument.getDocumentText());
         createDocument.setComments(referenceDocument.getComments());
         createDocument.setCommandId(UUID.randomUUID().toString());
@@ -569,12 +571,12 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
     @Override
     public void when(BffReceivingServiceCommands.RemoveReceivingReferenceDocument c) {
-
-        AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
-                new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
-        deleteCommand.setDocumentId(c.getReferenceDocumentId());
-        shippingDocumentApplicationService.when(deleteCommand);
-        
+        if (c.getReferenceDocumentId() != null && !c.getReferenceDocumentId().isBlank()) {
+            AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
+                    new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
+            deleteCommand.setDocumentId(c.getReferenceDocumentId());
+            shippingDocumentApplicationService.when(deleteCommand);
+        }
     }
 
     @Override
