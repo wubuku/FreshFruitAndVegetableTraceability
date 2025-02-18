@@ -70,11 +70,13 @@ public class BffListResource {
 
     @GetMapping("RawItems") // 因为对应的分页查询接口的路径名是 "BffRawItems"
     public List<? extends BffRawItemDto> getRawItems(
+            @RequestParam(value = "supplierId", required = false) String supplierId,
             @RequestParam(value = "active", required = false) String active
     ) {
         BffRawItemServiceCommands.GetRawItems getRawItems = new BffRawItemServiceCommands.GetRawItems();
         getRawItems.setPage(0);
         getRawItems.setSize(Integer.MAX_VALUE);
+        getRawItems.setSupplierId(supplierId);
         getRawItems.setActive(active);
         try {
             getRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
