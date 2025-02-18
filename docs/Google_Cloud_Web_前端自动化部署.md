@@ -326,6 +326,9 @@ server {
 gcloud iam service-accounts create github-deploy-sa \
     --display-name="GitHub Deploy Service Account"
 
+# 首先需要获取项目 ID
+# gcloud config get-value project
+
 # 赋予必要权限
 gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
     --member="serviceAccount:github-deploy-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
