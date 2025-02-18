@@ -15,7 +15,7 @@
       <column name="FACILITY_ID" />
     </many-to-one>
     <property name="idValue">
-      <column name="id_value" sql-type="VARCHAR(20)" />
+      <column name="id_value" sql-type="VARCHAR(60)" />
     </property>
     <property name="createdBy">
       <column name="created_by" />

@@ -19,7 +19,7 @@
     <property name="commandId" column="command_id" />
     <subclass name="AbstractFacilityIdentificationEvent$AbstractFacilityIdentificationStateEvent" abstract="true">
       <property name="idValue">
-        <column name="id_value" sql-type="VARCHAR(20)" />
+        <column name="id_value" sql-type="VARCHAR(60)" />
       </property>
       <property name="version" column="version" not-null="true" />
       <subclass name="AbstractFacilityIdentificationEvent$SimpleFacilityIdentificationStateCreated" discriminator-value="Created"></subclass>

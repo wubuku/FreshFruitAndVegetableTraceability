@@ -13,8 +13,6 @@ import org.dddml.ffvtraceability.domain.*;
 public interface DocumentStateRepository {
     DocumentState get(String id, boolean nullAllowed);
 
-    DocumentState get(Class<? extends DocumentState> type, String id, boolean nullAllowed);
-
     void save(DocumentState state);
 
     void merge(DocumentState detached);

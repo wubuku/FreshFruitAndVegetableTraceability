@@ -52,38 +52,13 @@ public class HibernateDocumentStateRepository implements DocumentStateRepository
 
     @Transactional(readOnly = true)
     public DocumentState get(String id, boolean nullAllowed) {
-        return get(DocumentState.class, id, nullAllowed);
-    }
-
-    @Transactional(readOnly = true)
-    public DocumentState get(Class<? extends DocumentState> type, String id, boolean nullAllowed) {
         DocumentState.SqlDocumentState state = (DocumentState.SqlDocumentState)getEntityManager().find(AbstractDocumentState.SimpleDocumentState.class, id);
-        if (state != null && !type.isAssignableFrom(state.getClass())) {
-            throw new ClassCastException(String.format("state is NOT instance of %1$s", type.getName()));
-        }
         if (!nullAllowed && state == null) {
-            state = (DocumentState.SqlDocumentState)newEmptyState(type);
+            state = new AbstractDocumentState.SimpleDocumentState();
             state.setDocumentId(id);
         }
-        return state;
-    }
-
-    private DocumentState newEmptyState(Class<? extends DocumentState> type) {
-        DocumentState state = null;
-        Class<? extends AbstractDocumentState> clazz = null;
-        if (state != null) {
-            // do nothing.
-        }
-        else if (type.equals(DocumentState.class)) {
-            clazz = AbstractDocumentState.SimpleDocumentState.class;
-        }
-        else {
-            throw new IllegalArgumentException("type");
-        }
-        try {
-            state = clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new IllegalArgumentException("type", e);
+        if (getReadOnlyProxyGenerator() != null && state != null) {
+            return (DocumentState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{DocumentState.SqlDocumentState.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
         }
         return state;
     }

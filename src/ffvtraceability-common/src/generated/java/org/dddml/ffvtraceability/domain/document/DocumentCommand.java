@@ -90,10 +90,6 @@ public interface DocumentCommand extends Command {
     }
 
     interface DeleteDocument extends DocumentCommand {
-
-        String getDocumentTypeId();
-
-        void setDocumentTypeId(String documentTypeId);
     }
 
 }

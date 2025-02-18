@@ -32,18 +32,6 @@ public interface DocumentApplicationService {
 
     long getCount(Criterion filter);
 
-    Iterable<DocumentState> getAll(Class<? extends DocumentState> stateType, Integer firstResult, Integer maxResults);
-
-    Iterable<DocumentState> get(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults);
-
-    Iterable<DocumentState> get(Class<? extends DocumentState> stateType, Criterion filter, List<String> orders, Integer firstResult, Integer maxResults);
-
-    Iterable<DocumentState> getByProperty(Class<? extends DocumentState> stateType, String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults);
-
-    long getCount(Class<? extends DocumentState> stateType, Iterable<Map.Entry<String, Object>> filter);
-
-    long getCount(Class<? extends DocumentState> stateType, Criterion filter);
-
     DocumentEvent getEvent(String documentId, long version);
 
     DocumentState getHistoryState(String documentId, long version);

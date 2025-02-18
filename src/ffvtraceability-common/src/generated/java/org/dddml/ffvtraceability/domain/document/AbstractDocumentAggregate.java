@@ -61,13 +61,6 @@ public abstract class AbstractDocumentAggregate extends AbstractAggregate implem
     }
 
     protected DocumentEvent map(DocumentCommand.CreateDocument c) {
-        if(DocumentTypeId.DOCUMENT.equals(c.getDocumentTypeId())) {
-            return mapToDocumentEvent(c);
-        }
-        return mapToDocumentEvent(c);
-    }
-
-    protected DocumentEvent mapToDocumentEvent(DocumentCommand.CreateDocument c) {
         DocumentEventId stateEventId = new DocumentEventId(c.getDocumentId(), c.getVersion());
         DocumentEvent.DocumentStateCreated e = newDocumentStateCreated(stateEventId);
         e.setDocumentTypeId(c.getDocumentTypeId());
@@ -81,13 +74,6 @@ public abstract class AbstractDocumentAggregate extends AbstractAggregate implem
     }
 
     protected DocumentEvent map(DocumentCommand.MergePatchDocument c) {
-        if(c.getDocumentTypeId().equals(DocumentTypeId.DOCUMENT)) {
-            return mapToDocumentEvent(c);
-        }
-        return mapToDocumentEvent(c);
-    }
-
-    protected DocumentEvent mapToDocumentEvent(DocumentCommand.MergePatchDocument c) {
         DocumentEventId stateEventId = new DocumentEventId(c.getDocumentId(), c.getVersion());
         DocumentEvent.DocumentStateMergePatched e = newDocumentStateMergePatched(stateEventId);
         e.setDocumentTypeId(c.getDocumentTypeId());
