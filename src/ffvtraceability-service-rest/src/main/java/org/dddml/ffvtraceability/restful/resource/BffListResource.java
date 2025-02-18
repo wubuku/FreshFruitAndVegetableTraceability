@@ -70,20 +70,17 @@ public class BffListResource {
 
     @GetMapping("RawItems") // 因为对应的分页查询接口的路径名是 "BffRawItems"
     public List<? extends BffRawItemDto> getRawItems(
+            @RequestParam(value = "supplierId", required = false) String supplierId,
             @RequestParam(value = "active", required = false) String active
     ) {
         BffRawItemServiceCommands.GetRawItems getRawItems = new BffRawItemServiceCommands.GetRawItems();
         getRawItems.setPage(0);
         getRawItems.setSize(Integer.MAX_VALUE);
+        getRawItems.setSupplierId(supplierId);
         getRawItems.setActive(active);
-        try {
-            getRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
-            Page<BffRawItemDto> rawItemDtoPage = bffRawItemApplicationService.when(getRawItems);
-            return rawItemDtoPage.getContent();
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        getRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
+        Page<BffRawItemDto> rawItemDtoPage = bffRawItemApplicationService.when(getRawItems);
+        return rawItemDtoPage.getContent();
     }
 
     @GetMapping("/Suppliers")
@@ -94,13 +91,8 @@ public class BffListResource {
         getSuppliers.setPage(0);
         getSuppliers.setSize(Integer.MAX_VALUE);
         getSuppliers.setActive(active);
-        try {
-            getSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
-            return bffSupplierApplicationService.when(getSuppliers).getContent();
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        getSuppliers.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffSupplierApplicationService.when(getSuppliers).getContent();
     }
 
     @GetMapping("/Facilities")
@@ -113,13 +105,8 @@ public class BffListResource {
         getFacilities.setSize(Integer.MAX_VALUE);
         getFacilities.setActive(active);
         getFacilities.setOwnerPartyId(ownerPartyId);
-        try {
-            getFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
-            return bffFacilityApplicationService.when(getFacilities).getContent();
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        getFacilities.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffFacilityApplicationService.when(getFacilities).getContent();
     }
 
 
@@ -133,12 +120,7 @@ public class BffListResource {
         getUnitsOfMeasure.setSize(Integer.MAX_VALUE);
         getUnitsOfMeasure.setActive(active);
         getUnitsOfMeasure.setUomTypeId(uomTypeId);
-        try {
-            getUnitsOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
-            return bffUomApplicationService.when(getUnitsOfMeasure).getContent();
-        } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
-            throw DomainErrorUtils.convertException(ex);
-        }
+        getUnitsOfMeasure.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffUomApplicationService.when(getUnitsOfMeasure).getContent();
     }
 }
