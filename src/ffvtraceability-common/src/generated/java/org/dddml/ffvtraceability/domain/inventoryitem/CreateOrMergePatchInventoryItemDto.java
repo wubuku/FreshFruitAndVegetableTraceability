@@ -401,18 +401,6 @@ public class CreateOrMergePatchInventoryItemDto extends AbstractInventoryItemCom
     }
 
 
-    private CreateOrMergePatchInventoryItemDetailDto[] details = new CreateOrMergePatchInventoryItemDetailDto[0];
-
-    public CreateOrMergePatchInventoryItemDetailDto[] getDetails()
-    {
-        return this.details;
-    }
-
-    public void setDetails(CreateOrMergePatchInventoryItemDetailDto[] details)
-    {
-        this.details = details;
-    }
-
     private Boolean isPropertyInventoryItemTypeIdRemoved;
 
     public Boolean getIsPropertyInventoryItemTypeIdRemoved()
@@ -764,20 +752,10 @@ public class CreateOrMergePatchInventoryItemDto extends AbstractInventoryItemCom
         if (COMMAND_TYPE_CREATE.equals(getCommandType())) {
             AbstractInventoryItemCommand.SimpleCreateInventoryItem command = new AbstractInventoryItemCommand.SimpleCreateInventoryItem();
             copyTo((AbstractInventoryItemCommand.AbstractCreateInventoryItem) command);
-            if (this.getDetails() != null) {
-                for (CreateOrMergePatchInventoryItemDetailDto cmd : this.getDetails()) {
-                    command.getDetails().add((InventoryItemDetailCommand.CreateInventoryItemDetail) cmd.toCommand());
-                }
-            }
             return command;
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
             AbstractInventoryItemCommand.SimpleMergePatchInventoryItem command = new AbstractInventoryItemCommand.SimpleMergePatchInventoryItem();
             copyTo((AbstractInventoryItemCommand.SimpleMergePatchInventoryItem) command);
-            if (this.getDetails() != null) {
-                for (CreateOrMergePatchInventoryItemDetailDto cmd : this.getDetails()) {
-                    command.getInventoryItemDetailCommands().add(cmd.toCommand());
-                }
-            }
             return command;
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
@@ -791,21 +769,10 @@ public class CreateOrMergePatchInventoryItemDto extends AbstractInventoryItemCom
         if (COMMAND_TYPE_CREATE.equals(getCommandType()) || null == getCommandType()) {
             CreateInventoryItemDto command = new CreateInventoryItemDto();
             copyTo((CreateInventoryItem) command);
-            if (this.getDetails() != null) {
-                for (CreateOrMergePatchInventoryItemDetailDto cmd : this.getDetails()) {
-                    if (cmd.getCommandType() == null) { cmd.setCommandType(COMMAND_TYPE_CREATE); }
-                    command.getCreateInventoryItemDetailCommands().add((InventoryItemDetailCommand.CreateInventoryItemDetail) cmd.toSubclass());
-                }
-            }
             return command;
         } else if (COMMAND_TYPE_MERGE_PATCH.equals(getCommandType())) {
             MergePatchInventoryItemDto command = new MergePatchInventoryItemDto();
             copyTo((MergePatchInventoryItem) command);
-            if (this.getDetails() != null) {
-                for (CreateOrMergePatchInventoryItemDetailDto cmd : this.getDetails()) {
-                    command.getInventoryItemDetailCommands().add(cmd.toSubclass());
-                }
-            }
             return command;
         } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
@@ -862,42 +829,6 @@ public class CreateOrMergePatchInventoryItemDto extends AbstractInventoryItemCom
             return (InventoryItemCommand.CreateInventoryItem) toCommand();
         }
 
-
-        @Override
-        public CreateInventoryItemDetailCommandCollection getCreateInventoryItemDetailCommands() {
-            return new CreateInventoryItemDetailCommandCollection() {
-                @Override
-                public void add(InventoryItemDetailCommand.CreateInventoryItemDetail c) {
-                    java.util.List<CreateOrMergePatchInventoryItemDetailDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getDetails()));
-                    list.add((CreateOrMergePatchInventoryItemDetailDto) c);
-                    setDetails(list.toArray(new CreateOrMergePatchInventoryItemDetailDto[0]));
-                }
-
-                @Override
-                public void remove(InventoryItemDetailCommand.CreateInventoryItemDetail c) {
-                    java.util.List<CreateOrMergePatchInventoryItemDetailDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getDetails()));
-                    list.remove((CreateOrMergePatchInventoryItemDetailDto) c);
-                    setDetails(list.toArray(new CreateOrMergePatchInventoryItemDetailDto[0]));
-                }
-
-                @Override
-                public void clear() {
-                    setDetails(new CreateOrMergePatchInventoryItemDetailDto[]{});
-                }
-
-                @Override
-                public java.util.Iterator<InventoryItemDetailCommand.CreateInventoryItemDetail> iterator() {
-                    return java.util.Arrays.stream(getDetails())
-                            .map(e -> {if (e.getCommandType()==null) e.setCommandType(COMMAND_TYPE_CREATE);return (InventoryItemDetailCommand.CreateInventoryItemDetail) e.toSubclass();}).iterator();
-                }
-            };
-        }
-
-        @Override
-        public InventoryItemDetailCommand.CreateInventoryItemDetail newCreateInventoryItemDetail() {
-            return new CreateOrMergePatchInventoryItemDetailDto.CreateInventoryItemDetailDto();
-        }
-
     }
 
     public static class MergePatchInventoryItemDto extends CreateOrMergePatchInventoryItemDto implements InventoryItemCommand.MergePatchInventoryItem
@@ -913,42 +844,6 @@ public class CreateOrMergePatchInventoryItemDto extends AbstractInventoryItemCom
         public InventoryItemCommand.MergePatchInventoryItem toMergePatchInventoryItem()
         {
             return (InventoryItemCommand.MergePatchInventoryItem) toCommand();
-        }
-
-
-        @Override
-        public InventoryItemDetailCommandCollection getInventoryItemDetailCommands() {
-            return new InventoryItemDetailCommandCollection() {
-                @Override
-                public void add(InventoryItemDetailCommand c) {
-                    java.util.List<CreateOrMergePatchInventoryItemDetailDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getDetails()));
-                    list.add((CreateOrMergePatchInventoryItemDetailDto) c);
-                    setDetails(list.toArray(new CreateOrMergePatchInventoryItemDetailDto[0]));
-                }
-
-                @Override
-                public void remove(InventoryItemDetailCommand c) {
-                    java.util.List<CreateOrMergePatchInventoryItemDetailDto> list = new java.util.ArrayList<>(java.util.Arrays.asList(getDetails()));
-                    list.remove((CreateOrMergePatchInventoryItemDetailDto) c);
-                    setDetails(list.toArray(new CreateOrMergePatchInventoryItemDetailDto[0]));
-                }
-
-                @Override
-                public void clear() {
-                    setDetails(new CreateOrMergePatchInventoryItemDetailDto[]{});
-                }
-
-                @Override
-                public java.util.Iterator<InventoryItemDetailCommand> iterator() {
-                    return java.util.Arrays.stream(getDetails())
-                            .map(e -> (InventoryItemDetailCommand) e.toSubclass()).iterator();
-                }
-            };
-        }
-
-        @Override
-        public InventoryItemDetailCommand.CreateInventoryItemDetail newCreateInventoryItemDetail() {
-            return new CreateOrMergePatchInventoryItemDetailDto.CreateInventoryItemDetailDto();
         }
 
     }

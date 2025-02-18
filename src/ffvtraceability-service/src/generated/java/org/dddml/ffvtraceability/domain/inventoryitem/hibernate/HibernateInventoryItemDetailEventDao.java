@@ -26,33 +26,29 @@ public class HibernateInventoryItemDetailEventDao implements InventoryItemDetail
 
     @Override
     public void save(InventoryItemDetailEvent e) {
-        InventoryItemDetailState state = ((AbstractInventoryItemDetailEvent.AbstractInventoryItemDetailStateCreated)e).getInventoryItemDetailState();
         getEntityManager().persist(e);
-        getEntityManager().persist(e);
-
         if (e instanceof Saveable) {
             Saveable saveable = (Saveable) e;
             saveable.save();
         }
     }
 
+
     @Transactional(readOnly = true)
     @Override
     public Iterable<InventoryItemDetailEvent> findByInventoryItemEventId(InventoryItemEventId inventoryItemEventId) {
-        EntityManager em = getEntityManager();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InventoryItemDetailState> cq = cb.createQuery(InventoryItemDetailState.class);
-        Root<InventoryItemDetailState> root = cq.from(InventoryItemDetailState.class);
-        cq.select(root);
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<InventoryItemDetailEvent> cq = cb.createQuery(InventoryItemDetailEvent.class);
+        Root<AbstractInventoryItemDetailEvent> root = cq.from(AbstractInventoryItemDetailEvent.class);
 
-        java.util.List<Predicate> predicates = new java.util.ArrayList<>();
-        predicates.add(cb.equal(root.get("inventoryItemDetailId").get("inventoryItemId"), inventoryItemEventId.getInventoryItemId()));
-        cq.where(cb.and(predicates.toArray(new Predicate[0])));
+        Predicate condition = cb.and(
+            cb.equal(root.get("inventoryItemDetailEventId").get("inventoryItemId"), inventoryItemEventId.getInventoryItemId()),
+            cb.equal(root.get("inventoryItemDetailEventId").get("inventoryItemVersion"), inventoryItemEventId.getVersion())
+        );
 
-        return em.createQuery(cq).getResultList()
-                .stream()
-                .map(s -> new AbstractInventoryItemDetailEvent.SimpleInventoryItemDetailStateCreated(s))
-                .collect(java.util.stream.Collectors.toList());
+        cq.where(condition);
+
+        return getEntityManager().createQuery(cq).getResultList();
     }
 
 }

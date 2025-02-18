@@ -1,13 +1,14 @@
 package org.dddml.ffvtraceability.domain.attributesetinstance;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dddml.ffvtraceability.domain.attributesetinstance.AttributeSetInstanceCommand.CreateAttributeSetInstance;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
 import org.erdtman.jcs.JsonCanonicalizer;
 import org.springframework.util.DigestUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 public class AttributeSetInstanceIdGenerator implements
         IdGenerator<String, AttributeSetInstanceCommand.CreateAttributeSetInstance, AttributeSetInstanceState> {
@@ -31,7 +32,7 @@ public class AttributeSetInstanceIdGenerator implements
             // return bytesToHex(hashBytes);
             return DigestUtils.md5DigestAsHex(encoded.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            return "OBJ_HASH" + command.hashCode() + "";
+            return getNextId();
         }
     }
 

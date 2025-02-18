@@ -351,14 +351,6 @@ public abstract class AbstractInventoryItemCommand extends AbstractCommand imple
             this.inventoryItemAttributeHash = inventoryItemAttributeHash;
         }
 
-        public InventoryItemDetailCommand.CreateInventoryItemDetail newCreateInventoryItemDetail()
-        {
-            AbstractInventoryItemDetailCommand.SimpleCreateInventoryItemDetail c = new AbstractInventoryItemDetailCommand.SimpleCreateInventoryItemDetail();
-            c.setInventoryItemId(this.getInventoryItemId());
-
-            return c;
-        }
-
     }
 
     public static abstract class AbstractCreateInventoryItem extends AbstractCreateOrMergePatchInventoryItem implements CreateInventoryItem
@@ -366,16 +358,6 @@ public abstract class AbstractInventoryItemCommand extends AbstractCommand imple
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_CREATE;
-        }
-
-        private CreateInventoryItemDetailCommandCollection createInventoryItemDetailCommands = new SimpleCreateInventoryItemDetailCommandCollection();
-
-        public CreateInventoryItemDetailCommandCollection getCreateInventoryItemDetailCommands() {
-            return this.createInventoryItemDetailCommands;
-        }
-
-        public CreateInventoryItemDetailCommandCollection getDetails() {
-            return this.createInventoryItemDetailCommands; //details;
         }
 
     }
@@ -700,13 +682,6 @@ public abstract class AbstractInventoryItemCommand extends AbstractCommand imple
         }
 
 
-        private InventoryItemDetailCommandCollection inventoryItemDetailCommands = new SimpleInventoryItemDetailCommandCollection();
-
-        public InventoryItemDetailCommandCollection getInventoryItemDetailCommands()
-        {
-            return this.inventoryItemDetailCommands;
-        }
-
     }
 
     public static class SimpleCreateInventoryItem extends AbstractCreateInventoryItem
@@ -728,48 +703,6 @@ public abstract class AbstractInventoryItemCommand extends AbstractCommand imple
     }
 
     
-    public static class SimpleCreateInventoryItemDetailCommandCollection implements CreateInventoryItemDetailCommandCollection {
-        private List<InventoryItemDetailCommand.CreateInventoryItemDetail> innerCommands = new ArrayList<InventoryItemDetailCommand.CreateInventoryItemDetail>();
-
-        public void add(InventoryItemDetailCommand.CreateInventoryItemDetail c) {
-            innerCommands.add(c);
-        }
-
-        public void remove(InventoryItemDetailCommand.CreateInventoryItemDetail c) {
-            innerCommands.remove(c);
-        }
-
-        public void clear() {
-            innerCommands.clear();
-        }
-
-        @Override
-        public Iterator<InventoryItemDetailCommand.CreateInventoryItemDetail> iterator() {
-            return innerCommands.iterator();
-        }
-    }
-
-    public static class SimpleInventoryItemDetailCommandCollection implements InventoryItemDetailCommandCollection {
-        private List<InventoryItemDetailCommand> innerCommands = new ArrayList<InventoryItemDetailCommand>();
-
-        public void add(InventoryItemDetailCommand c) {
-            innerCommands.add(c);
-        }
-
-        public void remove(InventoryItemDetailCommand c) {
-            innerCommands.remove(c);
-        }
-
-        public void clear() {
-            innerCommands.clear();
-        }
-
-        @Override
-        public Iterator<InventoryItemDetailCommand> iterator() {
-            return innerCommands.iterator();
-        }
-    }
-
 
 }
 

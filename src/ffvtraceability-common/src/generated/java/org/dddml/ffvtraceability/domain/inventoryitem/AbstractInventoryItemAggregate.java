@@ -93,12 +93,6 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         Long version = c.getVersion();
-        for (InventoryItemDetailCommand.CreateInventoryItemDetail innerCommand : c.getCreateInventoryItemDetailCommands()) {
-            throwOnInconsistentCommands(c, innerCommand);
-            InventoryItemDetailEvent.InventoryItemDetailStateCreated innerEvent = mapCreate(innerCommand, c, version, this.state);
-            e.addInventoryItemDetailEvent(innerEvent);
-        }
-
         return e;
     }
 
@@ -161,59 +155,9 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
         Long version = c.getVersion();
-        for (InventoryItemDetailCommand innerCommand : c.getInventoryItemDetailCommands()) {
-            throwOnInconsistentCommands(c, innerCommand);
-            InventoryItemDetailEvent innerEvent = map(innerCommand, c, version, this.state);
-            e.addInventoryItemDetailEvent(innerEvent);
-        }
 
         return e;
     }
-
-
-    protected InventoryItemDetailEvent map(InventoryItemDetailCommand c, InventoryItemCommand outerCommand, Long version, InventoryItemState outerState) {
-        InventoryItemDetailCommand.CreateInventoryItemDetail create = (c.getCommandType().equals(CommandType.CREATE)) ? ((InventoryItemDetailCommand.CreateInventoryItemDetail)c) : null;
-        if(create != null) {
-            return mapCreate(create, outerCommand, version, outerState);
-        }
-
-        throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
-    }
-
-    protected InventoryItemDetailEvent.InventoryItemDetailStateCreated mapCreate(InventoryItemDetailCommand.CreateInventoryItemDetail c, InventoryItemCommand outerCommand, Long version, InventoryItemState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        InventoryItemDetailEventId stateEventId = new InventoryItemDetailEventId(outerState.getInventoryItemId(), c.getInventoryItemDetailSeqId(), version);
-        InventoryItemDetailEvent.InventoryItemDetailStateCreated e = newInventoryItemDetailStateCreated(stateEventId);
-        InventoryItemDetailState s = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)outerState.getDetails()).getOrAddDefault(c.getInventoryItemDetailSeqId());
-
-        e.setEffectiveDate(c.getEffectiveDate());
-        e.setQuantityOnHandDiff(c.getQuantityOnHandDiff());
-        e.setAvailableToPromiseDiff(c.getAvailableToPromiseDiff());
-        e.setAccountingQuantityDiff(c.getAccountingQuantityDiff());
-        e.setUnitCost(c.getUnitCost());
-        e.setOrderId(c.getOrderId());
-        e.setOrderItemSeqId(c.getOrderItemSeqId());
-        e.setShipGroupSeqId(c.getShipGroupSeqId());
-        e.setShipmentId(c.getShipmentId());
-        e.setShipmentItemSeqId(c.getShipmentItemSeqId());
-        e.setReturnId(c.getReturnId());
-        e.setReturnItemSeqId(c.getReturnItemSeqId());
-        e.setWorkEffortId(c.getWorkEffortId());
-        e.setFixedAssetId(c.getFixedAssetId());
-        e.setMaintHistSeqId(c.getMaintHistSeqId());
-        e.setItemIssuanceId(c.getItemIssuanceId());
-        e.setReceiptId(c.getReceiptId());
-        e.setPhysicalInventoryId(c.getPhysicalInventoryId());
-        e.setReasonEnumId(c.getReasonEnumId());
-        e.setDescription(c.getDescription());
-        e.setInventoryItemAttributeHash(c.getInventoryItemAttributeHash());
-        e.setInventoryItemEntrySourceHash(c.getInventoryItemEntrySourceHash());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-
-        return e;
-
-    }// END map(ICreate... ////////////////////////////
 
     protected void throwOnInconsistentCommands(InventoryItemCommand command, InventoryItemDetailCommand innerCommand) {
         AbstractInventoryItemCommand properties = command instanceof AbstractInventoryItemCommand ? (AbstractInventoryItemCommand) command : null;
@@ -259,10 +203,6 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
 
     protected InventoryItemEvent.InventoryItemStateMergePatched newInventoryItemStateMergePatched(InventoryItemEventId stateEventId) {
         return new AbstractInventoryItemEvent.SimpleInventoryItemStateMergePatched(stateEventId);
-    }
-
-    protected InventoryItemDetailEvent.InventoryItemDetailStateCreated newInventoryItemDetailStateCreated(InventoryItemDetailEventId stateEventId) {
-        return new AbstractInventoryItemDetailEvent.SimpleInventoryItemDetailStateCreated(stateEventId);
     }
 
 

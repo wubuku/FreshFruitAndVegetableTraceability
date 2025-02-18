@@ -8,7 +8,7 @@ package org.dddml.ffvtraceability.domain.inventoryitem;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
-public class CreateOrMergePatchInventoryItemDetailDto extends AbstractInventoryItemDetailCommandDto implements InventoryItemDetailCommand.CreateOrMergePatchInventoryItemDetail {
+public class CreateOrMergePatchInventoryItemDetailDto extends AbstractInventoryItemDetailCommandDto {
 
     /**
      * Effective Date
@@ -605,43 +605,12 @@ public class CreateOrMergePatchInventoryItemDetailDto extends AbstractInventoryI
         this.isPropertyInventoryItemEntrySourceHashRemoved = removed;
     }
 
-    public void copyTo(CreateOrMergePatchInventoryItemDetail command)
-    {
-        ((AbstractInventoryItemDetailCommandDto) this).copyTo(command);
-        command.setEffectiveDate(this.getEffectiveDate());
-        command.setQuantityOnHandDiff(this.getQuantityOnHandDiff());
-        command.setAvailableToPromiseDiff(this.getAvailableToPromiseDiff());
-        command.setAccountingQuantityDiff(this.getAccountingQuantityDiff());
-        command.setUnitCost(this.getUnitCost());
-        command.setOrderId(this.getOrderId());
-        command.setOrderItemSeqId(this.getOrderItemSeqId());
-        command.setShipGroupSeqId(this.getShipGroupSeqId());
-        command.setShipmentId(this.getShipmentId());
-        command.setShipmentItemSeqId(this.getShipmentItemSeqId());
-        command.setReturnId(this.getReturnId());
-        command.setReturnItemSeqId(this.getReturnItemSeqId());
-        command.setWorkEffortId(this.getWorkEffortId());
-        command.setFixedAssetId(this.getFixedAssetId());
-        command.setMaintHistSeqId(this.getMaintHistSeqId());
-        command.setItemIssuanceId(this.getItemIssuanceId());
-        command.setReceiptId(this.getReceiptId());
-        command.setPhysicalInventoryId(this.getPhysicalInventoryId());
-        command.setReasonEnumId(this.getReasonEnumId());
-        command.setDescription(this.getDescription());
-        command.setInventoryItemAttributeHash(this.getInventoryItemAttributeHash());
-        command.setInventoryItemEntrySourceHash(this.getInventoryItemEntrySourceHash());
-    }
 
     public InventoryItemDetailCommand toCommand()
     {
         if (getCommandType() == null) {
             setCommandType(COMMAND_TYPE_MERGE_PATCH);
         }
-        if (COMMAND_TYPE_CREATE.equals(getCommandType())) {
-            AbstractInventoryItemDetailCommand.SimpleCreateInventoryItemDetail command = new AbstractInventoryItemDetailCommand.SimpleCreateInventoryItemDetail();
-            copyTo((AbstractInventoryItemDetailCommand.AbstractCreateInventoryItemDetail) command);
-            return command;
-        } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
 
@@ -650,35 +619,9 @@ public class CreateOrMergePatchInventoryItemDetailDto extends AbstractInventoryI
         if (getCommandType() == null) {
             setCommandType(COMMAND_TYPE_MERGE_PATCH);
         }
-        if (COMMAND_TYPE_CREATE.equals(getCommandType()) || null == getCommandType()) {
-            CreateInventoryItemDetailDto command = new CreateInventoryItemDetailDto();
-            copyTo((CreateInventoryItemDetail) command);
-            return command;
-        } 
         throw new UnsupportedOperationException("Unknown command type:" + getCommandType());
     }
 
-    public void copyTo(CreateInventoryItemDetail command)
-    {
-        copyTo((CreateOrMergePatchInventoryItemDetail) command);
-    }
-
-    public static class CreateInventoryItemDetailDto extends CreateOrMergePatchInventoryItemDetailDto implements InventoryItemDetailCommand.CreateInventoryItemDetail
-    {
-        public CreateInventoryItemDetailDto() {
-            this.commandType = COMMAND_TYPE_CREATE;
-        }
-
-        @Override
-        public String getCommandType() {
-            return COMMAND_TYPE_CREATE;
-        }
-        public InventoryItemDetailCommand.CreateInventoryItemDetail toCreateInventoryItemDetail()
-        {
-            return (InventoryItemDetailCommand.CreateInventoryItemDetail) toCommand();
-        }
-
-    }
 
 }
 

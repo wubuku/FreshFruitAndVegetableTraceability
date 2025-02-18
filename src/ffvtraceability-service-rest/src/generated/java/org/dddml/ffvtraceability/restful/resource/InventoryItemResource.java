@@ -182,69 +182,6 @@ public class InventoryItemResource {
         
     }
 
-
-    /**
-     * Create.
-     * Create InventoryItem
-     */
-    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody CreateOrMergePatchInventoryItemDto.CreateInventoryItemDto value,  HttpServletResponse response) {
-        
-            InventoryItemCommand.CreateInventoryItem cmd = value;//.toCreateInventoryItem();
-            if (cmd.getInventoryItemId() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "InventoryItem");
-            }
-            String idObj = cmd.getInventoryItemId();
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            inventoryItemApplicationService.when(cmd);
-
-            return idObj;
-        
-    }
-
-
-    /**
-     * Create or update.
-     * Create or update InventoryItem
-     */
-    @PutMapping("{inventoryItemId}")
-    public void put(@PathVariable("inventoryItemId") String inventoryItemId, @RequestBody CreateOrMergePatchInventoryItemDto value) {
-        
-            if (value.getVersion() != null) {
-                value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
-                InventoryItemCommand.MergePatchInventoryItem cmd = (InventoryItemCommand.MergePatchInventoryItem) value.toSubclass();
-                InventoryItemResourceUtils.setNullIdOrThrowOnInconsistentIds(inventoryItemId, cmd);
-                cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-                inventoryItemApplicationService.when(cmd);
-                return;
-            }
-
-            value.setCommandType(Command.COMMAND_TYPE_CREATE);
-            InventoryItemCommand.CreateInventoryItem cmd = (InventoryItemCommand.CreateInventoryItem) value.toSubclass();
-            InventoryItemResourceUtils.setNullIdOrThrowOnInconsistentIds(inventoryItemId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            inventoryItemApplicationService.when(cmd);
-
-        
-    }
-
-
-    /**
-     * Patch.
-     * Patch InventoryItem
-     */
-    @PatchMapping("{inventoryItemId}")
-    public void patch(@PathVariable("inventoryItemId") String inventoryItemId, @RequestBody CreateOrMergePatchInventoryItemDto.MergePatchInventoryItemDto value) {
-        
-
-            InventoryItemCommand.MergePatchInventoryItem cmd = value;//.toMergePatchInventoryItem();
-            InventoryItemResourceUtils.setNullIdOrThrowOnInconsistentIds(inventoryItemId, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            inventoryItemApplicationService.when(cmd);
-
-        
-    }
-
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         

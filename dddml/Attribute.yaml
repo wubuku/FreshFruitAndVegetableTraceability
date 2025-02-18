@@ -1,0 +1,86 @@
+aggregates:
+  Attribute:
+    reservedPropertyMetadata:
+      noActive: false
+      #noDeleted: true
+      active:
+        name: "Active"
+    # metadata:
+    #   NoEventSourcing: true
+    id:
+      name: AttributeId
+      type: id-long
+      # arbitrary: true
+      # isServerSideGenerated: true
+      # constraints: [AttributeId]
+    # uniqueConstraints:
+    #   UniqueFieldName: [FieldName]
+    properties:
+      AttributeName:
+        type: name
+      Description:
+        type: description
+      IsMandatory:
+        type: indicator
+        description: Indicates whether a value must be provided when saving the record
+      AttributeType:
+        type: id
+        description: Defines the data type for the attribute's values
+      AttributeLength:
+        type: numeric
+        description: Specifies the maximum length allowed for the attribute's value
+      IsEnumeration:
+        type: indicator
+        description: Indicates whether the attribute represents a list of predefined values
+      # -------------------------------
+      AttributeValues:
+        itemType: AttributeValue
+      # -------------------------------
+
+    entities:
+      AttributeValue:
+        reservedPropertyMetadata:
+          noActive: false
+          active:
+            name: "Active"
+        id:
+          name: Value
+          type: id-long
+        properties:
+          AttributeValueName:
+            type: name
+          Description:
+            type: description
+          IsDefault:
+            type: indicator
+            description: Indicates whether this value serves as the default option
+
+  AttributeSet:
+    id:
+      name: AttributeSetId
+      type: id-long
+    properties:
+      AttributeSetName:
+        type: name
+      Description:
+        type: description
+      AttributeUses:
+        itemType: AttributeUse
+      # # The following property determines if attributes are instance-specific
+      # IsInstanceAttributeSet:
+      #   type: indicator
+      #   description: When true, indicates that the attribute values are specific to each product instance
+      #                (e.g., Serial Number, Lot Number, Guarantee Date). When false, the attribute is
+      #                shared across all instances of the product (e.g., Color, Size).
+      #   defaultLogic:
+      #     Java: "true"
+      #     CSharp: "true"
+
+    entities:
+      AttributeUse:
+        id:
+          name: AttributeId
+          type: id-long
+        properties:
+          SequenceNumber:
+            type: numeric

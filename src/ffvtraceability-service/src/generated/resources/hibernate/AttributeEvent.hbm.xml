@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.attribute">
+  <class name="AbstractAttributeEvent" table="attribute_event" abstract="true">
+    <composite-id name="attributeEventId" class="org.dddml.ffvtraceability.domain.attribute.AttributeEventId">
+      <key-property name="attributeId">
+        <column name="attribute_id" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <subclass name="AbstractAttributeEvent$AttributeLobEvent" discriminator-value="AttributeLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractAttributeEvent$AbstractAttributeStateEvent" abstract="true">
+      <property name="attributeName">
+        <column name="attribute_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="isMandatory">
+        <column name="is_mandatory" sql-type="CHAR(1)" />
+      </property>
+      <property name="attributeType">
+        <column name="attribute_type" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="attributeLength">
+        <column name="attribute_length" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="isEnumeration">
+        <column name="is_enumeration" sql-type="CHAR(1)" />
+      </property>
+      <property name="active">
+        <column name="active" />
+      </property>
+      <subclass name="AbstractAttributeEvent$SimpleAttributeStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractAttributeEvent$SimpleAttributeStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyAttributeNameRemoved" column="is_property_attribute_name_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+        <property name="isPropertyIsMandatoryRemoved" column="is_property_is_mandatory_removed" />
+        <property name="isPropertyAttributeTypeRemoved" column="is_property_attribute_type_removed" />
+        <property name="isPropertyAttributeLengthRemoved" column="is_property_attribute_length_removed" />
+        <property name="isPropertyIsEnumerationRemoved" column="is_property_is_enumeration_removed" />
+        <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

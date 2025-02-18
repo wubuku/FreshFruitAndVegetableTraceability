@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.attribute">
+  <class name="AbstractAttributeValueEvent" table="attribute_value_event" abstract="true">
+    <composite-id name="attributeValueEventId" class="org.dddml.ffvtraceability.domain.attribute.AttributeValueEventId">
+      <key-property name="attributeId">
+        <column name="attribute_value_id_attribute_id" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="value">
+        <column name="attribute_value_id_value" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="attributeVersion">
+        <column name="attribute_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractAttributeValueEvent$AbstractAttributeValueStateEvent" abstract="true">
+      <property name="attributeValueName">
+        <column name="attribute_value_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="description">
+        <column name="description" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="isDefault">
+        <column name="is_default" sql-type="CHAR(1)" />
+      </property>
+      <property name="active">
+        <column name="active" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractAttributeValueEvent$SimpleAttributeValueStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractAttributeValueEvent$SimpleAttributeValueStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyAttributeValueNameRemoved" column="is_property_attribute_value_name_removed" />
+        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
+        <property name="isPropertyIsDefaultRemoved" column="is_property_is_default_removed" />
+        <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.attributeset">
+  <class name="AbstractAttributeUseEvent" table="attribute_use_event" abstract="true">
+    <composite-id name="attributeUseEventId" class="org.dddml.ffvtraceability.domain.attributeset.AttributeUseEventId">
+      <key-property name="attributeSetId">
+        <column name="attribute_set_attribute_use_id_attribute_set_id" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="attributeId">
+        <column name="attribute_set_attribute_use_id_attribute_id" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="attributeSetVersion">
+        <column name="attribute_set_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractAttributeUseEvent$AbstractAttributeUseStateEvent" abstract="true">
+      <property name="sequenceNumber">
+        <column name="sequence_number" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractAttributeUseEvent$SimpleAttributeUseStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractAttributeUseEvent$SimpleAttributeUseStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertySequenceNumberRemoved" column="is_property_sequence_number_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

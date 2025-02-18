@@ -391,42 +391,11 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
 
     public void mutate(Event e) {
         setStateReadOnly(false);
-        if (e instanceof InventoryItemDetailStateCreated) {
-            when((InventoryItemDetailStateCreated) e);
+        if (false) { 
+            ;
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
-    }
-
-    public void when(InventoryItemDetailStateCreated e) {
-        throwOnWrongEvent(e);
-
-        this.setEffectiveDate(e.getEffectiveDate());
-        this.setQuantityOnHandDiff(e.getQuantityOnHandDiff());
-        this.setAvailableToPromiseDiff(e.getAvailableToPromiseDiff());
-        this.setAccountingQuantityDiff(e.getAccountingQuantityDiff());
-        this.setUnitCost(e.getUnitCost());
-        this.setOrderId(e.getOrderId());
-        this.setOrderItemSeqId(e.getOrderItemSeqId());
-        this.setShipGroupSeqId(e.getShipGroupSeqId());
-        this.setShipmentId(e.getShipmentId());
-        this.setShipmentItemSeqId(e.getShipmentItemSeqId());
-        this.setReturnId(e.getReturnId());
-        this.setReturnItemSeqId(e.getReturnItemSeqId());
-        this.setWorkEffortId(e.getWorkEffortId());
-        this.setFixedAssetId(e.getFixedAssetId());
-        this.setMaintHistSeqId(e.getMaintHistSeqId());
-        this.setItemIssuanceId(e.getItemIssuanceId());
-        this.setReceiptId(e.getReceiptId());
-        this.setPhysicalInventoryId(e.getPhysicalInventoryId());
-        this.setReasonEnumId(e.getReasonEnumId());
-        this.setDescription(e.getDescription());
-        this.setInventoryItemAttributeHash(e.getInventoryItemAttributeHash());
-        this.setInventoryItemEntrySourceHash(e.getInventoryItemEntrySourceHash());
-
-        this.setCreatedBy(e.getCreatedBy());
-        this.setCreatedAt(e.getCreatedAt());
-
     }
 
     public void merge(InventoryItemDetailState s) {
@@ -475,19 +444,6 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
 
 
         if (getForReapplying()) { return; }
-        InventoryItemDetailStateEvent stateEvent = event instanceof InventoryItemDetailStateEvent ? (InventoryItemDetailStateEvent)event : null;
-        if (stateEvent == null) { return; }
-
-        Long stateVersion = this.getVersion();
-        Long stateEventStateVersion = stateEvent.getVersion();
-        //if (stateEventStateVersion == null) {
-        stateEventStateVersion = stateVersion == null ? InventoryItemDetailState.VERSION_NULL : stateVersion;
-        stateEvent.setVersion(stateEventStateVersion);
-        //}
-        //if (!(stateVersion == null && stateEventStateVersion.equals(InventoryItemDetailState.VERSION_NULL)) && !stateEventStateVersion.equals(stateVersion))
-        //{
-        //    throw DomainError.named("concurrencyConflict", "Conflict between stateVersion (%1$s) and stateEventStateVersion (%2$s)", stateVersion, stateEventStateVersion);
-        //}
 
     }
 
