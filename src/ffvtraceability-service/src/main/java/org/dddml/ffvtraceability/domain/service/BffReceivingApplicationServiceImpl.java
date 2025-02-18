@@ -573,7 +573,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     public void when(BffReceivingServiceCommands.RemoveReceivingReferenceDocument c) {
         if (c.getReferenceDocumentId() != null && !c.getReferenceDocumentId().isBlank()) {
             ShippingDocumentState shippingDocumentState = shippingDocumentApplicationService.get(c.getReferenceDocumentId());
-            if (shippingDocumentState != null) {
+            if (shippingDocumentState != null && (shippingDocumentState.getDeleted() == null || !shippingDocumentState.getDeleted())) {
                 AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
                         new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
                 deleteCommand.setDocumentId(c.getReferenceDocumentId());
