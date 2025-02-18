@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-engine-xml>
 
-    <Enumeration enumId="MANUFACTURER" enumTypeId="SUPPLIER_TYPE_ENUM" 
+    <!--Enumeration enumId="MANUFACTURER" enumTypeId="SUPPLIER_TYPE_ENUM"
         description="Manufacturer - Equipment, packaging materials and processing facilities"/>
     <Enumeration enumId="FARM" enumTypeId="SUPPLIER_TYPE_ENUM" 
         description="Farm - Planting bases, orchards, and greenhouse facilities"/>
@@ -10,6 +10,15 @@
     <Enumeration enumId="RETAILER" enumTypeId="SUPPLIER_TYPE_ENUM" 
         description="Retailer - Supermarkets and fresh food stores"/>
     <Enumeration enumId="COOPERATIVE" enumTypeId="SUPPLIER_TYPE_ENUM" 
-        description="Cooperative - Farmers' professional cooperatives and production-sales alliances"/>
+        description="Cooperative - Farmers' professional cooperatives and production-sales alliances"/ -->
+    <Enumeration enumId="Raw Material Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
+    <Enumeration enumId="Pre-Processed Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
+    <Enumeration enumId="Ingredient &amp; Additive Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
+    <Enumeration enumId="Logistics &amp; Storage Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
+    <Enumeration enumId="Equipment &amp; Service Supplier" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
+    <Enumeration enumId="Special Category Suppliers" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
+    <Enumeration enumId="3rd Party" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
+    <Enumeration enumId="Regulator" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
+    <Enumeration enumId="Other" enumTypeId="SUPPLIER_TYPE_ENUM" description=""/>
 
 </entity-engine-xml>
