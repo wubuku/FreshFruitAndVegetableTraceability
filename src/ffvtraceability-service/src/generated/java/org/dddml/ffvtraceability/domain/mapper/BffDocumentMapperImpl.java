@@ -19,11 +19,11 @@ public class BffDocumentMapperImpl implements BffDocumentMapper {
 
         BffDocumentDto bffDocumentDto = new BffDocumentDto();
 
-        bffDocumentDto.setDocumentId( documentState.getDocumentId() );
-        bffDocumentDto.setDocumentTypeId( documentState.getDocumentTypeId() );
         bffDocumentDto.setComments( documentState.getComments() );
+        bffDocumentDto.setDocumentId( documentState.getDocumentId() );
         bffDocumentDto.setDocumentLocation( documentState.getDocumentLocation() );
         bffDocumentDto.setDocumentText( documentState.getDocumentText() );
+        bffDocumentDto.setDocumentTypeId( documentState.getDocumentTypeId() );
 
         return bffDocumentDto;
     }
