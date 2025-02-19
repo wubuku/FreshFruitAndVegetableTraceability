@@ -49,7 +49,7 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
                 pa.postal_code as zipCode,
                 pa.state_province_geo_id as stateProvinceGeoId,
                 pa.country_geo_id as countryGeoId,
-                pa.telecom_contact_number as contactNumber,
+                pa.telecom_contact_number as phoneNumber,
                 gc.geo_name as country,
                 gp.geo_name as state,
                 pa.email as email,

@@ -21,16 +21,16 @@ public class BffBusinessContactMapperImpl implements BffBusinessContactMapper {
         BffBusinessContactDto bffBusinessContactDto = new BffBusinessContactDto();
 
         bffBusinessContactDto.setBusinessName( projection.getBusinessName() );
-        bffBusinessContactDto.setPhoneNumber( projection.getPhoneNumber() );
-        bffBusinessContactDto.setPhysicalLocationAddress( projection.getPhysicalLocationAddress() );
         bffBusinessContactDto.setCity( projection.getCity() );
-        bffBusinessContactDto.setState( projection.getState() );
-        bffBusinessContactDto.setZipCode( projection.getZipCode() );
+        bffBusinessContactDto.setContactRole( projection.getContactRole() );
         bffBusinessContactDto.setCountry( projection.getCountry() );
-        bffBusinessContactDto.setStateProvinceGeoId( projection.getStateProvinceGeoId() );
         bffBusinessContactDto.setCountryGeoId( projection.getCountryGeoId() );
         bffBusinessContactDto.setEmail( projection.getEmail() );
-        bffBusinessContactDto.setContactRole( projection.getContactRole() );
+        bffBusinessContactDto.setPhoneNumber( projection.getPhoneNumber() );
+        bffBusinessContactDto.setPhysicalLocationAddress( projection.getPhysicalLocationAddress() );
+        bffBusinessContactDto.setState( projection.getState() );
+        bffBusinessContactDto.setStateProvinceGeoId( projection.getStateProvinceGeoId() );
+        bffBusinessContactDto.setZipCode( projection.getZipCode() );
 
         return bffBusinessContactDto;
     }
@@ -44,16 +44,16 @@ public class BffBusinessContactMapperImpl implements BffBusinessContactMapper {
         BffBusinessContactDto bffBusinessContactDto = new BffBusinessContactDto();
 
         bffBusinessContactDto.setBusinessName( projection.getBusinessName() );
-        bffBusinessContactDto.setPhoneNumber( projection.getPhoneNumber() );
-        bffBusinessContactDto.setPhysicalLocationAddress( projection.getPhysicalLocationAddress() );
         bffBusinessContactDto.setCity( projection.getCity() );
-        bffBusinessContactDto.setState( projection.getState() );
-        bffBusinessContactDto.setZipCode( projection.getZipCode() );
+        bffBusinessContactDto.setContactRole( projection.getContactRole() );
         bffBusinessContactDto.setCountry( projection.getCountry() );
-        bffBusinessContactDto.setStateProvinceGeoId( projection.getStateProvinceGeoId() );
         bffBusinessContactDto.setCountryGeoId( projection.getCountryGeoId() );
         bffBusinessContactDto.setEmail( projection.getEmail() );
-        bffBusinessContactDto.setContactRole( projection.getContactRole() );
+        bffBusinessContactDto.setPhoneNumber( projection.getPhoneNumber() );
+        bffBusinessContactDto.setPhysicalLocationAddress( projection.getPhysicalLocationAddress() );
+        bffBusinessContactDto.setState( projection.getState() );
+        bffBusinessContactDto.setStateProvinceGeoId( projection.getStateProvinceGeoId() );
+        bffBusinessContactDto.setZipCode( projection.getZipCode() );
 
         return bffBusinessContactDto;
     }
