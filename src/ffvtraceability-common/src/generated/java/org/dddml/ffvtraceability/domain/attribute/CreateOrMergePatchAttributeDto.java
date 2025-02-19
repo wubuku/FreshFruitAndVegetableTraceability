@@ -11,6 +11,21 @@ import org.dddml.ffvtraceability.domain.*;
 public class CreateOrMergePatchAttributeDto extends AbstractAttributeCommandDto implements AttributeCommand.CreateOrMergePatchAttribute {
 
     /**
+     * Defines the data type for the attribute's values
+     */
+    private String attributeType;
+
+    public String getAttributeType()
+    {
+        return this.attributeType;
+    }
+
+    public void setAttributeType(String attributeType)
+    {
+        this.attributeType = attributeType;
+    }
+
+    /**
      * Attribute Name
      */
     private String attributeName;
@@ -56,21 +71,6 @@ public class CreateOrMergePatchAttributeDto extends AbstractAttributeCommandDto 
     }
 
     /**
-     * Defines the data type for the attribute's values
-     */
-    private String attributeType;
-
-    public String getAttributeType()
-    {
-        return this.attributeType;
-    }
-
-    public void setAttributeType(String attributeType)
-    {
-        this.attributeType = attributeType;
-    }
-
-    /**
      * Specifies the maximum length allowed for the attribute's value
      */
     private Long attributeLength;
@@ -101,6 +101,36 @@ public class CreateOrMergePatchAttributeDto extends AbstractAttributeCommandDto 
     }
 
     /**
+     * Specifies the number of decimal places for the attribute's value
+     */
+    private Long scale;
+
+    public Long getScale()
+    {
+        return this.scale;
+    }
+
+    public void setScale(Long scale)
+    {
+        this.scale = scale;
+    }
+
+    /**
+     * Specifies the unit of measure for the attribute's value
+     */
+    private String truncatedTo;
+
+    public String getTruncatedTo()
+    {
+        return this.truncatedTo;
+    }
+
+    public void setTruncatedTo(String truncatedTo)
+    {
+        this.truncatedTo = truncatedTo;
+    }
+
+    /**
      * Active
      */
     private Boolean active;
@@ -126,6 +156,18 @@ public class CreateOrMergePatchAttributeDto extends AbstractAttributeCommandDto 
     public void setAttributeValues(CreateOrMergePatchAttributeValueDto[] attributeValues)
     {
         this.attributeValues = attributeValues;
+    }
+
+    private Boolean isPropertyAttributeTypeRemoved;
+
+    public Boolean getIsPropertyAttributeTypeRemoved()
+    {
+        return this.isPropertyAttributeTypeRemoved;
+    }
+
+    public void setIsPropertyAttributeTypeRemoved(Boolean removed)
+    {
+        this.isPropertyAttributeTypeRemoved = removed;
     }
 
     private Boolean isPropertyAttributeNameRemoved;
@@ -164,18 +206,6 @@ public class CreateOrMergePatchAttributeDto extends AbstractAttributeCommandDto 
         this.isPropertyIsMandatoryRemoved = removed;
     }
 
-    private Boolean isPropertyAttributeTypeRemoved;
-
-    public Boolean getIsPropertyAttributeTypeRemoved()
-    {
-        return this.isPropertyAttributeTypeRemoved;
-    }
-
-    public void setIsPropertyAttributeTypeRemoved(Boolean removed)
-    {
-        this.isPropertyAttributeTypeRemoved = removed;
-    }
-
     private Boolean isPropertyAttributeLengthRemoved;
 
     public Boolean getIsPropertyAttributeLengthRemoved()
@@ -200,6 +230,30 @@ public class CreateOrMergePatchAttributeDto extends AbstractAttributeCommandDto 
         this.isPropertyIsEnumerationRemoved = removed;
     }
 
+    private Boolean isPropertyScaleRemoved;
+
+    public Boolean getIsPropertyScaleRemoved()
+    {
+        return this.isPropertyScaleRemoved;
+    }
+
+    public void setIsPropertyScaleRemoved(Boolean removed)
+    {
+        this.isPropertyScaleRemoved = removed;
+    }
+
+    private Boolean isPropertyTruncatedToRemoved;
+
+    public Boolean getIsPropertyTruncatedToRemoved()
+    {
+        return this.isPropertyTruncatedToRemoved;
+    }
+
+    public void setIsPropertyTruncatedToRemoved(Boolean removed)
+    {
+        this.isPropertyTruncatedToRemoved = removed;
+    }
+
     private Boolean isPropertyActiveRemoved;
 
     public Boolean getIsPropertyActiveRemoved()
@@ -215,12 +269,14 @@ public class CreateOrMergePatchAttributeDto extends AbstractAttributeCommandDto 
     public void copyTo(CreateOrMergePatchAttribute command)
     {
         ((AbstractAttributeCommandDto) this).copyTo(command);
+        command.setAttributeType(this.getAttributeType());
         command.setAttributeName(this.getAttributeName());
         command.setDescription(this.getDescription());
         command.setIsMandatory(this.getIsMandatory());
-        command.setAttributeType(this.getAttributeType());
         command.setAttributeLength(this.getAttributeLength());
         command.setIsEnumeration(this.getIsEnumeration());
+        command.setScale(this.getScale());
+        command.setTruncatedTo(this.getTruncatedTo());
         command.setActive(this.getActive());
     }
 
@@ -287,12 +343,14 @@ public class CreateOrMergePatchAttributeDto extends AbstractAttributeCommandDto 
     public void copyTo(MergePatchAttribute command)
     {
         copyTo((CreateOrMergePatchAttribute) command);
+        command.setIsPropertyAttributeTypeRemoved(this.getIsPropertyAttributeTypeRemoved());
         command.setIsPropertyAttributeNameRemoved(this.getIsPropertyAttributeNameRemoved());
         command.setIsPropertyDescriptionRemoved(this.getIsPropertyDescriptionRemoved());
         command.setIsPropertyIsMandatoryRemoved(this.getIsPropertyIsMandatoryRemoved());
-        command.setIsPropertyAttributeTypeRemoved(this.getIsPropertyAttributeTypeRemoved());
         command.setIsPropertyAttributeLengthRemoved(this.getIsPropertyAttributeLengthRemoved());
         command.setIsPropertyIsEnumerationRemoved(this.getIsPropertyIsEnumerationRemoved());
+        command.setIsPropertyScaleRemoved(this.getIsPropertyScaleRemoved());
+        command.setIsPropertyTruncatedToRemoved(this.getIsPropertyTruncatedToRemoved());
         command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
     }
 

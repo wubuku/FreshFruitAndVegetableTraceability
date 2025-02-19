@@ -45,6 +45,10 @@ public interface AttributeEvent extends Event {
     void setTenantId(String tenantId);
 
     interface AttributeStateEvent extends AttributeEvent {
+        String getAttributeType();
+
+        void setAttributeType(String attributeType);
+
         String getAttributeName();
 
         void setAttributeName(String attributeName);
@@ -57,10 +61,6 @@ public interface AttributeEvent extends Event {
 
         void setIsMandatory(String isMandatory);
 
-        String getAttributeType();
-
-        void setAttributeType(String attributeType);
-
         Long getAttributeLength();
 
         void setAttributeLength(Long attributeLength);
@@ -68,6 +68,14 @@ public interface AttributeEvent extends Event {
         String getIsEnumeration();
 
         void setIsEnumeration(String isEnumeration);
+
+        Long getScale();
+
+        void setScale(Long scale);
+
+        String getTruncatedTo();
+
+        void setTruncatedTo(String truncatedTo);
 
         Boolean getActive();
 
@@ -89,6 +97,10 @@ public interface AttributeEvent extends Event {
 
     interface AttributeStateMergePatched extends AttributeStateEvent
     {
+        Boolean getIsPropertyAttributeTypeRemoved();
+
+        void setIsPropertyAttributeTypeRemoved(Boolean removed);
+
         Boolean getIsPropertyAttributeNameRemoved();
 
         void setIsPropertyAttributeNameRemoved(Boolean removed);
@@ -101,10 +113,6 @@ public interface AttributeEvent extends Event {
 
         void setIsPropertyIsMandatoryRemoved(Boolean removed);
 
-        Boolean getIsPropertyAttributeTypeRemoved();
-
-        void setIsPropertyAttributeTypeRemoved(Boolean removed);
-
         Boolean getIsPropertyAttributeLengthRemoved();
 
         void setIsPropertyAttributeLengthRemoved(Boolean removed);
@@ -112,6 +120,14 @@ public interface AttributeEvent extends Event {
         Boolean getIsPropertyIsEnumerationRemoved();
 
         void setIsPropertyIsEnumerationRemoved(Boolean removed);
+
+        Boolean getIsPropertyScaleRemoved();
+
+        void setIsPropertyScaleRemoved(Boolean removed);
+
+        Boolean getIsPropertyTruncatedToRemoved();
+
+        void setIsPropertyTruncatedToRemoved(Boolean removed);
 
         Boolean getIsPropertyActiveRemoved();
 

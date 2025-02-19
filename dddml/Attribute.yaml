@@ -16,6 +16,9 @@ aggregates:
     # uniqueConstraints:
     #   UniqueFieldName: [FieldName]
     properties:
+      AttributeType:
+        type: id
+        description: Defines the data type for the attribute's values
       AttributeName:
         type: name
       Description:
@@ -23,15 +26,18 @@ aggregates:
       IsMandatory:
         type: indicator
         description: Indicates whether a value must be provided when saving the record
-      AttributeType:
-        type: id
-        description: Defines the data type for the attribute's values
       AttributeLength:
         type: numeric
         description: Specifies the maximum length allowed for the attribute's value
       IsEnumeration:
         type: indicator
         description: Indicates whether the attribute represents a list of predefined values
+      Scale:
+        type: numeric
+        description: Specifies the number of decimal places for the attribute's value
+      TruncatedTo:
+        type: id
+        description: Specifies the unit of measure for the attribute's value
       # -------------------------------
       AttributeValues:
         itemType: AttributeValue

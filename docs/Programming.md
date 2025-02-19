@@ -83,6 +83,7 @@ CREATE DATABASE test4
 Then execute the following command to generate the database schema:
 
 ```shell
+# mvn clean && mvn package -Dmaven.test.skip=true
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar ddl -d "./scripts" -c "jdbc:postgresql://127.0.0.1/test4" -u postgres -p 123456
 ```
 
@@ -95,6 +96,7 @@ java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1
 ### Initialize data
 
 ```shell
+# mvn clean && mvn package -Dmaven.test.skip=true
 # 使用 JSON 文件初始化数据
 java -jar ./ffvtraceability-service-cli/target/ffvtraceability-service-cli-0.0.1-SNAPSHOT.jar initData -d "file:../data/*.json" --json
 

@@ -10362,12 +10362,14 @@ public class M {
 
     public static final String[] propertyNames = new String[] {
             "attributeId",
+            "attributeType",
             "attributeName",
             "description",
             "isMandatory",
-            "attributeType",
             "attributeLength",
             "isEnumeration",
+            "scale",
+            "truncatedTo",
             "version",
             "createdBy",
             "createdAt",
@@ -10382,6 +10384,8 @@ public class M {
             "String",
             "String",
             "String",
+            "String",
+            "Long",
             "String",
             "Long",
             "String",
@@ -10408,18 +10412,22 @@ public class M {
     private static void initAliasMap() {
         aliasMap.put("attributeId", "attributeId");
         aliasMap.put("AttributeId", "attributeId");
+        aliasMap.put("attributeType", "attributeType");
+        aliasMap.put("AttributeType", "attributeType");
         aliasMap.put("attributeName", "attributeName");
         aliasMap.put("AttributeName", "attributeName");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
         aliasMap.put("isMandatory", "isMandatory");
         aliasMap.put("IsMandatory", "isMandatory");
-        aliasMap.put("attributeType", "attributeType");
-        aliasMap.put("AttributeType", "attributeType");
         aliasMap.put("attributeLength", "attributeLength");
         aliasMap.put("AttributeLength", "attributeLength");
         aliasMap.put("isEnumeration", "isEnumeration");
         aliasMap.put("IsEnumeration", "isEnumeration");
+        aliasMap.put("scale", "scale");
+        aliasMap.put("Scale", "scale");
+        aliasMap.put("truncatedTo", "truncatedTo");
+        aliasMap.put("TruncatedTo", "truncatedTo");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

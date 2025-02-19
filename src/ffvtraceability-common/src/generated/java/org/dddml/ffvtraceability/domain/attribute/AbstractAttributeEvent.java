@@ -163,6 +163,18 @@ public abstract class AbstractAttributeEvent extends AbstractEvent implements At
 
 
     public static abstract class AbstractAttributeStateEvent extends AbstractAttributeEvent implements AttributeEvent.AttributeStateEvent {
+        private String attributeType;
+
+        public String getAttributeType()
+        {
+            return this.attributeType;
+        }
+
+        public void setAttributeType(String attributeType)
+        {
+            this.attributeType = attributeType;
+        }
+
         private String attributeName;
 
         public String getAttributeName()
@@ -199,18 +211,6 @@ public abstract class AbstractAttributeEvent extends AbstractEvent implements At
             this.isMandatory = isMandatory;
         }
 
-        private String attributeType;
-
-        public String getAttributeType()
-        {
-            return this.attributeType;
-        }
-
-        public void setAttributeType(String attributeType)
-        {
-            this.attributeType = attributeType;
-        }
-
         private Long attributeLength;
 
         public Long getAttributeLength()
@@ -233,6 +233,30 @@ public abstract class AbstractAttributeEvent extends AbstractEvent implements At
         public void setIsEnumeration(String isEnumeration)
         {
             this.isEnumeration = isEnumeration;
+        }
+
+        private Long scale;
+
+        public Long getScale()
+        {
+            return this.scale;
+        }
+
+        public void setScale(Long scale)
+        {
+            this.scale = scale;
+        }
+
+        private String truncatedTo;
+
+        public String getTruncatedTo()
+        {
+            return this.truncatedTo;
+        }
+
+        public void setTruncatedTo(String truncatedTo)
+        {
+            this.truncatedTo = truncatedTo;
         }
 
         private Boolean active;
@@ -331,6 +355,16 @@ public abstract class AbstractAttributeEvent extends AbstractEvent implements At
             return StateEventType.MERGE_PATCHED;
         }
 
+        private Boolean isPropertyAttributeTypeRemoved;
+
+        public Boolean getIsPropertyAttributeTypeRemoved() {
+            return this.isPropertyAttributeTypeRemoved;
+        }
+
+        public void setIsPropertyAttributeTypeRemoved(Boolean removed) {
+            this.isPropertyAttributeTypeRemoved = removed;
+        }
+
         private Boolean isPropertyAttributeNameRemoved;
 
         public Boolean getIsPropertyAttributeNameRemoved() {
@@ -361,16 +395,6 @@ public abstract class AbstractAttributeEvent extends AbstractEvent implements At
             this.isPropertyIsMandatoryRemoved = removed;
         }
 
-        private Boolean isPropertyAttributeTypeRemoved;
-
-        public Boolean getIsPropertyAttributeTypeRemoved() {
-            return this.isPropertyAttributeTypeRemoved;
-        }
-
-        public void setIsPropertyAttributeTypeRemoved(Boolean removed) {
-            this.isPropertyAttributeTypeRemoved = removed;
-        }
-
         private Boolean isPropertyAttributeLengthRemoved;
 
         public Boolean getIsPropertyAttributeLengthRemoved() {
@@ -389,6 +413,26 @@ public abstract class AbstractAttributeEvent extends AbstractEvent implements At
 
         public void setIsPropertyIsEnumerationRemoved(Boolean removed) {
             this.isPropertyIsEnumerationRemoved = removed;
+        }
+
+        private Boolean isPropertyScaleRemoved;
+
+        public Boolean getIsPropertyScaleRemoved() {
+            return this.isPropertyScaleRemoved;
+        }
+
+        public void setIsPropertyScaleRemoved(Boolean removed) {
+            this.isPropertyScaleRemoved = removed;
+        }
+
+        private Boolean isPropertyTruncatedToRemoved;
+
+        public Boolean getIsPropertyTruncatedToRemoved() {
+            return this.isPropertyTruncatedToRemoved;
+        }
+
+        public void setIsPropertyTruncatedToRemoved(Boolean removed) {
+            this.isPropertyTruncatedToRemoved = removed;
         }
 
         private Boolean isPropertyActiveRemoved;

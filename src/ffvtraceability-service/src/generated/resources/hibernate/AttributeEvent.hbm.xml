@@ -25,6 +25,9 @@
       </property>
     </subclass>
     <subclass name="AbstractAttributeEvent$AbstractAttributeStateEvent" abstract="true">
+      <property name="attributeType">
+        <column name="attribute_type" sql-type="VARCHAR(20)" />
+      </property>
       <property name="attributeName">
         <column name="attribute_name" sql-type="VARCHAR(100)" />
       </property>
@@ -34,26 +37,31 @@
       <property name="isMandatory">
         <column name="is_mandatory" sql-type="CHAR(1)" />
       </property>
-      <property name="attributeType">
-        <column name="attribute_type" sql-type="VARCHAR(20)" />
-      </property>
       <property name="attributeLength">
         <column name="attribute_length" sql-type="DECIMAL(20,0)" />
       </property>
       <property name="isEnumeration">
         <column name="is_enumeration" sql-type="CHAR(1)" />
       </property>
+      <property name="scale">
+        <column name="scale" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="truncatedTo">
+        <column name="truncated_to" sql-type="VARCHAR(20)" />
+      </property>
       <property name="active">
         <column name="active" />
       </property>
       <subclass name="AbstractAttributeEvent$SimpleAttributeStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractAttributeEvent$SimpleAttributeStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyAttributeTypeRemoved" column="is_property_attribute_type_removed" />
         <property name="isPropertyAttributeNameRemoved" column="is_property_attribute_name_removed" />
         <property name="isPropertyDescriptionRemoved" column="is_property_description_removed" />
         <property name="isPropertyIsMandatoryRemoved" column="is_property_is_mandatory_removed" />
-        <property name="isPropertyAttributeTypeRemoved" column="is_property_attribute_type_removed" />
         <property name="isPropertyAttributeLengthRemoved" column="is_property_attribute_length_removed" />
         <property name="isPropertyIsEnumerationRemoved" column="is_property_is_enumeration_removed" />
+        <property name="isPropertyScaleRemoved" column="is_property_scale_removed" />
+        <property name="isPropertyTruncatedToRemoved" column="is_property_truncated_to_removed" />
         <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
       </subclass>
     </subclass>

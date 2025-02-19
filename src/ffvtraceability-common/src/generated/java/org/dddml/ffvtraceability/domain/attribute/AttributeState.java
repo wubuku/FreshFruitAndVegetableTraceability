@@ -19,17 +19,21 @@ public interface AttributeState
 
     String getAttributeId();
 
+    String getAttributeType();
+
     String getAttributeName();
 
     String getDescription();
 
     String getIsMandatory();
 
-    String getAttributeType();
-
     Long getAttributeLength();
 
     String getIsEnumeration();
+
+    Long getScale();
+
+    String getTruncatedTo();
 
     Long getVersion();
 
@@ -50,17 +54,21 @@ public interface AttributeState
     interface MutableAttributeState extends AttributeState {
         void setAttributeId(String attributeId);
 
+        void setAttributeType(String attributeType);
+
         void setAttributeName(String attributeName);
 
         void setDescription(String description);
 
         void setIsMandatory(String isMandatory);
 
-        void setAttributeType(String attributeType);
-
         void setAttributeLength(Long attributeLength);
 
         void setIsEnumeration(String isEnumeration);
+
+        void setScale(Long scale);
+
+        void setTruncatedTo(String truncatedTo);
 
         void setVersion(Long version);
 

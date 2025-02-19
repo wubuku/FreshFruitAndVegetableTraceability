@@ -63,12 +63,14 @@ public abstract class AbstractAttributeAggregate extends AbstractAggregate imple
     protected AttributeEvent map(AttributeCommand.CreateAttribute c) {
         AttributeEventId stateEventId = new AttributeEventId(c.getAttributeId(), c.getVersion());
         AttributeEvent.AttributeStateCreated e = newAttributeStateCreated(stateEventId);
+        e.setAttributeType(c.getAttributeType());
         e.setAttributeName(c.getAttributeName());
         e.setDescription(c.getDescription());
         e.setIsMandatory(c.getIsMandatory());
-        e.setAttributeType(c.getAttributeType());
         e.setAttributeLength(c.getAttributeLength());
         e.setIsEnumeration(c.getIsEnumeration());
+        e.setScale(c.getScale());
+        e.setTruncatedTo(c.getTruncatedTo());
         e.setActive(c.getActive());
         ((AbstractAttributeEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
@@ -86,19 +88,23 @@ public abstract class AbstractAttributeAggregate extends AbstractAggregate imple
     protected AttributeEvent map(AttributeCommand.MergePatchAttribute c) {
         AttributeEventId stateEventId = new AttributeEventId(c.getAttributeId(), c.getVersion());
         AttributeEvent.AttributeStateMergePatched e = newAttributeStateMergePatched(stateEventId);
+        e.setAttributeType(c.getAttributeType());
         e.setAttributeName(c.getAttributeName());
         e.setDescription(c.getDescription());
         e.setIsMandatory(c.getIsMandatory());
-        e.setAttributeType(c.getAttributeType());
         e.setAttributeLength(c.getAttributeLength());
         e.setIsEnumeration(c.getIsEnumeration());
+        e.setScale(c.getScale());
+        e.setTruncatedTo(c.getTruncatedTo());
         e.setActive(c.getActive());
+        e.setIsPropertyAttributeTypeRemoved(c.getIsPropertyAttributeTypeRemoved());
         e.setIsPropertyAttributeNameRemoved(c.getIsPropertyAttributeNameRemoved());
         e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
         e.setIsPropertyIsMandatoryRemoved(c.getIsPropertyIsMandatoryRemoved());
-        e.setIsPropertyAttributeTypeRemoved(c.getIsPropertyAttributeTypeRemoved());
         e.setIsPropertyAttributeLengthRemoved(c.getIsPropertyAttributeLengthRemoved());
         e.setIsPropertyIsEnumerationRemoved(c.getIsPropertyIsEnumerationRemoved());
+        e.setIsPropertyScaleRemoved(c.getIsPropertyScaleRemoved());
+        e.setIsPropertyTruncatedToRemoved(c.getIsPropertyTruncatedToRemoved());
         e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
         ((AbstractAttributeEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());

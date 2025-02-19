@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+
+    <!-- Attributes for InventoryItem -->
+
+    <Attribute attributeId="inventoryItemTypeId" attributeType="id"
+        attributeName="Inventory Item Type"
+        description="The type of inventory item" />
+
+    <Attribute attributeId="productId" attributeType="id"
+        attributeName="Product"
+        description="The product associated with this inventory item" />
+
+    <Attribute attributeId="partyId" attributeType="id"
+        attributeName="Party"
+        description="The party associated with this inventory item" />
+
+    <Attribute attributeId="ownerPartyId" attributeType="id"
+        attributeName="Owner Party"
+        description="The owner of the inventory item" />
+
+    <Attribute attributeId="statusId" attributeType="id"
+        attributeName="Status"
+        description="The status of the inventory item" />
+
+    <Attribute attributeId="datetimeReceived" attributeType="date-time"
+        attributeName="Received Date/Time"
+        description="The date and time when the item was received" />
+
+    <Attribute attributeId="datetimeManufactured" attributeType="date-time"
+        attributeName="Manufactured Date/Time"
+        description="The date and time when the item was manufactured" />
+
+    <Attribute attributeId="expireDate" attributeType="date-time"
+        attributeName="Expiration Date"
+        description="The date when the item expires" />
+
+    <Attribute attributeId="facilityId" attributeType="id"
+        attributeName="Facility"
+        description="The facility where the item is stored" />
+
+    <Attribute attributeId="containerId" attributeType="id"
+        attributeName="Container"
+        description="The container holding the inventory item" />
+
+    <Attribute attributeId="lotId" attributeType="id"
+        attributeName="Lot"
+        description="The lot identifier for the inventory item" />
+
+    <Attribute attributeId="uomId" attributeType="id"
+        attributeName="Unit of Measure"
+        description="The unit of measure for the inventory item" />
+
+    <Attribute attributeId="binNumber" attributeType="id"
+        attributeName="Bin Number"
+        description="The bin location number" />
+
+    <Attribute attributeId="locationSeqId" attributeType="id-long"
+        attributeName="Location Sequence"
+        description="The sequence identifier for the item location" />
+
+    <Attribute attributeId="comments" attributeType="comment"
+        attributeName="Comments"
+        description="Additional comments about the inventory item" />
+
+    <Attribute attributeId="serialNumber" attributeType="id-vlong"
+        attributeName="Serial Number"
+        description="The serial number of the inventory item" />
+
+    <Attribute attributeId="softIdentifier" attributeType="id-vlong"
+        attributeName="Soft Identifier"
+        description="The soft identifier for the inventory item" />
+
+    <Attribute attributeId="activationNumber" attributeType="id-vlong"
+        attributeName="Activation Number"
+        description="The activation number for the item" />
+
+    <Attribute attributeId="activationValidThru" attributeType="date-time"
+        attributeName="Activation Valid Through"
+        description="The date through which the activation is valid" />
+
+    <Attribute attributeId="currencyUomId" attributeType="id"
+        attributeName="Currency Unit"
+        description="The currency unit of measure for the unit cost" />
+
+    <Attribute attributeId="unitCost" attributeType="fixed-point"
+        attributeName="Unit Cost"
+        description="The cost per unit with higher precision for calculated values" />
+
+    <Attribute attributeId="fixedAssetId" attributeType="id"
+        attributeName="Fixed Asset"
+        description="The associated fixed asset identifier" />
+
+
+    <!-- Attributes for InventoryItemDetail -->
+
+    <Attribute attributeId="effectiveDate" attributeType="date-time"
+        attributeName="Effective Date"
+        description="The date when the inventory detail becomes effective" />
+
+    <!-- Duplicate unitCost attribute for InventoryItem - commenting out -->
+    <!-- <Attribute attributeId="unitCost" attributeType="fixed-point"
+        attributeName="Unit Cost"
+        description="The cost per unit for this detail record" /> -->
+
+    <Attribute attributeId="orderId" attributeType="id"
+        attributeName="Order"
+        description="The associated order identifier" />
+
+    <Attribute attributeId="orderItemSeqId" attributeType="id"
+        attributeName="Order Item Sequence"
+        description="The sequence identifier of the order item" />
+
+    <Attribute attributeId="shipGroupSeqId" attributeType="id"
+        attributeName="Ship Group Sequence"
+        description="The sequence identifier of the shipping group" />
+
+    <Attribute attributeId="shipmentId" attributeType="id"
+        attributeName="Shipment"
+        description="The associated shipment identifier" />
+
+    <Attribute attributeId="shipmentItemSeqId" attributeType="id"
+        attributeName="Shipment Item Sequence"
+        description="The sequence identifier of the shipment item" />
+
+    <Attribute attributeId="returnId" attributeType="id"
+        attributeName="Return"
+        description="The associated return identifier" />
+
+    <Attribute attributeId="returnItemSeqId" attributeType="id"
+        attributeName="Return Item Sequence"
+        description="The sequence identifier of the return item" />
+
+    <Attribute attributeId="workEffortId" attributeType="id"
+        attributeName="Work Effort"
+        description="The associated work effort identifier" />
+
+    <!-- Duplicate fixedAssetId attribute for InventoryItem - commenting out -->
+    <!-- <Attribute attributeId="fixedAssetId" attributeType="id"
+        attributeName="Fixed Asset"
+        description="The associated fixed asset identifier" /> -->
+
+    <Attribute attributeId="maintHistSeqId" attributeType="id"
+        attributeName="Maintenance History Sequence"
+        description="The sequence identifier of the maintenance history record" />
+
+    <Attribute attributeId="itemIssuanceId" attributeType="id"
+        attributeName="Item Issuance"
+        description="The identifier of the item issuance record" />
+
+    <Attribute attributeId="receiptId" attributeType="id"
+        attributeName="Receipt"
+        description="The identifier of the receipt record" />
+
+    <Attribute attributeId="physicalInventoryId" attributeType="id"
+        attributeName="Physical Inventory"
+        description="The identifier of the physical inventory record" />
+
+    <Attribute attributeId="reasonEnumId" attributeType="id"
+        attributeName="Reason"
+        description="The reason enumeration for this inventory detail" />
+
+    <Attribute attributeId="description" attributeType="description"
+        attributeName="Description"
+        description="A description of this inventory detail record" />
+</entity-engine-xml>

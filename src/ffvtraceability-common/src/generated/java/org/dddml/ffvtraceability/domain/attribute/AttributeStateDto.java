@@ -26,6 +26,18 @@ public class AttributeStateDto {
         this.attributeId = attributeId;
     }
 
+    private String attributeType;
+
+    public String getAttributeType()
+    {
+        return this.attributeType;
+    }
+
+    public void setAttributeType(String attributeType)
+    {
+        this.attributeType = attributeType;
+    }
+
     private String attributeName;
 
     public String getAttributeName()
@@ -62,18 +74,6 @@ public class AttributeStateDto {
         this.isMandatory = isMandatory;
     }
 
-    private String attributeType;
-
-    public String getAttributeType()
-    {
-        return this.attributeType;
-    }
-
-    public void setAttributeType(String attributeType)
-    {
-        this.attributeType = attributeType;
-    }
-
     private Long attributeLength;
 
     public Long getAttributeLength()
@@ -96,6 +96,30 @@ public class AttributeStateDto {
     public void setIsEnumeration(String isEnumeration)
     {
         this.isEnumeration = isEnumeration;
+    }
+
+    private Long scale;
+
+    public Long getScale()
+    {
+        return this.scale;
+    }
+
+    public void setScale(Long scale)
+    {
+        this.scale = scale;
+    }
+
+    private String truncatedTo;
+
+    public String getTruncatedTo()
+    {
+        return this.truncatedTo;
+    }
+
+    public void setTruncatedTo(String truncatedTo)
+    {
+        this.truncatedTo = truncatedTo;
     }
 
     private Boolean active;
@@ -214,6 +238,9 @@ public class AttributeStateDto {
             if (returnedFieldsContains("AttributeId")) {
                 dto.setAttributeId(state.getAttributeId());
             }
+            if (returnedFieldsContains("AttributeType")) {
+                dto.setAttributeType(state.getAttributeType());
+            }
             if (returnedFieldsContains("AttributeName")) {
                 dto.setAttributeName(state.getAttributeName());
             }
@@ -223,14 +250,17 @@ public class AttributeStateDto {
             if (returnedFieldsContains("IsMandatory")) {
                 dto.setIsMandatory(state.getIsMandatory());
             }
-            if (returnedFieldsContains("AttributeType")) {
-                dto.setAttributeType(state.getAttributeType());
-            }
             if (returnedFieldsContains("AttributeLength")) {
                 dto.setAttributeLength(state.getAttributeLength());
             }
             if (returnedFieldsContains("IsEnumeration")) {
                 dto.setIsEnumeration(state.getIsEnumeration());
+            }
+            if (returnedFieldsContains("Scale")) {
+                dto.setScale(state.getScale());
+            }
+            if (returnedFieldsContains("TruncatedTo")) {
+                dto.setTruncatedTo(state.getTruncatedTo());
             }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
