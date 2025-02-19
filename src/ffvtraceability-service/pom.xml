@@ -151,6 +151,13 @@
                                         <include>**/*MapperImpl.java</include>
                                     </includes>
                                 </fileset>
+                                <fileset>
+                                    <directory>src/generated/java/org/dddml/ffvtraceability/domain/inventoryitem
+                                    </directory>
+                                    <includes>
+                                        <include>**/*MapperImpl.java</include>
+                                    </includes>
+                                </fileset>
                             </filesets>
                         </configuration>
                     </execution>

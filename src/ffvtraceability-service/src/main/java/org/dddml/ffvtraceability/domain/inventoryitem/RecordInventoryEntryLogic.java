@@ -5,12 +5,10 @@
 
 package org.dddml.ffvtraceability.domain.inventoryitem;
 
-import java.math.*;
-import java.util.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.specialization.*;
-import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemAttributes;
-import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemDetailAttributes;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.dddml.ffvtraceability.specialization.MutationContext;
+import org.dddml.ffvtraceability.specialization.VerificationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -19,42 +17,90 @@ import org.springframework.stereotype.Component;
  */
 @Component("(inventoryItem_RecordInventoryEntry)")
 public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
+
+    private static ObjectMapper objectMapper;
+
+    static {
+        objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+        objectMapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // 反序列化时忽略未知属性
+        objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule())
+                .setDateFormat(new com.fasterxml.jackson.databind.util.StdDateFormat().withColonInTimeZone(true))
+                .configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
+                .configure(com.fasterxml.jackson.databind.DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
+    }
+
+    @Autowired
+    private InventoryItemMapper inventoryItemMapper;
+
     /**
      * Verifies the InventoryItem.RecordInventoryEntry command by performing validation logic
      * before the state mutation. Creates and returns an event.
-     * 
-     * @param eventFactory The supplier that creates new InventoryItemEvent.RecordInventoryEntryEvent events
-     * @param inventoryItemState The current state of the InventoryItem aggregate
-     * @param inventoryItemAttributes 
-     * @param inventoryItemDetailAttributes 
-     * @param quantityOnHandDiff 
-     * @param availableToPromiseDiff 
-     * @param accountingQuantityDiff 
-     * @param unitCost 
-     * @param verificationContext The context information for the verification process
+     *
+     * @param eventFactory                  The supplier that creates new InventoryItemEvent.RecordInventoryEntryEvent events
+     * @param inventoryItemState            The current state of the InventoryItem aggregate
+     * @param inventoryItemAttributes
+     * @param inventoryItemDetailAttributes
+     * @param quantityOnHandDiff
+     * @param availableToPromiseDiff
+     * @param accountingQuantityDiff
+     * @param unitCost
+     * @param verificationContext           The context information for the verification process
      * @return An event that will be applied to the current state to update the InventoryItem
      */
-    public InventoryItemEvent.RecordInventoryEntryEvent verify(java.util.function.Supplier<InventoryItemEvent.RecordInventoryEntryEvent> eventFactory, InventoryItemState inventoryItemState, InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, VerificationContext verificationContext) {
+    public InventoryItemEvent.RecordInventoryEntryEvent verify(
+            java.util.function.Supplier<InventoryItemEvent.RecordInventoryEntryEvent> eventFactory,
+            InventoryItemState inventoryItemState,
+            InventoryItemAttributes inventoryItemAttributes,
+            InventoryItemDetailAttributes inventoryItemDetailAttributes,
+            java.math.BigDecimal quantityOnHandDiff,
+            java.math.BigDecimal availableToPromiseDiff,
+            java.math.BigDecimal accountingQuantityDiff,
+            java.math.BigDecimal unitCost,
+            VerificationContext verificationContext
+    ) {
         InventoryItemEvent.RecordInventoryEntryEvent e = eventFactory.get();
-        // TODO: implement
+        // TODO: verification logic?
         return e;
     }
 
     /**
      * Performs the state mutation operation of InventoryItem.RecordInventoryEntry command.
-     * 
-     * @param inventoryItemState The current immutable state of the InventoryItem
-     * @param inventoryItemAttributes 
-     * @param inventoryItemDetailAttributes 
-     * @param quantityOnHandDiff 
-     * @param availableToPromiseDiff 
-     * @param accountingQuantityDiff 
-     * @param unitCost 
-     * @param mutationContext The context that provides functionality including creating mutable state
+     *
+     * @param inventoryItemState            The current immutable state of the InventoryItem
+     * @param inventoryItemAttributes
+     * @param inventoryItemDetailAttributes
+     * @param quantityOnHandDiff
+     * @param availableToPromiseDiff
+     * @param accountingQuantityDiff
+     * @param unitCost
+     * @param mutationContext               The context that provides functionality including creating mutable state
      * @return The new state of the InventoryItem
      */
-    public InventoryItemState mutate(InventoryItemState inventoryItemState, InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, MutationContext<InventoryItemState, InventoryItemState.MutableInventoryItemState> mutationContext) {
+    public InventoryItemState mutate(
+            InventoryItemState inventoryItemState,
+            InventoryItemAttributes inventoryItemAttributes,
+            InventoryItemDetailAttributes inventoryItemDetailAttributes,
+            java.math.BigDecimal quantityOnHandDiff,
+            java.math.BigDecimal availableToPromiseDiff,
+            java.math.BigDecimal accountingQuantityDiff,
+            java.math.BigDecimal unitCost,
+            MutationContext<InventoryItemState, InventoryItemState.MutableInventoryItemState> mutationContext
+    ) {
         InventoryItemState.MutableInventoryItemState s = mutationContext.createMutableState(inventoryItemState);
+        if (s.getVersion() == null) {
+            if (inventoryItemAttributes == null) {
+                //todo throw 合适的异常
+            }
+            inventoryItemMapper.updateInventoryItemState(s, inventoryItemAttributes);
+            //todo s.setInventoryItemAttributeHash();
+        } else {
+            if (inventoryItemAttributes != null) {
+                //todo throw 合适的异常！ 因为当已经存在 InventoryItem 时，不能修改它的属性。
+            }
+        }
+
         // TODO: implement
         return s; // Return the updated state
     }
