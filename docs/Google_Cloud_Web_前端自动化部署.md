@@ -58,24 +58,52 @@ gcloud services enable \
   - URL 不够友好
   - 无法使用自定义域名
 
+
 #### 方案二：配置自定义域名（推荐）
 
 1. **在 Cloud Run 中映射域名**：
+
+
+> **提示**
+> - 服务名称在部署时就确定了，通常是您的项目名称或应用标识符
+> - 可以通过 `gcloud run services list` 命令随时查看
+> - 确保域名映射时使用的服务名称与部署时使用的完全一致
+
+首先，查看您的服务名称：
+
 ```bash
-# 将您的域名映射到 Cloud Run 服务
+# 列出所有 Cloud Run 服务
+gcloud run services list
+
+# 输出示例：
+# SERVICE          REGION      URL                                    LAST DEPLOYED  ACTIVE
+# my-web-app       asia-east1  https://my-web-app-xxx-xxx.a.run.app  2 hours ago   yes
+```
+
+服务名称就是您在 GitHub Actions 工作流文件中配置的名称：
+
+```yaml
+# .github/workflows/deploy.yml
+steps:
+  # ... 其他步骤 ...
+  
+  - name: Deploy to Cloud Run
+    uses: google-github-actions/deploy-cloudrun@v1
+    with:
+      service: my-web-app    # <-- 这里定义的就是服务名称
+      region: asia-east1
+      source: ./
+```
+
+确认服务名称后，就可以创建域名映射：
+
+```shell
 gcloud run domain-mappings create \
-    --service=your-service-name \
+    --service=my-web-app \
     --domain=www.your-domain.com \
     --platform=managed \
     --region=asia-east1
 ```
-
-> **HTTPS 证书说明**
-> - Cloud Run 会自动为映射的域名配置 SSL/TLS 证书
-> - 证书由 Google 管理的 CA 签发
-> - 证书会自动续期，无需手动操作
-> - 支持现代的 TLS 1.3 协议
-> - 完全免费，无需额外付费
 
 2. **验证域名所有权**：
 - 执行上述命令后，Google Cloud 会提供一条 TXT 记录
@@ -120,6 +148,15 @@ gcloud run domain-mappings create \
       --platform=managed \
       --region=asia-east1
   ```
+
+
+> **HTTPS 证书说明**
+> - Cloud Run 会自动为映射的域名配置 SSL/TLS 证书
+> - 证书由 Google 管理的 CA 签发
+> - 证书会自动续期，无需手动操作
+> - 支持现代的 TLS 1.3 协议
+> - 完全免费，无需额外付费
+
 
 #### 关于负载均衡
 
@@ -660,11 +697,21 @@ jobs:
 
 ### 3.3 GitHub 仓库安全设置
 
-1. 添加 Secrets：
-   - `GCP_SA_KEY`：服务账号的 JSON 密钥
-   - `PROJECT_ID`：Google Cloud 项目 ID
+#### 添加 Secrets
 
-2. 分支保护规则：
+**注意**：根据您选择的认证方案，需要配置不同的 Secrets。
+
+**方案一：服务账号密钥**
+- `GCP_SA_KEY`：服务账号的 JSON 密钥
+- `PROJECT_ID`：Google Cloud 项目 ID
+ 
+**方案二：Workload Identity Federation（推荐）**
+- 不需要存储任何密钥
+- 只需要在 GitHub Actions 工作流中配置 Workload Identity Provider
+- 更安全，无需管理敏感的密钥信息
+
+
+#### 分支保护规则
 
 什么是分支保护？
 - 分支保护是 GitHub 的一个安全功能
