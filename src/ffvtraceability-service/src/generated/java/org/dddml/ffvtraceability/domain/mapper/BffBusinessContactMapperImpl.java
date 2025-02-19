@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class BffBusinessContactMapperImpl implements BffBusinessContactMapper {
 
     @Override
-    public BffBusinessContactDto toBffBusinessContactDto(BffFacilityContactMechRepository.BffFacilityBusinessContactProjection projection) {
+    public BffBusinessContactDto toBffFacilityBusinessContactDto(BffFacilityContactMechRepository.BffFacilityBusinessContactProjection projection) {
         if ( projection == null ) {
             return null;
         }
@@ -21,22 +21,22 @@ public class BffBusinessContactMapperImpl implements BffBusinessContactMapper {
         BffBusinessContactDto bffBusinessContactDto = new BffBusinessContactDto();
 
         bffBusinessContactDto.setBusinessName( projection.getBusinessName() );
-        bffBusinessContactDto.setCity( projection.getCity() );
-        bffBusinessContactDto.setContactRole( projection.getContactRole() );
-        bffBusinessContactDto.setCountry( projection.getCountry() );
-        bffBusinessContactDto.setCountryGeoId( projection.getCountryGeoId() );
-        bffBusinessContactDto.setEmail( projection.getEmail() );
         bffBusinessContactDto.setPhoneNumber( projection.getPhoneNumber() );
         bffBusinessContactDto.setPhysicalLocationAddress( projection.getPhysicalLocationAddress() );
+        bffBusinessContactDto.setCity( projection.getCity() );
         bffBusinessContactDto.setState( projection.getState() );
-        bffBusinessContactDto.setStateProvinceGeoId( projection.getStateProvinceGeoId() );
         bffBusinessContactDto.setZipCode( projection.getZipCode() );
+        bffBusinessContactDto.setCountry( projection.getCountry() );
+        bffBusinessContactDto.setStateProvinceGeoId( projection.getStateProvinceGeoId() );
+        bffBusinessContactDto.setCountryGeoId( projection.getCountryGeoId() );
+        bffBusinessContactDto.setEmail( projection.getEmail() );
+        bffBusinessContactDto.setContactRole( projection.getContactRole() );
 
         return bffBusinessContactDto;
     }
 
     @Override
-    public BffBusinessContactDto toBffBusinessContactDto(BffPartyContactMechRepository.BffPartyBusinessContactProjection projection) {
+    public BffBusinessContactDto toBffPartyBusinessContactDto(BffPartyContactMechRepository.BffPartyBusinessContactProjection projection) {
         if ( projection == null ) {
             return null;
         }
@@ -44,16 +44,16 @@ public class BffBusinessContactMapperImpl implements BffBusinessContactMapper {
         BffBusinessContactDto bffBusinessContactDto = new BffBusinessContactDto();
 
         bffBusinessContactDto.setBusinessName( projection.getBusinessName() );
-        bffBusinessContactDto.setCity( projection.getCity() );
-        bffBusinessContactDto.setContactRole( projection.getContactRole() );
-        bffBusinessContactDto.setCountry( projection.getCountry() );
-        bffBusinessContactDto.setCountryGeoId( projection.getCountryGeoId() );
-        bffBusinessContactDto.setEmail( projection.getEmail() );
         bffBusinessContactDto.setPhoneNumber( projection.getPhoneNumber() );
         bffBusinessContactDto.setPhysicalLocationAddress( projection.getPhysicalLocationAddress() );
+        bffBusinessContactDto.setCity( projection.getCity() );
         bffBusinessContactDto.setState( projection.getState() );
-        bffBusinessContactDto.setStateProvinceGeoId( projection.getStateProvinceGeoId() );
         bffBusinessContactDto.setZipCode( projection.getZipCode() );
+        bffBusinessContactDto.setCountry( projection.getCountry() );
+        bffBusinessContactDto.setStateProvinceGeoId( projection.getStateProvinceGeoId() );
+        bffBusinessContactDto.setCountryGeoId( projection.getCountryGeoId() );
+        bffBusinessContactDto.setEmail( projection.getEmail() );
+        bffBusinessContactDto.setContactRole( projection.getContactRole() );
 
         return bffBusinessContactDto;
     }

@@ -101,7 +101,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         }
         BffSupplierDto dto = bffSupplierMapper.toBffSupplierDto(projection.get());
         bffPartyContactMechRepository.findPartyContactByPartyId(c.getSupplierId()).ifPresent(contact -> {
-            dto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffBusinessContactDto(contact)));
+            dto.setBusinessContacts(Collections.singletonList(bffBusinessContactMapper.toBffPartyBusinessContactDto(contact)));
         });
         if (c.getIncludesFacilities() != null && c.getIncludesFacilities()) {
             enrichFacilityDetails(dto, c.getSupplierId());
@@ -117,7 +117,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
                 BffFacilityDto bffFacilityDto = bffFacilityMapper.toBffFacilityDto(bffFacilityProjection);
                 bffFacilityContactMechRepository.findFacilityContactByFacilityId(bffFacilityDto.getFacilityId())
                         .ifPresent(contact -> bffFacilityDto.setBusinessContacts(
-                                Collections.singletonList(bffBusinessContactMapper.toBffBusinessContactDto(contact))));
+                                Collections.singletonList(bffBusinessContactMapper.toBffFacilityBusinessContactDto(contact))));
                 facilityDtos.add(bffFacilityDto);
             });
             dto.setFacilities(facilityDtos);

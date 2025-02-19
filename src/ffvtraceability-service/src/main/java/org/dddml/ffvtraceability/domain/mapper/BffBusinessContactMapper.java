@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface BffBusinessContactMapper {
-    BffBusinessContactDto toBffBusinessContactDto(BffFacilityContactMechRepository.BffFacilityBusinessContactProjection projection);
+    BffBusinessContactDto toBffFacilityBusinessContactDto(BffFacilityContactMechRepository.BffFacilityBusinessContactProjection projection);
 
-    BffBusinessContactDto toBffBusinessContactDto(BffPartyContactMechRepository.BffPartyBusinessContactProjection projection);
+    BffBusinessContactDto toBffPartyBusinessContactDto(BffPartyContactMechRepository.BffPartyBusinessContactProjection projection);
 }
