@@ -40,6 +40,8 @@ public interface InventoryItemCommand extends Command {
             return false;
         if (c.getCommandType() != null) {
             String commandType = c.getCommandType();
+            if (commandType.equals("RecordInventoryEntry"))
+                return false;
         }
 
         if (c.getVersion().equals(InventoryItemState.VERSION_NULL))

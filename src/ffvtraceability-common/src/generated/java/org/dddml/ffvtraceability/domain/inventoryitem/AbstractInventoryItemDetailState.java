@@ -270,14 +270,14 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
         this.inventoryItemAttributeHash = inventoryItemAttributeHash;
     }
 
-    private String inventoryItemEntrySourceHash;
+    private String inventoryItemDetailAttributeHash;
 
-    public String getInventoryItemEntrySourceHash() {
-        return this.inventoryItemEntrySourceHash;
+    public String getInventoryItemDetailAttributeHash() {
+        return this.inventoryItemDetailAttributeHash;
     }
 
-    public void setInventoryItemEntrySourceHash(String inventoryItemEntrySourceHash) {
-        this.inventoryItemEntrySourceHash = inventoryItemEntrySourceHash;
+    public void setInventoryItemDetailAttributeHash(String inventoryItemDetailAttributeHash) {
+        this.inventoryItemDetailAttributeHash = inventoryItemDetailAttributeHash;
     }
 
     private Long version;
@@ -423,7 +423,7 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
         this.setReasonEnumId(s.getReasonEnumId());
         this.setDescription(s.getDescription());
         this.setInventoryItemAttributeHash(s.getInventoryItemAttributeHash());
-        this.setInventoryItemEntrySourceHash(s.getInventoryItemEntrySourceHash());
+        this.setInventoryItemDetailAttributeHash(s.getInventoryItemDetailAttributeHash());
     }
 
     public void save() {

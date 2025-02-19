@@ -68,7 +68,30 @@ aggregates:
         isInternal: true
       MergePatch:
         isInternal: true
-
+      RecordInventoryEntry:
+        shouldCreateOnDemand: true
+        # 记录一个库存分录。
+        # 如果 InventoryItemId 为 null，此方法会根据 InventoryItemAttributes 自动处理库存项（InventoryItem）：
+        # - 如果是新的库存特征组合，会创建新的库存项
+        # - 如果是已存在的库存特征组合，会复用现有的库存项
+        # 然后在对应的库存项下创建一个新的库存明细（InventoryItemDetail）。
+        # 这是一个标准的库存过账操作，用于记录所有类型的库存变动。
+        isInternal: true
+        parameters:
+          InventoryItemId:
+            type: id-long
+          InventoryItemAttributes:
+            type: InventoryItemAttributes
+          InventoryItemDetailAttributes:
+            type: InventoryItemDetailAttributes
+          QuantityOnHandDiff:
+            type: fixed-point
+          AvailableToPromiseDiff:
+            type: fixed-point
+          AccountingQuantityDiff:
+            type: fixed-point
+          UnitCost:
+            type: fixed-point
 
     entities:
       InventoryItemDetail:
@@ -129,10 +152,98 @@ aggregates:
           InventoryItemAttributeHash:
             # AttributeSetInstanceId
             type: HashHex
-          InventoryItemEntrySourceHash:
+          InventoryItemDetailAttributeHash:
             type: HashHex
 
+    valueObjects:
+      InventoryItemAttributes:
+        properties:
+          InventoryItemTypeId:
+            type: id
+          ProductId:
+            type: id
+          PartyId:
+            type: id
+          OwnerPartyId:
+            description: The owner of the inventory item.
+            type: id
+          StatusId:
+            type: id
+          DatetimeReceived:
+            type: date-time
+          DatetimeManufactured:
+            type: date-time
+          ExpireDate:
+            type: date-time
+          FacilityId:
+            type: id
+          ContainerId:
+            type: id
+          LotId:
+            type: id
+          UomId:
+            type: id
+          BinNumber:
+            type: id
+          LocationSeqId:
+            type: id-long
+          Comments:
+            type: comment
+          SerialNumber:
+            type: id-vlong #value
+          SoftIdentifier:
+            type: id-vlong #value
+          ActivationNumber:
+            type: id-vlong #value
+          ActivationValidThru:
+            type: date-time
+          # UnitCost:
+          #   description: Higher precision in case it is a calculated number
+          #   type: fixed-point
+          CurrencyUomId:
+            description: The currency Uom of the unit cost.
+            type: id
+          FixedAssetId:
+            type: id
 
+      InventoryItemDetailAttributes:
+        properties:
+          EffectiveDate:
+            type: date-time
+          # UnitCost:
+          #   type: fixed-point
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id
+          ShipGroupSeqId:
+            type: id
+          ShipmentId:
+            type: id
+          ShipmentItemSeqId:
+            type: id
+          ReturnId:
+            type: id
+          ReturnItemSeqId:
+            type: id
+          WorkEffortId:
+            type: id
+          FixedAssetId:
+            type: id
+          MaintHistSeqId:
+            type: id
+          ItemIssuanceId:
+            type: id
+          ReceiptId:
+            type: id
+          PhysicalInventoryId:
+            type: id
+          ReasonEnumId:
+            type: id
+          Description:
+            type: description
+
+  # Aggregate
   InventoryItemType:
     id:
       name: InventoryItemTypeId

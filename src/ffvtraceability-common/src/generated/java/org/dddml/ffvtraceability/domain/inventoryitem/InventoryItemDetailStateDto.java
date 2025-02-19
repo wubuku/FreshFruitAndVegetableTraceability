@@ -278,16 +278,16 @@ public class InventoryItemDetailStateDto {
         this.inventoryItemAttributeHash = inventoryItemAttributeHash;
     }
 
-    private String inventoryItemEntrySourceHash;
+    private String inventoryItemDetailAttributeHash;
 
-    public String getInventoryItemEntrySourceHash()
+    public String getInventoryItemDetailAttributeHash()
     {
-        return this.inventoryItemEntrySourceHash;
+        return this.inventoryItemDetailAttributeHash;
     }
 
-    public void setInventoryItemEntrySourceHash(String inventoryItemEntrySourceHash)
+    public void setInventoryItemDetailAttributeHash(String inventoryItemDetailAttributeHash)
     {
-        this.inventoryItemEntrySourceHash = inventoryItemEntrySourceHash;
+        this.inventoryItemDetailAttributeHash = inventoryItemDetailAttributeHash;
     }
 
     private Long version;
@@ -457,8 +457,8 @@ public class InventoryItemDetailStateDto {
             if (returnedFieldsContains("InventoryItemAttributeHash")) {
                 dto.setInventoryItemAttributeHash(state.getInventoryItemAttributeHash());
             }
-            if (returnedFieldsContains("InventoryItemEntrySourceHash")) {
-                dto.setInventoryItemEntrySourceHash(state.getInventoryItemEntrySourceHash());
+            if (returnedFieldsContains("InventoryItemDetailAttributeHash")) {
+                dto.setInventoryItemDetailAttributeHash(state.getInventoryItemDetailAttributeHash());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

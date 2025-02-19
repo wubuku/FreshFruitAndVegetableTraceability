@@ -20,6 +20,33 @@ public interface InventoryItemEvent extends Event {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface RecordInventoryEntryEvent extends InventoryItemEvent {
+        InventoryItemAttributes getInventoryItemAttributes();
+
+        void setInventoryItemAttributes(InventoryItemAttributes value);
+
+        InventoryItemDetailAttributes getInventoryItemDetailAttributes();
+
+        void setInventoryItemDetailAttributes(InventoryItemDetailAttributes value);
+
+        java.math.BigDecimal getQuantityOnHandDiff();
+
+        void setQuantityOnHandDiff(java.math.BigDecimal value);
+
+        java.math.BigDecimal getAvailableToPromiseDiff();
+
+        void setAvailableToPromiseDiff(java.math.BigDecimal value);
+
+        java.math.BigDecimal getAccountingQuantityDiff();
+
+        void setAccountingQuantityDiff(java.math.BigDecimal value);
+
+        java.math.BigDecimal getUnitCost();
+
+        void setUnitCost(java.math.BigDecimal value);
+
+    }
+
     String getInventoryItemId();
 
     //void setInventoryItemId(String inventoryItemId);

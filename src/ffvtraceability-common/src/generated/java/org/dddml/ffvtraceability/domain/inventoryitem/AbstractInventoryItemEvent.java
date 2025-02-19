@@ -153,6 +153,87 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
 
     }
 
+    public static class RecordInventoryEntryEvent extends InventoryItemLobEvent implements InventoryItemEvent.RecordInventoryEntryEvent {
+
+        @Override
+        public String getEventType() {
+            return "RecordInventoryEntryEvent";
+        }
+
+        public InventoryItemAttributes getInventoryItemAttributes() {
+            Object val = getDynamicProperties().get("inventoryItemAttributes");
+            if (val instanceof InventoryItemAttributes) {
+                return (InventoryItemAttributes) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, InventoryItemAttributes.class);
+        }
+
+        public void setInventoryItemAttributes(InventoryItemAttributes value) {
+            getDynamicProperties().put("inventoryItemAttributes", value);
+        }
+
+        public InventoryItemDetailAttributes getInventoryItemDetailAttributes() {
+            Object val = getDynamicProperties().get("inventoryItemDetailAttributes");
+            if (val instanceof InventoryItemDetailAttributes) {
+                return (InventoryItemDetailAttributes) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, InventoryItemDetailAttributes.class);
+        }
+
+        public void setInventoryItemDetailAttributes(InventoryItemDetailAttributes value) {
+            getDynamicProperties().put("inventoryItemDetailAttributes", value);
+        }
+
+        public java.math.BigDecimal getQuantityOnHandDiff() {
+            Object val = getDynamicProperties().get("quantityOnHandDiff");
+            if (val instanceof java.math.BigDecimal) {
+                return (java.math.BigDecimal) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, java.math.BigDecimal.class);
+        }
+
+        public void setQuantityOnHandDiff(java.math.BigDecimal value) {
+            getDynamicProperties().put("quantityOnHandDiff", value);
+        }
+
+        public java.math.BigDecimal getAvailableToPromiseDiff() {
+            Object val = getDynamicProperties().get("availableToPromiseDiff");
+            if (val instanceof java.math.BigDecimal) {
+                return (java.math.BigDecimal) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, java.math.BigDecimal.class);
+        }
+
+        public void setAvailableToPromiseDiff(java.math.BigDecimal value) {
+            getDynamicProperties().put("availableToPromiseDiff", value);
+        }
+
+        public java.math.BigDecimal getAccountingQuantityDiff() {
+            Object val = getDynamicProperties().get("accountingQuantityDiff");
+            if (val instanceof java.math.BigDecimal) {
+                return (java.math.BigDecimal) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, java.math.BigDecimal.class);
+        }
+
+        public void setAccountingQuantityDiff(java.math.BigDecimal value) {
+            getDynamicProperties().put("accountingQuantityDiff", value);
+        }
+
+        public java.math.BigDecimal getUnitCost() {
+            Object val = getDynamicProperties().get("unitCost");
+            if (val instanceof java.math.BigDecimal) {
+                return (java.math.BigDecimal) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, java.math.BigDecimal.class);
+        }
+
+        public void setUnitCost(java.math.BigDecimal value) {
+            getDynamicProperties().put("unitCost", value);
+        }
+
+    }
+
 
     public static abstract class AbstractInventoryItemStateEvent extends AbstractInventoryItemEvent implements InventoryItemEvent.InventoryItemStateEvent {
         private String inventoryItemTypeId;

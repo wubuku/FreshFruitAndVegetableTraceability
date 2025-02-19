@@ -10006,7 +10006,7 @@ public class M {
             "reasonEnumId",
             "description",
             "inventoryItemAttributeHash",
-            "inventoryItemEntrySourceHash",
+            "inventoryItemDetailAttributeHash",
             "version",
             "createdBy",
             "createdAt",
@@ -10111,8 +10111,8 @@ public class M {
         aliasMap.put("Description", "description");
         aliasMap.put("inventoryItemAttributeHash", "inventoryItemAttributeHash");
         aliasMap.put("InventoryItemAttributeHash", "inventoryItemAttributeHash");
-        aliasMap.put("inventoryItemEntrySourceHash", "inventoryItemEntrySourceHash");
-        aliasMap.put("InventoryItemEntrySourceHash", "inventoryItemEntrySourceHash");
+        aliasMap.put("inventoryItemDetailAttributeHash", "inventoryItemDetailAttributeHash");
+        aliasMap.put("InventoryItemDetailAttributeHash", "inventoryItemDetailAttributeHash");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

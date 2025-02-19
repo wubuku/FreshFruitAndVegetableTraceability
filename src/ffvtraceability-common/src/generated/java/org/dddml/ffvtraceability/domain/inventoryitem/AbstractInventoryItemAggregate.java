@@ -210,6 +210,52 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
             super(state);
         }
 
+        @Override
+        public void recordInventoryEntry(InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, Long version, String commandId, String requesterId, InventoryItemCommands.RecordInventoryEntry c) {
+            java.util.function.Supplier<InventoryItemEvent.RecordInventoryEntryEvent> eventFactory = () -> newRecordInventoryEntryEvent(inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, version, commandId, requesterId);
+            InventoryItemEvent.RecordInventoryEntryEvent e;
+            try {
+                e = verifyRecordInventoryEntry(eventFactory, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        protected InventoryItemEvent.RecordInventoryEntryEvent verifyRecordInventoryEntry(java.util.function.Supplier<InventoryItemEvent.RecordInventoryEntryEvent> eventFactory, InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, InventoryItemCommands.RecordInventoryEntry c) {
+            InventoryItemAttributes InventoryItemAttributes = inventoryItemAttributes;
+            InventoryItemDetailAttributes InventoryItemDetailAttributes = inventoryItemDetailAttributes;
+            java.math.BigDecimal QuantityOnHandDiff = quantityOnHandDiff;
+            java.math.BigDecimal AvailableToPromiseDiff = availableToPromiseDiff;
+            java.math.BigDecimal AccountingQuantityDiff = accountingQuantityDiff;
+            java.math.BigDecimal UnitCost = unitCost;
+
+            InventoryItemEvent.RecordInventoryEntryEvent e = (InventoryItemEvent.RecordInventoryEntryEvent) ApplicationContext.current.get(IRecordInventoryEntryLogic.class).verify(
+                    eventFactory, getState(), inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, VerificationContext.of(c));
+
+            return e;
+        }
+
+        protected AbstractInventoryItemEvent.RecordInventoryEntryEvent newRecordInventoryEntryEvent(InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, Long version, String commandId, String requesterId) {
+            InventoryItemEventId eventId = new InventoryItemEventId(getState().getInventoryItemId(), version);
+            AbstractInventoryItemEvent.RecordInventoryEntryEvent e = new AbstractInventoryItemEvent.RecordInventoryEntryEvent();
+
+            e.getDynamicProperties().put("inventoryItemAttributes", inventoryItemAttributes);
+            e.getDynamicProperties().put("inventoryItemDetailAttributes", inventoryItemDetailAttributes);
+            e.getDynamicProperties().put("quantityOnHandDiff", quantityOnHandDiff);
+            e.getDynamicProperties().put("availableToPromiseDiff", availableToPromiseDiff);
+            e.getDynamicProperties().put("accountingQuantityDiff", accountingQuantityDiff);
+            e.getDynamicProperties().put("unitCost", unitCost);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+            e.setInventoryItemEventId(eventId);
+            return e;
+        }
+
     }
 
 }

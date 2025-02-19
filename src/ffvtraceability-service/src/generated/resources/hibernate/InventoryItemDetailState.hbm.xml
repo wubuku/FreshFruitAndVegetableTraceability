@@ -78,8 +78,8 @@
     <property name="inventoryItemAttributeHash">
       <column name="inventory_item_attribute_hash" sql-type="VARCHAR(64)" />
     </property>
-    <property name="inventoryItemEntrySourceHash">
-      <column name="inventory_item_entry_source_hash" sql-type="VARCHAR(64)" />
+    <property name="inventoryItemDetailAttributeHash">
+      <column name="inventory_item_detail_attribute_hash" sql-type="VARCHAR(64)" />
     </property>
     <property name="createdBy">
       <column name="created_by" />

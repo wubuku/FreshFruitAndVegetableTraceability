@@ -182,4 +182,15 @@ under the License.
     <Attribute attributeId="description" attributeType="description"
         attributeName="Description"
         description="A description of this inventory detail record" />
+
+    <!-- Attribute types: -->
+    <!-- id -->
+    <!-- id-long -->
+    <!-- id-vlong -->
+    <!-- date-time -->
+    <!-- fixed-point -->
+    <!-- comment -->
+    <!-- description -->
+    <!-- long-varchar -->
+
 </entity-engine-xml>

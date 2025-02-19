@@ -431,6 +431,8 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
             when((InventoryItemStateCreated) e);
         } else if (e instanceof InventoryItemStateMergePatched) {
             when((InventoryItemStateMergePatched) e);
+        } else if (e instanceof AbstractInventoryItemEvent.RecordInventoryEntryEvent) {
+            when((AbstractInventoryItemEvent.RecordInventoryEntryEvent)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -727,6 +729,39 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
 
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
+
+    }
+
+    public void when(AbstractInventoryItemEvent.RecordInventoryEntryEvent e) {
+        throwOnWrongEvent(e);
+
+        InventoryItemAttributes inventoryItemAttributes = e.getInventoryItemAttributes();
+        InventoryItemAttributes InventoryItemAttributes = inventoryItemAttributes;
+        InventoryItemDetailAttributes inventoryItemDetailAttributes = e.getInventoryItemDetailAttributes();
+        InventoryItemDetailAttributes InventoryItemDetailAttributes = inventoryItemDetailAttributes;
+        java.math.BigDecimal quantityOnHandDiff = e.getQuantityOnHandDiff();
+        java.math.BigDecimal QuantityOnHandDiff = quantityOnHandDiff;
+        java.math.BigDecimal availableToPromiseDiff = e.getAvailableToPromiseDiff();
+        java.math.BigDecimal AvailableToPromiseDiff = availableToPromiseDiff;
+        java.math.BigDecimal accountingQuantityDiff = e.getAccountingQuantityDiff();
+        java.math.BigDecimal AccountingQuantityDiff = accountingQuantityDiff;
+        java.math.BigDecimal unitCost = e.getUnitCost();
+        java.math.BigDecimal UnitCost = unitCost;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        InventoryItemState updatedInventoryItemState = ApplicationContext.current.get(IRecordInventoryEntryLogic.class).mutate(
+                this, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+
+
+        if (this != updatedInventoryItemState) { merge(updatedInventoryItemState); } //else do nothing
 
     }
 

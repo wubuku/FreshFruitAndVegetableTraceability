@@ -23,6 +23,7 @@
           <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
         </type>
       </property>
+      <subclass name="AbstractInventoryItemEvent$RecordInventoryEntryEvent" discriminator-value="RecordInventoryEntryEvent" />
     </subclass>
     <subclass name="AbstractInventoryItemEvent$AbstractInventoryItemStateEvent" abstract="true">
       <property name="inventoryItemTypeId">

@@ -57,6 +57,10 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
         update(c, ar -> ar.mergePatch(c));
     }
 
+    public void when(InventoryItemCommands.RecordInventoryEntry c) {
+        update(c, ar -> ar.recordInventoryEntry(c.getInventoryItemAttributes(), c.getInventoryItemDetailAttributes(), c.getQuantityOnHandDiff(), c.getAvailableToPromiseDiff(), c.getAccountingQuantityDiff(), c.getUnitCost(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public InventoryItemState get(String id) {
         InventoryItemState state = getStateRepository().get(id, true);
         return state;

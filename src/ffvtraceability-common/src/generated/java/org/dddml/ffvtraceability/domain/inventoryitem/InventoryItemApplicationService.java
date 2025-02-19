@@ -18,6 +18,8 @@ public interface InventoryItemApplicationService {
 
     void when(InventoryItemCommand.MergePatchInventoryItem c);
 
+    void when(InventoryItemCommands.RecordInventoryEntry c);
+
     InventoryItemState get(String id);
 
     Iterable<InventoryItemState> getAll(Integer firstResult, Integer maxResults);

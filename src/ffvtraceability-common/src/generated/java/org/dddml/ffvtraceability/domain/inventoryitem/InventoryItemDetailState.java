@@ -61,7 +61,7 @@ public interface InventoryItemDetailState
 
     String getInventoryItemAttributeHash();
 
-    String getInventoryItemEntrySourceHash();
+    String getInventoryItemDetailAttributeHash();
 
     Long getVersion();
 
@@ -122,7 +122,7 @@ public interface InventoryItemDetailState
 
         void setInventoryItemAttributeHash(String inventoryItemAttributeHash);
 
-        void setInventoryItemEntrySourceHash(String inventoryItemEntrySourceHash);
+        void setInventoryItemDetailAttributeHash(String inventoryItemDetailAttributeHash);
 
         void setVersion(Long version);
 

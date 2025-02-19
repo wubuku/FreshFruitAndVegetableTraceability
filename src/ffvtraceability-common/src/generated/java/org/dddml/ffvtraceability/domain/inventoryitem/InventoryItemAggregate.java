@@ -20,6 +20,8 @@ public interface InventoryItemAggregate {
 
     void mergePatch(InventoryItemCommand.MergePatchInventoryItem c);
 
+    void recordInventoryEntry(InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, Long version, String commandId, String requesterId, InventoryItemCommands.RecordInventoryEntry c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 
