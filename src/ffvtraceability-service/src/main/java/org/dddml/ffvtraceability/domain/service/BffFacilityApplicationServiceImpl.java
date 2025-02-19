@@ -328,7 +328,12 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         FacilityLocationState locationState = facilityLocationApplicationService.get(
                 new FacilityLocationId(c.getFacilityId(), c.getLocationSeqId()));
         if (locationState != null) {
-            return bffFacilityLocationMapper.toBffFacilityLocationDto(locationState);
+            BffFacilityLocationDto facilityLocationDto = bffFacilityLocationMapper.toBffFacilityLocationDto(locationState);
+            facilityLocationDto.setFacilityId(c.getFacilityId());
+            bffFacilityRepository.findById(c.getFacilityId()).ifPresent(simpleFacilityState -> {
+                facilityLocationDto.setFacilityName(simpleFacilityState.getFacilityName());
+            });
+            return facilityLocationDto;
         }
         return null;
     }
