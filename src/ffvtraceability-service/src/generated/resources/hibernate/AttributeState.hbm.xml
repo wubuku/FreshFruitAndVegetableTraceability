@@ -13,6 +13,9 @@
       </key>
       <one-to-many class="org.dddml.ffvtraceability.domain.attribute.AbstractAttributeValueState$SimpleAttributeValueState" />
     </set>
+    <property name="attributeType">
+      <column name="attribute_type" sql-type="VARCHAR(20)" />
+    </property>
     <property name="attributeName">
       <column name="attribute_name" sql-type="VARCHAR(100)" />
     </property>
@@ -22,14 +25,17 @@
     <property name="isMandatory">
       <column name="is_mandatory" sql-type="CHAR(1)" />
     </property>
-    <property name="attributeType">
-      <column name="attribute_type" sql-type="VARCHAR(20)" />
-    </property>
     <property name="attributeLength">
       <column name="attribute_length" sql-type="DECIMAL(20,0)" />
     </property>
     <property name="isEnumeration">
       <column name="is_enumeration" sql-type="CHAR(1)" />
+    </property>
+    <property name="scale">
+      <column name="scale" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="truncatedTo">
+      <column name="truncated_to" sql-type="VARCHAR(20)" />
     </property>
     <property name="createdBy">
       <column name="created_by" />

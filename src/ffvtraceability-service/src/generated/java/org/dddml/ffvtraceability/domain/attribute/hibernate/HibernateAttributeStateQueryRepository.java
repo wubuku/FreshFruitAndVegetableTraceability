@@ -42,7 +42,7 @@ public class HibernateAttributeStateQueryRepository implements AttributeStateQue
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("AttributeId", "AttributeName", "Description", "IsMandatory", "AttributeType", "AttributeLength", "IsEnumeration", "AttributeValues", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("AttributeId", "AttributeType", "AttributeName", "Description", "IsMandatory", "AttributeLength", "IsEnumeration", "Scale", "TruncatedTo", "AttributeValues", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 

@@ -24,6 +24,16 @@ public abstract class AbstractAttributeState implements AttributeState.SqlAttrib
         this.attributeId = attributeId;
     }
 
+    private String attributeType;
+
+    public String getAttributeType() {
+        return this.attributeType;
+    }
+
+    public void setAttributeType(String attributeType) {
+        this.attributeType = attributeType;
+    }
+
     private String attributeName;
 
     public String getAttributeName() {
@@ -54,16 +64,6 @@ public abstract class AbstractAttributeState implements AttributeState.SqlAttrib
         this.isMandatory = isMandatory;
     }
 
-    private String attributeType;
-
-    public String getAttributeType() {
-        return this.attributeType;
-    }
-
-    public void setAttributeType(String attributeType) {
-        this.attributeType = attributeType;
-    }
-
     private Long attributeLength;
 
     public Long getAttributeLength() {
@@ -82,6 +82,26 @@ public abstract class AbstractAttributeState implements AttributeState.SqlAttrib
 
     public void setIsEnumeration(String isEnumeration) {
         this.isEnumeration = isEnumeration;
+    }
+
+    private Long scale;
+
+    public Long getScale() {
+        return this.scale;
+    }
+
+    public void setScale(Long scale) {
+        this.scale = scale;
+    }
+
+    private String truncatedTo;
+
+    public String getTruncatedTo() {
+        return this.truncatedTo;
+    }
+
+    public void setTruncatedTo(String truncatedTo) {
+        this.truncatedTo = truncatedTo;
     }
 
     private Long version;
@@ -249,12 +269,14 @@ public abstract class AbstractAttributeState implements AttributeState.SqlAttrib
     public void when(AttributeStateCreated e) {
         throwOnWrongEvent(e);
 
+        this.setAttributeType(e.getAttributeType());
         this.setAttributeName(e.getAttributeName());
         this.setDescription(e.getDescription());
         this.setIsMandatory(e.getIsMandatory());
-        this.setAttributeType(e.getAttributeType());
         this.setAttributeLength(e.getAttributeLength());
         this.setIsEnumeration(e.getIsEnumeration());
+        this.setScale(e.getScale());
+        this.setTruncatedTo(e.getTruncatedTo());
         this.setActive(e.getActive());
 
         this.setCreatedBy(e.getCreatedBy());
@@ -270,12 +292,14 @@ public abstract class AbstractAttributeState implements AttributeState.SqlAttrib
         if (s == this) {
             return;
         }
+        this.setAttributeType(s.getAttributeType());
         this.setAttributeName(s.getAttributeName());
         this.setDescription(s.getDescription());
         this.setIsMandatory(s.getIsMandatory());
-        this.setAttributeType(s.getAttributeType());
         this.setAttributeLength(s.getAttributeLength());
         this.setIsEnumeration(s.getIsEnumeration());
+        this.setScale(s.getScale());
+        this.setTruncatedTo(s.getTruncatedTo());
         this.setActive(s.getActive());
 
         if (s.getAttributeValues() != null) {
@@ -318,6 +342,13 @@ public abstract class AbstractAttributeState implements AttributeState.SqlAttrib
     public void when(AttributeStateMergePatched e) {
         throwOnWrongEvent(e);
 
+        if (e.getAttributeType() == null) {
+            if (e.getIsPropertyAttributeTypeRemoved() != null && e.getIsPropertyAttributeTypeRemoved()) {
+                this.setAttributeType(null);
+            }
+        } else {
+            this.setAttributeType(e.getAttributeType());
+        }
         if (e.getAttributeName() == null) {
             if (e.getIsPropertyAttributeNameRemoved() != null && e.getIsPropertyAttributeNameRemoved()) {
                 this.setAttributeName(null);
@@ -339,13 +370,6 @@ public abstract class AbstractAttributeState implements AttributeState.SqlAttrib
         } else {
             this.setIsMandatory(e.getIsMandatory());
         }
-        if (e.getAttributeType() == null) {
-            if (e.getIsPropertyAttributeTypeRemoved() != null && e.getIsPropertyAttributeTypeRemoved()) {
-                this.setAttributeType(null);
-            }
-        } else {
-            this.setAttributeType(e.getAttributeType());
-        }
         if (e.getAttributeLength() == null) {
             if (e.getIsPropertyAttributeLengthRemoved() != null && e.getIsPropertyAttributeLengthRemoved()) {
                 this.setAttributeLength(null);
@@ -359,6 +383,20 @@ public abstract class AbstractAttributeState implements AttributeState.SqlAttrib
             }
         } else {
             this.setIsEnumeration(e.getIsEnumeration());
+        }
+        if (e.getScale() == null) {
+            if (e.getIsPropertyScaleRemoved() != null && e.getIsPropertyScaleRemoved()) {
+                this.setScale(null);
+            }
+        } else {
+            this.setScale(e.getScale());
+        }
+        if (e.getTruncatedTo() == null) {
+            if (e.getIsPropertyTruncatedToRemoved() != null && e.getIsPropertyTruncatedToRemoved()) {
+                this.setTruncatedTo(null);
+            }
+        } else {
+            this.setTruncatedTo(e.getTruncatedTo());
         }
         if (e.getActive() == null) {
             if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
