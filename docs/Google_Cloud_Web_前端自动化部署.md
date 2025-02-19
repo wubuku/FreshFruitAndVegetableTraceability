@@ -44,18 +44,125 @@ gcloud services enable \
 
 ### 1.3 域名设置
 
-1. 购买域名（如果没有）
-2. 配置 DNS：
+如果您的域名不是在 Google Cloud DNS 注册的，有两种方案可以配置：
+
+#### 方案一：直接使用 Cloud Run URL（最简单）
+
+这种方案不需要任何额外配置：
+- 直接使用 Cloud Run 提供的 URL（如 `https://your-app-xxx-xxx.a.run.app`）
+- 优点：
+  - 零配置
+  - 自动 HTTPS
+  - 自动证书管理
+- 缺点：
+  - URL 不够友好
+  - 无法使用自定义域名
+
+#### 方案二：配置自定义域名（推荐）
+
+1. **在 Cloud Run 中映射域名**：
 ```bash
-# 在 Google Cloud DNS 添加记录
-gcloud dns record-sets transaction start
-gcloud dns record-sets transaction add \
-    --name="www.yourdomain.com." \
-    --type=A \
-    --ttl=300 \
-    "$CLOUD_RUN_IP"
-gcloud dns record-sets transaction execute
+# 将您的域名映射到 Cloud Run 服务
+gcloud run domain-mappings create \
+    --service=your-service-name \
+    --domain=www.your-domain.com \
+    --platform=managed \
+    --region=asia-east1
 ```
+
+> **HTTPS 证书说明**
+> - Cloud Run 会自动为映射的域名配置 SSL/TLS 证书
+> - 证书由 Google 管理的 CA 签发
+> - 证书会自动续期，无需手动操作
+> - 支持现代的 TLS 1.3 协议
+> - 完全免费，无需额外付费
+
+2. **验证域名所有权**：
+- 执行上述命令后，Google Cloud 会提供一条 TXT 记录
+- 需要在您的域名服务商控制台添加这条记录
+- 格式类似：
+  ```
+  名称: @
+  类型: TXT
+  值: google-site-verification=xxxxxxxxxxxxxxxxx
+  ```
+
+3. **配置 DNS 记录**：
+- 在您的域名服务商控制台添加以下记录：
+
+```
+# 对于根域名
+类型: A
+名称: @
+值: 获取自 Cloud Run 的 IP 地址列表（通常有多个）
+
+# 对于 www 子域名
+类型: A
+名称: www
+值: 获取自 Cloud Run 的 IP 地址列表（通常有多个）
+
+# 或者使用 CNAME（推荐）
+类型: CNAME
+名称: www
+值: your-app-xxx-xxx.a.run.app
+```
+
+> **提示**
+> - CNAME 记录更灵活，因为它会自动跟随 Cloud Run 的 IP 变化
+> - 但根域名（@）不能使用 CNAME，只能使用 A 记录
+
+4. **等待 DNS 生效**：
+- DNS 记录可能需要几分钟到 48 小时不等的时间来全球生效
+- 可以使用以下命令查看映射状态：
+  ```bash
+  gcloud run domain-mappings describe \
+      --domain=www.your-domain.com \
+      --platform=managed \
+      --region=asia-east1
+  ```
+
+#### 关于负载均衡
+
+对于大多数前端应用，Cloud Run 内置的负载均衡足够使用：
+- 自动处理流量分配
+- 自动扩缩容
+- 全球 CDN
+- DDoS 保护
+
+但如果您需要更高级的负载均衡功能，可以考虑配置 Google Cloud Load Balancer：
+
+1. **何时需要额外的负载均衡器**：
+   - 需要跨区域负载均衡
+   - 需要更复杂的路由规则
+   - 需要 WebSocket 支持
+   - 需要集成其他 Google Cloud 服务
+
+2. **配置负载均衡器**：
+```bash
+# 1. 创建负载均衡器
+gcloud compute forwarding-rules create web-frontend \
+    --load-balancing-scheme=EXTERNAL \
+    --network-tier=PREMIUM \
+    --address=your-static-ip \
+    --ports=80,443 \
+    --target-http-proxy=your-http-proxy
+
+# 2. 配置 SSL 证书（如果需要 HTTPS）
+gcloud compute ssl-certificates create www-cert \
+    --domains=www.your-domain.com
+
+# 3. 创建后端服务
+gcloud compute backend-services create web-backend \
+    --protocol=HTTP \
+    --port-name=http \
+    --health-checks=http-health-check \
+    --global
+```
+
+> **注意**
+> - 使用负载均衡器会产生额外费用
+> - 对于大多数前端应用，Cloud Run 的内置功能已经足够
+> - 建议先使用 Cloud Run 的基本功能，需要时再添加负载均衡器
 
 ### 为什么选择 Cloud Run？
 
