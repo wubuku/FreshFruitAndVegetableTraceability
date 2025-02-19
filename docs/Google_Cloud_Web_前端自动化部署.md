@@ -112,6 +112,73 @@ spec:
 | 最小实例 | 可以为 0 | 至少 1 个 |
 | 自定义 | 高度自定义 | 框架限制 |
 
+
+
+### 测试 Cloud Run 配置
+
+#### 1. 部署测试容器
+
+使用 Google 官方的 hello-world 容器镜像来测试：
+
+```bash
+# 部署一个测试服务
+gcloud run deploy hello-test \
+    --image gcr.io/google-samples/hello-app:1.0 \
+    --platform managed \
+    --region asia-east1 \
+    --allow-unauthenticated
+
+# 部署完成后，命令会返回服务URL，格式类似：
+# Service URL: https://hello-test-[unique-id].[region].run.app
+# 
+# 例如：
+# https://hello-test-152582749766.asia-east1.run.app
+# 
+# 这个 URL 是部署时生成的，其中：
+# - hello-test 是服务名
+# - 152582749766 是部署时生成的唯一标识符
+# - asia-east1 是区域名
+```
+
+#### 2. 验证服务
+
+有几种方式可以验证服务是否正常运行：
+
+```bash
+# 方式1：使用 curl 访问服务URL
+# 注意：gcloud describe 命令返回的 URL 可能与部署时显示的 URL 看起来不同
+# 例如：https://hello-test-cya7rmdd2q-de.a.run.app
+# 这两个 URL 都是有效的，都会指向同一个服务
+# URL 格式的差异是由 Cloud Run 的内部路由和负载均衡机制导致的
+# 建议使用 gcloud describe 命令获取的 URL，因为这是服务的当前规范 URL
+curl $(gcloud run services describe hello-test --platform managed --region asia-east1 --format 'value(status.url)')
+
+# 方式2：获取服务信息
+gcloud run services describe hello-test \
+    --platform managed \
+    --region asia-east1
+
+# 方式3：列出所有运行中的服务
+gcloud run services list
+```
+
+#### 3. 清理资源
+
+测试完成后，删除测试服务以节省资源：
+
+```bash
+# 删除测试服务
+gcloud run services delete hello-test \
+    --platform managed \
+    --region asia-east1 \
+    --quiet  # 跳过确认提示
+```
+
+> **提示**
+> - Cloud Run 的按使用量计费特性意味着：当服务没有流量时，不会产生费用
+> - 但为了避免意外的资源使用，建议在测试后删除不需要的服务
+
+
 ## 2. 自动化部署流程
 
 ### 2.1 分支策略说明
@@ -316,35 +383,175 @@ server {
    - 提供 HTTPS 访问
    - 管理流量路由
 
+
 ## 3. 安全配置
 
-### 3.1 服务账号设置
+### 3.1 身份认证方案对比
 
-1. 创建服务账号：
+在将 GitHub Actions 与 Google Cloud 集成时，有两种主要的身份认证方案：
+
+> **提示**
+> 
+> 获取项目 ID：
+> ```bash
+> gcloud config get-value project
+> ```
+
+#### 方案一：服务账号密钥（传统方案）
+
+**优点：**
+- 设置简单，容易理解
+- 广泛支持，适用于所有 Google Cloud API
+- 文档和示例丰富
+
+**缺点：**
+- 需要管理密钥文件
+- 密钥可能泄露风险
+- 需要定期轮换密钥
+- 一些组织策略可能禁止创建服务账号密钥
+
+**实现步骤：**
 ```bash
-# 在 Google Cloud Console 创建服务账号
+# 1. 创建服务账号
 gcloud iam service-accounts create github-deploy-sa \
     --display-name="GitHub Deploy Service Account"
 
-# 首先需要获取项目 ID
-# gcloud config get-value project
-
-# 赋予必要权限
+# 2. 赋予权限
 gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
     --member="serviceAccount:github-deploy-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/run.admin"
 
-# 创建并下载密钥
+# 3. 创建密钥
 gcloud iam service-accounts keys create key.json \
     --iam-account=github-deploy-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com
 ```
 
-2. 最小权限原则：
-   - 只赋予必要的权限
-   - 定期审查权限
-   - 使用服务账号而不是用户账号
 
-### 3.2 GitHub 仓库安全设置
+#### 方案二：Workload Identity Federation（推荐方案）
+
+**优点：**
+- 无需管理服务账号密钥
+- 更符合零信任安全模型
+- 支持短期令牌，更安全
+- 可以精细控制权限
+- Google Cloud 官方推荐的最佳实践
+
+**缺点：**
+- 初始设置相对复杂
+- 需要更多的配置步骤
+- 可能需要组织管理员协助设置
+
+**实现步骤：**
+
+下面我们假设：
+- Google Cloud 项目 ID 为 `YOUR_PROJECT_ID`
+- 授权 `flex-protocol` 组织下的 GitHub 仓库通过 Workload Identity Federation 使用此服务账号访问 Google Cloud 资源
+
+1. 创建 Workload Identity 池和提供者：
+```bash
+# 创建 Workload Identity 池
+gcloud iam workload-identity-pools create "github-pool" \
+    --project="YOUR_PROJECT_ID" \
+    --location="global" \
+    --display-name="GitHub Actions Pool"
+
+# 创建 GitHub 提供者
+gcloud iam workload-identity-pools providers create-oidc "github-provider" \
+    --project="YOUR_PROJECT_ID" \
+    --location="global" \
+    --workload-identity-pool="github-pool" \
+    --display-name="GitHub provider" \
+    --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
+    --issuer-uri="https://token.actions.githubusercontent.com" \
+    --attribute-condition="assertion.repository.startsWith('flex-protocol/')"
+
+# 注意替换 `flex-protocol` 为你的组织名
+
+
+# 获取池名称（后续使用）
+export WORKLOAD_IDENTITY_POOL_ID=$(gcloud iam workload-identity-pools describe "github-pool" \
+    --project="YOUR_PROJECT_ID" \
+    --location="global" \
+    --format="value(name)")
+
+# echo $WORKLOAD_IDENTITY_POOL_ID
+```
+
+2. 创建服务账号并配置权限：
+```bash
+# 创建服务账号
+gcloud iam service-accounts create github-deploy-sa \
+    --display-name="GitHub Deploy Service Account"
+
+# 配置 Workload Identity Federation
+gcloud iam service-accounts add-iam-policy-binding "github-deploy-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+    --project="YOUR_PROJECT_ID" \
+    --role="roles/iam.workloadIdentityUser" \
+    --member="principalSet://iam.googleapis.com/${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/GITHUB_USERNAME/REPO_NAME"
+
+# 注意替换上面命令中的 GITHUB_USERNAME 和 REPO_NAME！
+
+# 替换 `GITHUB_USERNAME` 和 `REPO_NAME` 后，配置示例：
+# gcloud iam service-accounts add-iam-policy-binding "github-deploy-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+#     --project="YOUR_PROJECT_ID" \
+#     --role="roles/iam.workloadIdentityUser" \
+#     --member="principalSet://iam.googleapis.com/${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/flex-protocol/aptos-flex-app"
+
+# 赋予部署权限
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+    --member="serviceAccount:github-deploy-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+    --role="roles/run.admin"
+```
+
+
+3. 配置 GitHub Actions 工作流：
+```yaml
+# .github/workflows/deploy.yml
+jobs:
+  deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'   # 这个权限是必需的
+
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'github-deploy-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com'
+
+      - name: 'Deploy to Cloud Run'
+        uses: 'google-github-actions/deploy-cloudrun@v1'
+        with:
+          service: 'my-service'
+          region: 'us-central1'
+          source: ./
+```
+
+### 3.2 方案选择建议
+
+1. **对于新项目：**
+   - 强烈推荐使用 Workload Identity Federation
+   - 符合现代安全最佳实践
+   - 无需担心密钥管理和轮换
+
+2. **对于现有项目：**
+   - 如果已经在使用服务账号密钥且运行良好，可以继续使用
+   - 建议在下一次大更新时迁移到 Workload Identity Federation
+
+3. **特殊情况：**
+   - 如果组织策略禁止创建服务账号密钥，必须使用 Workload Identity Federation
+   - 如果需要更严格的安全控制，推荐使用 Workload Identity Federation
+
+4. **生产环境考虑：**
+   - Workload Identity Federation 完全适合生产环境使用
+   - 实际上，它比服务账号密钥更安全
+   - 被 Google Cloud 官方推荐用于生产环境
+
+
+### 3.3 GitHub 仓库安全设置
 
 1. 添加 Secrets：
    - `GCP_SA_KEY`：服务账号的 JSON 密钥
@@ -548,6 +755,3 @@ gcloud logging read "resource.type=cloud_run_revision AND \
 
 1. [Google Cloud 文档](https://cloud.google.com/docs)
 2. [GitHub Actions 文档](https://docs.github.com/en/actions)
-
-
-
