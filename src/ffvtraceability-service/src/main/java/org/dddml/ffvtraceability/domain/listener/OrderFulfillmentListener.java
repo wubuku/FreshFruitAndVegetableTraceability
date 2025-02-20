@@ -45,9 +45,7 @@ public class OrderFulfillmentListener {
     private PurchaseOrderFulfillmentService purchaseOrderFulfillmentService;
 
     @Autowired
-    public OrderFulfillmentListener(
-            @Qualifier("eventProcessingExecutor") TaskExecutor taskExecutor
-    ) {
+    public OrderFulfillmentListener(@Qualifier("eventProcessingExecutor") TaskExecutor taskExecutor) {
         this.orderQueue = new DelayedProcessingQueue<>(
                 taskExecutor,
                 this::processOrder,
@@ -173,7 +171,6 @@ public class OrderFulfillmentListener {
                     // NOTE: Avoid infinite loop messages!
                     continue;
                 }
-
                 queueOrderForProcessing(orderId, tenantId);
             } catch (Exception ex) {
                 logger.error("Error processing ShipmentReceipt event", ex);
