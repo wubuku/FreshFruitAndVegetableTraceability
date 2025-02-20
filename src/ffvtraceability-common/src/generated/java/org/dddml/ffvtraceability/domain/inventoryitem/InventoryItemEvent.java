@@ -49,6 +49,7 @@ public interface InventoryItemEvent extends Event {
 
     String getInventoryItemId();
 
+    //todo 如果是需要“方法的业务逻辑实现”来决定实体的 ID，那么需要有这个 set ID 方法
     //void setInventoryItemId(String inventoryItemId);
 
     Long getVersion();

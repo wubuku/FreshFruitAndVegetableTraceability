@@ -61,6 +61,7 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
             VerificationContext verificationContext
     ) {
         InventoryItemEvent.RecordInventoryEntryEvent e = eventFactory.get();
+
         // TODO: verification logic?
         return e;
     }
@@ -94,6 +95,7 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
                 //todo throw 合适的异常
             }
             inventoryItemMapper.updateInventoryItemState(s, inventoryItemAttributes);
+            //todo s.setInventoryItemId();
             //todo s.setInventoryItemAttributeHash();
         } else {
             if (inventoryItemAttributes != null) {

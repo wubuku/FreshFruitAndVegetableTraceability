@@ -762,6 +762,10 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
 
 
         if (this != updatedInventoryItemState) { merge(updatedInventoryItemState); } //else do nothing
+        //todo set EntityID?
+        if (this != updatedInventoryItemState && this.getInventoryItemId() == null) {
+            this.setInventoryItemId(updatedInventoryItemState.getInventoryItemId());
+        }
 
     }
 

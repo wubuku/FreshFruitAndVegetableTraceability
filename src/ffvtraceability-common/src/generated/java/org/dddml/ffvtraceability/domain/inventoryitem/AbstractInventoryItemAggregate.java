@@ -219,8 +219,17 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
-
+            //
+            //获取事件对象中的实体 ID 的方法：e.getInventoryItemId()
+            //
+            //todo 创建状态（state）对象的实例，如果事件（e）中包含了实体 ID，那么需要使用这个 ID 来创建状态的实例。
+            //  如果没有，那么需要等待 mutation 方法来生成。（给状态对象的 ID 属性赋值）
+            //  不过，不管哪种方式，
+            //  在调用 apply 之前都需要创建 state 的实例。（需要外部传入 state factory？）
             apply(e);
+            //todo 在调用 apply 之后，状态对象已经存在，并且它的（实体）ID 属性应该已经有值。
+            //  需要将状态对象中的实体 ID 赋予事件对象
+            //  e.setInventoryItemId(...);
         }
 
         protected InventoryItemEvent.RecordInventoryEntryEvent verifyRecordInventoryEntry(java.util.function.Supplier<InventoryItemEvent.RecordInventoryEntryEvent> eventFactory, InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, InventoryItemCommands.RecordInventoryEntry c) {
@@ -238,6 +247,7 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         }
 
         protected AbstractInventoryItemEvent.RecordInventoryEntryEvent newRecordInventoryEntryEvent(InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, Long version, String commandId, String requesterId) {
+            //todo 这个里 getState 方法可能返回 null
             InventoryItemEventId eventId = new InventoryItemEventId(getState().getInventoryItemId(), version);
             AbstractInventoryItemEvent.RecordInventoryEntryEvent e = new AbstractInventoryItemEvent.RecordInventoryEntryEvent();
 
@@ -252,6 +262,7 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
             e.setCreatedBy(requesterId);
             e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
 
+            //todo 如果 eventId 是 null，那么不要设置！
             e.setInventoryItemEventId(eventId);
             return e;
         }

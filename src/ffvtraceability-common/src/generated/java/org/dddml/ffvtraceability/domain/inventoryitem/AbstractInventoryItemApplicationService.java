@@ -122,6 +122,12 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
         return new EventStoreAggregateId.SimpleEventStoreAggregateId(aggregateId);
     }
 
+    //todo 增加一个 createOrUpdate 方法（这个命名 Ok？）
+    //  允许命令中不包含实体的 ID。（Id 属性为 null）
+    //  如果不包含 ID，那么走的流程和现有的 update 方法不同。
+    //  “create” 流程可以不向 InventoryItemAggregate 传入 state 对象，而是传入 state factory。
+    //  当调用 `action.accept(aggregate)` 时，aggregate 对象内部会调用 verification 以及在需要的时候创建 state 对象。
+
     protected void update(InventoryItemCommand c, Consumer<InventoryItemAggregate> action) {
         String aggregateId = c.getInventoryItemId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
