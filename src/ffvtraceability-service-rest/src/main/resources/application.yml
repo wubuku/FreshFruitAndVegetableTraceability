@@ -1,7 +1,24 @@
+# 测试环境
+logging:
+  level:
+    org:
+      dddml:
+        ffvtraceability:
+          domain:
+            hibernate:
+              OFF
+          restful:
+            DEBUG
+      springframework:
+        web: TRACE #打印 Mapped 信息 比如：{PUT /users/{user_id}, produces [application/json;charset=UTF-8]}: updateUser(Long,UserVo)
+  file:
+    name: logs/${spring.application.name}.log
+
 spring:
   profiles:
     active: dev
-
+  application:
+    name: ffvtraceability-service-rest
   main:
     allow-bean-definition-overriding: true
 
