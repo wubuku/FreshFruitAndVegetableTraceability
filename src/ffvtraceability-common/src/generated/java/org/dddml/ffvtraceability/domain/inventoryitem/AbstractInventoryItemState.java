@@ -762,7 +762,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
 
 
         if (this != updatedInventoryItemState) { merge(updatedInventoryItemState); } //else do nothing
-        //todo set EntityID?
+        // NOTE: 如果“当前的”状态对象没有 Id，那么需要设置 Id！
         if (this != updatedInventoryItemState && this.getInventoryItemId() == null) {
             this.setInventoryItemId(updatedInventoryItemState.getInventoryItemId());
         }

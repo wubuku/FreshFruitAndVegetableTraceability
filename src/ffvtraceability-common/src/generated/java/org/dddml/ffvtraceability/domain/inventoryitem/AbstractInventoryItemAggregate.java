@@ -13,14 +13,24 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractInventoryItemAggregate extends AbstractAggregate implements InventoryItemAggregate {
     private InventoryItemState.MutableInventoryItemState state;
 
+    protected java.util.function.Function<String, InventoryItemState> stateFactory;
+
     private List<Event> changes = new ArrayList<Event>();
 
     public AbstractInventoryItemAggregate(InventoryItemState state) {
         this.state = (InventoryItemState.MutableInventoryItemState)state;
     }
 
+    public AbstractInventoryItemAggregate(java.util.function.Function<String, InventoryItemState> stateFactory) {
+        this.stateFactory = stateFactory;
+    }
+
     public InventoryItemState getState() {
         return this.state;
+    }
+
+    protected void setState(InventoryItemState state) {
+        this.state = (InventoryItemState.MutableInventoryItemState)state;
     }
 
     public List<Event> getChanges() {
@@ -169,7 +179,7 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         if (innerInventoryItemIdValue == null) {
             innerProperties.setInventoryItemId(outerInventoryItemIdValue);
         }
-        else if (innerInventoryItemIdValue != outerInventoryItemIdValue 
+        else if (innerInventoryItemIdValue != outerInventoryItemIdValue
             && (innerInventoryItemIdValue == null || innerInventoryItemIdValue != null && !innerInventoryItemIdValue.equals(outerInventoryItemIdValue))) {
             throw DomainError.named("inconsistentId", "Outer %1$s %2$s NOT equals inner %3$s %4$s", outerInventoryItemIdName, outerInventoryItemIdValue, innerInventoryItemIdName, innerInventoryItemIdValue);
         }
@@ -210,6 +220,10 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
             super(state);
         }
 
+        public SimpleInventoryItemAggregate(java.util.function.Function<String, InventoryItemState> stateFactory) {
+            super(stateFactory);
+        }
+
         @Override
         public void recordInventoryEntry(InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, Long version, String commandId, String requesterId, InventoryItemCommands.RecordInventoryEntry c) {
             java.util.function.Supplier<InventoryItemEvent.RecordInventoryEntryEvent> eventFactory = () -> newRecordInventoryEntryEvent(inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, version, commandId, requesterId);
@@ -219,17 +233,20 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
-            //
-            //获取事件对象中的实体 ID 的方法：e.getInventoryItemId()
-            //
-            //todo 创建状态（state）对象的实例，如果事件（e）中包含了实体 ID，那么需要使用这个 ID 来创建状态的实例。
+            //NOTE: 创建状态（state）对象的实例，如果事件（e）中包含了实体 ID，那么需要使用这个 ID 来创建状态的实例。
             //  如果没有，那么需要等待 mutation 方法来生成。（给状态对象的 ID 属性赋值）
-            //  不过，不管哪种方式，
-            //  在调用 apply 之前都需要创建 state 的实例。（需要外部传入 state factory？）
+            //  不过，不管哪种方式，在调用 apply 之前都需要创建 state 的实例。
+            setState(stateFactory.apply(e.getInventoryItemId()));
             apply(e);
-            //todo 在调用 apply 之后，状态对象已经存在，并且它的（实体）ID 属性应该已经有值。
+            //在调用 apply 之后，状态对象已经存在，并且它的（实体）ID 属性应该已经有值。
             //  需要将状态对象中的实体 ID 赋予事件对象
-            //  e.setInventoryItemId(...);
+            if (e.getInventoryItemId() == null) {
+                e.setInventoryItemId(getState().getInventoryItemId());
+            } else if (!e.getInventoryItemId().equals(getState().getInventoryItemId())) {
+                throw DomainError.named("InconsistentId", String.format("Event entity ID '%s' does not match state entity ID '%s'",
+                        e.getInventoryItemId(), getState().getInventoryItemId()
+                ));
+            }
         }
 
         protected InventoryItemEvent.RecordInventoryEntryEvent verifyRecordInventoryEntry(java.util.function.Supplier<InventoryItemEvent.RecordInventoryEntryEvent> eventFactory, InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, InventoryItemCommands.RecordInventoryEntry c) {
@@ -247,8 +264,7 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         }
 
         protected AbstractInventoryItemEvent.RecordInventoryEntryEvent newRecordInventoryEntryEvent(InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, Long version, String commandId, String requesterId) {
-            //todo 这个里 getState 方法可能返回 null
-            InventoryItemEventId eventId = new InventoryItemEventId(getState().getInventoryItemId(), version);
+            InventoryItemEventId eventId = getState() != null ? new InventoryItemEventId(getState().getInventoryItemId(), version) : null;
             AbstractInventoryItemEvent.RecordInventoryEntryEvent e = new AbstractInventoryItemEvent.RecordInventoryEntryEvent();
 
             e.getDynamicProperties().put("inventoryItemAttributes", inventoryItemAttributes);
@@ -262,8 +278,9 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
             e.setCreatedBy(requesterId);
             e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
 
-            //todo 如果 eventId 是 null，那么不要设置！
-            e.setInventoryItemEventId(eventId);
+            if (eventId != null) {
+                e.setInventoryItemEventId(eventId);
+            }
             return e;
         }
 
