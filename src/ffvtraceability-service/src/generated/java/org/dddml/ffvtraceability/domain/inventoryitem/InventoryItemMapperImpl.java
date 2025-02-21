@@ -15,27 +15,27 @@ public class InventoryItemMapperImpl implements InventoryItemMapper {
             return;
         }
 
-        state.setInventoryItemTypeId( attributes.getInventoryItemTypeId() );
-        state.setProductId( attributes.getProductId() );
-        state.setPartyId( attributes.getPartyId() );
-        state.setOwnerPartyId( attributes.getOwnerPartyId() );
-        state.setStatusId( attributes.getStatusId() );
-        state.setDatetimeReceived( attributes.getDatetimeReceived() );
-        state.setDatetimeManufactured( attributes.getDatetimeManufactured() );
-        state.setExpireDate( attributes.getExpireDate() );
-        state.setFacilityId( attributes.getFacilityId() );
-        state.setContainerId( attributes.getContainerId() );
-        state.setLotId( attributes.getLotId() );
-        state.setUomId( attributes.getUomId() );
-        state.setBinNumber( attributes.getBinNumber() );
-        state.setLocationSeqId( attributes.getLocationSeqId() );
-        state.setComments( attributes.getComments() );
-        state.setSerialNumber( attributes.getSerialNumber() );
-        state.setSoftIdentifier( attributes.getSoftIdentifier() );
         state.setActivationNumber( attributes.getActivationNumber() );
         state.setActivationValidThru( attributes.getActivationValidThru() );
+        state.setBinNumber( attributes.getBinNumber() );
+        state.setComments( attributes.getComments() );
+        state.setContainerId( attributes.getContainerId() );
         state.setCurrencyUomId( attributes.getCurrencyUomId() );
+        state.setDatetimeManufactured( attributes.getDatetimeManufactured() );
+        state.setDatetimeReceived( attributes.getDatetimeReceived() );
+        state.setExpireDate( attributes.getExpireDate() );
+        state.setFacilityId( attributes.getFacilityId() );
         state.setFixedAssetId( attributes.getFixedAssetId() );
+        state.setInventoryItemTypeId( attributes.getInventoryItemTypeId() );
+        state.setLocationSeqId( attributes.getLocationSeqId() );
+        state.setLotId( attributes.getLotId() );
+        state.setOwnerPartyId( attributes.getOwnerPartyId() );
+        state.setPartyId( attributes.getPartyId() );
+        state.setProductId( attributes.getProductId() );
+        state.setSerialNumber( attributes.getSerialNumber() );
+        state.setSoftIdentifier( attributes.getSoftIdentifier() );
+        state.setStatusId( attributes.getStatusId() );
+        state.setUomId( attributes.getUomId() );
     }
 
     @Override
@@ -44,21 +44,21 @@ public class InventoryItemMapperImpl implements InventoryItemMapper {
             return;
         }
 
+        state.setDescription( attributes.getDescription() );
         state.setEffectiveDate( attributes.getEffectiveDate() );
+        state.setFixedAssetId( attributes.getFixedAssetId() );
+        state.setItemIssuanceId( attributes.getItemIssuanceId() );
+        state.setMaintHistSeqId( attributes.getMaintHistSeqId() );
         state.setOrderId( attributes.getOrderId() );
         state.setOrderItemSeqId( attributes.getOrderItemSeqId() );
+        state.setPhysicalInventoryId( attributes.getPhysicalInventoryId() );
+        state.setReasonEnumId( attributes.getReasonEnumId() );
+        state.setReceiptId( attributes.getReceiptId() );
+        state.setReturnId( attributes.getReturnId() );
+        state.setReturnItemSeqId( attributes.getReturnItemSeqId() );
         state.setShipGroupSeqId( attributes.getShipGroupSeqId() );
         state.setShipmentId( attributes.getShipmentId() );
         state.setShipmentItemSeqId( attributes.getShipmentItemSeqId() );
-        state.setReturnId( attributes.getReturnId() );
-        state.setReturnItemSeqId( attributes.getReturnItemSeqId() );
         state.setWorkEffortId( attributes.getWorkEffortId() );
-        state.setFixedAssetId( attributes.getFixedAssetId() );
-        state.setMaintHistSeqId( attributes.getMaintHistSeqId() );
-        state.setItemIssuanceId( attributes.getItemIssuanceId() );
-        state.setReceiptId( attributes.getReceiptId() );
-        state.setPhysicalInventoryId( attributes.getPhysicalInventoryId() );
-        state.setReasonEnumId( attributes.getReasonEnumId() );
-        state.setDescription( attributes.getDescription() );
     }
 }

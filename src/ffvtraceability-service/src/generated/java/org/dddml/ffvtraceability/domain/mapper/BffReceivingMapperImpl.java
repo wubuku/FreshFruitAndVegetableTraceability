@@ -21,22 +21,22 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
 
         BffReceivingDocumentDto bffReceivingDocumentDto = new BffReceivingDocumentDto();
 
-        bffReceivingDocumentDto.setDocumentId( documentItemProjection.getDocumentId() );
-        bffReceivingDocumentDto.setStatusId( documentItemProjection.getStatusId() );
-        bffReceivingDocumentDto.setPartyIdTo( documentItemProjection.getPartyIdTo() );
-        bffReceivingDocumentDto.setPartyIdFrom( documentItemProjection.getPartyIdFrom() );
-        bffReceivingDocumentDto.setPartyNameFrom( documentItemProjection.getPartyNameFrom() );
-        bffReceivingDocumentDto.setOriginFacilityId( documentItemProjection.getOriginFacilityId() );
-        bffReceivingDocumentDto.setOriginFacilityName( documentItemProjection.getOriginFacilityName() );
+        bffReceivingDocumentDto.setCreatedAt( instantToOffsetDateTime( documentItemProjection.getCreatedAt() ) );
+        bffReceivingDocumentDto.setCreatedBy( documentItemProjection.getCreatedBy() );
         bffReceivingDocumentDto.setDestinationFacilityId( documentItemProjection.getDestinationFacilityId() );
         bffReceivingDocumentDto.setDestinationFacilityName( documentItemProjection.getDestinationFacilityName() );
+        bffReceivingDocumentDto.setDocumentId( documentItemProjection.getDocumentId() );
+        bffReceivingDocumentDto.setOriginFacilityId( documentItemProjection.getOriginFacilityId() );
+        bffReceivingDocumentDto.setOriginFacilityName( documentItemProjection.getOriginFacilityName() );
+        bffReceivingDocumentDto.setPartyIdFrom( documentItemProjection.getPartyIdFrom() );
+        bffReceivingDocumentDto.setPartyIdTo( documentItemProjection.getPartyIdTo() );
+        bffReceivingDocumentDto.setPartyNameFrom( documentItemProjection.getPartyNameFrom() );
         bffReceivingDocumentDto.setPrimaryOrderId( documentItemProjection.getPrimaryOrderId() );
         bffReceivingDocumentDto.setPrimaryReturnId( documentItemProjection.getPrimaryReturnId() );
         bffReceivingDocumentDto.setPrimaryShipGroupSeqId( documentItemProjection.getPrimaryShipGroupSeqId() );
-        bffReceivingDocumentDto.setQaStatusId( documentItemProjection.getQaStatusId() );
         bffReceivingDocumentDto.setQaInspectionStatusId( documentItemProjection.getQaInspectionStatusId() );
-        bffReceivingDocumentDto.setCreatedAt( instantToOffsetDateTime( documentItemProjection.getCreatedAt() ) );
-        bffReceivingDocumentDto.setCreatedBy( documentItemProjection.getCreatedBy() );
+        bffReceivingDocumentDto.setQaStatusId( documentItemProjection.getQaStatusId() );
+        bffReceivingDocumentDto.setStatusId( documentItemProjection.getStatusId() );
 
         return bffReceivingDocumentDto;
     }
@@ -49,37 +49,37 @@ public class BffReceivingMapperImpl implements BffReceivingMapper {
 
         BffReceivingItemDto bffReceivingItemDto = new BffReceivingItemDto();
 
-        bffReceivingItemDto.setReceiptId( documentItemProjection.getReceiptId() );
-        bffReceivingItemDto.setProductId( documentItemProjection.getProductId() );
-        bffReceivingItemDto.setProductName( documentItemProjection.getProductName() );
-        bffReceivingItemDto.setSmallImageUrl( documentItemProjection.getSmallImageUrl() );
-        bffReceivingItemDto.setQuantityUomId( documentItemProjection.getQuantityUomId() );
         bffReceivingItemDto.setCaseUomId( documentItemProjection.getCaseUomId() );
-        bffReceivingItemDto.setQuantityIncluded( documentItemProjection.getQuantityIncluded() );
-        bffReceivingItemDto.setPiecesIncluded( documentItemProjection.getPiecesIncluded() );
-        bffReceivingItemDto.setInternalId( documentItemProjection.getInternalId() );
-        bffReceivingItemDto.setGtin( documentItemProjection.getGtin() );
-        bffReceivingItemDto.setLotId( documentItemProjection.getLotId() );
-        bffReceivingItemDto.setLocationSeqId( documentItemProjection.getLocationSeqId() );
-        bffReceivingItemDto.setLocationName( documentItemProjection.getLocationName() );
-        bffReceivingItemDto.setItemDescription( documentItemProjection.getItemDescription() );
-        bffReceivingItemDto.setQuantityAccepted( documentItemProjection.getQuantityAccepted() );
-        bffReceivingItemDto.setQuantityRejected( documentItemProjection.getQuantityRejected() );
         bffReceivingItemDto.setCasesAccepted( documentItemProjection.getCasesAccepted() );
         bffReceivingItemDto.setCasesRejected( documentItemProjection.getCasesRejected() );
+        bffReceivingItemDto.setComments( documentItemProjection.getComments() );
+        bffReceivingItemDto.setDeleted( documentItemProjection.getDeleted() );
+        bffReceivingItemDto.setGtin( documentItemProjection.getGtin() );
+        bffReceivingItemDto.setInspectedBy( documentItemProjection.getInspectedBy() );
+        bffReceivingItemDto.setInternalId( documentItemProjection.getInternalId() );
+        bffReceivingItemDto.setItemDescription( documentItemProjection.getItemDescription() );
+        bffReceivingItemDto.setLocationName( documentItemProjection.getLocationName() );
+        bffReceivingItemDto.setLocationSeqId( documentItemProjection.getLocationSeqId() );
+        bffReceivingItemDto.setLotId( documentItemProjection.getLotId() );
         bffReceivingItemDto.setOrderId( documentItemProjection.getOrderId() );
         bffReceivingItemDto.setOrderItemSeqId( documentItemProjection.getOrderItemSeqId() );
+        bffReceivingItemDto.setOutstandingOrderQuantity( documentItemProjection.getOutstandingOrderQuantity() );
+        bffReceivingItemDto.setPiecesIncluded( documentItemProjection.getPiecesIncluded() );
+        bffReceivingItemDto.setProductId( documentItemProjection.getProductId() );
+        bffReceivingItemDto.setProductName( documentItemProjection.getProductName() );
+        bffReceivingItemDto.setQaInspectionStatusId( documentItemProjection.getQaInspectionStatusId() );
+        bffReceivingItemDto.setQuantityAccepted( documentItemProjection.getQuantityAccepted() );
+        bffReceivingItemDto.setQuantityIncluded( documentItemProjection.getQuantityIncluded() );
+        bffReceivingItemDto.setQuantityRejected( documentItemProjection.getQuantityRejected() );
+        bffReceivingItemDto.setQuantityUomId( documentItemProjection.getQuantityUomId() );
+        bffReceivingItemDto.setReceiptId( documentItemProjection.getReceiptId() );
+        bffReceivingItemDto.setRejectionId( documentItemProjection.getRejectionId() );
         bffReceivingItemDto.setReturnId( documentItemProjection.getReturnId() );
         bffReceivingItemDto.setReturnItemSeqId( documentItemProjection.getReturnItemSeqId() );
-        bffReceivingItemDto.setRejectionId( documentItemProjection.getRejectionId() );
         bffReceivingItemDto.setShipmentId( documentItemProjection.getShipmentId() );
         bffReceivingItemDto.setShipmentItemSeqId( documentItemProjection.getShipmentItemSeqId() );
         bffReceivingItemDto.setShipmentPackageSeqId( documentItemProjection.getShipmentPackageSeqId() );
-        bffReceivingItemDto.setOutstandingOrderQuantity( documentItemProjection.getOutstandingOrderQuantity() );
-        bffReceivingItemDto.setInspectedBy( documentItemProjection.getInspectedBy() );
-        bffReceivingItemDto.setComments( documentItemProjection.getComments() );
-        bffReceivingItemDto.setQaInspectionStatusId( documentItemProjection.getQaInspectionStatusId() );
-        bffReceivingItemDto.setDeleted( documentItemProjection.getDeleted() );
+        bffReceivingItemDto.setSmallImageUrl( documentItemProjection.getSmallImageUrl() );
 
         return bffReceivingItemDto;
     }
