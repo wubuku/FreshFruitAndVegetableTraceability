@@ -6,10 +6,14 @@
 package org.dddml.ffvtraceability.domain.inventoryitem;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.dddml.ffvtraceability.specialization.DomainError;
 import org.dddml.ffvtraceability.specialization.MutationContext;
 import org.dddml.ffvtraceability.specialization.VerificationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.UUID;
 
 
 /**
@@ -89,21 +93,67 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
             java.math.BigDecimal unitCost,
             MutationContext<InventoryItemState, InventoryItemState.MutableInventoryItemState> mutationContext
     ) {
+        if (inventoryItemState == null) {
+            throw DomainError.named("InvalidState", "InventoryItem state cannot be null");
+        }
         InventoryItemState.MutableInventoryItemState s = mutationContext.createMutableState(inventoryItemState);
         if (s.getVersion() == null) {
+            // 新建库存项目
             if (inventoryItemAttributes == null) {
-                //todo throw 合适的异常
+                throw DomainError.named("InvalidAttributes", "InventoryItem attributes are required for new inventory item");
             }
             inventoryItemMapper.updateInventoryItemState(s, inventoryItemAttributes);
-            //todo s.setInventoryItemId();
-            //todo s.setInventoryItemAttributeHash();
-        } else {
-            if (inventoryItemAttributes != null) {
-                //todo throw 合适的异常！ 因为当已经存在 InventoryItem 时，不能修改它的属性。
+            //TODO s.setInventoryItemId();  // 下面先使用 UUID
+            s.setInventoryItemId(UUID.randomUUID().toString());
+            //TODO s.setInventoryItemAttributeHash();
+            InventoryItemDetailState.MutableInventoryItemDetailState d = s.getDetails().getOrAddMutableState(UUID.randomUUID().toString());
+            // 如果有详细属性，更新它们
+            if (inventoryItemDetailAttributes != null) {
+                inventoryItemMapper.updateInventoryItemDetailState(d, inventoryItemDetailAttributes);
             }
-        }
 
-        // TODO: implement
-        return s; // Return the updated state
+            d.setQuantityOnHandDiff(quantityOnHandDiff);
+            s.setQuantityOnHandTotal(quantityOnHandDiff);
+            d.setAvailableToPromiseDiff(availableToPromiseDiff);
+            s.setAvailableToPromiseTotal(availableToPromiseDiff);
+            d.setAccountingQuantityDiff(accountingQuantityDiff);
+            s.setAccountingQuantityTotal(accountingQuantityDiff);
+//            d.setUnitCost(unitCost);
+//            s.setUnitCost(unitCost);
+        } else {
+            // 更新已存在的库存项目
+            if (inventoryItemAttributes != null) {
+                throw DomainError.named("InvalidOperation",
+                        "Cannot modify inventory item attributes for existing inventory item");
+            }
+            // 创建新的库存明细记录
+            InventoryItemDetailState.MutableInventoryItemDetailState d = s.getDetails().getOrAddMutableState(UUID.randomUUID().toString());
+            if (inventoryItemDetailAttributes != null) {
+                inventoryItemMapper.updateInventoryItemDetailState(d, inventoryItemDetailAttributes);
+            }
+
+            // 设置数量变化并累加总量
+            if (quantityOnHandDiff != null) {
+                d.setQuantityOnHandDiff(quantityOnHandDiff);
+                java.math.BigDecimal currentTotal = s.getQuantityOnHandTotal() != null ? s.getQuantityOnHandTotal() : BigDecimal.ZERO;
+                s.setQuantityOnHandTotal(currentTotal.add(quantityOnHandDiff));
+            }
+            if (availableToPromiseDiff != null) {
+                d.setAvailableToPromiseDiff(availableToPromiseDiff);
+                java.math.BigDecimal currentTotal = s.getAvailableToPromiseTotal() != null ? s.getAvailableToPromiseTotal() : BigDecimal.ZERO;
+                s.setAvailableToPromiseTotal(currentTotal.add(availableToPromiseDiff));
+            }
+            if (accountingQuantityDiff != null) {
+                d.setAccountingQuantityDiff(accountingQuantityDiff);
+                java.math.BigDecimal currentTotal = s.getAccountingQuantityTotal() != null ? s.getAccountingQuantityTotal() : BigDecimal.ZERO;
+                s.setAccountingQuantityTotal(currentTotal.add(accountingQuantityDiff));
+            }
+//            if (unitCost != null) {
+//                d.setUnitCost(unitCost);
+//                s.setUnitCost(unitCost); // 更新当前单位成本
+//            }
+
+        }
+        return s;
     }
 }

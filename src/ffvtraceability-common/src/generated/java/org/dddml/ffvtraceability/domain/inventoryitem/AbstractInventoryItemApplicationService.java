@@ -58,7 +58,7 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
     }
 
     public void when(InventoryItemCommands.RecordInventoryEntry c) {
-        update(c, ar -> ar.recordInventoryEntry(c.getInventoryItemAttributes(), c.getInventoryItemDetailAttributes(), c.getQuantityOnHandDiff(), c.getAvailableToPromiseDiff(), c.getAccountingQuantityDiff(), c.getUnitCost(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        updateWithOptionalId(c, ar -> ar.recordInventoryEntry(c.getInventoryItemAttributes(), c.getInventoryItemDetailAttributes(), c.getQuantityOnHandDiff(), c.getAvailableToPromiseDiff(), c.getAccountingQuantityDiff(), c.getUnitCost(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public InventoryItemState get(String id) {
@@ -122,11 +122,12 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
         return new EventStoreAggregateId.SimpleEventStoreAggregateId(aggregateId);
     }
 
-    protected void createOrUpdate(InventoryItemCommand c, Consumer<InventoryItemAggregate> action) {
-        //  允许命令中不包含实体的 ID。（Id 属性为 null）
-        //  如果不包含 ID，那么走的流程和现有的 update 方法不同。
-        //  “create” 流程可以不向 InventoryItemAggregate 传入 state 对象，而是传入 state factory。
-        //  当调用 `action.accept(aggregate)` 时，aggregate 对象内部会调用 verification 以及在需要的时候创建 state 对象。
+    protected void updateWithOptionalId(InventoryItemCommand c, Consumer<InventoryItemAggregate> action) {
+        // The command is allowed to not contain the entity ID (the ID property can be null).
+        // If ID is not included, the flow will be different from the existing update method.
+        // The "create" flow can pass a state factory to the Aggregate Object instead of passing a state object.
+        // When calling `action.accept(aggregate)`, the aggregate object will internally call the verification method,
+        // and create the state object when needed.
         String aggregateId = c.getInventoryItemId();
         if (aggregateId == null) {
             InventoryItemAggregate aggregate = new AbstractInventoryItemAggregate.SimpleInventoryItemAggregate((i -> {
@@ -140,23 +141,11 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
             InventoryItemState state = aggregate.getState();
             aggregateId = state.getInventoryItemId();
             EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-            persist(eventStoreAggregateId, c.getVersion() == null ? InventoryItemState.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
+            persist(eventStoreAggregateId, c.getVersion() == null ? InventoryItemState.VERSION_NULL : c.getVersion(), aggregate, state);
 
         } else {
-            EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-            InventoryItemState state = getStateRepository().get(aggregateId, false);
-            boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);
-            if (duplicate) {
-                return;
-            }
-
-            InventoryItemAggregate aggregate = getInventoryItemAggregate(state);
-            aggregate.throwOnInvalidStateTransition(c);
-            action.accept(aggregate);
-            persist(eventStoreAggregateId, c.getVersion() == null ? InventoryItemState.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
-
+            update(c, action);
         }
-
     }
 
     protected void update(InventoryItemCommand c, Consumer<InventoryItemAggregate> action) {

@@ -49,12 +49,13 @@ public interface InventoryItemEvent extends Event {
 
     String getInventoryItemId();
 
-    // 如果是需要“方法的业务逻辑实现”来决定实体的 ID，那么需要有这个 set ID 方法
+    // If the "biz. logic of the method" is required to determine the ID of the entity,
+    // then the "set ID" method and "set Version" method are required.
     void setInventoryItemId(String inventoryItemId);
 
     Long getVersion();
-    
-    //void setVersion(Long version);
+
+    void setVersion(Long version);
 
     String getCreatedBy();
 

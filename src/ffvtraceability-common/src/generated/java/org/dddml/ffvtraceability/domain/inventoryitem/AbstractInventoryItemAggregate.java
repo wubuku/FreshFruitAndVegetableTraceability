@@ -233,19 +233,25 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
-            //NOTE: 创建状态（state）对象的实例，如果事件（e）中包含了实体 ID，那么需要使用这个 ID 来创建状态的实例。
-            //  如果没有，那么需要等待 mutation 方法来生成。（给状态对象的 ID 属性赋值）
-            //  不过，不管哪种方式，在调用 apply 之前都需要创建 state 的实例。
-            setState(stateFactory.apply(e.getInventoryItemId()));
-            apply(e);
-            //在调用 apply 之后，状态对象已经存在，并且它的（实体）ID 属性应该已经有值。
-            //  需要将状态对象中的实体 ID 赋予事件对象
-            if (e.getInventoryItemId() == null) {
-                e.setInventoryItemId(getState().getInventoryItemId());
-            } else if (!e.getInventoryItemId().equals(getState().getInventoryItemId())) {
-                throw DomainError.named("InconsistentId", String.format("Event entity ID '%s' does not match state entity ID '%s'",
-                        e.getInventoryItemId(), getState().getInventoryItemId()
-                ));
+            if (getState() == null) {
+                // NOTE: Create an instance of the state object. If the event `e` contains an entity ID,
+                //   we need to use this ID to create the state instance.
+                //   If not, we need to wait for the mutation method to generate it (assign value to the state object's ID property).
+                //   In either case, we need to create the state instance before calling apply.
+                setState(stateFactory.apply(e.getInventoryItemId()));
+                e.setVersion(getState().getVersion() == null ? InventoryItemState.VERSION_NULL : getState().getVersion());
+                apply(e);
+                //  After calling `apply`, the state object exists and its entity ID property should have a value.
+                //    We need to assign the entity ID from the state object to the event object
+                if (e.getInventoryItemId() == null) {
+                    e.setInventoryItemId(getState().getInventoryItemId());
+                } else if (!e.getInventoryItemId().equals(getState().getInventoryItemId())) {
+                    throw DomainError.named("InconsistentId", String.format("Event entity ID '%s' does not match state entity ID '%s'",
+                            e.getInventoryItemId(), getState().getInventoryItemId()
+                    ));
+                }
+            } else {
+                apply(e);
             }
         }
 

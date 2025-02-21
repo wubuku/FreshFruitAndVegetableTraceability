@@ -733,7 +733,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
     }
 
     public void when(AbstractInventoryItemEvent.RecordInventoryEntryEvent e) {
-        throwOnWrongEvent(e);
+        //throwOnWrongEvent(e);
 
         InventoryItemAttributes inventoryItemAttributes = e.getInventoryItemAttributes();
         InventoryItemAttributes InventoryItemAttributes = inventoryItemAttributes;
@@ -762,7 +762,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
 
 
         if (this != updatedInventoryItemState) { merge(updatedInventoryItemState); } //else do nothing
-        // NOTE: 如果“当前的”状态对象没有 Id，那么需要设置 Id！
+        // NOTE: If the current state object does not have an ID, then the ID needs to be set.
         if (this != updatedInventoryItemState && this.getInventoryItemId() == null) {
             this.setInventoryItemId(updatedInventoryItemState.getInventoryItemId());
         }
@@ -910,7 +910,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedDetails.contains(c);
+            return protectedDetails.containsAll(c);
         }
 
         @Override
