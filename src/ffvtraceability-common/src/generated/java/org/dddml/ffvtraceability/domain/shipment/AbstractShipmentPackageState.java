@@ -579,7 +579,7 @@ public abstract class AbstractShipmentPackageState implements ShipmentPackageSta
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedShipmentPackageContents.contains(c);
+            return protectedShipmentPackageContents.containsAll(c);
         }
 
         @Override

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.bffnotification">
+  <class name="AbstractBffNotificationEvent" table="bff_notification_event" abstract="true">
+    <composite-id name="bffNotificationEventId" class="org.dddml.ffvtraceability.domain.bffnotification.BffNotificationEventId">
+      <key-property name="bffNotificationId">
+        <column name="bff_notification_id" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <subclass name="AbstractBffNotificationEvent$BffNotificationLobEvent" discriminator-value="BffNotificationLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractBffNotificationEvent$AbstractBffNotificationStateEvent" abstract="true">
+      <property name="notificationTypeId">
+        <column name="notification_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="referenceDocumentTypeId">
+        <column name="reference_document_type_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="referenceDocumentId">
+        <column name="reference_document_id" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="referenceDocumentNumber">
+        <column name="reference_document_number" sql-type="VARCHAR(60)" />
+      </property>
+      <property name="notificationContent">
+        <column name="notification_content" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="statusId">
+        <column name="status_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="priority">
+        <column name="priority" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="recipientId">
+        <column name="recipient_id" sql-type="VARCHAR(60)" />
+      </property>
+      <subclass name="AbstractBffNotificationEvent$SimpleBffNotificationStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractBffNotificationEvent$SimpleBffNotificationStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyNotificationTypeIdRemoved" column="is_property_notification_type_id_removed" />
+        <property name="isPropertyReferenceDocumentTypeIdRemoved" column="is_property_reference_document_type_id_removed" />
+        <property name="isPropertyReferenceDocumentIdRemoved" column="is_property_reference_document_id_removed" />
+        <property name="isPropertyReferenceDocumentNumberRemoved" column="is_property_reference_document_number_removed" />
+        <property name="isPropertyNotificationContentRemoved" column="is_property_notification_content_removed" />
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyPriorityRemoved" column="is_property_priority_removed" />
+        <property name="isPropertyRecipientIdRemoved" column="is_property_recipient_id_removed" />
+      </subclass>
+      <subclass name="AbstractBffNotificationEvent$SimpleBffNotificationStateDeleted" discriminator-value="Deleted"></subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

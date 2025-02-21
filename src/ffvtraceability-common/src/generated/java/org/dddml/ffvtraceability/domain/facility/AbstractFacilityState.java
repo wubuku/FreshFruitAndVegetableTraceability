@@ -788,7 +788,7 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedFacilityIdentifications.contains(c);
+            return protectedFacilityIdentifications.containsAll(c);
         }
 
         @Override

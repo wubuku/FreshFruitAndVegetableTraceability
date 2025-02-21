@@ -997,7 +997,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedShipmentItems.contains(c);
+            return protectedShipmentItems.containsAll(c);
         }
 
         @Override
@@ -1118,7 +1118,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedShipmentPackages.contains(c);
+            return protectedShipmentPackages.containsAll(c);
         }
 
         @Override

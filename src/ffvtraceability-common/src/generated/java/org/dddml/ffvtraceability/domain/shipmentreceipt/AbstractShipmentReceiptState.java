@@ -884,7 +884,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedShipmentReceiptRoles.contains(c);
+            return protectedShipmentReceiptRoles.containsAll(c);
         }
 
         @Override
@@ -1005,7 +1005,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedOrderAllocations.contains(c);
+            return protectedOrderAllocations.containsAll(c);
         }
 
         @Override

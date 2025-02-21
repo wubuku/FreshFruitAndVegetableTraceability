@@ -1,0 +1,32 @@
+aggregates:
+  BffNotification:
+    reservedPropertyMetadata:
+      noDeleted: false # Deletable
+    id:
+      name: BffNotificationId
+      type: id-long
+    properties:
+      NotificationTypeId:
+        type: id
+        description: Type of notification (e.g., new order created, order cancelled, receipt created, receipt modified)
+      ReferenceDocumentTypeId:
+        type: id
+        description: Type of the referenced document (e.g., purchase order, receipt, quality inspection)
+      ReferenceDocumentId:
+        type: id-long
+        description: Unique identifier of the referenced document
+      ReferenceDocumentNumber:
+        type: id-long
+        description: Human-readable business number of the referenced document
+      NotificationContent:
+        type: description
+        description: Content of the notification message
+      StatusId:
+        type: id
+        description: Status of the notification (e.g., unread, read)
+      Priority:
+        type: numeric
+        description: Priority level of the notification
+      RecipientId:
+        type: id-long
+        description: Identifier of the notification recipient

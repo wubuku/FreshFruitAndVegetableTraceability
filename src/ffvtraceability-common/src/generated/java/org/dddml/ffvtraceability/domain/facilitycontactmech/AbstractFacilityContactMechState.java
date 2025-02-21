@@ -442,7 +442,7 @@ public abstract class AbstractFacilityContactMechState implements FacilityContac
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedFacilityContactMechPurposes.contains(c);
+            return protectedFacilityContactMechPurposes.containsAll(c);
         }
 
         @Override

@@ -1795,7 +1795,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedGoodIdentifications.contains(c);
+            return protectedGoodIdentifications.containsAll(c);
         }
 
         @Override

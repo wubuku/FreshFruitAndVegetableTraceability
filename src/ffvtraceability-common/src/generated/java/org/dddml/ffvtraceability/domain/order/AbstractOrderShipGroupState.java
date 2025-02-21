@@ -826,7 +826,7 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedOrderItemShipGroupAssociations.contains(c);
+            return protectedOrderItemShipGroupAssociations.containsAll(c);
         }
 
         @Override

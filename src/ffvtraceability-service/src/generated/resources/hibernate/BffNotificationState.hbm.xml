@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.bffnotification">
+  <class name="org.dddml.ffvtraceability.domain.bffnotification.AbstractBffNotificationState$SimpleBffNotificationState" table="bff_notification">
+    <id name="bffNotificationId" length="60">
+      <column name="bff_notification_id" sql-type="VARCHAR(60)" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <property name="notificationTypeId">
+      <column name="notification_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="referenceDocumentTypeId">
+      <column name="reference_document_type_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="referenceDocumentId">
+      <column name="reference_document_id" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="referenceDocumentNumber">
+      <column name="reference_document_number" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="notificationContent">
+      <column name="notification_content" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="statusId">
+      <column name="status_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="priority">
+      <column name="priority" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="recipientId">
+      <column name="recipient_id" sql-type="VARCHAR(60)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="__Deleted__">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
+  </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
+</hibernate-mapping>

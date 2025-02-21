@@ -486,7 +486,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedComments.contains(c);
+            return protectedComments.containsAll(c);
         }
 
         @Override

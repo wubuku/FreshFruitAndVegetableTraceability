@@ -1238,7 +1238,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedOrderRoles.contains(c);
+            return protectedOrderRoles.containsAll(c);
         }
 
         @Override
@@ -1359,7 +1359,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedOrderContactMechanisms.contains(c);
+            return protectedOrderContactMechanisms.containsAll(c);
         }
 
         @Override
@@ -1480,7 +1480,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedOrderItems.contains(c);
+            return protectedOrderItems.containsAll(c);
         }
 
         @Override
@@ -1601,7 +1601,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedOrderAdjustments.contains(c);
+            return protectedOrderAdjustments.containsAll(c);
         }
 
         @Override
@@ -1722,7 +1722,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedOrderShipGroups.contains(c);
+            return protectedOrderShipGroups.containsAll(c);
         }
 
         @Override

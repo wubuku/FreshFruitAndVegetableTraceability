@@ -613,7 +613,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedLotIdentifications.contains(c);
+            return protectedLotIdentifications.containsAll(c);
         }
 
         @Override

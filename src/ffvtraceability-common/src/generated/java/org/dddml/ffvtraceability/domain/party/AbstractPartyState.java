@@ -575,7 +575,7 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedPartyIdentifications.contains(c);
+            return protectedPartyIdentifications.containsAll(c);
         }
 
         @Override

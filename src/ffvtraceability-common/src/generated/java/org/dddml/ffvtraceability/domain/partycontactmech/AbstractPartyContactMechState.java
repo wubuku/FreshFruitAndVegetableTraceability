@@ -537,7 +537,7 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedPartyContactMechPurposes.contains(c);
+            return protectedPartyContactMechPurposes.containsAll(c);
         }
 
         @Override

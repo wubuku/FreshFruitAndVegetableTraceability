@@ -423,7 +423,7 @@ public abstract class AbstractAttributeSetState implements AttributeSetState.Sql
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedAttributeUses.contains(c);
+            return protectedAttributeUses.containsAll(c);
         }
 
         @Override

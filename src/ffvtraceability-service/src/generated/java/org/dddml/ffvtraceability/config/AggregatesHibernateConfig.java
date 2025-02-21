@@ -200,6 +200,9 @@ import org.dddml.ffvtraceability.domain.attribute.hibernate.*;
 import org.dddml.ffvtraceability.domain.attributeset.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.attributeset.hibernate.*;
+import org.dddml.ffvtraceability.domain.bffnotification.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.bffnotification.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -1169,6 +1172,22 @@ public class AggregatesHibernateConfig {
                 attributeSetEventStore,
                 attributeSetStateRepository,
                 attributeSetStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractBffNotificationApplicationService.SimpleBffNotificationApplicationService bffNotificationApplicationService(
+            @Qualifier("bffNotificationEventStore") EventStore bffNotificationEventStore,
+            BffNotificationStateRepository bffNotificationStateRepository,
+            BffNotificationStateQueryRepository bffNotificationStateQueryRepository
+    ) {
+        AbstractBffNotificationApplicationService.SimpleBffNotificationApplicationService applicationService = new AbstractBffNotificationApplicationService.SimpleBffNotificationApplicationService(
+                bffNotificationEventStore,
+                bffNotificationStateRepository,
+                bffNotificationStateQueryRepository
         );
         return applicationService;
     }
