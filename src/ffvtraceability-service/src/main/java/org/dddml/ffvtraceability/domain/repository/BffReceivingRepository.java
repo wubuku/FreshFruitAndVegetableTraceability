@@ -290,7 +290,8 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 sr.receipt_id as receiptId,
                 CASE 
                     WHEN qi.status_id = 'APPROVED' THEN 'INSPECTION_PASSED'
-                    WHEN qi.status_id = 'REJECTED' THEN 'INSPECTION_FAILED'
+                    WHEN qi.status_id = 'REJECTED' THEN 'INSPECTION_FAILED'                    
+                    WHEN qi.status_id = 'ON_HOLD' THEN 'INSPECTION_ON_HOLD'
                     ELSE NULL 
                 END as qaInspectionStatusId
             FROM shipment_receipt sr
