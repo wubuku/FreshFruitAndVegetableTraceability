@@ -91,7 +91,7 @@ docker run -d \
   your-docker-image:tag
 ```
 
-示例：
+示例（：
 
 ```bash
 docker run -d \
@@ -103,6 +103,9 @@ docker run -d \
   -e STORAGE_GCS_PUBLIC_BUCKET="gmeme-public" \
   -e SPRING_DATASOURCE_URL='jdbc:mysql://10.95.80.3:3306/gmeme_files?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false' \
   -e SPRING_DATASOURCE_USERNAME=flex-api-test \
+  -e SPRING_DATASOURCE_PASSWORD='YOUR_PASSWORD' \
+  -e SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver \
+  -e SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQLDialect \
   ghcr.io/wubuku/ffvtraceability-file-service:main
 ```
 
