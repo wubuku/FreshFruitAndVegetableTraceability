@@ -1,25 +1,28 @@
 # File Service
 
-## 关于使用 GCS 作为后端存储的说明
+## GCS 存储后端配置指南
 
-### 1. 配置概述
+本文档介绍如何使用 Google Cloud Storage (GCS) 作为文件服务的存储后端。
 
-要使用 Google Cloud Storage (GCS) 作为文件服务的后端存储，需要：
-1. 正确配置 GCS 相关环境
-2. 确保运行环境具有适当的 GCS 访问权限
+### 1. 前置要求
 
-### 2. 配置步骤
+成功配置 GCS 存储后端需要：
+1. Google Cloud 项目访问权限
+2. 适当的 GCS 访问权限
+3. 相关命令行工具（gcloud）
 
-#### 2.1 创建和配置 Bucket
+### 2. 存储配置
 
-以下命令示例中使用的配置：
-- Project ID: `woven-justice-441107-h8`（替换为你的项目 ID）
-- Location: `asia-east1`（可选择离你最近的区域）
+#### 2.1 创建存储 Bucket
+
+本服务需要两个 bucket：一个用于私有文件，另一个用于公开访问的文件。以下示例使用：
+- Project ID: `woven-justice-441107-h8`（请替换为你的项目 ID）
+- Location: `asia-east1`（选择适合你的区域）
 - Bucket 名称: 
   - 私有：`flex-api-private`
   - 公开：`flex-api-public`
 
-> 注意：Bucket 名称必须是全局唯一的，建议使用有意义的前缀，如项目名或组织名。
+> 注意：Bucket 名称在全局范围内必须唯一，建议使用项目名或组织名作为前缀。
 
 1. 创建私有 bucket（默认就是私有的）：
 ```shell
@@ -44,7 +47,7 @@ gcloud storage buckets add-iam-policy-binding gs://flex-api-public \
 
 #### 2.2 应用配置
 
-在 `application.yml` 中配置：
+配置 application.yml 文件：
 ```yaml
 storage:
   type: gcs  # 指定使用 GCS 存储
@@ -54,11 +57,16 @@ storage:
     public-bucket: your-public-bucket
 ```
 
-### 3. 部署方式
+### 3. 访问权限配置
+
+在 Google Cloud 中，访问权限的控制分为两个层面：
+1. VM 实例级别的访问作用域（Access Scopes）
+2. 服务账号级别的 IAM 权限
 
 #### 3.1 本地开发环境
 
-使用服务账号 JSON 文件：
+本地开发时，只需要使用服务账号 JSON 文件即可，不涉及 VM 的访问作用域：
+
 ```bash
 docker run -d \
   --name file-service \
@@ -79,24 +87,29 @@ docker run -d \
 
 #### 3.2 Google Cloud VM 环境（推荐）
 
-在 Google Cloud VM 上运行时，需要确保 VM 有正确的访问权限。有两种方式：
+在 VM 环境中，需要同时配置：
+1. VM 的访问作用域
+2. 服务账号的 IAM 权限
 
-##### A. 使用访问作用域（Access Scopes）
+有两种配置方案：
 
+##### 方案一：使用特定的访问作用域
+
+这种方式直接在 VM 级别控制对 GCS 的访问权限：
+
+1. 检查当前 VM 的访问作用域：
 ```bash
-# 检查当前 VM 的作用域
 gcloud compute instances describe INSTANCE_NAME \
     --zone=ZONE \
     --format='get(serviceAccounts[].scopes)'
 ```
 
-实际案例：当发现 VM 只有 `devstorage.read_only` 作用域时，需要更新为 `devstorage.full_control`：
-
+2. 如果作用域不足（例如只有 `devstorage.read_only`），需要更新为 `devstorage.full_control`：
 ```bash
 # 1. 停止 VM
 gcloud compute instances stop instance-20250124-134353 --zone=us-central1-c
 
-# 2. 更新 VM 的访问作用域（保留其他必要的作用域）
+# 2. 更新访问作用域（保留其他必要的作用域）
 gcloud compute instances set-service-account instance-20250124-134353 \
     --zone=us-central1-c \
     --scopes=https://www.googleapis.com/auth/devstorage.full_control,\
@@ -110,64 +123,65 @@ https://www.googleapis.com/auth/trace.append
 gcloud compute instances start instance-20250124-134353 --zone=us-central1-c
 ```
 
-> 注意：更新 VM 的访问作用域需要重启 VM。如果想避免重启，建议使用方式 B（cloud-platform 作用域和 IAM 权限）。
+##### 方案二：使用 cloud-platform 作用域 + IAM（推荐）
 
-##### B. 使用 cloud-platform 作用域和 IAM 权限（推荐）
+这种方式更灵活，但需要两步配置：
 
-这种方式更灵活，因为：
-- 不需要管理具体的 API 作用域
-- 可以通过 IAM 精细控制权限
-- 不需要重启 VM 就能更新权限
-
+1. 首先确保 VM 有 `cloud-platform` 作用域：
 ```bash
-# 创建 VM 时设置
-gcloud compute instances create INSTANCE_NAME \
+# 检查作用域
+gcloud compute instances describe INSTANCE_NAME \
+    --zone=ZONE \
+    --format='get(serviceAccounts[].scopes)'
+
+# 如果没有 cloud-platform 作用域，需要更新（需要重启 VM）
+gcloud compute instances set-service-account INSTANCE_NAME \
     --zone=ZONE \
     --scopes=cloud-platform
-
-# 确保服务账号有正确的 IAM 权限
-gcloud projects add-iam-policy-binding PROJECT_ID \
-    --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
-    --role="roles/storage.admin"
 ```
 
-### 4. 权限配置和验证
-
-#### 4.1 查看和配置权限
-
-1. 查看当前 VM 服务账号：
+2. 然后配置服务账号的 IAM 权限：
 ```bash
+# 1. 获取服务账号邮箱
 curl -H "Metadata-Flavor: Google" \
   http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email
-```
 
-2. 检查服务账号权限：
-```bash
-gcloud projects get-iam-policy PROJECT_ID \
-  --flatten="bindings[].members" \
-  --format='table(bindings.role)' \
-  --filter="bindings.members:SERVICE_ACCOUNT_EMAIL"
-```
-
-3. 配置必要的权限：
-```bash
-# 添加读取权限
-gcloud projects add-iam-policy-binding PROJECT_ID \
-    --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
-    --role="roles/storage.objectViewer"
-
-# 添加创建权限
-gcloud projects add-iam-policy-binding PROJECT_ID \
-    --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
-    --role="roles/storage.objectCreator"
-
-# 添加完整管理权限（如需删除文件）
+# 2. 配置必要的权限
 gcloud projects add-iam-policy-binding PROJECT_ID \
     --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
     --role="roles/storage.objectAdmin"
 ```
 
-### 5. 部署示例
+> 重要说明：
+> 1. 如果没有正确的访问作用域，即使配置了 IAM 权限也不会生效
+> 2. 更新访问作用域需要重启 VM
+> 3. 配置 IAM 权限不需要重启 VM
+
+### 4. 验证配置
+
+完成配置后，可以使用以下命令验证：
+
+1. 验证服务账号身份：
+```bash
+curl -H "Metadata-Flavor: Google" \
+  http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email
+```
+
+2. 验证 GCS 访问：
+```bash
+# 获取访问令牌
+TOKEN=$(curl -s -H "Metadata-Flavor: Google" \
+  http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token \
+  | grep -o '"access_token":"[^"]*' | cut -d'"' -f4)
+
+# 测试访问 bucket
+curl -H "Authorization: Bearer $TOKEN" \
+  "https://storage.googleapis.com/storage/v1/b/YOUR_BUCKET/o"
+```
+
+### 5. 部署和测试
+
+#### 5.1 部署服务
 
 以下是一个完整的部署示例，使用 MySQL 作为数据库：
 
@@ -196,8 +210,9 @@ docker run -d \
    - 时区：`GMT+0`
 3. 其他配置根据实际需求调整
 
+#### 5.2 功能测试
 
-部署后可以使用 curl 命令测试，示例：
+部署完成后，可以使用以下命令测试文件上传功能：
 
 ```shell
 curl -X POST \
@@ -212,27 +227,31 @@ curl -X POST \
 {"id":"{FILE_ID}","originalFilename":"ORIGINAL_FILE_NAME","storageFilename":"public/FILE_ID.jpg","contentType":"image/jpeg","size":1156066,"userId":"anonymous","uploadTime":"2025-02-23T12:50:55.037351296Z","url":"https://storage.googleapis.com/gmeme-public/GCS_FILE_NAME","urlExpireTime":null,"public":true}
 ```
 
-可以使用返回的 url 直接访问文件。也可以像下面这样通过拼接 url 来访问文件（注意文件 Id `{FILE_ID}` 需要替换为上传文件的返回结果中的 `id` 字段的值）：
+文件访问方式：
+1. 直接使用返回的 URL
+2. 通过 API 接口访问：
 
 ```
 https://files.gmeme.xyz/api/files/{FILE_ID}/media
 ```
 
+### 6. 本地开发
 
-## Maven 
+如果需要在本地开发环境构建和运行项目：
 
-### Package
+#### Maven Package
 
 ```shell
 # in `src` directory
 mvn package -pl ffvtraceability-file-service
 ```
 
-### Run
+#### Maven Run
 
 ```shell
 java -jar ./ffvtraceability-file-service/target/ffvtraceability-file-service-0.0.1-SNAPSHOT.jar
 ```
+
 
 
 
