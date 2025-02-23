@@ -11,7 +11,7 @@ COPY ffvtraceability-file-service ffvtraceability-file-service
 RUN --mount=type=cache,target=/root/.m2 \
     apt-get update && \
     apt-get install -y maven && \
-    mvn clean package -DskipTests
+    mvn clean package -pl ffvtraceability-file-service -am -DskipTests
 
 # 运行阶段
 FROM eclipse-temurin:17-jre-jammy
