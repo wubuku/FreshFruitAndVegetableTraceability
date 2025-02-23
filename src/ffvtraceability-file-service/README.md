@@ -8,33 +8,29 @@
 1. 正确配置 GCS 相关环境
 2. 确保运行环境具有适当的 GCS 访问权限
 
-### 2. 配置方式
+### 2. 配置步骤
 
-#### 2.1 应用配置
+#### 2.1 创建和配置 Bucket
 
-在 `application.yml` 中配置：
+以下命令示例中使用的配置：
+- Project ID: `woven-justice-441107-h8`（替换为你的项目 ID）
+- Location: `asia-east1`（可选择离你最近的区域）
+- Bucket 名称: 
+  - 私有：`flex-api-private`
+  - 公开：`flex-api-public`
 
-```yaml
-storage:
-  type: gcs  # 指定使用 GCS 存储
-  gcs:
-    project-id: your-project-id
-    private-bucket: your-private-bucket
-    public-bucket: your-public-bucket
-```
+> 注意：Bucket 名称必须是全局唯一的，建议使用有意义的前缀，如项目名或组织名。
 
-关于 bucket 的创建，可以参考下面的命令：
-
+1. 创建私有 bucket（默认就是私有的）：
 ```shell
-# 创建私有 bucket，默认就是私有的
 gcloud storage buckets create gs://flex-api-private \
     --project=woven-justice-441107-h8 \
     --location=asia-east1 \
     --uniform-bucket-level-access
 ```
 
+2. 创建公开访问的 bucket：
 ```shell
-# 创建 bucket 并设置为公开访问
 gcloud storage buckets create gs://flex-api-public \
     --project=woven-justice-441107-h8 \
     --location=asia-east1 \
@@ -46,13 +42,23 @@ gcloud storage buckets add-iam-policy-binding gs://flex-api-public \
     --role=roles/storage.objectViewer
 ```
 
+#### 2.2 应用配置
 
-#### 2.2 运行环境配置
+在 `application.yml` 中配置：
+```yaml
+storage:
+  type: gcs  # 指定使用 GCS 存储
+  gcs:
+    project-id: your-project-id
+    private-bucket: your-private-bucket
+    public-bucket: your-public-bucket
+```
 
-有两种部署方式：
+### 3. 部署方式
 
-##### A. 使用服务账号 JSON 文件（本地开发环境推荐）
+#### 3.1 本地开发环境
 
+使用服务账号 JSON 文件：
 ```bash
 docker run -d \
   --name file-service \
@@ -71,27 +77,99 @@ docker run -d \
   your-docker-image:tag
 ```
 
-##### B. 使用 Google Cloud VM（生产环境推荐）
+#### 3.2 Google Cloud VM 环境（推荐）
 
-在 Google Cloud VM 上运行时，可以直接使用 VM 的服务账号，无需配置凭证文件：
+在 Google Cloud VM 上运行时，需要确保 VM 有正确的访问权限。有两种方式：
+
+##### A. 使用访问作用域（Access Scopes）
 
 ```bash
-docker run -d \
-  --name file-service \
-  -p 8080:8080 \
-  -e STORAGE_TYPE=gcs \
-  -e STORAGE_GCS_PROJECT_ID="your-project-id" \
-  -e STORAGE_GCS_PRIVATE_BUCKET="your-private-bucket" \
-  -e STORAGE_GCS_PUBLIC_BUCKET="your-public-bucket" \
-  -e SPRING_DATASOURCE_USERNAME="your-db-username" \
-  -e SPRING_DATASOURCE_PASSWORD="your-db-password" \
-  -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI="https://your-auth-server/realms/your-realm" \
-  -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI="https://your-auth-server/realms/your-realm/.well-known/jwks.json" \
-  [其他配置...] \
-  your-docker-image:tag
+# 检查当前 VM 的作用域
+gcloud compute instances describe INSTANCE_NAME \
+    --zone=ZONE \
+    --format='get(serviceAccounts[].scopes)'
 ```
 
-示例（：
+实际案例：当发现 VM 只有 `devstorage.read_only` 作用域时，需要更新为 `devstorage.full_control`：
+
+```bash
+# 1. 停止 VM
+gcloud compute instances stop instance-20250124-134353 --zone=us-central1-c
+
+# 2. 更新 VM 的访问作用域（保留其他必要的作用域）
+gcloud compute instances set-service-account instance-20250124-134353 \
+    --zone=us-central1-c \
+    --scopes=https://www.googleapis.com/auth/devstorage.full_control,\
+https://www.googleapis.com/auth/logging.write,\
+https://www.googleapis.com/auth/monitoring.write,\
+https://www.googleapis.com/auth/service.management.readonly,\
+https://www.googleapis.com/auth/servicecontrol,\
+https://www.googleapis.com/auth/trace.append
+
+# 3. 重启 VM
+gcloud compute instances start instance-20250124-134353 --zone=us-central1-c
+```
+
+> 注意：更新 VM 的访问作用域需要重启 VM。如果想避免重启，建议使用方式 B（cloud-platform 作用域和 IAM 权限）。
+
+##### B. 使用 cloud-platform 作用域和 IAM 权限（推荐）
+
+这种方式更灵活，因为：
+- 不需要管理具体的 API 作用域
+- 可以通过 IAM 精细控制权限
+- 不需要重启 VM 就能更新权限
+
+```bash
+# 创建 VM 时设置
+gcloud compute instances create INSTANCE_NAME \
+    --zone=ZONE \
+    --scopes=cloud-platform
+
+# 确保服务账号有正确的 IAM 权限
+gcloud projects add-iam-policy-binding PROJECT_ID \
+    --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
+    --role="roles/storage.admin"
+```
+
+### 4. 权限配置和验证
+
+#### 4.1 查看和配置权限
+
+1. 查看当前 VM 服务账号：
+```bash
+curl -H "Metadata-Flavor: Google" \
+  http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email
+```
+
+2. 检查服务账号权限：
+```bash
+gcloud projects get-iam-policy PROJECT_ID \
+  --flatten="bindings[].members" \
+  --format='table(bindings.role)' \
+  --filter="bindings.members:SERVICE_ACCOUNT_EMAIL"
+```
+
+3. 配置必要的权限：
+```bash
+# 添加读取权限
+gcloud projects add-iam-policy-binding PROJECT_ID \
+    --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
+    --role="roles/storage.objectViewer"
+
+# 添加创建权限
+gcloud projects add-iam-policy-binding PROJECT_ID \
+    --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
+    --role="roles/storage.objectCreator"
+
+# 添加完整管理权限（如需删除文件）
+gcloud projects add-iam-policy-binding PROJECT_ID \
+    --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
+    --role="roles/storage.objectAdmin"
+```
+
+### 5. 部署示例
+
+以下是一个完整的部署示例，使用 MySQL 作为数据库：
 
 ```bash
 docker run -d \
@@ -109,108 +187,36 @@ docker run -d \
   ghcr.io/wubuku/ffvtraceability-file-service:main
 ```
 
-### 3. 权限配置
+配置说明：
+1. GCS 配置：设置存储类型为 GCS，并配置项目 ID 和 bucket 名称
+2. MySQL 配置：
+   - 数据库地址：`10.95.80.3:3306`
+   - 数据库名：`gmeme_files`
+   - 字符集：`utf8`
+   - 时区：`GMT+0`
+3. 其他配置根据实际需求调整
 
-#### 3.1 查看当前 VM 服务账号
 
-```bash
-# 方法1：使用 gcloud 命令
-gcloud compute instances describe INSTANCE_NAME --zone=ZONE \
-    --format='get(serviceAccounts[0].email)'
+部署后可以使用 curl 命令测试，示例：
 
-# 方法2：在 VM 内部查询
-curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email
+```shell
+curl -X POST \
+  -F "file=@/PATH/TO/YOUR/FILE" \
+  -F "isPublic=true" \
+  https://files.gmeme.xyz/api/files/upload -v
 ```
 
-#### 3.2 检查服务账号权限
+返回的结果类似（注意，在下面的例子中，`{FILE_ID}` 占位符表示的是文件 Id，`ORIGINAL_FILE_NAME` 是文件的原始名称，`GCS_FILE_NAME` 是文件在 GCS 中的文件名称，我们隐去了它们的实际的值）：
 
-```bash
-gcloud projects get-iam-policy PROJECT_ID \
-  --flatten="bindings[].members" \
-  --format='table(bindings.role)' \
-  --filter="bindings.members:SERVICE_ACCOUNT_EMAIL"
+```json
+{"id":"{FILE_ID}","originalFilename":"ORIGINAL_FILE_NAME","storageFilename":"public/FILE_ID.jpg","contentType":"image/jpeg","size":1156066,"userId":"anonymous","uploadTime":"2025-02-23T12:50:55.037351296Z","url":"https://storage.googleapis.com/gmeme-public/GCS_FILE_NAME","urlExpireTime":null,"public":true}
 ```
 
-#### 3.3 配置必要的权限
+可以使用返回的 url 直接访问文件。也可以像下面这样通过拼接 url 来访问文件（注意文件 Id `{FILE_ID}` 需要替换为上传文件的返回结果中的 `id` 字段的值）：
 
-服务账号需要以下权限：
-- `roles/storage.objectViewer` - 读取文件权限
-- `roles/storage.objectCreator` - 创建文件权限
-- `roles/storage.objectAdmin` - 完整的文件管理权限（如需删除文件）
-
-添加权限命令：
-```bash
-gcloud projects add-iam-policy-binding PROJECT_ID \
-    --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
-    --role="roles/storage.objectViewer"
-
-gcloud projects add-iam-policy-binding PROJECT_ID \
-    --member="serviceAccount:SERVICE_ACCOUNT_EMAIL" \
-    --role="roles/storage.objectCreator"
 ```
-
-### 4. 权限验证脚本
-
-可以使用以下脚本验证 GCS 权限配置是否正确：
-
-```bash
-#!/bin/bash
-
-# 获取当前服务账号
-SERVICE_ACCOUNT=$(curl -s -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email)
-echo "Current Service Account: $SERVICE_ACCOUNT"
-
-# 检查 IAM 权限
-echo "Checking IAM roles..."
-gcloud projects get-iam-policy YOUR_PROJECT_ID \
-  --flatten="bindings[].members" \
-  --format='table(bindings.role)' \
-  --filter="bindings.members:$SERVICE_ACCOUNT"
-
-# 测试 GCS 访问
-echo "Testing GCS access..."
-if gsutil ls gs://your-private-bucket &>/dev/null; then
-    echo "✅ Can access private bucket"
-else
-    echo "❌ Cannot access private bucket"
-fi
-
-if gsutil ls gs://your-public-bucket &>/dev/null; then
-    echo "✅ Can access public bucket"
-else
-    echo "❌ Cannot access public bucket"
-fi
-
-# 测试写入权限
-echo "Testing write permission..."
-echo "test" > test.txt
-if gsutil cp test.txt gs://your-private-bucket/test.txt &>/dev/null; then
-    echo "✅ Can write to private bucket"
-    gsutil rm gs://your-private-bucket/test.txt &>/dev/null
-else
-    echo "❌ Cannot write to private bucket"
-fi
-rm test.txt
-
-echo "Done checking permissions"
+https://files.gmeme.xyz/api/files/{FILE_ID}/media
 ```
-
-将此脚本保存为 `check_gcs_permissions.sh` 并运行：
-```bash
-chmod +x check_gcs_permissions.sh
-./check_gcs_permissions.sh
-```
-
-### 5. 最佳实践
-
-1. 在生产环境中，推荐使用 Google Cloud VM 的服务账号，而不是 JSON 凭证文件
-2. 遵循最小权限原则，只分配必要的权限
-3. 定期审查服务账号权限
-4. 在本地开发环境可以使用 JSON 凭证文件
-5. 确保 bucket 名称在全局唯一
-6. 使用不同的 bucket 区分公开和私有文件
 
 
 ## Maven 
