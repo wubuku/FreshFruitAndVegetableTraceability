@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  file-service:
+    build:
+      context: ..
+      dockerfile: docker/file-service/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - STORAGE_MINIO_ENDPOINT=http://minio:9000
+      - STORAGE_MINIO_PUBLIC_ENDPOINT=http://localhost:9000
+      - STORAGE_MINIO_ACCESS_KEY=minioadmin
+      - STORAGE_MINIO_SECRET_KEY=minioadmin
+      - STORAGE_MINIO_BUCKET=my-bucket
+    depends_on:
+      - minio
+
+  rest-service:
+    build:
+      context: ..
+      dockerfile: docker/rest-service/Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ffvtraceability
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - db
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+  db:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_DB=ffvtraceability
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  minio_data:
+  postgres_data: 
