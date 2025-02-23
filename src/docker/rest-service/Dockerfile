@@ -3,17 +3,21 @@ FROM eclipse-temurin:17-jdk-jammy as build
 
 WORKDIR /opt/ffvtraceability
 
-# 复制项目文件
+# 复制所有模块 - 路径相对于 context (src)
 COPY pom.xml .
 COPY ffvtraceability-common ffvtraceability-common
 COPY ffvtraceability-service ffvtraceability-service
 COPY ffvtraceability-service-rest ffvtraceability-service-rest
+COPY ffvtraceability-service-cli ffvtraceability-service-cli
+COPY ffvtraceability-auth-server ffvtraceability-auth-server
+COPY ffvtraceability-resource-server ffvtraceability-resource-server
+COPY ffvtraceability-file-service ffvtraceability-file-service
 
-# 使用Maven进行构建
+# 使用Maven进行构建，只构建需要的模块
 RUN --mount=type=cache,target=/root/.m2 \
     apt-get update && \
     apt-get install -y maven && \
-    mvn clean package -DskipTests
+    mvn clean package -pl ffvtraceability-service-rest -am -DskipTests
 
 # 运行阶段
 FROM eclipse-temurin:17-jre-jammy
