@@ -65,7 +65,40 @@ storage:
 
 #### 3.1 本地开发环境
 
-本地开发时，只需要使用服务账号 JSON 文件即可，不涉及 VM 的访问作用域：
+本地开发环境有两种方式配置 GCS 认证：
+
+##### A. 使用 gcloud CLI（推荐）
+
+应用会按照以下顺序自动查找凭证（Application Default Credentials）：
+1. `GOOGLE_APPLICATION_CREDENTIALS` 环境变量指定的 JSON 文件
+2. gcloud 默认用户凭证（`~/.config/gcloud/application_default_credentials.json`）
+3. Google Cloud 环境的元数据服务器
+
+如果你已经安装了 gcloud CLI，只需执行：
+```bash
+# 登录并创建默认凭证
+gcloud auth application-default login
+```
+
+然后在 application.yml 中配置：
+```yaml
+storage:
+  type: gcs
+  gcs:
+    project-id: your-project-id
+    private-bucket: your-private-bucket
+    public-bucket: your-public-bucket
+```
+
+这种方式的优点：
+- 不需要手动管理服务账号 JSON 文件
+- 使用你的 Google 账号权限
+- 与其他 gcloud 命令使用相同的认证
+- 凭证会自动保存在 `~/.config/gcloud/application_default_credentials.json`
+
+##### B. 使用服务账号 JSON 文件
+
+如果需要使用特定的服务账号，可以下载 JSON 凭证文件：
 
 ```bash
 docker run -d \
@@ -125,20 +158,27 @@ gcloud compute instances start instance-20250124-134353 --zone=us-central1-c
 
 ##### 方案二：使用 cloud-platform 作用域 + IAM（推荐）
 
-这种方式更灵活，但需要两步配置：
+这是 Google Cloud 推荐的现代方式：
+1. 使用 `cloud-platform` 作用域启用 IAM 权限控制
+2. 然后通过 IAM 精确控制具体权限
 
-1. 首先确保 VM 有 `cloud-platform` 作用域：
+首先配置 VM 使用 `cloud-platform` 作用域：
 ```bash
 # 检查作用域
 gcloud compute instances describe INSTANCE_NAME \
     --zone=ZONE \
     --format='get(serviceAccounts[].scopes)'
 
-# 如果没有 cloud-platform 作用域，需要更新（需要重启 VM）
+# 如果需要，更新作用域（需要重启 VM）
 gcloud compute instances set-service-account INSTANCE_NAME \
     --zone=ZONE \
     --scopes=cloud-platform
 ```
+
+> 说明：虽然 `cloud-platform` 作用域理论上允许访问所有 API，但实际的访问权限是由 IAM 控制的。这种方式的优点是：
+> 1. 可以通过 IAM 随时调整具体权限，无需重启 VM
+> 2. 可以实现更精细的权限控制
+> 3. 符合 Google Cloud 的最佳实践
 
 2. 然后配置服务账号的 IAM 权限：
 ```bash
@@ -178,6 +218,11 @@ TOKEN=$(curl -s -H "Metadata-Flavor: Google" \
 curl -H "Authorization: Bearer $TOKEN" \
   "https://storage.googleapis.com/storage/v1/b/YOUR_BUCKET/o"
 ```
+
+> 提示：如果验证失败，请按以下顺序检查：
+> 1. VM 的访问作用域是否正确（使用第一个验证命令）
+> 2. 服务账号是否有正确的 IAM 权限
+> 3. 确保 bucket 存在且配置正确
 
 ### 5. 部署和测试
 
