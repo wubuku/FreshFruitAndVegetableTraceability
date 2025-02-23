@@ -229,6 +229,7 @@ public class BffQaInspectionApplicationServiceImpl implements BffQaInspectionApp
                     new BffQaInspectionServiceCommands.UpdateQaInspection();
             // 设置质检信息
             updateCommand.setQaInspection(qaInspection);
+            updateCommand.setQaInspectionId(qaInspection.getQaInspectionId());
             updateCommand.setRequesterId(c.getRequesterId());
             updateCommand.setCommandId(UUID.randomUUID().toString());
             // 调用已有的更新方法

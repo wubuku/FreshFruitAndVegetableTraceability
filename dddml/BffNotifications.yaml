@@ -7,10 +7,10 @@ aggregates:
       type: id-long
     properties:
       NotificationTypeId:
-        type: id
+        type: id-long
         description: Type of notification (e.g., new order created, order cancelled, receipt created, receipt modified)
       ReferenceDocumentTypeId:
-        type: id
+        type: id-long
         description: Type of the referenced document (e.g., purchase order, receipt, quality inspection)
       ReferenceDocumentId:
         type: id-long
