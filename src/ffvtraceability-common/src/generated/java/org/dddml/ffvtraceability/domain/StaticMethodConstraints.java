@@ -75,6 +75,7 @@ import org.dddml.ffvtraceability.domain.inventoryitemtype.*;
 import org.dddml.ffvtraceability.domain.documentnumbergenerator.*;
 import org.dddml.ffvtraceability.domain.attribute.*;
 import org.dddml.ffvtraceability.domain.attributeset.*;
+import org.dddml.ffvtraceability.domain.bffnotification.*;
 
 public class StaticMethodConstraints {
 

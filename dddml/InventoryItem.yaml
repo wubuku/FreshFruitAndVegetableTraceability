@@ -69,12 +69,12 @@ aggregates:
       MergePatch:
         isInternal: true
       RecordInventoryEntry:
-        shouldCreateOnDemand: true
+        isIdOptional: true  # Client may omit the ID when executing this command
         # 记录一个库存分录。
-        # 如果 InventoryItemId 为 null，此方法会根据 InventoryItemAttributes 自动处理库存项（InventoryItem）：
-        # - 如果是新的库存特征组合，会创建新的库存项
-        # - 如果是已存在的库存特征组合，会复用现有的库存项
-        # 然后在对应的库存项下创建一个新的库存明细（InventoryItemDetail）。
+        # 如果 InventoryItemId 为 null，此方法会根据 InventoryItemAttributes 自动处理库存单元（InventoryItem）：
+        # - 如果是新的库存特征组合，会创建新的库存单元
+        # - 如果是已存在的库存特征组合，会复用现有的库存单元
+        # 然后在对应的库存单元下创建一个新的库存单元明细（InventoryItemDetail）。
         # 这是一个标准的库存过账操作，用于记录所有类型的库存变动。
         isInternal: true
         parameters:

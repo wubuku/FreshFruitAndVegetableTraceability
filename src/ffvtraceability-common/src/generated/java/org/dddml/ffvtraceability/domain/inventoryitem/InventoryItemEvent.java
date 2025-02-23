@@ -49,12 +49,10 @@ public interface InventoryItemEvent extends Event {
 
     String getInventoryItemId();
 
-    // If the "biz. logic of the method" is required to determine the ID of the entity,
-    // then the "set ID" method and "set Version" method are required.
     void setInventoryItemId(String inventoryItemId);
 
     Long getVersion();
-
+    
     void setVersion(Long version);
 
     String getCreatedBy();
