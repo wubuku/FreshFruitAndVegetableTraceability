@@ -14,6 +14,7 @@ import org.springframework.context.event.EventListener;
 @ConfigurationProperties(prefix = "storage.minio")
 public class MinioConfig {
     private String endpoint;
+    private String publicEndpoint;
     private String accessKey;
     private String secretKey;
     private String bucket;
@@ -25,6 +26,14 @@ public class MinioConfig {
 
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
+    }
+
+    public String getPublicEndpoint() {
+        return publicEndpoint != null ? publicEndpoint : endpoint;
+    }
+
+    public void setPublicEndpoint(String publicEndpoint) {
+        this.publicEndpoint = publicEndpoint;
     }
 
     public String getAccessKey() {
