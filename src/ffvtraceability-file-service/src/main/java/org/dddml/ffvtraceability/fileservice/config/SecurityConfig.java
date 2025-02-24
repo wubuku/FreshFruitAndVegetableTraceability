@@ -38,13 +38,13 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
                 .headers(headers -> headers.frameOptions().disable())  // 允许 H2 控制台在 iframe 中显示
                 .authorizeHttpRequests(auth -> {
-                    // 首先允许 OPTIONS 请求
-                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    // 首先处理 OPTIONS 请求
+                    auth.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.OPTIONS, "/**")).permitAll();
 
-                    // 然后是其他公开访问的端点
-                    auth.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-                            .requestMatchers(mvcMatcherBuilder.pattern("/api/files/*/media")).permitAll()
-                            .requestMatchers(mvcMatcherBuilder.pattern("/api/files/*/download")).permitAll();  // 允许下载端点的匿名访问
+                    // 然后是公开访问的端点
+                    auth.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll();
+                    auth.requestMatchers(mvcMatcherBuilder.pattern("/api/files/*/media")).permitAll();
+                    auth.requestMatchers(mvcMatcherBuilder.pattern("/api/files/*/download")).permitAll();
 
                     // 根据配置决定是否允许匿名上传
                     if (securityProperties.isAllowAnonymousUpload()) {
