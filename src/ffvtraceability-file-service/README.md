@@ -297,6 +297,234 @@ mvn package -pl ffvtraceability-file-service
 java -jar ./ffvtraceability-file-service/target/ffvtraceability-file-service-0.0.1-SNAPSHOT.jar
 ```
 
+### 7. CORS 配置
 
+本服务支持跨域资源共享（CORS）配置，可以通过 application.yml 进行设置。
 
+#### 7.1 基础配置
+
+在 application.yml 中添加 CORS 配置：
+```yaml
+spring:
+  mvc:
+    cors:
+      # 允许的源，使用 * 表示允许所有源
+      allowed-origins: "*"
+      # 允许的 HTTP 方法
+      allowed-methods: "*"
+      # 允许的请求头
+      allowed-headers: "*"
+      # 暴露的响应头
+      exposed-headers: "*"
+      # 是否允许发送认证信息（cookies, auth headers）
+      allow-credentials: false
+      # 预检请求的有效期（秒）
+      max-age: 3600
+```
+
+> 重要说明：
+> 1. 如果设置 `allowed-origins: "*"`，则 `allow-credentials` 必须为 false
+> 2. 如果需要发送认证信息，必须指定具体的域名，例如：
+>    ```yaml
+>    allowed-origins: http://your-domain.com,https://your-domain.com
+>    allow-credentials: true
+>    ```
+
+#### 7.2 安全配置
+
+本服务使用 Spring Security 进行安全控制，需要确保 OPTIONS 请求（预检请求）能够通过。有两种配置方式：
+
+##### A. 使用 SecurityConfig（当前方式）
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(Customizer.withDefaults())  // 启用 CORS
+            .authorizeHttpRequests(auth -> {
+                // 首先允许 OPTIONS 请求
+                auth.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.OPTIONS, "/**")).permitAll();
+                // ... 其他安全配置 ...
+            });
+        return http.build();
+    }
+}
+```
+
+##### B. 使用注解方式
+```java
+@RestController
+@CrossOrigin(origins = "*", maxAge = 3600)  // 在控制器级别配置
+public class FileController {
+    
+    @PostMapping("/upload")
+    @CrossOrigin(origins = "http://specific-domain.com")  // 在方法级别配置
+    public ResponseEntity<?> upload() {
+        // ...
+    }
+}
+```
+
+> 注意：推荐使用 SecurityConfig 方式，因为：
+> 1. 集中管理 CORS 配置，易于维护
+> 2. 与安全配置结合更紧密
+> 3. 可以通过配置文件动态调整
+
+#### 7.3 常见问题
+
+1. 403 错误：
+   - 检查 SecurityConfig 中是否正确配置了 OPTIONS 请求
+   - 确保 OPTIONS 请求的配置在其他安全规则之前
+
+2. CORS 预检失败：
+   - 检查请求头是否在 allowed-headers 列表中
+   - 检查请求方法是否在 allowed-methods 列表中
+   - 检查源域名是否在 allowed-origins 列表中
+
+3. 认证信息无法发送：
+   - 不能同时使用 `allowed-origins: "*"` 和 `allow-credentials: true`
+   - 必须明确指定允许的域名
+
+4. 500 错误：
+   - 检查 Spring Security 配置是否正确
+   - 检查是否有其他过滤器干扰
+   - 查看服务器日志获取具体错误信息
+
+#### 7.4 测试 CORS 配置
+
+使用以下命令测试 CORS 配置：
+
+```bash
+# 测试预检请求（OPTIONS）
+curl -X OPTIONS -H "Origin: http://example.com" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: content-type" \
+  -v https://your-api-domain/api/files/upload
+
+# 测试实际请求
+curl -X POST -H "Origin: http://example.com" \
+  -F "file=@/path/to/file.jpg" \
+  -F "isPublic=true" \
+  -v https://your-api-domain/api/files/upload
+```
+
+预检请求成功时，应该看到以下响应头：
+```
+access-control-allow-origin: *
+access-control-allow-methods: POST
+access-control-allow-headers: content-type
+access-control-expose-headers: *
+access-control-max-age: 3600
+```
+
+> 生产环境安全建议：
+> 1. 限制允许的源域名：
+>    ```yaml
+>    allowed-origins: https://your-frontend.com,https://admin.your-frontend.com
+>    ```
+> 2. 限制允许的 HTTP 方法：
+>    ```yaml
+>    allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+>    ```
+> 3. 明确指定允许的请求头：
+>    ```yaml
+>    allowed-headers: Origin,Content-Type,Accept,Authorization
+>    ```
+> 4. 定期审查 CORS 配置，确保安全性
+> 5. 考虑使用 Spring Security 的 CSRF 保护（对于非 GET 请求）
+
+#### 7.5 CORS vs CSRF
+
+##### CORS（跨域资源共享）
+- 用于控制不同域之间的资源访问
+- 是浏览器的安全机制
+- 通过 HTTP 头部控制是否允许跨域请求
+- 主要解决：来自不同域的前端应用能否调用 API
+
+例如：
+- 前端域名：`https://app.example.com`
+- API 域名：`https://api.example.com`
+- 需要配置 CORS 才能让前端调用 API
+
+##### CSRF（跨站请求伪造）
+- 用于防止恶意网站冒充用户发送请求
+- 是应用程序的安全机制
+- 通过令牌验证请求是否来自合法的前端应用
+- 主要解决：确保请求来自你的合法前端，而不是恶意网站
+
+CSRF 攻击示例：
+1. HTML 表单自动提交：
+```html
+<!-- evil.com 的页面 -->
+<form action="https://bank.com/transfer" method="POST" id="hack-form">
+    <input type="hidden" name="to" value="hacker-account" />
+    <input type="hidden" name="amount" value="1000000" />
+</form>
+<script>
+    document.getElementById('hack-form').submit(); // 自动提交
+</script>
+```
+
+2. AJAX 请求：
+```javascript
+// evil.com 的脚本
+fetch('https://bank.com/transfer', {
+    method: 'POST',
+    credentials: 'include', // 会带上 cookie
+    body: JSON.stringify({
+        to: 'hacker-account',
+        amount: 1000000
+    })
+});
+```
+
+为什么会成功：
+1. 浏览器会自动带上目标网站的 cookie
+2. 传统的 session-cookie 认证无法分辨请求来源
+3. 用户在目标网站是已登录状态
+
+防护方式：
+1. CSRF Token：
+```java
+// 后端生成 token
+String csrfToken = generateToken();
+response.setCookie("CSRF-TOKEN", csrfToken);
+
+// 前端发请求时带上 token
+fetch('/api/transfer', {
+    method: 'POST',
+    headers: {
+        'X-CSRF-TOKEN': document.cookie.match('CSRF-TOKEN=([^;]+)')[1]
+    }
+});
+```
+
+2. SameSite Cookie：
+```java
+// 设置 cookie 的 SameSite 属性
+response.setHeader("Set-Cookie", "session=123; SameSite=Strict");
+```
+
+3. 使用 JWT 等自定义头：
+```javascript
+// 前端请求时手动添加 Authorization 头
+fetch('/api/transfer', {
+    headers: {
+        'Authorization': 'Bearer ' + jwt
+    }
+});
+```
+
+> 关于 CSRF 保护：
+> 1. GET 请求通常不需要 CSRF 保护
+> 2. 文件上传等 API 如果只用于前端上传，可以禁用 CSRF
+> 3. 涉及敏感操作的 API（如支付）应该启用 CSRF 保护
+> 4. 使用 JWT 等 token 认证时，通常不需要 CSRF 保护
+
+> 注意：我们的文件服务使用 JWT 认证，所以默认是安全的，因为：
+> 1. JWT token 存在 Authorization 头中，而不是 cookie
+> 2. 恶意网站无法获取或设置其他域的请求头
+> 3. 这就是为什么我们可以安全地禁用 CSRF 保护
 
