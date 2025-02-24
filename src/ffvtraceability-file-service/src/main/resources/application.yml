@@ -46,6 +46,17 @@ spring:
           issuer-uri: http://localhost:9000
           jwk-set-uri: http://localhost:9000/.well-known/jwks.json
 
+  mvc:
+    cors:
+      # 开发环境临时配置，生产环境应该限制为特定域名
+      allowed-origins: "*"
+      allowed-methods: "*"
+      allowed-headers: "*"
+      exposed-headers: "*"
+      # 可选配置
+      # allow-credentials: true
+      # max-age: 3600
+
 storage:
   security:
     allow-anonymous-upload: true
