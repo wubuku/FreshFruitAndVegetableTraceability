@@ -20,6 +20,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${spring.mvc.cors.exposed-headers:*}")
     private String exposedHeaders;
 
+    @Value("${spring.mvc.cors.allow-credentials:false}")
+    private boolean allowCredentials;
+
+    @Value("${spring.mvc.cors.max-age:1800}")
+    private long maxAge;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -27,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods(allowedMethods)
                 .allowedHeaders(allowedHeaders)
                 .exposedHeaders(exposedHeaders)
-                .allowCredentials(true)
-                .maxAge(3600);
+                .allowCredentials(allowCredentials)
+                .maxAge(maxAge);
     }
 } 
