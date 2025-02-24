@@ -35,10 +35,10 @@ public interface MutationContext<T, TM> {
     /**
      * Creates a new MutationContext instance that supports creating new mutable state by ID.
      *
-     * @param e                    The event that triggers the mutation
-     * @param mutableStateFactory  A function that creates new mutable state from an ID
-     * @param <T>                  The type of the immutable state
-     * @param <TM>                 The type of the mutable state
+     * @param e                   The event that triggers the mutation
+     * @param mutableStateFactory A function that creates new mutable state from an ID
+     * @param <T>                 The type of the immutable state
+     * @param <TM>                The type of the mutable state
      * @return A new MutationContext instance
      */
     static <T, TM> MutationContext<T, TM> forCreation(Event e, Function<Object, TM> mutableStateFactory) {
@@ -59,10 +59,6 @@ public interface MutationContext<T, TM> {
             }
         };
     }
-    //NOTE: 已将 createMutableState 重命名为 toMutableState。因为 createMutableState 听起来像是创建一个新对象。
-    //    它的一般实现，其实是如果一个状态对象（T state）本来是可变的，那么就直接返回它；
-    //    如果是不可变的，那么才会创建并返回一个可变的状态对象。
-    //    把这个方法改名为 toMutableState() 似乎更合理。
 
     Event getEvent();
 
