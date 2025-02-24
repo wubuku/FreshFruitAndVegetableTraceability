@@ -733,7 +733,7 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setUpdatedAt(e.getCreatedAt());
 
         ShipmentReceiptState updatedShipmentReceiptState = ApplicationContext.current.get(IUpdateOrderAllocationLogic.class).mutate(
-                this, unallocatedQuantity, orderItemAllocations, previousOrderId, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, unallocatedQuantity, orderItemAllocations, previousOrderId, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedShipmentReceiptState) { merge(updatedShipmentReceiptState); } //else do nothing

@@ -823,7 +823,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.setUpdatedAt(e.getCreatedAt());
 
         ShipmentState updatedShipmentState = ApplicationContext.current.get(IShipmentActionLogic.class).mutate(
-                this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedShipmentState) { merge(updatedShipmentState); } //else do nothing
@@ -846,7 +846,7 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.setUpdatedAt(e.getCreatedAt());
 
         ShipmentState updatedShipmentState = ApplicationContext.current.get(IShipmentQaActionLogic.class).mutate(
-                this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedShipmentState) { merge(updatedShipmentState); } //else do nothing

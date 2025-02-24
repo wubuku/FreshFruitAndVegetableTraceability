@@ -338,7 +338,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedAt(e.getCreatedAt());
 
         ArticleState updatedArticleState = ApplicationContext.current.get(IUpdateBodyLogic.class).mutate(
-                this, body, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, body, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing

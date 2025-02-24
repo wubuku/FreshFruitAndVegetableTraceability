@@ -1006,13 +1006,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         @Override
         public void updateFulfillmentStatus(OrderItemQuantityAllocationValue[] orderItemAllocations, Long version, String commandId, String requesterId, OrderCommands.UpdateFulfillmentStatus c) {
             java.util.function.Supplier<OrderEvent.FulfillmentStatusUpdated> eventFactory = () -> newFulfillmentStatusUpdated(orderItemAllocations, version, commandId, requesterId);
-            OrderEvent.FulfillmentStatusUpdated e;
-            try {
-                e = verifyUpdateFulfillmentStatus(eventFactory, orderItemAllocations, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            OrderEvent.FulfillmentStatusUpdated e = verifyUpdateFulfillmentStatus(eventFactory, orderItemAllocations, c);
             apply(e);
         }
 

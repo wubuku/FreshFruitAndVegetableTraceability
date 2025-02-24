@@ -211,13 +211,7 @@ public abstract class AbstractQaInspectionAggregate extends AbstractAggregate im
             apply(e);
             */
             java.util.function.Supplier<QaInspectionEvent.QaInspectionActionEvent> eventFactory = () -> newQaInspectionActionEvent(value, version, commandId, requesterId);
-            QaInspectionEvent.QaInspectionActionEvent e;
-            try {
-                e = verifyQaInspectionAction(eventFactory, value, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            QaInspectionEvent.QaInspectionActionEvent e = verifyQaInspectionAction(eventFactory, value, c);
             apply(e);
         }
 

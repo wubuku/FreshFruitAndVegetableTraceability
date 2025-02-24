@@ -385,13 +385,7 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
         @Override
         public void updateOrderAllocation(java.math.BigDecimal unallocatedQuantity, OrderItemQuantityAllocationValue[] orderItemAllocations, Long version, String commandId, String requesterId, ShipmentReceiptCommands.UpdateOrderAllocation c) {
             java.util.function.Supplier<ShipmentReceiptEvent.OrderAllocationUpdated> eventFactory = () -> newOrderAllocationUpdated(unallocatedQuantity, orderItemAllocations, version, commandId, requesterId);
-            ShipmentReceiptEvent.OrderAllocationUpdated e;
-            try {
-                e = verifyUpdateOrderAllocation(eventFactory, unallocatedQuantity, orderItemAllocations, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ShipmentReceiptEvent.OrderAllocationUpdated e = verifyUpdateOrderAllocation(eventFactory, unallocatedQuantity, orderItemAllocations, c);
             apply(e);
         }
 

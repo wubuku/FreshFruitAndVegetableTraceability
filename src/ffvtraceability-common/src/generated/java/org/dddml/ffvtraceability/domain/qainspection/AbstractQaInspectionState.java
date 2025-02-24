@@ -330,7 +330,7 @@ public abstract class AbstractQaInspectionState implements QaInspectionState.Sql
         this.setUpdatedAt(e.getCreatedAt());
 
         QaInspectionState updatedQaInspectionState = ApplicationContext.current.get(IQaInspectionActionLogic.class).mutate(
-                this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedQaInspectionState) { merge(updatedQaInspectionState); } //else do nothing

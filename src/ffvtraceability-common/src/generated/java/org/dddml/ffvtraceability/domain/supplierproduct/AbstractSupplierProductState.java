@@ -611,7 +611,7 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setUpdatedAt(e.getCreatedAt());
 
         SupplierProductState updatedSupplierProductState = ((UpdateAvailableThruDateMutation) UpdateAvailableThruDateLogic::mutate).mutate(
-                this, availableThruDate, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, availableThruDate, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
 //package org.dddml.ffvtraceability.domain.supplierproduct;
@@ -639,7 +639,7 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setUpdatedAt(e.getCreatedAt());
 
         SupplierProductState updatedSupplierProductState = ((DisableMutation) DisableLogic::mutate).mutate(
-                this, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
 //package org.dddml.ffvtraceability.domain.supplierproduct;

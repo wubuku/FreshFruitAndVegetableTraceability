@@ -170,26 +170,14 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         @Override
         public void updateAvailableThruDate(OffsetDateTime availableThruDate, Long version, String commandId, String requesterId, SupplierProductCommands.UpdateAvailableThruDate c) {
             java.util.function.Supplier<SupplierProductEvent.AvailableThruDateUpdated> eventFactory = () -> newAvailableThruDateUpdated(availableThruDate, version, commandId, requesterId);
-            SupplierProductEvent.AvailableThruDateUpdated e;
-            try {
-                e = verifyUpdateAvailableThruDate(eventFactory, availableThruDate, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            SupplierProductEvent.AvailableThruDateUpdated e = verifyUpdateAvailableThruDate(eventFactory, availableThruDate, c);
             apply(e);
         }
 
         @Override
         public void disable(Long version, String commandId, String requesterId, SupplierProductCommands.Disable c) {
             java.util.function.Supplier<SupplierProductEvent.SupplierProductDisabled> eventFactory = () -> newSupplierProductDisabled(version, commandId, requesterId);
-            SupplierProductEvent.SupplierProductDisabled e;
-            try {
-                e = verifyDisable(eventFactory, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            SupplierProductEvent.SupplierProductDisabled e = verifyDisable(eventFactory, c);
             apply(e);
         }
 

@@ -612,13 +612,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
             apply(e);
             */
             java.util.function.Supplier<ShipmentEvent.ShipmentActionEvent> eventFactory = () -> newShipmentActionEvent(value, version, commandId, requesterId);
-            ShipmentEvent.ShipmentActionEvent e;
-            try {
-                e = verifyShipmentAction(eventFactory, value, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ShipmentEvent.ShipmentActionEvent e = verifyShipmentAction(eventFactory, value, c);
             apply(e);
         }
 
@@ -648,13 +642,7 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
             apply(e);
             */
             java.util.function.Supplier<ShipmentEvent.ShipmentQaActionEvent> eventFactory = () -> newShipmentQaActionEvent(value, version, commandId, requesterId);
-            ShipmentEvent.ShipmentQaActionEvent e;
-            try {
-                e = verifyShipmentQaAction(eventFactory, value, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ShipmentEvent.ShipmentQaActionEvent e = verifyShipmentQaAction(eventFactory, value, c);
             apply(e);
         }
 

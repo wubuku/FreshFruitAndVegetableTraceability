@@ -215,13 +215,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         @Override
         public void updateBody(String body, Long version, String commandId, String requesterId, ArticleCommands.UpdateBody c) {
             java.util.function.Supplier<ArticleEvent.ArticleBodyUpdated> eventFactory = () -> newArticleBodyUpdated(body, version, commandId, requesterId);
-            ArticleEvent.ArticleBodyUpdated e;
-            try {
-                e = verifyUpdateBody(eventFactory, body, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ArticleEvent.ArticleBodyUpdated e = verifyUpdateBody(eventFactory, body, c);
             apply(e);
         }
 

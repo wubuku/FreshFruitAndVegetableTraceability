@@ -1078,7 +1078,7 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setUpdatedAt(e.getCreatedAt());
 
         OrderHeaderState updatedOrderHeaderState = ApplicationContext.current.get(IUpdateFulfillmentStatusLogic.class).mutate(
-                this, orderItemAllocations, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, orderItemAllocations, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedOrderHeaderState) { merge(updatedOrderHeaderState); } //else do nothing
