@@ -5,9 +5,6 @@
 
 package org.dddml.ffvtraceability.domain.qainspection;
 
-import java.math.*;
-import java.util.*;
-import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +42,7 @@ public class QaInspectionActionLogic implements IQaInspectionActionLogic {
      * @return The new state of the QaInspection
      */
     public QaInspectionState mutate(QaInspectionState qaInspectionState, String value, MutationContext<QaInspectionState, QaInspectionState.MutableQaInspectionState> mutationContext) {
-        QaInspectionState.MutableQaInspectionState s = mutationContext.createMutableState(qaInspectionState);
+        QaInspectionState.MutableQaInspectionState s = mutationContext.toMutableState(qaInspectionState);
         AbstractQaInspectionAggregate.SimpleQaInspectionQaInspectionActionCommandHandler cmdHandler = new AbstractQaInspectionAggregate.SimpleQaInspectionQaInspectionActionCommandHandler();
         cmdHandler.execute(new PropertyCommandContext<>() {
             @Override

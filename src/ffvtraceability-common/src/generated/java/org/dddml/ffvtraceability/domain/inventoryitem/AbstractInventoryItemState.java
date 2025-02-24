@@ -769,6 +769,29 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
 
     }
 
+
+    static AbstractInventoryItemState create(InventoryItemEvent.RecordInventoryEntryEvent e, java.util.function.Function<String, AbstractInventoryItemState> stateFactory) {
+        InventoryItemAttributes inventoryItemAttributes = e.getInventoryItemAttributes();
+        InventoryItemDetailAttributes inventoryItemDetailAttributes = e.getInventoryItemDetailAttributes();
+        java.math.BigDecimal quantityOnHandDiff = e.getQuantityOnHandDiff();
+        java.math.BigDecimal availableToPromiseDiff = e.getAvailableToPromiseDiff();
+        java.math.BigDecimal accountingQuantityDiff = e.getAccountingQuantityDiff();
+        java.math.BigDecimal unitCost = e.getUnitCost();
+
+        AbstractInventoryItemState _this = (AbstractInventoryItemState)ApplicationContext.current.get(IRecordInventoryEntryLogic.class).mutate(
+                null, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, MutationContext.forCreation(e, id -> stateFactory.apply((String) id) ));
+
+        if (_this.getCreatedBy() == null){
+            _this.setCreatedBy(e.getCreatedBy());
+        }
+        if (_this.getCreatedAt() == null){
+            _this.setCreatedAt(e.getCreatedAt());
+        }
+        _this.setUpdatedBy(e.getCreatedBy());
+        _this.setUpdatedAt(e.getCreatedAt());
+        return _this;
+    }
+
     public void save() {
         if (details instanceof Saveable) {
             ((Saveable)details).save();

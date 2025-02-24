@@ -71,7 +71,7 @@ public class UpdateOrderAllocationLogic implements IUpdateOrderAllocationLogic {
                                        OrderItemQuantityAllocationValue[] orderItemAllocations,
                                        String previousOrderId,
                                        MutationContext<ShipmentReceiptState, ShipmentReceiptState.MutableShipmentReceiptState> mutationContext) {
-        ShipmentReceiptState.MutableShipmentReceiptState s = mutationContext.createMutableState(shipmentReceiptState);
+        ShipmentReceiptState.MutableShipmentReceiptState s = mutationContext.toMutableState(shipmentReceiptState);
         s.setQuantityUnallocated(unallocatedQuantity);
 
         EntityStateCollection.MutableEntityStateCollection<OrderItemId, ShipmentReceiptOrderAllocationState>

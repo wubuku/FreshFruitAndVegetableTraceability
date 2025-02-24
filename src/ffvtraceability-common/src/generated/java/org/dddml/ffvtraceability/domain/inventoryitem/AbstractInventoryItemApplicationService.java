@@ -5,19 +5,19 @@
 
 package org.dddml.ffvtraceability.domain.inventoryitem;
 
-import org.dddml.ffvtraceability.domain.AbstractEvent;
-import org.dddml.ffvtraceability.specialization.*;
-import org.dddml.support.criterion.Criterion;
-
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
+import org.dddml.support.criterion.Criterion;
+import java.time.OffsetDateTime;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.specialization.*;
 
 public abstract class AbstractInventoryItemApplicationService implements InventoryItemApplicationService {
 
     private EventStore eventStore;
 
-    protected EventStore getEventStore() {
+    protected EventStore getEventStore()
+    {
         return eventStore;
     }
 
@@ -91,9 +91,9 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
     }
 
     public InventoryItemEvent getEvent(String inventoryItemId, long version) {
-        InventoryItemEvent e = (InventoryItemEvent) getEventStore().getEvent(toEventStoreAggregateId(inventoryItemId), version);
+        InventoryItemEvent e = (InventoryItemEvent)getEventStore().getEvent(toEventStoreAggregateId(inventoryItemId), version);
         if (e != null) {
-            ((InventoryItemEvent.SqlInventoryItemEvent) e).setEventReadOnly(true);
+            ((InventoryItemEvent.SqlInventoryItemEvent)e).setEventReadOnly(true); 
         } else if (version == -1) {
             return getEvent(inventoryItemId, 0);
         }
@@ -123,18 +123,13 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
     }
 
     protected void updateWithOptionalId(InventoryItemCommand c, Consumer<InventoryItemAggregate> action) {
-        // The command is allowed to not contain the entity ID (the ID property can be null).
-        // If ID is not included, the flow will be different from the existing update method.
-        // The "create" flow can pass a state factory to the Aggregate Object instead of passing a state object.
-        // When calling `action.accept(aggregate)`, the aggregate object will internally call the verification method,
-        // and create the state object when needed.
         String aggregateId = c.getInventoryItemId();
         if (aggregateId == null) {
             InventoryItemAggregate aggregate = new AbstractInventoryItemAggregate.SimpleInventoryItemAggregate((i -> {
                 if (i != null) {
                     return getStateRepository().get(i, false);
                 } else {
-                    return new AbstractInventoryItemState.SimpleInventoryItemState();
+                    throw new IllegalStateException("Cannot create state object without ID in updateWithOptionalId method");
                 }
             }));
             action.accept(aggregate);
@@ -153,9 +148,7 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
         InventoryItemState state = getStateRepository().get(aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);
-        if (duplicate) {
-            return;
-        }
+        if (duplicate) { return; }
 
         InventoryItemAggregate aggregate = getInventoryItemAggregate(state);
         aggregate.throwOnInvalidStateTransition(c);
@@ -171,30 +164,28 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
     }
 
     public DomainEventPublisher getDomainEventPublisher() {
-        if (domainEventPublisher != null) {
-            return domainEventPublisher;
-        }
+        if (domainEventPublisher != null) { return domainEventPublisher; }
         return ApplicationContext.current.get(DomainEventPublisher.class);
     }
 
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, InventoryItemAggregate aggregate, InventoryItemState state) {
         final DomainEventPublisher ep = getDomainEventPublisher();
-        getEventStore().appendEvents(eventStoreAggregateId, version,
-                aggregate.getChanges(), (events) -> {
-                    getStateRepository().save(state);
-                    if (ep != null) {
-                        ep.publish(org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemAggregate.class,
-                                eventStoreAggregateId.getId(),
-                                (List<Event>) events);
-                    }
-                });
+        getEventStore().appendEvents(eventStoreAggregateId, version, 
+            aggregate.getChanges(), (events) -> { 
+                getStateRepository().save(state); 
+                if (ep != null) {
+                    ep.publish(org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemAggregate.class,
+                        eventStoreAggregateId.getId(),
+                        (List<Event>)events);
+                }
+            });
         if (aggregateEventListener != null) {
             aggregateEventListener.eventAppended(new AggregateEvent<>(aggregate, state, aggregate.getChanges()));
         }
     }
 
     void initialize(InventoryItemEvent.InventoryItemStateCreated stateCreated) {
-        String aggregateId = ((InventoryItemEvent.SqlInventoryItemEvent) stateCreated).getInventoryItemEventId().getInventoryItemId();
+        String aggregateId = ((InventoryItemEvent.SqlInventoryItemEvent)stateCreated).getInventoryItemEventId().getInventoryItemId();
         InventoryItemState.SqlInventoryItemState state = new AbstractInventoryItemState.SimpleInventoryItemState();
         state.setInventoryItemId(aggregateId);
 
@@ -202,18 +193,16 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
         ((AbstractInventoryItemAggregate) aggregate).apply(stateCreated);
 
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        persist(eventStoreAggregateId, ((InventoryItemEvent.SqlInventoryItemEvent) stateCreated).getInventoryItemEventId().getVersion(), aggregate, state);
+        persist(eventStoreAggregateId, ((InventoryItemEvent.SqlInventoryItemEvent)stateCreated).getInventoryItemEventId().getVersion(), aggregate, state);
     }
 
     protected boolean isDuplicateCommand(InventoryItemCommand command, EventStoreAggregateId eventStoreAggregateId, InventoryItemState state) {
         boolean duplicate = false;
-        if (command.getVersion() == null) {
-            command.setVersion(InventoryItemState.VERSION_NULL);
-        }
+        if (command.getVersion() == null) { command.setVersion(InventoryItemState.VERSION_NULL); }
         if (state.getVersion() != null && state.getVersion() > command.getVersion()) {
             Event lastEvent = getEventStore().getEvent(AbstractInventoryItemEvent.class, eventStoreAggregateId, command.getVersion());
             if (lastEvent != null && lastEvent instanceof AbstractEvent
-                    && command.getCommandId() != null && command.getCommandId().equals(((AbstractEvent) lastEvent).getCommandId())) {
+               && command.getCommandId() != null && command.getCommandId().equals(((AbstractEvent) lastEvent).getCommandId())) {
                 duplicate = true;
             }
         }
@@ -221,7 +210,8 @@ public abstract class AbstractInventoryItemApplicationService implements Invento
     }
 
     public static class SimpleInventoryItemApplicationService extends AbstractInventoryItemApplicationService {
-        public SimpleInventoryItemApplicationService(EventStore eventStore, InventoryItemStateRepository stateRepository, InventoryItemStateQueryRepository stateQueryRepository) {
+        public SimpleInventoryItemApplicationService(EventStore eventStore, InventoryItemStateRepository stateRepository, InventoryItemStateQueryRepository stateQueryRepository)
+        {
             super(eventStore, stateRepository, stateQueryRepository);
         }
     }

@@ -13,9 +13,9 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractInventoryItemAggregate extends AbstractAggregate implements InventoryItemAggregate {
     private InventoryItemState.MutableInventoryItemState state;
 
-    protected java.util.function.Function<String, InventoryItemState> stateFactory;
+    protected List<Event> changes = new ArrayList<Event>();
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected java.util.function.Function<String, InventoryItemState> stateFactory;
 
     public AbstractInventoryItemAggregate(InventoryItemState state) {
         this.state = (InventoryItemState.MutableInventoryItemState)state;
@@ -25,12 +25,12 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         this.stateFactory = stateFactory;
     }
 
-    public InventoryItemState getState() {
-        return this.state;
-    }
-
     protected void setState(InventoryItemState state) {
         this.state = (InventoryItemState.MutableInventoryItemState)state;
+    }
+
+    public InventoryItemState getState() {
+        return this.state;
     }
 
     public List<Event> getChanges() {
@@ -179,7 +179,7 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         if (innerInventoryItemIdValue == null) {
             innerProperties.setInventoryItemId(outerInventoryItemIdValue);
         }
-        else if (innerInventoryItemIdValue != outerInventoryItemIdValue
+        else if (innerInventoryItemIdValue != outerInventoryItemIdValue 
             && (innerInventoryItemIdValue == null || innerInventoryItemIdValue != null && !innerInventoryItemIdValue.equals(outerInventoryItemIdValue))) {
             throw DomainError.named("inconsistentId", "Outer %1$s %2$s NOT equals inner %3$s %4$s", outerInventoryItemIdName, outerInventoryItemIdValue, innerInventoryItemIdName, innerInventoryItemIdValue);
         }
@@ -227,22 +227,19 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
         @Override
         public void recordInventoryEntry(InventoryItemAttributes inventoryItemAttributes, InventoryItemDetailAttributes inventoryItemDetailAttributes, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal availableToPromiseDiff, java.math.BigDecimal accountingQuantityDiff, java.math.BigDecimal unitCost, Long version, String commandId, String requesterId, InventoryItemCommands.RecordInventoryEntry c) {
             java.util.function.Supplier<InventoryItemEvent.RecordInventoryEntryEvent> eventFactory = () -> newRecordInventoryEntryEvent(inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, version, commandId, requesterId);
-            InventoryItemEvent.RecordInventoryEntryEvent e;
-            try {
-                e = verifyRecordInventoryEntry(eventFactory, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
+            InventoryItemEvent.RecordInventoryEntryEvent e = verifyRecordInventoryEntry(eventFactory, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, c);
             if (getState() == null) {
-                // NOTE: Create an instance of the state object. If the event `e` contains an entity ID,
-                //   we need to use this ID to create the state instance.
-                //   If not, we need to wait for the mutation method to generate it (assign value to the state object's ID property).
-                //   In either case, we need to create the state instance before calling apply.
-                setState(stateFactory.apply(e.getInventoryItemId()));
-                e.setVersion(getState().getVersion() == null ? InventoryItemState.VERSION_NULL : getState().getVersion());
-                apply(e);
-                //  After calling `apply`, the state object exists and its entity ID property should have a value.
-                //    We need to assign the entity ID from the state object to the event object
+                if (e.getInventoryItemId() != null) {
+                    setState(stateFactory.apply(e.getInventoryItemId()));
+                    e.setVersion(getState().getVersion() == null ? InventoryItemState.VERSION_NULL : getState().getVersion());
+                    apply(e);
+                } else {
+                    AbstractInventoryItemState _this = AbstractInventoryItemState.create(e, _id -> (AbstractInventoryItemState) stateFactory.apply(_id));
+                    e.setVersion(_this.getVersion() == null ? InventoryItemState.VERSION_NULL : _this.getVersion());
+                    setState(_this);
+                    onApplying(e);
+                    this.changes.add(e);
+                }
                 if (e.getInventoryItemId() == null) {
                     e.setInventoryItemId(getState().getInventoryItemId());
                 } else if (!e.getInventoryItemId().equals(getState().getInventoryItemId())) {

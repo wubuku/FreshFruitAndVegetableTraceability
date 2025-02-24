@@ -21,7 +21,7 @@ public class UpdateAvailableThruDateLogic {
     }
 
     public static SupplierProductState mutate(SupplierProductState supplierProductState, OffsetDateTime availableThruDate, MutationContext<SupplierProductState, SupplierProductState.MutableSupplierProductState> mutationContext) {
-        SupplierProductState.MutableSupplierProductState s = mutationContext.createMutableState(supplierProductState);
+        SupplierProductState.MutableSupplierProductState s = mutationContext.toMutableState(supplierProductState);
         s.setAvailableThruDate(availableThruDate);
         return s;
     }

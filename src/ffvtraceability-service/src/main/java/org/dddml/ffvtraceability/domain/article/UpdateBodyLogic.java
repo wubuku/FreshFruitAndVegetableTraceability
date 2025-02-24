@@ -43,7 +43,7 @@ public class UpdateBodyLogic implements IUpdateBodyLogic {
      * @return The new state of the Article
      */
     public ArticleState mutate(ArticleState articleState, String body, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-        ArticleState.MutableArticleState s = mutationContext.createMutableState(articleState);
+        ArticleState.MutableArticleState s = mutationContext.toMutableState(articleState);
         // Update the body text in the mutable state
         s.setBody(body);
         // Return the updated state

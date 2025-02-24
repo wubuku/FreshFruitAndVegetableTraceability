@@ -67,7 +67,7 @@ public class UpdateFulfillmentStatusLogic implements IUpdateFulfillmentStatusLog
      * @return The new state of the Order
      */
     public OrderHeaderState mutate(OrderHeaderState orderHeaderState, OrderItemQuantityAllocationValue[] orderItemAllocations, MutationContext<OrderHeaderState, OrderHeaderState.MutableOrderHeaderState> mutationContext) {
-        OrderHeaderState.MutableOrderHeaderState s = mutationContext.createMutableState(orderHeaderState);
+        OrderHeaderState.MutableOrderHeaderState s = mutationContext.toMutableState(orderHeaderState);
 
         Map<OrderItemId, BigDecimal> totalAllocatedQuantities = Arrays.stream(orderItemAllocations)
                 .collect(java.util.stream.Collectors.groupingBy(

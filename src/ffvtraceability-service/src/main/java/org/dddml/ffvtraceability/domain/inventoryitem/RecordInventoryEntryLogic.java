@@ -93,18 +93,19 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
             java.math.BigDecimal unitCost,
             MutationContext<InventoryItemState, InventoryItemState.MutableInventoryItemState> mutationContext
     ) {
+        InventoryItemState.MutableInventoryItemState s;
         if (inventoryItemState == null) {
-            throw DomainError.named("InvalidState", "InventoryItem state cannot be null");
+            s = mutationContext.newMutableStateById(UUID.randomUUID().toString());//todo 先使用 UUID
+        } else {
+            s = mutationContext.toMutableState(inventoryItemState);
         }
-        InventoryItemState.MutableInventoryItemState s = mutationContext.createMutableState(inventoryItemState);
-        if (s.getVersion() == null) {
+        if (inventoryItemState == null) { //s.getVersion() == null) {
             // 新建库存项目
             if (inventoryItemAttributes == null) {
                 throw DomainError.named("InvalidAttributes", "InventoryItem attributes are required for new inventory item");
             }
             inventoryItemMapper.updateInventoryItemState(s, inventoryItemAttributes);
-            //TODO s.setInventoryItemId();  // 下面先使用 UUID
-            s.setInventoryItemId(UUID.randomUUID().toString());
+            //s.setInventoryItemId(UUID.randomUUID().toString());
             //TODO s.setInventoryItemAttributeHash();
             InventoryItemDetailState.MutableInventoryItemDetailState d = s.getDetails().getOrAddMutableState(UUID.randomUUID().toString());
             // 如果有详细属性，更新它们

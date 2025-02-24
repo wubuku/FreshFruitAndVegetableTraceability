@@ -5,9 +5,6 @@
 
 package org.dddml.ffvtraceability.domain.shipment;
 
-import java.math.*;
-import java.util.*;
-import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.specialization.*;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +42,7 @@ public class ShipmentActionLogic implements IShipmentActionLogic {
      * @return The new state of the Shipment
      */
     public ShipmentState mutate(ShipmentState shipmentState, String value, MutationContext<ShipmentState, ShipmentState.MutableShipmentState> mutationContext) {
-        ShipmentState.MutableShipmentState s = mutationContext.createMutableState(shipmentState);
+        ShipmentState.MutableShipmentState s = mutationContext.toMutableState(shipmentState);
         AbstractShipmentAggregate.SimpleShipmentShipmentActionCommandHandler cmdHandler = new AbstractShipmentAggregate.SimpleShipmentShipmentActionCommandHandler();
         cmdHandler.execute(new PropertyCommandContext<>() {
             @Override
