@@ -13,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +32,7 @@ public class SecurityConfig {
         MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
         http
+                .cors(Customizer.withDefaults())  // 启用 CORS
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/files/**"))
                         .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
@@ -48,6 +51,8 @@ public class SecurityConfig {
                     // 其他端点需要认证
                     auth.requestMatchers(mvcMatcherBuilder.pattern("/api/files/**")).authenticated()
                             .anyRequest().authenticated();
+
+                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();  // 允许所有 OPTIONS 请求
                 })
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
