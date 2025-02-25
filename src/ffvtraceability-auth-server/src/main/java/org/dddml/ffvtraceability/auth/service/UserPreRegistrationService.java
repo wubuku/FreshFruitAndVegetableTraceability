@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.auth.service;
 
+import org.dddml.ffvtraceability.auth.dto.PreRegisterUserDto;
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +28,9 @@ public class UserPreRegistrationService {
     }
 
     @Transactional
-    public PreRegisterUserResponse preRegisterUser(String username) {
+    public PreRegisterUserResponse preRegisterUser(PreRegisterUserDto preRegisterUser) {
         // Check if user already exists
+        String username = preRegisterUser.getUsername();
         if (userExists(username)) {
             throw new IllegalArgumentException("Username already exists: " + username);
         }
@@ -39,8 +41,16 @@ public class UserPreRegistrationService {
 
         // Insert new user
         jdbcTemplate.update(
-                "INSERT INTO users (username, password, enabled, password_change_required, first_login) VALUES (?, ?, ?, ?, ?)",
-                username, encodedPassword, true, true, true
+                "INSERT INTO users (username, password, enabled, password_change_required, first_login,first_name,last_name," +
+                        "email,department_id,from_data,employee_number,employee_contract_number,certification_description,skill_set_description," +
+                        "language_skills,associated_gln,profile_image_url,direct_manager_name,employee_type_id,telephone_number," +
+                        "mobile_number)" +
+                        " VALUES (?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                username, encodedPassword, true, true, true, preRegisterUser.getFirstName(), preRegisterUser.getLastName(),
+                preRegisterUser.getEmail(), preRegisterUser.getDepartmentId(), preRegisterUser.getFromDate(), preRegisterUser.getEmployeeNumber(),
+                preRegisterUser.getEmployeeContractNumber(), preRegisterUser.getCertificationDescription(), preRegisterUser.getSkillSetDescription(),
+                preRegisterUser.getLanguageSkills(), preRegisterUser.getAssociatedGln(), preRegisterUser.getProfileImageUrl(),
+                preRegisterUser.getDirectManagerName(), preRegisterUser.getEmployeeTypeId(), preRegisterUser.getTelephoneNumber(), preRegisterUser.getMobileNumber()
         );
 
         // Add to USER_GROUP
