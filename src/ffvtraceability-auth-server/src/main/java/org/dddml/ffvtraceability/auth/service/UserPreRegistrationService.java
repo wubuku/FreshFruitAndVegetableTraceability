@@ -2,6 +2,8 @@ package org.dddml.ffvtraceability.auth.service;
 
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserDto;
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserResponse;
+import org.dddml.ffvtraceability.auth.dto.UserDto;
+import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,6 +27,13 @@ public class UserPreRegistrationService {
         this.jdbcTemplate = jdbcTemplate;
         this.passwordEncoder = passwordEncoder;
         this.random = new SecureRandom();
+    }
+
+    @Transactional
+    public UserDto getUserByUsername(String username) {
+        String sql = "SELECT * FROM users WHERE username = ?";
+        UserDto user = jdbcTemplate.queryForObject(sql, new UserDtoMapper(), username);
+        return user;
     }
 
     @Transactional

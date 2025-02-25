@@ -7,6 +7,8 @@ public class UserDto {
     private String username;
     private String firstName;
     private String lastName;
+    private Boolean enabled;
+    private Boolean passwordChangeRequired;
     private String email;
     private String employeeNumber;
     private String departmentId;
@@ -21,6 +23,22 @@ public class UserDto {
     private String languageSkills;
     private String associatedGln;
     private String profileImageUrl;
+
+    public Boolean getPasswordChangeRequired() {
+        return passwordChangeRequired;
+    }
+
+    public void setPasswordChangeRequired(Boolean passwordChangeRequired) {
+        this.passwordChangeRequired = passwordChangeRequired;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getUsername() {
         return username;
