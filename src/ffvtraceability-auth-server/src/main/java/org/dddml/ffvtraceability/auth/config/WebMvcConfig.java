@@ -2,6 +2,7 @@ package org.dddml.ffvtraceability.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.dddml.ffvtraceability.auth.jackson.CustomJacksonModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean(name = "restApiObjectMapper")
     public ObjectMapper restApiObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         // 禁用所有类型信息序列化
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
