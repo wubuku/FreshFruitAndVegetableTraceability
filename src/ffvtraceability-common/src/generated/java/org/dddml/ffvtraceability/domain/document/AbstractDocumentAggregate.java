@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractDocumentAggregate extends AbstractAggregate implements DocumentAggregate {
     private DocumentState.MutableDocumentState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractDocumentAggregate(DocumentState state) {
         this.state = (DocumentState.MutableDocumentState)state;

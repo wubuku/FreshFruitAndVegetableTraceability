@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractSupplierProductAggregate extends AbstractAggregate implements SupplierProductAggregate {
     private SupplierProductState.MutableSupplierProductState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractSupplierProductAggregate(SupplierProductState state) {
         this.state = (SupplierProductState.MutableSupplierProductState)state;

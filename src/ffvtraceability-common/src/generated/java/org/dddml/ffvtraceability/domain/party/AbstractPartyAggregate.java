@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractPartyAggregate extends AbstractAggregate implements PartyAggregate {
     private PartyState.MutablePartyState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractPartyAggregate(PartyState state) {
         this.state = (PartyState.MutablePartyState)state;

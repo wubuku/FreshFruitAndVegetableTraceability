@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractStatusItemAggregate extends AbstractAggregate implements StatusItemAggregate {
     private StatusItemState.MutableStatusItemState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractStatusItemAggregate(StatusItemState state) {
         this.state = (StatusItemState.MutableStatusItemState)state;

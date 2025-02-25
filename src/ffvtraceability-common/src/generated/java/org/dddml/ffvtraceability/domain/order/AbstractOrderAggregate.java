@@ -14,7 +14,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractOrderAggregate extends AbstractAggregate implements OrderAggregate {
     private OrderHeaderState.MutableOrderHeaderState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractOrderAggregate(OrderHeaderState state) {
         this.state = (OrderHeaderState.MutableOrderHeaderState)state;

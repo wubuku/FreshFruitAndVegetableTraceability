@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractLotAggregate extends AbstractAggregate implements LotAggregate {
     private LotState.MutableLotState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractLotAggregate(LotState state) {
         this.state = (LotState.MutableLotState)state;

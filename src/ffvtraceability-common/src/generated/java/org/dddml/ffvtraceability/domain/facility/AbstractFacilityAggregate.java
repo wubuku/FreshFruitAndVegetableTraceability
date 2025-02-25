@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractFacilityAggregate extends AbstractAggregate implements FacilityAggregate {
     private FacilityState.MutableFacilityState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractFacilityAggregate(FacilityState state) {
         this.state = (FacilityState.MutableFacilityState)state;

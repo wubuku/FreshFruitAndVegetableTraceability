@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractShippingDocumentAggregate extends AbstractAggregate implements ShippingDocumentAggregate {
     private ShippingDocumentState.MutableShippingDocumentState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractShippingDocumentAggregate(ShippingDocumentState state) {
         this.state = (ShippingDocumentState.MutableShippingDocumentState)state;

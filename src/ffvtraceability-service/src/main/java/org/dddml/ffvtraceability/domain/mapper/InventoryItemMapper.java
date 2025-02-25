@@ -1,5 +1,9 @@
-package org.dddml.ffvtraceability.domain.inventoryitem;
+package org.dddml.ffvtraceability.domain.mapper;
 
+import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemAttributes;
+import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemDetailAttributes;
+import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemDetailState;
+import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemState;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

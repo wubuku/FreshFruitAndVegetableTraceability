@@ -733,7 +733,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
     }
 
     public void when(AbstractInventoryItemEvent.RecordInventoryEntryEvent e) {
-        //throwOnWrongEvent(e);
+        throwOnWrongEvent(e);
 
         InventoryItemAttributes inventoryItemAttributes = e.getInventoryItemAttributes();
         InventoryItemAttributes InventoryItemAttributes = inventoryItemAttributes;
@@ -758,17 +758,12 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         this.setUpdatedAt(e.getCreatedAt());
 
         InventoryItemState updatedInventoryItemState = ApplicationContext.current.get(IRecordInventoryEntryLogic.class).mutate(
-                this, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedInventoryItemState) { merge(updatedInventoryItemState); } //else do nothing
-        // NOTE: If the current state object does not have an ID, then the ID needs to be set.
-        if (this != updatedInventoryItemState && this.getInventoryItemId() == null) {
-            this.setInventoryItemId(updatedInventoryItemState.getInventoryItemId());
-        }
 
     }
-
 
     static AbstractInventoryItemState create(InventoryItemEvent.RecordInventoryEntryEvent e, java.util.function.Function<String, AbstractInventoryItemState> stateFactory) {
         InventoryItemAttributes inventoryItemAttributes = e.getInventoryItemAttributes();
@@ -778,8 +773,11 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         java.math.BigDecimal accountingQuantityDiff = e.getAccountingQuantityDiff();
         java.math.BigDecimal unitCost = e.getUnitCost();
 
-        AbstractInventoryItemState _this = (AbstractInventoryItemState)ApplicationContext.current.get(IRecordInventoryEntryLogic.class).mutate(
+        AbstractInventoryItemState _this = (AbstractInventoryItemState) ApplicationContext.current.get(IRecordInventoryEntryLogic.class).mutate(
                 null, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, MutationContext.forCreation(e, id -> stateFactory.apply((String) id) ));
+
+
+
 
         if (_this.getCreatedBy() == null){
             _this.setCreatedBy(e.getCreatedBy());
@@ -789,6 +787,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         }
         _this.setUpdatedBy(e.getCreatedBy());
         _this.setUpdatedAt(e.getCreatedAt());
+
         return _this;
     }
 

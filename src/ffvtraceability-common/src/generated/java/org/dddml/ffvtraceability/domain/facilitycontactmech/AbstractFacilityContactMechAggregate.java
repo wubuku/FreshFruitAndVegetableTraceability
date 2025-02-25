@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractFacilityContactMechAggregate extends AbstractAggregate implements FacilityContactMechAggregate {
     private FacilityContactMechState.MutableFacilityContactMechState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractFacilityContactMechAggregate(FacilityContactMechState state) {
         this.state = (FacilityContactMechState.MutableFacilityContactMechState)state;

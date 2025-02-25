@@ -15,7 +15,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate implements ShipmentReceiptAggregate {
     private ShipmentReceiptState.MutableShipmentReceiptState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractShipmentReceiptAggregate(ShipmentReceiptState state) {
         this.state = (ShipmentReceiptState.MutableShipmentReceiptState)state;

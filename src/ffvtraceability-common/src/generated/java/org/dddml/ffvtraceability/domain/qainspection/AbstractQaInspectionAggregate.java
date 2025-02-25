@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractQaInspectionAggregate extends AbstractAggregate implements QaInspectionAggregate {
     private QaInspectionState.MutableQaInspectionState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractQaInspectionAggregate(QaInspectionState state) {
         this.state = (QaInspectionState.MutableQaInspectionState)state;

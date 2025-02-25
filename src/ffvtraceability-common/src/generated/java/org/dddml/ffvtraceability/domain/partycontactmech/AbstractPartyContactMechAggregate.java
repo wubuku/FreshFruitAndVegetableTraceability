@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractPartyContactMechAggregate extends AbstractAggregate implements PartyContactMechAggregate {
     private PartyContactMechState.MutablePartyContactMechState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractPartyContactMechAggregate(PartyContactMechState state) {
         this.state = (PartyContactMechState.MutablePartyContactMechState)state;

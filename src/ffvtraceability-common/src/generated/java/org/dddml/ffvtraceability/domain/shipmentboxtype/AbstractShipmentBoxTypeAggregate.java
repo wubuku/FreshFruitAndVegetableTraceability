@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractShipmentBoxTypeAggregate extends AbstractAggregate implements ShipmentBoxTypeAggregate {
     private ShipmentBoxTypeState.MutableShipmentBoxTypeState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractShipmentBoxTypeAggregate(ShipmentBoxTypeState state) {
         this.state = (ShipmentBoxTypeState.MutableShipmentBoxTypeState)state;
