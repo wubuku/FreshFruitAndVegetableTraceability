@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractPartyRoleAggregate extends AbstractAggregate implements PartyRoleAggregate {
     private PartyRoleState.MutablePartyRoleState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractPartyRoleAggregate(PartyRoleState state) {
         this.state = (PartyRoleState.MutablePartyRoleState)state;

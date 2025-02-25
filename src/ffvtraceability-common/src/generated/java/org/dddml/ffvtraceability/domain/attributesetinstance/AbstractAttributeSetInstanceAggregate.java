@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractAttributeSetInstanceAggregate extends AbstractAggregate implements AttributeSetInstanceAggregate {
     private AttributeSetInstanceState.MutableAttributeSetInstanceState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractAttributeSetInstanceAggregate(AttributeSetInstanceState state) {
         this.state = (AttributeSetInstanceState.MutableAttributeSetInstanceState)state;

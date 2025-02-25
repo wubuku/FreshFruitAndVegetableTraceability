@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractWorkEffortAggregate extends AbstractAggregate implements WorkEffortAggregate {
     private WorkEffortState.MutableWorkEffortState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractWorkEffortAggregate(WorkEffortState state) {
         this.state = (WorkEffortState.MutableWorkEffortState)state;

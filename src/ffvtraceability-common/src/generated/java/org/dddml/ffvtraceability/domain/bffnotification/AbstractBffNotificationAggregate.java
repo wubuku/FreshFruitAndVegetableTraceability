@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractBffNotificationAggregate extends AbstractAggregate implements BffNotificationAggregate {
     private BffNotificationState.MutableBffNotificationState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractBffNotificationAggregate(BffNotificationState state) {
         this.state = (BffNotificationState.MutableBffNotificationState)state;

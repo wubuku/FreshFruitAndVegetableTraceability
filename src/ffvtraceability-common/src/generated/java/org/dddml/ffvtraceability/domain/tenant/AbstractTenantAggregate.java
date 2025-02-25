@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractTenantAggregate extends AbstractAggregate implements TenantAggregate {
     private TenantState.MutableTenantState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractTenantAggregate(TenantState state) {
         this.state = (TenantState.MutableTenantState)state;

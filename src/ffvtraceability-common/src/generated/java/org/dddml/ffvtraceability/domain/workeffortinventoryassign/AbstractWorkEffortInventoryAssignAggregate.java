@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractWorkEffortInventoryAssignAggregate extends AbstractAggregate implements WorkEffortInventoryAssignAggregate {
     private WorkEffortInventoryAssignState.MutableWorkEffortInventoryAssignState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractWorkEffortInventoryAssignAggregate(WorkEffortInventoryAssignState state) {
         this.state = (WorkEffortInventoryAssignState.MutableWorkEffortInventoryAssignState)state;

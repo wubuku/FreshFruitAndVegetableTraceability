@@ -13,7 +13,7 @@ import org.dddml.ffvtraceability.specialization.*;
 public abstract class AbstractUomAggregate extends AbstractAggregate implements UomAggregate {
     private UomState.MutableUomState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractUomAggregate(UomState state) {
         this.state = (UomState.MutableUomState)state;
