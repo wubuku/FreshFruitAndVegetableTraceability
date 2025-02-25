@@ -6,6 +6,7 @@
 package org.dddml.ffvtraceability.domain.inventoryitem;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.dddml.ffvtraceability.domain.mapper.InventoryItemMapper;
 import org.dddml.ffvtraceability.specialization.DomainError;
 import org.dddml.ffvtraceability.specialization.MutationContext;
 import org.dddml.ffvtraceability.specialization.VerificationContext;
