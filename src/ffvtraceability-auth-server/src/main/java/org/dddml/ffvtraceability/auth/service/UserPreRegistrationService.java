@@ -3,6 +3,7 @@ package org.dddml.ffvtraceability.auth.service;
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserDto;
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserResponse;
 import org.dddml.ffvtraceability.auth.dto.UserDto;
+import org.dddml.ffvtraceability.auth.mapper.GroupDtoMapper;
 import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +31,16 @@ public class UserPreRegistrationService {
         this.random = new SecureRandom();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDto getUserByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
-        UserDto user = jdbcTemplate.queryForObject(sql, new UserDtoMapper(), username);
+        UserDto user = jdbcTemplate.query(sql, new UserDtoMapper(), username).stream().findFirst().orElse(null);
+        //UserDto user = jdbcTemplate.queryForObject(sql, new UserDtoMapper(), username);
+        //注释掉的这个写法当遇到没有结果时会报异常EmptyResultDataAccessException
+        if (user != null) {
+            sql = "select * from groups where id in (select group_id from group_members gm where gm.username=?)";
+            user.setGroups(jdbcTemplate.query(sql, new GroupDtoMapper(), username));
+        }
         return user;
     }
 
