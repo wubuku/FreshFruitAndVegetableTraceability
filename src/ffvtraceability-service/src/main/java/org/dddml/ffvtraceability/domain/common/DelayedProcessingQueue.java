@@ -34,7 +34,8 @@ public class DelayedProcessingQueue<ID, CONTEXT, T extends DelayedProcessingQueu
     }
 
 
-    public void queueItemForProcessing(ID id, CONTEXT context, T delayedItem) {
+    public void queueItemForProcessing(T delayedItem) {
+        ID id = delayedItem.getId();
         if (id == null) {
             return;
         }

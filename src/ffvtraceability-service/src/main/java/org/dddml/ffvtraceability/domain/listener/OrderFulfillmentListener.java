@@ -77,8 +77,6 @@ public class OrderFulfillmentListener {
             return;
         }
         orderQueue.queueItemForProcessing(
-                orderId,
-                tenantId,
                 new DelayedOrderId(orderId, tenantId, FULFILLMENT_PROCESSING_DELAY_MS)
         );
     }
