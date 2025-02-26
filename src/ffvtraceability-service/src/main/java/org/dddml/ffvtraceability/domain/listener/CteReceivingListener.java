@@ -73,8 +73,6 @@ public class CteReceivingListener {
             return;
         }
         shipmentQueue.queueItemForProcessing(
-                shipmentId,
-                tenantId,
                 new DelayedShipmentId(shipmentId, tenantId, CTE_PROCESSING_DELAY_MS)
         );
     }
