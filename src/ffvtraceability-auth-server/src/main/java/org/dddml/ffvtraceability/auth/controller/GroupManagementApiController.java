@@ -1,5 +1,7 @@
 package org.dddml.ffvtraceability.auth.controller;
 
+import org.dddml.ffvtraceability.auth.dto.GroupDto;
+import org.dddml.ffvtraceability.auth.mapper.GroupDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,17 @@ public class GroupManagementApiController {
 
     public GroupManagementApiController(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @GetMapping
+    public List<GroupDto> findGroups(@RequestParam(value = "enabled", required = false) Boolean enabled) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM groups");
+        if (enabled != null) {
+            sql.append(" WHERE enabled = ? order by id");
+            return jdbcTemplate.query(sql.toString(), new GroupDtoMapper(), enabled);
+        }
+        sql.append(" order by id");
+        return jdbcTemplate.query(sql.toString(), new GroupDtoMapper());
     }
 
     @GetMapping("/list")
