@@ -4,6 +4,15 @@ public class GroupDto {
     private Long id;
     private String groupName;
     private Boolean enabled;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getGroupName() {
         return groupName;
