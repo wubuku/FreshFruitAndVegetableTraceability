@@ -2,12 +2,14 @@ package org.dddml.ffvtraceability.auth.dto;
 
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public class UserDto {
     private String username;
     private String firstName;
     private String lastName;
     private Boolean enabled;
+    private List<Long> groupIds;
     private Boolean passwordChangeRequired;
     private String email;
     private String employeeNumber;
@@ -23,6 +25,14 @@ public class UserDto {
     private String languageSkills;
     private String associatedGln;
     private String profileImageUrl;
+
+    public List<Long> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(List<Long> groupIds) {
+        this.groupIds = groupIds;
+    }
 
     public Boolean getPasswordChangeRequired() {
         return passwordChangeRequired;

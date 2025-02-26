@@ -2,12 +2,14 @@ package org.dddml.ffvtraceability.auth.dto;
 
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public class PreRegisterUserDto {
     private String username;
     private String firstName;
     private String lastName;
     private String email;
+    private List<Long> groupIds;
     private String employeeNumber;
     private String departmentId;
     private String directManagerName;
@@ -21,6 +23,14 @@ public class PreRegisterUserDto {
     private String languageSkills;
     private String associatedGln;
     private String profileImageUrl;
+
+    public List<Long> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(List<Long> groupIds) {
+        this.groupIds = groupIds;
+    }
 
     public String getUsername() {
         return username;
