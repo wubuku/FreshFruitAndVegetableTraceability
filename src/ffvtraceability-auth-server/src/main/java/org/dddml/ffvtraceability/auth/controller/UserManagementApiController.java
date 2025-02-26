@@ -1,5 +1,7 @@
 package org.dddml.ffvtraceability.auth.controller;
 
+import org.dddml.ffvtraceability.auth.dto.UserDto;
+import org.dddml.ffvtraceability.auth.service.UserPreRegistrationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,11 @@ public class UserManagementApiController {
     private static final Logger logger = LoggerFactory.getLogger(UserManagementApiController.class);
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserPreRegistrationService userPreRegistrationService;
 
-    public UserManagementApiController(JdbcTemplate jdbcTemplate) {
+    public UserManagementApiController(JdbcTemplate jdbcTemplate, UserPreRegistrationService userPreRegistrationService) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userPreRegistrationService = userPreRegistrationService;
     }
 
     @GetMapping("/list")
@@ -38,6 +42,13 @@ public class UserManagementApiController {
                 """;
 
         return jdbcTemplate.queryForList(sql);
+    }
+
+
+    @GetMapping("/{username}")
+    public ResponseEntity<UserDto> getUserByUserName(@PathVariable("username") String username) {
+        UserDto userDto = userPreRegistrationService.getUserByUsername(username);
+        return ResponseEntity.ok(userDto);
     }
 
     @PostMapping("/{username}/toggle-enabled")

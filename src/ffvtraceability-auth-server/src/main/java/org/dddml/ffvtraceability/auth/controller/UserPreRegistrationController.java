@@ -30,9 +30,4 @@ public class UserPreRegistrationController {
     }
 
 
-    @GetMapping("/{username}")
-    public ResponseEntity<UserDto> getUserByUserName(@PathVariable("username") String username) {
-        UserDto userDto = userPreRegistrationService.getUserByUsername(username);
-        return ResponseEntity.ok(userDto);
-    }
 }
