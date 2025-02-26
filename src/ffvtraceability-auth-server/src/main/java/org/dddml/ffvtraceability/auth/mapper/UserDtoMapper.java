@@ -2,13 +2,15 @@ package org.dddml.ffvtraceability.auth.mapper;
 
 import org.dddml.ffvtraceability.auth.dto.UserDto;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.NonNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
 
 public class UserDtoMapper implements RowMapper<UserDto> {
     @Override
-    public UserDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public UserDto mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
         UserDto userDto = new UserDto();
         userDto.setUsername(rs.getString("username"));
         userDto.setEnabled(rs.getBoolean("enabled"));
@@ -28,6 +30,11 @@ public class UserDtoMapper implements RowMapper<UserDto> {
         userDto.setEmployeeTypeId(rs.getString("employee_type_id"));
         userDto.setSkillSetDescription(rs.getString("skill_set_description"));
         userDto.setTelephoneNumber(rs.getString("telephone_number"));
+        userDto.setUpdatedBy(rs.getString("updated_by"));
+        userDto.setCreatedBy(rs.getString("created_by"));
+
+        userDto.setUpdatedAt(rs.getObject("updated_at", OffsetDateTime.class));
+        userDto.setCreatedAt(rs.getObject("created_at", OffsetDateTime.class));
         return userDto;
     }
 }

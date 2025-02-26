@@ -22,6 +22,10 @@ CREATE TABLE users (
     telephone_number VARCHAR(20) DEFAULT NULL,
     mobile_number VARCHAR(20) DEFAULT NULL,
     employee_number VARCHAR(50) DEFAULT NULL,
+    created_by VARCHAR(50) DEFAULT NULL,
+    created_at TIMESTAMPTZ DEFAULT NULL,
+    updated_by VARCHAR(50) DEFAULT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NULL,
     PRIMARY KEY (username)
 );
 
