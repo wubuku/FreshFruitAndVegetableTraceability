@@ -45,7 +45,7 @@ public class UserPreRegistrationService {
     }
 
     @Transactional
-    public PreRegisterUserResponse preRegisterUser(PreRegisterUserDto preRegisterUser) {
+    public PreRegisterUserResponse preRegisterUser(PreRegisterUserDto preRegisterUser,String operator) {
         // Check if user already exists
         String username = preRegisterUser.getUsername();
         if (userExists(username)) {
