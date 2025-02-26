@@ -1,6 +1,8 @@
 package org.dddml.ffvtraceability.auth.controller;
 
 import org.dddml.ffvtraceability.auth.dto.UserDto;
+import org.dddml.ffvtraceability.auth.mapper.GroupDtoMapper;
+import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
 import org.dddml.ffvtraceability.auth.service.UserPreRegistrationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth-srv/users")
@@ -25,19 +29,18 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<?> getUsers() {
-        String sql = """
-                SELECT u.username, u.enabled, u.password_change_required,
-                       STRING_AGG(DISTINCT g.group_name, ', ') as groups,
-                       STRING_AGG(DISTINCT a.authority, ', ') as authorities
-                FROM users u
-                LEFT JOIN group_members gm ON u.username = gm.username
-                LEFT JOIN groups g ON gm.group_id = g.id
-                LEFT JOIN authorities a ON u.username = a.username
-                WHERE u.username != '*'
-                GROUP BY u.username, u.enabled, u.password_change_required
-                ORDER BY u.username
-                """;
-        return ResponseEntity.ok(jdbcTemplate.queryForList(sql));
+        try {
+            String sql = "SELECT * FROM users";
+            List<UserDto> users = jdbcTemplate.query(sql, new UserDtoMapper());
+            users.forEach(user -> {
+                String selectGroups = "select * from groups where id in (select group_id from group_members gm where gm.username=?)";
+                user.setGroups(jdbcTemplate.query(selectGroups, new GroupDtoMapper(), user.getUsername()));
+
+            });
+            return ResponseEntity.ok(users);
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
 
