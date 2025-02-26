@@ -19,16 +19,15 @@ public class UserPreRegistrationController {
     }
 
     @PostMapping("/pre-register")
-    public ResponseEntity<PreRegisterUserResponse> preRegisterUser(
+    public ResponseEntity<?> preRegisterUser(
             @Valid @RequestBody PreRegisterUserDto preRegisterUser) {
-        PreRegisterUserResponse response = userPreRegistrationService.preRegisterUser(preRegisterUser);
-        return ResponseEntity.ok(response);
+        try {
+            PreRegisterUserResponse response = userPreRegistrationService.preRegisterUser(preRegisterUser);
+            return ResponseEntity.ok(response);
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("Register user failed:" + ex.getMessage());
+        }
     }
 
 
-    @GetMapping("/{username}")
-    public ResponseEntity<UserDto> getUserByUserName(@PathVariable("username") String username) {
-        UserDto userDto = userPreRegistrationService.getUserByUsername(username);
-        return ResponseEntity.ok(userDto);
-    }
 }

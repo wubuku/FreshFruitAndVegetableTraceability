@@ -13,6 +13,7 @@ public class GroupDtoMapper implements RowMapper<GroupDto> {
         groupDto.setId(rs.getLong("id"));
         groupDto.setGroupName(rs.getString("group_name"));
         groupDto.setEnabled(rs.getBoolean("enabled"));
+        groupDto.setDescription(rs.getString("description"));
         return groupDto;
     }
 }

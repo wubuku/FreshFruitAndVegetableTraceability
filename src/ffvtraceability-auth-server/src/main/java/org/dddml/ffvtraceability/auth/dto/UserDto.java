@@ -9,7 +9,7 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private Boolean enabled;
-    private List<Long> groupIds;
+    private List<GroupDto> groups;
     private Boolean passwordChangeRequired;
     private String email;
     private String employeeNumber;
@@ -26,12 +26,12 @@ public class UserDto {
     private String associatedGln;
     private String profileImageUrl;
 
-    public List<Long> getGroupIds() {
-        return groupIds;
+    public List<GroupDto> getGroups() {
+        return groups;
     }
 
-    public void setGroupIds(List<Long> groupIds) {
-        this.groupIds = groupIds;
+    public void setGroups(List<GroupDto> groups) {
+        this.groups = groups;
     }
 
     public Boolean getPasswordChangeRequired() {

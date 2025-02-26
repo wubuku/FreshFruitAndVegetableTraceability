@@ -10,24 +10,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-
 @RestController
-@RequestMapping("/api/users")
-public class UserManagementApiController {
-    private static final Logger logger = LoggerFactory.getLogger(UserManagementApiController.class);
+@RequestMapping("/api/auth-srv/users")
+public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final JdbcTemplate jdbcTemplate;
     private final UserPreRegistrationService userPreRegistrationService;
 
-    public UserManagementApiController(JdbcTemplate jdbcTemplate, UserPreRegistrationService userPreRegistrationService) {
+    public UserController(JdbcTemplate jdbcTemplate, UserPreRegistrationService userPreRegistrationService) {
         this.jdbcTemplate = jdbcTemplate;
         this.userPreRegistrationService = userPreRegistrationService;
     }
 
-    @GetMapping("/list")
-    public List<Map<String, Object>> getUsers() {
+    @GetMapping
+    public ResponseEntity<?> getUsers() {
         String sql = """
                 SELECT u.username, u.enabled, u.password_change_required,
                        STRING_AGG(DISTINCT g.group_name, ', ') as groups,
@@ -40,19 +37,14 @@ public class UserManagementApiController {
                 GROUP BY u.username, u.enabled, u.password_change_required
                 ORDER BY u.username
                 """;
-
-        return jdbcTemplate.queryForList(sql);
+        return ResponseEntity.ok(jdbcTemplate.queryForList(sql));
     }
 
 
     @GetMapping("/{username}")
-    public ResponseEntity<?> getUserByUserName(@PathVariable("username") String username) {
-        try {
-            UserDto userDto = userPreRegistrationService.getUserByUsername(username);
-            return ResponseEntity.ok(userDto);
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
+    public ResponseEntity<UserDto> getUserByUserName(@PathVariable("username") String username) {
+        UserDto userDto = userPreRegistrationService.getUserByUsername(username);
+        return ResponseEntity.ok(userDto);
     }
 
     @PostMapping("/{username}/toggle-enabled")

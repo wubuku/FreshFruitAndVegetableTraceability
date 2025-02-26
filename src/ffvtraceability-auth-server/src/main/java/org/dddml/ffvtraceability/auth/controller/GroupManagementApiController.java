@@ -1,6 +1,5 @@
 package org.dddml.ffvtraceability.auth.controller;
 
-import org.dddml.ffvtraceability.auth.dto.GroupDto;
 import org.dddml.ffvtraceability.auth.mapper.GroupDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +25,18 @@ public class GroupManagementApiController {
     }
 
     @GetMapping
-    public List<GroupDto> findGroups(@RequestParam(value = "enabled", required = false) Boolean enabled) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM groups");
-        if (enabled != null) {
-            sql.append(" WHERE enabled = ? order by id");
-            return jdbcTemplate.query(sql.toString(), new GroupDtoMapper(), enabled);
+    public ResponseEntity<?> findGroups(@RequestParam(value = "enabled", required = false) Boolean enabled) {
+        try {
+            StringBuilder sql = new StringBuilder("SELECT * FROM groups");
+            if (enabled != null) {
+                sql.append(" WHERE enabled = ? order by id");
+                return ResponseEntity.ok(jdbcTemplate.query(sql.toString(), new GroupDtoMapper(), enabled));
+            }
+            sql.append(" order by id");
+            return ResponseEntity.ok(jdbcTemplate.query(sql.toString(), new GroupDtoMapper()));
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
-        sql.append(" order by id");
-        return jdbcTemplate.query(sql.toString(), new GroupDtoMapper());
     }
 
     @GetMapping("/list")
@@ -74,18 +77,30 @@ public class GroupManagementApiController {
     @PostMapping("/create")
     public ResponseEntity<?> createGroup(@RequestBody Map<String, String> request) {
         String groupName = request.get("groupName");
+        if (groupName == null || groupName.isBlank()) {
+            return ResponseEntity.badRequest().body("Group name can't be null");
+        }
+        Integer count = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM groups WHERE group_name = ?",
+                Integer.class,
+                groupName
+        );
+        if (count != null && count > 0) {
+            return ResponseEntity.badRequest().body("Group name already exists: " + groupName);
+        }
+        String description = request.get("description");
 
         try {
-            logger.debug("Attempting to create group with name: {}", groupName);
+            logger.debug("Attempting to create group with name: {},description:{}", groupName, description);
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
-
             int rows = jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO groups (group_name) VALUES (?)",
+                        "INSERT INTO groups (group_name,description) VALUES (?,?)",
                         new String[]{"id"}
                 );
                 ps.setString(1, groupName);
+                ps.setString(2, description);
                 return ps;
             }, keyHolder);
 
@@ -102,7 +117,8 @@ public class GroupManagementApiController {
 
             Map<String, Object> response = Map.of(
                     "id", key.longValue(),
-                    "groupName", groupName
+                    "groupName", groupName,
+                    "description", description
             );
 
             logger.debug("Successfully created group: {}, with ID: {}", groupName, key.longValue());
