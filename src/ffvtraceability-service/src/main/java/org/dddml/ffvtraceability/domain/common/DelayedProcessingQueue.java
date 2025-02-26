@@ -16,6 +16,7 @@ public class DelayedProcessingQueue<ID, CONTEXT, T extends DelayedProcessingQueu
     private static final int MAX_RETRY_COUNT = 3;
     // 基础延迟时间 (毫秒)
     private static final long BASE_DELAY_MS = 1000L;
+    private static final long MAX_DELAY_MS = 30000L; // 最大延迟30秒
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final DelayQueue<T> processingQueue;
     private final Set<ID> queuedIds;
@@ -107,8 +108,9 @@ public class DelayedProcessingQueue<ID, CONTEXT, T extends DelayedProcessingQueu
 
                 // 检查是否已达到最大重试次数
                 if (!isShutdown && retryCount <= MAX_RETRY_COUNT) {
-                    // 使用指数退避计算新的延迟时间
-                    long newDelayMs = BASE_DELAY_MS * (1L << (retryCount - 1)); // 1s, 2s, 4s...
+                    // 使用指数退避计算新的延迟时间，并限制最大值
+                    long calculatedDelay = BASE_DELAY_MS * (1L << Math.min(retryCount - 1, 30)); // 防止溢出
+                    long newDelayMs = Math.min(calculatedDelay, MAX_DELAY_MS); // 应用最大延迟限制
                     logger.info("Requeuing {} with delay {} ms (attempt {})", id, newDelayMs, retryCount);
 
                     retryCountMap.put(id, retryCount);
@@ -169,6 +171,13 @@ public class DelayedProcessingQueue<ID, CONTEXT, T extends DelayedProcessingQueu
      */
     public boolean close(long timeoutMs) {
         isShutdown = true;
+
+        // 清空队列中的所有项
+        synchronized (queuedIds) {
+            queuedIds.clear();
+            processingQueue.clear();
+            logger.info("Cleared {} queue with {} remaining items", componentName, processingQueue.size());
+        }
 
         if (!isProcessing.get()) {
             return true; // 没有正在进行的处理，直接返回

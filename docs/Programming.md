@@ -920,3 +920,100 @@ mvn help:evaluate -Dexpression=maven.compiler.target -q -DforceStdout
 3. 确保设置的版本与项目的 JDK 版本兼容
 4. 在多模块项目中，推荐在父 POM 中统一配置，特殊需求的模块再单独覆盖
 
+
+## 在 Spring Boot 中混用 JdbcTemplate 和 JPA
+
+在同一个Spring Boot应用程序中，可以同时使用JdbcTemplate和JPA。这种混合使用的方式在实际开发中很常见，特别是在以下场景：
+
+- 项目演进过程中，逐步从JdbcTemplate迁移到JPA
+- 某些复杂查询使用JdbcTemplate更高效，而简单的CRUD操作使用JPA更方便
+- 项目中某些模块已经使用JdbcTemplate开发完成，而新功能想要利用JPA的优势
+
+### 事务管理
+
+Spring的事务管理机制可以很好地处理这种混合使用的情况：
+
+- Spring的事务管理是在数据源（DataSource）层面进行的，而不是在数据访问技术层面
+- 只要JdbcTemplate和JPA使用的是同一个数据源，它们就可以参与到同一个事务中
+- 使用`@Transactional`注解的方法中，可以同时包含JdbcTemplate和JPA的操作，它们会在同一个事务中执行
+
+### 实现步骤
+
+1. 保持现有的JdbcTemplate配置不变
+2. 添加JPA相关依赖：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+```
+
+3. 确保JdbcTemplate和JPA使用同一个数据源配置
+4. 为新实体创建JPA的Entity类和Repository接口
+
+### 示例代码
+
+下面是一个混合使用JdbcTemplate和JPA的服务类示例：
+
+```java
+@Service
+@Transactional
+public class MixedDataAccessService {
+    
+    private final JdbcTemplate jdbcTemplate;
+    private final NewEntityRepository newEntityRepository; // JPA仓库
+    
+    public MixedDataAccessService(JdbcTemplate jdbcTemplate, NewEntityRepository newEntityRepository) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.newEntityRepository = newEntityRepository;
+    }
+    
+    public void performMixedOperation() {
+        // 使用JdbcTemplate操作旧表
+        jdbcTemplate.update("UPDATE old_table SET status = ? WHERE id = ?", "PROCESSED", 1);
+        
+        // 使用JPA操作新表
+        NewEntity entity = new NewEntity();
+        entity.setName("新实体");
+        newEntityRepository.save(entity);
+        
+        // 两种操作都在同一个事务中，要么一起成功，要么一起失败
+    }
+}
+```
+
+### 配置示例
+
+确保JPA和JdbcTemplate使用同一个数据源：
+
+```java
+@Configuration
+public class DatabaseConfig {
+
+    @Bean
+    @Primary
+    public DataSource dataSource() {
+        // 配置数据源
+        return new HikariDataSource(/* 配置参数 */);
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    // JPA将自动使用上面配置的主数据源
+}
+```
+
+### 注意事项
+
+1. 使用相同的事务管理器：确保JPA和JdbcTemplate使用相同的事务管理器
+2. 避免数据不一致：当两种技术混用时，注意避免缓存与数据库不一致的问题
+3. 性能考虑：合理选择在什么场景使用JdbcTemplate（如复杂查询）和JPA（如简单的CRUD）
+4. 清晰的架构设计：明确不同数据访问技术的职责边界，避免混乱
+
+通过以上配置和实践，可以在同一个项目中平滑地混合使用JdbcTemplate和JPA，充分利用各自的优势。
+
+
