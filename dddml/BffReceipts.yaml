@@ -5,6 +5,7 @@ valueObjects:
       JpaProjectionInterfaceName: BffReceivingDocumentProjection
       JpaProjectionPropertyTypes:
         CreatedAt: java.time.Instant
+        ReceivedAt: java.time.Instant
     properties:
       DocumentId:
         type: id
