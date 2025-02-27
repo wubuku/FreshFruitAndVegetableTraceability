@@ -176,13 +176,32 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
             addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID, facility.getInternalId());
         }
 
+
         facilityApplicationService.when(createFacility);
+
+
+        //给仓库创建一个默认的库位
+        createDefaultLocation(createFacility.getFacilityId(), c.getRequesterId());
 
         if (facility.getBusinessContacts() != null && !facility.getBusinessContacts().isEmpty()) {
             String contactMechId = bffBusinessContactService.createMiscContact(facility.getBusinessContacts().get(0), c);
             createFacilityContactMechAssociation(createFacility.getFacilityId(), contactMechId, "-PE", c);
         }
         return createFacility.getFacilityId();
+    }
+
+    private void createDefaultLocation(String facilityId, String requesterId) {
+        AbstractFacilityLocationCommand.SimpleCreateFacilityLocation createLocation = new AbstractFacilityLocationCommand.SimpleCreateFacilityLocation();
+        FacilityLocationId locationId = new FacilityLocationId();
+        locationId.setFacilityId(facilityId);
+        locationId.setLocationSeqId(facilityId + "_DEFAULT");
+        createLocation.setFacilityLocationId(locationId);
+        createLocation.setLocationName("Default location");
+        createLocation.setDescription("The default location of the facility");
+        createLocation.setActive(INDICATOR_YES); // 默认激活
+        createLocation.setCommandId(locationId.getLocationSeqId());
+        createLocation.setRequesterId(requesterId);
+        facilityLocationApplicationService.when(createLocation);
     }
 
     private void addFacilityIdentification(
