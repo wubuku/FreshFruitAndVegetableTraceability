@@ -196,7 +196,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         locationId.setFacilityId(facilityId);
         locationId.setLocationSeqId(facilityId + "_DEFAULT");
         createLocation.setFacilityLocationId(locationId);
-        createLocation.setLocationName("Default location");
+        createLocation.setLocationName("-");
         createLocation.setDescription("The default location of the facility");
         createLocation.setActive(INDICATOR_YES); // 默认激活
         createLocation.setCommandId(locationId.getLocationSeqId());
