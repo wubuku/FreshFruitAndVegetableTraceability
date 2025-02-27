@@ -41,6 +41,14 @@ public class UserPreRegistrationService {
         if (user != null) {
             sql = "select * from groups where id in (select group_id from group_members gm where gm.username=?)";
             user.setGroups(jdbcTemplate.query(sql, new GroupDtoMapper(), username));
+            String sqlGetPermissions = """
+                    SELECT a.authority 
+                    FROM authorities a
+                    JOIN permissions p ON a.authority = p.permission_id
+                    WHERE a.username = ? 
+                    AND (p.enabled IS NULL OR p.enabled = true)
+                    """;
+            user.setPermissions(jdbcTemplate.queryForList(sqlGetPermissions, String.class, username));
         }
         return user;
     }

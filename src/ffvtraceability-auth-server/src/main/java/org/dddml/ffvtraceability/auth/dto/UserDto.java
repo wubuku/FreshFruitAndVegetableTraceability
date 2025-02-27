@@ -29,6 +29,15 @@ public class UserDto {
     private OffsetDateTime updatedAt;
     private String createdBy;
     private String updatedBy;
+    private List<String> permissions;
+
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
+    }
 
     public OffsetDateTime getCreatedAt() {
         return createdAt;
