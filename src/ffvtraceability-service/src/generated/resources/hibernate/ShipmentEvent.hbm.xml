@@ -105,6 +105,12 @@
       <property name="addtlShippingChargeDesc">
         <column name="ADDTL_SHIPPING_CHARGE_DESC" sql-type="VARCHAR(255)" />
       </property>
+      <property name="receivedBy">
+        <column name="RECEIVED_BY" sql-type="VARCHAR(250)" />
+      </property>
+      <property name="datetimeReceived">
+        <column name="DATETIME_RECEIVED" sql-type="timestamptz" />
+      </property>
       <subclass name="AbstractShipmentEvent$SimpleShipmentStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractShipmentEvent$SimpleShipmentStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyShipmentTypeIdRemoved" column="is_property_shipment_type_id_removed" />
@@ -133,6 +139,8 @@
         <property name="isPropertyPartyIdFromRemoved" column="is_property_party_id_from_removed" />
         <property name="isPropertyAdditionalShippingChargeRemoved" column="is_property_additional_shipping_charge_removed" />
         <property name="isPropertyAddtlShippingChargeDescRemoved" column="is_property_addtl_shipping_charge_desc_removed" />
+        <property name="isPropertyReceivedByRemoved" column="is_property_received_by_removed" />
+        <property name="isPropertyDatetimeReceivedRemoved" column="is_property_datetime_received_removed" />
       </subclass>
     </subclass>
   </class>

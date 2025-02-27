@@ -347,6 +347,30 @@ public abstract class AbstractShipmentCommand extends AbstractCommand implements
             this.addtlShippingChargeDesc = addtlShippingChargeDesc;
         }
 
+        private String receivedBy;
+
+        public String getReceivedBy()
+        {
+            return this.receivedBy;
+        }
+
+        public void setReceivedBy(String receivedBy)
+        {
+            this.receivedBy = receivedBy;
+        }
+
+        private OffsetDateTime datetimeReceived;
+
+        public OffsetDateTime getDatetimeReceived()
+        {
+            return this.datetimeReceived;
+        }
+
+        public void setDatetimeReceived(OffsetDateTime datetimeReceived)
+        {
+            this.datetimeReceived = datetimeReceived;
+        }
+
         public ShipmentItemCommand.CreateShipmentItem newCreateShipmentItem()
         {
             AbstractShipmentItemCommand.SimpleCreateShipmentItem c = new AbstractShipmentItemCommand.SimpleCreateShipmentItem();
@@ -719,6 +743,30 @@ public abstract class AbstractShipmentCommand extends AbstractCommand implements
         public void setIsPropertyAddtlShippingChargeDescRemoved(Boolean removed)
         {
             this.isPropertyAddtlShippingChargeDescRemoved = removed;
+        }
+
+        private Boolean isPropertyReceivedByRemoved;
+
+        public Boolean getIsPropertyReceivedByRemoved()
+        {
+            return this.isPropertyReceivedByRemoved;
+        }
+
+        public void setIsPropertyReceivedByRemoved(Boolean removed)
+        {
+            this.isPropertyReceivedByRemoved = removed;
+        }
+
+        private Boolean isPropertyDatetimeReceivedRemoved;
+
+        public Boolean getIsPropertyDatetimeReceivedRemoved()
+        {
+            return this.isPropertyDatetimeReceivedRemoved;
+        }
+
+        public void setIsPropertyDatetimeReceivedRemoved(Boolean removed)
+        {
+            this.isPropertyDatetimeReceivedRemoved = removed;
         }
 
 

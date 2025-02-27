@@ -124,6 +124,17 @@
       AddtlShippingChargeDesc:
         type: long-varchar
         columnName: ADDTL_SHIPPING_CHARGE_DESC
+      # ------------------------------------------------------------
+      # NOTE: 这里的命名和 ShipmentReceipt 保持一致
+      ReceivedBy:
+        #ReceivedByUserLoginId:
+        type: id-vlong
+        columnName: RECEIVED_BY
+      DatetimeReceived:
+        # 这里没有使用 ReceivedAt 这个命名
+        type: date-time
+        columnName: DATETIME_RECEIVED
+      # ------------------------------------------------------------
 
       ShipmentItems:
         itemType: ShipmentItem

@@ -71,6 +71,10 @@ public interface ShipmentState
 
     String getAddtlShippingChargeDesc();
 
+    String getReceivedBy();
+
+    OffsetDateTime getDatetimeReceived();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -141,6 +145,10 @@ public interface ShipmentState
         void setAdditionalShippingCharge(java.math.BigDecimal additionalShippingCharge);
 
         void setAddtlShippingChargeDesc(String addtlShippingChargeDesc);
+
+        void setReceivedBy(String receivedBy);
+
+        void setDatetimeReceived(OffsetDateTime datetimeReceived);
 
         void setVersion(Long version);
 

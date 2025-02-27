@@ -89,6 +89,8 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         e.setPartyIdFrom(c.getPartyIdFrom());
         e.setAdditionalShippingCharge(c.getAdditionalShippingCharge());
         e.setAddtlShippingChargeDesc(c.getAddtlShippingChargeDesc());
+        e.setReceivedBy(c.getReceivedBy());
+        e.setDatetimeReceived(c.getDatetimeReceived());
         ((AbstractShipmentEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -139,6 +141,8 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         e.setPartyIdFrom(c.getPartyIdFrom());
         e.setAdditionalShippingCharge(c.getAdditionalShippingCharge());
         e.setAddtlShippingChargeDesc(c.getAddtlShippingChargeDesc());
+        e.setReceivedBy(c.getReceivedBy());
+        e.setDatetimeReceived(c.getDatetimeReceived());
         e.setIsPropertyShipmentTypeIdRemoved(c.getIsPropertyShipmentTypeIdRemoved());
         e.setIsPropertyPrimaryOrderIdRemoved(c.getIsPropertyPrimaryOrderIdRemoved());
         e.setIsPropertyPrimaryReturnIdRemoved(c.getIsPropertyPrimaryReturnIdRemoved());
@@ -163,6 +167,8 @@ public abstract class AbstractShipmentAggregate extends AbstractAggregate implem
         e.setIsPropertyPartyIdFromRemoved(c.getIsPropertyPartyIdFromRemoved());
         e.setIsPropertyAdditionalShippingChargeRemoved(c.getIsPropertyAdditionalShippingChargeRemoved());
         e.setIsPropertyAddtlShippingChargeDescRemoved(c.getIsPropertyAddtlShippingChargeDescRemoved());
+        e.setIsPropertyReceivedByRemoved(c.getIsPropertyReceivedByRemoved());
+        e.setIsPropertyDatetimeReceivedRemoved(c.getIsPropertyDatetimeReceivedRemoved());
         ((AbstractShipmentEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

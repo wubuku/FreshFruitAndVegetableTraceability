@@ -6246,6 +6246,8 @@ public class M {
             "partyIdFrom",
             "additionalShippingCharge",
             "addtlShippingChargeDesc",
+            "receivedBy",
+            "datetimeReceived",
             "version",
             "createdBy",
             "createdAt",
@@ -6283,6 +6285,8 @@ public class M {
             "String",
             "java.math.BigDecimal",
             "String",
+            "String",
+            "OffsetDateTime",
             "Long",
             "String",
             "OffsetDateTime",
@@ -6358,6 +6362,10 @@ public class M {
         aliasMap.put("AdditionalShippingCharge", "additionalShippingCharge");
         aliasMap.put("addtlShippingChargeDesc", "addtlShippingChargeDesc");
         aliasMap.put("AddtlShippingChargeDesc", "addtlShippingChargeDesc");
+        aliasMap.put("receivedBy", "receivedBy");
+        aliasMap.put("ReceivedBy", "receivedBy");
+        aliasMap.put("datetimeReceived", "datetimeReceived");
+        aliasMap.put("DatetimeReceived", "datetimeReceived");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

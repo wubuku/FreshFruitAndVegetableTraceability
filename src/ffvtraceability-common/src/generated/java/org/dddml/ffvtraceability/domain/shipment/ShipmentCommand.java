@@ -156,6 +156,14 @@ public interface ShipmentCommand extends Command {
 
         void setAddtlShippingChargeDesc(String addtlShippingChargeDesc);
 
+        String getReceivedBy();
+
+        void setReceivedBy(String receivedBy);
+
+        OffsetDateTime getDatetimeReceived();
+
+        void setDatetimeReceived(OffsetDateTime datetimeReceived);
+
     }
 
     interface CreateShipment extends CreateOrMergePatchShipment {
@@ -265,6 +273,14 @@ public interface ShipmentCommand extends Command {
         Boolean getIsPropertyAddtlShippingChargeDescRemoved();
 
         void setIsPropertyAddtlShippingChargeDescRemoved(Boolean removed);
+
+        Boolean getIsPropertyReceivedByRemoved();
+
+        void setIsPropertyReceivedByRemoved(Boolean removed);
+
+        Boolean getIsPropertyDatetimeReceivedRemoved();
+
+        void setIsPropertyDatetimeReceivedRemoved(Boolean removed);
 
 
         ShipmentItemCommandCollection getShipmentItemCommands();

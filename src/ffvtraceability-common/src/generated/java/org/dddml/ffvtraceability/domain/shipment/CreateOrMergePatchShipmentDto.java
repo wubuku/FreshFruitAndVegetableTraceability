@@ -370,6 +370,36 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         this.addtlShippingChargeDesc = addtlShippingChargeDesc;
     }
 
+    /**
+     * Received By
+     */
+    private String receivedBy;
+
+    public String getReceivedBy()
+    {
+        return this.receivedBy;
+    }
+
+    public void setReceivedBy(String receivedBy)
+    {
+        this.receivedBy = receivedBy;
+    }
+
+    /**
+     * Datetime Received
+     */
+    private OffsetDateTime datetimeReceived;
+
+    public OffsetDateTime getDatetimeReceived()
+    {
+        return this.datetimeReceived;
+    }
+
+    public void setDatetimeReceived(OffsetDateTime datetimeReceived)
+    {
+        this.datetimeReceived = datetimeReceived;
+    }
+
     private String shipmentAction;
 
     public String getShipmentAction() {
@@ -703,6 +733,30 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         this.isPropertyAddtlShippingChargeDescRemoved = removed;
     }
 
+    private Boolean isPropertyReceivedByRemoved;
+
+    public Boolean getIsPropertyReceivedByRemoved()
+    {
+        return this.isPropertyReceivedByRemoved;
+    }
+
+    public void setIsPropertyReceivedByRemoved(Boolean removed)
+    {
+        this.isPropertyReceivedByRemoved = removed;
+    }
+
+    private Boolean isPropertyDatetimeReceivedRemoved;
+
+    public Boolean getIsPropertyDatetimeReceivedRemoved()
+    {
+        return this.isPropertyDatetimeReceivedRemoved;
+    }
+
+    public void setIsPropertyDatetimeReceivedRemoved(Boolean removed)
+    {
+        this.isPropertyDatetimeReceivedRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchShipment command)
     {
         ((AbstractShipmentCommandDto) this).copyTo(command);
@@ -730,6 +784,8 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         command.setPartyIdFrom(this.getPartyIdFrom());
         command.setAdditionalShippingCharge(this.getAdditionalShippingCharge());
         command.setAddtlShippingChargeDesc(this.getAddtlShippingChargeDesc());
+        command.setReceivedBy(this.getReceivedBy());
+        command.setDatetimeReceived(this.getDatetimeReceived());
     }
 
     public ShipmentCommand toCommand()
@@ -840,6 +896,8 @@ public class CreateOrMergePatchShipmentDto extends AbstractShipmentCommandDto im
         command.setIsPropertyPartyIdFromRemoved(this.getIsPropertyPartyIdFromRemoved());
         command.setIsPropertyAdditionalShippingChargeRemoved(this.getIsPropertyAdditionalShippingChargeRemoved());
         command.setIsPropertyAddtlShippingChargeDescRemoved(this.getIsPropertyAddtlShippingChargeDescRemoved());
+        command.setIsPropertyReceivedByRemoved(this.getIsPropertyReceivedByRemoved());
+        command.setIsPropertyDatetimeReceivedRemoved(this.getIsPropertyDatetimeReceivedRemoved());
     }
 
     public static class CreateShipmentDto extends CreateOrMergePatchShipmentDto implements ShipmentCommand.CreateShipment

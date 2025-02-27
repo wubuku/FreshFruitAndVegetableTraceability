@@ -202,6 +202,30 @@ public class BffReceivingDocumentDto implements Serializable {
         this.createdBy = createdBy;
     }
 
+    private String receivedBy;
+
+    public String getReceivedBy()
+    {
+        return this.receivedBy;
+    }
+
+    public void setReceivedBy(String receivedBy)
+    {
+        this.receivedBy = receivedBy;
+    }
+
+    private OffsetDateTime receivedAt;
+
+    public OffsetDateTime getReceivedAt()
+    {
+        return this.receivedAt;
+    }
+
+    public void setReceivedAt(OffsetDateTime receivedAt)
+    {
+        this.receivedAt = receivedAt;
+    }
+
     private java.util.List<BffReceivingItemDto> receivingItems;
 
     public java.util.List<BffReceivingItemDto> getReceivingItems() {
@@ -570,7 +594,7 @@ public class BffReceivingDocumentDto implements Serializable {
     {
     }
 
-    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String partyNameFrom, String originFacilityId, String originFacilityName, String destinationFacilityId, String destinationFacilityName, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, String qaStatusId, String qaInspectionStatusId, OffsetDateTime createdAt, String createdBy, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<BffDocumentDto> referenceDocuments, BffFacilityDto originFacility, BffFacilityDto destinationFacility)
+    public BffReceivingDocumentDto(String documentId, String statusId, String partyIdTo, String partyIdFrom, String partyNameFrom, String originFacilityId, String originFacilityName, String destinationFacilityId, String destinationFacilityName, String primaryOrderId, String primaryReturnId, String primaryShipGroupSeqId, String qaStatusId, String qaInspectionStatusId, OffsetDateTime createdAt, String createdBy, String receivedBy, OffsetDateTime receivedAt, java.util.List<BffReceivingItemDto> receivingItems, java.util.List<BffDocumentDto> referenceDocuments, BffFacilityDto originFacility, BffFacilityDto destinationFacility)
     {
         this.documentId = documentId;
         this.statusId = statusId;
@@ -588,6 +612,8 @@ public class BffReceivingDocumentDto implements Serializable {
         this.qaInspectionStatusId = qaInspectionStatusId;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
+        this.receivedBy = receivedBy;
+        this.receivedAt = receivedAt;
         this.receivingItems = receivingItems;
         this.referenceDocuments = referenceDocuments;
         this.originFacility = originFacility;
@@ -622,6 +648,8 @@ public class BffReceivingDocumentDto implements Serializable {
             && (qaInspectionStatusId == other.qaInspectionStatusId || (qaInspectionStatusId != null && qaInspectionStatusId.equals(other.qaInspectionStatusId)))
             && (createdAt == other.createdAt || (createdAt != null && createdAt.equals(other.createdAt)))
             && (createdBy == other.createdBy || (createdBy != null && createdBy.equals(other.createdBy)))
+            && (receivedBy == other.receivedBy || (receivedBy != null && receivedBy.equals(other.receivedBy)))
+            && (receivedAt == other.receivedAt || (receivedAt != null && receivedAt.equals(other.receivedAt)))
             && (receivingItems == other.receivingItems || (receivingItems != null && receivingItems.equals(other.receivingItems)))
             && (referenceDocuments == other.referenceDocuments || (referenceDocuments != null && referenceDocuments.equals(other.referenceDocuments)))
             && (originFacility == other.originFacility || (originFacility != null && originFacility.equals(other.originFacility)))
@@ -681,6 +709,12 @@ public class BffReceivingDocumentDto implements Serializable {
         if (this.createdBy != null) {
             hash += 13 * this.createdBy.hashCode();
         }
+        if (this.receivedBy != null) {
+            hash += 13 * this.receivedBy.hashCode();
+        }
+        if (this.receivedAt != null) {
+            hash += 13 * this.receivedAt.hashCode();
+        }
         if (this.receivingItems != null) {
             hash += 13 * this.receivingItems.hashCode();
         }
@@ -715,6 +749,8 @@ public class BffReceivingDocumentDto implements Serializable {
                 ", qaInspectionStatusId=" + '\'' + qaInspectionStatusId + '\'' +
                 ", createdAt=" + createdAt +
                 ", createdBy=" + '\'' + createdBy + '\'' +
+                ", receivedBy=" + '\'' + receivedBy + '\'' +
+                ", receivedAt=" + receivedAt +
                 ", receivingItems=" + receivingItems +
                 ", referenceDocuments=" + referenceDocuments +
                 ", originFacility=" + originFacility +

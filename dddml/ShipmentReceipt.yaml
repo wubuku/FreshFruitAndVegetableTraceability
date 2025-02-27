@@ -45,7 +45,7 @@
       ReceivedBy:
         #ReceivedByUserLoginId:
         type: id-vlong
-        columnName: RECEIVED_BY_USER_LOGIN_ID
+        columnName: RECEIVED_BY
       DatetimeReceived:
         type: date-time
         columnName: DATETIME_RECEIVED

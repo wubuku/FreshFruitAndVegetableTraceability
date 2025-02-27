@@ -97,6 +97,12 @@
     <property name="addtlShippingChargeDesc">
       <column name="ADDTL_SHIPPING_CHARGE_DESC" sql-type="VARCHAR(255)" />
     </property>
+    <property name="receivedBy">
+      <column name="RECEIVED_BY" sql-type="VARCHAR(250)" />
+    </property>
+    <property name="datetimeReceived">
+      <column name="DATETIME_RECEIVED" sql-type="timestamptz" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

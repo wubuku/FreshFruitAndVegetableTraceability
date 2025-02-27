@@ -284,6 +284,26 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.addtlShippingChargeDesc = addtlShippingChargeDesc;
     }
 
+    private String receivedBy;
+
+    public String getReceivedBy() {
+        return this.receivedBy;
+    }
+
+    public void setReceivedBy(String receivedBy) {
+        this.receivedBy = receivedBy;
+    }
+
+    private OffsetDateTime datetimeReceived;
+
+    public OffsetDateTime getDatetimeReceived() {
+        return this.datetimeReceived;
+    }
+
+    public void setDatetimeReceived(OffsetDateTime datetimeReceived) {
+        this.datetimeReceived = datetimeReceived;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -490,6 +510,8 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.setPartyIdFrom(e.getPartyIdFrom());
         this.setAdditionalShippingCharge(e.getAdditionalShippingCharge());
         this.setAddtlShippingChargeDesc(e.getAddtlShippingChargeDesc());
+        this.setReceivedBy(e.getReceivedBy());
+        this.setDatetimeReceived(e.getDatetimeReceived());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -534,6 +556,8 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.setPartyIdFrom(s.getPartyIdFrom());
         this.setAdditionalShippingCharge(s.getAdditionalShippingCharge());
         this.setAddtlShippingChargeDesc(s.getAddtlShippingChargeDesc());
+        this.setReceivedBy(s.getReceivedBy());
+        this.setDatetimeReceived(s.getDatetimeReceived());
 
         if (s.getShipmentItems() != null) {
             Iterable<ShipmentItemState> iterable;
@@ -792,6 +816,20 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
             }
         } else {
             this.setAddtlShippingChargeDesc(e.getAddtlShippingChargeDesc());
+        }
+        if (e.getReceivedBy() == null) {
+            if (e.getIsPropertyReceivedByRemoved() != null && e.getIsPropertyReceivedByRemoved()) {
+                this.setReceivedBy(null);
+            }
+        } else {
+            this.setReceivedBy(e.getReceivedBy());
+        }
+        if (e.getDatetimeReceived() == null) {
+            if (e.getIsPropertyDatetimeReceivedRemoved() != null && e.getIsPropertyDatetimeReceivedRemoved()) {
+                this.setDatetimeReceived(null);
+            }
+        } else {
+            this.setDatetimeReceived(e.getDatetimeReceived());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

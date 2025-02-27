@@ -60,7 +60,7 @@
         <column name="REJECTION_ID" sql-type="VARCHAR(20)" />
       </property>
       <property name="receivedBy">
-        <column name="RECEIVED_BY_USER_LOGIN_ID" sql-type="VARCHAR(250)" />
+        <column name="RECEIVED_BY" sql-type="VARCHAR(250)" />
       </property>
       <property name="datetimeReceived">
         <column name="DATETIME_RECEIVED" sql-type="timestamptz" />

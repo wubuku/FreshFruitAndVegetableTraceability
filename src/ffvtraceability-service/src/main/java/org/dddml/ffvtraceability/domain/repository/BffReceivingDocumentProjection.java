@@ -40,6 +40,10 @@ public interface BffReceivingDocumentProjection {
     java.time.Instant getCreatedAt();
     String getCreatedBy();
 
+    String getReceivedBy();
+
+    OffsetDateTime getReceivedAt();
+
     String getOriginFacilityFacilityId();
 
     String getOriginFacilityFacilityTypeId();

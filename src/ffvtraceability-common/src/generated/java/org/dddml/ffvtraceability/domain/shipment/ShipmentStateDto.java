@@ -338,6 +338,30 @@ public class ShipmentStateDto {
         this.addtlShippingChargeDesc = addtlShippingChargeDesc;
     }
 
+    private String receivedBy;
+
+    public String getReceivedBy()
+    {
+        return this.receivedBy;
+    }
+
+    public void setReceivedBy(String receivedBy)
+    {
+        this.receivedBy = receivedBy;
+    }
+
+    private OffsetDateTime datetimeReceived;
+
+    public OffsetDateTime getDatetimeReceived()
+    {
+        return this.datetimeReceived;
+    }
+
+    public void setDatetimeReceived(OffsetDateTime datetimeReceived)
+    {
+        this.datetimeReceived = datetimeReceived;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -531,6 +555,12 @@ public class ShipmentStateDto {
             }
             if (returnedFieldsContains("AddtlShippingChargeDesc")) {
                 dto.setAddtlShippingChargeDesc(state.getAddtlShippingChargeDesc());
+            }
+            if (returnedFieldsContains("ReceivedBy")) {
+                dto.setReceivedBy(state.getReceivedBy());
+            }
+            if (returnedFieldsContains("DatetimeReceived")) {
+                dto.setDatetimeReceived(state.getDatetimeReceived());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

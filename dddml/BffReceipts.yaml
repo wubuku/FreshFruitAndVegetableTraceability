@@ -42,11 +42,16 @@ valueObjects:
         type: date-time
       CreatedBy:
         type: id
-      # ReceivedAt:
-      #   type: date-time
-      #   # 目前使用 CreatedAt 作为前端显示的 ReceivedAt。
-      #   # 在底层我们使用 Shipment 来实现“收货单”，理论上 Shipment 并没有 ReceivedAt 这个属性。
-      #   # 并且，每一个“收货行项” 的 ReceivedAt 是可以不同的。
+      # ------------------------------------------------------------
+      # 在底层我们使用 Shipment 来实现“收货单”。
+      # NOTE: Shipment 实体“原本”没有 ReceivedBy / ReceivedAt 属性。
+      # 并且每一个“收货行项” 的 ReceivedBy / ReceivedAt 应该是可以不同的。
+      # 先为 Shipment 添加 ReceivedBy / ReceivedAt 属性。（有更好做法？）
+      ReceivedBy:
+        type: id
+      ReceivedAt:
+        type: date-time
+      # ------------------------------------------------------------
       ReceivingItems:
         itemType: BffReceivingItemDto
         isList: true
@@ -56,7 +61,7 @@ valueObjects:
       OriginFacility:
         type: BffFacilityDto
       DestinationFacility:
-        # 暂时可能不会使用
+        # 暂时可能不会用到？
         type: BffFacilityDto
 
 

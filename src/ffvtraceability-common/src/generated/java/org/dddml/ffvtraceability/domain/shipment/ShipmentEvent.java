@@ -163,6 +163,14 @@ public interface ShipmentEvent extends Event {
 
         void setAddtlShippingChargeDesc(String addtlShippingChargeDesc);
 
+        String getReceivedBy();
+
+        void setReceivedBy(String receivedBy);
+
+        OffsetDateTime getDatetimeReceived();
+
+        void setDatetimeReceived(OffsetDateTime datetimeReceived);
+
     }
 
     interface ShipmentStateCreated extends ShipmentStateEvent
@@ -288,6 +296,14 @@ public interface ShipmentEvent extends Event {
         Boolean getIsPropertyAddtlShippingChargeDescRemoved();
 
         void setIsPropertyAddtlShippingChargeDescRemoved(Boolean removed);
+
+        Boolean getIsPropertyReceivedByRemoved();
+
+        void setIsPropertyReceivedByRemoved(Boolean removed);
+
+        Boolean getIsPropertyDatetimeReceivedRemoved();
+
+        void setIsPropertyDatetimeReceivedRemoved(Boolean removed);
 
 
         Iterable<ShipmentItemEvent> getShipmentItemEvents();
