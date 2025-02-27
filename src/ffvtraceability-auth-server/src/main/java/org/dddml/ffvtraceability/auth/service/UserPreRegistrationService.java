@@ -41,14 +41,15 @@ public class UserPreRegistrationService {
         if (user != null) {
             sql = "select * from groups where id in (select group_id from group_members gm where gm.username=?)";
             user.setGroups(jdbcTemplate.query(sql, new GroupDtoMapper(), username));
-            String sqlGetPermissions = """
-                    SELECT a.authority 
-                    FROM authorities a
-                    JOIN permissions p ON a.authority = p.permission_id
-                    WHERE a.username = ? 
-                    AND (p.enabled IS NULL OR p.enabled = true)
-                    """;
-            user.setPermissions(jdbcTemplate.queryForList(sqlGetPermissions, String.class, username));
+//            String sqlGetPermissions = """
+//                        SELECT a.authority
+//                        FROM authorities a
+//                        JOIN permissions p ON a.authority = p.permission_id
+//                        WHERE a.username = ?
+//                        AND (p.enabled IS NULL OR p.enabled = true)
+//                        """; //如果用这个查询语句，那么给admin预设的几个权限就没了。
+            sql = "select distinct authority from authorities where username=?";
+            user.setPermissions(jdbcTemplate.queryForList(sql, String.class, username));
         }
         return user;
     }
