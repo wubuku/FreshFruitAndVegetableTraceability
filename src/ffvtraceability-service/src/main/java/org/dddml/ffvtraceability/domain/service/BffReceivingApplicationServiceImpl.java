@@ -293,6 +293,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         createShipment.setPartyIdFrom(c.getReceivingDocument().getPartyIdFrom());
         createShipment.setOriginFacilityId(c.getReceivingDocument().getOriginFacilityId());
         createShipment.setDestinationFacilityId(c.getReceivingDocument().getDestinationFacilityId());
+        if (createShipment.getDestinationFacilityId() == null || createShipment.getDestinationFacilityId().isBlank()) {
+            throw new IllegalArgumentException("destination facility id can't be null");
+        }
         createShipment.setPrimaryOrderId(c.getReceivingDocument().getPrimaryOrderId());
         //        PrimaryReturnId:
         //        PrimaryShipGroupSeqId:
@@ -308,7 +311,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 createShipmentReceipt.setShipmentId(createShipment.getShipmentId());
                 createShipmentReceipt.setProductId(receivingItem.getProductId());
                 createShipmentReceipt.setLotId(receivingItem.getLotId());
-                createShipmentReceipt.setLocationSeqId(receivingItem.getLocationSeqId());
+                //如果没有指定货位，那么设置为指定仓库的默认货位，默认货位Id:[仓库Id_DEFAULT]
+                createShipmentReceipt.setLocationSeqId(receivingItem.getLocationSeqId() == null || receivingItem.getLocationSeqId().isBlank()
+                        ? createShipment.getDestinationFacilityId() + "_DEFAULT" : receivingItem.getLocationSeqId());
                 createShipmentReceipt.setQuantityAccepted(receivingItem.getQuantityAccepted());
                 createShipmentReceipt.setQuantityRejected(receivingItem.getQuantityRejected());
                 createShipmentReceipt.setCasesAccepted(receivingItem.getCasesAccepted());
@@ -382,7 +387,10 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             }
             for (BffReceivingItemDto itemDto : receivingDocumentDto.getReceivingItems()) {
                 // validate facility location
-
+                //如果没有指定货位，那么设置为指定仓库的默认货位，默认货位Id:[仓库Id_DEFAULT]
+                if (itemDto.getLocationSeqId() == null || itemDto.getLocationSeqId().isBlank()) {
+                    itemDto.setLocationSeqId(destinationFacilityId + "_DEFAULT");
+                }
                 FacilityLocationState fl = facilityLocationApplicationService.get(new FacilityLocationId(destinationFacilityId, itemDto.getLocationSeqId()));
                 if (fl == null) {
                     throw new IllegalArgumentException("Location not found: " + destinationFacilityId + "/" + itemDto.getLocationSeqId());
@@ -645,9 +653,11 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             throw new IllegalArgumentException("Shipment (receiving document) not found: " + shipmentId);
         }
         BffReceivingItemDto receivingItemDto = c.getReceivingItem();
-
-        String receiptId = createReceivingItem(receivingItemDto, shipmentId, c);
-        return receiptId;
+        //如果没有指定货位，那么设置为指定仓库的默认货位，默认货位Id:[仓库Id_DEFAULT]
+        if (receivingItemDto.getLocationSeqId() == null || receivingItemDto.getLocationSeqId().isBlank()) {
+            receivingItemDto.setLocationSeqId(shipmentState.getDestinationFacilityId() + "_DEFAULT");
+        }
+        return createReceivingItem(receivingItemDto, shipmentId, c);
     }
 
     private String createReceivingItem(
@@ -726,7 +736,14 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (!c.getDocumentId().equals(shipmentReceiptState.getShipmentId())) {
             throw new IllegalArgumentException("Shipment (receiving document) Id mismatch: " + c.getDocumentId());
         }
-
+        //如果没有指定货位，那么设置为指定仓库的默认货位，默认货位Id:[仓库Id_DEFAULT]
+        if (c.getLocationSeqId() == null || c.getLocationSeqId().isBlank()) {
+            ShipmentState shipmentState = shipmentApplicationService.get(shipmentReceiptState.getShipmentId());
+            if (shipmentState == null) {
+                throw new IllegalArgumentException("Shipment not found: " + shipmentReceiptState.getShipmentId());
+            }
+            c.setLocationSeqId(shipmentState.getDestinationFacilityId() + "_DEFAULT");
+        }
         updateReceivingItem(receiptId, shipmentReceiptState, c, false);
     }
 
