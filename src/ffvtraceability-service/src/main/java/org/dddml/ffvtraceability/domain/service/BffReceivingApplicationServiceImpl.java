@@ -498,21 +498,16 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (shipmentState == null) {
             throw new IllegalArgumentException("Shipment (receiving document) not found: " + shipmentId);
         }
-
-        ShipmentCommands.ShipmentAction shipmentAction = new ShipmentCommands.ShipmentAction();
-        shipmentAction.setShipmentId(shipmentId);
-        shipmentAction.setValue(ShipmentAction.SUBMIT);
-        // Add version check
-        shipmentAction.setVersion(shipmentState.getVersion());
-        // Add command tracking
-        shipmentAction.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
-        shipmentAction.setRequesterId(c.getRequesterId());
-
-        try {
-            shipmentApplicationService.when(shipmentAction);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to submit receiving document: " + shipmentId, e);
-        }
+        OffsetDateTime now = OffsetDateTime.now();
+        AbstractShipmentCommand.SimpleMergePatchShipment mergePatchShipment =
+                new AbstractShipmentCommand.SimpleMergePatchShipment();
+        mergePatchShipment.setShipmentId(shipmentId);
+        mergePatchShipment.setDatetimeReceived(now);
+        mergePatchShipment.setShipmentAction(ShipmentAction.SUBMIT);
+        mergePatchShipment.setReceivedBy(c.getRequesterId());
+        mergePatchShipment.setVersion(shipmentState.getVersion());
+        mergePatchShipment.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+        shipmentApplicationService.when(mergePatchShipment);
     }
 
     @Override
