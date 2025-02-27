@@ -30,7 +30,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<?> getUsers() {
         try {
-            String sql = "SELECT * FROM users";
+            String sql = "SELECT * FROM users order by created_at desc";
             List<UserDto> users = jdbcTemplate.query(sql, new UserDtoMapper());
             users.forEach(user -> {
                 String selectGroups = "select * from groups where id in (select group_id from group_members gm where gm.username=?)";

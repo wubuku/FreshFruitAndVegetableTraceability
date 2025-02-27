@@ -24,14 +24,6 @@ public class PreRegisterUserDto {
     private String associatedGln;
     private String profileImageUrl;
 
-    public List<Long> getGroupIds() {
-        return groupIds;
-    }
-
-    public void setGroupIds(List<Long> groupIds) {
-        this.groupIds = groupIds;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -62,6 +54,14 @@ public class PreRegisterUserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Long> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(List<Long> groupIds) {
+        this.groupIds = groupIds;
     }
 
     public String getEmployeeNumber() {

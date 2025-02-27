@@ -1,10 +1,21 @@
 package org.dddml.ffvtraceability.auth.dto;
 
+import java.util.List;
+
 public class GroupDto {
     private Long id;
     private String groupName;
     private Boolean enabled;
     private String description;
+    private List<String> permissions;
+
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
+    }
 
     public String getDescription() {
         return description;

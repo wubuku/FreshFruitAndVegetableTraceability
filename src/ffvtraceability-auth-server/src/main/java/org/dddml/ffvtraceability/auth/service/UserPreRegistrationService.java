@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -40,12 +41,21 @@ public class UserPreRegistrationService {
         if (user != null) {
             sql = "select * from groups where id in (select group_id from group_members gm where gm.username=?)";
             user.setGroups(jdbcTemplate.query(sql, new GroupDtoMapper(), username));
+//            String sqlGetPermissions = """
+//                        SELECT a.authority
+//                        FROM authorities a
+//                        JOIN permissions p ON a.authority = p.permission_id
+//                        WHERE a.username = ?
+//                        AND (p.enabled IS NULL OR p.enabled = true)
+//                        """; //如果用这个查询语句，那么给admin预设的几个权限就没了。
+            sql = "select distinct authority from authorities where username=?";
+            user.setPermissions(jdbcTemplate.queryForList(sql, String.class, username));
         }
         return user;
     }
 
     @Transactional
-    public PreRegisterUserResponse preRegisterUser(PreRegisterUserDto preRegisterUser,String operator) {
+    public PreRegisterUserResponse preRegisterUser(PreRegisterUserDto preRegisterUser, String operator) {
         // Check if user already exists
         String username = preRegisterUser.getUsername();
         if (userExists(username)) {
@@ -56,18 +66,20 @@ public class UserPreRegistrationService {
         String oneTimePassword = generateOneTimePassword();
         String encodedPassword = passwordEncoder.encode(oneTimePassword);
 
+        OffsetDateTime now = OffsetDateTime.now();
         // Insert new user
         jdbcTemplate.update(
                 "INSERT INTO users (username, password, enabled, password_change_required, first_login,first_name,last_name," +
                         "email,department_id,from_data,employee_number,employee_contract_number,certification_description,skill_set_description," +
                         "language_skills,associated_gln,profile_image_url,direct_manager_name,employee_type_id,telephone_number," +
-                        "mobile_number)" +
-                        " VALUES (?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        "mobile_number,created_at,updated_at,created_by,updated_by)" +
+                        " VALUES (?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 username, encodedPassword, true, true, true, preRegisterUser.getFirstName(), preRegisterUser.getLastName(),
                 preRegisterUser.getEmail(), preRegisterUser.getDepartmentId(), preRegisterUser.getFromDate(), preRegisterUser.getEmployeeNumber(),
                 preRegisterUser.getEmployeeContractNumber(), preRegisterUser.getCertificationDescription(), preRegisterUser.getSkillSetDescription(),
                 preRegisterUser.getLanguageSkills(), preRegisterUser.getAssociatedGln(), preRegisterUser.getProfileImageUrl(),
-                preRegisterUser.getDirectManagerName(), preRegisterUser.getEmployeeTypeId(), preRegisterUser.getTelephoneNumber(), preRegisterUser.getMobileNumber()
+                preRegisterUser.getDirectManagerName(), preRegisterUser.getEmployeeTypeId(), preRegisterUser.getTelephoneNumber(), preRegisterUser.getMobileNumber(),
+                now, now, operator, operator
         );
 
         List<Long> groupIds = preRegisterUser.getGroupIds().stream().distinct().toList();

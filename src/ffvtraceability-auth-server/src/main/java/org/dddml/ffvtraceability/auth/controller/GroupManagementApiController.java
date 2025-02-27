@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.auth.controller;
 
+import org.dddml.ffvtraceability.auth.dto.GroupDto;
 import org.dddml.ffvtraceability.auth.mapper.GroupDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,25 +28,39 @@ public class GroupManagementApiController {
     @GetMapping
     public ResponseEntity<?> findGroups(@RequestParam(value = "enabled", required = false) Boolean enabled) {
         try {
+            List<GroupDto> groups = null;
             StringBuilder sql = new StringBuilder("SELECT * FROM groups");
             if (enabled != null) {
                 sql.append(" WHERE enabled = ? order by id");
-                return ResponseEntity.ok(jdbcTemplate.query(sql.toString(), new GroupDtoMapper(), enabled));
+                groups = jdbcTemplate.query(sql.toString(), new GroupDtoMapper(), enabled);
+            } else {
+                sql.append(" order by id");
+                groups = jdbcTemplate.query(sql.toString(), new GroupDtoMapper());
             }
-            sql.append(" order by id");
-            return ResponseEntity.ok(jdbcTemplate.query(sql.toString(), new GroupDtoMapper()));
+            groups.forEach(group -> {
+                String sqlGetPermissions = """
+                        SELECT ga.authority 
+                        FROM group_authorities ga
+                        JOIN permissions p ON ga.authority = p.permission_id
+                        WHERE ga.group_id = ? 
+                        AND (p.enabled IS NULL OR p.enabled = true)
+                        """;
+                group.setPermissions(jdbcTemplate.queryForList(sqlGetPermissions, String.class, group.getId()));
+            });
+            return ResponseEntity.ok(groups);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+
     }
 
     @GetMapping("/list")
     public List<Map<String, Object>> getGroups() {
         String sql = """
                 SELECT g.id, g.group_name, g.enabled,
-                       STRING_AGG(DISTINCT u.username, ', ') as members,
-                       COUNT(DISTINCT gm.username) as member_count,
-                       STRING_AGG(DISTINCT ga.authority, ', ') as authorities
+                        STRING_AGG(DISTINCT u.username, ', ') as members,
+                COUNT(DISTINCT gm.username) as member_count,
+                STRING_AGG(DISTINCT ga.authority, ', ') as authorities
                 FROM groups g
                 LEFT JOIN group_members gm ON g.id = gm.group_id
                 LEFT JOIN users u ON gm.username = u.username
@@ -199,4 +214,4 @@ public class GroupManagementApiController {
             return ResponseEntity.badRequest().body("Failed to update group status");
         }
     }
-} 
+}
