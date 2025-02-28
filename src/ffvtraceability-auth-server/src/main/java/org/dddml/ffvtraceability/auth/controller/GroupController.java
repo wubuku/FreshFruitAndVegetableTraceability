@@ -25,6 +25,70 @@ public class GroupController {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @PostMapping
+    @Transactional
+    public ResponseEntity<?> createGroup(@RequestBody GroupVo groupVo) {
+        String groupName = groupVo.getGroupName();
+        if (groupName == null || groupName.isBlank()) {
+            return ResponseEntity.badRequest().body("Group name can't be null");
+        }
+        try {
+            Integer count = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM groups WHERE group_name = ?",
+                    Integer.class,
+                    groupName
+            );
+            if (count > 0) {
+                return ResponseEntity.badRequest().body("Group name already exists: " + groupName);
+            }
+            String description = groupVo.getDescription();
+            logger.debug("Attempting to create group with name: {},description:{}", groupName, description);
+
+            // 或者使用 SimpleJdbcInsert（推荐）
+            SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
+                    .withTableName("groups")
+                    .usingGeneratedKeyColumns("id");
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("group_name", groupName);
+            params.put("description", description);
+            params.put("enabled", true);
+            Number id = insert.executeAndReturnKey(params);
+
+            if (groupVo.getPermissions() == null) {
+                groupVo.setPermissions(new ArrayList<>());
+            } else {
+                groupVo.setPermissions(groupVo.getPermissions().stream()
+                        .filter(permission -> Objects.nonNull(permission) && !permission.isBlank())
+                        .distinct().collect(Collectors.toList()));
+                // 批量插入权限
+                jdbcTemplate.batchUpdate(
+                        "INSERT INTO group_authorities (group_id, authority) VALUES (?, ?)",
+                        groupVo.getPermissions().stream()
+                                .map(permission -> new Object[]{id.longValue(), permission})
+                                .collect(Collectors.toList())
+                );
+            }
+            GroupDto groupDto = new GroupDto();
+            groupDto.setGroupName(groupName);
+            groupDto.setDescription(description);
+            groupDto.setId(id.longValue());
+            groupDto.setEnabled(true);
+            groupDto.setPermissions(groupVo.getPermissions());
+
+            logger.debug("Successfully created group: {}, with ID: {}", groupName, id.longValue());
+            return ResponseEntity.ok(groupDto);
+
+        } catch (Exception e) {
+            logger.error("Failed to create group: {} - {}", groupName, e.getMessage());
+            if (e.getMessage() != null && e.getMessage().contains("duplicate key value")) {
+                return ResponseEntity.badRequest().body("Group name already exists");
+            }
+            return ResponseEntity.badRequest().body("Failed to create group: " + e.getMessage());
+        }
+    }
+
+
     @PutMapping("/{groupId}")
     @Transactional
     public ResponseEntity<?> updateGroup(@PathVariable("groupId") Long groupId, @RequestBody GroupVo groupVo) {
@@ -114,68 +178,79 @@ public class GroupController {
         }
     }
 
-    @PostMapping
+    @PutMapping("/{groupId}/users")
     @Transactional
-    public ResponseEntity<?> createGroup(@RequestBody GroupVo groupVo) {
-        String groupName = groupVo.getGroupName();
-        if (groupName == null || groupName.isBlank()) {
-            return ResponseEntity.badRequest().body("Group name can't be null");
-        }
+    public ResponseEntity<?> syncGroupMembers(@PathVariable("groupId") Long groupId, @RequestBody List<String> usernames) {
         try {
-            Integer count = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM groups WHERE group_name = ?",
-                    Integer.class,
-                    groupName
-            );
-            if (count > 0) {
-                return ResponseEntity.badRequest().body("Group name already exists: " + groupName);
+            String sql = "SELECT COUNT(1) FROM groups WHERE id = ?";
+            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, groupId);
+            if (count < 1) {
+                throw new IllegalArgumentException("Group not found with id: " + groupId);
             }
-            String description = groupVo.getDescription();
-            logger.debug("Attempting to create group with name: {},description:{}", groupName, description);
-
-            // 或者使用 SimpleJdbcInsert（推荐）
-            SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
-                    .withTableName("groups")
-                    .usingGeneratedKeyColumns("id");
-
-            Map<String, Object> params = new HashMap<>();
-            params.put("group_name", groupName);
-            params.put("description", description);
-            params.put("enabled", true);
-            Number id = insert.executeAndReturnKey(params);
-
-            if (groupVo.getPermissions() == null) {
-                groupVo.setPermissions(new ArrayList<>());
+            if (usernames == null) {
+                usernames = new ArrayList<>();
             } else {
-                groupVo.setPermissions(groupVo.getPermissions().stream()
-                        .filter(permission -> Objects.nonNull(permission) && !permission.isBlank())
-                        .distinct().collect(Collectors.toList()));
-                // 批量插入权限
+                usernames = usernames.stream()
+                        .filter(username -> Objects.nonNull(username) && !username.isBlank())
+                        .distinct().collect(Collectors.toList());
+                if (!usernames.isEmpty()) {
+                    List<String> invalidUsers = checkUserExistence(usernames);
+                    if (!invalidUsers.isEmpty()) {
+                        return ResponseEntity.badRequest().body(
+                                "Invalid user accounts:  " + String.join(", ", invalidUsers)
+                        );
+                    }
+                }
+            }
+            Set<String> existingUsernames = new HashSet<>(jdbcTemplate.queryForList(
+                    "SELECT username FROM group_members WHERE group_id = ?",
+                    String.class,
+                    groupId
+            ));
+            // 4. 计算变更集
+            Set<String> toAdd = new HashSet<>(usernames);
+            toAdd.removeAll(existingUsernames);
+
+            Set<String> toRemove = new HashSet<>(existingUsernames);
+            toRemove.removeAll(usernames);
+
+            // 5. 执行批量删除
+            if (!toRemove.isEmpty()) {
                 jdbcTemplate.batchUpdate(
-                        "INSERT INTO group_authorities (group_id, authority) VALUES (?, ?)",
-                        groupVo.getPermissions().stream()
-                                .map(permission -> new Object[]{id.longValue(), permission})
+                        "DELETE FROM group_members WHERE group_id = ? AND username = ?",
+                        toRemove.stream()
+                                .map(username -> new Object[]{groupId, username})
                                 .collect(Collectors.toList())
                 );
             }
-            GroupDto groupDto = new GroupDto();
-            groupDto.setGroupName(groupName);
-            groupDto.setDescription(description);
-            groupDto.setId(id.longValue());
-            groupDto.setEnabled(true);
-            groupDto.setPermissions(groupVo.getPermissions());
-
-            logger.debug("Successfully created group: {}, with ID: {}", groupName, id.longValue());
-            return ResponseEntity.ok(groupDto);
-
-        } catch (Exception e) {
-            logger.error("Failed to create group: {} - {}", groupName, e.getMessage());
-            if (e.getMessage() != null && e.getMessage().contains("duplicate key value")) {
-                return ResponseEntity.badRequest().body("Group name already exists");
+            if (!toAdd.isEmpty()) {
+                jdbcTemplate.batchUpdate(
+                        "INSERT INTO group_members (group_id, username) VALUES (?, ?)",
+                        toAdd.stream()
+                                .map(username -> new Object[]{groupId, username})
+                                .collect(Collectors.toList())
+                );
             }
-            return ResponseEntity.badRequest().body("Failed to create group: " + e.getMessage());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to sync group members: " + e.getMessage());
         }
     }
 
+    private List<String> checkUserExistence(List<String> usernames) {
+        String inClause = String.join(",",
+                Collections.nCopies(usernames.size(), "?")
+        );
+
+        String sql = "SELECT username FROM users WHERE username IN (" + inClause + ")";
+
+        List<String> existingUsers = jdbcTemplate.queryForList(
+                sql, String.class, usernames.toArray()
+        );
+
+        return usernames.stream()
+                .filter(u -> !existingUsers.contains(u))
+                .collect(Collectors.toList());
+    }
 
 }
