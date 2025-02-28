@@ -201,6 +201,18 @@ public class GroupController {
         }
     }
 
+    @GetMapping("/{groupId}/users")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getGroupMembers(@PathVariable("groupId") Long groupId) {
+        try {
+            String sql = "SELECT username FROM group_members WHERE group_id = ?";
+            List<String> usernames = jdbcTemplate.queryForList(sql, String.class, groupId);
+            return ResponseEntity.ok(usernames);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to get group members: " + e.getMessage());
+        }
+    }
+
     @PutMapping("/{groupId}/users")
     @Transactional
     public ResponseEntity<?> syncGroupMembers(@PathVariable("groupId") Long
