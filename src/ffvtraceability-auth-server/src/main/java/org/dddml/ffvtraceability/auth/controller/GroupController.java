@@ -88,6 +88,29 @@ public class GroupController {
         }
     }
 
+    @GetMapping("/{groupId}")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getGroup(@PathVariable("groupId") Long groupId) {
+        try {
+            String sql = "SELECT id, group_name, enabled, description FROM groups WHERE id = ?";
+            GroupDto groupDto = jdbcTemplate.query(sql, new GroupDtoMapper(), groupId).stream().findFirst().orElse(null);
+            if (groupDto == null) {
+                return ResponseEntity.badRequest().body("Group not found with id: " + groupId);
+            }
+            String sqlGetPermissions = """
+                    SELECT ga.authority 
+                    FROM group_authorities ga
+                    JOIN permissions p ON ga.authority = p.permission_id
+                    WHERE ga.group_id = ? 
+                    AND (p.enabled IS NULL OR p.enabled = true)
+                    """;
+            groupDto.setPermissions(jdbcTemplate.queryForList(sqlGetPermissions, String.class, groupId));
+            return ResponseEntity.ok(groupDto);
+        } catch (Exception e) {
+            logger.error("Failed to get group: {} - {}", groupId, e.getMessage());
+            return ResponseEntity.badRequest().body("Failed to get group: " + e.getMessage());
+        }
+    }
 
     @PutMapping("/{groupId}")
     @Transactional
@@ -180,7 +203,8 @@ public class GroupController {
 
     @PutMapping("/{groupId}/users")
     @Transactional
-    public ResponseEntity<?> syncGroupMembers(@PathVariable("groupId") Long groupId, @RequestBody List<String> usernames) {
+    public ResponseEntity<?> syncGroupMembers(@PathVariable("groupId") Long
+                                                      groupId, @RequestBody List<String> usernames) {
         try {
             String sql = "SELECT COUNT(1) FROM groups WHERE id = ?";
             Integer count = jdbcTemplate.queryForObject(sql, Integer.class, groupId);
