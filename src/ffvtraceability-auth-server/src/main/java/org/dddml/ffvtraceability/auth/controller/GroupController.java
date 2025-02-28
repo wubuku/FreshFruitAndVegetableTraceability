@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -59,13 +60,18 @@ public class GroupController {
             params.put("enabled", true);
             Number id = insert.executeAndReturnKey(params);
 
-            // 批量插入权限
-            jdbcTemplate.batchUpdate(
-                    "INSERT INTO group_authorities (group_id, authority) VALUES (?, ?)",
-                    groupVo.getPermissions().stream()
-                            .map(permission -> new Object[]{id.longValue(), permission})
-                            .collect(Collectors.toList())
-            );
+            if (groupVo.getPermissions() != null && !groupVo.getPermissions().isEmpty()) {
+                groupVo.setPermissions(groupVo.getPermissions().stream()
+                        .filter(permission -> Objects.nonNull(permission) && !permission.isBlank())
+                        .distinct().collect(Collectors.toList()));
+                // 批量插入权限
+                jdbcTemplate.batchUpdate(
+                        "INSERT INTO group_authorities (group_id, authority) VALUES (?, ?)",
+                        groupVo.getPermissions().stream()
+                                .map(permission -> new Object[]{id.longValue(), permission})
+                                .collect(Collectors.toList())
+                );
+            }
 
 
             GroupDto groupDto = new GroupDto();
