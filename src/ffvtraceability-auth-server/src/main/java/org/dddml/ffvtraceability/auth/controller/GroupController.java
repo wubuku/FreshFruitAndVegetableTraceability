@@ -2,7 +2,9 @@ package org.dddml.ffvtraceability.auth.controller;
 
 import org.dddml.ffvtraceability.auth.dto.GroupDto;
 import org.dddml.ffvtraceability.auth.dto.GroupVo;
+import org.dddml.ffvtraceability.auth.dto.UserDto;
 import org.dddml.ffvtraceability.auth.mapper.GroupDtoMapper;
+import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -205,9 +207,19 @@ public class GroupController {
     @Transactional(readOnly = true)
     public ResponseEntity<?> getGroupMembers(@PathVariable("groupId") Long groupId) {
         try {
-            String sql = "SELECT username FROM group_members WHERE group_id = ?";
-            List<String> usernames = jdbcTemplate.queryForList(sql, String.class, groupId);
-            return ResponseEntity.ok(usernames);
+            String sql = """
+                    SELECT u.* FROM users u 
+                    where 
+                    u.username in (select username from group_members gm where gm.group_id=?) 
+                    order by u.created_at desc
+                    """;
+            List<UserDto> users = jdbcTemplate.query(sql, new UserDtoMapper(), groupId);
+//            users.forEach(user -> {
+//                String selectGroups = "select * from groups where id in (select group_id from group_members gm where gm.username=?)";
+//                user.setGroups(jdbcTemplate.query(selectGroups, new GroupDtoMapper(), user.getUsername()));
+//
+//            });
+            return ResponseEntity.ok(users);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to get group members: " + e.getMessage());
         }

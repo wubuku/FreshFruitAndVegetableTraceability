@@ -70,7 +70,7 @@ public class UserPreRegistrationService {
         // Insert new user
         jdbcTemplate.update(
                 "INSERT INTO users (username, password, enabled, password_change_required, first_login,first_name,last_name," +
-                        "email,department_id,from_data,employee_number,employee_contract_number,certification_description,skill_set_description," +
+                        "email,department_id,from_date,employee_number,employee_contract_number,certification_description,skill_set_description," +
                         "language_skills,associated_gln,profile_image_url,direct_manager_name,employee_type_id,telephone_number," +
                         "mobile_number,created_at,updated_at,created_by,updated_by)" +
                         " VALUES (?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",

@@ -10,7 +10,7 @@ CREATE TABLE users (
     last_name VARCHAR(50) DEFAULT NULL,
     email VARCHAR(50) DEFAULT NULL,
     department_id VARCHAR(20) DEFAULT NULL,
-    from_data TIMESTAMPTZ DEFAULT NULL,
+    from_date TIMESTAMPTZ DEFAULT NULL,
     employee_contract_number VARCHAR(50) DEFAULT NULL,
     certification_description VARCHAR(50) DEFAULT NULL,
     skill_set_description VARCHAR(255) DEFAULT NULL,

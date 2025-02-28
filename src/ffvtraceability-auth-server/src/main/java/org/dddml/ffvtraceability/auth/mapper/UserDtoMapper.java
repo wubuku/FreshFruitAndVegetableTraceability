@@ -32,7 +32,7 @@ public class UserDtoMapper implements RowMapper<UserDto> {
         userDto.setTelephoneNumber(rs.getString("telephone_number"));
         userDto.setUpdatedBy(rs.getString("updated_by"));
         userDto.setCreatedBy(rs.getString("created_by"));
-
+        userDto.setFromDate(rs.getObject("from_date", OffsetDateTime.class));
         userDto.setUpdatedAt(rs.getObject("updated_at", OffsetDateTime.class));
         userDto.setCreatedAt(rs.getObject("created_at", OffsetDateTime.class));
         return userDto;
