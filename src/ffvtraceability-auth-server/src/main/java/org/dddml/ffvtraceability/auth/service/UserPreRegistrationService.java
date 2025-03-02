@@ -73,7 +73,7 @@ public class UserPreRegistrationService {
                         "email,department_id,from_date,employee_number,employee_contract_number,certification_description,skill_set_description," +
                         "language_skills,associated_gln,profile_image_url,direct_manager_name,employee_type_id,telephone_number," +
                         "mobile_number,created_at,updated_at,created_by,updated_by)" +
-                        " VALUES (?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 username, encodedPassword, true, true, true, preRegisterUser.getFirstName(), preRegisterUser.getLastName(),
                 preRegisterUser.getEmail(), preRegisterUser.getDepartmentId(), preRegisterUser.getFromDate(), preRegisterUser.getEmployeeNumber(),
                 preRegisterUser.getEmployeeContractNumber(), preRegisterUser.getCertificationDescription(), preRegisterUser.getSkillSetDescription(),

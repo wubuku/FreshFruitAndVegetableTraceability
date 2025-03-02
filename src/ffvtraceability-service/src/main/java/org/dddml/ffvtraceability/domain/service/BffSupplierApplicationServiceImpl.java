@@ -393,19 +393,24 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
 
 
         createParty.setPreferredCurrencyUomId(supplier.getPreferredCurrencyUomId() != null ? supplier.getPreferredCurrencyUomId() : DEFAULT_PREFERRED_CURRENCY_UOM_ID);
-        if (supplier.getGgn() != null) {
+        if (supplier.getGgn() != null && !supplier.getGgn().isBlank()) {
+            supplier.setGgn(supplier.getGgn().trim());
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GGN, supplier.getGgn());
         }
-        if (supplier.getGln() != null) {
+        if (supplier.getGln() != null && !supplier.getGln().isBlank()) {
+            supplier.setGln(supplier.getGln().trim());
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GLN, supplier.getGln());
         }
-        if (supplier.getInternalId() != null) {
+        if (supplier.getInternalId() != null && !supplier.getInternalId().isBlank()) {
+            supplier.setInternalId(supplier.getInternalId().trim());
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, supplier.getInternalId());
         }
-        if (supplier.getGs1CompanyPrefix() != null) {
+        if (supplier.getGs1CompanyPrefix() != null && !supplier.getGs1CompanyPrefix().isBlank()) {
+            supplier.setGs1CompanyPrefix(supplier.getGs1CompanyPrefix().trim());
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX, supplier.getGs1CompanyPrefix());
         }
-        if (supplier.getTaxId() != null) {
+        if (supplier.getTaxId() != null && !supplier.getTaxId().isBlank()) {
+            supplier.setTaxId(supplier.getTaxId().trim());
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_TAX_ID, supplier.getTaxId());
         }
         createParty.setStatusId(PARTY_STATUS_ACTIVE); // default status
