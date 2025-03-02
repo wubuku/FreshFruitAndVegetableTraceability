@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserPreRegistrationService {
@@ -80,21 +82,21 @@ public class UserPreRegistrationService {
                 preRegisterUser.getDirectManagerName(), preRegisterUser.getEmployeeTypeId(), preRegisterUser.getTelephoneNumber(), preRegisterUser.getMobileNumber(),
                 now, now, operator, operator
         );
-//        if (preRegisterUser.getGroupIds() == null) {
-//            preRegisterUser.setGroupIds(new ArrayList<>());
-//        }
-//        List<Long> groupIds = preRegisterUser.getGroupIds().stream().distinct().toList();
-//        if (!groupIds.isEmpty()) {
-//            groupIds.forEach(groupId -> {
-//                jdbcTemplate.update("INSERT INTO group_members (username, group_id) values(?,?)", username, groupId);
-//            });
-//        } else {
-//            // 如果 groupIds 为空那么至少要 Add to USER_GROUP
-//            jdbcTemplate.update(
-//                    "INSERT INTO group_members (username, group_id) SELECT ?, id FROM groups WHERE group_name = 'USER_GROUP'",
-//                    username
-//            );
-//        }
+        if (preRegisterUser.getGroupIds() == null) {
+            preRegisterUser.setGroupIds(new ArrayList<>());
+        }
+        List<Long> groupIds = preRegisterUser.getGroupIds().stream().distinct().toList();
+        if (!groupIds.isEmpty()) {
+            groupIds.forEach(groupId -> {
+                jdbcTemplate.update("INSERT INTO group_members (username, group_id) values(?,?)", username, groupId);
+            });
+        } else {
+            // 如果 groupIds 为空那么至少要 Add to USER_GROUP
+            jdbcTemplate.update(
+                    "INSERT INTO group_members (username, group_id) SELECT ?, id FROM groups WHERE group_name = 'USER_GROUP'",
+                    username
+            );
+        }
         logger.info("Pre-registered user: {}", username);
         return new PreRegisterUserResponse(username, oneTimePassword);
     }
