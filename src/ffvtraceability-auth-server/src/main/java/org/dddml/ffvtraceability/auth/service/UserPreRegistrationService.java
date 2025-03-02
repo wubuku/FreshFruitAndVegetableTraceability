@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -81,7 +82,9 @@ public class UserPreRegistrationService {
                 preRegisterUser.getDirectManagerName(), preRegisterUser.getEmployeeTypeId(), preRegisterUser.getTelephoneNumber(), preRegisterUser.getMobileNumber(),
                 now, now, operator, operator
         );
-
+        if (preRegisterUser.getGroupIds() == null) {
+            preRegisterUser.setGroupIds(new ArrayList<>());
+        }
         List<Long> groupIds = preRegisterUser.getGroupIds().stream().distinct().toList();
         if (!groupIds.isEmpty()) {
             groupIds.forEach(groupId -> {

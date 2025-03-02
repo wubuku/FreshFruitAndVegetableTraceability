@@ -1,7 +1,10 @@
 package org.dddml.ffvtraceability.auth.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GroupDto {
     private Long id;
     private String groupName;
