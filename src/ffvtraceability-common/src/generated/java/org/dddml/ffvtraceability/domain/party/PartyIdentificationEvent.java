@@ -8,7 +8,6 @@ package org.dddml.ffvtraceability.domain.party;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.facility.PartyIdentificationEvent;
 import org.dddml.ffvtraceability.specialization.Event;
 
 public interface PartyIdentificationEvent extends Event {
