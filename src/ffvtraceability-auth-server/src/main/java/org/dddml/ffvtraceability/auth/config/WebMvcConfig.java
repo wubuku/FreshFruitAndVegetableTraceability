@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.auth.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -31,10 +32,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean(name = "restApiObjectMapper")
     public ObjectMapper restApiObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
+        // 注册 Java 8 时间模块（支持 LocalDateTime 等）
         objectMapper.registerModule(new JavaTimeModule());
-        // 禁用所有类型信息序列化
+        // 禁用反序列化时未知属性的警告
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 禁用日期时间戳格式（使用 ISO-8601 格式）
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                // 禁用空 Bean 序列化失败
                 .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+                // 禁用默认的类型信息（防止安全漏洞）
                 .setDefaultTyping(null);  // 关键：禁用类型信息
         return objectMapper;
     }
