@@ -185,6 +185,8 @@ public abstract class AbstractPartyIdentificationState implements PartyIdentific
             when((PartyIdentificationStateCreated) e);
         } else if (e instanceof PartyIdentificationStateMergePatched) {
             when((PartyIdentificationStateMergePatched) e);
+        } else if (e instanceof PartyIdentificationStateRemoved) {
+            when((PartyIdentificationStateRemoved) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -227,6 +229,15 @@ public abstract class AbstractPartyIdentificationState implements PartyIdentific
             this.setVerified(e.getVerified());
         }
 
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+    }
+
+    public void when(PartyIdentificationEvent.PartyIdentificationStateRemoved e) {
+        throwOnWrongEvent(e);
+
+        //this.set__Deleted__(true);
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
