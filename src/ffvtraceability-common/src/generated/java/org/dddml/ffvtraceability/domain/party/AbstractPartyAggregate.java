@@ -8,6 +8,7 @@ package org.dddml.ffvtraceability.domain.party;
 import java.util.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.facility.*;
 import org.dddml.ffvtraceability.specialization.*;
 
 public abstract class AbstractPartyAggregate extends AbstractAggregate implements PartyAggregate {
@@ -613,6 +614,11 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
+        PartyIdentificationCommand.RemovePartyIdentification remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((PartyIdentificationCommand.RemovePartyIdentification)c) : null;
+        if (remove != null) {
+            return mapRemove(remove, outerCommand, version, outerState);
+        }
+
         throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
     }
 
@@ -648,6 +654,18 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
+
+    protected PartyIdentificationEvent.PartyIdentificationStateRemoved mapRemove(PartyIdentificationCommand.RemovePartyIdentification c, PartyCommand outerCommand, Long version, PartyState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        PartyIdentificationEventId stateEventId = new PartyIdentificationEventId(outerState.getPartyId(), c.getPartyIdentificationTypeId(), version);
+        PartyIdentificationEvent.PartyIdentificationStateRemoved e = newPartyIdentificationStateRemoved(stateEventId);
+
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(IRemove... ////////////////////////////
 
     protected void throwOnInconsistentCommands(PartyCommand command, PartyIdentificationCommand innerCommand) {
         AbstractPartyCommand properties = command instanceof AbstractPartyCommand ? (AbstractPartyCommand) command : null;
@@ -751,6 +769,9 @@ public abstract class AbstractPartyAggregate extends AbstractAggregate implement
         return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateMergePatched(stateEventId);
     }
 
+    protected PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(PartyIdentificationEventId stateEventId) {
+        return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateRemoved(stateEventId);
+    }
 
     public static class SimplePartyAggregate extends AbstractPartyAggregate {
         public SimplePartyAggregate(PartyState state) {

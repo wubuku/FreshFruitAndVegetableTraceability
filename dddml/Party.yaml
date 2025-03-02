@@ -269,6 +269,8 @@
 
     entities:
       PartyIdentification:
+        reservedPropertyMetadata:
+          noDeleted: false # Removable
         id:
           name: PartyIdentificationTypeId
           type: id-ne
