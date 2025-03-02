@@ -35,7 +35,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 禁用所有类型信息序列化
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .setDefaultTyping(null);  // 关键：禁用类型信息
         return objectMapper;
     }
@@ -49,4 +48,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         MappingJackson2HttpMessageConverter restApiConverter = new MappingJackson2HttpMessageConverter(restApiObjectMapper());
         converters.add(0, restApiConverter);  // 添加到第一位，确保优先使用
     }
-} 
+}
+
