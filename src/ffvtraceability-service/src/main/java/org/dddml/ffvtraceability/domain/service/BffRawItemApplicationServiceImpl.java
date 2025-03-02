@@ -162,13 +162,16 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         //默认情况下（不传值）就是Y
         createProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(rawItem.getActive()));
 
-        if (rawItem.getGtin() != null) {
+        if (rawItem.getGtin() != null && !rawItem.getGtin().isBlank()) {
+            rawItem.setGtin(rawItem.getGtin().trim());
             addGoodIdentification(GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin(), createProduct);
         }
-        if (rawItem.getInternalId() != null) {
+        if (rawItem.getInternalId() != null && !rawItem.getInternalId().isBlank()) {
+            rawItem.setInternalId(rawItem.getInternalId().trim());
             addGoodIdentification(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId(), createProduct);
         }
-        if (rawItem.getHsCode() != null) {
+        if (rawItem.getHsCode() != null && !rawItem.getHsCode().isBlank()) {
+            rawItem.setHsCode(rawItem.getHsCode().trim());
             addGoodIdentification(GOOD_IDENTIFICATION_TYPE_HS_CODE, rawItem.getHsCode(), createProduct);
         }
 
@@ -341,7 +344,8 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
                 .filter(x -> x.getGoodIdentificationTypeId().equals(identificationTypeId))
                 .findFirst();
-        if (newValue != null) {
+        if (newValue != null && !newValue.isBlank()) {
+            newValue = newValue.trim();
             if (existingGtin.isPresent()) {
                 if (!newValue.equals(existingGtin.get().getIdValue())) {
                     GoodIdentificationCommand.MergePatchGoodIdentification mergePatchGoodIdentification = mergePatchProduct
