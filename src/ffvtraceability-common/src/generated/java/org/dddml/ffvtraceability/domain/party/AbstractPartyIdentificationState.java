@@ -130,6 +130,16 @@ public abstract class AbstractPartyIdentificationState implements PartyIdentific
         this.updatedAt = updatedAt;
     }
 
+    private Boolean __Deleted__;
+
+    public Boolean get__Deleted__() {
+        return this.__Deleted__;
+    }
+
+    public void set__Deleted__(Boolean __Deleted__) {
+        this.__Deleted__ = __Deleted__;
+    }
+
     public boolean isStateUnsaved() {
         return this.getVersion() == null;
     }
@@ -198,6 +208,8 @@ public abstract class AbstractPartyIdentificationState implements PartyIdentific
         this.setIdValue(e.getIdValue());
         this.setVerified(e.getVerified());
 
+        this.set__Deleted__(false);
+
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
 
@@ -234,10 +246,10 @@ public abstract class AbstractPartyIdentificationState implements PartyIdentific
 
     }
 
-    public void when(PartyIdentificationEvent.PartyIdentificationStateRemoved e) {
+    public void when(PartyIdentificationStateRemoved e) {
         throwOnWrongEvent(e);
 
-        //this.set__Deleted__(true);
+        this.set__Deleted__(true);
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 

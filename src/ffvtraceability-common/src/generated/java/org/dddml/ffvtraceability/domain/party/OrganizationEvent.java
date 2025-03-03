@@ -86,6 +86,8 @@ public interface OrganizationEvent extends PartyEvent {
 
         PartyIdentificationEvent.PartyIdentificationStateMergePatched newPartyIdentificationStateMergePatched(String partyIdentificationTypeId);
 
+        PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId);
+
 
     }
 

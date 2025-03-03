@@ -150,6 +150,8 @@ public interface PartyEvent extends Event {
 
         PartyIdentificationEvent.PartyIdentificationStateMergePatched newPartyIdentificationStateMergePatched(String partyIdentificationTypeId);
 
+        PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId);
+
 
     }
 

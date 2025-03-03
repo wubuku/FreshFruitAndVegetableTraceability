@@ -136,6 +136,10 @@ public abstract class AbstractPartyEvent extends AbstractEvent implements PartyE
         return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateMergePatched(newPartyIdentificationEventId(partyIdentificationTypeId));
     }
 
+    public PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId) {
+        return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateRemoved(newPartyIdentificationEventId(partyIdentificationTypeId));
+    }
+
 
     public abstract String getEventType();
 

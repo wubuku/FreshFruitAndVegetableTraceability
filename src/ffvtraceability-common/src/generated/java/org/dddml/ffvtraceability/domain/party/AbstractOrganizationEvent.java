@@ -53,6 +53,10 @@ public abstract class AbstractOrganizationEvent extends AbstractPartyEvent imple
         return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateMergePatched(newPartyIdentificationEventId(partyIdentificationTypeId));
     }
 
+    public PartyIdentificationEvent.PartyIdentificationStateRemoved newPartyIdentificationStateRemoved(String partyIdentificationTypeId) {
+        return new AbstractPartyIdentificationEvent.SimplePartyIdentificationStateRemoved(newPartyIdentificationEventId(partyIdentificationTypeId));
+    }
+
     public static class PartyLobEvent extends AbstractPartyEvent {
 
         public Map<String, Object> getDynamicProperties() {

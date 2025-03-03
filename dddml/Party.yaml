@@ -299,8 +299,6 @@
               - PartyIdentificationId.PartyIdentificationTypeId
             foreignKeyName: PARTY_ID_TYPE
 
-        reservedPropertyMetadata: {}
-
         # valueObjects:
         # PartyIdentificationId:
         # properties:

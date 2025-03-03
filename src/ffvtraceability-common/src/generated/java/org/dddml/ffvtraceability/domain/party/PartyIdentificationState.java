@@ -33,6 +33,8 @@ public interface PartyIdentificationState
 
     OffsetDateTime getUpdatedAt();
 
+    Boolean get__Deleted__();
+
     String getPartyId();
 
     interface MutablePartyIdentificationState extends PartyIdentificationState {
@@ -52,6 +54,8 @@ public interface PartyIdentificationState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
+        void set__Deleted__(Boolean __Deleted__);
+
         void setPartyId(String partyId);
 
 
@@ -61,6 +65,7 @@ public interface PartyIdentificationState
 
         //void when(PartyIdentificationEvent.PartyIdentificationStateMergePatched e);
 
+        //void when(PartyIdentificationEvent.PartyIdentificationStateRemoved e);
     }
 
     interface SqlPartyIdentificationState extends MutablePartyIdentificationState {

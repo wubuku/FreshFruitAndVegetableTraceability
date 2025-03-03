@@ -71,9 +71,10 @@ public interface PartyIdentificationEvent extends Event {
 
     }
 
-
-    interface PartyIdentificationStateRemoved extends PartyIdentificationEvent.PartyIdentificationStateEvent
+    interface PartyIdentificationStateRemoved extends PartyIdentificationStateEvent
     {
     }
+
+
 }
 

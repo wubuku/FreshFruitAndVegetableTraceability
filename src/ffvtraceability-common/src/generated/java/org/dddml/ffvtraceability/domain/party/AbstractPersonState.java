@@ -458,6 +458,10 @@ public abstract class AbstractPersonState extends AbstractPartyState implements 
         for (PartyIdentificationEvent innerEvent : e.getPartyIdentificationEvents()) {
             PartyIdentificationState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, PartyIdentificationState>)this.getPartyIdentifications()).getOrAddDefault(((PartyIdentificationEvent.SqlPartyIdentificationEvent)innerEvent).getPartyIdentificationEventId().getPartyIdentificationTypeId());
             ((PartyIdentificationState.SqlPartyIdentificationState)innerState).mutate(innerEvent);
+            if (innerEvent instanceof PartyIdentificationEvent.PartyIdentificationStateRemoved) {
+                //PartyIdentificationEvent.PartyIdentificationStateRemoved removed = (PartyIdentificationEvent.PartyIdentificationStateRemoved)innerEvent;
+                ((EntityStateCollection.MutableEntityStateCollection)this.getPartyIdentifications()).removeState(innerState);
+            }
         }
     }
 

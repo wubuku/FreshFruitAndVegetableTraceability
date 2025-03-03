@@ -23,3 +23,4 @@ src/ffvtraceability-service-rest/src/main/resources/application-test.yml
 docs/__*报价单*.md
 docs/__*_*.md
 src/ffvtraceability-service/src/generated/java/org/dddml/ffvtraceability/domain/mapper/*Impl.java
+docs/__*.md

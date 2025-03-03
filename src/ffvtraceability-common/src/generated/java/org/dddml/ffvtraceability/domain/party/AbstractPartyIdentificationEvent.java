@@ -175,7 +175,7 @@ public abstract class AbstractPartyIdentificationEvent extends AbstractEvent imp
     }
 
 
-    public static abstract class AbstractPartyIdentificationStateRemoved extends AbstractPartyIdentificationEvent.AbstractPartyIdentificationStateEvent implements PartyIdentificationEvent.PartyIdentificationStateRemoved
+    public static abstract class AbstractPartyIdentificationStateRemoved extends AbstractPartyIdentificationStateEvent implements PartyIdentificationEvent.PartyIdentificationStateRemoved
     {
         public AbstractPartyIdentificationStateRemoved() {
             this(new PartyIdentificationEventId());
@@ -190,7 +190,6 @@ public abstract class AbstractPartyIdentificationEvent extends AbstractEvent imp
         }
 
     }
-
 
     public static class SimplePartyIdentificationStateCreated extends AbstractPartyIdentificationStateCreated
     {
@@ -221,5 +220,6 @@ public abstract class AbstractPartyIdentificationEvent extends AbstractEvent imp
             super(eventId);
         }
     }
+
 }
 
