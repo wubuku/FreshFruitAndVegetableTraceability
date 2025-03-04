@@ -3,7 +3,6 @@ package org.dddml.ffvtraceability.auth.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
 @ConfigurationProperties(prefix = "auth-server")
 public class AuthServerProperties {
     private String issuer;
