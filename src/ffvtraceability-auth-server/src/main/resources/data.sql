@@ -50,24 +50,49 @@ DELETE FROM users WHERE username = '*';
 
 -- 添加基础权限
 INSERT INTO permissions (permission_id, description, enabled) VALUES 
-    ('ITEM_CREATE', 'Permission to create items', NULL),
-    ('ITEM_READ', 'Permission to read items', NULL),
-    ('ITEM_UPDATE', 'Permission to update items', NULL),
-    ('ITEM_DELETE', 'Permission to delete items', NULL),
-    ('ORDER_PO_CREATE', 'Permission to create purchase orders', NULL),
-    ('ORDER_PO_READ', 'Permission to read purchase orders', NULL),
-    ('ORDER_PO_UPDATE', 'Permission to update purchase orders', NULL),
-    ('ORDER_PO_DEACTIVATE', 'Permission to deactivate purchase orders', NULL),
-    ('ORDER_SO_CREATE', 'Permission to create sales orders', NULL),
-    ('ORDER_SO_READ', 'Permission to read sales orders', NULL),
-    ('ORDER_SO_UPDATE', 'Permission to update sales orders', NULL),
-    ('ORDER_SO_DEACTIVATE', 'Permission to deactivate sales orders', NULL);
+    ('Vendors_Read', 'Permission to read vendors', true),
+    ('Vendors_Create', 'Permission to create vendors', true),
+    ('Vendors_Update', 'Permission to update vendors', true),
+    ('Vendors_Disable', 'Permission to disable vendors', true),
+    ('Items_Read', 'Permission to read items', true),
+    ('Items_Create', 'Permission to create items', true),
+    ('Items_Update', 'Permission to update items', true),
+    ('Items_Disable', 'Permission to disable items', true),
+    ('Warehouses_Read', 'Permission to read warehouses', true),
+    ('Warehouses_Create', 'Permission to create warehouses', true),
+    ('Warehouses_Update', 'Permission to update warehouses', true),
+    ('Warehouses_Disable', 'Permission to disable warehouses', true),
+    ('Locations_Read', 'Permission to read locations', true),
+    ('Locations_Create', 'Permission to create locations', true),
+    ('Locations_Update', 'Permission to update locations', true),
+    ('Locations_Disable', 'Permission to disable locations', true),
+    ('Procurement_Read', 'Permission to read procurement', true),
+    ('Procurement_Create', 'Permission to create procurement', true),
+    ('Procurement_Update', 'Permission to update procurement', true),
+    ('Procurement_Request-updates', 'Permission to request updates for procurement', true),
+    ('Procurement_Cancel', 'Permission to cancel procurement', true),
+    ('Procurement_Approve-updates', 'Permission to approve procurement updates', true),
+    ('Receiving_Read', 'Permission to read receiving', true),
+    ('Receiving_Create', 'Permission to create receiving', true),
+    ('Receiving_Update', 'Permission to update receiving', true),
+    ('Receiving_Request-updates', 'Permission to request updates for receiving', true),
+    ('Receiving_Approve-updates', 'Permission to approve receiving updates', true),
+    ('QA_Read', 'Permission to read quality assurance', true),
+    ('QA_Create', 'Permission to create quality assurance', true),
+    ('Users_Read', 'Permission to read users', true),
+    ('Users_Create', 'Permission to create users', true),
+    ('Users_Update', 'Permission to update users', true),
+    ('Users_Disable', 'Permission to disable users', true),
+    ('Roles_Read', 'Permission to read roles', true),
+    ('Roles_Create', 'Permission to create roles', true),
+    ('Roles_Update', 'Permission to update roles', true),
+    ('Roles_Disable', 'Permission to disable roles', true);
 
 -- 为测试用户添加一些初始权限
 INSERT INTO authorities (username, authority) VALUES 
-    ('user', 'ITEM_READ'),
-    ('user', 'ORDER_PO_READ'),
-    ('user', 'ORDER_SO_READ');
+    ('user', 'Vendors_Read'),
+    ('user', 'Vendors_Create'),
+    ('user', 'Warehouses_Create');
 
 -- 添加默认的OAuth2客户端
 INSERT INTO oauth2_registered_client (
