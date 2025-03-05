@@ -87,16 +87,16 @@ INSERT INTO permissions (permission_id, description, enabled) VALUES
     ('Roles_Create', 'Permission to create roles', true),
     ('Roles_Update', 'Permission to update roles', true),
     ('Roles_Disable', 'Permission to disable roles', true),
-    ('basedata', 'Permission to access base data', true),
-    ('vendors', 'Permission to access vendors module', true),
-    ('items', 'Permission to access items module', true),
-    ('warehouses', 'Permission to access warehouses module', true),
-    ('locations', 'Permission to access locations module', true),
-    ('procurement', 'Permission to access procurement module', true),
-    ('receiving', 'Permission to access receiving module', true),
-    ('qa', 'Permission to access quality assurance module', true),
-    ('users', 'Permission to access users module', true),
-    ('roles', 'Permission to access roles module', true);
+    ('Basedata', 'Permission to access base data', true),
+    ('Vendors', 'Permission to access vendors module', true),
+    ('Items', 'Permission to access items module', true),
+    ('Warehouses', 'Permission to access warehouses module', true),
+    ('Locations', 'Permission to access locations module', true),
+    ('Procurement', 'Permission to access procurement module', true),
+    ('Receiving', 'Permission to access receiving module', true),
+    ('QA', 'Permission to access quality assurance module', true),
+    ('Users', 'Permission to access users module', true),
+    ('Roles', 'Permission to access roles module', true);
 
 -- 为测试用户添加一些初始权限
 INSERT INTO authorities (username, authority) VALUES 
