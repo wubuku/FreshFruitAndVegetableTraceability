@@ -50,7 +50,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Configuration
-@EnableConfigurationProperties({JwtKeyProperties.class, AuthServerProperties.class})
+@EnableConfigurationProperties({ JwtKeyProperties.class, AuthServerProperties.class })
 public class AuthorizationServerConfig {
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationServerConfig.class);
 
@@ -69,23 +69,19 @@ public class AuthorizationServerConfig {
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-                http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http
+                .getConfigurer(OAuth2AuthorizationServerConfigurer.class);
 
         authorizationServerConfigurer
                 .clientAuthentication(clientAuth -> {
-                    clientAuth.authenticationProviders(providers ->
-                            providers.removeIf(provider ->
-                                    provider.getClass().getSimpleName().startsWith("X509")
-                            )
-                    );
+                    clientAuth.authenticationProviders(providers -> providers
+                            .removeIf(provider -> provider.getClass().getSimpleName().startsWith("X509")));
                 })
                 .tokenGenerator(tokenGenerator())
                 .oidc(Customizer.withDefaults());
 
         http.exceptionHandling((exceptionHandlingConfigurer) -> exceptionHandlingConfigurer
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-        );
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")));
 
         return http.build();
     }
@@ -106,8 +102,7 @@ public class AuthorizationServerConfig {
                 "X-Requested-With",
                 "Origin",
                 "Access-Control-Request-Method",
-                "Access-Control-Request-Headers"
-        ));
+                "Access-Control-Request-Headers"));
 
         configuration.setAllowCredentials(true);
 
@@ -154,8 +149,7 @@ public class AuthorizationServerConfig {
         return new DelegatingOAuth2TokenGenerator(
                 jwtGenerator,
                 accessTokenGenerator,
-                refreshTokenGenerator
-        );
+                refreshTokenGenerator);
     }
 
     @Bean
@@ -173,15 +167,12 @@ public class AuthorizationServerConfig {
 
         JdbcOAuth2AuthorizationService service = new JdbcOAuth2AuthorizationService(
                 jdbcTemplate,
-                registeredClientRepository
-        );
+                registeredClientRepository);
         JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper rowMapper = new JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper(
-                registeredClientRepository
-        );
+                registeredClientRepository);
         rowMapper.setObjectMapper(objectMapper);
         service.setAuthorizationRowMapper(
-                rowMapper
-        );
+                rowMapper);
 
         return service;
     }
@@ -204,13 +195,11 @@ public class AuthorizationServerConfig {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(
                     jwtKeyProperties.getKeyStore().getInputStream(),
-                    jwtKeyProperties.getKeyStorePassword().toCharArray()
-            );
+                    jwtKeyProperties.getKeyStorePassword().toCharArray());
 
             Key key = keyStore.getKey(
                     jwtKeyProperties.getKeyAlias(),
-                    jwtKeyProperties.getPrivateKeyPassphrase().toCharArray()
-            );
+                    jwtKeyProperties.getPrivateKeyPassphrase().toCharArray());
 
             Certificate cert = keyStore.getCertificate(jwtKeyProperties.getKeyAlias());
             PublicKey publicKey = cert.getPublicKey();
@@ -235,24 +224,24 @@ public class AuthorizationServerConfig {
     }
 
     /*
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        // 注册 Spring Security 核心模块
-        ClassLoader classLoader = getClass().getClassLoader();
-        List<com.fasterxml.jackson.databind.Module> securityModules =
-        SecurityJackson2Modules.getModules(classLoader);
-        mapper.registerModules(securityModules);
-        
-        // 注册 OAuth2 相关的模块
-        mapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
-        
-        // 注册我们的自定义模块
-        mapper.registerModule(new CustomJacksonModule());
-        
-        return mapper;
-    }
-    */
+     * @Bean
+     * public ObjectMapper objectMapper() {
+     * ObjectMapper mapper = new ObjectMapper();
+     * 
+     * // 注册 Spring Security 核心模块
+     * ClassLoader classLoader = getClass().getClassLoader();
+     * List<com.fasterxml.jackson.databind.Module> securityModules =
+     * SecurityJackson2Modules.getModules(classLoader);
+     * mapper.registerModules(securityModules);
+     * 
+     * // 注册 OAuth2 相关的模块
+     * mapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
+     * 
+     * // 注册我们的自定义模块
+     * mapper.registerModule(new CustomJacksonModule());
+     * 
+     * return mapper;
+     * }
+     */
 
 }

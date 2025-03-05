@@ -3,6 +3,7 @@ package org.dddml.ffvtraceability.auth.service;
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserDto;
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserResponse;
 import org.dddml.ffvtraceability.auth.dto.UserDto;
+import org.dddml.ffvtraceability.auth.exception.BusinessException;
 import org.dddml.ffvtraceability.auth.mapper.GroupDtoMapper;
 import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
 import org.slf4j.Logger;
@@ -60,7 +61,7 @@ public class UserPreRegistrationService {
         // Check if user already exists
         String username = preRegisterUser.getUsername();
         if (userExists(username)) {
-            throw new IllegalArgumentException("Username already exists: " + username);
+            throw new BusinessException("Username already exists: " + username);
         }
 
         // Generate one-time password

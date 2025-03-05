@@ -54,40 +54,39 @@ public class WebTokenController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body("{\"error\":\"unauthorized_client\"}");
         }
+//        try {
+        // 2. 构建请求头和请求体
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBasicAuth(clientId, clientSecrets[clientIndex]);
 
-        try {
-            // 2. 构建请求头和请求体
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            headers.setBasicAuth(clientId, clientSecrets[clientIndex]);
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", "authorization_code");
+        body.add("code", code);
+        body.add("redirect_uri", redirectUri);
+        body.add("code_verifier", codeVerifier);
 
-            MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-            body.add("grant_type", "authorization_code");
-            body.add("code", code);
-            body.add("redirect_uri", redirectUri);
-            body.add("code_verifier", codeVerifier);
+        HttpEntity<MultiValueMap<String, String>> requestEntity =
+                new HttpEntity<>(body, headers);
 
-            HttpEntity<MultiValueMap<String, String>> requestEntity =
-                    new HttpEntity<>(body, headers);
+        // 3. 调用本地 token endpoint
+        ResponseEntity<String> response = restTemplate.postForEntity(
+                "http://localhost:" + request.getServerPort() + "/oauth2/token",
+                requestEntity,
+                String.class
+        );
 
-            // 3. 调用本地 token endpoint
-            ResponseEntity<String> response = restTemplate.postForEntity(
-                    "http://localhost:" + request.getServerPort() + "/oauth2/token",
-                    requestEntity,
-                    String.class
-            );
+        // 4. 返回响应，移除手动的 CORS 头设置
+        return ResponseEntity.status(response.getStatusCode())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response.getBody());
 
-            // 4. 返回响应，移除手动的 CORS 头设置
-            return ResponseEntity.status(response.getStatusCode())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(response.getBody());
-
-        } catch (Exception e) {
-            logger.error("Token request failed", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body("{\"error\":\"internal_server_error\",\"error_description\":\""
-                            + e.getMessage() + "\"}");
-        }
+//        } catch (Exception e) {
+//            logger.error("Token request failed", e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .body("{\"error\":\"internal_server_error\",\"error_description\":\""
+//                            + e.getMessage() + "\"}");
+//        }
     }
 } 

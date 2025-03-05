@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.BindException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,19 +47,14 @@ public class PermissionManagementApiController {
     @GetMapping("/base")
     public List<Map<String, Object>> getBasePermissions() {
         logger.debug("Fetching base permissions...");
-        try {
-            String sql = """
-                    SELECT permission_id, description, enabled 
-                    FROM permissions 
-                    ORDER BY permission_id
-                    """;
-            List<Map<String, Object>> permissions = jdbcTemplate.queryForList(sql);
-            logger.debug("Found {} base permissions: {}", permissions.size(), permissions);
-            return permissions;
-        } catch (Exception e) {
-            logger.error("Error fetching base permissions", e);
-            throw e;
-        }
+        String sql = """
+                SELECT permission_id, description, enabled 
+                FROM permissions 
+                ORDER BY permission_id
+                """;
+        List<Map<String, Object>> permissions = jdbcTemplate.queryForList(sql);
+        logger.debug("Found {} base permissions: {}", permissions.size(), permissions);
+        return permissions;
     }
 
     @GetMapping("/user/{username}")
@@ -74,32 +71,26 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updatePermission(@RequestBody Map<String, Object> request) {
+    public void updatePermission(@RequestBody Map<String, Object> request) {
         String username = (String) request.get("username");
         String permission = (String) request.get("permission");
         boolean granted = (boolean) request.get("granted");
 
-        try {
-            if (granted) {
-                jdbcTemplate.update(
-                        "INSERT INTO authorities (username, authority) VALUES (?, ?) ON CONFLICT DO NOTHING",
-                        username, permission
-                );
-            } else {
-                jdbcTemplate.update(
-                        "DELETE FROM authorities WHERE username = ? AND authority = ?",
-                        username, permission
-                );
-            }
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            logger.error("Failed to update permission", e);
-            return ResponseEntity.badRequest().body("Failed to update permission");
+        if (granted) {
+            jdbcTemplate.update(
+                    "INSERT INTO authorities (username, authority) VALUES (?, ?) ON CONFLICT DO NOTHING",
+                    username, permission
+            );
+        } else {
+            jdbcTemplate.update(
+                    "DELETE FROM authorities WHERE username = ? AND authority = ?",
+                    username, permission
+            );
         }
     }
 
     @PostMapping("/batch-update")
-    public ResponseEntity<?> batchUpdatePermissions(@RequestBody Map<String, Object> request) {
+    public void batchUpdatePermissions(@RequestBody Map<String, Object> request) {
         String username = (String) request.get("username");
         @SuppressWarnings("unchecked")
         List<String> permissions = (List<String>) request.get("permissions");
@@ -108,28 +99,22 @@ public class PermissionManagementApiController {
         logger.debug("Batch updating permissions for user: {}, granted: {}, permissions: {}",
                 username, granted, permissions);
 
-        try {
-            if (granted) {
-                // 批量插入权限
-                for (String permission : permissions) {
-                    jdbcTemplate.update(
-                            "INSERT INTO authorities (username, authority) VALUES (?, ?) ON CONFLICT DO NOTHING",
-                            username, permission
-                    );
-                }
-            } else {
-                // 批量删除权限
-                jdbcTemplate.batchUpdate(
-                        "DELETE FROM authorities WHERE username = ? AND authority = ?",
-                        permissions.stream()
-                                .map(permission -> new Object[]{username, permission})
-                                .collect(Collectors.toList())
+        if (granted) {
+            // 批量插入权限
+            for (String permission : permissions) {
+                jdbcTemplate.update(
+                        "INSERT INTO authorities (username, authority) VALUES (?, ?) ON CONFLICT DO NOTHING",
+                        username, permission
                 );
             }
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            logger.error("Failed to batch update permissions", e);
-            return ResponseEntity.badRequest().body("Failed to batch update permissions");
+        } else {
+            // 批量删除权限
+            jdbcTemplate.batchUpdate(
+                    "DELETE FROM authorities WHERE username = ? AND authority = ?",
+                    permissions.stream()
+                            .map(permission -> new Object[]{username, permission})
+                            .collect(Collectors.toList())
+            );
         }
     }
 
@@ -155,32 +140,26 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/group/update")
-    public ResponseEntity<?> updateGroupPermission(@RequestBody Map<String, Object> request) {
+    public void updateGroupPermission(@RequestBody Map<String, Object> request) {
         Long groupId = Long.valueOf(request.get("groupId").toString());
         String permission = (String) request.get("permission");
         boolean granted = (boolean) request.get("granted");
 
-        try {
-            if (granted) {
-                jdbcTemplate.update(
-                        "INSERT INTO group_authorities (group_id, authority) VALUES (?, ?) ON CONFLICT DO NOTHING",
-                        groupId, permission
-                );
-            } else {
-                jdbcTemplate.update(
-                        "DELETE FROM group_authorities WHERE group_id = ? AND authority = ?",
-                        groupId, permission
-                );
-            }
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            logger.error("Failed to update group permission", e);
-            return ResponseEntity.badRequest().body("Failed to update group permission");
+        if (granted) {
+            jdbcTemplate.update(
+                    "INSERT INTO group_authorities (group_id, authority) VALUES (?, ?) ON CONFLICT DO NOTHING",
+                    groupId, permission
+            );
+        } else {
+            jdbcTemplate.update(
+                    "DELETE FROM group_authorities WHERE group_id = ? AND authority = ?",
+                    groupId, permission
+            );
         }
     }
 
     @PostMapping("/group/batch-update")
-    public ResponseEntity<?> batchUpdateGroupPermissions(@RequestBody Map<String, Object> request) {
+    public void batchUpdateGroupPermissions(@RequestBody Map<String, Object> request) {
         Long groupId = Long.valueOf(request.get("groupId").toString());
         @SuppressWarnings("unchecked")
         List<String> permissions = (List<String>) request.get("permissions");
@@ -189,93 +168,65 @@ public class PermissionManagementApiController {
         logger.debug("Batch updating permissions for group: {}, granted: {}, permissions: {}",
                 groupId, granted, permissions);
 
-        try {
-            if (granted) {
-                for (String permission : permissions) {
-                    jdbcTemplate.update(
-                            "INSERT INTO group_authorities (group_id, authority) VALUES (?, ?) ON CONFLICT DO NOTHING",
-                            groupId, permission
-                    );
-                }
-            } else {
-                jdbcTemplate.batchUpdate(
-                        "DELETE FROM group_authorities WHERE group_id = ? AND authority = ?",
-                        permissions.stream()
-                                .map(permission -> new Object[]{groupId, permission})
-                                .collect(Collectors.toList())
+        if (granted) {
+            for (String permission : permissions) {
+                jdbcTemplate.update(
+                        "INSERT INTO group_authorities (group_id, authority) VALUES (?, ?) ON CONFLICT DO NOTHING",
+                        groupId, permission
                 );
             }
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            logger.error("Failed to batch update group permissions", e);
-            return ResponseEntity.badRequest().body("Failed to batch update group permissions");
+        } else {
+            jdbcTemplate.batchUpdate(
+                    "DELETE FROM group_authorities WHERE group_id = ? AND authority = ?",
+                    permissions.stream()
+                            .map(permission -> new Object[]{groupId, permission})
+                            .collect(Collectors.toList())
+            );
         }
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPermission(@RequestBody Map<String, String> request) {
+    public void createPermission(@RequestBody Map<String, String> request) {
         String permissionId = request.get("permissionId");
         String description = request.get("description");
-
-        try {
-            jdbcTemplate.update(
-                    "INSERT INTO permissions (permission_id, description, enabled) VALUES (?, ?, NULL)",
-                    permissionId, description
-            );
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            logger.error("Failed to create permission", e);
-            if (e.getMessage().contains("duplicate key")) {
-                return ResponseEntity.badRequest().body("Permission already exists");
-            }
-            return ResponseEntity.badRequest().body("Failed to create permission");
-        }
+        jdbcTemplate.update(
+                "INSERT INTO permissions (permission_id, description, enabled) VALUES (?, ?, NULL)",
+                permissionId, description
+        );
     }
 
     @PostMapping("/{permissionId}/toggle-enabled")
-    public ResponseEntity<?> togglePermissionEnabled(@PathVariable String permissionId) {
-        try {
-            // 先检查当前状态
-            Boolean currentEnabled = jdbcTemplate.queryForObject(
-                    "SELECT enabled FROM permissions WHERE permission_id = ?",
-                    Boolean.class,
-                    permissionId
-            );
+    public void togglePermissionEnabled(@PathVariable String permissionId) {
+        // 先检查当前状态
+        Boolean currentEnabled = jdbcTemplate.queryForObject(
+                "SELECT enabled FROM permissions WHERE permission_id = ?",
+                Boolean.class,
+                permissionId
+        );
 
-            // 如果当前是 null，设置为 false；如果当前是 false，设置为 null
-            Boolean newEnabled = (currentEnabled == null) ? false : null;
+        // 如果当前是 null，设置为 false；如果当前是 false，设置为 null
+        Boolean newEnabled = (currentEnabled == null) ? false : null;
 
-            jdbcTemplate.update(
-                    "UPDATE permissions SET enabled = ? WHERE permission_id = ?",
-                    newEnabled, permissionId
-            );
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            logger.error("Failed to toggle permission enabled status", e);
-            return ResponseEntity.badRequest().body("Failed to update permission status");
-        }
+        jdbcTemplate.update(
+                "UPDATE permissions SET enabled = ? WHERE permission_id = ?",
+                newEnabled, permissionId
+        );
     }
 
     @PostMapping("/{permissionId}/update")
-    public ResponseEntity<?> updatePermission(
+    public void updatePermission(
             @PathVariable String permissionId,
             @RequestBody Map<String, String> request) {
         String description = request.get("description");
 
-        try {
-            jdbcTemplate.update(
-                    "UPDATE permissions SET description = ? WHERE permission_id = ?",
-                    description, permissionId
-            );
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            logger.error("Failed to update permission", e);
-            return ResponseEntity.badRequest().body("Failed to update permission");
-        }
+        jdbcTemplate.update(
+                "UPDATE permissions SET description = ? WHERE permission_id = ?",
+                description, permissionId
+        );
     }
 
     @PostMapping("/import-csv")
-    public ResponseEntity<?> importPermissionsFromCsv(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> importPermissionsFromCsv(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Please select a file to upload");
         }
@@ -356,7 +307,8 @@ public class PermissionManagementApiController {
 
         } catch (Exception e) {
             logger.error("Error processing CSV file", e);
-            return ResponseEntity.badRequest().body("Error processing CSV file: " + e.getMessage());
+            throw new BindException("Error processing CSV file: " + e.getMessage());
+            //return ResponseEntity.badRequest().body("Error processing CSV file: " + e.getMessage());
         }
     }
 

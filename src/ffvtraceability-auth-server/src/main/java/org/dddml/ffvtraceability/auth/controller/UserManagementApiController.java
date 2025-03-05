@@ -1,6 +1,7 @@
 package org.dddml.ffvtraceability.auth.controller;
 
 import org.dddml.ffvtraceability.auth.dto.UserDto;
+import org.dddml.ffvtraceability.auth.exception.BusinessException;
 import org.dddml.ffvtraceability.auth.service.UserPreRegistrationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,47 +47,29 @@ public class UserManagementApiController {
 
 
     @GetMapping("/{username}")
-    public ResponseEntity<?> getUserByUserName(@PathVariable("username") String username) {
-        try {
-            UserDto userDto = userPreRegistrationService.getUserByUsername(username);
-            return ResponseEntity.ok(userDto);
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
+    public UserDto getUserByUserName(@PathVariable("username") String username) {
+        return userPreRegistrationService.getUserByUsername(username);
     }
 
     @PostMapping("/{username}/toggle-enabled")
-    public ResponseEntity<?> toggleEnabled(@PathVariable String username) {
+    public void toggleEnabled(@PathVariable String username) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = auth.getName();
 
         if (username.equals(currentUsername)) {
-            return ResponseEntity.badRequest().body("Cannot disable your own account");
+            throw new BusinessException("Cannot disable your own account");
         }
-
-        try {
-            jdbcTemplate.update(
-                    "UPDATE users SET enabled = NOT enabled WHERE username = ?",
-                    username
-            );
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            logger.error("Failed to toggle user enabled status", e);
-            return ResponseEntity.badRequest().body("Failed to update user status");
-        }
+        jdbcTemplate.update(
+                "UPDATE users SET enabled = NOT enabled WHERE username = ?",
+                username
+        );
     }
 
     @PostMapping("/{username}/toggle-password-change")
-    public ResponseEntity<?> togglePasswordChange(@PathVariable String username) {
-        try {
-            jdbcTemplate.update(
-                    "UPDATE users SET password_change_required = NOT password_change_required WHERE username = ?",
-                    username
-            );
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            logger.error("Failed to toggle password change required", e);
-            return ResponseEntity.badRequest().body("Failed to update password change status");
-        }
+    public void togglePasswordChange(@PathVariable String username) {
+        jdbcTemplate.update(
+                "UPDATE users SET password_change_required = NOT password_change_required WHERE username = ?",
+                username
+        );
     }
 } 
