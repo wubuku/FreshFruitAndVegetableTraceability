@@ -50,8 +50,16 @@ public class UserPreRegistrationService {
 //                        WHERE a.username = ?
 //                        AND (p.enabled IS NULL OR p.enabled = true)
 //                        """; //如果用这个查询语句，那么给admin预设的几个权限就没了。
-            sql = "select distinct authority from authorities where username=?";
-            user.setPermissions(jdbcTemplate.queryForList(sql, String.class, username));
+            // 获取用户关联的所有组的权限集合
+            String sqlPermissions = """
+                        SELECT DISTINCT p.permission_id
+                        FROM permissions p
+                        JOIN group_authorities ga ON p.permission_id = ga.authority
+                        JOIN group_members gm ON ga.group_id = gm.group_id
+                        WHERE gm.username = ?
+                    """;
+            List<String> permissions = jdbcTemplate.queryForList(sqlPermissions, String.class, username);
+            user.setPermissions(permissions);
         }
         return user;
     }
