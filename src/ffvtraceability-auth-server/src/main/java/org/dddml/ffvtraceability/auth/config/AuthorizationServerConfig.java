@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -84,7 +83,7 @@ public class AuthorizationServerConfig {
                 .tokenGenerator(tokenGenerator())
                 .oidc(Customizer.withDefaults());
 
-        http.exceptionHandling((exceptions) -> exceptions
+        http.exceptionHandling((exceptionHandlingConfigurer) -> exceptionHandlingConfigurer
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
         );
 
@@ -94,26 +93,26 @@ public class AuthorizationServerConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        
+
         String[] origins = authServerProperties.getCors().getAllowedOrigins().split(",");
         configuration.setAllowedOriginPatterns(Arrays.asList(origins));
-        
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        
+
         configuration.setAllowedHeaders(Arrays.asList(
-            "Authorization",
-            "Content-Type",
-            "Accept",
-            "X-Requested-With",
-            "Origin",
-            "Access-Control-Request-Method",
-            "Access-Control-Request-Headers"
+                "Authorization",
+                "Content-Type",
+                "Accept",
+                "X-Requested-With",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
         ));
-        
+
         configuration.setAllowCredentials(true);
-        
+
         configuration.setMaxAge(3600L);
-        
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
