@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.dddml.ffvtraceability.auth.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.BindException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -226,13 +225,13 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/import-csv")
-    public ResponseEntity<?> importPermissionsFromCsv(@RequestParam("file") MultipartFile file) throws IOException {
+    public String importPermissionsFromCsv(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("Please select a file to upload");
+            throw new BusinessException("Please select a file to upload");
         }
 
-        if (!file.getOriginalFilename().toLowerCase().endsWith(".csv")) {
-            return ResponseEntity.badRequest().body("Please upload a CSV file");
+        if (!Objects.requireNonNull(file.getOriginalFilename()).toLowerCase().endsWith(".csv")) {
+            throw new BusinessException("Please upload a CSV file");
         }
 
         try (BufferedReader reader
@@ -249,7 +248,7 @@ public class PermissionManagementApiController {
             // 验证必需的列是否存在
             Set<String> headers = new HashSet<>(csvParser.getHeaderNames());
             if (!headers.contains("permission_id")) {
-                return ResponseEntity.badRequest().body("CSV file must contain 'permission_id' column");
+                throw new BusinessException("CSV file must contain 'permission_id' column");
             }
 
             List<String> errors = new ArrayList<>();
@@ -303,11 +302,11 @@ public class PermissionManagementApiController {
                 errors.forEach(error -> message.append(error).append("\n"));
             }
 
-            return ResponseEntity.ok(message.toString());
+            return message.toString();
 
         } catch (Exception e) {
             logger.error("Error processing CSV file", e);
-            throw new BindException("Error processing CSV file: " + e.getMessage());
+            throw new BusinessException("Error processing CSV file: " + e.getMessage());
             //return ResponseEntity.badRequest().body("Error processing CSV file: " + e.getMessage());
         }
     }
