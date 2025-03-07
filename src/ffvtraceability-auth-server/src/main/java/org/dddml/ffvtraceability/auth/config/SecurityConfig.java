@@ -114,7 +114,6 @@ public class SecurityConfig {
                                 "/oauth2-test-callback",
                                 "/password/change"
                         ).permitAll()
-                        //.requestMatchers("").hasAuthority("")
                         .requestMatchers(
                                 "/pre-register/**",
                                 "/permission-management/**",
