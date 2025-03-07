@@ -114,13 +114,14 @@ public class SecurityConfig {
                                 "/oauth2-test-callback",
                                 "/password/change"
                         ).permitAll()
-                        .requestMatchers(
-                                "/pre-register/**",
-                                "/permission-management/**",
-                                "/user-management",
-                                "/group-management"
-                        )
-                        .hasAuthority("ROLE_ADMIN")
+                        //.requestMatchers("").hasAuthority("")
+//                        .requestMatchers(
+//                                "/pre-register/**",
+//                                "/permission-management/**",
+//                                "/user-management",
+//                                "/group-management"
+//                        )
+//                        .hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
