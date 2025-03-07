@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserManagementViewController {
 
     @GetMapping("/user-management")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public String userManagementPage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("currentUsername", auth.getName());

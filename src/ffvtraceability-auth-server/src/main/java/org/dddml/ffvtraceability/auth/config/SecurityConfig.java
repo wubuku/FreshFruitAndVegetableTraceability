@@ -101,16 +101,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/web-clients/oauth2/**"))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(
-                                "/oauth2/**",
-                                "/web-clients/oauth2/**",
-                                "/login",
-                                "/error",
-                                "/oauth2-test",
-                                "/oauth2-test-callback",
-                                "/password/change"
-                        ).permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+//                                .requestMatchers(
+//                                        "/oauth2/**",
+//                                        "/web-clients/oauth2/**",
+//                                        "/login",
+//                                        "/error",
+//                                        "/oauth2-test",
+//                                        "/oauth2-test-callback",
+//                                        "/password/change"
+//                                ).permitAll()
 //                        .requestMatchers("/user-management")
 //                        .hasAuthority("Users_Read")
 //                        .requestMatchers("/group-management")
@@ -120,7 +120,8 @@ public class SecurityConfig {
 //                                "/permission-management/**"
 //                        )
 //                        .hasAuthority("ROLE_ADMIN")
-                        .anyRequest().authenticated()
+                                .requestMatchers("/**").permitAll()
+                                //.anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")

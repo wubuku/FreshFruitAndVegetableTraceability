@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class GroupManagementViewController {
 
     @GetMapping("/group-management")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public String groupManagementPage() {
         return "group-management";
     }
