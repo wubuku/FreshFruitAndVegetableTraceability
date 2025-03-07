@@ -115,13 +115,13 @@ public class SecurityConfig {
                                 "/password/change"
                         ).permitAll()
                         //.requestMatchers("").hasAuthority("")
-//                        .requestMatchers(
-//                                "/pre-register/**",
-//                                "/permission-management/**",
-//                                "/user-management",
-//                                "/group-management"
-//                        )
-//                        .hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(
+                                "/pre-register/**",
+                                "/permission-management/**",
+                                "/user-management",
+                                "/group-management"
+                        )
+                        .hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
