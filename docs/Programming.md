@@ -1017,3 +1017,135 @@ public class DatabaseConfig {
 通过以上配置和实践，可以在同一个项目中平滑地混合使用JdbcTemplate和JPA，充分利用各自的优势。
 
 
+
+
+## 开发环境配置
+
+
+### 网络问题：DNS劫持识别与解决
+
+在AI开发过程中，尤其是配置环境、下载模型或拉取容器时，可能会遇到DNS劫持问题，表现为证书错误或下载中断。
+
+**快速识别DNS劫持**:
+```bash
+# 检查可疑域名的DNS解析
+dig registry-1.docker.io
+
+# 正常结果应显示AWS IP地址(通常44.x.x.x或54.x.x.x)
+# 如解析到66.220.x.x(Facebook)等非预期IP，则可能被劫持
+```
+
+**解决方案**:
+1. **更改DNS服务器**(推荐):
+   ```bash
+   # macOS
+   networksetup -setdnsservers Wi-Fi 8.8.8.8 1.1.1.1
+   
+   # 或通过系统设置更改网络配置中的DNS服务器
+   # 添加: 8.8.8.8(Google) 和 1.1.1.1(Cloudflare)
+   ```
+
+2. **临时hosts解决方案**:
+   ```bash
+   # 编辑hosts文件
+   sudo nano /etc/hosts
+   
+   # 添加正确的IP映射
+   44.205.64.79 registry-1.docker.io
+   
+   # 刷新DNS缓存
+   sudo killall -HUP mDNSResponder  # macOS
+   ```
+
+此类问题常影响Docker镜像拉取、Hugging Face模型下载和各类API连接，及时识别和解决可显著提高开发效率。
+
+### Docker Hub DNS劫持案例分析与解决：
+
+以下是一个实际的DNS劫持问题排查和解决案例，展示了如何运用DNS诊断工具有效识别和解决Docker Hub域名劫持问题。
+
+#### 问题表现
+
+在尝试拉取Docker镜像时遇到SSL证书错误：
+
+```
+Get "https://registry-1.docker.io/v2/": tls: failed to verify certificate: x509: certificate is valid for *.facebook.com, *.facebook.net, *.fbcdn.net, *.fbsbx.com, *.m.facebook.com, *.messenger.com, *.xx.fbcdn.net, *.xy.fbcdn.net, *.xz.fbcdn.net, facebook.com, messenger.com, not registry-1.docker.io
+```
+
+#### 初步诊断
+
+使用`dig`命令检查本地DNS解析结果：
+
+```bash
+% dig registry-1.docker.io
+
+;; ANSWER SECTION:
+registry-1.docker.io.	214	IN	A	66.220.148.145
+```
+
+发现解析到了Facebook的IP地址范围(66.220.x.x)，而非预期的Docker Hub服务器。
+
+#### 多DNS服务提供商交叉验证
+
+使用Google DNS(8.8.8.8)和Cloudflare DNS(1.1.1.1)进行查询：
+
+```bash
+% dig @8.8.8.8 registry-1.docker.io A
+
+;; ANSWER SECTION:
+registry-1.docker.io.	105	IN	A	31.13.88.169
+```
+
+```bash
+% dig @1.1.1.1 registry-1.docker.io A
+
+;; ANSWER SECTION:
+registry-1.docker.io.	60	IN	A	3.94.224.37
+registry-1.docker.io.	60	IN	A	44.208.254.194
+registry-1.docker.io.	60	IN	A	98.85.153.80
+```
+
+#### 关键发现
+
+1. 即使Google DNS(8.8.8.8)也返回了Facebook的IP地址(31.13.x.x)
+2. 只有Cloudflare DNS(1.1.1.1)返回了正确的AWS IP地址(3.x.x.x和44.x.x.x)，这些是Docker Hub的实际服务器
+3. 说明DNS劫持可能发生在较广泛的网络层面，甚至影响了Google的DNS服务
+
+#### 解决方案
+
+1. **使用hosts文件直接映射正确IP**：
+   ```bash
+   sudo nano /etc/hosts
+   
+   # 添加Cloudflare DNS返回的正确IP
+   3.94.224.37 registry-1.docker.io
+   44.208.254.194 registry-1.docker.io
+   98.85.153.80 registry-1.docker.io
+   
+   # 刷新DNS缓存
+   sudo killall -HUP mDNSResponder  # macOS
+   ```
+
+2. **切换到Cloudflare DNS**：
+   ```bash
+   # 为网络接口设置Cloudflare DNS
+   networksetup -setdnsservers Wi-Fi 1.1.1.1 1.0.0.1
+   ```
+
+#### 重要经验
+
+1. **不要完全信任单一DNS提供商**：即使是Google DNS这样的主流服务也可能受到污染
+2. **交叉验证的重要性**：使用多个DNS服务进行验证是发现问题的关键
+3. **Cloudflare DNS的可靠性**：在这个案例中，Cloudflare DNS提供了更准确的结果
+4. **证书错误是DNS劫持的典型症状**：收到非预期网站证书是识别DNS劫持的重要线索
+
+#### 后续验证
+
+确认DNS劫持问题解决：
+```bash
+# 尝试拉取Docker镜像
+docker pull registry-1.docker.io/library/hello-world
+```
+
+如果镜像成功拉取，且没有SSL证书错误，表明问题已解决。
+
+这个实际案例展示了如何系统化地识别和解决DNS劫持问题，特别是在Docker和容器化开发环境中，这类问题对AI开发工作流程的影响尤为显著。
