@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PermissionManagementViewController {
 
     @GetMapping("/permission-management")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public String permissionManagementPage() {
         return "permission-management";
     }

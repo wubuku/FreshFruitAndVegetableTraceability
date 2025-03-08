@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PreRegisterViewController {
 
     @GetMapping("/pre-register")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public String preRegisterPage() {
         return "pre-register";
     }

@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,9 +30,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
@@ -104,24 +101,27 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/web-clients/oauth2/**"))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(
-                                "/oauth2/**",
-                                "/web-clients/oauth2/**",
-                                "/login",
-                                "/error",
-                                "/oauth2-test",
-                                "/oauth2-test-callback",
-                                "/password/change"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/pre-register/**",
-                                "/permission-management/**",
-                                "/user-management",
-                                "/group-management"
-                        )
-                        .hasAuthority("ROLE_ADMIN")
-                        .anyRequest().authenticated()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+//                                .requestMatchers(
+//                                        "/oauth2/**",
+//                                        "/web-clients/oauth2/**",
+//                                        "/login",
+//                                        "/error",
+//                                        "/oauth2-test",
+//                                        "/oauth2-test-callback",
+//                                        "/password/change"
+//                                ).permitAll()
+//                        .requestMatchers("/user-management")
+//                        .hasAuthority("Users_Read")
+//                        .requestMatchers("/group-management")
+//                        .hasAuthority("Roles_Read")
+//                        .requestMatchers(
+//                                "/pre-register/**",
+//                                "/permission-management/**"
+//                        )
+//                        .hasAuthority("ROLE_ADMIN")
+                                .requestMatchers("/**").permitAll()
+                                //.anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -146,55 +146,96 @@ public class SecurityConfig {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         return username -> {
-            String sql = """
-                    SELECT u.username, 
-                           u.password, 
-                           u.enabled,
-                           u.password_change_required,
-                           u.password_last_changed,
-                           u.first_login,
-                           a.authority,
-                           g.group_name
+            String queryUser = """
+                    SELECT u.username, u.password, u.enabled, u.password_change_required, u.password_last_changed, u.first_login
                     FROM users u
-                    LEFT JOIN authorities a ON u.username = a.username
-                    LEFT JOIN group_members gm ON u.username = gm.username
-                    LEFT JOIN groups g ON gm.group_id = g.id
                     WHERE u.username = ?
                     """;
-
-            List<Map<String, Object>> results = jdbcTemplate.queryForList(sql, username);
-
-            if (results.isEmpty()) {
+            Map<String, Object> userInfo = null;
+            try {
+                userInfo = jdbcTemplate.queryForMap(queryUser, username);
+            } catch (Exception exception) {
                 throw new UsernameNotFoundException("User not found: " + username);
             }
+            String sqlPermissions = """
+                        SELECT DISTINCT p.permission_id
+                        FROM permissions p
+                        JOIN group_authorities ga ON p.permission_id = ga.authority
+                        JOIN group_members gm ON ga.group_id = gm.group_id
+                        WHERE gm.username = ?
+                    """;
+            List<String> permissions = null;
+            try {
+                permissions = jdbcTemplate.queryForList(sqlPermissions, String.class, username);
+            } catch (Exception exception) {
+                permissions = new ArrayList<>();
+            }
+            List<String> groupNames = null;
+            try {
+                groupNames = jdbcTemplate.queryForList("""
+                                select 
+                                group_name 
+                                from groups 
+                                where id in (select group_id from group_members gm where gm.username=?) 
+                                and enabled is true
+                                """,
+                        String.class, username);
+            } catch (Exception e) {
+                groupNames = new ArrayList<>();
+            }
+//            jdbcTemplate.queryForList("SELECT 1 FROM users WHERE username = ?", username);
+//            String sql = """
+//                    SELECT u.username,
+//                           u.password,
+//                           u.enabled,
+//                           u.password_change_required,
+//                           u.password_last_changed,
+//                           u.first_login,
+//                           a.authority,
+//                           g.group_name
+//                    FROM users u
+//                    LEFT JOIN authorities a ON u.username = a.username
+//                    LEFT JOIN group_members gm ON u.username = gm.username
+//                    LEFT JOIN groups g ON gm.group_id = g.id
+//                    WHERE u.username = ?
+//                    """;
+//
+//            List<Map<String, Object>> results = jdbcTemplate.queryForList(sql, username);
+//
+//            if (results.isEmpty()) {
+//                throw new UsernameNotFoundException("User not found: " + username);
+//            }
 
             Set<GrantedAuthority> authorities = new HashSet<>();
-            Set<String> groups = new HashSet<>();
-
-            for (Map<String, Object> row : results) {
-                String authority = (String) row.get("authority");
-                String groupName = (String) row.get("group_name");
-
-                if (authority != null) {
-                    authorities.add(new SimpleGrantedAuthority(authority));
-                }
-                if (groupName != null) {
-                    groups.add(groupName);
-                }
+            Set<String> groups = new HashSet<>(groupNames);
+            for (String permission : permissions) {
+                authorities.add(new SimpleGrantedAuthority(permission));
             }
 
-            Map<String, Object> firstRow = results.get(0);
+//            for (Map<String, Object> row : results) {
+//                String authority = (String) row.get("authority");
+//                String groupName = (String) row.get("group_name");
+//
+//                if (authority != null) {
+//                    authorities.add(new SimpleGrantedAuthority(authority));
+//                }
+//                if (groupName != null) {
+//                    groups.add(groupName);
+//                }
+//            }
 
-            OffsetDateTime passwordLastChanged = toOffsetDateTime(firstRow.get("password_last_changed"));
+//            Map<String, Object> firstRow = null;// results.get(0);
+
+            OffsetDateTime passwordLastChanged = toOffsetDateTime(userInfo.get("password_last_changed"));
 
             return new CustomUserDetails(
                     username,
-                    (String) firstRow.get("password"),
+                    (String) userInfo.get("password"),
                     authorities,
                     groups,
-                    (Boolean) firstRow.get("password_change_required"),
+                    (Boolean) userInfo.get("password_change_required"),
                     passwordLastChanged,
-                    (Boolean) firstRow.get("first_login")
+                    (Boolean) userInfo.get("first_login")
             );
         };
     }
