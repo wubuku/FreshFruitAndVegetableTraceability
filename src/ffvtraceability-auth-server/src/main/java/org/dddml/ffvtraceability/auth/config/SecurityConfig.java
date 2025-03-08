@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.auth.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.dddml.ffvtraceability.auth.security.CustomUserDetails;
 import org.dddml.ffvtraceability.auth.security.handler.CustomAuthenticationSuccessHandler;
 import org.slf4j.Logger;
@@ -121,7 +122,7 @@ public class SecurityConfig {
 //                        )
 //                        .hasAuthority("ROLE_ADMIN")
                                 .requestMatchers("/**").permitAll()
-                                //.anyRequest().authenticated()
+                        //.anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -133,7 +134,8 @@ public class SecurityConfig {
                                 String targetUrl = savedRequest.getRedirectUrl();
                                 response.sendRedirect(targetUrl);
                             } else {
-                                response.sendRedirect("/");
+                                //response.sendRedirect("/");// 获取自动生成的 CSRF Token
+                                response.setStatus(HttpServletResponse.SC_OK);
                             }
                         })
                 );
