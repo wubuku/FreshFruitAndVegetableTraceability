@@ -1239,3 +1239,439 @@ model.save_pretrained_merged(new_model_local, tokenizer, save_method = "merged_1
 - **路径处理改进**：强调并解决了Python脚本中`~/`路径不会自动展开的问题
 
 这些调整不仅解决了Apple Silicon架构与MPS后端的兼容性问题，还通过精心优化的内存管理和参数调整，使得在内存有限的Mac设备上也能稳定地微调14B参数级别的大语言模型。
+
+
+
+## Mac设备微调大语言模型的其他参考信息
+
+### 非CUDA环境下的大模型微调实践
+
+[有云技术团队的实践](https://mp.weixin.qq.com/s?__biz=MjM5NjUxNDIwNw==&mid=2654069282&idx=1&sn=ac26cc4dc52b0d63c11cfee95edd2187&chksm=bc35d7c842283b695ab733fa22829780c7e39ca62ae460fa4fd2cae2594bf175a0b4291eeb4e#rd)展示了如何在Mac M系列芯片上使用LoRA技术对DeepSeek Coder模型进行微调，为使用 Mac 的开发者提供参考。
+
+#### 1. 项目概述
+
+**目标**：
+- 使用LoRA技术微调DeepSeek Coder 7B模型
+- 优化模型在代码生成任务上的表现
+- 在Mac M系列芯片上实现微调训练和推理
+
+**技术栈**：
+- 基础模型：deepseek-ai/deepseek-coder-7b-base
+- 训练框架：PyTorch + Transformers + PEFT
+- 硬件平台：Mac M系列芯片(MPS后端)
+
+#### 2. 实现流程
+
+**数据准备**：
+```python
+training_data = [
+    {
+        "instruction": "实现一个二分查找算法",
+        "input": "",
+        "output": """def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1"""
+    },
+    {
+        "instruction": "编写一个快速排序函数",
+        "input": "",
+        "output": """def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)"""
+    }
+]
+```
+
+**LoRA配置**：
+```python
+LORA_CONFIG = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,      # 任务类型:因果语言模型
+    r=8,                               # LoRA矩阵的秩,控制可训练参数量
+    lora_alpha=32,                     # 缩放因子,控制LoRA更新的重要性
+    lora_dropout=0.1,                  # Dropout比例,防止过拟合
+    target_modules=[                   # 需要训练的模块
+        "q_proj",                      # 查询矩阵投影层
+        "v_proj",                      # 值矩阵投影层  
+        "k_proj",                      # 键矩阵投影层
+        "o_proj",                      # 输出投影层
+    ],
+    bias="none",                       # 是否训练偏置项
+    modules_to_save=None               # 需要完整保存的模块
+)
+```
+
+**训练参数优化**：
+```python
+training_args = TrainingArguments(
+    output_dir="./deepseek-finetuned",
+    per_device_train_batch_size=1,     # 受限于M系列芯片内存
+    gradient_accumulation_steps=64,    # 累积梯度以模拟大批量
+    learning_rate=5e-5,
+    num_train_epochs=3,
+    gradient_checkpointing=True,       # 减少内存使用
+    max_grad_norm=0.3,                 # 梯度裁剪,防止梯度爆炸
+    warmup_steps=50                    # 预热步数
+)
+```
+
+#### 3. Mac M系列适配技巧
+
+**内存管理**：
+```python
+# 设置MPS内存水位
+os.environ['PYTORCH_MPS_HIGH_WATERMARK_RATIO'] = '0.0'
+os.environ['PYTORCH_MPS_LOW_WATERMARK_RATIO'] = '0.0'
+
+# 定期清理内存
+if torch.backends.mps.is_available():
+    torch.mps.empty_cache()
+```
+
+**性能优化策略**：
+
+1. **模型优化**：
+   - KV Cache优化：启用注意力缓存机制,优化缓存更新策略
+   - 计算图优化：使用torch.inferencemode(),启用静态图优化
+   - 生成参数调优：自适应batch size,优化采样策略
+
+2. **内存优化**：
+   - 批处理策略：动态batch size调整,梯度累积步数优化
+   - 梯度检查点：选择性激活检查点,平衡内存与速度
+   - 显存管理：及时释放无用张量,使用CPU offload,启用混合精度训练
+
+3. **数据加载优化**：
+   - 预处理加速：多进程数据加载,数据预取与缓存
+   - 内存管理：使用内存映射,渐进式数据加载
+   - IO优化：使用异步加载,优化数据格式
+
+4. **训练流程优化**：
+   - 监控与调整：实时性能分析,自动化参数调优
+   - 容错机制：检查点保存,训练状态恢复
+
+#### 4. 推理优化配置
+
+```python
+generation_config = {
+    "max_length": 2048,               # 生成文本的最大长度
+    "temperature": 0.7,               # 采样温度,控制生成的随机性
+    "top_p": 0.95,                    # 核采样阈值,控制词表采样范围
+    "top_k": 50,                      # 保留概率最高的k个token
+    "do_sample": True,                # 是否使用采样策略
+    "num_beams": 1,                   # beam search的束宽
+    "repetition_penalty": 1.1,        # 重复惩罚因子,避免重复生成
+    "early_stopping": True,           # 是否提前停止生成
+    "pad_token_id": tokenizer.pad_token_id,  # padding token的ID
+    "eos_token_id": tokenizer.eos_token_id,  # 结束符token的ID
+}
+```
+
+#### 5. 主要挑战与解决方案
+
+**MPS后端内存管理**：
+- 内存泄漏问题：MPS后端缓存积累、张量碎片化、自动回收不及时
+- 解决方案：定期手动清理缓存、监控内存使用、优化张量生命周期
+
+**消费级硬件优化**：
+- 计算能力限制：单GPU显存不足、计算速度瓶颈
+- 解决方案：模型量化、梯度累积、优化器内存优化
+
+**训练和推理性能平衡**：
+- 训练效率：批处理大小受限、梯度累积开销大
+- 推理延迟：首次推理延迟高、响应时间不稳定
+- 解决方案：动态批处理、KV缓存优化、预热模型
+
+#### 6. 参考资源
+
+- DeepSeek Coder官方文档
+- PEFT库文档
+- PyTorch MPS文档
+- LoRA论文
+
+
+### 基于Apple MLX框架的大模型微调
+
+[Apple MLX框架](https://github.com/ml-explore/mlx)是苹果官方开源的针对Apple Silicon芯片优化的深度学习框架，为开发者提供了在Mac等设备上直接进行模型训练和部署的能力。[文章](https://mp.weixin.qq.com/s?__biz=MzA5NDc3ODQxNQ==&mid=2247484394&idx=1&sn=aeeb89f13a5269cbda8ca6f31d198b89&chksm=915cb4f81cab6148fda2f458f969edec253f789c4279ba67cd946f6d0fdbc3eb2a93f32c389a#rd)介绍基于MLX框架在M1设备上微调Mistral-7B模型的实践过程。
+
+#### 1. MLX框架特性
+
+- **熟悉的API**：提供类似NumPy的Python API和类似PyTorch的高级API
+- **可组合函数转换**：支持自动微分、自动矢量化和计算图优化
+- **惰性计算**：只在需要时才具体化数组，提高计算效率
+- **动态图构建**：无需重编译即可支持形状变化，简化调试
+- **多设备支持**：可在CPU和GPU上运行，充分利用硬件
+- **统一内存模型**：数组位于共享内存，无需设备间数据移动
+
+#### 2. 微调环境准备
+
+```bash
+# 获取MLX示例代码
+git clone https://github.com/ml-explore/mlx-examples
+cd mlx-examples/lora
+
+# 安装依赖
+pip install -r requirements.txt
+
+# 下载Mistral-7B模型
+curl -O https://files.mistral-7b-v0-1.mistral.ai/mistral-7B-v0.1.tar
+tar -xf mistral-7B-v0.1.tar
+
+# 转换模型格式为MLX格式
+python convert.py \
+  --torch-model mistral-7B-v0.1 \
+  --mlx-model mistral-7b-v0.1-mlx
+```
+
+#### 3. 训练数据格式
+
+MLX示例中使用WikiSQL数据集进行文本到SQL的转换训练，数据格式如下：
+
+```json
+{
+    "text": "table: 1-1000181-1\ncolumns: State/territory, Text/background colour, Format, Current slogan, Current series, Notes\nQ: Tell me what the notes are for South Australia \nA: SELECT Notes FROM 1-1000181-1 WHERE Current slogan = 'SOUTH AUSTRALIA'"
+}
+```
+
+数据集结构：
+- `table`: 表名称
+- `columns`: 列名称列表
+- `Q`: 用户自然语言问题
+- `A`: 对应的SQL查询语句
+
+#### 4. 内存优化与参数调整
+
+在M1设备上进行微调时，内存管理是关键挑战。以下是优化参数：
+
+```bash
+# 优化内存使用的训练命令
+python lora.py \
+   --model mistral-7b-v0.1-mlx \
+   --train \
+   --batch-size 1 \          # 降低批次大小减少内存占用
+   --lora-layers 4           # 减少微调层数
+```
+
+**关键参数解析**：
+- `--batch-size`：默认为4，降低至1或2可显著减少内存消耗
+- `--lora-layers`：默认为16，可降至8或4减少反向传播内存，但可能影响微调质量
+- 数据集长度：较长样本需要更多内存，可考虑分解为更小序列
+
+#### 5. 性能与训练过程
+
+在32GB的M1 Mac上，使用优化参数后的训练性能：
+- 处理速度：约110 tokens/秒
+- 损失变化：从初始2.265降至1.325（800次迭代后）
+
+**不同参数配置的损失变化对比**：
+
+| 配置 | 迭代次数 | Loss |
+|------|---------|------|
+| batch=1, lora=4 | 800 | 1.325 |
+| batch=2, lora=8 | 800 | 1.213 |
+| batch=2, lora=8, 更大数据集 | 800 | 1.360 |
+
+
+#### 6. 模型评估与输出示例
+
+微调后的模型用于自然语言到SQL的转换任务：
+
+```bash
+python lora.py --model mistral-7b-v0.1-mlx \
+               --adapter-file adapters_2_8.npz \
+               --num-tokens 50 \
+               --prompt "table: 1-10015132-16
+columns: Player, No., Nationality, Position, Years in Toronto, School/Club Team
+Q: What is terrence ross' nationality
+A: "
+```
+
+**模型输出**：
+```
+A: SELECT Nationality FROM 1-10015132-16 WHERE Player = 'Terrence Ross'
+```
+
+#### 7. 经验总结与建议
+
+1. **内存管理策略**：
+   - 降低批次大小是最直接有效的内存减少方法
+   - 降低LoRA层数可减少内存，但会影响模型质量
+   - 32GB内存设备建议最大使用8个LoRA层
+
+2. **数据集考量**：
+   - 训练集大小对结果影响显著
+   - 对于复杂任务，1000条样本通常不足，建议使用5000-10000条
+
+3. **适用场景**：
+   - RAG系统自定义：针对特定领域知识微调
+   - 小型专业模型：如文本到SQL转换器
+   - 开发和测试：无需高端GPU即可进行原型开发
+
+#### 8. 技术价值与意义
+
+- **生态多样化**：为非NVIDIA设备提供大模型微调能力
+- **开发门槛降低**：降低硬件要求，使更多开发者能参与大模型开发
+- **苹果设备优势**：充分利用Apple Silicon统一内存架构
+- **应用场景扩展**：支持在边缘设备上进行个性化模型适配
+
+MLX框架为Apple设备提供了一条不依赖NVIDIA CUDA的大模型微调路径，虽然在处理大规模训练时仍有局限，但对于特定任务的适应性微调已经展现出实用价值，未来随着框架优化和Apple硬件升级，这一方案的可行性将进一步增强。
+
+#### 9. 参考资源
+
+- [MLX GitHub仓库](https://github.com/ml-explore/mlx)
+- [MLX LoRA微调示例](https://github.com/ml-explore/mlx-examples/tree/main/lora)
+- [八一菜刀：基于Apple MLX框架的M1设备上大模型微调实践](https://mp.weixin.qq.com/s?__biz=MzA5NDc3ODQxNQ==&mid=2247484394&idx=1&sn=aeeb89f13a5269cbda8ca6f31d198b89&chksm=915cb4f81cab6148fda2f458f969edec253f789c4279ba67cd946f6d0fdbc3eb2a93f32c389a#rd)
+
+
+### Apple设备深度学习框架
+
+#### MPS与MLX框架对比
+
+MPS后端和MLX框架虽然都利用Apple硬件能力，但它们在架构和设计理念上有明显区别：
+
+##### 底层硬件调用
+- **共同点**：二者都使用苹果的Metal图形API来访问计算能力
+- **共同点**：都充分利用了Apple Silicon芯片的统一内存架构
+
+##### 架构层次
+- **MPS (Metal Performance Shaders)**：
+  - 是一个适配层，让PyTorch等现有框架能在苹果硬件上运行
+  - 本质上是将现有框架的运算翻译成Metal指令
+  - 类似"翻译器"角色，存在一定的转换开销
+
+- **MLX框架**：
+  - 苹果从头开发的框架，直接为Apple Silicon架构优化
+  - 无需"翻译"层，直接生成针对苹果硬件的最优指令
+  - 更深度整合了苹果硬件的特性（特别是统一内存）
+
+##### 技术性能对比
+
+```
+性能优化层次：
+┌─────────────────────────┐
+│     应用代码 (Python)    │
+├───────────┬─────────────┤
+│  PyTorch  │    MLX      │
+├───────────┤             │
+│ MPS后端   │             │
+├───────────┴─────────────┤
+│        Metal API        │
+├─────────────────────────┤
+│    Apple Silicon硬件    │
+└─────────────────────────┘
+```
+
+- **内存效率**：MLX通常比PyTorch+MPS有更高的内存利用率
+- **计算性能**：MLX在相同硬件上通常能提供更好的性能，特别是在矩阵运算上
+- **启动时间**：MLX通常有更快的启动和编译时间
+
+#### Apple Metal计算资源管理
+
+Metal不仅限于GPU，它是Apple设计的底层图形和计算API，能够访问Apple Silicon芯片上的多种计算资源：
+
+##### Metal的全面计算能力
+- **CPU**：包括性能核心和能效核心
+- **GPU**：集成的图形处理单元
+- **神经引擎(Neural Engine)**：专用于机器学习加速的硬件
+- **AMX(Apple Matrix accelerators)**：矩阵计算加速器
+- **媒体引擎**：视频编解码专用处理单元
+
+##### 自动资源分配能力
+
+```
+┌──────────────────────────────────────────┐
+│           应用程序 (MLX/PyTorch等)        │
+└───────────────────┬──────────────────────┘
+                    ↓
+┌──────────────────────────────────────────┐
+│                 Metal框架                 │
+└───────┬───────────┬────────────┬─────────┘
+        ↓           ↓            ↓         ↓
+   ┌─────────┐ ┌─────────┐ ┌──────────┐ ┌─────────┐
+   │   CPU   │ │   GPU   │ │神经引擎  │ │  AMX    │
+   └─────────┘ └─────────┘ └──────────┘ └─────────┘
+```
+
+Metal的任务分配策略：
+
+1. **智能调度**：根据工作负载特性自动选择适当的计算单元
+2. **异构计算**：可以同时利用多种计算资源协同工作
+3. **专用加速**：特定运算会自动路由到最适合的硬件单元
+
+##### 框架差异在资源利用上
+
+- **MPS(Metal Performance Shaders)**：
+  - 主要优化GPU计算，对其他计算单元支持有限
+  - 通过Metal访问硬件，但优化层次较浅
+
+- **MLX**：
+  - 深度整合所有计算资源，包括CPU、GPU、神经引擎
+  - 更智能地分配不同类型的计算任务到最适合的硬件
+  - 专为机器学习优化，了解不同计算模式的特点
+
+在训练大语言模型时，Metal能够自动将不同类型的计算任务分配给最适合的硬件单元：
+- 矩阵乘法可能路由到GPU或AMX
+- 注意力机制可以利用GPU的并行能力
+- 激活函数可能在CPU上执行
+- 特定ML算子可以利用神经引擎加速
+
+这种全面的计算资源调度是Apple设备上能够进行大模型微调的关键技术基础，也是为什么即使没有高端NVIDIA GPU，Apple设备仍能有效支持机器学习工作负载的根本原因。
+
+### Mac设备上微调大语言模型的通用注意事项
+
+通过分析上述两篇关于Mac设备上微调大模型的实践文章(DeepSeek+MPS与MLX框架)，可以总结出以下通用的关键注意事项：
+
+#### 1. 内存管理是核心挑战
+
+- **内存水位控制**：设置`PYTORCH_MPS_HIGH_WATERMARK_RATIO`和`PYTORCH_MPS_LOW_WATERMARK_RATIO`参数控制内存使用上限
+- **手动清理缓存**：定期使用`torch.mps.empty_cache()`或MLX等效命令清理GPU内存
+- **内存泄漏监控**：特别关注MPS后端缓存积累、张量碎片化问题，长时间训练时尤为重要
+
+#### 2. 训练参数优化
+
+- **批次大小降低**：将batch size降至1-2，这是最直接有效的内存节省方法
+- **梯度累积**：使用较大的`gradient_accumulation_steps`(如64)来模拟大批量训练效果
+- **微调层数限制**：
+  - 针对特定关键层(q_proj, v_proj, k_proj, o_proj)进行LoRA微调
+  - 32GB内存设备建议最大使用8个LoRA层，16GB设备建议4层或更少
+
+#### 3. 技术策略共识
+
+- **梯度检查点**：两种方法都采用了`gradient_checkpointing=True`以平衡性能和内存占用
+- **专注于LoRA**：LoRA技术是目前Mac设备上微调大模型的最佳选择，添加参数少、内存占用低
+- **数据集规模**：Mac设备上微调需谨慎控制数据集大小，建议根据任务复杂度选择适当数量(1000-10000条)
+
+#### 4. 性能与质量平衡
+
+- **训练与推理权衡**：需要在训练效率与模型效果间做出权衡，参数越小训练越快但效果可能较差
+- **训练时间预期**：相比NVIDIA GPU，需要接受更长的训练时间(每秒处理约100-110个tokens)
+- **模型规模选择**：
+  - 16GB内存设备：最大建议7B模型
+  - 32GB内存设备：可尝试7B-13B级别模型，但参数需谨慎调整
+
+#### 5. 框架选择考量
+
+- **PyTorch+MPS**：兼容性更好，生态更丰富，但性能优化有限
+- **MLX框架**：针对Apple Silicon优化，性能更好，但生态较新，工具链不够丰富
+- **统一内存优势**：两种方法都能充分利用Apple Silicon芯片的统一内存架构
+
+#### 6. 实用建议
+
+- **预热阶段**：为模型设置适当的预热步数(50-100步)以稳定初始训练
+- **量化考虑**：可以探索在训练后使用4位或8位量化以提高推理速度
+- **功耗管理**：注意Mac设备在长时间训练中的散热问题，可能需要外部散热支持
+- **分批训练**：将长时间训练分为多个短训练阶段，定期保存检查点，避免因内存问题训练失败
+
+Mac设备上的大模型微调虽然面临资源限制，但通过合理的参数设置和优化策略，完全可以实现有效的微调，尤其适合原型开发、概念验证和特定领域的小规模定制化需求。
+
