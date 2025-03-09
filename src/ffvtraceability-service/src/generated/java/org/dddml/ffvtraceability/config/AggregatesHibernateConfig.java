@@ -203,6 +203,9 @@ import org.dddml.ffvtraceability.domain.attributeset.hibernate.*;
 import org.dddml.ffvtraceability.domain.bffnotification.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.bffnotification.hibernate.*;
+import org.dddml.ffvtraceability.domain.inventorytransfer.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.inventorytransfer.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -1188,6 +1191,22 @@ public class AggregatesHibernateConfig {
                 bffNotificationEventStore,
                 bffNotificationStateRepository,
                 bffNotificationStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractInventoryTransferApplicationService.SimpleInventoryTransferApplicationService inventoryTransferApplicationService(
+            @Qualifier("inventoryTransferEventStore") EventStore inventoryTransferEventStore,
+            InventoryTransferStateRepository inventoryTransferStateRepository,
+            InventoryTransferStateQueryRepository inventoryTransferStateQueryRepository
+    ) {
+        AbstractInventoryTransferApplicationService.SimpleInventoryTransferApplicationService applicationService = new AbstractInventoryTransferApplicationService.SimpleInventoryTransferApplicationService(
+                inventoryTransferEventStore,
+                inventoryTransferStateRepository,
+                inventoryTransferStateQueryRepository
         );
         return applicationService;
     }

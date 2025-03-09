@@ -1,0 +1,50 @@
+aggregates:
+  InventoryTransfer:
+    id:
+      name: InventoryTransferId
+      type: id
+    properties:
+      StatusId:
+        type: id
+      InventoryItemId:
+        type: id
+      FacilityId:
+        type: id
+      LocationSeqId:
+        type: id
+      ContainerId:
+        type: id
+      FacilityIdTo:
+        type: id
+      LocationSeqIdTo:
+        type: id
+      ContainerIdTo:
+        type: id
+      ItemIssuanceId:
+        type: id
+      SendDate:
+        type: date-time
+      ReceiveDate:
+        type: date-time
+      Comments:
+        type: comment
+
+    # methods:
+    #   Create:
+    #     isInternal: true
+    #   MergePatch:
+    #     isInternal: true
+    #   CompleteTransfer:
+    #     parameters:
+    #       ReceiveDate:
+    #         type: date-time
+    #         isOptional: true
+    #       Comments:
+    #         type: comment
+    #         isOptional: true
+    #   CancelTransfer:
+    #     parameters:
+    #       Comments:
+    #         type: comment
+    #         isOptional: true
+
