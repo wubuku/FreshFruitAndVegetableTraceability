@@ -32,28 +32,23 @@ public class SecurityConfig {
         MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
         http
-                .cors(Customizer.withDefaults())  // 启用 CORS
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/files/**"))
                         .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
-                .headers(headers -> headers.frameOptions().disable())  // 允许 H2 控制台在 iframe 中显示
+                .headers(headers -> headers.frameOptions().disable())
                 .authorizeHttpRequests(auth -> {
-                    // 首先处理 OPTIONS 请求
+                    // 首先处理 OPTIONS 请求和公开端点
                     auth.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.OPTIONS, "/**")).permitAll();
-
-                    // 然后是公开访问的端点
                     auth.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll();
                     auth.requestMatchers(mvcMatcherBuilder.pattern("/api/files/*/media")).permitAll();
                     auth.requestMatchers(mvcMatcherBuilder.pattern("/api/files/*/download")).permitAll();
-
-                    // 根据配置决定是否允许匿名上传
-                    if (securityProperties.isAllowAnonymousUpload()) {
-                        auth.requestMatchers(mvcMatcherBuilder.pattern("/api/files/upload")).permitAll();
-                    }
-
-                    // 最后是需要认证的端点
-                    auth.requestMatchers(mvcMatcherBuilder.pattern("/api/files/**")).authenticated()
-                            .anyRequest().authenticated();
+                    
+                    // 确保上传端点总是允许匿名访问
+                    auth.requestMatchers(mvcMatcherBuilder.pattern("/api/files/upload")).permitAll();
+                    
+                    // 其他端点需要认证
+                    auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
