@@ -75,6 +75,9 @@
     <property name="description">
       <column name="description" sql-type="VARCHAR(255)" />
     </property>
+    <property name="inventoryTransferId">
+      <column name="inventory_transfer_id" sql-type="VARCHAR(20)" />
+    </property>
     <property name="inventoryItemAttributeHash">
       <column name="inventory_item_attribute_hash" sql-type="VARCHAR(64)" />
     </property>
