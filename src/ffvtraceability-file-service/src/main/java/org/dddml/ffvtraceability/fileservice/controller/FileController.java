@@ -43,14 +43,10 @@ public class FileController {
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "isPublic", defaultValue = "false") boolean isPublic,
             Authentication authentication) {
-        String userId;
-        if (authentication != null) {
+        String userId = ANONYMOUS_USER;
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             userId = ((UserDetails) authentication.getPrincipal()).getUsername();
-        } else {
-            if (!securityProperties.isAllowAnonymousUpload()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
-            userId = ANONYMOUS_USER;
         }
 
         FileInfo fileInfo = fileService.uploadFile(file, userId, isPublic);

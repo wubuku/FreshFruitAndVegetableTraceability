@@ -146,8 +146,12 @@ aggregates:
             type: id
           ReasonEnumId:
             type: id
+            # 考虑将这个 ReasonEnumId 用于区分同一单据/行项的不同操作（如接收、冲销等）。
+            # Used to distinguish different operations (e.g., receive, reverse) on the same document/line item
           Description:
             type: description
+          InventoryTransferId:
+            type: id
           # ------------------------------------------------------------
           InventoryItemAttributeHash:
             # AttributeSetInstanceId

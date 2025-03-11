@@ -59,6 +59,8 @@ public interface InventoryItemDetailState
 
     String getDescription();
 
+    String getInventoryTransferId();
+
     String getInventoryItemAttributeHash();
 
     String getInventoryItemDetailAttributeHash();
@@ -119,6 +121,8 @@ public interface InventoryItemDetailState
         void setReasonEnumId(String reasonEnumId);
 
         void setDescription(String description);
+
+        void setInventoryTransferId(String inventoryTransferId);
 
         void setInventoryItemAttributeHash(String inventoryItemAttributeHash);
 

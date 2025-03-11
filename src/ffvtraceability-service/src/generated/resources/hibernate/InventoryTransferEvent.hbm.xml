@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.inventorytransfer">
+  <class name="AbstractInventoryTransferEvent" table="inventory_transfer_event" abstract="true">
+    <composite-id name="inventoryTransferEventId" class="org.dddml.ffvtraceability.domain.inventorytransfer.InventoryTransferEventId">
+      <key-property name="inventoryTransferId">
+        <column name="inventory_transfer_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <subclass name="AbstractInventoryTransferEvent$InventoryTransferLobEvent" discriminator-value="InventoryTransferLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractInventoryTransferEvent$AbstractInventoryTransferStateEvent" abstract="true">
+      <property name="statusId">
+        <column name="status_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="inventoryItemId">
+        <column name="inventory_item_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="facilityId">
+        <column name="facility_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="locationSeqId">
+        <column name="location_seq_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="containerId">
+        <column name="container_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="facilityIdTo">
+        <column name="facility_id_to" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="locationSeqIdTo">
+        <column name="location_seq_id_to" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="containerIdTo">
+        <column name="container_id_to" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="itemIssuanceId">
+        <column name="item_issuance_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="sendDate">
+        <column name="send_date" sql-type="timestamptz" />
+      </property>
+      <property name="receiveDate">
+        <column name="receive_date" sql-type="timestamptz" />
+      </property>
+      <property name="comments">
+        <column name="comments" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractInventoryTransferEvent$SimpleInventoryTransferStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractInventoryTransferEvent$SimpleInventoryTransferStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyStatusIdRemoved" column="is_property_status_id_removed" />
+        <property name="isPropertyInventoryItemIdRemoved" column="is_property_inventory_item_id_removed" />
+        <property name="isPropertyFacilityIdRemoved" column="is_property_facility_id_removed" />
+        <property name="isPropertyLocationSeqIdRemoved" column="is_property_location_seq_id_removed" />
+        <property name="isPropertyContainerIdRemoved" column="is_property_container_id_removed" />
+        <property name="isPropertyFacilityIdToRemoved" column="is_property_facility_id_to_removed" />
+        <property name="isPropertyLocationSeqIdToRemoved" column="is_property_location_seq_id_to_removed" />
+        <property name="isPropertyContainerIdToRemoved" column="is_property_container_id_to_removed" />
+        <property name="isPropertyItemIssuanceIdRemoved" column="is_property_item_issuance_id_removed" />
+        <property name="isPropertySendDateRemoved" column="is_property_send_date_removed" />
+        <property name="isPropertyReceiveDateRemoved" column="is_property_receive_date_removed" />
+        <property name="isPropertyCommentsRemoved" column="is_property_comments_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

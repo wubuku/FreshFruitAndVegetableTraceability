@@ -266,6 +266,18 @@ public class InventoryItemDetailStateDto {
         this.description = description;
     }
 
+    private String inventoryTransferId;
+
+    public String getInventoryTransferId()
+    {
+        return this.inventoryTransferId;
+    }
+
+    public void setInventoryTransferId(String inventoryTransferId)
+    {
+        this.inventoryTransferId = inventoryTransferId;
+    }
+
     private String inventoryItemAttributeHash;
 
     public String getInventoryItemAttributeHash()
@@ -453,6 +465,9 @@ public class InventoryItemDetailStateDto {
             }
             if (returnedFieldsContains("Description")) {
                 dto.setDescription(state.getDescription());
+            }
+            if (returnedFieldsContains("InventoryTransferId")) {
+                dto.setInventoryTransferId(state.getInventoryTransferId());
             }
             if (returnedFieldsContains("InventoryItemAttributeHash")) {
                 dto.setInventoryItemAttributeHash(state.getInventoryItemAttributeHash());

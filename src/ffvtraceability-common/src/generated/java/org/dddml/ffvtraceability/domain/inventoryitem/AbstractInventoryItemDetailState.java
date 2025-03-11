@@ -260,6 +260,16 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
         this.description = description;
     }
 
+    private String inventoryTransferId;
+
+    public String getInventoryTransferId() {
+        return this.inventoryTransferId;
+    }
+
+    public void setInventoryTransferId(String inventoryTransferId) {
+        this.inventoryTransferId = inventoryTransferId;
+    }
+
     private String inventoryItemAttributeHash;
 
     public String getInventoryItemAttributeHash() {
@@ -422,6 +432,7 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
         this.setPhysicalInventoryId(s.getPhysicalInventoryId());
         this.setReasonEnumId(s.getReasonEnumId());
         this.setDescription(s.getDescription());
+        this.setInventoryTransferId(s.getInventoryTransferId());
         this.setInventoryItemAttributeHash(s.getInventoryItemAttributeHash());
         this.setInventoryItemDetailAttributeHash(s.getInventoryItemDetailAttributeHash());
     }
