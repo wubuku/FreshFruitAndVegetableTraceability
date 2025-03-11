@@ -455,6 +455,9 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         mergePatchLocation.setDescription(c.getFacilityLocation().getDescription());
         mergePatchLocation.setAisleId(c.getFacilityLocation().getAisleId());
         mergePatchLocation.setSectionId(c.getFacilityLocation().getSectionId());
+        mergePatchLocation.setGln(c.getFacilityLocation().getGln());
+        mergePatchLocation.setLocationName(c.getFacilityLocation().getLocationName());
+        mergePatchLocation.setLocationCode(c.getFacilityLocation().getLocationCode());
         mergePatchLocation.setLevelId(c.getFacilityLocation().getLevelId());
         mergePatchLocation.setPositionId(c.getFacilityLocation().getPositionId());
         mergePatchLocation.setGeoPointId(c.getFacilityLocation().getGeoPointId());
