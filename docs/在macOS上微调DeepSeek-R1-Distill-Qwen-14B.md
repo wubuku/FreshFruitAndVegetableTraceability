@@ -308,6 +308,165 @@ pip install transformers datasets peft accelerate wandb
 pip install numpy==1.26.4
 ```
 
+
+可以使用下面的脚本做一次在微调前的推理：
+
+
+```python
+import torch
+import time
+import os
+import gc
+import threading
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+print(f"PyTorch版本: {torch.__version__}")
+print(f"MPS可用: {torch.backends.mps.is_available()}")
+
+# 优化MPS性能的环境变量
+os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"  
+os.environ["PYTORCH_MPS_HIGH_WATERMARK_RATIO"] = "0.0"  
+os.environ["PYTORCH_MPS_LOW_WATERMARK_RATIO"] = "0.0"   
+
+# 清理内存
+gc.collect()
+torch.mps.empty_cache()
+
+# 模型路径
+model_path = "/Users/yangjiefeng/Documents/models/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"
+
+print("====== 阶段1: 加载模型 ======")
+tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+tokenizer.pad_token = tokenizer.eos_token
+
+print("开始加载模型...")
+start_time = time.time()
+
+model = AutoModelForCausalLM.from_pretrained(
+    model_path,
+    torch_dtype=torch.float16,  # 使用float16减少内存占用
+    device_map="mps",  # 直接指定使用MPS
+    trust_remote_code=True,
+    low_cpu_mem_usage=True,
+)
+
+print(f"模型加载用时: {time.time() - start_time:.2f}秒")
+print(f"模型类型: {model.__class__.__name__}")
+
+# 打印模型参数所在设备
+devices = {}
+for name, param in model.named_parameters():
+    device = param.device
+    if device not in devices:
+        devices[device] = 0
+    devices[device] += param.numel()
+
+print("模型参数分布:")
+total_params = sum(devices.values())
+for device, count in devices.items():
+    print(f"  {device}: {count/1e9:.2f}B 参数 ({count/total_params*100:.1f}%)")
+
+print("====== 阶段2: 准备推理 ======")
+model.eval()
+model.config.use_cache = True
+torch.set_grad_enabled(False)
+
+# 清理内存
+gc.collect()
+torch.mps.empty_cache()
+
+print("====== 阶段3: 执行推理 ======")
+question = "一名70岁的男性患者因胸痛伴呕吐16小时就医，心电图显示下壁导联和右胸导联ST段抬高0.1~0.3mV，经补液后血压降至80/60mmHg，患者出现呼吸困难和不能平卧的症状，体检发现双肺有大量水泡音。在这种情况下，最恰当的药物处理是什么？"
+
+prompt = f"""以下是描述任务的指令，以及提供更多上下文的输入。
+请写出恰当完成该请求的回答。
+在回答之前，请仔细思考问题，并创建一个逐步的思维链，以确保回答合乎逻辑且准确。
+### Instruction:
+你是一位在临床推理、诊断和治疗计划方面具有专业知识的医学专家。
+请回答以下医学问题。
+### Question:
+{question}
+### Response:
+"""
+
+print("准备输入...")
+inputs = tokenizer(prompt, return_tensors="pt")
+
+main_device = next(model.parameters()).device
+print(f"模型主要在设备: {main_device}")
+inputs = {k: v.to(main_device) for k, v in inputs.items()}
+
+# 全局变量，用于跟踪生成是否完成
+generation_completed = False
+
+def print_progress():
+    """每10秒打印一次进度提示"""
+    if not generation_completed:
+        elapsed = time.time() - start_time
+        print(f"生成中... 已经运行 {elapsed:.1f} 秒")
+        threading.Timer(10.0, print_progress).start()
+
+print("开始生成...")
+print("注意：生成过程中将每10秒显示一次运行时间，请耐心等待...")
+start_time = time.time()
+
+# 启动进度打印线程
+threading.Timer(10.0, print_progress).start()
+
+try:
+    # 执行生成 - 不使用callback参数
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=1200,
+        temperature=0.7,
+        do_sample=True,
+        use_cache=True,
+    )
+    
+    # 标记生成已完成
+    generation_completed = True
+    
+    # 计算生成速度
+    generation_time = time.time() - start_time
+    tokens_generated = outputs.shape[1] - inputs["input_ids"].shape[1]
+    tokens_per_second = tokens_generated / generation_time
+    
+    print(f"\n生成完成!")
+    print(f"生成了 {tokens_generated} 个tokens，用时 {generation_time:.2f} 秒")
+    print(f"生成速度: {tokens_per_second:.2f} tokens/秒")
+    
+    # 解码输出
+    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    
+    print("\n====== 生成结果 ======\n")
+    print(generated_text)
+    
+    # 尝试分割出回答部分
+    if "### Response:" in generated_text:
+        answer = generated_text.split("### Response:")[1]
+        print("\n====== 提取的回答 ======\n")
+        print(answer)
+    
+except Exception as e:
+    print(f"生成过程中出错: {e}")
+    import traceback
+    traceback.print_exc()
+
+# 标记生成已完成，停止进度提示
+generation_completed = True
+
+# 清理资源
+print("\n====== 清理资源 ======")
+del model
+del tokenizer
+gc.collect()
+torch.mps.empty_cache()
+print("推理完成，资源已释放")
+```
+
+---
+
+
 创建微调脚本：
 
 ```bash
@@ -1181,7 +1340,30 @@ UserWarning: CUDA initialization: CUDA unknown error - this may be due to an inc
 ### 微调前模型推理结果
 
 ```
-<think>
+% python r1-lora-peft-mac.py
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: anony-mouse-733470366999568055 to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.8
+wandb: Run data is saved locally in /Users/yangjiefeng/Documents/unsloth-finetune/wandb/run-20250309_114503-sjw44dc1
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run curious-forest-13
+wandb: ⭐️ View project at https://wandb.ai/anony-mouse-733470366999568055/Lora-DeepSeek-R1-Distill-Qwen-14B-Mac?apiKey=c16d51f0be89758603632573346321aab91cbb6f
+wandb: 🚀 View run at https://wandb.ai/anony-mouse-733470366999568055/Lora-DeepSeek-R1-Distill-Qwen-14B-Mac/runs/sjw44dc1?apiKey=c16d51f0be89758603632573346321aab91cbb6f
+wandb: WARNING Do NOT share these links with anyone. They can be used to claim your runs.
+/Users/yangjiefeng/Documents/unsloth-finetune/unsloth-env/lib/python3.11/site-packages/transformers/utils/hub.py:106: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+正在从本地路径加载模型: /Users/yangjiefeng/Documents/models/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+开始加载模型，这可能需要几分钟...
+Sliding Window Attention is enabled but not implemented for `sdpa`; unexpected results may be encountered.
+Loading checkpoint shards: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:56<00:00, 14.22s/it]
+Model loaded: Qwen2ForCausalLM
+使用MPS进行推理...
+Setting `pad_token_id` to `eos_token_id`:151643 for open-end generation.
+/Users/yangjiefeng/Documents/unsloth-finetune/unsloth-env/lib/python3.11/site-packages/transformers/pytorch_utils.py:338: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  test_elements = torch.tensor(test_elements)
+### 微调前模型推理结果：
+
+  <think>
 好，我现在要解决这个医学问题。首先，患者是一个70岁的男性，主诉是胸痛和呕吐，已经持续了16个小时。心电图显示下壁导联和右胸导联的ST段抬高，幅度在0.1到0.3mV之间。这可能提示心肌梗死，尤其是下壁梗死，可能影响到右心室。
 
 接下来，患者接受了补液治疗，但血压降到了80/60mmHg，这是一个低血压的状态。同时，患者出现了呼吸困难，不能平卧，体检发现双肺有大量水泡音，这提示肺水肿。这些症状结合起来，可能意味着患者发生了心源性休克或急性心力衰竭。
@@ -1228,6 +1410,15 @@ UserWarning: CUDA initialization: CUDA unknown error - this may be due to an inc
 8. **紧急PCI或溶栓**：尽快进行PCI以恢复心肌血流，或在无法PCI时考虑溶栓治疗，如使用替罗非班。
 
 同时，监测肾功能和电解质，确保药物剂量适当。立即转送至心脏中心进行进一步处理。
+分批处理参数转换，避免内存峰值...
+处理注意力层参数...
+处理前馈层参数...
+参数转换完成！
+trainable params: 103,219,200 || all params: 14,873,252,864 || trainable%: 0.6940
+Trainable params: None
+Dataset loaded: 200 examples
+No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+开始训练: 50 步，批次大小: 1，梯度累积: 6
 ```
 
 
@@ -1409,12 +1600,8 @@ def smart_inference(model, inputs, max_new_tokens=1200, temperature=0.7):
 
 # 主函数
 def main():
-    # 1. 设置路径 - 正确处理波浪号
-    import os
-    from pathlib import Path
-    
-    # 展开用户主目录中的波浪号
-    base_model_path = os.path.expanduser("~/Documents/models/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B")  # 原始模型路径
+    # 1. 设置路径
+    base_model_path = "~/Documents/models/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"  # 原始模型路径
     adapter_path = "outputs/checkpoint-20"  # 适配器路径，使用最后一个检查点
     
     # 2. 加载分词器
@@ -1437,17 +1624,17 @@ def main():
     model.eval()
     
     # 6. 准备输入提示
-    
+
     prompt_style = """以下是描述任务的指令，以及提供更多上下文的输入。
-请写出恰当完成该请求的回答。
-在回答之前，请仔细思考问题，并创建一个逐步的思维链，以确保回答合乎逻辑且准确。
-### Instruction:
-你是一位在临床推理、诊断和治疗计划方面具有专业知识的医学专家。
-请回答以下医学问题。
-### Question:
-{}
-### Response:
-<think>{}"""
+    请写出恰当完成该请求的回答。
+    在回答之前，请仔细思考问题，并创建一个逐步的思维链，以确保回答合乎逻辑且准确。
+    ### Instruction:
+    你是一位在临床推理、诊断和治疗计划方面具有专业知识的医学专家。
+    请回答以下医学问题。
+    ### Question:
+    {}
+    ### Response:
+    <think>{}"""
     # train_prompt_style = prompt_style + """
     #   </think>
     #   {}"""
@@ -1473,15 +1660,6 @@ def main():
     except IndexError:
         print("无法分割响应，显示完整输出:")
         print(response)
-
-    # 合并适配器和基础模型
-    merged_model = model.merge_and_unload()
-
-    # 保存完整模型 - 确保路径是绝对路径
-    merged_model_path = os.path.abspath("DeepSeek-R1-Medical-Merged")
-    merged_model.save_pretrained(merged_model_path)
-    tokenizer.save_pretrained(merged_model_path)
-    print(f"合并后的模型已保存到: {merged_model_path}")
 
 if __name__ == "__main__":
     main()
@@ -1531,6 +1709,8 @@ print(f"合并后的模型已保存到: {os.path.abspath(merged_model_path)}")
 ```
 
 请注意，合并后的模型将占用更多磁盘空间，但在推理时不再需要原始基础模型。
+
+
 
 
 ---
