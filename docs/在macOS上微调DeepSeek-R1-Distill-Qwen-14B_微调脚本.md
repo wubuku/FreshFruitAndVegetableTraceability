@@ -1,5 +1,15 @@
 # 微调脚本
 
+
+```shell
+# 卸载当前版本
+pip uninstall -y torch torchvision torchaudio
+pip install torch torchvision torchaudio
+
+pip install coremltools  # 安装Apple的CoreML工具
+```
+
+
 ```python
 import os
 import json
@@ -7,6 +17,7 @@ import torch
 import wandb
 import gc  # 用于主动垃圾收集
 from pathlib import Path
+import psutil
 
 # ==================== 核心内存优化设置 ====================
 # 这些设置对解决接近尾声时崩溃的问题至关重要
@@ -20,10 +31,12 @@ os.environ["PYTORCH_MPS_LOW_WATERMARK_RATIO"] = "0.0"   # 完全禁用内存下�
 
 # 定义内存清理函数
 def clean_memory():
-    """清理GPU和CPU内存缓存"""
-    gc.collect()  # 强制Python垃圾收集
-    if torch.backends.mps.is_available():
-        torch.mps.empty_cache()  # 清理MPS缓存
+    """清理GPU和CPU内存缓存，但只在内存压力大时执行"""
+    # 只有当内存使用率超过85%时才执行清理
+    if psutil.virtual_memory().percent > 85:
+        gc.collect()  # 强制Python垃圾收集
+        if torch.backends.mps.is_available():
+            torch.mps.empty_cache()  # 清理MPS缓存
 
 # 可选：登录wandb进行实验跟踪
 # wandb.login(key="你的wandb.ai网站上的token")
@@ -233,14 +246,20 @@ dataset = load_dataset(
 # 如果返回的是DatasetDict，则取出"train"这一部分
 if isinstance(dataset, dict):  
     dataset = dataset["train"]
-    
-# 分批处理以避免内存峰值
+
+
+# 分批处理以避免内存峰值,同时缓存处理结果
+cache_dir = os.path.join(os.getcwd(), "dataset_cache")
+os.makedirs(cache_dir, exist_ok=True)  # 确保缓存目录存在
+
 dataset = dataset.map(
     formatting_prompts_func, 
     batched=True,
     batch_size=10,  # 合理的批处理大小
     num_proc=1,     # 单进程以避免额外内存开销
+    cache_file_name=os.path.join(cache_dir, "processed_dataset_cache.arrow")  # 添加缓存文件
 )
+
 print(f"Dataset loaded: {len(dataset)} examples")
 
 # 清理内存
@@ -254,7 +273,7 @@ import transformers
 
 # 定义数据整理函数 - 针对MPS优化
 def data_collator(features):
-    """确保输出的张量类型一致为float32并添加必要的labels"""
+    """优化的数据整理函数，减少数据转换开销"""
     texts = [f["text"] for f in features]
     batch = tokenizer(
         texts, 
@@ -265,13 +284,11 @@ def data_collator(features):
     )
     
     # 创建标签张量：对于因果语言模型，标签通常与输入ID相同
-    # 但注意：我们要复制input_ids作为labels
     batch["labels"] = batch["input_ids"].clone()
     
-    # 确保所有张量为float32类型
-    for key, value in batch.items():
-        if isinstance(value, torch.Tensor) and value.dtype == torch.float16:
-            batch[key] = value.to(dtype=torch.float32)
+    # 将所有张量直接移到设备上，避免额外转换
+    device = "mps" if torch.backends.mps.is_available() else "cpu"
+    batch = {k: v.to(device) for k, v in batch.items()}
     
     return batch
 
@@ -281,13 +298,13 @@ def data_collator(features):
 # 96GB+内存: batch_size=2, gradient_steps=4
 training_args = TrainingArguments(
     output_dir="outputs",
-    per_device_train_batch_size=1,    # 降低批次大小以减少内存使用
-    gradient_accumulation_steps=8,    # 增加梯度累积步数以保持有效批大小
+    per_device_train_batch_size=1,    # 保持批次大小=1
+    gradient_accumulation_steps=16,   # 增加梯度累积步数以保持性能同时提高稳定性
     learning_rate=2e-4,               # 学习率
     lr_scheduler_type="linear",       # 线性学习率调度器
     warmup_steps=5,                   # 预热步数
     max_steps=20,                     # 初始验证只需少量步骤
-    logging_steps=1,                  # 每步记录一次日志以便于验证
+    logging_steps=5,                  # 减少日志记录频率
     save_steps=10,                    # 每10步保存一次
     fp16=False,                       # 不使用半精度，MPS不支持
     bf16=False,                       # 同样不使用bf16
@@ -298,6 +315,7 @@ training_args = TrainingArguments(
     # 内存优化参数
     dataloader_num_workers=0,         # 不使用多进程数据加载
     dataloader_pin_memory=False,      # 不使用固定内存
+    optim="adamw_torch",              # 使用标准的AdamW优化器
     report_to="none" if not wandb.run else "wandb",  # 根据wandb是否启用决定报告
     run_name="medical-o1-sft-experiment-mac",  # wandb运行名称
 )
@@ -312,6 +330,20 @@ trainer = Trainer(
 
 # 在开始训练前确保模型配置正确
 model.config.use_cache = False  # 确保禁用缓存，与梯度检查点兼容
+
+# 在"开始训练"之前添加
+# 添加检查点恢复功能
+checkpoint_dir = Path("outputs")
+resume_from_checkpoint = None
+
+# 检查是否有现有检查点
+if checkpoint_dir.exists():
+    checkpoints = [d for d in checkpoint_dir.iterdir() if d.is_dir() and "checkpoint" in d.name]
+    if checkpoints:
+        latest_checkpoint = max(checkpoints, key=lambda x: int(x.name.split("-")[-1]))
+        print(f"找到之前的检查点: {latest_checkpoint}")
+        resume_from_checkpoint = latest_checkpoint
+        print(f"将从检查点 {resume_from_checkpoint} 恢复训练")
 
 # 开始训练
 print(f"开始训练: {training_args.max_steps} 步，批次大小: {training_args.per_device_train_batch_size}，梯度累积: {training_args.gradient_accumulation_steps}")
@@ -343,7 +375,7 @@ def prepare_model_for_mps_training(model):
 model = prepare_model_for_mps_training(model)
 
 try:
-    trainer.train()
+    trainer.train(resume_from_checkpoint=resume_from_checkpoint)
     print(f"训练完成。步数: {trainer.state.global_step}")
 except RuntimeError as e:
     error_msg = str(e)
