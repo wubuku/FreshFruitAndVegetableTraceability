@@ -140,7 +140,7 @@ Target /usr/local/bin/2to3-3.11 already exists.
 1. **使用特定版本路径**：
    ```bash
    # 使用Homebrew安装的Python 3.11的完整路径创建虚拟环境
-   /usr/local/Cellar/python@3.11/3.11.11/bin/python3.11 -m venv unsloth-env
+   /usr/local/Cellar/python@3.11/3.11.11/bin/python3.11 -m venv peft-env
    ```
 
 2. **强制创建链接**（可选）：
@@ -155,7 +155,7 @@ Target /usr/local/bin/2to3-3.11 already exists.
 
 #### 虚拟环境使用须知
 
-请注意，激活虚拟环境（`source unsloth-env/bin/activate`）**仅对当前终端会话有效**：
+请注意，激活虚拟环境（`source peft-env/bin/activate`）**仅对当前终端会话有效**：
 
 - 关闭终端窗口后，激活状态会丢失
 - 新开的终端窗口需要重新激活环境
@@ -165,14 +165,14 @@ Target /usr/local/bin/2to3-3.11 already exists.
 
 1. **创建别名**：在`.zshrc`中添加：
    ```bash
-   echo 'alias activate-unsloth="cd ~/Documents/unsloth-finetune && source unsloth-env/bin/activate"' >> ~/.zshrc
+   echo 'alias activate-unsloth="cd ~/Documents/unsloth-finetune && source peft-env/bin/activate"' >> ~/.zshrc
    ```
 
 2. **创建启动脚本**：
    ```bash
    echo '#!/bin/bash
    cd ~/Documents/unsloth-finetune
-   source unsloth-env/bin/activate
+   source peft-env/bin/activate
    exec "$@"' > ~/start-unsloth.sh
    chmod +x ~/start-unsloth.sh
    ```
@@ -319,6 +319,9 @@ pip install numpy==1.26.4
 # 激活虚拟环境（如果尚未激活）
 cd ~/Documents/llm-finetune
 source peft-env/bin/activate
+
+# 激活unsloth虚拟环境
+# source unsloth-env/bin/activate
 
 # 安装NumPy 1.x版本解决兼容性问题
 pip install numpy==1.26.4
@@ -642,89 +645,120 @@ UserWarning: CUDA initialization: CUDA unknown error - this may be due to an inc
 因此，即使Mac拥有更大的总内存，但由于上述因素，在LLM微调任务上仍需使用更保守的参数设置。
 
 
-### 微调前模型推理结果
+### 5. 模型微调前后推理结果对比
+
+微调前：
 
 ```
-% python r1-lora-peft-mac.py
-wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
-wandb: Currently logged in as: anony-mouse-733470366999568055 to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: Tracking run with wandb version 0.19.8
-wandb: Run data is saved locally in /Users/yangjiefeng/Documents/unsloth-finetune/wandb/run-20250309_114503-sjw44dc1
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run curious-forest-13
-wandb: ⭐️ View project at https://wandb.ai/anony-mouse-733470366999568055/Lora-DeepSeek-R1-Distill-Qwen-14B-Mac?apiKey=c16d51f0be89758603632573346321aab91cbb6f
-wandb: 🚀 View run at https://wandb.ai/anony-mouse-733470366999568055/Lora-DeepSeek-R1-Distill-Qwen-14B-Mac/runs/sjw44dc1?apiKey=c16d51f0be89758603632573346321aab91cbb6f
-wandb: WARNING Do NOT share these links with anyone. They can be used to claim your runs.
-/Users/yangjiefeng/Documents/unsloth-finetune/unsloth-env/lib/python3.11/site-packages/transformers/utils/hub.py:106: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
-  warnings.warn(
-正在从本地路径加载模型: /Users/yangjiefeng/Documents/models/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
-开始加载模型，这可能需要几分钟...
-Sliding Window Attention is enabled but not implemented for `sdpa`; unexpected results may be encountered.
-Loading checkpoint shards: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:56<00:00, 14.22s/it]
-Model loaded: Qwen2ForCausalLM
-使用MPS进行推理...
-Setting `pad_token_id` to `eos_token_id`:151643 for open-end generation.
-/Users/yangjiefeng/Documents/unsloth-finetune/unsloth-env/lib/python3.11/site-packages/transformers/pytorch_utils.py:338: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
-  test_elements = torch.tensor(test_elements)
-### 微调前模型推理结果：
-
   <think>
-好，我现在要解决这个医学问题。首先，患者是一个70岁的男性，主诉是胸痛和呕吐，已经持续了16个小时。心电图显示下壁导联和右胸导联的ST段抬高，幅度在0.1到0.3mV之间。这可能提示心肌梗死，尤其是下壁梗死，可能影响到右心室。
+好的，我现在需要仔细分析这个病例，确定最合适的药物处理方案。首先，患者是一个70岁的男性，主诉是胸痛伴呕吐，持续了16个小时。心电图显示下壁导联和右胸导联的ST段抬高，幅度在0.1到0.3mV之间。这可能提示下壁心肌梗死，因为这些导联通常对应右心房、右心室前壁以及后壁的部分区域。
 
-接下来，患者接受了补液治疗，但血压降到了80/60mmHg，这是一个低血压的状态。同时，患者出现了呼吸困难，不能平卧，体检发现双肺有大量水泡音，这提示肺水肿。这些症状结合起来，可能意味着患者发生了心源性休克或急性心力衰竭。
+接下来，患者在补液后血压下降到80/60mmHg，这提示可能存在休克，特别是心源性休克，因为心肌梗死可能导致心脏泵血功能下降。随后，患者出现呼吸困难和不能平卧的症状，体检发现双肺有大量水泡音，这表明肺水肿的存在。肺水肿通常与心脏功能不全有关，尤其是右心衰竭时，液体可能积聚在肺部。
 
-首先，我需要考虑患者的心脏状况。下壁心肌梗死通常影响右心室，可能导致心输出量减少，进而引起休克和肺水肿。补液后血压下降，可能是因为心脏无法有效处理液体，导致液体潴留，进而引发肺水肿。
+综合以上信息，患者的状况可能涉及以下几个方面：
 
-接下来，药物处理方面，应该考虑以下几个方面：
+1. **急性心肌梗死（下壁）**：ST段抬高提示心肌梗死，需要紧急处理以减少心肌损伤和改善心脏功能。
+2. **心源性休克**：血压下降到80/60mmHg，可能是因为心脏输出量减少导致的。
+3. **肺水肿**：双肺水泡音提示肺水肿，可能由心脏衰竭引起，需要紧急处理以防止呼吸衰竭。
 
-1. **吸氧**：患者有呼吸困难，不能平卧，双肺有大量水泡音，吸氧可以缓解缺氧症状。
+接下来，我需要考虑可能的药物治疗方案：
 
-2. **利尿剂**：如呋塞米，用于减少肺水肿，帮助排出多余的液体，改善呼吸困难。
+- **硝酸甘油**：用于缓解胸痛，扩张冠状动脉，减少心脏负荷。但需注意血压变化，因为补液后血压已下降，使用时可能需要调整剂量。
+- **吗啡**：用于缓解胸痛和焦虑，同时可以扩张外周血管，减轻心脏负担，但需注意呼吸抑制。
+- **利尿剂**：用于处理肺水肿，减少肺部液体积聚，改善呼吸困难。
+- **ACEI类药物**：如依那普利，有助于减轻心脏负荷和延缓心室重构，但需在血压允许的情况下使用。
+- **β受体阻滞剂**：用于降低心率和血压，减少心脏耗氧量，但需在没有禁忌证的情况下使用，如无严重心动过速或低血压。
+- **正性肌力药物**：如多巴胺或多巴酚丁胺，用于改善心脏输出，提升血压，适用于休克状态。
 
-3. **正性肌力药物**：如多巴胺或去甲肾上腺素，用于提升血压和心输出量，改善心脏功能。
+考虑到患者当前的情况，尤其是心源性休克和肺水肿，优先处理应该是稳定循环和改善心脏功能。因此，可能需要使用升压药物来维持血压，同时处理肺水肿。
 
-4. **硝酸甘油**：虽然患者血压已经很低，但硝酸甘油可以扩张肺动脉，减轻肺水肿，同时谨慎使用以避免进一步降低血压。
+在处理过程中，还需要考虑其他可能的并发症，如心律失常，可能需要监测和处理。此外，补液后的血压下降可能提示液体过负荷，因此在补液时需要谨慎，可能需要调整液体量或使用利尿剂来管理。
 
-5. **抗生素和抗呕吐药物**：处理伴随症状，如呕吐，可能使用甲氧氯普胺，同时排除感染可能。
-
-6. **紧急PCI或溶栓治疗**：如果患者有禁忌症或无法立即进行PCI，可能考虑溶栓治疗，以恢复心肌血流。
-
-此外，需要考虑患者的肾功能，因为呋塞米和利尿剂的使用可能影响肾脏，需监测肾功能。同时，补液要谨慎，避免加重肺水肿。
-
-最后，患者可能需要紧急的心脏介入治疗，如PCI，以开通闭塞的冠状动脉，改善心肌供血，进而改善心脏功能和休克状态。
-
-综上所述，药物处理应包括吸氧、利尿、正性肌力药物、硝酸甘油，以及处理呕吐症状，同时考虑紧急PCI或溶栓治疗。
+综上所述，最恰当的药物处理可能包括使用升压药物如多巴胺或多巴酚丁胺来维持血压，同时使用利尿剂处理肺水肿，并辅以硝酸甘油和ACEI类药物来减轻心脏负荷。同时，吗啡可能用于缓解胸痛和焦虑，但需注意呼吸抑制。此外，抗凝治疗也是必要的，以防止血栓扩展和并发症。
 </think>
 
-在这种情况下，患者的症状和检查结果提示心源性休克和急性肺水肿，最可能的诊断是急性心肌梗死导致的心源性休克。以下是恰当的药物处理步骤：
+### 分步解释：
 
-1. **吸氧**：立即给予高流量氧疗，缓解低氧血症。
+1. **评估心电图结果**：下壁导联和右胸导联的ST段抬高提示下壁心肌梗死，可能影响右心室功能。
 
-2. **利尿剂**：使用呋塞米（40-80 mg静脉注射）以减少肺水肿，改善呼吸困难。
+2. **处理胸痛和改善心脏供血**：使用硝酸甘油扩张冠状动脉，缓解胸痛，但需监测血压，避免过低。
 
-3. **正性肌力药物**：开始多巴胺（初始剂量为每分钟2-5微克，根据需要调整）或去甲肾上腺素（每分钟0.5-5微克）以提升血压和心输出量。
+3. **缓解呼吸困难和肺水肿**：应用利尿剂（如呋塞米）减少肺部液体，改善呼吸情况。
 
-4. **硝酸甘油**：谨慎使用，以扩张肺动脉，减轻肺水肿，同时监测血压，避免过低。
+4. **提升血压和心脏输出**：使用升压药物（如多巴胺）以维持血压，改善心脏泵血功能。
 
-5. **抗呕吐治疗**：使用甲氧氯普胺（10 mg静脉注射）以控制呕吐。
+5. **减轻心脏负荷**：使用ACEI类药物（如依那普利）帮助降低血压和减轻心脏负担。
 
-6. **抗生素**：若考虑肺部感染，使用抗生素如头孢曲松（1-2 g静脉滴注）。
+6. **缓解疼痛和焦虑**：使用吗啡减轻胸痛，但需注意可能的呼吸抑制作用。
 
-7. **补液管理**：根据血流动力学状态调整，避免过度补液加重水肿。
+7. **抗凝治疗**：预防血栓扩展，通常使用肝素。
 
-8. **紧急PCI或溶栓**：尽快进行PCI以恢复心肌血流，或在无法PCI时考虑溶栓治疗，如使用替罗非班。
+8. **监测和处理并发症**：如心律失常、低血压等，确保患者生命体征稳定。
 
-同时，监测肾功能和电解质，确保药物剂量适当。立即转送至心脏中心进行进一步处理。
-分批处理参数转换，避免内存峰值...
-处理注意力层参数...
-处理前馈层参数...
-参数转换完成！
-trainable params: 103,219,200 || all params: 14,873,252,864 || trainable%: 0.6940
-Trainable params: None
-Dataset loaded: 200 examples
-No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
-开始训练: 50 步，批次大小: 1，梯度累积: 6
+### 最终药物处理建议：
+
+- **立即处理**：
+  - **硝酸甘油**：静脉滴注，根据血压调整剂量。
+  - **吗啡**：静脉注射，缓解疼痛。
+  - **利尿剂**：如呋塞米，静脉注射，处理肺水肿。
+  - **升压药物**：如多巴胺，静脉滴注，维持血压≥80/60mmHg。
+
+- **后续治疗**：
+  - **ACEI类药物**：如依那普利，改善心脏功能。
+  - **β受体阻滞剂**：如美托洛尔，降低心率，但需在血压稳定后使用。
+  - **抗凝治疗**：如肝素，预防血栓。
+
+- **监测与支持**：
+  - 持续监测血压、心率、呼吸和液体平衡。
+  - 评估是否需要机械通气，尤其是如果呼吸困难严重。
+  - 考虑进一步的介入治疗，如PCI（经皮冠状动脉介入术）以恢复血流。
+
 ```
+
+微调后：
+
+```
+  <think>
+  该患者70岁，胸痛16小时，伴呕吐，心电图显示下壁导联和右胸导联ST段抬高0.1~0.3mV，补液后血压降至80/60mmHg，出现呼吸困难和不能平卧，体检发现双肺有大量水泡音。
+
+首先，心电图显示下壁导联和右胸导联ST段抬高，这提示可能有下壁心肌梗死。同时，血压下降和呼吸困难可能与心肌梗死导致心功能不全有关。补液后血压降至80/60mmHg，这可能表明存在心功能不全或心源性休克。
+
+双肺大量水泡音提示肺水肿，这可能与心功能不全有关。因此，该患者的症状和体征提示有心源性休克和肺水肿。在这种情况下，最恰当的药物处理是使用利尿剂，如速尿，以减轻肺水肿和改善呼吸困难。
+
+此外，补液后血压下降可能表明存在血容量过载或心功能不全。在这种情况下，补液可能不是最佳选择。相反，使用利尿剂可以帮助降低心室前负荷，减轻心脏负担，从而改善血压和呼吸困难。
+
+综上所述，针对该患者的症状和体征，使用利尿剂如速尿是最恰当的药物处理。
+</think>
+
+在这种情况下，最恰当的药物处理是使用利尿剂，如速尿，以减轻肺水肿和改善呼吸困难。
+```
+
+
+关于微调效果，AI（Claude 3.7 Sonnet thinking）给出了如下分析😂：
+
+> 通过对比微调前后的模型输出，我可以看到明显的差异和微调效果：
+>
+> 1. 简洁度提升：
+>    - 微调前：输出非常详细，包含大量医学推理和多种药物选择，回答长达数百字
+>    - 微调后：输出极其简洁，仅有一句话直接指出最恰当的药物处理方案
+> 2. 焦点集中：
+>    - 微调前：提供了全面的药物方案，包括硝酸甘油、吗啡、ACEI类药物、β受体阻滞剂等多种选择
+>    - 微调后：直接聚焦于最关键的药物（利尿剂/速尿），不再列举其他可能的治疗方案
+> 3. 思维过程变化：
+>    - 微调前：`<think>` 部分非常详细，展示了全面的医学推理过程
+>    - 微调后：`<think>` 部分仍有一定推理，但更加简洁直接，直接指向最终结论
+> 4. 信息密度：
+>    - 微调前：信息密度较低，内容冗余，虽然全面但需要阅读更多文本
+>    - 微调后：信息密度高，直接提供关键治疗建议
+> 5. 实用性：
+>    - 微调后的模型似乎更专注于提供一个明确的、可操作的治疗方案，而不是列举所有可能性
+> 6. 总体评价：
+>    - 微调效果显著，模型回答风格从全面详尽转变为简洁直接。这种变化是否是改进取决于具体使用场景：
+>
+> - 如果目标是获得快速、明确的临床决策建议，微调后的模型表现更好
+> - 如果需要全面的医学推理和多种治疗方案的详细说明，原始模型可能更适合
+>
+> 值得注意的是，微调后的模型保留了关键的医学推理能力（在`<think>`部分），但最终输出极度精简，这表明微调可能特别强调了提供简洁明了的最终答案的能力。
 
 
 
