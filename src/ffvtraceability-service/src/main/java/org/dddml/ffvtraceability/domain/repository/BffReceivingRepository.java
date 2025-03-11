@@ -83,7 +83,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
     /**
      * SQL 片段常量，用于计算 shipment 的 QA 检验状态。
      * 通过分析 shipment 关联的所有 shipment_receipt 的 qa_inspection 状态，得出整体的检验状态：
-     * - 'INSPECTED': 所有收货行项都已完成检验 (APPROVED 或 REJECTED)
+     * - 'INSPECTED': 所有收货行项都已完成检验 (APPROVED 或 REJECTED，甚至包括 ON_HOLD)
      * - 'PARTIALLY_INSPECTED': 部分收货行项已完成检验，部分未完成
      * - 'PENDING_INSPECTION': 没有收货行项，或所有收货行项都未完成检验
      */
@@ -91,9 +91,9 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             SELECT
                 CASE
                     WHEN COUNT(sr.receipt_id) = 0 THEN 'PENDING_INSPECTION'
-                    WHEN COUNT(sr.receipt_id) = COUNT(CASE WHEN qi.status_id IN ('APPROVED', 'REJECTED') THEN 1 END) 
+                    WHEN COUNT(sr.receipt_id) = COUNT(CASE WHEN qi.status_id IN ('APPROVED', 'REJECTED', 'ON_HOLD') THEN 1 END) 
                         THEN 'INSPECTED'
-                    WHEN COUNT(CASE WHEN qi.status_id IN ('APPROVED', 'REJECTED') THEN 1 END) > 0 
+                    WHEN COUNT(CASE WHEN qi.status_id IN ('APPROVED', 'REJECTED', 'ON_HOLD') THEN 1 END) > 0 
                         THEN 'PARTIALLY_INSPECTED'
                     ELSE 'PENDING_INSPECTION'
                 END
@@ -107,7 +107,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             WITH filtered_shipments AS (
                 SELECT DISTINCT s.shipment_id, s.created_at
                 FROM shipment s
-                """ + RECEIPT_JOIN + """
+            """ + RECEIPT_JOIN + """
                 LEFT JOIN product prod ON sr.product_id = prod.product_id
                 LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
                     AND gi.good_identification_type_id = 'GTIN'
