@@ -79,6 +79,24 @@ pip install transformers datasets peft accelerate huggingface_hub wandb psutil
 
 > ⚠️ **重要说明**：本指南目前使用标准的Hugging Face PEFT库进行LoRA微调，而非Unsloth。这是因为经过测试，**Unsloth目前不完全支持Apple Silicon的MPS后端**。
 
+
+#### 安装Apple的CoreML工具（可选）
+
+```shell
+pip install coremltools  # 安装Apple的CoreML工具
+```
+
+coremltools 的安装本身并不会自动提升 PyTorch 训练性能。这个工具主要用于：
+* 模型转换：将训练好的模型转换为 Apple CoreML 格式，以便在 iOS、macOS 等 Apple 设备上高效运行
+* 模型优化：为 Apple 设备优化模型结构和性能
+* 模型部署：帮助将模型部署到 Apple 设备上
+
+对于当前的微调训练任务，coremltools 实际上并没有直接帮助，因为：
+* 我们使用的是 PyTorch 的 MPS (Metal Performance Shaders) 后端进行训练
+* LoRA 微调过程主要依赖 PyTorch 的原生功能
+* coremltools 更多是用于模型推理阶段，而不是训练阶段
+
+
 ### 4. 原始方法：Unsloth安装（参考，不适用于Apple Silicon）
 
 <details>

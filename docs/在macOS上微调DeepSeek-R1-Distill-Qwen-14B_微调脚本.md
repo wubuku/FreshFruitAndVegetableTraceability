@@ -1,15 +1,6 @@
 # 微调脚本
 
 
-```shell
-# 卸载当前版本
-pip uninstall -y torch torchvision torchaudio
-pip install torch torchvision torchaudio
-
-pip install coremltools  # 安装Apple的CoreML工具
-```
-
-
 ```python
 import os
 import json
