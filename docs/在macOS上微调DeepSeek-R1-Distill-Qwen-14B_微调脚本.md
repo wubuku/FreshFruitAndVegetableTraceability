@@ -295,6 +295,7 @@ training_args = TrainingArguments(
     lr_scheduler_type="linear",       # 线性学习率调度器
     warmup_steps=5,                   # 预热步数
     max_steps=20,                     # 初始验证只需少量步骤
+    # max_steps=50,                     # <-- 改为 max_steps=50 即可训练到50步
     logging_steps=5,                  # 减少日志记录频率
     save_steps=10,                    # 每10步保存一次
     fp16=False,                       # 不使用半精度，MPS不支持
@@ -418,7 +419,10 @@ clean_memory()
 model_save_path = "DeepSeek-R1-Medical-COT-Qwen-14B-Mac"
 model.save_pretrained(model_save_path)
 tokenizer.save_pretrained(model_save_path)
-
+#
+# 注意：重复执行本脚本，虽然最终模型会被覆盖，但训练过程中的检查点（checkpoints）会保留在 outputs 目录下
+# 所以你仍然可以在 outputs/checkpoint-* 目录下找到训练过程中的中间检查点
+#
 print(f"模型已保存到: {os.path.abspath(model_save_path)}")
 print("验证完成后，可以移除max_steps限制并使用完整数据集进行训练")
 ```
