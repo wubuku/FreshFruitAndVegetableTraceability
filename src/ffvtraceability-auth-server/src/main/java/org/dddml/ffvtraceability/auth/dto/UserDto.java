@@ -14,6 +14,7 @@ public class UserDto {
     private Boolean enabled;
     private List<GroupDto> groups;
     private Boolean passwordChangeRequired;
+    private OffsetDateTime TempPasswordLastGenerated;
     private String email;
     private String employeeNumber;
     private String departmentId;
@@ -33,6 +34,14 @@ public class UserDto {
     private String createdBy;
     private String updatedBy;
     private List<String> permissions;
+
+    public OffsetDateTime getTempPasswordLastGenerated() {
+        return TempPasswordLastGenerated;
+    }
+
+    public void setTempPasswordLastGenerated(OffsetDateTime tempPasswordLastGenerated) {
+        TempPasswordLastGenerated = tempPasswordLastGenerated;
+    }
 
     public List<String> getPermissions() {
         return permissions;

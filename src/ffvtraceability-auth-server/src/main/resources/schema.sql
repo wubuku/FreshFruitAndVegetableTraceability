@@ -5,6 +5,7 @@ CREATE TABLE users (
     enabled BOOLEAN NOT NULL,
     password_change_required BOOLEAN DEFAULT true,
     password_last_changed TIMESTAMPTZ DEFAULT NULL,
+    temp_password_last_generated TIMESTAMPTZ DEFAULT NULL,
     first_login BOOLEAN DEFAULT true,
     first_name VARCHAR(50) DEFAULT NULL,
     last_name VARCHAR(50) DEFAULT NULL,

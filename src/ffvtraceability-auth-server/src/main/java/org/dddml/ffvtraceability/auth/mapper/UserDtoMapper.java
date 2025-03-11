@@ -14,6 +14,7 @@ public class UserDtoMapper implements RowMapper<UserDto> {
         UserDto userDto = new UserDto();
         userDto.setUsername(rs.getString("username"));
         userDto.setEnabled(rs.getBoolean("enabled"));
+        userDto.setTempPasswordLastGenerated(rs.getObject("temp_password_last_generated", OffsetDateTime.class));
         userDto.setPasswordChangeRequired(rs.getBoolean("password_change_required"));
         userDto.setDepartmentId(rs.getString("department_id"));
         userDto.setAssociatedGln(rs.getString("associated_gln"));

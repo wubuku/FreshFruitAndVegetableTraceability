@@ -18,13 +18,13 @@ DELETE FROM SPRING_SESSION_ATTRIBUTES;
 DELETE FROM SPRING_SESSION;
 
 -- 创建特殊的基础权限用户
-INSERT INTO users (username, password, enabled, password_change_required, first_login, password_last_changed) VALUES
-    ('*', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, false, false, CURRENT_TIMESTAMP);
+INSERT INTO users (username, password, enabled, password_change_required, first_login, password_last_changed,temp_password_last_generated) VALUES
+    ('*', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, false, false, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 
 -- 创建测试用户
-INSERT INTO users (username, password, enabled, password_change_required, first_login, password_last_changed) VALUES
-    ('admin', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, false, false, CURRENT_TIMESTAMP),  -- password=admin
-    ('user', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, true, true, null);   -- password=admin
+INSERT INTO users (username, password, enabled, password_change_required, first_login, password_last_changed,temp_password_last_generated) VALUES
+    ('admin', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, false, false, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),  -- password=admin
+    ('user', '{bcrypt}$2a$10$eKBDBSf4DBNzRwbF7fx5IetdKKjqzkYoST0F7Dkro84eRiDTBJYky', true, true, true, null,CURRENT_TIMESTAMP);   -- password=admin
 
 -- 给 admin 用户添加 ROLE_ADMIN 权限（auth server 使用这个权限对特权操作进行保护）
 INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_ADMIN');
