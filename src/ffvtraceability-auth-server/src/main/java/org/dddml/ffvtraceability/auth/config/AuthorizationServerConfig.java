@@ -211,8 +211,27 @@ public class AuthorizationServerConfig {
         }
     }
 
+    /** 在 OAuth2ConfigurerUtils 中被加载
+     * authorizationServerSettings = getBean(httpSecurity, AuthorizationServerSettings.class);
+     * @return
+     */
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
+        /*
+        public static Builder builder() {
+		return new Builder().multipleIssuersAllowed(false)
+			.authorizationEndpoint("/oauth2/authorize")
+			.deviceAuthorizationEndpoint("/oauth2/device_authorization")
+			.deviceVerificationEndpoint("/oauth2/device_verification")
+			.tokenEndpoint("/oauth2/token")
+			.jwkSetEndpoint("/oauth2/jwks")
+			.tokenRevocationEndpoint("/oauth2/revoke")
+			.tokenIntrospectionEndpoint("/oauth2/introspect")
+			.oidcClientRegistrationEndpoint("/connect/register")
+			.oidcUserInfoEndpoint("/userinfo")
+			.oidcLogoutEndpoint("/connect/logout");
+	}
+         */
         return AuthorizationServerSettings.builder()
                 .issuer(authServerProperties.getIssuer())
                 .build();

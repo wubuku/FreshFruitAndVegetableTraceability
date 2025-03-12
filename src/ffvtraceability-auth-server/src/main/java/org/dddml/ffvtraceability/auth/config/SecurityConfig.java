@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.auth.config;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.dddml.ffvtraceability.auth.security.CustomUserDetails;
 import org.dddml.ffvtraceability.auth.security.handler.CustomAuthenticationSuccessHandler;
@@ -28,6 +29,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -134,7 +136,17 @@ public class SecurityConfig {
                                 String targetUrl = savedRequest.getRedirectUrl();
                                 response.sendRedirect(targetUrl);
                             } else {
-                                //response.sendRedirect("/");// 获取自动生成的 CSRF Token
+                                //response.sendRedirect("/");//重定向到 /
+                                // 返回生成的CSRF Token
+//                                CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+//                                // 设置响应头
+//                                response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+//                                // 手动设置 Cookie（可选，CsrfFilter 已自动设置）
+//                                response.addCookie(new Cookie("XSRF-TOKEN", csrfToken.getToken()));
+//                                // 返回纯 Token 响应
+//                                response.setContentType("text/plain");
+//                                response.getWriter().write(csrfToken.getToken());
+//                                response.getWriter().flush();
                                 response.setStatus(HttpServletResponse.SC_OK);
                             }
                         })
