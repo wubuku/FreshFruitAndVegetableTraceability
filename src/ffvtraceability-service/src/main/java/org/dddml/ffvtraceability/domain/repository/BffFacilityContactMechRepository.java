@@ -48,6 +48,8 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
                 pa.city as city,
                 pa.postal_code as zipCode,
                 pa.state_province_geo_id as stateProvinceGeoId,
+                pa.telecom_area_code as telecomAreaCode,
+                pa.telecom_country_code as telecomCountryCode,
                 pa.country_geo_id as countryGeoId,
                 pa.telecom_contact_number as phoneNumber,
                 gc.geo_name as country,

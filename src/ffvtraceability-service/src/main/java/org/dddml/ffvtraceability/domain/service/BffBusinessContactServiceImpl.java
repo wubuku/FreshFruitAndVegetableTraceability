@@ -83,9 +83,8 @@ public class BffBusinessContactServiceImpl implements BffBusinessContactService 
 
 
 //        TelecomNumberUtil.TelecomNumberDto telecomNumberDto = TelecomNumberUtil.parse(bizContact.getPhoneNumber());
-//        createMiscContactMech.setTelecomCountryCode(telecomNumberDto.getCountryCode());
-//        createMiscContactMech.setTelecomAreaCode(telecomNumberDto.getAreaCode());
-//        createMiscContactMech.setTelecomContactNumber(telecomNumberDto.getContactNumber());
+        createMiscContactMech.setTelecomCountryCode(bizContact.getTelecomCountryCode());
+        createMiscContactMech.setTelecomAreaCode(bizContact.getTelecomAreaCode());
         createMiscContactMech.setTelecomContactNumber(bizContact.getPhoneNumber());
 
         createMiscContactMech.setEmail(bizContact.getEmail());

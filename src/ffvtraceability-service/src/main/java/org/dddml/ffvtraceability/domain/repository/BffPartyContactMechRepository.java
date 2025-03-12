@@ -49,6 +49,8 @@ public interface BffPartyContactMechRepository extends JpaRepository<AbstractCon
                 pa.postal_code as zipCode,
                 pa.state_province_geo_id as stateProvinceGeoId,
                 pa.country_geo_id as countryGeoId,
+                pa.telecom_area_code as telecomAreaCode,
+                pa.telecom_country_code as telecomCountryCode,
                 pa.telecom_contact_number as phoneNumber,
                 gc.geo_name as country,
                 gp.geo_name as state,

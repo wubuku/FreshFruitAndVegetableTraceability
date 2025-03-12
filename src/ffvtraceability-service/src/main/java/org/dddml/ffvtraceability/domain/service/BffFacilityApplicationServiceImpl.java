@@ -559,6 +559,8 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 mergePatchContactMech.setCity(bizContact.getCity());
                 mergePatchContactMech.setAddress1(bizContact.getPhysicalLocationAddress());
                 mergePatchContactMech.setPostalCode(bizContact.getZipCode());
+                mergePatchContactMech.setTelecomAreaCode(bizContact.getTelecomAreaCode());
+                mergePatchContactMech.setTelecomCountryCode(bizContact.getTelecomCountryCode());
                 mergePatchContactMech.setTelecomContactNumber(bizContact.getPhoneNumber());
 
                 mergePatchContactMech.setEmail(bizContact.getEmail());
