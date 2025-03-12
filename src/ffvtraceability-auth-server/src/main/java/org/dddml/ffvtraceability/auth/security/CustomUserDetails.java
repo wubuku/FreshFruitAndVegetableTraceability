@@ -13,8 +13,9 @@ public class CustomUserDetails extends User {
     private OffsetDateTime passwordLastChanged;
     private boolean firstLogin;
 
-    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities, Set<String> groups, boolean passwordChangeRequired, OffsetDateTime passwordLastChanged, boolean firstLogin) {
-        super(username, password, authorities);
+    public CustomUserDetails(String username, String password, boolean enabled, Collection<? extends GrantedAuthority> authorities, Set<String> groups, boolean passwordChangeRequired, OffsetDateTime passwordLastChanged, boolean firstLogin) {
+        //super(username, password, authorities);
+        super(username, password, enabled, true, true, true, authorities);
         this.groups = groups;
         this.passwordChangeRequired = passwordChangeRequired;
         this.passwordLastChanged = passwordLastChanged;

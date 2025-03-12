@@ -1,6 +1,5 @@
 package org.dddml.ffvtraceability.auth.config;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.dddml.ffvtraceability.auth.security.CustomUserDetails;
 import org.dddml.ffvtraceability.auth.security.handler.CustomAuthenticationSuccessHandler;
@@ -14,6 +13,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -29,7 +30,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -127,17 +127,32 @@ public class SecurityConfig {
                         //.anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .successHandler((request, response, authentication) -> {
-                            RequestCache requestCache = new HttpSessionRequestCache();
-                            SavedRequest savedRequest = requestCache.getRequest(request, response);
+                                .loginPage("/login")
+                                .failureHandler((request, response, exception) -> {
+                                    response.setContentType("application/json");
+                                    response.setCharacterEncoding("UTF-8");
+                                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                    String errorMessage;
+                                    if (exception instanceof DisabledException) {
+                                        errorMessage = "User is disabled";
+                                    } else if (exception instanceof BadCredentialsException) {
+                                        errorMessage = "Username or password error";
+                                    } else {
+                                        errorMessage = exception.getMessage();
+                                    }
+                                    String jsonResponse = String.format("{\"error\": \"%s\"}", errorMessage);
+                                    response.getWriter().write(jsonResponse);
+                                })
+                                .successHandler((request, response, authentication) -> {
+                                    RequestCache requestCache = new HttpSessionRequestCache();
+                                    SavedRequest savedRequest = requestCache.getRequest(request, response);
 
-                            if (savedRequest != null) {
-                                String targetUrl = savedRequest.getRedirectUrl();
-                                response.sendRedirect(targetUrl);
-                            } else {
-                                //response.sendRedirect("/");//重定向到 /
-                                // 返回生成的CSRF Token
+                                    if (savedRequest != null) {
+                                        String targetUrl = savedRequest.getRedirectUrl();
+                                        response.sendRedirect(targetUrl);
+                                    } else {
+                                        //response.sendRedirect("/");//重定向到 /
+                                        // 返回生成的CSRF Token
 //                                CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
 //                                // 设置响应头
 //                                response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
@@ -147,9 +162,9 @@ public class SecurityConfig {
 //                                response.setContentType("text/plain");
 //                                response.getWriter().write(csrfToken.getToken());
 //                                response.getWriter().flush();
-                                response.setStatus(HttpServletResponse.SC_OK);
-                            }
-                        })
+                                        response.setStatus(HttpServletResponse.SC_OK);
+                                    }
+                                })
                 );
 
         return http.build();
@@ -245,6 +260,7 @@ public class SecurityConfig {
             return new CustomUserDetails(
                     username,
                     (String) userInfo.get("password"),
+                    userInfo.get("enabled") != null && (Boolean) userInfo.get("enabled"),
                     authorities,
                     groups,
                     (Boolean) userInfo.get("password_change_required"),
