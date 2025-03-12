@@ -127,44 +127,35 @@ public class SecurityConfig {
                         //.anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                                .loginPage("/login")
-                                .failureHandler((request, response, exception) -> {
-                                    response.setContentType("application/json");
-                                    response.setCharacterEncoding("UTF-8");
-                                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                                    String errorMessage;
-                                    if (exception instanceof DisabledException) {
-                                        errorMessage = "User is disabled";
-                                    } else if (exception instanceof BadCredentialsException) {
-                                        errorMessage = "Username or password error";
-                                    } else {
-                                        errorMessage = exception.getMessage();
-                                    }
-                                    String jsonResponse = String.format("{\"error\": \"%s\"}", errorMessage);
-                                    response.getWriter().write(jsonResponse);
-                                })
-                                .successHandler((request, response, authentication) -> {
-                                    RequestCache requestCache = new HttpSessionRequestCache();
-                                    SavedRequest savedRequest = requestCache.getRequest(request, response);
+                        .loginPage("/login")
+                        .failureHandler((request, response, exception) -> {
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            String errorMessage;
+                            if (exception instanceof DisabledException) {
+                                errorMessage = "User is disabled";
+                            } else if (exception instanceof BadCredentialsException) {
+                                errorMessage = "Username or password error";
+                            } else {
+                                errorMessage = exception.getMessage();
+                            }
+                            String jsonResponse = String.format("{\"error\": \"%s\"}", errorMessage);
+                            response.getWriter().write(jsonResponse);
+                        })
+                        .successHandler((request, response, authentication) -> {
+                            RequestCache requestCache = new HttpSessionRequestCache();
+                            SavedRequest savedRequest = requestCache.getRequest(request, response);
 
-                                    if (savedRequest != null) {
-                                        String targetUrl = savedRequest.getRedirectUrl();
-                                        response.sendRedirect(targetUrl);
-                                    } else {
-                                        //response.sendRedirect("/");//重定向到 /
-                                        // 返回生成的CSRF Token
-//                                CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-//                                // 设置响应头
-//                                response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
-//                                // 手动设置 Cookie（可选，CsrfFilter 已自动设置）
-//                                response.addCookie(new Cookie("XSRF-TOKEN", csrfToken.getToken()));
-//                                // 返回纯 Token 响应
-//                                response.setContentType("text/plain");
-//                                response.getWriter().write(csrfToken.getToken());
-//                                response.getWriter().flush();
-                                        response.setStatus(HttpServletResponse.SC_OK);
-                                    }
-                                })
+                            if (savedRequest != null) {
+                                String targetUrl = savedRequest.getRedirectUrl();
+                                response.sendRedirect(targetUrl);
+                            } else {
+                                //重定向到 "/"
+                                //response.sendRedirect("/");
+                                response.setStatus(HttpServletResponse.SC_OK);
+                            }
+                        })
                 );
 
         return http.build();
