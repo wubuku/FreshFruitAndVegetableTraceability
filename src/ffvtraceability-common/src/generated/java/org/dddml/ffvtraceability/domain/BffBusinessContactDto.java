@@ -129,6 +129,36 @@ public class BffBusinessContactDto implements Serializable {
         this.email = email;
     }
 
+    /**
+     * Telecom Country Code
+     */
+    private String telecomCountryCode;
+
+    public String getTelecomCountryCode()
+    {
+        return this.telecomCountryCode;
+    }
+
+    public void setTelecomCountryCode(String telecomCountryCode)
+    {
+        this.telecomCountryCode = telecomCountryCode;
+    }
+
+    /**
+     * Telecom Area Code
+     */
+    private String telecomAreaCode;
+
+    public String getTelecomAreaCode()
+    {
+        return this.telecomAreaCode;
+    }
+
+    public void setTelecomAreaCode(String telecomAreaCode)
+    {
+        this.telecomAreaCode = telecomAreaCode;
+    }
+
     private String contactRole;
 
     public String getContactRole()
@@ -145,7 +175,7 @@ public class BffBusinessContactDto implements Serializable {
     {
     }
 
-    public BffBusinessContactDto(String businessName, String phoneNumber, String physicalLocationAddress, String city, String state, String zipCode, String country, String stateProvinceGeoId, String countryGeoId, String email, String contactRole)
+    public BffBusinessContactDto(String businessName, String phoneNumber, String physicalLocationAddress, String city, String state, String zipCode, String country, String stateProvinceGeoId, String countryGeoId, String email, String telecomCountryCode, String telecomAreaCode, String contactRole)
     {
         this.businessName = businessName;
         this.phoneNumber = phoneNumber;
@@ -157,6 +187,8 @@ public class BffBusinessContactDto implements Serializable {
         this.stateProvinceGeoId = stateProvinceGeoId;
         this.countryGeoId = countryGeoId;
         this.email = email;
+        this.telecomCountryCode = telecomCountryCode;
+        this.telecomAreaCode = telecomAreaCode;
         this.contactRole = contactRole;
     }
 
@@ -182,6 +214,8 @@ public class BffBusinessContactDto implements Serializable {
             && (stateProvinceGeoId == other.stateProvinceGeoId || (stateProvinceGeoId != null && stateProvinceGeoId.equals(other.stateProvinceGeoId)))
             && (countryGeoId == other.countryGeoId || (countryGeoId != null && countryGeoId.equals(other.countryGeoId)))
             && (email == other.email || (email != null && email.equals(other.email)))
+            && (telecomCountryCode == other.telecomCountryCode || (telecomCountryCode != null && telecomCountryCode.equals(other.telecomCountryCode)))
+            && (telecomAreaCode == other.telecomAreaCode || (telecomAreaCode != null && telecomAreaCode.equals(other.telecomAreaCode)))
             && (contactRole == other.contactRole || (contactRole != null && contactRole.equals(other.contactRole)))
             ;
     }
@@ -220,6 +254,12 @@ public class BffBusinessContactDto implements Serializable {
         if (this.email != null) {
             hash += 13 * this.email.hashCode();
         }
+        if (this.telecomCountryCode != null) {
+            hash += 13 * this.telecomCountryCode.hashCode();
+        }
+        if (this.telecomAreaCode != null) {
+            hash += 13 * this.telecomAreaCode.hashCode();
+        }
         if (this.contactRole != null) {
             hash += 13 * this.contactRole.hashCode();
         }
@@ -239,6 +279,8 @@ public class BffBusinessContactDto implements Serializable {
                 ", stateProvinceGeoId=" + '\'' + stateProvinceGeoId + '\'' +
                 ", countryGeoId=" + '\'' + countryGeoId + '\'' +
                 ", email=" + '\'' + email + '\'' +
+                ", telecomCountryCode=" + '\'' + telecomCountryCode + '\'' +
+                ", telecomAreaCode=" + '\'' + telecomAreaCode + '\'' +
                 ", contactRole=" + '\'' + contactRole + '\'' +
                 '}';
     }

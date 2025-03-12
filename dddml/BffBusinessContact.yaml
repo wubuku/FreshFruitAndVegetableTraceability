@@ -27,7 +27,15 @@ valueObjects:
         # 国家的地理 ID（关联到 Geo 实体的 GeoId）
         type: id
       Email:
-        type: id # todo: email?
+        type: id
+        # TODO type: email?
+      TelecomCountryCode:
+        description: "Telecom Country Code"
+        type: very-short
+      TelecomAreaCode:
+        description: "Telecom Area Code"
+        type: very-short
+        # 可能暂时用不到？
       ContactRole:
         type: name
 

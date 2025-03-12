@@ -28,6 +28,10 @@ public interface BffBusinessContactProjection {
 
     String getEmail();
 
+    String getTelecomCountryCode();
+
+    String getTelecomAreaCode();
+
     String getContactRole();
 
 }
