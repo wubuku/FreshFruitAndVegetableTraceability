@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,70 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final JdbcTemplate jdbcTemplate;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(JdbcTemplate jdbcTemplate) {
+    public UserController(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @PostMapping("/change-password")
+    public void changePassword(@RequestParam String currentPassword,
+                               @RequestParam String newPassword) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.debug("Attempting to change password for user: {}", username);
+
+        // 直接从数据库查询当前密码
+        String currentStoredPassword = jdbcTemplate.queryForObject(
+                "SELECT password FROM users WHERE username = ?",
+                String.class,
+                username
+        );
+
+        logger.debug("Current stored password: {}", currentStoredPassword);
+        logger.debug("Attempting to match password: {}", currentPassword);
+
+        // 验证当前密码
+        if (!passwordEncoder.matches(currentPassword, currentStoredPassword)) {
+            logger.warn("Current password verification failed for user: {}", username);
+            throw new BusinessException("Current password verification failed");
+        }
+
+        // 加密新密码
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        logger.debug("New encoded password: {}", encodedPassword);
+
+        // 确保新密码可以被验证
+        if (!passwordEncoder.matches(newPassword, encodedPassword)) {
+            logger.error("New password verification failed immediately after encoding!");
+            throw new BusinessException("New password verification failed immediately after encoding");
+        }
+
+        // 更新密码
+        int updated = jdbcTemplate.update("""
+                UPDATE users 
+                SET password = ?, 
+                    password_change_required = false,
+                    password_last_changed = CURRENT_TIMESTAMP,
+                    first_login = false
+                WHERE username = ?
+                """, encodedPassword, username);
+
+        logger.debug("Password update affected {} rows", updated);
+
+        // 安全处理 state 参数
+//        try {
+//            if (state != null && !state.isEmpty()) {
+//                String originalUrl = urlStateEncoder.decode(state);
+//                if (originalUrl != null && !originalUrl.isEmpty()) {
+//                    logger.debug("Redirecting to original URL: {}", originalUrl);
+//                    return "redirect:" + originalUrl;
+//                }
+//            }
+//        } catch (Exception e) {
+//            logger.warn("Failed to decode state parameter: {}", e.getMessage());
+//            // 如果解码失败，继续使用默认重定向
+//        }
     }
 
     @GetMapping
@@ -132,4 +194,5 @@ public class UserController {
         return userDto;
     }
 
-} 
+
+}
