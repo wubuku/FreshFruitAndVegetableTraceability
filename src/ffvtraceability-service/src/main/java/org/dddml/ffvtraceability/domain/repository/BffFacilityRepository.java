@@ -82,4 +82,33 @@ public interface BffFacilityRepository extends JpaRepository<AbstractFacilitySta
             WHERE f.facility_id = :facilityId
             """, nativeQuery = true)
     Optional<BffFacilityProjection> findFacilityByFacilityId(@Param("facilityId") String facilityId);
+
+    @Query(value = """
+            SELECT COUNT(*) FROM facility f WHERE f.facility_name = :facilityName
+            """, nativeQuery = true)
+    Integer countByFacilityName(@Param("facilityName") String facilityName);
+
+    @Query(value = """
+            SELECT facility_id FROM facility f WHERE f.facility_name = :facilityName
+            limit 1
+            """, nativeQuery = true)
+    String queryByFacilityName(@Param("facilityName") String facilityName);
+
+    @Query(value = """
+            SELECT COUNT(*) FROM facility_identification fi 
+            WHERE fi.facility_identification_type_id = :identificationTypeId 
+            AND fi.id_value = :idValue
+            """, nativeQuery = true)
+    Integer countByIdentificationTypeIdAndIdValue(@Param("identificationTypeId") String identificationTypeId,
+                                                  @Param("idValue") String idValue);
+
+
+    @Query(value = """
+            SELECT fi.facility_Id FROM facility_identification fi 
+            WHERE fi.facility_identification_type_id = :identificationTypeId 
+            AND fi.id_value = :idValue
+            limit 1
+            """, nativeQuery = true)
+    String queryByIdentificationTypeIdAndIdValue(@Param("identificationTypeId") String identificationTypeId,
+                                                 @Param("idValue") String idValue);
 }

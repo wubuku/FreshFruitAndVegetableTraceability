@@ -149,6 +149,13 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
     }
 
     private String createSingleFacility(BffFacilityDto facility, Command c) {
+        if (facility.getFacilityName() == null || facility.getFacilityName().isBlank()) {
+            throw new IllegalArgumentException("Facility name is required");
+        }
+        facility.setFacilityName(facility.getFacilityName().trim());
+        if (bffFacilityRepository.countByFacilityName(facility.getFacilityName()) > 0) {
+            throw new IllegalArgumentException("Facility name already exists: " + facility.getFacilityName());
+        }
         AbstractFacilityCommand.SimpleCreateFacility createFacility = new AbstractFacilityCommand.SimpleCreateFacility();
         createFacility.setFacilityId(facility.getFacilityId() != null ? facility.getFacilityId() : IdUtils.randomId());
         createFacility.setFacilityTypeId(facility.getFacilityTypeId());
@@ -166,17 +173,21 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         createFacility.setCommandId(createFacility.getFacilityId());
         createFacility.setRequesterId(c.getRequesterId());
 
-        if (facility.getFfrn() != null) {
+        if (facility.getFfrn() != null && !facility.getFfrn().isBlank()) {
+            facility.setFfrn(facility.getFfrn().trim());
             addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_FFRN, facility.getFfrn());
         }
-        if (facility.getGln() != null) {
+        if (facility.getGln() != null && !facility.getGln().isBlank()) {
+            facility.setGln(facility.getGln().trim());
             addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_GLN, facility.getGln());
         }
-        if (facility.getInternalId() != null) {
+        if (facility.getInternalId() != null && !facility.getInternalId().isBlank()) {
+            facility.setInternalId(facility.getInternalId().trim());
+            if (bffFacilityRepository.countByIdentificationTypeIdAndIdValue(FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID, facility.getInternalId()) > 0) {
+                throw new IllegalArgumentException(String.format("Facility Number:%s is already in use. Please try a different one.", facility.getInternalId()));
+            }
             addFacilityIdentification(createFacility, FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID, facility.getInternalId());
         }
-
-
         facilityApplicationService.when(createFacility);
 
 
@@ -225,6 +236,14 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         if (facilityState == null) {
             throw new IllegalArgumentException("Facility not found: " + facilityId);
         }
+        if (c.getFacility().getFacilityName() == null || c.getFacility().getFacilityName().isBlank()) {
+            throw new IllegalArgumentException("Facility name is required");
+        }
+        c.getFacility().setFacilityName(c.getFacility().getFacilityName().trim());
+        String facilityIdByName = bffFacilityRepository.queryByFacilityName(c.getFacility().getFacilityName());
+        if (facilityIdByName != null && !facilityIdByName.equals(facilityId)) {
+            throw new IllegalArgumentException("Facility name already exists: " + c.getFacility().getFacilityName());
+        }
         AbstractFacilityCommand.SimpleMergePatchFacility mergePatchFacility = new AbstractFacilityCommand.SimpleMergePatchFacility();
         mergePatchFacility.setFacilityId(facilityId);
         mergePatchFacility.setVersion(facilityState.getVersion());
@@ -239,13 +258,20 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         mergePatchFacility.setGeoId(c.getFacility().getGeoId());
         mergePatchFacility.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchFacility.setRequesterId(c.getRequesterId());
-
+        //修改的InternalId也不能重复
+        if (c.getFacility().getInternalId() != null && !c.getFacility().getInternalId().isBlank()) {
+            c.getFacility().setInternalId(c.getFacility().getInternalId().trim());
+            String existingId = bffFacilityRepository.queryByIdentificationTypeIdAndIdValue(FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID, c.getFacility().getInternalId());
+            if (existingId != null && !existingId.equals(facilityId)) {
+                throw new IllegalArgumentException("Facility Number:" + c.getFacility().getInternalId() + " is already in use. Please try a different one.");
+            }
+        }
+        updateFacilityIdentification(facilityState, mergePatchFacility, FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID,
+                c.getFacility().getInternalId());
         updateFacilityIdentification(facilityState, mergePatchFacility, FACILITY_IDENTIFICATION_TYPE_FFRN,
                 c.getFacility().getFfrn());
         updateFacilityIdentification(facilityState, mergePatchFacility, FACILITY_IDENTIFICATION_TYPE_GLN,
                 c.getFacility().getGln());
-        updateFacilityIdentification(facilityState, mergePatchFacility, FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID,
-                c.getFacility().getInternalId());
 
         facilityApplicationService.when(mergePatchFacility);
         if (c.getFacility().getBusinessContacts() != null && !c.getFacility().getBusinessContacts().isEmpty()) {
