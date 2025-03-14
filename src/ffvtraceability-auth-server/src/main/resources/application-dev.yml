@@ -13,14 +13,14 @@ spring:
       idle-timeout: 300000
       connection-timeout: 20000
     
-  sql:
-    init:
-      mode: always
-      continue-on-error: true
-      schema-locations:
-        - classpath:schema.sql
-      data-locations:
-        - classpath:data.sql
+#  sql:
+#    init:
+#      mode: always
+#      continue-on-error: true
+#      schema-locations:
+#        - classpath:schema.sql
+#      data-locations:
+#        - classpath:data.sql
         
   jpa:
     show-sql: true
