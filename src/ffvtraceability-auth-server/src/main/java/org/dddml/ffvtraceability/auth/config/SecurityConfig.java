@@ -92,8 +92,6 @@ public class SecurityConfig {
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/**")
-                .requiresChannel(channel -> channel
-                        .anyRequest().requiresSecure())
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated()
                 );
@@ -105,8 +103,6 @@ public class SecurityConfig {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
-                .requiresChannel(channel -> channel
-                        .anyRequest().requiresSecure())
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/web-clients/oauth2/**"))
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
