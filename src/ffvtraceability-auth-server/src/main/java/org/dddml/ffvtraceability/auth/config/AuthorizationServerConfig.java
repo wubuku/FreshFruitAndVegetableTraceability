@@ -67,7 +67,9 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .requiresChannel(channel -> channel
+                .anyRequest().requiresSecure());
 
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http
                 .getConfigurer(OAuth2AuthorizationServerConfigurer.class);

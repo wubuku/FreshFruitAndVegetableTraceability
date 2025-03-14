@@ -13,7 +13,12 @@ spring:
       minimum-idle: ${DB_MIN_IDLE:5}
       idle-timeout: 300000
       connection-timeout: 20000
-    
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: qingdao
+    key-alias: tomcat
+
   sql:
     init:
       mode: ${SQL_INIT_MODE:never}
