@@ -183,13 +183,18 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             mergePatchParty.setPreferredCurrencyUomId(bffSupplier.getPreferredCurrencyUomId());
         }
         //以上为Supplier(Party本身）基础资料的修改
-
-
+        if (bffSupplier.getInternalId() != null && !bffSupplier.getInternalId().isBlank()) {
+            bffSupplier.setInternalId(bffSupplier.getInternalId().trim());
+            String partyId = bffSupplierRepository.queryByPartyIdentificationTypeIdAndIdValue(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, bffSupplier.getInternalId());
+            if (partyId != null && !partyId.equals(supplierId)) {
+                throw new IllegalArgumentException(String.format("Duplicate vendor number:%s", c.getSupplierId()));
+            }
+        }
+        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, bffSupplier.getInternalId());
         updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GGN, bffSupplier.getGgn());
         updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GLN, bffSupplier.getGln());
         updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_GS1_COMPANY_PREFIX, bffSupplier.getGs1CompanyPrefix());
         updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_TAX_ID, bffSupplier.getTaxId());
-        updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, bffSupplier.getInternalId());
 
 
 //        if (StringUtils.hasText(c.getSupplier().getStatusId())
@@ -403,6 +408,9 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         }
         if (supplier.getInternalId() != null && !supplier.getInternalId().isBlank()) {
             supplier.setInternalId(supplier.getInternalId().trim());
+            if (bffSupplierRepository.countByPartyIdentificationTypeIdAndIdValue(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, supplier.getInternalId()) > 0) {
+                throw new IllegalArgumentException(String.format("Vendor Number:%s is already in use. Please try a different one.", supplier.getInternalId()));
+            }
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, supplier.getInternalId());
         }
         if (supplier.getGs1CompanyPrefix() != null && !supplier.getGs1CompanyPrefix().isBlank()) {

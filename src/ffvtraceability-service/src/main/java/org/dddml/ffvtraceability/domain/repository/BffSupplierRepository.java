@@ -1,6 +1,5 @@
 package org.dddml.ffvtraceability.domain.repository;
 
-import org.dddml.ffvtraceability.domain.BffSupplierDto;
 import org.dddml.ffvtraceability.domain.party.AbstractPartyState;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +43,7 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                 FROM party_identification pi
                 WHERE pi.party_identification_type_id = 'GLN'
             ) gln ON gln.party_id = p.party_id
-                        
+            
             LEFT JOIN (
                 SELECT 
                     pi.party_id,
@@ -52,8 +51,8 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                 FROM party_identification pi
                 WHERE pi.party_identification_type_id = 'INTERNAL_ID'
             ) ii ON ii.party_id = p.party_id
-                        
-                        
+            
+            
             LEFT JOIN (
                 SELECT 
                     pi.party_id,
@@ -61,8 +60,8 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                 FROM party_identification pi
                 WHERE pi.party_identification_type_id = 'TAX_ID'
             ) ti ON ti.party_id = p.party_id
-                        
-                        
+            
+            
             LEFT JOIN (
                 SELECT 
                     pi.party_id,
@@ -70,7 +69,7 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                 FROM party_identification pi
                 WHERE pi.party_identification_type_id = 'GCP'
             ) gcp ON gcp.party_id = p.party_id
-                        
+            
             WHERE pr.role_type_id = 'SUPPLIER'
                 AND (:statusId IS NULL OR p.status_id = :statusId)
             ORDER BY p.created_at DESC
@@ -123,7 +122,7 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
                 FROM party_identification pi
                 WHERE pi.party_identification_type_id = 'GLN'
             ) gln ON gln.party_id = p.party_id
-                     
+            
             LEFT JOIN (
                 SELECT
                     pi.party_id,
@@ -152,4 +151,21 @@ public interface BffSupplierRepository extends JpaRepository<AbstractPartyState,
             AND p.party_id=:supplierId
             """, nativeQuery = true)
     Optional<BffSupplierProjection> findSupplierById(@Param("supplierId") String supplierId);
+
+    @Query(value = """
+            select count(1) from party_identification
+            where  party_identification_type_id=:partyIdentificationTypeId
+            and id_value=:idValue
+            """, nativeQuery = true)
+    Integer countByPartyIdentificationTypeIdAndIdValue(@Param("partyIdentificationTypeId") String partyIdentificationTypeId,
+                                                       @Param("idValue") String idValue);
+
+    @Query(value = """
+            select party_id from party_identification
+            where  party_identification_type_id=:partyIdentificationTypeId
+            and id_value=:idValue
+            limit 1
+            """, nativeQuery = true)
+    String queryByPartyIdentificationTypeIdAndIdValue(@Param("partyIdentificationTypeId") String partyIdentificationTypeId,
+                                                      @Param("idValue") String idValue);
 }
