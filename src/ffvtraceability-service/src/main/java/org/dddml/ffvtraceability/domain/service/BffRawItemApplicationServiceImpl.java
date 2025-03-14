@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.dddml.ffvtraceability.domain.constants.BffPartyConstants.PARTY_IDENTIFICATION_TYPE_INTERNAL_ID;
 import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.*;
 import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.DEFAULT_CURRENCY_UOM_ID;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
@@ -168,6 +169,9 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         }
         if (rawItem.getInternalId() != null && !rawItem.getInternalId().isBlank()) {
             rawItem.setInternalId(rawItem.getInternalId().trim());
+            if (bffRawItemRepository.countByIdentificationTypeIdAndIdValue(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId()) > 0) {
+                throw new IllegalArgumentException(String.format("Item Number:%s is already in use. Please try a different one.", rawItem.getInternalId()));
+            }
             addGoodIdentification(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId(), createProduct);
         }
         if (rawItem.getHsCode() != null && !rawItem.getHsCode().isBlank()) {
@@ -311,6 +315,15 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             mergePatchProduct.setDefaultShipmentBoxTypeId(rawItem.getDefaultShipmentBoxTypeId());
         } else if (rawItem.getDefaultShipmentBoxType() != null) {
             mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
+        }
+
+        if (rawItem.getInternalId() != null && !rawItem.getInternalId().isBlank()) {
+            rawItem.setInternalId(rawItem.getInternalId().trim());
+            String itemId = bffRawItemRepository
+                    .queryProductIdByIdentificationTypeIdAndIdValue(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId());
+            if (itemId != null && !itemId.equals(productId)) {
+                throw new IllegalArgumentException(String.format("Duplicate item number:%s", rawItem.getInternalId()));
+            }
         }
         updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin());
         updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId());

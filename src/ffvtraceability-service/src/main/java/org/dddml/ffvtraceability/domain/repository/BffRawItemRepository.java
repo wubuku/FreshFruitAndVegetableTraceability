@@ -73,7 +73,7 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 ii.id_value as internalId,
                 priority_party.party_id as supplierId,
                 priority_party.supplier_name as supplierName
-                
+            
             FROM product p
             LEFT JOIN (
                 SELECT
@@ -82,7 +82,7 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 FROM good_identification gi
                 WHERE gi.good_identification_type_id = 'GTIN'
             ) gi ON gi.product_id = p.product_id
-                        
+            
             LEFT JOIN (
                 SELECT
                     gi.product_id,
@@ -90,9 +90,9 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 FROM good_identification gi
                 WHERE gi.good_identification_type_id = 'INTERNAL_ID'
             ) ii ON ii.product_id = p.product_id
-                        
+            
             LEFT JOIN (
-                """ + PRIORITY_SUPPLIER_SUBQUERY + """
+            """ + PRIORITY_SUPPLIER_SUBQUERY + """
             ) priority_party ON priority_party.product_id = p.product_id
             """ + WHERE_CONDITIONS + """
             ORDER BY p.created_at DESC
@@ -101,7 +101,7 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                     SELECT COUNT(*)
                     FROM product p
                     LEFT JOIN (
-                        """ + PRIORITY_SUPPLIER_SUBQUERY + """
+                    """ + PRIORITY_SUPPLIER_SUBQUERY + """
                     ) priority_party ON priority_party.product_id = p.product_id
                     """ + WHERE_CONDITIONS,
             nativeQuery = true)
@@ -150,4 +150,21 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             """, nativeQuery = true)
     BffSupplierProductAssocProjection findSupplierProductAssociationByProductId(
             @Param("productId") String productId);
+
+    @Query(value = """
+            SELECT COUNT(*) FROM good_identification 
+            WHERE good_identification_type_id = :identificationTypeId
+            and id_value = :idValue
+            """, nativeQuery = true)
+    Integer countByIdentificationTypeIdAndIdValue(@Param("identificationTypeId") String identificationTypeId,
+                                                  @Param("idValue") String idValue);
+
+    @Query(value = """
+            SELECT product_id FROM good_identification 
+            WHERE good_identification_type_id = :identificationTypeId
+            and id_value = :idValue
+            limit 1
+            """, nativeQuery = true)
+    String queryProductIdByIdentificationTypeIdAndIdValue(@Param("identificationTypeId") String identificationTypeId,
+                                                          @Param("idValue") String idValue);
 }
