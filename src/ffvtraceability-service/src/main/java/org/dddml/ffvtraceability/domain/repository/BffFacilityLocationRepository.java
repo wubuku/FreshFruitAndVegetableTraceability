@@ -62,4 +62,34 @@ public interface BffFacilityLocationRepository extends JpaRepository<
             nativeQuery = true)
     List<BffFacilityLocationProjection> findAllLocations(@Param("active") String active);
 
+    @Query(value = """
+            SELECT count(*) from facility_location where location_name = :locationName
+            """, nativeQuery = true)
+    Integer countyByLocationName(@Param("locationName") String locationName);
+
+    @Query(value = """
+            SELECT facility_id as facilityId,location_seq_id as locationSeqId from facility_location where location_name = :locationName
+            limit 1
+            """, nativeQuery = true)
+    BffFacilityLocationIdProjection findFacilityLocationIdByLocationName(@Param("locationName") String locationName);
+
+
+    @Query(value = """
+            SELECT count(*) from facility_location where location_code = :locationCode
+            """, nativeQuery = true)
+    Integer countyByLocationCode(@Param("locationCode") String locationCode);
+
+
+    @Query(value = """
+            SELECT facility_id as facilityId,location_seq_id as locationSeqId from facility_location where location_code = :locationCode
+            limit 1
+            """, nativeQuery = true)
+    BffFacilityLocationIdProjection findFacilityLocationIdByLocationCode(@Param("locationCode") String locationCode);
+
+    interface BffFacilityLocationIdProjection {
+        String getFacilityId();
+
+        String getLocationSeqId();
+    }
+
 }

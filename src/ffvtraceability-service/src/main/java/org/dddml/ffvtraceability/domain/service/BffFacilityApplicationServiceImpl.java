@@ -399,6 +399,21 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         } else {
             locationId.setLocationSeqId(IdUtils.randomId());
         }
+        if (location.getLocationName() == null || location.getLocationName().isBlank()) {
+            throw new IllegalArgumentException("Location name is required");
+        }
+        location.setLocationName(location.getLocationName().trim());
+        if (bffFacilityLocationRepository.countyByLocationName(location.getLocationName()) > 0) {
+            throw new IllegalArgumentException(String.format("Location name already exists: %s", location.getLocationName()));
+        }
+        if (location.getLocationCode() == null && location.getLocationCode().isBlank()) {
+            throw new IllegalArgumentException("Location code is required");
+        }
+        location.setLocationCode(location.getLocationCode().trim());
+        if (bffFacilityLocationRepository.countyByLocationCode(location.getLocationCode()) > 0) {
+            throw new IllegalArgumentException(String.format("Location code already exists:%s", location.getLocationCode()));
+        }
+
         createLocation.setFacilityLocationId(locationId);
         createLocation.setLocationTypeEnumId(location.getLocationTypeEnumId());
         createLocation.setAreaId(location.getAreaId());
@@ -471,6 +486,29 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
         FacilityLocationState locationState = facilityLocationApplicationService.get(locationId);
         if (locationState == null) {
             throw new IllegalArgumentException("Facility location not found: " + locationId);
+        }
+
+        if (c.getFacilityLocation().getLocationName() == null || c.getFacilityLocation().getLocationName().isBlank()) {
+            throw new IllegalArgumentException("Location name is required");
+        }
+        c.getFacilityLocation().setLocationName(c.getFacilityLocation().getLocationName().trim());
+        BffFacilityLocationRepository.BffFacilityLocationIdProjection bffFacilityLocationIdProjection
+                = bffFacilityLocationRepository.findFacilityLocationIdByLocationName(c.getFacilityLocation().getLocationName());
+        if (bffFacilityLocationIdProjection != null &&
+                !(bffFacilityLocationIdProjection.getLocationSeqId().equals(locationId.getLocationSeqId())
+                        && bffFacilityLocationIdProjection.getFacilityId().equals(locationId.getFacilityId()))) {
+            throw new IllegalArgumentException(String.format("Location name already exists: %s", c.getFacilityLocation().getLocationName()));
+        }
+
+        if (c.getFacilityLocation().getLocationCode() == null && c.getFacilityLocation().getLocationCode().isBlank()) {
+            throw new IllegalArgumentException("Location code is required");
+        }
+        c.getFacilityLocation().setLocationCode(c.getFacilityLocation().getLocationCode().trim());
+        bffFacilityLocationIdProjection = bffFacilityLocationRepository.findFacilityLocationIdByLocationCode(c.getFacilityLocation().getLocationCode());
+        if (bffFacilityLocationIdProjection != null &&
+                !(bffFacilityLocationIdProjection.getLocationSeqId().equals(locationId.getLocationSeqId())
+                        && bffFacilityLocationIdProjection.getFacilityId().equals(locationId.getFacilityId()))) {
+            throw new IllegalArgumentException(String.format("Location code already exists: %s", c.getFacilityLocation().getLocationCode()));
         }
 
         AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation mergePatchLocation = new AbstractFacilityLocationCommand.SimpleMergePatchFacilityLocation();
