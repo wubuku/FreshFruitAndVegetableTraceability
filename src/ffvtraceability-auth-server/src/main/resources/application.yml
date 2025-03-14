@@ -38,24 +38,11 @@ spring:
       table-name: SPRING_SESSION
     timeout: 30m
 
-#  mail:
-#    host: smtp.qq.com  # 邮件服务器地址
-#    port: 587            # 端口号
-#    username: 8745138@qq.com
-#    password: izzrlktcijgfcabb  # 邮箱授权码
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
-#            required: true
-
   mail:
-    host: mail.privateemail.com  # 邮件服务器地址
+    host: smtp.qq.com  # 邮件服务器地址
     port: 587            # 端口号
-    username: demo@ablueforce.com
-    password: plxo-xlbr-flsn-luri
+    username: 8745138@qq.com
+    password: izzrlktcijgfcabb  # 邮箱授权码
     properties:
       mail:
         smtp:
@@ -63,6 +50,19 @@ spring:
           starttls:
             enable: true
             required: true
+
+#  mail:
+#    host: mail.privateemail.com  # 邮件服务器地址
+#    port: 587            # 端口号
+#    username: demo@ablueforce.com
+#    password: plxo-xlbr-flsn-luri
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
 
 
 server:
