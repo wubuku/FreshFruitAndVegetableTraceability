@@ -168,6 +168,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             throw new IllegalArgumentException(String.format(ERROR_SUPPLIER_NOT_FOUND, c.getSupplierId()));
         }
         BffSupplierDto bffSupplier = c.getSupplier();
+        bffSupplier.setSupplierId(supplierId);
         AbstractPartyCommand.SimpleMergePatchOrganization mergePatchParty = new AbstractPartyCommand.SimpleMergePatchOrganization();
         mergePatchParty.setPartyId(supplierId);
         mergePatchParty.setOrganizationName(bffSupplier.getSupplierName());
@@ -187,7 +188,7 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
             bffSupplier.setInternalId(bffSupplier.getInternalId().trim());
             String partyId = bffSupplierRepository.queryByPartyIdentificationTypeIdAndIdValue(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, bffSupplier.getInternalId());
             if (partyId != null && !partyId.equals(supplierId)) {
-                throw new IllegalArgumentException(String.format("Duplicate vendor number:%s", c.getSupplierId()));
+                throw new IllegalArgumentException(String.format("Duplicate vendor number:%s", bffSupplier.getInternalId()));
             }
         }
         updatePartyIdentification(partyState, mergePatchParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, bffSupplier.getInternalId());
@@ -246,6 +247,11 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         List<String> originalFacilityIds = new ArrayList<>();
         facilityProjections.forEach(bffFacilityProjection -> originalFacilityIds.add(bffFacilityProjection.getFacilityId()));
         List<String> newFacilityIds = bffSupplier.getFacilities().stream().map(BffFacilityDto::getFacilityId).filter(Objects::nonNull).collect(Collectors.toList());
+        //不管前端传的Facility的OwnerId是什么，都要改成当前供应商的Id
+        bffSupplier.getFacilities().forEach(bffFacilityDto -> {
+            bffFacilityDto.setOwnerPartyId(supplierId);
+        });
+
         //前端传过来没有Id的设施列表，这部分会用来表示要添加的设施列表
         List<BffFacilityDto> needToAddedNoId = bffSupplier.getFacilities().stream().filter(bffFacilityDto -> bffFacilityDto.getFacilityId() == null).collect(Collectors.toList());
         List<String> needToUpdateIds = new ArrayList<>();
