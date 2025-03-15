@@ -1,0 +1,81 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: file-service
+  
+  datasource:
+    # url: jdbc:h2:mem:filedb
+    # driver-class-name: org.h2.Driver
+    # username: sa
+    # password: password
+    url: jdbc:postgresql://127.0.0.1/test4
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    # database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc.time_zone: UTC
+        format_sql: true
+        # hbm2ddl:
+        #   auto: update
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: ${java.io.tmpdir}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000
+          jwk-set-uri: http://localhost:9000/.well-known/jwks.json
+
+  mvc:
+    cors:
+      allowed-origins: "*"
+      allowed-methods: "*"
+      allowed-headers: "*"
+      exposed-headers: "*"
+      allow-credentials: false
+      max-age: 3600
+
+storage:
+  security:
+    allow-anonymous-upload: true
+  
+  type: minio
+  
+  gcs:
+    project-id: woven-justice-441107-h8
+    private-bucket: flex-api-private
+    public-bucket: flex-api-public
+
+  aws:
+    access-key: your-aws-access-key
+    secret-key: your-aws-secret-key
+    region: your-aws-region
+    private-bucket: flex-api-private
+    public-bucket: flex-api-public
+  
+  minio:
+    endpoint: http://fp.ablueforce.com:9002
+    public-endpoint: http://fp.ablueforce.com:9002
+    access-key: ZMBht5YRzMpTI2PmYNxD
+    secret-key: ksZSdng7eFNoHgHsR46PXoz2HpkmEwDd64HuuuKk
+    bucket: my-bucket

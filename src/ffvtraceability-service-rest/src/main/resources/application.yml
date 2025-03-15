@@ -86,7 +86,7 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 server:
-  port: 1023
+  port: 8001
   servlet:
     context-path: /
     register-default-servlet: true
