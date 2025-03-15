@@ -74,7 +74,8 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Transactional(readOnly = true)
     public Page<BffRawItemDto> when(BffRawItemServiceCommands.GetRawItems c) {
         return PageUtils.toPage(
-                bffRawItemRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize()), c.getSupplierId(), c.getActive()),
+                bffRawItemRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize()), c.getSupplierId(),
+                        c.getActive()),
                 bffRawItemMapper::toBffRawItemDto);
     }
 
@@ -140,7 +141,6 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createProduct.setCaseUomId(rawItem.getCaseUomId());
         createProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
 
-
         // Weight related fields
         createProduct.setWeightUomId(rawItem.getWeightUomId());
         createProduct.setShippingWeight(rawItem.getShippingWeight());
@@ -160,7 +160,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         // Diameter related fields
         createProduct.setDiameterUomId(rawItem.getDiameterUomId());
         createProduct.setProductDiameter(rawItem.getProductDiameter());
-        //默认情况下（不传值）就是Y
+        // 默认情况下（不传值）就是Y
         createProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(rawItem.getActive()));
 
         if (rawItem.getGtin() != null && !rawItem.getGtin().isBlank()) {
@@ -169,8 +169,10 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         }
         if (rawItem.getInternalId() != null && !rawItem.getInternalId().isBlank()) {
             rawItem.setInternalId(rawItem.getInternalId().trim());
-            if (bffRawItemRepository.countByIdentificationTypeIdAndIdValue(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId()) > 0) {
-                throw new IllegalArgumentException(String.format("Item Number:%s is already in use. Please try a different one.", rawItem.getInternalId()));
+            if (bffRawItemRepository.countByIdentificationTypeIdAndIdValue(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID,
+                    rawItem.getInternalId()) > 0) {
+                throw new IllegalArgumentException(String.format(
+                        "Item Number:%s is already in use. Please try a different one.", rawItem.getInternalId()));
             }
             addGoodIdentification(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId(), createProduct);
         }
@@ -195,7 +197,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     }
 
     private void addGoodIdentification(String goodIdentificationTypeId, String idValue,
-                                       AbstractProductCommand.SimpleCreateProduct createProduct) {
+            AbstractProductCommand.SimpleCreateProduct createProduct) {
         AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification createGoodIdentification = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
         createGoodIdentification.setGoodIdentificationTypeId(goodIdentificationTypeId);
         createGoodIdentification.setIdValue(idValue);
@@ -262,7 +264,6 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         mergePatchProduct.setStorageConditions(rawItem.getStorageConditions());
         mergePatchProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
 
-
         if (rawItem.getCaseUomId() != null) {
             mergePatchProduct.setCaseUomId(rawItem.getCaseUomId());
         }
@@ -320,14 +321,18 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         if (rawItem.getInternalId() != null && !rawItem.getInternalId().isBlank()) {
             rawItem.setInternalId(rawItem.getInternalId().trim());
             String itemId = bffRawItemRepository
-                    .queryProductIdByIdentificationTypeIdAndIdValue(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId());
+                    .queryProductIdByIdentificationTypeIdAndIdValue(
+                            GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId());
             if (itemId != null && !itemId.equals(productId)) {
-                throw new IllegalArgumentException(String.format("Duplicate item number:%s", rawItem.getInternalId()));
+                throw new IllegalArgumentException(String.format(
+                        "Item Number:%s is already in use. Please try a different one.", rawItem.getInternalId()));
             }
         }
         updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin());
-        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId());
-        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE, rawItem.getHsCode());
+        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_INTERNAL_ID,
+                rawItem.getInternalId());
+        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE,
+                rawItem.getHsCode());
 
         productApplicationService.when(mergePatchProduct);
 
@@ -353,7 +358,8 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         }
     }
 
-    private void updateProductIdentification(AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct, ProductState productState, String identificationTypeId, String newValue) {
+    private void updateProductIdentification(AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct,
+            ProductState productState, String identificationTypeId, String newValue) {
         Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
                 .filter(x -> x.getGoodIdentificationTypeId().equals(identificationTypeId))
                 .findFirst();
@@ -375,8 +381,9 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                 mergePatchProduct.getGoodIdentificationCommands().add(createGoodIdentification);
             }
         } else {
-            if (existingGtin.isPresent()) {//原来有，现在没有，做删除处理
-                GoodIdentificationCommand.RemoveGoodIdentification removeGoodIdentification = mergePatchProduct.newRemoveGoodIdentification();
+            if (existingGtin.isPresent()) {// 原来有，现在没有，做删除处理
+                GoodIdentificationCommand.RemoveGoodIdentification removeGoodIdentification = mergePatchProduct
+                        .newRemoveGoodIdentification();
                 removeGoodIdentification.setGoodIdentificationTypeId(identificationTypeId);
                 mergePatchProduct.getGoodIdentificationCommands().add(removeGoodIdentification);
             }
