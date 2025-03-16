@@ -17,7 +17,7 @@ public class SwaggerConfig {
     public OperationCustomizer addGlobalHeader() {
         return (Operation operation, HandlerMethod handlerMethod) -> {
             HeaderParameter headerParam = (HeaderParameter) new HeaderParameter()
-                    .name("X-TenantID")
+                    .name(HEADER_X_TENANT_ID)
                     .description("租户Id")
                     .required(false)
                     .schema(new StringSchema().example("X"));

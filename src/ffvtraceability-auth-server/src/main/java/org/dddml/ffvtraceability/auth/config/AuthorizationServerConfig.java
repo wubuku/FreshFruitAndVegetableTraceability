@@ -50,7 +50,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Configuration
-@EnableConfigurationProperties({ JwtKeyProperties.class, AuthServerProperties.class })
+@EnableConfigurationProperties({JwtKeyProperties.class, AuthServerProperties.class})
 public class AuthorizationServerConfig {
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationServerConfig.class);
 
@@ -211,27 +211,8 @@ public class AuthorizationServerConfig {
         }
     }
 
-    /** 在 OAuth2ConfigurerUtils 中被加载
-     * authorizationServerSettings = getBean(httpSecurity, AuthorizationServerSettings.class);
-     * @return
-     */
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        /*
-        public static Builder builder() {
-		return new Builder().multipleIssuersAllowed(false)
-			.authorizationEndpoint("/oauth2/authorize")
-			.deviceAuthorizationEndpoint("/oauth2/device_authorization")
-			.deviceVerificationEndpoint("/oauth2/device_verification")
-			.tokenEndpoint("/oauth2/token")
-			.jwkSetEndpoint("/oauth2/jwks")
-			.tokenRevocationEndpoint("/oauth2/revoke")
-			.tokenIntrospectionEndpoint("/oauth2/introspect")
-			.oidcClientRegistrationEndpoint("/connect/register")
-			.oidcUserInfoEndpoint("/userinfo")
-			.oidcLogoutEndpoint("/connect/logout");
-	}
-         */
         return AuthorizationServerSettings.builder()
                 .issuer(authServerProperties.getIssuer())
                 .build();
@@ -246,19 +227,19 @@ public class AuthorizationServerConfig {
      * @Bean
      * public ObjectMapper objectMapper() {
      * ObjectMapper mapper = new ObjectMapper();
-     * 
+     *
      * // 注册 Spring Security 核心模块
      * ClassLoader classLoader = getClass().getClassLoader();
      * List<com.fasterxml.jackson.databind.Module> securityModules =
      * SecurityJackson2Modules.getModules(classLoader);
      * mapper.registerModules(securityModules);
-     * 
+     *
      * // 注册 OAuth2 相关的模块
      * mapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
-     * 
+     *
      * // 注册我们的自定义模块
      * mapper.registerModule(new CustomJacksonModule());
-     * 
+     *
      * return mapper;
      * }
      */
