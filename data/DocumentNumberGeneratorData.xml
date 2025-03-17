@@ -21,12 +21,19 @@ under the License.
 <entity-engine-xml>
     <!-- ASN Document Number Generator -->
     <DocumentNumberGenerator
-        generatorId="X-ASN"
-        prefix="ASN"
-        dateFormat="yyyyMMdd"
-        timeZoneId="Asia/Shanghai"
-        sequenceLength="5"
-        description="ASN document number generator" />
+            generatorId="X-ASN"
+            prefix="ASN"
+            dateFormat="yyyyMMdd"
+            timeZoneId="Asia/Shanghai"
+            sequenceLength="5"
+            description="ASN document number generator" />
+    <DocumentNumberGenerator
+            generatorId="RECEIVING"
+            prefix="RC"
+            dateFormat="yyyyMMdd"
+            timeZoneId="Asia/Shanghai"
+            sequenceLength="5"
+            description="Auto generate Receiving Order Number" />
 
     <!-- Add more generators here as needed -->
 </entity-engine-xml>
