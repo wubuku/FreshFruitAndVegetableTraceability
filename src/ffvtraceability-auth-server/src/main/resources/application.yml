@@ -33,24 +33,11 @@ spring:
       table-name: SPRING_SESSION
     timeout: 30m
 
-  mail:
-    host: smtp.qq.com  # 邮件服务器地址
-    port: 587            # 端口号
-    username: 8745138@qq.com
-    password: izzrlktcijgfcabb  # 邮箱授权码
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
-
 #  mail:
-#    host: mail.privateemail.com  # 邮件服务器地址
+#    host: smtp.qq.com  # 邮件服务器地址
 #    port: 587            # 端口号
-#    username: demo@ablueforce.com
-#    password: plxo-xlbr-flsn-luri
+#    username: 8745138@qq.com
+#    password: izzrlktcijgfcabb  # 邮箱授权码
 #    properties:
 #      mail:
 #        smtp:
@@ -58,6 +45,19 @@ spring:
 #          starttls:
 #            enable: true
 #            required: true
+
+  mail:
+    host: smtp.gmail.com  # 邮件服务器地址
+    port: 587            # 端口号
+    username: demoblueforce@gmail.com
+    password: ocvxgppmoalwlkjr
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 
 server:
@@ -72,7 +72,7 @@ server:
 auth-server:
   issuer: ${AUTH_SERVER_ISSUER:http://localhost:9000}
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:1023,https://demo-git-master-liugan2222s-projects.vercel.app/}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:1023,https://fp.ablueforce.com,https://demo-git-master-liugan2222s-projects.vercel.app/}
     allowed-methods: GET,POST,PUT,DELETE,OPTIONS
     allowed-headers: Authorization,Content-Type,Accept,X-Requested-With,Origin,Sec-Fetch-Mode,Sec-Fetch-Site,Sec-Fetch-Dest
     allow-credentials: true
