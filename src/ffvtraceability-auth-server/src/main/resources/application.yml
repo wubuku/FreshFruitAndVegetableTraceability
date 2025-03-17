@@ -58,8 +58,6 @@ spring:
           starttls:
             enable: true
             required: true
-
-
 server:
   port: ${SERVER_PORT:9000}
   error:
@@ -67,6 +65,8 @@ server:
     include-binding-errors: never
     include-stacktrace: never
     include-exception: false
+  servlet:
+    context-path: /
 
 # OAuth2 授权服务器配置
 auth-server:

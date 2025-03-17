@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/auth-srv/users")
 public class UserManagementApiController {
     private static final Logger logger = LoggerFactory.getLogger(UserManagementApiController.class);
 

@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/auth-srv/users")
 public class UserPreRegistrationController {
 
     private final UserPreRegistrationService userPreRegistrationService;

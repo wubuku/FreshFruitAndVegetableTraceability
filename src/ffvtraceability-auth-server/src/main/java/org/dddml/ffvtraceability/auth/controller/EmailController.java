@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth-srv/emails")
+@RequestMapping("/auth-srv/emails")
 public class EmailController {
     private static final Logger logger = LoggerFactory.getLogger(EmailController.class);
 

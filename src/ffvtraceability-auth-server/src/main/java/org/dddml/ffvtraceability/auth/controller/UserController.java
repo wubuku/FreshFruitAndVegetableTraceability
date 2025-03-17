@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/auth-srv/users")
+@RequestMapping("/auth-srv/users")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 

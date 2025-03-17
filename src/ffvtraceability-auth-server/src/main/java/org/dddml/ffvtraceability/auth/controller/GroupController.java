@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/auth-srv/groups")
+@RequestMapping("/auth-srv/groups")
 public class GroupController {
     private static final Logger logger = LoggerFactory.getLogger(GroupController.class);
 
