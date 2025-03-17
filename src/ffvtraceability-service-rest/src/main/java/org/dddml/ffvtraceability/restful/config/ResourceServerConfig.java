@@ -54,7 +54,7 @@ public class ResourceServerConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:9000","https://demo-git-master-liugan2222s-projects.vercel.app/"
+                "http://localhost:9000",",https://fp.ablueforce.com","https://demo-git-master-liugan2222s-projects.vercel.app/"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList(
