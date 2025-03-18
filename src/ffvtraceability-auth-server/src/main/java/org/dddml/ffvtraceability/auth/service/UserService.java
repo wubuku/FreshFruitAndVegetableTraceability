@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserPreRegistrationService {
-    private static final Logger logger = LoggerFactory.getLogger(UserPreRegistrationService.class);
+public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private static final String ALLOWED_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final int OTP_LENGTH = 6;
 
@@ -33,9 +33,11 @@ public class UserPreRegistrationService {
     //@Autowired
     private final PasswordTokenProperties passwordTokenProperties;
     @Autowired
+    private PasswordTokenService passwordTokenService;
+    @Autowired
     private EmailService emailService;
 
-    public UserPreRegistrationService(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder,PasswordTokenProperties passwordTokenProperties) {
+    public UserService(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder, PasswordTokenProperties passwordTokenProperties) {
         this.jdbcTemplate = jdbcTemplate;
         this.passwordEncoder = passwordEncoder;
         this.random = new SecureRandom();
@@ -161,21 +163,12 @@ public class UserPreRegistrationService {
             );
         }
         String token = UUID.randomUUID().toString();
-        savePermissionToken(username, token, now);
+        passwordTokenService.savePermissionToken(username, token, "register", now);
         sendCreatePasswordEmail(username, token);
         logger.info("Pre-registered user: {}", username);
         return new PreRegisterUserResponse(username, oneTimePassword, now);
     }
 
-    private void savePermissionToken(String username, String token, OffsetDateTime now) {
-        if (now == null) {
-            now = OffsetDateTime.now();
-        }
-        jdbcTemplate.update(
-                "INSERT INTO password_tokens (username, token, type, token_created_at) VALUES (?,?,?,?)",
-                username, token, "register", now
-        );
-    }
 
     private boolean userExists(String username) {
         Integer count = jdbcTemplate.queryForObject(

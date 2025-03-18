@@ -1,12 +1,17 @@
 package org.dddml.ffvtraceability.auth.controller;
 
+import org.dddml.ffvtraceability.auth.config.PasswordTokenProperties;
+import org.dddml.ffvtraceability.auth.dto.PasswordTokenDto;
+import org.dddml.ffvtraceability.auth.dto.PasswordVo;
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserDto;
 import org.dddml.ffvtraceability.auth.dto.UserDto;
 import org.dddml.ffvtraceability.auth.exception.BusinessException;
 import org.dddml.ffvtraceability.auth.mapper.GroupDtoMapper;
 import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
+import org.dddml.ffvtraceability.auth.service.PasswordTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +29,10 @@ public class UserController {
 
     private final JdbcTemplate jdbcTemplate;
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordTokenService passwordTokenService;
+    @Autowired
+    private PasswordTokenProperties passwordTokenProperties;
 
     public UserController(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
