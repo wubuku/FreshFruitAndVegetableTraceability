@@ -229,6 +229,44 @@ INSERT INTO permissions (permission_id, description) VALUES
 在上面的示例中，权限的分隔符是 `_`，表示层级关系。这些基础权限在数据库初始化时插入，一般不需要进行手动管理。
 
 
+### 命名问题讨论：permissions 表与 authority 概念
+
+#### 当前的命名挑战
+
+在实现权限管理功能时，我们遇到了一个命名上的挑战。Spring Security 框架中并没有定义一个明确的"authority"实体，而是直接使用字符串来表示用户的权限。这种设计在我们需要为用户进行权限配置管理时带来了一些困扰：
+
+1. 系统中有哪些可用的权限？
+2. 这些权限的基本信息（如描述、分类等）应该存储在哪里？
+
+显然，我们需要一个实体（表）来存储这些"可用权限"的定义。但在Spring Security中，"authority"出现的地方通常都是作为字符串类型，这就产生了概念上的不一致。
+
+目前我们使用 `permissions` 表来存储权限定义，但这个命名可能不够精确地反映其与Spring Security权限模型的关系。
+
+#### 命名选项分析
+
+经过讨论，我们考虑了以下几个命名选项：
+
+1. **`permissions`** (当前选择) - 简洁但可能和Spring Security的已有概念放在一起显得有些混乱
+2. **`authority_definitions`** - 明确表示这是对authority的定义表
+3. **`permission_catalog`** - 强调这是一个权限目录
+4. **`available_authorities`** - 表示系统中可用的权限列表
+5. **`authority_registry`** - 表示权限的注册表
+
+#### 结论与重构计划
+
+经过分析，我们认为 **`authority_definitions`** 是最准确的命名，因为：
+
+1. 直接使用"authority"术语，与Spring Security概念保持一致
+2. "definitions"后缀明确表示这是定义表，不是实际的授权表
+3. 清晰地区分于Spring Security的`authorities`表（存储用户-权限关系）
+4. 准确反映表的用途 - 存储系统中可用权限的基本定义
+
+在下一个版本的重构中，我们也许应该将`permissions`表重命名为`authority_definitions`，以更好地反映其在系统中的角色。
+这个重命名会涉及到相关的实体类、数据库表和参考代码的修改，但将使系统的概念模型更加清晰。
+
+在重构完成前，我们将继续使用`permissions`表，但请注意在注释和文档中会明确说明其用途和与Spring Security权限模型的关系。
+
+
 ### 用户权限管理 UI 的实现
 
 假设在“用户权限管理”界面，我们可以将某个权限赋予某个用户，或者从用户身上收回某个权限。
