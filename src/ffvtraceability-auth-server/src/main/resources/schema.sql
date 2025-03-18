@@ -143,10 +143,9 @@ CREATE TABLE IF NOT EXISTS oauth2_registered_client (
 DROP TABLE IF EXISTS password_tokens;
 -- 密码重置表
 CREATE TABLE if not EXISTS password_tokens (
-    token VARCHAR(50) NOT NULL,
+    token VARCHAR(50) NOT NULL PRIMARY KEY,
     username VARCHAR(30) NOT NULL,
     type VARCHAR(20) NOT NULL,
     token_created_at TIMESTAMPTZ NOT NULL,
-    operated_at TIMESTAMPTZ NULL DEFAULT NULL,
-    password_created_at KEY (token)
+    operated_at TIMESTAMPTZ DEFAULT NULL
 );
