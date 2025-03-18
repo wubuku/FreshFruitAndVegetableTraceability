@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.auth.service;
 
+import org.dddml.ffvtraceability.auth.config.PasswordTokenProperties;
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserDto;
 import org.dddml.ffvtraceability.auth.dto.PreRegisterUserResponse;
 import org.dddml.ffvtraceability.auth.dto.UserDto;
@@ -8,6 +9,7 @@ import org.dddml.ffvtraceability.auth.mapper.GroupDtoMapper;
 import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.security.SecureRandom;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserPreRegistrationService {
@@ -27,11 +30,30 @@ public class UserPreRegistrationService {
     private final JdbcTemplate jdbcTemplate;
     private final PasswordEncoder passwordEncoder;
     private final SecureRandom random;
+    //@Autowired
+    private final PasswordTokenProperties passwordTokenProperties;
+    @Autowired
+    private EmailService emailService;
 
-    public UserPreRegistrationService(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
+    public UserPreRegistrationService(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder,PasswordTokenProperties passwordTokenProperties) {
         this.jdbcTemplate = jdbcTemplate;
         this.passwordEncoder = passwordEncoder;
         this.random = new SecureRandom();
+        this.passwordTokenProperties = passwordTokenProperties;
+    }
+
+    private void sendCreatePasswordEmail(String mailTo, String token) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Finish Setting up Your Account\r\n");
+        sb.append("Use the link below to complete your account setup.\r\n");
+        sb.append("It's valid for ").append(passwordTokenProperties.getExpireInMinutes()).append(" minutes.\r\n");
+        sb.append("If expired, you can request a new one.\r\n");
+        sb.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token);
+        sb.append("&type=register\r\n");
+        sb.append("\r\n");
+        sb.append("Thanks\r\n");
+        sb.append("Powered by Fresh Fruit & Vegetable Traceability System\r\n");
+        emailService.sendTextMail(mailTo, "Finish Setting up Your Account", sb.toString());
     }
 
     @Transactional(readOnly = true)
@@ -138,8 +160,21 @@ public class UserPreRegistrationService {
                     username
             );
         }
+        String token = UUID.randomUUID().toString();
+        savePermissionToken(username, token, now);
+        sendCreatePasswordEmail(username, token);
         logger.info("Pre-registered user: {}", username);
         return new PreRegisterUserResponse(username, oneTimePassword, now);
+    }
+
+    private void savePermissionToken(String username, String token, OffsetDateTime now) {
+        if (now == null) {
+            now = OffsetDateTime.now();
+        }
+        jdbcTemplate.update(
+                "INSERT INTO password_tokens (username, token, type, token_created_at) VALUES (?,?,?,?)",
+                username, token, "register", now
+        );
     }
 
     private boolean userExists(String username) {

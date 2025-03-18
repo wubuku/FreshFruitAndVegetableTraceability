@@ -35,6 +35,10 @@ server:
     include-stacktrace: always
     include-exception: true
 
+password:
+  token:
+    create-password-url: https://demo-git-master-liugan2222s-projects.vercel.app/change-password
+    expire-in-minutes: 5
 # 添加 JWT 密钥配置
 security:
   jwt:
