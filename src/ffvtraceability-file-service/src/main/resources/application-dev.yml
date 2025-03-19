@@ -74,8 +74,8 @@ storage:
     public-bucket: flex-api-public
   
   minio:
-    endpoint: http://fp.ablueforce.com:9002
-    public-endpoint: https://fp.ablueforce.com
+    endpoint: http://fp.ablueforce.com:9002  #minio服务（--address）的地址，默认为9000，启动docker的时候映射为宿主的9002 (-p 9002:9000)
+    public-endpoint: https://fp.ablueforce.com #上传文件之后返回的url的前缀
     access-key: ZMBht5YRzMpTI2PmYNxD
     secret-key: ksZSdng7eFNoHgHsR46PXoz2HpkmEwDd64HuuuKk
     bucket: my-bucket
