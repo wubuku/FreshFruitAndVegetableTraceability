@@ -5,6 +5,7 @@ import org.dddml.ffvtraceability.domain.constants.BffReceivingConstants;
 import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
+import org.dddml.ffvtraceability.domain.document.DocumentTypeId;
 import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorApplicationService;
 import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorCommands;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
@@ -603,7 +604,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 AbstractDocumentCommand.SimpleMergePatchDocument updateCommand = new AbstractDocumentCommand.SimpleMergePatchDocument();
                 updateCommand.setVersion(shippingDocumentState.getVersion());
                 updateCommand.setDocumentId(c.getReferenceDocumentId());
-                updateCommand.setDocumentTypeId(c.getReferenceDocument().getDocumentTypeId());
+                updateCommand.setDocumentTypeId(DocumentTypeId.DOCUMENT); // 目前只有一种文档类型，先硬编码
+                //updateCommand.setDocumentTypeId(c.getReferenceDocument().getDocumentTypeId());
                 updateCommand.setDocumentText(c.getReferenceDocument().getDocumentText());
                 updateCommand.setComments(c.getReferenceDocument().getComments());
                 updateCommand.setDocumentLocation(c.getReferenceDocument().getDocumentLocation());
