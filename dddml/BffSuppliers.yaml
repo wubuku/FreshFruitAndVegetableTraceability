@@ -55,6 +55,9 @@ valueObjects:
       BankAccountInformation:
         description: "Bank Account Information"
         type: description
+      TelecomCountryCode:
+        description: "Telecom Country Code"
+        type: id
       Telephone:
         type: short-varchar
         # 电话

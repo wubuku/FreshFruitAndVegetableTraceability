@@ -42,6 +42,8 @@ public interface BffSupplierProjection {
 
     String getBankAccountInformation();
 
+    String getTelecomCountryCode();
+
     String getTelephone();
 
     String getEmail();

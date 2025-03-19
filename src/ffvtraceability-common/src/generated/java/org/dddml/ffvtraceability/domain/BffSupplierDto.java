@@ -250,6 +250,21 @@ public class BffSupplierDto implements Serializable {
         this.bankAccountInformation = bankAccountInformation;
     }
 
+    /**
+     * Telecom Country Code
+     */
+    private String telecomCountryCode;
+
+    public String getTelecomCountryCode()
+    {
+        return this.telecomCountryCode;
+    }
+
+    public void setTelecomCountryCode(String telecomCountryCode)
+    {
+        this.telecomCountryCode = telecomCountryCode;
+    }
+
     private String telephone;
 
     public String getTelephone()
@@ -312,7 +327,7 @@ public class BffSupplierDto implements Serializable {
     {
     }
 
-    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String tpaNumber, String supplierTypeEnumId, String supplierProductTypeDescription, String certificationCodes, String bankAccountInformation, String telephone, String email, String webSite, String active, java.util.List<BffFacilityDto> facilities)
+    public BffSupplierDto(String supplierId, String supplierName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String supplierShortName, String taxId, String gs1CompanyPrefix, String internalId, String tpaNumber, String supplierTypeEnumId, String supplierProductTypeDescription, String certificationCodes, String bankAccountInformation, String telecomCountryCode, String telephone, String email, String webSite, String active, java.util.List<BffFacilityDto> facilities)
     {
         this.supplierId = supplierId;
         this.supplierName = supplierName;
@@ -332,6 +347,7 @@ public class BffSupplierDto implements Serializable {
         this.supplierProductTypeDescription = supplierProductTypeDescription;
         this.certificationCodes = certificationCodes;
         this.bankAccountInformation = bankAccountInformation;
+        this.telecomCountryCode = telecomCountryCode;
         this.telephone = telephone;
         this.email = email;
         this.webSite = webSite;
@@ -369,6 +385,7 @@ public class BffSupplierDto implements Serializable {
             && (supplierProductTypeDescription == other.supplierProductTypeDescription || (supplierProductTypeDescription != null && supplierProductTypeDescription.equals(other.supplierProductTypeDescription)))
             && (certificationCodes == other.certificationCodes || (certificationCodes != null && certificationCodes.equals(other.certificationCodes)))
             && (bankAccountInformation == other.bankAccountInformation || (bankAccountInformation != null && bankAccountInformation.equals(other.bankAccountInformation)))
+            && (telecomCountryCode == other.telecomCountryCode || (telecomCountryCode != null && telecomCountryCode.equals(other.telecomCountryCode)))
             && (telephone == other.telephone || (telephone != null && telephone.equals(other.telephone)))
             && (email == other.email || (email != null && email.equals(other.email)))
             && (webSite == other.webSite || (webSite != null && webSite.equals(other.webSite)))
@@ -435,6 +452,9 @@ public class BffSupplierDto implements Serializable {
         if (this.bankAccountInformation != null) {
             hash += 13 * this.bankAccountInformation.hashCode();
         }
+        if (this.telecomCountryCode != null) {
+            hash += 13 * this.telecomCountryCode.hashCode();
+        }
         if (this.telephone != null) {
             hash += 13 * this.telephone.hashCode();
         }
@@ -474,6 +494,7 @@ public class BffSupplierDto implements Serializable {
                 ", supplierProductTypeDescription=" + '\'' + supplierProductTypeDescription + '\'' +
                 ", certificationCodes=" + '\'' + certificationCodes + '\'' +
                 ", bankAccountInformation=" + '\'' + bankAccountInformation + '\'' +
+                ", telecomCountryCode=" + '\'' + telecomCountryCode + '\'' +
                 ", telephone=" + '\'' + telephone + '\'' +
                 ", email=" + '\'' + email + '\'' +
                 ", webSite=" + '\'' + webSite + '\'' +
