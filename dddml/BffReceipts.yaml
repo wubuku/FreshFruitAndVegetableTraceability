@@ -332,6 +332,21 @@ services:
           ReferenceDocumentId:
             type: id
 
+      UpdateReceivingReferenceDocument:
+        httpMethod: PUT
+        restfulResourceName: "{DocumentId}/ReferenceDocuments/{ReferenceDocumentId}"
+        metadata:
+          RestfulPathVariables:
+            - DocumentId
+            - ReferenceDocumentId
+        parameters:
+          DocumentId:
+            type: id
+          ReferenceDocumentId:
+            type: id
+          ReferenceDocument:
+            type: BffDocumentDto
+
 
       UpdateReceivingReferenceDocuments:
         # 更新收货单的关联文档

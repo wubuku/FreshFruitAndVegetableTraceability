@@ -184,6 +184,20 @@ public class BffReceivingServiceResource {
         
     }
 
+    @PutMapping("{documentId}/ReferenceDocuments/{referenceDocumentId}")
+    public void updateReceivingReferenceDocument(
+        @PathVariable("documentId") String documentId,
+        @PathVariable("referenceDocumentId") String referenceDocumentId,
+        @RequestBody BffReceivingServiceCommands.UpdateReceivingReferenceDocument requestBody
+    ) {
+        requestBody.setDocumentId(documentId);
+        requestBody.setReferenceDocumentId(referenceDocumentId);
+        
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffReceivingApplicationService.when(requestBody);
+        
+    }
+
     @PutMapping("{documentId}/ReferenceDocuments")
     public void updateReceivingReferenceDocuments(
         @PathVariable("documentId") String documentId,

@@ -31,6 +31,8 @@ public interface BffReceivingApplicationService {
 
     void when(BffReceivingServiceCommands.RemoveReceivingReferenceDocument c);
 
+    void when(BffReceivingServiceCommands.UpdateReceivingReferenceDocument c);
+
     void when(BffReceivingServiceCommands.UpdateReceivingReferenceDocuments c);
 
     String when(BffReceivingServiceCommands.CreateReceivingItem c);

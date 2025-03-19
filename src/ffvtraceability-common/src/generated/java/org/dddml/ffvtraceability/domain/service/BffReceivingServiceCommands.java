@@ -384,6 +384,49 @@ public class BffReceivingServiceCommands {
 
     }
 
+    public static class UpdateReceivingReferenceDocument extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Document Id
+         */
+        private String documentId;
+
+        public String getDocumentId() {
+            return documentId;
+        }
+
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+
+        /**
+         * Reference Document Id
+         */
+        private String referenceDocumentId;
+
+        public String getReferenceDocumentId() {
+            return referenceDocumentId;
+        }
+
+        public void setReferenceDocumentId(String referenceDocumentId) {
+            this.referenceDocumentId = referenceDocumentId;
+        }
+
+        /**
+         * Reference Document
+         */
+        private BffDocumentDto referenceDocument;
+
+        public BffDocumentDto getReferenceDocument() {
+            return referenceDocument;
+        }
+
+        public void setReferenceDocument(BffDocumentDto referenceDocument) {
+            this.referenceDocument = referenceDocument;
+        }
+
+    }
+
     public static class UpdateReceivingReferenceDocuments extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
