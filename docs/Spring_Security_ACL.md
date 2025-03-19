@@ -438,6 +438,67 @@ public DocumentHistory getDocumentHistory(Long id) {
     // 实现获取文档历史的逻辑
 }
 ```
+### 4.6 注解VS编程方式使用ACL
+
+Spring Security ACL提供了两种主要的使用方式，各自适用于不同场景：
+
+#### 注解方式（使用`hasPermission`表达式）
+
+适用于单个对象的访问控制：
+
+```java
+// 通过ID访问对象
+@PreAuthorize("hasPermission(#documentId, 'com.example.Document', 'READ')")
+public Document getDocument(Long documentId) { ... }
+
+// 直接使用对象实例
+@PreAuthorize("hasPermission(#document, 'WRITE')")
+public Document updateDocument(Document document) { ... }
+```
+
+#### 编程方式
+
+以下场景需要通过Java代码编程使用ACL：
+
+1. **批量权限检查**
+```java
+// 过滤有权访问的文档列表
+List<Document> accessibleDocs = documentList.stream()
+    .filter(doc -> permissionEvaluator.hasPermission(
+        authentication, doc, BasePermission.READ))
+    .collect(Collectors.toList());
+```
+
+2. **权限管理操作**
+```java
+// 授予、撤销权限
+MutableAcl acl = aclService.readAclById(objectIdentity);
+acl.insertAce(index, permission, sid, granting);
+aclService.updateAcl(acl);
+```
+
+3. **字段级别的权限控制**
+```java
+// 基于权限控制返回不同字段
+DocumentDto dto = new DocumentDto();
+// 基本字段总是可见
+dto.setId(document.getId());
+// 敏感字段需要特定权限
+if (acl.isGranted(Collections.singletonList(CustomPermission.VIEW_CONFIDENTIAL), 
+                  sids, false)) {
+    dto.setConfidentialField(document.getConfidentialField());
+}
+```
+
+4. **复杂的条件性权限**
+```java
+// 复杂条件下的权限逻辑
+boolean canAccess = isWorkingHours() && 
+                   !isInRestrictedLocation() && 
+                   aclService.hasPermission(...);
+```
+
+实际应用中，通常将注解用于简单的访问控制场景，而在需要更细粒度控制、批量操作或权限管理时，则通过编程方式使用ACL服务。
 
 ## 5. 实现特定业务场景
 
