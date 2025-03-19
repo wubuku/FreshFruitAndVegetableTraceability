@@ -74,8 +74,8 @@ storage:
     public-bucket: flex-api-public
   
   minio:
-    endpoint: http://fp.ablueforce.com:9002
-    public-endpoint: http://fp.ablueforce.com:9002
+    endpoint: https://fp.ablueforce.com
+    public-endpoint: https://fp.ablueforce.com
     access-key: ZMBht5YRzMpTI2PmYNxD
     secret-key: ksZSdng7eFNoHgHsR46PXoz2HpkmEwDd64HuuuKk
     bucket: my-bucket
