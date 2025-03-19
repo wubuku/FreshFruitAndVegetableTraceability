@@ -147,5 +147,5 @@ CREATE TABLE if not EXISTS password_tokens (
     username VARCHAR(30) NOT NULL,
     type VARCHAR(20) NOT NULL,
     token_created_at TIMESTAMPTZ NOT NULL,
-    operated_at TIMESTAMPTZ DEFAULT NULL
+    password_created_at TIMESTAMPTZ DEFAULT NULL
 );
