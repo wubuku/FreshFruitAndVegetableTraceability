@@ -339,6 +339,7 @@ services:
           RestfulPathVariables:
             - DocumentId
             - ReferenceDocumentId
+          HttpRequestBody: ReferenceDocument
         parameters:
           DocumentId:
             type: id
