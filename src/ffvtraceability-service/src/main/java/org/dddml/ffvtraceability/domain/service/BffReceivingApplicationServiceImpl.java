@@ -580,9 +580,11 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
                         new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
                 deleteCommand.setDocumentId(c.getReferenceDocumentId());
+
                 deleteCommand.setVersion(shippingDocumentState.getVersion());
                 shippingDocumentApplicationService.when(deleteCommand);
             }
+            //以上只是删除了Shipment与Document的关联关系，但是Shipment Document本身并没有删除。先留着吧。
 //            DocumentState documentState=documentApplicationService.get(c.getReferenceDocumentId());
 //            if(documentState!=null){
 //                AbstractDocumentCommand.SimpleDeleteDocument deleteDocument=new AbstractDocumentCommand.SimpleDeleteDocument();
@@ -595,7 +597,21 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
     @Override
     public void when(BffReceivingServiceCommands.UpdateReceivingReferenceDocument c) {
-        //todo
+        if (c.getReferenceDocumentId() != null && !c.getReferenceDocumentId().isBlank()) {
+            DocumentState shippingDocumentState = documentApplicationService.get(c.getReferenceDocumentId());
+            if (shippingDocumentState != null) {
+                AbstractDocumentCommand.SimpleMergePatchDocument updateCommand = new AbstractDocumentCommand.SimpleMergePatchDocument();
+                updateCommand.setVersion(shippingDocumentState.getVersion());
+                updateCommand.setDocumentId(c.getReferenceDocumentId());
+                updateCommand.setDocumentTypeId(c.getReferenceDocument().getDocumentTypeId());
+                updateCommand.setDocumentText(c.getReferenceDocument().getDocumentText());
+                updateCommand.setComments(c.getReferenceDocument().getComments());
+                updateCommand.setDocumentLocation(c.getReferenceDocument().getDocumentLocation());
+                updateCommand.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+                updateCommand.setRequesterId(c.getRequesterId());
+                documentApplicationService.when(updateCommand);
+            }
+        }
     }
 
     @Override
