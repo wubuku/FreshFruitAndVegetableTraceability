@@ -68,6 +68,11 @@ server:
   servlet:
     context-path: /
 
+password:
+  token:
+    create-password-url: https://demo-git-master-liugan2222s-projects.vercel.app/change-password
+    expire-in-minutes: 30
+
 # OAuth2 授权服务器配置
 auth-server:
   issuer: ${AUTH_SERVER_ISSUER:http://localhost:9000}
