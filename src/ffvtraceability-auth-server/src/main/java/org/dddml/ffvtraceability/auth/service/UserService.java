@@ -44,11 +44,11 @@ public class UserService {
         this.passwordTokenProperties = passwordTokenProperties;
     }
 
-    private void sendCreatePasswordEmail(String mailTo, String token) {
+    public void sendCreatePasswordEmail(String mailTo, String token) {
         StringBuilder sb = new StringBuilder();
         sb.append("Finish Setting up Your Account\r\n");
         sb.append("Use the link below to complete your account setup.\r\n");
-        sb.append("It's valid for ").append(passwordTokenProperties.getExpireInMinutes()).append(" minutes.\r\n");
+        sb.append("It's valid for ").append(passwordTokenProperties.getExpireInHours()).append(" hours.\r\n");
         sb.append("If expired, you can request a new one.\r\n");
         sb.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token);
         sb.append("&type=register\r\n");
@@ -176,7 +176,7 @@ public class UserService {
                 Integer.class,
                 username
         );
-        return count != null && count > 0;
+        return count > 0;
     }
 
     private String generateOneTimePassword() {

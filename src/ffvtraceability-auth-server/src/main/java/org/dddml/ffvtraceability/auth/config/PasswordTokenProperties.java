@@ -1,20 +1,19 @@
 package org.dddml.ffvtraceability.auth.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.core.io.Resource;
 
 @ConfigurationProperties(prefix = "password.token")
 public class PasswordTokenProperties {
 
-    private Long expireInMinutes = 30L;
+    private Integer expireInHours = 24;
     private String createPasswordUrl;
 
-    public Long getExpireInMinutes() {
-        return expireInMinutes;
+    public Integer getExpireInHours() {
+        return expireInHours;
     }
 
-    public void setExpireInMinutes(Long expireInMinutes) {
-        this.expireInMinutes = expireInMinutes;
+    public void setExpireInHours(Integer expireInHours) {
+        this.expireInHours = expireInHours;
     }
 
     public String getCreatePasswordUrl() {

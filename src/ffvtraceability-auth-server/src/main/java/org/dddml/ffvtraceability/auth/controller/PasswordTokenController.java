@@ -11,11 +11,13 @@ import org.dddml.ffvtraceability.auth.mapper.PasswordTokenMapper;
 import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
 import org.dddml.ffvtraceability.auth.service.EmailService;
 import org.dddml.ffvtraceability.auth.service.PasswordTokenService;
+import org.dddml.ffvtraceability.auth.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
@@ -34,6 +36,8 @@ public class PasswordTokenController {
     private PasswordTokenProperties passwordTokenProperties;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private UserService userService;
 
     public PasswordTokenController(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
@@ -50,8 +54,15 @@ public class PasswordTokenController {
     // 找到一条这样的信息，你要参考里面的passwordCreatedAt属性，如果passwordCreatedAt有值，说明它已经通过这种方式注册过了（管理员不能再发送邮件），
     // 如果 passwordCreatedAt 为null，则检查其tokenCreatedAt字段，检查它是否超时，如果超时则不能发送邮件
     @GetMapping("/last-register-type-token")
+    @Transactional(readOnly = true)
     public PasswordTokenDto getLastRegisterTypeToken(@NotNull @RequestParam("username") String username) {
         //因为这个查询语句是找最后一条register类型的token，也许由于某些原因存在register类型但是 token_created_at不为null，甚至用户通过forgot已经设置了密码，但是不重要了。
+        String sql = "SELECT * FROM users WHERE username = ?";
+        UserDto user = jdbcTemplate.query(sql, new UserDtoMapper(), username).stream().findFirst().orElse(null);
+        if (user == null)
+            throw new BusinessException("User not found");
+        if (!user.getEnabled())
+            throw new BusinessException("User is disabled");
         PasswordTokenDto passwordTokenDto = jdbcTemplate.query("""
                         select * from password_tokens 
                         where username  = ?
@@ -66,6 +77,21 @@ public class PasswordTokenController {
             passwordTokenDto.setUsername(username);
         }
         return passwordTokenDto;
+    }
+
+    @PutMapping("/resend-register-email")
+    @Transactional
+    public void resendRegisterEmail(@RequestParam("username") String username) {
+        String sql = "SELECT * FROM users WHERE username = ?";
+        UserDto user = jdbcTemplate.query(sql, new UserDtoMapper(), username).stream().findFirst().orElse(null);
+        if (user == null)
+            throw new BusinessException("User not found");
+        if (!user.getEnabled())
+            throw new BusinessException("User is disabled");
+        OffsetDateTime now = OffsetDateTime.now();
+        String token = UUID.randomUUID().toString();
+        passwordTokenService.savePermissionToken(username, token, "register", now);
+        userService.sendCreatePasswordEmail(username, token);
     }
 
     /**
@@ -147,7 +173,7 @@ public class PasswordTokenController {
             throw new BusinessException("Token is already used");
         }
         OffsetDateTime now = OffsetDateTime.now();
-        if (now.isAfter(passwordToken.getTokenCreatedAt().plusMinutes(passwordTokenProperties.getExpireInMinutes()))) {
+        if (now.isAfter(passwordToken.getTokenCreatedAt().plusMinutes(passwordTokenProperties.getExpireInHours()))) {
             throw new BusinessException("Token is expired");
         }
         if (passwordToken.getToken() == null) {
