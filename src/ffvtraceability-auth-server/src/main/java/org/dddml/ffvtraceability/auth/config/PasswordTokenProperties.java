@@ -6,7 +6,7 @@ import org.springframework.core.io.Resource;
 @ConfigurationProperties(prefix = "password.token")
 public class PasswordTokenProperties {
 
-    private Long expireInMinutes = 5L;
+    private Long expireInMinutes = 30L;
     private String createPasswordUrl;
 
     public Long getExpireInMinutes() {

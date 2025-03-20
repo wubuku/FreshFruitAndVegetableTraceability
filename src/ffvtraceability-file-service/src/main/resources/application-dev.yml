@@ -74,8 +74,12 @@ storage:
     public-bucket: flex-api-public
   
   minio:
-    endpoint: http://fp.ablueforce.com:9002
-    public-endpoint: http://fp.ablueforce.com:9002
+    endpoint: http://fp.ablueforce.com:9002  #minio服务的地址（端口为参数 --address的值，默认为9000），我们在启动docker的时候将其映射为宿主的 9002 端口 (-p 9002:9000)
+    public-endpoint: https://fp.ablueforce.com #上传文件之后返回的url的前缀
+    #因为我们自己启动的 minio docker实例没有配置 https，真正的 https 是来自于nginx的配置
+    #拿文件https://fp.ablueforce.com/my-bucket/public/5c813eae-8ecc-4d1a-b8c8-fed5f93781ca.jpg 来说，
+    #在nginx中，会将这个地址会被反向代理到minio的地址
+    #http://localhost:9002/my-bucket/public/5c813eae-8ecc-4d1a-b8c8-fed5f93781ca.jpg 上
     access-key: ZMBht5YRzMpTI2PmYNxD
     secret-key: ksZSdng7eFNoHgHsR46PXoz2HpkmEwDd64HuuuKk
     bucket: my-bucket

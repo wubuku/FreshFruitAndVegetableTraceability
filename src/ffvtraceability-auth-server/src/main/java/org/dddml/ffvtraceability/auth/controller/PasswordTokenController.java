@@ -1,11 +1,13 @@
 package org.dddml.ffvtraceability.auth.controller;
 
+import jakarta.validation.constraints.NotNull;
 import org.dddml.ffvtraceability.auth.config.PasswordTokenProperties;
 import org.dddml.ffvtraceability.auth.dto.ForgotPasswordVo;
 import org.dddml.ffvtraceability.auth.dto.PasswordTokenDto;
 import org.dddml.ffvtraceability.auth.dto.PasswordVo;
 import org.dddml.ffvtraceability.auth.dto.UserDto;
 import org.dddml.ffvtraceability.auth.exception.BusinessException;
+import org.dddml.ffvtraceability.auth.mapper.PasswordTokenMapper;
 import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
 import org.dddml.ffvtraceability.auth.service.EmailService;
 import org.dddml.ffvtraceability.auth.service.PasswordTokenService;
@@ -43,32 +45,54 @@ public class PasswordTokenController {
         return passwordTokenService.getPasswordToken(token);
     }
 
+    //根据提供的username，我会返回register类型（通过管理员发送邮件）的最后一条Token的信息，
+    // 如果找不到这样的信息，我会返回200+响应体中只返回username（管理员可以发送邮件），
+    // 找到一条这样的信息，你要参考里面的passwordCreatedAt属性，如果passwordCreatedAt有值，说明它已经通过这种方式注册过了（管理员不能再发送邮件），
+    // 如果 passwordCreatedAt 为null，则检查其tokenCreatedAt字段，检查它是否超时，如果超时则不能发送邮件
+    @GetMapping("/last-register-type-token")
+    public PasswordTokenDto getLastRegisterTypeToken(@NotNull @RequestParam("username") String username) {
+        //因为这个查询语句是找最后一条register类型的token，也许由于某些原因存在register类型但是 token_created_at不为null，甚至用户通过forgot已经设置了密码，但是不重要了。
+        PasswordTokenDto passwordTokenDto = jdbcTemplate.query("""
+                        select * from password_tokens 
+                        where username  = ?
+                        and type = 'register' 
+                        order by token_created_at desc 
+                        limit 1
+                        """,
+                new PasswordTokenMapper(),
+                username).stream().findFirst().orElse(null);
+        if (passwordTokenDto == null) {
+            passwordTokenDto = new PasswordTokenDto();
+            passwordTokenDto.setUsername(username);
+        }
+        return passwordTokenDto;
+    }
+
     /**
      * 根据username获取最后创建的token的时间
      *
      * @return
      */
-    @GetMapping("/last-token-created-at/{username}")
-    public PasswordTokenDto getLastCreatedAt(@PathVariable("username") String username) {
-        OffsetDateTime tokenCreatedAt =
-                jdbcTemplate.query("""
-                                        select token_created_at from password_tokens 
-                                        where username  = ? 
-                                        order by token_created_at desc 
-                                        limit 1
-                                        """,
-                                (rs, rowNum) -> rs.getObject("token_created_at", OffsetDateTime.class),
-                                username)
-                        .stream().findFirst().orElse(null);
-        PasswordTokenDto passwordTokenDto = new PasswordTokenDto();
-        passwordTokenDto.setUsername(username);
-        if (tokenCreatedAt != null) {
-            passwordTokenDto.setTokenCreatedAt(tokenCreatedAt);
-        }
-        return passwordTokenDto;
-    }
-
-
+//    @GetMapping("/last-token-created-at/{username}")
+//    @Deprecated
+//    public PasswordTokenDto getLastCreatedAt(@PathVariable("username") String username) {
+//        OffsetDateTime tokenCreatedAt =
+//                jdbcTemplate.query("""
+//                                        select token_created_at from password_tokens
+//                                        where username  = ?
+//                                        order by token_created_at desc
+//                                        limit 1
+//                                        """,
+//                                (rs, rowNum) -> rs.getObject("token_created_at", OffsetDateTime.class),
+//                                username)
+//                        .stream().findFirst().orElse(null);
+//        PasswordTokenDto passwordTokenDto = new PasswordTokenDto();
+//        passwordTokenDto.setUsername(username);
+//        if (tokenCreatedAt != null) {
+//            passwordTokenDto.setTokenCreatedAt(tokenCreatedAt);
+//        }
+//        return passwordTokenDto;
+//    }
     private void sendResetPasswordEmail(String mailTo, String token) {
         StringBuilder sb = new StringBuilder();
         sb.append("Password Reset\r\n");
@@ -91,6 +115,17 @@ public class PasswordTokenController {
         }
         if (!user.getEnabled()) {
             throw new BusinessException("User is disabled");
+        }
+        //查询用户之前是否完成过管理员发送的完成注册邮件中生成密码
+        sql = "SELECT count(*) FROM password_tokens WHERE username = ? AND type = 'register' AND password_created_at IS NOT NULL";
+        //password_created_at IS NOT NULL 表示他至少完成了一次通过管理员发送的完成注册邮件设置密码
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, forgotPasswordVo.getUsername());
+        if (count < 1) {
+            throw new BusinessException("""
+                    Your account setup is incomplete. 
+                    Please use the set up link sent to your email. 
+                    If the link has expired, contact your admin to resend it.
+                    """);
         }
         String token = UUID.randomUUID().toString();
         passwordTokenService.savePermissionToken(user.getUsername(), token, "reset", now);
