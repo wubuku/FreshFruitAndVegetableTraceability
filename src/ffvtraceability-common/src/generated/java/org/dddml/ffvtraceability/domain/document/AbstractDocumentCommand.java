@@ -87,6 +87,18 @@ public abstract class AbstractDocumentCommand extends AbstractCommand implements
             this.documentText = documentText;
         }
 
+        private String contentType;
+
+        public String getContentType()
+        {
+            return this.contentType;
+        }
+
+        public void setContentType(String contentType)
+        {
+            this.contentType = contentType;
+        }
+
     }
 
     public static abstract class AbstractCreateDocument extends AbstractCreateOrMergePatchDocument implements CreateDocument
@@ -151,6 +163,18 @@ public abstract class AbstractDocumentCommand extends AbstractCommand implements
         public void setIsPropertyDocumentTextRemoved(Boolean removed)
         {
             this.isPropertyDocumentTextRemoved = removed;
+        }
+
+        private Boolean isPropertyContentTypeRemoved;
+
+        public Boolean getIsPropertyContentTypeRemoved()
+        {
+            return this.isPropertyContentTypeRemoved;
+        }
+
+        public void setIsPropertyContentTypeRemoved(Boolean removed)
+        {
+            this.isPropertyContentTypeRemoved = removed;
         }
 
 

@@ -4417,6 +4417,7 @@ public class M {
             "comments",
             "documentLocation",
             "documentText",
+            "contentType",
             "version",
             "createdBy",
             "createdAt",
@@ -4427,6 +4428,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
             "String",
             "String",
             "String",
@@ -4463,6 +4465,8 @@ public class M {
         aliasMap.put("DocumentLocation", "documentLocation");
         aliasMap.put("documentText", "documentText");
         aliasMap.put("DocumentText", "documentText");
+        aliasMap.put("contentType", "contentType");
+        aliasMap.put("ContentType", "contentType");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

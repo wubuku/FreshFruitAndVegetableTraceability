@@ -67,6 +67,7 @@ public abstract class AbstractDocumentAggregate extends AbstractAggregate implem
         e.setComments(c.getComments());
         e.setDocumentLocation(c.getDocumentLocation());
         e.setDocumentText(c.getDocumentText());
+        e.setContentType(c.getContentType());
         ((AbstractDocumentEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -80,10 +81,12 @@ public abstract class AbstractDocumentAggregate extends AbstractAggregate implem
         e.setComments(c.getComments());
         e.setDocumentLocation(c.getDocumentLocation());
         e.setDocumentText(c.getDocumentText());
+        e.setContentType(c.getContentType());
         e.setIsPropertyDocumentTypeIdRemoved(c.getIsPropertyDocumentTypeIdRemoved());
         e.setIsPropertyCommentsRemoved(c.getIsPropertyCommentsRemoved());
         e.setIsPropertyDocumentLocationRemoved(c.getIsPropertyDocumentLocationRemoved());
         e.setIsPropertyDocumentTextRemoved(c.getIsPropertyDocumentTextRemoved());
+        e.setIsPropertyContentTypeRemoved(c.getIsPropertyContentTypeRemoved());
         ((AbstractDocumentEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));

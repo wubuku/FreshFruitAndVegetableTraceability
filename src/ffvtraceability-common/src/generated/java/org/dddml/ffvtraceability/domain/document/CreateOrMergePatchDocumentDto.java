@@ -70,6 +70,21 @@ public class CreateOrMergePatchDocumentDto extends AbstractDocumentCommandDto im
         this.documentText = documentText;
     }
 
+    /**
+     * Content Type
+     */
+    private String contentType;
+
+    public String getContentType()
+    {
+        return this.contentType;
+    }
+
+    public void setContentType(String contentType)
+    {
+        this.contentType = contentType;
+    }
+
 
     private Boolean isPropertyDocumentTypeIdRemoved;
 
@@ -119,6 +134,18 @@ public class CreateOrMergePatchDocumentDto extends AbstractDocumentCommandDto im
         this.isPropertyDocumentTextRemoved = removed;
     }
 
+    private Boolean isPropertyContentTypeRemoved;
+
+    public Boolean getIsPropertyContentTypeRemoved()
+    {
+        return this.isPropertyContentTypeRemoved;
+    }
+
+    public void setIsPropertyContentTypeRemoved(Boolean removed)
+    {
+        this.isPropertyContentTypeRemoved = removed;
+    }
+
     public void copyTo(CreateOrMergePatchDocument command)
     {
         ((AbstractDocumentCommandDto) this).copyTo(command);
@@ -126,6 +153,7 @@ public class CreateOrMergePatchDocumentDto extends AbstractDocumentCommandDto im
         command.setComments(this.getComments());
         command.setDocumentLocation(this.getDocumentLocation());
         command.setDocumentText(this.getDocumentText());
+        command.setContentType(this.getContentType());
     }
 
     public DocumentCommand toCommand()
@@ -174,6 +202,7 @@ public class CreateOrMergePatchDocumentDto extends AbstractDocumentCommandDto im
         command.setIsPropertyCommentsRemoved(this.getIsPropertyCommentsRemoved());
         command.setIsPropertyDocumentLocationRemoved(this.getIsPropertyDocumentLocationRemoved());
         command.setIsPropertyDocumentTextRemoved(this.getIsPropertyDocumentTextRemoved());
+        command.setIsPropertyContentTypeRemoved(this.getIsPropertyContentTypeRemoved());
     }
 
     public static class CreateDocumentDto extends CreateOrMergePatchDocumentDto implements DocumentCommand.CreateDocument

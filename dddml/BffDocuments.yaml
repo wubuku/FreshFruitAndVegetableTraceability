@@ -16,7 +16,7 @@ valueObjects:
         type: long-varchar
       # ImageData:
       #   type: object
-      FileContentType:
+      ContentType:
         type: short-varchar
 
 services:

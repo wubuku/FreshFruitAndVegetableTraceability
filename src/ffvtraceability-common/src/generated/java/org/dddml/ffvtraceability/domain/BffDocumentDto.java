@@ -69,30 +69,30 @@ public class BffDocumentDto implements Serializable {
         this.documentText = documentText;
     }
 
-    private String fileContentType;
+    private String contentType;
 
-    public String getFileContentType()
+    public String getContentType()
     {
-        return this.fileContentType;
+        return this.contentType;
     }
 
-    public void setFileContentType(String fileContentType)
+    public void setContentType(String contentType)
     {
-        this.fileContentType = fileContentType;
+        this.contentType = contentType;
     }
 
     public BffDocumentDto()
     {
     }
 
-    public BffDocumentDto(String documentId, String documentTypeId, String comments, String documentLocation, String documentText, String fileContentType)
+    public BffDocumentDto(String documentId, String documentTypeId, String comments, String documentLocation, String documentText, String contentType)
     {
         this.documentId = documentId;
         this.documentTypeId = documentTypeId;
         this.comments = comments;
         this.documentLocation = documentLocation;
         this.documentText = documentText;
-        this.fileContentType = fileContentType;
+        this.contentType = contentType;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class BffDocumentDto implements Serializable {
             && (comments == other.comments || (comments != null && comments.equals(other.comments)))
             && (documentLocation == other.documentLocation || (documentLocation != null && documentLocation.equals(other.documentLocation)))
             && (documentText == other.documentText || (documentText != null && documentText.equals(other.documentText)))
-            && (fileContentType == other.fileContentType || (fileContentType != null && fileContentType.equals(other.fileContentType)))
+            && (contentType == other.contentType || (contentType != null && contentType.equals(other.contentType)))
             ;
     }
 
@@ -135,8 +135,8 @@ public class BffDocumentDto implements Serializable {
         if (this.documentText != null) {
             hash += 13 * this.documentText.hashCode();
         }
-        if (this.fileContentType != null) {
-            hash += 13 * this.fileContentType.hashCode();
+        if (this.contentType != null) {
+            hash += 13 * this.contentType.hashCode();
         }
         return hash;
     }
@@ -149,7 +149,7 @@ public class BffDocumentDto implements Serializable {
                 ", comments=" + '\'' + comments + '\'' +
                 ", documentLocation=" + '\'' + documentLocation + '\'' +
                 ", documentText=" + '\'' + documentText + '\'' +
-                ", fileContentType=" + '\'' + fileContentType + '\'' +
+                ", contentType=" + '\'' + contentType + '\'' +
                 '}';
     }
 

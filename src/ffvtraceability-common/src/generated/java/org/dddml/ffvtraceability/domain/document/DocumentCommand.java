@@ -64,6 +64,10 @@ public interface DocumentCommand extends Command {
 
         void setDocumentText(String documentText);
 
+        String getContentType();
+
+        void setContentType(String contentType);
+
     }
 
     interface CreateDocument extends CreateOrMergePatchDocument {
@@ -85,6 +89,10 @@ public interface DocumentCommand extends Command {
         Boolean getIsPropertyDocumentTextRemoved();
 
         void setIsPropertyDocumentTextRemoved(Boolean removed);
+
+        Boolean getIsPropertyContentTypeRemoved();
+
+        void setIsPropertyContentTypeRemoved(Boolean removed);
 
 
     }

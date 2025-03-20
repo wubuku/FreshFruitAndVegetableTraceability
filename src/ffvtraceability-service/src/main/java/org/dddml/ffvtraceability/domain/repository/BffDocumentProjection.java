@@ -18,7 +18,7 @@ public interface BffDocumentProjection {
 
     String getDocumentText();
 
-    String getFileContentType();
+    String getContentType();
 
 }
 

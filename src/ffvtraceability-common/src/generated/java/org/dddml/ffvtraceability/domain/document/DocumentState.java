@@ -27,6 +27,8 @@ public interface DocumentState
 
     String getDocumentText();
 
+    String getContentType();
+
     Long getVersion();
 
     String getCreatedBy();
@@ -49,6 +51,8 @@ public interface DocumentState
         void setDocumentLocation(String documentLocation);
 
         void setDocumentText(String documentText);
+
+        void setContentType(String contentType);
 
         void setVersion(Long version);
 

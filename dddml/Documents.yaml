@@ -17,6 +17,9 @@ aggregates:
         type: long-varchar
       # ImageData:
       #   type: object
+      ContentType:
+        type: short-varchar
+        # 文档的内容类型，可以是简单值如 `pdf` 或 MIME 类型如 `application/pdf`
 
 #   DocumentAssociation:
 #     # TODO: remove this entity

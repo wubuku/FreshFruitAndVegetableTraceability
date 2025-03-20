@@ -64,6 +64,16 @@ public abstract class AbstractDocumentState implements DocumentState.SqlDocument
         this.documentText = documentText;
     }
 
+    private String contentType;
+
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
     private Long version;
 
     public Long getVersion() {
@@ -202,6 +212,7 @@ public abstract class AbstractDocumentState implements DocumentState.SqlDocument
         this.setComments(e.getComments());
         this.setDocumentLocation(e.getDocumentLocation());
         this.setDocumentText(e.getDocumentText());
+        this.setContentType(e.getContentType());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -216,6 +227,7 @@ public abstract class AbstractDocumentState implements DocumentState.SqlDocument
         this.setComments(s.getComments());
         this.setDocumentLocation(s.getDocumentLocation());
         this.setDocumentText(s.getDocumentText());
+        this.setContentType(s.getContentType());
     }
 
     public void when(DocumentStateMergePatched e) {
@@ -248,6 +260,13 @@ public abstract class AbstractDocumentState implements DocumentState.SqlDocument
             }
         } else {
             this.setDocumentText(e.getDocumentText());
+        }
+        if (e.getContentType() == null) {
+            if (e.getIsPropertyContentTypeRemoved() != null && e.getIsPropertyContentTypeRemoved()) {
+                this.setContentType(null);
+            }
+        } else {
+            this.setContentType(e.getContentType());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

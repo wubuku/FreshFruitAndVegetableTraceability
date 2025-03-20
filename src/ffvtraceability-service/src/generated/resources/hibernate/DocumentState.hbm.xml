@@ -19,6 +19,9 @@
     <property name="documentText">
       <column name="document_text" sql-type="VARCHAR(255)" />
     </property>
+    <property name="contentType">
+      <column name="content_type" sql-type="VARCHAR(60)" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

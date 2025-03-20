@@ -177,6 +177,18 @@ public abstract class AbstractDocumentEvent extends AbstractEvent implements Doc
             this.documentText = documentText;
         }
 
+        private String contentType;
+
+        public String getContentType()
+        {
+            return this.contentType;
+        }
+
+        public void setContentType(String contentType)
+        {
+            this.contentType = contentType;
+        }
+
         protected AbstractDocumentStateEvent(DocumentEventId eventId) {
             super(eventId);
         }
@@ -251,6 +263,16 @@ public abstract class AbstractDocumentEvent extends AbstractEvent implements Doc
 
         public void setIsPropertyDocumentTextRemoved(Boolean removed) {
             this.isPropertyDocumentTextRemoved = removed;
+        }
+
+        private Boolean isPropertyContentTypeRemoved;
+
+        public Boolean getIsPropertyContentTypeRemoved() {
+            return this.isPropertyContentTypeRemoved;
+        }
+
+        public void setIsPropertyContentTypeRemoved(Boolean removed) {
+            this.isPropertyContentTypeRemoved = removed;
         }
 
 

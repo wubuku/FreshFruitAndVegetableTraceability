@@ -61,6 +61,10 @@ public interface DocumentEvent extends Event {
 
         void setDocumentText(String documentText);
 
+        String getContentType();
+
+        void setContentType(String contentType);
+
     }
 
     interface DocumentStateCreated extends DocumentStateEvent
@@ -86,6 +90,10 @@ public interface DocumentEvent extends Event {
         Boolean getIsPropertyDocumentTextRemoved();
 
         void setIsPropertyDocumentTextRemoved(Boolean removed);
+
+        Boolean getIsPropertyContentTypeRemoved();
+
+        void setIsPropertyContentTypeRemoved(Boolean removed);
 
 
 

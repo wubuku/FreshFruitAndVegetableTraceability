@@ -74,6 +74,18 @@ public class DocumentStateDto {
         this.documentText = documentText;
     }
 
+    private String contentType;
+
+    public String getContentType()
+    {
+        return this.contentType;
+    }
+
+    public void setContentType(String contentType)
+    {
+        this.contentType = contentType;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -177,6 +189,9 @@ public class DocumentStateDto {
             }
             if (returnedFieldsContains("DocumentText")) {
                 dto.setDocumentText(state.getDocumentText());
+            }
+            if (returnedFieldsContains("ContentType")) {
+                dto.setContentType(state.getContentType());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
