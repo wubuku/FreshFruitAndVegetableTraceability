@@ -37,6 +37,18 @@ public interface MiscContactMechEvent extends ContactMechEvent {
 
         void setPhysicalLocationAddress(String physicalLocationAddress);
 
+        String getTelecomCountryCode2();
+
+        void setTelecomCountryCode2(String telecomCountryCode2);
+
+        String getTelecomAreaCode2();
+
+        void setTelecomAreaCode2(String telecomAreaCode2);
+
+        String getTelecomContactNumber2();
+
+        void setTelecomContactNumber2(String telecomContactNumber2);
+
     }
 
     interface MiscContactMechStateCreated extends MiscContactMechStateEvent
@@ -70,6 +82,18 @@ public interface MiscContactMechEvent extends ContactMechEvent {
         Boolean getIsPropertyPhysicalLocationAddressRemoved();
 
         void setIsPropertyPhysicalLocationAddressRemoved(Boolean removed);
+
+        Boolean getIsPropertyTelecomCountryCode2Removed();
+
+        void setIsPropertyTelecomCountryCode2Removed(Boolean removed);
+
+        Boolean getIsPropertyTelecomAreaCode2Removed();
+
+        void setIsPropertyTelecomAreaCode2Removed(Boolean removed);
+
+        Boolean getIsPropertyTelecomContactNumber2Removed();
+
+        void setIsPropertyTelecomContactNumber2Removed(Boolean removed);
 
         Boolean getIsPropertyContactMechTypeIdRemoved();
 

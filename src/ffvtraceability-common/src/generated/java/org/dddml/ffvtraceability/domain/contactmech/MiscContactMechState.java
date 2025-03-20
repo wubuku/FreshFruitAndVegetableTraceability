@@ -25,6 +25,12 @@ public interface MiscContactMechState extends ContactMechState
 
     String getPhysicalLocationAddress();
 
+    String getTelecomCountryCode2();
+
+    String getTelecomAreaCode2();
+
+    String getTelecomContactNumber2();
+
     interface MutableMiscContactMechState extends MiscContactMechState, ContactMechState.MutableContactMechState {
         void setEmail(String email);
 
@@ -37,6 +43,12 @@ public interface MiscContactMechState extends ContactMechState
         void setTelecomContactNumber(String telecomContactNumber);
 
         void setPhysicalLocationAddress(String physicalLocationAddress);
+
+        void setTelecomCountryCode2(String telecomCountryCode2);
+
+        void setTelecomAreaCode2(String telecomAreaCode2);
+
+        void setTelecomContactNumber2(String telecomContactNumber2);
 
         //void when(MiscContactMechEvent.MiscContactMechStateCreated e);
 

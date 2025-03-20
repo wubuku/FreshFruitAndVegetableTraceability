@@ -115,6 +115,42 @@ public abstract class AbstractMiscContactMechEvent extends AbstractContactMechEv
             this.physicalLocationAddress = physicalLocationAddress;
         }
 
+        private String telecomCountryCode2;
+
+        public String getTelecomCountryCode2()
+        {
+            return this.telecomCountryCode2;
+        }
+
+        public void setTelecomCountryCode2(String telecomCountryCode2)
+        {
+            this.telecomCountryCode2 = telecomCountryCode2;
+        }
+
+        private String telecomAreaCode2;
+
+        public String getTelecomAreaCode2()
+        {
+            return this.telecomAreaCode2;
+        }
+
+        public void setTelecomAreaCode2(String telecomAreaCode2)
+        {
+            this.telecomAreaCode2 = telecomAreaCode2;
+        }
+
+        private String telecomContactNumber2;
+
+        public String getTelecomContactNumber2()
+        {
+            return this.telecomContactNumber2;
+        }
+
+        public void setTelecomContactNumber2(String telecomContactNumber2)
+        {
+            this.telecomContactNumber2 = telecomContactNumber2;
+        }
+
         protected AbstractMiscContactMechStateEvent(ContactMechEventId eventId) {
             super(eventId);
         }
@@ -209,6 +245,36 @@ public abstract class AbstractMiscContactMechEvent extends AbstractContactMechEv
 
         public void setIsPropertyPhysicalLocationAddressRemoved(Boolean removed) {
             this.isPropertyPhysicalLocationAddressRemoved = removed;
+        }
+
+        private Boolean isPropertyTelecomCountryCode2Removed;
+
+        public Boolean getIsPropertyTelecomCountryCode2Removed() {
+            return this.isPropertyTelecomCountryCode2Removed;
+        }
+
+        public void setIsPropertyTelecomCountryCode2Removed(Boolean removed) {
+            this.isPropertyTelecomCountryCode2Removed = removed;
+        }
+
+        private Boolean isPropertyTelecomAreaCode2Removed;
+
+        public Boolean getIsPropertyTelecomAreaCode2Removed() {
+            return this.isPropertyTelecomAreaCode2Removed;
+        }
+
+        public void setIsPropertyTelecomAreaCode2Removed(Boolean removed) {
+            this.isPropertyTelecomAreaCode2Removed = removed;
+        }
+
+        private Boolean isPropertyTelecomContactNumber2Removed;
+
+        public Boolean getIsPropertyTelecomContactNumber2Removed() {
+            return this.isPropertyTelecomContactNumber2Removed;
+        }
+
+        public void setIsPropertyTelecomContactNumber2Removed(Boolean removed) {
+            this.isPropertyTelecomContactNumber2Removed = removed;
         }
 
         private Boolean isPropertyContactMechTypeIdRemoved;

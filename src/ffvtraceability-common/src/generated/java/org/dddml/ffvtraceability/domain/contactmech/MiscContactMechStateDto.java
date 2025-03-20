@@ -123,6 +123,15 @@ public class MiscContactMechStateDto extends ContactMechStateDto {
             if (returnedFieldsContains("PhysicalLocationAddress")) {
                 dto.setPhysicalLocationAddress(ss.getPhysicalLocationAddress());
             }
+            if (returnedFieldsContains("TelecomCountryCode2")) {
+                dto.setTelecomCountryCode2(ss.getTelecomCountryCode2());
+            }
+            if (returnedFieldsContains("TelecomAreaCode2")) {
+                dto.setTelecomAreaCode2(ss.getTelecomAreaCode2());
+            }
+            if (returnedFieldsContains("TelecomContactNumber2")) {
+                dto.setTelecomContactNumber2(ss.getTelecomContactNumber2());
+            }
           }
           // ////////////////
             return dto;

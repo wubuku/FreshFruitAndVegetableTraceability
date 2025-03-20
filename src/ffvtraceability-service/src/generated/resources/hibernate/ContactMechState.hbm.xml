@@ -72,6 +72,15 @@
       <property name="physicalLocationAddress">
         <column name="physical_location_address" sql-type="VARCHAR(255)" />
       </property>
+      <property name="telecomCountryCode2">
+        <column name="telecom_country_code2" sql-type="VARCHAR(10)" />
+      </property>
+      <property name="telecomAreaCode2">
+        <column name="telecom_area_code2" sql-type="VARCHAR(10)" />
+      </property>
+      <property name="telecomContactNumber2">
+        <column name="telecom_contact_number2" sql-type="VARCHAR(60)" />
+      </property>
     </subclass>
     <subclass name="org.dddml.ffvtraceability.domain.contactmech.AbstractPostalAddressState$SimplePostalAddressState" discriminator-value="POSTAL_ADDRESS" abstract="false">
       <property name="toName">

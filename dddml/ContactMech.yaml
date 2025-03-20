@@ -61,6 +61,12 @@
             type: short-varchar
           PhysicalLocationAddress:
             type: long-varchar
+          TelecomCountryCode2:
+            type: very-short
+          TelecomAreaCode2:
+            type: very-short
+          TelecomContactNumber2:
+            type: short-varchar
 
 
   ContactMechPurposeType:

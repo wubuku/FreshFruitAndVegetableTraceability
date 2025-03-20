@@ -95,6 +95,9 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         e.setTelecomAreaCode(c.getTelecomAreaCode());
         e.setTelecomContactNumber(c.getTelecomContactNumber());
         e.setPhysicalLocationAddress(c.getPhysicalLocationAddress());
+        e.setTelecomCountryCode2(c.getTelecomCountryCode2());
+        e.setTelecomAreaCode2(c.getTelecomAreaCode2());
+        e.setTelecomContactNumber2(c.getTelecomContactNumber2());
         ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
         e.setCreatedBy(c.getRequesterId());
         e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
@@ -189,12 +192,18 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         e.setTelecomAreaCode(c.getTelecomAreaCode());
         e.setTelecomContactNumber(c.getTelecomContactNumber());
         e.setPhysicalLocationAddress(c.getPhysicalLocationAddress());
+        e.setTelecomCountryCode2(c.getTelecomCountryCode2());
+        e.setTelecomAreaCode2(c.getTelecomAreaCode2());
+        e.setTelecomContactNumber2(c.getTelecomContactNumber2());
         e.setIsPropertyEmailRemoved(c.getIsPropertyEmailRemoved());
         e.setIsPropertyAskForRoleRemoved(c.getIsPropertyAskForRoleRemoved());
         e.setIsPropertyTelecomCountryCodeRemoved(c.getIsPropertyTelecomCountryCodeRemoved());
         e.setIsPropertyTelecomAreaCodeRemoved(c.getIsPropertyTelecomAreaCodeRemoved());
         e.setIsPropertyTelecomContactNumberRemoved(c.getIsPropertyTelecomContactNumberRemoved());
         e.setIsPropertyPhysicalLocationAddressRemoved(c.getIsPropertyPhysicalLocationAddressRemoved());
+        e.setIsPropertyTelecomCountryCode2Removed(c.getIsPropertyTelecomCountryCode2Removed());
+        e.setIsPropertyTelecomAreaCode2Removed(c.getIsPropertyTelecomAreaCode2Removed());
+        e.setIsPropertyTelecomContactNumber2Removed(c.getIsPropertyTelecomContactNumber2Removed());
         e.setIsPropertyContactMechTypeIdRemoved(c.getIsPropertyContactMechTypeIdRemoved());
         e.setIsPropertyInfoStringRemoved(c.getIsPropertyInfoStringRemoved());
         e.setIsPropertyAskForNameRemoved(c.getIsPropertyAskForNameRemoved());

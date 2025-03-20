@@ -296,6 +296,51 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     }
 
     /**
+     * Telecom Country Code2
+     */
+    private String telecomCountryCode2;
+
+    public String getTelecomCountryCode2()
+    {
+        return this.telecomCountryCode2;
+    }
+
+    public void setTelecomCountryCode2(String telecomCountryCode2)
+    {
+        this.telecomCountryCode2 = telecomCountryCode2;
+    }
+
+    /**
+     * Telecom Area Code2
+     */
+    private String telecomAreaCode2;
+
+    public String getTelecomAreaCode2()
+    {
+        return this.telecomAreaCode2;
+    }
+
+    public void setTelecomAreaCode2(String telecomAreaCode2)
+    {
+        this.telecomAreaCode2 = telecomAreaCode2;
+    }
+
+    /**
+     * Telecom Contact Number2
+     */
+    private String telecomContactNumber2;
+
+    public String getTelecomContactNumber2()
+    {
+        return this.telecomContactNumber2;
+    }
+
+    public void setTelecomContactNumber2(String telecomContactNumber2)
+    {
+        this.telecomContactNumber2 = telecomContactNumber2;
+    }
+
+    /**
      * To Name
      */
     private String toName;
@@ -659,6 +704,42 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         this.isPropertyPhysicalLocationAddressRemoved = removed;
     }
 
+    private Boolean isPropertyTelecomCountryCode2Removed;
+
+    public Boolean getIsPropertyTelecomCountryCode2Removed()
+    {
+        return this.isPropertyTelecomCountryCode2Removed;
+    }
+
+    public void setIsPropertyTelecomCountryCode2Removed(Boolean removed)
+    {
+        this.isPropertyTelecomCountryCode2Removed = removed;
+    }
+
+    private Boolean isPropertyTelecomAreaCode2Removed;
+
+    public Boolean getIsPropertyTelecomAreaCode2Removed()
+    {
+        return this.isPropertyTelecomAreaCode2Removed;
+    }
+
+    public void setIsPropertyTelecomAreaCode2Removed(Boolean removed)
+    {
+        this.isPropertyTelecomAreaCode2Removed = removed;
+    }
+
+    private Boolean isPropertyTelecomContactNumber2Removed;
+
+    public Boolean getIsPropertyTelecomContactNumber2Removed()
+    {
+        return this.isPropertyTelecomContactNumber2Removed;
+    }
+
+    public void setIsPropertyTelecomContactNumber2Removed(Boolean removed)
+    {
+        this.isPropertyTelecomContactNumber2Removed = removed;
+    }
+
     private Boolean isPropertyToNameRemoved;
 
     public Boolean getIsPropertyToNameRemoved()
@@ -789,6 +870,9 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setTelecomAreaCode(this.getTelecomAreaCode());
         command.setTelecomContactNumber(this.getTelecomContactNumber());
         command.setPhysicalLocationAddress(this.getPhysicalLocationAddress());
+        command.setTelecomCountryCode2(this.getTelecomCountryCode2());
+        command.setTelecomAreaCode2(this.getTelecomAreaCode2());
+        command.setTelecomContactNumber2(this.getTelecomContactNumber2());
         command.setToName(this.getToName());
         command.setAttnName(this.getAttnName());
         command.setPrefectureGeoId(this.getPrefectureGeoId());
@@ -861,6 +945,9 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setIsPropertyTelecomAreaCodeRemoved(this.getIsPropertyTelecomAreaCodeRemoved());
         command.setIsPropertyTelecomContactNumberRemoved(this.getIsPropertyTelecomContactNumberRemoved());
         command.setIsPropertyPhysicalLocationAddressRemoved(this.getIsPropertyPhysicalLocationAddressRemoved());
+        command.setIsPropertyTelecomCountryCode2Removed(this.getIsPropertyTelecomCountryCode2Removed());
+        command.setIsPropertyTelecomAreaCode2Removed(this.getIsPropertyTelecomAreaCode2Removed());
+        command.setIsPropertyTelecomContactNumber2Removed(this.getIsPropertyTelecomContactNumber2Removed());
         command.setIsPropertyToNameRemoved(this.getIsPropertyToNameRemoved());
         command.setIsPropertyAttnNameRemoved(this.getIsPropertyAttnNameRemoved());
         command.setIsPropertyPrefectureGeoIdRemoved(this.getIsPropertyPrefectureGeoIdRemoved());

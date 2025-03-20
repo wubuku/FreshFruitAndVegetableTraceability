@@ -74,6 +74,36 @@ public abstract class AbstractMiscContactMechState extends AbstractContactMechSt
         this.physicalLocationAddress = physicalLocationAddress;
     }
 
+    private String telecomCountryCode2;
+
+    public String getTelecomCountryCode2() {
+        return this.telecomCountryCode2;
+    }
+
+    public void setTelecomCountryCode2(String telecomCountryCode2) {
+        this.telecomCountryCode2 = telecomCountryCode2;
+    }
+
+    private String telecomAreaCode2;
+
+    public String getTelecomAreaCode2() {
+        return this.telecomAreaCode2;
+    }
+
+    public void setTelecomAreaCode2(String telecomAreaCode2) {
+        this.telecomAreaCode2 = telecomAreaCode2;
+    }
+
+    private String telecomContactNumber2;
+
+    public String getTelecomContactNumber2() {
+        return this.telecomContactNumber2;
+    }
+
+    public void setTelecomContactNumber2(String telecomContactNumber2) {
+        this.telecomContactNumber2 = telecomContactNumber2;
+    }
+
     public AbstractMiscContactMechState(List<Event> events) {
         initializeForReapplying();
         if (events != null && events.size() > 0) {
@@ -133,6 +163,9 @@ public abstract class AbstractMiscContactMechState extends AbstractContactMechSt
         this.setTelecomAreaCode(e.getTelecomAreaCode());
         this.setTelecomContactNumber(e.getTelecomContactNumber());
         this.setPhysicalLocationAddress(e.getPhysicalLocationAddress());
+        this.setTelecomCountryCode2(e.getTelecomCountryCode2());
+        this.setTelecomAreaCode2(e.getTelecomAreaCode2());
+        this.setTelecomContactNumber2(e.getTelecomContactNumber2());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -167,6 +200,9 @@ public abstract class AbstractMiscContactMechState extends AbstractContactMechSt
         this.setTelecomAreaCode(s.getTelecomAreaCode());
         this.setTelecomContactNumber(s.getTelecomContactNumber());
         this.setPhysicalLocationAddress(s.getPhysicalLocationAddress());
+        this.setTelecomCountryCode2(s.getTelecomCountryCode2());
+        this.setTelecomAreaCode2(s.getTelecomAreaCode2());
+        this.setTelecomContactNumber2(s.getTelecomContactNumber2());
     }
 
     public void when(MiscContactMechStateMergePatched e) {
@@ -304,6 +340,27 @@ public abstract class AbstractMiscContactMechState extends AbstractContactMechSt
             }
         } else {
             this.setPhysicalLocationAddress(e.getPhysicalLocationAddress());
+        }
+        if (e.getTelecomCountryCode2() == null) {
+            if (e.getIsPropertyTelecomCountryCode2Removed() != null && e.getIsPropertyTelecomCountryCode2Removed()) {
+                this.setTelecomCountryCode2(null);
+            }
+        } else {
+            this.setTelecomCountryCode2(e.getTelecomCountryCode2());
+        }
+        if (e.getTelecomAreaCode2() == null) {
+            if (e.getIsPropertyTelecomAreaCode2Removed() != null && e.getIsPropertyTelecomAreaCode2Removed()) {
+                this.setTelecomAreaCode2(null);
+            }
+        } else {
+            this.setTelecomAreaCode2(e.getTelecomAreaCode2());
+        }
+        if (e.getTelecomContactNumber2() == null) {
+            if (e.getIsPropertyTelecomContactNumber2Removed() != null && e.getIsPropertyTelecomContactNumber2Removed()) {
+                this.setTelecomContactNumber2(null);
+            }
+        } else {
+            this.setTelecomContactNumber2(e.getTelecomContactNumber2());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

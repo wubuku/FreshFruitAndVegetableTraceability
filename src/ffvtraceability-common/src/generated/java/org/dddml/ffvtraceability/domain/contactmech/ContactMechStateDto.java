@@ -254,6 +254,42 @@ public class ContactMechStateDto {
         this.physicalLocationAddress = physicalLocationAddress;
     }
 
+    private String telecomCountryCode2;
+
+    public String getTelecomCountryCode2()
+    {
+        return this.telecomCountryCode2;
+    }
+
+    public void setTelecomCountryCode2(String telecomCountryCode2)
+    {
+        this.telecomCountryCode2 = telecomCountryCode2;
+    }
+
+    private String telecomAreaCode2;
+
+    public String getTelecomAreaCode2()
+    {
+        return this.telecomAreaCode2;
+    }
+
+    public void setTelecomAreaCode2(String telecomAreaCode2)
+    {
+        this.telecomAreaCode2 = telecomAreaCode2;
+    }
+
+    private String telecomContactNumber2;
+
+    public String getTelecomContactNumber2()
+    {
+        return this.telecomContactNumber2;
+    }
+
+    public void setTelecomContactNumber2(String telecomContactNumber2)
+    {
+        this.telecomContactNumber2 = telecomContactNumber2;
+    }
+
     private String toName;
 
     public String getToName()
@@ -530,6 +566,15 @@ public class ContactMechStateDto {
             }
             if (returnedFieldsContains("PhysicalLocationAddress")) {
                 dto.setPhysicalLocationAddress(ss.getPhysicalLocationAddress());
+            }
+            if (returnedFieldsContains("TelecomCountryCode2")) {
+                dto.setTelecomCountryCode2(ss.getTelecomCountryCode2());
+            }
+            if (returnedFieldsContains("TelecomAreaCode2")) {
+                dto.setTelecomAreaCode2(ss.getTelecomAreaCode2());
+            }
+            if (returnedFieldsContains("TelecomContactNumber2")) {
+                dto.setTelecomContactNumber2(ss.getTelecomContactNumber2());
             }
           }
           // ////////////////

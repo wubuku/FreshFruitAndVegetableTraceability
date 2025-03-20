@@ -99,6 +99,15 @@
         <property name="physicalLocationAddress">
           <column name="physical_location_address" sql-type="VARCHAR(255)" />
         </property>
+        <property name="telecomCountryCode2">
+          <column name="telecom_country_code2" sql-type="VARCHAR(10)" />
+        </property>
+        <property name="telecomAreaCode2">
+          <column name="telecom_area_code2" sql-type="VARCHAR(10)" />
+        </property>
+        <property name="telecomContactNumber2">
+          <column name="telecom_contact_number2" sql-type="VARCHAR(60)" />
+        </property>
         <subclass name="AbstractMiscContactMechEvent$SimpleMiscContactMechStateCreated" discriminator-value="MiscContactMechCreated"></subclass>
         <subclass name="AbstractMiscContactMechEvent$SimpleMiscContactMechStateMergePatched" discriminator-value="MiscContactMechMergePatched">
           <property name="isPropertyEmailRemoved" column="is_property_email_removed" />
@@ -107,6 +116,9 @@
           <property name="isPropertyTelecomAreaCodeRemoved" column="is_property_telecom_area_code_removed" />
           <property name="isPropertyTelecomContactNumberRemoved" column="is_property_telecom_contact_number_removed" />
           <property name="isPropertyPhysicalLocationAddressRemoved" column="is_property_physical_location_address_removed" />
+          <property name="isPropertyTelecomCountryCode2Removed" column="is_property_telecom_country_code2_removed" />
+          <property name="isPropertyTelecomAreaCode2Removed" column="is_property_telecom_area_code2_removed" />
+          <property name="isPropertyTelecomContactNumber2Removed" column="is_property_telecom_contact_number2_removed" />
           <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
           <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
           <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />

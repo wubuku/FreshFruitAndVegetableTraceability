@@ -7418,6 +7418,9 @@ public class M {
             "telecomAreaCode",
             "telecomContactNumber",
             "physicalLocationAddress",
+            "telecomCountryCode2",
+            "telecomAreaCode2",
+            "telecomContactNumber2",
             "toName",
             "attnName",
             "prefectureGeoId",
@@ -7437,6 +7440,9 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
             "String",
             "String",
             "String",
@@ -7527,6 +7533,12 @@ public class M {
         aliasMap.put("TelecomContactNumber", "telecomContactNumber");
         aliasMap.put("physicalLocationAddress", "physicalLocationAddress");
         aliasMap.put("PhysicalLocationAddress", "physicalLocationAddress");
+        aliasMap.put("telecomCountryCode2", "telecomCountryCode2");
+        aliasMap.put("TelecomCountryCode2", "telecomCountryCode2");
+        aliasMap.put("telecomAreaCode2", "telecomAreaCode2");
+        aliasMap.put("TelecomAreaCode2", "telecomAreaCode2");
+        aliasMap.put("telecomContactNumber2", "telecomContactNumber2");
+        aliasMap.put("TelecomContactNumber2", "telecomContactNumber2");
         aliasMap.put("toName", "toName");
         aliasMap.put("ToName", "toName");
         aliasMap.put("attnName", "attnName");
