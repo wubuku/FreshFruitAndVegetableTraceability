@@ -10,6 +10,7 @@ import org.dddml.ffvtraceability.auth.mapper.UserDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -45,17 +44,62 @@ public class UserService {
     }
 
     public void sendCreatePasswordEmail(String mailTo, String token) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Finish Setting up Your Account\r\n");
-        sb.append("Use the link below to complete your account setup.\r\n");
-        sb.append("It's valid for ").append(passwordTokenProperties.getExpireInHours()).append(" hours.\r\n");
-        sb.append("If expired, you can request a new one.\r\n");
-        sb.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token);
-        sb.append("&type=register\r\n");
-        sb.append("\r\n");
-        sb.append("Thanks\r\n");
-        sb.append("Powered by Fresh Fruit & Vegetable Traceability System\r\n");
-        emailService.sendTextMail(mailTo, "Finish Setting up Your Account", sb.toString());
+        StringBuilder sbLink = new StringBuilder();
+        sbLink.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token).append("&type=register");
+        StringBuilder sbHtml = new StringBuilder("""
+                <div style="width: 100%; height: 100%; padding: 46px; background: white; overflow: hidden; outline: 1px #D4D4D8 solid; outline-offset: -1px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 24px; display: inline-flex">
+                    <img style="width: 165.31px; height: 49.65px" src="cid:logo" />
+                    <div style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
+                        <div style="align-self: stretch; color: black; font-size: 24px; font-family: Inter; font-weight: 600; line-height: 32px; word-wrap: break-word">Finish Setting up Your Account </div>
+                        <div style="align-self: stretch; color: black; font-size: 16px; font-family: Inter; font-weight: 400; line-height: 24px; word-wrap: break-word">Use the link below to complete your account setup. It is valid for """);
+        sbHtml.append(" ").append(passwordTokenProperties.getExpireInHours()).append(" ");
+        sbHtml.append(""" 
+                hours. If it expires, contact the admin to request a new one.</div>
+                </div>
+                <button onclick="window.open('""");
+        sbHtml.append(sbLink);
+        sbHtml.append("""
+                ', '_blank')"
+                    style="
+                    height: 40px;
+                    padding: 8px 16px;
+                    background: #15803D;
+                    border-radius: 4px;
+                    color: #FFFFFF;
+                    border: none;
+                    cursor: pointer;
+                    font-family: Inter;
+                    font-size: 16px;
+                    gap: 8px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                ">
+                Finish set-up
+                    </button>
+                    <div style="width: 522.89px; height: 0px; outline: 1px #D4D4D8 solid; outline-offset: -0.50px"></div>
+                    <div data-orientation="Horizontal" style="justify-content: center; align-items: center; gap: 4px; display: inline-flex">
+                        <div style="text-align: center; color: black; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">Powered by</div>
+                        <img style="width: 96.30px; height: 27.91px" src="cid:blueforce" />
+                    </div>
+                </div>
+                """);
+//        sbHtml.append("<br><br><a href='");
+//        sbHtml.append(sbLink.toString()).append("'>").append(sbLink.toString()).append("</a>");
+        Map<String, ClassPathResource> inlineResources = new HashMap<>();
+        inlineResources.put("logo", new ClassPathResource("images/logo.png"));
+        inlineResources.put("blueforce", new ClassPathResource("images/blueforce.png"));
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Finish Setting up Your Account\r\n");
+//        sb.append("Use the link below to complete your account setup.\r\n");
+//        sb.append("It's valid for ").append(passwordTokenProperties.getExpireInHours()).append(" hours.\r\n");
+//        sb.append("If expired, you can request a new one.\r\n");
+//        sb.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token);
+//        sb.append("&type=register\r\n");
+//        sb.append("\r\n");
+//        sb.append("Thanks\r\n");
+//        sb.append("Powered by Fresh Fruit & Vegetable Traceability System\r\n");
+        emailService.sendHtmlMail(mailTo, "Finish Setting up Your Account", sbHtml.toString(), inlineResources);
     }
 
     @Transactional(readOnly = true)
