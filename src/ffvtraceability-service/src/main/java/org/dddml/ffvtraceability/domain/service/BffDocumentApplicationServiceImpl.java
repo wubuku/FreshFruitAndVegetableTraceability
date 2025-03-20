@@ -55,9 +55,14 @@ public class BffDocumentApplicationServiceImpl implements BffDocumentApplication
         AbstractDocumentCommand.SimpleCreateDocument createDocument = new AbstractDocumentCommand.SimpleCreateDocument();
         createDocument.setDocumentId(c.getDocument().getDocumentId() != null ? c.getDocument().getDocumentId() : IdUtils.randomId());
         createDocument.setDocumentLocation(c.getDocument().getDocumentLocation());
-        //createDocument.setDocumentTypeId(c.getDocument().getDocumentTypeId());
+        if (c.getDocument().getDocumentTypeId() != null && !c.getDocument().getDocumentTypeId().isBlank()) {
+            createDocument.setDocumentTypeId(c.getDocument().getDocumentTypeId());
+        } else {
+            createDocument.setDocumentTypeId(DocumentTypeId.DOCUMENT); // 目前只有一种文档类型，先硬编码
+        }
         createDocument.setDocumentText(c.getDocument().getDocumentText());
         createDocument.setComments(c.getDocument().getComments());
+        createDocument.setContentType(c.getDocument().getContentType());
         createDocument.setCommandId(createDocument.getDocumentId());
         createDocument.setRequesterId(c.getRequesterId());
         documentApplicationService.when(createDocument);
@@ -75,9 +80,14 @@ public class BffDocumentApplicationServiceImpl implements BffDocumentApplication
         AbstractDocumentCommand.SimpleMergePatchDocument mergePatchDocument = new AbstractDocumentCommand.SimpleMergePatchDocument();
         mergePatchDocument.setDocumentId(documentId);
         mergePatchDocument.setVersion(d.getVersion()); // 注意，我们默认实体是使用了乐观锁的，所以这里要传入“当前版本号”
-        mergePatchDocument.setDocumentTypeId(DocumentTypeId.DOCUMENT); // 目前只有一种文档类型，先硬编码
+        if (c.getDocument().getDocumentTypeId() != null && !c.getDocument().getDocumentTypeId().isBlank()) {
+            mergePatchDocument.setDocumentTypeId(c.getDocument().getDocumentTypeId());
+        } else {
+            mergePatchDocument.setDocumentTypeId(DocumentTypeId.DOCUMENT); // 目前只有一种文档类型，先硬编码
+        }
         mergePatchDocument.setDocumentLocation(c.getDocument().getDocumentLocation());
         mergePatchDocument.setDocumentText(c.getDocument().getDocumentText());
+        mergePatchDocument.setContentType(c.getDocument().getContentType());
         mergePatchDocument.setComments(c.getDocument().getComments());
         mergePatchDocument.setCommandId(c.getCommandId() == null ? UUID.randomUUID().toString() : c.getCommandId());
         mergePatchDocument.setRequesterId(c.getRequesterId());

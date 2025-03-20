@@ -5,7 +5,6 @@ import org.dddml.ffvtraceability.domain.constants.BffReceivingConstants;
 import org.dddml.ffvtraceability.domain.document.AbstractDocumentCommand;
 import org.dddml.ffvtraceability.domain.document.DocumentApplicationService;
 import org.dddml.ffvtraceability.domain.document.DocumentState;
-import org.dddml.ffvtraceability.domain.document.DocumentTypeId;
 import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorApplicationService;
 import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorCommands;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
@@ -463,7 +462,12 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         AbstractDocumentCommand.SimpleCreateDocument createDocument = new AbstractDocumentCommand.SimpleCreateDocument();
         createDocument.setDocumentId(IdUtils.randomId());
         createDocument.setDocumentLocation(referenceDocument.getDocumentLocation());
-        createDocument.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC);
+        if (referenceDocument.getDocumentTypeId() != null || !referenceDocument.getDocumentTypeId().isBlank()) {
+            createDocument.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC); // 目前只有一种文档类型，先硬编码
+        } else {
+            createDocument.setDocumentTypeId(referenceDocument.getDocumentTypeId());
+        }
+        createDocument.setDocumentText(referenceDocument.getDocumentText());
         createDocument.setDocumentText(referenceDocument.getDocumentText());
         createDocument.setComments(referenceDocument.getComments());
         createDocument.setCommandId(UUID.randomUUID().toString());
@@ -604,9 +608,13 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 AbstractDocumentCommand.SimpleMergePatchDocument updateCommand = new AbstractDocumentCommand.SimpleMergePatchDocument();
                 updateCommand.setVersion(shippingDocumentState.getVersion());
                 updateCommand.setDocumentId(c.getReferenceDocumentId());
-                updateCommand.setDocumentTypeId(DocumentTypeId.DOCUMENT); // 目前只有一种文档类型，先硬编码
-                //updateCommand.setDocumentTypeId(c.getReferenceDocument().getDocumentTypeId());
+                if (c.getReferenceDocument().getDocumentTypeId() != null || !c.getReferenceDocument().getDocumentTypeId().isBlank()) {
+                    updateCommand.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC); // 目前只有一种文档类型，先硬编码
+                } else {
+                    updateCommand.setDocumentTypeId(c.getReferenceDocument().getDocumentTypeId());
+                }
                 updateCommand.setDocumentText(c.getReferenceDocument().getDocumentText());
+                updateCommand.setContentType(c.getReferenceDocument().getContentType());
                 updateCommand.setComments(c.getReferenceDocument().getComments());
                 updateCommand.setDocumentLocation(c.getReferenceDocument().getDocumentLocation());
                 updateCommand.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());

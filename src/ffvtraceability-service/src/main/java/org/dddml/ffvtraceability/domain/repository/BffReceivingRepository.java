@@ -205,7 +205,8 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             "   d.document_id as referenceDocumentId, " +
             "   d.comments as referenceComments, " +
             "   d.document_location as referenceDocumentLocation, " +
-            "   d.document_text as referenceDocumentText " +
+            "   d.document_text as referenceDocumentText, " +
+            "   d.content_type as referenceDocumentContentType "+
             "FROM shipping_document sd " +
             "JOIN document d ON sd.document_id = d.document_id " +
             "WHERE sd.shipment_id IN :shipmentIds " +

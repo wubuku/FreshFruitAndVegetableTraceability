@@ -26,5 +26,6 @@ public interface BffReceivingMapper {
     @Mapping(source = "referenceComments", target = "comments")
     @Mapping(source = "referenceDocumentLocation", target = "documentLocation")
     @Mapping(source = "referenceDocumentText", target = "documentText")
+    @Mapping(source = "referenceDocumentContentType", target = "contentType")
     BffDocumentDto toReferenceDocument(BffReceivingDocumentItemProjection documentItemProjection);
 }

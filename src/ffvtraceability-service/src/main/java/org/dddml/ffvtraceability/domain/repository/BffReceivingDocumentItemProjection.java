@@ -14,5 +14,7 @@ public interface BffReceivingDocumentItemProjection extends BffReceivingDocument
 
     String getReferenceDocumentText();
 
+    String getReferenceDocumentContentType();
+
     //Instant getCreatedAtInstant();
 }
