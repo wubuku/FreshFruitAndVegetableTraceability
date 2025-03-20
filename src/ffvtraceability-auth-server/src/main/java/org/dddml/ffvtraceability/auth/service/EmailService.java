@@ -1,12 +1,11 @@
 package org.dddml.ffvtraceability.auth.service;
 
 import jakarta.mail.internet.MimeMessage;
-import org.dddml.ffvtraceability.auth.controller.EmailController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -18,17 +17,12 @@ import java.util.Map;
 @Service
 public class EmailService {
 
-    private static final Logger logger = LoggerFactory.getLogger(EmailController.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-    private final JavaMailSender mailSender;
-    private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JavaMailSender mailSender;
     @Value("${spring.mail.username}")
     private String from;
-
-    public EmailService(JdbcTemplate jdbcTemplate, JavaMailSender mailSender) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.mailSender = mailSender;
-    }
 
     @Async
     public void sendHtmlMail(String mailTo, String subject, String htmlContent, Map<String, ClassPathResource> inlineResources) {

@@ -47,41 +47,38 @@ public class UserService {
         StringBuilder sbLink = new StringBuilder();
         sbLink.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token).append("&type=register");
         StringBuilder sbHtml = new StringBuilder("""
-                <div style="width: 100%; height: 100%; padding: 46px; background: white; overflow: hidden; outline: 1px #D4D4D8 solid; outline-offset: -1px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 24px; display: inline-flex">
-                    <img style="width: 165.31px; height: 49.65px" src="cid:logo" />
-                    <div style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
-                        <div style="align-self: stretch; color: black; font-size: 24px; font-family: Inter; font-weight: 600; line-height: 32px; word-wrap: break-word">Finish Setting up Your Account </div>
-                        <div style="align-self: stretch; color: black; font-size: 16px; font-family: Inter; font-weight: 400; line-height: 24px; word-wrap: break-word">Use the link below to complete your account setup. It is valid for """);
+                <div style="max-width: 600px; padding: 46px; background: white; outline: 1px #D4D4D8 solid; margin: 0 auto; font-family: Inter;">
+                <img style="width: 165px; height: 50px;" src="cid:logo" alt="Logo">
+                <div style="margin: 24px 0;">
+                <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px 0;">Finish Setting up Your Account</h1>
+                <p style="font-size: 16px; line-height: 24px; margin: 0;">Use the link below to complete your account setup. It is valid for """);
         sbHtml.append(" ").append(passwordTokenProperties.getExpireInHours()).append(" ");
         sbHtml.append(""" 
-                hours. If it expires, contact the admin to request a new one.</div>
+                hours.<br> If it expires, contact the admin to request a new one.</p>
                 </div>
-                <button onclick="window.open('""");
+                <a href='""");
         sbHtml.append(sbLink);
         sbHtml.append("""
-                ', '_blank')"
-                    style="
-                    height: 40px;
+                ' target='_blank'
+                    style="display: inline-block;
                     padding: 8px 16px;
                     background: #15803D;
-                    border-radius: 4px;
                     color: #FFFFFF;
-                    border: none;
-                    cursor: pointer;
-                    font-family: Inter;
+                    text-decoration: none;
+                    border-radius: 4px;
                     font-size: 16px;
-                    gap: 8px;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                ">
-                Finish set-up
-                    </button>
-                    <div style="width: 522.89px; height: 0px; outline: 1px #D4D4D8 solid; outline-offset: -0.50px"></div>
-                    <div data-orientation="Horizontal" style="justify-content: center; align-items: center; gap: 4px; display: inline-flex">
-                        <div style="text-align: center; color: black; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">Powered by</div>
-                        <img style="width: 96.30px; height: 27.91px" src="cid:blueforce" />
-                    </div>
+                    line-height: 24px;
+                    margin: 16px 0;">
+                    Finish set-up
+                    </a>
+                  <hr style="border: 0;
+                            height: 0;
+                            border-top: 1px solid #D4D4D8;
+                            margin: 24px 0;">
+                  <div style="text-align: center; margin-top: 24px;">
+                      <span style="font-size: 14px;">Powered by</span>
+                      <img style="width: 96px; height: 28px; vertical-align: middle;" src="cid:blueforce" alt="Blueforce">
+                  </div>
                 </div>
                 """);
 //        sbHtml.append("<br><br><a href='");
@@ -89,16 +86,6 @@ public class UserService {
         Map<String, ClassPathResource> inlineResources = new HashMap<>();
         inlineResources.put("logo", new ClassPathResource("images/logo.png"));
         inlineResources.put("blueforce", new ClassPathResource("images/blueforce.png"));
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("Finish Setting up Your Account\r\n");
-//        sb.append("Use the link below to complete your account setup.\r\n");
-//        sb.append("It's valid for ").append(passwordTokenProperties.getExpireInHours()).append(" hours.\r\n");
-//        sb.append("If expired, you can request a new one.\r\n");
-//        sb.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token);
-//        sb.append("&type=register\r\n");
-//        sb.append("\r\n");
-//        sb.append("Thanks\r\n");
-//        sb.append("Powered by Fresh Fruit & Vegetable Traceability System\r\n");
         emailService.sendHtmlMail(mailTo, "Finish Setting up Your Account", sbHtml.toString(), inlineResources);
     }
 
@@ -149,18 +136,15 @@ public class UserService {
         String oneTimePassword = generateOneTimePassword();
         String encodedPassword = passwordEncoder.encode(oneTimePassword);
         OffsetDateTime now = OffsetDateTime.now();
-        jdbcTemplate.update(
-                """
-                        UPDATE users SET 
-                        password = ?,
-                        password_change_required = true, 
-                        temp_password_last_generated = ?,
-                        updated_by = ?,
-                        updated_at = ?
-                        WHERE username = ?
-                        """,
-                encodedPassword, now, operator, now, username
-        );
+        jdbcTemplate.update("""
+                UPDATE users SET 
+                password = ?,
+                password_change_required = true, 
+                temp_password_last_generated = ?,
+                updated_by = ?,
+                updated_at = ?
+                WHERE username = ?
+                """, encodedPassword, now, operator, now, username);
         return new PreRegisterUserResponse(username, oneTimePassword, now);
     }
 
@@ -178,19 +162,7 @@ public class UserService {
 
         OffsetDateTime now = OffsetDateTime.now();
         // Insert new user
-        jdbcTemplate.update(
-                "INSERT INTO users (username, password, enabled, password_change_required,temp_password_last_generated, first_login,first_name,last_name," +
-                        "email,department_id,from_date,employee_number,employee_contract_number,certification_description,skill_set_description," +
-                        "language_skills,associated_gln,profile_image_url,direct_manager_name,employee_type_id,telephone_number," +
-                        "mobile_number,created_at,updated_at,created_by,updated_by)" +
-                        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                username, encodedPassword, true, true, now, true, preRegisterUser.getFirstName(), preRegisterUser.getLastName(),
-                preRegisterUser.getEmail(), preRegisterUser.getDepartmentId(), preRegisterUser.getFromDate(), preRegisterUser.getEmployeeNumber(),
-                preRegisterUser.getEmployeeContractNumber(), preRegisterUser.getCertificationDescription(), preRegisterUser.getSkillSetDescription(),
-                preRegisterUser.getLanguageSkills(), preRegisterUser.getAssociatedGln(), preRegisterUser.getProfileImageUrl(),
-                preRegisterUser.getDirectManagerName(), preRegisterUser.getEmployeeTypeId(), preRegisterUser.getTelephoneNumber(), preRegisterUser.getMobileNumber(),
-                now, now, operator, operator
-        );
+        jdbcTemplate.update("INSERT INTO users (username, password, enabled, password_change_required,temp_password_last_generated, first_login,first_name,last_name," + "email,department_id,from_date,employee_number,employee_contract_number,certification_description,skill_set_description," + "language_skills,associated_gln,profile_image_url,direct_manager_name,employee_type_id,telephone_number," + "mobile_number,created_at,updated_at,created_by,updated_by)" + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", username, encodedPassword, true, true, now, true, preRegisterUser.getFirstName(), preRegisterUser.getLastName(), preRegisterUser.getEmail(), preRegisterUser.getDepartmentId(), preRegisterUser.getFromDate(), preRegisterUser.getEmployeeNumber(), preRegisterUser.getEmployeeContractNumber(), preRegisterUser.getCertificationDescription(), preRegisterUser.getSkillSetDescription(), preRegisterUser.getLanguageSkills(), preRegisterUser.getAssociatedGln(), preRegisterUser.getProfileImageUrl(), preRegisterUser.getDirectManagerName(), preRegisterUser.getEmployeeTypeId(), preRegisterUser.getTelephoneNumber(), preRegisterUser.getMobileNumber(), now, now, operator, operator);
         if (preRegisterUser.getGroupIds() == null) {
             preRegisterUser.setGroupIds(new ArrayList<>());
         }
@@ -201,10 +173,7 @@ public class UserService {
             });
         } else {
             // 如果 groupIds 为空那么至少要 Add to USER_GROUP
-            jdbcTemplate.update(
-                    "INSERT INTO group_members (username, group_id) SELECT ?, id FROM groups WHERE group_name = 'USER_GROUP'",
-                    username
-            );
+            jdbcTemplate.update("INSERT INTO group_members (username, group_id) SELECT ?, id FROM groups WHERE group_name = 'USER_GROUP'", username);
         }
         String token = UUID.randomUUID().toString();
         passwordTokenService.savePermissionToken(username, token, "register", now);
@@ -215,11 +184,7 @@ public class UserService {
 
 
     private boolean userExists(String username) {
-        Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM users WHERE username = ?",
-                Integer.class,
-                username
-        );
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE username = ?", Integer.class, username);
         return count > 0;
     }
 
