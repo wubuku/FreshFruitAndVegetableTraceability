@@ -16,6 +16,8 @@ valueObjects:
         type: long-varchar
       # ImageData:
       #   type: object
+      FileContentType:
+        type: short-varchar
 
 services:
   BffDocumentService:

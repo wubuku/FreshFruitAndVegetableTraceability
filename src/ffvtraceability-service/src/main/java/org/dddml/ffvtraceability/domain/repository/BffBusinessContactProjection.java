@@ -32,6 +32,12 @@ public interface BffBusinessContactProjection {
 
     String getTelecomAreaCode();
 
+    String getTelecomCountryCode2();
+
+    String getTelecomAreaCode2();
+
+    String getPhoneNumber2();
+
     String getContactRole();
 
 }

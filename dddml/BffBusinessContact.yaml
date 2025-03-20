@@ -35,7 +35,15 @@ valueObjects:
       TelecomAreaCode:
         description: "Telecom Area Code"
         type: very-short
-        # 可能暂时用不到？
+      TelecomCountryCode2:
+        description: "Telecom Country Code"
+        type: very-short
+      TelecomAreaCode2:
+        description: "Telecom Area Code"
+        type: very-short
+      PhoneNumber2:
+        description: "Phone Number"
+        type: short-varchar
       ContactRole:
         type: name
 

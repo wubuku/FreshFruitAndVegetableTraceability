@@ -159,6 +159,51 @@ public class BffBusinessContactDto implements Serializable {
         this.telecomAreaCode = telecomAreaCode;
     }
 
+    /**
+     * Telecom Country Code
+     */
+    private String telecomCountryCode2;
+
+    public String getTelecomCountryCode2()
+    {
+        return this.telecomCountryCode2;
+    }
+
+    public void setTelecomCountryCode2(String telecomCountryCode2)
+    {
+        this.telecomCountryCode2 = telecomCountryCode2;
+    }
+
+    /**
+     * Telecom Area Code
+     */
+    private String telecomAreaCode2;
+
+    public String getTelecomAreaCode2()
+    {
+        return this.telecomAreaCode2;
+    }
+
+    public void setTelecomAreaCode2(String telecomAreaCode2)
+    {
+        this.telecomAreaCode2 = telecomAreaCode2;
+    }
+
+    /**
+     * Phone Number
+     */
+    private String phoneNumber2;
+
+    public String getPhoneNumber2()
+    {
+        return this.phoneNumber2;
+    }
+
+    public void setPhoneNumber2(String phoneNumber2)
+    {
+        this.phoneNumber2 = phoneNumber2;
+    }
+
     private String contactRole;
 
     public String getContactRole()
@@ -175,7 +220,7 @@ public class BffBusinessContactDto implements Serializable {
     {
     }
 
-    public BffBusinessContactDto(String businessName, String phoneNumber, String physicalLocationAddress, String city, String state, String zipCode, String country, String stateProvinceGeoId, String countryGeoId, String email, String telecomCountryCode, String telecomAreaCode, String contactRole)
+    public BffBusinessContactDto(String businessName, String phoneNumber, String physicalLocationAddress, String city, String state, String zipCode, String country, String stateProvinceGeoId, String countryGeoId, String email, String telecomCountryCode, String telecomAreaCode, String telecomCountryCode2, String telecomAreaCode2, String phoneNumber2, String contactRole)
     {
         this.businessName = businessName;
         this.phoneNumber = phoneNumber;
@@ -189,6 +234,9 @@ public class BffBusinessContactDto implements Serializable {
         this.email = email;
         this.telecomCountryCode = telecomCountryCode;
         this.telecomAreaCode = telecomAreaCode;
+        this.telecomCountryCode2 = telecomCountryCode2;
+        this.telecomAreaCode2 = telecomAreaCode2;
+        this.phoneNumber2 = phoneNumber2;
         this.contactRole = contactRole;
     }
 
@@ -216,6 +264,9 @@ public class BffBusinessContactDto implements Serializable {
             && (email == other.email || (email != null && email.equals(other.email)))
             && (telecomCountryCode == other.telecomCountryCode || (telecomCountryCode != null && telecomCountryCode.equals(other.telecomCountryCode)))
             && (telecomAreaCode == other.telecomAreaCode || (telecomAreaCode != null && telecomAreaCode.equals(other.telecomAreaCode)))
+            && (telecomCountryCode2 == other.telecomCountryCode2 || (telecomCountryCode2 != null && telecomCountryCode2.equals(other.telecomCountryCode2)))
+            && (telecomAreaCode2 == other.telecomAreaCode2 || (telecomAreaCode2 != null && telecomAreaCode2.equals(other.telecomAreaCode2)))
+            && (phoneNumber2 == other.phoneNumber2 || (phoneNumber2 != null && phoneNumber2.equals(other.phoneNumber2)))
             && (contactRole == other.contactRole || (contactRole != null && contactRole.equals(other.contactRole)))
             ;
     }
@@ -260,6 +311,15 @@ public class BffBusinessContactDto implements Serializable {
         if (this.telecomAreaCode != null) {
             hash += 13 * this.telecomAreaCode.hashCode();
         }
+        if (this.telecomCountryCode2 != null) {
+            hash += 13 * this.telecomCountryCode2.hashCode();
+        }
+        if (this.telecomAreaCode2 != null) {
+            hash += 13 * this.telecomAreaCode2.hashCode();
+        }
+        if (this.phoneNumber2 != null) {
+            hash += 13 * this.phoneNumber2.hashCode();
+        }
         if (this.contactRole != null) {
             hash += 13 * this.contactRole.hashCode();
         }
@@ -281,6 +341,9 @@ public class BffBusinessContactDto implements Serializable {
                 ", email=" + '\'' + email + '\'' +
                 ", telecomCountryCode=" + '\'' + telecomCountryCode + '\'' +
                 ", telecomAreaCode=" + '\'' + telecomAreaCode + '\'' +
+                ", telecomCountryCode2=" + '\'' + telecomCountryCode2 + '\'' +
+                ", telecomAreaCode2=" + '\'' + telecomAreaCode2 + '\'' +
+                ", phoneNumber2=" + '\'' + phoneNumber2 + '\'' +
                 ", contactRole=" + '\'' + contactRole + '\'' +
                 '}';
     }

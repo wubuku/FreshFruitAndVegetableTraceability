@@ -69,17 +69,30 @@ public class BffDocumentDto implements Serializable {
         this.documentText = documentText;
     }
 
+    private String fileContentType;
+
+    public String getFileContentType()
+    {
+        return this.fileContentType;
+    }
+
+    public void setFileContentType(String fileContentType)
+    {
+        this.fileContentType = fileContentType;
+    }
+
     public BffDocumentDto()
     {
     }
 
-    public BffDocumentDto(String documentId, String documentTypeId, String comments, String documentLocation, String documentText)
+    public BffDocumentDto(String documentId, String documentTypeId, String comments, String documentLocation, String documentText, String fileContentType)
     {
         this.documentId = documentId;
         this.documentTypeId = documentTypeId;
         this.comments = comments;
         this.documentLocation = documentLocation;
         this.documentText = documentText;
+        this.fileContentType = fileContentType;
     }
 
     @Override
@@ -99,6 +112,7 @@ public class BffDocumentDto implements Serializable {
             && (comments == other.comments || (comments != null && comments.equals(other.comments)))
             && (documentLocation == other.documentLocation || (documentLocation != null && documentLocation.equals(other.documentLocation)))
             && (documentText == other.documentText || (documentText != null && documentText.equals(other.documentText)))
+            && (fileContentType == other.fileContentType || (fileContentType != null && fileContentType.equals(other.fileContentType)))
             ;
     }
 
@@ -121,6 +135,9 @@ public class BffDocumentDto implements Serializable {
         if (this.documentText != null) {
             hash += 13 * this.documentText.hashCode();
         }
+        if (this.fileContentType != null) {
+            hash += 13 * this.fileContentType.hashCode();
+        }
         return hash;
     }
 
@@ -132,6 +149,7 @@ public class BffDocumentDto implements Serializable {
                 ", comments=" + '\'' + comments + '\'' +
                 ", documentLocation=" + '\'' + documentLocation + '\'' +
                 ", documentText=" + '\'' + documentText + '\'' +
+                ", fileContentType=" + '\'' + fileContentType + '\'' +
                 '}';
     }
 
