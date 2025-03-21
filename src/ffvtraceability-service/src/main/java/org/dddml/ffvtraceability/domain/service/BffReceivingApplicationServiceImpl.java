@@ -655,6 +655,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                     AbstractShippingDocumentCommand.SimpleDeleteShippingDocument deleteCommand =
                             new AbstractShippingDocumentCommand.SimpleDeleteShippingDocument();
                     deleteCommand.setDocumentId(documentId);
+                    //FIXME 应该查出来在删除，否则这里没有版本号。
+                    //deleteCommand.setVersion(); 如果不设置version 那么报错：Conflict between state version (0) and event version (NULL)]
                     shippingDocumentApplicationService.when(deleteCommand);
                 });
 
