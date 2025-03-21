@@ -608,7 +608,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 AbstractDocumentCommand.SimpleMergePatchDocument updateCommand = new AbstractDocumentCommand.SimpleMergePatchDocument();
                 updateCommand.setVersion(shippingDocumentState.getVersion());
                 updateCommand.setDocumentId(c.getReferenceDocumentId());
-                if (c.getReferenceDocument().getDocumentTypeId() != null || !c.getReferenceDocument().getDocumentTypeId().isBlank()) {
+                if (c.getReferenceDocument().getDocumentTypeId() != null && !c.getReferenceDocument().getDocumentTypeId().isBlank()) {
                     updateCommand.setDocumentTypeId(c.getReferenceDocument().getDocumentTypeId());
                 } else {
                     updateCommand.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC); // 目前只有一种文档类型，先硬编码
