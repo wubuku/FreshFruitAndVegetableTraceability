@@ -462,10 +462,10 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         AbstractDocumentCommand.SimpleCreateDocument createDocument = new AbstractDocumentCommand.SimpleCreateDocument();
         createDocument.setDocumentId(IdUtils.randomId());
         createDocument.setDocumentLocation(referenceDocument.getDocumentLocation());
-        if (referenceDocument.getDocumentTypeId() != null || !referenceDocument.getDocumentTypeId().isBlank()) {
-            createDocument.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC); // 目前只有一种文档类型，先硬编码
-        } else {
+        if (referenceDocument.getDocumentTypeId() != null && !referenceDocument.getDocumentTypeId().isBlank()) {
             createDocument.setDocumentTypeId(referenceDocument.getDocumentTypeId());
+        } else {
+            createDocument.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC); // 目前只有一种文档类型，先硬编码
         }
         createDocument.setDocumentText(referenceDocument.getDocumentText());
         createDocument.setDocumentText(referenceDocument.getDocumentText());
@@ -609,9 +609,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 updateCommand.setVersion(shippingDocumentState.getVersion());
                 updateCommand.setDocumentId(c.getReferenceDocumentId());
                 if (c.getReferenceDocument().getDocumentTypeId() != null || !c.getReferenceDocument().getDocumentTypeId().isBlank()) {
-                    updateCommand.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC); // 目前只有一种文档类型，先硬编码
-                } else {
                     updateCommand.setDocumentTypeId(c.getReferenceDocument().getDocumentTypeId());
+                } else {
+                    updateCommand.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC); // 目前只有一种文档类型，先硬编码
                 }
                 updateCommand.setDocumentText(c.getReferenceDocument().getDocumentText());
                 updateCommand.setContentType(c.getReferenceDocument().getContentType());
