@@ -467,7 +467,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         } else {
             createDocument.setDocumentTypeId(BffReceivingConstants.DOCUMENT_TYPE_RECV_REF_DOC); // 目前只有一种文档类型，先硬编码
         }
-        createDocument.setDocumentText(referenceDocument.getDocumentText());
+        createDocument.setContentType(referenceDocument.getContentType());
         createDocument.setDocumentText(referenceDocument.getDocumentText());
         createDocument.setComments(referenceDocument.getComments());
         createDocument.setCommandId(UUID.randomUUID().toString());
