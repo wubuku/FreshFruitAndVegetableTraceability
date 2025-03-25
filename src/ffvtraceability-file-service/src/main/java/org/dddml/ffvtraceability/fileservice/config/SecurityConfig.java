@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/files/**"))
                         .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
-                .headers(headers -> headers.frameOptions().disable())
+                .headers(headers -> headers.frameOptions(Customizer.withDefaults()).disable())
                 .authorizeHttpRequests(auth -> {
                     // 首先处理 OPTIONS 请求和公开端点
                     auth.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.OPTIONS, "/**")).permitAll();
@@ -61,8 +61,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
-        return jwtConverter;
+        return new JwtAuthenticationConverter();
     }
 
     @Bean
