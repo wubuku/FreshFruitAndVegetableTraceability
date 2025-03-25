@@ -39,7 +39,7 @@ public class E2EAuthFlowTests {
     private final String TEST_USER_NAME = "user";
     private final String TEST_PASSWORD = "admin";
     private final String NEW_PASSWORD = "newPassword123!";
-    private final String[] OAUTH2_SCOPES = {"openid", "profile"};
+    private final String[] OAUTH2_SCOPES = { "openid", "profile" };
     private final String FORMATTED_SCOPES = String.join("+", OAUTH2_SCOPES);
     @LocalServerPort
     private int port;
@@ -100,7 +100,8 @@ public class E2EAuthFlowTests {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
     }
 
-    private String getAuthorizationCode(CloseableHttpClient client, String codeChallenge, String username) throws Exception {
+    private String getAuthorizationCode(CloseableHttpClient client, String codeChallenge, String username)
+            throws Exception {
         // 1. 获取登录页面和 CSRF token
         System.out.println("📝 Getting login page and CSRF token...");
         HttpGet loginPageRequest = new HttpGet(AUTH_SERVER + "/login");
@@ -131,23 +132,25 @@ public class E2EAuthFlowTests {
 
         try (CloseableHttpResponse response = client.execute(loginRequest, context)) {
             System.out.println("📤 Login Response Status: " + response.getCode());
-            String location = response.getHeader("Location").getValue();
-            System.out.println("📍 Login Response Location: " + location);
+            if (response.getHeader("Location") != null) {
+                String location = response.getHeader("Location").getValue();
+                System.out.println("📍 Login Response Location: " + location);
 
-            // 检查是否需要修改密码
-            if (location.contains("/password/change")) {
-                System.out.println("\n🔄 Password change required, handling password change...");
-                handlePasswordChange(client);
-                
-                // 密码修改后需要重新登录
-                System.out.println("\n🔑 Re-logging in with new password...");
-                formData = String.format("username=%s&password=%s&_csrf=%s",
-                        username, NEW_PASSWORD, csrfToken);
-                loginRequest.setEntity(new StringEntity(formData, ContentType.APPLICATION_FORM_URLENCODED));
-                
-                try (CloseableHttpResponse reLoginResponse = client.execute(loginRequest, context)) {
-                    System.out.println("📤 Re-login Response Status: " + reLoginResponse.getCode());
-                    System.out.println("📍 Re-login Response Location: " + reLoginResponse.getHeader("Location"));
+                // 检查是否需要修改密码
+                if (location.contains("/password/change")) {
+                    System.out.println("\n🔄 Password change required, handling password change...");
+                    handlePasswordChange(client);
+
+                    // 密码修改后需要重新登录
+                    System.out.println("\n🔑 Re-logging in with new password...");
+                    formData = String.format("username=%s&password=%s&_csrf=%s",
+                            username, NEW_PASSWORD, csrfToken);
+                    loginRequest.setEntity(new StringEntity(formData, ContentType.APPLICATION_FORM_URLENCODED));
+
+                    try (CloseableHttpResponse reLoginResponse = client.execute(loginRequest, context)) {
+                        System.out.println("📤 Re-login Response Status: " + reLoginResponse.getCode());
+                        System.out.println("📍 Re-login Response Location: " + reLoginResponse.getHeader("Location"));
+                    }
                 }
             }
         }
@@ -280,9 +283,8 @@ public class E2EAuthFlowTests {
             System.out.println("\n📤 Token Response Details:");
             System.out.println("Status Code: " + statusCode);
             System.out.println("Response Headers:");
-            Arrays.stream(response.getHeaders()).forEach(header ->
-                    System.out.println("  " + header.getName() + ": " + header.getValue())
-            );
+            Arrays.stream(response.getHeaders())
+                    .forEach(header -> System.out.println("  " + header.getName() + ": " + header.getValue()));
             System.out.println("Response Body: " + json);
 
             // 检查状态码
@@ -290,16 +292,14 @@ public class E2EAuthFlowTests {
                 throw new RuntimeException(String.format(
                         "Token request failed with status %d. Response: %s",
                         statusCode,
-                        json
-                ));
+                        json));
             }
 
             // 解析响应
             JsonNode node = objectMapper.readTree(json);
             if (!node.has("access_token")) {
                 throw new RuntimeException(
-                        "Token response does not contain access_token. Response: " + json
-                );
+                        "Token response does not contain access_token. Response: " + json);
             }
 
             String accessToken = node.get("access_token").asText();
@@ -361,7 +361,8 @@ public class E2EAuthFlowTests {
 
     private String extractCode(String location) {
         int codeIndex = location.indexOf("code=");
-        if (codeIndex == -1) return null;
+        if (codeIndex == -1)
+            return null;
         String code = location.substring(codeIndex + 5);
         int andIndex = code.indexOf("&");
         if (andIndex != -1) {
@@ -369,4 +370,4 @@ public class E2EAuthFlowTests {
         }
         return code;
     }
-} 
+}
