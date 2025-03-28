@@ -45,7 +45,6 @@ import java.time.ZoneOffset;
 import java.util.*;
 
 @Configuration
-@EnableWebSecurity(debug = true)
 @EnableConfigurationProperties(AuthStateProperties.class)
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {

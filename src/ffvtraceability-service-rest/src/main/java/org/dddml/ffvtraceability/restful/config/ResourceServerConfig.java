@@ -44,7 +44,10 @@ public class ResourceServerConfig {
                         .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt.decoder(jwtDecoder()))
+                        .jwt(jwt -> {
+                            jwt.decoder(jwtDecoder());
+                            //jwt.jwtAuthenticationConverter(jwtAuthenticationConverter);
+                        })
                 );
 
         return http.build();
