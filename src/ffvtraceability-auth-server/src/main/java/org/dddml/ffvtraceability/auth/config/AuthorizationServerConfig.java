@@ -66,7 +66,7 @@ public class AuthorizationServerConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-
+        
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http
@@ -82,7 +82,6 @@ public class AuthorizationServerConfig {
 
         http.exceptionHandling((exceptionHandlingConfigurer) -> exceptionHandlingConfigurer
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")));
-
         return http.build();
     }
 
@@ -179,16 +178,24 @@ public class AuthorizationServerConfig {
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
+        // 1. 加载 RSA 密钥对（私钥签名，公钥验证）
         KeyPair keyPair = loadKeyPair();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+
+        // 2. 构建 RSAKey（包含公钥和私钥）
         RSAKey rsaKey = new RSAKey.Builder(publicKey)
-                .privateKey(privateKey)
-                .keyID(UUID.randomUUID().toString())
+                .privateKey(privateKey)  // 私钥仅用于签名，不对外暴露
+                .keyID(UUID.randomUUID().toString())  // 唯一标识符（用于密钥轮换）
                 .build();
+
+        // 3. 包装为 JWKSet
         JWKSet jwkSet = new JWKSet(rsaKey);
+
+        // 4. 返回 ImmutableJWKSet（不可变的安全实现）
         return new ImmutableJWKSet<>(jwkSet);
     }
+
 
     private KeyPair loadKeyPair() {
         try {
@@ -211,12 +218,18 @@ public class AuthorizationServerConfig {
         }
     }
 
-    @Bean
-    public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder()
-                .issuer(authServerProperties.getIssuer())
-                .build();
-    }
+//可以通过以下配置来设置 issuer
+// spring:
+//  security:
+//    oauth2:
+//      authorization-server:
+//        issuer: ${AUTH_SERVER_ISSUER:http://localhost:9000}
+//    @Bean
+//    public AuthorizationServerSettings authorizationServerSettings() {
+//        return AuthorizationServerSettings.builder()
+//                .issuer(authServerProperties.getIssuer())
+//                .build();
+//    }
 
     @Bean
     public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
