@@ -40,6 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/change-password")
+    @Transactional
     public void changePassword(@RequestParam String currentPassword,
                                @RequestParam String newPassword) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -202,6 +203,4 @@ public class UserController {
         userDto.setUsername(username);
         return userDto;
     }
-
-
 }

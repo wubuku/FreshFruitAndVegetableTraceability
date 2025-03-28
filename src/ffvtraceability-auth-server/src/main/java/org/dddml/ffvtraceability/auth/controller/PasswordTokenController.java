@@ -55,7 +55,7 @@ public class PasswordTokenController {
     // 根据提供的username，我会返回register类型（通过管理员发送邮件）的最后一条Token的信息，
     // 如果找不到这样的信息，我会返回200+响应体中只返回username（管理员可以发送邮件），
     // 找到一条这样的信息，你要参考里面的passwordCreatedAt属性，如果passwordCreatedAt有值，说明它已经通过这种方式注册过了（管理员不能再发送邮件），
-    // 如果 passwordCreatedAt 为null，则检查其tokenCreatedAt字段，检查它是否超时，如果超时则不能发送邮件
+    // 如果 passwordCreatedAt 为null，则检查其tokenCreatedAt字段，检查它是否超时，如果超时则同样不能发送邮件
     @GetMapping("/last-register-type-token")
     @Transactional(readOnly = true)
     public PasswordTokenDto getLastRegisterTypeToken(@NotNull @RequestParam("username") String username) {
@@ -165,7 +165,13 @@ public class PasswordTokenController {
         emailService.sendHtmlMail(mailTo, "Finish Setting up Your Account", sbHtml.toString(), inlineResources);
     }
 
+    /**
+     * 这个接口应该是任何人都可以调用的，
+     *
+     * @param forgotPasswordVo
+     */
     @PostMapping("/forgot-password")
+    @Transactional
     public void forgotPassword(@RequestBody ForgotPasswordVo forgotPasswordVo) {
         OffsetDateTime now = OffsetDateTime.now();
         String sql = "SELECT * FROM users WHERE username = ?";
@@ -194,6 +200,7 @@ public class PasswordTokenController {
     }
 
     @PutMapping("/create-password")
+    @Transactional
     public void createPassword(@RequestBody PasswordVo passwordVo) {
         if (passwordVo.getToken() == null || passwordVo.getToken().isBlank()) {
             throw new BusinessException("Token is required");

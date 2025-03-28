@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.PreparedStatement;
@@ -26,6 +27,7 @@ public class GroupManagementApiController {
     }
 
     @GetMapping
+    @Transactional(readOnly = true)
     public List<GroupDto> findGroups(@RequestParam(value = "enabled", required = false) Boolean enabled) {
         List<GroupDto> groups = null;
         StringBuilder sql = new StringBuilder("SELECT * FROM groups");
@@ -50,6 +52,7 @@ public class GroupManagementApiController {
     }
 
     @GetMapping("/list")
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> getGroups() {
         String sql = """
                 SELECT g.id, g.group_name, g.enabled,
@@ -67,6 +70,7 @@ public class GroupManagementApiController {
     }
 
     @GetMapping("/{groupId}/members")
+    @Transactional(readOnly = true)
     public List<String> getGroupMembers(@PathVariable Long groupId) {
         return jdbcTemplate.queryForList(
                 "SELECT username FROM group_members WHERE group_id = ? ORDER BY username",
@@ -76,6 +80,7 @@ public class GroupManagementApiController {
     }
 
     @GetMapping("/available-users")
+    @Transactional(readOnly = true)
     public List<String> getAvailableUsers() {
         return jdbcTemplate.queryForList(
                 "SELECT username FROM users WHERE username != '*' ORDER BY username",
@@ -84,6 +89,7 @@ public class GroupManagementApiController {
     }
 
     @PostMapping("/create")
+    @Transactional
     public Map<String, Object> createGroup(@RequestBody Map<String, String> request) {
         String groupName = request.get("groupName");
         if (groupName == null || groupName.isBlank()) {
@@ -94,7 +100,7 @@ public class GroupManagementApiController {
                 Integer.class,
                 groupName
         );
-        if (count != null && count > 0) {
+        if (count > 0) {
             throw new BusinessException("Group name already exists: " + groupName);
         }
         String description = request.get("description");
@@ -143,6 +149,7 @@ public class GroupManagementApiController {
     }
 
     @PostMapping("/{groupId}/members")
+    @Transactional
     public void addGroupMember(@PathVariable Long groupId, @RequestBody Map<String, String> request) {
         String username = request.get("username");
         jdbcTemplate.update(
@@ -152,6 +159,7 @@ public class GroupManagementApiController {
     }
 
     @DeleteMapping("/{groupId}/members/{username}")
+    @Transactional
     public void removeGroupMember(@PathVariable Long groupId, @PathVariable String username) {
         jdbcTemplate.update(
                 "DELETE FROM group_members WHERE group_id = ? AND username = ?",
@@ -160,6 +168,7 @@ public class GroupManagementApiController {
     }
 
     @PostMapping("/{groupId}/toggle-enabled")
+    @Transactional
     public void toggleGroupEnabled(@PathVariable Long groupId) {
         // 首先检查是否是 ADMIN_GROUP，不允许禁用
         Integer count = jdbcTemplate.queryForObject(

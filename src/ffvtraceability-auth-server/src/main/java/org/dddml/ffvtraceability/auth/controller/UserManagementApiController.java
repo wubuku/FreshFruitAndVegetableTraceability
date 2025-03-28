@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class UserManagementApiController {
     }
 
     @GetMapping("/list")
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> getUsers() {
         String sql = """
                 SELECT u.username, u.enabled, u.password_change_required,
@@ -46,11 +48,13 @@ public class UserManagementApiController {
 
 
     @GetMapping("/{username}")
+    @Transactional(readOnly = true)
     public UserDto getUserByUserName(@PathVariable("username") String username) {
         return userService.getUserByUsername(username);
     }
 
     @PostMapping("/{username}/toggle-enabled")
+    @Transactional
     public void toggleEnabled(@PathVariable String username) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = auth.getName();

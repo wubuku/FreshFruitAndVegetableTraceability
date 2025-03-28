@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +37,7 @@ public class PermissionManagementApiController {
     }
 
     @GetMapping("/users")
+    @Transactional(readOnly = true)
     public List<String> getUsers() {
         return jdbcTemplate.queryForList(
                 "SELECT username FROM users WHERE username != '*' ORDER BY username",
@@ -44,6 +46,7 @@ public class PermissionManagementApiController {
     }
 
     @GetMapping("/base")
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> getBasePermissions() {
         logger.debug("Fetching base permissions...");
         String sql = """
@@ -57,6 +60,7 @@ public class PermissionManagementApiController {
     }
 
     @GetMapping("/user/{username}")
+    @Transactional(readOnly = true)
     public List<String> getUserPermissions(@PathVariable String username) {
         String sql = """
                 SELECT a.authority 
@@ -70,6 +74,7 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/update")
+    @Transactional
     public void updatePermission(@RequestBody Map<String, Object> request) {
         String username = (String) request.get("username");
         String permission = (String) request.get("permission");
@@ -89,6 +94,7 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/batch-update")
+    @Transactional
     public void batchUpdatePermissions(@RequestBody Map<String, Object> request) {
         String username = (String) request.get("username");
         @SuppressWarnings("unchecked")
@@ -118,6 +124,7 @@ public class PermissionManagementApiController {
     }
 
     @GetMapping("/groups")
+    @Transactional(readOnly = true)
     public List<GroupInfo> getGroups() {
         return jdbcTemplate.query(
                 "SELECT id, group_name FROM groups ORDER BY group_name",
@@ -126,6 +133,7 @@ public class PermissionManagementApiController {
     }
 
     @GetMapping("/group/{groupId}")
+    @Transactional(readOnly = true)
     public List<String> getGroupPermissions(@PathVariable Long groupId) {
         String sql = """
                 SELECT ga.authority 
@@ -139,6 +147,7 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/group/update")
+    @Transactional
     public void updateGroupPermission(@RequestBody Map<String, Object> request) {
         Long groupId = Long.valueOf(request.get("groupId").toString());
         String permission = (String) request.get("permission");
@@ -158,6 +167,7 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/group/batch-update")
+    @Transactional
     public void batchUpdateGroupPermissions(@RequestBody Map<String, Object> request) {
         Long groupId = Long.valueOf(request.get("groupId").toString());
         @SuppressWarnings("unchecked")
@@ -185,6 +195,7 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/create")
+    @Transactional
     public void createPermission(@RequestBody Map<String, String> request) {
         String permissionId = request.get("permissionId");
         String description = request.get("description");
@@ -195,6 +206,7 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/{permissionId}/toggle-enabled")
+    @Transactional
     public void togglePermissionEnabled(@PathVariable String permissionId) {
         // 先检查当前状态
         Boolean currentEnabled = jdbcTemplate.queryForObject(
@@ -213,6 +225,7 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/{permissionId}/update")
+    @Transactional
     public void updatePermission(
             @PathVariable String permissionId,
             @RequestBody Map<String, String> request) {
@@ -225,6 +238,7 @@ public class PermissionManagementApiController {
     }
 
     @PostMapping("/import-csv")
+    @Transactional
     public String importPermissionsFromCsv(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new BusinessException("Please select a file to upload");
