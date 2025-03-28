@@ -15,12 +15,15 @@ import org.dddml.ffvtraceability.auth.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -49,7 +52,7 @@ public class PasswordTokenController {
         return passwordTokenService.getPasswordToken(token);
     }
 
-    //根据提供的username，我会返回register类型（通过管理员发送邮件）的最后一条Token的信息，
+    // 根据提供的username，我会返回register类型（通过管理员发送邮件）的最后一条Token的信息，
     // 如果找不到这样的信息，我会返回200+响应体中只返回username（管理员可以发送邮件），
     // 找到一条这样的信息，你要参考里面的passwordCreatedAt属性，如果passwordCreatedAt有值，说明它已经通过这种方式注册过了（管理员不能再发送邮件），
     // 如果 passwordCreatedAt 为null，则检查其tokenCreatedAt字段，检查它是否超时，如果超时则不能发送邮件
@@ -120,15 +123,46 @@ public class PasswordTokenController {
 //        return passwordTokenDto;
 //    }
     private void sendResetPasswordEmail(String mailTo, String token) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Password Reset\r\n");
-        sb.append("You have requested to reset your password.Use the link below to create a new password\r\n");
-        sb.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token);
-        sb.append("&type=reset\r\n");
-        sb.append("\r\n");
-        sb.append("Thanks\r\n");
-        sb.append("Powered by Fresh Fruit & Vegetable Traceability System\r\n");
-        emailService.sendTextMail(mailTo, "Password Reset", sb.toString());
+        StringBuilder sbLink = new StringBuilder();
+        sbLink.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token).append("&type=reset");
+        StringBuilder sbHtml = new StringBuilder("""
+                <div style="max-width: 600px; padding: 46px; background: white; outline: 1px #D4D4D8 solid; margin: 0 auto; font-family: Inter;">
+                <img style="width: 165px; height: 50px;" src="cid:logo" alt="Logo">
+                <div style="margin: 24px 0;">
+                <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px 0;">Password Reset</h1>
+                <p style="font-size: 16px; line-height: 24px; margin: 0;">You have requested to reset your password.Use the link below to create a new password.
+                </p>
+                </div>
+                """);
+        sbHtml.append("<a href='");
+        sbHtml.append(sbLink);
+        sbHtml.append("""
+                ' target='_blank'
+                    style="display: inline-block;
+                    padding: 8px 16px;
+                    background: #15803D;
+                    color: #FFFFFF;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-size: 16px;
+                    line-height: 24px;
+                    margin: 16px 0;">
+                    Reset password
+                    </a>
+                  <hr style="border: 0;
+                            height: 0;
+                            border-top: 1px solid #D4D4D8;
+                            margin: 24px 0;">
+                  <div style="text-align: center; margin-top: 24px;">
+                      <span style="font-size: 14px;">Powered by</span>
+                      <img style="width: 96px; height: 28px; vertical-align: middle;" src="cid:blueforce" alt="Blueforce">
+                  </div>
+                </div>
+                """);
+        Map<String, ClassPathResource> inlineResources = new HashMap<>();
+        inlineResources.put("logo", new ClassPathResource("images/logo.png"));
+        inlineResources.put("blueforce", new ClassPathResource("images/blueforce.png"));
+        emailService.sendHtmlMail(mailTo, "Finish Setting up Your Account", sbHtml.toString(), inlineResources);
     }
 
     @PostMapping("/forgot-password")
