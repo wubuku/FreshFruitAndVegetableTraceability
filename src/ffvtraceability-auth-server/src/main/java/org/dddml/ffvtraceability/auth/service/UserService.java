@@ -153,7 +153,7 @@ public class UserService {
         // Check if user already exists
         String username = preRegisterUser.getUsername();
         if (userExists(username)) {
-            throw new BusinessException("Username already exists: " + username);
+            throw new BusinessException("User email already exists: " + username);
         }
 
         // Generate one-time password

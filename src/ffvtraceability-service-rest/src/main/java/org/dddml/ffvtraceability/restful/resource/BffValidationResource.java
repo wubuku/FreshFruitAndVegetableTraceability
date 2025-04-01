@@ -51,7 +51,7 @@ public class BffValidationResource {
         }
         internalId = internalId.trim();
         if (bffSupplierRepository.countByPartyIdentificationTypeIdAndIdValue(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, internalId) > 0) {
-            throw new IllegalArgumentException(String.format("Vendor Number:%s is already in use. Please try a different one.", internalId));
+            throw new IllegalArgumentException(String.format("Vendor number:%s is already in use. Please try a different one.", internalId));
         }
     }
 
@@ -72,7 +72,7 @@ public class BffValidationResource {
         internalId = internalId.trim();
         String partyId = bffSupplierRepository.queryByPartyIdentificationTypeIdAndIdValue(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, internalId);
         if (partyId != null && !partyId.equals(supplierId)) {
-            throw new IllegalArgumentException(String.format("Vendor Number:%s is already in use. Please try a different one.", internalId));
+            throw new IllegalArgumentException(String.format("Vendor number:%s is already in use. Please try a different one.", internalId));
         }
     }
 
@@ -90,7 +90,7 @@ public class BffValidationResource {
         }
         internalId = internalId.trim();
         if (bffRawItemRepository.countByIdentificationTypeIdAndIdValue(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, internalId) > 0) {
-            throw new IllegalArgumentException(String.format("Item Number:%s is already in use. Please try a different one.", internalId));
+            throw new IllegalArgumentException(String.format("Item number:%s is already in use. Please try a different one.", internalId));
         }
     }
 
@@ -112,7 +112,7 @@ public class BffValidationResource {
         String itemId = bffRawItemRepository.queryProductIdByIdentificationTypeIdAndIdValue(
                 GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, internalId);
         if (itemId != null && !itemId.equals(productId)) {
-            throw new IllegalArgumentException(String.format("Item Number:%s is already in use. Please try a different one.", internalId));
+            throw new IllegalArgumentException(String.format("Item number:%s is already in use. Please try a different one.", internalId));
         }
     }
 
@@ -172,7 +172,7 @@ public class BffValidationResource {
         }
         internalId = internalId.trim();
         if (bffFacilityRepository.countByIdentificationTypeIdAndIdValue(FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID, internalId) > 0) {
-            throw new IllegalArgumentException(String.format("Facility Number:%s is already in use. Please try a different one.", internalId));
+            throw new IllegalArgumentException(String.format("Facility number:%s is already in use. Please try a different one.", internalId));
         }
     }
 
@@ -196,7 +196,7 @@ public class BffValidationResource {
         internalId = internalId.trim();
         String existingId = bffFacilityRepository.queryByIdentificationTypeIdAndIdValue(FACILITY_IDENTIFICATION_TYPE_INTERNAL_ID, internalId);
         if (existingId != null && !existingId.equals(facilityId)) {
-            throw new IllegalArgumentException("Facility Number:" + internalId + " is already in use. Please try a different one.");
+            throw new IllegalArgumentException("Facility number:" + internalId + " is already in use. Please try a different one.");
         }
     }
 
@@ -285,7 +285,7 @@ public class BffValidationResource {
         if (bffFacilityLocationIdProjection != null &&
                 !(bffFacilityLocationIdProjection.getLocationSeqId().equals(locationSeqId)
                         && bffFacilityLocationIdProjection.getFacilityId().equals(facilityId))) {
-            throw new IllegalArgumentException(String.format("Location name already exists: %s", locationCode));
+            throw new IllegalArgumentException(String.format("Location code already exists: %s", locationCode));
         }
     }
 }
