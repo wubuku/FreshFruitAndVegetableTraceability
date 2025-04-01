@@ -336,7 +336,9 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
             throw new IllegalArgumentException("OrderId is required.");
         }
         OrderHeaderState orderHeaderState = getAndValidateOrder(c.getOrderId());
-
+        if (orderHeaderState.getOrderId() == null) {
+            throw new IllegalArgumentException("Order not found: " + c.getOrderId());
+        }
         BffPurchaseOrderDto purchaseOrder = c.getPurchaseOrder();
         AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
         mergePatchOrder.setOrderId(c.getOrderId());
@@ -401,6 +403,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
                                                  BffPurchaseOrderItemDto item
     ) {
         mergePatchOrderItem.setOrderItemSeqId(item.getOrderItemSeqId());
+        mergePatchOrderItem.setProductId(item.getProductId());
         mergePatchOrderItem.setQuantity(item.getQuantity());
         mergePatchOrderItem.setUnitPrice(item.getUnitPrice());
         mergePatchOrderItem.setEstimatedShipDate(item.getEstimatedShipDate());
