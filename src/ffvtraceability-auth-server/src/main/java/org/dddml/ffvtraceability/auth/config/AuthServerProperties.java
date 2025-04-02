@@ -4,17 +4,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "auth-server")
 public class AuthServerProperties {
-    private String issuer;
+    //private String issuer;
     private CorsConfig cors;
 
     // Getters and setters
-    public String getIssuer() {
-        return issuer;
-    }
-
-    public void setIssuer(String issuer) {
-        this.issuer = issuer;
-    }
+//    public String getIssuer() {
+//        return issuer;
+//    }
+//
+//    public void setIssuer(String issuer) {
+//        this.issuer = issuer;
+//    }
 
     public CorsConfig getCors() {
         return cors;

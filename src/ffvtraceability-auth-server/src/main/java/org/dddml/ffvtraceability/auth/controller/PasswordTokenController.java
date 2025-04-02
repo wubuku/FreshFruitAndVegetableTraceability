@@ -162,7 +162,7 @@ public class PasswordTokenController {
         Map<String, ClassPathResource> inlineResources = new HashMap<>();
         inlineResources.put("logo", new ClassPathResource("images/logo.png"));
         inlineResources.put("blueforce", new ClassPathResource("images/blueforce.png"));
-        emailService.sendHtmlMail(mailTo, "Finish Setting up Your Account", sbHtml.toString(), inlineResources);
+        emailService.sendHtmlMail(mailTo, "Password Reset", sbHtml.toString(), inlineResources);
     }
 
     /**
