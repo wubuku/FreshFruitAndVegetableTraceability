@@ -84,7 +84,6 @@ spring:
 password:
   token:
     create-password-url: https://fp.ablueforce.com/change-password
-    reset-password-url: https://fp.ablueforce.com/reset-password
     expire-in-hours: 24
 
 

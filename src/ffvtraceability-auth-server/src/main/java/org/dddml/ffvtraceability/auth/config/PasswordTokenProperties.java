@@ -7,7 +7,6 @@ public class PasswordTokenProperties {
 
     private Integer expireInHours = 24;
     private String createPasswordUrl;
-    private String resetPasswordUrl;
 
     public Integer getExpireInHours() {
         return expireInHours;
@@ -23,13 +22,5 @@ public class PasswordTokenProperties {
 
     public void setCreatePasswordUrl(String createPasswordUrl) {
         this.createPasswordUrl = createPasswordUrl;
-    }
-
-    public String getResetPasswordUrl() {
-        return resetPasswordUrl;
-    }
-
-    public void setResetPasswordUrl(String resetPasswordUrl) {
-        this.resetPasswordUrl = resetPasswordUrl;
     }
 }

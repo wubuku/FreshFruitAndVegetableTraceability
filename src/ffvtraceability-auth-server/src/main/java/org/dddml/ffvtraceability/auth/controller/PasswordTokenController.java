@@ -124,7 +124,7 @@ public class PasswordTokenController {
 //    }
     private void sendResetPasswordEmail(String mailTo, String token) {
         StringBuilder sbLink = new StringBuilder();
-        sbLink.append(passwordTokenProperties.getResetPasswordUrl()).append("?").append("token=").append(token).append("&type=reset");
+        sbLink.append(passwordTokenProperties.getCreatePasswordUrl()).append("?").append("token=").append(token).append("&type=reset");
         StringBuilder sbHtml = new StringBuilder("""
                 <div style="max-width: 600px; padding: 46px; background: white; outline: 1px #D4D4D8 solid; margin: 0 auto; font-family: Inter;">
                 <img style="width: 165px; height: 50px;" src="cid:logo" alt="Logo">
