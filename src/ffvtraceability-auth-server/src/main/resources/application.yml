@@ -83,7 +83,8 @@ spring:
 
 password:
   token:
-    create-password-url: https://demo-git-master-liugan2222s-projects.vercel.app/change-password
+    create-password-url: https://www.ablueforce.com/change-password
+    reset-password-url: https://www.ablueforce.com/reset-password
     expire-in-hours: 24
 
 
