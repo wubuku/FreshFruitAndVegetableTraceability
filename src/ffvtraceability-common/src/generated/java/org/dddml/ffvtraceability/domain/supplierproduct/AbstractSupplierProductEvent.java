@@ -125,7 +125,7 @@ public abstract class AbstractSupplierProductEvent extends AbstractEvent impleme
         }
 
         public OffsetDateTime getAvailableThruDate() {
-            Object val = getDynamicProperties().get("availableThruDate");
+            Object val = getDynamicProperties().get("available_thru_date");
             if (val instanceof OffsetDateTime) {
                 return (OffsetDateTime) val;
             }
@@ -133,7 +133,7 @@ public abstract class AbstractSupplierProductEvent extends AbstractEvent impleme
         }
 
         public void setAvailableThruDate(OffsetDateTime value) {
-            getDynamicProperties().put("availableThruDate", value);
+            getDynamicProperties().put("available_thru_date", value);
         }
 
     }

@@ -229,7 +229,7 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
         }
 
         public java.math.BigDecimal getUnallocatedQuantity() {
-            Object val = getDynamicProperties().get("unallocatedQuantity");
+            Object val = getDynamicProperties().get("unallocated_quantity");
             if (val instanceof java.math.BigDecimal) {
                 return (java.math.BigDecimal) val;
             }
@@ -237,11 +237,11 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
         }
 
         public void setUnallocatedQuantity(java.math.BigDecimal value) {
-            getDynamicProperties().put("unallocatedQuantity", value);
+            getDynamicProperties().put("unallocated_quantity", value);
         }
 
         public OrderItemQuantityAllocationValue[] getOrderItemAllocations() {
-            Object val = getDynamicProperties().get("orderItemAllocations");
+            Object val = getDynamicProperties().get("order_item_allocations");
             if (val instanceof OrderItemQuantityAllocationValue[]) {
                 return (OrderItemQuantityAllocationValue[]) val;
             }
@@ -249,11 +249,11 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
         }
 
         public void setOrderItemAllocations(OrderItemQuantityAllocationValue[] value) {
-            getDynamicProperties().put("orderItemAllocations", value);
+            getDynamicProperties().put("order_item_allocations", value);
         }
 
         public String getPreviousOrderId() {
-            Object val = getDynamicProperties().get("previousOrderId");
+            Object val = getDynamicProperties().get("previous_order_id");
             if (val instanceof String) {
                 return (String) val;
             }
@@ -261,7 +261,7 @@ public abstract class AbstractShipmentReceiptEvent extends AbstractEvent impleme
         }
 
         public void setPreviousOrderId(String value) {
-            getDynamicProperties().put("previousOrderId", value);
+            getDynamicProperties().put("previous_order_id", value);
         }
 
     }
