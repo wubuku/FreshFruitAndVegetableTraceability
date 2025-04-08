@@ -75,10 +75,6 @@ public interface SupplierProductEvent extends Event {
 
         void setProductWeight(java.math.BigDecimal productWeight);
 
-        String getActive();
-
-        void setActive(String active);
-
         String getCaseUomId();
 
         void setCaseUomId(String caseUomId);
@@ -220,10 +216,6 @@ public interface SupplierProductEvent extends Event {
         Boolean getIsPropertyProductWeightRemoved();
 
         void setIsPropertyProductWeightRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
         Boolean getIsPropertyCaseUomIdRemoved();
 

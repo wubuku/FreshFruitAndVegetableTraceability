@@ -1,11 +1,18 @@
 # 原材料与供应商的关系
 valueObjects:
   BffSupplierRawItemDto:
+    metadata:
+      JpaProjectionInterfaceName: BffSupplierRawItemProjection
+      JpaProjectionPropertyTypes:
+        AvailableFromDate: java.time.Instant
+        AvailableThruDate: java.time.Instant
     properties:
       ProductId:
         type: id
       SupplierId: #partyId
         type: id
+      Version:
+        type: numeric
       CurrencyUomId:
         type: id
       MinimumOrderQuantity:

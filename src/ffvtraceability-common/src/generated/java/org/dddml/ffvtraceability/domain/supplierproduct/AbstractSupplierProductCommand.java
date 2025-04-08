@@ -111,18 +111,6 @@ public abstract class AbstractSupplierProductCommand extends AbstractCommand imp
             this.productWeight = productWeight;
         }
 
-        private String active;
-
-        public String getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(String active)
-        {
-            this.active = active;
-        }
-
         private String caseUomId;
 
         public String getCaseUomId()
@@ -535,18 +523,6 @@ public abstract class AbstractSupplierProductCommand extends AbstractCommand imp
         public void setIsPropertyProductWeightRemoved(Boolean removed)
         {
             this.isPropertyProductWeightRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
         }
 
         private Boolean isPropertyCaseUomIdRemoved;

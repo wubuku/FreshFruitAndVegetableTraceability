@@ -76,10 +76,6 @@ public interface SupplierProductCommand extends Command {
 
         void setProductWeight(java.math.BigDecimal productWeight);
 
-        String getActive();
-
-        void setActive(String active);
-
         String getCaseUomId();
 
         void setCaseUomId(String caseUomId);
@@ -217,10 +213,6 @@ public interface SupplierProductCommand extends Command {
         Boolean getIsPropertyProductWeightRemoved();
 
         void setIsPropertyProductWeightRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
 
         Boolean getIsPropertyCaseUomIdRemoved();
 

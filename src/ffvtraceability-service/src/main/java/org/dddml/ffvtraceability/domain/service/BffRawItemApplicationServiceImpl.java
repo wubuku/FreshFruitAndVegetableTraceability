@@ -11,7 +11,7 @@ import org.dddml.ffvtraceability.domain.party.PartyApplicationService;
 import org.dddml.ffvtraceability.domain.party.PartyState;
 import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
-import org.dddml.ffvtraceability.domain.repository.BffSupplierProductAssocProjection;
+import org.dddml.ffvtraceability.domain.repository.BffSupplierRawItemProjection;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.AbstractShipmentBoxTypeCommand;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeApplicationService;
 import org.dddml.ffvtraceability.domain.supplierproduct.AbstractSupplierProductCommand;
@@ -29,7 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.*;
 import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.DEFAULT_CURRENCY_UOM_ID;
@@ -106,13 +108,6 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
 //        if (partyApplicationService.get(supplierId) == null) {
 //            throw new IllegalArgumentException("SupplierId is not valid.");
 //        }
-        // if (uomApplicationService.get(c.getRawItem().getQuantityUomId()) == null) {
-        // throw new IllegalArgumentException("QuantityUomId is not valid.");
-        // }
-        // if (c.getRawItem().getSupplierId() != null &&
-        // partyApplicationService.get(c.getRawItem().getSupplierId()) == null) {
-        // throw new IllegalArgumentException("SupplierId is not valid.");
-        // }
         AbstractProductCommand.SimpleCreateProduct createProduct = new AbstractProductCommand.SimpleCreateProduct();
         createProduct.setProductId(rawItem.getProductId() != null ? rawItem.getProductId() : IdUtils.randomId());
         // (rawItem.getProductId()); // NOTE: ignore the productId from the client side?
@@ -124,26 +119,26 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createProduct.setQuantityUomId(rawItem.getQuantityUomId());
         // If you have a six-pack of 12oz soda cans you would have quantityIncluded=12,
         // quantityUomId=oz, piecesIncluded=6.
-        createProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
+        //createProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
         createProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
         createProduct.setDescription(rawItem.getDescription());
-        createProduct.setBrandName(rawItem.getBrandName());
+        //createProduct.setBrandName(rawItem.getBrandName());
         createProduct.setProduceVariety(rawItem.getProduceVariety());
-        createProduct.setOrganicCertifications(rawItem.getOrganicCertifications());
-        createProduct.setCountryOfOrigin(rawItem.getCountryOfOrigin());
+        //createProduct.setOrganicCertifications(rawItem.getOrganicCertifications());
+        //createProduct.setCountryOfOrigin(rawItem.getCountryOfOrigin());
         createProduct.setShelfLifeDescription(rawItem.getShelfLifeDescription());
         createProduct.setHandlingInstructions(rawItem.getHandlingInstructions());
         createProduct.setStorageConditions(rawItem.getStorageConditions());
-        createProduct.setMaterialCompositionDescription(rawItem.getMaterialCompositionDescription());
-        createProduct.setCertificationCodes(rawItem.getCertificationCodes());
-        createProduct.setIndividualsPerPackage(rawItem.getIndividualsPerPackage());
-        createProduct.setCaseUomId(rawItem.getCaseUomId());
+        //createProduct.setMaterialCompositionDescription(rawItem.getMaterialCompositionDescription());
+        //createProduct.setCertificationCodes(rawItem.getCertificationCodes());
+        //createProduct.setIndividualsPerPackage(rawItem.getIndividualsPerPackage());
+        //createProduct.setCaseUomId(rawItem.getCaseUomId());
         createProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
 
         // Weight related fields
         createProduct.setWeightUomId(rawItem.getWeightUomId());
         createProduct.setShippingWeight(rawItem.getShippingWeight());
-        createProduct.setProductWeight(rawItem.getProductWeight());
+        //createProduct.setProductWeight(rawItem.getProductWeight());
         // Height related fields
         createProduct.setHeightUomId(rawItem.getHeightUomId());
         createProduct.setProductHeight(rawItem.getProductHeight());
@@ -160,12 +155,11 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createProduct.setDiameterUomId(rawItem.getDiameterUomId());
         createProduct.setProductDiameter(rawItem.getProductDiameter());
         // 默认情况下（不传值）就是Y
-        createProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(rawItem.getActive()));
-
-        if (rawItem.getGtin() != null && !rawItem.getGtin().isBlank()) {
-            rawItem.setGtin(rawItem.getGtin().trim());
-            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin(), createProduct);
-        }
+        createProduct.setActive(INDICATOR_YES);//.asIndicatorDefaultYes(rawItem.getActive()));
+//        if (rawItem.getGtin() != null && !rawItem.getGtin().isBlank()) {
+//            rawItem.setGtin(rawItem.getGtin().trim());
+//            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin(), createProduct);
+//        }
         if (rawItem.getInternalId() != null && !rawItem.getInternalId().isBlank()) {
             rawItem.setInternalId(rawItem.getInternalId().trim());
             if (bffRawItemRepository.countByIdentificationTypeIdAndIdValue(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID,
@@ -188,6 +182,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : createProduct.getProductId());
         createProduct.setRequesterId(c.getRequesterId());
         productApplicationService.when(createProduct);
+        OffsetDateTime now = OffsetDateTime.now();
         if (rawItem.getSuppliers() != null && !rawItem.getSuppliers().isEmpty()) {
             List<String> supplierIds = new ArrayList<>();
             rawItem.getSuppliers().forEach(supplierRawItem -> {
@@ -195,7 +190,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                     throw new IllegalArgumentException("Duplicate vendor: " + supplierRawItem.getSupplierId());
                 }
                 supplierIds.add(supplierRawItem.getSupplierId());
-                createSupplierProduct(createProduct.getProductId(), supplierRawItem, c);
+                createSupplierProduct(createProduct.getProductId(), supplierRawItem, now, c);
             });
         }
         return createProduct.getProductId();
@@ -241,13 +236,13 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         if (productState == null) {
             throw new IllegalArgumentException("Product not found: " + productId);
         }
-        String supplierId = c.getRawItem().getSupplierId();
-        if (supplierId == null || supplierId.isBlank()) {
-            throw new IllegalArgumentException("Supplier can't be null");
-        }
-        if (partyApplicationService.get(supplierId) == null) {
-            throw new IllegalArgumentException("SupplierId is not valid.");
-        }
+//        String supplierId = c.getRawItem().getSupplierId();
+//        if (supplierId == null || supplierId.isBlank()) {
+//            throw new IllegalArgumentException("Supplier can't be null");
+//        }
+//        if (partyApplicationService.get(supplierId) == null) {
+//            throw new IllegalArgumentException("SupplierId is not valid.");
+//        }
         BffRawItemDto rawItem = c.getRawItem();
         AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
         mergePatchProduct.setProductId(productId);
@@ -258,15 +253,15 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         mergePatchProduct.setSmallImageUrl(rawItem.getSmallImageUrl());
         mergePatchProduct.setMediumImageUrl(rawItem.getMediumImageUrl());
         mergePatchProduct.setLargeImageUrl(rawItem.getLargeImageUrl());
-        mergePatchProduct.setBrandName(rawItem.getBrandName());
+        //mergePatchProduct.setBrandName(rawItem.getBrandName());
         mergePatchProduct.setProduceVariety(rawItem.getProduceVariety());
-        mergePatchProduct.setOrganicCertifications(rawItem.getOrganicCertifications());
-        mergePatchProduct.setMaterialCompositionDescription(rawItem.getMaterialCompositionDescription());
-        mergePatchProduct.setCountryOfOrigin(rawItem.getCountryOfOrigin());
-        mergePatchProduct.setCertificationCodes(rawItem.getCertificationCodes());
+        //mergePatchProduct.setOrganicCertifications(rawItem.getOrganicCertifications());
+        //mergePatchProduct.setMaterialCompositionDescription(rawItem.getMaterialCompositionDescription());
+        //mergePatchProduct.setCountryOfOrigin(rawItem.getCountryOfOrigin());
+        //mergePatchProduct.setCertificationCodes(rawItem.getCertificationCodes());
         mergePatchProduct.setShelfLifeDescription(rawItem.getShelfLifeDescription());
         mergePatchProduct.setHandlingInstructions(rawItem.getHandlingInstructions());
-        mergePatchProduct.setStorageConditions(rawItem.getStorageConditions());
+        //mergePatchProduct.setStorageConditions(rawItem.getStorageConditions());
         mergePatchProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
 
         if (rawItem.getCaseUomId() != null) {
@@ -274,16 +269,16 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         }
         if (rawItem.getQuantityUomId() != null)
             mergePatchProduct.setQuantityUomId(rawItem.getQuantityUomId());
-        if (rawItem.getQuantityIncluded() != null)
-            mergePatchProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
+//        if (rawItem.getQuantityIncluded() != null)
+//            mergePatchProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
         if (rawItem.getPiecesIncluded() != null)
             mergePatchProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
         if (rawItem.getWeightUomId() != null)
             mergePatchProduct.setWeightUomId(rawItem.getWeightUomId());
         if (rawItem.getShippingWeight() != null)
             mergePatchProduct.setShippingWeight(rawItem.getShippingWeight());
-        if (rawItem.getProductWeight() != null)
-            mergePatchProduct.setProductWeight(rawItem.getProductWeight());
+//        if (rawItem.getProductWeight() != null)
+//            mergePatchProduct.setProductWeight(rawItem.getProductWeight());
 
         if (rawItem.getHeightUomId() != null)
             mergePatchProduct.setHeightUomId(rawItem.getHeightUomId());
@@ -310,9 +305,9 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             mergePatchProduct.setDiameterUomId(rawItem.getDiameterUomId());
         if (rawItem.getProductDiameter() != null)
             mergePatchProduct.setProductDiameter(rawItem.getProductDiameter());
-        if (rawItem.getIndividualsPerPackage() != null) {
-            mergePatchProduct.setIndividualsPerPackage(rawItem.getIndividualsPerPackage());
-        }
+//        if (rawItem.getIndividualsPerPackage() != null) {
+//            mergePatchProduct.setIndividualsPerPackage(rawItem.getIndividualsPerPackage());
+//        }
         mergePatchProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(rawItem.getActive()));
 
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
@@ -322,7 +317,6 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         } else if (rawItem.getDefaultShipmentBoxType() != null) {
             mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
         }
-
         if (rawItem.getInternalId() != null && !rawItem.getInternalId().isBlank()) {
             rawItem.setInternalId(rawItem.getInternalId().trim());
             String itemId = bffRawItemRepository
@@ -333,7 +327,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                         "Item Number:%s is already in use. Please try a different one.", rawItem.getInternalId()));
             }
         }
-        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin());
+        //updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin());
         updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_INTERNAL_ID,
                 rawItem.getInternalId());
         updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE,
@@ -341,26 +335,87 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
 
         productApplicationService.when(mergePatchProduct);
 
-        // 这里不需要使用完整的 ID 全等匹配查询
-        BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.findSupplierProductAssociation(
-                productId,
-                supplierId,
-                DEFAULT_CURRENCY_UOM_ID,
-                BigDecimal.ZERO,
-                OffsetDateTime.now());
-        SupplierProductAssocId supplierProductAssocId;
-        if (existingAssoc == null) {
-            //createSupplierProduct(productId, supplierId, c);
-        } else {
-            supplierProductAssocId = bffSupplierProductAssocIdMapper.toSupplierProductAssocId(existingAssoc);
+        //更新供应商产品关联
+        if (rawItem.getSuppliers() == null) {
+            rawItem.setSuppliers(new ArrayList<>());
+        }
+        //先查询当前产品的供应商与产品关联关系列表
+        List<BffSupplierRawItemProjection> supplierRawItemProjections =
+                bffRawItemRepository.findSupplierRawItemByProductId(productId);
+        List<String> existingSupplierIds = supplierRawItemProjections.stream().
+                map(BffSupplierRawItemProjection::getSupplierId).collect(Collectors.toList());
+        List<String> inputSupplierIds = rawItem.getSuppliers().stream().
+                map(BffSupplierRawItemDto::getSupplierId).collect(Collectors.toList());
+        List<String> newSupplierIds = inputSupplierIds.stream().filter(x -> !existingSupplierIds.contains(x)).collect(Collectors.toList());
+        List<String> deleteSupplierIds = existingSupplierIds.stream().filter(x -> !inputSupplierIds.contains(x)).collect(Collectors.toList());
+        List<String> updateSupplierIds = inputSupplierIds.stream().filter(x -> existingSupplierIds.contains(x)).collect(Collectors.toList());
+        OffsetDateTime now = OffsetDateTime.now();
+        //新添加的关联关系
+        rawItem.getSuppliers().forEach(x -> {
+            if (newSupplierIds.contains(x.getSupplierId())) {
+                createSupplierProduct(productId, x, now, c);
+            }
+        });
+        //要进行更新的Supplier-Product(SupplierId与BffSupplierRawItemDto)的映射关系
+        Map<String, BffSupplierRawItemDto> toBeUpdatedSupplierProductMap = new HashMap<>();
+        rawItem.getSuppliers().forEach(x -> {
+            if (updateSupplierIds.contains(x.getSupplierId())) {
+                toBeUpdatedSupplierProductMap.put(x.getSupplierId(), x);
+            }
+        });
+        supplierRawItemProjections.forEach(x -> {
+            SupplierProductAssocId supplierProductAssocId = new SupplierProductAssocId();
+            supplierProductAssocId.setProductId(productId);
+            supplierProductAssocId.setPartyId(x.getSupplierId());
+            supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
+            supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
+            supplierProductAssocId.setAvailableFromDate(x.getAvailableFromDate().atOffset(ZoneOffset.UTC));//更新的时候原有的fromDate不变
             AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct = new AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct();
             mergePatchSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
-            mergePatchSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
-            mergePatchSupplierProduct.setVersion(existingAssoc.getVersion());
+            mergePatchSupplierProduct.setVersion(x.getVersion());
             mergePatchSupplierProduct.setCommandId(UUID.randomUUID().toString());
             mergePatchSupplierProduct.setRequesterId(c.getRequesterId());
+            if (updateSupplierIds.contains(x.getSupplierId())) {//存在的更新
+                mergePatchSupplierProduct.setAvailableThruDate(now.plusYears(100));//ThruDate改为当前时间加100years
+                BffSupplierRawItemDto supplierRawItemDto = toBeUpdatedSupplierProductMap.get(x.getSupplierId());
+                if (supplierRawItemDto != null) {
+                    mergePatchSupplierProduct.setBrandName(supplierRawItemDto.getBrandName());
+                    mergePatchSupplierProduct.setGtin(supplierRawItemDto.getGtin());
+                    mergePatchSupplierProduct.setQuantityIncluded(supplierRawItemDto.getQuantityIncluded());
+                    mergePatchSupplierProduct.setProductWeight(supplierRawItemDto.getProductWeight());
+                    mergePatchSupplierProduct.setCaseUomId(supplierRawItemDto.getCaseUomId());
+                    mergePatchSupplierProduct.setOrganicCertifications(supplierRawItemDto.getOrganicCertifications());
+                    mergePatchSupplierProduct.setMaterialCompositionDescription(supplierRawItemDto.getMaterialCompositionDescription());
+                    mergePatchSupplierProduct.setCertificationCodes(supplierRawItemDto.getCertificationCodes());
+                    mergePatchSupplierProduct.setCountryOfOrigin(supplierRawItemDto.getCountryOfOrigin());
+                    mergePatchSupplierProduct.setIndividualsPerPackage(supplierRawItemDto.getIndividualsPerPackage());
+                }
+            } else {
+                mergePatchSupplierProduct.setAvailableThruDate(now);//ThruDate改为当前时间
+                //禁用
+            }
             supplierProductApplicationService.when(mergePatchSupplierProduct);
-        }
+        });
+//        // 这里不需要使用完整的 ID 全等匹配查询
+//        BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.findSupplierProductAssociation(
+//                productId,
+//                supplierId,
+//                DEFAULT_CURRENCY_UOM_ID,
+//                BigDecimal.ZERO,
+//                OffsetDateTime.now());
+//        SupplierProductAssocId supplierProductAssocId;
+//        if (existingAssoc == null) {
+//            //createSupplierProduct(productId, supplierId, c);
+//        } else {
+//            supplierProductAssocId = bffSupplierProductAssocIdMapper.toSupplierProductAssocId(existingAssoc);
+//            AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct = new AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct();
+//            mergePatchSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
+//            mergePatchSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
+//            mergePatchSupplierProduct.setVersion(existingAssoc.getVersion());
+//            mergePatchSupplierProduct.setCommandId(UUID.randomUUID().toString());
+//            mergePatchSupplierProduct.setRequesterId(c.getRequesterId());
+//            supplierProductApplicationService.when(mergePatchSupplierProduct);
+//        }
     }
 
     private void updateProductIdentification(AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct,
@@ -449,7 +504,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         }
     }
 
-    private void createSupplierProduct(String productId, BffSupplierRawItemDto supplierRawItem, Command c) {
+    private void createSupplierProduct(String productId, BffSupplierRawItemDto supplierRawItem, OffsetDateTime now, Command c) {
         PartyState partyState = partyApplicationService.get(supplierRawItem.getSupplierId());
         if (partyState == null) {
             throw new IllegalArgumentException(String.format("Vendor not found:%s ", supplierRawItem.getSupplierId()));
@@ -458,10 +513,9 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         supplierProductAssocId.setProductId(productId);
         supplierProductAssocId.setPartyId(supplierRawItem.getSupplierId());
         supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
-        supplierProductAssocId.setAvailableFromDate(OffsetDateTime.now());
+        supplierProductAssocId.setAvailableFromDate(now);
         supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
         AbstractSupplierProductCommand.SimpleCreateSupplierProduct createSupplierProduct = new AbstractSupplierProductCommand.SimpleCreateSupplierProduct();
-        createSupplierProduct.setActive(IndicatorUtils.INDICATOR_YES);
         createSupplierProduct.setBrandName(supplierRawItem.getBrandName());
         createSupplierProduct.setGtin(supplierRawItem.getGtin());
         createSupplierProduct.setQuantityIncluded(supplierRawItem.getQuantityIncluded());
@@ -473,7 +527,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createSupplierProduct.setCountryOfOrigin(supplierRawItem.getCountryOfOrigin());
         createSupplierProduct.setIndividualsPerPackage(supplierRawItem.getIndividualsPerPackage());
         createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
-        createSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
+        createSupplierProduct.setAvailableThruDate(now.plusYears(100));
         createSupplierProduct.setCommandId(UUID.randomUUID().toString());
         createSupplierProduct.setRequesterId(c.getRequesterId());
         supplierProductApplicationService.when(createSupplierProduct);

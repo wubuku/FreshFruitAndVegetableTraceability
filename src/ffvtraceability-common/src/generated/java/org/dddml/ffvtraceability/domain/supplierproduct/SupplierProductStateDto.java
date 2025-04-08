@@ -98,18 +98,6 @@ public class SupplierProductStateDto {
         this.productWeight = productWeight;
     }
 
-    private String active;
-
-    public String getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(String active)
-    {
-        this.active = active;
-    }
-
     private String caseUomId;
 
     public String getCaseUomId()
@@ -543,9 +531,6 @@ public class SupplierProductStateDto {
             }
             if (returnedFieldsContains("ProductWeight")) {
                 dto.setProductWeight(state.getProductWeight());
-            }
-            if (returnedFieldsContains("Active")) {
-                dto.setActive(state.getActive());
             }
             if (returnedFieldsContains("CaseUomId")) {
                 dto.setCaseUomId(state.getCaseUomId());

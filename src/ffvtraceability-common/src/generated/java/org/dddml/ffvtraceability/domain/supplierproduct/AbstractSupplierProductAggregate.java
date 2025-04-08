@@ -57,7 +57,6 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         e.setQuantityIncluded(c.getQuantityIncluded());
         e.setPiecesIncluded(c.getPiecesIncluded());
         e.setProductWeight(c.getProductWeight());
-        e.setActive(c.getActive());
         e.setCaseUomId(c.getCaseUomId());
         e.setOrganicCertifications(c.getOrganicCertifications());
         e.setMaterialCompositionDescription(c.getMaterialCompositionDescription());
@@ -100,7 +99,6 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         e.setQuantityIncluded(c.getQuantityIncluded());
         e.setPiecesIncluded(c.getPiecesIncluded());
         e.setProductWeight(c.getProductWeight());
-        e.setActive(c.getActive());
         e.setCaseUomId(c.getCaseUomId());
         e.setOrganicCertifications(c.getOrganicCertifications());
         e.setMaterialCompositionDescription(c.getMaterialCompositionDescription());
@@ -134,7 +132,6 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         e.setIsPropertyQuantityIncludedRemoved(c.getIsPropertyQuantityIncludedRemoved());
         e.setIsPropertyPiecesIncludedRemoved(c.getIsPropertyPiecesIncludedRemoved());
         e.setIsPropertyProductWeightRemoved(c.getIsPropertyProductWeightRemoved());
-        e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
         e.setIsPropertyCaseUomIdRemoved(c.getIsPropertyCaseUomIdRemoved());
         e.setIsPropertyOrganicCertificationsRemoved(c.getIsPropertyOrganicCertificationsRemoved());
         e.setIsPropertyMaterialCompositionDescriptionRemoved(c.getIsPropertyMaterialCompositionDescriptionRemoved());

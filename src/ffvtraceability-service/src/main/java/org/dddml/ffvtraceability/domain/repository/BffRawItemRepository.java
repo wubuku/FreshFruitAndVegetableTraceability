@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public interface BffRawItemRepository extends JpaRepository<AbstractProductState.SimpleProductState, String> {
 
@@ -167,4 +168,30 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             """, nativeQuery = true)
     String queryProductIdByIdentificationTypeIdAndIdValue(@Param("identificationTypeId") String identificationTypeId,
                                                           @Param("idValue") String idValue);
+
+    @Query(value = """
+            SELECT 
+            product_id as productId,
+            party_id as supplierId,
+            currency_uom_id as currencyUomId,
+            minimum_order_quantity as minimumOrderQuantity,
+            available_from_date as availableFromDate,
+            available_thru_date as availableThruDate,
+            version as version,
+            gtin as gtin,
+            quantity_included as quantityIncluded,
+            pieces_included as piecesIncluded,
+            product_weight as productWeight,
+            
+            case_uom_id as caseUomId,
+            organic_certifications as organicCertifications,
+            brand_name as brandName,
+            material_composition_description as materialCompositionDescription,
+            country_of_origin as countryOfOrigin,
+            certification_codes as certificationCodes,
+            individuals_per_package as individualsPerPackage
+            from supplier_product
+            WHERE product_id = :productId
+            """, nativeQuery = true)
+    List<BffSupplierRawItemProjection> findSupplierRawItemByProductId(@Param("productId") String productId);
 }

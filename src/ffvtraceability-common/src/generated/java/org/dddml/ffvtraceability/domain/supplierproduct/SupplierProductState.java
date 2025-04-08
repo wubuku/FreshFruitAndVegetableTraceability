@@ -33,8 +33,6 @@ public interface SupplierProductState
 
     java.math.BigDecimal getProductWeight();
 
-    String getActive();
-
     String getCaseUomId();
 
     String getOrganicCertifications();
@@ -113,8 +111,6 @@ public interface SupplierProductState
         void setPiecesIncluded(Long piecesIncluded);
 
         void setProductWeight(java.math.BigDecimal productWeight);
-
-        void setActive(String active);
 
         void setCaseUomId(String caseUomId);
 

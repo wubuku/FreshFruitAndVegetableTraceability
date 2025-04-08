@@ -88,16 +88,6 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.productWeight = productWeight;
     }
 
-    private String active;
-
-    public String getActive() {
-        return this.active;
-    }
-
-    public void setActive(String active) {
-        this.active = active;
-    }
-
     private String caseUomId;
 
     public String getCaseUomId() {
@@ -502,7 +492,6 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setQuantityIncluded(e.getQuantityIncluded());
         this.setPiecesIncluded(e.getPiecesIncluded());
         this.setProductWeight(e.getProductWeight());
-        this.setActive(e.getActive());
         this.setCaseUomId(e.getCaseUomId());
         this.setOrganicCertifications(e.getOrganicCertifications());
         this.setMaterialCompositionDescription(e.getMaterialCompositionDescription());
@@ -546,7 +535,6 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setQuantityIncluded(s.getQuantityIncluded());
         this.setPiecesIncluded(s.getPiecesIncluded());
         this.setProductWeight(s.getProductWeight());
-        this.setActive(s.getActive());
         this.setCaseUomId(s.getCaseUomId());
         this.setOrganicCertifications(s.getOrganicCertifications());
         this.setMaterialCompositionDescription(s.getMaterialCompositionDescription());
@@ -620,13 +608,6 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
             }
         } else {
             this.setProductWeight(e.getProductWeight());
-        }
-        if (e.getActive() == null) {
-            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
-                this.setActive(null);
-            }
-        } else {
-            this.setActive(e.getActive());
         }
         if (e.getCaseUomId() == null) {
             if (e.getIsPropertyCaseUomIdRemoved() != null && e.getIsPropertyCaseUomIdRemoved()) {

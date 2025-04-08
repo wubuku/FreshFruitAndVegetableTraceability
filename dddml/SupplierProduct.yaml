@@ -35,8 +35,8 @@
         # 一个包装内包含的“件数”，如果包装内没有“分件”，则该值设置为 1（可以把 null 看作 1）
       ProductWeight: #Net Weight Per Package
         type: fixed-point
-      Active:
-        type: indicator
+#      Active:
+#        type: indicator
       CaseUomId: #Packaging Type
         type: id
         # 用于描述“包装类型”的单位 Id。比如 EA、BX(Box)、PLT(Pallet)、PK(Pack)

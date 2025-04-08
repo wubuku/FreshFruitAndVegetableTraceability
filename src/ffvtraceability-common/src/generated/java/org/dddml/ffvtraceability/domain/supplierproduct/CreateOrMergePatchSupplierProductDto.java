@@ -101,21 +101,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
     }
 
     /**
-     * Active
-     */
-    private String active;
-
-    public String getActive()
-    {
-        return this.active;
-    }
-
-    public void setActive(String active)
-    {
-        this.active = active;
-    }
-
-    /**
      * Case Uom Id
      */
     private String caseUomId;
@@ -593,18 +578,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         this.isPropertyProductWeightRemoved = removed;
     }
 
-    private Boolean isPropertyActiveRemoved;
-
-    public Boolean getIsPropertyActiveRemoved()
-    {
-        return this.isPropertyActiveRemoved;
-    }
-
-    public void setIsPropertyActiveRemoved(Boolean removed)
-    {
-        this.isPropertyActiveRemoved = removed;
-    }
-
     private Boolean isPropertyCaseUomIdRemoved;
 
     public Boolean getIsPropertyCaseUomIdRemoved()
@@ -938,7 +911,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         command.setQuantityIncluded(this.getQuantityIncluded());
         command.setPiecesIncluded(this.getPiecesIncluded());
         command.setProductWeight(this.getProductWeight());
-        command.setActive(this.getActive());
         command.setCaseUomId(this.getCaseUomId());
         command.setOrganicCertifications(this.getOrganicCertifications());
         command.setMaterialCompositionDescription(this.getMaterialCompositionDescription());
@@ -1016,7 +988,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         command.setIsPropertyQuantityIncludedRemoved(this.getIsPropertyQuantityIncludedRemoved());
         command.setIsPropertyPiecesIncludedRemoved(this.getIsPropertyPiecesIncludedRemoved());
         command.setIsPropertyProductWeightRemoved(this.getIsPropertyProductWeightRemoved());
-        command.setIsPropertyActiveRemoved(this.getIsPropertyActiveRemoved());
         command.setIsPropertyCaseUomIdRemoved(this.getIsPropertyCaseUomIdRemoved());
         command.setIsPropertyOrganicCertificationsRemoved(this.getIsPropertyOrganicCertificationsRemoved());
         command.setIsPropertyMaterialCompositionDescriptionRemoved(this.getIsPropertyMaterialCompositionDescriptionRemoved());

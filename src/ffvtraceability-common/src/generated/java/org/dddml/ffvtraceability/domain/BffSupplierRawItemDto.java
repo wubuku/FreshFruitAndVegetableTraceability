@@ -34,6 +34,18 @@ public class BffSupplierRawItemDto implements Serializable {
         this.supplierId = supplierId;
     }
 
+    private Long version;
+
+    public Long getVersion()
+    {
+        return this.version;
+    }
+
+    public void setVersion(Long version)
+    {
+        this.version = version;
+    }
+
     private String currencyUomId;
 
     public String getCurrencyUomId()
@@ -251,10 +263,11 @@ public class BffSupplierRawItemDto implements Serializable {
     {
     }
 
-    public BffSupplierRawItemDto(String productId, String supplierId, String currencyUomId, java.math.BigDecimal minimumOrderQuantity, OffsetDateTime availableFromDate, OffsetDateTime availableThruDate, String brandName, String gtin, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String supplierName, java.math.BigDecimal productWeight, String active, String caseUomId, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String certificationCodes, Long individualsPerPackage)
+    public BffSupplierRawItemDto(String productId, String supplierId, Long version, String currencyUomId, java.math.BigDecimal minimumOrderQuantity, OffsetDateTime availableFromDate, OffsetDateTime availableThruDate, String brandName, String gtin, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String supplierName, java.math.BigDecimal productWeight, String active, String caseUomId, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String certificationCodes, Long individualsPerPackage)
     {
         this.productId = productId;
         this.supplierId = supplierId;
+        this.version = version;
         this.currencyUomId = currencyUomId;
         this.minimumOrderQuantity = minimumOrderQuantity;
         this.availableFromDate = availableFromDate;
@@ -288,6 +301,7 @@ public class BffSupplierRawItemDto implements Serializable {
         return true 
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
             && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
+            && (version == other.version || (version != null && version.equals(other.version)))
             && (currencyUomId == other.currencyUomId || (currencyUomId != null && currencyUomId.equals(other.currencyUomId)))
             && (minimumOrderQuantity == other.minimumOrderQuantity || (minimumOrderQuantity != null && minimumOrderQuantity.equals(other.minimumOrderQuantity)))
             && (availableFromDate == other.availableFromDate || (availableFromDate != null && availableFromDate.equals(other.availableFromDate)))
@@ -317,6 +331,9 @@ public class BffSupplierRawItemDto implements Serializable {
         }
         if (this.supplierId != null) {
             hash += 13 * this.supplierId.hashCode();
+        }
+        if (this.version != null) {
+            hash += 13 * this.version.hashCode();
         }
         if (this.currencyUomId != null) {
             hash += 13 * this.currencyUomId.hashCode();
@@ -377,6 +394,7 @@ public class BffSupplierRawItemDto implements Serializable {
         return "BffSupplierRawItemDto{" +
                 "productId=" + '\'' + productId + '\'' +
                 ", supplierId=" + '\'' + supplierId + '\'' +
+                ", version=" + version +
                 ", currencyUomId=" + '\'' + currencyUomId + '\'' +
                 ", minimumOrderQuantity=" + minimumOrderQuantity +
                 ", availableFromDate=" + availableFromDate +
