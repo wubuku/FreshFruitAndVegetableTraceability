@@ -2,11 +2,13 @@ package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
 import org.dddml.ffvtraceability.domain.BffShipmentBoxTypeDto;
+import org.dddml.ffvtraceability.domain.BffSupplierRawItemDto;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.mapper.BffRawItemMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffShipmentBoxTypeMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffSupplierProductAssocIdMapper;
 import org.dddml.ffvtraceability.domain.party.PartyApplicationService;
+import org.dddml.ffvtraceability.domain.party.PartyState;
 import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierProductAssocProjection;
@@ -27,11 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
-import static org.dddml.ffvtraceability.domain.constants.BffPartyConstants.PARTY_IDENTIFICATION_TYPE_INTERNAL_ID;
 import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.*;
 import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.DEFAULT_CURRENCY_UOM_ID;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
@@ -100,13 +99,13 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                 }
             }
         }
-        String supplierId = rawItem.getSupplierId();
-        if (supplierId == null || supplierId.isBlank()) {
-            throw new IllegalArgumentException("Supplier can't be null");
-        }
-        if (partyApplicationService.get(supplierId) == null) {
-            throw new IllegalArgumentException("SupplierId is not valid.");
-        }
+//        String supplierId = rawItem.getSupplierId();
+//        if (supplierId == null || supplierId.isBlank()) {
+//            throw new IllegalArgumentException("Supplier can't be null");
+//        }
+//        if (partyApplicationService.get(supplierId) == null) {
+//            throw new IllegalArgumentException("SupplierId is not valid.");
+//        }
         // if (uomApplicationService.get(c.getRawItem().getQuantityUomId()) == null) {
         // throw new IllegalArgumentException("QuantityUomId is not valid.");
         // }
@@ -189,15 +188,21 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : createProduct.getProductId());
         createProduct.setRequesterId(c.getRequesterId());
         productApplicationService.when(createProduct);
-
-        if (rawItem.getSupplierId() != null) {
-            createSupplierProduct(createProduct.getProductId(), rawItem.getSupplierId(), c);
+        if (rawItem.getSuppliers() != null && !rawItem.getSuppliers().isEmpty()) {
+            List<String> supplierIds = new ArrayList<>();
+            rawItem.getSuppliers().forEach(supplierRawItem -> {
+                if (supplierIds.contains(supplierRawItem.getSupplierId())) {
+                    throw new IllegalArgumentException("Duplicate vendor: " + supplierRawItem.getSupplierId());
+                }
+                supplierIds.add(supplierRawItem.getSupplierId());
+                createSupplierProduct(createProduct.getProductId(), supplierRawItem, c);
+            });
         }
         return createProduct.getProductId();
     }
 
     private void addGoodIdentification(String goodIdentificationTypeId, String idValue,
-            AbstractProductCommand.SimpleCreateProduct createProduct) {
+                                       AbstractProductCommand.SimpleCreateProduct createProduct) {
         AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification createGoodIdentification = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
         createGoodIdentification.setGoodIdentificationTypeId(goodIdentificationTypeId);
         createGoodIdentification.setIdValue(idValue);
@@ -345,7 +350,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                 OffsetDateTime.now());
         SupplierProductAssocId supplierProductAssocId;
         if (existingAssoc == null) {
-            createSupplierProduct(productId, supplierId, c);
+            //createSupplierProduct(productId, supplierId, c);
         } else {
             supplierProductAssocId = bffSupplierProductAssocIdMapper.toSupplierProductAssocId(existingAssoc);
             AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct = new AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct();
@@ -359,7 +364,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     }
 
     private void updateProductIdentification(AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct,
-            ProductState productState, String identificationTypeId, String newValue) {
+                                             ProductState productState, String identificationTypeId, String newValue) {
         Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
                 .filter(x -> x.getGoodIdentificationTypeId().equals(identificationTypeId))
                 .findFirst();
@@ -444,14 +449,29 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         }
     }
 
-    private void createSupplierProduct(String productId, String supplierId, Command c) {
+    private void createSupplierProduct(String productId, BffSupplierRawItemDto supplierRawItem, Command c) {
+        PartyState partyState = partyApplicationService.get(supplierRawItem.getSupplierId());
+        if (partyState == null) {
+            throw new IllegalArgumentException(String.format("Vendor not found:%s ", supplierRawItem.getSupplierId()));
+        }
         SupplierProductAssocId supplierProductAssocId = new SupplierProductAssocId();
         supplierProductAssocId.setProductId(productId);
-        supplierProductAssocId.setPartyId(supplierId);
+        supplierProductAssocId.setPartyId(supplierRawItem.getSupplierId());
         supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
         supplierProductAssocId.setAvailableFromDate(OffsetDateTime.now());
         supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
         AbstractSupplierProductCommand.SimpleCreateSupplierProduct createSupplierProduct = new AbstractSupplierProductCommand.SimpleCreateSupplierProduct();
+        createSupplierProduct.setActive(IndicatorUtils.INDICATOR_YES);
+        createSupplierProduct.setBrandName(supplierRawItem.getBrandName());
+        createSupplierProduct.setGtin(supplierRawItem.getGtin());
+        createSupplierProduct.setQuantityIncluded(supplierRawItem.getQuantityIncluded());
+        createSupplierProduct.setProductWeight(supplierRawItem.getProductWeight());
+        createSupplierProduct.setCaseUomId(supplierRawItem.getCaseUomId());
+        createSupplierProduct.setOrganicCertifications(supplierRawItem.getOrganicCertifications());
+        createSupplierProduct.setMaterialCompositionDescription(supplierRawItem.getMaterialCompositionDescription());
+        createSupplierProduct.setCertificationCodes(supplierRawItem.getCertificationCodes());
+        createSupplierProduct.setCountryOfOrigin(supplierRawItem.getCountryOfOrigin());
+        createSupplierProduct.setIndividualsPerPackage(supplierRawItem.getIndividualsPerPackage());
         createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
         createSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
         createSupplierProduct.setCommandId(UUID.randomUUID().toString());
