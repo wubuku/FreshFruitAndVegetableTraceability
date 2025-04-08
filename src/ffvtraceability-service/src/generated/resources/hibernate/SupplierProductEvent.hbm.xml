@@ -44,6 +44,42 @@
       <property name="availableThruDate">
         <column name="AVAILABLE_THRU_DATE" sql-type="timestamptz" />
       </property>
+      <property name="brandName">
+        <column name="brand_name" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="gtin">
+        <column name="gtin" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="quantityIncluded">
+        <column name="quantity_included" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="piecesIncluded">
+        <column name="pieces_included" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="productWeight">
+        <column name="product_weight" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="active">
+        <column name="active" sql-type="CHAR(1)" />
+      </property>
+      <property name="caseUomId">
+        <column name="case_uom_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="organicCertifications">
+        <column name="organic_certifications" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="materialCompositionDescription">
+        <column name="material_composition_description" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="countryOfOrigin">
+        <column name="country_of_origin" sql-type="VARCHAR(100)" />
+      </property>
+      <property name="certificationCodes">
+        <column name="certification_codes" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="individualsPerPackage">
+        <column name="individuals_per_package" sql-type="DECIMAL(20,0)" />
+      </property>
       <property name="supplierPrefOrderId">
         <column name="SUPPLIER_PREF_ORDER_ID" sql-type="VARCHAR(20)" />
       </property>
@@ -110,6 +146,18 @@
       <subclass name="AbstractSupplierProductEvent$SimpleSupplierProductStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractSupplierProductEvent$SimpleSupplierProductStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertyAvailableThruDateRemoved" column="is_property_available_thru_date_removed" />
+        <property name="isPropertyBrandNameRemoved" column="is_property_brand_name_removed" />
+        <property name="isPropertyGtinRemoved" column="is_property_gtin_removed" />
+        <property name="isPropertyQuantityIncludedRemoved" column="is_property_quantity_included_removed" />
+        <property name="isPropertyPiecesIncludedRemoved" column="is_property_pieces_included_removed" />
+        <property name="isPropertyProductWeightRemoved" column="is_property_product_weight_removed" />
+        <property name="isPropertyActiveRemoved" column="is_property_active_removed" />
+        <property name="isPropertyCaseUomIdRemoved" column="is_property_case_uom_id_removed" />
+        <property name="isPropertyOrganicCertificationsRemoved" column="is_property_organic_certifications_removed" />
+        <property name="isPropertyMaterialCompositionDescriptionRemoved" column="is_property_material_composition_description_removed" />
+        <property name="isPropertyCountryOfOriginRemoved" column="is_property_country_of_origin_removed" />
+        <property name="isPropertyCertificationCodesRemoved" column="is_property_certification_codes_removed" />
+        <property name="isPropertyIndividualsPerPackageRemoved" column="is_property_individuals_per_package_removed" />
         <property name="isPropertySupplierPrefOrderIdRemoved" column="is_property_supplier_pref_order_id_removed" />
         <property name="isPropertySupplierRatingTypeIdRemoved" column="is_property_supplier_rating_type_id_removed" />
         <property name="isPropertyStandardLeadTimeDaysRemoved" column="is_property_standard_lead_time_days_removed" />

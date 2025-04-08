@@ -23,6 +23,30 @@ public interface SupplierProductState
 
     OffsetDateTime getAvailableThruDate();
 
+    String getBrandName();
+
+    String getGtin();
+
+    java.math.BigDecimal getQuantityIncluded();
+
+    Long getPiecesIncluded();
+
+    java.math.BigDecimal getProductWeight();
+
+    String getActive();
+
+    String getCaseUomId();
+
+    String getOrganicCertifications();
+
+    String getMaterialCompositionDescription();
+
+    String getCountryOfOrigin();
+
+    String getCertificationCodes();
+
+    Long getIndividualsPerPackage();
+
     String getSupplierPrefOrderId();
 
     String getSupplierRatingTypeId();
@@ -79,6 +103,30 @@ public interface SupplierProductState
         void setSupplierProductTenantizedId(SupplierProductTenantizedId supplierProductTenantizedId);
 
         void setAvailableThruDate(OffsetDateTime availableThruDate);
+
+        void setBrandName(String brandName);
+
+        void setGtin(String gtin);
+
+        void setQuantityIncluded(java.math.BigDecimal quantityIncluded);
+
+        void setPiecesIncluded(Long piecesIncluded);
+
+        void setProductWeight(java.math.BigDecimal productWeight);
+
+        void setActive(String active);
+
+        void setCaseUomId(String caseUomId);
+
+        void setOrganicCertifications(String organicCertifications);
+
+        void setMaterialCompositionDescription(String materialCompositionDescription);
+
+        void setCountryOfOrigin(String countryOfOrigin);
+
+        void setCertificationCodes(String certificationCodes);
+
+        void setIndividualsPerPackage(Long individualsPerPackage);
 
         void setSupplierPrefOrderId(String supplierPrefOrderId);
 

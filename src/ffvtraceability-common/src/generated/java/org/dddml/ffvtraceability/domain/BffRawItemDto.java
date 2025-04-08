@@ -561,6 +561,16 @@ public class BffRawItemDto implements Serializable {
         this.dimensionsDescription = dimensionsDescription;
     }
 
+    private java.util.List<BffSupplierRawItemDto> suppliers;
+
+    public java.util.List<BffSupplierRawItemDto> getSuppliers() {
+        return this.suppliers;
+    }
+
+    public void setSuppliers(java.util.List<BffSupplierRawItemDto> suppliers) {
+        this.suppliers = suppliers;
+    }
+
     protected String getDefaultShipmentBoxTypeShipmentBoxTypeId()
     {
         return getDefaultShipmentBoxType().getShipmentBoxTypeId();
@@ -665,7 +675,7 @@ public class BffRawItemDto implements Serializable {
     {
     }
 
-    public BffRawItemDto(String productId, String productName, String internalName, String brandName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight, String heightUomId, java.math.BigDecimal productHeight, java.math.BigDecimal shippingHeight, String widthUomId, java.math.BigDecimal productWidth, java.math.BigDecimal shippingWidth, String depthUomId, java.math.BigDecimal productDepth, java.math.BigDecimal shippingDepth, String diameterUomId, java.math.BigDecimal productDiameter, String active, String defaultShipmentBoxTypeId, BffShipmentBoxTypeDto defaultShipmentBoxType, String caseUomId, String internalId, String produceVariety, String hsCode, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String shelfLifeDescription, String handlingInstructions, String storageConditions, String certificationCodes, Long individualsPerPackage, String dimensionsDescription)
+    public BffRawItemDto(String productId, String productName, String internalName, String brandName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight, String heightUomId, java.math.BigDecimal productHeight, java.math.BigDecimal shippingHeight, String widthUomId, java.math.BigDecimal productWidth, java.math.BigDecimal shippingWidth, String depthUomId, java.math.BigDecimal productDepth, java.math.BigDecimal shippingDepth, String diameterUomId, java.math.BigDecimal productDiameter, String active, String defaultShipmentBoxTypeId, BffShipmentBoxTypeDto defaultShipmentBoxType, String caseUomId, String internalId, String produceVariety, String hsCode, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String shelfLifeDescription, String handlingInstructions, String storageConditions, String certificationCodes, Long individualsPerPackage, String dimensionsDescription, java.util.List<BffSupplierRawItemDto> suppliers)
     {
         this.productId = productId;
         this.productName = productName;
@@ -712,6 +722,7 @@ public class BffRawItemDto implements Serializable {
         this.certificationCodes = certificationCodes;
         this.individualsPerPackage = individualsPerPackage;
         this.dimensionsDescription = dimensionsDescription;
+        this.suppliers = suppliers;
     }
 
     @Override
@@ -771,6 +782,7 @@ public class BffRawItemDto implements Serializable {
             && (certificationCodes == other.certificationCodes || (certificationCodes != null && certificationCodes.equals(other.certificationCodes)))
             && (individualsPerPackage == other.individualsPerPackage || (individualsPerPackage != null && individualsPerPackage.equals(other.individualsPerPackage)))
             && (dimensionsDescription == other.dimensionsDescription || (dimensionsDescription != null && dimensionsDescription.equals(other.dimensionsDescription)))
+            && (suppliers == other.suppliers || (suppliers != null && suppliers.equals(other.suppliers)))
             ;
     }
 
@@ -913,6 +925,9 @@ public class BffRawItemDto implements Serializable {
         if (this.dimensionsDescription != null) {
             hash += 13 * this.dimensionsDescription.hashCode();
         }
+        if (this.suppliers != null) {
+            hash += 13 * this.suppliers.hashCode();
+        }
         return hash;
     }
 
@@ -964,6 +979,7 @@ public class BffRawItemDto implements Serializable {
                 ", certificationCodes=" + '\'' + certificationCodes + '\'' +
                 ", individualsPerPackage=" + individualsPerPackage +
                 ", dimensionsDescription=" + '\'' + dimensionsDescription + '\'' +
+                ", suppliers=" + suppliers +
                 '}';
     }
 

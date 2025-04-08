@@ -38,6 +38,150 @@ public class SupplierProductStateDto {
         this.availableThruDate = availableThruDate;
     }
 
+    private String brandName;
+
+    public String getBrandName()
+    {
+        return this.brandName;
+    }
+
+    public void setBrandName(String brandName)
+    {
+        this.brandName = brandName;
+    }
+
+    private String gtin;
+
+    public String getGtin()
+    {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin)
+    {
+        this.gtin = gtin;
+    }
+
+    private java.math.BigDecimal quantityIncluded;
+
+    public java.math.BigDecimal getQuantityIncluded()
+    {
+        return this.quantityIncluded;
+    }
+
+    public void setQuantityIncluded(java.math.BigDecimal quantityIncluded)
+    {
+        this.quantityIncluded = quantityIncluded;
+    }
+
+    private Long piecesIncluded;
+
+    public Long getPiecesIncluded()
+    {
+        return this.piecesIncluded;
+    }
+
+    public void setPiecesIncluded(Long piecesIncluded)
+    {
+        this.piecesIncluded = piecesIncluded;
+    }
+
+    private java.math.BigDecimal productWeight;
+
+    public java.math.BigDecimal getProductWeight()
+    {
+        return this.productWeight;
+    }
+
+    public void setProductWeight(java.math.BigDecimal productWeight)
+    {
+        this.productWeight = productWeight;
+    }
+
+    private String active;
+
+    public String getActive()
+    {
+        return this.active;
+    }
+
+    public void setActive(String active)
+    {
+        this.active = active;
+    }
+
+    private String caseUomId;
+
+    public String getCaseUomId()
+    {
+        return this.caseUomId;
+    }
+
+    public void setCaseUomId(String caseUomId)
+    {
+        this.caseUomId = caseUomId;
+    }
+
+    private String organicCertifications;
+
+    public String getOrganicCertifications()
+    {
+        return this.organicCertifications;
+    }
+
+    public void setOrganicCertifications(String organicCertifications)
+    {
+        this.organicCertifications = organicCertifications;
+    }
+
+    private String materialCompositionDescription;
+
+    public String getMaterialCompositionDescription()
+    {
+        return this.materialCompositionDescription;
+    }
+
+    public void setMaterialCompositionDescription(String materialCompositionDescription)
+    {
+        this.materialCompositionDescription = materialCompositionDescription;
+    }
+
+    private String countryOfOrigin;
+
+    public String getCountryOfOrigin()
+    {
+        return this.countryOfOrigin;
+    }
+
+    public void setCountryOfOrigin(String countryOfOrigin)
+    {
+        this.countryOfOrigin = countryOfOrigin;
+    }
+
+    private String certificationCodes;
+
+    public String getCertificationCodes()
+    {
+        return this.certificationCodes;
+    }
+
+    public void setCertificationCodes(String certificationCodes)
+    {
+        this.certificationCodes = certificationCodes;
+    }
+
+    private Long individualsPerPackage;
+
+    public Long getIndividualsPerPackage()
+    {
+        return this.individualsPerPackage;
+    }
+
+    public void setIndividualsPerPackage(Long individualsPerPackage)
+    {
+        this.individualsPerPackage = individualsPerPackage;
+    }
+
     private String supplierPrefOrderId;
 
     public String getSupplierPrefOrderId()
@@ -384,6 +528,42 @@ public class SupplierProductStateDto {
             }
             if (returnedFieldsContains("AvailableThruDate")) {
                 dto.setAvailableThruDate(state.getAvailableThruDate());
+            }
+            if (returnedFieldsContains("BrandName")) {
+                dto.setBrandName(state.getBrandName());
+            }
+            if (returnedFieldsContains("Gtin")) {
+                dto.setGtin(state.getGtin());
+            }
+            if (returnedFieldsContains("QuantityIncluded")) {
+                dto.setQuantityIncluded(state.getQuantityIncluded());
+            }
+            if (returnedFieldsContains("PiecesIncluded")) {
+                dto.setPiecesIncluded(state.getPiecesIncluded());
+            }
+            if (returnedFieldsContains("ProductWeight")) {
+                dto.setProductWeight(state.getProductWeight());
+            }
+            if (returnedFieldsContains("Active")) {
+                dto.setActive(state.getActive());
+            }
+            if (returnedFieldsContains("CaseUomId")) {
+                dto.setCaseUomId(state.getCaseUomId());
+            }
+            if (returnedFieldsContains("OrganicCertifications")) {
+                dto.setOrganicCertifications(state.getOrganicCertifications());
+            }
+            if (returnedFieldsContains("MaterialCompositionDescription")) {
+                dto.setMaterialCompositionDescription(state.getMaterialCompositionDescription());
+            }
+            if (returnedFieldsContains("CountryOfOrigin")) {
+                dto.setCountryOfOrigin(state.getCountryOfOrigin());
+            }
+            if (returnedFieldsContains("CertificationCodes")) {
+                dto.setCertificationCodes(state.getCertificationCodes());
+            }
+            if (returnedFieldsContains("IndividualsPerPackage")) {
+                dto.setIndividualsPerPackage(state.getIndividualsPerPackage());
             }
             if (returnedFieldsContains("SupplierPrefOrderId")) {
                 dto.setSupplierPrefOrderId(state.getSupplierPrefOrderId());

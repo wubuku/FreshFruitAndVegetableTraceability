@@ -130,7 +130,6 @@ public class M {
         typeToAggMap.put("AttributeSet", "AttributeSet");
         typeToAggMap.put("AttributeUse", "AttributeSet");
         typeToAggMap.put("BffNotification", "BffNotification");
-        typeToAggMap.put("InventoryTransfer", "InventoryTransfer");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
         Map<String, Class<?>> clsMap = new HashMap<>();
@@ -4214,6 +4213,18 @@ public class M {
 
     public static final String[] propertyNames = new String[] {
             "availableThruDate",
+            "brandName",
+            "gtin",
+            "quantityIncluded",
+            "piecesIncluded",
+            "productWeight",
+            "active",
+            "caseUomId",
+            "organicCertifications",
+            "materialCompositionDescription",
+            "countryOfOrigin",
+            "certificationCodes",
+            "individualsPerPackage",
             "supplierPrefOrderId",
             "supplierRatingTypeId",
             "standardLeadTimeDays",
@@ -4252,6 +4263,18 @@ public class M {
 
     public static final String[] propertyTypes = new String[] {
             "OffsetDateTime",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "Long",
+            "java.math.BigDecimal",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "Long",
             "String",
             "String",
             "java.math.BigDecimal",
@@ -4302,6 +4325,30 @@ public class M {
     private static void initAliasMap() {
         aliasMap.put("availableThruDate", "availableThruDate");
         aliasMap.put("AvailableThruDate", "availableThruDate");
+        aliasMap.put("brandName", "brandName");
+        aliasMap.put("BrandName", "brandName");
+        aliasMap.put("gtin", "gtin");
+        aliasMap.put("Gtin", "gtin");
+        aliasMap.put("quantityIncluded", "quantityIncluded");
+        aliasMap.put("QuantityIncluded", "quantityIncluded");
+        aliasMap.put("piecesIncluded", "piecesIncluded");
+        aliasMap.put("PiecesIncluded", "piecesIncluded");
+        aliasMap.put("productWeight", "productWeight");
+        aliasMap.put("ProductWeight", "productWeight");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("caseUomId", "caseUomId");
+        aliasMap.put("CaseUomId", "caseUomId");
+        aliasMap.put("organicCertifications", "organicCertifications");
+        aliasMap.put("OrganicCertifications", "organicCertifications");
+        aliasMap.put("materialCompositionDescription", "materialCompositionDescription");
+        aliasMap.put("MaterialCompositionDescription", "materialCompositionDescription");
+        aliasMap.put("countryOfOrigin", "countryOfOrigin");
+        aliasMap.put("CountryOfOrigin", "countryOfOrigin");
+        aliasMap.put("certificationCodes", "certificationCodes");
+        aliasMap.put("CertificationCodes", "certificationCodes");
+        aliasMap.put("individualsPerPackage", "individualsPerPackage");
+        aliasMap.put("IndividualsPerPackage", "individualsPerPackage");
         aliasMap.put("supplierPrefOrderId", "supplierPrefOrderId");
         aliasMap.put("SupplierPrefOrderId", "supplierPrefOrderId");
         aliasMap.put("supplierRatingTypeId", "supplierRatingTypeId");
@@ -10846,133 +10893,6 @@ public class M {
         aliasMap.put("Priority", "priority");
         aliasMap.put("recipientId", "recipientId");
         aliasMap.put("RecipientId", "recipientId");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
-        aliasMap.put("createdBy", "createdBy");
-        aliasMap.put("CreatedBy", "createdBy");
-        aliasMap.put("createdAt", "createdAt");
-        aliasMap.put("CreatedAt", "createdAt");
-        aliasMap.put("updatedBy", "updatedBy");
-        aliasMap.put("UpdatedBy", "updatedBy");
-        aliasMap.put("updatedAt", "updatedAt");
-        aliasMap.put("UpdatedAt", "updatedAt");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Active__", "__Active__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-        aliasMap.put("__Deleted__", "__Deleted__");
-    }
-
-    private static void initPropertyTypeMap() {
-        for (int i = 0; i < propertyNames.length; i++ ) {
-            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
-        }
-    }
-
-  }
-
-
-  // /////////////////////////////////////////////////////////  
-  public static class InventoryTransferMetadata {
-
-    private InventoryTransferMetadata() {
-    }
-
-    public static final String PROPERTY_NAME_VERSION      = "version";
-    public static final String PROPERTY_NAME_ACTIVE       = "__Active__";
-    public static final String PROPERTY_NAME_DELETED      = "__Deleted__";
-    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
-    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
-    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
-    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
-
-    public static final String ID_PROPERTY_NAME = "inventoryTransferId";
-
-    public static final Class ID_CLASS = String.class;
-
-    public static final String[] propertyNames = new String[] {
-            "inventoryTransferId",
-            "statusId",
-            "inventoryItemId",
-            "facilityId",
-            "locationSeqId",
-            "containerId",
-            "facilityIdTo",
-            "locationSeqIdTo",
-            "containerIdTo",
-            "itemIssuanceId",
-            "sendDate",
-            "receiveDate",
-            "comments",
-            "version",
-            "createdBy",
-            "createdAt",
-            "updatedBy",
-            "updatedAt",
-            "__Active__",
-            "__Deleted__",
-    };
-
-    public static final String[] propertyTypes = new String[] {
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "String",
-            "OffsetDateTime",
-            "OffsetDateTime",
-            "String",
-            "Long",
-            "String",
-            "OffsetDateTime",
-            "String",
-            "OffsetDateTime",
-            "Boolean",
-            "Boolean",
-    };
-
-    public static final Map<String, String> propertyTypeMap;
-
-    public static final Map<String, String> aliasMap;
-
-    static {
-        propertyTypeMap = new HashMap<String, String>();
-        initPropertyTypeMap();
-        aliasMap = new HashMap<String, String>();
-        initAliasMap();
-    }
-
-    private static void initAliasMap() {
-        aliasMap.put("inventoryTransferId", "inventoryTransferId");
-        aliasMap.put("InventoryTransferId", "inventoryTransferId");
-        aliasMap.put("statusId", "statusId");
-        aliasMap.put("StatusId", "statusId");
-        aliasMap.put("inventoryItemId", "inventoryItemId");
-        aliasMap.put("InventoryItemId", "inventoryItemId");
-        aliasMap.put("facilityId", "facilityId");
-        aliasMap.put("FacilityId", "facilityId");
-        aliasMap.put("locationSeqId", "locationSeqId");
-        aliasMap.put("LocationSeqId", "locationSeqId");
-        aliasMap.put("containerId", "containerId");
-        aliasMap.put("ContainerId", "containerId");
-        aliasMap.put("facilityIdTo", "facilityIdTo");
-        aliasMap.put("FacilityIdTo", "facilityIdTo");
-        aliasMap.put("locationSeqIdTo", "locationSeqIdTo");
-        aliasMap.put("LocationSeqIdTo", "locationSeqIdTo");
-        aliasMap.put("containerIdTo", "containerIdTo");
-        aliasMap.put("ContainerIdTo", "containerIdTo");
-        aliasMap.put("itemIssuanceId", "itemIssuanceId");
-        aliasMap.put("ItemIssuanceId", "itemIssuanceId");
-        aliasMap.put("sendDate", "sendDate");
-        aliasMap.put("SendDate", "sendDate");
-        aliasMap.put("receiveDate", "receiveDate");
-        aliasMap.put("ReceiveDate", "receiveDate");
-        aliasMap.put("comments", "comments");
-        aliasMap.put("Comments", "comments");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

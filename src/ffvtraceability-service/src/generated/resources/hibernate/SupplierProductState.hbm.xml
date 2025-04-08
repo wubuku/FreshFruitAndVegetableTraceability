@@ -26,6 +26,42 @@
     <property name="availableThruDate">
       <column name="AVAILABLE_THRU_DATE" sql-type="timestamptz" />
     </property>
+    <property name="brandName">
+      <column name="brand_name" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="gtin">
+      <column name="gtin" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="quantityIncluded">
+      <column name="quantity_included" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="piecesIncluded">
+      <column name="pieces_included" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="productWeight">
+      <column name="product_weight" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="active">
+      <column name="active" sql-type="CHAR(1)" />
+    </property>
+    <property name="caseUomId">
+      <column name="case_uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="organicCertifications">
+      <column name="organic_certifications" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="materialCompositionDescription">
+      <column name="material_composition_description" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="countryOfOrigin">
+      <column name="country_of_origin" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="certificationCodes">
+      <column name="certification_codes" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="individualsPerPackage">
+      <column name="individuals_per_package" sql-type="DECIMAL(20,0)" />
+    </property>
     <property name="supplierPrefOrderId">
       <column name="SUPPLIER_PREF_ORDER_ID" sql-type="VARCHAR(20)" />
     </property>

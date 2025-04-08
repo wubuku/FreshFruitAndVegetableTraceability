@@ -51,6 +51,150 @@ public abstract class AbstractSupplierProductCommand extends AbstractCommand imp
             this.availableThruDate = availableThruDate;
         }
 
+        private String brandName;
+
+        public String getBrandName()
+        {
+            return this.brandName;
+        }
+
+        public void setBrandName(String brandName)
+        {
+            this.brandName = brandName;
+        }
+
+        private String gtin;
+
+        public String getGtin()
+        {
+            return this.gtin;
+        }
+
+        public void setGtin(String gtin)
+        {
+            this.gtin = gtin;
+        }
+
+        private java.math.BigDecimal quantityIncluded;
+
+        public java.math.BigDecimal getQuantityIncluded()
+        {
+            return this.quantityIncluded;
+        }
+
+        public void setQuantityIncluded(java.math.BigDecimal quantityIncluded)
+        {
+            this.quantityIncluded = quantityIncluded;
+        }
+
+        private Long piecesIncluded;
+
+        public Long getPiecesIncluded()
+        {
+            return this.piecesIncluded;
+        }
+
+        public void setPiecesIncluded(Long piecesIncluded)
+        {
+            this.piecesIncluded = piecesIncluded;
+        }
+
+        private java.math.BigDecimal productWeight;
+
+        public java.math.BigDecimal getProductWeight()
+        {
+            return this.productWeight;
+        }
+
+        public void setProductWeight(java.math.BigDecimal productWeight)
+        {
+            this.productWeight = productWeight;
+        }
+
+        private String active;
+
+        public String getActive()
+        {
+            return this.active;
+        }
+
+        public void setActive(String active)
+        {
+            this.active = active;
+        }
+
+        private String caseUomId;
+
+        public String getCaseUomId()
+        {
+            return this.caseUomId;
+        }
+
+        public void setCaseUomId(String caseUomId)
+        {
+            this.caseUomId = caseUomId;
+        }
+
+        private String organicCertifications;
+
+        public String getOrganicCertifications()
+        {
+            return this.organicCertifications;
+        }
+
+        public void setOrganicCertifications(String organicCertifications)
+        {
+            this.organicCertifications = organicCertifications;
+        }
+
+        private String materialCompositionDescription;
+
+        public String getMaterialCompositionDescription()
+        {
+            return this.materialCompositionDescription;
+        }
+
+        public void setMaterialCompositionDescription(String materialCompositionDescription)
+        {
+            this.materialCompositionDescription = materialCompositionDescription;
+        }
+
+        private String countryOfOrigin;
+
+        public String getCountryOfOrigin()
+        {
+            return this.countryOfOrigin;
+        }
+
+        public void setCountryOfOrigin(String countryOfOrigin)
+        {
+            this.countryOfOrigin = countryOfOrigin;
+        }
+
+        private String certificationCodes;
+
+        public String getCertificationCodes()
+        {
+            return this.certificationCodes;
+        }
+
+        public void setCertificationCodes(String certificationCodes)
+        {
+            this.certificationCodes = certificationCodes;
+        }
+
+        private Long individualsPerPackage;
+
+        public Long getIndividualsPerPackage()
+        {
+            return this.individualsPerPackage;
+        }
+
+        public void setIndividualsPerPackage(Long individualsPerPackage)
+        {
+            this.individualsPerPackage = individualsPerPackage;
+        }
+
         private String supplierPrefOrderId;
 
         public String getSupplierPrefOrderId()
@@ -331,6 +475,150 @@ public abstract class AbstractSupplierProductCommand extends AbstractCommand imp
         public void setIsPropertyAvailableThruDateRemoved(Boolean removed)
         {
             this.isPropertyAvailableThruDateRemoved = removed;
+        }
+
+        private Boolean isPropertyBrandNameRemoved;
+
+        public Boolean getIsPropertyBrandNameRemoved()
+        {
+            return this.isPropertyBrandNameRemoved;
+        }
+
+        public void setIsPropertyBrandNameRemoved(Boolean removed)
+        {
+            this.isPropertyBrandNameRemoved = removed;
+        }
+
+        private Boolean isPropertyGtinRemoved;
+
+        public Boolean getIsPropertyGtinRemoved()
+        {
+            return this.isPropertyGtinRemoved;
+        }
+
+        public void setIsPropertyGtinRemoved(Boolean removed)
+        {
+            this.isPropertyGtinRemoved = removed;
+        }
+
+        private Boolean isPropertyQuantityIncludedRemoved;
+
+        public Boolean getIsPropertyQuantityIncludedRemoved()
+        {
+            return this.isPropertyQuantityIncludedRemoved;
+        }
+
+        public void setIsPropertyQuantityIncludedRemoved(Boolean removed)
+        {
+            this.isPropertyQuantityIncludedRemoved = removed;
+        }
+
+        private Boolean isPropertyPiecesIncludedRemoved;
+
+        public Boolean getIsPropertyPiecesIncludedRemoved()
+        {
+            return this.isPropertyPiecesIncludedRemoved;
+        }
+
+        public void setIsPropertyPiecesIncludedRemoved(Boolean removed)
+        {
+            this.isPropertyPiecesIncludedRemoved = removed;
+        }
+
+        private Boolean isPropertyProductWeightRemoved;
+
+        public Boolean getIsPropertyProductWeightRemoved()
+        {
+            return this.isPropertyProductWeightRemoved;
+        }
+
+        public void setIsPropertyProductWeightRemoved(Boolean removed)
+        {
+            this.isPropertyProductWeightRemoved = removed;
+        }
+
+        private Boolean isPropertyActiveRemoved;
+
+        public Boolean getIsPropertyActiveRemoved()
+        {
+            return this.isPropertyActiveRemoved;
+        }
+
+        public void setIsPropertyActiveRemoved(Boolean removed)
+        {
+            this.isPropertyActiveRemoved = removed;
+        }
+
+        private Boolean isPropertyCaseUomIdRemoved;
+
+        public Boolean getIsPropertyCaseUomIdRemoved()
+        {
+            return this.isPropertyCaseUomIdRemoved;
+        }
+
+        public void setIsPropertyCaseUomIdRemoved(Boolean removed)
+        {
+            this.isPropertyCaseUomIdRemoved = removed;
+        }
+
+        private Boolean isPropertyOrganicCertificationsRemoved;
+
+        public Boolean getIsPropertyOrganicCertificationsRemoved()
+        {
+            return this.isPropertyOrganicCertificationsRemoved;
+        }
+
+        public void setIsPropertyOrganicCertificationsRemoved(Boolean removed)
+        {
+            this.isPropertyOrganicCertificationsRemoved = removed;
+        }
+
+        private Boolean isPropertyMaterialCompositionDescriptionRemoved;
+
+        public Boolean getIsPropertyMaterialCompositionDescriptionRemoved()
+        {
+            return this.isPropertyMaterialCompositionDescriptionRemoved;
+        }
+
+        public void setIsPropertyMaterialCompositionDescriptionRemoved(Boolean removed)
+        {
+            this.isPropertyMaterialCompositionDescriptionRemoved = removed;
+        }
+
+        private Boolean isPropertyCountryOfOriginRemoved;
+
+        public Boolean getIsPropertyCountryOfOriginRemoved()
+        {
+            return this.isPropertyCountryOfOriginRemoved;
+        }
+
+        public void setIsPropertyCountryOfOriginRemoved(Boolean removed)
+        {
+            this.isPropertyCountryOfOriginRemoved = removed;
+        }
+
+        private Boolean isPropertyCertificationCodesRemoved;
+
+        public Boolean getIsPropertyCertificationCodesRemoved()
+        {
+            return this.isPropertyCertificationCodesRemoved;
+        }
+
+        public void setIsPropertyCertificationCodesRemoved(Boolean removed)
+        {
+            this.isPropertyCertificationCodesRemoved = removed;
+        }
+
+        private Boolean isPropertyIndividualsPerPackageRemoved;
+
+        public Boolean getIsPropertyIndividualsPerPackageRemoved()
+        {
+            return this.isPropertyIndividualsPerPackageRemoved;
+        }
+
+        public void setIsPropertyIndividualsPerPackageRemoved(Boolean removed)
+        {
+            this.isPropertyIndividualsPerPackageRemoved = removed;
         }
 
         private Boolean isPropertySupplierPrefOrderIdRemoved;

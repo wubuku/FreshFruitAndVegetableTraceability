@@ -55,6 +55,54 @@ public interface SupplierProductEvent extends Event {
 
         void setAvailableThruDate(OffsetDateTime availableThruDate);
 
+        String getBrandName();
+
+        void setBrandName(String brandName);
+
+        String getGtin();
+
+        void setGtin(String gtin);
+
+        java.math.BigDecimal getQuantityIncluded();
+
+        void setQuantityIncluded(java.math.BigDecimal quantityIncluded);
+
+        Long getPiecesIncluded();
+
+        void setPiecesIncluded(Long piecesIncluded);
+
+        java.math.BigDecimal getProductWeight();
+
+        void setProductWeight(java.math.BigDecimal productWeight);
+
+        String getActive();
+
+        void setActive(String active);
+
+        String getCaseUomId();
+
+        void setCaseUomId(String caseUomId);
+
+        String getOrganicCertifications();
+
+        void setOrganicCertifications(String organicCertifications);
+
+        String getMaterialCompositionDescription();
+
+        void setMaterialCompositionDescription(String materialCompositionDescription);
+
+        String getCountryOfOrigin();
+
+        void setCountryOfOrigin(String countryOfOrigin);
+
+        String getCertificationCodes();
+
+        void setCertificationCodes(String certificationCodes);
+
+        Long getIndividualsPerPackage();
+
+        void setIndividualsPerPackage(Long individualsPerPackage);
+
         String getSupplierPrefOrderId();
 
         void setSupplierPrefOrderId(String supplierPrefOrderId);
@@ -152,6 +200,54 @@ public interface SupplierProductEvent extends Event {
         Boolean getIsPropertyAvailableThruDateRemoved();
 
         void setIsPropertyAvailableThruDateRemoved(Boolean removed);
+
+        Boolean getIsPropertyBrandNameRemoved();
+
+        void setIsPropertyBrandNameRemoved(Boolean removed);
+
+        Boolean getIsPropertyGtinRemoved();
+
+        void setIsPropertyGtinRemoved(Boolean removed);
+
+        Boolean getIsPropertyQuantityIncludedRemoved();
+
+        void setIsPropertyQuantityIncludedRemoved(Boolean removed);
+
+        Boolean getIsPropertyPiecesIncludedRemoved();
+
+        void setIsPropertyPiecesIncludedRemoved(Boolean removed);
+
+        Boolean getIsPropertyProductWeightRemoved();
+
+        void setIsPropertyProductWeightRemoved(Boolean removed);
+
+        Boolean getIsPropertyActiveRemoved();
+
+        void setIsPropertyActiveRemoved(Boolean removed);
+
+        Boolean getIsPropertyCaseUomIdRemoved();
+
+        void setIsPropertyCaseUomIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyOrganicCertificationsRemoved();
+
+        void setIsPropertyOrganicCertificationsRemoved(Boolean removed);
+
+        Boolean getIsPropertyMaterialCompositionDescriptionRemoved();
+
+        void setIsPropertyMaterialCompositionDescriptionRemoved(Boolean removed);
+
+        Boolean getIsPropertyCountryOfOriginRemoved();
+
+        void setIsPropertyCountryOfOriginRemoved(Boolean removed);
+
+        Boolean getIsPropertyCertificationCodesRemoved();
+
+        void setIsPropertyCertificationCodesRemoved(Boolean removed);
+
+        Boolean getIsPropertyIndividualsPerPackageRemoved();
+
+        void setIsPropertyIndividualsPerPackageRemoved(Boolean removed);
 
         Boolean getIsPropertySupplierPrefOrderIdRemoved();
 

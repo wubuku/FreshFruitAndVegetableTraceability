@@ -38,6 +38,126 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.availableThruDate = availableThruDate;
     }
 
+    private String brandName;
+
+    public String getBrandName() {
+        return this.brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
+    private String gtin;
+
+    public String getGtin() {
+        return this.gtin;
+    }
+
+    public void setGtin(String gtin) {
+        this.gtin = gtin;
+    }
+
+    private java.math.BigDecimal quantityIncluded;
+
+    public java.math.BigDecimal getQuantityIncluded() {
+        return this.quantityIncluded;
+    }
+
+    public void setQuantityIncluded(java.math.BigDecimal quantityIncluded) {
+        this.quantityIncluded = quantityIncluded;
+    }
+
+    private Long piecesIncluded;
+
+    public Long getPiecesIncluded() {
+        return this.piecesIncluded;
+    }
+
+    public void setPiecesIncluded(Long piecesIncluded) {
+        this.piecesIncluded = piecesIncluded;
+    }
+
+    private java.math.BigDecimal productWeight;
+
+    public java.math.BigDecimal getProductWeight() {
+        return this.productWeight;
+    }
+
+    public void setProductWeight(java.math.BigDecimal productWeight) {
+        this.productWeight = productWeight;
+    }
+
+    private String active;
+
+    public String getActive() {
+        return this.active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
+    private String caseUomId;
+
+    public String getCaseUomId() {
+        return this.caseUomId;
+    }
+
+    public void setCaseUomId(String caseUomId) {
+        this.caseUomId = caseUomId;
+    }
+
+    private String organicCertifications;
+
+    public String getOrganicCertifications() {
+        return this.organicCertifications;
+    }
+
+    public void setOrganicCertifications(String organicCertifications) {
+        this.organicCertifications = organicCertifications;
+    }
+
+    private String materialCompositionDescription;
+
+    public String getMaterialCompositionDescription() {
+        return this.materialCompositionDescription;
+    }
+
+    public void setMaterialCompositionDescription(String materialCompositionDescription) {
+        this.materialCompositionDescription = materialCompositionDescription;
+    }
+
+    private String countryOfOrigin;
+
+    public String getCountryOfOrigin() {
+        return this.countryOfOrigin;
+    }
+
+    public void setCountryOfOrigin(String countryOfOrigin) {
+        this.countryOfOrigin = countryOfOrigin;
+    }
+
+    private String certificationCodes;
+
+    public String getCertificationCodes() {
+        return this.certificationCodes;
+    }
+
+    public void setCertificationCodes(String certificationCodes) {
+        this.certificationCodes = certificationCodes;
+    }
+
+    private Long individualsPerPackage;
+
+    public Long getIndividualsPerPackage() {
+        return this.individualsPerPackage;
+    }
+
+    public void setIndividualsPerPackage(Long individualsPerPackage) {
+        this.individualsPerPackage = individualsPerPackage;
+    }
+
     private String supplierPrefOrderId;
 
     public String getSupplierPrefOrderId() {
@@ -377,6 +497,18 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         throwOnWrongEvent(e);
 
         this.setAvailableThruDate(e.getAvailableThruDate());
+        this.setBrandName(e.getBrandName());
+        this.setGtin(e.getGtin());
+        this.setQuantityIncluded(e.getQuantityIncluded());
+        this.setPiecesIncluded(e.getPiecesIncluded());
+        this.setProductWeight(e.getProductWeight());
+        this.setActive(e.getActive());
+        this.setCaseUomId(e.getCaseUomId());
+        this.setOrganicCertifications(e.getOrganicCertifications());
+        this.setMaterialCompositionDescription(e.getMaterialCompositionDescription());
+        this.setCountryOfOrigin(e.getCountryOfOrigin());
+        this.setCertificationCodes(e.getCertificationCodes());
+        this.setIndividualsPerPackage(e.getIndividualsPerPackage());
         this.setSupplierPrefOrderId(e.getSupplierPrefOrderId());
         this.setSupplierRatingTypeId(e.getSupplierRatingTypeId());
         this.setStandardLeadTimeDays(e.getStandardLeadTimeDays());
@@ -409,6 +541,18 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
             return;
         }
         this.setAvailableThruDate(s.getAvailableThruDate());
+        this.setBrandName(s.getBrandName());
+        this.setGtin(s.getGtin());
+        this.setQuantityIncluded(s.getQuantityIncluded());
+        this.setPiecesIncluded(s.getPiecesIncluded());
+        this.setProductWeight(s.getProductWeight());
+        this.setActive(s.getActive());
+        this.setCaseUomId(s.getCaseUomId());
+        this.setOrganicCertifications(s.getOrganicCertifications());
+        this.setMaterialCompositionDescription(s.getMaterialCompositionDescription());
+        this.setCountryOfOrigin(s.getCountryOfOrigin());
+        this.setCertificationCodes(s.getCertificationCodes());
+        this.setIndividualsPerPackage(s.getIndividualsPerPackage());
         this.setSupplierPrefOrderId(s.getSupplierPrefOrderId());
         this.setSupplierRatingTypeId(s.getSupplierRatingTypeId());
         this.setStandardLeadTimeDays(s.getStandardLeadTimeDays());
@@ -441,6 +585,90 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
             }
         } else {
             this.setAvailableThruDate(e.getAvailableThruDate());
+        }
+        if (e.getBrandName() == null) {
+            if (e.getIsPropertyBrandNameRemoved() != null && e.getIsPropertyBrandNameRemoved()) {
+                this.setBrandName(null);
+            }
+        } else {
+            this.setBrandName(e.getBrandName());
+        }
+        if (e.getGtin() == null) {
+            if (e.getIsPropertyGtinRemoved() != null && e.getIsPropertyGtinRemoved()) {
+                this.setGtin(null);
+            }
+        } else {
+            this.setGtin(e.getGtin());
+        }
+        if (e.getQuantityIncluded() == null) {
+            if (e.getIsPropertyQuantityIncludedRemoved() != null && e.getIsPropertyQuantityIncludedRemoved()) {
+                this.setQuantityIncluded(null);
+            }
+        } else {
+            this.setQuantityIncluded(e.getQuantityIncluded());
+        }
+        if (e.getPiecesIncluded() == null) {
+            if (e.getIsPropertyPiecesIncludedRemoved() != null && e.getIsPropertyPiecesIncludedRemoved()) {
+                this.setPiecesIncluded(null);
+            }
+        } else {
+            this.setPiecesIncluded(e.getPiecesIncluded());
+        }
+        if (e.getProductWeight() == null) {
+            if (e.getIsPropertyProductWeightRemoved() != null && e.getIsPropertyProductWeightRemoved()) {
+                this.setProductWeight(null);
+            }
+        } else {
+            this.setProductWeight(e.getProductWeight());
+        }
+        if (e.getActive() == null) {
+            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
+                this.setActive(null);
+            }
+        } else {
+            this.setActive(e.getActive());
+        }
+        if (e.getCaseUomId() == null) {
+            if (e.getIsPropertyCaseUomIdRemoved() != null && e.getIsPropertyCaseUomIdRemoved()) {
+                this.setCaseUomId(null);
+            }
+        } else {
+            this.setCaseUomId(e.getCaseUomId());
+        }
+        if (e.getOrganicCertifications() == null) {
+            if (e.getIsPropertyOrganicCertificationsRemoved() != null && e.getIsPropertyOrganicCertificationsRemoved()) {
+                this.setOrganicCertifications(null);
+            }
+        } else {
+            this.setOrganicCertifications(e.getOrganicCertifications());
+        }
+        if (e.getMaterialCompositionDescription() == null) {
+            if (e.getIsPropertyMaterialCompositionDescriptionRemoved() != null && e.getIsPropertyMaterialCompositionDescriptionRemoved()) {
+                this.setMaterialCompositionDescription(null);
+            }
+        } else {
+            this.setMaterialCompositionDescription(e.getMaterialCompositionDescription());
+        }
+        if (e.getCountryOfOrigin() == null) {
+            if (e.getIsPropertyCountryOfOriginRemoved() != null && e.getIsPropertyCountryOfOriginRemoved()) {
+                this.setCountryOfOrigin(null);
+            }
+        } else {
+            this.setCountryOfOrigin(e.getCountryOfOrigin());
+        }
+        if (e.getCertificationCodes() == null) {
+            if (e.getIsPropertyCertificationCodesRemoved() != null && e.getIsPropertyCertificationCodesRemoved()) {
+                this.setCertificationCodes(null);
+            }
+        } else {
+            this.setCertificationCodes(e.getCertificationCodes());
+        }
+        if (e.getIndividualsPerPackage() == null) {
+            if (e.getIsPropertyIndividualsPerPackageRemoved() != null && e.getIsPropertyIndividualsPerPackageRemoved()) {
+                this.setIndividualsPerPackage(null);
+            }
+        } else {
+            this.setIndividualsPerPackage(e.getIndividualsPerPackage());
         }
         if (e.getSupplierPrefOrderId() == null) {
             if (e.getIsPropertySupplierPrefOrderIdRemoved() != null && e.getIsPropertySupplierPrefOrderIdRemoved()) {
