@@ -1,0 +1,53 @@
+# 原材料与供应商的关系
+valueObjects:
+  BffSupplierRawItemDto:
+    properties:
+      ProductId:
+        type: id
+      SupplierId: #partyId
+        type: id
+      CurrencyUomId:
+        type: id
+      MinimumOrderQuantity:
+        type: fixed-point
+      AvailableFromDate:
+        type: date-time
+      AvailableThruDate:
+        type: date-time
+      BrandName:
+        type: name
+      Gtin:
+        description: "GTIN (Global Trade Item Number)"
+        type: id
+      #QuantityUomId:
+      #  type: id
+        # 主计量单位的 ID，比如“oz”
+      QuantityIncluded: #Gross Weight Per Package
+        description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+        type: fixed-point
+        # 一件（piece/can）的数量（以“主计量单位”计算）是 12oz，即 12oz/can，一个包装6罐装的话就是12*6=72oz
+      PiecesIncluded: #这个还要不要？
+        type: numeric
+        # 一个包装内包含的“件数”，如果包装内没有“分件”，则该值设置为 1（可以把 null 看作 1）
+      StatusId: #这个还要不要？
+        type: id
+      SupplierName:
+        type: name
+      ProductWeight: #Net Weight Per Package
+        type: fixed-point
+      Active:
+        type: indicator
+      CaseUomId: #Packaging Type
+        type: id
+        # 用于描述“包装类型”的单位 Id。比如 EA、BX(Box)、PLT(Pallet)、PK(Pack)
+      OrganicCertifications: #Organic Certification
+        type: description
+      MaterialCompositionDescription: #Material Composition
+        type: description
+      CountryOfOrigin: #Country of Origin
+        type: name
+      CertificationCodes: #Certification Code
+        type: description
+      IndividualsPerPackage: #Quantity Per Package
+        description: Number of individual units in one package (for products counted by individual pieces, e.g., fruits, eggs)
+        type: numeric
