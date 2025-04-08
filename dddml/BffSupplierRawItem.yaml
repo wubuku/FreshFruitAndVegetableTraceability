@@ -29,8 +29,6 @@ valueObjects:
       PiecesIncluded: #这个还要不要？
         type: numeric
         # 一个包装内包含的“件数”，如果包装内没有“分件”，则该值设置为 1（可以把 null 看作 1）
-      StatusId: #这个还要不要？
-        type: id
       SupplierName:
         type: name
       ProductWeight: #Net Weight Per Package
