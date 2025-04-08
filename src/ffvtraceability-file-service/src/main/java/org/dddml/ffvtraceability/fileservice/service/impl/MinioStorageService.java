@@ -97,7 +97,8 @@ public class MinioStorageService implements StorageService {
 
     @Override
     public String getPublicUrl(String path) {
-        return String.format("%s/%s/%s", minioConfig.getPublicEndpoint(),
+        String publicEndpoint = minioConfig.getPublicEndpoint(); 
+        return String.format("%s/%s/%s", publicEndpoint.endsWith("/") ? publicEndpoint.substring(0, publicEndpoint.length() - 1) : publicEndpoint,
                 minioConfig.getBucket(), path);
     }
 
