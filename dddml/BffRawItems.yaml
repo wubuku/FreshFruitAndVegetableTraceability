@@ -123,6 +123,9 @@ valueObjects:
         type: numeric
       DimensionsDescription:
         type: description
+      Suppliers:
+        itemType: BffSupplierRawItemDto
+        isList: true
 
 services:
   BffRawItemService:
