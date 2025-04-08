@@ -82,6 +82,7 @@ public class TenantSupport {
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.attribute.AttributeState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.attributeset.AttributeSetState", "tenantId");
         tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.bffnotification.BffNotificationState", "tenantId");
+        tenantIdPropertyNameMap.put("org.dddml.ffvtraceability.domain.inventorytransfer.InventoryTransferState", "tenantId");
         typesWithIdStartsWithOrEndsWithTenantId = new HashSet<>();
         typesWithIdStartsWithOrEndsWithTenantId.add("org.dddml.ffvtraceability.domain.statusitem.StatusItemState");
     }

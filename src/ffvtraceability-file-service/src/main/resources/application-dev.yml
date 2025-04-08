@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8082
 
 spring:
   application:
@@ -59,7 +59,7 @@ storage:
   security:
     allow-anonymous-upload: true
   
-  type: minio
+  type: cos
   
   gcs:
     project-id: woven-justice-441107-h8
@@ -72,6 +72,14 @@ storage:
     region: your-aws-region
     private-bucket: flex-api-private
     public-bucket: flex-api-public
+  
+  cos:
+    secret-id: YOUR_SECRET_ID
+    secret-key: YOUR_SECRET_KEY
+    region: ap-nanjing
+    private-bucket: ffvt-private
+    public-bucket: ruichaungqi-skin-1252161476
+    public-endpoint: https://ruichaungqi-skin-1252161476.cos.ap-nanjing.myqcloud.com
   
   minio:
     endpoint: http://fp.ablueforce.com:9002  #minio服务的地址（端口为参数 --address的值，默认为9000），我们在启动docker的时候将其映射为宿主的 9002 端口 (-p 9002:9000)
