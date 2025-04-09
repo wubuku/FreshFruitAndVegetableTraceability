@@ -87,6 +87,16 @@ public class BffRawItemServiceResource {
         
     }
 
+    @PutMapping("{productId}/SupplierRawItems/{supplierId}/active")
+    public void activateSupplierRawItem(
+        @RequestBody BffRawItemServiceCommands.ActivateSupplierRawItem requestBody
+    ) {
+        
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffRawItemApplicationService.when(requestBody);
+        
+    }
+
     @PutMapping("{productId}/active")
     public void activateRawItem(
         @PathVariable("productId") String productId,

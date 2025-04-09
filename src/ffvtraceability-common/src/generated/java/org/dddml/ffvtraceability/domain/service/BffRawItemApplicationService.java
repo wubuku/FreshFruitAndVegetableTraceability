@@ -18,6 +18,8 @@ public interface BffRawItemApplicationService {
 
     void when(BffRawItemServiceCommands.UpdateRawItem c);
 
+    void when(BffRawItemServiceCommands.ActivateSupplierRawItem c);
+
     void when(BffRawItemServiceCommands.ActivateRawItem c);
 
     void when(BffRawItemServiceCommands.BatchAddRawItems c);

@@ -88,8 +88,8 @@ valueObjects:
           # BoxHeight:
           #   type: fixed-point
           # WeightUomId:
-          #   type: id
-          # BoxWeight:
+        #   type: id
+        # BoxWeight:
         #   type: fixed-point
       # -------------------------------------------------------------------
       CaseUomId:
@@ -179,6 +179,22 @@ services:
             optional: false # is required
           RawItem:
             type: BffRawItemDto
+
+      ActivateSupplierRawItem:
+        # 激活指定ItemId和SupplierId的SupplierProduct
+        restfulResourceName: "{ProductId}/SupplierRawItems/{SupplierId}/active"
+        metadata:
+          RestfulPathVariable:
+            - ProductId
+            - SupplierId
+        httpMethod: PUT
+        parameters:
+          ProductId:
+            type: id
+            optional: false
+          SupplierId:
+            type: id
+            optional: false
 
       ActivateRawItem:
         # 禁用 / 激活指定 Id 的 Item

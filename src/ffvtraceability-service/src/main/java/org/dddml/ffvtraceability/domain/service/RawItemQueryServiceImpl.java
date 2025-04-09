@@ -59,7 +59,7 @@ public class RawItemQueryServiceImpl implements RawItemQueryService {
                 dto.setDefaultShipmentBoxType(bffShipmentBoxTypeMapper.toBffShipmentBoxTypeDto(
                         shipmentBoxTypeApplicationService.get(dto.getDefaultShipmentBoxTypeId())));
             }
-            List<BffSupplierRawItemProjection> supplierRawItems = bffRawItemRepository.findSupplierRawItemByProductId(productId);
+            List<BffSupplierRawItemProjection> supplierRawItems = bffRawItemRepository.findSupplierRawItemsByProductId(productId);
             dto.setSuppliers(new ArrayList<>(supplierRawItems.size()));
             supplierRawItems.forEach(x -> {
                 BffSupplierRawItemDto supplierRawItemDto = bffRawItemMapper.toBffSupplierRawItemDto(x);

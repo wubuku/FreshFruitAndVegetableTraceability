@@ -341,7 +341,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         }
         //先查询当前产品的供应商与产品关联关系列表
         List<BffSupplierRawItemProjection> supplierRawItemProjections =
-                bffRawItemRepository.findSupplierRawItemByProductId(productId);
+                bffRawItemRepository.findSupplierRawItemsByProductId(productId);
         List<String> existingSupplierIds = supplierRawItemProjections.stream().
                 map(BffSupplierRawItemProjection::getSupplierId).collect(Collectors.toList());
         List<String> inputSupplierIds = rawItem.getSuppliers().stream().
@@ -531,5 +531,29 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createSupplierProduct.setCommandId(UUID.randomUUID().toString());
         createSupplierProduct.setRequesterId(c.getRequesterId());
         supplierProductApplicationService.when(createSupplierProduct);
+    }
+
+    @Override
+    public void when(BffRawItemServiceCommands.ActivateSupplierRawItem c) {
+        Optional<BffSupplierRawItemProjection> supplierRawItemProjection =
+                bffRawItemRepository.findSupplierRawItemByProductId(c.getProductId(), c.getSupplierId());
+        OffsetDateTime now = OffsetDateTime.now();
+        if (supplierRawItemProjection.isPresent()) {
+            //不管之前的有效终止日期是否已经过期，都更新为当前时间加100年
+            BffSupplierRawItemProjection supplierRawItem = supplierRawItemProjection.get();
+            AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct = new AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct();
+            SupplierProductAssocId supplierProductAssocId = new SupplierProductAssocId();
+            supplierProductAssocId.setProductId(c.getProductId());
+            supplierProductAssocId.setPartyId(c.getSupplierId());
+            supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
+            supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
+            supplierProductAssocId.setAvailableFromDate(supplierRawItem.getAvailableFromDate().atOffset(ZoneOffset.UTC));
+            mergePatchSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
+            mergePatchSupplierProduct.setVersion(supplierRawItem.getVersion());
+            mergePatchSupplierProduct.setAvailableThruDate(now.plusYears(100));
+            mergePatchSupplierProduct.setCommandId(UUID.randomUUID().toString());
+            mergePatchSupplierProduct.setRequesterId(c.getRequesterId());
+            supplierProductApplicationService.when(mergePatchSupplierProduct);
+        }
     }
 }

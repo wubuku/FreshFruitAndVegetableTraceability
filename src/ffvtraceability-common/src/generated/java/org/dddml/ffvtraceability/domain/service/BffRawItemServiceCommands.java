@@ -125,6 +125,36 @@ public class BffRawItemServiceCommands {
 
     }
 
+    public static class ActivateSupplierRawItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Supplier Id
+         */
+        private String supplierId;
+
+        public String getSupplierId() {
+            return supplierId;
+        }
+
+        public void setSupplierId(String supplierId) {
+            this.supplierId = supplierId;
+        }
+
+    }
+
     public static class ActivateRawItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**

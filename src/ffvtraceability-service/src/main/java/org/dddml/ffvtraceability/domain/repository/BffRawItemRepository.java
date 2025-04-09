@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface BffRawItemRepository extends JpaRepository<AbstractProductState.SimpleProductState, String> {
 
@@ -32,6 +33,14 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
                 AND (:active IS NULL OR p.active = :active)
             """;
 
+    /**
+     * 根据条件分页查询原材料
+     *
+     * @param pageable
+     * @param supplierId
+     * @param active
+     * @return
+     */
     @Query(value = """
             SELECT
                 p.product_id as productId,
@@ -196,5 +205,36 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             from supplier_product
             WHERE product_id = :productId
             """, nativeQuery = true)
-    List<BffSupplierRawItemProjection> findSupplierRawItemByProductId(@Param("productId") String productId);
+    List<BffSupplierRawItemProjection> findSupplierRawItemsByProductId(@Param("productId") String productId);
+
+    @Query(value = """
+            SELECT 
+            product_id as productId,
+            party_id as supplierId,
+            currency_uom_id as currencyUomId,
+            minimum_order_quantity as minimumOrderQuantity,
+            available_from_date as availableFromDate,
+            available_thru_date as availableThruDate,
+            version as version,
+            gtin as gtin,
+            quantity_included as quantityIncluded,
+            pieces_included as piecesIncluded,
+            product_weight as productWeight,
+            CASE
+               WHEN available_thru_date > CURRENT_TIMESTAMP THEN 'Y' -- 有效期内
+               ELSE 'N' -- 已过期
+            END AS active,
+            "case_uom_id" as caseUomId,
+            organic_certifications as organicCertifications,
+            brand_name as brandName,
+            material_composition_description as materialCompositionDescription,
+            country_of_origin as countryOfOrigin,
+            certification_codes as certificationCodes,
+            individuals_per_package as individualsPerPackage
+            from supplier_product
+            WHERE product_id = :productId
+            and party_id = :supplierId
+            """, nativeQuery = true)
+    Optional<BffSupplierRawItemProjection> findSupplierRawItemByProductId(@Param("productId") String productId,
+                                                                          @Param("supplierId") String supplierId);
 }
