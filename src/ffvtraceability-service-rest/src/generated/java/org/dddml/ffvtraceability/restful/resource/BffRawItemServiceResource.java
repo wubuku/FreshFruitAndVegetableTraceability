@@ -89,8 +89,26 @@ public class BffRawItemServiceResource {
 
     @PutMapping("{productId}/SupplierRawItems/{supplierId}/active")
     public void activateSupplierRawItem(
+        @PathVariable("productId") String productId,
+        @PathVariable("supplierId") String supplierId,
         @RequestBody BffRawItemServiceCommands.ActivateSupplierRawItem requestBody
     ) {
+        requestBody.setProductId(productId);
+        requestBody.setSupplierId(supplierId);
+        
+        requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffRawItemApplicationService.when(requestBody);
+        
+    }
+
+    @PutMapping("{productId}/SupplierRawItems/{supplierId}/deactivate")
+    public void deactivateSupplierRawItem(
+        @PathVariable("productId") String productId,
+        @PathVariable("supplierId") String supplierId,
+        @RequestBody BffRawItemServiceCommands.DeactivateSupplierRawItem requestBody
+    ) {
+        requestBody.setProductId(productId);
+        requestBody.setSupplierId(supplierId);
         
         requestBody.setRequesterId(SecurityContextUtil.getRequesterId());
         bffRawItemApplicationService.when(requestBody);

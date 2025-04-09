@@ -556,4 +556,30 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             supplierProductApplicationService.when(mergePatchSupplierProduct);
         }
     }
+
+    @Override
+    public void when(BffRawItemServiceCommands.DeactivateSupplierRawItem c) {
+        Optional<BffSupplierRawItemProjection> supplierRawItemProjection =
+                bffRawItemRepository.findSupplierRawItemByProductId(c.getProductId(), c.getSupplierId());
+        OffsetDateTime now = OffsetDateTime.now();
+        if (supplierRawItemProjection.isPresent()) {
+            //不管之前的有效终止日期是否已经过期，都更新为当前时间
+            BffSupplierRawItemProjection supplierRawItem = supplierRawItemProjection.get();
+            AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct = new AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct();
+            SupplierProductAssocId supplierProductAssocId = new SupplierProductAssocId();
+            supplierProductAssocId.setProductId(c.getProductId());
+            supplierProductAssocId.setPartyId(c.getSupplierId());
+            supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
+            supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
+            supplierProductAssocId.setAvailableFromDate(supplierRawItem.getAvailableFromDate().atOffset(ZoneOffset.UTC));
+            mergePatchSupplierProduct.setAvailableThruDate(now);
+            mergePatchSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
+            mergePatchSupplierProduct.setVersion(supplierRawItem.getVersion());
+            //更新为当前时间
+            mergePatchSupplierProduct.setAvailableThruDate(now);
+            mergePatchSupplierProduct.setCommandId(UUID.randomUUID().toString());
+            mergePatchSupplierProduct.setRequesterId(c.getRequesterId());
+            supplierProductApplicationService.when(mergePatchSupplierProduct);
+        }
+    }
 }

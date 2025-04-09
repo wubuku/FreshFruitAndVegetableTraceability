@@ -184,7 +184,23 @@ services:
         # 激活指定ItemId和SupplierId的SupplierProduct
         restfulResourceName: "{ProductId}/SupplierRawItems/{SupplierId}/active"
         metadata:
-          RestfulPathVariable:
+          RestfulPathVariables:
+            - ProductId
+            - SupplierId
+        httpMethod: PUT
+        parameters:
+          ProductId:
+            type: id
+            optional: false
+          SupplierId:
+            type: id
+            optional: false
+
+      DeactivateSupplierRawItem:
+        # 禁用指定ItemId和SupplierId的SupplierProduct
+        restfulResourceName: "{ProductId}/SupplierRawItems/{SupplierId}/deactivate"
+        metadata:
+          RestfulPathVariables:
             - ProductId
             - SupplierId
         httpMethod: PUT
