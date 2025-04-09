@@ -182,8 +182,11 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             quantity_included as quantityIncluded,
             pieces_included as piecesIncluded,
             product_weight as productWeight,
-            
-            case_uom_id as caseUomId,
+            CASE
+               WHEN available_thru_date > CURRENT_TIMESTAMP THEN 'Y' -- 有效期内
+               ELSE 'N' -- 已过期
+            END AS active,
+            "case_uom_id" as caseUomId,
             organic_certifications as organicCertifications,
             brand_name as brandName,
             material_composition_description as materialCompositionDescription,

@@ -1,17 +1,21 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
+import org.dddml.ffvtraceability.domain.BffSupplierRawItemDto;
 import org.dddml.ffvtraceability.domain.mapper.BffRawItemMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffShipmentBoxTypeMapper;
 import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
 import org.dddml.ffvtraceability.domain.product.ProductState;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
-import org.dddml.ffvtraceability.domain.repository.BffSupplierProductAssocProjection;
+import org.dddml.ffvtraceability.domain.repository.BffSupplierRawItemProjection;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.*;
 
@@ -55,12 +59,18 @@ public class RawItemQueryServiceImpl implements RawItemQueryService {
                 dto.setDefaultShipmentBoxType(bffShipmentBoxTypeMapper.toBffShipmentBoxTypeDto(
                         shipmentBoxTypeApplicationService.get(dto.getDefaultShipmentBoxTypeId())));
             }
-            BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.
-                    findSupplierProductAssociationByProductId(productId);
-            if (existingAssoc != null) {
-                dto.setSupplierId(existingAssoc.getSupplierId());
-                dto.setSupplierName(existingAssoc.getSupplierName());
-            }
+            List<BffSupplierRawItemProjection> supplierRawItems = bffRawItemRepository.findSupplierRawItemByProductId(productId);
+            dto.setSuppliers(new ArrayList<>(supplierRawItems.size()));
+            supplierRawItems.forEach(x -> {
+                BffSupplierRawItemDto supplierRawItemDto = bffRawItemMapper.toBffSupplierRawItemDto(x);
+                dto.getSuppliers().add(supplierRawItemDto);
+            });
+//            BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.
+//                    findSupplierProductAssociationByProductId(productId);
+//            if (existingAssoc != null) {
+//                dto.setSupplierId(existingAssoc.getSupplierId());
+//                dto.setSupplierName(existingAssoc.getSupplierName());
+//            }
             return dto;
         }
         return null;
