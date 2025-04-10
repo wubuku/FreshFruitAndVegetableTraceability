@@ -20,14 +20,16 @@ public interface BffLotRepository extends JpaRepository<AbstractLotState.SimpleL
 
     String COMMON_WHERE =
             "WHERE (:active IS NULL OR l.active = :active) " +
+                    "    AND (:supplierId IS NULL OR l.supplier_id = :supplierId) " +
                     "    AND (:keyword IS NULL OR " +
-                    "        LOWER(l.lot_id) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                    "        LOWER(l.internal_id) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                     "        LOWER(li.id_value) LIKE LOWER(CONCAT('%', :keyword, '%'))) ";
 
     String COMMON_SELECT =
             "SELECT " +
                     "    l.lot_id as lotId, " +
                     "    l.expiration_date as expirationDate, " +
+                    "    l.supplier_id as supplierId, " +
                     "    l.quantity as quantity, " +
                     "    l.active as active, " +
                     "    l.internal_id as internalId, " +
@@ -49,7 +51,10 @@ public interface BffLotRepository extends JpaRepository<AbstractLotState.SimpleL
                             COMMON_FROM_JOIN +
                             COMMON_WHERE,
             nativeQuery = true)
-    Page<BffLotProjection> findAllLots(Pageable pageable, @Param("active") String active, @Param("keyword") String keyword);
+    Page<BffLotProjection> findAllLots(Pageable pageable,
+                                       @Param("supplierId") String supplierId,
+                                       @Param("active") String active,
+                                       @Param("keyword") String keyword);
 
     @Query(value =
             COMMON_SELECT +
@@ -63,6 +68,21 @@ public interface BffLotRepository extends JpaRepository<AbstractLotState.SimpleL
             @Param("caseGtin") String caseGtin,
             @Param("caseBatch") String caseBatch
     );
+
+    @Query(value = """
+            SELECT
+                l.lot_id as lotId,
+                l.supplier_id as supplierId,
+                l.internal_id as internalId
+            FROM lot l
+            WHERE l.supplier_id = :supplierId
+            AND l.internal_id = :lotNo
+            """, nativeQuery = true)
+    Optional<BffLotProjection> findLotBySupplierIdAndLotNo(
+            @Param("lotNo") String lotNo,
+            @Param("supplierId") String supplierId
+    );
+
     // 似乎没有必要添加下面的条件：
     /*
     AND l.pallet_sscc IS NULL

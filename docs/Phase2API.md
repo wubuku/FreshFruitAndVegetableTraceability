@@ -293,3 +293,67 @@ curl -X 'PUT' \
 
 不管当前该关联关系的可用状态是“禁用”还是“启用”，都将其可用状态设置为“启用”。
 
+## 二、批次号相关API
+
+### 1. 添加批次号
+添加批次号时需要传递供应商的Id（SupplierId）和批次号(internalId)：
+```shell
+curl -X 'POST' \
+  'http://localhost:8001/api/BffLots' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "supplierId": "13HDSG4J6BKYPHJVZ0",
+  "internalId": "Lot No"
+}'
+```
+操作成功直接返回该批次号的Id，如：
+```shell
+14AGQF7D2VWBEZH298
+```
+添加策略：
+
+如果指定供应商的批次号已经存在那么直接返回LotId;
+
+如果不存在那么将添加给批次号并返回 LotId.
+
+### 2. 根据条件查询批次号信息
+
+新增查询条件：供应商Id，如：
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffLots?page=0&size=20&supplierId=13HDSG4J6BKYPHJVZ0' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+返回结果如下：
+```json
+{
+  "content": [
+    {
+      "lotId": "14AGPQ39F501D6RAZD",
+      "supplierId": "13HDSG4J6BKYPHJVZ0",
+      "active": "Y",
+      "internalId": "Lot No1"
+    },
+    {
+      "lotId": "14AGQF7D2VWBEZH298",
+      "supplierId": "13HDSG4J6BKYPHJVZ0",
+      "active": "Y",
+      "internalId": "Lot No"
+    }
+  ],
+  "totalElements": 2,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+lotId 为批次号的 Id
+
+supplierId 为供应商 Id
+
+internalId 为批次号
+
+

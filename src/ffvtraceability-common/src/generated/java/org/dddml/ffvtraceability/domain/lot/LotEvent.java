@@ -45,6 +45,10 @@ public interface LotEvent extends Event {
     void setTenantId(String tenantId);
 
     interface LotStateEvent extends LotEvent {
+        String getSupplierId();
+
+        void setSupplierId(String supplierId);
+
         java.math.BigDecimal getQuantity();
 
         void setQuantity(java.math.BigDecimal quantity);
@@ -109,6 +113,10 @@ public interface LotEvent extends Event {
 
     interface LotStateMergePatched extends LotStateEvent
     {
+        Boolean getIsPropertySupplierIdRemoved();
+
+        void setIsPropertySupplierIdRemoved(Boolean removed);
+
         Boolean getIsPropertyQuantityRemoved();
 
         void setIsPropertyQuantityRemoved(Boolean removed);

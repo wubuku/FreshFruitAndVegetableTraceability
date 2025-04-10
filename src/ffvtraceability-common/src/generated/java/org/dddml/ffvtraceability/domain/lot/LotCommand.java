@@ -48,6 +48,10 @@ public interface LotCommand extends Command {
     }
 
     interface CreateOrMergePatchLot extends LotCommand {
+        String getSupplierId();
+
+        void setSupplierId(String supplierId);
+
         java.math.BigDecimal getQuantity();
 
         void setQuantity(java.math.BigDecimal quantity);
@@ -106,6 +110,10 @@ public interface LotCommand extends Command {
     }
 
     interface MergePatchLot extends CreateOrMergePatchLot {
+        Boolean getIsPropertySupplierIdRemoved();
+
+        void setIsPropertySupplierIdRemoved(Boolean removed);
+
         Boolean getIsPropertyQuantityRemoved();
 
         void setIsPropertyQuantityRemoved(Boolean removed);

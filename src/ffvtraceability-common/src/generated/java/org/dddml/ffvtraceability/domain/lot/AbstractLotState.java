@@ -24,6 +24,16 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.lotId = lotId;
     }
 
+    private String supplierId;
+
+    public String getSupplierId() {
+        return this.supplierId;
+    }
+
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
+    }
+
     private java.math.BigDecimal quantity;
 
     public java.math.BigDecimal getQuantity() {
@@ -299,6 +309,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
     public void when(LotStateCreated e) {
         throwOnWrongEvent(e);
 
+        this.setSupplierId(e.getSupplierId());
         this.setQuantity(e.getQuantity());
         this.setExpirationDate(e.getExpirationDate());
         this.setLotTypeId(e.getLotTypeId());
@@ -325,6 +336,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         if (s == this) {
             return;
         }
+        this.setSupplierId(s.getSupplierId());
         this.setQuantity(s.getQuantity());
         this.setExpirationDate(s.getExpirationDate());
         this.setLotTypeId(s.getLotTypeId());
@@ -378,6 +390,13 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
     public void when(LotStateMergePatched e) {
         throwOnWrongEvent(e);
 
+        if (e.getSupplierId() == null) {
+            if (e.getIsPropertySupplierIdRemoved() != null && e.getIsPropertySupplierIdRemoved()) {
+                this.setSupplierId(null);
+            }
+        } else {
+            this.setSupplierId(e.getSupplierId());
+        }
         if (e.getQuantity() == null) {
             if (e.getIsPropertyQuantityRemoved() != null && e.getIsPropertyQuantityRemoved()) {
                 this.setQuantity(null);

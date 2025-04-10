@@ -35,12 +35,14 @@ public class BffLotServiceResource {
     public Page<BffLotDto> getLots(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "supplierId", required = false) String supplierId,
         @RequestParam(value = "active", required = false) String active,
         @RequestParam(value = "keyword", required = false) String keyword
     ) {
         BffLotServiceCommands.GetLots getLots = new BffLotServiceCommands.GetLots();
         getLots.setPage(page);
         getLots.setSize(size);
+        getLots.setSupplierId(supplierId);
         getLots.setActive(active);
         getLots.setKeyword(keyword);
         

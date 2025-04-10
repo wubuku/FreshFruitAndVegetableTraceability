@@ -163,6 +163,18 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
 
 
     public static abstract class AbstractLotStateEvent extends AbstractLotEvent implements LotEvent.LotStateEvent {
+        private String supplierId;
+
+        public String getSupplierId()
+        {
+            return this.supplierId;
+        }
+
+        public void setSupplierId(String supplierId)
+        {
+            this.supplierId = supplierId;
+        }
+
         private java.math.BigDecimal quantity;
 
         public java.math.BigDecimal getQuantity()
@@ -389,6 +401,16 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
 
         public String getEventType() {
             return StateEventType.MERGE_PATCHED;
+        }
+
+        private Boolean isPropertySupplierIdRemoved;
+
+        public Boolean getIsPropertySupplierIdRemoved() {
+            return this.isPropertySupplierIdRemoved;
+        }
+
+        public void setIsPropertySupplierIdRemoved(Boolean removed) {
+            this.isPropertySupplierIdRemoved = removed;
         }
 
         private Boolean isPropertyQuantityRemoved;

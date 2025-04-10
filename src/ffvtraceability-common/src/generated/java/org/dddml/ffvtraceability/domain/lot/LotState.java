@@ -19,6 +19,8 @@ public interface LotState
 
     String getLotId();
 
+    String getSupplierId();
+
     java.math.BigDecimal getQuantity();
 
     OffsetDateTime getExpirationDate();
@@ -59,6 +61,8 @@ public interface LotState
 
     interface MutableLotState extends LotState {
         void setLotId(String lotId);
+
+        void setSupplierId(String supplierId);
 
         void setQuantity(java.math.BigDecimal quantity);
 

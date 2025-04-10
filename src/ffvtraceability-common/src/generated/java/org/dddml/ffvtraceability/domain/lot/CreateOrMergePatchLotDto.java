@@ -11,6 +11,21 @@ import org.dddml.ffvtraceability.domain.*;
 public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements LotCommand.CreateOrMergePatchLot {
 
     /**
+     * Supplier Id
+     */
+    private String supplierId;
+
+    public String getSupplierId()
+    {
+        return this.supplierId;
+    }
+
+    public void setSupplierId(String supplierId)
+    {
+        this.supplierId = supplierId;
+    }
+
+    /**
      * Quantity
      */
     private java.math.BigDecimal quantity;
@@ -203,6 +218,18 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.lotIdentifications = lotIdentifications;
     }
 
+    private Boolean isPropertySupplierIdRemoved;
+
+    public Boolean getIsPropertySupplierIdRemoved()
+    {
+        return this.isPropertySupplierIdRemoved;
+    }
+
+    public void setIsPropertySupplierIdRemoved(Boolean removed)
+    {
+        this.isPropertySupplierIdRemoved = removed;
+    }
+
     private Boolean isPropertyQuantityRemoved;
 
     public Boolean getIsPropertyQuantityRemoved()
@@ -350,6 +377,7 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     public void copyTo(CreateOrMergePatchLot command)
     {
         ((AbstractLotCommandDto) this).copyTo(command);
+        command.setSupplierId(this.getSupplierId());
         command.setQuantity(this.getQuantity());
         command.setExpirationDate(this.getExpirationDate());
         command.setLotTypeId(this.getLotTypeId());
@@ -427,6 +455,7 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     public void copyTo(MergePatchLot command)
     {
         copyTo((CreateOrMergePatchLot) command);
+        command.setIsPropertySupplierIdRemoved(this.getIsPropertySupplierIdRemoved());
         command.setIsPropertyQuantityRemoved(this.getIsPropertyQuantityRemoved());
         command.setIsPropertyExpirationDateRemoved(this.getIsPropertyExpirationDateRemoved());
         command.setIsPropertyLotTypeIdRemoved(this.getIsPropertyLotTypeIdRemoved());

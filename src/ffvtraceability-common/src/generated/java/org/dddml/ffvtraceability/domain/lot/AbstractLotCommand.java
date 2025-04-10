@@ -39,6 +39,18 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
 
     public static abstract class AbstractCreateOrMergePatchLot extends AbstractLotCommand implements CreateOrMergePatchLot
     {
+        private String supplierId;
+
+        public String getSupplierId()
+        {
+            return this.supplierId;
+        }
+
+        public void setSupplierId(String supplierId)
+        {
+            this.supplierId = supplierId;
+        }
+
         private java.math.BigDecimal quantity;
 
         public java.math.BigDecimal getQuantity()
@@ -233,6 +245,18 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
         @Override
         public String getCommandType() {
             return COMMAND_TYPE_MERGE_PATCH;
+        }
+
+        private Boolean isPropertySupplierIdRemoved;
+
+        public Boolean getIsPropertySupplierIdRemoved()
+        {
+            return this.isPropertySupplierIdRemoved;
+        }
+
+        public void setIsPropertySupplierIdRemoved(Boolean removed)
+        {
+            this.isPropertySupplierIdRemoved = removed;
         }
 
         private Boolean isPropertyQuantityRemoved;

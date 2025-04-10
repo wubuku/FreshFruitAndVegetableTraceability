@@ -9,6 +9,8 @@ aggregates:
     #     name: "__Active__"
 
     properties:
+      SupplierId:
+        type: id
       Quantity:
         type: fixed-point
       ExpirationDate:

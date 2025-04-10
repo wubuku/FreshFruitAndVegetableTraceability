@@ -4400,6 +4400,7 @@ public class M {
 
     public static final String[] propertyNames = new String[] {
             "lotId",
+            "supplierId",
             "quantity",
             "expirationDate",
             "lotTypeId",
@@ -4422,6 +4423,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
             "String",
             "java.math.BigDecimal",
             "OffsetDateTime",
@@ -4458,6 +4460,8 @@ public class M {
     private static void initAliasMap() {
         aliasMap.put("lotId", "lotId");
         aliasMap.put("LotId", "lotId");
+        aliasMap.put("supplierId", "supplierId");
+        aliasMap.put("SupplierId", "supplierId");
         aliasMap.put("quantity", "quantity");
         aliasMap.put("Quantity", "quantity");
         aliasMap.put("expirationDate", "expirationDate");
