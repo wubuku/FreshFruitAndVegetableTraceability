@@ -357,4 +357,57 @@ supplierId 为供应商 Id
 
 internalId 为批次号
 
+## 三、库存相关接口
+### 查询库存
+
+可以根据产品类型、供应商 Id、产品 Id、仓库 Id 来查询库存：
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffInventoryItems?page=0&size=20
+  &productTypeId=RAW_MATERIAL
+  &supplierId=13HDSG4J6BKYPHJVZ0
+  &productId=14AG8L4GM6EKAWK277
+  &facilityId=13LNXR6X497W03AP81' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+其中 productTypeId 为产品类型，可取值范围：
+
+    * RAW_MATERIAL 
+    * RAC_WIP
+    * RTE_WIP
+    * PACKED_WIP
+    * FINISHED_GOOD
+supplierId 为供应商 Id；
+
+productId 为产品 Id；
+
+facilityId 为仓库 Id.
+
+返回结果举例如下：
+```json
+{
+  "content": [
+    {
+      "inventoryItemId": "inverntory_itemId",
+      "productId": "14AG8L4GM6EKAWK277",
+      "productName": "productName",
+      "supplierId": "13HDSG4J6BKYPHJVZ0",
+      "supplierShortName": "v25031701",
+      "facilityId": "13LNXR6X497W03AP81",
+      "lotId": "14AGPQ39F501D6RAZD",
+      "locationSeqId": "13LNXR6X497W03AP81_DEFAULT",
+      "comments": "comments",
+      "quantityOnHandTotal": 999
+    }
+  ],
+  "totalElements": 1,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+
+
+
 
