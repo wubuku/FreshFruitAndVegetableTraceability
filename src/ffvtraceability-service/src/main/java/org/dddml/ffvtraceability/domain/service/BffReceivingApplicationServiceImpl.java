@@ -59,6 +59,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     private DocumentNumberGeneratorApplicationService documentNumberGeneratorApplicationService;
 
     @Autowired
+    private BffLotService bffLotService;
+
+    @Autowired
     private BffFacilityRepository bffFacilityRepository;
     @Autowired
     private BffFacilityMapper bffFacilityMapper;
@@ -289,7 +292,11 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         generateNextNumber.setRequesterId(c.getRequesterId());
         createShipment.setShipmentId(c.getReceivingDocument().getDocumentId() != null ? c.getReceivingDocument().getDocumentId()
                 : documentNumberGeneratorApplicationService.when(generateNextNumber));
-        createShipment.setPartyIdTo(c.getReceivingDocument().getPartyIdTo());
+        String supplierId = c.getReceivingDocument().getPartyIdTo();
+        if (supplierId == null || supplierId.isBlank()) {
+            throw new IllegalArgumentException("Vendor can't be null");
+        }
+        createShipment.setPartyIdTo(supplierId);
         createShipment.setPartyIdFrom(c.getReceivingDocument().getPartyIdFrom());
         createShipment.setOriginFacilityId(c.getReceivingDocument().getOriginFacilityId());
         createShipment.setDestinationFacilityId(c.getReceivingDocument().getDestinationFacilityId());
@@ -310,7 +317,12 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 createShipmentReceipt.setReceiptId(createShipment.getShipmentId() + "-" + itemSeq);
                 createShipmentReceipt.setShipmentId(createShipment.getShipmentId());
                 createShipmentReceipt.setProductId(receivingItem.getProductId());
-                createShipmentReceipt.setLotId(receivingItem.getLotId());
+                //在这里获取批次号
+                BffLotDto lotDto = new BffLotDto();
+                lotDto.setSupplierId(supplierId);
+                lotDto.setInternalId(receivingItem.getLotNo());
+                String lotId = bffLotService.createLot(lotDto, OffsetDateTime.now(), c.getRequesterId());
+                createShipmentReceipt.setLotId(lotId);
                 //如果没有指定货位，那么设置为指定仓库的默认货位，默认货位Id:[仓库Id_DEFAULT]
                 createShipmentReceipt.setLocationSeqId(receivingItem.getLocationSeqId() == null || receivingItem.getLocationSeqId().isBlank()
                         ? createShipment.getDestinationFacilityId() + "_DEFAULT" : receivingItem.getLocationSeqId());

@@ -3,7 +3,6 @@ package org.dddml.ffvtraceability.domain.service;
 import org.dddml.ffvtraceability.domain.BffLotDto;
 import org.dddml.ffvtraceability.domain.lot.*;
 import org.dddml.ffvtraceability.domain.mapper.BffLotMapper;
-import org.dddml.ffvtraceability.domain.repository.BffLotProjection;
 import org.dddml.ffvtraceability.domain.repository.BffLotRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
@@ -14,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.*;
 
 import static org.dddml.ffvtraceability.domain.constants.BffLotConstants.LOT_IDENTIFICATION_TYPE_TLC_CASE_GTIN_BATCH;
@@ -33,6 +33,9 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
 
     @Autowired
     private BffLotMapper bffLotMapper;
+
+    @Autowired
+    private BffLotService bffLotService;
 
     public static String formatTlcCaseGtinAndBatch(String caseGtin, String caseBatch) {
         if (caseGtin == null || caseGtin.trim().isEmpty() || caseBatch == null || caseBatch.trim().isEmpty()) {
@@ -75,29 +78,7 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     @Override
     @Transactional
     public String when(BffLotServiceCommands.CreateLot c) {
-        BffLotDto lotDto = c.getLot();
-        if (lotDto == null) {
-            throw new IllegalArgumentException("Lot information can't be null");
-        }
-        if (lotDto.getSupplierId() == null || lotDto.getSupplierId().isBlank()) {
-            throw new IllegalArgumentException("Vendor can't be null");
-        }
-        if (lotDto.getInternalId() == null || lotDto.getInternalId().isBlank()) {
-            throw new IllegalArgumentException("Lot no. can't be null");
-        }
-        Optional<BffLotProjection> lotProjection = bffLotRepository.findLotBySupplierIdAndLotNo(lotDto.getInternalId(), lotDto.getSupplierId());
-        if (lotProjection.isPresent()) {
-            return lotProjection.get().getLotId();
-        }
-        AbstractLotCommand.SimpleCreateLot createLot = bffLotMapper.toCreateLot(lotDto);
-        createLot.setLotId(lotDto.getLotId() != null && !lotDto.getLotId().isEmpty() ? lotDto.getLotId() : IdUtils.randomId());
-        createLot.setActive(INDICATOR_YES);//.asIndicatorDefaultYes(lotDto.getActive())); // 将前端传入的 active 规范化
-        createLot.setCommandId(c.getCommandId() != null ? c.getCommandId() : createLot.getLotId());
-        createLot.setSupplierId(lotDto.getSupplierId());
-        createLot.setInternalId(lotDto.getInternalId());
-        createLot.setRequesterId(c.getRequesterId());
-        lotApplicationService.when(createLot);
-        return createLot.getLotId();
+        return bffLotService.createLot(c.getLot(), OffsetDateTime.now(), c.getRequesterId());
     }
 
     @Override

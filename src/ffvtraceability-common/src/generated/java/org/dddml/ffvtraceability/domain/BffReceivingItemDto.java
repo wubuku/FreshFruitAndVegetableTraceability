@@ -147,6 +147,18 @@ public class BffReceivingItemDto implements Serializable {
         this.lotId = lotId;
     }
 
+    private String lotNo;
+
+    public String getLotNo()
+    {
+        return this.lotNo;
+    }
+
+    public void setLotNo(String lotNo)
+    {
+        this.lotNo = lotNo;
+    }
+
     private String locationSeqId;
 
     public String getLocationSeqId()
@@ -397,7 +409,7 @@ public class BffReceivingItemDto implements Serializable {
     {
     }
 
-    public BffReceivingItemDto(String receiptId, String productId, String productName, String smallImageUrl, String quantityUomId, String caseUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String internalId, String gtin, String lotId, String locationSeqId, String locationName, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity, String inspectedBy, String comments, String qaInspectionStatusId, Boolean deleted)
+    public BffReceivingItemDto(String receiptId, String productId, String productName, String smallImageUrl, String quantityUomId, String caseUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String internalId, String gtin, String lotId, String lotNo, String locationSeqId, String locationName, String itemDescription, java.math.BigDecimal quantityAccepted, java.math.BigDecimal quantityRejected, Long casesAccepted, Long casesRejected, String orderId, String orderItemSeqId, String returnId, String returnItemSeqId, String rejectionId, String shipmentId, String shipmentItemSeqId, String shipmentPackageSeqId, java.math.BigDecimal outstandingOrderQuantity, String inspectedBy, String comments, String qaInspectionStatusId, Boolean deleted)
     {
         this.receiptId = receiptId;
         this.productId = productId;
@@ -410,6 +422,7 @@ public class BffReceivingItemDto implements Serializable {
         this.internalId = internalId;
         this.gtin = gtin;
         this.lotId = lotId;
+        this.lotNo = lotNo;
         this.locationSeqId = locationSeqId;
         this.locationName = locationName;
         this.itemDescription = itemDescription;
@@ -455,6 +468,7 @@ public class BffReceivingItemDto implements Serializable {
             && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
             && (gtin == other.gtin || (gtin != null && gtin.equals(other.gtin)))
             && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
+            && (lotNo == other.lotNo || (lotNo != null && lotNo.equals(other.lotNo)))
             && (locationSeqId == other.locationSeqId || (locationSeqId != null && locationSeqId.equals(other.locationSeqId)))
             && (locationName == other.locationName || (locationName != null && locationName.equals(other.locationName)))
             && (itemDescription == other.itemDescription || (itemDescription != null && itemDescription.equals(other.itemDescription)))
@@ -514,6 +528,9 @@ public class BffReceivingItemDto implements Serializable {
         }
         if (this.lotId != null) {
             hash += 13 * this.lotId.hashCode();
+        }
+        if (this.lotNo != null) {
+            hash += 13 * this.lotNo.hashCode();
         }
         if (this.locationSeqId != null) {
             hash += 13 * this.locationSeqId.hashCode();
@@ -592,6 +609,7 @@ public class BffReceivingItemDto implements Serializable {
                 ", internalId=" + '\'' + internalId + '\'' +
                 ", gtin=" + '\'' + gtin + '\'' +
                 ", lotId=" + '\'' + lotId + '\'' +
+                ", lotNo=" + '\'' + lotNo + '\'' +
                 ", locationSeqId=" + '\'' + locationSeqId + '\'' +
                 ", locationName=" + '\'' + locationName + '\'' +
                 ", itemDescription=" + '\'' + itemDescription + '\'' +

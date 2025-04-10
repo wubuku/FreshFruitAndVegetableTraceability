@@ -102,6 +102,8 @@ valueObjects:
         type: id
       LotId:
         type: id
+      LotNo:
+        type: id
       LocationSeqId:
         type: id-long
       LocationName:

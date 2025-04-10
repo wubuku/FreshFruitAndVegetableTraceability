@@ -30,6 +30,8 @@ public interface BffReceivingItemProjection {
 
     String getLotId();
 
+    String getLotNo();
+
     String getLocationSeqId();
 
     String getLocationName();
