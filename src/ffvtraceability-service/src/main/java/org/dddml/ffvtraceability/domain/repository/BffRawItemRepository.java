@@ -181,12 +181,13 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
     @Query(value = """
             SELECT 
             product_id as productId,
-            party_id as supplierId,
+            p.party_id as supplierId,
+            p.short_description as supplierShortName,
             currency_uom_id as currencyUomId,
             minimum_order_quantity as minimumOrderQuantity,
             available_from_date as availableFromDate,
             available_thru_date as availableThruDate,
-            version as version,
+            sp.version as version,
             gtin as gtin,
             quantity_included as quantityIncluded,
             pieces_included as piecesIncluded,
@@ -202,7 +203,8 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             country_of_origin as countryOfOrigin,
             certification_codes as certificationCodes,
             individuals_per_package as individualsPerPackage
-            from supplier_product
+            from supplier_product sp
+            left join party p on sp.party_id = p.party_id
             WHERE product_id = :productId
             """, nativeQuery = true)
     List<BffSupplierRawItemProjection> findSupplierRawItemsByProductId(@Param("productId") String productId);

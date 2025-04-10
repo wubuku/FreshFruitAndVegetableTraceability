@@ -11,6 +11,8 @@ valueObjects:
         type: id
       SupplierId: #partyId
         type: id
+      SupplierShortName:
+        type: name
       Version:
         type: numeric
       CurrencyUomId:
@@ -26,8 +28,8 @@ valueObjects:
       Gtin:
         description: "GTIN (Global Trade Item Number)"
         type: id
-      #QuantityUomId:
-      #  type: id
+        #QuantityUomId:
+        #  type: id
         # 主计量单位的 ID，比如“oz”
       QuantityIncluded: #Gross Weight Per Package
         description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.

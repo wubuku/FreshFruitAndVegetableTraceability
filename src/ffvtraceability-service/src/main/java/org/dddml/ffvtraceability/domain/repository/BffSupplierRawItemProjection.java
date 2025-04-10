@@ -13,6 +13,8 @@ public interface BffSupplierRawItemProjection {
 
     String getSupplierId();
 
+    String getSupplierShortName();
+
     Long getVersion();
 
     String getCurrencyUomId();
