@@ -1,0 +1,111 @@
+# 库存相关
+valueObjects:
+  BffInventoryItemDto:
+    metadata:
+      JpaProjectionInterfaceName: BffInventoryItemProjection
+        #JpaProjectionPropertyTypes:
+        #CreatedAt: java.time.Instant
+      #ReceivedAt: java.time.Instant
+    properties:
+      InventoryItemId:
+        type: id
+      ProductId:
+        type: id
+      ProductName:
+        type: name
+      SupplierId:
+        type: id
+      SupplierShortName:
+        type: name
+      FacilityId:
+        type: id
+      LotId:
+        type: id
+      LocationSeqId:
+        type: id
+      Comments:
+        type: comment
+      QuantityOnHandTotal:
+        type: fixed-point
+      CreatedAt:
+        type: date-time
+      Details:
+        itemType: BffInventoryItemDetailDto
+        isList: true
+
+  BffInventoryItemDetailDto:
+    metadata:
+      JpaProjectionInterfaceName: BffInventoryItemDetailProjection
+    properties:
+      InventoryItemId:
+        type: id
+      InventoryItemDetailSeqId:
+        # RawItem Id
+        type: id
+      EffectiveDate:
+        type: date-time
+      QuantityOnHandDiff:
+        type: fixed-point
+      ShipmentId:
+        type: id
+      ReceiptId:
+        type: id
+      PhysicalInventoryId:
+        type: id
+      Description:
+        type: description
+      InventoryTransferId:
+        type: id
+
+services:
+  BffInventoryItemService:
+    restfulResourceName: BffInventoryItems
+    methods:
+      GetInventoryItems:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        parameters:
+          ProductTypeId:
+            type: id
+            optional: false # Required
+          SupplierId:
+            type: id
+            optional: true # NOT required
+          ProductId:
+            type: id
+            optional: true # NOT required
+          FacilityId:
+            type: id
+            optional: true # NOT required
+        result:
+          itemType: BffInventoryItemDto
+
+      GetInventoryItem:
+        # 获取库存详情
+        restfulResourceName: "{InventoryItemId}"
+        metadata:
+          RestfulPathVariable: InventoryItemId
+        isQuery: true
+        result:
+          type: BffInventoryItemDto
+        parameters:
+          InventoryItemId:
+            type: id
+
+      GetInventoryItemDetail:
+        # 获取指定库存下的库存明细详情
+        restfulResourceName: "{InventoryItemId}/Items/{InventoryItemDetailSeqId}"
+        metadata:
+          RestfulPathVariables:
+            - InventoryItemId
+            - InventoryItemDetailSeqId
+        isQuery: true
+        result:
+          type: BffInventoryItemDetailDto
+        parameters:
+          InventoryItemId:
+            type: id
+          InventoryItemDetailSeqId:
+            type: id
