@@ -33,6 +33,18 @@ public class BffProductDto implements Serializable {
         this.productName = productName;
     }
 
+    private String productTypeId;
+
+    public String getProductTypeId()
+    {
+        return this.productTypeId;
+    }
+
+    public void setProductTypeId(String productTypeId)
+    {
+        this.productTypeId = productTypeId;
+    }
+
     private String internalName;
 
     public String getInternalName()
@@ -665,10 +677,11 @@ public class BffProductDto implements Serializable {
     {
     }
 
-    public BffProductDto(String productId, String productName, String internalName, String brandName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight, String heightUomId, java.math.BigDecimal productHeight, java.math.BigDecimal shippingHeight, String widthUomId, java.math.BigDecimal productWidth, java.math.BigDecimal shippingWidth, String depthUomId, java.math.BigDecimal productDepth, java.math.BigDecimal shippingDepth, String diameterUomId, java.math.BigDecimal productDiameter, String active, String defaultShipmentBoxTypeId, BffShipmentBoxTypeDto defaultShipmentBoxType, String caseUomId, String internalId, String produceVariety, String hsCode, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String shelfLifeDescription, String handlingInstructions, String storageConditions, String certificationCodes, Long individualsPerPackage, String dimensionsDescription)
+    public BffProductDto(String productId, String productName, String productTypeId, String internalName, String brandName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight, String heightUomId, java.math.BigDecimal productHeight, java.math.BigDecimal shippingHeight, String widthUomId, java.math.BigDecimal productWidth, java.math.BigDecimal shippingWidth, String depthUomId, java.math.BigDecimal productDepth, java.math.BigDecimal shippingDepth, String diameterUomId, java.math.BigDecimal productDiameter, String active, String defaultShipmentBoxTypeId, BffShipmentBoxTypeDto defaultShipmentBoxType, String caseUomId, String internalId, String produceVariety, String hsCode, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String shelfLifeDescription, String handlingInstructions, String storageConditions, String certificationCodes, Long individualsPerPackage, String dimensionsDescription)
     {
         this.productId = productId;
         this.productName = productName;
+        this.productTypeId = productTypeId;
         this.internalName = internalName;
         this.brandName = brandName;
         this.description = description;
@@ -728,6 +741,7 @@ public class BffProductDto implements Serializable {
         return true 
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
             && (productName == other.productName || (productName != null && productName.equals(other.productName)))
+            && (productTypeId == other.productTypeId || (productTypeId != null && productTypeId.equals(other.productTypeId)))
             && (internalName == other.internalName || (internalName != null && internalName.equals(other.internalName)))
             && (brandName == other.brandName || (brandName != null && brandName.equals(other.brandName)))
             && (description == other.description || (description != null && description.equals(other.description)))
@@ -783,6 +797,9 @@ public class BffProductDto implements Serializable {
         }
         if (this.productName != null) {
             hash += 13 * this.productName.hashCode();
+        }
+        if (this.productTypeId != null) {
+            hash += 13 * this.productTypeId.hashCode();
         }
         if (this.internalName != null) {
             hash += 13 * this.internalName.hashCode();
@@ -921,6 +938,7 @@ public class BffProductDto implements Serializable {
         return "BffProductDto{" +
                 "productId=" + '\'' + productId + '\'' +
                 ", productName=" + '\'' + productName + '\'' +
+                ", productTypeId=" + '\'' + productTypeId + '\'' +
                 ", internalName=" + '\'' + internalName + '\'' +
                 ", brandName=" + '\'' + brandName + '\'' +
                 ", description=" + '\'' + description + '\'' +

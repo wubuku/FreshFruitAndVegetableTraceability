@@ -26,7 +26,7 @@ public interface BffProductRepository extends JpaRepository<AbstractProductState
             """;
 
     String WHERE_CONDITIONS = """
-            WHERE p.product_type_id = 'RAW_MATERIAL'
+            WHERE (:productTypeId is null or p.product_type_id = :productTypeId)
                 AND (:supplierId is null or priority_party.party_id = :supplierId)
                 AND (:active IS NULL OR p.active = :active)
             """;
@@ -105,7 +105,8 @@ public interface BffProductRepository extends JpaRepository<AbstractProductState
                     ) priority_party ON priority_party.product_id = p.product_id
                     """ + WHERE_CONDITIONS,
             nativeQuery = true)
-    Page<BffProductProjection> findAllRawItems(Pageable pageable,
+    Page<BffProductProjection> findAllProducts(Pageable pageable,
+                                               @Param("productTypeId") String productTypeId,
                                                @Param("supplierId") String supplierId,
                                                @Param("active") String active);
     //String tenantId

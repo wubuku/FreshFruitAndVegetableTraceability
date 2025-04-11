@@ -1,5 +1,8 @@
 package org.dddml.ffvtraceability.domain.constants;
 
+import java.util.Arrays;
+import java.util.List;
+
 public final class BffProductConstants {
     /**
      * RAW_MATERIAL: 原材料
@@ -15,6 +18,16 @@ public final class BffProductConstants {
      * FINISHED_GOOD: 成品
      */
     public static final String PRODUCT_TYPE_FINISHED_GOOD = "FINISHED_GOOD";
+
+    /**
+     * WIP产品类型列表
+     */
+    public static final List<String> PRODUCT_TYPES_NOT_RAW = Arrays.asList(
+        PRODUCT_TYPE_RAC_WIP,
+        PRODUCT_TYPE_RTE_WIP,
+        PRODUCT_TYPE_PACKED_WIP,
+        PRODUCT_TYPE_FINISHED_GOOD
+    );
     /**
      * GTIN (Global Trade Item Number)
      */

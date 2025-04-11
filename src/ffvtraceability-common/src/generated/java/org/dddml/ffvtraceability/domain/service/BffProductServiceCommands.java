@@ -34,6 +34,19 @@ public class BffProductServiceCommands {
         }
 
         /**
+         * Product Type Id
+         */
+        private String productTypeId;
+
+        public String getProductTypeId() {
+            return productTypeId;
+        }
+
+        public void setProductTypeId(String productTypeId) {
+            this.productTypeId = productTypeId;
+        }
+
+        /**
          * Supplier Id
          */
         private String supplierId;

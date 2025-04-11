@@ -8,6 +8,8 @@ valueObjects:
         type: id
       ProductName:
         type: name
+      ProductTypeId:
+        type: id
       InternalName:
         type: description
       BrandName:
@@ -89,7 +91,7 @@ valueObjects:
           #   type: fixed-point
           # WeightUomId:
           #   type: id
-          # BoxWeight:
+        # BoxWeight:
         #   type: fixed-point
       # -------------------------------------------------------------------
       CaseUomId:
@@ -135,6 +137,8 @@ services:
         isQuery: true
         #httpMethod: GET
         parameters:
+          ProductTypeId:
+            type: id
           SupplierId:
             type: id
           Active:

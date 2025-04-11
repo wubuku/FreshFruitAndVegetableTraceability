@@ -35,12 +35,14 @@ public class BffProductServiceResource {
     public Page<BffProductDto> getProducts(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productTypeId", required = false) String productTypeId,
         @RequestParam(value = "supplierId", required = false) String supplierId,
         @RequestParam(value = "active", required = false) String active
     ) {
         BffProductServiceCommands.GetProducts getProducts = new BffProductServiceCommands.GetProducts();
         getProducts.setPage(page);
         getProducts.setSize(size);
+        getProducts.setProductTypeId(productTypeId);
         getProducts.setSupplierId(supplierId);
         getProducts.setActive(active);
         

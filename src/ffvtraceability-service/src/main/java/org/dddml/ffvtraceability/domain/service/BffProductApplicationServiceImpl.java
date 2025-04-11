@@ -71,9 +71,8 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
     @Override
     @Transactional(readOnly = true)
     public Page<BffProductDto> when(BffProductServiceCommands.GetProducts c) {
-        return PageUtils.toPage(
-                bffProductRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize()), c.getSupplierId(),
-                        c.getActive()),
+        return PageUtils.toPage(bffProductRepository.findAllProducts(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductTypeId(), c.getSupplierId(), c.getActive()),
                 bffProductMapper::toBffProductDto);
     }
 
@@ -87,19 +86,25 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
     @Override
     @Transactional
     public String when(BffProductServiceCommands.CreateProduct c) {
-        BffProductDto Product = c.getProduct();
-        if (Product == null) {
+        BffProductDto product = c.getProduct();
+        if (product == null) {
             throw new IllegalArgumentException("Product can't be null");
         }
-        if (Product.getProductId() != null) {
-            Product.setProductId(Product.getProductId().trim());
-            if (!Product.getProductId().isEmpty()) {
-                if (productApplicationService.get(Product.getProductId()) != null) {
-                    throw new IllegalArgumentException("The product already exists: " + Product.getProductId());
+        if (product.getProductTypeId() == null || product.getProductTypeId().isBlank()) {
+            throw new IllegalArgumentException("Product type can't be null");
+        }
+        if (!PRODUCT_TYPES_NOT_RAW.contains(product.getProductTypeId())) {
+            throw new IllegalArgumentException("Product type is error");
+        }
+        if (product.getProductId() != null) {
+            product.setProductId(product.getProductId().trim());
+            if (!product.getProductId().isEmpty()) {
+                if (productApplicationService.get(product.getProductId()) != null) {
+                    throw new IllegalArgumentException("The product already exists: " + product.getProductId());
                 }
             }
         }
-        String supplierId = Product.getSupplierId();
+        String supplierId = product.getSupplierId();
         if (supplierId == null || supplierId.isBlank()) {
             throw new IllegalArgumentException("Supplier can't be null");
         }
@@ -114,89 +119,86 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
         // throw new IllegalArgumentException("SupplierId is not valid.");
         // }
         AbstractProductCommand.SimpleCreateProduct createProduct = new AbstractProductCommand.SimpleCreateProduct();
-        createProduct.setProductId(Product.getProductId() != null ? Product.getProductId() : IdUtils.randomId());
+        createProduct.setProductId(product.getProductId() != null ? product.getProductId() : IdUtils.randomId());
         // (Product.getProductId()); // NOTE: ignore the productId from the client side?
-        createProduct.setProductTypeId(PRODUCT_TYPE_RAW_MATERIAL);
-        createProduct.setProductName(Product.getProductName());
-        createProduct.setSmallImageUrl(Product.getSmallImageUrl());
-        createProduct.setMediumImageUrl(Product.getMediumImageUrl());
-        createProduct.setLargeImageUrl(Product.getLargeImageUrl());
-        createProduct.setQuantityUomId(Product.getQuantityUomId());
+        createProduct.setProductTypeId(product.getProductTypeId());
+        createProduct.setProductName(product.getProductName());
+        createProduct.setSmallImageUrl(product.getSmallImageUrl());
+        createProduct.setMediumImageUrl(product.getMediumImageUrl());
+        createProduct.setLargeImageUrl(product.getLargeImageUrl());
+        createProduct.setQuantityUomId(product.getQuantityUomId());
         // If you have a six-pack of 12oz soda cans you would have quantityIncluded=12,
         // quantityUomId=oz, piecesIncluded=6.
-        createProduct.setQuantityIncluded(Product.getQuantityIncluded());
-        createProduct.setPiecesIncluded(Product.getPiecesIncluded() != null ? Product.getPiecesIncluded() : 1);
-        createProduct.setDescription(Product.getDescription());
-        createProduct.setBrandName(Product.getBrandName());
-        createProduct.setProduceVariety(Product.getProduceVariety());
-        createProduct.setOrganicCertifications(Product.getOrganicCertifications());
-        createProduct.setCountryOfOrigin(Product.getCountryOfOrigin());
-        createProduct.setShelfLifeDescription(Product.getShelfLifeDescription());
-        createProduct.setHandlingInstructions(Product.getHandlingInstructions());
-        createProduct.setStorageConditions(Product.getStorageConditions());
-        createProduct.setMaterialCompositionDescription(Product.getMaterialCompositionDescription());
-        createProduct.setCertificationCodes(Product.getCertificationCodes());
-        createProduct.setIndividualsPerPackage(Product.getIndividualsPerPackage());
-        createProduct.setCaseUomId(Product.getCaseUomId());
-        createProduct.setDimensionsDescription(Product.getDimensionsDescription());
+        createProduct.setQuantityIncluded(product.getQuantityIncluded());
+        createProduct.setPiecesIncluded(product.getPiecesIncluded() != null ? product.getPiecesIncluded() : 1);
+        createProduct.setDescription(product.getDescription());
+        createProduct.setBrandName(product.getBrandName());
+        createProduct.setProduceVariety(product.getProduceVariety());
+        createProduct.setOrganicCertifications(product.getOrganicCertifications());
+        createProduct.setCountryOfOrigin(product.getCountryOfOrigin());
+        createProduct.setShelfLifeDescription(product.getShelfLifeDescription());
+        createProduct.setHandlingInstructions(product.getHandlingInstructions());
+        createProduct.setStorageConditions(product.getStorageConditions());
+        createProduct.setMaterialCompositionDescription(product.getMaterialCompositionDescription());
+        createProduct.setCertificationCodes(product.getCertificationCodes());
+        createProduct.setIndividualsPerPackage(product.getIndividualsPerPackage());
+        createProduct.setCaseUomId(product.getCaseUomId());
+        createProduct.setDimensionsDescription(product.getDimensionsDescription());
 
         // Weight related fields
-        createProduct.setWeightUomId(Product.getWeightUomId());
-        createProduct.setShippingWeight(Product.getShippingWeight());
-        createProduct.setProductWeight(Product.getProductWeight());
+        createProduct.setWeightUomId(product.getWeightUomId());
+        createProduct.setShippingWeight(product.getShippingWeight());
+        createProduct.setProductWeight(product.getProductWeight());
         // Height related fields
-        createProduct.setHeightUomId(Product.getHeightUomId());
-        createProduct.setProductHeight(Product.getProductHeight());
-        createProduct.setShippingHeight(Product.getShippingHeight());
+        createProduct.setHeightUomId(product.getHeightUomId());
+        createProduct.setProductHeight(product.getProductHeight());
+        createProduct.setShippingHeight(product.getShippingHeight());
         // Width related fields
-        createProduct.setWidthUomId(Product.getWidthUomId());
-        createProduct.setProductWidth(Product.getProductWidth());
-        createProduct.setShippingWidth(Product.getShippingWidth());
+        createProduct.setWidthUomId(product.getWidthUomId());
+        createProduct.setProductWidth(product.getProductWidth());
+        createProduct.setShippingWidth(product.getShippingWidth());
         // Depth related fields
-        createProduct.setDepthUomId(Product.getDepthUomId());
-        createProduct.setProductDepth(Product.getProductDepth());
-        createProduct.setShippingDepth(Product.getShippingDepth());
+        createProduct.setDepthUomId(product.getDepthUomId());
+        createProduct.setProductDepth(product.getProductDepth());
+        createProduct.setShippingDepth(product.getShippingDepth());
         // Diameter related fields
-        createProduct.setDiameterUomId(Product.getDiameterUomId());
-        createProduct.setProductDiameter(Product.getProductDiameter());
+        createProduct.setDiameterUomId(product.getDiameterUomId());
+        createProduct.setProductDiameter(product.getProductDiameter());
         // 默认情况下（不传值）就是Y
-        createProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(Product.getActive()));
+        createProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(product.getActive()));
 
-        if (Product.getGtin() != null && !Product.getGtin().isBlank()) {
-            Product.setGtin(Product.getGtin().trim());
-            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_GTIN, Product.getGtin(), createProduct);
+        if (product.getGtin() != null && !product.getGtin().isBlank()) {
+            product.setGtin(product.getGtin().trim());
+            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_GTIN, product.getGtin(), createProduct);
         }
-        if (Product.getInternalId() != null && !Product.getInternalId().isBlank()) {
-            Product.setInternalId(Product.getInternalId().trim());
-            if (bffProductRepository.countByIdentificationTypeIdAndIdValue(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID,
-                    Product.getInternalId()) > 0) {
-                throw new IllegalArgumentException(String.format(
-                        "Item Number:%s is already in use. Please try a different one.", Product.getInternalId()));
+        if (product.getInternalId() != null && !product.getInternalId().isBlank()) {
+            product.setInternalId(product.getInternalId().trim());
+            if (bffProductRepository.countByIdentificationTypeIdAndIdValue(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, product.getInternalId()) > 0) {
+                throw new IllegalArgumentException(String.format("Item Number:%s is already in use. Please try a different one.", product.getInternalId()));
             }
-            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, Product.getInternalId(), createProduct);
+            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, product.getInternalId(), createProduct);
         }
-        if (Product.getHsCode() != null && !Product.getHsCode().isBlank()) {
-            Product.setHsCode(Product.getHsCode().trim());
-            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_HS_CODE, Product.getHsCode(), createProduct);
+        if (product.getHsCode() != null && !product.getHsCode().isBlank()) {
+            product.setHsCode(product.getHsCode().trim());
+            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_HS_CODE, product.getHsCode(), createProduct);
         }
 
-        if (Product.getDefaultShipmentBoxTypeId() != null) {
-            createProduct.setDefaultShipmentBoxTypeId(Product.getDefaultShipmentBoxTypeId());
-        } else if (Product.getDefaultShipmentBoxType() != null) {
-            createProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(Product, c));
+        if (product.getDefaultShipmentBoxTypeId() != null) {
+            createProduct.setDefaultShipmentBoxTypeId(product.getDefaultShipmentBoxTypeId());
+        } else if (product.getDefaultShipmentBoxType() != null) {
+            createProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(product, c));
         }
         createProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : createProduct.getProductId());
         createProduct.setRequesterId(c.getRequesterId());
         productApplicationService.when(createProduct);
 
-        if (Product.getSupplierId() != null) {
-            createSupplierProduct(createProduct.getProductId(), Product.getSupplierId(), c);
+        if (product.getSupplierId() != null) {
+            createSupplierProduct(createProduct.getProductId(), product.getSupplierId(), c);
         }
         return createProduct.getProductId();
     }
 
-    private void addGoodIdentification(String goodIdentificationTypeId, String idValue,
-                                       AbstractProductCommand.SimpleCreateProduct createProduct) {
+    private void addGoodIdentification(String goodIdentificationTypeId, String idValue, AbstractProductCommand.SimpleCreateProduct createProduct) {
         AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification createGoodIdentification = new AbstractGoodIdentificationCommand.SimpleCreateGoodIdentification();
         createGoodIdentification.setGoodIdentificationTypeId(goodIdentificationTypeId);
         createGoodIdentification.setIdValue(idValue);
@@ -206,9 +208,7 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
     private String createShipmentBoxType(BffProductDto Product, Command c) {
         BffShipmentBoxTypeDto shipmentBoxTypeDto = Product.getDefaultShipmentBoxType();
         AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType createShipmentBoxType = new AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType();
-        createShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeDto.getShipmentBoxTypeId() != null
-                ? shipmentBoxTypeDto.getShipmentBoxTypeId()
-                : IdUtils.randomId());
+        createShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeDto.getShipmentBoxTypeId() != null ? shipmentBoxTypeDto.getShipmentBoxTypeId() : IdUtils.randomId());
         createShipmentBoxType.setDescription(shipmentBoxTypeDto.getDescription());
         createShipmentBoxType.setDimensionUomId(shipmentBoxTypeDto.getDimensionUomId());
         createShipmentBoxType.setBoxLength(shipmentBoxTypeDto.getBoxLength());
@@ -217,8 +217,7 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
         createShipmentBoxType.setWeightUomId(shipmentBoxTypeDto.getWeightUomId());
         createShipmentBoxType.setBoxWeight(shipmentBoxTypeDto.getBoxWeight());
         createShipmentBoxType.setBoxTypeName(shipmentBoxTypeDto.getBoxTypeName());
-        createShipmentBoxType.setCommandId(
-                c.getCommandId() != null ? c.getCommandId() : createShipmentBoxType.getShipmentBoxTypeId());
+        createShipmentBoxType.setCommandId(c.getCommandId() != null ? c.getCommandId() : createShipmentBoxType.getShipmentBoxTypeId());
         createShipmentBoxType.setRequesterId(c.getRequesterId());
         shipmentBoxTypeApplicationService.when(createShipmentBoxType);
         return createShipmentBoxType.getShipmentBoxTypeId();
@@ -229,6 +228,13 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
     public void when(BffProductServiceCommands.UpdateProduct c) {
         if (c.getProductId() == null) {
             throw new IllegalArgumentException("Product id can't be null");
+        }
+        BffProductDto product = c.getProduct();
+        if (product.getProductTypeId() == null || product.getProductTypeId().isBlank()) {
+            throw new IllegalArgumentException("Product type can't be null");
+        }
+        if (!PRODUCT_TYPES_NOT_RAW.contains(product.getProductTypeId())) {
+            throw new IllegalArgumentException("Product type is error");
         }
         String productId = c.getProductId();
         ProductState productState = productApplicationService.get(productId);
@@ -242,106 +248,79 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
         if (partyApplicationService.get(supplierId) == null) {
             throw new IllegalArgumentException("SupplierId is not valid.");
         }
-        BffProductDto Product = c.getProduct();
         AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
         mergePatchProduct.setProductId(productId);
-        mergePatchProduct.setProductTypeId(PRODUCT_TYPE_RAW_MATERIAL);
+        mergePatchProduct.setProductTypeId(product.getProductTypeId());
         mergePatchProduct.setVersion(productState.getVersion());
-        mergePatchProduct.setProductName(Product.getProductName());
-        mergePatchProduct.setDescription(Product.getDescription());
-        mergePatchProduct.setSmallImageUrl(Product.getSmallImageUrl());
-        mergePatchProduct.setMediumImageUrl(Product.getMediumImageUrl());
-        mergePatchProduct.setLargeImageUrl(Product.getLargeImageUrl());
-        mergePatchProduct.setBrandName(Product.getBrandName());
-        mergePatchProduct.setProduceVariety(Product.getProduceVariety());
-        mergePatchProduct.setOrganicCertifications(Product.getOrganicCertifications());
-        mergePatchProduct.setMaterialCompositionDescription(Product.getMaterialCompositionDescription());
-        mergePatchProduct.setCountryOfOrigin(Product.getCountryOfOrigin());
-        mergePatchProduct.setCertificationCodes(Product.getCertificationCodes());
-        mergePatchProduct.setShelfLifeDescription(Product.getShelfLifeDescription());
-        mergePatchProduct.setHandlingInstructions(Product.getHandlingInstructions());
-        mergePatchProduct.setStorageConditions(Product.getStorageConditions());
-        mergePatchProduct.setDimensionsDescription(Product.getDimensionsDescription());
+        mergePatchProduct.setProductName(product.getProductName());
+        mergePatchProduct.setDescription(product.getDescription());
+        mergePatchProduct.setSmallImageUrl(product.getSmallImageUrl());
+        mergePatchProduct.setMediumImageUrl(product.getMediumImageUrl());
+        mergePatchProduct.setLargeImageUrl(product.getLargeImageUrl());
+        mergePatchProduct.setBrandName(product.getBrandName());
+        mergePatchProduct.setProduceVariety(product.getProduceVariety());
+        mergePatchProduct.setOrganicCertifications(product.getOrganicCertifications());
+        mergePatchProduct.setMaterialCompositionDescription(product.getMaterialCompositionDescription());
+        mergePatchProduct.setCountryOfOrigin(product.getCountryOfOrigin());
+        mergePatchProduct.setCertificationCodes(product.getCertificationCodes());
+        mergePatchProduct.setShelfLifeDescription(product.getShelfLifeDescription());
+        mergePatchProduct.setHandlingInstructions(product.getHandlingInstructions());
+        mergePatchProduct.setStorageConditions(product.getStorageConditions());
+        mergePatchProduct.setDimensionsDescription(product.getDimensionsDescription());
 
-        if (Product.getCaseUomId() != null) {
-            mergePatchProduct.setCaseUomId(Product.getCaseUomId());
+        if (product.getCaseUomId() != null) {
+            mergePatchProduct.setCaseUomId(product.getCaseUomId());
         }
-        if (Product.getQuantityUomId() != null)
-            mergePatchProduct.setQuantityUomId(Product.getQuantityUomId());
-        if (Product.getQuantityIncluded() != null)
-            mergePatchProduct.setQuantityIncluded(Product.getQuantityIncluded());
-        if (Product.getPiecesIncluded() != null)
-            mergePatchProduct.setPiecesIncluded(Product.getPiecesIncluded() != null ? Product.getPiecesIncluded() : 1);
-        if (Product.getWeightUomId() != null)
-            mergePatchProduct.setWeightUomId(Product.getWeightUomId());
-        if (Product.getShippingWeight() != null)
-            mergePatchProduct.setShippingWeight(Product.getShippingWeight());
-        if (Product.getProductWeight() != null)
-            mergePatchProduct.setProductWeight(Product.getProductWeight());
+        if (product.getQuantityUomId() != null) mergePatchProduct.setQuantityUomId(product.getQuantityUomId());
+        if (product.getQuantityIncluded() != null) mergePatchProduct.setQuantityIncluded(product.getQuantityIncluded());
+        if (product.getPiecesIncluded() != null)
+            mergePatchProduct.setPiecesIncluded(product.getPiecesIncluded() != null ? product.getPiecesIncluded() : 1);
+        if (product.getWeightUomId() != null) mergePatchProduct.setWeightUomId(product.getWeightUomId());
+        if (product.getShippingWeight() != null) mergePatchProduct.setShippingWeight(product.getShippingWeight());
+        if (product.getProductWeight() != null) mergePatchProduct.setProductWeight(product.getProductWeight());
 
-        if (Product.getHeightUomId() != null)
-            mergePatchProduct.setHeightUomId(Product.getHeightUomId());
-        if (Product.getProductHeight() != null)
-            mergePatchProduct.setProductHeight(Product.getProductHeight());
-        if (Product.getShippingHeight() != null)
-            mergePatchProduct.setShippingHeight(Product.getShippingHeight());
+        if (product.getHeightUomId() != null) mergePatchProduct.setHeightUomId(product.getHeightUomId());
+        if (product.getProductHeight() != null) mergePatchProduct.setProductHeight(product.getProductHeight());
+        if (product.getShippingHeight() != null) mergePatchProduct.setShippingHeight(product.getShippingHeight());
 
-        if (Product.getWidthUomId() != null)
-            mergePatchProduct.setWidthUomId(Product.getWidthUomId());
-        if (Product.getProductWidth() != null)
-            mergePatchProduct.setProductWidth(Product.getProductWidth());
-        if (Product.getShippingWidth() != null)
-            mergePatchProduct.setShippingWidth(Product.getShippingWidth());
+        if (product.getWidthUomId() != null) mergePatchProduct.setWidthUomId(product.getWidthUomId());
+        if (product.getProductWidth() != null) mergePatchProduct.setProductWidth(product.getProductWidth());
+        if (product.getShippingWidth() != null) mergePatchProduct.setShippingWidth(product.getShippingWidth());
 
-        if (Product.getDepthUomId() != null)
-            mergePatchProduct.setDepthUomId(Product.getDepthUomId());
-        if (Product.getProductDepth() != null)
-            mergePatchProduct.setProductDepth(Product.getProductDepth());
-        if (Product.getShippingDepth() != null)
-            mergePatchProduct.setShippingDepth(Product.getShippingDepth());
+        if (product.getDepthUomId() != null) mergePatchProduct.setDepthUomId(product.getDepthUomId());
+        if (product.getProductDepth() != null) mergePatchProduct.setProductDepth(product.getProductDepth());
+        if (product.getShippingDepth() != null) mergePatchProduct.setShippingDepth(product.getShippingDepth());
 
-        if (Product.getDiameterUomId() != null)
-            mergePatchProduct.setDiameterUomId(Product.getDiameterUomId());
-        if (Product.getProductDiameter() != null)
-            mergePatchProduct.setProductDiameter(Product.getProductDiameter());
-        if (Product.getIndividualsPerPackage() != null) {
-            mergePatchProduct.setIndividualsPerPackage(Product.getIndividualsPerPackage());
+        if (product.getDiameterUomId() != null) mergePatchProduct.setDiameterUomId(product.getDiameterUomId());
+        if (product.getProductDiameter() != null) mergePatchProduct.setProductDiameter(product.getProductDiameter());
+        if (product.getIndividualsPerPackage() != null) {
+            mergePatchProduct.setIndividualsPerPackage(product.getIndividualsPerPackage());
         }
-        mergePatchProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(Product.getActive()));
+        mergePatchProduct.setActive(IndicatorUtils.asIndicatorDefaultYes(product.getActive()));
 
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchProduct.setRequesterId(c.getRequesterId());
-        if (Product.getDefaultShipmentBoxTypeId() != null) {
-            mergePatchProduct.setDefaultShipmentBoxTypeId(Product.getDefaultShipmentBoxTypeId());
-        } else if (Product.getDefaultShipmentBoxType() != null) {
-            mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(Product, c));
+        if (product.getDefaultShipmentBoxTypeId() != null) {
+            mergePatchProduct.setDefaultShipmentBoxTypeId(product.getDefaultShipmentBoxTypeId());
+        } else if (product.getDefaultShipmentBoxType() != null) {
+            mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(product, c));
         }
 
-        if (Product.getInternalId() != null && !Product.getInternalId().isBlank()) {
-            Product.setInternalId(Product.getInternalId().trim());
-            String itemId = bffProductRepository
-                    .queryProductIdByIdentificationTypeIdAndIdValue(
-                            GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, Product.getInternalId());
+        if (product.getInternalId() != null && !product.getInternalId().isBlank()) {
+            product.setInternalId(product.getInternalId().trim());
+            String itemId = bffProductRepository.queryProductIdByIdentificationTypeIdAndIdValue(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, product.getInternalId());
             if (itemId != null && !itemId.equals(productId)) {
-                throw new IllegalArgumentException(String.format(
-                        "Item Number:%s is already in use. Please try a different one.", Product.getInternalId()));
+                throw new IllegalArgumentException(String.format("Item Number:%s is already in use. Please try a different one.", product.getInternalId()));
             }
         }
-        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_GTIN, Product.getGtin());
-        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_INTERNAL_ID,
-                Product.getInternalId());
-        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE,
-                Product.getHsCode());
+        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_GTIN, product.getGtin());
+        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, product.getInternalId());
+        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE, product.getHsCode());
 
         productApplicationService.when(mergePatchProduct);
 
         // 这里不需要使用完整的 ID 全等匹配查询
-        BffSupplierProductAssocProjection existingAssoc = bffProductRepository.findSupplierProductAssociation(
-                productId,
-                supplierId,
-                DEFAULT_CURRENCY_UOM_ID,
-                BigDecimal.ZERO,
-                OffsetDateTime.now());
+        BffSupplierProductAssocProjection existingAssoc = bffProductRepository.findSupplierProductAssociation(productId, supplierId, DEFAULT_CURRENCY_UOM_ID, BigDecimal.ZERO, OffsetDateTime.now());
         SupplierProductAssocId supplierProductAssocId;
         if (existingAssoc == null) {
             createSupplierProduct(productId, supplierId, c);
@@ -357,32 +336,26 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
         }
     }
 
-    private void updateProductIdentification(AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct,
-                                             ProductState productState, String identificationTypeId, String newValue) {
-        Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream()
-                .filter(x -> x.getGoodIdentificationTypeId().equals(identificationTypeId))
-                .findFirst();
+    private void updateProductIdentification(AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct, ProductState productState, String identificationTypeId, String newValue) {
+        Optional<GoodIdentificationState> existingGtin = productState.getGoodIdentifications().stream().filter(x -> x.getGoodIdentificationTypeId().equals(identificationTypeId)).findFirst();
         if (newValue != null && !newValue.isBlank()) {
             newValue = newValue.trim();
             if (existingGtin.isPresent()) {
                 if (!newValue.equals(existingGtin.get().getIdValue())) {
-                    GoodIdentificationCommand.MergePatchGoodIdentification mergePatchGoodIdentification = mergePatchProduct
-                            .newMergePatchGoodIdentification();
+                    GoodIdentificationCommand.MergePatchGoodIdentification mergePatchGoodIdentification = mergePatchProduct.newMergePatchGoodIdentification();
                     mergePatchGoodIdentification.setGoodIdentificationTypeId(identificationTypeId);
                     mergePatchGoodIdentification.setIdValue(newValue);
                     mergePatchProduct.getGoodIdentificationCommands().add(mergePatchGoodIdentification);
                 }
             } else {
-                GoodIdentificationCommand.CreateGoodIdentification createGoodIdentification = mergePatchProduct
-                        .newCreateGoodIdentification();
+                GoodIdentificationCommand.CreateGoodIdentification createGoodIdentification = mergePatchProduct.newCreateGoodIdentification();
                 createGoodIdentification.setGoodIdentificationTypeId(identificationTypeId);
                 createGoodIdentification.setIdValue(newValue);
                 mergePatchProduct.getGoodIdentificationCommands().add(createGoodIdentification);
             }
         } else {
             if (existingGtin.isPresent()) {// 原来有，现在没有，做删除处理
-                GoodIdentificationCommand.RemoveGoodIdentification removeGoodIdentification = mergePatchProduct
-                        .newRemoveGoodIdentification();
+                GoodIdentificationCommand.RemoveGoodIdentification removeGoodIdentification = mergePatchProduct.newRemoveGoodIdentification();
                 removeGoodIdentification.setGoodIdentificationTypeId(identificationTypeId);
                 mergePatchProduct.getGoodIdentificationCommands().add(removeGoodIdentification);
             }
@@ -415,7 +388,7 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
 
         AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
         mergePatchProduct.setProductId(productId);
-        mergePatchProduct.setProductTypeId(PRODUCT_TYPE_RAW_MATERIAL);
+        //mergePatchProduct.setProductTypeId(PRODUCT_TYPE_RAW_MATERIAL);
         mergePatchProduct.setVersion(productState.getVersion());
         mergePatchProduct.setActive(active ? INDICATOR_YES : INDICATOR_NO);
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());

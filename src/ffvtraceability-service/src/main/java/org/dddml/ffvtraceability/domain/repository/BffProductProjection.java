@@ -12,6 +12,8 @@ public interface BffProductProjection {
 
     String getProductName();
 
+    String getProductTypeId();
+
     String getInternalName();
 
     String getBrandName();
