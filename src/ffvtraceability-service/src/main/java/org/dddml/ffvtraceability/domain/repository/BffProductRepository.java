@@ -36,6 +36,7 @@ public interface BffProductRepository extends JpaRepository<AbstractProductState
                 p.product_id as productId,
                 p.product_name as productName,
                 p.description as description,
+                p.product_type_id as productTypeId,
                 p.small_image_url as smallImageUrl,
                 p.medium_image_url as mediumImageUrl,
                 p.large_image_url as largeImageUrl,

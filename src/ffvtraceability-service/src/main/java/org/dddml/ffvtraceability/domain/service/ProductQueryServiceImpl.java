@@ -8,6 +8,7 @@ import org.dddml.ffvtraceability.domain.mapper.BffRawItemMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffShipmentBoxTypeMapper;
 import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
 import org.dddml.ffvtraceability.domain.product.ProductState;
+import org.dddml.ffvtraceability.domain.repository.BffProductRepository;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierProductAssocProjection;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierRawItemProjection;
@@ -34,6 +35,8 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     private BffShipmentBoxTypeMapper bffShipmentBoxTypeMapper;
     @Autowired
     private BffRawItemRepository bffRawItemRepository;
+    @Autowired
+    private BffProductRepository bffProductRepository;
     @Autowired
     private ShipmentBoxTypeApplicationService shipmentBoxTypeApplicationService;
 
@@ -107,7 +110,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                 dto.setDefaultShipmentBoxType(bffShipmentBoxTypeMapper.toBffShipmentBoxTypeDto(
                         shipmentBoxTypeApplicationService.get(dto.getDefaultShipmentBoxTypeId())));
             }
-            BffSupplierProductAssocProjection existingAssoc = bffRawItemRepository.
+            BffSupplierProductAssocProjection existingAssoc = bffProductRepository.
                     findSupplierProductAssociationByProductId(productId);
             if (existingAssoc != null) {
                 dto.setSupplierId(existingAssoc.getSupplierId());
