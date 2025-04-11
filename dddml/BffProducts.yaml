@@ -1,0 +1,230 @@
+# 产品 / 原材料相关
+valueObjects:
+  BffRawItemDto:
+    metadata:
+      JpaProjectionInterfaceName: BffRawItemProjection
+    properties:
+      ProductId:
+        type: id
+      ProductName:
+        type: name
+      InternalName:
+        type: description
+      BrandName:
+        type: name
+      Description:
+        type: description
+      Gtin:
+        description: "GTIN (Global Trade Item Number)"
+        type: id
+      SmallImageUrl:
+        type: url
+      MediumImageUrl:
+        type: url
+      LargeImageUrl:
+        type: url
+      QuantityUomId:
+        type: id
+        # 主计量单位的 ID，比如“oz”
+      QuantityIncluded:
+        description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+        type: fixed-point
+        # 一件（piece/can）的数量（以“主计量单位”计算）是 12oz，即 12oz/can，一个包装6罐装的话就是12*6=72oz
+      PiecesIncluded:
+        type: numeric
+        # 一个包装内包含的“件数”，如果包装内没有“分件”，则该值设置为 1（可以把 null 看作 1）
+      StatusId:
+        type: id
+      SupplierId:
+        type: id
+        # Vendor
+      SupplierName:
+        type: name
+      WeightUomId:
+        type: id
+      ShippingWeight:
+        description: The shipping weight of the product.
+        type: fixed-point
+      ProductWeight:
+        type: fixed-point
+      HeightUomId:
+        type: id
+      ProductHeight:
+        type: fixed-point
+      ShippingHeight:
+        type: fixed-point
+      WidthUomId:
+        type: id
+      ProductWidth:
+        type: fixed-point
+      ShippingWidth:
+        type: fixed-point
+      DepthUomId:
+        type: id
+      ProductDepth:
+        type: fixed-point
+      ShippingDepth:
+        type: fixed-point
+      DiameterUomId:
+        type: id
+      ProductDiameter:
+        type: fixed-point
+      Active:
+        type: indicator
+      DefaultShipmentBoxTypeId:
+        # 默认的装运箱类型 Id
+        type: id
+      # -------------------------------------------------------------------
+      DefaultShipmentBoxType:
+        # 在需要的时候，返回默认的装运箱类型的详细信息
+        type: BffShipmentBoxTypeDto
+          # 在 DefaultShipmentBoxType 中包含“包装尺寸”和“包装重量”信息
+          # DimensionUomId:
+          #   type: id
+          # BoxLength:
+          #   type: fixed-point
+          # BoxWidth:
+          #   type: fixed-point
+          # BoxHeight:
+          #   type: fixed-point
+          # WeightUomId:
+          #   type: id
+          # BoxWeight:
+        #   type: fixed-point
+      # -------------------------------------------------------------------
+      CaseUomId:
+        type: id
+        # 用于描述“包装类型”的单位 Id。比如 EA、BX(Box)、PLT(Pallet)、PK(Pack)
+      InternalId:
+        # 内部编码
+        type: id
+      ProduceVariety:
+        type: name
+      HsCode:
+        type: id
+        # HS Code（海关商品编码）
+        # 全称：Harmonized System Code（协调制度编码）
+      OrganicCertifications:
+        type: description
+      MaterialCompositionDescription:
+        type: description
+      CountryOfOrigin:
+        type: name
+      ShelfLifeDescription:
+        type: description
+      HandlingInstructions:
+        type: description
+      StorageConditions:
+        type: description
+      CertificationCodes:
+        type: description
+      IndividualsPerPackage:
+        description: Number of individual units in one package (for products counted by individual pieces, e.g., fruits, eggs)
+        type: numeric
+      DimensionsDescription:
+        type: description
+
+services:
+  BffRawItemService:
+    restfulResourceName: BffRawItems
+    methods:
+      GetRawItems:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        parameters:
+          SupplierId:
+            type: id
+          Active:
+            type: indicator
+        result:
+          itemType: BffRawItemDto
+
+      GetRawItem:
+        #根据 Id 查询产品的详细信息
+        metadata:
+          RestfulPathVariable: ProductId
+        isQuery: true
+        result:
+          type: BffRawItemDto
+        parameters:
+          ProductId:
+            type: id
+
+      CreateRawItem:
+        # 新增 Item
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: RawItem
+        parameters:
+          RawItem:
+            type: BffRawItemDto
+        result:
+          type: id # ProductId
+
+      UpdateRawItem:
+        #更新指定的 Item 的信息
+        metadata:
+          RestfulPathVariable: ProductId
+          HttpRequestBody: RawItem
+        httpMethod: PUT
+        parameters:
+          ProductId:
+            type: id
+            optional: false # is required
+          RawItem:
+            type: BffRawItemDto
+
+      ActivateRawItem:
+        # 禁用 / 激活指定 Id 的 Item
+        restfulResourceName: "{ProductId}/active"
+        metadata:
+          RestfulPathVariable: ProductId
+          HttpRequestBody: Active
+        httpMethod: PUT
+        parameters:
+          ProductId:
+            type: id
+            optional: false # is required
+          Active:
+            # 禁用传入 false；激活传入 true。
+            type: bool
+
+      BatchAddRawItems:
+        # 批量添加 RawItem
+        httpMethod: POST
+        restfulResourceName: "batchAddRawItems"
+        metadata:
+          HttpRequestBody: RawItems
+        parameters:
+          RawItems:
+            itemType: BffRawItemDto
+
+      # 批量“激活”
+      BatchActivateRawItems:
+        httpMethod: PUT
+        restfulResourceName: "batchActivateRawItems"
+        metadata:
+          HttpRequestBody: ProductIds
+        parameters:
+          ProductIds:
+            itemType: id
+
+      # 批量“禁用”
+      BatchDeactivateRawItems:
+        httpMethod: PUT
+        restfulResourceName: "batchDeactivateRawItems"
+        metadata:
+          HttpRequestBody: ProductIds
+        parameters:
+          ProductIds:
+            itemType: id
+
+      # 关于支持通过 CVS 文件导入 RawItem：
+      # 可以为这样的功能单独开发开发一个 RestController。它的方法可以不在 DDDML 模型中定义。
+      #
+      # 未来还可以考虑在工具层面改进：支持在 DDDML 模型中定义参数类型为采用“自定义参数解析器”的类型？
+      # 对于 Spring MVC 来说，这里的参数解析器指：
+      #   org.springframework.web.method.support.HandlerMethodArgumentResolver

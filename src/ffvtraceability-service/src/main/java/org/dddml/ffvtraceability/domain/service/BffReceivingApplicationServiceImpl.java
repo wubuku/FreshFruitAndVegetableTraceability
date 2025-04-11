@@ -10,6 +10,9 @@ import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGe
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationState;
+import org.dddml.ffvtraceability.domain.inventoryitem.AbstractInventoryItemCommand;
+import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemApplicationService;
+import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemCommands;
 import org.dddml.ffvtraceability.domain.mapper.BffBusinessContactMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
@@ -57,6 +60,10 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     private BffOrderRepository bffOrderRepository;
     @Autowired
     private DocumentNumberGeneratorApplicationService documentNumberGeneratorApplicationService;
+    @Autowired
+    private InventoryItemApplicationService inventoryItemApplicationService;
+    @Autowired
+    private BffInventoryItemRepository bffInventoryItemRepository;
 
     @Autowired
     private BffLotService bffLotService;
@@ -292,12 +299,12 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         generateNextNumber.setRequesterId(c.getRequesterId());
         createShipment.setShipmentId(c.getReceivingDocument().getDocumentId() != null ? c.getReceivingDocument().getDocumentId()
                 : documentNumberGeneratorApplicationService.when(generateNextNumber));
-        String supplierId = c.getReceivingDocument().getPartyIdTo();
+        String supplierId = c.getReceivingDocument().getPartyIdFrom();
         if (supplierId == null || supplierId.isBlank()) {
             throw new IllegalArgumentException("Vendor can't be null");
         }
-        createShipment.setPartyIdTo(supplierId);
-        createShipment.setPartyIdFrom(c.getReceivingDocument().getPartyIdFrom());
+        createShipment.setPartyIdFrom(supplierId);
+        createShipment.setPartyIdTo(c.getReceivingDocument().getPartyIdTo());
         createShipment.setOriginFacilityId(c.getReceivingDocument().getOriginFacilityId());
         createShipment.setDestinationFacilityId(c.getReceivingDocument().getDestinationFacilityId());
         if (createShipment.getDestinationFacilityId() == null || createShipment.getDestinationFacilityId().isBlank()) {
@@ -533,6 +540,43 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         mergePatchShipment.setVersion(shipmentState.getVersion());
         mergePatchShipment.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         shipmentApplicationService.when(mergePatchShipment);
+        //新增库存
+        /*List<BffReceivingRepository.BffShipmentReceiptProjection> projection = bffReceivingRepository.findReceivingItemsByShipmentId(shipmentId);
+        for (var shipmentReceipt : projection) {
+            Optional<BffInventoryItemProjection> bffInventoryItemProjection =
+                    bffInventoryItemRepository.findInventoryItemsByProductAndSupplierAndFacility(shipmentReceipt.getProductId(),
+                            shipmentState.getPartyIdFrom(),
+                            shipmentState.getDestinationFacilityId(),
+                            shipmentReceipt.getLocationSeqId(),
+                            shipmentReceipt.getLotId());
+            if (bffInventoryItemProjection.isEmpty()) {//新增
+                //增加一条 InventoryItem
+                AbstractInventoryItemCommand.SimpleCreateInventoryItem createInventoryItem =
+                        new AbstractInventoryItemCommand.SimpleCreateInventoryItem();
+                createInventoryItem.setInventoryItemId(IdUtils.randomId());
+                createInventoryItem.setProductId(shipmentReceipt.getProductId());
+                createInventoryItem.setLotId(shipmentReceipt.getLotId());
+                createInventoryItem.setComments("Receiving");
+                createInventoryItem.setQuantityOnHandTotal(shipmentReceipt.getQuantityAccepted());
+                createInventoryItem.setFacilityId(shipmentState.getDestinationFacilityId());
+                createInventoryItem.setLocationSeqId(shipmentReceipt.getLocationSeqId());
+                createInventoryItem.setCommandId(createInventoryItem.getInventoryItemId());
+                createInventoryItem.setRequesterId(c.getRequesterId());
+                inventoryItemApplicationService.when(createInventoryItem);
+
+                //????
+                InventoryItemCommands.RecordInventoryEntry recordInventoryEntry = new InventoryItemCommands.RecordInventoryEntry();
+                recordInventoryEntry.setInventoryItemId(bffInventoryItemProjection.get().getInventoryItemId());
+
+                inventoryItemApplicationService.when(recordInventoryEntry);
+
+            } else {//更改数量
+                AbstractInventoryItemCommand.SimpleMergePatchInventoryItem mergePatchInventoryItem =
+                        new AbstractInventoryItemCommand.SimpleMergePatchInventoryItem();
+                mergePatchInventoryItem.setInventoryItemId(bffInventoryItemProjection.get().getInventoryItemId());
+            }
+        }
+        //新增库存*/
     }
 
     @Override

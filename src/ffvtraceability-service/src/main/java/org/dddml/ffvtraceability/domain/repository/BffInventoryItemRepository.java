@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface BffInventoryItemRepository extends JpaRepository<AbstractInventoryItemState.SimpleInventoryItemState, String> {
 
     @Query(value = """
@@ -46,5 +48,21 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                                                            @Param("productId") String productId,
                                                            @Param("supplierId") String supplierId,
                                                            @Param("facilityId") String facilityId);
+
+    @Query(value = """
+            SELECT * from inventory_item i
+            left join lot l on i.lot_id = l.lot_id
+            where i.product_id = :productId
+            and i.facility_id = :facilityId
+            and l.supplier_id = :supplierId
+            and l.lot_id = :lotId
+            and i.location_seq_id = :locationSeqId
+            """, nativeQuery = true)
+    Optional<BffInventoryItemProjection>
+    findInventoryItemsByProductAndSupplierAndFacility(@Param("productId") String productId,
+                                                      @Param("supplierId") String supplierId,
+                                                      @Param("facilityId") String facilityId,
+                                                      @Param("locationSeqId") String locationSeqId,
+                                                      @Param("lotId") String lotId);
 
 }

@@ -43,6 +43,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 qi.inspected_by as inspectedBy,
                 qi.comments as comments,
                 sr.lot_id as lotId,
+                l.internal_id as lotNo,
                 sr.location_seq_id as locationSeqId,
                 fl.location_name as locationName,
                 sr.item_description as itemDescription,
@@ -76,8 +77,9 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             """;
 
     String RECEIPT_JOIN = """
-            LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id 
+            LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id
                 AND (sr.deleted IS NULL OR sr.deleted = false)
+            LEFT JOIN lot l ON sr.lot_id = l.lot_id
             """;
 
     /**
@@ -184,6 +186,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                 prod.small_image_url as smallImageUrl,
                 gi.id_value as gtin,
                 sr.lot_id as lotId,
+                l.internal_id as lotNo,
                 sr.location_seq_id as locationSeqId,
                 sr.item_description as itemDescription,
                 sr.quantity_accepted as quantityAccepted,
@@ -206,7 +209,7 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
             "   d.comments as referenceComments, " +
             "   d.document_location as referenceDocumentLocation, " +
             "   d.document_text as referenceDocumentText, " +
-            "   d.content_type as referenceDocumentContentType "+
+            "   d.content_type as referenceDocumentContentType " +
             "FROM shipping_document sd " +
             "JOIN document d ON sd.document_id = d.document_id " +
             "WHERE sd.shipment_id IN :shipmentIds " +
@@ -304,4 +307,25 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
     List<BffReceivingItemProjection> findQaInspectionStatusByShipmentReceiptIds(
             @Param("receiptIds") List<String> receiptIds
     );
+
+    @Query(value = """
+            SELECT * from shipment_receipt sr
+            WHERE sr.shipment_id = :shipmentId
+            and (sr.deleted is null or sr.deleted = false)
+            """, nativeQuery = true)
+    List<BffShipmentReceiptProjection> findReceivingItemsByShipmentId(@Param("shipmentId") String shipmentId);
+
+    interface BffShipmentReceiptProjection {
+        String getReceiptId();
+
+        String getProductId();
+
+        java.math.BigDecimal getQuantityAccepted();
+
+        String getLocationSeqId();
+
+        String getLotId();
+
+        String getShipmentId();
+    }
 }
