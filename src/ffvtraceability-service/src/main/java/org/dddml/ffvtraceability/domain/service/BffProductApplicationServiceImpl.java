@@ -66,7 +66,7 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
     private BffShipmentBoxTypeMapper bffShipmentBoxTypeMapper;
 
     @Autowired
-    private ProductQueryService ProductQueryService;
+    private ProductQueryService productQueryService;
 
     @Override
     @Transactional(readOnly = true)
@@ -79,8 +79,7 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
     @Override
     @Transactional(readOnly = true)
     public BffProductDto when(BffProductServiceCommands.GetProduct c) {
-        //return ProductQueryService.getProductWithoutCache(c.getProductId());
-        return null;
+        return productQueryService.getProductWithoutCache(c.getProductId());
     }
 
     @Override
