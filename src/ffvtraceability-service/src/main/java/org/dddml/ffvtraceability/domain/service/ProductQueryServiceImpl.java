@@ -20,7 +20,7 @@ import java.util.List;
 import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.*;
 
 @Service
-public class RawItemQueryServiceImpl implements RawItemQueryService {
+public class ProductQueryServiceImpl implements ProductQueryService {
     @Autowired
     private ProductApplicationService productApplicationService;
     @Autowired

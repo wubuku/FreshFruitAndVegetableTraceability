@@ -69,7 +69,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     private BffShipmentBoxTypeMapper bffShipmentBoxTypeMapper;
 
     @Autowired
-    private RawItemQueryService rawItemQueryService;
+    private ProductQueryService rawItemQueryService;
 
     @Override
     @Transactional(readOnly = true)

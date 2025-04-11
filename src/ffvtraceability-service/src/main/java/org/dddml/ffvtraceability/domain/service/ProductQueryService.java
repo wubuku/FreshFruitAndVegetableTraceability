@@ -2,7 +2,7 @@ package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
 
-public interface RawItemQueryService {
+public interface ProductQueryService {
 
     /**
      * Retrieves a raw item by its product ID using cache.

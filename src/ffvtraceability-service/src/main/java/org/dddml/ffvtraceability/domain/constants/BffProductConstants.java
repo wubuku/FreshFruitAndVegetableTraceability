@@ -28,6 +28,7 @@ public final class BffProductConstants {
      */
     public static final String GOOD_IDENTIFICATION_TYPE_HS_CODE = "HS_CODE";
 
+    public static final String DEFAULT_CURRENCY_UOM_ID = "USD";
     private BffProductConstants() {
         // Prevent instantiation
     }

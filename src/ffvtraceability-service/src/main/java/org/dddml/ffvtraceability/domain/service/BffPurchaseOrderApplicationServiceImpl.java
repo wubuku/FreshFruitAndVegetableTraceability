@@ -45,7 +45,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     @Autowired
     private BffRawItemApplicationService rawItemApplicationService;
     @Autowired
-    private RawItemQueryService rawItemQueryService;
+    private ProductQueryService rawItemQueryService;
 
     @Override
     @Transactional(readOnly = true)

@@ -1,8 +1,8 @@
 # 产品 / 原材料相关
 valueObjects:
-  BffRawItemDto:
+  BffProductDto:
     metadata:
-      JpaProjectionInterfaceName: BffRawItemProjection
+      JpaProjectionInterfaceName: BffProductProjection
     properties:
       ProductId:
         type: id
@@ -125,10 +125,10 @@ valueObjects:
         type: description
 
 services:
-  BffRawItemService:
-    restfulResourceName: BffRawItems
+  BffProductService:
+    restfulResourceName: BffProducts
     methods:
-      GetRawItems:
+      GetProducts:
         metadata:
           IsPageable: true
           ReturnPageEnvelope: true
@@ -140,44 +140,44 @@ services:
           Active:
             type: indicator
         result:
-          itemType: BffRawItemDto
+          itemType: BffProductDto
 
-      GetRawItem:
+      GetProduct:
         #根据 Id 查询产品的详细信息
         metadata:
           RestfulPathVariable: ProductId
         isQuery: true
         result:
-          type: BffRawItemDto
+          type: BffProductDto
         parameters:
           ProductId:
             type: id
 
-      CreateRawItem:
+      CreateProduct:
         # 新增 Item
         httpMethod: POST
         metadata:
-          HttpRequestBody: RawItem
+          HttpRequestBody: Product
         parameters:
-          RawItem:
-            type: BffRawItemDto
+          Product:
+            type: BffProductDto
         result:
           type: id # ProductId
 
-      UpdateRawItem:
+      UpdateProduct:
         #更新指定的 Item 的信息
         metadata:
           RestfulPathVariable: ProductId
-          HttpRequestBody: RawItem
+          HttpRequestBody: Product
         httpMethod: PUT
         parameters:
           ProductId:
             type: id
             optional: false # is required
-          RawItem:
-            type: BffRawItemDto
+          Product:
+            type: BffProductDto
 
-      ActivateRawItem:
+      ActivateProduct:
         # 禁用 / 激活指定 Id 的 Item
         restfulResourceName: "{ProductId}/active"
         metadata:
@@ -192,20 +192,20 @@ services:
             # 禁用传入 false；激活传入 true。
             type: bool
 
-      BatchAddRawItems:
-        # 批量添加 RawItem
+      BatchAddProducts:
+        # 批量添加 Product
         httpMethod: POST
-        restfulResourceName: "batchAddRawItems"
+        restfulResourceName: "batchAddProducts"
         metadata:
-          HttpRequestBody: RawItems
+          HttpRequestBody: Products
         parameters:
-          RawItems:
-            itemType: BffRawItemDto
+          Products:
+            itemType: BffProductDto
 
       # 批量“激活”
-      BatchActivateRawItems:
+      BatchActivateProducts:
         httpMethod: PUT
-        restfulResourceName: "batchActivateRawItems"
+        restfulResourceName: "batchActivateProducts"
         metadata:
           HttpRequestBody: ProductIds
         parameters:
@@ -213,16 +213,16 @@ services:
             itemType: id
 
       # 批量“禁用”
-      BatchDeactivateRawItems:
+      BatchDeactivateProducts:
         httpMethod: PUT
-        restfulResourceName: "batchDeactivateRawItems"
+        restfulResourceName: "batchDeactivateProducts"
         metadata:
           HttpRequestBody: ProductIds
         parameters:
           ProductIds:
             itemType: id
 
-      # 关于支持通过 CVS 文件导入 RawItem：
+      # 关于支持通过 CVS 文件导入 Product：
       # 可以为这样的功能单独开发开发一个 RestController。它的方法可以不在 DDDML 模型中定义。
       #
       # 未来还可以考虑在工具层面改进：支持在 DDDML 模型中定义参数类型为采用“自定义参数解析器”的类型？
