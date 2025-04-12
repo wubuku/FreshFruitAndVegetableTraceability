@@ -53,5 +53,27 @@ public class BffInventoryItemServiceResource {
         
     }
 
+    @GetMapping("WIPs")
+    public Page<BffWipInventoryGroupDto> getWipInventories(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productTypeId") String productTypeId,
+        @RequestParam(value = "productName", required = false) String productName,
+        @RequestParam(value = "productId", required = false) String productId,
+        @RequestParam(value = "facilityId", required = false) String facilityId
+    ) {
+        BffInventoryItemServiceCommands.GetWipInventories getWipInventories = new BffInventoryItemServiceCommands.GetWipInventories();
+        getWipInventories.setPage(page);
+        getWipInventories.setSize(size);
+        getWipInventories.setProductTypeId(productTypeId);
+        getWipInventories.setProductName(productName);
+        getWipInventories.setProductId(productId);
+        getWipInventories.setFacilityId(facilityId);
+        
+        getWipInventories.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getWipInventories);
+        
+    }
+
 }
 

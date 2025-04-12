@@ -401,7 +401,7 @@ facilityId 为仓库 Id.
 可以根据半成品类型、供应商 Id、产品 Id、仓库 Id 来查询库存：
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems/RawItems?page=0&size=20&productName=blueforceitem1&supplierId=13HDSG4J6BKYPHJVZ0&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
+  'http://localhost:8001/api/BffInventoryItems/WIPs?page=0&size=20&productTypeId=RAC_WIP&productName=blueforceitem1&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
@@ -410,8 +410,6 @@ curl -X 'GET' \
     * RAC_WIP
     * RTE_WIP
     * PACKED_WIP
-
-supplierId 为供应商 Id；
 
 productId 为产品 Id；
 
@@ -425,7 +423,6 @@ facilityId 为仓库 Id.
       "productId": "13XM0K65JP235EMN65",
       "productName": "blueforceitem1",
       "quantityUomId": "LB",
-      "supplierId": "13HDSG4J6BKYPHJVZ0",
       "facilityId": "13XM4J6CJBWD6FK64B",
       "facilityName": "blureforcewh1",
       "quantityOnHandTotal": 400

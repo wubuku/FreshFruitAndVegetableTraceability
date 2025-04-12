@@ -87,6 +87,80 @@ public class BffInventoryItemServiceCommands {
 
     }
 
+    public static class GetWipInventories extends org.dddml.ffvtraceability.domain.AbstractCommand {
+        private Integer page;
+        private Integer size;
+
+        public Integer getPage() {
+            return page;
+        }
+
+        public void setPage(Integer page) {
+            this.page = page;
+        }
+
+        public Integer getSize() {
+            return size;
+        }
+
+        public void setSize(Integer size) {
+            this.size = size;
+        }
+
+        /**
+         * Product Type Id
+         */
+        private String productTypeId;
+
+        public String getProductTypeId() {
+            return productTypeId;
+        }
+
+        public void setProductTypeId(String productTypeId) {
+            this.productTypeId = productTypeId;
+        }
+
+        /**
+         * Product Name
+         */
+        private String productName;
+
+        public String getProductName() {
+            return productName;
+        }
+
+        public void setProductName(String productName) {
+            this.productName = productName;
+        }
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+    }
+
 
 }
 

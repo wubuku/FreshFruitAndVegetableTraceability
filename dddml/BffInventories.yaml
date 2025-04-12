@@ -124,3 +124,25 @@ services:
             optional: true # NOT required
         result:
           itemType: BffRawItemInventoryGroupDto
+
+      GetWipInventories:
+        restfulResourceName: "WIPs"
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        parameters:
+          ProductTypeId:
+            type: id
+            optional: false # Required
+          ProductName:
+            type: name
+            optional: true # NOT required
+          ProductId:
+            type: id
+            optional: true # NOT required
+          FacilityId:
+            type: id
+            optional: true # NOT required
+        result:
+          itemType: BffWipInventoryGroupDto
