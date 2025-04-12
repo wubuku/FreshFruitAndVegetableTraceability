@@ -1,0 +1,186 @@
+# Customer相关
+valueObjects:
+  BffCustomerDto:
+    metadata:
+      JpaProjectionInterfaceName: BffCustomerProjection
+      JakartaValidationEnabled: true
+    properties:
+      CustomerId:
+        type: id
+      CustomerName:
+        type: name
+      Ggn:
+        description: "GGN (GLOBALG.A.P. Number)"
+        type: id
+        constraints:
+          - GGN
+      Gln:
+        description: "GLN (Global Location Number)"
+        type: id
+        constraints:
+          - GLN
+      ExternalId:
+        type: id
+      PreferredCurrencyUomId:
+        type: id
+      Description:
+        type: very-long
+      StatusId:
+        type: id
+      BusinessContacts:
+        itemType: BffBusinessContactDto
+        isList: true
+      CustomerShortName:
+        # Customer 的缩写名称
+        type: name
+      TaxId:
+        type: id
+      Gs1CompanyPrefix:
+        description: "GS1 Company Prefix"
+        type: id
+      InternalId:
+        type: id
+      TpaNumber:
+        description: "Trade Partner Agreement Number"
+        type: name
+      CustomerTypeEnumId:
+        # Customer的类别（枚举值 / 单选）
+        type: id
+      CustomerProductTypeDescription:
+        # Customer提供的产品/服务类型的信息描述：实体产品，服务（Service）等。
+        type: description
+      CertificationCodes:
+        description: "Certification Codes"
+        type: description
+      BankAccountInformation:
+        description: "Bank Account Information"
+        type: description
+      TelecomCountryCode:
+        description: "Telecom Country Code"
+        type: id
+      Telephone:
+        type: short-varchar
+        # 电话
+      Email:
+        type: id # todo: email?
+      WebSite:
+        type: url
+      Active:
+        type: indicator
+      Facilities:
+        itemType: BffFacilityDto
+        isList: true
+
+services:
+  BffCustomerService:
+    restfulResourceName: BffCustomers
+    methods:
+      GetCustomers:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        parameters:
+          Active:
+            type: indicator
+        result:
+          itemType: BffCustomerDto
+
+      GetCustomer:
+        #根据 Id 查询 Customer 的详细信息
+        metadata:
+          RestfulPathVariable: CustomerId
+        isQuery: true
+        result:
+          type: BffCustomerDto
+        parameters:
+          CustomerId:
+            type: id
+          IncludesFacilities:
+            # 是否包含 Customer 拥有的设施信息
+            type: bool
+            optional: true # NOT required
+
+
+      CreateCustomer:
+        # 新增 Customer
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: Customer
+        parameters:
+          Customer:
+            type: BffCustomerDto
+        result:
+          type: id # Customer (party) Id
+
+      UpdateCustomer:
+        metadata:
+          RestfulPathVariable: CustomerId
+          HttpRequestBody: Customer
+        httpMethod: PUT
+        parameters:
+          CustomerId:
+            type: id
+            optional: false # is required
+          Customer:
+            type: BffCustomerDto
+
+      ActivateCustomer:
+        # 禁用 / 激活指定 Id 的 Customer
+        restfulResourceName: "{CustomerId}/active"
+        metadata:
+          RestfulPathVariable: CustomerId
+          HttpRequestBody: Active
+        httpMethod: PUT
+        parameters:
+          CustomerId:
+            type: id
+            optional: false # is required
+          Active:
+            # 禁用传入 false；激活传入 true。
+            type: boolean
+
+
+      UpdateBusinessContact:
+        httpMethod: PUT
+        restfulResourceName: "{CustomerId}/BusinessContact"
+        metadata:
+          RestfulPathVariable: CustomerId
+          HttpRequestBody: BusinessContact
+        parameters:
+          CustomerId:
+            type: id
+          BusinessContact:
+            type: BffBusinessContactDto
+
+
+      BatchAddCustomers:
+        # 批量添加 Customer
+        httpMethod: POST
+        restfulResourceName: "batchAddCustomers"
+        metadata:
+          HttpRequestBody: Customers
+        parameters:
+          Customers:
+            itemType: BffCustomerDto
+
+      # 批量“激活”
+      BatchActivateCustomers:
+        httpMethod: POST
+        restfulResourceName: "batchActivateCustomers"
+        metadata:
+          HttpRequestBody: CustomerIds
+        parameters:
+          CustomerIds:
+            itemType: id
+
+      # 批量“禁用”
+      BatchDeactivateCustomers:
+        httpMethod: POST
+        restfulResourceName: "batchDeactivateCustomers"
+        metadata:
+          HttpRequestBody: CustomerIds
+        parameters:
+          CustomerIds:
+            itemType: id
