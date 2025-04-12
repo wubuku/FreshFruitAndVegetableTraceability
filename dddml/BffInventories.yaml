@@ -33,6 +33,26 @@ valueObjects:
         itemType: BffInventoryItemDetailDto
         isList: true
 
+
+  BffInventoryItemGroupDto:
+    metadata:
+      JpaProjectionInterfaceName: BffInventoryItemGroupProjection
+    properties:
+      ProductId:
+        type: id
+      ProductName:
+        type: name
+      QuantityUomId:
+        type: id
+      SupplierId:
+        type: id
+      FacilityId:
+        type: id
+      FacilityName:
+        type: name
+      QuantityOnHandTotal:
+        type: fixed-point
+
   BffInventoryItemDetailDto:
     metadata:
       JpaProjectionInterfaceName: BffInventoryItemDetailProjection
@@ -80,7 +100,7 @@ services:
             type: id
             optional: true # NOT required
         result:
-          itemType: BffInventoryItemDto
+          itemType: BffInventoryItemGroupDto
 
       GetInventoryItem:
         # 获取库存详情

@@ -7,11 +7,57 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
-
 public interface BffInventoryItemRepository extends JpaRepository<AbstractInventoryItemState.SimpleInventoryItemState, String> {
 
     @Query(value = """
+            SELECT
+               g.product_id as productId,
+               p.product_name as productName,
+               p.quantity_uom_id as quantityUomId,
+               g.supplier_id as supplierId,
+               g.facility_id as facilityId,
+               f.facility_name as facilityName,
+               g.total_quantity as quantityOnHandTotal
+            FROM
+              (SELECT i.product_id,
+                      l.supplier_id,
+                      i.facility_id,
+                      SUM(i.quantity_on_hand_total) AS total_quantity
+               FROM inventory_item i
+               LEFT JOIN lot l ON i.lot_id = l.lot_id
+               LEFT JOIN product p ON i.product_id = p.product_id
+               LEFT JOIN facility f ON i.facility_id = f.facility_id
+               WHERE p.product_type_id = :productTypeId
+                 AND (:productId is null or i.product_id = :productId)
+                 AND (:supplierId is null or l.supplier_id = :supplierId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
+               GROUP BY i.product_id,
+                        l.supplier_id,
+                        i.facility_id
+                          ) g
+            LEFT JOIN product p ON p.product_id=g.product_id
+            LEFT JOIN facility f ON g.facility_id=f.facility_id
+            """, countQuery = """
+            SELECT COUNT(*)
+            FROM inventory_item i
+               LEFT JOIN lot l ON i.lot_id = l.lot_id
+               LEFT JOIN product p ON i.product_id = p.product_id
+               LEFT JOIN facility f ON i.facility_id = f.facility_id
+               WHERE p.product_type_id = :productTypeId
+                 AND (:productId is null or i.product_id = :productId)
+                 AND (:supplierId is null or l.supplier_id = :supplierId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
+               GROUP BY i.product_id,
+                        l.supplier_id,
+                        i.facility_id
+            """, nativeQuery = true)
+    Page<BffInventoryItemGroupProjection> findAllInventoryItems(Pageable pageable,
+                                                                @Param("productTypeId") String productTypeId,
+                                                                @Param("productId") String productId,
+                                                                @Param("supplierId") String supplierId,
+                                                                @Param("facilityId") String facilityId);
+
+    /*@Query(value = """
             SELECT
             i.inventory_item_id as inventoryItemId,
             i.product_id as productId,
@@ -47,22 +93,22 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                                                            @Param("productTypeId") String productTypeId,
                                                            @Param("productId") String productId,
                                                            @Param("supplierId") String supplierId,
-                                                           @Param("facilityId") String facilityId);
+                                                           @Param("facilityId") String facilityId);*/
 
-    @Query(value = """
-            SELECT * from inventory_item i
-            left join lot l on i.lot_id = l.lot_id
-            where i.product_id = :productId
-            and i.facility_id = :facilityId
-            and l.supplier_id = :supplierId
-            and l.lot_id = :lotId
-            and i.location_seq_id = :locationSeqId
-            """, nativeQuery = true)
-    Optional<BffInventoryItemProjection>
-    findInventoryItemsByProductAndSupplierAndFacility(@Param("productId") String productId,
-                                                      @Param("supplierId") String supplierId,
-                                                      @Param("facilityId") String facilityId,
-                                                      @Param("locationSeqId") String locationSeqId,
-                                                      @Param("lotId") String lotId);
+//    @Query(value = """
+//            SELECT * from inventory_item i
+//            left join lot l on i.lot_id = l.lot_id
+//            where i.product_id = :productId
+//            and i.facility_id = :facilityId
+//            and l.supplier_id = :supplierId
+//            and l.lot_id = :lotId
+//            and i.location_seq_id = :locationSeqId
+//            """, nativeQuery = true)
+//    Optional<BffInventoryItemProjection>
+//    findInventoryItemsByProductAndSupplierAndFacility(@Param("productId") String productId,
+//                                                      @Param("supplierId") String supplierId,
+//                                                      @Param("facilityId") String facilityId,
+//                                                      @Param("locationSeqId") String locationSeqId,
+//                                                      @Param("lotId") String lotId);
 
 }

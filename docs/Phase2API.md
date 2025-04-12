@@ -363,11 +363,7 @@ internalId 为批次号
 可以根据产品类型、供应商 Id、产品 Id、仓库 Id 来查询库存：
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems?page=0&size=20
-  &productTypeId=RAW_MATERIAL
-  &supplierId=13HDSG4J6BKYPHJVZ0
-  &productId=14AG8L4GM6EKAWK277
-  &facilityId=13LNXR6X497W03AP81' \
+  'http://localhost:8001/api/BffInventoryItems?page=0&size=20&productTypeId=RAW_MATERIAL&supplierId=13HDSG4J6BKYPHJVZ0&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
@@ -389,16 +385,13 @@ facilityId 为仓库 Id.
 {
   "content": [
     {
-      "inventoryItemId": "inverntory_itemId",
-      "productId": "14AG8L4GM6EKAWK277",
-      "productName": "productName",
+      "productId": "13XM0K65JP235EMN65",
+      "productName": "blueforceitem1",
+      "quantityUomId": "LB",
       "supplierId": "13HDSG4J6BKYPHJVZ0",
-      "supplierShortName": "v25031701",
-      "facilityId": "13LNXR6X497W03AP81",
-      "lotId": "14AGPQ39F501D6RAZD",
-      "locationSeqId": "13LNXR6X497W03AP81_DEFAULT",
-      "comments": "comments",
-      "quantityOnHandTotal": 999
+      "facilityId": "13XM4J6CJBWD6FK64B",
+      "facilityName": "blureforcewh1",
+      "quantityOnHandTotal": 400
     }
   ],
   "totalElements": 1,

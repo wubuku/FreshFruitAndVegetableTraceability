@@ -1,6 +1,8 @@
 package org.dddml.ffvtraceability.domain.mapper;
 
 import org.dddml.ffvtraceability.domain.BffInventoryItemDto;
+import org.dddml.ffvtraceability.domain.BffInventoryItemGroupDto;
+import org.dddml.ffvtraceability.domain.repository.BffInventoryItemGroupProjection;
 import org.dddml.ffvtraceability.domain.repository.BffInventoryItemProjection;
 import org.mapstruct.Mapper;
 
@@ -16,5 +18,8 @@ public interface BffInventoryItemMapper {
     default OffsetDateTime instantToOffsetDateTime(Instant instant) {
         return instant != null ? instant.atOffset(ZoneOffset.UTC) : null;
     }
+
     BffInventoryItemDto toBffInventoryItemDto(BffInventoryItemProjection bffInventoryItemProjection);
+
+    BffInventoryItemGroupDto toBffInventoryItemGroupDto(BffInventoryItemGroupProjection bffInventoryItemGroupProjection);
 }

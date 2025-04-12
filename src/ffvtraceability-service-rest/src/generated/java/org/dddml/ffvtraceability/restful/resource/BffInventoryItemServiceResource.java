@@ -32,7 +32,7 @@ public class BffInventoryItemServiceResource {
     private BffInventoryItemApplicationService bffInventoryItemApplicationService;
 
     @GetMapping
-    public Page<BffInventoryItemDto> getInventoryItems(
+    public Page<BffInventoryItemGroupDto> getInventoryItems(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "productTypeId") String productTypeId,
