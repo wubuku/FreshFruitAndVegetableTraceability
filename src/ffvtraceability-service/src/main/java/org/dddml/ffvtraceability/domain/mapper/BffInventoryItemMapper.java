@@ -1,9 +1,9 @@
 package org.dddml.ffvtraceability.domain.mapper;
 
 import org.dddml.ffvtraceability.domain.BffInventoryItemDto;
-import org.dddml.ffvtraceability.domain.BffInventoryItemGroupDto;
-import org.dddml.ffvtraceability.domain.repository.BffInventoryItemGroupProjection;
+import org.dddml.ffvtraceability.domain.BffRawItemInventoryGroupDto;
 import org.dddml.ffvtraceability.domain.repository.BffInventoryItemProjection;
+import org.dddml.ffvtraceability.domain.repository.BffRawItemInventoryGroupProjection;
 import org.mapstruct.Mapper;
 
 import java.time.Instant;
@@ -21,5 +21,5 @@ public interface BffInventoryItemMapper {
 
     BffInventoryItemDto toBffInventoryItemDto(BffInventoryItemProjection bffInventoryItemProjection);
 
-    BffInventoryItemGroupDto toBffInventoryItemGroupDto(BffInventoryItemGroupProjection bffInventoryItemGroupProjection);
+    BffRawItemInventoryGroupDto toBffRawItemInventoryGroupDto(BffRawItemInventoryGroupProjection bffRawItemInventoryGroupProjection);
 }

@@ -31,11 +31,10 @@ public class BffInventoryItemServiceResource {
     @Autowired
     private BffInventoryItemApplicationService bffInventoryItemApplicationService;
 
-    @GetMapping
-    public Page<BffInventoryItemGroupDto> getInventoryItems(
+    @GetMapping("RawItems")
+    public Page<BffRawItemInventoryGroupDto> getInventoryItems(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
-        @RequestParam(value = "productTypeId") String productTypeId,
         @RequestParam(value = "productName", required = false) String productName,
         @RequestParam(value = "supplierId", required = false) String supplierId,
         @RequestParam(value = "productId", required = false) String productId,
@@ -44,7 +43,6 @@ public class BffInventoryItemServiceResource {
         BffInventoryItemServiceCommands.GetInventoryItems getInventoryItems = new BffInventoryItemServiceCommands.GetInventoryItems();
         getInventoryItems.setPage(page);
         getInventoryItems.setSize(size);
-        getInventoryItems.setProductTypeId(productTypeId);
         getInventoryItems.setProductName(productName);
         getInventoryItems.setSupplierId(supplierId);
         getInventoryItems.setProductId(productId);
@@ -52,32 +50,6 @@ public class BffInventoryItemServiceResource {
         
         getInventoryItems.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffInventoryItemApplicationService.when(getInventoryItems);
-        
-    }
-
-    @GetMapping("{inventoryItemId}")
-    public BffInventoryItemDto getInventoryItem(
-        @PathVariable("inventoryItemId") String inventoryItemId
-    ) {
-        BffInventoryItemServiceCommands.GetInventoryItem getInventoryItem = new BffInventoryItemServiceCommands.GetInventoryItem();
-        getInventoryItem.setInventoryItemId(inventoryItemId);
-        
-        getInventoryItem.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffInventoryItemApplicationService.when(getInventoryItem);
-        
-    }
-
-    @GetMapping("{inventoryItemId}/Items/{inventoryItemDetailSeqId}")
-    public BffInventoryItemDetailDto getInventoryItemDetail(
-        @PathVariable("inventoryItemId") String inventoryItemId,
-        @PathVariable("inventoryItemDetailSeqId") String inventoryItemDetailSeqId
-    ) {
-        BffInventoryItemServiceCommands.GetInventoryItemDetail getInventoryItemDetail = new BffInventoryItemServiceCommands.GetInventoryItemDetail();
-        getInventoryItemDetail.setInventoryItemId(inventoryItemId);
-        getInventoryItemDetail.setInventoryItemDetailSeqId(inventoryItemDetailSeqId);
-        
-        getInventoryItemDetail.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffInventoryItemApplicationService.when(getInventoryItemDetail);
         
     }
 

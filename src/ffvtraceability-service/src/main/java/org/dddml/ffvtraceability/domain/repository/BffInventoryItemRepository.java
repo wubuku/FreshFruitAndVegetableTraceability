@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.domain.repository;
 
+import org.dddml.ffvtraceability.domain.BffRawItemInventoryGroupDto;
 import org.dddml.ffvtraceability.domain.inventoryitem.AbstractInventoryItemState;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +61,57 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                                                                 @Param("supplierId") String supplierId,
                                                                 @Param("facilityId") String facilityId);
 
+    @Query(value = """
+            SELECT
+               g.product_id as productId,
+               p.product_name as productName,
+               p.quantity_uom_id as quantityUomId,
+               g.supplier_id as supplierId,
+               pa.short_description as supplierName,
+               g.facility_id as facilityId,
+               f.facility_name as facilityName,
+               g.total_quantity as quantityOnHandTotal
+            FROM
+              (SELECT i.product_id,
+                      l.supplier_id,
+                      i.facility_id,
+                      SUM(i.quantity_on_hand_total) AS total_quantity
+               FROM inventory_item i
+               LEFT JOIN lot l ON i.lot_id = l.lot_id
+               LEFT JOIN product p ON i.product_id = p.product_id
+               LEFT JOIN facility f ON i.facility_id = f.facility_id
+               WHERE p.product_type_id = 'RAW_MATERIAL'
+                 AND (:productId is null or i.product_id = :productId)
+                 AND (:supplierId is null or l.supplier_id = :supplierId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
+                 AND (:productName is null or p.product_name like concat('%', :productName, '%'))
+               GROUP BY i.product_id,
+                        l.supplier_id,
+                        i.facility_id
+                          ) g
+            LEFT JOIN product p ON p.product_id=g.product_id
+            LEFT JOIN facility f ON g.facility_id=f.facility_id
+            left join party pa on pa.party_id = g.supplier_id
+            """, countQuery = """
+            SELECT COUNT(*)
+            FROM inventory_item i
+               LEFT JOIN lot l ON i.lot_id = l.lot_id
+               LEFT JOIN product p ON i.product_id = p.product_id
+               LEFT JOIN facility f ON i.facility_id = f.facility_id
+               WHERE p.product_type_id = 'RAW_MATERIAL'
+                 AND (:productId is null or i.product_id = :productId)
+                 AND (:supplierId is null or l.supplier_id = :supplierId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
+                 AND (:productName is null or p.product_name like concat('%', :productName, '%'))
+               GROUP BY i.product_id,
+                        l.supplier_id,
+                        i.facility_id
+            """, nativeQuery = true)
+    Page<BffRawItemInventoryGroupProjection> findAllRawItemInventories(Pageable pageable,
+                                                                @Param("productId") String productId,
+                                                                @Param("productName") String productName,
+                                                                @Param("supplierId") String supplierId,
+                                                                @Param("facilityId") String facilityId);
     /*@Query(value = """
             SELECT
             i.inventory_item_id as inventoryItemId,

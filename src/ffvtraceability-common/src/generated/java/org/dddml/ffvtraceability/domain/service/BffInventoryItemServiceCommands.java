@@ -34,19 +34,6 @@ public class BffInventoryItemServiceCommands {
         }
 
         /**
-         * Product Type Id
-         */
-        private String productTypeId;
-
-        public String getProductTypeId() {
-            return productTypeId;
-        }
-
-        public void setProductTypeId(String productTypeId) {
-            this.productTypeId = productTypeId;
-        }
-
-        /**
          * Product Name
          */
         private String productName;
@@ -96,53 +83,6 @@ public class BffInventoryItemServiceCommands {
 
         public void setFacilityId(String facilityId) {
             this.facilityId = facilityId;
-        }
-
-    }
-
-    public static class GetInventoryItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
-
-        /**
-         * Inventory Item Id
-         */
-        private String inventoryItemId;
-
-        public String getInventoryItemId() {
-            return inventoryItemId;
-        }
-
-        public void setInventoryItemId(String inventoryItemId) {
-            this.inventoryItemId = inventoryItemId;
-        }
-
-    }
-
-    public static class GetInventoryItemDetail extends org.dddml.ffvtraceability.domain.AbstractCommand {
-
-        /**
-         * Inventory Item Id
-         */
-        private String inventoryItemId;
-
-        public String getInventoryItemId() {
-            return inventoryItemId;
-        }
-
-        public void setInventoryItemId(String inventoryItemId) {
-            this.inventoryItemId = inventoryItemId;
-        }
-
-        /**
-         * Inventory Item Detail Seq Id
-         */
-        private String inventoryItemDetailSeqId;
-
-        public String getInventoryItemDetailSeqId() {
-            return inventoryItemDetailSeqId;
-        }
-
-        public void setInventoryItemDetailSeqId(String inventoryItemDetailSeqId) {
-            this.inventoryItemDetailSeqId = inventoryItemDetailSeqId;
         }
 
     }

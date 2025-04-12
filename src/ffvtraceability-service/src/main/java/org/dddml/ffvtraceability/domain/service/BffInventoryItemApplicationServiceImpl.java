@@ -1,8 +1,6 @@
 package org.dddml.ffvtraceability.domain.service;
 
-import org.dddml.ffvtraceability.domain.BffInventoryItemDetailDto;
-import org.dddml.ffvtraceability.domain.BffInventoryItemDto;
-import org.dddml.ffvtraceability.domain.BffInventoryItemGroupDto;
+import org.dddml.ffvtraceability.domain.BffRawItemInventoryGroupDto;
 import org.dddml.ffvtraceability.domain.mapper.BffInventoryItemMapper;
 import org.dddml.ffvtraceability.domain.repository.BffInventoryItemRepository;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
@@ -19,20 +17,11 @@ public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemA
     private BffInventoryItemMapper bffInventoryItemMapper;
 
     @Override
-    public Page<BffInventoryItemGroupDto> when(BffInventoryItemServiceCommands.GetInventoryItems c) {
+    public Page<BffRawItemInventoryGroupDto> when(BffInventoryItemServiceCommands.GetInventoryItems c) {
         return PageUtils.toPage(
-                bffInventoryItemRepository.findAllInventoryItems(PageRequest.of(c.getPage(), c.getSize()),
-                        c.getProductTypeId(), c.getProductId(), c.getProductName(), c.getSupplierId(), c.getFacilityId()),
-                bffInventoryItemMapper::toBffInventoryItemGroupDto);
+                bffInventoryItemRepository.findAllRawItemInventories(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductId(), c.getProductName(), c.getSupplierId(), c.getFacilityId()),
+                bffInventoryItemMapper::toBffRawItemInventoryGroupDto);
     }
 
-    @Override
-    public BffInventoryItemDto when(BffInventoryItemServiceCommands.GetInventoryItem c) {
-        return null;
-    }
-
-    @Override
-    public BffInventoryItemDetailDto when(BffInventoryItemServiceCommands.GetInventoryItemDetail c) {
-        return null;
-    }
 }
