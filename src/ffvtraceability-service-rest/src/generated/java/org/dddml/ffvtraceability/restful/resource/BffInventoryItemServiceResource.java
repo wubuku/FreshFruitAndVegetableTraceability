@@ -32,7 +32,7 @@ public class BffInventoryItemServiceResource {
     private BffInventoryItemApplicationService bffInventoryItemApplicationService;
 
     @GetMapping("RawItems")
-    public Page<BffRawItemInventoryGroupDto> getInventoryItems(
+    public Page<BffRawItemInventoryGroupDto> getRawItemInventories(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "productName", required = false) String productName,
@@ -40,16 +40,16 @@ public class BffInventoryItemServiceResource {
         @RequestParam(value = "productId", required = false) String productId,
         @RequestParam(value = "facilityId", required = false) String facilityId
     ) {
-        BffInventoryItemServiceCommands.GetInventoryItems getInventoryItems = new BffInventoryItemServiceCommands.GetInventoryItems();
-        getInventoryItems.setPage(page);
-        getInventoryItems.setSize(size);
-        getInventoryItems.setProductName(productName);
-        getInventoryItems.setSupplierId(supplierId);
-        getInventoryItems.setProductId(productId);
-        getInventoryItems.setFacilityId(facilityId);
+        BffInventoryItemServiceCommands.GetRawItemInventories getRawItemInventories = new BffInventoryItemServiceCommands.GetRawItemInventories();
+        getRawItemInventories.setPage(page);
+        getRawItemInventories.setSize(size);
+        getRawItemInventories.setProductName(productName);
+        getRawItemInventories.setSupplierId(supplierId);
+        getRawItemInventories.setProductId(productId);
+        getRawItemInventories.setFacilityId(facilityId);
         
-        getInventoryItems.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffInventoryItemApplicationService.when(getInventoryItems);
+        getRawItemInventories.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getRawItemInventories);
         
     }
 

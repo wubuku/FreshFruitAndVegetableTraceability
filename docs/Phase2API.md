@@ -398,14 +398,14 @@ facilityId 为仓库 Id.
 ```
 1. 根据条件查询半成品库存
 
-可以根据产品类型、供应商 Id、产品 Id、仓库 Id 来查询库存：
+可以根据半成品类型、供应商 Id、产品 Id、仓库 Id 来查询库存：
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffInventoryItems/RawItems?page=0&size=20&productName=blueforceitem1&supplierId=13HDSG4J6BKYPHJVZ0&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
-其中 productTypeId 为产品类型，可取值范围：
+其中 productTypeId 为半成品类型，可取值范围：
 
     * RAC_WIP
     * RTE_WIP

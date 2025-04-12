@@ -13,7 +13,7 @@ public class BffInventoryItemServiceCommands {
     private BffInventoryItemServiceCommands() {
     }
     
-    public static class GetInventoryItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
+    public static class GetRawItemInventories extends org.dddml.ffvtraceability.domain.AbstractCommand {
         private Integer page;
         private Integer size;
 

@@ -100,7 +100,7 @@ services:
   BffInventoryItemService:
     restfulResourceName: BffInventoryItems
     methods:
-      GetInventoryItems:
+      GetRawItemInventories:
         restfulResourceName: "RawItems"
         metadata:
           IsPageable: true
