@@ -270,12 +270,12 @@ public abstract class AbstractInventoryItemAggregate extends AbstractAggregate i
             InventoryItemEventId eventId = getState() != null ? new InventoryItemEventId(getState().getInventoryItemId(), version) : null;
             AbstractInventoryItemEvent.RecordInventoryEntryEvent e = new AbstractInventoryItemEvent.RecordInventoryEntryEvent();
 
-            e.getDynamicProperties().put("inventoryItemAttributes", inventoryItemAttributes);
-            e.getDynamicProperties().put("inventoryItemDetailAttributes", inventoryItemDetailAttributes);
-            e.getDynamicProperties().put("quantityOnHandDiff", quantityOnHandDiff);
-            e.getDynamicProperties().put("availableToPromiseDiff", availableToPromiseDiff);
-            e.getDynamicProperties().put("accountingQuantityDiff", accountingQuantityDiff);
-            e.getDynamicProperties().put("unitCost", unitCost);
+            e.getDynamicProperties().put("inventory_item_attributes", inventoryItemAttributes);
+            e.getDynamicProperties().put("inventory_item_detail_attributes", inventoryItemDetailAttributes);
+            e.getDynamicProperties().put("quantity_on_hand_diff", quantityOnHandDiff);
+            e.getDynamicProperties().put("available_to_promise_diff", availableToPromiseDiff);
+            e.getDynamicProperties().put("accounting_quantity_diff", accountingQuantityDiff);
+            e.getDynamicProperties().put("unit_cost", unitCost);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

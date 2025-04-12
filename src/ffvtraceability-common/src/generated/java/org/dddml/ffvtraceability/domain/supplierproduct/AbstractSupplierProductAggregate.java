@@ -257,7 +257,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
             SupplierProductEventId eventId = new SupplierProductEventId(getState().getSupplierProductTenantizedId(), version);
             AbstractSupplierProductEvent.AvailableThruDateUpdated e = new AbstractSupplierProductEvent.AvailableThruDateUpdated();
 
-            e.getDynamicProperties().put("availableThruDate", availableThruDate);
+            e.getDynamicProperties().put("available_thru_date", availableThruDate);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
