@@ -29,7 +29,7 @@ public class AttributeSetInstanceIdGenerator implements
             String encoded = jc.getEncodedString();
             // MessageDigest md = MessageDigest.getInstance("SHA-1");
             // byte[] hashBytes = md.digest(encoded.getBytes(StandardCharsets.UTF_8));
-            // return bytesToHex(hashBytes);
+            // return bytesToHex(hashBytes);Z
             return DigestUtils.md5DigestAsHex(encoded.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             return getNextId();

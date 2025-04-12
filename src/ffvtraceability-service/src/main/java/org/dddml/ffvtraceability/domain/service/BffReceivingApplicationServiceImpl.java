@@ -10,9 +10,10 @@ import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGe
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationApplicationService;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationId;
 import org.dddml.ffvtraceability.domain.facilitylocation.FacilityLocationState;
-import org.dddml.ffvtraceability.domain.inventoryitem.AbstractInventoryItemCommand;
 import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemApplicationService;
+import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemAttributes;
 import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemCommands;
+import org.dddml.ffvtraceability.domain.inventoryitem.InventoryItemDetailAttributes;
 import org.dddml.ffvtraceability.domain.mapper.BffBusinessContactMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffFacilityMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffReceivingMapper;
@@ -541,9 +542,27 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         mergePatchShipment.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         shipmentApplicationService.when(mergePatchShipment);
         //新增库存
-        /*List<BffReceivingRepository.BffShipmentReceiptProjection> projection = bffReceivingRepository.findReceivingItemsByShipmentId(shipmentId);
+        List<BffReceivingRepository.BffShipmentReceiptProjection> projection = bffReceivingRepository.findReceivingItemsByShipmentId(shipmentId);
         for (var shipmentReceipt : projection) {
-            Optional<BffInventoryItemProjection> bffInventoryItemProjection =
+            InventoryItemCommands.RecordInventoryEntry recordInventoryEntry = new InventoryItemCommands.RecordInventoryEntry();
+            InventoryItemAttributes inventoryItemAttributes = new InventoryItemAttributes();
+            inventoryItemAttributes.setLotId(shipmentReceipt.getLotId());
+            inventoryItemAttributes.setProductId(shipmentReceipt.getProductId());
+            inventoryItemAttributes.setFacilityId(shipmentState.getDestinationFacilityId());
+            inventoryItemAttributes.setLocationSeqId(shipmentReceipt.getLocationSeqId());
+
+            InventoryItemDetailAttributes inventoryItemDetailAttributes = new InventoryItemDetailAttributes();
+            inventoryItemDetailAttributes.setReceiptId(shipmentReceipt.getReceiptId());
+            inventoryItemDetailAttributes.setShipmentId(shipmentId);
+
+            recordInventoryEntry.setQuantityOnHandDiff(shipmentReceipt.getQuantityAccepted());
+
+            recordInventoryEntry.setInventoryItemAttributes(inventoryItemAttributes);
+            recordInventoryEntry.setInventoryItemDetailAttributes(inventoryItemDetailAttributes);
+            recordInventoryEntry.setRequesterId(c.getRequesterId());
+            recordInventoryEntry.setCommandId(UUID.randomUUID().toString());
+            inventoryItemApplicationService.when(recordInventoryEntry);
+            /*Optional<BffInventoryItemProjection> bffInventoryItemProjection =
                     bffInventoryItemRepository.findInventoryItemsByProductAndSupplierAndFacility(shipmentReceipt.getProductId(),
                             shipmentState.getPartyIdFrom(),
                             shipmentState.getDestinationFacilityId(),
@@ -564,6 +583,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 createInventoryItem.setRequesterId(c.getRequesterId());
                 inventoryItemApplicationService.when(createInventoryItem);
 
+
                 //????
                 InventoryItemCommands.RecordInventoryEntry recordInventoryEntry = new InventoryItemCommands.RecordInventoryEntry();
                 recordInventoryEntry.setInventoryItemId(bffInventoryItemProjection.get().getInventoryItemId());
@@ -577,6 +597,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             }
         }
         //新增库存*/
+        }
     }
 
     @Override
