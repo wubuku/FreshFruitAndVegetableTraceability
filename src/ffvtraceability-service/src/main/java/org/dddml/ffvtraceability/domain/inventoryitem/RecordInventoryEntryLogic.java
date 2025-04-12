@@ -136,7 +136,8 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
 
             InventoryItemDetailState.MutableInventoryItemDetailState d =
                     mutableInventoryItemState.getDetails().getOrAddMutableState(getInventoryItemDetailId(inventoryItemDetailAttributes));
-            d.setInventoryItemAttributeHash(d.getInventoryItemDetailSeqId());
+            d.setInventoryItemAttributeHash(mutableInventoryItemState.getInventoryItemId());
+            d.setInventoryItemDetailAttributeHash(d.getInventoryItemDetailSeqId());
             // 如果有详细属性，更新它们
             if (inventoryItemDetailAttributes != null) {
                 inventoryItemMapper.updateInventoryItemDetailState(d, inventoryItemDetailAttributes);
