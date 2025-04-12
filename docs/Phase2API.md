@@ -83,10 +83,10 @@ curl -X 'POST' \
   ]
 }'
 ```
+
 添加成功将返回原材料的Id。如：148H6N2U8Q40JKPS9Q.
 
 ### 2. 更新原材料
-
 
 ```shell
 curl -X 'PUT' \
@@ -153,6 +153,7 @@ curl -X 'PUT' \
   ]
 }'
 ```
+
 路径参数 {productId} 为原材料 Id;
 
 另外注意：
@@ -170,16 +171,20 @@ suppliers 数组为该原材料最终所关联的供应商与产品之间的关�
 更新成功将会得到 200 的响应码。
 
 ### 3. 根据原材料 Id 获取原材料的详情信息
+
 请求调用方式如下：
+
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffRawItems/{productId}' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 路径参数 {productId} 为原材料 Id.
 
 返回结果举例如下：
+
 ```json
 {
   "productId": "14AG8L4GM6EKAWK277",
@@ -257,11 +262,13 @@ curl -X 'GET' \
   ]
 }
 ```
+
 客户端并不需要关注 suppliers 列表中的：version,currencyUomId,minimumOrderQuantity,availableFromDate,availableThruDate等属性。
 
 ### 4. 禁用原材料的供应商与产品之间的关联关系
 
 请求调用方式如下：
+
 ```shell
 curl -X 'PUT' \
   'http://localhost:8001/api/BffRawItems/{productId}/SupplierRawItems/{supplierId}/deactivate' \
@@ -270,16 +277,17 @@ curl -X 'PUT' \
   -H 'Content-Type: application/json' \
   -d '{}'
 ```
+
 路径参数 {productId} 为原材料 Id,{supplierId} 为供应商 Id.
 
 禁用策略：
 
 不管当前该关联关系的可用状态是“禁用”还是“启用”，都将其可用状态设置为“禁用”。
 
-
 ### 5. 启用原材料的供应商与产品之间的关联关系
 
 请求调用方式如下：
+
 ```shell
 curl -X 'PUT' \
   'http://localhost:8001/api/BffRawItems/{productId}/SupplierRawItems/{supplierId}/active' \
@@ -288,16 +296,25 @@ curl -X 'PUT' \
   -H 'Content-Type: application/json' \
   -d '{}'
 ```
+
 路径参数 {productId} 为原材料 Id,{supplierId} 为供应商 Id.
 
 禁用策略：
 
 不管当前该关联关系的可用状态是“禁用”还是“启用”，都将其可用状态设置为“启用”。
 
+### 6. 关于原材料状态的激活和禁用
+
+原来原材料有激活（禁用）单个原材料、批量激活原材料、批量禁用原材料结构
+
+以上接口全部改用 “BffProducts” 路径前缀的接口。
+
 ## 二、批次号相关API
 
 ### 1. 添加批次号
+
 添加批次号时需要传递供应商的Id（SupplierId）和批次号(internalId)：
+
 ```shell
 curl -X 'POST' \
   'http://localhost:8001/api/BffLots' \
@@ -309,10 +326,13 @@ curl -X 'POST' \
   "internalId": "Lot No"
 }'
 ```
+
 操作成功直接返回该批次号的Id，如：
+
 ```shell
 14AGQF7D2VWBEZH298
 ```
+
 添加策略：
 
 如果指定供应商的批次号已经存在那么直接返回LotId;
@@ -322,13 +342,16 @@ curl -X 'POST' \
 ### 2. 根据条件查询批次号信息
 
 新增查询条件：供应商Id，如：
+
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffLots?page=0&size=20&supplierId=13HDSG4J6BKYPHJVZ0' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 返回结果如下：
+
 ```json
 {
   "content": [
@@ -351,6 +374,7 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+
 lotId 为批次号的 Id
 
 supplierId 为供应商 Id
@@ -358,15 +382,18 @@ supplierId 为供应商 Id
 internalId 为批次号
 
 ## 三、库存相关接口
+
 ### 1. 根据条件查询原材料库存
 
 可以根据产品名称（支持模糊查询）、供应商 Id、产品 Id、仓库 Id 来查询库存：
+
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffInventoryItems/RawItems?page=0&size=20&productName=blueforceitem1&supplierId=13HDSG4J6BKYPHJVZ0&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 其中 productName 为产品名称（支持模糊查询）；
 
 supplierId 为供应商 Id；
@@ -376,6 +403,7 @@ productId 为产品 Id；
 facilityId 为仓库 Id.
 
 返回结果举例如下：
+
 ```json
 {
   "content": [
@@ -396,15 +424,18 @@ facilityId 为仓库 Id.
   "totalPages": 1
 }
 ```
+
 ### 2. 根据条件查询半成品库存
 
 可以根据半成品类型、供应商 Id、产品 Id、仓库 Id 来查询库存：
+
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffInventoryItems/WIPs?page=0&size=20&productTypeId=RAC_WIP&productName=blueforceitem1&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 其中 productTypeId 为半成品类型，可取值范围：
 
     * RAC_WIP
@@ -416,6 +447,7 @@ productId 为产品 Id；
 facilityId 为仓库 Id.
 
 返回结果举例如下：
+
 ```json
 {
   "content": [

@@ -185,36 +185,6 @@ public class BffRawItemServiceCommands {
 
     }
 
-    public static class ActivateRawItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
-
-        /**
-         * Product Id
-         */
-        private String productId;
-
-        public String getProductId() {
-            return productId;
-        }
-
-        public void setProductId(String productId) {
-            this.productId = productId;
-        }
-
-        /**
-         * Active
-         */
-        private Boolean active;
-
-        public Boolean getActive() {
-            return active;
-        }
-
-        public void setActive(Boolean active) {
-            this.active = active;
-        }
-
-    }
-
     public static class BatchAddRawItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
@@ -228,40 +198,6 @@ public class BffRawItemServiceCommands {
 
         public void setRawItems(BffRawItemDto[] rawItems) {
             this.rawItems = rawItems;
-        }
-
-    }
-
-    public static class BatchActivateRawItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
-
-        /**
-         * Product Ids
-         */
-        private String[] productIds;
-
-        public String[] getProductIds() {
-            return productIds;
-        }
-
-        public void setProductIds(String[] productIds) {
-            this.productIds = productIds;
-        }
-
-    }
-
-    public static class BatchDeactivateRawItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
-
-        /**
-         * Product Ids
-         */
-        private String[] productIds;
-
-        public String[] getProductIds() {
-            return productIds;
-        }
-
-        public void setProductIds(String[] productIds) {
-            this.productIds = productIds;
         }
 
     }

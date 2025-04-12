@@ -450,40 +450,40 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         }
     }
 
-    @Override
-    @Transactional
-    public void when(BffRawItemServiceCommands.ActivateRawItem c) {
-        updateProductActiveStatus(c.getProductId(), c.getActive() != null && c.getActive(), c);
-    }
-
-    @Override
-    @Transactional
-    public void when(BffRawItemServiceCommands.BatchActivateRawItems c) {
-        Arrays.stream(c.getProductIds()).forEach(productId -> updateProductActiveStatus(productId, true, c));
-    }
-
-    @Override
-    @Transactional
-    public void when(BffRawItemServiceCommands.BatchDeactivateRawItems c) {
-        Arrays.stream(c.getProductIds()).forEach(productId -> updateProductActiveStatus(productId, false, c));
-    }
-
-    private void updateProductActiveStatus(String productId, boolean active, Command c) {
-        ProductState productState = productApplicationService.get(productId);
-        if (productState == null) {
-            throw new IllegalArgumentException("Raw item not found: " + productId);
-        }
-
-        AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
-        mergePatchProduct.setProductId(productId);
-        mergePatchProduct.setProductTypeId(PRODUCT_TYPE_RAW_MATERIAL);
-        mergePatchProduct.setVersion(productState.getVersion());
-        mergePatchProduct.setActive(active ? INDICATOR_YES : INDICATOR_NO);
-        mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
-        mergePatchProduct.setRequesterId(c.getRequesterId());
-
-        productApplicationService.when(mergePatchProduct);
-    }
+//    @Override
+//    @Transactional
+//    public void when(BffRawItemServiceCommands.ActivateRawItem c) {
+//        updateProductActiveStatus(c.getProductId(), c.getActive() != null && c.getActive(), c);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void when(BffRawItemServiceCommands.BatchActivateRawItems c) {
+//        Arrays.stream(c.getProductIds()).forEach(productId -> updateProductActiveStatus(productId, true, c));
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void when(BffRawItemServiceCommands.BatchDeactivateRawItems c) {
+//        Arrays.stream(c.getProductIds()).forEach(productId -> updateProductActiveStatus(productId, false, c));
+//    }
+//
+//    private void updateProductActiveStatus(String productId, boolean active, Command c) {
+//        ProductState productState = productApplicationService.get(productId);
+//        if (productState == null) {
+//            throw new IllegalArgumentException("Raw item not found: " + productId);
+//        }
+//
+//        AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
+//        mergePatchProduct.setProductId(productId);
+//        mergePatchProduct.setProductTypeId(PRODUCT_TYPE_RAW_MATERIAL);
+//        mergePatchProduct.setVersion(productState.getVersion());
+//        mergePatchProduct.setActive(active ? INDICATOR_YES : INDICATOR_NO);
+//        mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
+//        mergePatchProduct.setRequesterId(c.getRequesterId());
+//
+//        productApplicationService.when(mergePatchProduct);
+//    }
 
     @Override
     @Transactional

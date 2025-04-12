@@ -22,13 +22,7 @@ public interface BffRawItemApplicationService {
 
     void when(BffRawItemServiceCommands.DeactivateSupplierRawItem c);
 
-    void when(BffRawItemServiceCommands.ActivateRawItem c);
-
     void when(BffRawItemServiceCommands.BatchAddRawItems c);
-
-    void when(BffRawItemServiceCommands.BatchActivateRawItems c);
-
-    void when(BffRawItemServiceCommands.BatchDeactivateRawItems c);
 
 
 }

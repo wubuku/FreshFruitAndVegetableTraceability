@@ -212,20 +212,20 @@ services:
             type: id
             optional: false
 
-      ActivateRawItem:
-        # 禁用 / 激活指定 Id 的 Item
-        restfulResourceName: "{ProductId}/active"
-        metadata:
-          RestfulPathVariable: ProductId
-          HttpRequestBody: Active
-        httpMethod: PUT
-        parameters:
-          ProductId:
-            type: id
-            optional: false # is required
-          Active:
-            # 禁用传入 false；激活传入 true。
-            type: bool
+#      ActivateRawItem:
+#        # 禁用 / 激活指定 Id 的 Item
+#        restfulResourceName: "{ProductId}/active"
+#        metadata:
+#          RestfulPathVariable: ProductId
+#          HttpRequestBody: Active
+#        httpMethod: PUT
+#        parameters:
+#          ProductId:
+#            type: id
+#            optional: false # is required
+#          Active:
+#            # 禁用传入 false；激活传入 true。
+#            type: bool
 
       BatchAddRawItems:
         # 批量添加 RawItem
@@ -238,24 +238,24 @@ services:
             itemType: BffRawItemDto
 
       # 批量“激活”
-      BatchActivateRawItems:
-        httpMethod: PUT
-        restfulResourceName: "batchActivateRawItems"
-        metadata:
-          HttpRequestBody: ProductIds
-        parameters:
-          ProductIds:
-            itemType: id
+#      BatchActivateRawItems:
+#        httpMethod: PUT
+#        restfulResourceName: "batchActivateRawItems"
+#        metadata:
+#          HttpRequestBody: ProductIds
+#        parameters:
+#          ProductIds:
+#            itemType: id
 
       # 批量“禁用”
-      BatchDeactivateRawItems:
-        httpMethod: PUT
-        restfulResourceName: "batchDeactivateRawItems"
-        metadata:
-          HttpRequestBody: ProductIds
-        parameters:
-          ProductIds:
-            itemType: id
+#      BatchDeactivateRawItems:
+#        httpMethod: PUT
+#        restfulResourceName: "batchDeactivateRawItems"
+#        metadata:
+#          HttpRequestBody: ProductIds
+#        parameters:
+#          ProductIds:
+#            itemType: id
 
       # 关于支持通过 CVS 文件导入 RawItem：
       # 可以为这样的功能单独开发开发一个 RestController。它的方法可以不在 DDDML 模型中定义。

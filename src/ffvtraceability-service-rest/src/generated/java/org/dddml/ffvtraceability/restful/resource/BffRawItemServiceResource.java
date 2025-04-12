@@ -115,20 +115,6 @@ public class BffRawItemServiceResource {
         
     }
 
-    @PutMapping("{productId}/active")
-    public void activateRawItem(
-        @PathVariable("productId") String productId,
-        @RequestBody Boolean active
-    ) {
-        BffRawItemServiceCommands.ActivateRawItem activateRawItem = new BffRawItemServiceCommands.ActivateRawItem();
-        activateRawItem.setProductId(productId);
-        activateRawItem.setActive(active);
-        
-        activateRawItem.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffRawItemApplicationService.when(activateRawItem);
-        
-    }
-
     @PostMapping("batchAddRawItems")
     public void batchAddRawItems(
         @RequestBody BffRawItemDto[] rawItems
@@ -138,30 +124,6 @@ public class BffRawItemServiceResource {
         
         batchAddRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
         bffRawItemApplicationService.when(batchAddRawItems);
-        
-    }
-
-    @PutMapping("batchActivateRawItems")
-    public void batchActivateRawItems(
-        @RequestBody String[] productIds
-    ) {
-        BffRawItemServiceCommands.BatchActivateRawItems batchActivateRawItems = new BffRawItemServiceCommands.BatchActivateRawItems();
-        batchActivateRawItems.setProductIds(productIds);
-        
-        batchActivateRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffRawItemApplicationService.when(batchActivateRawItems);
-        
-    }
-
-    @PutMapping("batchDeactivateRawItems")
-    public void batchDeactivateRawItems(
-        @RequestBody String[] productIds
-    ) {
-        BffRawItemServiceCommands.BatchDeactivateRawItems batchDeactivateRawItems = new BffRawItemServiceCommands.BatchDeactivateRawItems();
-        batchDeactivateRawItems.setProductIds(productIds);
-        
-        batchDeactivateRawItems.setRequesterId(SecurityContextUtil.getRequesterId());
-        bffRawItemApplicationService.when(batchDeactivateRawItems);
         
     }
 
