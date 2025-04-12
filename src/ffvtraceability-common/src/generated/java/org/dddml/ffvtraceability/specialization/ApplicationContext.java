@@ -27,7 +27,7 @@ public class ApplicationContext {
         }
     };
 
-    public static ApplicationContext current;
+    public static volatile ApplicationContext current;
 
     public Object get(String name) {
         throw new UnsupportedOperationException();

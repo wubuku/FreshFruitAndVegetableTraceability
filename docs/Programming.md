@@ -850,6 +850,26 @@ curl -X 'PUT' \
   -d '{"commandId":"UPDATE_BODY_21","requesterId":"REQUESTER_ID_11111","body":"new_world","version":0}'
 ```
 
+## ApplicationContext.current 的线程安全问题
+
+ApplicationContext.current 的访问需要是线程安全的。
+
+我们可以假设这个前提条件成立：SpringApplicationContext 实例是 immutable 的，即使存在多个实例，它们的功能完全一致。
+这消除了对象状态变更带来的线程安全问题，让实现简单一些。
+
+在此前提下，当前实现是线程安全的。以下是关键原因：
+
+1. 写操作同步：
+   所有修改 current 的地方（setApplicationContext 和 handleContextRefresh）都使用 synchronized(CONTEXT_LOCK) 进行同步，保证了写操作的原子性。
+   同一锁对象 CONTEXT_LOCK 确保不会出现多个线程同时修改 current 的情况。
+2. volatile 修饰符：
+   current 被声明为 volatile，保证了多线程环境下的可见性。任何线程读取该变量时都会获取主内存中的最新值。
+3. 原子引用赋值：
+   Java 中对象引用的赋值是原子操作，volatile 修饰符确保引用切换的原子性。读线程不会看到中间状态的引用值。
+4. 事件处理安全：
+   handleContextRefresh 方法同样使用同步块，确保在 Spring 上下文刷新事件中安全更新 current。
+
+因此，这种设计在多线程环境下能够安全地管理 ApplicationContext.current 的读写。
 
 
 ## Customize Query Repositories

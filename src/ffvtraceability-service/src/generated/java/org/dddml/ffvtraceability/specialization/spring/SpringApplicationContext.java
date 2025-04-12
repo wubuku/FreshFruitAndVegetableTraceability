@@ -25,6 +25,10 @@ public class SpringApplicationContext extends ApplicationContext {
         this.innerApplicationContext = innerApplicationContext;
     }
 
+    public org.springframework.context.ApplicationContext getInnerContext() {
+        return this.innerApplicationContext;
+    }
+
     @Override
     public Object get(String name) {
         int len = 1;
