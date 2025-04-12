@@ -407,6 +407,17 @@ facilityId 为仓库 Id.
   "totalPages": 1
 }
 ```
+## 四、产品相关接口
+
+* 原以“BffRawItems”开头的接口全部用来满足原材料（RAW_MATERIAL）的管理；
+* 增加以“BffProducts”开头的接口来满足半成品和成品的管理；
+* 半成品和成品的产品类型（productTypeId）种类如下：
+
+    * 半成品包括：RAC_WIP、RTE_WIP、PACKED_WIP 三种
+    * 成品为 FINISHED_GOOD
+* 总的指导原则：除了新建原材料，更新原材料，查询原材料详情信息之外其余都是用统一的“BffProducts”接口。
+
+
 
 
 
