@@ -11,7 +11,10 @@ public class FileInfo {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String originalFilename;
+    
+    @Column(unique = true)
     private String storageFilename;
+    
     private String contentType;
     private Long size;
     private String userId;
@@ -19,7 +22,9 @@ public class FileInfo {
     @Column(updatable = false)
     private Instant uploadTime;
 
+    @Column(length = 1024)
     private String url;
+    
     private Instant urlExpireTime;
     private boolean isPublic;
 
