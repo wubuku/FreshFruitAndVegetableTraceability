@@ -31,51 +31,47 @@ public class BffInventoryItemServiceResource {
     @Autowired
     private BffInventoryItemApplicationService bffInventoryItemApplicationService;
 
-    @GetMapping
-    public Page<BffInventoryItemDto> getInventoryItems(
+    @GetMapping("RawItems")
+    public Page<BffRawItemInventoryGroupDto> getRawItemInventories(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
-        @RequestParam(value = "productTypeId") String productTypeId,
+        @RequestParam(value = "productName", required = false) String productName,
         @RequestParam(value = "supplierId", required = false) String supplierId,
         @RequestParam(value = "productId", required = false) String productId,
         @RequestParam(value = "facilityId", required = false) String facilityId
     ) {
-        BffInventoryItemServiceCommands.GetInventoryItems getInventoryItems = new BffInventoryItemServiceCommands.GetInventoryItems();
-        getInventoryItems.setPage(page);
-        getInventoryItems.setSize(size);
-        getInventoryItems.setProductTypeId(productTypeId);
-        getInventoryItems.setSupplierId(supplierId);
-        getInventoryItems.setProductId(productId);
-        getInventoryItems.setFacilityId(facilityId);
+        BffInventoryItemServiceCommands.GetRawItemInventories getRawItemInventories = new BffInventoryItemServiceCommands.GetRawItemInventories();
+        getRawItemInventories.setPage(page);
+        getRawItemInventories.setSize(size);
+        getRawItemInventories.setProductName(productName);
+        getRawItemInventories.setSupplierId(supplierId);
+        getRawItemInventories.setProductId(productId);
+        getRawItemInventories.setFacilityId(facilityId);
         
-        getInventoryItems.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffInventoryItemApplicationService.when(getInventoryItems);
-        
-    }
-
-    @GetMapping("{inventoryItemId}")
-    public BffInventoryItemDto getInventoryItem(
-        @PathVariable("inventoryItemId") String inventoryItemId
-    ) {
-        BffInventoryItemServiceCommands.GetInventoryItem getInventoryItem = new BffInventoryItemServiceCommands.GetInventoryItem();
-        getInventoryItem.setInventoryItemId(inventoryItemId);
-        
-        getInventoryItem.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffInventoryItemApplicationService.when(getInventoryItem);
+        getRawItemInventories.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getRawItemInventories);
         
     }
 
-    @GetMapping("{inventoryItemId}/Items/{inventoryItemDetailSeqId}")
-    public BffInventoryItemDetailDto getInventoryItemDetail(
-        @PathVariable("inventoryItemId") String inventoryItemId,
-        @PathVariable("inventoryItemDetailSeqId") String inventoryItemDetailSeqId
+    @GetMapping("WIPs")
+    public Page<BffWipInventoryGroupDto> getWipInventories(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productTypeId") String productTypeId,
+        @RequestParam(value = "productName", required = false) String productName,
+        @RequestParam(value = "productId", required = false) String productId,
+        @RequestParam(value = "facilityId", required = false) String facilityId
     ) {
-        BffInventoryItemServiceCommands.GetInventoryItemDetail getInventoryItemDetail = new BffInventoryItemServiceCommands.GetInventoryItemDetail();
-        getInventoryItemDetail.setInventoryItemId(inventoryItemId);
-        getInventoryItemDetail.setInventoryItemDetailSeqId(inventoryItemDetailSeqId);
+        BffInventoryItemServiceCommands.GetWipInventories getWipInventories = new BffInventoryItemServiceCommands.GetWipInventories();
+        getWipInventories.setPage(page);
+        getWipInventories.setSize(size);
+        getWipInventories.setProductTypeId(productTypeId);
+        getWipInventories.setProductName(productName);
+        getWipInventories.setProductId(productId);
+        getWipInventories.setFacilityId(facilityId);
         
-        getInventoryItemDetail.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffInventoryItemApplicationService.when(getInventoryItemDetail);
+        getWipInventories.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getWipInventories);
         
     }
 

@@ -358,26 +358,17 @@ supplierId 为供应商 Id
 internalId 为批次号
 
 ## 三、库存相关接口
-### 1. 根据条件查询库存
+### 1. 根据条件查询原材料库存
 
-可以根据产品类型、供应商 Id、产品 Id、仓库 Id 来查询库存：
+可以根据产品名称（支持模糊查询）、供应商 Id、产品 Id、仓库 Id 来查询库存：
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems?page=0&size=20
-  &productTypeId=RAW_MATERIAL
-  &supplierId=13HDSG4J6BKYPHJVZ0
-  &productId=14AG8L4GM6EKAWK277
-  &facilityId=13LNXR6X497W03AP81' \
+  'http://localhost:8001/api/BffInventoryItems/RawItems?page=0&size=20&productName=blueforceitem1&supplierId=13HDSG4J6BKYPHJVZ0&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
-其中 productTypeId 为产品类型，可取值范围：
+其中 productName 为产品名称（支持模糊查询）；
 
-    * RAW_MATERIAL 
-    * RAC_WIP
-    * RTE_WIP
-    * PACKED_WIP
-    * FINISHED_GOOD
 supplierId 为供应商 Id；
 
 productId 为产品 Id；
@@ -389,16 +380,14 @@ facilityId 为仓库 Id.
 {
   "content": [
     {
-      "inventoryItemId": "inverntory_itemId",
-      "productId": "14AG8L4GM6EKAWK277",
-      "productName": "productName",
+      "productId": "13XM0K65JP235EMN65",
+      "productName": "blueforceitem1",
+      "quantityUomId": "LB",
       "supplierId": "13HDSG4J6BKYPHJVZ0",
-      "supplierShortName": "v25031701",
-      "facilityId": "13LNXR6X497W03AP81",
-      "lotId": "14AGPQ39F501D6RAZD",
-      "locationSeqId": "13LNXR6X497W03AP81_DEFAULT",
-      "comments": "comments",
-      "quantityOnHandTotal": 999
+      "supplierName": "v25031701",
+      "facilityId": "13XM4J6CJBWD6FK64B",
+      "facilityName": "blureforcewh1",
+      "quantityOnHandTotal": 400
     }
   ],
   "totalElements": 1,
@@ -407,6 +396,45 @@ facilityId 为仓库 Id.
   "totalPages": 1
 }
 ```
+### 2. 根据条件查询半成品库存
+
+可以根据半成品类型、供应商 Id、产品 Id、仓库 Id 来查询库存：
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffInventoryItems/WIPs?page=0&size=20&productTypeId=RAC_WIP&productName=blueforceitem1&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+其中 productTypeId 为半成品类型，可取值范围：
+
+    * RAC_WIP
+    * RTE_WIP
+    * PACKED_WIP
+
+productId 为产品 Id；
+
+facilityId 为仓库 Id.
+
+返回结果举例如下：
+```json
+{
+  "content": [
+    {
+      "productId": "13XM0K65JP235EMN65",
+      "productName": "blueforceitem1",
+      "quantityUomId": "LB",
+      "facilityId": "13XM4J6CJBWD6FK64B",
+      "facilityName": "blureforcewh1",
+      "quantityOnHandTotal": 400
+    }
+  ],
+  "totalElements": 1,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+
 ## 四、产品相关接口
 
 * 原以“BffRawItems”开头的接口全部用来满足原材料（RAW_MATERIAL）的管理；

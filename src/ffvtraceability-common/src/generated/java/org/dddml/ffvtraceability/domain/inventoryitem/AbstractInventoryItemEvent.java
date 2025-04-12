@@ -161,7 +161,7 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
         }
 
         public InventoryItemAttributes getInventoryItemAttributes() {
-            Object val = getDynamicProperties().get("inventoryItemAttributes");
+            Object val = getDynamicProperties().get("inventory_item_attributes");
             if (val instanceof InventoryItemAttributes) {
                 return (InventoryItemAttributes) val;
             }
@@ -169,11 +169,11 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
         }
 
         public void setInventoryItemAttributes(InventoryItemAttributes value) {
-            getDynamicProperties().put("inventoryItemAttributes", value);
+            getDynamicProperties().put("inventory_item_attributes", value);
         }
 
         public InventoryItemDetailAttributes getInventoryItemDetailAttributes() {
-            Object val = getDynamicProperties().get("inventoryItemDetailAttributes");
+            Object val = getDynamicProperties().get("inventory_item_detail_attributes");
             if (val instanceof InventoryItemDetailAttributes) {
                 return (InventoryItemDetailAttributes) val;
             }
@@ -181,11 +181,11 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
         }
 
         public void setInventoryItemDetailAttributes(InventoryItemDetailAttributes value) {
-            getDynamicProperties().put("inventoryItemDetailAttributes", value);
+            getDynamicProperties().put("inventory_item_detail_attributes", value);
         }
 
         public java.math.BigDecimal getQuantityOnHandDiff() {
-            Object val = getDynamicProperties().get("quantityOnHandDiff");
+            Object val = getDynamicProperties().get("quantity_on_hand_diff");
             if (val instanceof java.math.BigDecimal) {
                 return (java.math.BigDecimal) val;
             }
@@ -193,11 +193,11 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
         }
 
         public void setQuantityOnHandDiff(java.math.BigDecimal value) {
-            getDynamicProperties().put("quantityOnHandDiff", value);
+            getDynamicProperties().put("quantity_on_hand_diff", value);
         }
 
         public java.math.BigDecimal getAvailableToPromiseDiff() {
-            Object val = getDynamicProperties().get("availableToPromiseDiff");
+            Object val = getDynamicProperties().get("available_to_promise_diff");
             if (val instanceof java.math.BigDecimal) {
                 return (java.math.BigDecimal) val;
             }
@@ -205,11 +205,11 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
         }
 
         public void setAvailableToPromiseDiff(java.math.BigDecimal value) {
-            getDynamicProperties().put("availableToPromiseDiff", value);
+            getDynamicProperties().put("available_to_promise_diff", value);
         }
 
         public java.math.BigDecimal getAccountingQuantityDiff() {
-            Object val = getDynamicProperties().get("accountingQuantityDiff");
+            Object val = getDynamicProperties().get("accounting_quantity_diff");
             if (val instanceof java.math.BigDecimal) {
                 return (java.math.BigDecimal) val;
             }
@@ -217,11 +217,11 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
         }
 
         public void setAccountingQuantityDiff(java.math.BigDecimal value) {
-            getDynamicProperties().put("accountingQuantityDiff", value);
+            getDynamicProperties().put("accounting_quantity_diff", value);
         }
 
         public java.math.BigDecimal getUnitCost() {
-            Object val = getDynamicProperties().get("unitCost");
+            Object val = getDynamicProperties().get("unit_cost");
             if (val instanceof java.math.BigDecimal) {
                 return (java.math.BigDecimal) val;
             }
@@ -229,7 +229,7 @@ public abstract class AbstractInventoryItemEvent extends AbstractEvent implement
         }
 
         public void setUnitCost(java.math.BigDecimal value) {
-            getDynamicProperties().put("unitCost", value);
+            getDynamicProperties().put("unit_cost", value);
         }
 
     }

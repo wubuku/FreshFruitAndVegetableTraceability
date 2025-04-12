@@ -3,8 +3,8 @@ valueObjects:
   BffInventoryItemDto:
     metadata:
       JpaProjectionInterfaceName: BffInventoryItemProjection
-        #JpaProjectionPropertyTypes:
-        #CreatedAt: java.time.Instant
+      #JpaProjectionPropertyTypes:
+      #CreatedAt: java.time.Instant
       #ReceivedAt: java.time.Instant
     properties:
       InventoryItemId:
@@ -32,6 +32,45 @@ valueObjects:
       Details:
         itemType: BffInventoryItemDetailDto
         isList: true
+
+
+  BffRawItemInventoryGroupDto:
+    metadata:
+      JpaProjectionInterfaceName: BffRawItemInventoryGroupProjection
+    properties:
+      ProductId:
+        type: id
+      ProductName:
+        type: name
+      QuantityUomId:
+        type: id
+      SupplierId:
+        type: id
+      SupplierName:
+        type: name
+      FacilityId:
+        type: id
+      FacilityName:
+        type: name
+      QuantityOnHandTotal:
+        type: fixed-point
+
+  BffWipInventoryGroupDto:
+    metadata:
+      JpaProjectionInterfaceName: BffWipInventoryGroupProjection
+    properties:
+      ProductId:
+        type: id
+      ProductName:
+        type: name
+      QuantityUomId:
+        type: id
+      FacilityId:
+        type: id
+      FacilityName:
+        type: name
+      QuantityOnHandTotal:
+        type: fixed-point
 
   BffInventoryItemDetailDto:
     metadata:
@@ -61,15 +100,19 @@ services:
   BffInventoryItemService:
     restfulResourceName: BffInventoryItems
     methods:
-      GetInventoryItems:
+      GetRawItemInventories:
+        restfulResourceName: "RawItems"
         metadata:
           IsPageable: true
           ReturnPageEnvelope: true
         isQuery: true
         parameters:
-          ProductTypeId:
-            type: id
-            optional: false # Required
+          #          ProductTypeId:
+          #            type: id
+          #            optional: false # Required
+          ProductName:
+            type: name
+            optional: true # NOT required
           SupplierId:
             type: id
             optional: true # NOT required
@@ -80,32 +123,26 @@ services:
             type: id
             optional: true # NOT required
         result:
-          itemType: BffInventoryItemDto
+          itemType: BffRawItemInventoryGroupDto
 
-      GetInventoryItem:
-        # 获取库存详情
-        restfulResourceName: "{InventoryItemId}"
+      GetWipInventories:
+        restfulResourceName: "WIPs"
         metadata:
-          RestfulPathVariable: InventoryItemId
+          IsPageable: true
+          ReturnPageEnvelope: true
         isQuery: true
-        result:
-          type: BffInventoryItemDto
         parameters:
-          InventoryItemId:
+          ProductTypeId:
             type: id
-
-      GetInventoryItemDetail:
-        # 获取指定库存下的库存明细详情
-        restfulResourceName: "{InventoryItemId}/Items/{InventoryItemDetailSeqId}"
-        metadata:
-          RestfulPathVariables:
-            - InventoryItemId
-            - InventoryItemDetailSeqId
-        isQuery: true
+            optional: false # Required
+          ProductName:
+            type: name
+            optional: true # NOT required
+          ProductId:
+            type: id
+            optional: true # NOT required
+          FacilityId:
+            type: id
+            optional: true # NOT required
         result:
-          type: BffInventoryItemDetailDto
-        parameters:
-          InventoryItemId:
-            type: id
-          InventoryItemDetailSeqId:
-            type: id
+          itemType: BffWipInventoryGroupDto

@@ -13,7 +13,7 @@ public class BffInventoryItemServiceCommands {
     private BffInventoryItemServiceCommands() {
     }
     
-    public static class GetInventoryItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
+    public static class GetRawItemInventories extends org.dddml.ffvtraceability.domain.AbstractCommand {
         private Integer page;
         private Integer size;
 
@@ -34,16 +34,16 @@ public class BffInventoryItemServiceCommands {
         }
 
         /**
-         * Product Type Id
+         * Product Name
          */
-        private String productTypeId;
+        private String productName;
 
-        public String getProductTypeId() {
-            return productTypeId;
+        public String getProductName() {
+            return productName;
         }
 
-        public void setProductTypeId(String productTypeId) {
-            this.productTypeId = productTypeId;
+        public void setProductName(String productName) {
+            this.productName = productName;
         }
 
         /**
@@ -87,49 +87,76 @@ public class BffInventoryItemServiceCommands {
 
     }
 
-    public static class GetInventoryItem extends org.dddml.ffvtraceability.domain.AbstractCommand {
+    public static class GetWipInventories extends org.dddml.ffvtraceability.domain.AbstractCommand {
+        private Integer page;
+        private Integer size;
 
-        /**
-         * Inventory Item Id
-         */
-        private String inventoryItemId;
-
-        public String getInventoryItemId() {
-            return inventoryItemId;
+        public Integer getPage() {
+            return page;
         }
 
-        public void setInventoryItemId(String inventoryItemId) {
-            this.inventoryItemId = inventoryItemId;
+        public void setPage(Integer page) {
+            this.page = page;
         }
 
-    }
-
-    public static class GetInventoryItemDetail extends org.dddml.ffvtraceability.domain.AbstractCommand {
-
-        /**
-         * Inventory Item Id
-         */
-        private String inventoryItemId;
-
-        public String getInventoryItemId() {
-            return inventoryItemId;
+        public Integer getSize() {
+            return size;
         }
 
-        public void setInventoryItemId(String inventoryItemId) {
-            this.inventoryItemId = inventoryItemId;
+        public void setSize(Integer size) {
+            this.size = size;
         }
 
         /**
-         * Inventory Item Detail Seq Id
+         * Product Type Id
          */
-        private String inventoryItemDetailSeqId;
+        private String productTypeId;
 
-        public String getInventoryItemDetailSeqId() {
-            return inventoryItemDetailSeqId;
+        public String getProductTypeId() {
+            return productTypeId;
         }
 
-        public void setInventoryItemDetailSeqId(String inventoryItemDetailSeqId) {
-            this.inventoryItemDetailSeqId = inventoryItemDetailSeqId;
+        public void setProductTypeId(String productTypeId) {
+            this.productTypeId = productTypeId;
+        }
+
+        /**
+         * Product Name
+         */
+        private String productName;
+
+        public String getProductName() {
+            return productName;
+        }
+
+        public void setProductName(String productName) {
+            this.productName = productName;
+        }
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
         }
 
     }

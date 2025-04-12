@@ -20,13 +20,21 @@ public final class BffProductConstants {
     public static final String PRODUCT_TYPE_FINISHED_GOOD = "FINISHED_GOOD";
 
     /**
-     * WIP产品类型列表
+     * 非原材料产品类型列表
      */
     public static final List<String> PRODUCT_TYPES_NOT_RAW = Arrays.asList(
         PRODUCT_TYPE_RAC_WIP,
         PRODUCT_TYPE_RTE_WIP,
         PRODUCT_TYPE_PACKED_WIP,
         PRODUCT_TYPE_FINISHED_GOOD
+    );
+    /**
+     * WIP产品类型列表
+     */
+    public static final List<String> PRODUCT_TYPES_WIP = Arrays.asList(
+            PRODUCT_TYPE_RAC_WIP,
+            PRODUCT_TYPE_RTE_WIP,
+            PRODUCT_TYPE_PACKED_WIP
     );
     /**
      * GTIN (Global Trade Item Number)

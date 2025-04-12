@@ -10,11 +10,9 @@ import org.dddml.ffvtraceability.specialization.Page;
 
 public interface BffInventoryItemApplicationService {
 
-    Page<BffInventoryItemDto> when(BffInventoryItemServiceCommands.GetInventoryItems c);
+    Page<BffRawItemInventoryGroupDto> when(BffInventoryItemServiceCommands.GetRawItemInventories c);
 
-    BffInventoryItemDto when(BffInventoryItemServiceCommands.GetInventoryItem c);
-
-    BffInventoryItemDetailDto when(BffInventoryItemServiceCommands.GetInventoryItemDetail c);
+    Page<BffWipInventoryGroupDto> when(BffInventoryItemServiceCommands.GetWipInventories c);
 
 
 }
