@@ -29,6 +29,8 @@ public class ApplicationContext {
 
     public static volatile ApplicationContext current;
 
+    private final ThreadLocal<String> requesterIdHolder = new ThreadLocal<>();
+
     public Object get(String name) {
         throw new UnsupportedOperationException();
     }
@@ -43,6 +45,22 @@ public class ApplicationContext {
 
     public TimestampService getTimestampService() {
         return DEFAULT_TIMESTAMP_SERVICE;
+    }
+
+    public String getRequesterId() {
+        return requesterIdHolder.get();
+    }
+
+    public void setRequesterId(String requesterId) {
+        if (requesterId == null) {
+            requesterIdHolder.remove();
+        } else {
+            requesterIdHolder.set(requesterId);
+        }
+    }
+
+    public void clearRequesterId() {
+        requesterIdHolder.remove();
     }
 
     public ClobConverter getClobConverter() {
