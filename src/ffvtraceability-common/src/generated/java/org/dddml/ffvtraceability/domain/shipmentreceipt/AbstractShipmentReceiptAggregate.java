@@ -403,8 +403,8 @@ public abstract class AbstractShipmentReceiptAggregate extends AbstractAggregate
             ShipmentReceiptEventId eventId = new ShipmentReceiptEventId(getState().getReceiptId(), version);
             AbstractShipmentReceiptEvent.OrderAllocationUpdated e = new AbstractShipmentReceiptEvent.OrderAllocationUpdated();
 
-            e.getDynamicProperties().put("unallocated_quantity", unallocatedQuantity);
-            e.getDynamicProperties().put("order_item_allocations", orderItemAllocations);
+            e.getDynamicProperties().put("unallocatedQuantity", unallocatedQuantity);
+            e.getDynamicProperties().put("orderItemAllocations", orderItemAllocations);
             e.setPreviousOrderId(null);
             e.setOrderFulfillmentSyncStatusId(null);
             e.setCteSyncStatusId(null);

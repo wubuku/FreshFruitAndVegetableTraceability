@@ -1023,7 +1023,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             OrderEventId eventId = new OrderEventId(getState().getOrderId(), version);
             AbstractOrderEvent.FulfillmentStatusUpdated e = new AbstractOrderEvent.FulfillmentStatusUpdated();
 
-            e.getDynamicProperties().put("order_item_allocations", orderItemAllocations);
+            e.getDynamicProperties().put("orderItemAllocations", orderItemAllocations);
             e.setOrderFulfillmentSyncStatusId(null);
 
             e.setCommandId(commandId);
