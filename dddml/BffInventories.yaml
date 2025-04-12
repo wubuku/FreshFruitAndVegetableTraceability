@@ -4,7 +4,7 @@ valueObjects:
     metadata:
       JpaProjectionInterfaceName: BffInventoryItemProjection
         #JpaProjectionPropertyTypes:
-        #CreatedAt: java.time.Instant
+      #CreatedAt: java.time.Instant
       #ReceivedAt: java.time.Instant
     properties:
       InventoryItemId:
@@ -90,6 +90,9 @@ services:
           ProductTypeId:
             type: id
             optional: false # Required
+          ProductName:
+            type: name
+            optional: true # NOT required
           SupplierId:
             type: id
             optional: true # NOT required

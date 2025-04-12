@@ -31,6 +31,7 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                  AND (:productId is null or i.product_id = :productId)
                  AND (:supplierId is null or l.supplier_id = :supplierId)
                  AND (:facilityId is null or i.facility_id = :facilityId)
+                 AND (:productName is null or p.product_name like concat('%', :productName, '%'))
                GROUP BY i.product_id,
                         l.supplier_id,
                         i.facility_id
@@ -47,6 +48,7 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                  AND (:productId is null or i.product_id = :productId)
                  AND (:supplierId is null or l.supplier_id = :supplierId)
                  AND (:facilityId is null or i.facility_id = :facilityId)
+                 AND (:productName is null or p.product_name like concat('%', :productName, '%'))
                GROUP BY i.product_id,
                         l.supplier_id,
                         i.facility_id
@@ -54,6 +56,7 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
     Page<BffInventoryItemGroupProjection> findAllInventoryItems(Pageable pageable,
                                                                 @Param("productTypeId") String productTypeId,
                                                                 @Param("productId") String productId,
+                                                                @Param("productName") String productName,
                                                                 @Param("supplierId") String supplierId,
                                                                 @Param("facilityId") String facilityId);
 

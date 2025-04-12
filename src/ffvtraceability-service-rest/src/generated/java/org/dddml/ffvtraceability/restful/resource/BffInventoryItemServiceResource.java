@@ -36,6 +36,7 @@ public class BffInventoryItemServiceResource {
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "productTypeId") String productTypeId,
+        @RequestParam(value = "productName", required = false) String productName,
         @RequestParam(value = "supplierId", required = false) String supplierId,
         @RequestParam(value = "productId", required = false) String productId,
         @RequestParam(value = "facilityId", required = false) String facilityId
@@ -44,6 +45,7 @@ public class BffInventoryItemServiceResource {
         getInventoryItems.setPage(page);
         getInventoryItems.setSize(size);
         getInventoryItems.setProductTypeId(productTypeId);
+        getInventoryItems.setProductName(productName);
         getInventoryItems.setSupplierId(supplierId);
         getInventoryItems.setProductId(productId);
         getInventoryItems.setFacilityId(facilityId);

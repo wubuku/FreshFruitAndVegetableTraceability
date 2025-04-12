@@ -22,7 +22,7 @@ public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemA
     public Page<BffInventoryItemGroupDto> when(BffInventoryItemServiceCommands.GetInventoryItems c) {
         return PageUtils.toPage(
                 bffInventoryItemRepository.findAllInventoryItems(PageRequest.of(c.getPage(), c.getSize()),
-                        c.getProductTypeId(), c.getProductId(), c.getSupplierId(), c.getFacilityId()),
+                        c.getProductTypeId(), c.getProductId(), c.getProductName(), c.getSupplierId(), c.getFacilityId()),
                 bffInventoryItemMapper::toBffInventoryItemGroupDto);
     }
 
