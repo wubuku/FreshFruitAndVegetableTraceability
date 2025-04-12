@@ -27,11 +27,9 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                LEFT JOIN facility f ON i.facility_id = f.facility_id
                WHERE p.product_type_id = :productTypeId
                  AND (:productId is null or i.product_id = :productId)
-                 --AND (:supplierId is null or l.supplier_id = :supplierId)
                  AND (:facilityId is null or i.facility_id = :facilityId)
                  AND (:productName is null or p.product_name like concat('%', :productName, '%'))
                GROUP BY i.product_id,
-                        --l.supplier_id,
                         i.facility_id
                           ) g
             LEFT JOIN product p ON p.product_id=g.product_id
@@ -39,16 +37,13 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
             """, countQuery = """
             SELECT COUNT(*)
             FROM inventory_item i
-               --LEFT JOIN lot l ON i.lot_id = l.lot_id
                LEFT JOIN product p ON i.product_id = p.product_id
                LEFT JOIN facility f ON i.facility_id = f.facility_id
                WHERE p.product_type_id = :productTypeId
                  AND (:productId is null or i.product_id = :productId)
-                 --AND (:supplierId is null or l.supplier_id = :supplierId)
                  AND (:facilityId is null or i.facility_id = :facilityId)
                  AND (:productName is null or p.product_name like concat('%', :productName, '%'))
                GROUP BY i.product_id,
-                        --l.supplier_id,
                         i.facility_id
             """, nativeQuery = true)
     Page<BffWipInventoryGroupProjection> findAllWipInventories(Pageable pageable,
