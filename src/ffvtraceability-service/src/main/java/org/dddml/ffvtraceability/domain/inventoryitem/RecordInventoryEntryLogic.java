@@ -10,10 +10,13 @@ import org.dddml.ffvtraceability.domain.mapper.InventoryItemMapper;
 import org.dddml.ffvtraceability.specialization.DomainError;
 import org.dddml.ffvtraceability.specialization.MutationContext;
 import org.dddml.ffvtraceability.specialization.VerificationContext;
+import org.erdtman.jcs.JsonCanonicalizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 
@@ -71,6 +74,29 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
         return e;
     }
 
+    private String getInventoryItemId(InventoryItemAttributes inventoryItemAttributes) {
+        try {
+            String json = objectMapper.writeValueAsString(inventoryItemAttributes);
+            JsonCanonicalizer jc = new JsonCanonicalizer(json);
+            String encoded = jc.getEncodedString();
+            return DigestUtils.md5DigestAsHex(encoded.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            throw DomainError.named("CannotCalculateInventoryItemId", "Cannot calculate inventory item id");
+        }
+    }
+
+    private String getInventoryItemDetailId(InventoryItemDetailAttributes inventoryItemDetailAttributes) {
+        try {
+            String json = objectMapper.writeValueAsString(inventoryItemDetailAttributes);
+            JsonCanonicalizer jc = new JsonCanonicalizer(json);
+            String encoded = jc.getEncodedString();
+            return DigestUtils.md5DigestAsHex(encoded.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            throw DomainError.named("CannotCalculateInventoryItemDetailId", "Cannot calculate inventory item detail id");
+        }
+    }
+
+
     /**
      * Performs the state mutation operation of InventoryItem.RecordInventoryEntry command.
      *
@@ -94,32 +120,34 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
             java.math.BigDecimal unitCost,
             MutationContext<InventoryItemState, InventoryItemState.MutableInventoryItemState> mutationContext
     ) {
-        InventoryItemState.MutableInventoryItemState s;
+        InventoryItemState.MutableInventoryItemState mutableInventoryItemState;
         if (inventoryItemState == null) {
-            s = mutationContext.newMutableStateById(UUID.randomUUID().toString());//todo 先使用 UUID
+            mutableInventoryItemState = mutationContext.newMutableStateById(getInventoryItemId(inventoryItemAttributes));
         } else {
-            s = mutationContext.toMutableState(inventoryItemState);
+            mutableInventoryItemState = mutationContext.toMutableState(inventoryItemState);
         }
         if (inventoryItemState == null) { //s.getVersion() == null) {
             // 新建库存项目
             if (inventoryItemAttributes == null) {
                 throw DomainError.named("InvalidAttributes", "InventoryItem attributes are required for new inventory item");
             }
-            inventoryItemMapper.updateInventoryItemState(s, inventoryItemAttributes);
-            //s.setInventoryItemId(UUID.randomUUID().toString());
-            //TODO s.setInventoryItemAttributeHash();
-            InventoryItemDetailState.MutableInventoryItemDetailState d = s.getDetails().getOrAddMutableState(UUID.randomUUID().toString());
+            mutableInventoryItemState.setInventoryItemAttributeHash(mutableInventoryItemState.getInventoryItemId());
+            inventoryItemMapper.updateInventoryItemState(mutableInventoryItemState, inventoryItemAttributes);
+
+            InventoryItemDetailState.MutableInventoryItemDetailState d =
+                    mutableInventoryItemState.getDetails().getOrAddMutableState(getInventoryItemDetailId(inventoryItemDetailAttributes));
+            d.setInventoryItemAttributeHash(d.getInventoryItemDetailSeqId());
             // 如果有详细属性，更新它们
             if (inventoryItemDetailAttributes != null) {
                 inventoryItemMapper.updateInventoryItemDetailState(d, inventoryItemDetailAttributes);
             }
 
             d.setQuantityOnHandDiff(quantityOnHandDiff);
-            s.setQuantityOnHandTotal(quantityOnHandDiff);
+            mutableInventoryItemState.setQuantityOnHandTotal(quantityOnHandDiff);
             d.setAvailableToPromiseDiff(availableToPromiseDiff);
-            s.setAvailableToPromiseTotal(availableToPromiseDiff);
+            mutableInventoryItemState.setAvailableToPromiseTotal(availableToPromiseDiff);
             d.setAccountingQuantityDiff(accountingQuantityDiff);
-            s.setAccountingQuantityTotal(accountingQuantityDiff);
+            mutableInventoryItemState.setAccountingQuantityTotal(accountingQuantityDiff);
 //            d.setUnitCost(unitCost);
 //            s.setUnitCost(unitCost);
         } else {
@@ -129,7 +157,7 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
                         "Cannot modify inventory item attributes for existing inventory item");
             }
             // 创建新的库存明细记录
-            InventoryItemDetailState.MutableInventoryItemDetailState d = s.getDetails().getOrAddMutableState(UUID.randomUUID().toString());
+            InventoryItemDetailState.MutableInventoryItemDetailState d = mutableInventoryItemState.getDetails().getOrAddMutableState(UUID.randomUUID().toString());
             if (inventoryItemDetailAttributes != null) {
                 inventoryItemMapper.updateInventoryItemDetailState(d, inventoryItemDetailAttributes);
             }
@@ -137,18 +165,18 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
             // 设置数量变化并累加总量
             if (quantityOnHandDiff != null) {
                 d.setQuantityOnHandDiff(quantityOnHandDiff);
-                java.math.BigDecimal currentTotal = s.getQuantityOnHandTotal() != null ? s.getQuantityOnHandTotal() : BigDecimal.ZERO;
-                s.setQuantityOnHandTotal(currentTotal.add(quantityOnHandDiff));
+                java.math.BigDecimal currentTotal = mutableInventoryItemState.getQuantityOnHandTotal() != null ? mutableInventoryItemState.getQuantityOnHandTotal() : BigDecimal.ZERO;
+                mutableInventoryItemState.setQuantityOnHandTotal(currentTotal.add(quantityOnHandDiff));
             }
             if (availableToPromiseDiff != null) {
                 d.setAvailableToPromiseDiff(availableToPromiseDiff);
-                java.math.BigDecimal currentTotal = s.getAvailableToPromiseTotal() != null ? s.getAvailableToPromiseTotal() : BigDecimal.ZERO;
-                s.setAvailableToPromiseTotal(currentTotal.add(availableToPromiseDiff));
+                java.math.BigDecimal currentTotal = mutableInventoryItemState.getAvailableToPromiseTotal() != null ? mutableInventoryItemState.getAvailableToPromiseTotal() : BigDecimal.ZERO;
+                mutableInventoryItemState.setAvailableToPromiseTotal(currentTotal.add(availableToPromiseDiff));
             }
             if (accountingQuantityDiff != null) {
                 d.setAccountingQuantityDiff(accountingQuantityDiff);
-                java.math.BigDecimal currentTotal = s.getAccountingQuantityTotal() != null ? s.getAccountingQuantityTotal() : BigDecimal.ZERO;
-                s.setAccountingQuantityTotal(currentTotal.add(accountingQuantityDiff));
+                java.math.BigDecimal currentTotal = mutableInventoryItemState.getAccountingQuantityTotal() != null ? mutableInventoryItemState.getAccountingQuantityTotal() : BigDecimal.ZERO;
+                mutableInventoryItemState.setAccountingQuantityTotal(currentTotal.add(accountingQuantityDiff));
             }
 //            if (unitCost != null) {
 //                d.setUnitCost(unitCost);
@@ -156,6 +184,6 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
 //            }
 
         }
-        return s;
+        return mutableInventoryItemState;
     }
 }

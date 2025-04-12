@@ -309,7 +309,14 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
     );
 
     @Query(value = """
-            SELECT * from shipment_receipt sr
+            SELECT
+            sr.shipment_id as shipmentId,
+            sr.receipt_id as receiptId,
+            sr.product_id as productId,
+            sr.quantity_accepted as quantityAccepted,
+            sr.location_seq_id as locationSeqId,
+            sr.lot_id as lotId
+            from shipment_receipt sr
             WHERE sr.shipment_id = :shipmentId
             and (sr.deleted is null or sr.deleted = false)
             """, nativeQuery = true)
