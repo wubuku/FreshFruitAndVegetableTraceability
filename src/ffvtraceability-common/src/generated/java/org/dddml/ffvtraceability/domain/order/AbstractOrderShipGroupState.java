@@ -760,8 +760,14 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
                 OrderItemShipGroupAssociationId globalId = new OrderItemShipGroupAssociationId(getOrderShipGroupId().getOrderId(), getOrderShipGroupId().getShipGroupSeqId(), orderItemSeqId);
                 AbstractOrderItemShipGroupAssociationState state = new AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState();
                 state.setOrderItemShipGroupAssociationId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractOrderItemShipGroupAssociationState state = (AbstractOrderItemShipGroupAssociationState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

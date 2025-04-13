@@ -513,8 +513,14 @@ public abstract class AbstractPartyState implements PartyState.SqlPartyState, Sa
                 PartyIdentificationId globalId = new PartyIdentificationId(getPartyId(), partyIdentificationTypeId);
                 AbstractPartyIdentificationState state = new AbstractPartyIdentificationState.SimplePartyIdentificationState();
                 state.setPartyIdentificationId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractPartyIdentificationState state = (AbstractPartyIdentificationState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

@@ -1077,12 +1077,17 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         OrderHeaderState updatedOrderHeaderState = ApplicationContext.current.get(IUpdateFulfillmentStatusLogic.class).mutate(
                 this, orderItemAllocations, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedOrderHeaderState) { merge(updatedOrderHeaderState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void save() {
@@ -1172,8 +1177,14 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                 OrderRoleId globalId = new OrderRoleId(getOrderId(), partyRoleId);
                 AbstractOrderRoleState state = new AbstractOrderRoleState.SimpleOrderRoleState();
                 state.setOrderRoleId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractOrderRoleState state = (AbstractOrderRoleState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
@@ -1293,8 +1304,14 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                 OrderContactMechId globalId = new OrderContactMechId(getOrderId(), contactMechPurposeTypeId);
                 AbstractOrderContactMechState state = new AbstractOrderContactMechState.SimpleOrderContactMechState();
                 state.setOrderContactMechId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractOrderContactMechState state = (AbstractOrderContactMechState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
@@ -1414,8 +1431,14 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                 OrderItemId globalId = new OrderItemId(getOrderId(), orderItemSeqId);
                 AbstractOrderItemState state = new AbstractOrderItemState.SimpleOrderItemState();
                 state.setOrderItemId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractOrderItemState state = (AbstractOrderItemState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
@@ -1535,8 +1558,14 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                 OrderIdOrderAdjustmentIdPair globalId = new OrderIdOrderAdjustmentIdPair(getOrderId(), orderAdjustmentId);
                 AbstractOrderAdjustmentState state = new AbstractOrderAdjustmentState.SimpleOrderAdjustmentState();
                 state.setOrderIdOrderAdjustmentIdPair(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractOrderAdjustmentState state = (AbstractOrderAdjustmentState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
@@ -1656,8 +1685,14 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
                 OrderShipGroupId globalId = new OrderShipGroupId(getOrderId(), shipGroupSeqId);
                 AbstractOrderShipGroupState state = new AbstractOrderShipGroupState.SimpleOrderShipGroupState();
                 state.setOrderShipGroupId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractOrderShipGroupState state = (AbstractOrderShipGroupState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

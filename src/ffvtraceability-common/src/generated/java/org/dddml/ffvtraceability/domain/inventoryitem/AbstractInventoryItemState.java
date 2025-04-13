@@ -764,10 +764,10 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
 
 
         if (this != updatedInventoryItemState) { merge(updatedInventoryItemState); } //else do nothing
+
         } finally {
             ApplicationContext.current.clearRequesterId();
         }
-
     }
 
     static AbstractInventoryItemState create(InventoryItemEvent.RecordInventoryEntryEvent e, java.util.function.Function<String, AbstractInventoryItemState> stateFactory) {
@@ -877,13 +877,13 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
                 AbstractInventoryItemDetailState state = new AbstractInventoryItemDetailState.SimpleInventoryItemDetailState();
                 state.setInventoryItemDetailId(globalId);
                 state.setCreatedBy(ApplicationContext.current.getRequesterId());
-                state.setCreatedAt((OffsetDateTime) ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
             } else {
                 AbstractInventoryItemDetailState state = (AbstractInventoryItemDetailState) s;
                 state.setUpdatedBy(ApplicationContext.current.getRequesterId());
-                state.setUpdatedAt((OffsetDateTime) ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

@@ -860,12 +860,17 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ShipmentState updatedShipmentState = ApplicationContext.current.get(IShipmentActionLogic.class).mutate(
                 this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedShipmentState) { merge(updatedShipmentState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractShipmentEvent.ShipmentQaActionEvent e) {
@@ -883,12 +888,17 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ShipmentState updatedShipmentState = ApplicationContext.current.get(IShipmentQaActionLogic.class).mutate(
                 this, value, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedShipmentState) { merge(updatedShipmentState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void save() {
@@ -969,8 +979,14 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
                 ShipmentItemId globalId = new ShipmentItemId(getShipmentId(), shipmentItemSeqId);
                 AbstractShipmentItemState state = new AbstractShipmentItemState.SimpleShipmentItemState();
                 state.setShipmentItemId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractShipmentItemState state = (AbstractShipmentItemState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
@@ -1090,8 +1106,14 @@ public abstract class AbstractShipmentState implements ShipmentState.SqlShipment
                 ShipmentPackageId globalId = new ShipmentPackageId(getShipmentId(), shipmentPackageSeqId);
                 AbstractShipmentPackageState state = new AbstractShipmentPackageState.SimpleShipmentPackageState();
                 state.setShipmentPackageId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractShipmentPackageState state = (AbstractShipmentPackageState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

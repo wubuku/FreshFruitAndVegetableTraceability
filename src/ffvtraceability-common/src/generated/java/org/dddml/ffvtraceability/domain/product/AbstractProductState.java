@@ -1729,8 +1729,14 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
                 GoodIdentificationId globalId = new GoodIdentificationId(getProductId(), goodIdentificationTypeId);
                 AbstractGoodIdentificationState state = new AbstractGoodIdentificationState.SimpleGoodIdentificationState();
                 state.setGoodIdentificationId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractGoodIdentificationState state = (AbstractGoodIdentificationState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

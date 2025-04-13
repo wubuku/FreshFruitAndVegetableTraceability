@@ -490,8 +490,14 @@ public abstract class AbstractAttributeState implements AttributeState.SqlAttrib
                 AttributeValueId globalId = new AttributeValueId(getAttributeId(), value);
                 AbstractAttributeValueState state = new AbstractAttributeValueState.SimpleAttributeValueState();
                 state.setAttributeValueId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractAttributeValueState state = (AbstractAttributeValueState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
