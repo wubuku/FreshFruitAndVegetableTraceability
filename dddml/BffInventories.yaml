@@ -33,7 +33,6 @@ valueObjects:
         itemType: BffInventoryItemDetailDto
         isList: true
 
-
   BffRawItemInventoryGroupDto:
     metadata:
       JpaProjectionInterfaceName: BffRawItemInventoryGroupProjection
@@ -44,6 +43,14 @@ valueObjects:
         type: name
       QuantityUomId:
         type: id
+        # 主计量单位的 ID，比如“oz”
+      QuantityIncluded:
+        description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+        type: fixed-point
+        # 一件（piece/can）的数量（以“主计量单位”计算）是 12oz，即 12oz/can，一个包装6罐装的话就是12*6=72oz
+      CaseUomId:
+        type: id
+        # 用于描述“包装类型”的单位 Id。比如 EA、BX(Box)、PLT(Pallet)、PK(Pack)
       SupplierId:
         type: id
       SupplierName:
@@ -55,6 +62,27 @@ valueObjects:
       QuantityOnHandTotal:
         type: fixed-point
 
+
+  BffRawItemInventoryDetailGroupDto:
+    metadata:
+      JpaProjectionInterfaceName: BffRawItemInventoryDetailGroupProjection
+      JpaProjectionPropertyTypes:
+      ReceivedAt: java.time.Instant
+    properties:
+      LotNo:
+        type: id
+      ReceivingRecord:
+        type: id
+      ReceivedAt:
+        type: date-time
+      OrderId:
+        type: id
+      QaStatusId:
+        type: id
+      LocationCode:
+        type: id-long
+
+
   BffWipInventoryGroupDto:
     metadata:
       JpaProjectionInterfaceName: BffWipInventoryGroupProjection
@@ -65,6 +93,14 @@ valueObjects:
         type: name
       QuantityUomId:
         type: id
+        # 主计量单位的 ID，比如“oz”
+      QuantityIncluded:
+        description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+        type: fixed-point
+        # 一件（piece/can）的数量（以“主计量单位”计算）是 12oz，即 12oz/can，一个包装6罐装的话就是12*6=72oz
+      CaseUomId:
+        type: id
+        # 用于描述“包装类型”的单位 Id。比如 EA、BX(Box)、PLT(Pallet)、PK(Pack)
       FacilityId:
         type: id
       FacilityName:
@@ -100,16 +136,13 @@ services:
   BffInventoryItemService:
     restfulResourceName: BffInventoryItems
     methods:
-      GetRawItemInventories:
+      GetRawItemInventories: #根据条件（productId,supplierId,warehouseId）查询汇总库存
         restfulResourceName: "RawItems"
         metadata:
           IsPageable: true
           ReturnPageEnvelope: true
         isQuery: true
         parameters:
-          #          ProductTypeId:
-          #            type: id
-          #            optional: false # Required
           ProductName:
             type: name
             optional: true # NOT required
@@ -124,6 +157,26 @@ services:
             optional: true # NOT required
         result:
           itemType: BffRawItemInventoryGroupDto
+
+      GetRawItemInventoryItems: #分解 GetRawItemInventories 返回的列表中的某一条数据，基本上对应的是Inventory_item中的数据
+        restfulResourceName: "RawItems/InventoryItems"
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+          #RestfulPathVariable: ProductId
+        isQuery: true
+        parameters:
+          ProductId:
+            type: id
+            optional: false # required
+          SupplierId:
+            type: id
+            optional: false # required
+          FacilityId:
+            type: id
+            optional: false # required
+        result:
+          itemType: BffRawItemInventoryDetailGroupDto
 
       GetWipInventories:
         restfulResourceName: "WIPs"
