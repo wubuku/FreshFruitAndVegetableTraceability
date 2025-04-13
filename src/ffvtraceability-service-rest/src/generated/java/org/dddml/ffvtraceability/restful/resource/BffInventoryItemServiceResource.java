@@ -53,6 +53,26 @@ public class BffInventoryItemServiceResource {
         
     }
 
+    @GetMapping("RawItems/{productId}/InventoryItems")
+    public Page<BffRawItemInventoryItemDto> getRawItemInventoryItems(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @PathVariable("productId") String productId,
+        @RequestParam(value = "supplierId") String supplierId,
+        @RequestParam(value = "facilityId") String facilityId
+    ) {
+        BffInventoryItemServiceCommands.GetRawItemInventoryItems getRawItemInventoryItems = new BffInventoryItemServiceCommands.GetRawItemInventoryItems();
+        getRawItemInventoryItems.setPage(page);
+        getRawItemInventoryItems.setSize(size);
+        getRawItemInventoryItems.setProductId(productId);
+        getRawItemInventoryItems.setSupplierId(supplierId);
+        getRawItemInventoryItems.setFacilityId(facilityId);
+        
+        getRawItemInventoryItems.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getRawItemInventoryItems);
+        
+    }
+
     @GetMapping("WIPs")
     public Page<BffWipInventoryGroupDto> getWipInventories(
         @RequestParam(value = "page", defaultValue = "0") Integer page,

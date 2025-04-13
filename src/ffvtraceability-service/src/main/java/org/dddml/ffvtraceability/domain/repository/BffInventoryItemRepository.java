@@ -14,6 +14,8 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                g.product_id as productId,
                p.product_name as productName,
                p.quantity_uom_id as quantityUomId,
+               p.quantity_included as quantityIncluded,
+               p.case_uom_id as caseUomId,
                g.facility_id as facilityId,
                f.facility_name as facilityName,
                g.total_quantity as quantityOnHandTotal
@@ -47,16 +49,18 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                         i.facility_id
             """, nativeQuery = true)
     Page<BffWipInventoryGroupProjection> findAllWipInventories(Pageable pageable,
-                                                                @Param("productTypeId") String productTypeId,
-                                                                @Param("productId") String productId,
-                                                                @Param("productName") String productName,
-                                                                @Param("facilityId") String facilityId);
+                                                               @Param("productTypeId") String productTypeId,
+                                                               @Param("productId") String productId,
+                                                               @Param("productName") String productName,
+                                                               @Param("facilityId") String facilityId);
 
     @Query(value = """
             SELECT
                g.product_id as productId,
                p.product_name as productName,
                p.quantity_uom_id as quantityUomId,
+               sp.quantity_included as quantityIncluded,
+               sp.case_uom_id as caseUomId,
                g.supplier_id as supplierId,
                pa.short_description as supplierName,
                g.facility_id as facilityId,
@@ -82,7 +86,9 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                           ) g
             LEFT JOIN product p ON p.product_id=g.product_id
             LEFT JOIN facility f ON g.facility_id=f.facility_id
-            left join party pa on pa.party_id = g.supplier_id
+            LEFT JOIN party pa on pa.party_id = g.supplier_id
+            LEFT JOIN supplier_product sp ON sp.product_id = g.product_id
+                     AND sp.party_id = g.supplier_id
             """, countQuery = """
             SELECT COUNT(*)
             FROM inventory_item i
@@ -99,10 +105,46 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                         i.facility_id
             """, nativeQuery = true)
     Page<BffRawItemInventoryGroupProjection> findAllRawItemInventories(Pageable pageable,
-                                                                @Param("productId") String productId,
-                                                                @Param("productName") String productName,
-                                                                @Param("supplierId") String supplierId,
-                                                                @Param("facilityId") String facilityId);
+                                                                       @Param("productId") String productId,
+                                                                       @Param("productName") String productName,
+                                                                       @Param("supplierId") String supplierId,
+                                                                       @Param("facilityId") String facilityId);
+
+    @Query(value = """
+            SELECT
+                i.inventory_item_id AS inventoryItemId,
+                l.internal_id AS lotNo,
+                p.quantity_uom_id AS quantityUomId,
+                sp.quantity_included AS quantityIncluded,
+                i.quantity_on_hand_total AS quantityOnHandTotal,
+                sp.case_uom_id AS caseUomId,
+                i.created_at AS receivedAt,
+                fl.location_code AS locationCode
+             FROM
+            inventory_item i
+            LEFT JOIN lot l ON i.lot_id = l.lot_id
+            LEFT JOIN product p ON p.product_id = i.product_id
+            LEFT JOIN supplier_product sp ON l.supplier_id=sp.party_id AND i.product_id=sp.product_id
+            LEFT JOIN facility_location fl ON i.location_seq_id = fl.location_seq_id
+            WHERE i.product_id = :productId
+            AND i.facility_id = :facilityId
+            AND l.supplier_id = :supplierId
+            """, countQuery = """
+            SELECT COUNT(*)
+             FROM
+            inventory_item i
+            LEFT JOIN lot l ON i.lot_id = l.lot_id
+            LEFT JOIN product p ON p.product_id = i.product_id
+            LEFT JOIN supplier_product sp ON l.supplier_id=sp.party_id AND i.product_id=sp.product_id
+            LEFT JOIN facility_location fl ON i.location_seq_id = fl.location_seq_id
+            WHERE i.product_id = :productId
+            AND i.facility_id = :facilityId
+            AND l.supplier_id = :supplierId
+            """, nativeQuery = true)
+    Page<BffRawItemInventoryItemProjection> findRawItemInventoryItems(Pageable pageable,
+                                                                      @Param("productId") String productId,
+                                                                      @Param("supplierId") String supplierId,
+                                                                      @Param("facilityId") String facilityId);
     /*@Query(value = """
             SELECT
             i.inventory_item_id as inventoryItemId,

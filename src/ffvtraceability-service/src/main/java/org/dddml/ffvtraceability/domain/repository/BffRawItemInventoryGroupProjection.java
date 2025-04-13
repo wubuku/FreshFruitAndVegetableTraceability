@@ -14,6 +14,10 @@ public interface BffRawItemInventoryGroupProjection {
 
     String getQuantityUomId();
 
+    java.math.BigDecimal getQuantityIncluded();
+
+    String getCaseUomId();
+
     String getSupplierId();
 
     String getSupplierName();

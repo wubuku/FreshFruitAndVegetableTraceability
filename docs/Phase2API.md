@@ -408,14 +408,16 @@ facilityId 为仓库 Id.
 {
   "content": [
     {
-      "productId": "13XM0K65JP235EMN65",
-      "productName": "blueforceitem1",
-      "quantityUomId": "LB",
+      "productId": "14AG8L4GM6EKAWK277",
+      "productName": "productName",
+      "quantityUomId": "quantityUomId",
+      "quantityIncluded": 100,
+      "caseUomId": "caseUomId1",
       "supplierId": "13HDSG4J6BKYPHJVZ0",
       "supplierName": "v25031701",
-      "facilityId": "13XM4J6CJBWD6FK64B",
-      "facilityName": "blureforcewh1",
-      "quantityOnHandTotal": 400
+      "facilityId": "13LNXR6X497W03AP81",
+      "facilityName": "freshpointvendor1facilityname",
+      "quantityOnHandTotal": 1399
     }
   ],
   "totalElements": 1,

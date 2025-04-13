@@ -14,6 +14,10 @@ public interface BffWipInventoryGroupProjection {
 
     String getQuantityUomId();
 
+    java.math.BigDecimal getQuantityIncluded();
+
+    String getCaseUomId();
+
     String getFacilityId();
 
     String getFacilityName();

@@ -45,6 +45,33 @@ public class BffRawItemInventoryGroupDto implements Serializable {
         this.quantityUomId = quantityUomId;
     }
 
+    /**
+     * If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+     */
+    private java.math.BigDecimal quantityIncluded;
+
+    public java.math.BigDecimal getQuantityIncluded()
+    {
+        return this.quantityIncluded;
+    }
+
+    public void setQuantityIncluded(java.math.BigDecimal quantityIncluded)
+    {
+        this.quantityIncluded = quantityIncluded;
+    }
+
+    private String caseUomId;
+
+    public String getCaseUomId()
+    {
+        return this.caseUomId;
+    }
+
+    public void setCaseUomId(String caseUomId)
+    {
+        this.caseUomId = caseUomId;
+    }
+
     private String supplierId;
 
     public String getSupplierId()
@@ -109,11 +136,13 @@ public class BffRawItemInventoryGroupDto implements Serializable {
     {
     }
 
-    public BffRawItemInventoryGroupDto(String productId, String productName, String quantityUomId, String supplierId, String supplierName, String facilityId, String facilityName, java.math.BigDecimal quantityOnHandTotal)
+    public BffRawItemInventoryGroupDto(String productId, String productName, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId, String supplierId, String supplierName, String facilityId, String facilityName, java.math.BigDecimal quantityOnHandTotal)
     {
         this.productId = productId;
         this.productName = productName;
         this.quantityUomId = quantityUomId;
+        this.quantityIncluded = quantityIncluded;
+        this.caseUomId = caseUomId;
         this.supplierId = supplierId;
         this.supplierName = supplierName;
         this.facilityId = facilityId;
@@ -136,6 +165,8 @@ public class BffRawItemInventoryGroupDto implements Serializable {
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
             && (productName == other.productName || (productName != null && productName.equals(other.productName)))
             && (quantityUomId == other.quantityUomId || (quantityUomId != null && quantityUomId.equals(other.quantityUomId)))
+            && (quantityIncluded == other.quantityIncluded || (quantityIncluded != null && quantityIncluded.equals(other.quantityIncluded)))
+            && (caseUomId == other.caseUomId || (caseUomId != null && caseUomId.equals(other.caseUomId)))
             && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
             && (supplierName == other.supplierName || (supplierName != null && supplierName.equals(other.supplierName)))
             && (facilityId == other.facilityId || (facilityId != null && facilityId.equals(other.facilityId)))
@@ -156,6 +187,12 @@ public class BffRawItemInventoryGroupDto implements Serializable {
         }
         if (this.quantityUomId != null) {
             hash += 13 * this.quantityUomId.hashCode();
+        }
+        if (this.quantityIncluded != null) {
+            hash += 13 * this.quantityIncluded.hashCode();
+        }
+        if (this.caseUomId != null) {
+            hash += 13 * this.caseUomId.hashCode();
         }
         if (this.supplierId != null) {
             hash += 13 * this.supplierId.hashCode();
@@ -181,6 +218,8 @@ public class BffRawItemInventoryGroupDto implements Serializable {
                 "productId=" + '\'' + productId + '\'' +
                 ", productName=" + '\'' + productName + '\'' +
                 ", quantityUomId=" + '\'' + quantityUomId + '\'' +
+                ", quantityIncluded=" + quantityIncluded +
+                ", caseUomId=" + '\'' + caseUomId + '\'' +
                 ", supplierId=" + '\'' + supplierId + '\'' +
                 ", supplierName=" + '\'' + supplierName + '\'' +
                 ", facilityId=" + '\'' + facilityId + '\'' +
