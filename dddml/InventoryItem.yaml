@@ -246,6 +246,9 @@ aggregates:
             type: id
           Description:
             type: description
+          InventoryTransferId:
+            type: id
+
 
   # Aggregate
   InventoryItemType:
