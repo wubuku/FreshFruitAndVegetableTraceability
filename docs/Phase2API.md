@@ -600,7 +600,7 @@ curl -X 'POST' \
 ```json
 "14DA853H1Z0ET6KUNZ"
 ```
-### 2. 根据 Id 查询 Customer 详情：
+### 2. 根据 Id 查询 Customer 详情
 
 ```shell
 curl -X 'GET' \
