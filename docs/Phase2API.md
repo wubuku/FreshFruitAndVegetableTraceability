@@ -479,7 +479,7 @@ facilityId 为仓库 Id.
 
 ## 五、Customer 相关接口
 
-### 1. 创建 Customer
+
 相比较 Vendor(Supplier)来说有如下变化（其实我不知道是否也要给 Customer 附带 Facilities）：
 
 * 类型从 SUPPLIER 变为 CUSTOMER
@@ -488,6 +488,8 @@ facilityId 为仓库 Id.
 * supplierShortName->customerShortName
 * supplierTypeEnumId->customerTypeEnumId
 * supplierProductTypeDescription->customerProductTypeDescription
+
+### 1. 创建 Customer
 
 举例说明(添加一个 Customer,附带同时创建两个 Facilities)：
 ```shell
@@ -598,6 +600,116 @@ curl -X 'POST' \
 ```json
 "14DA853H1Z0ET6KUNZ"
 ```
+### 2. 根据 Id 查询 Customer 详情：
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffCustomers/14DA853H1Z0ET6KUNZ?includesFacilities=true' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+得到结果（举例）如下：
+```json
+{
+  "customerId": "14DA853H1Z0ET6KUNZ",
+  "customerName": "customerShortName",
+  "ggn": "8511684464926",
+  "gln": "5251637539544",
+  "externalId": "externalId",
+  "preferredCurrencyUomId": "pcUomId",
+  "description": "description",
+  "statusId": "ACTIVE",
+  "businessContacts": [
+    {
+      "phoneNumber": "phoneNumber",
+      "physicalLocationAddress": "physicalLocationAddress",
+      "city": "city",
+      "state": "California",
+      "zipCode": "zipCode",
+      "country": "United States",
+      "stateProvinceGeoId": "CA",
+      "countryGeoId": "USA",
+      "email": "email"
+    }
+  ],
+  "customerShortName": "customerShortName",
+  "taxId": "taxId",
+  "gs1CompanyPrefix": "gs1CompanyPrefix",
+  "internalId": "Customer Numberddd",
+  "tpaNumber": "tpaNumber",
+  "customerTypeEnumId": "customerTypeEnumId",
+  "customerProductTypeDescription": "SPTypeDescription",
+  "certificationCodes": "certificationCodes",
+  "bankAccountInformation": "bankAccountInformation",
+  "telephone": "telephone",
+  "email": "email",
+  "webSite": "webSite",
+  "active": "Y",
+  "facilities": [
+    {
+      "facilityId": "14DA8562PEYCZEDMDB",
+      "parentFacilityId": "parentFacilityId2",
+      "ownerPartyId": "14DA853H1Z0ET6KUNZ",
+      "facilityName": "facilityNamexc2",
+      "facilitySize": 100,
+      "facilitySizeUomId": "facilitySizeUomId2",
+      "description": "description2",
+      "geoPointId": "geoPointId2",
+      "geoId": "geoId2",
+      "active": "Y",
+      "gln": "gln2",
+      "ffrn": "ffrn3",
+      "facilityLevel": 120,
+      "internalId": "cFacility NumberPP",
+      "sequenceNumber": 130,
+      "businessContacts": [
+        {
+          "phoneNumber": "phoneNumber2",
+          "physicalLocationAddress": "physicalLocationAddress",
+          "city": "city",
+          "state": "California",
+          "zipCode": "zipCode",
+          "country": "United States",
+          "stateProvinceGeoId": "CA",
+          "countryGeoId": "USA",
+          "email": "email"
+        }
+      ]
+    },
+    {
+      "facilityId": "14DA8560AJJKRHVNGJ",
+      "parentFacilityId": "parentFacilityId",
+      "ownerPartyId": "14DA853H1Z0ET6KUNZ",
+      "facilityName": "facilityNameQ",
+      "facilitySize": 10,
+      "facilitySizeUomId": "facilitySizeUomId",
+      "description": "description",
+      "geoPointId": "geoPointId",
+      "geoId": "geoId",
+      "active": "Y",
+      "gln": "gln1",
+      "ffrn": "ffrn2",
+      "facilityLevel": 20,
+      "internalId": "tFacility Number K",
+      "sequenceNumber": 30,
+      "businessContacts": [
+        {
+          "phoneNumber": "phoneNumber",
+          "physicalLocationAddress": "physicalLocationAddress",
+          "city": "city",
+          "state": "California",
+          "zipCode": "zipCode",
+          "country": "United States",
+          "stateProvinceGeoId": "CA",
+          "countryGeoId": "USA",
+          "email": "email"
+        }
+      ]
+    }
+  ]
+}
+```
+
 
 
 
