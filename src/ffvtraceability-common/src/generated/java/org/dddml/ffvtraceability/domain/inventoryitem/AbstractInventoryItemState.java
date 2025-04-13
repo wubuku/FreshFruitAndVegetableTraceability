@@ -882,8 +882,8 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
                 s = state;
             } else {
                 AbstractInventoryItemDetailState state = (AbstractInventoryItemDetailState) s;
-                state.setCreatedBy(ApplicationContext.current.getRequesterId());
-                state.setCreatedAt((OffsetDateTime) ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime) ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
