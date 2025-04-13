@@ -57,6 +57,14 @@ public interface PartyRoleEvent extends Event {
 
         void setBankAccountInformation(String bankAccountInformation);
 
+        String getCustomerTypeEnumId();
+
+        void setCustomerTypeEnumId(String customerTypeEnumId);
+
+        String getCustomerProductTypeDescription();
+
+        void setCustomerProductTypeDescription(String customerProductTypeDescription);
+
         String getSupplierTypeEnumId();
 
         void setSupplierTypeEnumId(String supplierTypeEnumId);
@@ -86,6 +94,14 @@ public interface PartyRoleEvent extends Event {
         Boolean getIsPropertyBankAccountInformationRemoved();
 
         void setIsPropertyBankAccountInformationRemoved(Boolean removed);
+
+        Boolean getIsPropertyCustomerTypeEnumIdRemoved();
+
+        void setIsPropertyCustomerTypeEnumIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyCustomerProductTypeDescriptionRemoved();
+
+        void setIsPropertyCustomerProductTypeDescriptionRemoved(Boolean removed);
 
         Boolean getIsPropertySupplierTypeEnumIdRemoved();
 

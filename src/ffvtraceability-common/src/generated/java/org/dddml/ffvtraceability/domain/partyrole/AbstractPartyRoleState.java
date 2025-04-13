@@ -54,6 +54,26 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         this.bankAccountInformation = bankAccountInformation;
     }
 
+    private String customerTypeEnumId;
+
+    public String getCustomerTypeEnumId() {
+        return this.customerTypeEnumId;
+    }
+
+    public void setCustomerTypeEnumId(String customerTypeEnumId) {
+        this.customerTypeEnumId = customerTypeEnumId;
+    }
+
+    private String customerProductTypeDescription;
+
+    public String getCustomerProductTypeDescription() {
+        return this.customerProductTypeDescription;
+    }
+
+    public void setCustomerProductTypeDescription(String customerProductTypeDescription) {
+        this.customerProductTypeDescription = customerProductTypeDescription;
+    }
+
     private String supplierTypeEnumId;
 
     public String getSupplierTypeEnumId() {
@@ -211,6 +231,8 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         this.setTpaNumber(e.getTpaNumber());
         this.setCertificationCodes(e.getCertificationCodes());
         this.setBankAccountInformation(e.getBankAccountInformation());
+        this.setCustomerTypeEnumId(e.getCustomerTypeEnumId());
+        this.setCustomerProductTypeDescription(e.getCustomerProductTypeDescription());
         this.setSupplierTypeEnumId(e.getSupplierTypeEnumId());
         this.setSupplierProductTypeDescription(e.getSupplierProductTypeDescription());
 
@@ -226,6 +248,8 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         this.setTpaNumber(s.getTpaNumber());
         this.setCertificationCodes(s.getCertificationCodes());
         this.setBankAccountInformation(s.getBankAccountInformation());
+        this.setCustomerTypeEnumId(s.getCustomerTypeEnumId());
+        this.setCustomerProductTypeDescription(s.getCustomerProductTypeDescription());
         this.setSupplierTypeEnumId(s.getSupplierTypeEnumId());
         this.setSupplierProductTypeDescription(s.getSupplierProductTypeDescription());
     }
@@ -253,6 +277,20 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
             }
         } else {
             this.setBankAccountInformation(e.getBankAccountInformation());
+        }
+        if (e.getCustomerTypeEnumId() == null) {
+            if (e.getIsPropertyCustomerTypeEnumIdRemoved() != null && e.getIsPropertyCustomerTypeEnumIdRemoved()) {
+                this.setCustomerTypeEnumId(null);
+            }
+        } else {
+            this.setCustomerTypeEnumId(e.getCustomerTypeEnumId());
+        }
+        if (e.getCustomerProductTypeDescription() == null) {
+            if (e.getIsPropertyCustomerProductTypeDescriptionRemoved() != null && e.getIsPropertyCustomerProductTypeDescriptionRemoved()) {
+                this.setCustomerProductTypeDescription(null);
+            }
+        } else {
+            this.setCustomerProductTypeDescription(e.getCustomerProductTypeDescription());
         }
         if (e.getSupplierTypeEnumId() == null) {
             if (e.getIsPropertySupplierTypeEnumIdRemoved() != null && e.getIsPropertySupplierTypeEnumIdRemoved()) {

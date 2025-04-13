@@ -25,6 +25,10 @@ public interface PartyRoleState
 
     String getBankAccountInformation();
 
+    String getCustomerTypeEnumId();
+
+    String getCustomerProductTypeDescription();
+
     String getSupplierTypeEnumId();
 
     String getSupplierProductTypeDescription();
@@ -49,6 +53,10 @@ public interface PartyRoleState
         void setCertificationCodes(String certificationCodes);
 
         void setBankAccountInformation(String bankAccountInformation);
+
+        void setCustomerTypeEnumId(String customerTypeEnumId);
+
+        void setCustomerProductTypeDescription(String customerProductTypeDescription);
 
         void setSupplierTypeEnumId(String supplierTypeEnumId);
 

@@ -56,6 +56,36 @@ public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto 
     }
 
     /**
+     * Customer Type Enum Id
+     */
+    private String customerTypeEnumId;
+
+    public String getCustomerTypeEnumId()
+    {
+        return this.customerTypeEnumId;
+    }
+
+    public void setCustomerTypeEnumId(String customerTypeEnumId)
+    {
+        this.customerTypeEnumId = customerTypeEnumId;
+    }
+
+    /**
+     * Customer Product Type Description
+     */
+    private String customerProductTypeDescription;
+
+    public String getCustomerProductTypeDescription()
+    {
+        return this.customerProductTypeDescription;
+    }
+
+    public void setCustomerProductTypeDescription(String customerProductTypeDescription)
+    {
+        this.customerProductTypeDescription = customerProductTypeDescription;
+    }
+
+    /**
      * Supplier Type Enum Id
      */
     private String supplierTypeEnumId;
@@ -122,6 +152,30 @@ public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto 
         this.isPropertyBankAccountInformationRemoved = removed;
     }
 
+    private Boolean isPropertyCustomerTypeEnumIdRemoved;
+
+    public Boolean getIsPropertyCustomerTypeEnumIdRemoved()
+    {
+        return this.isPropertyCustomerTypeEnumIdRemoved;
+    }
+
+    public void setIsPropertyCustomerTypeEnumIdRemoved(Boolean removed)
+    {
+        this.isPropertyCustomerTypeEnumIdRemoved = removed;
+    }
+
+    private Boolean isPropertyCustomerProductTypeDescriptionRemoved;
+
+    public Boolean getIsPropertyCustomerProductTypeDescriptionRemoved()
+    {
+        return this.isPropertyCustomerProductTypeDescriptionRemoved;
+    }
+
+    public void setIsPropertyCustomerProductTypeDescriptionRemoved(Boolean removed)
+    {
+        this.isPropertyCustomerProductTypeDescriptionRemoved = removed;
+    }
+
     private Boolean isPropertySupplierTypeEnumIdRemoved;
 
     public Boolean getIsPropertySupplierTypeEnumIdRemoved()
@@ -152,6 +206,8 @@ public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto 
         command.setTpaNumber(this.getTpaNumber());
         command.setCertificationCodes(this.getCertificationCodes());
         command.setBankAccountInformation(this.getBankAccountInformation());
+        command.setCustomerTypeEnumId(this.getCustomerTypeEnumId());
+        command.setCustomerProductTypeDescription(this.getCustomerProductTypeDescription());
         command.setSupplierTypeEnumId(this.getSupplierTypeEnumId());
         command.setSupplierProductTypeDescription(this.getSupplierProductTypeDescription());
     }
@@ -201,6 +257,8 @@ public class CreateOrMergePatchPartyRoleDto extends AbstractPartyRoleCommandDto 
         command.setIsPropertyTpaNumberRemoved(this.getIsPropertyTpaNumberRemoved());
         command.setIsPropertyCertificationCodesRemoved(this.getIsPropertyCertificationCodesRemoved());
         command.setIsPropertyBankAccountInformationRemoved(this.getIsPropertyBankAccountInformationRemoved());
+        command.setIsPropertyCustomerTypeEnumIdRemoved(this.getIsPropertyCustomerTypeEnumIdRemoved());
+        command.setIsPropertyCustomerProductTypeDescriptionRemoved(this.getIsPropertyCustomerProductTypeDescriptionRemoved());
         command.setIsPropertySupplierTypeEnumIdRemoved(this.getIsPropertySupplierTypeEnumIdRemoved());
         command.setIsPropertySupplierProductTypeDescriptionRemoved(this.getIsPropertySupplierProductTypeDescriptionRemoved());
     }

@@ -60,6 +60,14 @@ public interface PartyRoleCommand extends Command {
 
         void setBankAccountInformation(String bankAccountInformation);
 
+        String getCustomerTypeEnumId();
+
+        void setCustomerTypeEnumId(String customerTypeEnumId);
+
+        String getCustomerProductTypeDescription();
+
+        void setCustomerProductTypeDescription(String customerProductTypeDescription);
+
         String getSupplierTypeEnumId();
 
         void setSupplierTypeEnumId(String supplierTypeEnumId);
@@ -85,6 +93,14 @@ public interface PartyRoleCommand extends Command {
         Boolean getIsPropertyBankAccountInformationRemoved();
 
         void setIsPropertyBankAccountInformationRemoved(Boolean removed);
+
+        Boolean getIsPropertyCustomerTypeEnumIdRemoved();
+
+        void setIsPropertyCustomerTypeEnumIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyCustomerProductTypeDescriptionRemoved();
+
+        void setIsPropertyCustomerProductTypeDescriptionRemoved(Boolean removed);
 
         Boolean getIsPropertySupplierTypeEnumIdRemoved();
 

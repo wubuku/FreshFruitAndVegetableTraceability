@@ -62,6 +62,30 @@ public class PartyRoleStateDto {
         this.bankAccountInformation = bankAccountInformation;
     }
 
+    private String customerTypeEnumId;
+
+    public String getCustomerTypeEnumId()
+    {
+        return this.customerTypeEnumId;
+    }
+
+    public void setCustomerTypeEnumId(String customerTypeEnumId)
+    {
+        this.customerTypeEnumId = customerTypeEnumId;
+    }
+
+    private String customerProductTypeDescription;
+
+    public String getCustomerProductTypeDescription()
+    {
+        return this.customerProductTypeDescription;
+    }
+
+    public void setCustomerProductTypeDescription(String customerProductTypeDescription)
+    {
+        this.customerProductTypeDescription = customerProductTypeDescription;
+    }
+
     private String supplierTypeEnumId;
 
     public String getSupplierTypeEnumId()
@@ -186,6 +210,12 @@ public class PartyRoleStateDto {
             }
             if (returnedFieldsContains("BankAccountInformation")) {
                 dto.setBankAccountInformation(state.getBankAccountInformation());
+            }
+            if (returnedFieldsContains("CustomerTypeEnumId")) {
+                dto.setCustomerTypeEnumId(state.getCustomerTypeEnumId());
+            }
+            if (returnedFieldsContains("CustomerProductTypeDescription")) {
+                dto.setCustomerProductTypeDescription(state.getCustomerProductTypeDescription());
             }
             if (returnedFieldsContains("SupplierTypeEnumId")) {
                 dto.setSupplierTypeEnumId(state.getSupplierTypeEnumId());

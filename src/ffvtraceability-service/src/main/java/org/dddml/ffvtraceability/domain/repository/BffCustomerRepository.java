@@ -12,15 +12,15 @@ import java.util.Optional;
 public interface BffCustomerRepository extends JpaRepository<AbstractPartyState, String> {
     @Query(value = """
             SELECT 
-                p.party_id as supplierId,
+                p.party_id as customerId,
                 p.external_id as externalId,
                 p.preferred_currency_uom_id as preferredCurrencyUomId,
                 p.description as description,
                 p.status_id as statusId,
                 p.telephone as telephone,
-                COALESCE(p.short_description,p.organization_name, p.last_name) as supplierName,
-                p.short_description AS supplierShortName,
-                pr.supplier_product_type_description AS supplierProductTypeDescription,
+                COALESCE(p.short_description,p.organization_name, p.last_name) as customerName,
+                p.short_description AS customerShortName,
+                pr.customer_product_type_description AS customerProductTypeDescription,
                 pr.tpa_number as tpaNumber,
                 ggn.id_value as ggn,
                 gln.id_value as gln,
@@ -70,7 +70,7 @@ public interface BffCustomerRepository extends JpaRepository<AbstractPartyState,
                 WHERE pi.party_identification_type_id = 'GCP'
             ) gcp ON gcp.party_id = p.party_id
             
-            WHERE pr.role_type_id = 'SUPPLIER'
+            WHERE pr.role_type_id = 'CUSTOMER'
                 AND (:statusId IS NULL OR p.status_id = :statusId)
             ORDER BY p.created_at DESC
             """,
@@ -78,7 +78,7 @@ public interface BffCustomerRepository extends JpaRepository<AbstractPartyState,
                     SELECT COUNT(DISTINCT p.party_id)
                     FROM party p
                     JOIN party_role pr ON pr.party_id = p.party_id
-                    WHERE pr.role_type_id = 'SUPPLIER'
+                    WHERE pr.role_type_id = 'CUSTOMER'
                         AND (:statusId IS NULL OR p.status_id = :statusId)
                     """,
             nativeQuery = true)
@@ -86,7 +86,7 @@ public interface BffCustomerRepository extends JpaRepository<AbstractPartyState,
 
     @Query(value = """
             SELECT
-                p.party_id as supplierId,
+                p.party_id as customerId,
                 p.external_id as externalId,
                 p.preferred_currency_uom_id as preferredCurrencyUomId,
                 p.description as description,
@@ -94,13 +94,13 @@ public interface BffCustomerRepository extends JpaRepository<AbstractPartyState,
                 p.email AS email,
                 p.web_site AS webSite,
                 p.telephone as telephone,
-                COALESCE(p.short_description,p.organization_name, p.last_name) as supplierName,
-                p.short_description AS supplierShortName,
+                COALESCE(p.short_description,p.organization_name, p.last_name) as customerName,
+                p.short_description AS customerShortName,
                 pr.bank_account_information AS bankAccountInformation,
                 pr.certification_codes AS certificationCodes,
                 pr.tpa_number AS tpaNumber,
-                pr.supplier_product_type_description AS supplierProductTypeDescription,
-                pr.supplier_type_enum_id AS supplierTypeEnumId,
+                pr.customer_product_type_description AS customerProductTypeDescription,
+                pr.customer_type_enum_id AS customerTypeEnumId,
                 ggn.id_value as ggn,
                 gln.id_value as gln,
                 ii.id_value as internalId,
@@ -147,10 +147,10 @@ public interface BffCustomerRepository extends JpaRepository<AbstractPartyState,
                 WHERE pi.party_identification_type_id = 'GCP'
             ) gcp ON gcp.party_id = p.party_id
             
-            WHERE pr.role_type_id = 'SUPPLIER'
-            AND p.party_id=:supplierId
+            WHERE pr.role_type_id = 'CUSTOMER'
+            AND p.party_id=:customerId
             """, nativeQuery = true)
-    Optional<BffCustomerProjection> findCustomerById(@Param("supplierId") String supplierId);
+    Optional<BffCustomerProjection> findCustomerById(@Param("customerId") String customerId);
 
     @Query(value = """
             select count(1) from party_identification

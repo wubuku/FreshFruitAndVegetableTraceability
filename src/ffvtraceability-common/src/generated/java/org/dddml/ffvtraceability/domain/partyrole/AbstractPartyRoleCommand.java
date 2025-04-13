@@ -75,6 +75,30 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
             this.bankAccountInformation = bankAccountInformation;
         }
 
+        private String customerTypeEnumId;
+
+        public String getCustomerTypeEnumId()
+        {
+            return this.customerTypeEnumId;
+        }
+
+        public void setCustomerTypeEnumId(String customerTypeEnumId)
+        {
+            this.customerTypeEnumId = customerTypeEnumId;
+        }
+
+        private String customerProductTypeDescription;
+
+        public String getCustomerProductTypeDescription()
+        {
+            return this.customerProductTypeDescription;
+        }
+
+        public void setCustomerProductTypeDescription(String customerProductTypeDescription)
+        {
+            this.customerProductTypeDescription = customerProductTypeDescription;
+        }
+
         private String supplierTypeEnumId;
 
         public String getSupplierTypeEnumId()
@@ -151,6 +175,30 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
         public void setIsPropertyBankAccountInformationRemoved(Boolean removed)
         {
             this.isPropertyBankAccountInformationRemoved = removed;
+        }
+
+        private Boolean isPropertyCustomerTypeEnumIdRemoved;
+
+        public Boolean getIsPropertyCustomerTypeEnumIdRemoved()
+        {
+            return this.isPropertyCustomerTypeEnumIdRemoved;
+        }
+
+        public void setIsPropertyCustomerTypeEnumIdRemoved(Boolean removed)
+        {
+            this.isPropertyCustomerTypeEnumIdRemoved = removed;
+        }
+
+        private Boolean isPropertyCustomerProductTypeDescriptionRemoved;
+
+        public Boolean getIsPropertyCustomerProductTypeDescriptionRemoved()
+        {
+            return this.isPropertyCustomerProductTypeDescriptionRemoved;
+        }
+
+        public void setIsPropertyCustomerProductTypeDescriptionRemoved(Boolean removed)
+        {
+            this.isPropertyCustomerProductTypeDescriptionRemoved = removed;
         }
 
         private Boolean isPropertySupplierTypeEnumIdRemoved;

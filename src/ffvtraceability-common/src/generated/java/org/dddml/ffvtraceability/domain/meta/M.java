@@ -6823,6 +6823,8 @@ public class M {
             "tpaNumber",
             "certificationCodes",
             "bankAccountInformation",
+            "customerTypeEnumId",
+            "customerProductTypeDescription",
             "supplierTypeEnumId",
             "supplierProductTypeDescription",
             "version",
@@ -6837,6 +6839,8 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
             "String",
             "String",
             "String",
@@ -6871,6 +6875,10 @@ public class M {
         aliasMap.put("CertificationCodes", "certificationCodes");
         aliasMap.put("bankAccountInformation", "bankAccountInformation");
         aliasMap.put("BankAccountInformation", "bankAccountInformation");
+        aliasMap.put("customerTypeEnumId", "customerTypeEnumId");
+        aliasMap.put("CustomerTypeEnumId", "customerTypeEnumId");
+        aliasMap.put("customerProductTypeDescription", "customerProductTypeDescription");
+        aliasMap.put("CustomerProductTypeDescription", "customerProductTypeDescription");
         aliasMap.put("supplierTypeEnumId", "supplierTypeEnumId");
         aliasMap.put("SupplierTypeEnumId", "supplierTypeEnumId");
         aliasMap.put("supplierProductTypeDescription", "supplierProductTypeDescription");

@@ -37,6 +37,12 @@
       <property name="bankAccountInformation">
         <column name="bank_account_information" sql-type="VARCHAR(255)" />
       </property>
+      <property name="customerTypeEnumId">
+        <column name="customer_type_enum_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="customerProductTypeDescription">
+        <column name="customer_product_type_description" sql-type="VARCHAR(255)" />
+      </property>
       <property name="supplierTypeEnumId">
         <column name="supplier_type_enum_id" sql-type="VARCHAR(20)" />
       </property>
@@ -48,6 +54,8 @@
         <property name="isPropertyTpaNumberRemoved" column="is_property_tpa_number_removed" />
         <property name="isPropertyCertificationCodesRemoved" column="is_property_certification_codes_removed" />
         <property name="isPropertyBankAccountInformationRemoved" column="is_property_bank_account_information_removed" />
+        <property name="isPropertyCustomerTypeEnumIdRemoved" column="is_property_customer_type_enum_id_removed" />
+        <property name="isPropertyCustomerProductTypeDescriptionRemoved" column="is_property_customer_product_type_description_removed" />
         <property name="isPropertySupplierTypeEnumIdRemoved" column="is_property_supplier_type_enum_id_removed" />
         <property name="isPropertySupplierProductTypeDescriptionRemoved" column="is_property_supplier_product_type_description_removed" />
       </subclass>

@@ -20,6 +20,12 @@
     <property name="bankAccountInformation">
       <column name="bank_account_information" sql-type="VARCHAR(255)" />
     </property>
+    <property name="customerTypeEnumId">
+      <column name="customer_type_enum_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="customerProductTypeDescription">
+      <column name="customer_product_type_description" sql-type="VARCHAR(255)" />
+    </property>
     <property name="supplierTypeEnumId">
       <column name="supplier_type_enum_id" sql-type="VARCHAR(20)" />
     </property>

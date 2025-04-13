@@ -757,16 +757,11 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        ApplicationContext.current.setRequesterId(e.getCreatedBy());
-        try {
         InventoryItemState updatedInventoryItemState = ApplicationContext.current.get(IRecordInventoryEntryLogic.class).mutate(
                 this, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedInventoryItemState) { merge(updatedInventoryItemState); } //else do nothing
-        } finally {
-            ApplicationContext.current.clearRequesterId();
-        }
 
     }
 
@@ -778,8 +773,6 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         java.math.BigDecimal accountingQuantityDiff = e.getAccountingQuantityDiff();
         java.math.BigDecimal unitCost = e.getUnitCost();
 
-        ApplicationContext.current.setRequesterId(e.getCreatedBy());
-        try {
         AbstractInventoryItemState _this = (AbstractInventoryItemState) ApplicationContext.current.get(IRecordInventoryEntryLogic.class).mutate(
                 null, inventoryItemAttributes, inventoryItemDetailAttributes, quantityOnHandDiff, availableToPromiseDiff, accountingQuantityDiff, unitCost, MutationContext.forCreation(e, id -> stateFactory.apply((String) id) ));
 
@@ -796,9 +789,6 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         _this.setUpdatedAt(e.getCreatedAt());
 
         return _this;
-        } finally {
-            ApplicationContext.current.clearRequesterId();
-        }
     }
 
     public void save() {
@@ -876,14 +866,8 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
                 InventoryItemDetailId globalId = new InventoryItemDetailId(getInventoryItemId(), inventoryItemDetailSeqId);
                 AbstractInventoryItemDetailState state = new AbstractInventoryItemDetailState.SimpleInventoryItemDetailState();
                 state.setInventoryItemDetailId(globalId);
-                state.setCreatedBy(ApplicationContext.current.getRequesterId());
-                state.setCreatedAt((OffsetDateTime) ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
-            } else {
-                AbstractInventoryItemDetailState state = (AbstractInventoryItemDetailState) s;
-                state.setCreatedBy(ApplicationContext.current.getRequesterId());
-                state.setCreatedAt((OffsetDateTime) ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

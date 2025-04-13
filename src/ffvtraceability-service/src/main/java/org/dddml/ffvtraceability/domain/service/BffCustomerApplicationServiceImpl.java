@@ -193,7 +193,7 @@ public class BffCustomerApplicationServiceImpl implements BffCustomerApplication
                     PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, bffCustomer.getInternalId());
             if (partyId != null && !partyId.equals(customerId)) {
                 throw new IllegalArgumentException(String.format(
-                        "Vendor Number:%s is already in use. Please try a different one.",
+                        "Customer Number:%s is already in use. Please try a different one.",
                         bffCustomer.getInternalId()));
             }
         }
@@ -227,13 +227,9 @@ public class BffCustomerApplicationServiceImpl implements BffCustomerApplication
             simpleMergePatchPartyRole.setBankAccountInformation(bffCustomer.getBankAccountInformation());
             simpleMergePatchPartyRole.setCertificationCodes(bffCustomer.getCertificationCodes());
             simpleMergePatchPartyRole.setTpaNumber(bffCustomer.getTpaNumber());
+            simpleMergePatchPartyRole.setCustomerTypeEnumId(bffCustomer.getCustomerTypeEnumId());
             simpleMergePatchPartyRole
-                    .setSupplierProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
-            simpleMergePatchPartyRole.setSupplierTypeEnumId(bffCustomer.getCustomerTypeEnumId());
-            //TODO
-            //simpleMergePatchPartyRole.setCustomerTypeEnumId(bffCustomer.getCustomerTypeEnumId());
-//            simpleMergePatchPartyRole
-//                    .setCustomerProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
+                    .setCustomerProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
             partyRoleApplicationService.when(simpleMergePatchPartyRole);
         } else {// 没有就添加
             AbstractPartyRoleCommand.SimpleCreatePartyRole createPartyRole = new AbstractPartyRoleCommand.SimpleCreatePartyRole();
@@ -244,9 +240,8 @@ public class BffCustomerApplicationServiceImpl implements BffCustomerApplication
             createPartyRole.setBankAccountInformation(bffCustomer.getBankAccountInformation());
             createPartyRole.setCertificationCodes(bffCustomer.getCertificationCodes());
             createPartyRole.setTpaNumber(bffCustomer.getTpaNumber());
-            //TODO
-//            createPartyRole.setCustomerProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
-//            createPartyRole.setCustomerTypeEnumId(bffCustomer.getCustomerTypeEnumId());
+            createPartyRole.setCustomerProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
+            createPartyRole.setCustomerTypeEnumId(bffCustomer.getCustomerTypeEnumId());
             createPartyRole.setSupplierProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
             createPartyRole.setSupplierTypeEnumId(bffCustomer.getCustomerTypeEnumId());
             partyRoleApplicationService.when(createPartyRole);
@@ -440,7 +435,7 @@ public class BffCustomerApplicationServiceImpl implements BffCustomerApplication
             if (bffCustomerRepository.countByPartyIdentificationTypeIdAndIdValue(PARTY_IDENTIFICATION_TYPE_INTERNAL_ID,
                     customer.getInternalId()) > 0) {
                 throw new IllegalArgumentException(String.format(
-                        "Vendor Number:%s is already in use. Please try a different one.", customer.getInternalId()));
+                        "Customer Number:%s is already in use. Please try a different one.", customer.getInternalId()));
             }
             addPartyIdentification(createParty, PARTY_IDENTIFICATION_TYPE_INTERNAL_ID, customer.getInternalId());
         }
@@ -467,13 +462,9 @@ public class BffCustomerApplicationServiceImpl implements BffCustomerApplication
         createPartyRole.setRequesterId(c.getRequesterId());
         createPartyRole.setBankAccountInformation(customer.getBankAccountInformation());
         createPartyRole.setCertificationCodes(customer.getCertificationCodes());
-        // createPartyRole.setCustomerShortName(customer.getCustomerShortName());
         createPartyRole.setTpaNumber(customer.getTpaNumber());
-        //TODO
-//        createPartyRole.setCustomerProductTypeDescription(customer.getCustomerProductTypeDescription());
-//        createPartyRole.setCustomerTypeEnumId(customer.getCustomerTypeEnumId());
-        createPartyRole.setSupplierProductTypeDescription(customer.getCustomerProductTypeDescription());
-        createPartyRole.setSupplierTypeEnumId(customer.getCustomerTypeEnumId());
+        createPartyRole.setCustomerProductTypeDescription(customer.getCustomerProductTypeDescription());
+        createPartyRole.setCustomerTypeEnumId(customer.getCustomerTypeEnumId());
         partyRoleApplicationService.when(createPartyRole);
 
         return createParty.getPartyId();

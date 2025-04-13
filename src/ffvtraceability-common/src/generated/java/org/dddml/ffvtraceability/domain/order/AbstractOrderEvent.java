@@ -320,7 +320,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public OrderItemQuantityAllocationValue[] getOrderItemAllocations() {
-            Object val = getDynamicProperties().get("order_item_allocations");
+            Object val = getDynamicProperties().get("orderItemAllocations");
             if (val instanceof OrderItemQuantityAllocationValue[]) {
                 return (OrderItemQuantityAllocationValue[]) val;
             }
@@ -328,7 +328,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public void setOrderItemAllocations(OrderItemQuantityAllocationValue[] value) {
-            getDynamicProperties().put("order_item_allocations", value);
+            getDynamicProperties().put("orderItemAllocations", value);
         }
 
     }

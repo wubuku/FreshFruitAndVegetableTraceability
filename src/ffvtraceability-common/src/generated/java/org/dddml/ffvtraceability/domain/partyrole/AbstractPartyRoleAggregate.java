@@ -66,6 +66,8 @@ public abstract class AbstractPartyRoleAggregate extends AbstractAggregate imple
         e.setTpaNumber(c.getTpaNumber());
         e.setCertificationCodes(c.getCertificationCodes());
         e.setBankAccountInformation(c.getBankAccountInformation());
+        e.setCustomerTypeEnumId(c.getCustomerTypeEnumId());
+        e.setCustomerProductTypeDescription(c.getCustomerProductTypeDescription());
         e.setSupplierTypeEnumId(c.getSupplierTypeEnumId());
         e.setSupplierProductTypeDescription(c.getSupplierProductTypeDescription());
         ((AbstractPartyRoleEvent)e).setCommandId(c.getCommandId());
@@ -80,11 +82,15 @@ public abstract class AbstractPartyRoleAggregate extends AbstractAggregate imple
         e.setTpaNumber(c.getTpaNumber());
         e.setCertificationCodes(c.getCertificationCodes());
         e.setBankAccountInformation(c.getBankAccountInformation());
+        e.setCustomerTypeEnumId(c.getCustomerTypeEnumId());
+        e.setCustomerProductTypeDescription(c.getCustomerProductTypeDescription());
         e.setSupplierTypeEnumId(c.getSupplierTypeEnumId());
         e.setSupplierProductTypeDescription(c.getSupplierProductTypeDescription());
         e.setIsPropertyTpaNumberRemoved(c.getIsPropertyTpaNumberRemoved());
         e.setIsPropertyCertificationCodesRemoved(c.getIsPropertyCertificationCodesRemoved());
         e.setIsPropertyBankAccountInformationRemoved(c.getIsPropertyBankAccountInformationRemoved());
+        e.setIsPropertyCustomerTypeEnumIdRemoved(c.getIsPropertyCustomerTypeEnumIdRemoved());
+        e.setIsPropertyCustomerProductTypeDescriptionRemoved(c.getIsPropertyCustomerProductTypeDescriptionRemoved());
         e.setIsPropertySupplierTypeEnumIdRemoved(c.getIsPropertySupplierTypeEnumIdRemoved());
         e.setIsPropertySupplierProductTypeDescriptionRemoved(c.getIsPropertySupplierProductTypeDescriptionRemoved());
         ((AbstractPartyRoleEvent)e).setCommandId(c.getCommandId());
