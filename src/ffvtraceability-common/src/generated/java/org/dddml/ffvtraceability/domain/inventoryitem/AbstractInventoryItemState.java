@@ -866,6 +866,8 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
                 InventoryItemDetailId globalId = new InventoryItemDetailId(getInventoryItemId(), inventoryItemDetailSeqId);
                 AbstractInventoryItemDetailState state = new AbstractInventoryItemDetailState.SimpleInventoryItemDetailState();
                 state.setInventoryItemDetailId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime) ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
             } else {
