@@ -469,6 +469,50 @@ facilityId 为仓库 Id.
 }
 ```
 
+### 3. 原材料产品库存明细
+
+在手持终端可以按照产品名称、产品Id、供应商Id以及仓库Id进行半成品的库存查询，查询结果按照供应商，仓库，产品汇总库存总数量。
+那这些库存按照批次号拆分之后成为库存明细。
+
+客户端需要传递上述查询获得结果列表，所选中的库存信息中的产品Id、供应商Id以及仓库Id来如下调用接口：
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffInventoryItems/RawItems/14AG8L4GM6EKAWK277/InventoryItems?page=0&size=20&supplierId=13HDSG4J6BKYPHJVZ0&facilityId=13LNXR6X497W03AP81' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+将会得到该库存的分批次列表：
+```json
+{
+  "content": [
+    {
+      "lotNo": "Lot No3",
+      "receivedAt": "2025-04-13T02:59:19.746984Z",
+      "locationCode": "blureforcewh11",
+      "quantityOnHandTotal": 400,
+      "quantityUomId": "quantityUomId",
+      "quantityIncluded": 100,
+      "caseUomId": "caseUomId1"
+    },
+    {
+      "lotNo": "Lot No1",
+      "receivedAt": "2025-04-10T08:57:34Z",
+      "locationCode": "13LNXR6X497W03AP81_DEFAULT",
+      "quantityOnHandTotal": 999,
+      "quantityUomId": "quantityUomId",
+      "quantityIncluded": 100,
+      "caseUomId": "caseUomId1"
+    }
+  ],
+  "totalElements": 2,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+
+
+
 ## 四、产品相关接口
 
 * 原以“BffRawItems”开头的接口全部用来满足原材料（RAW_MATERIAL）的管理；
