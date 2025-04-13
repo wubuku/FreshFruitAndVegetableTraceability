@@ -566,8 +566,14 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
                 LotIdentificationId globalId = new LotIdentificationId(getLotId(), lotIdentificationTypeId);
                 AbstractLotIdentificationState state = new AbstractLotIdentificationState.SimpleLotIdentificationState();
                 state.setLotIdentificationId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractLotIdentificationState state = (AbstractLotIdentificationState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

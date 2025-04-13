@@ -337,12 +337,17 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ArticleState updatedArticleState = ApplicationContext.current.get(IUpdateBodyLogic.class).mutate(
                 this, body, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void save() {
@@ -420,8 +425,14 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
                 ArticleCommentId globalId = new ArticleCommentId(getArticleId(), commentSeqId);
                 AbstractCommentState state = new AbstractCommentState.SimpleCommentState();
                 state.setArticleCommentId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractCommentState state = (AbstractCommentState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

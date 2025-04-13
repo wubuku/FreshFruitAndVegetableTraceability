@@ -732,12 +732,17 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ShipmentReceiptState updatedShipmentReceiptState = ApplicationContext.current.get(IUpdateOrderAllocationLogic.class).mutate(
                 this, unallocatedQuantity, orderItemAllocations, previousOrderId, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedShipmentReceiptState) { merge(updatedShipmentReceiptState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void save() {
@@ -818,8 +823,14 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
                 ShipmentReceiptRoleId globalId = new ShipmentReceiptRoleId(getReceiptId(), partyRoleId);
                 AbstractShipmentReceiptRoleState state = new AbstractShipmentReceiptRoleState.SimpleShipmentReceiptRoleState();
                 state.setShipmentReceiptRoleId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractShipmentReceiptRoleState state = (AbstractShipmentReceiptRoleState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
@@ -939,8 +950,14 @@ public abstract class AbstractShipmentReceiptState implements ShipmentReceiptSta
                 ShipmentReceiptOrderAllocationId globalId = new ShipmentReceiptOrderAllocationId(getReceiptId(), orderItemId);
                 AbstractShipmentReceiptOrderAllocationState state = new AbstractShipmentReceiptOrderAllocationState.SimpleShipmentReceiptOrderAllocationState();
                 state.setShipmentReceiptOrderAllocationId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractShipmentReceiptOrderAllocationState state = (AbstractShipmentReceiptOrderAllocationState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

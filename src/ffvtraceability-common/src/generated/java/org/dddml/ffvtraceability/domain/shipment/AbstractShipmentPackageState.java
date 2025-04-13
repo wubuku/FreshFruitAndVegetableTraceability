@@ -513,8 +513,14 @@ public abstract class AbstractShipmentPackageState implements ShipmentPackageSta
                 ShipmentPackageContentId globalId = new ShipmentPackageContentId(getShipmentPackageId().getShipmentId(), getShipmentPackageId().getShipmentPackageSeqId(), shipmentItemSeqId);
                 AbstractShipmentPackageContentState state = new AbstractShipmentPackageContentState.SimpleShipmentPackageContentState();
                 state.setShipmentPackageContentId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractShipmentPackageContentState state = (AbstractShipmentPackageContentState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

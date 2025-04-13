@@ -819,6 +819,8 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         SupplierProductState updatedSupplierProductState = ((UpdateAvailableThruDateMutation) UpdateAvailableThruDateLogic::mutate).mutate(
                 this, availableThruDate, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
@@ -832,6 +834,9 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
 
         if (this != updatedSupplierProductState) { merge(updatedSupplierProductState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractSupplierProductEvent.SupplierProductDisabled e) {
@@ -847,6 +852,8 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         SupplierProductState updatedSupplierProductState = ((DisableMutation) DisableLogic::mutate).mutate(
                 this, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
@@ -860,6 +867,9 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
 
         if (this != updatedSupplierProductState) { merge(updatedSupplierProductState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public interface UpdateAvailableThruDateMutation {

@@ -722,8 +722,14 @@ public abstract class AbstractFacilityState implements FacilityState.SqlFacility
                 FacilityIdentificationId globalId = new FacilityIdentificationId(getFacilityId(), facilityIdentificationTypeId);
                 AbstractFacilityIdentificationState state = new AbstractFacilityIdentificationState.SimpleFacilityIdentificationState();
                 state.setFacilityIdentificationId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractFacilityIdentificationState state = (AbstractFacilityIdentificationState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

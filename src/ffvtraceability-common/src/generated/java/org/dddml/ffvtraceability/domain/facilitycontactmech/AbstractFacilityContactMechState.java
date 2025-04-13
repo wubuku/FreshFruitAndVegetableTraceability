@@ -376,8 +376,14 @@ public abstract class AbstractFacilityContactMechState implements FacilityContac
                 FacilityContactMechPurposeId globalId = new FacilityContactMechPurposeId(getFacilityContactMechId(), contactMechPurposeTypeId);
                 AbstractFacilityContactMechPurposeState state = new AbstractFacilityContactMechPurposeState.SimpleFacilityContactMechPurposeState();
                 state.setFacilityContactMechPurposeId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractFacilityContactMechPurposeState state = (AbstractFacilityContactMechPurposeState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }

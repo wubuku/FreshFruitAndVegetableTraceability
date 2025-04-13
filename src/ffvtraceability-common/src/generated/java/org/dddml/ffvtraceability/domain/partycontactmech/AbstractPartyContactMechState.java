@@ -471,8 +471,14 @@ public abstract class AbstractPartyContactMechState implements PartyContactMechS
                 PartyContactMechPurposeId globalId = new PartyContactMechPurposeId(getPartyContactMechId(), contactMechPurposeTypeId);
                 AbstractPartyContactMechPurposeState state = new AbstractPartyContactMechPurposeState.SimplePartyContactMechPurposeState();
                 state.setPartyContactMechPurposeId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractPartyContactMechPurposeState state = (AbstractPartyContactMechPurposeState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
