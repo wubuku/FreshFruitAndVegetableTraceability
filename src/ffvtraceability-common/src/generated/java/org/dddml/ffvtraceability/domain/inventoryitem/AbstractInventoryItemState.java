@@ -868,6 +868,10 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
                 state.setInventoryItemDetailId(globalId);
                 add(state);
                 s = state;
+            } else {
+                AbstractInventoryItemDetailState state = (AbstractInventoryItemDetailState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((OffsetDateTime) ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
             }
             return s;
         }
