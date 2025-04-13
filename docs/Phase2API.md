@@ -477,6 +477,128 @@ facilityId 为仓库 Id.
     * 成品为 FINISHED_GOOD
 * 总的指导原则：除了新建原材料，更新原材料，查询原材料详情信息之外其余都是用统一的“BffProducts”接口。
 
+## 五、Customer 相关接口
+
+### 1. 创建 Customer
+相比较 Vendor(Supplier)来说有如下变化（其实我不知道是否也要给 Customer 附带 Facilities）：
+
+* 类型从 SUPPLIER 变为 CUSTOMER
+* supplierId->customerId
+* supplierName->customerName
+* supplierShortName->customerShortName
+* supplierTypeEnumId->customerTypeEnumId
+* supplierProductTypeDescription->customerProductTypeDescription
+
+举例说明(添加一个 Customer,附带同时创建两个 Facilities)：
+```shell
+curl -X 'POST' \
+  'http://localhost:8001/api/BffCustomers' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "customerName": "CustomerNameX",
+  "ggn": "8511684464926",
+  "gln": "5251637539544",
+  "externalId": "externalId",
+  "preferredCurrencyUomId": "pcUomId",
+  "description": "description",
+  "businessContacts": [
+    {
+      "businessName": "businessName",
+      "phoneNumber": "phoneNumber",
+      "physicalLocationAddress": "physicalLocationAddress",
+      "city": "city",
+      "state": "state",
+      "zipCode": "zipCode",
+      "country": "country",
+      "stateProvinceGeoId": "CA",
+      "countryGeoId": "USA",
+      "email": "email",
+      "contactRole": "contactRole"
+    }
+  ],
+  "customerShortName": "customerShortName",
+  "taxId": "taxId",
+  "gs1CompanyPrefix": "gs1CompanyPrefix",
+  "internalId": "Customer Numberddd",
+  "tpaNumber": "tpaNumber",
+  "customerTypeEnumId": "customerTypeEnumId",
+  "customerProductTypeDescription": "SPTypeDescription",
+  "certificationCodes": "certificationCodes",
+  "bankAccountInformation": "bankAccountInformation",
+  "telephone": "telephone",
+  "email": "email",
+  "webSite": "webSite",
+  "facilities": [
+    {
+      "parentFacilityId": "parentFacilityId",
+      "facilityName": "facilityNameQ",
+      "facilitySize": 10,
+      "facilitySizeUomId": "facilitySizeUomId",
+      "description": "description",
+      "geoPointId": "geoPointId",
+      "geoId": "geoId",
+      "active": "active",
+      "gln": "gln1",
+      "ffrn": "ffrn2",
+      "facilityLevel": 20,
+      "internalId": "tFacility Number K",
+      "sequenceNumber": 30,
+      "businessContacts": [
+        {
+          "businessName": "businessName",
+          "phoneNumber": "phoneNumber",
+          "physicalLocationAddress": "physicalLocationAddress",
+          "city": "city",
+          "state": "state",
+          "zipCode": "zipCode",
+          "country": "country",
+          "stateProvinceGeoId": "CA",
+          "countryGeoId": "USA",
+          "email": "email",
+          "contactRole": "contactRole"
+        }
+      ]
+    },    
+    {
+      "parentFacilityId": "parentFacilityId2",
+      "facilityName": "facilityNamexc2",
+      "facilitySize": 100,
+      "facilitySizeUomId": "facilitySizeUomId2",
+      "description": "description2",
+      "geoPointId": "geoPointId2",
+      "geoId": "geoId2",
+      "active": "active",
+      "gln": "gln2",
+      "ffrn": "ffrn3",
+      "facilityLevel": 120,
+      "internalId": "cFacility NumberPP",
+      "sequenceNumber": 130,
+      "businessContacts": [
+        {
+          "businessName": "businessName2",
+          "phoneNumber": "phoneNumber2",
+          "physicalLocationAddress": "physicalLocationAddress",
+          "city": "city",
+          "state": "state",
+          "zipCode": "zipCode",
+          "country": "country",
+          "stateProvinceGeoId": "CA",
+          "countryGeoId": "USA",
+          "email": "email",
+          "contactRole": "contactRole"
+        }
+      ]
+    }
+  ]
+}'
+```
+创建成功直接返回 Customer 的 Id:
+```json
+"14DA853H1Z0ET6KUNZ"
+```
+
 
 
 
