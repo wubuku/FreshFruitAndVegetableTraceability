@@ -10,6 +10,30 @@ import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public class BffRawItemInventoryItemDto implements Serializable {
+    private String productId;
+
+    public String getProductId()
+    {
+        return this.productId;
+    }
+
+    public void setProductId(String productId)
+    {
+        this.productId = productId;
+    }
+
+    private String lotId;
+
+    public String getLotId()
+    {
+        return this.lotId;
+    }
+
+    public void setLotId(String lotId)
+    {
+        this.lotId = lotId;
+    }
+
     private String lotNo;
 
     public String getLotNo()
@@ -22,16 +46,16 @@ public class BffRawItemInventoryItemDto implements Serializable {
         this.lotNo = lotNo;
     }
 
-    private String receivingRecord;
+    private String receivingDocumentId;
 
-    public String getReceivingRecord()
+    public String getReceivingDocumentId()
     {
-        return this.receivingRecord;
+        return this.receivingDocumentId;
     }
 
-    public void setReceivingRecord(String receivingRecord)
+    public void setReceivingDocumentId(String receivingDocumentId)
     {
-        this.receivingRecord = receivingRecord;
+        this.receivingDocumentId = receivingDocumentId;
     }
 
     private OffsetDateTime receivedAt;
@@ -137,10 +161,12 @@ public class BffRawItemInventoryItemDto implements Serializable {
     {
     }
 
-    public BffRawItemInventoryItemDto(String lotNo, String receivingRecord, OffsetDateTime receivedAt, String orderId, String qaStatusId, String locationCode, java.math.BigDecimal quantityOnHandTotal, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId)
+    public BffRawItemInventoryItemDto(String productId, String lotId, String lotNo, String receivingDocumentId, OffsetDateTime receivedAt, String orderId, String qaStatusId, String locationCode, java.math.BigDecimal quantityOnHandTotal, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId)
     {
+        this.productId = productId;
+        this.lotId = lotId;
         this.lotNo = lotNo;
-        this.receivingRecord = receivingRecord;
+        this.receivingDocumentId = receivingDocumentId;
         this.receivedAt = receivedAt;
         this.orderId = orderId;
         this.qaStatusId = qaStatusId;
@@ -163,8 +189,10 @@ public class BffRawItemInventoryItemDto implements Serializable {
 
         BffRawItemInventoryItemDto other = (BffRawItemInventoryItemDto)obj;
         return true 
+            && (productId == other.productId || (productId != null && productId.equals(other.productId)))
+            && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
             && (lotNo == other.lotNo || (lotNo != null && lotNo.equals(other.lotNo)))
-            && (receivingRecord == other.receivingRecord || (receivingRecord != null && receivingRecord.equals(other.receivingRecord)))
+            && (receivingDocumentId == other.receivingDocumentId || (receivingDocumentId != null && receivingDocumentId.equals(other.receivingDocumentId)))
             && (receivedAt == other.receivedAt || (receivedAt != null && receivedAt.equals(other.receivedAt)))
             && (orderId == other.orderId || (orderId != null && orderId.equals(other.orderId)))
             && (qaStatusId == other.qaStatusId || (qaStatusId != null && qaStatusId.equals(other.qaStatusId)))
@@ -180,11 +208,17 @@ public class BffRawItemInventoryItemDto implements Serializable {
     public int hashCode()
     {
         int hash = 0;
+        if (this.productId != null) {
+            hash += 13 * this.productId.hashCode();
+        }
+        if (this.lotId != null) {
+            hash += 13 * this.lotId.hashCode();
+        }
         if (this.lotNo != null) {
             hash += 13 * this.lotNo.hashCode();
         }
-        if (this.receivingRecord != null) {
-            hash += 13 * this.receivingRecord.hashCode();
+        if (this.receivingDocumentId != null) {
+            hash += 13 * this.receivingDocumentId.hashCode();
         }
         if (this.receivedAt != null) {
             hash += 13 * this.receivedAt.hashCode();
@@ -216,8 +250,10 @@ public class BffRawItemInventoryItemDto implements Serializable {
     @Override
     public String toString() {
         return "BffRawItemInventoryItemDto{" +
-                "lotNo=" + '\'' + lotNo + '\'' +
-                ", receivingRecord=" + '\'' + receivingRecord + '\'' +
+                "productId=" + '\'' + productId + '\'' +
+                ", lotId=" + '\'' + lotId + '\'' +
+                ", lotNo=" + '\'' + lotNo + '\'' +
+                ", receivingDocumentId=" + '\'' + receivingDocumentId + '\'' +
                 ", receivedAt=" + receivedAt +
                 ", orderId=" + '\'' + orderId + '\'' +
                 ", qaStatusId=" + '\'' + qaStatusId + '\'' +

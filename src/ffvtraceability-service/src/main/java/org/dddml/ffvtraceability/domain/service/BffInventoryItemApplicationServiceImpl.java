@@ -1,6 +1,5 @@
 package org.dddml.ffvtraceability.domain.service;
 
-import org.dddml.ffvtraceability.domain.BffRawItemInventoryDetailGroupDto;
 import org.dddml.ffvtraceability.domain.BffRawItemInventoryGroupDto;
 import org.dddml.ffvtraceability.domain.BffRawItemInventoryItemDto;
 import org.dddml.ffvtraceability.domain.BffWipInventoryGroupDto;
@@ -11,6 +10,8 @@ import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.time.ZoneOffset;
 
 import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.PRODUCT_TYPES_WIP;
 
@@ -45,9 +46,18 @@ public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemA
 
     @Override
     public Page<BffRawItemInventoryItemDto> when(BffInventoryItemServiceCommands.GetRawItemInventoryItems c) {
-        return PageUtils.toPage(
+        Page<BffRawItemInventoryItemDto> page = PageUtils.toPage(
                 bffInventoryItemRepository.findRawItemInventoryItems(PageRequest.of(c.getPage(), c.getSize()),
                         c.getProductId(), c.getSupplierId(), c.getFacilityId()),
                 bffInventoryItemMapper::toBffRawItemInventoryItemDto);
+        page.getContent().forEach(item -> {
+            bffInventoryItemRepository.getInventoryItemReceiving(item.getProductId(), item.getLotId()).ifPresent(receiving -> {
+                item.setReceivedAt(receiving.getReceivedAt().atOffset(ZoneOffset.UTC));
+                item.setOrderId(receiving.getOrderId());
+                item.setQaStatusId(receiving.getQaStatusId());
+                item.setReceivingDocumentId(receiving.getReceivingDocumentId());
+            });
+        });
+        return page;
     }
 }

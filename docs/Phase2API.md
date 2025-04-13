@@ -486,8 +486,13 @@ curl -X 'GET' \
 {
   "content": [
     {
+      "productId": "14AG8L4GM6EKAWK277",
+      "lotId": "14AMK06WKP804F2VN0",
       "lotNo": "Lot No3",
-      "receivedAt": "2025-04-13T02:59:19.746984Z",
+      "receivingDocumentId": "RC2025040100002",
+      "receivedAt": "2025-03-31T21:53:08.842486Z",
+      "orderId": "blueforcepo1",
+      "qaStatusId": "REJECTED",
       "locationCode": "blureforcewh11",
       "quantityOnHandTotal": 400,
       "quantityUomId": "quantityUomId",
@@ -495,8 +500,13 @@ curl -X 'GET' \
       "caseUomId": "caseUomId1"
     },
     {
+      "productId": "14AG8L4GM6EKAWK277",
+      "lotId": "14AGPQ39F501D6RAZD",
       "lotNo": "Lot No1",
-      "receivedAt": "2025-04-10T08:57:34Z",
+      "receivingDocumentId": "RC2025040100001",
+      "receivedAt": "2025-03-31T21:46:13.509342Z",
+      "orderId": "blueforcepo1",
+      "qaStatusId": "APPROVED",
       "locationCode": "13LNXR6X497W03AP81_DEFAULT",
       "quantityOnHandTotal": 999,
       "quantityUomId": "quantityUomId",

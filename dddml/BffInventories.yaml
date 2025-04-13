@@ -68,9 +68,13 @@ valueObjects:
       JpaProjectionPropertyTypes:
         ReceivedAt: java.time.Instant
     properties:
+      ProductId:
+        type: id
+      LotId:
+        type: id
       LotNo:
         type: id
-      ReceivingRecord:
+      ReceivingDocumentId:
         type: id
       ReceivedAt:
         type: date-time

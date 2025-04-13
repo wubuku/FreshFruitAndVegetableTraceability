@@ -9,9 +9,13 @@ import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
 
 public interface BffRawItemInventoryItemProjection {
+    String getProductId();
+
+    String getLotId();
+
     String getLotNo();
 
-    String getReceivingRecord();
+    String getReceivingDocumentId();
 
     java.time.Instant getReceivedAt();
     String getOrderId();

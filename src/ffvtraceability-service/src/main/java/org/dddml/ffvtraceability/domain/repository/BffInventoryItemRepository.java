@@ -7,6 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.util.Optional;
+
 public interface BffInventoryItemRepository extends JpaRepository<AbstractInventoryItemState.SimpleInventoryItemState, String> {
 
     @Query(value = """
@@ -112,6 +116,8 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
 
     @Query(value = """
             SELECT
+                i.product_id AS productId,
+                i.lot_id AS lotId,
                 i.inventory_item_id AS inventoryItemId,
                 l.internal_id AS lotNo,
                 p.quantity_uom_id AS quantityUomId,
@@ -145,6 +151,34 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                                                                       @Param("productId") String productId,
                                                                       @Param("supplierId") String supplierId,
                                                                       @Param("facilityId") String facilityId);
+
+    @Query(value = """
+              SELECT
+              s.primary_order_id AS orderId,
+              qi.status_id AS qaStatusId,
+              sr.datetime_received AS receivedAt,
+              sr.shipment_id AS receivingDocumentId
+              FROM shipment_receipt sr
+              LEFT JOIN shipment s ON sr.shipment_id=s.shipment_id
+              LEFT JOIN qa_inspection qi ON qi.receipt_id=sr.receipt_id
+              WHERE sr.product_id = :productId
+              AND sr.lot_id = :lotId
+              ORDER BY sr.datetime_received DESC LIMIT 1
+            """, nativeQuery = true)
+    Optional<BffInventoryItemReceivingProjection> getInventoryItemReceiving(@Param("productId") String productId,
+                                                                            @Param("lotId") String lotId);
+
+    interface BffInventoryItemReceivingProjection {
+
+        Instant getReceivedAt();
+
+        String getQaStatusId();
+
+        String getOrderId();
+
+        String getReceivingDocumentId();
+    }
+
     /*@Query(value = """
             SELECT
             i.inventory_item_id as inventoryItemId,
