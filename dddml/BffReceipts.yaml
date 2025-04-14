@@ -411,11 +411,15 @@ services:
             type: id
           ReceiptId:
             type: id-long
+          ProductId:
+            type: id
           DestinationFacilityId:
             # 只有当收货单的只存在一个行项（当前行项）时，才允许修改 DestinationFacilityId？
             # 如果收货单存在多个行项，如果试图修改 DestinationFacilityId，则报错（or 忽略？）。
             type: id
           LotId:
+            type: id
+          LotNo:
             type: id
           LocationSeqId:
             type: id-long

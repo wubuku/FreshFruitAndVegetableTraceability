@@ -546,6 +546,19 @@ public class BffReceivingServiceCommands {
         }
 
         /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
          * Destination Facility Id
          */
         private String destinationFacilityId;
@@ -569,6 +582,19 @@ public class BffReceivingServiceCommands {
 
         public void setLotId(String lotId) {
             this.lotId = lotId;
+        }
+
+        /**
+         * Lot No
+         */
+        private String lotNo;
+
+        public String getLotNo() {
+            return lotNo;
+        }
+
+        public void setLotNo(String lotNo) {
+            this.lotNo = lotNo;
         }
 
         /**

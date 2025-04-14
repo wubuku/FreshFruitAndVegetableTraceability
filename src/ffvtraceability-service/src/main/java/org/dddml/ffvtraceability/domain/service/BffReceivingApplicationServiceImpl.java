@@ -287,6 +287,14 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         return bffReceivingMapper.toBffReceivingItemDto(projection);
     }
 
+    private String getLotId(String supplierId, String productId, String lotNo, String operatorId, OffsetDateTime now) {
+        BffLotDto lotDto = new BffLotDto();
+        lotDto.setSupplierId(supplierId);
+        lotDto.setProductId(productId);
+        lotDto.setInternalId(lotNo);
+        return bffLotService.createLot(lotDto, now == null ? OffsetDateTime.now() : now, operatorId);
+    }
+
     @Override
     @Transactional
     public String when(BffReceivingServiceCommands.CreateReceivingDocument c) {
@@ -326,12 +334,12 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 createShipmentReceipt.setShipmentId(createShipment.getShipmentId());
                 createShipmentReceipt.setProductId(receivingItem.getProductId());
                 //在这里获取批次号
-                BffLotDto lotDto = new BffLotDto();
-                lotDto.setSupplierId(supplierId);
-                lotDto.setProductId(receivingItem.getProductId());
-                lotDto.setInternalId(receivingItem.getLotNo());
-                String lotId = bffLotService.createLot(lotDto, OffsetDateTime.now(), c.getRequesterId());
-                createShipmentReceipt.setLotId(lotId);
+//                BffLotDto lotDto = new BffLotDto();
+//                lotDto.setSupplierId(supplierId);
+//                lotDto.setProductId(receivingItem.getProductId());
+//                lotDto.setInternalId(receivingItem.getLotNo());
+//                String lotId = bffLotService.createLot(lotDto, OffsetDateTime.now(), c.getRequesterId());
+                createShipmentReceipt.setLotId(getLotId(supplierId, receivingItem.getProductId(), receivingItem.getLotNo(), c.getRequesterId(), OffsetDateTime.now()));
                 //如果没有指定货位，那么设置为指定仓库的默认货位，默认货位Id:[仓库Id_DEFAULT]
                 createShipmentReceipt.setLocationSeqId(receivingItem.getLocationSeqId() == null || receivingItem.getLocationSeqId().isBlank()
                         ? createShipment.getDestinationFacilityId() + "_DEFAULT" : receivingItem.getLocationSeqId());
@@ -442,6 +450,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                         }
                     } else {
                         BffReceivingServiceCommands.UpdateReceivingItem u = toUpdateReceivingItem(c, itemDto, shipmentId);
+                        u.setLotId(getLotId(receivingDocumentDto.getPartyIdFrom(), itemDto.getProductId(),
+                                itemDto.getLotNo(), c.getRequesterId(), OffsetDateTime.now()));
                         updateReceivingItem(receiptId, itemState, u, true);
                     }
                 }
@@ -794,7 +804,8 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
         // 设置行项数据
         createShipmentReceipt.setProductId(receivingItemDto.getProductId());
-        createShipmentReceipt.setLotId(receivingItemDto.getLotId());
+        //TODO
+        //createShipmentReceipt.setLotId(receivingItemDto.getLotId());
         createShipmentReceipt.setLocationSeqId(receivingItemDto.getLocationSeqId());
         createShipmentReceipt.setQuantityAccepted(receivingItemDto.getQuantityAccepted());
         createShipmentReceipt.setQuantityRejected(receivingItemDto.getQuantityRejected());
@@ -848,16 +859,17 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             throw new IllegalArgumentException("Receipt not found: " + receiptId);
         }
         if (!c.getDocumentId().equals(shipmentReceiptState.getShipmentId())) {
-            throw new IllegalArgumentException("Shipment (receiving document) Id mismatch: " + c.getDocumentId());
+            throw new IllegalArgumentException("Shipment (receiving document) id mismatch: " + c.getDocumentId());
+        }
+        ShipmentState shipmentState = shipmentApplicationService.get(shipmentReceiptState.getShipmentId());
+        if (shipmentState == null) {
+            throw new IllegalArgumentException("Shipment not found: " + shipmentReceiptState.getShipmentId());
         }
         //如果没有指定货位，那么设置为指定仓库的默认货位，默认货位Id:[仓库Id_DEFAULT]
         if (c.getLocationSeqId() == null || c.getLocationSeqId().isBlank()) {
-            ShipmentState shipmentState = shipmentApplicationService.get(shipmentReceiptState.getShipmentId());
-            if (shipmentState == null) {
-                throw new IllegalArgumentException("Shipment not found: " + shipmentReceiptState.getShipmentId());
-            }
             c.setLocationSeqId(shipmentState.getDestinationFacilityId() + "_DEFAULT");
         }
+        c.setLotId(getLotId(shipmentState.getPartyIdFrom(), c.getProductId(), c.getLotNo(), c.getRequesterId(), null));
         updateReceivingItem(receiptId, shipmentReceiptState, c, false);
     }
 
@@ -872,7 +884,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         mergePatchShipmentReceipt.setVersion(shipmentReceiptState.getVersion());
 
         // 设置更新的字段
-        //mergePatchShipmentReceipt.setProductId(item.getProductId()); // 不能更新 product Id？
+        mergePatchShipmentReceipt.setProductId(receivingItem.getProductId());
         mergePatchShipmentReceipt.setLotId(receivingItem.getLotId());
         mergePatchShipmentReceipt.setLocationSeqId(receivingItem.getLocationSeqId());
         mergePatchShipmentReceipt.setQuantityAccepted(receivingItem.getQuantityAccepted());
