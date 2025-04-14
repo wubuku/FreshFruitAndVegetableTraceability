@@ -34,6 +34,16 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         this.supplierId = supplierId;
     }
 
+    private String productId;
+
+    public String getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
     private java.math.BigDecimal quantity;
 
     public java.math.BigDecimal getQuantity() {
@@ -310,6 +320,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
         throwOnWrongEvent(e);
 
         this.setSupplierId(e.getSupplierId());
+        this.setProductId(e.getProductId());
         this.setQuantity(e.getQuantity());
         this.setExpirationDate(e.getExpirationDate());
         this.setLotTypeId(e.getLotTypeId());
@@ -337,6 +348,7 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
             return;
         }
         this.setSupplierId(s.getSupplierId());
+        this.setProductId(s.getProductId());
         this.setQuantity(s.getQuantity());
         this.setExpirationDate(s.getExpirationDate());
         this.setLotTypeId(s.getLotTypeId());
@@ -396,6 +408,13 @@ public abstract class AbstractLotState implements LotState.SqlLotState, Saveable
             }
         } else {
             this.setSupplierId(e.getSupplierId());
+        }
+        if (e.getProductId() == null) {
+            if (e.getIsPropertyProductIdRemoved() != null && e.getIsPropertyProductIdRemoved()) {
+                this.setProductId(null);
+            }
+        } else {
+            this.setProductId(e.getProductId());
         }
         if (e.getQuantity() == null) {
             if (e.getIsPropertyQuantityRemoved() != null && e.getIsPropertyQuantityRemoved()) {

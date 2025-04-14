@@ -11,6 +11,8 @@ import org.dddml.ffvtraceability.domain.*;
 public interface BffLotProjection {
     String getLotId();
 
+    String getProductId();
+
     String getSupplierId();
 
     String getGs1Batch();

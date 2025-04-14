@@ -4401,6 +4401,7 @@ public class M {
     public static final String[] propertyNames = new String[] {
             "lotId",
             "supplierId",
+            "productId",
             "quantity",
             "expirationDate",
             "lotTypeId",
@@ -4423,6 +4424,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
             "String",
             "String",
             "java.math.BigDecimal",
@@ -4462,6 +4464,8 @@ public class M {
         aliasMap.put("LotId", "lotId");
         aliasMap.put("supplierId", "supplierId");
         aliasMap.put("SupplierId", "supplierId");
+        aliasMap.put("productId", "productId");
+        aliasMap.put("ProductId", "productId");
         aliasMap.put("quantity", "quantity");
         aliasMap.put("Quantity", "quantity");
         aliasMap.put("expirationDate", "expirationDate");

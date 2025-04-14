@@ -322,15 +322,16 @@ curl -X 'POST' \
   -H 'X-TenantID: X' \
   -H 'Content-Type: application/json' \
   -d '{
-  "supplierId": "13HDSG4J6BKYPHJVZ0",
-  "internalId": "Lot No"
+  "supplierId": "13J38CJZZNEEVH3M80",
+  "internalId": "Lot No T",
+  "productId":"14AG8L4GM6EKAWK277"
 }'
 ```
 
 操作成功直接返回该批次号的Id，如：
 
 ```shell
-14AGQF7D2VWBEZH298
+"14EHM643F9U3FXJCR8"
 ```
 
 添加策略：
@@ -345,7 +346,7 @@ curl -X 'POST' \
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffLots?page=0&size=20&supplierId=13HDSG4J6BKYPHJVZ0' \
+  'http://localhost:8001/api/BffLots?page=0&size=20&productId=14AG8L4GM6EKAWK277&supplierId=13J38CJZZNEEVH3M80&keyword=Lot' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
@@ -356,19 +357,14 @@ curl -X 'GET' \
 {
   "content": [
     {
-      "lotId": "14AGPQ39F501D6RAZD",
-      "supplierId": "13HDSG4J6BKYPHJVZ0",
+      "lotId": "14EHM643F9U3FXJCR8",
+      "productId": "14AG8L4GM6EKAWK277",
+      "supplierId": "13J38CJZZNEEVH3M80",
       "active": "Y",
-      "internalId": "Lot No1"
-    },
-    {
-      "lotId": "14AGQF7D2VWBEZH298",
-      "supplierId": "13HDSG4J6BKYPHJVZ0",
-      "active": "Y",
-      "internalId": "Lot No"
+      "internalId": "Lot No T"
     }
   ],
-  "totalElements": 2,
+  "totalElements": 1,
   "size": 20,
   "number": 0,
   "totalPages": 1

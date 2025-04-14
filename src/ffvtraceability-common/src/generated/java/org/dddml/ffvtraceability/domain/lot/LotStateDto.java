@@ -38,6 +38,18 @@ public class LotStateDto {
         this.supplierId = supplierId;
     }
 
+    private String productId;
+
+    public String getProductId()
+    {
+        return this.productId;
+    }
+
+    public void setProductId(String productId)
+    {
+        this.productId = productId;
+    }
+
     private java.math.BigDecimal quantity;
 
     public java.math.BigDecimal getQuantity()
@@ -288,6 +300,9 @@ public class LotStateDto {
             }
             if (returnedFieldsContains("SupplierId")) {
                 dto.setSupplierId(state.getSupplierId());
+            }
+            if (returnedFieldsContains("ProductId")) {
+                dto.setProductId(state.getProductId());
             }
             if (returnedFieldsContains("Quantity")) {
                 dto.setQuantity(state.getQuantity());

@@ -175,6 +175,18 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
             this.supplierId = supplierId;
         }
 
+        private String productId;
+
+        public String getProductId()
+        {
+            return this.productId;
+        }
+
+        public void setProductId(String productId)
+        {
+            this.productId = productId;
+        }
+
         private java.math.BigDecimal quantity;
 
         public java.math.BigDecimal getQuantity()
@@ -411,6 +423,16 @@ public abstract class AbstractLotEvent extends AbstractEvent implements LotEvent
 
         public void setIsPropertySupplierIdRemoved(Boolean removed) {
             this.isPropertySupplierIdRemoved = removed;
+        }
+
+        private Boolean isPropertyProductIdRemoved;
+
+        public Boolean getIsPropertyProductIdRemoved() {
+            return this.isPropertyProductIdRemoved;
+        }
+
+        public void setIsPropertyProductIdRemoved(Boolean removed) {
+            this.isPropertyProductIdRemoved = removed;
         }
 
         private Boolean isPropertyQuantityRemoved;

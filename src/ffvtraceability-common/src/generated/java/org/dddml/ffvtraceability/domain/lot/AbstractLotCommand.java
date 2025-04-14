@@ -51,6 +51,18 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
             this.supplierId = supplierId;
         }
 
+        private String productId;
+
+        public String getProductId()
+        {
+            return this.productId;
+        }
+
+        public void setProductId(String productId)
+        {
+            this.productId = productId;
+        }
+
         private java.math.BigDecimal quantity;
 
         public java.math.BigDecimal getQuantity()
@@ -257,6 +269,18 @@ public abstract class AbstractLotCommand extends AbstractCommand implements LotC
         public void setIsPropertySupplierIdRemoved(Boolean removed)
         {
             this.isPropertySupplierIdRemoved = removed;
+        }
+
+        private Boolean isPropertyProductIdRemoved;
+
+        public Boolean getIsPropertyProductIdRemoved()
+        {
+            return this.isPropertyProductIdRemoved;
+        }
+
+        public void setIsPropertyProductIdRemoved(Boolean removed)
+        {
+            this.isPropertyProductIdRemoved = removed;
         }
 
         private Boolean isPropertyQuantityRemoved;

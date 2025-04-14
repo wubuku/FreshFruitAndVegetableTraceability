@@ -23,6 +23,18 @@ public class BffLotDto implements Serializable {
         this.lotId = lotId;
     }
 
+    private String productId;
+
+    public String getProductId()
+    {
+        return this.productId;
+    }
+
+    public void setProductId(String productId)
+    {
+        this.productId = productId;
+    }
+
     private String supplierId;
 
     public String getSupplierId()
@@ -178,9 +190,10 @@ public class BffLotDto implements Serializable {
     {
     }
 
-    public BffLotDto(String lotId, String supplierId, String gs1Batch, java.math.BigDecimal quantity, OffsetDateTime expirationDate, String active, String internalId, String gtin, String sourceFacilityId, String palletSscc, OffsetDateTime packDate, OffsetDateTime harvestDate, String serialNumber)
+    public BffLotDto(String lotId, String productId, String supplierId, String gs1Batch, java.math.BigDecimal quantity, OffsetDateTime expirationDate, String active, String internalId, String gtin, String sourceFacilityId, String palletSscc, OffsetDateTime packDate, OffsetDateTime harvestDate, String serialNumber)
     {
         this.lotId = lotId;
+        this.productId = productId;
         this.supplierId = supplierId;
         this.gs1Batch = gs1Batch;
         this.quantity = quantity;
@@ -208,6 +221,7 @@ public class BffLotDto implements Serializable {
         BffLotDto other = (BffLotDto)obj;
         return true 
             && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
+            && (productId == other.productId || (productId != null && productId.equals(other.productId)))
             && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
             && (gs1Batch == other.gs1Batch || (gs1Batch != null && gs1Batch.equals(other.gs1Batch)))
             && (quantity == other.quantity || (quantity != null && quantity.equals(other.quantity)))
@@ -229,6 +243,9 @@ public class BffLotDto implements Serializable {
         int hash = 0;
         if (this.lotId != null) {
             hash += 13 * this.lotId.hashCode();
+        }
+        if (this.productId != null) {
+            hash += 13 * this.productId.hashCode();
         }
         if (this.supplierId != null) {
             hash += 13 * this.supplierId.hashCode();
@@ -273,6 +290,7 @@ public class BffLotDto implements Serializable {
     public String toString() {
         return "BffLotDto{" +
                 "lotId=" + '\'' + lotId + '\'' +
+                ", productId=" + '\'' + productId + '\'' +
                 ", supplierId=" + '\'' + supplierId + '\'' +
                 ", gs1Batch=" + '\'' + gs1Batch + '\'' +
                 ", quantity=" + quantity +

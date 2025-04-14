@@ -328,6 +328,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 //在这里获取批次号
                 BffLotDto lotDto = new BffLotDto();
                 lotDto.setSupplierId(supplierId);
+                lotDto.setProductId(receivingItem.getProductId());
                 lotDto.setInternalId(receivingItem.getLotNo());
                 String lotId = bffLotService.createLot(lotDto, OffsetDateTime.now(), c.getRequesterId());
                 createShipmentReceipt.setLotId(lotId);

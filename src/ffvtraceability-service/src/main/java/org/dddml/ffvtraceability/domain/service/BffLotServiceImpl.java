@@ -38,7 +38,8 @@ public class BffLotServiceImpl implements BffLotService {
         if (lotDto.getInternalId() == null || lotDto.getInternalId().isBlank()) {
             throw new IllegalArgumentException("Lot no. can't be null");
         }
-        Optional<BffLotProjection> lotProjection = bffLotRepository.findLotBySupplierIdAndLotNo(lotDto.getInternalId(), lotDto.getSupplierId());
+        Optional<BffLotProjection> lotProjection = bffLotRepository.
+                findLotBySupplierIdAndLotNo(lotDto.getInternalId(), lotDto.getSupplierId(), lotDto.getProductId());
         if (lotProjection.isPresent()) {
             return lotProjection.get().getLotId();
         }
@@ -48,6 +49,7 @@ public class BffLotServiceImpl implements BffLotService {
         createLot.setCommandId(createLot.getLotId());
         createLot.setSupplierId(lotDto.getSupplierId());
         createLot.setInternalId(lotDto.getInternalId());
+        createLot.setProductId(lotDto.getProductId());
         createLot.setRequesterId(operator);
         lotApplicationService.when(createLot);
         return createLot.getLotId();

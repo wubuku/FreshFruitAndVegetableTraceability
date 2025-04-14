@@ -64,6 +64,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         LotEventId stateEventId = new LotEventId(c.getLotId(), c.getVersion());
         LotEvent.LotStateCreated e = newLotStateCreated(stateEventId);
         e.setSupplierId(c.getSupplierId());
+        e.setProductId(c.getProductId());
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
         e.setLotTypeId(c.getLotTypeId());
@@ -93,6 +94,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         LotEventId stateEventId = new LotEventId(c.getLotId(), c.getVersion());
         LotEvent.LotStateMergePatched e = newLotStateMergePatched(stateEventId);
         e.setSupplierId(c.getSupplierId());
+        e.setProductId(c.getProductId());
         e.setQuantity(c.getQuantity());
         e.setExpirationDate(c.getExpirationDate());
         e.setLotTypeId(c.getLotTypeId());
@@ -106,6 +108,7 @@ public abstract class AbstractLotAggregate extends AbstractAggregate implements 
         e.setHarvestDate(c.getHarvestDate());
         e.setSerialNumber(c.getSerialNumber());
         e.setIsPropertySupplierIdRemoved(c.getIsPropertySupplierIdRemoved());
+        e.setIsPropertyProductIdRemoved(c.getIsPropertyProductIdRemoved());
         e.setIsPropertyQuantityRemoved(c.getIsPropertyQuantityRemoved());
         e.setIsPropertyExpirationDateRemoved(c.getIsPropertyExpirationDateRemoved());
         e.setIsPropertyLotTypeIdRemoved(c.getIsPropertyLotTypeIdRemoved());

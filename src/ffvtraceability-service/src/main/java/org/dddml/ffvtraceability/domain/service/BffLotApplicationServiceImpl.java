@@ -51,9 +51,9 @@ public class BffLotApplicationServiceImpl implements BffLotApplicationService {
     @Transactional(readOnly = true)
     public Page<BffLotDto> when(BffLotServiceCommands.GetLots c) {
         return PageUtils.toPage(
-                bffLotRepository.findAllLots(PageRequest.of(c.getPage(), c.getSize()), c.getSupplierId(), c.getActive(), c.getKeyword()),
-                bffLotMapper::toBffLotDto
-        );
+                bffLotRepository.findAllLots(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getSupplierId(), c.getActive(), c.getProductId(), c.getKeyword()),
+                bffLotMapper::toBffLotDto);
     }
 
     @Override

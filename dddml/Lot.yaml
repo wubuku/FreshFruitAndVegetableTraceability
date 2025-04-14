@@ -11,6 +11,8 @@ aggregates:
     properties:
       SupplierId:
         type: id
+      ProductId:
+        type: id
       Quantity:
         type: fixed-point
       ExpirationDate:

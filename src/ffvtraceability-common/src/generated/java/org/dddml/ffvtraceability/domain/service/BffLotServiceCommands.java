@@ -34,6 +34,19 @@ public class BffLotServiceCommands {
         }
 
         /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
          * Supplier Id
          */
         private String supplierId;

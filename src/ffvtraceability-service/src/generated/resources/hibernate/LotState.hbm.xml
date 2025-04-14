@@ -16,6 +16,9 @@
     <property name="supplierId">
       <column name="supplier_id" sql-type="VARCHAR(20)" />
     </property>
+    <property name="productId">
+      <column name="product_id" sql-type="VARCHAR(20)" />
+    </property>
     <property name="quantity">
       <column name="quantity" sql-type="DECIMAL(18,6)" />
     </property>

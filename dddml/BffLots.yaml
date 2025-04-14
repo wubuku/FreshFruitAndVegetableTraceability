@@ -13,6 +13,8 @@ valueObjects:
     properties:
       LotId:
         type: id
+      ProductId:
+        type: id
       SupplierId:
         type: id
       Gs1Batch:
@@ -67,6 +69,8 @@ services:
         isQuery: true
         #httpMethod: GET
         parameters:
+          ProductId:
+            type: id
           SupplierId:
             type: id
           Active:

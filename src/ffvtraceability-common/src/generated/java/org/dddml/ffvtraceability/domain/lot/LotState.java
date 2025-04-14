@@ -21,6 +21,8 @@ public interface LotState
 
     String getSupplierId();
 
+    String getProductId();
+
     java.math.BigDecimal getQuantity();
 
     OffsetDateTime getExpirationDate();
@@ -63,6 +65,8 @@ public interface LotState
         void setLotId(String lotId);
 
         void setSupplierId(String supplierId);
+
+        void setProductId(String productId);
 
         void setQuantity(java.math.BigDecimal quantity);
 

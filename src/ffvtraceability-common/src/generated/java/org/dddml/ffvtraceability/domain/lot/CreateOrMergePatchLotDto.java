@@ -26,6 +26,21 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     }
 
     /**
+     * Product Id
+     */
+    private String productId;
+
+    public String getProductId()
+    {
+        return this.productId;
+    }
+
+    public void setProductId(String productId)
+    {
+        this.productId = productId;
+    }
+
+    /**
      * Quantity
      */
     private java.math.BigDecimal quantity;
@@ -230,6 +245,18 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
         this.isPropertySupplierIdRemoved = removed;
     }
 
+    private Boolean isPropertyProductIdRemoved;
+
+    public Boolean getIsPropertyProductIdRemoved()
+    {
+        return this.isPropertyProductIdRemoved;
+    }
+
+    public void setIsPropertyProductIdRemoved(Boolean removed)
+    {
+        this.isPropertyProductIdRemoved = removed;
+    }
+
     private Boolean isPropertyQuantityRemoved;
 
     public Boolean getIsPropertyQuantityRemoved()
@@ -378,6 +405,7 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     {
         ((AbstractLotCommandDto) this).copyTo(command);
         command.setSupplierId(this.getSupplierId());
+        command.setProductId(this.getProductId());
         command.setQuantity(this.getQuantity());
         command.setExpirationDate(this.getExpirationDate());
         command.setLotTypeId(this.getLotTypeId());
@@ -456,6 +484,7 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
     {
         copyTo((CreateOrMergePatchLot) command);
         command.setIsPropertySupplierIdRemoved(this.getIsPropertySupplierIdRemoved());
+        command.setIsPropertyProductIdRemoved(this.getIsPropertyProductIdRemoved());
         command.setIsPropertyQuantityRemoved(this.getIsPropertyQuantityRemoved());
         command.setIsPropertyExpirationDateRemoved(this.getIsPropertyExpirationDateRemoved());
         command.setIsPropertyLotTypeIdRemoved(this.getIsPropertyLotTypeIdRemoved());

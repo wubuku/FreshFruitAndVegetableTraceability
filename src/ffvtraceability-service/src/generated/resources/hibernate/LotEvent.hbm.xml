@@ -28,6 +28,9 @@
       <property name="supplierId">
         <column name="supplier_id" sql-type="VARCHAR(20)" />
       </property>
+      <property name="productId">
+        <column name="product_id" sql-type="VARCHAR(20)" />
+      </property>
       <property name="quantity">
         <column name="quantity" sql-type="DECIMAL(18,6)" />
       </property>
@@ -67,6 +70,7 @@
       <subclass name="AbstractLotEvent$SimpleLotStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractLotEvent$SimpleLotStateMergePatched" discriminator-value="MergePatched">
         <property name="isPropertySupplierIdRemoved" column="is_property_supplier_id_removed" />
+        <property name="isPropertyProductIdRemoved" column="is_property_product_id_removed" />
         <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed" />
         <property name="isPropertyExpirationDateRemoved" column="is_property_expiration_date_removed" />
         <property name="isPropertyLotTypeIdRemoved" column="is_property_lot_type_id_removed" />
