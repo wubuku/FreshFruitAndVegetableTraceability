@@ -557,6 +557,37 @@ curl -X 'GET' \
 }
 ```
 其中最重要的应该是 productId 和 ProductName.
+### 5.根据产品类型和产品名称/Product Number 关键字查询产品
+库存查询中，在过滤库存查询条件时，可以指定产品，而产品的选定是通过产品类型、产品名称或者Product Number的关键字来过滤的，特此提供该接口：
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffProducts/GetProductsByKeyword?page=0&size=2&productTypeId=RAW_MATERIAL&productKeyword=freshpoint' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+其中查询参数 productTypeId 为产品类型，productKeyword 是为产品名称或 Product Number 指定的关键字（支持模糊查询）。
+返回结果举例如下：
+```json
+{
+  "content": [
+    {
+      "productId": "14AG8L4GM6EKAWK277",
+      "productName": "productName",
+      "smallImageUrl": "smallImageUrl",
+      "mediumImageUrl": "mediumImageUrl",
+      "largeImageUrl": "largeImageUrl",
+      "productTypeId": "RAW_MATERIAL",
+      "internalId": "internalId1",
+      "quantityUomId": "quantityUomId"
+    }
+  ],
+  "totalElements": 1,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+其中较重要的属性为：productId,productName,smallImageUrl.
 
 ## 四、产品相关接口
 

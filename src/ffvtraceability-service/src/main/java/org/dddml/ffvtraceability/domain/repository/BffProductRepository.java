@@ -141,7 +141,6 @@ public interface BffProductRepository extends JpaRepository<AbstractProductState
                     gi.id_value
                 FROM good_identification gi
                 WHERE gi.good_identification_type_id = 'INTERNAL_ID'
-                AND (:keyword is null or gi.id_value like concat('%', :keyword, '%'))
             ) ii ON ii.product_id = p.product_id
             where p.product_type_id=:productTypeId
             and (:keyword is null or (p.product_name like concat('%', :keyword, '%') OR ii.id_value like concat('%', :keyword, '%')))
