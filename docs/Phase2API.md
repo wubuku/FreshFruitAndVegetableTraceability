@@ -471,13 +471,16 @@ facilityId 为仓库 Id.
 那这些库存按照批次号拆分之后成为库存明细。
 
 客户端需要传递上述查询获得结果列表，所选中的库存信息中的产品Id、供应商Id以及仓库Id来如下调用接口：
+
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffInventoryItems/RawItems/14AG8L4GM6EKAWK277/InventoryItems?page=0&size=20&supplierId=13HDSG4J6BKYPHJVZ0&facilityId=13LNXR6X497W03AP81' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 将会得到该库存的分批次列表：
+
 ```json
 {
   "content": [
@@ -516,18 +519,23 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+
 ### 4. 根据产品类型返回产品列表（支持分页）
+
 在进行Inventory Adjustment时，先选择产品类型得到产品下拉列表，由于使用原条件查询查询接口返回的信息太多（需要联合查询的表也多）所以响应速度肯定较慢，
-所以特别提供该接口.
+所以特别提供该接口。
 
 使用方式：
+
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffProducts/GetProductsForAdjustInventory?page=0&size=2&productTypeId=RAW_MATERIAL' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 返回结果举例如下：
+
 ```json
 {
   "content": [
@@ -552,17 +560,23 @@ curl -X 'GET' \
   "totalPages": 10
 }
 ```
+
 其中最重要的应该是 productId 和 ProductName.
+
 ### 5.根据产品类型和产品名称/Product Number 关键字查询产品（支持分页）
-库存查询中，在过滤库存查询条件时，可以指定产品，而产品的选定是通过产品类型、产品名称或者Product Number的关键字来过滤的，特此提供该接口：
+
+库存查询中，在过滤库存查询条件时，可以指定产品，而产品的选定是通过产品类型、产品名称或者Product Number的关键字来过滤的，特此提供该接口。
+
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffProducts/GetProductsByKeyword?page=0&size=2&productTypeId=RAW_MATERIAL&productKeyword=freshpoint' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 其中查询参数 productTypeId 为产品类型，productKeyword 是为产品名称或 Product Number 指定的关键字（支持模糊查询）。
 返回结果举例如下：
+
 ```json
 {
   "content": [
@@ -583,17 +597,22 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+
 其中较重要的属性为：productId,productName,smallImageUrl 以及 internalId（Product number）.
 
 ### 6. 根据半成品 Id 和 LotId 获取查询库存
+
 在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
+
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffInventoryItems/WIPs/GroupByProductAndLot?page=0&size=20&productId=141L0K7AH7DL6W4948&lotId=14AMK06WKP804F2VN0' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 返回结果举例如下：
+
 ```json
 {
   "content": [
@@ -620,15 +639,35 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+
+* inventoryItemId 库存Id
+* productId 产品Id
+* productName 产品名称
+* quantityUomId 产品主数量单位
+* quantityIncluded 一个包装(caseUomId)产品按主数量单位来计算的数量
+* caseUomId 包装单位
+* facilityId 仓库Id
+* facilityName 仓库名称
+* facilityInternalId 仓库内部标识（Warehouse Number）
+* lotId 批次Id
+* locationSeqId 仓位Id
+* locationName 仓位名称
+* locationCode 仓位内部标识(Location Number)
+* quantityOnHandTotal 库存数量
+
 ### 7. 根据原材料 Id 和 LotId 获取查询库存
+
 在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
+
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems/RawItems/GroupByProductAndLot?page=0&size=20&productId=14AG8L4GM6EKAWK277' \
+  'http://localhost:8001/api/BffInventoryItems/RawItems/GroupByProductAndLot?page=0&size=20&productId=14AG8L4GM6EKAWK277&lotId=14AGPQ39F501D6RAZD' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 返回结果举例如下：
+
 ```json
 {
   "content": [
@@ -668,7 +707,6 @@ curl -X 'GET' \
 
 ## 五、Customer 相关接口
 
-
 相比较 Vendor(Supplier)来说有如下变化（其实我不知道是否也要给 Customer 附带 Facilities）：
 
 * 类型从 SUPPLIER 变为 CUSTOMER
@@ -681,6 +719,7 @@ curl -X 'GET' \
 ### 1. 创建 Customer
 
 举例说明(添加一个 Customer,附带同时创建两个 Facilities)：
+
 ```shell
 curl -X 'POST' \
   'http://localhost:8001/api/BffCustomers' \
@@ -785,10 +824,13 @@ curl -X 'POST' \
   ]
 }'
 ```
+
 创建成功直接返回 Customer 的 Id:
+
 ```json
 "14DA853H1Z0ET6KUNZ"
 ```
+
 ### 2. 根据 Id 查询 Customer 详情
 
 ```shell
@@ -797,7 +839,9 @@ curl -X 'GET' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
 得到结果（举例）如下：
+
 ```json
 {
   "customerId": "14DA853H1Z0ET6KUNZ",
