@@ -1,0 +1,56 @@
+# 库存转移相关
+valueObjects:
+  BffInventoryTransferDto:
+    metadata:
+      JpaProjectionInterfaceName: BffInventoryTransferProjection
+      JpaProjectionPropertyTypes:
+        SendDate: java.time.Instant
+        ReceiveDate: java.time.Instant
+    properties:
+      InventoryTransferId:
+        type: id
+      StatusId:
+        type: id
+      InventoryItemId:
+        type: id
+      FacilityId:
+        type: id
+      LocationSeqId:
+        type: id
+      ContainerId:
+        type: id
+      FacilityIdTo:
+        type: id
+      LocationSeqIdTo:
+        type: id
+      ContainerIdTo:
+        type: id
+      ItemIssuanceId:
+        type: id
+      SendDate:
+        type: date-time
+      ReceiveDate:
+        type: date-time
+      Comments:
+        type: comment
+
+services:
+  BffInventoryTransferService:
+    restfulResourceName: BffInventoryTransfers
+    methods:
+      LocationAdjustment:
+        httpMethod: POST
+        restfulResourceName: "LocationAdjustment"
+        parameters:
+          InventoryItemId:
+            type: id
+          AdjustmentQuantity:
+            type: fixed-point
+          FacilityIdTo:
+            type: id
+          LocationSeqIdTo:
+            type: id
+          Comments:
+            type: description
+        result:
+          type: id # InventoryTransferId

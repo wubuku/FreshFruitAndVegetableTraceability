@@ -7,7 +7,7 @@ aggregates:
       StatusId:
         type: id
       InventoryItemId:
-        type: id
+        type: id-long
       FacilityId:
         type: id
       LocationSeqId:

@@ -29,7 +29,7 @@
         <column name="status_id" sql-type="VARCHAR(20)" />
       </property>
       <property name="inventoryItemId">
-        <column name="inventory_item_id" sql-type="VARCHAR(20)" />
+        <column name="inventory_item_id" sql-type="VARCHAR(60)" />
       </property>
       <property name="facilityId">
         <column name="facility_id" sql-type="VARCHAR(20)" />
