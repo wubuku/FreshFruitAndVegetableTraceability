@@ -110,6 +110,23 @@ public interface BffProductRepository extends JpaRepository<AbstractProductState
                                                @Param("productTypeId") String productTypeId,
                                                @Param("supplierId") String supplierId,
                                                @Param("active") String active);
+
+    @Query(value = """
+            SELECT
+            p.product_id as productId,
+            p.product_name as productName,
+            p.quantity_uom_id as quantityUomId,
+            p.small_image_url as smallImageUrl,
+            p.medium_image_url as mediumImageUrl,
+            p.large_image_url as largeImageUrl,
+            -- ii.id_value as internalId,
+            p.product_type_id as productTypeId
+            from product p
+            where p.product_type_id=:productTypeId
+            """, countQuery = """
+            """, nativeQuery = true)
+    Page<BffSimpleProductProjection> findAllSimpleProducts(Pageable pageable,
+                                                           @Param("productTypeId") String productTypeId);
     //String tenantId
     //todo AND p.tenant_id = :tenantId
     //todo WHERE p.product_type_id = 'RAW_MATERIAL' ??? 这个地方应该过滤出"原材料"类型的产品？

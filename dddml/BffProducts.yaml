@@ -88,9 +88,9 @@ valueObjects:
           # BoxWidth:
           #   type: fixed-point
           # BoxHeight:
-          #   type: fixed-point
-          # WeightUomId:
-          #   type: id
+        #   type: fixed-point
+        # WeightUomId:
+        #   type: id
         # BoxWeight:
         #   type: fixed-point
       # -------------------------------------------------------------------
@@ -126,6 +126,27 @@ valueObjects:
       DimensionsDescription:
         type: description
 
+  BffSimpleProductDto:
+    metadata:
+      JpaProjectionInterfaceName: BffSimpleProductProjection
+    properties:
+      ProductId:
+        type: id
+      ProductName:
+        type: name
+      SmallImageUrl:
+        type: url
+      MediumImageUrl:
+        type: url
+      LargeImageUrl:
+        type: url
+      ProductTypeId:
+        type: id
+      InternalId:
+        type: description
+      QuantityUomId:
+        type: id
+
 services:
   BffProductService:
     restfulResourceName: BffProducts
@@ -145,6 +166,20 @@ services:
             type: indicator
         result:
           itemType: BffProductDto
+
+      GetProductsForAdjustInventory:
+        restfulResourceName: GetProductsForAdjustInventory
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        parameters:
+          ProductTypeId:
+            type: id
+            optional: false
+        result:
+          itemType: BffSimpleProductDto
 
       GetProduct:
         #根据 Id 查询产品的详细信息

@@ -74,6 +74,41 @@ public class BffProductServiceCommands {
 
     }
 
+    public static class GetProductsForAdjustInventory extends org.dddml.ffvtraceability.domain.AbstractCommand {
+        private Integer page;
+        private Integer size;
+
+        public Integer getPage() {
+            return page;
+        }
+
+        public void setPage(Integer page) {
+            this.page = page;
+        }
+
+        public Integer getSize() {
+            return size;
+        }
+
+        public void setSize(Integer size) {
+            this.size = size;
+        }
+
+        /**
+         * Product Type Id
+         */
+        private String productTypeId;
+
+        public String getProductTypeId() {
+            return productTypeId;
+        }
+
+        public void setProductTypeId(String productTypeId) {
+            this.productTypeId = productTypeId;
+        }
+
+    }
+
     public static class GetProduct extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**

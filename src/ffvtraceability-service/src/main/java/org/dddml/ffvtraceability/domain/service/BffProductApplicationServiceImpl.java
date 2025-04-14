@@ -2,6 +2,7 @@ package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffProductDto;
 import org.dddml.ffvtraceability.domain.BffShipmentBoxTypeDto;
+import org.dddml.ffvtraceability.domain.BffSimpleProductDto;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.mapper.BffProductMapper;
 import org.dddml.ffvtraceability.domain.mapper.BffShipmentBoxTypeMapper;
@@ -74,6 +75,13 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
         return PageUtils.toPage(bffProductRepository.findAllProducts(PageRequest.of(c.getPage(), c.getSize()),
                         c.getProductTypeId(), c.getSupplierId(), c.getActive()),
                 bffProductMapper::toBffProductDto);
+    }
+
+    @Override
+    public Page<BffSimpleProductDto> when(BffProductServiceCommands.GetProductsForAdjustInventory c) {
+        return PageUtils.toPage(bffProductRepository.findAllSimpleProducts(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductTypeId()),
+                bffProductMapper::toBffSimpleProductDto);
     }
 
     @Override

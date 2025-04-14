@@ -1,9 +1,11 @@
 package org.dddml.ffvtraceability.domain.mapper;
 
 import org.dddml.ffvtraceability.domain.BffProductDto;
+import org.dddml.ffvtraceability.domain.BffSimpleProductDto;
 import org.dddml.ffvtraceability.domain.product.AbstractProductCommand;
 import org.dddml.ffvtraceability.domain.product.ProductState;
 import org.dddml.ffvtraceability.domain.repository.BffProductProjection;
+import org.dddml.ffvtraceability.domain.repository.BffSimpleProductProjection;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring"//,
@@ -18,4 +20,6 @@ public interface BffProductMapper {
     AbstractProductCommand.SimpleCreateProduct toCreateProduct(BffProductDto bffProductDto);
 
     AbstractProductCommand.SimpleMergePatchProduct toMergePatchProduct(BffProductDto bffProductDto);
+
+    BffSimpleProductDto toBffSimpleProductDto(BffSimpleProductProjection bffSimpleProductProjection);
 }

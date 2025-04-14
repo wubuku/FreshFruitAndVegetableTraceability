@@ -520,8 +520,43 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+### 4. 根据产品类型返回产品列表（支持分页）
+在进行Inventory Adjustment时，先选择产品类型得到产品下拉列表，由于使用原条件查询查询接口返回的信息太多（需要联合查询的表也多）所以响应速度肯定较慢，
+所以特别提供该接口.
 
-
+使用方式：
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffProducts/GetProductsForAdjustInventory?page=0&size=2&productTypeId=RAW_MATERIAL' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+返回结果举例如下：
+```json
+{
+  "content": [
+    {
+      "productId": "13HDUP50Y9WHFMAMKP",
+      "productName": "i25031701",
+      "smallImageUrl": "f19bae8f-dbf4-4722-a565-9a63ae9e5f8f",
+      "productTypeId": "RAW_MATERIAL",
+      "quantityUomId": "KG"
+    },
+    {
+      "productId": "13L16H5CJJCA0JBUCQ",
+      "productName": "i25032001",
+      "smallImageUrl": "dda1494f-7224-4e4f-b7b3-6c7b49d3a9bc",
+      "productTypeId": "RAW_MATERIAL",
+      "quantityUomId": "KG"
+    }
+  ],
+  "totalElements": 20,
+  "size": 2,
+  "number": 0,
+  "totalPages": 10
+}
+```
+其中最重要的应该是 productId 和 ProductName.
 
 ## 四、产品相关接口
 

@@ -51,6 +51,22 @@ public class BffProductServiceResource {
         
     }
 
+    @GetMapping("GetProductsForAdjustInventory")
+    public Page<BffSimpleProductDto> getProductsForAdjustInventory(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productTypeId") String productTypeId
+    ) {
+        BffProductServiceCommands.GetProductsForAdjustInventory getProductsForAdjustInventory = new BffProductServiceCommands.GetProductsForAdjustInventory();
+        getProductsForAdjustInventory.setPage(page);
+        getProductsForAdjustInventory.setSize(size);
+        getProductsForAdjustInventory.setProductTypeId(productTypeId);
+        
+        getProductsForAdjustInventory.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffProductApplicationService.when(getProductsForAdjustInventory);
+        
+    }
+
     @GetMapping("{productId}")
     public BffProductDto getProduct(
         @PathVariable("productId") String productId
