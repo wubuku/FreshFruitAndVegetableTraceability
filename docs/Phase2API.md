@@ -694,6 +694,35 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+### 8. 库存调整-位置调整
+对应手持终端的 "Location adjustment".
+```shell
+curl -X 'POST' \
+  'http://localhost:8001/api/BffInventoryTransfers/LocationAdjustment' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inventoryItemId": "daa0afcf71a678c53248843173cdecf7",
+  "adjustmentQuantity": 30,
+  "facilityIdTo": "13LN5R1QKHUWBKN3PS",
+  "locationSeqIdTo": "13LN6K2WGW493HJ9SF",
+  "comments": "comments"
+}'
+```
+* inventoryItemId:所选中库存的Id;
+* adjustmentQuantity:转移数量，必须大于0;
+* facilityIdTo:目的仓库Id;
+* locationSeqIdTo:目的仓位Id;
+* comments:备注信息
+
+
+
+
+操作成功后直接返回库存转移操作(Inventory Transfer)的Id:
+```json
+"14ENT01XAAVDQ6ZPDY"
+```
 
 ## 四、产品相关接口
 
