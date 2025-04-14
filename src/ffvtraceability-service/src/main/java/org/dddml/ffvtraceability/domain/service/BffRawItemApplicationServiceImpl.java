@@ -261,7 +261,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         //mergePatchProduct.setCertificationCodes(rawItem.getCertificationCodes());
         mergePatchProduct.setShelfLifeDescription(rawItem.getShelfLifeDescription());
         mergePatchProduct.setHandlingInstructions(rawItem.getHandlingInstructions());
-        //mergePatchProduct.setStorageConditions(rawItem.getStorageConditions());
+        mergePatchProduct.setStorageConditions(rawItem.getStorageConditions());
         mergePatchProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
 
         if (rawItem.getCaseUomId() != null) {
