@@ -202,11 +202,23 @@ public class InventoryItemDetailAttributes implements Serializable {
         this.description = description;
     }
 
+    private String inventoryTransferId;
+
+    public String getInventoryTransferId()
+    {
+        return this.inventoryTransferId;
+    }
+
+    public void setInventoryTransferId(String inventoryTransferId)
+    {
+        this.inventoryTransferId = inventoryTransferId;
+    }
+
     public InventoryItemDetailAttributes()
     {
     }
 
-    public InventoryItemDetailAttributes(OffsetDateTime effectiveDate, String orderId, String orderItemSeqId, String shipGroupSeqId, String shipmentId, String shipmentItemSeqId, String returnId, String returnItemSeqId, String workEffortId, String fixedAssetId, String maintHistSeqId, String itemIssuanceId, String receiptId, String physicalInventoryId, String reasonEnumId, String description)
+    public InventoryItemDetailAttributes(OffsetDateTime effectiveDate, String orderId, String orderItemSeqId, String shipGroupSeqId, String shipmentId, String shipmentItemSeqId, String returnId, String returnItemSeqId, String workEffortId, String fixedAssetId, String maintHistSeqId, String itemIssuanceId, String receiptId, String physicalInventoryId, String reasonEnumId, String description, String inventoryTransferId)
     {
         this.effectiveDate = effectiveDate;
         this.orderId = orderId;
@@ -224,6 +236,7 @@ public class InventoryItemDetailAttributes implements Serializable {
         this.physicalInventoryId = physicalInventoryId;
         this.reasonEnumId = reasonEnumId;
         this.description = description;
+        this.inventoryTransferId = inventoryTransferId;
     }
 
     @Override
@@ -254,6 +267,7 @@ public class InventoryItemDetailAttributes implements Serializable {
             && (physicalInventoryId == other.physicalInventoryId || (physicalInventoryId != null && physicalInventoryId.equals(other.physicalInventoryId)))
             && (reasonEnumId == other.reasonEnumId || (reasonEnumId != null && reasonEnumId.equals(other.reasonEnumId)))
             && (description == other.description || (description != null && description.equals(other.description)))
+            && (inventoryTransferId == other.inventoryTransferId || (inventoryTransferId != null && inventoryTransferId.equals(other.inventoryTransferId)))
             ;
     }
 
@@ -309,6 +323,9 @@ public class InventoryItemDetailAttributes implements Serializable {
         if (this.description != null) {
             hash += 13 * this.description.hashCode();
         }
+        if (this.inventoryTransferId != null) {
+            hash += 13 * this.inventoryTransferId.hashCode();
+        }
         return hash;
     }
 
@@ -331,6 +348,7 @@ public class InventoryItemDetailAttributes implements Serializable {
                 ", physicalInventoryId=" + '\'' + physicalInventoryId + '\'' +
                 ", reasonEnumId=" + '\'' + reasonEnumId + '\'' +
                 ", description=" + '\'' + description + '\'' +
+                ", inventoryTransferId=" + '\'' + inventoryTransferId + '\'' +
                 '}';
     }
 

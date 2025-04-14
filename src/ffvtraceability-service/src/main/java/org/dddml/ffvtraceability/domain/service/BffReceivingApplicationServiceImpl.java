@@ -554,6 +554,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             InventoryItemDetailAttributes inventoryItemDetailAttributes = new InventoryItemDetailAttributes();
             inventoryItemDetailAttributes.setReceiptId(shipmentReceipt.getReceiptId());
             inventoryItemDetailAttributes.setShipmentId(shipmentId);
+            //inventoryItemDetailAttributes.setReasonEnumId("RECEIVING");
 
             recordInventoryEntry.setQuantityOnHandDiff(shipmentReceipt.getQuantityAccepted());
 
