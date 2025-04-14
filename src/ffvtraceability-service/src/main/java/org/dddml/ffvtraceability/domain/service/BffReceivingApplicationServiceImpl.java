@@ -450,6 +450,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                         }
                     } else {
                         BffReceivingServiceCommands.UpdateReceivingItem u = toUpdateReceivingItem(c, itemDto, shipmentId);
+                        //前端直接传输LotNo过来，后端根据供应商，产品Id,LotNo,获取LotId，如果有直接返回，如果没有那么创建并返回
                         u.setLotId(getLotId(receivingDocumentDto.getPartyIdFrom(), itemDto.getProductId(),
                                 itemDto.getLotNo(), c.getRequesterId(), OffsetDateTime.now()));
                         updateReceivingItem(receiptId, itemState, u, true);
@@ -869,6 +870,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (c.getLocationSeqId() == null || c.getLocationSeqId().isBlank()) {
             c.setLocationSeqId(shipmentState.getDestinationFacilityId() + "_DEFAULT");
         }
+        //前端直接传输LotNo过来，后端根据供应商，产品Id,LotNo,获取LotId，如果有直接返回，如果没有那么创建并返回
         c.setLotId(getLotId(shipmentState.getPartyIdFrom(), c.getProductId(), c.getLotNo(), c.getRequesterId(), null));
         updateReceivingItem(receiptId, shipmentReceiptState, c, false);
     }
