@@ -16,6 +16,8 @@ public interface BffInventoryItemApplicationService {
 
     Page<BffWipInventoryGroupDto> when(BffInventoryItemServiceCommands.GetWipInventories c);
 
+    Page<BffInventoryItemDto> when(BffInventoryItemServiceCommands.GetWipInventoriesByProductAndLot c);
+
 
 }
 

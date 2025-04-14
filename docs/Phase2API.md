@@ -557,7 +557,7 @@ curl -X 'GET' \
 }
 ```
 其中最重要的应该是 productId 和 ProductName.
-### 5.根据产品类型和产品名称/Product Number 关键字查询产品
+### 5.根据产品类型和产品名称/Product Number 关键字查询产品（支持分页）
 库存查询中，在过滤库存查询条件时，可以指定产品，而产品的选定是通过产品类型、产品名称或者Product Number的关键字来过滤的，特此提供该接口：
 ```shell
 curl -X 'GET' \
@@ -588,6 +588,42 @@ curl -X 'GET' \
 }
 ```
 其中较重要的属性为：productId,productName,smallImageUrl 以及 internalId（Product number）.
+
+### 6. 根据半成品 Id 和 LotId 获取查询库存
+在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffInventoryItems/WIPs/GroupByProductAndLot?page=0&size=20&productId=141L0K7AH7DL6W4948&lotId=14AMK06WKP804F2VN0' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+返回结果举例如下：
+```json
+{
+  "content": [
+    {
+      "inventoryItemId": "54f91257311f3f3d44bcd89e4cdc5fc2",
+      "productId": "141L0K7AH7DL6W4948",
+      "productName": "freshpointitem15",
+      "quantityUomId": "KG",
+      "quantityIncluded": 10,
+      "caseUomId": "BOX",
+      "facilityId": "14DAZ36WRKMFF4VQR8",
+      "facilityName": "facilityNameX",
+      "facilityInternalId": "Facility Number K",
+      "lotId": "14AMK06WKP804F2VN0",
+      "locationSeqId": "13XM9019U6979XVY4U",
+      "locationName": "blueforce1",
+      "locationCode": "blureforcewh11",
+      "quantityOnHandTotal": 400
+    }
+  ],
+  "totalElements": 1,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
 
 ## 四、产品相关接口
 

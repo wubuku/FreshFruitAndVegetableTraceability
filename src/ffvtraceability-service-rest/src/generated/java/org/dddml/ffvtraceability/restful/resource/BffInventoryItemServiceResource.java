@@ -95,5 +95,23 @@ public class BffInventoryItemServiceResource {
         
     }
 
+    @GetMapping("WIPs/GroupByProductAndLot")
+    public Page<BffInventoryItemDto> getWipInventoriesByProductAndLot(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productId", required = false) String productId,
+        @RequestParam(value = "lotId", required = false) String lotId
+    ) {
+        BffInventoryItemServiceCommands.GetWipInventoriesByProductAndLot getWipInventoriesByProductAndLot = new BffInventoryItemServiceCommands.GetWipInventoriesByProductAndLot();
+        getWipInventoriesByProductAndLot.setPage(page);
+        getWipInventoriesByProductAndLot.setSize(size);
+        getWipInventoriesByProductAndLot.setProductId(productId);
+        getWipInventoriesByProductAndLot.setLotId(lotId);
+        
+        getWipInventoriesByProductAndLot.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getWipInventoriesByProductAndLot);
+        
+    }
+
 }
 

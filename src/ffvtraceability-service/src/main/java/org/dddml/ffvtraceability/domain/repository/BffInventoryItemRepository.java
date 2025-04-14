@@ -8,10 +8,49 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.Optional;
 
 public interface BffInventoryItemRepository extends JpaRepository<AbstractInventoryItemState.SimpleInventoryItemState, String> {
+
+    @Query(value = """
+            SELECT
+               i.inventory_item_id as inventoryItemId,
+               i.product_id as productId,
+               p.product_name as productName,
+               i.lot_id as lotId,
+               p.quantity_uom_id as quantityUomId,
+               p.quantity_included as quantityIncluded,
+               p.case_uom_id as caseUomId,
+               i.facility_id as facilityId,
+               f.facility_name as facilityName,
+               ii.id_value as facilityInternalId,
+               i.location_seq_id as locationSeqId,
+               fl.location_name as locationName,
+               fl.location_code as locationCode,
+               i.quantity_on_hand_total as quantityOnHandTotal
+            from inventory_item i
+            left join product p on i.product_id = p.product_id
+            left join facility f on i.facility_id = f.facility_id
+            left join facility_location fl on i.location_seq_id = fl.location_seq_id
+            LEFT JOIN (
+                SELECT
+                    fi.facility_id,
+                    fi.id_value
+                FROM facility_identification fi
+                WHERE fi.facility_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.facility_id = f.facility_id
+            WHERE (:productId is null or i.product_id = :productId)
+                 AND (:lotId is null or i.lot_id = :lotId)
+            """, countQuery = """
+            SELECT COUNT(*)
+            FROM inventory_item i
+            WHERE (:productId is null or i.product_id = :productId)
+                 AND (:lotId is null or i.lot_id = :lotId)
+            """, nativeQuery = true)
+    Page<BffInventoryItemProjection> findWipInventories(Pageable pageable,
+                                                     @Param("productId") String productId,
+                                                     @Param("lotId") String lotId);
+
 
     @Query(value = """
             SELECT

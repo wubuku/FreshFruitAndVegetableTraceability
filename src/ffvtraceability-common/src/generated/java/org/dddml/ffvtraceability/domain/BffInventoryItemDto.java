@@ -46,28 +46,43 @@ public class BffInventoryItemDto implements Serializable {
         this.productName = productName;
     }
 
-    private String supplierId;
+    private String quantityUomId;
 
-    public String getSupplierId()
+    public String getQuantityUomId()
     {
-        return this.supplierId;
+        return this.quantityUomId;
     }
 
-    public void setSupplierId(String supplierId)
+    public void setQuantityUomId(String quantityUomId)
     {
-        this.supplierId = supplierId;
+        this.quantityUomId = quantityUomId;
     }
 
-    private String supplierShortName;
+    /**
+     * If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+     */
+    private java.math.BigDecimal quantityIncluded;
 
-    public String getSupplierShortName()
+    public java.math.BigDecimal getQuantityIncluded()
     {
-        return this.supplierShortName;
+        return this.quantityIncluded;
     }
 
-    public void setSupplierShortName(String supplierShortName)
+    public void setQuantityIncluded(java.math.BigDecimal quantityIncluded)
     {
-        this.supplierShortName = supplierShortName;
+        this.quantityIncluded = quantityIncluded;
+    }
+
+    private String caseUomId;
+
+    public String getCaseUomId()
+    {
+        return this.caseUomId;
+    }
+
+    public void setCaseUomId(String caseUomId)
+    {
+        this.caseUomId = caseUomId;
     }
 
     private String facilityId;
@@ -80,6 +95,30 @@ public class BffInventoryItemDto implements Serializable {
     public void setFacilityId(String facilityId)
     {
         this.facilityId = facilityId;
+    }
+
+    private String facilityName;
+
+    public String getFacilityName()
+    {
+        return this.facilityName;
+    }
+
+    public void setFacilityName(String facilityName)
+    {
+        this.facilityName = facilityName;
+    }
+
+    private String facilityInternalId;
+
+    public String getFacilityInternalId()
+    {
+        return this.facilityInternalId;
+    }
+
+    public void setFacilityInternalId(String facilityInternalId)
+    {
+        this.facilityInternalId = facilityInternalId;
     }
 
     private String lotId;
@@ -104,6 +143,30 @@ public class BffInventoryItemDto implements Serializable {
     public void setLocationSeqId(String locationSeqId)
     {
         this.locationSeqId = locationSeqId;
+    }
+
+    private String locationName;
+
+    public String getLocationName()
+    {
+        return this.locationName;
+    }
+
+    public void setLocationName(String locationName)
+    {
+        this.locationName = locationName;
+    }
+
+    private String locationCode;
+
+    public String getLocationCode()
+    {
+        return this.locationCode;
+    }
+
+    public void setLocationCode(String locationCode)
+    {
+        this.locationCode = locationCode;
     }
 
     private String comments;
@@ -156,16 +219,21 @@ public class BffInventoryItemDto implements Serializable {
     {
     }
 
-    public BffInventoryItemDto(String inventoryItemId, String productId, String productName, String supplierId, String supplierShortName, String facilityId, String lotId, String locationSeqId, String comments, java.math.BigDecimal quantityOnHandTotal, OffsetDateTime createdAt, java.util.List<BffInventoryItemDetailDto> details)
+    public BffInventoryItemDto(String inventoryItemId, String productId, String productName, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId, String facilityId, String facilityName, String facilityInternalId, String lotId, String locationSeqId, String locationName, String locationCode, String comments, java.math.BigDecimal quantityOnHandTotal, OffsetDateTime createdAt, java.util.List<BffInventoryItemDetailDto> details)
     {
         this.inventoryItemId = inventoryItemId;
         this.productId = productId;
         this.productName = productName;
-        this.supplierId = supplierId;
-        this.supplierShortName = supplierShortName;
+        this.quantityUomId = quantityUomId;
+        this.quantityIncluded = quantityIncluded;
+        this.caseUomId = caseUomId;
         this.facilityId = facilityId;
+        this.facilityName = facilityName;
+        this.facilityInternalId = facilityInternalId;
         this.lotId = lotId;
         this.locationSeqId = locationSeqId;
+        this.locationName = locationName;
+        this.locationCode = locationCode;
         this.comments = comments;
         this.quantityOnHandTotal = quantityOnHandTotal;
         this.createdAt = createdAt;
@@ -187,11 +255,16 @@ public class BffInventoryItemDto implements Serializable {
             && (inventoryItemId == other.inventoryItemId || (inventoryItemId != null && inventoryItemId.equals(other.inventoryItemId)))
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
             && (productName == other.productName || (productName != null && productName.equals(other.productName)))
-            && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
-            && (supplierShortName == other.supplierShortName || (supplierShortName != null && supplierShortName.equals(other.supplierShortName)))
+            && (quantityUomId == other.quantityUomId || (quantityUomId != null && quantityUomId.equals(other.quantityUomId)))
+            && (quantityIncluded == other.quantityIncluded || (quantityIncluded != null && quantityIncluded.equals(other.quantityIncluded)))
+            && (caseUomId == other.caseUomId || (caseUomId != null && caseUomId.equals(other.caseUomId)))
             && (facilityId == other.facilityId || (facilityId != null && facilityId.equals(other.facilityId)))
+            && (facilityName == other.facilityName || (facilityName != null && facilityName.equals(other.facilityName)))
+            && (facilityInternalId == other.facilityInternalId || (facilityInternalId != null && facilityInternalId.equals(other.facilityInternalId)))
             && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
             && (locationSeqId == other.locationSeqId || (locationSeqId != null && locationSeqId.equals(other.locationSeqId)))
+            && (locationName == other.locationName || (locationName != null && locationName.equals(other.locationName)))
+            && (locationCode == other.locationCode || (locationCode != null && locationCode.equals(other.locationCode)))
             && (comments == other.comments || (comments != null && comments.equals(other.comments)))
             && (quantityOnHandTotal == other.quantityOnHandTotal || (quantityOnHandTotal != null && quantityOnHandTotal.equals(other.quantityOnHandTotal)))
             && (createdAt == other.createdAt || (createdAt != null && createdAt.equals(other.createdAt)))
@@ -212,20 +285,35 @@ public class BffInventoryItemDto implements Serializable {
         if (this.productName != null) {
             hash += 13 * this.productName.hashCode();
         }
-        if (this.supplierId != null) {
-            hash += 13 * this.supplierId.hashCode();
+        if (this.quantityUomId != null) {
+            hash += 13 * this.quantityUomId.hashCode();
         }
-        if (this.supplierShortName != null) {
-            hash += 13 * this.supplierShortName.hashCode();
+        if (this.quantityIncluded != null) {
+            hash += 13 * this.quantityIncluded.hashCode();
+        }
+        if (this.caseUomId != null) {
+            hash += 13 * this.caseUomId.hashCode();
         }
         if (this.facilityId != null) {
             hash += 13 * this.facilityId.hashCode();
+        }
+        if (this.facilityName != null) {
+            hash += 13 * this.facilityName.hashCode();
+        }
+        if (this.facilityInternalId != null) {
+            hash += 13 * this.facilityInternalId.hashCode();
         }
         if (this.lotId != null) {
             hash += 13 * this.lotId.hashCode();
         }
         if (this.locationSeqId != null) {
             hash += 13 * this.locationSeqId.hashCode();
+        }
+        if (this.locationName != null) {
+            hash += 13 * this.locationName.hashCode();
+        }
+        if (this.locationCode != null) {
+            hash += 13 * this.locationCode.hashCode();
         }
         if (this.comments != null) {
             hash += 13 * this.comments.hashCode();
@@ -248,11 +336,16 @@ public class BffInventoryItemDto implements Serializable {
                 "inventoryItemId=" + '\'' + inventoryItemId + '\'' +
                 ", productId=" + '\'' + productId + '\'' +
                 ", productName=" + '\'' + productName + '\'' +
-                ", supplierId=" + '\'' + supplierId + '\'' +
-                ", supplierShortName=" + '\'' + supplierShortName + '\'' +
+                ", quantityUomId=" + '\'' + quantityUomId + '\'' +
+                ", quantityIncluded=" + quantityIncluded +
+                ", caseUomId=" + '\'' + caseUomId + '\'' +
                 ", facilityId=" + '\'' + facilityId + '\'' +
+                ", facilityName=" + '\'' + facilityName + '\'' +
+                ", facilityInternalId=" + '\'' + facilityInternalId + '\'' +
                 ", lotId=" + '\'' + lotId + '\'' +
                 ", locationSeqId=" + '\'' + locationSeqId + '\'' +
+                ", locationName=" + '\'' + locationName + '\'' +
+                ", locationCode=" + '\'' + locationCode + '\'' +
                 ", comments=" + '\'' + comments + '\'' +
                 ", quantityOnHandTotal=" + quantityOnHandTotal +
                 ", createdAt=" + createdAt +

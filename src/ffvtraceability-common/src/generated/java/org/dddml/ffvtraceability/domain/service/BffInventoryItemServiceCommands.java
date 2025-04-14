@@ -222,6 +222,54 @@ public class BffInventoryItemServiceCommands {
 
     }
 
+    public static class GetWipInventoriesByProductAndLot extends org.dddml.ffvtraceability.domain.AbstractCommand {
+        private Integer page;
+        private Integer size;
+
+        public Integer getPage() {
+            return page;
+        }
+
+        public void setPage(Integer page) {
+            this.page = page;
+        }
+
+        public Integer getSize() {
+            return size;
+        }
+
+        public void setSize(Integer size) {
+            this.size = size;
+        }
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Lot Id
+         */
+        private String lotId;
+
+        public String getLotId() {
+            return lotId;
+        }
+
+        public void setLotId(String lotId) {
+            this.lotId = lotId;
+        }
+
+    }
+
 
 }
 

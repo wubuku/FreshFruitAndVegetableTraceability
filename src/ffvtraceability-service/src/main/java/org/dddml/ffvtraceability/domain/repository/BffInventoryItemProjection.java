@@ -15,15 +15,25 @@ public interface BffInventoryItemProjection {
 
     String getProductName();
 
-    String getSupplierId();
+    String getQuantityUomId();
 
-    String getSupplierShortName();
+    java.math.BigDecimal getQuantityIncluded();
+
+    String getCaseUomId();
 
     String getFacilityId();
+
+    String getFacilityName();
+
+    String getFacilityInternalId();
 
     String getLotId();
 
     String getLocationSeqId();
+
+    String getLocationName();
+
+    String getLocationCode();
 
     String getComments();
 

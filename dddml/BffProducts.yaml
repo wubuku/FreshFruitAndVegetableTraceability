@@ -167,7 +167,7 @@ services:
         result:
           itemType: BffProductDto
 
-      GetProductsForAdjustInventory:
+      GetProductsForAdjustInventory: #该接口不一定用得到
         restfulResourceName: GetProductsForAdjustInventory
         metadata:
           IsPageable: true
