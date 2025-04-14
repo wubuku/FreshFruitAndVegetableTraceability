@@ -35,7 +35,7 @@
         <column name="facility_id" sql-type="VARCHAR(20)" />
       </property>
       <property name="locationSeqId">
-        <column name="location_seq_id" sql-type="VARCHAR(20)" />
+        <column name="location_seq_id" sql-type="VARCHAR(60)" />
       </property>
       <property name="containerId">
         <column name="container_id" sql-type="VARCHAR(20)" />
@@ -44,7 +44,7 @@
         <column name="facility_id_to" sql-type="VARCHAR(20)" />
       </property>
       <property name="locationSeqIdTo">
-        <column name="location_seq_id_to" sql-type="VARCHAR(20)" />
+        <column name="location_seq_id_to" sql-type="VARCHAR(60)" />
       </property>
       <property name="containerIdTo">
         <column name="container_id_to" sql-type="VARCHAR(20)" />

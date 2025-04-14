@@ -11,13 +11,13 @@ aggregates:
       FacilityId:
         type: id
       LocationSeqId:
-        type: id
+        type: id-long
       ContainerId:
         type: id
       FacilityIdTo:
         type: id
       LocationSeqIdTo:
-        type: id
+        type: id-long
       ContainerIdTo:
         type: id
       ItemIssuanceId:

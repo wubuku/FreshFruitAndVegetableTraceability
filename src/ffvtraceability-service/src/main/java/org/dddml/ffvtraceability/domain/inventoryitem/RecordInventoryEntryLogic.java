@@ -146,10 +146,12 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
             d.setQuantityOnHandDiff(quantityOnHandDiff == null ? BigDecimal.ZERO : quantityOnHandDiff);
             mutableInventoryItemState.setQuantityOnHandTotal(d.getQuantityOnHandDiff().add(
                     mutableInventoryItemState.getQuantityOnHandTotal() == null ? BigDecimal.ZERO : mutableInventoryItemState.getQuantityOnHandTotal()));
-            d.setAvailableToPromiseDiff(availableToPromiseDiff);
-            mutableInventoryItemState.setAvailableToPromiseTotal(availableToPromiseDiff);
-            d.setAccountingQuantityDiff(accountingQuantityDiff);
-            mutableInventoryItemState.setAccountingQuantityTotal(accountingQuantityDiff);
+            d.setAvailableToPromiseDiff(availableToPromiseDiff == null ? BigDecimal.ZERO : availableToPromiseDiff);
+            mutableInventoryItemState.setAvailableToPromiseTotal(d.getAvailableToPromiseDiff().add(
+                    mutableInventoryItemState.getAvailableToPromiseTotal() == null ? BigDecimal.ZERO : mutableInventoryItemState.getAvailableToPromiseTotal()));
+            d.setAccountingQuantityDiff(accountingQuantityDiff == null ? BigDecimal.ZERO : accountingQuantityDiff);
+            mutableInventoryItemState.setAccountingQuantityTotal(d.getAccountingQuantityDiff().add(
+                    mutableInventoryItemState.getAccountingQuantityTotal() == null ? BigDecimal.ZERO : mutableInventoryItemState.getAccountingQuantityTotal()));
 //            d.setUnitCost(unitCost);
 //            s.setUnitCost(unitCost);
         } else {
