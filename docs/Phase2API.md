@@ -587,7 +587,7 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
-其中较重要的属性为：productId,productName,smallImageUrl.
+其中较重要的属性为：productId,productName,smallImageUrl 以及 internalId（Product number）.
 
 ## 四、产品相关接口
 
