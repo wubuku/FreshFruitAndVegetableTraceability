@@ -145,7 +145,7 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
 
             d.setQuantityOnHandDiff(quantityOnHandDiff == null ? BigDecimal.ZERO : quantityOnHandDiff);
             mutableInventoryItemState.setQuantityOnHandTotal(d.getQuantityOnHandDiff().add(
-                    mutableInventoryItemState.getAccountingQuantityTotal() == null ? BigDecimal.ZERO : mutableInventoryItemState.getQuantityOnHandTotal()));
+                    mutableInventoryItemState.getQuantityOnHandTotal() == null ? BigDecimal.ZERO : mutableInventoryItemState.getQuantityOnHandTotal()));
             d.setAvailableToPromiseDiff(availableToPromiseDiff);
             mutableInventoryItemState.setAvailableToPromiseTotal(availableToPromiseDiff);
             d.setAccountingQuantityDiff(accountingQuantityDiff);
