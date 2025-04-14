@@ -85,6 +85,13 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
     }
 
     @Override
+    public Page<BffSimpleProductDto> when(BffProductServiceCommands.GetProductsByKeyword c) {
+        return PageUtils.toPage(bffProductRepository.findSimpleProductsByKeyword(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductTypeId(),c.getProductKeyword()),
+                bffProductMapper::toBffSimpleProductDto);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public BffProductDto when(BffProductServiceCommands.GetProduct c) {
         return productQueryService.getProductWithoutCache(c.getProductId());

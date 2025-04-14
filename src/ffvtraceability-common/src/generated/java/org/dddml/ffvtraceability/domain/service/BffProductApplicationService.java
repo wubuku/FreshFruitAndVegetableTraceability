@@ -14,6 +14,8 @@ public interface BffProductApplicationService {
 
     Page<BffSimpleProductDto> when(BffProductServiceCommands.GetProductsForAdjustInventory c);
 
+    Page<BffSimpleProductDto> when(BffProductServiceCommands.GetProductsByKeyword c);
+
     BffProductDto when(BffProductServiceCommands.GetProduct c);
 
     String when(BffProductServiceCommands.CreateProduct c);

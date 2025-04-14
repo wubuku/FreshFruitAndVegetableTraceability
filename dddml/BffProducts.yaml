@@ -86,8 +86,8 @@ valueObjects:
           # BoxLength:
           #   type: fixed-point
           # BoxWidth:
-          #   type: fixed-point
-          # BoxHeight:
+        #   type: fixed-point
+        # BoxHeight:
         #   type: fixed-point
         # WeightUomId:
         #   type: id
@@ -178,6 +178,23 @@ services:
           ProductTypeId:
             type: id
             optional: false
+        result:
+          itemType: BffSimpleProductDto
+
+      GetProductsByKeyword:
+        restfulResourceName: GetProductsByKeyword
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        #httpMethod: GET
+        parameters:
+          ProductTypeId:
+            type: id
+            optional: true
+          ProductKeyword:
+            type: name
+            optional: true
         result:
           itemType: BffSimpleProductDto
 

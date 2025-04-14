@@ -119,11 +119,54 @@ public interface BffProductRepository extends JpaRepository<AbstractProductState
             p.small_image_url as smallImageUrl,
             p.medium_image_url as mediumImageUrl,
             p.large_image_url as largeImageUrl,
+            ii.id_value as internalId,
+            p.product_type_id as productTypeId
+            from product p
+            LEFT JOIN (
+                SELECT
+                    gi.product_id,
+                    gi.id_value
+                FROM good_identification gi
+                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.product_id = p.product_id
+            where p.product_type_id=:productTypeId
+            and (:keyword is null or (p.product_name like concat('%', :keyword, '%') OR ii.id_value like concat('%', :keyword, '%')))
+            """, countQuery = """
+            SELECT
+            count(*)
+            from product p
+            LEFT JOIN (
+                SELECT
+                    gi.product_id,
+                    gi.id_value
+                FROM good_identification gi
+                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
+                AND (:keyword is null or gi.id_value like concat('%', :keyword, '%'))
+            ) ii ON ii.product_id = p.product_id
+            where p.product_type_id=:productTypeId
+            and (:keyword is null or (p.product_name like concat('%', :keyword, '%') OR ii.id_value like concat('%', :keyword, '%')))
+            """, nativeQuery = true)
+    Page<BffSimpleProductProjection> findSimpleProductsByKeyword(Pageable pageable,
+                                                                 @Param("productTypeId") String productTypeId,
+                                                                 @Param("keyword") String keyword);
+
+    @Query(value = """
+            SELECT
+            p.product_id as productId,
+            p.product_name as productName,
+            p.quantity_uom_id as quantityUomId,
+            p.small_image_url as smallImageUrl,
+            p.medium_image_url as mediumImageUrl,
+            p.large_image_url as largeImageUrl,
             -- ii.id_value as internalId,
             p.product_type_id as productTypeId
             from product p
             where p.product_type_id=:productTypeId
             """, countQuery = """
+            SELECT
+            count(*)
+            from product p
+            where p.product_type_id=:productTypeId
             """, nativeQuery = true)
     Page<BffSimpleProductProjection> findAllSimpleProducts(Pageable pageable,
                                                            @Param("productTypeId") String productTypeId);

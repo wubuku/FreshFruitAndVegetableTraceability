@@ -67,6 +67,24 @@ public class BffProductServiceResource {
         
     }
 
+    @GetMapping("GetProductsByKeyword")
+    public Page<BffSimpleProductDto> getProductsByKeyword(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productTypeId", required = false) String productTypeId,
+        @RequestParam(value = "productKeyword", required = false) String productKeyword
+    ) {
+        BffProductServiceCommands.GetProductsByKeyword getProductsByKeyword = new BffProductServiceCommands.GetProductsByKeyword();
+        getProductsByKeyword.setPage(page);
+        getProductsByKeyword.setSize(size);
+        getProductsByKeyword.setProductTypeId(productTypeId);
+        getProductsByKeyword.setProductKeyword(productKeyword);
+        
+        getProductsByKeyword.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffProductApplicationService.when(getProductsByKeyword);
+        
+    }
+
     @GetMapping("{productId}")
     public BffProductDto getProduct(
         @PathVariable("productId") String productId
