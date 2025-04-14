@@ -624,6 +624,41 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+### 7. 根据原材料 Id 和 LotId 获取查询库存
+在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffInventoryItems/RawItems/GroupByProductAndLot?page=0&size=20&productId=14AG8L4GM6EKAWK277' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+返回结果举例如下：
+```json
+{
+  "content": [
+    {
+      "inventoryItemId": "inverntory_itemId",
+      "productId": "14AG8L4GM6EKAWK277",
+      "productName": "productName",
+      "quantityUomId": "quantityUomId",
+      "quantityIncluded": 100,
+      "caseUomId": "caseUomId1",
+      "facilityId": "14DAZ36WRKMFF4VQR8",
+      "facilityName": "facilityNameX",
+      "facilityInternalId": "Facility Number K",
+      "lotId": "14AGPQ39F501D6RAZD",
+      "locationSeqId": "13LNXR6X497W03AP81_DEFAULT",
+      "locationName": "-",
+      "locationCode": "13LNXR6X497W03AP81_DEFAULT",
+      "quantityOnHandTotal": 999
+    }
+  ],
+  "totalElements": 1,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
 
 ## 四、产品相关接口
 

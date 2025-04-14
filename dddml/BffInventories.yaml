@@ -186,6 +186,22 @@ services:
         result:
           itemType: BffRawItemInventoryGroupDto
 
+      GetRawInventoriesByProductAndLot:
+        restfulResourceName: "RawItems/GroupByProductAndLot"
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        parameters:
+          ProductId:
+            type: id
+            optional: true # NOT required
+          LotId:
+            type: id
+            optional: true # NOT required
+        result:
+          itemType: BffInventoryItemDto
+
       GetRawItemInventoryItems: #分解 GetRawItemInventories 返回的列表中的某一条数据，基本上对应的是Inventory_item中的数据
         restfulResourceName: "RawItems/{ProductId}/InventoryItems"
         metadata:

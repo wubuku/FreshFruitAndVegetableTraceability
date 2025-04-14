@@ -14,91 +14,6 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
 
     @Query(value = """
             SELECT
-               i.inventory_item_id as inventoryItemId,
-               i.product_id as productId,
-               p.product_name as productName,
-               i.lot_id as lotId,
-               p.quantity_uom_id as quantityUomId,
-               p.quantity_included as quantityIncluded,
-               p.case_uom_id as caseUomId,
-               i.facility_id as facilityId,
-               f.facility_name as facilityName,
-               ii.id_value as facilityInternalId,
-               i.location_seq_id as locationSeqId,
-               fl.location_name as locationName,
-               fl.location_code as locationCode,
-               i.quantity_on_hand_total as quantityOnHandTotal
-            from inventory_item i
-            left join product p on i.product_id = p.product_id
-            left join facility f on i.facility_id = f.facility_id
-            left join facility_location fl on i.location_seq_id = fl.location_seq_id
-            LEFT JOIN (
-                SELECT
-                    fi.facility_id,
-                    fi.id_value
-                FROM facility_identification fi
-                WHERE fi.facility_identification_type_id = 'INTERNAL_ID'
-            ) ii ON ii.facility_id = f.facility_id
-            WHERE (:productId is null or i.product_id = :productId)
-                 AND (:lotId is null or i.lot_id = :lotId)
-            """, countQuery = """
-            SELECT COUNT(*)
-            FROM inventory_item i
-            WHERE (:productId is null or i.product_id = :productId)
-                 AND (:lotId is null or i.lot_id = :lotId)
-            """, nativeQuery = true)
-    Page<BffInventoryItemProjection> findWipInventories(Pageable pageable,
-                                                     @Param("productId") String productId,
-                                                     @Param("lotId") String lotId);
-
-
-    @Query(value = """
-            SELECT
-               g.product_id as productId,
-               p.product_name as productName,
-               p.quantity_uom_id as quantityUomId,
-               p.quantity_included as quantityIncluded,
-               p.case_uom_id as caseUomId,
-               g.facility_id as facilityId,
-               f.facility_name as facilityName,
-               g.total_quantity as quantityOnHandTotal
-            FROM
-              (SELECT i.product_id,
-                      i.facility_id,
-                      SUM(i.quantity_on_hand_total) AS total_quantity
-               FROM inventory_item i
-               --LEFT JOIN lot l ON i.lot_id = l.lot_id
-               LEFT JOIN product p ON i.product_id = p.product_id
-               LEFT JOIN facility f ON i.facility_id = f.facility_id
-               WHERE p.product_type_id = :productTypeId
-                 AND (:productId is null or i.product_id = :productId)
-                 AND (:facilityId is null or i.facility_id = :facilityId)
-                 AND (:productName is null or p.product_name like concat('%', :productName, '%'))
-               GROUP BY i.product_id,
-                        i.facility_id
-                          ) g
-            LEFT JOIN product p ON p.product_id=g.product_id
-            LEFT JOIN facility f ON g.facility_id=f.facility_id
-            """, countQuery = """
-            SELECT COUNT(*)
-            FROM inventory_item i
-               LEFT JOIN product p ON i.product_id = p.product_id
-               LEFT JOIN facility f ON i.facility_id = f.facility_id
-               WHERE p.product_type_id = :productTypeId
-                 AND (:productId is null or i.product_id = :productId)
-                 AND (:facilityId is null or i.facility_id = :facilityId)
-                 AND (:productName is null or p.product_name like concat('%', :productName, '%'))
-               GROUP BY i.product_id,
-                        i.facility_id
-            """, nativeQuery = true)
-    Page<BffWipInventoryGroupProjection> findAllWipInventories(Pageable pageable,
-                                                               @Param("productTypeId") String productTypeId,
-                                                               @Param("productId") String productId,
-                                                               @Param("productName") String productName,
-                                                               @Param("facilityId") String facilityId);
-
-    @Query(value = """
-            SELECT
                g.product_id as productId,
                p.product_name as productName,
                p.quantity_uom_id as quantityUomId,
@@ -190,6 +105,131 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                                                                       @Param("productId") String productId,
                                                                       @Param("supplierId") String supplierId,
                                                                       @Param("facilityId") String facilityId);
+
+    @Query(value = """
+            SELECT
+               i.inventory_item_id as inventoryItemId,
+               i.product_id as productId,
+               p.product_name as productName,
+               i.lot_id as lotId,
+               p.quantity_uom_id as quantityUomId,
+               sp.quantity_included as quantityIncluded,
+               sp.case_uom_id as caseUomId,
+               i.facility_id as facilityId,
+               f.facility_name as facilityName,
+               ii.id_value as facilityInternalId,
+               i.location_seq_id as locationSeqId,
+               fl.location_name as locationName,
+               fl.location_code as locationCode,
+               i.quantity_on_hand_total as quantityOnHandTotal
+            from inventory_item i
+            left join product p on i.product_id = p.product_id
+            left join facility f on i.facility_id = f.facility_id
+            left join facility_location fl on i.location_seq_id = fl.location_seq_id
+            left join lot l on i.lot_id = l.lot_id
+            left join supplier_product sp on sp.party_id = l.supplier_id AND i.product_id = sp.product_id
+            LEFT JOIN (
+                SELECT
+                    fi.facility_id,
+                    fi.id_value
+                FROM facility_identification fi
+                WHERE fi.facility_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.facility_id = f.facility_id
+            WHERE (:productId is null or i.product_id = :productId)
+                 AND (:lotId is null or i.lot_id = :lotId)
+            """, countQuery = """
+            SELECT COUNT(*)
+            FROM inventory_item i
+            WHERE (:productId is null or i.product_id = :productId)
+                 AND (:lotId is null or i.lot_id = :lotId)
+            """, nativeQuery = true)
+    Page<BffInventoryItemProjection> findRawItemInventories(Pageable pageable,
+                                                            @Param("productId") String productId,
+                                                            @Param("lotId") String lotId);
+
+    @Query(value = """
+            SELECT
+               g.product_id as productId,
+               p.product_name as productName,
+               p.quantity_uom_id as quantityUomId,
+               p.quantity_included as quantityIncluded,
+               p.case_uom_id as caseUomId,
+               g.facility_id as facilityId,
+               f.facility_name as facilityName,
+               g.total_quantity as quantityOnHandTotal
+            FROM
+              (SELECT i.product_id,
+                      i.facility_id,
+                      SUM(i.quantity_on_hand_total) AS total_quantity
+               FROM inventory_item i
+               --LEFT JOIN lot l ON i.lot_id = l.lot_id
+               LEFT JOIN product p ON i.product_id = p.product_id
+               LEFT JOIN facility f ON i.facility_id = f.facility_id
+               WHERE p.product_type_id = :productTypeId
+                 AND (:productId is null or i.product_id = :productId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
+                 AND (:productName is null or p.product_name like concat('%', :productName, '%'))
+               GROUP BY i.product_id,
+                        i.facility_id
+                          ) g
+            LEFT JOIN product p ON p.product_id=g.product_id
+            LEFT JOIN facility f ON g.facility_id=f.facility_id
+            """, countQuery = """
+            SELECT COUNT(*)
+            FROM inventory_item i
+               LEFT JOIN product p ON i.product_id = p.product_id
+               LEFT JOIN facility f ON i.facility_id = f.facility_id
+               WHERE p.product_type_id = :productTypeId
+                 AND (:productId is null or i.product_id = :productId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
+                 AND (:productName is null or p.product_name like concat('%', :productName, '%'))
+               GROUP BY i.product_id,
+                        i.facility_id
+            """, nativeQuery = true)
+    Page<BffWipInventoryGroupProjection> findAllWipInventories(Pageable pageable,
+                                                               @Param("productTypeId") String productTypeId,
+                                                               @Param("productId") String productId,
+                                                               @Param("productName") String productName,
+                                                               @Param("facilityId") String facilityId);
+
+    @Query(value = """
+            SELECT
+               i.inventory_item_id as inventoryItemId,
+               i.product_id as productId,
+               p.product_name as productName,
+               i.lot_id as lotId,
+               p.quantity_uom_id as quantityUomId,
+               p.quantity_included as quantityIncluded,
+               p.case_uom_id as caseUomId,
+               i.facility_id as facilityId,
+               f.facility_name as facilityName,
+               ii.id_value as facilityInternalId,
+               i.location_seq_id as locationSeqId,
+               fl.location_name as locationName,
+               fl.location_code as locationCode,
+               i.quantity_on_hand_total as quantityOnHandTotal
+            from inventory_item i
+            left join product p on i.product_id = p.product_id
+            left join facility f on i.facility_id = f.facility_id
+            left join facility_location fl on i.location_seq_id = fl.location_seq_id
+            LEFT JOIN (
+                SELECT
+                    fi.facility_id,
+                    fi.id_value
+                FROM facility_identification fi
+                WHERE fi.facility_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.facility_id = f.facility_id
+            WHERE (:productId is null or i.product_id = :productId)
+                 AND (:lotId is null or i.lot_id = :lotId)
+            """, countQuery = """
+            SELECT COUNT(*)
+            FROM inventory_item i
+            WHERE (:productId is null or i.product_id = :productId)
+                 AND (:lotId is null or i.lot_id = :lotId)
+            """, nativeQuery = true)
+    Page<BffInventoryItemProjection> findWipInventories(Pageable pageable,
+                                                        @Param("productId") String productId,
+                                                        @Param("lotId") String lotId);
 
     @Query(value = """
               SELECT

@@ -32,6 +32,14 @@ public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemA
     }
 
     @Override
+    public Page<BffInventoryItemDto> when(BffInventoryItemServiceCommands.GetRawInventoriesByProductAndLot c) {
+        return PageUtils.toPage(
+                bffInventoryItemRepository.findRawItemInventories(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductId(), c.getLotId()),
+                bffInventoryItemMapper::toBffInventoryItemDto);
+    }
+
+    @Override
     public Page<BffWipInventoryGroupDto> when(BffInventoryItemServiceCommands.GetWipInventories c) {
         if (c.getProductTypeId() == null || c.getProductTypeId().isBlank()) {
             throw new IllegalArgumentException("Product type is required");

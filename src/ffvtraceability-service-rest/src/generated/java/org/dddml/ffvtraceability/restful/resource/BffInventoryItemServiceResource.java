@@ -53,6 +53,24 @@ public class BffInventoryItemServiceResource {
         
     }
 
+    @GetMapping("RawItems/GroupByProductAndLot")
+    public Page<BffInventoryItemDto> getRawInventoriesByProductAndLot(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productId", required = false) String productId,
+        @RequestParam(value = "lotId", required = false) String lotId
+    ) {
+        BffInventoryItemServiceCommands.GetRawInventoriesByProductAndLot getRawInventoriesByProductAndLot = new BffInventoryItemServiceCommands.GetRawInventoriesByProductAndLot();
+        getRawInventoriesByProductAndLot.setPage(page);
+        getRawInventoriesByProductAndLot.setSize(size);
+        getRawInventoriesByProductAndLot.setProductId(productId);
+        getRawInventoriesByProductAndLot.setLotId(lotId);
+        
+        getRawInventoriesByProductAndLot.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getRawInventoriesByProductAndLot);
+        
+    }
+
     @GetMapping("RawItems/{productId}/InventoryItems")
     public Page<BffRawItemInventoryItemDto> getRawItemInventoryItems(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
