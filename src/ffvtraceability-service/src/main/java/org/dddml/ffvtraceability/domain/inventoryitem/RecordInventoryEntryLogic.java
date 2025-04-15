@@ -17,7 +17,6 @@ import org.springframework.util.DigestUtils;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 
 
 /**
@@ -74,7 +73,7 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
         return e;
     }
 
-    private String getInventoryItemId(InventoryItemAttributes inventoryItemAttributes) {
+    private String getInventoryItemAttributesHash(InventoryItemAttributes inventoryItemAttributes) {
         try {
             String json = objectMapper.writeValueAsString(inventoryItemAttributes);
             JsonCanonicalizer jc = new JsonCanonicalizer(json);
@@ -85,7 +84,7 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
         }
     }
 
-    private String getInventoryItemDetailId(InventoryItemDetailAttributes inventoryItemDetailAttributes) {
+    private String getInventoryItemDetailAttributesHash(InventoryItemDetailAttributes inventoryItemDetailAttributes) {
         try {
             String json = objectMapper.writeValueAsString(inventoryItemDetailAttributes);
             JsonCanonicalizer jc = new JsonCanonicalizer(json);
@@ -121,73 +120,76 @@ public class RecordInventoryEntryLogic implements IRecordInventoryEntryLogic {
             MutationContext<InventoryItemState, InventoryItemState.MutableInventoryItemState> mutationContext
     ) {
         InventoryItemState.MutableInventoryItemState mutableInventoryItemState;
+        String itemAttrHash = null;
         if (inventoryItemState == null) {
-            mutableInventoryItemState = mutationContext.newMutableStateById(getInventoryItemId(inventoryItemAttributes));
+            if (inventoryItemAttributes == null) {
+                throw DomainError.named("InvalidAttributes", "InventoryItem attributes are required");
+            }
+            itemAttrHash = getInventoryItemAttributesHash(inventoryItemAttributes);
+            mutableInventoryItemState = mutationContext.newMutableStateById(itemAttrHash);
+            if (mutableInventoryItemState.getInventoryItemAttributeHash() == null) {
+                mutableInventoryItemState.setInventoryItemAttributeHash(itemAttrHash);
+                inventoryItemMapper.updateInventoryItemState(mutableInventoryItemState, inventoryItemAttributes);
+            } else {
+                //TODO: If the inventory item already exists?
+            }
         } else {
             mutableInventoryItemState = mutationContext.toMutableState(inventoryItemState);
-        }
-        if (inventoryItemState == null) { //s.getVersion() == null) {
-            // 新建库存项目
-            if (inventoryItemAttributes == null) {
-                throw DomainError.named("InvalidAttributes", "InventoryItem attributes are required for new inventory item");
-            }
-            mutableInventoryItemState.setInventoryItemAttributeHash(mutableInventoryItemState.getInventoryItemId());
-            inventoryItemMapper.updateInventoryItemState(mutableInventoryItemState, inventoryItemAttributes);
-
-            InventoryItemDetailState.MutableInventoryItemDetailState d =
-                    mutableInventoryItemState.getDetails().getOrAddMutableState(getInventoryItemDetailId(inventoryItemDetailAttributes));
-            d.setInventoryItemAttributeHash(mutableInventoryItemState.getInventoryItemId());
-            d.setInventoryItemDetailAttributeHash(d.getInventoryItemDetailSeqId());
-            // 如果有详细属性，更新它们
-            if (inventoryItemDetailAttributes != null) {
-                inventoryItemMapper.updateInventoryItemDetailState(d, inventoryItemDetailAttributes);
-            }
-
-            d.setQuantityOnHandDiff(quantityOnHandDiff == null ? BigDecimal.ZERO : quantityOnHandDiff);
-            mutableInventoryItemState.setQuantityOnHandTotal(d.getQuantityOnHandDiff().add(
-                    mutableInventoryItemState.getQuantityOnHandTotal() == null ? BigDecimal.ZERO : mutableInventoryItemState.getQuantityOnHandTotal()));
-            d.setAvailableToPromiseDiff(availableToPromiseDiff == null ? BigDecimal.ZERO : availableToPromiseDiff);
-            mutableInventoryItemState.setAvailableToPromiseTotal(d.getAvailableToPromiseDiff().add(
-                    mutableInventoryItemState.getAvailableToPromiseTotal() == null ? BigDecimal.ZERO : mutableInventoryItemState.getAvailableToPromiseTotal()));
-            d.setAccountingQuantityDiff(accountingQuantityDiff == null ? BigDecimal.ZERO : accountingQuantityDiff);
-            mutableInventoryItemState.setAccountingQuantityTotal(d.getAccountingQuantityDiff().add(
-                    mutableInventoryItemState.getAccountingQuantityTotal() == null ? BigDecimal.ZERO : mutableInventoryItemState.getAccountingQuantityTotal()));
-//            d.setUnitCost(unitCost);
-//            s.setUnitCost(unitCost);
-        } else {
-            // 更新已存在的库存项目
             if (inventoryItemAttributes != null) {
                 throw DomainError.named("InvalidOperation",
                         "Cannot modify inventory item attributes for existing inventory item");
             }
-            // 创建新的库存明细记录
-            InventoryItemDetailState.MutableInventoryItemDetailState d = mutableInventoryItemState.getDetails().getOrAddMutableState(UUID.randomUUID().toString());
-            if (inventoryItemDetailAttributes != null) {
-                inventoryItemMapper.updateInventoryItemDetailState(d, inventoryItemDetailAttributes);
-            }
-
-            // 设置数量变化并累加总量
-            if (quantityOnHandDiff != null) {
-                d.setQuantityOnHandDiff(quantityOnHandDiff);
-                java.math.BigDecimal currentTotal = mutableInventoryItemState.getQuantityOnHandTotal() != null ? mutableInventoryItemState.getQuantityOnHandTotal() : BigDecimal.ZERO;
-                mutableInventoryItemState.setQuantityOnHandTotal(currentTotal.add(quantityOnHandDiff));
-            }
-            if (availableToPromiseDiff != null) {
-                d.setAvailableToPromiseDiff(availableToPromiseDiff);
-                java.math.BigDecimal currentTotal = mutableInventoryItemState.getAvailableToPromiseTotal() != null ? mutableInventoryItemState.getAvailableToPromiseTotal() : BigDecimal.ZERO;
-                mutableInventoryItemState.setAvailableToPromiseTotal(currentTotal.add(availableToPromiseDiff));
-            }
-            if (accountingQuantityDiff != null) {
-                d.setAccountingQuantityDiff(accountingQuantityDiff);
-                java.math.BigDecimal currentTotal = mutableInventoryItemState.getAccountingQuantityTotal() != null ? mutableInventoryItemState.getAccountingQuantityTotal() : BigDecimal.ZERO;
-                mutableInventoryItemState.setAccountingQuantityTotal(currentTotal.add(accountingQuantityDiff));
-            }
-//            if (unitCost != null) {
-//                d.setUnitCost(unitCost);
-//                s.setUnitCost(unitCost); // 更新当前单位成本
-//            }
-
         }
+
+        if (mutableInventoryItemState == null) {
+            throw DomainError.named("InvalidState", "Failed to create or retrieve mutable inventory item state");
+        }
+
+        // Create inventory item detail
+        if (inventoryItemDetailAttributes == null) {
+            throw DomainError.named("InvalidAttributes", "InventoryItem detail attributes are required for new inventory item");
+        }
+
+        String detailAttrHash = getInventoryItemDetailAttributesHash(inventoryItemDetailAttributes);
+        InventoryItemDetailState.MutableInventoryItemDetailState detailState
+                = mutableInventoryItemState.getDetails().getOrAddMutableState(detailAttrHash);
+        if (detailState.getInventoryItemDetailAttributeHash() != null) {
+            throw DomainError.named("InvalidOperation",
+                    "Cannot modify inventory item detail attributes for existing inventory item detail");
+        }
+        detailState.setInventoryItemAttributeHash(itemAttrHash);
+        detailState.setInventoryItemDetailAttributeHash(detailAttrHash);
+        inventoryItemMapper.updateInventoryItemDetailState(detailState, inventoryItemDetailAttributes);
+
+
+        // Process quantity changes - standardized for both new and existing items
+        // Handle quantityOnHand
+        BigDecimal qohDiff = quantityOnHandDiff == null ? BigDecimal.ZERO : quantityOnHandDiff;
+        detailState.setQuantityOnHandDiff(qohDiff);
+        BigDecimal currentQohTotal = mutableInventoryItemState.getQuantityOnHandTotal() == null ?
+                BigDecimal.ZERO : mutableInventoryItemState.getQuantityOnHandTotal();
+        mutableInventoryItemState.setQuantityOnHandTotal(currentQohTotal.add(qohDiff));
+
+        // Handle availableToPromise
+        BigDecimal atpDiff = availableToPromiseDiff == null ? BigDecimal.ZERO : availableToPromiseDiff;
+        detailState.setAvailableToPromiseDiff(atpDiff);
+        BigDecimal currentAtpTotal = mutableInventoryItemState.getAvailableToPromiseTotal() == null ?
+                BigDecimal.ZERO : mutableInventoryItemState.getAvailableToPromiseTotal();
+        mutableInventoryItemState.setAvailableToPromiseTotal(currentAtpTotal.add(atpDiff));
+
+        // Handle accountingQuantity
+        BigDecimal aqDiff = accountingQuantityDiff == null ? BigDecimal.ZERO : accountingQuantityDiff;
+        detailState.setAccountingQuantityDiff(aqDiff);
+        BigDecimal currentAqTotal = mutableInventoryItemState.getAccountingQuantityTotal() == null ?
+                BigDecimal.ZERO : mutableInventoryItemState.getAccountingQuantityTotal();
+        mutableInventoryItemState.setAccountingQuantityTotal(currentAqTotal.add(aqDiff));
+
+        // Unit cost handling is commented out in the original code
+        // if (unitCost != null) {
+        //     detailState.setUnitCost(unitCost);
+        //     mutableInventoryItemState.setUnitCost(unitCost);
+        // }
+
         return mutableInventoryItemState;
     }
 }
