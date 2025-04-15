@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.physicalinventory">
+  <class name="org.dddml.ffvtraceability.domain.physicalinventory.AbstractPhysicalInventoryState$SimplePhysicalInventoryState" table="physical_inventory">
+    <id name="physicalInventoryId" length="20">
+      <column name="physical_inventory_id" sql-type="VARCHAR(20)" />
+      <generator class="assigned" />
+    </id>
+    <version name="version" column="version" type="long" />
+    <set name="protectedInventoryItemVariances" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="PHYSICAL_INVENTORY_ID" />
+      </key>
+      <one-to-many class="org.dddml.ffvtraceability.domain.physicalinventory.AbstractInventoryItemVarianceState$SimpleInventoryItemVarianceState" />
+    </set>
+    <property name="physicalInventoryDate">
+      <column name="physical_inventory_date" sql-type="timestamptz" />
+    </property>
+    <property name="partyId">
+      <column name="party_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="generalComments">
+      <column name="general_comments" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <filter name="tenantFilter" condition="tenant_id = :tenantId" />
+  </class>
+  <filter-def name="tenantFilter">
+    <filter-param name="tenantId" type="string" />
+  </filter-def>
+</hibernate-mapping>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.physicalinventory">
+  <class name="AbstractPhysicalInventoryEvent" table="physical_inventory_event" abstract="true">
+    <composite-id name="physicalInventoryEventId" class="org.dddml.ffvtraceability.domain.physicalinventory.PhysicalInventoryEventId">
+      <key-property name="physicalInventoryId">
+        <column name="physical_inventory_id" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="commandType" column="command_type" length="50" />
+    <property name="tenantId" column="tenant_id" length="12" />
+    <subclass name="AbstractPhysicalInventoryEvent$PhysicalInventoryLobEvent" discriminator-value="PhysicalInventoryLobEvent">
+      <property name="dynamicProperties">
+        <column name="dynamic_properties" sql-type="json" />
+        <type name="io.hypersistence.utils.hibernate.type.json.JsonType">
+          <param name="org.hibernate.type.ParameterType">java.util.HashMap</param>
+        </type>
+      </property>
+    </subclass>
+    <subclass name="AbstractPhysicalInventoryEvent$AbstractPhysicalInventoryStateEvent" abstract="true">
+      <property name="physicalInventoryDate">
+        <column name="physical_inventory_date" sql-type="timestamptz" />
+      </property>
+      <property name="partyId">
+        <column name="party_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="generalComments">
+        <column name="general_comments" sql-type="VARCHAR(255)" />
+      </property>
+      <subclass name="AbstractPhysicalInventoryEvent$SimplePhysicalInventoryStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractPhysicalInventoryEvent$SimplePhysicalInventoryStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyPhysicalInventoryDateRemoved" column="is_property_physical_inventory_date_removed" />
+        <property name="isPropertyPartyIdRemoved" column="is_property_party_id_removed" />
+        <property name="isPropertyGeneralCommentsRemoved" column="is_property_general_comments_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>

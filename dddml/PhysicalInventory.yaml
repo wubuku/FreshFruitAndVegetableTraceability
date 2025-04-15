@@ -1,0 +1,43 @@
+aggregates:
+  PhysicalInventory:
+    id:
+      name: PhysicalInventoryId
+      type: id
+    properties:
+      PhysicalInventoryDate:
+        type: date-time
+      PartyId:
+        type: id
+      GeneralComments:
+        type: comment
+      InventoryItemVariances:
+        itemType: InventoryItemVariance
+
+    entities:
+      InventoryItemVariance:
+        id:
+          name: InventoryItemId
+          type: id-long
+        globalId:
+          columnNames:
+            - PHYSICAL_INVENTORY_ID
+            - INVENTORY_ITEM_ID
+        properties:
+          VarianceReasonId:
+            type: id
+          AvailableToPromiseVar:
+            type: fixed-point
+          QuantityOnHandVar:
+            type: fixed-point
+          Comments:
+            type: comment
+
+  VarianceReason:
+    metadata:
+      NoEventSourcing: true
+    id:
+      name: VarianceReasonId
+      type: id
+    properties:
+      Description:
+        type: description

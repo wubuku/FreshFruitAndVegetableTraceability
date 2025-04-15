@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.physicalinventory">
+  <class name="org.dddml.ffvtraceability.domain.physicalinventory.AbstractInventoryItemVarianceState$SimpleInventoryItemVarianceState" table="inventory_item_variance">
+    <composite-id name="physicalInventoryInventoryItemVarianceId" class="org.dddml.ffvtraceability.domain.physicalinventory.PhysicalInventoryInventoryItemVarianceId">
+      <key-property name="physicalInventoryId">
+        <column name="PHYSICAL_INVENTORY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="inventoryItemId">
+        <column name="INVENTORY_ITEM_ID" sql-type="VARCHAR(60)" />
+      </key-property>
+    </composite-id>
+    <version name="version" column="version" type="long" />
+    <many-to-one name="protectedPhysicalInventoryState" class="org.dddml.ffvtraceability.domain.physicalinventory.AbstractPhysicalInventoryState$SimplePhysicalInventoryState" insert="false" update="false">
+      <column name="PHYSICAL_INVENTORY_ID" />
+    </many-to-one>
+    <property name="varianceReasonId">
+      <column name="variance_reason_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="availableToPromiseVar">
+      <column name="available_to_promise_var" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="quantityOnHandVar">
+      <column name="quantity_on_hand_var" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="comments">
+      <column name="comments" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

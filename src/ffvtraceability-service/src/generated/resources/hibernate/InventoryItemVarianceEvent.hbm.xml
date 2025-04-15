@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.ffvtraceability.domain.physicalinventory">
+  <class name="AbstractInventoryItemVarianceEvent" table="inventory_item_variance_event" abstract="true">
+    <composite-id name="inventoryItemVarianceEventId" class="org.dddml.ffvtraceability.domain.physicalinventory.InventoryItemVarianceEventId">
+      <key-property name="physicalInventoryId">
+        <column name="PHYSICAL_INVENTORY_ID" sql-type="VARCHAR(20)" />
+      </key-property>
+      <key-property name="inventoryItemId">
+        <column name="INVENTORY_ITEM_ID" sql-type="VARCHAR(60)" />
+      </key-property>
+      <key-property name="physicalInventoryVersion">
+        <column name="physical_inventory_version" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <subclass name="AbstractInventoryItemVarianceEvent$AbstractInventoryItemVarianceStateEvent" abstract="true">
+      <property name="varianceReasonId">
+        <column name="variance_reason_id" sql-type="VARCHAR(20)" />
+      </property>
+      <property name="availableToPromiseVar">
+        <column name="available_to_promise_var" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="quantityOnHandVar">
+        <column name="quantity_on_hand_var" sql-type="DECIMAL(18,6)" />
+      </property>
+      <property name="comments">
+        <column name="comments" sql-type="VARCHAR(255)" />
+      </property>
+      <property name="version" column="version" not-null="true" />
+      <subclass name="AbstractInventoryItemVarianceEvent$SimpleInventoryItemVarianceStateCreated" discriminator-value="Created"></subclass>
+      <subclass name="AbstractInventoryItemVarianceEvent$SimpleInventoryItemVarianceStateMergePatched" discriminator-value="MergePatched">
+        <property name="isPropertyVarianceReasonIdRemoved" column="is_property_variance_reason_id_removed" />
+        <property name="isPropertyAvailableToPromiseVarRemoved" column="is_property_available_to_promise_var_removed" />
+        <property name="isPropertyQuantityOnHandVarRemoved" column="is_property_quantity_on_hand_var_removed" />
+        <property name="isPropertyCommentsRemoved" column="is_property_comments_removed" />
+      </subclass>
+    </subclass>
+  </class>
+</hibernate-mapping>
