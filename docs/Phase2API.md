@@ -313,7 +313,7 @@ curl -X 'PUT' \
 
 ### 1. 添加批次号
 
-添加批次号时需要传递供应商的Id（SupplierId）和批次号(internalId)：
+添加批次号时需要传递供应商的Id（SupplierId）、产品Id（productId）和批次号(internalId)：
 
 ```shell
 curl -X 'POST' \
@@ -520,9 +520,13 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+
 ### 4. 半成品库存明细
+
 BOM做完提供
+
 ### 5. 成品库存明细
+
 生产完成或者发货确定了客户的时候才能提供
 
 ### 6. 根据产品类型返回产品列表（支持分页）
@@ -699,8 +703,11 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+
 ### 10. 库存调整-位置调整
+
 对应手持终端的 "Location adjustment".
+
 ```shell
 curl -X 'POST' \
   'http://localhost:8001/api/BffInventoryTransfers/LocationAdjustment' \
@@ -715,6 +722,7 @@ curl -X 'POST' \
   "comments": "comments"
 }'
 ```
+
 * inventoryItemId:所选中库存的Id;
 * adjustmentQuantity:转移数量，必须大于0;
 * facilityIdTo:目的仓库Id;
@@ -722,6 +730,7 @@ curl -X 'POST' \
 * comments:备注信息
 
 操作成功后直接返回库存转移之前目的仓位的库存信息：
+
 ```json
 {
   "inventoryItemId": "c7fc0ac13f5e74c904ed498a031c8f27",
@@ -738,7 +747,9 @@ curl -X 'POST' \
   "quantityOnHandTotal": 64
 }
 ```
+
 注意：如果 quantityOnHandTotal 为 0，表示当前库位不存在相同批次的产品。
+
 ```json
 {
   "productId": "141L0K7AH7DL6W4948",
@@ -751,10 +762,10 @@ curl -X 'POST' \
   "quantityOnHandTotal": 0
 }
 ```
+
 也就不会存在 inventoryItemId、productName、quantityUomId 这些不太重要的信息。
 
 productName、quantityUomId 等本身就可以从源信息获取。
-
 
 ## 四、产品相关接口
 

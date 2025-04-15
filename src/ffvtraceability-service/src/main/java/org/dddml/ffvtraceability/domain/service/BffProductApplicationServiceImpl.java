@@ -118,13 +118,13 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
                 }
             }
         }
-        String supplierId = product.getSupplierId();
-        if (supplierId == null || supplierId.isBlank()) {
-            throw new IllegalArgumentException("Supplier can't be null");
-        }
-        if (partyApplicationService.get(supplierId) == null) {
-            throw new IllegalArgumentException("SupplierId is not valid.");
-        }
+//        String supplierId = product.getSupplierId();
+//        if (supplierId == null || supplierId.isBlank()) {
+//            throw new IllegalArgumentException("Supplier can't be null");
+//        }
+//        if (partyApplicationService.get(supplierId) == null) {
+//            throw new IllegalArgumentException("SupplierId is not valid.");
+//        }
         // if (uomApplicationService.get(c.getProduct().getQuantityUomId()) == null) {
         // throw new IllegalArgumentException("QuantityUomId is not valid.");
         // }
