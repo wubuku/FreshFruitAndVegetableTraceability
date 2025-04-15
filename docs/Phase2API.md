@@ -734,8 +734,21 @@ curl -X 'POST' \
 }
 ```
 注意：如果 quantityOnHandTotal 为 0，表示当前库位不存在相同批次的产品。
-
+```json
+{
+  "productId": "141L0K7AH7DL6W4948",
+  "facilityId": "13QPR94UDK1ALTS3F7",
+  "facilityName": "freshpointwh13",
+  "facilityInternalId": "freshpointvendor1number3",
+  "locationSeqId": "13QPT9H0W107CQLEPV",
+  "locationName": "freshpointl122",
+  "locationCode": "freshpointl1number3",
+  "quantityOnHandTotal": 0
+}
+```
 也就不会存在 inventoryItemId、productName、quantityUomId 这些不太重要的信息。
+
+productName、quantityUomId 等本身就可以从源信息获取。
 
 
 ## 四、产品相关接口
