@@ -6,6 +6,6 @@
         description="Credit Card" />
     <Enumeration enumId="BANK_TRANSFER" enumTypeId="CUSTOMER_PAYMENT_METHOD_ENUM"
         description="Bank Transfer" />
-    <Enumeration enumId="E_Payment" enumTypeId="CUSTOMER_PAYMENT_METHOD_ENUM"
+    <Enumeration enumId="E_PAYMENT" enumTypeId="CUSTOMER_PAYMENT_METHOD_ENUM"
         description="E-Payment" />
 </entity-engine-xml>

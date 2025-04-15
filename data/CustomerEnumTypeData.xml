@@ -6,7 +6,7 @@
         description="Retailer" />
     <Enumeration enumId="FOOD_SERVICE" enumTypeId="CUSTOMER_TYPE_ENUM"
         description="Food Service" />
-    <Enumeration enumId="E_commerce" enumTypeId="CUSTOMER_TYPE_ENUM"
+    <Enumeration enumId="E_COMMERCE" enumTypeId="CUSTOMER_TYPE_ENUM"
         description="E-commerce" />
     <Enumeration enumId="END_USER" enumTypeId="CUSTOMER_TYPE_ENUM"
         description="END Consumer" />

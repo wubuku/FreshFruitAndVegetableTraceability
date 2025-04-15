@@ -788,6 +788,24 @@ productName、quantityUomId 等本身就可以从源信息获取。
 * supplierTypeEnumId->customerTypeEnumId
 * supplierProductTypeDescription->customerProductTypeDescription
 
+增加以下三个属性：
+* creditRating
+* shippingAddress
+* paymentMethodEnumId
+ 
+其中 customerTypeEnumId 的取值范围为：
+* WHOLESALER
+* RETAILER
+* FOOD_SERVICE
+* E_COMMERCE
+* END_USER
+
+paymentMethodEnumId 的取值范围为：
+* CASH
+* CREDIT_CARD
+* BANK_TRANSFER
+* E_PAYMENT
+
 ### 1. 创建 Customer
 
 举例说明(添加一个 Customer,附带同时创建两个 Facilities)：
@@ -829,6 +847,9 @@ curl -X 'POST' \
   "customerProductTypeDescription": "SPTypeDescription",
   "certificationCodes": "certificationCodes",
   "bankAccountInformation": "bankAccountInformation",
+  "shippingAddress": "shippingAddress",
+  "paymentMethodEnumId": "paymentMethodEnumId",
+  "creditRating": "creditRating",
   "telephone": "telephone",
   "email": "email",
   "webSite": "webSite",
@@ -916,7 +937,7 @@ curl -X 'GET' \
 
 ```json
 {
-  "customerId": "14DA853H1Z0ET6KUNZ",
+  "customerId": "14FLR27KG1NF7QBR8Y",
   "customerName": "customerShortName",
   "ggn": "8511684464926",
   "gln": "5251637539544",
@@ -942,6 +963,9 @@ curl -X 'GET' \
   "gs1CompanyPrefix": "gs1CompanyPrefix",
   "internalId": "Customer Numberddd",
   "tpaNumber": "tpaNumber",
+  "shippingAddress": "shippingAddress",
+  "paymentMethodEnumId": "paymentMethodEnumId",
+  "creditRating": "creditRating",
   "customerTypeEnumId": "customerTypeEnumId",
   "customerProductTypeDescription": "SPTypeDescription",
   "certificationCodes": "certificationCodes",
@@ -952,9 +976,9 @@ curl -X 'GET' \
   "active": "Y",
   "facilities": [
     {
-      "facilityId": "14DA8562PEYCZEDMDB",
+      "facilityId": "14FLR24DXWQCKQ4LYJ",
       "parentFacilityId": "parentFacilityId2",
-      "ownerPartyId": "14DA853H1Z0ET6KUNZ",
+      "ownerPartyId": "14FLR27KG1NF7QBR8Y",
       "facilityName": "facilityNamexc2",
       "facilitySize": 100,
       "facilitySizeUomId": "facilitySizeUomId2",
@@ -982,9 +1006,9 @@ curl -X 'GET' \
       ]
     },
     {
-      "facilityId": "14DA8560AJJKRHVNGJ",
+      "facilityId": "14FLR26GZMXYH0LKEM",
       "parentFacilityId": "parentFacilityId",
-      "ownerPartyId": "14DA853H1Z0ET6KUNZ",
+      "ownerPartyId": "14FLR27KG1NF7QBR8Y",
       "facilityName": "facilityNameQ",
       "facilitySize": 10,
       "facilitySizeUomId": "facilitySizeUomId",
