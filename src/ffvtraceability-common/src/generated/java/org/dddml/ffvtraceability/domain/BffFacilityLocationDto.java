@@ -33,6 +33,18 @@ public class BffFacilityLocationDto implements Serializable {
         this.facilityName = facilityName;
     }
 
+    private String facilityInternalId;
+
+    public String getFacilityInternalId()
+    {
+        return this.facilityInternalId;
+    }
+
+    public void setFacilityInternalId(String facilityInternalId)
+    {
+        this.facilityInternalId = facilityInternalId;
+    }
+
     private String locationSeqId;
 
     public String getLocationSeqId()
@@ -193,10 +205,11 @@ public class BffFacilityLocationDto implements Serializable {
     {
     }
 
-    public BffFacilityLocationDto(String facilityId, String facilityName, String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId, String active, String locationCode, String gln, String description, String locationName)
+    public BffFacilityLocationDto(String facilityId, String facilityName, String facilityInternalId, String locationSeqId, String locationTypeEnumId, String areaId, String aisleId, String sectionId, String levelId, String positionId, String geoPointId, String active, String locationCode, String gln, String description, String locationName)
     {
         this.facilityId = facilityId;
         this.facilityName = facilityName;
+        this.facilityInternalId = facilityInternalId;
         this.locationSeqId = locationSeqId;
         this.locationTypeEnumId = locationTypeEnumId;
         this.areaId = areaId;
@@ -226,6 +239,7 @@ public class BffFacilityLocationDto implements Serializable {
         return true 
             && (facilityId == other.facilityId || (facilityId != null && facilityId.equals(other.facilityId)))
             && (facilityName == other.facilityName || (facilityName != null && facilityName.equals(other.facilityName)))
+            && (facilityInternalId == other.facilityInternalId || (facilityInternalId != null && facilityInternalId.equals(other.facilityInternalId)))
             && (locationSeqId == other.locationSeqId || (locationSeqId != null && locationSeqId.equals(other.locationSeqId)))
             && (locationTypeEnumId == other.locationTypeEnumId || (locationTypeEnumId != null && locationTypeEnumId.equals(other.locationTypeEnumId)))
             && (areaId == other.areaId || (areaId != null && areaId.equals(other.areaId)))
@@ -251,6 +265,9 @@ public class BffFacilityLocationDto implements Serializable {
         }
         if (this.facilityName != null) {
             hash += 13 * this.facilityName.hashCode();
+        }
+        if (this.facilityInternalId != null) {
+            hash += 13 * this.facilityInternalId.hashCode();
         }
         if (this.locationSeqId != null) {
             hash += 13 * this.locationSeqId.hashCode();
@@ -299,6 +316,7 @@ public class BffFacilityLocationDto implements Serializable {
         return "BffFacilityLocationDto{" +
                 "facilityId=" + '\'' + facilityId + '\'' +
                 ", facilityName=" + '\'' + facilityName + '\'' +
+                ", facilityInternalId=" + '\'' + facilityInternalId + '\'' +
                 ", locationSeqId=" + '\'' + locationSeqId + '\'' +
                 ", locationTypeEnumId=" + '\'' + locationTypeEnumId + '\'' +
                 ", areaId=" + '\'' + areaId + '\'' +

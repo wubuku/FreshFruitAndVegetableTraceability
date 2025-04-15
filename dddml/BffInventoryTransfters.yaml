@@ -53,4 +53,4 @@ services:
           Comments:
             type: description
         result:
-          type: id # InventoryTransferId
+          type: BffInventoryItemDto # 目的仓库仓位的添加前的库存信息

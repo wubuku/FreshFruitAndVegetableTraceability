@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BffFacilityLocationRepository extends JpaRepository<
         AbstractFacilityLocationState.SimpleFacilityLocationState, FacilityLocationId> {
@@ -38,7 +39,30 @@ public interface BffFacilityLocationRepository extends JpaRepository<
     );
 
     @Query(value = """
-            SELECT 
+            SELECT
+             fl.location_seq_id as locationSeqId,
+             fl.location_name as locationName,
+             fl.location_code as locationCode,
+             fl.facility_id AS facilityId,
+             f.facility_name AS facilityName,
+             ii.id_value as facilityInternalId
+             from facility_location fl
+             left join facility f ON fl.facility_id = f.facility_id
+             LEFT JOIN (
+                 SELECT
+                     fi.facility_id,
+                     fi.id_value
+                 FROM facility_identification fi
+                 WHERE fi.facility_identification_type_id = 'INTERNAL_ID'
+             ) ii ON ii.facility_id = f.facility_id
+                     where fl.location_seq_id = :locationSeqId
+            """, nativeQuery = true)
+    Optional<BffFacilityLocationProjection> getFacilityLocationById(
+            @Param("locationSeqId") String locationSeqId
+    );
+
+    @Query(value = """
+            SELECT
                 fl.location_seq_id as locationSeqId,
                 fl.location_type_enum_id as locationTypeEnumId,
                fl.facility_id AS facilityId,
