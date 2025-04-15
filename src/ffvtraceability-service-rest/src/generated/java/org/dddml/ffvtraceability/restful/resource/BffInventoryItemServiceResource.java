@@ -91,7 +91,7 @@ public class BffInventoryItemServiceResource {
         
     }
 
-    @GetMapping("WIPs")
+    @GetMapping("Products")
     public Page<BffWipInventoryGroupDto> getWipInventories(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
@@ -113,7 +113,7 @@ public class BffInventoryItemServiceResource {
         
     }
 
-    @GetMapping("WIPs/GroupByProductAndLot")
+    @GetMapping("Products/GroupByProductAndLot")
     public Page<BffInventoryItemDto> getWipInventoriesByProductAndLot(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
