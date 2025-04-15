@@ -57,14 +57,6 @@ public interface PartyRoleEvent extends Event {
 
         void setBankAccountInformation(String bankAccountInformation);
 
-        String getCustomerTypeEnumId();
-
-        void setCustomerTypeEnumId(String customerTypeEnumId);
-
-        String getCustomerProductTypeDescription();
-
-        void setCustomerProductTypeDescription(String customerProductTypeDescription);
-
         String getSupplierTypeEnumId();
 
         void setSupplierTypeEnumId(String supplierTypeEnumId);
@@ -72,6 +64,26 @@ public interface PartyRoleEvent extends Event {
         String getSupplierProductTypeDescription();
 
         void setSupplierProductTypeDescription(String supplierProductTypeDescription);
+
+        String getShippingAddress();
+
+        void setShippingAddress(String shippingAddress);
+
+        String getPaymentMethodEnumId();
+
+        void setPaymentMethodEnumId(String paymentMethodEnumId);
+
+        String getCreditRating();
+
+        void setCreditRating(String creditRating);
+
+        String getCustomerTypeEnumId();
+
+        void setCustomerTypeEnumId(String customerTypeEnumId);
+
+        String getCustomerProductTypeDescription();
+
+        void setCustomerProductTypeDescription(String customerProductTypeDescription);
 
     }
 
@@ -95,14 +107,6 @@ public interface PartyRoleEvent extends Event {
 
         void setIsPropertyBankAccountInformationRemoved(Boolean removed);
 
-        Boolean getIsPropertyCustomerTypeEnumIdRemoved();
-
-        void setIsPropertyCustomerTypeEnumIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyCustomerProductTypeDescriptionRemoved();
-
-        void setIsPropertyCustomerProductTypeDescriptionRemoved(Boolean removed);
-
         Boolean getIsPropertySupplierTypeEnumIdRemoved();
 
         void setIsPropertySupplierTypeEnumIdRemoved(Boolean removed);
@@ -110,6 +114,26 @@ public interface PartyRoleEvent extends Event {
         Boolean getIsPropertySupplierProductTypeDescriptionRemoved();
 
         void setIsPropertySupplierProductTypeDescriptionRemoved(Boolean removed);
+
+        Boolean getIsPropertyShippingAddressRemoved();
+
+        void setIsPropertyShippingAddressRemoved(Boolean removed);
+
+        Boolean getIsPropertyPaymentMethodEnumIdRemoved();
+
+        void setIsPropertyPaymentMethodEnumIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyCreditRatingRemoved();
+
+        void setIsPropertyCreditRatingRemoved(Boolean removed);
+
+        Boolean getIsPropertyCustomerTypeEnumIdRemoved();
+
+        void setIsPropertyCustomerTypeEnumIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyCustomerProductTypeDescriptionRemoved();
+
+        void setIsPropertyCustomerProductTypeDescriptionRemoved(Boolean removed);
 
 
 

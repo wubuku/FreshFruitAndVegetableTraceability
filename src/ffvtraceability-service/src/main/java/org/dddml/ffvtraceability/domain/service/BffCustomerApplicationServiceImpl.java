@@ -227,9 +227,11 @@ public class BffCustomerApplicationServiceImpl implements BffCustomerApplication
             simpleMergePatchPartyRole.setBankAccountInformation(bffCustomer.getBankAccountInformation());
             simpleMergePatchPartyRole.setCertificationCodes(bffCustomer.getCertificationCodes());
             simpleMergePatchPartyRole.setTpaNumber(bffCustomer.getTpaNumber());
+            simpleMergePatchPartyRole.setCustomerProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
             simpleMergePatchPartyRole.setCustomerTypeEnumId(bffCustomer.getCustomerTypeEnumId());
-            simpleMergePatchPartyRole
-                    .setCustomerProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
+            simpleMergePatchPartyRole.setPaymentMethodEnumId(bffCustomer.getPaymentMethodEnumId());
+            simpleMergePatchPartyRole.setCreditRating(bffCustomer.getCreditRating());
+            simpleMergePatchPartyRole.setShippingAddress(bffCustomer.getShippingAddress());
             partyRoleApplicationService.when(simpleMergePatchPartyRole);
         } else {// 没有就添加
             AbstractPartyRoleCommand.SimpleCreatePartyRole createPartyRole = new AbstractPartyRoleCommand.SimpleCreatePartyRole();
@@ -242,8 +244,9 @@ public class BffCustomerApplicationServiceImpl implements BffCustomerApplication
             createPartyRole.setTpaNumber(bffCustomer.getTpaNumber());
             createPartyRole.setCustomerProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
             createPartyRole.setCustomerTypeEnumId(bffCustomer.getCustomerTypeEnumId());
-            createPartyRole.setSupplierProductTypeDescription(bffCustomer.getCustomerProductTypeDescription());
-            createPartyRole.setSupplierTypeEnumId(bffCustomer.getCustomerTypeEnumId());
+            createPartyRole.setPaymentMethodEnumId(bffCustomer.getPaymentMethodEnumId());
+            createPartyRole.setCreditRating(bffCustomer.getCreditRating());
+            createPartyRole.setShippingAddress(bffCustomer.getShippingAddress());
             partyRoleApplicationService.when(createPartyRole);
         }
 
@@ -465,6 +468,9 @@ public class BffCustomerApplicationServiceImpl implements BffCustomerApplication
         createPartyRole.setTpaNumber(customer.getTpaNumber());
         createPartyRole.setCustomerProductTypeDescription(customer.getCustomerProductTypeDescription());
         createPartyRole.setCustomerTypeEnumId(customer.getCustomerTypeEnumId());
+        createPartyRole.setPaymentMethodEnumId(customer.getPaymentMethodEnumId());
+        createPartyRole.setCreditRating(customer.getCreditRating());
+        createPartyRole.setShippingAddress(customer.getShippingAddress());
         partyRoleApplicationService.when(createPartyRole);
 
         return createParty.getPartyId();

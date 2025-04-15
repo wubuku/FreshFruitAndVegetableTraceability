@@ -196,6 +196,42 @@ public class BffCustomerDto implements Serializable {
         this.tpaNumber = tpaNumber;
     }
 
+    private String shippingAddress;
+
+    public String getShippingAddress()
+    {
+        return this.shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress)
+    {
+        this.shippingAddress = shippingAddress;
+    }
+
+    private String paymentMethodEnumId;
+
+    public String getPaymentMethodEnumId()
+    {
+        return this.paymentMethodEnumId;
+    }
+
+    public void setPaymentMethodEnumId(String paymentMethodEnumId)
+    {
+        this.paymentMethodEnumId = paymentMethodEnumId;
+    }
+
+    private String creditRating;
+
+    public String getCreditRating()
+    {
+        return this.creditRating;
+    }
+
+    public void setCreditRating(String creditRating)
+    {
+        this.creditRating = creditRating;
+    }
+
     private String customerTypeEnumId;
 
     public String getCustomerTypeEnumId()
@@ -327,7 +363,7 @@ public class BffCustomerDto implements Serializable {
     {
     }
 
-    public BffCustomerDto(String customerId, String customerName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String customerShortName, String taxId, String gs1CompanyPrefix, String internalId, String tpaNumber, String customerTypeEnumId, String customerProductTypeDescription, String certificationCodes, String bankAccountInformation, String telecomCountryCode, String telephone, String email, String webSite, String active, java.util.List<BffFacilityDto> facilities)
+    public BffCustomerDto(String customerId, String customerName, String ggn, String gln, String externalId, String preferredCurrencyUomId, String description, String statusId, java.util.List<BffBusinessContactDto> businessContacts, String customerShortName, String taxId, String gs1CompanyPrefix, String internalId, String tpaNumber, String shippingAddress, String paymentMethodEnumId, String creditRating, String customerTypeEnumId, String customerProductTypeDescription, String certificationCodes, String bankAccountInformation, String telecomCountryCode, String telephone, String email, String webSite, String active, java.util.List<BffFacilityDto> facilities)
     {
         this.customerId = customerId;
         this.customerName = customerName;
@@ -343,6 +379,9 @@ public class BffCustomerDto implements Serializable {
         this.gs1CompanyPrefix = gs1CompanyPrefix;
         this.internalId = internalId;
         this.tpaNumber = tpaNumber;
+        this.shippingAddress = shippingAddress;
+        this.paymentMethodEnumId = paymentMethodEnumId;
+        this.creditRating = creditRating;
         this.customerTypeEnumId = customerTypeEnumId;
         this.customerProductTypeDescription = customerProductTypeDescription;
         this.certificationCodes = certificationCodes;
@@ -381,6 +420,9 @@ public class BffCustomerDto implements Serializable {
             && (gs1CompanyPrefix == other.gs1CompanyPrefix || (gs1CompanyPrefix != null && gs1CompanyPrefix.equals(other.gs1CompanyPrefix)))
             && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
             && (tpaNumber == other.tpaNumber || (tpaNumber != null && tpaNumber.equals(other.tpaNumber)))
+            && (shippingAddress == other.shippingAddress || (shippingAddress != null && shippingAddress.equals(other.shippingAddress)))
+            && (paymentMethodEnumId == other.paymentMethodEnumId || (paymentMethodEnumId != null && paymentMethodEnumId.equals(other.paymentMethodEnumId)))
+            && (creditRating == other.creditRating || (creditRating != null && creditRating.equals(other.creditRating)))
             && (customerTypeEnumId == other.customerTypeEnumId || (customerTypeEnumId != null && customerTypeEnumId.equals(other.customerTypeEnumId)))
             && (customerProductTypeDescription == other.customerProductTypeDescription || (customerProductTypeDescription != null && customerProductTypeDescription.equals(other.customerProductTypeDescription)))
             && (certificationCodes == other.certificationCodes || (certificationCodes != null && certificationCodes.equals(other.certificationCodes)))
@@ -440,6 +482,15 @@ public class BffCustomerDto implements Serializable {
         if (this.tpaNumber != null) {
             hash += 13 * this.tpaNumber.hashCode();
         }
+        if (this.shippingAddress != null) {
+            hash += 13 * this.shippingAddress.hashCode();
+        }
+        if (this.paymentMethodEnumId != null) {
+            hash += 13 * this.paymentMethodEnumId.hashCode();
+        }
+        if (this.creditRating != null) {
+            hash += 13 * this.creditRating.hashCode();
+        }
         if (this.customerTypeEnumId != null) {
             hash += 13 * this.customerTypeEnumId.hashCode();
         }
@@ -490,6 +541,9 @@ public class BffCustomerDto implements Serializable {
                 ", gs1CompanyPrefix=" + '\'' + gs1CompanyPrefix + '\'' +
                 ", internalId=" + '\'' + internalId + '\'' +
                 ", tpaNumber=" + '\'' + tpaNumber + '\'' +
+                ", shippingAddress=" + '\'' + shippingAddress + '\'' +
+                ", paymentMethodEnumId=" + '\'' + paymentMethodEnumId + '\'' +
+                ", creditRating=" + '\'' + creditRating + '\'' +
                 ", customerTypeEnumId=" + '\'' + customerTypeEnumId + '\'' +
                 ", customerProductTypeDescription=" + '\'' + customerProductTypeDescription + '\'' +
                 ", certificationCodes=" + '\'' + certificationCodes + '\'' +

@@ -62,30 +62,6 @@ public class PartyRoleStateDto {
         this.bankAccountInformation = bankAccountInformation;
     }
 
-    private String customerTypeEnumId;
-
-    public String getCustomerTypeEnumId()
-    {
-        return this.customerTypeEnumId;
-    }
-
-    public void setCustomerTypeEnumId(String customerTypeEnumId)
-    {
-        this.customerTypeEnumId = customerTypeEnumId;
-    }
-
-    private String customerProductTypeDescription;
-
-    public String getCustomerProductTypeDescription()
-    {
-        return this.customerProductTypeDescription;
-    }
-
-    public void setCustomerProductTypeDescription(String customerProductTypeDescription)
-    {
-        this.customerProductTypeDescription = customerProductTypeDescription;
-    }
-
     private String supplierTypeEnumId;
 
     public String getSupplierTypeEnumId()
@@ -108,6 +84,66 @@ public class PartyRoleStateDto {
     public void setSupplierProductTypeDescription(String supplierProductTypeDescription)
     {
         this.supplierProductTypeDescription = supplierProductTypeDescription;
+    }
+
+    private String shippingAddress;
+
+    public String getShippingAddress()
+    {
+        return this.shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress)
+    {
+        this.shippingAddress = shippingAddress;
+    }
+
+    private String paymentMethodEnumId;
+
+    public String getPaymentMethodEnumId()
+    {
+        return this.paymentMethodEnumId;
+    }
+
+    public void setPaymentMethodEnumId(String paymentMethodEnumId)
+    {
+        this.paymentMethodEnumId = paymentMethodEnumId;
+    }
+
+    private String creditRating;
+
+    public String getCreditRating()
+    {
+        return this.creditRating;
+    }
+
+    public void setCreditRating(String creditRating)
+    {
+        this.creditRating = creditRating;
+    }
+
+    private String customerTypeEnumId;
+
+    public String getCustomerTypeEnumId()
+    {
+        return this.customerTypeEnumId;
+    }
+
+    public void setCustomerTypeEnumId(String customerTypeEnumId)
+    {
+        this.customerTypeEnumId = customerTypeEnumId;
+    }
+
+    private String customerProductTypeDescription;
+
+    public String getCustomerProductTypeDescription()
+    {
+        return this.customerProductTypeDescription;
+    }
+
+    public void setCustomerProductTypeDescription(String customerProductTypeDescription)
+    {
+        this.customerProductTypeDescription = customerProductTypeDescription;
     }
 
     private Long version;
@@ -211,17 +247,26 @@ public class PartyRoleStateDto {
             if (returnedFieldsContains("BankAccountInformation")) {
                 dto.setBankAccountInformation(state.getBankAccountInformation());
             }
-            if (returnedFieldsContains("CustomerTypeEnumId")) {
-                dto.setCustomerTypeEnumId(state.getCustomerTypeEnumId());
-            }
-            if (returnedFieldsContains("CustomerProductTypeDescription")) {
-                dto.setCustomerProductTypeDescription(state.getCustomerProductTypeDescription());
-            }
             if (returnedFieldsContains("SupplierTypeEnumId")) {
                 dto.setSupplierTypeEnumId(state.getSupplierTypeEnumId());
             }
             if (returnedFieldsContains("SupplierProductTypeDescription")) {
                 dto.setSupplierProductTypeDescription(state.getSupplierProductTypeDescription());
+            }
+            if (returnedFieldsContains("ShippingAddress")) {
+                dto.setShippingAddress(state.getShippingAddress());
+            }
+            if (returnedFieldsContains("PaymentMethodEnumId")) {
+                dto.setPaymentMethodEnumId(state.getPaymentMethodEnumId());
+            }
+            if (returnedFieldsContains("CreditRating")) {
+                dto.setCreditRating(state.getCreditRating());
+            }
+            if (returnedFieldsContains("CustomerTypeEnumId")) {
+                dto.setCustomerTypeEnumId(state.getCustomerTypeEnumId());
+            }
+            if (returnedFieldsContains("CustomerProductTypeDescription")) {
+                dto.setCustomerProductTypeDescription(state.getCustomerProductTypeDescription());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

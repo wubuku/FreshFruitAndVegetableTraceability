@@ -25,13 +25,19 @@ public interface PartyRoleState
 
     String getBankAccountInformation();
 
-    String getCustomerTypeEnumId();
-
-    String getCustomerProductTypeDescription();
-
     String getSupplierTypeEnumId();
 
     String getSupplierProductTypeDescription();
+
+    String getShippingAddress();
+
+    String getPaymentMethodEnumId();
+
+    String getCreditRating();
+
+    String getCustomerTypeEnumId();
+
+    String getCustomerProductTypeDescription();
 
     Long getVersion();
 
@@ -54,13 +60,19 @@ public interface PartyRoleState
 
         void setBankAccountInformation(String bankAccountInformation);
 
-        void setCustomerTypeEnumId(String customerTypeEnumId);
-
-        void setCustomerProductTypeDescription(String customerProductTypeDescription);
-
         void setSupplierTypeEnumId(String supplierTypeEnumId);
 
         void setSupplierProductTypeDescription(String supplierProductTypeDescription);
+
+        void setShippingAddress(String shippingAddress);
+
+        void setPaymentMethodEnumId(String paymentMethodEnumId);
+
+        void setCreditRating(String creditRating);
+
+        void setCustomerTypeEnumId(String customerTypeEnumId);
+
+        void setCustomerProductTypeDescription(String customerProductTypeDescription);
 
         void setVersion(Long version);
 

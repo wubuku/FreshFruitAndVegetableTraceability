@@ -75,30 +75,6 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
             this.bankAccountInformation = bankAccountInformation;
         }
 
-        private String customerTypeEnumId;
-
-        public String getCustomerTypeEnumId()
-        {
-            return this.customerTypeEnumId;
-        }
-
-        public void setCustomerTypeEnumId(String customerTypeEnumId)
-        {
-            this.customerTypeEnumId = customerTypeEnumId;
-        }
-
-        private String customerProductTypeDescription;
-
-        public String getCustomerProductTypeDescription()
-        {
-            return this.customerProductTypeDescription;
-        }
-
-        public void setCustomerProductTypeDescription(String customerProductTypeDescription)
-        {
-            this.customerProductTypeDescription = customerProductTypeDescription;
-        }
-
         private String supplierTypeEnumId;
 
         public String getSupplierTypeEnumId()
@@ -121,6 +97,66 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
         public void setSupplierProductTypeDescription(String supplierProductTypeDescription)
         {
             this.supplierProductTypeDescription = supplierProductTypeDescription;
+        }
+
+        private String shippingAddress;
+
+        public String getShippingAddress()
+        {
+            return this.shippingAddress;
+        }
+
+        public void setShippingAddress(String shippingAddress)
+        {
+            this.shippingAddress = shippingAddress;
+        }
+
+        private String paymentMethodEnumId;
+
+        public String getPaymentMethodEnumId()
+        {
+            return this.paymentMethodEnumId;
+        }
+
+        public void setPaymentMethodEnumId(String paymentMethodEnumId)
+        {
+            this.paymentMethodEnumId = paymentMethodEnumId;
+        }
+
+        private String creditRating;
+
+        public String getCreditRating()
+        {
+            return this.creditRating;
+        }
+
+        public void setCreditRating(String creditRating)
+        {
+            this.creditRating = creditRating;
+        }
+
+        private String customerTypeEnumId;
+
+        public String getCustomerTypeEnumId()
+        {
+            return this.customerTypeEnumId;
+        }
+
+        public void setCustomerTypeEnumId(String customerTypeEnumId)
+        {
+            this.customerTypeEnumId = customerTypeEnumId;
+        }
+
+        private String customerProductTypeDescription;
+
+        public String getCustomerProductTypeDescription()
+        {
+            return this.customerProductTypeDescription;
+        }
+
+        public void setCustomerProductTypeDescription(String customerProductTypeDescription)
+        {
+            this.customerProductTypeDescription = customerProductTypeDescription;
         }
 
     }
@@ -177,30 +213,6 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
             this.isPropertyBankAccountInformationRemoved = removed;
         }
 
-        private Boolean isPropertyCustomerTypeEnumIdRemoved;
-
-        public Boolean getIsPropertyCustomerTypeEnumIdRemoved()
-        {
-            return this.isPropertyCustomerTypeEnumIdRemoved;
-        }
-
-        public void setIsPropertyCustomerTypeEnumIdRemoved(Boolean removed)
-        {
-            this.isPropertyCustomerTypeEnumIdRemoved = removed;
-        }
-
-        private Boolean isPropertyCustomerProductTypeDescriptionRemoved;
-
-        public Boolean getIsPropertyCustomerProductTypeDescriptionRemoved()
-        {
-            return this.isPropertyCustomerProductTypeDescriptionRemoved;
-        }
-
-        public void setIsPropertyCustomerProductTypeDescriptionRemoved(Boolean removed)
-        {
-            this.isPropertyCustomerProductTypeDescriptionRemoved = removed;
-        }
-
         private Boolean isPropertySupplierTypeEnumIdRemoved;
 
         public Boolean getIsPropertySupplierTypeEnumIdRemoved()
@@ -223,6 +235,66 @@ public abstract class AbstractPartyRoleCommand extends AbstractCommand implement
         public void setIsPropertySupplierProductTypeDescriptionRemoved(Boolean removed)
         {
             this.isPropertySupplierProductTypeDescriptionRemoved = removed;
+        }
+
+        private Boolean isPropertyShippingAddressRemoved;
+
+        public Boolean getIsPropertyShippingAddressRemoved()
+        {
+            return this.isPropertyShippingAddressRemoved;
+        }
+
+        public void setIsPropertyShippingAddressRemoved(Boolean removed)
+        {
+            this.isPropertyShippingAddressRemoved = removed;
+        }
+
+        private Boolean isPropertyPaymentMethodEnumIdRemoved;
+
+        public Boolean getIsPropertyPaymentMethodEnumIdRemoved()
+        {
+            return this.isPropertyPaymentMethodEnumIdRemoved;
+        }
+
+        public void setIsPropertyPaymentMethodEnumIdRemoved(Boolean removed)
+        {
+            this.isPropertyPaymentMethodEnumIdRemoved = removed;
+        }
+
+        private Boolean isPropertyCreditRatingRemoved;
+
+        public Boolean getIsPropertyCreditRatingRemoved()
+        {
+            return this.isPropertyCreditRatingRemoved;
+        }
+
+        public void setIsPropertyCreditRatingRemoved(Boolean removed)
+        {
+            this.isPropertyCreditRatingRemoved = removed;
+        }
+
+        private Boolean isPropertyCustomerTypeEnumIdRemoved;
+
+        public Boolean getIsPropertyCustomerTypeEnumIdRemoved()
+        {
+            return this.isPropertyCustomerTypeEnumIdRemoved;
+        }
+
+        public void setIsPropertyCustomerTypeEnumIdRemoved(Boolean removed)
+        {
+            this.isPropertyCustomerTypeEnumIdRemoved = removed;
+        }
+
+        private Boolean isPropertyCustomerProductTypeDescriptionRemoved;
+
+        public Boolean getIsPropertyCustomerProductTypeDescriptionRemoved()
+        {
+            return this.isPropertyCustomerProductTypeDescriptionRemoved;
+        }
+
+        public void setIsPropertyCustomerProductTypeDescriptionRemoved(Boolean removed)
+        {
+            this.isPropertyCustomerProductTypeDescriptionRemoved = removed;
         }
 
 

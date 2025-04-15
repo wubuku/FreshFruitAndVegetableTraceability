@@ -6830,10 +6830,13 @@ public class M {
             "tpaNumber",
             "certificationCodes",
             "bankAccountInformation",
-            "customerTypeEnumId",
-            "customerProductTypeDescription",
             "supplierTypeEnumId",
             "supplierProductTypeDescription",
+            "shippingAddress",
+            "paymentMethodEnumId",
+            "creditRating",
+            "customerTypeEnumId",
+            "customerProductTypeDescription",
             "version",
             "createdBy",
             "createdAt",
@@ -6846,6 +6849,9 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "String",
+            "String",
+            "String",
             "String",
             "String",
             "String",
@@ -6882,14 +6888,20 @@ public class M {
         aliasMap.put("CertificationCodes", "certificationCodes");
         aliasMap.put("bankAccountInformation", "bankAccountInformation");
         aliasMap.put("BankAccountInformation", "bankAccountInformation");
-        aliasMap.put("customerTypeEnumId", "customerTypeEnumId");
-        aliasMap.put("CustomerTypeEnumId", "customerTypeEnumId");
-        aliasMap.put("customerProductTypeDescription", "customerProductTypeDescription");
-        aliasMap.put("CustomerProductTypeDescription", "customerProductTypeDescription");
         aliasMap.put("supplierTypeEnumId", "supplierTypeEnumId");
         aliasMap.put("SupplierTypeEnumId", "supplierTypeEnumId");
         aliasMap.put("supplierProductTypeDescription", "supplierProductTypeDescription");
         aliasMap.put("SupplierProductTypeDescription", "supplierProductTypeDescription");
+        aliasMap.put("shippingAddress", "shippingAddress");
+        aliasMap.put("ShippingAddress", "shippingAddress");
+        aliasMap.put("paymentMethodEnumId", "paymentMethodEnumId");
+        aliasMap.put("PaymentMethodEnumId", "paymentMethodEnumId");
+        aliasMap.put("creditRating", "creditRating");
+        aliasMap.put("CreditRating", "creditRating");
+        aliasMap.put("customerTypeEnumId", "customerTypeEnumId");
+        aliasMap.put("CustomerTypeEnumId", "customerTypeEnumId");
+        aliasMap.put("customerProductTypeDescription", "customerProductTypeDescription");
+        aliasMap.put("CustomerProductTypeDescription", "customerProductTypeDescription");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("createdBy", "createdBy");

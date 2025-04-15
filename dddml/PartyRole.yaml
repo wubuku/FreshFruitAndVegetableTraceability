@@ -21,19 +21,25 @@
       BankAccountInformation:
         description: "Bank Account Information"
         type: description
-      CustomerTypeEnumId:
-        # Customer 的类别（枚举值 / 单选）
-        type: id
-      CustomerProductTypeDescription:
-        # Customer提供的产品/服务类型的信息描述：实体产品，服务（Service）等。
-        type: description
       SupplierTypeEnumId:
         # 供应商的类别（枚举值 / 单选）
         type: id
       SupplierProductTypeDescription:
         # 供应商提供的产品/服务类型的信息描述：实体产品，服务（Service）等。
         type: description
-
+      #当 RoleTypeId 为 "CUSTOMER" 时，我们使用这些属性：
+      ShippingAddress:
+        type: long-varchar
+      PaymentMethodEnumId:
+        type: id
+      CreditRating:
+        type: id
+      CustomerTypeEnumId:
+        # Customer 的类别（枚举值 / 单选）
+        type: id
+      CustomerProductTypeDescription:
+        # Customer提供的产品/服务类型的信息描述：实体产品，服务（Service）等。
+        type: description
       # ------------------------------------------------------------
 
     valueObjects:

@@ -20,17 +20,26 @@
     <property name="bankAccountInformation">
       <column name="bank_account_information" sql-type="VARCHAR(255)" />
     </property>
-    <property name="customerTypeEnumId">
-      <column name="customer_type_enum_id" sql-type="VARCHAR(20)" />
-    </property>
-    <property name="customerProductTypeDescription">
-      <column name="customer_product_type_description" sql-type="VARCHAR(255)" />
-    </property>
     <property name="supplierTypeEnumId">
       <column name="supplier_type_enum_id" sql-type="VARCHAR(20)" />
     </property>
     <property name="supplierProductTypeDescription">
       <column name="supplier_product_type_description" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="shippingAddress">
+      <column name="shipping_address" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="paymentMethodEnumId">
+      <column name="payment_method_enum_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="creditRating">
+      <column name="credit_rating" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="customerTypeEnumId">
+      <column name="customer_type_enum_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="customerProductTypeDescription">
+      <column name="customer_product_type_description" sql-type="VARCHAR(255)" />
     </property>
     <property name="createdBy">
       <column name="created_by" />

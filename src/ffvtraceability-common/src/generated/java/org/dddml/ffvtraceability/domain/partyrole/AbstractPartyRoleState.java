@@ -54,26 +54,6 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         this.bankAccountInformation = bankAccountInformation;
     }
 
-    private String customerTypeEnumId;
-
-    public String getCustomerTypeEnumId() {
-        return this.customerTypeEnumId;
-    }
-
-    public void setCustomerTypeEnumId(String customerTypeEnumId) {
-        this.customerTypeEnumId = customerTypeEnumId;
-    }
-
-    private String customerProductTypeDescription;
-
-    public String getCustomerProductTypeDescription() {
-        return this.customerProductTypeDescription;
-    }
-
-    public void setCustomerProductTypeDescription(String customerProductTypeDescription) {
-        this.customerProductTypeDescription = customerProductTypeDescription;
-    }
-
     private String supplierTypeEnumId;
 
     public String getSupplierTypeEnumId() {
@@ -92,6 +72,56 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
 
     public void setSupplierProductTypeDescription(String supplierProductTypeDescription) {
         this.supplierProductTypeDescription = supplierProductTypeDescription;
+    }
+
+    private String shippingAddress;
+
+    public String getShippingAddress() {
+        return this.shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    private String paymentMethodEnumId;
+
+    public String getPaymentMethodEnumId() {
+        return this.paymentMethodEnumId;
+    }
+
+    public void setPaymentMethodEnumId(String paymentMethodEnumId) {
+        this.paymentMethodEnumId = paymentMethodEnumId;
+    }
+
+    private String creditRating;
+
+    public String getCreditRating() {
+        return this.creditRating;
+    }
+
+    public void setCreditRating(String creditRating) {
+        this.creditRating = creditRating;
+    }
+
+    private String customerTypeEnumId;
+
+    public String getCustomerTypeEnumId() {
+        return this.customerTypeEnumId;
+    }
+
+    public void setCustomerTypeEnumId(String customerTypeEnumId) {
+        this.customerTypeEnumId = customerTypeEnumId;
+    }
+
+    private String customerProductTypeDescription;
+
+    public String getCustomerProductTypeDescription() {
+        return this.customerProductTypeDescription;
+    }
+
+    public void setCustomerProductTypeDescription(String customerProductTypeDescription) {
+        this.customerProductTypeDescription = customerProductTypeDescription;
     }
 
     private Long version;
@@ -231,10 +261,13 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         this.setTpaNumber(e.getTpaNumber());
         this.setCertificationCodes(e.getCertificationCodes());
         this.setBankAccountInformation(e.getBankAccountInformation());
-        this.setCustomerTypeEnumId(e.getCustomerTypeEnumId());
-        this.setCustomerProductTypeDescription(e.getCustomerProductTypeDescription());
         this.setSupplierTypeEnumId(e.getSupplierTypeEnumId());
         this.setSupplierProductTypeDescription(e.getSupplierProductTypeDescription());
+        this.setShippingAddress(e.getShippingAddress());
+        this.setPaymentMethodEnumId(e.getPaymentMethodEnumId());
+        this.setCreditRating(e.getCreditRating());
+        this.setCustomerTypeEnumId(e.getCustomerTypeEnumId());
+        this.setCustomerProductTypeDescription(e.getCustomerProductTypeDescription());
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -248,10 +281,13 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         this.setTpaNumber(s.getTpaNumber());
         this.setCertificationCodes(s.getCertificationCodes());
         this.setBankAccountInformation(s.getBankAccountInformation());
-        this.setCustomerTypeEnumId(s.getCustomerTypeEnumId());
-        this.setCustomerProductTypeDescription(s.getCustomerProductTypeDescription());
         this.setSupplierTypeEnumId(s.getSupplierTypeEnumId());
         this.setSupplierProductTypeDescription(s.getSupplierProductTypeDescription());
+        this.setShippingAddress(s.getShippingAddress());
+        this.setPaymentMethodEnumId(s.getPaymentMethodEnumId());
+        this.setCreditRating(s.getCreditRating());
+        this.setCustomerTypeEnumId(s.getCustomerTypeEnumId());
+        this.setCustomerProductTypeDescription(s.getCustomerProductTypeDescription());
     }
 
     public void when(PartyRoleStateMergePatched e) {
@@ -278,20 +314,6 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
         } else {
             this.setBankAccountInformation(e.getBankAccountInformation());
         }
-        if (e.getCustomerTypeEnumId() == null) {
-            if (e.getIsPropertyCustomerTypeEnumIdRemoved() != null && e.getIsPropertyCustomerTypeEnumIdRemoved()) {
-                this.setCustomerTypeEnumId(null);
-            }
-        } else {
-            this.setCustomerTypeEnumId(e.getCustomerTypeEnumId());
-        }
-        if (e.getCustomerProductTypeDescription() == null) {
-            if (e.getIsPropertyCustomerProductTypeDescriptionRemoved() != null && e.getIsPropertyCustomerProductTypeDescriptionRemoved()) {
-                this.setCustomerProductTypeDescription(null);
-            }
-        } else {
-            this.setCustomerProductTypeDescription(e.getCustomerProductTypeDescription());
-        }
         if (e.getSupplierTypeEnumId() == null) {
             if (e.getIsPropertySupplierTypeEnumIdRemoved() != null && e.getIsPropertySupplierTypeEnumIdRemoved()) {
                 this.setSupplierTypeEnumId(null);
@@ -305,6 +327,41 @@ public abstract class AbstractPartyRoleState implements PartyRoleState.SqlPartyR
             }
         } else {
             this.setSupplierProductTypeDescription(e.getSupplierProductTypeDescription());
+        }
+        if (e.getShippingAddress() == null) {
+            if (e.getIsPropertyShippingAddressRemoved() != null && e.getIsPropertyShippingAddressRemoved()) {
+                this.setShippingAddress(null);
+            }
+        } else {
+            this.setShippingAddress(e.getShippingAddress());
+        }
+        if (e.getPaymentMethodEnumId() == null) {
+            if (e.getIsPropertyPaymentMethodEnumIdRemoved() != null && e.getIsPropertyPaymentMethodEnumIdRemoved()) {
+                this.setPaymentMethodEnumId(null);
+            }
+        } else {
+            this.setPaymentMethodEnumId(e.getPaymentMethodEnumId());
+        }
+        if (e.getCreditRating() == null) {
+            if (e.getIsPropertyCreditRatingRemoved() != null && e.getIsPropertyCreditRatingRemoved()) {
+                this.setCreditRating(null);
+            }
+        } else {
+            this.setCreditRating(e.getCreditRating());
+        }
+        if (e.getCustomerTypeEnumId() == null) {
+            if (e.getIsPropertyCustomerTypeEnumIdRemoved() != null && e.getIsPropertyCustomerTypeEnumIdRemoved()) {
+                this.setCustomerTypeEnumId(null);
+            }
+        } else {
+            this.setCustomerTypeEnumId(e.getCustomerTypeEnumId());
+        }
+        if (e.getCustomerProductTypeDescription() == null) {
+            if (e.getIsPropertyCustomerProductTypeDescriptionRemoved() != null && e.getIsPropertyCustomerProductTypeDescriptionRemoved()) {
+                this.setCustomerProductTypeDescription(null);
+            }
+        } else {
+            this.setCustomerProductTypeDescription(e.getCustomerProductTypeDescription());
         }
 
         this.setUpdatedBy(e.getCreatedBy());

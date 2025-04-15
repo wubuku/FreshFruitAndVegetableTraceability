@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <Enumeration enumId="CASH" enumTypeId="CUSTOMER_PAYMENT_METHOD_ENUM"
+        description="Cash" />
+    <Enumeration enumId="CREDIT_CARD" enumTypeId="CUSTOMER_PAYMENT_METHOD_ENUM"
+        description="Credit Card" />
+    <Enumeration enumId="BANK_TRANSFER" enumTypeId="CUSTOMER_PAYMENT_METHOD_ENUM"
+        description="Bank Transfer" />
+    <Enumeration enumId="E_Payment" enumTypeId="CUSTOMER_PAYMENT_METHOD_ENUM"
+        description="E-Payment" />
+</entity-engine-xml>

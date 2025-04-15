@@ -34,6 +34,12 @@ public interface BffCustomerProjection {
 
     String getTpaNumber();
 
+    String getShippingAddress();
+
+    String getPaymentMethodEnumId();
+
+    String getCreditRating();
+
     String getCustomerTypeEnumId();
 
     String getCustomerProductTypeDescription();

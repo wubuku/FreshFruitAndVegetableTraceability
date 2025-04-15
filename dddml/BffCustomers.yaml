@@ -43,6 +43,12 @@ valueObjects:
       TpaNumber:
         description: "Trade Partner Agreement Number"
         type: name
+      ShippingAddress:
+        type: long-varchar
+      PaymentMethodEnumId:
+        type: id
+      CreditRating:
+        type: id
       CustomerTypeEnumId:
         # Customer的类别（枚举值 / 单选）
         type: id
