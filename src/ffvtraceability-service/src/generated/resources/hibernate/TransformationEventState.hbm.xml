@@ -35,10 +35,10 @@
         <column name="food_used_product_name" sql-type="VARCHAR(100)" />
       </property>
       <property name="packagingSize">
-        <column name="food_used_packaging_size" sql-type="VARCHAR(50)" />
+        <column name="food_used_packaging_size" sql-type="VARCHAR(100)" />
       </property>
       <property name="packagingStyle">
-        <column name="food_used_packaging_style" sql-type="VARCHAR(50)" />
+        <column name="food_used_packaging_style" sql-type="VARCHAR(100)" />
       </property>
     </component>
     <component name="foodUsedQuantityAndUom" class="org.dddml.ffvtraceability.domain.KdeQuantityAndUom">
@@ -77,10 +77,10 @@
         <column name="food_produced_product_name" sql-type="VARCHAR(100)" />
       </property>
       <property name="packagingSize">
-        <column name="food_produced_packaging_size" sql-type="VARCHAR(50)" />
+        <column name="food_produced_packaging_size" sql-type="VARCHAR(100)" />
       </property>
       <property name="packagingStyle">
-        <column name="food_produced_packaging_style" sql-type="VARCHAR(50)" />
+        <column name="food_produced_packaging_style" sql-type="VARCHAR(100)" />
       </property>
     </component>
     <component name="foodProducedQuantityAndUom" class="org.dddml.ffvtraceability.domain.KdeQuantityAndUom">
@@ -105,7 +105,7 @@
         <column name="transformation_location_city" sql-type="VARCHAR(100)" />
       </property>
       <property name="state">
-        <column name="transformation_location_state" sql-type="VARCHAR(50)" />
+        <column name="transformation_location_state" sql-type="VARCHAR(100)" />
       </property>
       <property name="zipCode">
         <column name="transformation_location_zip_code" sql-type="VARCHAR(30)" />

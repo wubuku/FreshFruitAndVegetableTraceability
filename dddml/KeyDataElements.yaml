@@ -47,11 +47,11 @@ typeDefinitions:
     javaType: String
 
   KdePackagingSize:
-    sqlType: VARCHAR(50)
+    sqlType: VARCHAR(100)
     javaType: String
 
   KdePackagingStyle:
-    sqlType: VARCHAR(50)
+    sqlType: VARCHAR(100)
     javaType: String
 
   KdeBusinessName:
@@ -73,7 +73,7 @@ typeDefinitions:
     javaType: String
 
   KdeState:
-    sqlType: VARCHAR(50)
+    sqlType: VARCHAR(100)
     javaType: String
 
   KdeZipCode:

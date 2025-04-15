@@ -43,10 +43,10 @@
         <column name="product_description_product_name" sql-type="VARCHAR(100)" />
       </property>
       <property name="packagingSize">
-        <column name="product_description_packaging_size" sql-type="VARCHAR(50)" />
+        <column name="product_description_packaging_size" sql-type="VARCHAR(100)" />
       </property>
       <property name="packagingStyle">
-        <column name="product_description_packaging_style" sql-type="VARCHAR(50)" />
+        <column name="product_description_packaging_style" sql-type="VARCHAR(100)" />
       </property>
     </component>
     <component name="shipToLocation" class="org.dddml.ffvtraceability.domain.KdeLocationDescription">
@@ -63,7 +63,7 @@
         <column name="ship_to_location_city" sql-type="VARCHAR(100)" />
       </property>
       <property name="state">
-        <column name="ship_to_location_state" sql-type="VARCHAR(50)" />
+        <column name="ship_to_location_state" sql-type="VARCHAR(100)" />
       </property>
       <property name="zipCode">
         <column name="ship_to_location_zip_code" sql-type="VARCHAR(30)" />
@@ -83,7 +83,7 @@
         <column name="ship_from_location_city" sql-type="VARCHAR(100)" />
       </property>
       <property name="state">
-        <column name="ship_from_location_state" sql-type="VARCHAR(50)" />
+        <column name="ship_from_location_state" sql-type="VARCHAR(100)" />
       </property>
       <property name="zipCode">
         <column name="ship_from_location_zip_code" sql-type="VARCHAR(30)" />
@@ -106,7 +106,7 @@
         <column name="tlc_source_city" sql-type="VARCHAR(100)" />
       </property>
       <property name="tlcSourceState">
-        <column name="tlc_source_state" sql-type="VARCHAR(50)" />
+        <column name="tlc_source_state" sql-type="VARCHAR(100)" />
       </property>
       <property name="tlcSourceZipCode">
         <column name="tlc_source_zip_code" sql-type="VARCHAR(30)" />
