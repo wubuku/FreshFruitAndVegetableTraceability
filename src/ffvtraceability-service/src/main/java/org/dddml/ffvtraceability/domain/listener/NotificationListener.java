@@ -123,27 +123,28 @@ public class NotificationListener {
             } else {
                 continue;
             }
-            OrderEvent.OrderStateEvent event = (OrderEvent.OrderStateEvent) e;
-            String orderId = event.getOrderId();
-            String tenantId = event.getTenantId();
-            ShipmentState shipmentState = shipmentApplicationService.get(orderId);
-            if (shipmentState == null) {
-                logger.error("Can't find Receiving document:{}", orderId);
-                continue;
-            }
-            BffNotificationCommand.CreateBffNotification createBffNotification = new AbstractBffNotificationCommand.SimpleCreateBffNotification();
-            createBffNotification.setReferenceDocumentId(orderId);
-            createBffNotification.setReferenceDocumentNumber(orderId);
-            createBffNotification.setBffNotificationId(IdUtils.randomId());
-            createBffNotification.setNotificationTypeId(notificationTypeId);
-            createBffNotification.setReferenceDocumentTypeId(REFERENCE_DOCUMENT_RECEIPT);
-            createBffNotification.setNotificationContent(notificationContent);
-            createBffNotification.setStatusId("Unread");
-            createBffNotification.setPriority(0L);
-            createBffNotification.setRequesterId(shipmentState.getCreatedBy());
-            createBffNotification.setCommandId(createBffNotification.getBffNotificationId());
-
-            bffNotificationApplicationService.when(createBffNotification);
+            //TODO FIXME 上面两个类型的事件并不能转换为OrderEvent.OrderStateEvent所以会报错。/2025/4/15发现
+//            OrderEvent.OrderStateEvent event = (OrderEvent.OrderStateEvent) e;
+//            String orderId = event.getOrderId();
+//            String tenantId = event.getTenantId();
+//            ShipmentState shipmentState = shipmentApplicationService.get(orderId);
+//            if (shipmentState == null) {
+//                logger.error("Can't find Receiving document:{}", orderId);
+//                continue;
+//            }
+//            BffNotificationCommand.CreateBffNotification createBffNotification = new AbstractBffNotificationCommand.SimpleCreateBffNotification();
+//            createBffNotification.setReferenceDocumentId(orderId);
+//            createBffNotification.setReferenceDocumentNumber(orderId);
+//            createBffNotification.setBffNotificationId(IdUtils.randomId());
+//            createBffNotification.setNotificationTypeId(notificationTypeId);
+//            createBffNotification.setReferenceDocumentTypeId(REFERENCE_DOCUMENT_RECEIPT);
+//            createBffNotification.setNotificationContent(notificationContent);
+//            createBffNotification.setStatusId("Unread");
+//            createBffNotification.setPriority(0L);
+//            createBffNotification.setRequesterId(shipmentState.getCreatedBy());
+//            createBffNotification.setCommandId(createBffNotification.getBffNotificationId());
+//
+//            bffNotificationApplicationService.when(createBffNotification);
         }
     }
 
