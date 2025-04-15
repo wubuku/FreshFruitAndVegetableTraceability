@@ -32,7 +32,7 @@ public class BffInventoryTransferServiceResource {
     private BffInventoryTransferApplicationService bffInventoryTransferApplicationService;
 
     @PostMapping("LocationAdjustment")
-    public String locationAdjustment(
+    public BffInventoryItemDto locationAdjustment(
         @RequestBody BffInventoryTransferServiceCommands.LocationAdjustment requestBody
     ) {
         

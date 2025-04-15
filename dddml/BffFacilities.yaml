@@ -80,6 +80,8 @@ valueObjects:
       FacilityName:
         type: name
         # 可以用于查询出“所有设施的所有位置”
+      FacilityInternalId:
+        type: id
       LocationSeqId:
         type: id-long
       LocationTypeEnumId:

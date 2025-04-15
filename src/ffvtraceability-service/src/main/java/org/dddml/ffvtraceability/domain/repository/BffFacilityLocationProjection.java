@@ -12,6 +12,8 @@ public interface BffFacilityLocationProjection {
 
     String getFacilityName();
 
+    String getFacilityInternalId();
+
     String getLocationSeqId();
 
     String getLocationTypeEnumId();

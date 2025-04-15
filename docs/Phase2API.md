@@ -716,13 +716,40 @@ curl -X 'POST' \
 * locationSeqIdTo:目的仓位Id;
 * comments:备注信息
 
-
-
-
-操作成功后直接返回库存转移操作(Inventory Transfer)的Id:
+操作成功后直接返回库存转移之前目的仓位的库存信息：
 ```json
-"14ENT01XAAVDQ6ZPDY"
+{
+  "inventoryItemId": "c7fc0ac13f5e74c904ed498a031c8f27",
+  "productId": "141L0K7AH7DL6W4948",
+  "productName": "freshpointitem15",
+  "quantityUomId": "KG",
+  "facilityId": "13M82U5EQYQXS101SJ",
+  "facilityName": "w2503201",
+  "facilityInternalId": "25032201",
+  "lotId": "14AMK06WKP804F2VN0",
+  "locationSeqId": "13M8AD4G2KD3WAY1JE",
+  "locationName": "l25032201",
+  "locationCode": "25032201",
+  "quantityOnHandTotal": 64
+}
 ```
+注意：如果 quantityOnHandTotal 为 0，表示当前库位不存在相同批次的产品。
+```json
+{
+  "productId": "141L0K7AH7DL6W4948",
+  "facilityId": "13QPR94UDK1ALTS3F7",
+  "facilityName": "freshpointwh13",
+  "facilityInternalId": "freshpointvendor1number3",
+  "locationSeqId": "13QPT9H0W107CQLEPV",
+  "locationName": "freshpointl122",
+  "locationCode": "freshpointl1number3",
+  "quantityOnHandTotal": 0
+}
+```
+也就不会存在 inventoryItemId、productName、quantityUomId 这些不太重要的信息。
+
+productName、quantityUomId 等本身就可以从源信息获取。
+
 
 ## 四、产品相关接口
 

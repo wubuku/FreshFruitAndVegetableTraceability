@@ -9,7 +9,7 @@ import org.dddml.ffvtraceability.domain.*;
 
 public interface BffInventoryTransferApplicationService {
 
-    String when(BffInventoryTransferServiceCommands.LocationAdjustment c);
+    BffInventoryItemDto when(BffInventoryTransferServiceCommands.LocationAdjustment c);
 
 
 }

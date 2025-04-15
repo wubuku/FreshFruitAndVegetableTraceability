@@ -247,6 +247,47 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
     Optional<BffInventoryItemReceivingProjection> getInventoryItemReceiving(@Param("productId") String productId,
                                                                             @Param("lotId") String lotId);
 
+
+    @Query(value = """
+            SELECT
+               i.inventory_item_id as inventoryItemId,
+               i.product_id as productId,
+               p.product_name as productName,
+               i.lot_id as lotId,
+               p.quantity_uom_id as quantityUomId,
+               sp.quantity_included as quantityIncluded,
+               sp.case_uom_id as caseUomId,
+               i.facility_id as facilityId,
+               f.facility_name as facilityName,
+               ii.id_value as facilityInternalId,
+               i.location_seq_id as locationSeqId,
+               fl.location_name as locationName,
+               fl.location_code as locationCode,
+               i.quantity_on_hand_total as quantityOnHandTotal
+            from inventory_item i
+            left join product p on i.product_id = p.product_id
+            left join facility f on i.facility_id = f.facility_id
+            left join facility_location fl on i.location_seq_id = fl.location_seq_id
+            left join lot l on i.lot_id = l.lot_id
+            left join supplier_product sp on sp.party_id = l.supplier_id AND i.product_id = sp.product_id
+            LEFT JOIN (
+                SELECT
+                    fi.facility_id,
+                    fi.id_value
+                FROM facility_identification fi
+                WHERE fi.facility_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.facility_id = f.facility_id
+            WHERE i.product_id = :productId
+                  and i.lot_id = :lotId
+                  and i.location_seq_id = :locationSeqId
+                  and i.facility_id = :facilityId
+            limit 1
+            """, nativeQuery = true)
+    Optional<BffInventoryItemProjection> findInventoryItem(@Param("productId") String productId,
+                                                           @Param("facilityId") String facilityId,
+                                                           @Param("locationSeqId") String locationSeqId,
+                                                           @Param("lotId") String lotId);
+
     interface BffInventoryItemReceivingProjection {
 
         Instant getReceivedAt();
