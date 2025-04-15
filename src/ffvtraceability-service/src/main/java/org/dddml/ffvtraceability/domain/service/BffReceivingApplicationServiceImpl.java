@@ -389,7 +389,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (receivingDocumentDto == null) {
             throw new IllegalArgumentException("Receiving information can't be null");
         }
-        String shipmentId = receivingDocumentDto.getDocumentId();
+        String shipmentId = c.getDocumentId();
         ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
         if (shipmentState == null) {
             throw new IllegalArgumentException("Shipment (receiving document) not found: " + shipmentId);
@@ -469,7 +469,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         // Set properties from itemDto to update command
         u.setDocumentId(shipmentId);
         u.setReceiptId(itemDto.getReceiptId());
-        //u.setProductId(itemDto.getProductId());
+        u.setProductId(itemDto.getProductId());
         u.setLotId(itemDto.getLotId());
         u.setLocationSeqId(itemDto.getLocationSeqId());
         u.setQuantityAccepted(itemDto.getQuantityAccepted());
