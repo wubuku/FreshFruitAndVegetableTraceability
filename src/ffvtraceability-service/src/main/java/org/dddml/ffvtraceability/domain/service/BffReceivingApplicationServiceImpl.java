@@ -389,6 +389,9 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (receivingDocumentDto == null) {
             throw new IllegalArgumentException("Receiving information can't be null");
         }
+        if (receivingDocumentDto.getPartyIdFrom() == null || receivingDocumentDto.getPartyIdFrom().isBlank()) {
+            throw new IllegalArgumentException("Vendor can't be null");
+        }
         String shipmentId = c.getDocumentId();
         ShipmentState shipmentState = shipmentApplicationService.get(shipmentId);
         if (shipmentState == null) {
@@ -439,7 +442,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                     }
                 }
                 if (isNewItem) {
-                    createReceivingItem(itemDto, shipmentId, c);
+                    createReceivingItem(receivingDocumentDto.getPartyIdFrom(), itemDto, shipmentId, c);
                 } else {
                     if (isDeleted) {
                         if (itemState == null) {
@@ -782,13 +785,13 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         if (receivingItemDto.getLocationSeqId() == null || receivingItemDto.getLocationSeqId().isBlank()) {
             receivingItemDto.setLocationSeqId(shipmentState.getDestinationFacilityId() + "_DEFAULT");
         }
-        return createReceivingItem(receivingItemDto, shipmentId, c);
+        return createReceivingItem(shipmentState.getPartyIdFrom(), receivingItemDto, shipmentId, c);
     }
 
-    private String createReceivingItem(
-            BffReceivingItemDto receivingItemDto,
-            String shipmentId,
-            Command c
+    private String createReceivingItem(String supplierId,
+                                       BffReceivingItemDto receivingItemDto,
+                                       String shipmentId,
+                                       Command c
     ) {
         // 创建收货单行项
         AbstractShipmentReceiptCommand.SimpleCreateShipmentReceipt createShipmentReceipt =
@@ -805,8 +808,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
 
         // 设置行项数据
         createShipmentReceipt.setProductId(receivingItemDto.getProductId());
-        //TODO
-        //createShipmentReceipt.setLotId(receivingItemDto.getLotId());
+        createShipmentReceipt.setLotId(getLotId(supplierId, receivingItemDto.getProductId(), receivingItemDto.getLotNo(), c.getRequesterId(), null));
         createShipmentReceipt.setLocationSeqId(receivingItemDto.getLocationSeqId());
         createShipmentReceipt.setQuantityAccepted(receivingItemDto.getQuantityAccepted());
         createShipmentReceipt.setQuantityRejected(receivingItemDto.getQuantityRejected());
