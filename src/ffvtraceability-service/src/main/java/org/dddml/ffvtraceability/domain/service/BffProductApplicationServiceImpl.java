@@ -10,12 +10,9 @@ import org.dddml.ffvtraceability.domain.mapper.BffSupplierProductAssocIdMapper;
 import org.dddml.ffvtraceability.domain.party.PartyApplicationService;
 import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.repository.BffProductRepository;
-import org.dddml.ffvtraceability.domain.repository.BffSupplierProductAssocProjection;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.AbstractShipmentBoxTypeCommand;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeApplicationService;
-import org.dddml.ffvtraceability.domain.supplierproduct.AbstractSupplierProductCommand;
 import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductApplicationService;
-import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductAssocId;
 import org.dddml.ffvtraceability.domain.uom.UomApplicationService;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.domain.util.IndicatorUtils;
@@ -26,8 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
@@ -87,7 +82,7 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
     @Override
     public Page<BffSimpleProductDto> when(BffProductServiceCommands.GetProductsByKeyword c) {
         return PageUtils.toPage(bffProductRepository.findSimpleProductsByKeyword(PageRequest.of(c.getPage(), c.getSize()),
-                        c.getProductTypeId(),c.getProductKeyword()),
+                        c.getProductTypeId(), c.getProductKeyword()),
                 bffProductMapper::toBffSimpleProductDto);
     }
 
@@ -206,9 +201,9 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
         createProduct.setRequesterId(c.getRequesterId());
         productApplicationService.when(createProduct);
 
-        if (product.getSupplierId() != null) {
-            createSupplierProduct(createProduct.getProductId(), product.getSupplierId(), c);
-        }
+//        if (product.getSupplierId() != null) {
+//            createSupplierProduct(createProduct.getProductId(), product.getSupplierId(), c);
+//        }
         return createProduct.getProductId();
     }
 
@@ -255,13 +250,13 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
         if (productState == null) {
             throw new IllegalArgumentException("Product not found: " + productId);
         }
-        String supplierId = c.getProduct().getSupplierId();
-        if (supplierId == null || supplierId.isBlank()) {
-            throw new IllegalArgumentException("Supplier can't be null");
-        }
-        if (partyApplicationService.get(supplierId) == null) {
-            throw new IllegalArgumentException("SupplierId is not valid.");
-        }
+//        String supplierId = c.getProduct().getSupplierId();
+//        if (supplierId == null || supplierId.isBlank()) {
+//            throw new IllegalArgumentException("Supplier can't be null");
+//        }
+//        if (partyApplicationService.get(supplierId) == null) {
+//            throw new IllegalArgumentException("SupplierId is not valid.");
+//        }
         AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct = new AbstractProductCommand.SimpleMergePatchProduct();
         mergePatchProduct.setProductId(productId);
         mergePatchProduct.setProductTypeId(product.getProductTypeId());
@@ -333,21 +328,21 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
 
         productApplicationService.when(mergePatchProduct);
 
-        // 这里不需要使用完整的 ID 全等匹配查询
-        BffSupplierProductAssocProjection existingAssoc = bffProductRepository.findSupplierProductAssociation(productId, supplierId, DEFAULT_CURRENCY_UOM_ID, BigDecimal.ZERO, OffsetDateTime.now());
-        SupplierProductAssocId supplierProductAssocId;
-        if (existingAssoc == null) {
-            createSupplierProduct(productId, supplierId, c);
-        } else {
-            supplierProductAssocId = bffSupplierProductAssocIdMapper.toSupplierProductAssocId(existingAssoc);
-            AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct = new AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct();
-            mergePatchSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
-            mergePatchSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
-            mergePatchSupplierProduct.setVersion(existingAssoc.getVersion());
-            mergePatchSupplierProduct.setCommandId(UUID.randomUUID().toString());
-            mergePatchSupplierProduct.setRequesterId(c.getRequesterId());
-            supplierProductApplicationService.when(mergePatchSupplierProduct);
-        }
+        // 这里不需要在与供应商有关联关关系
+//        BffSupplierProductAssocProjection existingAssoc = bffProductRepository.findSupplierProductAssociation(productId, supplierId, DEFAULT_CURRENCY_UOM_ID, BigDecimal.ZERO, OffsetDateTime.now());
+//        SupplierProductAssocId supplierProductAssocId;
+//        if (existingAssoc == null) {
+//            createSupplierProduct(productId, supplierId, c);
+//        } else {
+//            supplierProductAssocId = bffSupplierProductAssocIdMapper.toSupplierProductAssocId(existingAssoc);
+//            AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct mergePatchSupplierProduct = new AbstractSupplierProductCommand.SimpleMergePatchSupplierProduct();
+//            mergePatchSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
+//            mergePatchSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
+//            mergePatchSupplierProduct.setVersion(existingAssoc.getVersion());
+//            mergePatchSupplierProduct.setCommandId(UUID.randomUUID().toString());
+//            mergePatchSupplierProduct.setRequesterId(c.getRequesterId());
+//            supplierProductApplicationService.when(mergePatchSupplierProduct);
+//        }
     }
 
     private void updateProductIdentification(AbstractProductCommand.SimpleMergePatchProduct mergePatchProduct, ProductState productState, String identificationTypeId, String newValue) {
@@ -430,18 +425,18 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
         }
     }
 
-    private void createSupplierProduct(String productId, String supplierId, Command c) {
-        SupplierProductAssocId supplierProductAssocId = new SupplierProductAssocId();
-        supplierProductAssocId.setProductId(productId);
-        supplierProductAssocId.setPartyId(supplierId);
-        supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
-        supplierProductAssocId.setAvailableFromDate(OffsetDateTime.now());
-        supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
-        AbstractSupplierProductCommand.SimpleCreateSupplierProduct createSupplierProduct = new AbstractSupplierProductCommand.SimpleCreateSupplierProduct();
-        createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
-        createSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
-        createSupplierProduct.setCommandId(UUID.randomUUID().toString());
-        createSupplierProduct.setRequesterId(c.getRequesterId());
-        supplierProductApplicationService.when(createSupplierProduct);
-    }
+//    private void createSupplierProduct(String productId, String supplierId, Command c) {
+//        SupplierProductAssocId supplierProductAssocId = new SupplierProductAssocId();
+//        supplierProductAssocId.setProductId(productId);
+//        supplierProductAssocId.setPartyId(supplierId);
+//        supplierProductAssocId.setCurrencyUomId(DEFAULT_CURRENCY_UOM_ID);
+//        supplierProductAssocId.setAvailableFromDate(OffsetDateTime.now());
+//        supplierProductAssocId.setMinimumOrderQuantity(BigDecimal.ZERO);
+//        AbstractSupplierProductCommand.SimpleCreateSupplierProduct createSupplierProduct = new AbstractSupplierProductCommand.SimpleCreateSupplierProduct();
+//        createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
+//        createSupplierProduct.setAvailableThruDate(OffsetDateTime.now().plusYears(100));
+//        createSupplierProduct.setCommandId(UUID.randomUUID().toString());
+//        createSupplierProduct.setRequesterId(c.getRequesterId());
+//        supplierProductApplicationService.when(createSupplierProduct);
+//    }
 }
