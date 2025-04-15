@@ -423,22 +423,23 @@ facilityId 为仓库 Id.
 }
 ```
 
-### 2. 根据条件查询半成品库存
+### 2. 根据条件查询产品库存
 
-可以根据半成品类型、供应商 Id、产品 Id、仓库 Id 来查询库存：
+可以根据产品类型（除原材料外）、供应商 Id、产品 Id、仓库 Id 来查询库存：
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems/WIPs?page=0&size=20&productTypeId=RAC_WIP&productName=blueforceitem1&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
+  'http://localhost:8001/api/BffInventoryItems/Proucts?page=0&size=20&productTypeId=RAC_WIP&productName=blueforceitem1&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
 
-其中 productTypeId 为半成品类型，可取值范围：
+其中 productTypeId 为产品类型，可取值范围：
 
     * RAC_WIP
     * RTE_WIP
     * PACKED_WIP
+    * FINISHED_GOOD
 
 productId 为产品 Id；
 
@@ -519,8 +520,12 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+### 4. 半成品库存明细
+BOM做完提供
+### 5. 成品库存明细
+生产完成或者发货确定了客户的时候才能提供
 
-### 4. 根据产品类型返回产品列表（支持分页）
+### 6. 根据产品类型返回产品列表（支持分页）
 
 在进行Inventory Adjustment时，先选择产品类型得到产品下拉列表，由于使用原条件查询查询接口返回的信息太多（需要联合查询的表也多）所以响应速度肯定较慢，
 所以特别提供该接口。
@@ -563,7 +568,7 @@ curl -X 'GET' \
 
 其中最重要的应该是 productId 和 ProductName.
 
-### 5.根据产品类型和产品名称/Product Number 关键字查询产品（支持分页）
+### 7.根据产品类型和产品名称/Product Number 关键字查询产品（支持分页）
 
 库存查询中，在过滤库存查询条件时，可以指定产品，而产品的选定是通过产品类型、产品名称或者Product Number的关键字来过滤的，特此提供该接口。
 
@@ -600,13 +605,13 @@ curl -X 'GET' \
 
 其中较重要的属性为：productId,productName,smallImageUrl 以及 internalId（Product number）.
 
-### 6. 根据半成品 Id 和 LotId 获取查询库存
+### 8. 根据产品(除原材料外) Id 和 LotId 获取查询库存
 
 在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems/WIPs/GroupByProductAndLot?page=0&size=20&productId=141L0K7AH7DL6W4948&lotId=14AMK06WKP804F2VN0' \
+  'http://localhost:8001/api/BffInventoryItems/Products/GroupByProductAndLot?page=0&size=20&productId=141L0K7AH7DL6W4948&lotId=14AMK06WKP804F2VN0' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
@@ -655,7 +660,7 @@ curl -X 'GET' \
 * locationCode 仓位内部标识(Location Number)
 * quantityOnHandTotal 库存数量
 
-### 7. 根据原材料 Id 和 LotId 获取查询库存
+### 9. 根据原材料 Id 和 LotId 获取查询库存
 
 在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
 
@@ -694,7 +699,7 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
-### 8. 库存调整-位置调整
+### 10. 库存调整-位置调整
 对应手持终端的 "Location adjustment".
 ```shell
 curl -X 'POST' \
