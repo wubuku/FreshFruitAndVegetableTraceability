@@ -64,7 +64,7 @@
       <column name="item_issuance_id" sql-type="VARCHAR(20)" />
     </property>
     <property name="receiptId">
-      <column name="receipt_id" sql-type="VARCHAR(20)" />
+      <column name="receipt_id" sql-type="VARCHAR(60)" />
     </property>
     <property name="physicalInventoryId">
       <column name="physical_inventory_id" sql-type="VARCHAR(20)" />

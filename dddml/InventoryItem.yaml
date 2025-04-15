@@ -141,7 +141,7 @@ aggregates:
           ItemIssuanceId:
             type: id
           ReceiptId:
-            type: id
+            type: id-long
           PhysicalInventoryId:
             type: id
           ReasonEnumId:
