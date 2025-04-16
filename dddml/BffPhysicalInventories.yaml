@@ -1,0 +1,54 @@
+# 物理硬调库存
+valueObjects:
+  BffPhysicalInventoryDto:
+    metadata:
+      JpaProjectionInterfaceName: BffPhysicalInventoryProjection
+      JpaProjectionPropertyTypes:
+        PhysicalInventoryDate: java.time.Instant
+        CreatedAt: java.time.Instant
+    properties:
+      PhysicalInventoryId:
+        type: id
+      PhysicalInventoryDate:
+        type: date-time
+      GeneralComments:
+        type: comment
+      CreatedAt:
+        type: date-time
+      Variances:
+        itemType: BffInventoryVarianceDto
+        isList: true
+
+  BffInventoryVarianceDto:
+    metadata:
+      JpaProjectionInterfaceName: BffInventoryVarianceProjection
+      JpaProjectionPropertyTypes:
+        CreatedAt: java.time.Instant
+    properties:
+      PhysicalInventoryId:
+        type: id-long
+      InventoryItemId:
+        type: id-long
+      VarianceReasonId:
+        type: id
+      QuantityOnHandVar:
+        type: fixed-point
+      Comments:
+        type: comment
+      CreatedAt:
+        type: date-time
+
+services:
+  BffPhysicalInventoryService:
+    restfulResourceName: BffPhysicalInventories
+    methods:
+      CreatePhysicalInventory:
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: PhysicalInventory
+        #restfulResourceName: "PhysicalAdjustment"
+        parameters:
+          PhysicalInventory:
+            type: BffPhysicalInventoryDto
+        result:
+          type: id

@@ -729,7 +729,7 @@ curl -X 'POST' \
 * locationSeqIdTo:目的仓位Id;
 * comments:备注信息
 
-操作成功后直接返回库存转移之前目的仓位的库存信息：
+操作成功后直接返回库存转移【之前】目的仓位的库存信息：
 
 ```json
 {
@@ -766,6 +766,87 @@ curl -X 'POST' \
 也就不会存在 inventoryItemId、productName、quantityUomId 这些不太重要的信息。
 
 productName、quantityUomId 等本身就可以从源信息获取。
+
+### 11. 库存调整-数量调整、退回供应商、作废
+库存调整类型为数量调整、退回供应商、作废时，使用以下统一接口。
+
+针对这几种调整库存的方式，提供了 varianceReasonId 字段进行区分，注意不同的调整库存方式有不同的调整数量要求：
+
+* 数量调整：QUANTITY_ADJUSTMENT，数量：不能为 0，可正可负
+* 作废：SCRAP，数量：必须大于 0； 
+* 返回供应商：RETURN_TO_VENDOR，数量：必须大于 0
+
+1. 数量调整：
+```shell
+curl -X 'POST' \
+  'http://localhost:8001/api/BffPhysicalInventories' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "generalComments": "generalComments",
+  "variances": [
+    {
+      "inventoryItemId": "c39293f3420b8d95225e2ea76e520d07",
+      "varianceReasonId": "QUANTITY_ADJUSTMENT",
+      "quantityOnHandVar": -4,
+      "comments": "comments"
+    }
+  ]
+}'
+```
+参数说明：
+
+generalComments 为对整个调整的备注说明；
+
+variances 为调整的明细，按照当前的设置，该列表只有一条数据，但是为了以后扩展这里使用列表形式；
+
+inventoryItemId 为要调整的库存的 Id，经查询获取；
+
+varianceReasonId 调整类型，数量调整为：QUANTITY_ADJUSTMENT；
+
+quantityOnHandVar 调整数量，不能为 0，负数为减少库存，正数为增加库存，此处与设计不同，设计中为调整后的库存，但是为了接口的统一，这里改为调整数量；
+
+comments：针对改库存的说明，在只有一条数据的情况下可以与 generalComments 相同。
+
+操作成功后返回此次操作的 Id:
+```json
+"14GBUL4QQG1CNA8J8P"
+```
+用不到的情况下可以忽略该返回值。
+2. 作废
+```shell
+curl -X 'POST' \
+  'http://localhost:8001/api/BffPhysicalInventories' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "generalComments": "批量作废",
+  "variances": [
+    {
+      "inventoryItemId": "c39293f3420b8d95225e2ea76e520d07",
+      "varianceReasonId": "SCRAP",
+      "quantityOnHandVar": 4,
+      "comments": "作废"
+    }
+  ]
+}'
+```
+3. 返回供应商
+```shell
+{
+  "generalComments": "退回去",
+  "variances": [
+    {
+      "inventoryItemId": "c39293f3420b8d95225e2ea76e520d07",
+      "varianceReasonId": "RETURN_TO_VENDOR",
+      "quantityOnHandVar": 4,
+      "comments": "都臭了"
+    }
+  ]
+}
+```
 
 ## 四、产品相关接口
 
