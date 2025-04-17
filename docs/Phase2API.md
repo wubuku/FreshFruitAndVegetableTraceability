@@ -423,7 +423,7 @@ facilityId 为仓库 Id.
 }
 ```
 
-### 2. 根据条件查询产品库存
+### 2. 根据条件查询产品（非原材料）库存
 
 可以根据产品类型（除原材料外）、产品 Id、仓库 Id 来查询库存：
 
@@ -609,7 +609,7 @@ curl -X 'GET' \
 
 其中较重要的属性为：productId,productName,smallImageUrl 以及 internalId（Product number）.
 
-### 8. 根据产品(除原材料外) Id 和 LotId 获取查询库存
+### 8. 根据产品(除原材料外) Id 和 LotId 查询库存（支持分页）
 
 在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
 
@@ -664,7 +664,7 @@ curl -X 'GET' \
 * locationCode 仓位内部标识(Location Number)
 * quantityOnHandTotal 库存数量
 
-### 9. 根据原材料 Id 和 LotId 获取查询库存
+### 9. 根据原材料 Id 和 LotId 获取查询库存（支持分页）
 
 在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
 
