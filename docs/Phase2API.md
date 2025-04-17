@@ -894,8 +894,8 @@ curl -X 'GET' \
 * caseUomId 包装单位
 * quantityIncluded 一包装单位含有多少主数量单位的数量
 
-### 14. 根据条件查询库存流水（支持分页）
-当前支持按照产品类型、产品Id以及仓库查询库存流水。
+### 13. 根据条件查询库存流水（支持分页）
+当前支持按照产品类型、产品Id以及仓库Id查询库存流水。
 ```shell
 curl -X 'GET' \
   'http://localhost:8001/api/BffInventoryItems/Details?page=0&size=2&productTypeId=RAW_MATERIAL&productId=141L0K7AH7DL6W4948&facilityId=13XM4J6CJBWD6FK64B' \
