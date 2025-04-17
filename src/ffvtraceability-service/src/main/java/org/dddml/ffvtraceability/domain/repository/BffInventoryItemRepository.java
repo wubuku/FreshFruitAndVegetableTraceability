@@ -302,6 +302,10 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                p.product_type_id as productTypeId,
                p.product_name as productName,
                p.quantity_uom_id as quantityUomId,
+               p.quantity_included as productQuantityIncluded,
+               p.case_uom_id as productCaseUomId,
+               sp.quantity_included as rawIemQuantityIncluded,
+               sp.case_uom_id as rawItemCaseUomId,
                ii.id_value as productInternalId,
                i.lot_id as lotId,
                l.internal_id AS lotNo,
@@ -324,6 +328,7 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
             LEFT JOIN lot l ON l.lot_id = i.lot_id
             left join facility f ON i.facility_id = f.facility_id
             left join facility_location fl on i.location_seq_id = fl.location_seq_id
+            left join supplier_product sp ON sp.product_id = i.product_id and sp.party_id = l.supplier_id
             LEFT JOIN (
                 SELECT
                     gi.product_id,

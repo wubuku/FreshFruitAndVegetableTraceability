@@ -40,6 +40,14 @@ public interface BffInventoryItemDetailProjection {
     java.time.Instant getEffectiveDate();
     java.math.BigDecimal getQuantityOnHandDiff();
 
+    java.math.BigDecimal getProductQuantityIncluded();
+
+    String getProductCaseUomId();
+
+    java.math.BigDecimal getRawIemQuantityIncluded();
+
+    String getRawItemCaseUomId();
+
     String getShipmentId();
 
     String getReceiptId();

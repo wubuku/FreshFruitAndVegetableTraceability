@@ -921,6 +921,8 @@ curl -X 'GET' \
       "locationSeqId": "13XM4J6CJBWD6FK64B_DEFAULT",
       "locationName": "-",
       "quantityOnHandDiff": 40,
+      "rawIemQuantityIncluded": 12,
+      "rawItemCaseUomId": "BOX",
       "shipmentId": "RC2025041400002",
       "receiptId": "RC2025041400002-2",
       "reasonEnumId": "RECEIVING",
@@ -942,6 +944,8 @@ curl -X 'GET' \
       "locationSeqId": "13XM4J6CJBWD6FK64B_DEFAULT",
       "locationName": "-",
       "quantityOnHandDiff": -50,
+      "rawIemQuantityIncluded": 12,
+      "rawItemCaseUomId": "BOX",
       "physicalInventoryId": "14GC8S5M74LMQR3TEX",
       "reasonEnumId": "RETURN_TO_VENDOR",
       "createdAt": "2025-04-16T04:24:14.29097Z",
@@ -965,7 +969,9 @@ curl -X 'GET' \
 * locationCode 仓位内部编码
 * lotNo 批次号
 * productInternalId 产品内部编码
-* physicalInventoryId、inventoryTransferId、receiptId等为相关单据的Id，根据 reasonEnumId 的不同，这些字段分别有值。
+* physicalInventoryId、inventoryTransferId、receiptId等为相关单据的Id，根据 reasonEnumId 的不同，这些字段分别有值；
+* rawItemCaseUomId 如果是原材料那么用该字段表示原材料的包装类型，否则使用 productCaseUomId；
+* rawIemQuantityIncluded 如果是原材料那么用该字段表示一个包装单位内包含多少主数量单位的数量，否则使用 productQuantityIncluded。
 
 
 

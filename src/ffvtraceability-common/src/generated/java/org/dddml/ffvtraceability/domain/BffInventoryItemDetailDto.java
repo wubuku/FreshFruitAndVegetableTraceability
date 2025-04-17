@@ -202,6 +202,54 @@ public class BffInventoryItemDetailDto implements Serializable {
         this.quantityOnHandDiff = quantityOnHandDiff;
     }
 
+    private java.math.BigDecimal productQuantityIncluded;
+
+    public java.math.BigDecimal getProductQuantityIncluded()
+    {
+        return this.productQuantityIncluded;
+    }
+
+    public void setProductQuantityIncluded(java.math.BigDecimal productQuantityIncluded)
+    {
+        this.productQuantityIncluded = productQuantityIncluded;
+    }
+
+    private String productCaseUomId;
+
+    public String getProductCaseUomId()
+    {
+        return this.productCaseUomId;
+    }
+
+    public void setProductCaseUomId(String productCaseUomId)
+    {
+        this.productCaseUomId = productCaseUomId;
+    }
+
+    private java.math.BigDecimal rawIemQuantityIncluded;
+
+    public java.math.BigDecimal getRawIemQuantityIncluded()
+    {
+        return this.rawIemQuantityIncluded;
+    }
+
+    public void setRawIemQuantityIncluded(java.math.BigDecimal rawIemQuantityIncluded)
+    {
+        this.rawIemQuantityIncluded = rawIemQuantityIncluded;
+    }
+
+    private String rawItemCaseUomId;
+
+    public String getRawItemCaseUomId()
+    {
+        return this.rawItemCaseUomId;
+    }
+
+    public void setRawItemCaseUomId(String rawItemCaseUomId)
+    {
+        this.rawItemCaseUomId = rawItemCaseUomId;
+    }
+
     private String shipmentId;
 
     public String getShipmentId()
@@ -302,7 +350,7 @@ public class BffInventoryItemDetailDto implements Serializable {
     {
     }
 
-    public BffInventoryItemDetailDto(String inventoryItemId, String inventoryItemDetailSeqId, String productId, String productName, String productTypeId, String productInternalId, String quantityUomId, String lotId, String lotNo, String facilityId, String facilityName, String locationSeqId, String locationName, String locationCode, OffsetDateTime effectiveDate, java.math.BigDecimal quantityOnHandDiff, String shipmentId, String receiptId, String physicalInventoryId, String description, String inventoryTransferId, String reasonEnumId, OffsetDateTime createdAt, String createdBy)
+    public BffInventoryItemDetailDto(String inventoryItemId, String inventoryItemDetailSeqId, String productId, String productName, String productTypeId, String productInternalId, String quantityUomId, String lotId, String lotNo, String facilityId, String facilityName, String locationSeqId, String locationName, String locationCode, OffsetDateTime effectiveDate, java.math.BigDecimal quantityOnHandDiff, java.math.BigDecimal productQuantityIncluded, String productCaseUomId, java.math.BigDecimal rawIemQuantityIncluded, String rawItemCaseUomId, String shipmentId, String receiptId, String physicalInventoryId, String description, String inventoryTransferId, String reasonEnumId, OffsetDateTime createdAt, String createdBy)
     {
         this.inventoryItemId = inventoryItemId;
         this.inventoryItemDetailSeqId = inventoryItemDetailSeqId;
@@ -320,6 +368,10 @@ public class BffInventoryItemDetailDto implements Serializable {
         this.locationCode = locationCode;
         this.effectiveDate = effectiveDate;
         this.quantityOnHandDiff = quantityOnHandDiff;
+        this.productQuantityIncluded = productQuantityIncluded;
+        this.productCaseUomId = productCaseUomId;
+        this.rawIemQuantityIncluded = rawIemQuantityIncluded;
+        this.rawItemCaseUomId = rawItemCaseUomId;
         this.shipmentId = shipmentId;
         this.receiptId = receiptId;
         this.physicalInventoryId = physicalInventoryId;
@@ -358,6 +410,10 @@ public class BffInventoryItemDetailDto implements Serializable {
             && (locationCode == other.locationCode || (locationCode != null && locationCode.equals(other.locationCode)))
             && (effectiveDate == other.effectiveDate || (effectiveDate != null && effectiveDate.equals(other.effectiveDate)))
             && (quantityOnHandDiff == other.quantityOnHandDiff || (quantityOnHandDiff != null && quantityOnHandDiff.equals(other.quantityOnHandDiff)))
+            && (productQuantityIncluded == other.productQuantityIncluded || (productQuantityIncluded != null && productQuantityIncluded.equals(other.productQuantityIncluded)))
+            && (productCaseUomId == other.productCaseUomId || (productCaseUomId != null && productCaseUomId.equals(other.productCaseUomId)))
+            && (rawIemQuantityIncluded == other.rawIemQuantityIncluded || (rawIemQuantityIncluded != null && rawIemQuantityIncluded.equals(other.rawIemQuantityIncluded)))
+            && (rawItemCaseUomId == other.rawItemCaseUomId || (rawItemCaseUomId != null && rawItemCaseUomId.equals(other.rawItemCaseUomId)))
             && (shipmentId == other.shipmentId || (shipmentId != null && shipmentId.equals(other.shipmentId)))
             && (receiptId == other.receiptId || (receiptId != null && receiptId.equals(other.receiptId)))
             && (physicalInventoryId == other.physicalInventoryId || (physicalInventoryId != null && physicalInventoryId.equals(other.physicalInventoryId)))
@@ -421,6 +477,18 @@ public class BffInventoryItemDetailDto implements Serializable {
         if (this.quantityOnHandDiff != null) {
             hash += 13 * this.quantityOnHandDiff.hashCode();
         }
+        if (this.productQuantityIncluded != null) {
+            hash += 13 * this.productQuantityIncluded.hashCode();
+        }
+        if (this.productCaseUomId != null) {
+            hash += 13 * this.productCaseUomId.hashCode();
+        }
+        if (this.rawIemQuantityIncluded != null) {
+            hash += 13 * this.rawIemQuantityIncluded.hashCode();
+        }
+        if (this.rawItemCaseUomId != null) {
+            hash += 13 * this.rawItemCaseUomId.hashCode();
+        }
         if (this.shipmentId != null) {
             hash += 13 * this.shipmentId.hashCode();
         }
@@ -467,6 +535,10 @@ public class BffInventoryItemDetailDto implements Serializable {
                 ", locationCode=" + '\'' + locationCode + '\'' +
                 ", effectiveDate=" + effectiveDate +
                 ", quantityOnHandDiff=" + quantityOnHandDiff +
+                ", productQuantityIncluded=" + productQuantityIncluded +
+                ", productCaseUomId=" + '\'' + productCaseUomId + '\'' +
+                ", rawIemQuantityIncluded=" + rawIemQuantityIncluded +
+                ", rawItemCaseUomId=" + '\'' + rawItemCaseUomId + '\'' +
                 ", shipmentId=" + '\'' + shipmentId + '\'' +
                 ", receiptId=" + '\'' + receiptId + '\'' +
                 ", physicalInventoryId=" + '\'' + physicalInventoryId + '\'' +
