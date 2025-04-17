@@ -52,5 +52,8 @@ public interface BffInventoryItemDetailProjection {
 
     String getReasonEnumId();
 
+    java.time.Instant getCreatedAt();
+    String getCreatedBy();
+
 }
 

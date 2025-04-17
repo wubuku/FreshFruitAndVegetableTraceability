@@ -205,21 +205,11 @@ public class BffInventoryItemDto implements Serializable {
         this.createdAt = createdAt;
     }
 
-    private java.util.List<BffInventoryItemDetailDto> details;
-
-    public java.util.List<BffInventoryItemDetailDto> getDetails() {
-        return this.details;
-    }
-
-    public void setDetails(java.util.List<BffInventoryItemDetailDto> details) {
-        this.details = details;
-    }
-
     public BffInventoryItemDto()
     {
     }
 
-    public BffInventoryItemDto(String inventoryItemId, String productId, String productName, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId, String facilityId, String facilityName, String facilityInternalId, String lotId, String locationSeqId, String locationName, String locationCode, String comments, java.math.BigDecimal quantityOnHandTotal, OffsetDateTime createdAt, java.util.List<BffInventoryItemDetailDto> details)
+    public BffInventoryItemDto(String inventoryItemId, String productId, String productName, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId, String facilityId, String facilityName, String facilityInternalId, String lotId, String locationSeqId, String locationName, String locationCode, String comments, java.math.BigDecimal quantityOnHandTotal, OffsetDateTime createdAt)
     {
         this.inventoryItemId = inventoryItemId;
         this.productId = productId;
@@ -237,7 +227,6 @@ public class BffInventoryItemDto implements Serializable {
         this.comments = comments;
         this.quantityOnHandTotal = quantityOnHandTotal;
         this.createdAt = createdAt;
-        this.details = details;
     }
 
     @Override
@@ -268,7 +257,6 @@ public class BffInventoryItemDto implements Serializable {
             && (comments == other.comments || (comments != null && comments.equals(other.comments)))
             && (quantityOnHandTotal == other.quantityOnHandTotal || (quantityOnHandTotal != null && quantityOnHandTotal.equals(other.quantityOnHandTotal)))
             && (createdAt == other.createdAt || (createdAt != null && createdAt.equals(other.createdAt)))
-            && (details == other.details || (details != null && details.equals(other.details)))
             ;
     }
 
@@ -324,9 +312,6 @@ public class BffInventoryItemDto implements Serializable {
         if (this.createdAt != null) {
             hash += 13 * this.createdAt.hashCode();
         }
-        if (this.details != null) {
-            hash += 13 * this.details.hashCode();
-        }
         return hash;
     }
 
@@ -349,7 +334,6 @@ public class BffInventoryItemDto implements Serializable {
                 ", comments=" + '\'' + comments + '\'' +
                 ", quantityOnHandTotal=" + quantityOnHandTotal +
                 ", createdAt=" + createdAt +
-                ", details=" + details +
                 '}';
     }
 

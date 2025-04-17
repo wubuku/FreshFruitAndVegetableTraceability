@@ -274,11 +274,35 @@ public class BffInventoryItemDetailDto implements Serializable {
         this.reasonEnumId = reasonEnumId;
     }
 
+    private OffsetDateTime createdAt;
+
+    public OffsetDateTime getCreatedAt()
+    {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt)
+    {
+        this.createdAt = createdAt;
+    }
+
+    private String createdBy;
+
+    public String getCreatedBy()
+    {
+        return this.createdBy;
+    }
+
+    public void setCreatedBy(String createdBy)
+    {
+        this.createdBy = createdBy;
+    }
+
     public BffInventoryItemDetailDto()
     {
     }
 
-    public BffInventoryItemDetailDto(String inventoryItemId, String inventoryItemDetailSeqId, String productId, String productName, String productTypeId, String productInternalId, String quantityUomId, String lotId, String lotNo, String facilityId, String facilityName, String locationSeqId, String locationName, String locationCode, OffsetDateTime effectiveDate, java.math.BigDecimal quantityOnHandDiff, String shipmentId, String receiptId, String physicalInventoryId, String description, String inventoryTransferId, String reasonEnumId)
+    public BffInventoryItemDetailDto(String inventoryItemId, String inventoryItemDetailSeqId, String productId, String productName, String productTypeId, String productInternalId, String quantityUomId, String lotId, String lotNo, String facilityId, String facilityName, String locationSeqId, String locationName, String locationCode, OffsetDateTime effectiveDate, java.math.BigDecimal quantityOnHandDiff, String shipmentId, String receiptId, String physicalInventoryId, String description, String inventoryTransferId, String reasonEnumId, OffsetDateTime createdAt, String createdBy)
     {
         this.inventoryItemId = inventoryItemId;
         this.inventoryItemDetailSeqId = inventoryItemDetailSeqId;
@@ -302,6 +326,8 @@ public class BffInventoryItemDetailDto implements Serializable {
         this.description = description;
         this.inventoryTransferId = inventoryTransferId;
         this.reasonEnumId = reasonEnumId;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
     }
 
     @Override
@@ -338,6 +364,8 @@ public class BffInventoryItemDetailDto implements Serializable {
             && (description == other.description || (description != null && description.equals(other.description)))
             && (inventoryTransferId == other.inventoryTransferId || (inventoryTransferId != null && inventoryTransferId.equals(other.inventoryTransferId)))
             && (reasonEnumId == other.reasonEnumId || (reasonEnumId != null && reasonEnumId.equals(other.reasonEnumId)))
+            && (createdAt == other.createdAt || (createdAt != null && createdAt.equals(other.createdAt)))
+            && (createdBy == other.createdBy || (createdBy != null && createdBy.equals(other.createdBy)))
             ;
     }
 
@@ -411,6 +439,12 @@ public class BffInventoryItemDetailDto implements Serializable {
         if (this.reasonEnumId != null) {
             hash += 13 * this.reasonEnumId.hashCode();
         }
+        if (this.createdAt != null) {
+            hash += 13 * this.createdAt.hashCode();
+        }
+        if (this.createdBy != null) {
+            hash += 13 * this.createdBy.hashCode();
+        }
         return hash;
     }
 
@@ -439,6 +473,8 @@ public class BffInventoryItemDetailDto implements Serializable {
                 ", description=" + '\'' + description + '\'' +
                 ", inventoryTransferId=" + '\'' + inventoryTransferId + '\'' +
                 ", reasonEnumId=" + '\'' + reasonEnumId + '\'' +
+                ", createdAt=" + createdAt +
+                ", createdBy=" + '\'' + createdBy + '\'' +
                 '}';
     }
 

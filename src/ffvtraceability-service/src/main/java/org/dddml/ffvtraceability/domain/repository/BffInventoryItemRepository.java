@@ -293,64 +293,62 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                                                                         @Param("supplierId") String supplierId,
                                                                         @Param("facilityId") String facilityId);
 
-//    @Query(value = """
-//            SELECT
-//               g.product_id as productId,
-//               p.product_name as productName,
-//               p.quantity_uom_id as quantityUomId,
-//               sp.quantity_included as quantityIncluded,
-//               sp.case_uom_id as caseUomId,
-//               g.supplier_id as supplierId,
-//               g.lot_id as lotId,
-//               l.internal_id AS lotNo,
-//               g.facility_id as facilityId,
-//               ii.id_value as productInternalId,
-//               g.quantity_on_hand_total as quantityOnHandTotal
-//            FROM
-//              (SELECT i.product_id,
-//                      l.supplier_id,
-//                      i.facility_id,
-//                      i.lot_id,
-//                      SUM(i.quantity_on_hand_total) AS quantity_on_hand_total
-//               FROM inventory_item i
-//               LEFT JOIN lot l ON i.lot_id = l.lot_id
-//               LEFT JOIN product p ON i.product_id = p.product_id
-//               -- LEFT JOIN facility f ON i.facility_id = f.facility_id
-//               WHERE p.product_type_id = 'RAW_MATERIAL'
-//                 AND (:productId is null or i.product_id = :productId)
-//                 AND (:supplierId is null or l.supplier_id = :supplierId)
-//                 AND (:facilityId is null or i.facility_id = :facilityId)
-//               GROUP BY i.product_id,
-//                        l.supplier_id,
-//                        i.facility_id,
-//                        i.lot_id
-//                          ) g
-//            LEFT JOIN product p ON p.product_id=g.product_id
-//            LEFT JOIN lot l ON l.lot_id = g.lot_id
-//            LEFT JOIN (
-//                SELECT
-//                    gi.product_id,
-//                    gi.id_value
-//                FROM good_identification gi
-//                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
-//            ) ii ON ii.product_id = p.product_id
-//            LEFT JOIN supplier_product sp ON sp.product_id = g.product_id
-//                     AND sp.party_id = g.supplier_id
-//            """, countQuery = """
-//            SELECT COUNT(*)
-//            FROM inventory_item_detail iid
-//                LEFT JOIN inventory_item i ON i.inventory_item_id = iid.inventory_item_id
-//                LEFT JOIN product p ON p.product_id = iii.product_id
-//                LEFT JOIN lot l ON i.lot_id = l.lot_id
-//                LEFT JOIN product p ON i.product_id = p.product_id
-//            WHERE (:productTypeId is null or p.product_type_id = :productTypeId)
-//                AND (:productId is null or i.product_id = :productId)
-//                AND (:facilityId is null or i.facility_id = :facilityId)
-//            """, nativeQuery = true)
-//    Page<BffRawItemInventoryItemProjection> getInventoryItemDetails(Pageable pageable,
-//                                                                    @Param("productTypeId") String productTypeId,
-//                                                                    @Param("productId") String productId,
-//                                                                    @Param("facilityId") String facilityId);
+    @Query(value = """
+            SELECT
+               iid.inventory_item_id as inventoryItemId,
+               iid.inventory_item_detail_seq_id as inventoryItemDetailSeqId,
+               iid.reason_enum_id as reasonEnumId,
+               i.product_id as productId,
+               p.product_type_id as productTypeId,
+               p.product_name as productName,
+               p.quantity_uom_id as quantityUomId,
+               ii.id_value as productInternalId,
+               i.lot_id as lotId,
+               l.internal_id AS lotNo,
+               i.facility_id as facilityId,
+               f.facility_name as facilityName,
+               i.location_seq_id as locationSeqId,
+               fl.location_name as locationName,
+               fl.location_code as locationCode,
+               iid.effective_date as effectiveDate,
+               iid.quantity_on_hand_diff as quantityOnHandDiff,
+               iid.shipment_id as shipmentId,
+               iid.receipt_id as receiptId,
+               iid.physical_inventory_id as physicalInventoryId,
+               iid.inventory_transfer_id as inventoryTransferId,
+               iid.created_at as createdAt,
+               iid.created_by as createdBy
+            FROM inventory_item_detail iid
+            left join inventory_item i ON i.inventory_item_id = iid.inventory_item_id
+            LEFT JOIN product p ON p.product_id=i.product_id
+            LEFT JOIN lot l ON l.lot_id = i.lot_id
+            left join facility f ON i.facility_id = f.facility_id
+            left join facility_location fl on i.location_seq_id = fl.location_seq_id
+            LEFT JOIN (
+                SELECT
+                    gi.product_id,
+                    gi.id_value
+                FROM good_identification gi
+                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.product_id = p.product_id
+            WHERE (:productTypeId is null or p.product_type_id = :productTypeId)
+                AND (:productId is null or i.product_id = :productId)
+                AND (:facilityId is null or i.facility_id = :facilityId)
+            order by iid.created_at desc
+            """, countQuery = """
+            SELECT COUNT(*)
+            FROM inventory_item_detail iid
+                LEFT JOIN inventory_item i ON i.inventory_item_id = iid.inventory_item_id
+                LEFT JOIN product p ON p.product_id = i.product_id
+                -- LEFT JOIN lot l ON i.lot_id = l.lot_id
+            WHERE (:productTypeId is null or p.product_type_id = :productTypeId)
+                AND (:productId is null or i.product_id = :productId)
+                AND (:facilityId is null or i.facility_id = :facilityId)
+            """, nativeQuery = true)
+    Page<BffInventoryItemDetailProjection> getInventoryItemDetails(Pageable pageable,
+                                                                    @Param("productTypeId") String productTypeId,
+                                                                    @Param("productId") String productId,
+                                                                    @Param("facilityId") String facilityId);
 
     @Query(value = """
               SELECT

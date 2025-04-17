@@ -77,12 +77,11 @@ public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemA
     }
 
     @Override
-    public Page<BffRawItemInventoryItemDto> when(BffInventoryItemServiceCommands.GetRawItemInventoryDetails c) {
-//        return PageUtils.toPage(
-//                bffInventoryItemRepository.getRawItemInventoriesGroupByLot(PageRequest.of(c.getPage(), c.getSize()),
-//                        c.getProductId(), c.getSupplierId(), c.getFacilityId()),
-//                bffInventoryItemMapper::toBffInventoryByLotNoDto);
-        return null;
+    public Page<BffInventoryItemDetailDto> when(BffInventoryItemServiceCommands.GetRawItemInventoryDetails c) {
+        return PageUtils.toPage(
+                bffInventoryItemRepository.getInventoryItemDetails(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductTypeId(), c.getProductId(), c.getFacilityId()),
+                bffInventoryItemMapper::toBffInventoryItemDetailDto);
     }
 
     @Override

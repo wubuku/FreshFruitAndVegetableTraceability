@@ -28,4 +28,6 @@ public interface BffInventoryItemMapper {
 
     BffInventoryByLotNoDto toBffInventoryByLotNoDto(BffInventoryByLotNoProjection bffInventoryByLotNoProjection);
 
+    BffInventoryItemDetailDto toBffInventoryItemDetailDto(BffInventoryItemDetailProjection bffInventoryItemDetailProjection);
+
 }

@@ -43,9 +43,9 @@ valueObjects:
         type: fixed-point
       CreatedAt:
         type: date-time
-      Details:
-        itemType: BffInventoryItemDetailDto
-        isList: true
+#      Details:
+#        itemType: BffInventoryItemDetailDto
+#        isList: true
 
   BffRawItemInventoryGroupDto:
     metadata:
@@ -167,6 +167,7 @@ valueObjects:
       JpaProjectionInterfaceName: BffInventoryItemDetailProjection
       JpaProjectionPropertyTypes:
         EffectiveDate: java.time.Instant
+        CreatedAt: java.time.Instant
     properties:
       InventoryItemId:
         type: id
@@ -212,6 +213,10 @@ valueObjects:
         type: id
       ReasonEnumId:
         type: id
+      CreatedAt:
+        type: date-time
+      CreatedBy:
+        type: id
 
 services:
   BffInventoryItemService:
@@ -231,7 +236,7 @@ services:
           FacilityId:
             type: id
         result:
-          itemType: BffRawItemInventoryItemDto
+          itemType: BffInventoryItemDetailDto
 
       GetRawItemInventoriesByLotNo:
         restfulResourceName: "{ProductId}/RawItemInventoriesByLotNo"

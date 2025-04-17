@@ -894,6 +894,80 @@ curl -X 'GET' \
 * caseUomId 包装单位
 * quantityIncluded 一包装单位含有多少主数量单位的数量
 
+### 14. 根据条件查询库存流水（支持分页）
+当前支持按照产品类型、产品Id以及仓库查询库存流水。
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffInventoryItems/Details?page=0&size=2&productTypeId=RAW_MATERIAL&productId=141L0K7AH7DL6W4948&facilityId=13XM4J6CJBWD6FK64B' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+得到结果举例如下：
+```json
+{
+  "content": [
+    {
+      "inventoryItemId": "2649b7a09651e238f7d5aa962e65e53c",
+      "inventoryItemDetailSeqId": "f26e44e377b1c43418f2b242803550e4",
+      "productId": "141L0K7AH7DL6W4948",
+      "productName": "freshpointitem15",
+      "productTypeId": "RAW_MATERIAL",
+      "productInternalId": "freshpointvendor1number55",
+      "quantityUomId": "KG",
+      "lotId": "14FN1C418HTJ4DLUEX",
+      "lotNo": "1",
+      "facilityId": "13XM4J6CJBWD6FK64B",
+      "facilityName": "blureforcewh1",
+      "locationSeqId": "13XM4J6CJBWD6FK64B_DEFAULT",
+      "locationName": "-",
+      "quantityOnHandDiff": 40,
+      "shipmentId": "RC2025041400002",
+      "receiptId": "RC2025041400002-2",
+      "reasonEnumId": "RECEIVING",
+      "createdAt": "2025-04-17T07:02:08.567085Z",
+      "createdBy": "anonymousUser"
+    },
+    {
+      "inventoryItemId": "c39293f3420b8d95225e2ea76e520d07",
+      "inventoryItemDetailSeqId": "553371da8ea18aa3b1d2e5e650004a2c",
+      "productId": "141L0K7AH7DL6W4948",
+      "productName": "freshpointitem15",
+      "productTypeId": "RAW_MATERIAL",
+      "productInternalId": "freshpointvendor1number55",
+      "quantityUomId": "KG",
+      "lotId": "14E7JY726AQ3US1MJA",
+      "lotNo": "1",
+      "facilityId": "13XM4J6CJBWD6FK64B",
+      "facilityName": "blureforcewh1",
+      "locationSeqId": "13XM4J6CJBWD6FK64B_DEFAULT",
+      "locationName": "-",
+      "quantityOnHandDiff": -50,
+      "physicalInventoryId": "14GC8S5M74LMQR3TEX",
+      "reasonEnumId": "RETURN_TO_VENDOR",
+      "createdAt": "2025-04-16T04:24:14.29097Z",
+      "createdBy": "anonymousUser"
+    }
+  ],
+  "totalElements": 13,
+  "size": 2,
+  "number": 0,
+  "totalPages": 7
+}
+```
+* quantityOnHandDiff 库存变动数量，复数为减少，正数为增加；
+* reasonEnumId 库存变动原因
+* createdAt 库存变动时间
+* createdBy 操作人Id
+* facilityId 仓库Id
+* facilityName 仓库名称
+* locationSeqId 仓位Id
+* locationName 仓位名称
+* locationCode 仓位内部编码
+* lotNo 批次号
+* productInternalId 产品内部编码
+* physicalInventoryId、inventoryTransferId、receiptId等为相关单据的Id，根据 reasonEnumId 的不同，这些字段分别有值。
+
+
 
 ## 四、产品相关接口
 
