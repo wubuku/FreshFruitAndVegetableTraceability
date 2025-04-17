@@ -40,6 +40,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static org.dddml.ffvtraceability.domain.constants.BffStockInOutConstants.INOUT_TYPE_RECEIVING;
+
 @Service
 @Transactional
 public class BffReceivingApplicationServiceImpl implements BffReceivingApplicationService {
@@ -569,7 +571,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
             InventoryItemDetailAttributes inventoryItemDetailAttributes = new InventoryItemDetailAttributes();
             inventoryItemDetailAttributes.setReceiptId(shipmentReceipt.getReceiptId());
             inventoryItemDetailAttributes.setShipmentId(shipmentId);
-            //inventoryItemDetailAttributes.setReasonEnumId("RECEIVING");
+            inventoryItemDetailAttributes.setReasonEnumId(INOUT_TYPE_RECEIVING);
 
             recordInventoryEntry.setQuantityOnHandDiff(shipmentReceipt.getQuantityAccepted());
 

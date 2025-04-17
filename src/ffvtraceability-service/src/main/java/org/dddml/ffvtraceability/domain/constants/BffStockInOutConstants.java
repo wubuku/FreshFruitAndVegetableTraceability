@@ -21,4 +21,9 @@ public final class BffStockInOutConstants {
      */
     public static final String VARIANCE_REASON_TYPE_RETURN_TO_VENDOR = "RETURN_TO_VENDOR";
 
+    /**
+     * Receiving
+     */
+    public static final String INOUT_TYPE_RECEIVING = "RECEIVING";
+
 }

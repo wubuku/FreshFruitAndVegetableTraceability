@@ -81,6 +81,7 @@ public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemA
     }
 
     @Override
+    @Deprecated
     public Page<BffInventoryByLotNoDto> when(BffInventoryItemServiceCommands.GetInventoriesByLotNo c) {
         return PageUtils.toPage(
                 bffInventoryItemRepository.getRawItemInventoriesGroupByLot(PageRequest.of(c.getPage(), c.getSize()),
