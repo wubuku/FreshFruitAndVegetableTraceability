@@ -850,6 +850,7 @@ curl -X 'POST' \
 ### 12. 原材料库存按批次分组(支持分页)
 该接口为在手机客户端得到原材料根据产品、供应商，仓库汇总后的库存列表后，继续进一步按照批次号汇总的库存列表。
 也就是对于确定产品Id、供应商Id和仓库Id的库存信息按照批次号（更小粒度）进行分解：
+
 ![替代文字](https://haozhuo-store-pulic.oss-cn-shanghai.aliyuncs.com/RawItemInventoryByLotNo.png "可选标题")
 
 ```shell
