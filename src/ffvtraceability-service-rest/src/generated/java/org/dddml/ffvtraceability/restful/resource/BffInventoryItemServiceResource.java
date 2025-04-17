@@ -31,6 +31,46 @@ public class BffInventoryItemServiceResource {
     @Autowired
     private BffInventoryItemApplicationService bffInventoryItemApplicationService;
 
+    @GetMapping("Details")
+    public Page<BffRawItemInventoryItemDto> getRawItemInventoryDetails(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productTypeId", required = false) String productTypeId,
+        @RequestParam(value = "productId", required = false) String productId,
+        @RequestParam(value = "facilityId", required = false) String facilityId
+    ) {
+        BffInventoryItemServiceCommands.GetRawItemInventoryDetails getRawItemInventoryDetails = new BffInventoryItemServiceCommands.GetRawItemInventoryDetails();
+        getRawItemInventoryDetails.setPage(page);
+        getRawItemInventoryDetails.setSize(size);
+        getRawItemInventoryDetails.setProductTypeId(productTypeId);
+        getRawItemInventoryDetails.setProductId(productId);
+        getRawItemInventoryDetails.setFacilityId(facilityId);
+        
+        getRawItemInventoryDetails.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getRawItemInventoryDetails);
+        
+    }
+
+    @GetMapping("{productId}/InventoriesByLotNo")
+    public Page<BffInventoryByLotNoDto> getInventoriesByLotNo(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @PathVariable("productId") String productId,
+        @RequestParam(value = "supplierId") String supplierId,
+        @RequestParam(value = "facilityId") String facilityId
+    ) {
+        BffInventoryItemServiceCommands.GetInventoriesByLotNo getInventoriesByLotNo = new BffInventoryItemServiceCommands.GetInventoriesByLotNo();
+        getInventoriesByLotNo.setPage(page);
+        getInventoriesByLotNo.setSize(size);
+        getInventoriesByLotNo.setProductId(productId);
+        getInventoriesByLotNo.setSupplierId(supplierId);
+        getInventoriesByLotNo.setFacilityId(facilityId);
+        
+        getInventoriesByLotNo.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getInventoriesByLotNo);
+        
+    }
+
     @GetMapping("RawItems")
     public Page<BffRawItemInventoryGroupDto> getRawItemInventories(
         @RequestParam(value = "page", defaultValue = "0") Integer page,

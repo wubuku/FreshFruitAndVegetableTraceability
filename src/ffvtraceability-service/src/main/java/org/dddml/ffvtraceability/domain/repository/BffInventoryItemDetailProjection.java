@@ -13,8 +13,31 @@ public interface BffInventoryItemDetailProjection {
 
     String getInventoryItemDetailSeqId();
 
-    OffsetDateTime getEffectiveDate();
+    String getProductId();
 
+    String getProductName();
+
+    String getProductTypeId();
+
+    String getProductInternalId();
+
+    String getQuantityUomId();
+
+    String getLotId();
+
+    String getLotNo();
+
+    String getFacilityId();
+
+    String getFacilityName();
+
+    String getLocationSeqId();
+
+    String getLocationName();
+
+    String getLocationCode();
+
+    java.time.Instant getEffectiveDate();
     java.math.BigDecimal getQuantityOnHandDiff();
 
     String getShipmentId();
@@ -26,6 +49,8 @@ public interface BffInventoryItemDetailProjection {
     String getDescription();
 
     String getInventoryTransferId();
+
+    String getReasonEnumId();
 
 }
 

@@ -10,6 +10,10 @@ import org.dddml.ffvtraceability.specialization.Page;
 
 public interface BffInventoryItemApplicationService {
 
+    Page<BffRawItemInventoryItemDto> when(BffInventoryItemServiceCommands.GetRawItemInventoryDetails c);
+
+    Page<BffInventoryByLotNoDto> when(BffInventoryItemServiceCommands.GetInventoriesByLotNo c);
+
     Page<BffRawItemInventoryGroupDto> when(BffInventoryItemServiceCommands.GetRawItemInventories c);
 
     Page<BffInventoryItemDto> when(BffInventoryItemServiceCommands.GetRawInventoriesByProductAndLot c);

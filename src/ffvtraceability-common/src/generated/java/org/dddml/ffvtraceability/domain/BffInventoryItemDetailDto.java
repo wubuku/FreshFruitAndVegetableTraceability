@@ -34,6 +34,150 @@ public class BffInventoryItemDetailDto implements Serializable {
         this.inventoryItemDetailSeqId = inventoryItemDetailSeqId;
     }
 
+    private String productId;
+
+    public String getProductId()
+    {
+        return this.productId;
+    }
+
+    public void setProductId(String productId)
+    {
+        this.productId = productId;
+    }
+
+    private String productName;
+
+    public String getProductName()
+    {
+        return this.productName;
+    }
+
+    public void setProductName(String productName)
+    {
+        this.productName = productName;
+    }
+
+    private String productTypeId;
+
+    public String getProductTypeId()
+    {
+        return this.productTypeId;
+    }
+
+    public void setProductTypeId(String productTypeId)
+    {
+        this.productTypeId = productTypeId;
+    }
+
+    private String productInternalId;
+
+    public String getProductInternalId()
+    {
+        return this.productInternalId;
+    }
+
+    public void setProductInternalId(String productInternalId)
+    {
+        this.productInternalId = productInternalId;
+    }
+
+    private String quantityUomId;
+
+    public String getQuantityUomId()
+    {
+        return this.quantityUomId;
+    }
+
+    public void setQuantityUomId(String quantityUomId)
+    {
+        this.quantityUomId = quantityUomId;
+    }
+
+    private String lotId;
+
+    public String getLotId()
+    {
+        return this.lotId;
+    }
+
+    public void setLotId(String lotId)
+    {
+        this.lotId = lotId;
+    }
+
+    private String lotNo;
+
+    public String getLotNo()
+    {
+        return this.lotNo;
+    }
+
+    public void setLotNo(String lotNo)
+    {
+        this.lotNo = lotNo;
+    }
+
+    private String facilityId;
+
+    public String getFacilityId()
+    {
+        return this.facilityId;
+    }
+
+    public void setFacilityId(String facilityId)
+    {
+        this.facilityId = facilityId;
+    }
+
+    private String facilityName;
+
+    public String getFacilityName()
+    {
+        return this.facilityName;
+    }
+
+    public void setFacilityName(String facilityName)
+    {
+        this.facilityName = facilityName;
+    }
+
+    private String locationSeqId;
+
+    public String getLocationSeqId()
+    {
+        return this.locationSeqId;
+    }
+
+    public void setLocationSeqId(String locationSeqId)
+    {
+        this.locationSeqId = locationSeqId;
+    }
+
+    private String locationName;
+
+    public String getLocationName()
+    {
+        return this.locationName;
+    }
+
+    public void setLocationName(String locationName)
+    {
+        this.locationName = locationName;
+    }
+
+    private String locationCode;
+
+    public String getLocationCode()
+    {
+        return this.locationCode;
+    }
+
+    public void setLocationCode(String locationCode)
+    {
+        this.locationCode = locationCode;
+    }
+
     private OffsetDateTime effectiveDate;
 
     public OffsetDateTime getEffectiveDate()
@@ -118,14 +262,38 @@ public class BffInventoryItemDetailDto implements Serializable {
         this.inventoryTransferId = inventoryTransferId;
     }
 
+    private String reasonEnumId;
+
+    public String getReasonEnumId()
+    {
+        return this.reasonEnumId;
+    }
+
+    public void setReasonEnumId(String reasonEnumId)
+    {
+        this.reasonEnumId = reasonEnumId;
+    }
+
     public BffInventoryItemDetailDto()
     {
     }
 
-    public BffInventoryItemDetailDto(String inventoryItemId, String inventoryItemDetailSeqId, OffsetDateTime effectiveDate, java.math.BigDecimal quantityOnHandDiff, String shipmentId, String receiptId, String physicalInventoryId, String description, String inventoryTransferId)
+    public BffInventoryItemDetailDto(String inventoryItemId, String inventoryItemDetailSeqId, String productId, String productName, String productTypeId, String productInternalId, String quantityUomId, String lotId, String lotNo, String facilityId, String facilityName, String locationSeqId, String locationName, String locationCode, OffsetDateTime effectiveDate, java.math.BigDecimal quantityOnHandDiff, String shipmentId, String receiptId, String physicalInventoryId, String description, String inventoryTransferId, String reasonEnumId)
     {
         this.inventoryItemId = inventoryItemId;
         this.inventoryItemDetailSeqId = inventoryItemDetailSeqId;
+        this.productId = productId;
+        this.productName = productName;
+        this.productTypeId = productTypeId;
+        this.productInternalId = productInternalId;
+        this.quantityUomId = quantityUomId;
+        this.lotId = lotId;
+        this.lotNo = lotNo;
+        this.facilityId = facilityId;
+        this.facilityName = facilityName;
+        this.locationSeqId = locationSeqId;
+        this.locationName = locationName;
+        this.locationCode = locationCode;
         this.effectiveDate = effectiveDate;
         this.quantityOnHandDiff = quantityOnHandDiff;
         this.shipmentId = shipmentId;
@@ -133,6 +301,7 @@ public class BffInventoryItemDetailDto implements Serializable {
         this.physicalInventoryId = physicalInventoryId;
         this.description = description;
         this.inventoryTransferId = inventoryTransferId;
+        this.reasonEnumId = reasonEnumId;
     }
 
     @Override
@@ -149,6 +318,18 @@ public class BffInventoryItemDetailDto implements Serializable {
         return true 
             && (inventoryItemId == other.inventoryItemId || (inventoryItemId != null && inventoryItemId.equals(other.inventoryItemId)))
             && (inventoryItemDetailSeqId == other.inventoryItemDetailSeqId || (inventoryItemDetailSeqId != null && inventoryItemDetailSeqId.equals(other.inventoryItemDetailSeqId)))
+            && (productId == other.productId || (productId != null && productId.equals(other.productId)))
+            && (productName == other.productName || (productName != null && productName.equals(other.productName)))
+            && (productTypeId == other.productTypeId || (productTypeId != null && productTypeId.equals(other.productTypeId)))
+            && (productInternalId == other.productInternalId || (productInternalId != null && productInternalId.equals(other.productInternalId)))
+            && (quantityUomId == other.quantityUomId || (quantityUomId != null && quantityUomId.equals(other.quantityUomId)))
+            && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
+            && (lotNo == other.lotNo || (lotNo != null && lotNo.equals(other.lotNo)))
+            && (facilityId == other.facilityId || (facilityId != null && facilityId.equals(other.facilityId)))
+            && (facilityName == other.facilityName || (facilityName != null && facilityName.equals(other.facilityName)))
+            && (locationSeqId == other.locationSeqId || (locationSeqId != null && locationSeqId.equals(other.locationSeqId)))
+            && (locationName == other.locationName || (locationName != null && locationName.equals(other.locationName)))
+            && (locationCode == other.locationCode || (locationCode != null && locationCode.equals(other.locationCode)))
             && (effectiveDate == other.effectiveDate || (effectiveDate != null && effectiveDate.equals(other.effectiveDate)))
             && (quantityOnHandDiff == other.quantityOnHandDiff || (quantityOnHandDiff != null && quantityOnHandDiff.equals(other.quantityOnHandDiff)))
             && (shipmentId == other.shipmentId || (shipmentId != null && shipmentId.equals(other.shipmentId)))
@@ -156,6 +337,7 @@ public class BffInventoryItemDetailDto implements Serializable {
             && (physicalInventoryId == other.physicalInventoryId || (physicalInventoryId != null && physicalInventoryId.equals(other.physicalInventoryId)))
             && (description == other.description || (description != null && description.equals(other.description)))
             && (inventoryTransferId == other.inventoryTransferId || (inventoryTransferId != null && inventoryTransferId.equals(other.inventoryTransferId)))
+            && (reasonEnumId == other.reasonEnumId || (reasonEnumId != null && reasonEnumId.equals(other.reasonEnumId)))
             ;
     }
 
@@ -168,6 +350,42 @@ public class BffInventoryItemDetailDto implements Serializable {
         }
         if (this.inventoryItemDetailSeqId != null) {
             hash += 13 * this.inventoryItemDetailSeqId.hashCode();
+        }
+        if (this.productId != null) {
+            hash += 13 * this.productId.hashCode();
+        }
+        if (this.productName != null) {
+            hash += 13 * this.productName.hashCode();
+        }
+        if (this.productTypeId != null) {
+            hash += 13 * this.productTypeId.hashCode();
+        }
+        if (this.productInternalId != null) {
+            hash += 13 * this.productInternalId.hashCode();
+        }
+        if (this.quantityUomId != null) {
+            hash += 13 * this.quantityUomId.hashCode();
+        }
+        if (this.lotId != null) {
+            hash += 13 * this.lotId.hashCode();
+        }
+        if (this.lotNo != null) {
+            hash += 13 * this.lotNo.hashCode();
+        }
+        if (this.facilityId != null) {
+            hash += 13 * this.facilityId.hashCode();
+        }
+        if (this.facilityName != null) {
+            hash += 13 * this.facilityName.hashCode();
+        }
+        if (this.locationSeqId != null) {
+            hash += 13 * this.locationSeqId.hashCode();
+        }
+        if (this.locationName != null) {
+            hash += 13 * this.locationName.hashCode();
+        }
+        if (this.locationCode != null) {
+            hash += 13 * this.locationCode.hashCode();
         }
         if (this.effectiveDate != null) {
             hash += 13 * this.effectiveDate.hashCode();
@@ -190,6 +408,9 @@ public class BffInventoryItemDetailDto implements Serializable {
         if (this.inventoryTransferId != null) {
             hash += 13 * this.inventoryTransferId.hashCode();
         }
+        if (this.reasonEnumId != null) {
+            hash += 13 * this.reasonEnumId.hashCode();
+        }
         return hash;
     }
 
@@ -198,6 +419,18 @@ public class BffInventoryItemDetailDto implements Serializable {
         return "BffInventoryItemDetailDto{" +
                 "inventoryItemId=" + '\'' + inventoryItemId + '\'' +
                 ", inventoryItemDetailSeqId=" + '\'' + inventoryItemDetailSeqId + '\'' +
+                ", productId=" + '\'' + productId + '\'' +
+                ", productName=" + '\'' + productName + '\'' +
+                ", productTypeId=" + '\'' + productTypeId + '\'' +
+                ", productInternalId=" + '\'' + productInternalId + '\'' +
+                ", quantityUomId=" + '\'' + quantityUomId + '\'' +
+                ", lotId=" + '\'' + lotId + '\'' +
+                ", lotNo=" + '\'' + lotNo + '\'' +
+                ", facilityId=" + '\'' + facilityId + '\'' +
+                ", facilityName=" + '\'' + facilityName + '\'' +
+                ", locationSeqId=" + '\'' + locationSeqId + '\'' +
+                ", locationName=" + '\'' + locationName + '\'' +
+                ", locationCode=" + '\'' + locationCode + '\'' +
                 ", effectiveDate=" + effectiveDate +
                 ", quantityOnHandDiff=" + quantityOnHandDiff +
                 ", shipmentId=" + '\'' + shipmentId + '\'' +
@@ -205,6 +438,7 @@ public class BffInventoryItemDetailDto implements Serializable {
                 ", physicalInventoryId=" + '\'' + physicalInventoryId + '\'' +
                 ", description=" + '\'' + description + '\'' +
                 ", inventoryTransferId=" + '\'' + inventoryTransferId + '\'' +
+                ", reasonEnumId=" + '\'' + reasonEnumId + '\'' +
                 '}';
     }
 

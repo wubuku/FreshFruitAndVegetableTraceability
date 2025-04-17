@@ -136,15 +136,64 @@ valueObjects:
       QuantityOnHandTotal:
         type: fixed-point
 
+
+  BffInventoryByLotNoDto:
+    metadata:
+      JpaProjectionInterfaceName: BffInventoryByLotNoProjection
+    properties:
+      ProductId:
+        type: id
+      ProductInternalId:
+        type: id
+      LotId:
+        type: id
+      LotNo:
+        type: id
+      QuantityUomId:
+        type: id
+        # 主计量单位的 ID，比如“oz”
+      QuantityIncluded:
+        description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+        type: fixed-point
+      CaseUomId:
+        type: id
+
+
+
   BffInventoryItemDetailDto:
     metadata:
       JpaProjectionInterfaceName: BffInventoryItemDetailProjection
+      JpaProjectionPropertyTypes:
+        EffectiveDate: java.time.Instant
     properties:
       InventoryItemId:
         type: id
       InventoryItemDetailSeqId:
-        # RawItem Id
         type: id
+      ProductId:
+        type: id
+      ProductName:
+        type: name
+      ProductTypeId:
+        type: id
+      ProductInternalId:
+        type: id
+      QuantityUomId:
+        type: id
+      LotId:
+        type: id
+      LotNo:
+        type: id
+      FacilityId:
+        type: id
+      FacilityName:
+        type: name
+      LocationSeqId:
+        type: id
+      LocationName:
+        type: name
+      LocationCode:
+        type: name
       EffectiveDate:
         type: date-time
       QuantityOnHandDiff:
@@ -159,11 +208,49 @@ valueObjects:
         type: description
       InventoryTransferId:
         type: id
+      ReasonEnumId:
+        type: id
 
 services:
   BffInventoryItemService:
     restfulResourceName: BffInventoryItems
     methods:
+      GetRawItemInventoryDetails: #库存流水
+        restfulResourceName: "Details"
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        parameters:
+          ProductTypeId:
+            type: id
+          ProductId:
+            type: id
+          FacilityId:
+            type: id
+        result:
+          itemType: BffRawItemInventoryItemDto
+
+      GetInventoriesByLotNo:
+        restfulResourceName: "{ProductId}/InventoriesByLotNo"
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+          RestfulPathVariable: ProductId
+        isQuery: true
+        parameters:
+          ProductId:
+            type: id
+            optional: false
+          SupplierId:
+            type: id
+            optional: false # NOT required
+          FacilityId:
+            type: id
+            optional: false # NOT required
+        result:
+          itemType: BffInventoryByLotNoDto
+
       GetRawItemInventories: #根据条件（productId,supplierId,warehouseId）查询汇总库存
         restfulResourceName: "RawItems"
         metadata:
@@ -223,7 +310,7 @@ services:
           itemType: BffRawItemInventoryItemDto
 
       GetWipInventories:
-        restfulResourceName: "WIPs"
+        restfulResourceName: "Products"
         metadata:
           IsPageable: true
           ReturnPageEnvelope: true
@@ -245,7 +332,7 @@ services:
           itemType: BffWipInventoryGroupDto
 
       GetWipInventoriesByProductAndLot:
-        restfulResourceName: "WIPs/GroupByProductAndLot"
+        restfulResourceName: "Products/GroupByProductAndLot"
         metadata:
           IsPageable: true
           ReturnPageEnvelope: true
