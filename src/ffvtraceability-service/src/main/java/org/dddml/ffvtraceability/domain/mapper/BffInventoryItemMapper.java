@@ -22,7 +22,7 @@ public interface BffInventoryItemMapper {
     BffRawItemInventoryGroupDto toBffRawItemInventoryGroupDto(BffRawItemInventoryGroupProjection bffRawItemInventoryGroupProjection);
 
 
-    BffWipInventoryGroupDto toBffWipInventoryGroupDto(BffWipInventoryGroupProjection bffWipInventoryGroupProjection);
+    BffProductInventoryGroupDto toBffProductInventoryGroupDto(BffProductInventoryGroupProjection bffWipInventoryGroupProjection);
 
     BffRawItemInventoryItemDto toBffRawItemInventoryItemDto(BffRawItemInventoryItemProjection bffRawItemInventoryItemProjection);
 

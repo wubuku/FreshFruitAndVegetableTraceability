@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZoneOffset;
 
-import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.PRODUCT_TYPES_WIP;
+import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.PRODUCT_TYPES_NOT_RAW;
 
 @Service
 public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemApplicationService {
@@ -28,26 +28,27 @@ public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemA
                 bffInventoryItemMapper::toBffRawItemInventoryGroupDto);
     }
 
+
+    @Override
+    public Page<BffProductInventoryGroupDto> when(BffInventoryItemServiceCommands.GetProductInventories c) {
+        if (c.getProductTypeId() == null || c.getProductTypeId().isBlank()) {
+            throw new IllegalArgumentException("Product type is required");
+        }
+        if (!PRODUCT_TYPES_NOT_RAW.contains(c.getProductTypeId())) {
+            throw new IllegalArgumentException("Product type is not supported");
+        }
+        return PageUtils.toPage(
+                bffInventoryItemRepository.findAllProductInventories(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductTypeId(), c.getProductId(), c.getProductName(), c.getFacilityId()),
+                bffInventoryItemMapper::toBffProductInventoryGroupDto);
+    }
+
     @Override
     public Page<BffInventoryItemDto> when(BffInventoryItemServiceCommands.GetRawInventoriesByProductAndLot c) {
         return PageUtils.toPage(
                 bffInventoryItemRepository.findRawItemInventories(PageRequest.of(c.getPage(), c.getSize()),
                         c.getProductId(), c.getLotId()),
                 bffInventoryItemMapper::toBffInventoryItemDto);
-    }
-
-    @Override
-    public Page<BffWipInventoryGroupDto> when(BffInventoryItemServiceCommands.GetWipInventories c) {
-        if (c.getProductTypeId() == null || c.getProductTypeId().isBlank()) {
-            throw new IllegalArgumentException("Product type is required");
-        }
-        if (!PRODUCT_TYPES_WIP.contains(c.getProductTypeId())) {
-            throw new IllegalArgumentException("Product type is not supported");
-        }
-        return PageUtils.toPage(
-                bffInventoryItemRepository.findAllWipInventories(PageRequest.of(c.getPage(), c.getSize()),
-                        c.getProductTypeId(), c.getProductId(), c.getProductName(), c.getFacilityId()),
-                bffInventoryItemMapper::toBffWipInventoryGroupDto);
     }
 
     @Override
@@ -68,21 +69,24 @@ public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemA
     }
 
     @Override
-    public Page<BffInventoryItemDto> when(BffInventoryItemServiceCommands.GetWipInventoriesByProductAndLot c) {
+    public Page<BffInventoryItemDto> when(BffInventoryItemServiceCommands.GetProductInventoriesByProductAndLot c) {
         return PageUtils.toPage(
-                bffInventoryItemRepository.findWipInventories(PageRequest.of(c.getPage(), c.getSize()),
+                bffInventoryItemRepository.findProductInventories(PageRequest.of(c.getPage(), c.getSize()),
                         c.getProductId(), c.getLotId()),
                 bffInventoryItemMapper::toBffInventoryItemDto);
     }
 
     @Override
     public Page<BffRawItemInventoryItemDto> when(BffInventoryItemServiceCommands.GetRawItemInventoryDetails c) {
+//        return PageUtils.toPage(
+//                bffInventoryItemRepository.getRawItemInventoriesGroupByLot(PageRequest.of(c.getPage(), c.getSize()),
+//                        c.getProductId(), c.getSupplierId(), c.getFacilityId()),
+//                bffInventoryItemMapper::toBffInventoryByLotNoDto);
         return null;
     }
 
     @Override
-    @Deprecated
-    public Page<BffInventoryByLotNoDto> when(BffInventoryItemServiceCommands.GetInventoriesByLotNo c) {
+    public Page<BffInventoryByLotNoDto> when(BffInventoryItemServiceCommands.GetRawItemInventoriesByLotNo c) {
         return PageUtils.toPage(
                 bffInventoryItemRepository.getRawItemInventoriesGroupByLot(PageRequest.of(c.getPage(), c.getSize()),
                         c.getProductId(), c.getSupplierId(), c.getFacilityId()),

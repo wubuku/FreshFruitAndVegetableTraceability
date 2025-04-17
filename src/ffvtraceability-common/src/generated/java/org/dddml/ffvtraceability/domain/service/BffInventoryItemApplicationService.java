@@ -12,7 +12,7 @@ public interface BffInventoryItemApplicationService {
 
     Page<BffRawItemInventoryItemDto> when(BffInventoryItemServiceCommands.GetRawItemInventoryDetails c);
 
-    Page<BffInventoryByLotNoDto> when(BffInventoryItemServiceCommands.GetInventoriesByLotNo c);
+    Page<BffInventoryByLotNoDto> when(BffInventoryItemServiceCommands.GetRawItemInventoriesByLotNo c);
 
     Page<BffRawItemInventoryGroupDto> when(BffInventoryItemServiceCommands.GetRawItemInventories c);
 
@@ -20,9 +20,9 @@ public interface BffInventoryItemApplicationService {
 
     Page<BffRawItemInventoryItemDto> when(BffInventoryItemServiceCommands.GetRawItemInventoryItems c);
 
-    Page<BffWipInventoryGroupDto> when(BffInventoryItemServiceCommands.GetWipInventories c);
+    Page<BffProductInventoryGroupDto> when(BffInventoryItemServiceCommands.GetProductInventories c);
 
-    Page<BffInventoryItemDto> when(BffInventoryItemServiceCommands.GetWipInventoriesByProductAndLot c);
+    Page<BffInventoryItemDto> when(BffInventoryItemServiceCommands.GetProductInventoriesByProductAndLot c);
 
 
 }

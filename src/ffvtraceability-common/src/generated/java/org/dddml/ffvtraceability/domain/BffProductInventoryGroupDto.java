@@ -8,7 +8,7 @@ package org.dddml.ffvtraceability.domain;
 import java.io.Serializable;
 import org.dddml.ffvtraceability.domain.*;
 
-public class BffInventoryByLotNoDto implements Serializable {
+public class BffProductInventoryGroupDto implements Serializable {
     private String productId;
 
     public String getProductId()
@@ -21,52 +21,16 @@ public class BffInventoryByLotNoDto implements Serializable {
         this.productId = productId;
     }
 
-    private String productInternalId;
+    private String productName;
 
-    public String getProductInternalId()
+    public String getProductName()
     {
-        return this.productInternalId;
+        return this.productName;
     }
 
-    public void setProductInternalId(String productInternalId)
+    public void setProductName(String productName)
     {
-        this.productInternalId = productInternalId;
-    }
-
-    private String lotId;
-
-    public String getLotId()
-    {
-        return this.lotId;
-    }
-
-    public void setLotId(String lotId)
-    {
-        this.lotId = lotId;
-    }
-
-    private String lotNo;
-
-    public String getLotNo()
-    {
-        return this.lotNo;
-    }
-
-    public void setLotNo(String lotNo)
-    {
-        this.lotNo = lotNo;
-    }
-
-    private String facilityId;
-
-    public String getFacilityId()
-    {
-        return this.facilityId;
-    }
-
-    public void setFacilityId(String facilityId)
-    {
-        this.facilityId = facilityId;
+        this.productName = productName;
     }
 
     private String quantityUomId;
@@ -81,6 +45,9 @@ public class BffInventoryByLotNoDto implements Serializable {
         this.quantityUomId = quantityUomId;
     }
 
+    /**
+     * If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
+     */
     private java.math.BigDecimal quantityIncluded;
 
     public java.math.BigDecimal getQuantityIncluded()
@@ -105,6 +72,30 @@ public class BffInventoryByLotNoDto implements Serializable {
         this.caseUomId = caseUomId;
     }
 
+    private String facilityId;
+
+    public String getFacilityId()
+    {
+        return this.facilityId;
+    }
+
+    public void setFacilityId(String facilityId)
+    {
+        this.facilityId = facilityId;
+    }
+
+    private String facilityName;
+
+    public String getFacilityName()
+    {
+        return this.facilityName;
+    }
+
+    public void setFacilityName(String facilityName)
+    {
+        this.facilityName = facilityName;
+    }
+
     private java.math.BigDecimal quantityOnHandTotal;
 
     public java.math.BigDecimal getQuantityOnHandTotal()
@@ -117,20 +108,19 @@ public class BffInventoryByLotNoDto implements Serializable {
         this.quantityOnHandTotal = quantityOnHandTotal;
     }
 
-    public BffInventoryByLotNoDto()
+    public BffProductInventoryGroupDto()
     {
     }
 
-    public BffInventoryByLotNoDto(String productId, String productInternalId, String lotId, String lotNo, String facilityId, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId, java.math.BigDecimal quantityOnHandTotal)
+    public BffProductInventoryGroupDto(String productId, String productName, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId, String facilityId, String facilityName, java.math.BigDecimal quantityOnHandTotal)
     {
         this.productId = productId;
-        this.productInternalId = productInternalId;
-        this.lotId = lotId;
-        this.lotNo = lotNo;
-        this.facilityId = facilityId;
+        this.productName = productName;
         this.quantityUomId = quantityUomId;
         this.quantityIncluded = quantityIncluded;
         this.caseUomId = caseUomId;
+        this.facilityId = facilityId;
+        this.facilityName = facilityName;
         this.quantityOnHandTotal = quantityOnHandTotal;
     }
 
@@ -144,16 +134,15 @@ public class BffInventoryByLotNoDto implements Serializable {
             return false;
         }
 
-        BffInventoryByLotNoDto other = (BffInventoryByLotNoDto)obj;
+        BffProductInventoryGroupDto other = (BffProductInventoryGroupDto)obj;
         return true 
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
-            && (productInternalId == other.productInternalId || (productInternalId != null && productInternalId.equals(other.productInternalId)))
-            && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
-            && (lotNo == other.lotNo || (lotNo != null && lotNo.equals(other.lotNo)))
-            && (facilityId == other.facilityId || (facilityId != null && facilityId.equals(other.facilityId)))
+            && (productName == other.productName || (productName != null && productName.equals(other.productName)))
             && (quantityUomId == other.quantityUomId || (quantityUomId != null && quantityUomId.equals(other.quantityUomId)))
             && (quantityIncluded == other.quantityIncluded || (quantityIncluded != null && quantityIncluded.equals(other.quantityIncluded)))
             && (caseUomId == other.caseUomId || (caseUomId != null && caseUomId.equals(other.caseUomId)))
+            && (facilityId == other.facilityId || (facilityId != null && facilityId.equals(other.facilityId)))
+            && (facilityName == other.facilityName || (facilityName != null && facilityName.equals(other.facilityName)))
             && (quantityOnHandTotal == other.quantityOnHandTotal || (quantityOnHandTotal != null && quantityOnHandTotal.equals(other.quantityOnHandTotal)))
             ;
     }
@@ -165,17 +154,8 @@ public class BffInventoryByLotNoDto implements Serializable {
         if (this.productId != null) {
             hash += 13 * this.productId.hashCode();
         }
-        if (this.productInternalId != null) {
-            hash += 13 * this.productInternalId.hashCode();
-        }
-        if (this.lotId != null) {
-            hash += 13 * this.lotId.hashCode();
-        }
-        if (this.lotNo != null) {
-            hash += 13 * this.lotNo.hashCode();
-        }
-        if (this.facilityId != null) {
-            hash += 13 * this.facilityId.hashCode();
+        if (this.productName != null) {
+            hash += 13 * this.productName.hashCode();
         }
         if (this.quantityUomId != null) {
             hash += 13 * this.quantityUomId.hashCode();
@@ -186,6 +166,12 @@ public class BffInventoryByLotNoDto implements Serializable {
         if (this.caseUomId != null) {
             hash += 13 * this.caseUomId.hashCode();
         }
+        if (this.facilityId != null) {
+            hash += 13 * this.facilityId.hashCode();
+        }
+        if (this.facilityName != null) {
+            hash += 13 * this.facilityName.hashCode();
+        }
         if (this.quantityOnHandTotal != null) {
             hash += 13 * this.quantityOnHandTotal.hashCode();
         }
@@ -194,15 +180,14 @@ public class BffInventoryByLotNoDto implements Serializable {
 
     @Override
     public String toString() {
-        return "BffInventoryByLotNoDto{" +
+        return "BffProductInventoryGroupDto{" +
                 "productId=" + '\'' + productId + '\'' +
-                ", productInternalId=" + '\'' + productInternalId + '\'' +
-                ", lotId=" + '\'' + lotId + '\'' +
-                ", lotNo=" + '\'' + lotNo + '\'' +
-                ", facilityId=" + '\'' + facilityId + '\'' +
+                ", productName=" + '\'' + productName + '\'' +
                 ", quantityUomId=" + '\'' + quantityUomId + '\'' +
                 ", quantityIncluded=" + quantityIncluded +
                 ", caseUomId=" + '\'' + caseUomId + '\'' +
+                ", facilityId=" + '\'' + facilityId + '\'' +
+                ", facilityName=" + '\'' + facilityName + '\'' +
                 ", quantityOnHandTotal=" + quantityOnHandTotal +
                 '}';
     }

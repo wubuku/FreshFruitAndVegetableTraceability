@@ -51,23 +51,23 @@ public class BffInventoryItemServiceResource {
         
     }
 
-    @GetMapping("{productId}/InventoriesByLotNo")
-    public Page<BffInventoryByLotNoDto> getInventoriesByLotNo(
+    @GetMapping("{productId}/RawItemInventoriesByLotNo")
+    public Page<BffInventoryByLotNoDto> getRawItemInventoriesByLotNo(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @PathVariable("productId") String productId,
         @RequestParam(value = "supplierId") String supplierId,
         @RequestParam(value = "facilityId") String facilityId
     ) {
-        BffInventoryItemServiceCommands.GetInventoriesByLotNo getInventoriesByLotNo = new BffInventoryItemServiceCommands.GetInventoriesByLotNo();
-        getInventoriesByLotNo.setPage(page);
-        getInventoriesByLotNo.setSize(size);
-        getInventoriesByLotNo.setProductId(productId);
-        getInventoriesByLotNo.setSupplierId(supplierId);
-        getInventoriesByLotNo.setFacilityId(facilityId);
+        BffInventoryItemServiceCommands.GetRawItemInventoriesByLotNo getRawItemInventoriesByLotNo = new BffInventoryItemServiceCommands.GetRawItemInventoriesByLotNo();
+        getRawItemInventoriesByLotNo.setPage(page);
+        getRawItemInventoriesByLotNo.setSize(size);
+        getRawItemInventoriesByLotNo.setProductId(productId);
+        getRawItemInventoriesByLotNo.setSupplierId(supplierId);
+        getRawItemInventoriesByLotNo.setFacilityId(facilityId);
         
-        getInventoriesByLotNo.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffInventoryItemApplicationService.when(getInventoriesByLotNo);
+        getRawItemInventoriesByLotNo.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getRawItemInventoriesByLotNo);
         
     }
 
@@ -132,7 +132,7 @@ public class BffInventoryItemServiceResource {
     }
 
     @GetMapping("Products")
-    public Page<BffWipInventoryGroupDto> getWipInventories(
+    public Page<BffProductInventoryGroupDto> getProductInventories(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "productTypeId") String productTypeId,
@@ -140,34 +140,34 @@ public class BffInventoryItemServiceResource {
         @RequestParam(value = "productId", required = false) String productId,
         @RequestParam(value = "facilityId", required = false) String facilityId
     ) {
-        BffInventoryItemServiceCommands.GetWipInventories getWipInventories = new BffInventoryItemServiceCommands.GetWipInventories();
-        getWipInventories.setPage(page);
-        getWipInventories.setSize(size);
-        getWipInventories.setProductTypeId(productTypeId);
-        getWipInventories.setProductName(productName);
-        getWipInventories.setProductId(productId);
-        getWipInventories.setFacilityId(facilityId);
+        BffInventoryItemServiceCommands.GetProductInventories getProductInventories = new BffInventoryItemServiceCommands.GetProductInventories();
+        getProductInventories.setPage(page);
+        getProductInventories.setSize(size);
+        getProductInventories.setProductTypeId(productTypeId);
+        getProductInventories.setProductName(productName);
+        getProductInventories.setProductId(productId);
+        getProductInventories.setFacilityId(facilityId);
         
-        getWipInventories.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffInventoryItemApplicationService.when(getWipInventories);
+        getProductInventories.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getProductInventories);
         
     }
 
     @GetMapping("Products/GroupByProductAndLot")
-    public Page<BffInventoryItemDto> getWipInventoriesByProductAndLot(
+    public Page<BffInventoryItemDto> getProductInventoriesByProductAndLot(
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "productId", required = false) String productId,
         @RequestParam(value = "lotId", required = false) String lotId
     ) {
-        BffInventoryItemServiceCommands.GetWipInventoriesByProductAndLot getWipInventoriesByProductAndLot = new BffInventoryItemServiceCommands.GetWipInventoriesByProductAndLot();
-        getWipInventoriesByProductAndLot.setPage(page);
-        getWipInventoriesByProductAndLot.setSize(size);
-        getWipInventoriesByProductAndLot.setProductId(productId);
-        getWipInventoriesByProductAndLot.setLotId(lotId);
+        BffInventoryItemServiceCommands.GetProductInventoriesByProductAndLot getProductInventoriesByProductAndLot = new BffInventoryItemServiceCommands.GetProductInventoriesByProductAndLot();
+        getProductInventoriesByProductAndLot.setPage(page);
+        getProductInventoriesByProductAndLot.setSize(size);
+        getProductInventoriesByProductAndLot.setProductId(productId);
+        getProductInventoriesByProductAndLot.setLotId(lotId);
         
-        getWipInventoriesByProductAndLot.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffInventoryItemApplicationService.when(getWipInventoriesByProductAndLot);
+        getProductInventoriesByProductAndLot.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getProductInventoriesByProductAndLot);
         
     }
 

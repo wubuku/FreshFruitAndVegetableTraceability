@@ -74,7 +74,7 @@ public class BffInventoryItemServiceCommands {
 
     }
 
-    public static class GetInventoriesByLotNo extends org.dddml.ffvtraceability.domain.AbstractCommand {
+    public static class GetRawItemInventoriesByLotNo extends org.dddml.ffvtraceability.domain.AbstractCommand {
         private Integer page;
         private Integer size;
 
@@ -318,7 +318,7 @@ public class BffInventoryItemServiceCommands {
 
     }
 
-    public static class GetWipInventories extends org.dddml.ffvtraceability.domain.AbstractCommand {
+    public static class GetProductInventories extends org.dddml.ffvtraceability.domain.AbstractCommand {
         private Integer page;
         private Integer size;
 
@@ -392,7 +392,7 @@ public class BffInventoryItemServiceCommands {
 
     }
 
-    public static class GetWipInventoriesByProductAndLot extends org.dddml.ffvtraceability.domain.AbstractCommand {
+    public static class GetProductInventoriesByProductAndLot extends org.dddml.ffvtraceability.domain.AbstractCommand {
         private Integer page;
         private Integer size;
 

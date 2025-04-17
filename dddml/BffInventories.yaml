@@ -111,9 +111,9 @@ valueObjects:
         type: id
         # 用于描述“包装类型”的单位 Id。比如 EA、BX(Box)、PLT(Pallet)、PK(Pack)
 
-  BffWipInventoryGroupDto:
+  BffProductInventoryGroupDto:
     metadata:
-      JpaProjectionInterfaceName: BffWipInventoryGroupProjection
+      JpaProjectionInterfaceName: BffProductInventoryGroupProjection
     properties:
       ProductId:
         type: id
@@ -153,9 +153,7 @@ valueObjects:
         type: id
       QuantityUomId:
         type: id
-        # 主计量单位的 ID，比如“oz”
       QuantityIncluded:
-        description: If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
         type: fixed-point
       CaseUomId:
         type: id
@@ -235,8 +233,8 @@ services:
         result:
           itemType: BffRawItemInventoryItemDto
 
-      GetInventoriesByLotNo:
-        restfulResourceName: "{ProductId}/InventoriesByLotNo"
+      GetRawItemInventoriesByLotNo:
+        restfulResourceName: "{ProductId}/RawItemInventoriesByLotNo"
         metadata:
           IsPageable: true
           ReturnPageEnvelope: true
@@ -313,7 +311,7 @@ services:
         result:
           itemType: BffRawItemInventoryItemDto
 
-      GetWipInventories:
+      GetProductInventories:
         restfulResourceName: "Products"
         metadata:
           IsPageable: true
@@ -333,9 +331,9 @@ services:
             type: id
             optional: true # NOT required
         result:
-          itemType: BffWipInventoryGroupDto
+          itemType: BffProductInventoryGroupDto
 
-      GetWipInventoriesByProductAndLot:
+      GetProductInventoriesByProductAndLot:
         restfulResourceName: "Products/GroupByProductAndLot"
         metadata:
           IsPageable: true
