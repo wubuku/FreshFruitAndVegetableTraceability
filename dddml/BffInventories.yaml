@@ -149,6 +149,8 @@ valueObjects:
         type: id
       LotNo:
         type: id
+      FacilityId:
+        type: id
       QuantityUomId:
         type: id
         # 主计量单位的 ID，比如“oz”
@@ -157,6 +159,8 @@ valueObjects:
         type: fixed-point
       CaseUomId:
         type: id
+      QuantityOnHandTotal:
+        type: fixed-point
 
 
 

@@ -466,7 +466,7 @@ facilityId 为仓库 Id.
 }
 ```
 
-### 3. 原材料产品库存明细
+### 3. ~~（已废弃）原材料产品库存明细~~
 
 在手持终端可以按照产品名称、产品Id、供应商Id以及仓库Id进行半成品的库存查询，查询结果按照供应商，仓库，产品汇总库存总数量。
 那这些库存按照批次号拆分之后成为库存明细。
@@ -847,6 +847,52 @@ curl -X 'POST' \
   ]
 }
 ```
+### 12. 原材料库存按批次分组(支持分页)
+该接口为在手机客户端得到原材料根据产品、供应商，仓库汇总后的库存列表后，继续进一步按照批次号汇总的库存列表。
+也就是对于确定产品Id、供应商Id和仓库Id的库存信息按照批次号（更小粒度）进行分解：
+![替代文字](https://haozhuo-store-pulic.oss-cn-shanghai.aliyuncs.com/RawItemInventoryByLotNo.png "可选标题")
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffInventoryItems/141L0K7AH7DL6W4948/InventoriesByLotNo?page=0&size=20&supplierId=13XLVW1AUECBR9GH0L&facilityId=13XM4J6CJBWD6FK64B' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+* productId 产品Id 例子中为：141L0K7AH7DL6W4948
+* supplierId 供应商Id
+* facilityId 仓库Id
+
+得到结果举例如下：
+```json
+{
+  "content": [
+    {
+      "productId": "141L0K7AH7DL6W4948",
+      "productInternalId": "freshpointvendor1number55",
+      "lotId": "14E7JY726AQ3US1MJA",
+      "lotNo": "1",
+      "facilityId": "13XM4J6CJBWD6FK64B",
+      "quantityUomId": "KG",
+      "quantityIncluded": 12,
+      "caseUomId": "BOX",
+      "quantityOnHandTotal": 150
+    }
+  ],
+  "totalElements": 1,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+其中 content 为列表，也就是再按批次细分得到的列表。
+
+* productInternalId 产品内部编码
+* lotNo 批次号
+* quantityOnHandTotal 库存数量
+* quantityUomId 主数量单位
+* caseUomId 包装单位
+* quantityIncluded 一包装单位含有多少主数量单位的数量
+
 
 ## 四、产品相关接口
 
