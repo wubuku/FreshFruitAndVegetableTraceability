@@ -429,7 +429,7 @@ facilityId 为仓库 Id.
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems/Proucts?page=0&size=20&productTypeId=RAC_WIP&productName=blueforceitem1&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
+  'http://localhost:8001/api/BffInventoryItems/Products?page=0&size=20&productTypeId=RAC_WIP&productName=blueforceitem1&productId=13XM0K65JP235EMN65&facilityId=13XM4J6CJBWD6FK64B' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
