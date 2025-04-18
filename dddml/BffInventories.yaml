@@ -43,9 +43,9 @@ valueObjects:
         type: fixed-point
       CreatedAt:
         type: date-time
-#      Details:
-#        itemType: BffInventoryItemDetailDto
-#        isList: true
+  #      Details:
+  #        itemType: BffInventoryItemDetailDto
+  #        isList: true
 
   BffRawItemInventoryGroupDto:
     metadata:
@@ -136,7 +136,6 @@ valueObjects:
       QuantityOnHandTotal:
         type: fixed-point
 
-
   BffInventoryByLotNoDto:
     metadata:
       JpaProjectionInterfaceName: BffInventoryByLotNoProjection
@@ -159,8 +158,6 @@ valueObjects:
         type: id
       QuantityOnHandTotal:
         type: fixed-point
-
-
 
   BffInventoryItemDetailDto:
     metadata:
@@ -201,6 +198,14 @@ valueObjects:
         type: date-time
       QuantityOnHandDiff:
         type: fixed-point
+      ProductQuantityIncluded:
+        type: fixed-point
+      ProductCaseUomId:
+        type: id
+      RawIemQuantityIncluded:
+        type: fixed-point
+      RawItemCaseUomId:
+        type: id
       ShipmentId:
         type: id
       ReceiptId:
