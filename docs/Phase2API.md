@@ -553,6 +553,7 @@ curl -X 'GET' \
       "productName": "i25031701",
       "smallImageUrl": "f19bae8f-dbf4-4722-a565-9a63ae9e5f8f",
       "productTypeId": "RAW_MATERIAL",
+      "internalId": "25031701",
       "quantityUomId": "KG"
     },
     {
@@ -560,6 +561,7 @@ curl -X 'GET' \
       "productName": "i25032001",
       "smallImageUrl": "dda1494f-7224-4e4f-b7b3-6c7b49d3a9bc",
       "productTypeId": "RAW_MATERIAL",
+      "internalId": "25032001",
       "quantityUomId": "KG"
     }
   ],

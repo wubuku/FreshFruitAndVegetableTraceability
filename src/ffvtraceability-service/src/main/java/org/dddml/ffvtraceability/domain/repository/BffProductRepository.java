@@ -157,9 +157,16 @@ public interface BffProductRepository extends JpaRepository<AbstractProductState
             p.small_image_url as smallImageUrl,
             p.medium_image_url as mediumImageUrl,
             p.large_image_url as largeImageUrl,
-            -- ii.id_value as internalId,
+            ii.id_value as internalId,
             p.product_type_id as productTypeId
             from product p
+            LEFT JOIN (
+                SELECT
+                    gi.product_id,
+                    gi.id_value
+                FROM good_identification gi
+                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.product_id = p.product_id
             where p.product_type_id=:productTypeId
             """, countQuery = """
             SELECT
