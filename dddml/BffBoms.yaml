@@ -1,0 +1,57 @@
+# BOM 有关
+valueObjects:
+  BffProductAssociationDto:
+    metadata:
+      JpaProjectionInterfaceName: BffProductAssociationProjection
+      JpaProjectionPropertyTypes:
+        FromDate: java.time.Instant
+        ThruDate: java.time.Instant
+        CreatedAt: java.time.Instant
+    properties:
+      ProductId:
+        type: id
+      InternalId:
+        type: id
+      ProductName:
+        type: name
+      ProductIdTo:
+        type: id
+      ProductAssocTypeId:
+        type: id
+      SequenceNum:
+        type: numeric
+      FromDate:
+        type: date-time
+      Quantity:
+        type: fixed-point
+      ScrapFactor:
+        type: fixed-point
+      CreateAt:
+        type: date-time
+      CreatedBy:
+        type: id
+      Children:
+        type: BffProductAssociationDto
+        isList: true
+
+
+services:
+  BffBomService:
+    restfulResourceName: BffBoms
+    methods:
+      CreateBom:
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: Boms
+        parameters:
+          Boms:
+            type: BffProductAssociationDto
+#      BatchAddRawItems:
+#        # 批量添加 RawItem
+#        httpMethod: POST
+#        restfulResourceName: "batchAddRawItems"
+#        metadata:
+#          HttpRequestBody: RawItems
+#        parameters:
+#          RawItems:
+#            itemType: BffRawItemDto
