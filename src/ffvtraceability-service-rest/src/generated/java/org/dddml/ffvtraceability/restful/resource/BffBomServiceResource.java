@@ -23,23 +23,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.*;
 
-@RequestMapping(path = "BffPhysicalInventories", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "BffBoms", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
-public class BffPhysicalInventoryServiceResource {
+public class BffBomServiceResource {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private BffPhysicalInventoryApplicationService bffPhysicalInventoryApplicationService;
+    private BffBomApplicationService bffBomApplicationService;
 
     @PostMapping
-    public String createPhysicalInventory(
-        @RequestBody BffPhysicalInventoryDto physicalInventory
+    public void createBom(
+        @RequestBody BffProductAssociationDto boms
     ) {
-        BffPhysicalInventoryServiceCommands.CreatePhysicalInventory createPhysicalInventory = new BffPhysicalInventoryServiceCommands.CreatePhysicalInventory();
-        createPhysicalInventory.setPhysicalInventory(physicalInventory);
+        BffBomServiceCommands.CreateBom createBom = new BffBomServiceCommands.CreateBom();
+        createBom.setBoms(boms);
         
-        createPhysicalInventory.setRequesterId(SecurityContextUtil.getRequesterId());
-        return bffPhysicalInventoryApplicationService.when(createPhysicalInventory);
+        createBom.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffBomApplicationService.when(createBom);
         
     }
 

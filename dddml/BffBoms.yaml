@@ -7,6 +7,7 @@ valueObjects:
         FromDate: java.time.Instant
         ThruDate: java.time.Instant
         CreatedAt: java.time.Instant
+      NoFlattenedProperties: true
     properties:
       ProductId:
         type: id
