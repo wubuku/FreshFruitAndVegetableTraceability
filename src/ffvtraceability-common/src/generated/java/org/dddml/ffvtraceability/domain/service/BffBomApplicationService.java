@@ -16,6 +16,10 @@ public interface BffBomApplicationService {
 
     void when(BffBomServiceCommands.CreateBom c);
 
+    void when(BffBomServiceCommands.UpdateBom c);
+
+    void when(BffBomServiceCommands.DeleteBom c);
+
 
 }
 

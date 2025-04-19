@@ -136,4 +136,14 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
     public BffProductAssociationDto when(BffBomServiceCommands.GetBOM c) {
         return null;
     }
+
+    @Override
+    public void when(BffBomServiceCommands.UpdateBom c) {
+
+    }
+
+    @Override
+    public void when(BffBomServiceCommands.DeleteBom c) {
+
+    }
 }

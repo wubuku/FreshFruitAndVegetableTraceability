@@ -75,5 +75,31 @@ public class BffBomServiceResource {
         
     }
 
+    @PutMapping("{productId}")
+    public void updateBom(
+        @PathVariable("productId") String productId,
+        @RequestBody UpdateBomVo bom
+    ) {
+        BffBomServiceCommands.UpdateBom updateBom = new BffBomServiceCommands.UpdateBom();
+        updateBom.setProductId(productId);
+        updateBom.setBom(bom);
+        
+        updateBom.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffBomApplicationService.when(updateBom);
+        
+    }
+
+    @DeleteMapping("{productId}")
+    public void deleteBom(
+        @PathVariable("productId") String productId
+    ) {
+        BffBomServiceCommands.DeleteBom deleteBom = new BffBomServiceCommands.DeleteBom();
+        deleteBom.setProductId(productId);
+        
+        deleteBom.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffBomApplicationService.when(deleteBom);
+        
+    }
+
 }
 

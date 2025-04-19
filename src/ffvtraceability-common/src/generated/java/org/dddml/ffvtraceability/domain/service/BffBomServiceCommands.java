@@ -108,6 +108,53 @@ public class BffBomServiceCommands {
 
     }
 
+    public static class UpdateBom extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Bom
+         */
+        private UpdateBomVo bom;
+
+        public UpdateBomVo getBom() {
+            return bom;
+        }
+
+        public void setBom(UpdateBomVo bom) {
+            this.bom = bom;
+        }
+
+    }
+
+    public static class DeleteBom extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+    }
+
 
 }
 

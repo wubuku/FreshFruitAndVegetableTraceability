@@ -53,6 +53,12 @@ valueObjects:
         itemType: ProductToVo
         isList: true
 
+  UpdateBomVo:
+    properties:
+      Components:
+        itemType: ProductToVo
+        isList: true
+
   ProductToVo:
     properties:
       ProductId:
@@ -102,3 +108,25 @@ services:
         parameters:
           Bom:
             type: CreateBomVo
+
+      UpdateBom:
+        metadata:
+          RestfulPathVariable: ProductId
+          HttpRequestBody: Bom
+        httpMethod: PUT
+        parameters:
+          ProductId:
+            type: id
+            optional: false # is required
+          Bom:
+            type: UpdateBomVo
+
+      DeleteBom:
+        # 删除BOM
+        httpMethod: DELETE
+        restfulResourceName: "{ProductId}"
+        metadata:
+          RestfulPathVariable: ProductId
+        parameters:
+          ProductId:
+            type: id
