@@ -22,6 +22,66 @@ public class BffProductAssociationDto implements Serializable {
         this.productId = productId;
     }
 
+    private String productTypeId;
+
+    public String getProductTypeId()
+    {
+        return this.productTypeId;
+    }
+
+    public void setProductTypeId(String productTypeId)
+    {
+        this.productTypeId = productTypeId;
+    }
+
+    private String smallImageUrl;
+
+    public String getSmallImageUrl()
+    {
+        return this.smallImageUrl;
+    }
+
+    public void setSmallImageUrl(String smallImageUrl)
+    {
+        this.smallImageUrl = smallImageUrl;
+    }
+
+    private String mediumImageUrl;
+
+    public String getMediumImageUrl()
+    {
+        return this.mediumImageUrl;
+    }
+
+    public void setMediumImageUrl(String mediumImageUrl)
+    {
+        this.mediumImageUrl = mediumImageUrl;
+    }
+
+    private String largeImageUrl;
+
+    public String getLargeImageUrl()
+    {
+        return this.largeImageUrl;
+    }
+
+    public void setLargeImageUrl(String largeImageUrl)
+    {
+        this.largeImageUrl = largeImageUrl;
+    }
+
+    private String quantityUomId;
+
+    public String getQuantityUomId()
+    {
+        return this.quantityUomId;
+    }
+
+    public void setQuantityUomId(String quantityUomId)
+    {
+        this.quantityUomId = quantityUomId;
+    }
+
     private String internalId;
 
     public String getInternalId()
@@ -156,9 +216,14 @@ public class BffProductAssociationDto implements Serializable {
     {
     }
 
-    public BffProductAssociationDto(String productId, String internalId, String productName, String productIdTo, String productAssocTypeId, Long sequenceNum, OffsetDateTime fromDate, java.math.BigDecimal quantity, java.math.BigDecimal scrapFactor, OffsetDateTime createAt, String createdBy, java.util.List<BffProductAssociationDto> components)
+    public BffProductAssociationDto(String productId, String productTypeId, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, String internalId, String productName, String productIdTo, String productAssocTypeId, Long sequenceNum, OffsetDateTime fromDate, java.math.BigDecimal quantity, java.math.BigDecimal scrapFactor, OffsetDateTime createAt, String createdBy, java.util.List<BffProductAssociationDto> components)
     {
         this.productId = productId;
+        this.productTypeId = productTypeId;
+        this.smallImageUrl = smallImageUrl;
+        this.mediumImageUrl = mediumImageUrl;
+        this.largeImageUrl = largeImageUrl;
+        this.quantityUomId = quantityUomId;
         this.internalId = internalId;
         this.productName = productName;
         this.productIdTo = productIdTo;
@@ -185,6 +250,11 @@ public class BffProductAssociationDto implements Serializable {
         BffProductAssociationDto other = (BffProductAssociationDto)obj;
         return true 
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
+            && (productTypeId == other.productTypeId || (productTypeId != null && productTypeId.equals(other.productTypeId)))
+            && (smallImageUrl == other.smallImageUrl || (smallImageUrl != null && smallImageUrl.equals(other.smallImageUrl)))
+            && (mediumImageUrl == other.mediumImageUrl || (mediumImageUrl != null && mediumImageUrl.equals(other.mediumImageUrl)))
+            && (largeImageUrl == other.largeImageUrl || (largeImageUrl != null && largeImageUrl.equals(other.largeImageUrl)))
+            && (quantityUomId == other.quantityUomId || (quantityUomId != null && quantityUomId.equals(other.quantityUomId)))
             && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
             && (productName == other.productName || (productName != null && productName.equals(other.productName)))
             && (productIdTo == other.productIdTo || (productIdTo != null && productIdTo.equals(other.productIdTo)))
@@ -205,6 +275,21 @@ public class BffProductAssociationDto implements Serializable {
         int hash = 0;
         if (this.productId != null) {
             hash += 13 * this.productId.hashCode();
+        }
+        if (this.productTypeId != null) {
+            hash += 13 * this.productTypeId.hashCode();
+        }
+        if (this.smallImageUrl != null) {
+            hash += 13 * this.smallImageUrl.hashCode();
+        }
+        if (this.mediumImageUrl != null) {
+            hash += 13 * this.mediumImageUrl.hashCode();
+        }
+        if (this.largeImageUrl != null) {
+            hash += 13 * this.largeImageUrl.hashCode();
+        }
+        if (this.quantityUomId != null) {
+            hash += 13 * this.quantityUomId.hashCode();
         }
         if (this.internalId != null) {
             hash += 13 * this.internalId.hashCode();
@@ -246,6 +331,11 @@ public class BffProductAssociationDto implements Serializable {
     public String toString() {
         return "BffProductAssociationDto{" +
                 "productId=" + '\'' + productId + '\'' +
+                ", productTypeId=" + '\'' + productTypeId + '\'' +
+                ", smallImageUrl=" + '\'' + smallImageUrl + '\'' +
+                ", mediumImageUrl=" + '\'' + mediumImageUrl + '\'' +
+                ", largeImageUrl=" + '\'' + largeImageUrl + '\'' +
+                ", quantityUomId=" + '\'' + quantityUomId + '\'' +
                 ", internalId=" + '\'' + internalId + '\'' +
                 ", productName=" + '\'' + productName + '\'' +
                 ", productIdTo=" + '\'' + productIdTo + '\'' +

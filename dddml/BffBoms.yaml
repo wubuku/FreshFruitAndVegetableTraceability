@@ -2,7 +2,7 @@
 valueObjects:
   BffProductAssociationDto:
     metadata:
-      JpaProjectionInterfaceName: BffProductAssociationProjection
+      JpaProjectionInterfaceName: BffProductAssociationDtoProjection
       JpaProjectionPropertyTypes:
         FromDate: java.time.Instant
         ThruDate: java.time.Instant
@@ -10,6 +10,16 @@ valueObjects:
       NoFlattenedProperties: true
     properties:
       ProductId:
+        type: id
+      ProductTypeId:
+        type: id
+      SmallImageUrl:
+        type: url
+      MediumImageUrl:
+        type: url
+      LargeImageUrl:
+        type: url
+      QuantityUomId:
         type: id
       InternalId:
         type: id
@@ -47,8 +57,8 @@ valueObjects:
     properties:
       ProductId:
         type: id
-#      SequenceNum:
-#        type: numeric
+      #      SequenceNum:
+      #        type: numeric
       Quantity:
         type: fixed-point
       ScrapFactor:
@@ -58,6 +68,33 @@ services:
   BffBomService:
     restfulResourceName: BffBoms
     methods:
+      GetBoms:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        parameters:
+          ProductTypeId:
+            type: id
+          ProductId:
+            type: id
+          InternalId:
+            type: id
+        result:
+          itemType: BffProductAssociationDto
+
+      GetBOM:
+        #根据 Id 查询 Customer 的详细信息
+        metadata:
+          RestfulPathVariable: ProductId
+        isQuery: true
+        parameters:
+          ProductId:
+            type: id
+        result:
+          type: BffProductAssociationDto
+
+      #创建 BOM
       CreateBom:
         httpMethod: POST
         metadata:

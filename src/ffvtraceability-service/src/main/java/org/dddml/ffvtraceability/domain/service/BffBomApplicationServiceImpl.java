@@ -1,22 +1,26 @@
 package org.dddml.ffvtraceability.domain.service;
 
+import org.dddml.ffvtraceability.domain.BffProductAssociationDto;
 import org.dddml.ffvtraceability.domain.CreateBomVo;
 import org.dddml.ffvtraceability.domain.ProductToVo;
+import org.dddml.ffvtraceability.domain.mapper.BffProductAssocMapper;
 import org.dddml.ffvtraceability.domain.product.ProductApplicationService;
 import org.dddml.ffvtraceability.domain.product.ProductState;
 import org.dddml.ffvtraceability.domain.productassoc.AbstractProductAssocCommand;
 import org.dddml.ffvtraceability.domain.productassoc.ProductAssocApplicationService;
 import org.dddml.ffvtraceability.domain.productassoc.ProductAssocId;
 import org.dddml.ffvtraceability.domain.repository.BffProductAssocRepository;
+import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.specialization.DomainError;
+import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +34,9 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
     @Autowired
     private ProductAssocApplicationService productAssocApplicationService;
     @Autowired
-    private BffProductAssocRepository productAssocRepository;
+    private BffProductAssocRepository bffProductAssocRepository;
+    @Autowired
+    private BffProductAssocMapper bffProductAssocMapper;
 
     @Override
     @Transactional
@@ -54,8 +60,8 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
             throw new DomainError("Can't create BOM for raw material");
         }
         List<BffProductAssocRepository.ProductAssocProjection> productAssocProjections =
-                productAssocRepository.findBomByProductId(vo.getProductId());
-        if (!productAssocProjections.isEmpty()){
+                bffProductAssocRepository.findBomByProductId(vo.getProductId());
+        if (!productAssocProjections.isEmpty()) {
             throw new DomainError("BOM has been created for the product");
         }
 
@@ -70,10 +76,9 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
             if (childProductState == null) {
                 throw new IllegalArgumentException("Product not found: " + bom.getProductId());
             }
-            if (childProductState.getProductTypeId()== null) {
+            if (childProductState.getProductTypeId() == null) {
                 throw new DomainError("Unable to identify product type");
-            }
-            else if (PRODUCT_TYPE_RAC_WIP.equals(productState.getProductTypeId())) {
+            } else if (PRODUCT_TYPE_RAC_WIP.equals(productState.getProductTypeId())) {
                 if (!PRODUCT_TYPE_RAW_MATERIAL.equals(childProductState.getProductTypeId())) {
                     throw new DomainError("Only raw materials can be used to create RAC WIP");
                 }
@@ -117,5 +122,18 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
             productAssocApplicationService.when(createProductAssoc);
             sequenceNum++;
         }
+    }
+
+    @Override
+    public Page<BffProductAssociationDto> when(BffBomServiceCommands.GetBoms c) {
+        return PageUtils.toPage(
+                bffProductAssocRepository.findAllBoms(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductTypeId(), c.getProductId(), c.getInternalId()),
+                bffProductAssocMapper::toBffProductAssociationDto);
+    }
+
+    @Override
+    public BffProductAssociationDto when(BffBomServiceCommands.GetBOM c) {
+        return null;
     }
 }

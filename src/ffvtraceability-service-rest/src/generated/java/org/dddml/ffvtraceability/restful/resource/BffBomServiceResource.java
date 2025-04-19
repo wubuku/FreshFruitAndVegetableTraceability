@@ -31,6 +31,38 @@ public class BffBomServiceResource {
     @Autowired
     private BffBomApplicationService bffBomApplicationService;
 
+    @GetMapping
+    public Page<BffProductAssociationDto> getBoms(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productTypeId", required = false) String productTypeId,
+        @RequestParam(value = "productId", required = false) String productId,
+        @RequestParam(value = "internalId", required = false) String internalId
+    ) {
+        BffBomServiceCommands.GetBoms getBoms = new BffBomServiceCommands.GetBoms();
+        getBoms.setPage(page);
+        getBoms.setSize(size);
+        getBoms.setProductTypeId(productTypeId);
+        getBoms.setProductId(productId);
+        getBoms.setInternalId(internalId);
+        
+        getBoms.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffBomApplicationService.when(getBoms);
+        
+    }
+
+    @GetMapping("{productId}")
+    public BffProductAssociationDto getBOM(
+        @PathVariable("productId") String productId
+    ) {
+        BffBomServiceCommands.GetBOM getBOM = new BffBomServiceCommands.GetBOM();
+        getBOM.setProductId(productId);
+        
+        getBOM.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffBomApplicationService.when(getBOM);
+        
+    }
+
     @PostMapping
     public void createBom(
         @RequestBody CreateBomVo bom

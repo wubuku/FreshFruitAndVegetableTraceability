@@ -1250,7 +1250,7 @@ curl -X 'GET' \
 ```
 ## 六、 BOM 
 
-#### 1. 创建 BOM
+### 1. 创建 BOM
 ```shell
 curl -X 'POST' \
   'http://localhost:8001/api/BffBoms' \
@@ -1284,9 +1284,9 @@ curl -X 'POST' \
 
 为产品 Id 为 productId 的产品设置 BOM，productId 指向的产品不能为原材料；
 
-components 为组成 BOM 的直接构件；
+components 为组成 BOM 的【直接】构件列表；
 
-其中的 productId 为组成 BOM 的构件的产品的 Id；
+每一个元素中的 productId 为组成 BOM 的构件的产品的 Id；
 
 quantity 为该构建产品所需的数量（必须大于0）；
 
@@ -1299,6 +1299,46 @@ scrapFactor 为构建产品的报废百分比（取值大于0小于100）；
 3. 只能使用原材料和 RAC WIP 类型的产品创建 RTE WIP 类型产品的 BOM；
 4. 只能使用原材料、RAC WIP、RTE WIP 类型的产品创建 PACK WIP 类型产品的 BOM；
 5. 只能使用原材料、RAC WIP、RTE WIP、PACK WIP 类型的产品创建 FINISHED GOOD 类型产品的 BOM；
+
+### 2. 根据条件查询 BOM
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffBoms?page=0&size=20&productTypeId=RAC_WIP&productId=14F91P4G9RGPPJG80F&internalId=rac25041502' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+当前支持过滤条件：
+1. productTypeId 产品类型Id
+2. productId 产品Id
+3. internalId 产品内部标识
+
+返回结果举例如下：
+```json
+{
+  "content": [
+    {
+      "productId": "14F91P4G9RGPPJG80F",
+      "productTypeId": "RAC_WIP",
+      "smallImageUrl": "c486209b-1a61-402d-b8dd-a12394671a81",
+      "mediumImageUrl": "medium image url",
+      "largeImageUrl": "large image url",
+      "quantityUomId": "KG",
+      "internalId": "rac25041502",
+      "productName": "rac25041502",
+      "fromDate": "2025-04-19T12:59:28.309837Z"
+    }
+  ],
+  "totalElements": 1,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+其中：
+1. fromDate 表示创建时间
+2. internalId 标识产品内部标识
+
 
 
 

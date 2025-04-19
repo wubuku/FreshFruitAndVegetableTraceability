@@ -6,8 +6,13 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.specialization.Page;
 
 public interface BffBomApplicationService {
+
+    Page<BffProductAssociationDto> when(BffBomServiceCommands.GetBoms c);
+
+    BffProductAssociationDto when(BffBomServiceCommands.GetBOM c);
 
     void when(BffBomServiceCommands.CreateBom c);
 
