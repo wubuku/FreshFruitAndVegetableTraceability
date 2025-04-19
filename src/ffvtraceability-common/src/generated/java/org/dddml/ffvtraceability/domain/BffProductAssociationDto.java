@@ -142,23 +142,21 @@ public class BffProductAssociationDto implements Serializable {
         this.createdBy = createdBy;
     }
 
-    private BffProductAssociationDto children = new BffProductAssociationDto();
+    private java.util.List<BffProductAssociationDto> components;
 
-    public BffProductAssociationDto getChildren()
-    {
-        return this.children;
+    public java.util.List<BffProductAssociationDto> getComponents() {
+        return this.components;
     }
 
-    public void setChildren(BffProductAssociationDto children)
-    {
-        this.children = children;
+    public void setComponents(java.util.List<BffProductAssociationDto> components) {
+        this.components = components;
     }
 
     public BffProductAssociationDto()
     {
     }
 
-    public BffProductAssociationDto(String productId, String internalId, String productName, String productIdTo, String productAssocTypeId, Long sequenceNum, OffsetDateTime fromDate, java.math.BigDecimal quantity, java.math.BigDecimal scrapFactor, OffsetDateTime createAt, String createdBy, BffProductAssociationDto children)
+    public BffProductAssociationDto(String productId, String internalId, String productName, String productIdTo, String productAssocTypeId, Long sequenceNum, OffsetDateTime fromDate, java.math.BigDecimal quantity, java.math.BigDecimal scrapFactor, OffsetDateTime createAt, String createdBy, java.util.List<BffProductAssociationDto> components)
     {
         this.productId = productId;
         this.internalId = internalId;
@@ -171,7 +169,7 @@ public class BffProductAssociationDto implements Serializable {
         this.scrapFactor = scrapFactor;
         this.createAt = createAt;
         this.createdBy = createdBy;
-        this.children = children;
+        this.components = components;
     }
 
     @Override
@@ -197,7 +195,7 @@ public class BffProductAssociationDto implements Serializable {
             && (scrapFactor == other.scrapFactor || (scrapFactor != null && scrapFactor.equals(other.scrapFactor)))
             && (createAt == other.createAt || (createAt != null && createAt.equals(other.createAt)))
             && (createdBy == other.createdBy || (createdBy != null && createdBy.equals(other.createdBy)))
-            && (children == other.children || (children != null && children.equals(other.children)))
+            && (components == other.components || (components != null && components.equals(other.components)))
             ;
     }
 
@@ -238,8 +236,8 @@ public class BffProductAssociationDto implements Serializable {
         if (this.createdBy != null) {
             hash += 13 * this.createdBy.hashCode();
         }
-        if (this.children != null) {
-            hash += 13 * this.children.hashCode();
+        if (this.components != null) {
+            hash += 13 * this.components.hashCode();
         }
         return hash;
     }
@@ -258,7 +256,7 @@ public class BffProductAssociationDto implements Serializable {
                 ", scrapFactor=" + scrapFactor +
                 ", createAt=" + createAt +
                 ", createdBy=" + '\'' + createdBy + '\'' +
-                ", children=" + children +
+                ", components=" + components +
                 '}';
     }
 

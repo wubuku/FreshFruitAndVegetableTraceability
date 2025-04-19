@@ -16,16 +16,16 @@ public class BffBomServiceCommands {
     public static class CreateBom extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
-         * Boms
+         * Bom
          */
-        private BffProductAssociationDto boms;
+        private CreateBomVo bom;
 
-        public BffProductAssociationDto getBoms() {
-            return boms;
+        public CreateBomVo getBom() {
+            return bom;
         }
 
-        public void setBoms(BffProductAssociationDto boms) {
-            this.boms = boms;
+        public void setBom(CreateBomVo bom) {
+            this.bom = bom;
         }
 
     }

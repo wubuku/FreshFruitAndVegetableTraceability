@@ -33,10 +33,10 @@ public class BffBomServiceResource {
 
     @PostMapping
     public void createBom(
-        @RequestBody BffProductAssociationDto boms
+        @RequestBody CreateBomVo bom
     ) {
         BffBomServiceCommands.CreateBom createBom = new BffBomServiceCommands.CreateBom();
-        createBom.setBoms(boms);
+        createBom.setBom(bom);
         
         createBom.setRequesterId(SecurityContextUtil.getRequesterId());
         bffBomApplicationService.when(createBom);

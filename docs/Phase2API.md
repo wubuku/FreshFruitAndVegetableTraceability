@@ -1248,6 +1248,58 @@ curl -X 'GET' \
   ]
 }
 ```
+## 六、 BOM 
+
+#### 1. 创建 BOM
+```shell
+curl -X 'POST' \
+  'http://localhost:8001/api/BffBoms' \
+  -H 'accept: */*' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "productId": "14F8LJ5BHUMW4VCCAS",
+  "components": [
+    {
+      "productId": "14E2MB11RM6MV95X3E",
+      "quantity": 100,
+      "scrapFactor": 4.23
+    },
+    {
+      "productId": "14F91P4G9RGPPJG80F",
+      "quantity": 300,
+      "scrapFactor": 2
+    },
+    {
+      "productId": "14F9DW17Q9K170VP2Q",
+      "quantity": 254,
+      "scrapFactor": 7.1
+    }
+  ]
+}'
+```
+创建成功，响应状态为 200。
+
+对请求体 JSON 结构进行说明如下：
+
+为产品 Id 为 productId 的产品设置 BOM，productId 指向的产品不能为原材料；
+
+components 为组成 BOM 的直接构件；
+
+其中的 productId 为组成 BOM 的构件的产品的 Id；
+
+quantity 为该构建产品所需的数量（必须大于0）；
+
+scrapFactor 为构建产品的报废百分比（取值大于0小于100）；
+
+另外目前创建 BOM 遵循以下限制：
+
+1. 不能为原材料创建 BOM（无意义）；
+2. 只能使用原材料创建 RAC WIP 类型的产品的 BOM；
+3. 只能使用原材料和 RAC WIP 类型的产品创建 RTE WIP 类型产品的 BOM；
+4. 只能使用原材料、RAC WIP、RTE WIP 类型的产品创建 PACK WIP 类型产品的 BOM；
+5. 只能使用原材料、RAC WIP、RTE WIP、PACK WIP 类型的产品创建 FINISHED GOOD 类型产品的 BOM；
+
 
 
 

@@ -31,10 +31,28 @@ valueObjects:
         type: date-time
       CreatedBy:
         type: id
-      Children:
-        type: BffProductAssociationDto
+      Components:
+        itemType: BffProductAssociationDto
         isList: true
 
+  CreateBomVo:
+    properties:
+      ProductId:
+        type: id
+      Components:
+        itemType: ProductToVo
+        isList: true
+
+  ProductToVo:
+    properties:
+      ProductId:
+        type: id
+#      SequenceNum:
+#        type: numeric
+      Quantity:
+        type: fixed-point
+      ScrapFactor:
+        type: fixed-point
 
 services:
   BffBomService:
@@ -43,16 +61,7 @@ services:
       CreateBom:
         httpMethod: POST
         metadata:
-          HttpRequestBody: Boms
+          HttpRequestBody: Bom
         parameters:
-          Boms:
-            type: BffProductAssociationDto
-#      BatchAddRawItems:
-#        # 批量添加 RawItem
-#        httpMethod: POST
-#        restfulResourceName: "batchAddRawItems"
-#        metadata:
-#          HttpRequestBody: RawItems
-#        parameters:
-#          RawItems:
-#            itemType: BffRawItemDto
+          Bom:
+            type: CreateBomVo
