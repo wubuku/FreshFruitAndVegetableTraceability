@@ -31,15 +31,73 @@ public class BffBomServiceResource {
     @Autowired
     private BffBomApplicationService bffBomApplicationService;
 
+    @GetMapping
+    public Page<BffProductAssociationDto> getBoms(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productTypeId", required = false) String productTypeId,
+        @RequestParam(value = "productId", required = false) String productId,
+        @RequestParam(value = "internalId", required = false) String internalId
+    ) {
+        BffBomServiceCommands.GetBoms getBoms = new BffBomServiceCommands.GetBoms();
+        getBoms.setPage(page);
+        getBoms.setSize(size);
+        getBoms.setProductTypeId(productTypeId);
+        getBoms.setProductId(productId);
+        getBoms.setInternalId(internalId);
+        
+        getBoms.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffBomApplicationService.when(getBoms);
+        
+    }
+
+    @GetMapping("{productId}")
+    public BffProductAssociationDto getBOM(
+        @PathVariable("productId") String productId
+    ) {
+        BffBomServiceCommands.GetBOM getBOM = new BffBomServiceCommands.GetBOM();
+        getBOM.setProductId(productId);
+        
+        getBOM.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffBomApplicationService.when(getBOM);
+        
+    }
+
     @PostMapping
     public void createBom(
-        @RequestBody BffProductAssociationDto boms
+        @RequestBody CreateBomVo bom
     ) {
         BffBomServiceCommands.CreateBom createBom = new BffBomServiceCommands.CreateBom();
-        createBom.setBoms(boms);
+        createBom.setBom(bom);
         
         createBom.setRequesterId(SecurityContextUtil.getRequesterId());
         bffBomApplicationService.when(createBom);
+        
+    }
+
+    @PutMapping("{productId}")
+    public void updateBom(
+        @PathVariable("productId") String productId,
+        @RequestBody UpdateBomVo bom
+    ) {
+        BffBomServiceCommands.UpdateBom updateBom = new BffBomServiceCommands.UpdateBom();
+        updateBom.setProductId(productId);
+        updateBom.setBom(bom);
+        
+        updateBom.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffBomApplicationService.when(updateBom);
+        
+    }
+
+    @DeleteMapping("{productId}")
+    public void deleteBom(
+        @PathVariable("productId") String productId
+    ) {
+        BffBomServiceCommands.DeleteBom deleteBom = new BffBomServiceCommands.DeleteBom();
+        deleteBom.setProductId(productId);
+        
+        deleteBom.setRequesterId(SecurityContextUtil.getRequesterId());
+        bffBomApplicationService.when(deleteBom);
         
     }
 

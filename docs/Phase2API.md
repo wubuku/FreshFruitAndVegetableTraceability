@@ -1248,6 +1248,176 @@ curl -X 'GET' \
   ]
 }
 ```
+## 六、 BOM 
+
+### 1. 创建 BOM
+```shell
+curl -X 'POST' \
+  'http://localhost:8001/api/BffBoms' \
+  -H 'accept: */*' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "productId": "14F8LJ5BHUMW4VCCAS",
+  "components": [
+    {
+      "productId": "14E2MB11RM6MV95X3E",
+      "quantity": 100,
+      "scrapFactor": 4.23
+    },
+    {
+      "productId": "14F91P4G9RGPPJG80F",
+      "quantity": 300,
+      "scrapFactor": 2
+    },
+    {
+      "productId": "14F9DW17Q9K170VP2Q",
+      "quantity": 254,
+      "scrapFactor": 7.1
+    }
+  ]
+}'
+```
+创建成功，响应状态为 200。
+
+对请求体 JSON 结构进行说明如下：
+
+为产品 Id 为 productId 的产品设置 BOM，productId 指向的产品不能为原材料；
+
+components 为组成 BOM 的【直接】构件列表；
+
+每一个元素中的 productId 为组成 BOM 的构件的产品的 Id；
+
+quantity 为该构建产品所需的数量（必须大于0）；
+
+scrapFactor 为构建产品的报废百分比（取值大于0小于100）；
+
+另外目前创建 BOM 遵循以下限制：
+
+1. 不能为原材料创建 BOM（无意义）；
+2. 只能使用原材料创建 RAC WIP 类型的产品的 BOM；
+3. 只能使用原材料和 RAC WIP 类型的产品创建 RTE WIP 类型产品的 BOM；
+4. 只能使用原材料、RAC WIP、RTE WIP 类型的产品创建 PACK WIP 类型产品的 BOM；
+5. 只能使用原材料、RAC WIP、RTE WIP、PACK WIP 类型的产品创建 FINISHED GOOD 类型产品的 BOM；
+
+### 2. 根据条件查询 BOM
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffBoms?page=0&size=20&productTypeId=RAC_WIP&productId=14F91P4G9RGPPJG80F&internalId=rac25041502' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+当前支持过滤条件：
+1. productTypeId 产品类型Id
+2. productId 产品Id
+3. internalId 产品内部标识
+
+返回结果举例如下：
+```json
+{
+  "content": [
+    {
+      "productId": "14F91P4G9RGPPJG80F",
+      "productTypeId": "RAC_WIP",
+      "smallImageUrl": "c486209b-1a61-402d-b8dd-a12394671a81",
+      "mediumImageUrl": "medium image url",
+      "largeImageUrl": "large image url",
+      "quantityUomId": "KG",
+      "internalId": "rac25041502",
+      "productName": "rac25041502",
+      "fromDate": "2025-04-19T12:59:28.309837Z"
+    }
+  ],
+  "totalElements": 1,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+其中：
+1. fromDate 表示创建时间
+2. internalId 标识产品内部标识
+### 3. 获取指定产品的 BOM 详情
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffBoms/14F91P4G9RGPPJG80F' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+其中 14F91P4G9RGPPJG80F 为产品的Id；
+
+返回结果举例如下：
+
+```json
+{
+  "productId": "14F8LJ5BHUMW4VCCAS",
+  "productTypeId": "FINISHED_GOOD",
+  "smallImageUrl": "small image url",
+  "mediumImageUrl": "medium image url",
+  "largeImageUrl": "large_image_url",
+  "quantityUomId": "KG",
+  "internalId": "25041502",
+  "productName": "P25041502",
+  "fromDate": "2025-04-19T13:34:02.939311Z",
+  "components": [
+    {
+      "productId": "14E2MB11RM6MV95X3E",
+      "productTypeId": "RAW_MATERIAL",
+      "smallImageUrl": "c2616454-ebb2-402f-a709-1aefcfa63da3",
+      "quantityUomId": "LB",
+      "internalId": "25041401",
+      "productName": "i25041401",
+      "sequenceNum": 1,
+      "fromDate": "2025-04-19T13:34:02.939311Z",
+      "quantity": 100,
+      "scrapFactor": 4.23
+    },
+    {
+      "productId": "14F91P4G9RGPPJG80F",
+      "productTypeId": "RAC_WIP",
+      "smallImageUrl": "c486209b-1a61-402d-b8dd-a12394671a81",
+      "mediumImageUrl": "medium image url",
+      "largeImageUrl": "large image url",
+      "quantityUomId": "KG",
+      "internalId": "rac25041502",
+      "productName": "rac25041502",
+      "sequenceNum": 2,
+      "fromDate": "2025-04-19T12:59:28.309837Z",
+      "quantity": 300,
+      "scrapFactor": 2,
+      "components": [
+        {
+          "productId": "13X7PC3NRZ17ZFKZS1",
+          "productTypeId": "RAW_MATERIAL",
+          "smallImageUrl": "0179890d-d78e-4e65-9497-95c7a0eec3cd",
+          "quantityUomId": "KG",
+          "internalId": "25033102",
+          "productName": "i25033102",
+          "sequenceNum": 1,
+          "fromDate": "2025-04-19T12:59:28.309837Z",
+          "quantity": 100,
+          "scrapFactor": 4.23
+        }
+      ]
+    },
+    {
+      "productId": "14F9DW17Q9K170VP2Q",
+      "productTypeId": "RTE_WIP",
+      "smallImageUrl": "c64b2124-32e3-4b6d-960d-e6a151cff477",
+      "quantityUomId": "LB",
+      "internalId": "rte25041501",
+      "productName": "rte25041501",
+      "sequenceNum": 3,
+      "fromDate": "2025-04-19T13:34:03Z",
+      "quantity": 254,
+      "scrapFactor": 7.1
+    }
+  ]
+}
+```
+结果为一自顶而下的树状结构。
+
 
 
 

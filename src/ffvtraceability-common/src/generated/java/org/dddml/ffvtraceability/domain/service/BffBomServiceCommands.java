@@ -13,19 +13,144 @@ public class BffBomServiceCommands {
     private BffBomServiceCommands() {
     }
     
+    public static class GetBoms extends org.dddml.ffvtraceability.domain.AbstractCommand {
+        private Integer page;
+        private Integer size;
+
+        public Integer getPage() {
+            return page;
+        }
+
+        public void setPage(Integer page) {
+            this.page = page;
+        }
+
+        public Integer getSize() {
+            return size;
+        }
+
+        public void setSize(Integer size) {
+            this.size = size;
+        }
+
+        /**
+         * Product Type Id
+         */
+        private String productTypeId;
+
+        public String getProductTypeId() {
+            return productTypeId;
+        }
+
+        public void setProductTypeId(String productTypeId) {
+            this.productTypeId = productTypeId;
+        }
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Internal Id
+         */
+        private String internalId;
+
+        public String getInternalId() {
+            return internalId;
+        }
+
+        public void setInternalId(String internalId) {
+            this.internalId = internalId;
+        }
+
+    }
+
+    public static class GetBOM extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+    }
+
     public static class CreateBom extends org.dddml.ffvtraceability.domain.AbstractCommand {
 
         /**
-         * Boms
+         * Bom
          */
-        private BffProductAssociationDto boms;
+        private CreateBomVo bom;
 
-        public BffProductAssociationDto getBoms() {
-            return boms;
+        public CreateBomVo getBom() {
+            return bom;
         }
 
-        public void setBoms(BffProductAssociationDto boms) {
-            this.boms = boms;
+        public void setBom(CreateBomVo bom) {
+            this.bom = bom;
+        }
+
+    }
+
+    public static class UpdateBom extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Bom
+         */
+        private UpdateBomVo bom;
+
+        public UpdateBomVo getBom() {
+            return bom;
+        }
+
+        public void setBom(UpdateBomVo bom) {
+            this.bom = bom;
+        }
+
+    }
+
+    public static class DeleteBom extends org.dddml.ffvtraceability.domain.AbstractCommand {
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
         }
 
     }
