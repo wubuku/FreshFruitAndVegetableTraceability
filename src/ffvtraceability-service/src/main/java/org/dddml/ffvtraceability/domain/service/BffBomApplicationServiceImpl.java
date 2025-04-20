@@ -22,10 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.dddml.ffvtraceability.domain.constants.BffBomConstants.PRODUCT_ASSOC_TYPE_MANUF_COMPONENT;
 import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.*;
@@ -40,6 +37,15 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
     private BffProductAssocRepository bffProductAssocRepository;
     @Autowired
     private BffProductAssocMapper bffProductAssocMapper;
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<BffProductAssociationDto> when(BffBomServiceCommands.GetBoms c) {
+        return PageUtils.toPage(
+                bffProductAssocRepository.findAllBoms(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductTypeId(), c.getProductId(), c.getInternalId()),
+                bffProductAssocMapper::toBffProductAssociationDto);
+    }
 
     @Override
     @Transactional
@@ -126,13 +132,102 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
         }
     }
 
+
     @Override
-    @Transactional(readOnly = true)
-    public Page<BffProductAssociationDto> when(BffBomServiceCommands.GetBoms c) {
-        return PageUtils.toPage(
-                bffProductAssocRepository.findAllBoms(PageRequest.of(c.getPage(), c.getSize()),
-                        c.getProductTypeId(), c.getProductId(), c.getInternalId()),
-                bffProductAssocMapper::toBffProductAssociationDto);
+    @Transactional
+    public void when(BffBomServiceCommands.UpdateBom c) {
+        List<BffProductAssocRepository.ProductAssocProjection> productAssocProjections =
+                bffProductAssocRepository.findBomByProductId(c.getProductId());
+        if (productAssocProjections.isEmpty()) {
+            throw new IllegalArgumentException("BOM not found: " + c.getProductId());
+        }
+        List<String> existingProductToIds = new ArrayList<>();
+        productAssocProjections.forEach(productAssocProjection -> {
+            existingProductToIds.add(productAssocProjection.getProductIdTo());
+        });
+        //这次指定的关联产品的Id列表
+        List<String> inputProductToIds = new ArrayList<>();
+        //本次要移除的关联产品的Id列表
+        List<String> toBeDeletedProductToIds = new ArrayList<>();
+        List<String> toBeUpdateProductToIds = new ArrayList<>();
+        //本次要添加的关联产品的Id列表
+        List<String> toAddProductToIds = new ArrayList<>();
+        Map<String, ProductToVo> toBeAddedProductTo = new HashMap<>();
+        Map<String, ProductToVo> inputProductTo = new HashMap<>();
+        Arrays.stream(c.getComponents()).forEach(productTo -> {
+            if (inputProductToIds.contains(productTo.getProductId())) {
+                throw new IllegalArgumentException("Can't choose the same product: " + productTo.getProductId());
+            }
+            inputProductToIds.add(productTo.getProductId());
+            inputProductTo.put(productTo.getProductId(), productTo);
+            if (!existingProductToIds.contains(productTo.getProductId())) {
+                toAddProductToIds.add(productTo.getProductId());
+                toBeAddedProductTo.put(productTo.getProductId(), productTo);
+            }
+        });
+        existingProductToIds.forEach(productToId -> {
+            if (!inputProductToIds.contains(productToId)) {
+                toBeDeletedProductToIds.add(productToId);
+            }
+            toBeUpdateProductToIds.add(productToId);
+        });
+        OffsetDateTime now = OffsetDateTime.now();
+        for (int i = 0; i < c.getComponents().length; i++) {
+            Long sequenceNum = (long) i + 1;
+            ProductToVo productTo = c.getComponents()[i];
+            if (toAddProductToIds.contains(productTo.getProductId())) {//添加
+                AbstractProductAssocCommand.SimpleCreateProductAssoc createProductAssoc = new AbstractProductAssocCommand.SimpleCreateProductAssoc();
+                ProductAssocId productAssocId = new ProductAssocId();
+                productAssocId.setProductId(c.getProductId());
+                productAssocId.setProductIdTo(productTo.getProductId());
+                productAssocId.setProductAssocTypeId(PRODUCT_ASSOC_TYPE_MANUF_COMPONENT);
+                productAssocId.setFromDate(now);
+                createProductAssoc.setProductAssocId(productAssocId);
+                createProductAssoc.setSequenceNum(sequenceNum);
+                createProductAssoc.setQuantity(productTo.getQuantity());
+                createProductAssoc.setScrapFactor(productTo.getScrapFactor());
+                createProductAssoc.setCommandId(c.getCommandId() == null ? UUID.randomUUID().toString() : c.getCommandId());
+                createProductAssoc.setRequesterId(c.getRequesterId());
+                productAssocApplicationService.when(createProductAssoc);
+            } else if (toBeUpdateProductToIds.contains(productTo.getProductId())) {//更新
+                productAssocProjections.forEach(productAssocProjection -> {
+                    if (productTo.getProductId().equals(productAssocProjection.getProductIdTo())) {
+                        //需要更新
+                        AbstractProductAssocCommand.SimpleMergePatchProductAssoc updateProductAssoc = new AbstractProductAssocCommand.SimpleMergePatchProductAssoc();
+                        ProductAssocId productAssocId = new ProductAssocId();
+                        productAssocId.setProductId(productAssocProjection.getProductId());
+                        productAssocId.setProductIdTo(productAssocProjection.getProductIdTo());
+                        productAssocId.setProductAssocTypeId(productAssocProjection.getProductAssocTypeId());
+                        productAssocId.setFromDate(productAssocProjection.getFromDate().atOffset(ZoneOffset.UTC));
+                        updateProductAssoc.setProductAssocId(productAssocId);
+                        updateProductAssoc.setVersion(productAssocProjection.getVersion());
+                        updateProductAssoc.setQuantity(inputProductTo.get(productAssocProjection.getProductIdTo()).getQuantity());
+                        updateProductAssoc.setScrapFactor(inputProductTo.get(productAssocProjection.getProductIdTo()).getScrapFactor());
+                        updateProductAssoc.setSequenceNum(sequenceNum);
+                        updateProductAssoc.setCommandId(c.getCommandId() == null ? UUID.randomUUID().toString() : c.getCommandId());
+                        updateProductAssoc.setRequesterId(c.getRequesterId());
+                        productAssocApplicationService.when(updateProductAssoc);
+                        //FIXME 这里应该再把这一行的FromDate改成now
+                    }
+                });
+            }
+        }
+        //删除
+        productAssocProjections.forEach(productAssocProjection -> {
+            if (toBeDeletedProductToIds.contains(productAssocProjection.getProductIdTo())) {
+                AbstractProductAssocCommand.SimpleDeleteProductAssoc deleteProductAssoc = new AbstractProductAssocCommand.SimpleDeleteProductAssoc();
+                ProductAssocId productAssocId = new ProductAssocId();
+                productAssocId.setProductId(productAssocProjection.getProductId());
+                productAssocId.setProductIdTo(productAssocProjection.getProductIdTo());
+                productAssocId.setProductAssocTypeId(productAssocProjection.getProductAssocTypeId());
+                productAssocId.setFromDate(productAssocProjection.getFromDate().atOffset(ZoneOffset.UTC));
+                deleteProductAssoc.setProductAssocId(productAssocId);
+                deleteProductAssoc.setVersion(productAssocProjection.getVersion());
+                deleteProductAssoc.setCommandId(c.getCommandId() == null ? UUID.randomUUID().toString() : c.getCommandId());
+                deleteProductAssoc.setRequesterId(c.getRequesterId());
+                productAssocApplicationService.when(deleteProductAssoc);
+            }
+        });
     }
 
     @Override
@@ -182,13 +277,6 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
         productAssocProjections.forEach(productAssocProjection -> {
             getProductAssociationByProductId(component, productAssocProjection.getProductIdTo());
         });
-    }
-
-
-    @Override
-    @Transactional
-    public void when(BffBomServiceCommands.UpdateBom c) {
-
     }
 
     @Override

@@ -112,14 +112,14 @@ services:
       UpdateBom:
         metadata:
           RestfulPathVariable: ProductId
-          HttpRequestBody: Bom
+          HttpRequestBody: Components
         httpMethod: PUT
         parameters:
           ProductId:
             type: id
             optional: false # is required
-          Bom:
-            type: UpdateBomVo
+          Components:
+            itemType: ProductToVo
 
       DeleteBom:
         # 删除BOM

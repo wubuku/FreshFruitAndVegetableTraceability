@@ -78,11 +78,11 @@ public class BffBomServiceResource {
     @PutMapping("{productId}")
     public void updateBom(
         @PathVariable("productId") String productId,
-        @RequestBody UpdateBomVo bom
+        @RequestBody ProductToVo[] components
     ) {
         BffBomServiceCommands.UpdateBom updateBom = new BffBomServiceCommands.UpdateBom();
         updateBom.setProductId(productId);
-        updateBom.setBom(bom);
+        updateBom.setComponents(components);
         
         updateBom.setRequesterId(SecurityContextUtil.getRequesterId());
         bffBomApplicationService.when(updateBom);

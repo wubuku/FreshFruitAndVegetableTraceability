@@ -1430,6 +1430,73 @@ curl -X 'DELETE' \
 
 ✅ 成功删除时返回 HTTP 200 OK 状态码（无响应体）
 
+### 5. 更新 BOM
+
+请参照 【3. 获取指定产品的 BOM 详情】中 Id 为 14F8LJ5BHUMW4VCCAS 的产品的 BOM 由三个原材料或者WIP构建，
+现在我们删除与产品"14E2MB11RM6MV95X3E"和“14F91P4G9RGPPJG80F”的关联，并且增加与产品“13X7PC3NRZ17ZFKZS1”的关联，
+并且修改与产品“14F9DW17Q9K170VP2Q”的关联（修改数量和报废率），如下：
+```shell
+curl -X 'PUT' \
+  'http://localhost:8001/api/BffBoms/14F8LJ5BHUMW4VCCAS' \
+  -H 'accept: */*' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '[
+    {
+        "productId": "14F9DW17Q9K170VP2Q",
+        "quantity": 55,
+        "scrapFactor": 43.2
+    },
+    {
+        "productId": "13X7PC3NRZ17ZFKZS1",
+        "quantity": 66,
+        "scrapFactor": 3.2
+    }
+]'
+```
+操作成功（返回 HTTP 200 OK 状态码）后，我们再获取原产品“14F8LJ5BHUMW4VCCAS”的 BOM 信息将得到以下结果：
+```json
+{
+  "productId": "14F8LJ5BHUMW4VCCAS",
+  "productTypeId": "FINISHED_GOOD",
+  "smallImageUrl": "small image url",
+  "mediumImageUrl": "medium image url",
+  "largeImageUrl": "large_image_url",
+  "quantityUomId": "KG",
+  "internalId": "25041502",
+  "productName": "P25041502",
+  "fromDate": "2025-04-20T08:47:54.300194Z",
+  "components": [
+    {
+      "productId": "14F9DW17Q9K170VP2Q",
+      "productTypeId": "RTE_WIP",
+      "smallImageUrl": "c64b2124-32e3-4b6d-960d-e6a151cff477",
+      "quantityUomId": "LB",
+      "internalId": "rte25041501",
+      "productName": "rte25041501",
+      "sequenceNum": 1,
+      "fromDate": "2025-04-20T08:47:54.300194Z",
+      "quantity": 55,
+      "scrapFactor": 43.2
+    },
+    {
+      "productId": "13X7PC3NRZ17ZFKZS1",
+      "productTypeId": "RAW_MATERIAL",
+      "smallImageUrl": "0179890d-d78e-4e65-9497-95c7a0eec3cd",
+      "quantityUomId": "KG",
+      "internalId": "25033102",
+      "productName": "i25033102",
+      "sequenceNum": 2,
+      "fromDate": "2025-04-20T08:57:16.071297Z",
+      "quantity": 66,
+      "scrapFactor": 3.2
+    }
+  ]
+}
+```
+可以看到该产品的 BOM 已经如愿更新。
+
+
 
 
 

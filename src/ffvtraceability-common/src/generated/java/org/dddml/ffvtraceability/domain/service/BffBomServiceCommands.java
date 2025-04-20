@@ -124,16 +124,16 @@ public class BffBomServiceCommands {
         }
 
         /**
-         * Bom
+         * Components
          */
-        private UpdateBomVo bom;
+        private ProductToVo[] components;
 
-        public UpdateBomVo getBom() {
-            return bom;
+        public ProductToVo[] getComponents() {
+            return components;
         }
 
-        public void setBom(UpdateBomVo bom) {
-            this.bom = bom;
+        public void setComponents(ProductToVo[] components) {
+            this.components = components;
         }
 
     }
