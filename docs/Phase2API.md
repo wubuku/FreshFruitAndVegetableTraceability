@@ -1338,7 +1338,85 @@ curl -X 'GET' \
 其中：
 1. fromDate 表示创建时间
 2. internalId 标识产品内部标识
+### 3. 获取指定产品的 BOM 详情
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffBoms/14F91P4G9RGPPJG80F' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+其中 14F91P4G9RGPPJG80F 为产品的Id；
 
+返回结果举例如下：
+
+```json
+{
+  "productId": "14F8LJ5BHUMW4VCCAS",
+  "productTypeId": "FINISHED_GOOD",
+  "smallImageUrl": "small image url",
+  "mediumImageUrl": "medium image url",
+  "largeImageUrl": "large_image_url",
+  "quantityUomId": "KG",
+  "internalId": "25041502",
+  "productName": "P25041502",
+  "fromDate": "2025-04-19T13:34:02.939311Z",
+  "components": [
+    {
+      "productId": "14E2MB11RM6MV95X3E",
+      "productTypeId": "RAW_MATERIAL",
+      "smallImageUrl": "c2616454-ebb2-402f-a709-1aefcfa63da3",
+      "quantityUomId": "LB",
+      "internalId": "25041401",
+      "productName": "i25041401",
+      "sequenceNum": 1,
+      "fromDate": "2025-04-19T13:34:02.939311Z",
+      "quantity": 100,
+      "scrapFactor": 4.23
+    },
+    {
+      "productId": "14F91P4G9RGPPJG80F",
+      "productTypeId": "RAC_WIP",
+      "smallImageUrl": "c486209b-1a61-402d-b8dd-a12394671a81",
+      "mediumImageUrl": "medium image url",
+      "largeImageUrl": "large image url",
+      "quantityUomId": "KG",
+      "internalId": "rac25041502",
+      "productName": "rac25041502",
+      "sequenceNum": 2,
+      "fromDate": "2025-04-19T12:59:28.309837Z",
+      "quantity": 300,
+      "scrapFactor": 2,
+      "components": [
+        {
+          "productId": "13X7PC3NRZ17ZFKZS1",
+          "productTypeId": "RAW_MATERIAL",
+          "smallImageUrl": "0179890d-d78e-4e65-9497-95c7a0eec3cd",
+          "quantityUomId": "KG",
+          "internalId": "25033102",
+          "productName": "i25033102",
+          "sequenceNum": 1,
+          "fromDate": "2025-04-19T12:59:28.309837Z",
+          "quantity": 100,
+          "scrapFactor": 4.23
+        }
+      ]
+    },
+    {
+      "productId": "14F9DW17Q9K170VP2Q",
+      "productTypeId": "RTE_WIP",
+      "smallImageUrl": "c64b2124-32e3-4b6d-960d-e6a151cff477",
+      "quantityUomId": "LB",
+      "internalId": "rte25041501",
+      "productName": "rte25041501",
+      "sequenceNum": 3,
+      "fromDate": "2025-04-19T13:34:03Z",
+      "quantity": 254,
+      "scrapFactor": 7.1
+    }
+  ]
+}
+```
+结果为一自顶而下的树状结构。
 
 
 
