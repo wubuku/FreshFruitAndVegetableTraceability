@@ -1,11 +1,12 @@
 # 使用 DDDML 开发 RESTful API
 
-本教程详细介绍了如何使用 DDDML (Domain-Driven Design Markup Language) 通过 YAML 文件定义“服务”，并生成服务的 RESTful API 实现。
+本教程详细介绍了如何使用 DDDML (Domain-Driven Design Markup Language) 通过 YAML 文件定义"服务"，并生成服务的 RESTful API 实现。
 
 ## 1. DDDML 概述
 
-DDDML 是一种专为领域驱动设计 (DDD) 建模的标记语言，它允许开发者通过 YAML 格式声明式地定义业务领域模型（包括“服务”），然后自动生成相应的代码实现。
-在本文档中，我们主要介绍如何使用 DDDML 定义“服务”，以生成服务的 RESTful API 实现。
+DDDML 是一种专为领域驱动设计 (DDD) 建模的标记语言，它允许开发者通过 YAML 格式声明式地定义业务领域模型（"服务"是领域模型的组成部分），然后自动生成相应的代码实现。
+在本文档中，我们主要介绍如何使用 DDDML 定义"服务"，以生成服务的 RESTful API 实现。
+本文不涉及使用 DDDML 定义"聚合"等其他领域模型组成部分、生成对应的代码的用法。
 
 ## 2. YAML 文件基本结构
 
@@ -57,27 +58,27 @@ valueObjects:
 ```
 
 **常用元数据：**
-- `JpaProjectionInterfaceName`：指定值对象的 JPA 投影接口名称。我们可能期望在编写 JPA Repository 时，生成这里定义的“值对象”对应的投影接口。
+- `JpaProjectionInterfaceName`：指定值对象的 JPA 投影接口名称。我们可能期望在编写 JPA Repository 时，生成这里定义的"值对象"对应的投影接口。
 - `JpaProjectionPropertyTypes`：指定特定属性在 JPA 投影接口中的类型。
 - `JakartaValidationEnabled`：启用 Jakarta 验证
-- `NoFlattenedProperties`：禁止生成（类型为“值对象”的）属性的扁平化代码。
+- `NoFlattenedProperties`：禁止生成（类型为"值对象"的）属性的扁平化代码。
 
 
-## 3. 属性类型
+## 3. 抽象基本类型
 
-DDDML 允许项目自定义“抽象”类型，只要这些类型可以映射为生成的代码的“实现”类型即可（如何配置这些“映射”信息不在本文档讨论范围）。
-下面是当前项目中定义的部分“抽象”类型：
+DDDML 允许项目自定义"抽象基本类型"，只要这些类型可以映射为生成的代码的"实现"类型即可（如何配置这些"映射"信息不在本文档讨论范围）。
+下面是当前项目中定义的部分"抽象基本类型"：
 
 - `id`：标识符，通常是字符串
-- `id-long`：长整型标识符
-- `id-vlong`：超长整型标识符
-- `name`：名称类型
-- `description`：描述类型
-- `comment`：注释类型
-- `fixed-point`：定点数，适用于货币等精确计算
-- `numeric`：数值类型
+- `id-long`：长标识符
+- `id-vlong`：超长标识符
+- `name`：表示名称的类型
+- `description`：表示描述的类型
+- `comment`：表示注释的类型
+- `fixed-point`：表示定点数的类型，适用于货币等精确计算
+- `numeric`：表示数值的类型
 - `date-time`：日期时间类型
-- `indicator`：指示器类型，通常是布尔值
+- `indicator`：指示器类型，通常用来表示 Yes or No
 - `short-varchar`：短文本
 - `long-varchar`：长文本
 - `very-long`：超长文本
@@ -159,7 +160,96 @@ GetUnitsOfMeasure:
 - `result` 定义返回结果类型
 - `parameters` 定义查询参数
 
-### 4.3 参数定义
+### 4.3 条件查询示例
+
+在实际应用中，查询方法通常需要支持各种查询条件。以下是一个包含多种查询条件的示例：
+
+```yaml
+GetPurchaseOrders:
+  metadata:
+    IsPageable: true
+    ReturnPageEnvelope: true
+  isQuery: true
+  parameters:
+    OrderIdOrItem:
+      type: short-varchar
+      optional: true
+    SupplierId:
+      type: id
+      optional: true
+    OrderDateFrom:
+      type: date-time
+      optional: true
+    OrderDateTo:
+      type: date-time
+      optional: true
+    IncludesProductDetails:
+      type: bool
+      optional: true
+  result:
+    itemType: BffPurchaseOrderDto
+```
+
+生成的 Java 代码会为这些查询条件创建 `@RequestParam` 参数：
+
+```java
+@GetMapping
+public Page<BffPurchaseOrderDto> getPurchaseOrders(
+    @RequestParam(value = "page", defaultValue = "0") Integer page,
+    @RequestParam(value = "size", defaultValue = "20") Integer size,
+    @RequestParam(value = "orderIdOrItem", required = false) String orderIdOrItem,
+    @RequestParam(value = "supplierId", required = false) String supplierId,
+    @RequestParam(value = "orderDateFrom", required = false) OffsetDateTime orderDateFrom,
+    @RequestParam(value = "orderDateTo", required = false) OffsetDateTime orderDateTo,
+    @RequestParam(value = "includesProductDetails", required = false) Boolean includesProductDetails
+) {
+```
+
+使用这种方式可以支持模糊查询（通过文本参数）、日期范围查询以及其他复杂的查询条件组合。
+
+### 4.4 特殊类型参数处理
+
+在 RESTful API 中，常常需要处理一些特殊类型的参数，如日期时间和布尔值。
+
+**1. 日期时间参数：**
+
+在 YAML 中定义：
+
+```yaml
+OrderDateFrom:
+  type: date-time
+  optional: true
+OrderDateTo:
+  type: date-time
+  optional: true
+```
+
+生成的 Java 代码会自动将其映射为适当的日期时间类型：
+
+```java
+@RequestParam(value = "orderDateFrom", required = false) OffsetDateTime orderDateFrom,
+@RequestParam(value = "orderDateTo", required = false) OffsetDateTime orderDateTo
+```
+
+**2. 布尔值参数：**
+
+在 YAML 中定义：
+
+```yaml
+IncludesProductDetails:
+  type: bool
+  optional: true
+```
+
+生成的 Java 代码：
+
+```java
+@RequestParam(value = "includesProductDetails", required = false) Boolean includesProductDetails
+```
+
+这些特殊类型参数可以与 Spring Web 框架的类型转换功能无缝集成，使得客户端可以直接传递相应格式的值。
+
+### 4.5 参数定义
 
 方法参数可以定义各种属性：
 
@@ -178,16 +268,16 @@ parameters:
 - `optional`：是否可选
 - `itemType`：如果参数是集合，定义集合元素类型
 
-### 4.4 结果定义
+### 4.6 结果定义
 
 方法返回值可以有多种形式：
 
 ```yaml
-# 返回单个对象
+# 返回单个“自定义”值对象
 result:
   type: BffDocumentDto
 
-# 返回集合
+# 返回值对象的集合
 result:
   itemType: BffDocumentDto
 
@@ -369,7 +459,7 @@ Children:
   isList: true
 ```
 
-注意，此时需要设置 `NoFlattenedProperties: true`，否则在生成扁平化的代码时，会因为“无限”递归而导致生成失败。
+注意，此时需要设置 `NoFlattenedProperties: true`，否则在生成扁平化的代码时，会因为"无限"递归而导致生成失败。
 
 ## 8. 批量操作
 
@@ -395,7 +485,78 @@ public void batchAddUnitsOfMeasure(
 ) {
 ```
 
-## 9. 生成代码模式
+### 8.1 批量激活/禁用操作
+
+除了批量添加，DDDML 还支持批量激活或禁用操作：
+
+```yaml
+BatchActivateSuppliers:
+  httpMethod: POST
+  restfulResourceName: "batchActivateSuppliers"
+  metadata:
+    HttpRequestBody: SupplierIds
+  parameters:
+    SupplierIds:
+      itemType: id
+```
+
+生成的 Java 代码：
+
+```java
+@PostMapping("batchActivateSuppliers")
+public void batchActivateSuppliers(
+    @RequestBody String[] supplierIds
+) {
+```
+
+相应的批量禁用操作：
+
+```yaml
+BatchDeactivateSuppliers:
+  httpMethod: POST
+  restfulResourceName: "batchDeactivateSuppliers"
+  metadata:
+    HttpRequestBody: SupplierIds
+  parameters:
+    SupplierIds:
+      itemType: id
+```
+
+这种批量操作方法可以大大提高客户端处理大量数据时的效率。
+
+## 9. 删除操作定义
+
+DDDML 支持定义删除操作，用于删除资源：
+
+```yaml
+DeleteReceivingItem:
+  # 删除指定的接收行项
+  httpMethod: DELETE
+  restfulResourceName: "{DocumentId}/Items/{ReceiptId}"
+  metadata:
+    RestfulPathVariables:
+      - DocumentId
+      - ReceiptId
+  parameters:
+    DocumentId:
+      type: id
+    ReceiptId:
+      type: id-long
+```
+
+生成的 Java 代码：
+
+```java
+@DeleteMapping("{documentId}/Items/{receiptId}")
+public void deleteReceivingItem(
+    @PathVariable("documentId") String documentId,
+    @PathVariable("receiptId") String receiptId
+) {
+```
+
+这种操作通常用于删除资源或资源集合中的特定项目。在 RESTful API 设计中，DELETE 方法用于请求服务器删除指定的资源。
+
+## 10. 生成代码模式
 
 DDDML 生成的代码遵循以下模式：
 
@@ -419,7 +580,7 @@ public String createDocument(
 }
 ```
 
-## 10. 验证和安全
+## 11. 验证和安全
 
 DDDML 支持启用 Jakarta 验证和安全注解：
 
@@ -439,9 +600,9 @@ public String createCustomer(
 ) {
 ```
 
-## 11. 实际案例分析
+## 12. 实际案例分析
 
-### 11.1 物理库存调整示例
+### 12.1 物理库存调整示例
 
 以物理库存调整为例，展示完整的定义和生成流程：
 
@@ -506,7 +667,7 @@ public class BffPhysicalInventoryServiceResource {
 }
 ```
 
-### 11.2 质量检验示例
+### 12.2 质量检验示例
 
 质量检验服务定义了更复杂的 API 操作：
 
@@ -536,7 +697,7 @@ services:
             itemType: BffQaInspectionDto
 ```
 
-## 12. 最佳实践
+## 13. 最佳实践
 
 1. **命名规范**：
    - 使用有意义的名称
@@ -559,9 +720,10 @@ services:
    - 使用 JpaProjectionPropertyTypes 指定 Java 类型
    - 启用验证和安全注解
 
-## 13. 结论
+## 14. 结论
 
-DDDML 提供了一种声明式的方式来定义领域模型和 RESTful API，通过简洁的 YAML 语法，可以快速创建符合 DDD 原则的应用程序。本教程介绍了 DDDML 的基本概念和用法，希望能帮助开发人员更好地理解和使用 DDDML 来构建高质量的应用程序。
+DDDML 提供了一种声明式的方式来定义领域模型，通过简洁的 YAML 语法，可以快速创建符合 DDD 原则的应用程序。
+本文主要介绍了使用 DDDML 定义“服务”的基本用法，希望能帮助开发人员更好地理解和使用 DDDML 来构建应用的 RESTful API 层。
 
 ## 附录：常用元数据参考
 
@@ -574,4 +736,5 @@ DDDML 提供了一种声明式的方式来定义领域模型和 RESTful API，�
 | IsPageable | 支持分页 | 方法 |
 | ReturnPageEnvelope | 返回分页封装对象 | 方法 |
 | RestfulPathVariable | 路径变量 | 方法 |
+| RestfulPathVariables | 多个路径变量 | 方法 |
 | HttpRequestBody | 请求体参数 | 方法 | 
