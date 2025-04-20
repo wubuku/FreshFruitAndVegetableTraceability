@@ -1,5 +1,6 @@
 package org.dddml.ffvtraceability.domain.service;
 
+import org.dddml.ffvtraceability.domain.AbstractCommand;
 import org.dddml.ffvtraceability.domain.BffProductAssociationDto;
 import org.dddml.ffvtraceability.domain.CreateBomVo;
 import org.dddml.ffvtraceability.domain.ProductToVo;
@@ -47,6 +48,56 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
                 bffProductAssocMapper::toBffProductAssociationDto);
     }
 
+    void createProductAssoc(ProductState productState, ProductToVo productTo, OffsetDateTime now, Long sequenceNum, AbstractCommand c) {
+        ProductState childProductState = productApplicationService.get(productTo.getProductId());
+        if (childProductState == null) {
+            throw new IllegalArgumentException("Product not found: " + productTo.getProductId());
+        }
+        if (childProductState.getProductTypeId() == null) {
+            throw new DomainError("Unable to identify product type");
+        } else if (PRODUCT_TYPE_RAC_WIP.equals(productState.getProductTypeId())) {
+            if (!PRODUCT_TYPE_RAW_MATERIAL.equals(childProductState.getProductTypeId())) {
+                throw new DomainError("Only raw materials can be used to create RAC WIP");
+            }
+        } else if (PRODUCT_TYPE_RTE_WIP.equals(productState.getProductTypeId())) {
+            if (!PRODUCT_TYPE_RAW_MATERIAL.equals(childProductState.getProductTypeId())
+                    && !PRODUCT_TYPE_RAC_WIP.equals(childProductState.getProductTypeId())) {
+                throw new DomainError("Only raw materials or RAC WIP can be used to create RTE WIP");
+            }
+        } else if (PRODUCT_TYPE_PACKED_WIP.equals(productState.getProductTypeId())) {
+            if (PRODUCT_TYPE_PACKED_WIP.equals(childProductState.getProductTypeId())
+                    || !PRODUCT_TYPE_FINISHED_GOOD.equals(childProductState.getProductTypeId())) {
+                throw new DomainError("Only raw materials, RAC WIP, RTE WIP can be used to create PACK WIP");
+            }
+        } else if (PRODUCT_TYPE_FINISHED_GOOD.equals(productState.getProductTypeId())) {
+            if (PRODUCT_TYPE_FINISHED_GOOD.equals(childProductState.getProductTypeId())) {
+                throw new DomainError("Can't use Finished Good to create Finished Good");
+            }
+        }
+        if (productTo.getQuantity() == null || productTo.getQuantity().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Quantity must greater than 0");
+        }
+        if (productTo.getScrapFactor() == null) {
+            productTo.setScrapFactor(BigDecimal.ZERO);
+        }
+        if (productTo.getScrapFactor().compareTo(BigDecimal.ZERO) < 0 || productTo.getScrapFactor().compareTo(BigDecimal.valueOf(100)) >= 0) {
+            throw new IllegalArgumentException("Scrap rate must between 0 and 100");
+        }
+        AbstractProductAssocCommand.SimpleCreateProductAssoc createProductAssoc = new AbstractProductAssocCommand.SimpleCreateProductAssoc();
+        ProductAssocId productAssocId = new ProductAssocId();
+        productAssocId.setProductId(productState.getProductId());
+        productAssocId.setProductIdTo(productTo.getProductId());
+        productAssocId.setProductAssocTypeId(PRODUCT_ASSOC_TYPE_MANUF_COMPONENT);
+        productAssocId.setFromDate(now);
+        createProductAssoc.setProductAssocId(productAssocId);
+        createProductAssoc.setSequenceNum(sequenceNum);
+        createProductAssoc.setQuantity(productTo.getQuantity());
+        createProductAssoc.setScrapFactor(productTo.getScrapFactor());
+        createProductAssoc.setCommandId(c.getCommandId() == null ? UUID.randomUUID().toString() : c.getCommandId());
+        createProductAssoc.setRequesterId(c.getRequesterId());
+        productAssocApplicationService.when(createProductAssoc);
+    }
+
     @Override
     @Transactional
     public void when(BffBomServiceCommands.CreateBom c) {
@@ -76,58 +127,12 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
         OffsetDateTime now = OffsetDateTime.now();
         List<String> productToIds = new ArrayList<>();
         Long sequenceNum = 1L;
-        for (ProductToVo bom : vo.getComponents()) {
-            if (productToIds.contains(bom.getProductId())) {
+        for (ProductToVo productTo : vo.getComponents()) {
+            if (productToIds.contains(productTo.getProductId())) {
                 throw new IllegalArgumentException("Can't choose the same product");
             }
-            ProductState childProductState = productApplicationService.get(bom.getProductId());
-            if (childProductState == null) {
-                throw new IllegalArgumentException("Product not found: " + bom.getProductId());
-            }
-            if (childProductState.getProductTypeId() == null) {
-                throw new DomainError("Unable to identify product type");
-            } else if (PRODUCT_TYPE_RAC_WIP.equals(productState.getProductTypeId())) {
-                if (!PRODUCT_TYPE_RAW_MATERIAL.equals(childProductState.getProductTypeId())) {
-                    throw new DomainError("Only raw materials can be used to create RAC WIP");
-                }
-            } else if (PRODUCT_TYPE_RTE_WIP.equals(productState.getProductTypeId())) {
-                if (!PRODUCT_TYPE_RAW_MATERIAL.equals(childProductState.getProductTypeId())
-                        && !PRODUCT_TYPE_RAC_WIP.equals(childProductState.getProductTypeId())) {
-                    throw new DomainError("Only raw materials or RAC WIP can be used to create RTE WIP");
-                }
-            } else if (PRODUCT_TYPE_PACKED_WIP.equals(productState.getProductTypeId())) {
-                if (PRODUCT_TYPE_PACKED_WIP.equals(childProductState.getProductTypeId())
-                        || !PRODUCT_TYPE_FINISHED_GOOD.equals(childProductState.getProductTypeId())) {
-                    throw new DomainError("Only raw materials, RAC WIP, RTE WIP can be used to create PACK WIP");
-                }
-            } else if (PRODUCT_TYPE_FINISHED_GOOD.equals(productState.getProductTypeId())) {
-                if (PRODUCT_TYPE_FINISHED_GOOD.equals(childProductState.getProductTypeId())) {
-                    throw new DomainError("Can't use Finished Good to create Finished Good");
-                }
-            }
-            productToIds.add(bom.getProductId());
-            if (bom.getQuantity() == null || bom.getQuantity().compareTo(BigDecimal.ZERO) <= 0) {
-                throw new IllegalArgumentException("Quantity must greater than 0");
-            }
-            if (bom.getScrapFactor() == null) {
-                bom.setScrapFactor(BigDecimal.ZERO);
-            }
-            if (bom.getScrapFactor().compareTo(BigDecimal.ZERO) < 0 || bom.getScrapFactor().compareTo(BigDecimal.valueOf(100)) >= 0) {
-                throw new IllegalArgumentException("Scrap rate must between 0 and 100");
-            }
-            AbstractProductAssocCommand.SimpleCreateProductAssoc createProductAssoc = new AbstractProductAssocCommand.SimpleCreateProductAssoc();
-            ProductAssocId productAssocId = new ProductAssocId();
-            productAssocId.setProductId(vo.getProductId());
-            productAssocId.setProductIdTo(bom.getProductId());
-            productAssocId.setProductAssocTypeId(PRODUCT_ASSOC_TYPE_MANUF_COMPONENT);
-            productAssocId.setFromDate(now);
-            createProductAssoc.setProductAssocId(productAssocId);
-            createProductAssoc.setSequenceNum(sequenceNum);
-            createProductAssoc.setQuantity(bom.getQuantity());
-            createProductAssoc.setScrapFactor(bom.getScrapFactor());
-            createProductAssoc.setCommandId(c.getCommandId() == null ? UUID.randomUUID().toString() : c.getCommandId());
-            createProductAssoc.setRequesterId(c.getRequesterId());
-            productAssocApplicationService.when(createProductAssoc);
+            createProductAssoc(productState, productTo, now, sequenceNum, c);
+            productToIds.add(productTo.getProductId());
             sequenceNum++;
         }
     }
@@ -152,7 +157,6 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
         List<String> toBeUpdateProductToIds = new ArrayList<>();
         //本次要添加的关联产品的Id列表
         List<String> toAddProductToIds = new ArrayList<>();
-        Map<String, ProductToVo> toBeAddedProductTo = new HashMap<>();
         Map<String, ProductToVo> inputProductTo = new HashMap<>();
         Arrays.stream(c.getComponents()).forEach(productTo -> {
             if (inputProductToIds.contains(productTo.getProductId())) {
@@ -162,7 +166,6 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
             inputProductTo.put(productTo.getProductId(), productTo);
             if (!existingProductToIds.contains(productTo.getProductId())) {
                 toAddProductToIds.add(productTo.getProductId());
-                toBeAddedProductTo.put(productTo.getProductId(), productTo);
             }
         });
         existingProductToIds.forEach(productToId -> {
@@ -171,24 +174,16 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
             }
             toBeUpdateProductToIds.add(productToId);
         });
+        ProductState productState = productApplicationService.get(c.getProductId());
+        if (productState == null) {
+            throw new IllegalArgumentException("Product not found: " + c.getProductId());
+        }
         OffsetDateTime now = OffsetDateTime.now();
         for (int i = 0; i < c.getComponents().length; i++) {
             Long sequenceNum = (long) i + 1;
             ProductToVo productTo = c.getComponents()[i];
             if (toAddProductToIds.contains(productTo.getProductId())) {//添加
-                AbstractProductAssocCommand.SimpleCreateProductAssoc createProductAssoc = new AbstractProductAssocCommand.SimpleCreateProductAssoc();
-                ProductAssocId productAssocId = new ProductAssocId();
-                productAssocId.setProductId(c.getProductId());
-                productAssocId.setProductIdTo(productTo.getProductId());
-                productAssocId.setProductAssocTypeId(PRODUCT_ASSOC_TYPE_MANUF_COMPONENT);
-                productAssocId.setFromDate(now);
-                createProductAssoc.setProductAssocId(productAssocId);
-                createProductAssoc.setSequenceNum(sequenceNum);
-                createProductAssoc.setQuantity(productTo.getQuantity());
-                createProductAssoc.setScrapFactor(productTo.getScrapFactor());
-                createProductAssoc.setCommandId(c.getCommandId() == null ? UUID.randomUUID().toString() : c.getCommandId());
-                createProductAssoc.setRequesterId(c.getRequesterId());
-                productAssocApplicationService.when(createProductAssoc);
+                createProductAssoc(productState, productTo, now, sequenceNum, c);
             } else if (toBeUpdateProductToIds.contains(productTo.getProductId())) {//更新
                 productAssocProjections.forEach(productAssocProjection -> {
                     if (productTo.getProductId().equals(productAssocProjection.getProductIdTo())) {
