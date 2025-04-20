@@ -42,7 +42,7 @@ public class HibernateProductAssocStateQueryRepository implements ProductAssocSt
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductAssocId", "ThruDate", "SequenceNum", "Reason", "Quantity", "ScrapFactor", "Instruction", "RoutingWorkEffortId", "EstimateCalcMethod", "RecurrenceInfoId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductAssocId", "ThruDate", "SequenceNum", "Reason", "Quantity", "ScrapFactor", "Instruction", "RoutingWorkEffortId", "EstimateCalcMethod", "RecurrenceInfoId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "__Deleted__"));
 
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
 
@@ -154,6 +154,10 @@ public class HibernateProductAssocStateQueryRepository implements ProductAssocSt
     }
 
     protected void addNotDeletedRestriction(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<?> root) {
+        Predicate isNull = cb.isNull(root.get("__Deleted__"));
+        Predicate isFalse = cb.equal(root.get("__Deleted__"), false);
+        Predicate notDeleted = cb.or(isNull, isFalse);
+        cq.where(cq.getRestriction() == null ? notDeleted : cb.and(cq.getRestriction(), notDeleted));
     }
 
 }

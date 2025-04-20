@@ -57,6 +57,10 @@ public abstract class AbstractProductAssocApplicationService implements ProductA
         update(c, ar -> ar.mergePatch(c));
     }
 
+    public void when(ProductAssocCommand.DeleteProductAssoc c) {
+        update(c, ar -> ar.delete(c));
+    }
+
     public ProductAssocState get(ProductAssocId id) {
         ProductAssocState state = getStateRepository().get(id, true);
         return state;

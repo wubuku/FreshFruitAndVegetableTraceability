@@ -20,6 +20,8 @@ public interface ProductAssocAggregate {
 
     void mergePatch(ProductAssocCommand.MergePatchProductAssoc c);
 
+    void delete(ProductAssocCommand.DeleteProductAssoc c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

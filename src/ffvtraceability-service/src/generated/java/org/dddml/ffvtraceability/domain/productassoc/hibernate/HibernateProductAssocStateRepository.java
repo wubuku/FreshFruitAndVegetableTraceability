@@ -38,7 +38,7 @@ public class HibernateProductAssocStateRepository implements ProductAssocStateRe
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductAssocId", "ThruDate", "SequenceNum", "Reason", "Quantity", "ScrapFactor", "Instruction", "RoutingWorkEffortId", "EstimateCalcMethod", "RecurrenceInfoId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductAssocId", "ThruDate", "SequenceNum", "Reason", "Quantity", "ScrapFactor", "Instruction", "RoutingWorkEffortId", "EstimateCalcMethod", "RecurrenceInfoId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "__Deleted__"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

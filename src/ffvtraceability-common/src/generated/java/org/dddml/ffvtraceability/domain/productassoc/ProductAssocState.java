@@ -47,6 +47,8 @@ public interface ProductAssocState
 
     OffsetDateTime getUpdatedAt();
 
+    Boolean get__Deleted__();
+
     String getTenantId();
 
     interface MutableProductAssocState extends ProductAssocState {
@@ -80,6 +82,8 @@ public interface ProductAssocState
 
         void setUpdatedAt(OffsetDateTime updatedAt);
 
+        void set__Deleted__(Boolean __Deleted__);
+
         void setTenantId(String tenantId);
 
 
@@ -89,6 +93,7 @@ public interface ProductAssocState
 
         //void when(ProductAssocEvent.ProductAssocStateMergePatched e);
 
+        //void when(ProductAssocEvent.ProductAssocStateDeleted e);
     }
 
     interface SqlProductAssocState extends MutableProductAssocState {

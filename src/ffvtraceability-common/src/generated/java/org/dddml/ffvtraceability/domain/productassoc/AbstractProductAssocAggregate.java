@@ -38,6 +38,11 @@ public abstract class AbstractProductAssocAggregate extends AbstractAggregate im
         apply(e);
     }
 
+    public void delete(ProductAssocCommand.DeleteProductAssoc c) {
+        ProductAssocEvent e = map(c);
+        apply(e);
+    }
+
     public void throwOnInvalidStateTransition(Command c) {
         ProductAssocCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -105,6 +110,15 @@ public abstract class AbstractProductAssocAggregate extends AbstractAggregate im
         return e;
     }
 
+    protected ProductAssocEvent map(ProductAssocCommand.DeleteProductAssoc c) {
+        ProductAssocEventId stateEventId = new ProductAssocEventId(c.getProductAssocId(), c.getVersion());
+        ProductAssocEvent.ProductAssocStateDeleted e = newProductAssocStateDeleted(stateEventId);
+        ((AbstractProductAssocEvent)e).setCommandId(c.getCommandId());
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        return e;
+    }
+
 
     ////////////////////////
 
@@ -126,12 +140,25 @@ public abstract class AbstractProductAssocAggregate extends AbstractAggregate im
         return e;
     }
 
+    protected ProductAssocEvent.ProductAssocStateDeleted newProductAssocStateDeleted(Long version, String commandId, String requesterId) {
+        ProductAssocEventId stateEventId = new ProductAssocEventId(this.state.getProductAssocId(), version);
+        ProductAssocEvent.ProductAssocStateDeleted e = newProductAssocStateDeleted(stateEventId);
+        ((AbstractProductAssocEvent)e).setCommandId(commandId);
+        e.setCreatedBy(requesterId);
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        return e;
+    }
+
     protected ProductAssocEvent.ProductAssocStateCreated newProductAssocStateCreated(ProductAssocEventId stateEventId) {
         return new AbstractProductAssocEvent.SimpleProductAssocStateCreated(stateEventId);
     }
 
     protected ProductAssocEvent.ProductAssocStateMergePatched newProductAssocStateMergePatched(ProductAssocEventId stateEventId) {
         return new AbstractProductAssocEvent.SimpleProductAssocStateMergePatched(stateEventId);
+    }
+
+    protected ProductAssocEvent.ProductAssocStateDeleted newProductAssocStateDeleted(ProductAssocEventId stateEventId) {
+        return new AbstractProductAssocEvent.SimpleProductAssocStateDeleted(stateEventId);
     }
 
 

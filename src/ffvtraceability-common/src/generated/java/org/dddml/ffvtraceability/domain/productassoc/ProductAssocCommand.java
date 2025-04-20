@@ -28,6 +28,9 @@ public interface ProductAssocCommand extends Command {
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
         }
+        if (state.get__Deleted__() != null && state.get__Deleted__()) {
+            throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
+        }
         if (isCreationCommand((ProductAssocCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
@@ -37,6 +40,8 @@ public interface ProductAssocCommand extends Command {
             && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(ProductAssocState.VERSION_NULL)))
             return true;
         if ((c instanceof ProductAssocCommand.MergePatchProductAssoc))
+            return false;
+        if ((c instanceof ProductAssocCommand.DeleteProductAssoc))
             return false;
         if (c.getCommandType() != null) {
             String commandType = c.getCommandType();

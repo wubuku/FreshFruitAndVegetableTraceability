@@ -73,6 +73,7 @@
         <property name="isPropertyEstimateCalcMethodRemoved" column="is_property_estimate_calc_method_removed" />
         <property name="isPropertyRecurrenceInfoIdRemoved" column="is_property_recurrence_info_id_removed" />
       </subclass>
+      <subclass name="AbstractProductAssocEvent$SimpleProductAssocStateDeleted" discriminator-value="Deleted"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

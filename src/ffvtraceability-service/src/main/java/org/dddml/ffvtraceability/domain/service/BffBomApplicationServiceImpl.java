@@ -44,7 +44,6 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
     @Override
     @Transactional
     public void when(BffBomServiceCommands.CreateBom c) {
-
         CreateBomVo vo = c.getBom();
         if (vo == null) {
             throw new IllegalArgumentException("Bom is null");
@@ -128,6 +127,7 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<BffProductAssociationDto> when(BffBomServiceCommands.GetBoms c) {
         return PageUtils.toPage(
                 bffProductAssocRepository.findAllBoms(PageRequest.of(c.getPage(), c.getSize()),
@@ -136,6 +136,7 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BffProductAssociationDto when(BffBomServiceCommands.GetBOM c) {
         Optional<BffProductAssociationDtoProjection> productAssociationDtoProjection =
                 bffProductAssocRepository.findProductAssocByProductId(c.getProductId());
@@ -185,12 +186,28 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
 
 
     @Override
+    @Transactional
     public void when(BffBomServiceCommands.UpdateBom c) {
 
     }
 
     @Override
+    @Transactional
     public void when(BffBomServiceCommands.DeleteBom c) {
-
+        List<BffProductAssocRepository.ProductAssocProjection> productAssocProjections =
+                bffProductAssocRepository.findBomByProductId(c.getProductId());
+        productAssocProjections.forEach(productAssocProjection -> {
+            AbstractProductAssocCommand.SimpleDeleteProductAssoc deleteProductAssoc = new AbstractProductAssocCommand.SimpleDeleteProductAssoc();
+            ProductAssocId productAssocId = new ProductAssocId();
+            productAssocId.setProductId(productAssocProjection.getProductId());
+            productAssocId.setProductIdTo(productAssocProjection.getProductIdTo());
+            productAssocId.setProductAssocTypeId(productAssocProjection.getProductAssocTypeId());
+            productAssocId.setFromDate(productAssocProjection.getFromDate().atOffset(ZoneOffset.UTC));
+            deleteProductAssoc.setProductAssocId(productAssocId);
+            deleteProductAssoc.setVersion(productAssocProjection.getVersion());
+            deleteProductAssoc.setCommandId(c.getCommandId() == null ? UUID.randomUUID().toString() : c.getCommandId());
+            deleteProductAssoc.setRequesterId(c.getRequesterId());
+            productAssocApplicationService.when(deleteProductAssoc);
+        });
     }
 }

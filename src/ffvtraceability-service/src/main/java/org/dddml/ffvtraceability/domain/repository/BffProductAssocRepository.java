@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +37,7 @@ public interface BffProductAssocRepository extends JpaRepository<AbstractProduct
             updated_at as updatedAt
             from product_assoc
             where product_id = :productId
+            and (deleted is null or deleted = false)
             """, nativeQuery = true)
     List<ProductAssocProjection> findBomByProductId(@Param("productId") String productId);
 
@@ -57,6 +57,7 @@ public interface BffProductAssocRepository extends JpaRepository<AbstractProduct
             SELECT DISTINCT product_id, min(from_date) AS from_date
                                    FROM product_assoc
                                    WHERE (:productId IS NULL OR product_id = :productId)
+                                   and (deleted is null or deleted = false)
                                    GROUP BY product_id
                                    ORDER BY from_date DESC
             ) pa
@@ -76,6 +77,7 @@ public interface BffProductAssocRepository extends JpaRepository<AbstractProduct
             SELECT DISTINCT product_id, min(from_date) AS from_date
                                    FROM product_assoc
                                    WHERE (:productId IS NULL OR product_id = :productId)
+                                   and (deleted is null or deleted = false)
                                    GROUP BY product_id
                                    ORDER BY from_date DESC
             ) pa
@@ -110,6 +112,7 @@ public interface BffProductAssocRepository extends JpaRepository<AbstractProduct
             SELECT DISTINCT product_id, min(from_date) AS from_date
                                    FROM product_assoc
                                    WHERE product_id = :productId
+                                   and (deleted is null or deleted = false)
                                    GROUP BY product_id
                                    ORDER BY from_date DESC
             ) pa
@@ -151,6 +154,7 @@ public interface BffProductAssocRepository extends JpaRepository<AbstractProduct
             ) ii ON ii.product_id = pa.product_id_to
             where pa.product_id = :parentProductId
             and pa.product_id_to = :productId
+            and (pa.deleted is null or pa.deleted = false)
             """, nativeQuery = true)
         //当一个产品只作为BOM的子节点时，获取其作为BOM子节点的BOM信息（同时包括其产品信息）
     Optional<BffProductAssociationDtoProjection> findProductAssocInfoByProductIdTo(@Param("parentProductId") String parentProductId,
@@ -166,6 +170,7 @@ public interface BffProductAssocRepository extends JpaRepository<AbstractProduct
             from product_assoc pa
             where pa.product_id = :parentProductId
             and pa.product_id_to = :productId
+            and (pa.deleted is null or pa.deleted = false)
             """, nativeQuery = true)
         //当一个产品同时作为BOM的父节点和子节点时，需要补足作为子节点的BOM信息
     Optional<ProductAssocProjection> findBomInfoByWhenProductAsBomAndComponent(@Param("parentProductId") String parentProductId,

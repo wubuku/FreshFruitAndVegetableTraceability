@@ -367,6 +367,21 @@ public abstract class AbstractProductAssocEvent extends AbstractEvent implements
     }
 
 
+    public static abstract class AbstractProductAssocStateDeleted extends AbstractProductAssocStateEvent implements ProductAssocEvent.ProductAssocStateDeleted
+    {
+        public AbstractProductAssocStateDeleted() {
+            this(new ProductAssocEventId());
+        }
+
+        public AbstractProductAssocStateDeleted(ProductAssocEventId eventId) {
+            super(eventId);
+        }
+
+        public String getEventType() {
+            return StateEventType.DELETED;
+        }
+
+    }
 
     public static class SimpleProductAssocStateCreated extends AbstractProductAssocStateCreated
     {
@@ -384,6 +399,16 @@ public abstract class AbstractProductAssocEvent extends AbstractEvent implements
         }
 
         public SimpleProductAssocStateMergePatched(ProductAssocEventId eventId) {
+            super(eventId);
+        }
+    }
+
+    public static class SimpleProductAssocStateDeleted extends AbstractProductAssocStateDeleted
+    {
+        public SimpleProductAssocStateDeleted() {
+        }
+
+        public SimpleProductAssocStateDeleted(ProductAssocEventId eventId) {
             super(eventId);
         }
     }

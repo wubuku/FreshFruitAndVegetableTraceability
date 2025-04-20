@@ -131,6 +131,10 @@ public interface ProductAssocEvent extends Event {
 
     }
 
+    interface ProductAssocStateDeleted extends ProductAssocStateEvent
+    {
+    }
+
 
 }
 

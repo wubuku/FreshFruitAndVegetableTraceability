@@ -164,6 +164,16 @@ public abstract class AbstractProductAssocState implements ProductAssocState.Sql
         this.updatedAt = updatedAt;
     }
 
+    private Boolean __Deleted__;
+
+    public Boolean get__Deleted__() {
+        return this.__Deleted__;
+    }
+
+    public void set__Deleted__(Boolean __Deleted__) {
+        this.__Deleted__ = __Deleted__;
+    }
+
     private String tenantId;
 
     public String getTenantId() {
@@ -240,6 +250,8 @@ public abstract class AbstractProductAssocState implements ProductAssocState.Sql
             when((ProductAssocStateCreated) e);
         } else if (e instanceof ProductAssocStateMergePatched) {
             when((ProductAssocStateMergePatched) e);
+        } else if (e instanceof ProductAssocStateDeleted) {
+            when((ProductAssocStateDeleted) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -257,6 +269,8 @@ public abstract class AbstractProductAssocState implements ProductAssocState.Sql
         this.setRoutingWorkEffortId(e.getRoutingWorkEffortId());
         this.setEstimateCalcMethod(e.getEstimateCalcMethod());
         this.setRecurrenceInfoId(e.getRecurrenceInfoId());
+
+        this.set__Deleted__(false);
 
         this.setCreatedBy(e.getCreatedBy());
         this.setCreatedAt(e.getCreatedAt());
@@ -345,6 +359,15 @@ public abstract class AbstractProductAssocState implements ProductAssocState.Sql
             this.setRecurrenceInfoId(e.getRecurrenceInfoId());
         }
 
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+    }
+
+    public void when(ProductAssocStateDeleted e) {
+        throwOnWrongEvent(e);
+
+        this.set__Deleted__(true);
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 

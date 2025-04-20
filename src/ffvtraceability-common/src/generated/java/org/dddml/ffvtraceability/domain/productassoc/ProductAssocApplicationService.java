@@ -18,6 +18,8 @@ public interface ProductAssocApplicationService {
 
     void when(ProductAssocCommand.MergePatchProductAssoc c);
 
+    void when(ProductAssocCommand.DeleteProductAssoc c);
+
     ProductAssocState get(ProductAssocId id);
 
     Iterable<ProductAssocState> getAll(Integer firstResult, Integer maxResults);

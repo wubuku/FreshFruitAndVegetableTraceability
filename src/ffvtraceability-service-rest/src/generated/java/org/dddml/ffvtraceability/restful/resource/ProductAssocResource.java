@@ -245,6 +245,29 @@ public class ProductAssocResource {
         
     }
 
+    /**
+     * Delete.
+     * Delete ProductAssoc
+     */
+    @DeleteMapping("{productAssocId}")
+    public void delete(@PathVariable("productAssocId") String productAssocId,
+                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
+                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
+                       @RequestParam(value = "requesterId", required = false) String requesterId) {
+        
+
+            ProductAssocCommand.DeleteProductAssoc deleteCmd = new DeleteProductAssocDto();
+
+            deleteCmd.setCommandId(commandId);
+            deleteCmd.setRequesterId(requesterId);
+            deleteCmd.setVersion(version);
+            ProductAssocResourceUtils.setNullIdOrThrowOnInconsistentIds(productAssocId, deleteCmd);
+            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            productAssocApplicationService.when(deleteCmd);
+
+        
+    }
+
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         

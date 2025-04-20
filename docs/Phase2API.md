@@ -1416,7 +1416,20 @@ curl -X 'GET' \
   ]
 }
 ```
-结果为一自顶而下的树状结构。
+结果为一自顶而下的树状结构，一直延伸到最底层。
+
+### 4. 删除 BOM
+可以删除指定产品的 BOM 信息，并且只是移除其与直接关联产品的关系，如果其直接关联构建产品也有自己的 BOM 信息，则改信息不会被删除。
+```shell
+curl -X 'DELETE' \
+  'http://localhost:8001/api/BffBoms/14F8LJ5BHUMW4VCCAS' \
+  -H 'accept: */*' \
+  -H 'X-TenantID: X'
+```
+请求路径中的 14F8LJ5BHUMW4VCCAS 为产品 Id.
+
+✅ 成功删除时返回 HTTP 200 OK 状态码（无响应体）
+
 
 
 

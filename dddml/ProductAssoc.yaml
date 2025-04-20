@@ -10,7 +10,7 @@ aggregates:
         - FROM_DATE
     reservedPropertyMetadata:
       noActive: true
-      noDeleted: true
+      noDeleted: false
     properties:
       ThruDate:
         type: date-time
