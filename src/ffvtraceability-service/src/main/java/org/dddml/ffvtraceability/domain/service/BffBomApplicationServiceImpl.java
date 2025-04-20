@@ -10,6 +10,7 @@ import org.dddml.ffvtraceability.domain.productassoc.AbstractProductAssocCommand
 import org.dddml.ffvtraceability.domain.productassoc.ProductAssocApplicationService;
 import org.dddml.ffvtraceability.domain.productassoc.ProductAssocId;
 import org.dddml.ffvtraceability.domain.repository.BffProductAssocRepository;
+import org.dddml.ffvtraceability.domain.repository.BffProductAssociationDtoProjection;
 import org.dddml.ffvtraceability.domain.util.PageUtils;
 import org.dddml.ffvtraceability.specialization.DomainError;
 import org.dddml.ffvtraceability.specialization.Page;
@@ -20,8 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.dddml.ffvtraceability.domain.constants.BffBomConstants.PRODUCT_ASSOC_TYPE_MANUF_COMPONENT;
@@ -134,8 +137,52 @@ public class BffBomApplicationServiceImpl implements BffBomApplicationService {
 
     @Override
     public BffProductAssociationDto when(BffBomServiceCommands.GetBOM c) {
-        return null;
+        Optional<BffProductAssociationDtoProjection> productAssociationDtoProjection =
+                bffProductAssocRepository.findProductAssocByProductId(c.getProductId());
+        if (productAssociationDtoProjection.isEmpty()) {
+            return null;
+        }
+        BffProductAssociationDto dto = bffProductAssocMapper.toBffProductAssociationDto(productAssociationDtoProjection.get());
+        List<BffProductAssocRepository.ProductAssocProjection> productAssocProjections =
+                bffProductAssocRepository.findBomByProductId(c.getProductId());
+        productAssocProjections.forEach(productAssocProjection -> {
+            getProductAssociationByProductId(dto, productAssocProjection.getProductIdTo());
+        });
+        return dto;
     }
+
+    private void getProductAssociationByProductId(BffProductAssociationDto dto, String productId) {
+        if (dto.getComponents() == null) {
+            dto.setComponents(new ArrayList<>());
+        }
+        //首先看看自己是不是作为BOM存在
+        Optional<BffProductAssociationDtoProjection> productAssociationDtoProjection =
+                bffProductAssocRepository.findProductAssocByProductId(productId);
+        if (productAssociationDtoProjection.isEmpty()) {
+            //如果子节点不是作为BOM存在那么获取其作为BOM组成部分的BOM信息
+            Optional<BffProductAssociationDtoProjection> productAssocProjection = bffProductAssocRepository.findProductAssocInfoByProductIdTo(dto.getProductId(), productId);
+            productAssocProjection.ifPresent(
+                    bffProductAssociationDtoProjection ->
+                            dto.getComponents().add(bffProductAssocMapper.toBffProductAssociationDto(bffProductAssociationDtoProjection)));
+            return;
+        }
+        BffProductAssociationDto component = bffProductAssocMapper.toBffProductAssociationDto(productAssociationDtoProjection.get());
+        bffProductAssocRepository.findBomInfoByWhenProductAsBomAndComponent(dto.getProductId(), productId).ifPresent(
+                bffProductAssocProjection -> {
+                    component.setQuantity(bffProductAssocProjection.getQuantity());
+                    component.setScrapFactor(bffProductAssocProjection.getScrapFactor());
+                    component.setSequenceNum(bffProductAssocProjection.getSequenceNum());
+                    //component.setCreatedBy(bffProductAssocProjection.getCreatedBy());
+                    //component.setCreateAt(bffProductAssocProjection.getCreatedAt().atOffset(ZoneOffset.UTC));
+                });
+        dto.getComponents().add(component);
+        List<BffProductAssocRepository.ProductAssocProjection> productAssocProjections =
+                bffProductAssocRepository.findBomByProductId(productId);
+        productAssocProjections.forEach(productAssocProjection -> {
+            getProductAssociationByProductId(component, productAssocProjection.getProductIdTo());
+        });
+    }
+
 
     @Override
     public void when(BffBomServiceCommands.UpdateBom c) {
