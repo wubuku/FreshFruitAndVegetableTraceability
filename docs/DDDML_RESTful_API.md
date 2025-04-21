@@ -701,12 +701,12 @@ services:
 
 1. **命名规范**：
    - 使用有意义的名称
-   - DTO 后缀表示数据传输对象
-   - Service 后缀表示服务
+   - 使用 `Dto` 后缀表示数据传输对象
+   - 使用 `Service` 后缀表示服务
 
 2. **属性类型**：
    - 使用合适的预定义类型
-   - 为日期时间类型指定 Java 类型
+   - 为日期时间类型的属性指定它在 JPA 投影接口中的 Java 类型（因为 JPA 查询可能不支持返回某些基本类型的默认 Java 实现类型）
 
 3. **路径设计**：
    - 使用有意义的资源名称
@@ -730,7 +730,7 @@ DDDML 提供了一种声明式的方式来定义领域模型，通过简洁的 Y
 | 元数据名称 | 描述 | 适用范围 |
 |------------|------|----------|
 | JpaProjectionInterfaceName | JPA 投影接口名称 | 值对象 |
-| JpaProjectionPropertyTypes | 属性的 Java 类型 | 值对象 |
+| JpaProjectionPropertyTypes | JPA 投影接口的属性的 Java 类型 | 值对象 |
 | JakartaValidationEnabled | 启用 Jakarta 验证 | 值对象 |
 | NoFlattenedProperties | 禁止属性扁平化 | 值对象 |
 | IsPageable | 支持分页 | 方法 |
