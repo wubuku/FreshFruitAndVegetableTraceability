@@ -43,7 +43,7 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
                 pcm.facility_id as facilityId,
                 pcm.contact_mech_id as contactMechId,
                 pcm.from_date as fromDate,
-                pa.to_name as businessName,
+                pa.ask_for_name as businessName,
                 pa.address1 as physicalLocationAddress,
                 pa.city as city,
                 pa.postal_code as zipCode,
@@ -55,7 +55,7 @@ public interface BffFacilityContactMechRepository extends JpaRepository<Abstract
                 gc.geo_name as country,
                 gp.geo_name as state,
                 pa.email as email,
-                pa.ask_for_role as askForRole
+                pa.ask_for_role as contactRole
             FROM facility_contact_mech pcm
             JOIN contact_mech pa ON pa.contact_mech_id = pcm.contact_mech_id
             left join geo gc on pa.country_geo_id = gc.geo_id

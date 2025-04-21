@@ -607,7 +607,7 @@ public class BffFacilityApplicationServiceImpl implements BffFacilityApplication
                 ContactMechCommand.MergePatchContactMech mergePatchContactMech
                         = new AbstractContactMechCommand.SimpleMergePatchMiscContactMech();
                 mergePatchContactMech.setVersion(state.get().getVersion());
-                mergePatchContactMech.setToName(bizContact.getBusinessName());
+                //mergePatchContactMech.setToName(bizContact.getBusinessName());
                 mergePatchContactMech.setContactMechId(contactMechId);
                 if (bizContact.getStateProvinceGeoId() != null) {
                     Optional<BffGeoRepository.StateProvinceProjection> stateProvince
