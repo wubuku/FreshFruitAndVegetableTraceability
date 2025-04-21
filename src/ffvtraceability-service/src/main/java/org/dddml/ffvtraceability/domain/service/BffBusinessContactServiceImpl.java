@@ -65,7 +65,7 @@ public class BffBusinessContactServiceImpl implements BffBusinessContactService 
         AbstractContactMechCommand.SimpleCreateMiscContactMech createMiscContactMech = new AbstractContactMechCommand.SimpleCreateMiscContactMech();
         createMiscContactMech.setContactMechId(IdUtils.randomId());
 
-        createMiscContactMech.setToName(bizContact.getBusinessName());
+        //createMiscContactMech.setToName(bizContact.getBusinessName());
         if (bizContact.getStateProvinceGeoId() != null) {
             Optional<BffGeoRepository.StateProvinceProjection> stateProvince
                     = bffGeoRepository.findStateOrProvinceById(bizContact.getStateProvinceGeoId());

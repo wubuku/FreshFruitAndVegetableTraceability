@@ -261,6 +261,9 @@ public class BffCustomerApplicationServiceImpl implements BffCustomerApplication
         List<String> originalFacilityIds = new ArrayList<>();
         facilityProjections
                 .forEach(bffFacilityProjection -> originalFacilityIds.add(bffFacilityProjection.getFacilityId()));
+        if (bffCustomer.getFacilities() == null) {
+            bffCustomer.setFacilities(new ArrayList<>());
+        }//不能让下面那句报错
         List<String> newFacilityIds = bffCustomer.getFacilities().stream().map(BffFacilityDto::getFacilityId)
                 .filter(Objects::nonNull).collect(Collectors.toList());
         // 不管前端传的Facility的OwnerId是什么，都要改成当前供应商的Id

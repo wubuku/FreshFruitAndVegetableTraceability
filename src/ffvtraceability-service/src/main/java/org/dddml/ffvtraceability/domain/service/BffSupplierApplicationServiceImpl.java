@@ -262,7 +262,9 @@ public class BffSupplierApplicationServiceImpl implements BffSupplierApplication
         bffSupplier.getFacilities().forEach(bffFacilityDto -> {
             bffFacilityDto.setOwnerPartyId(supplierId);
         });
-
+        if (bffSupplier.getFacilities() == null) {
+            bffSupplier.setFacilities(new ArrayList<>());
+        }
         // 前端传过来没有Id的设施列表，这部分会用来表示要添加的设施列表
         List<BffFacilityDto> needToAddedNoId = bffSupplier.getFacilities().stream()
                 .filter(bffFacilityDto -> bffFacilityDto.getFacilityId() == null).collect(Collectors.toList());
