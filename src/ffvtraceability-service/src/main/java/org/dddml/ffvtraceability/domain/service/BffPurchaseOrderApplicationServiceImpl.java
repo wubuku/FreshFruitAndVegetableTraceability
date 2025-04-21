@@ -2,6 +2,8 @@ package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderDto;
 import org.dddml.ffvtraceability.domain.BffPurchaseOrderItemDto;
+import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorApplicationService;
+import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorCommands;
 import org.dddml.ffvtraceability.domain.mapper.BffPurchaseOrderMapper;
 import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
@@ -28,6 +30,8 @@ import static org.dddml.ffvtraceability.domain.constants.BffOrderConstants.*;
 @Transactional
 public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderApplicationService {
 
+    @Autowired
+    private DocumentNumberGeneratorApplicationService documentNumberGeneratorApplicationService;
     @Autowired
     private OrderApplicationService orderApplicationService;
     @Autowired
@@ -197,7 +201,14 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         }
         // Create order header
         AbstractOrderCommand.SimpleCreateOrder createOrder = new AbstractOrderCommand.SimpleCreateOrder();
-        createOrder.setOrderId(purchaseOrder.getOrderId() != null ? purchaseOrder.getOrderId() : IdUtils.randomId());
+        if(purchaseOrder.getOrderId()!=null&&!purchaseOrder.getOrderId().isBlank()){
+            createOrder.setOrderId(purchaseOrder.getOrderId());
+        }else{
+            DocumentNumberGeneratorCommands.GenerateNextNumber generateNextNumber = new DocumentNumberGeneratorCommands.GenerateNextNumber();
+            generateNextNumber.setGeneratorId(PURCHASE_ORDER);
+            generateNextNumber.setRequesterId(c.getRequesterId());
+            createOrder.setOrderId(documentNumberGeneratorApplicationService.when(generateNextNumber));
+        }
         createOrder.setOrderTypeId(PURCHASE_ORDER);
 
         // Set additional order header fields

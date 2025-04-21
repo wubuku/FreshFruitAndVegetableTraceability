@@ -34,6 +34,21 @@ under the License.
             timeZoneId="Asia/Shanghai"
             sequenceLength="5"
             description="Auto generate Receiving Order Number" />
+    <DocumentNumberGenerator
+            generatorId="PURCHASE_ORDER"
+            prefix="PO"
+            dateFormat="yyyyMMdd"
+            timeZoneId="Asia/Shanghai"
+            sequenceLength="5"
+            description="Auto generate Purchase Order Number" />
+
+    <DocumentNumberGenerator
+            generatorId="SALES_ORDER"
+            prefix="SO"
+            dateFormat="yyyyMMdd"
+            timeZoneId="Asia/Shanghai"
+            sequenceLength="5"
+            description="Auto generate Sales Order Number" />
 
     <!-- Add more generators here as needed -->
 </entity-engine-xml>

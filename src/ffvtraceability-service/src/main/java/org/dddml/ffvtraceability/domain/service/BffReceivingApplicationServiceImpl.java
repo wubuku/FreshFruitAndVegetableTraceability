@@ -40,6 +40,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static org.dddml.ffvtraceability.domain.constants.BffOrderConstants.RECEIVING;
 import static org.dddml.ffvtraceability.domain.constants.BffStockInOutConstants.INOUT_TYPE_RECEIVING;
 
 @Service
@@ -306,7 +307,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
         // NOTE: 将"BFF 文档 Id"映射到 Shipment Id
         AbstractShipmentCommand.SimpleCreateShipment createShipment = new AbstractShipmentCommand.SimpleCreateShipment();
         DocumentNumberGeneratorCommands.GenerateNextNumber generateNextNumber = new DocumentNumberGeneratorCommands.GenerateNextNumber();
-        generateNextNumber.setGeneratorId("RECEIVING");
+        generateNextNumber.setGeneratorId(RECEIVING);
         generateNextNumber.setRequesterId(c.getRequesterId());
         createShipment.setShipmentId(c.getReceivingDocument().getDocumentId() != null ? c.getReceivingDocument().getDocumentId()
                 : documentNumberGeneratorApplicationService.when(generateNextNumber));
