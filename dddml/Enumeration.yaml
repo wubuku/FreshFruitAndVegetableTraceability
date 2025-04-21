@@ -6,10 +6,10 @@ aggregates:
       NoEventSourcing: true
     id:
       name: EnumId
-      type: id
+      type: id-long
     properties:
       EnumTypeId:
-        type: id
+        type: id-long
       EnumCode:
         type: short-varchar
       SequenceId:

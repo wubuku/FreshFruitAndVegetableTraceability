@@ -2,13 +2,13 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.ffvtraceability.domain.enumeration">
   <class name="org.dddml.ffvtraceability.domain.enumeration.AbstractEnumerationState$SimpleEnumerationState" table="enumeration">
-    <id name="enumId" length="20">
-      <column name="enum_id" sql-type="VARCHAR(20)" />
+    <id name="enumId" length="60">
+      <column name="enum_id" sql-type="VARCHAR(60)" />
       <generator class="assigned" />
     </id>
     <version name="version" column="version" type="long" />
     <property name="enumTypeId">
-      <column name="enum_type_id" sql-type="VARCHAR(20)" />
+      <column name="enum_type_id" sql-type="VARCHAR(60)" />
     </property>
     <property name="enumCode">
       <column name="enum_code" sql-type="VARCHAR(60)" />
