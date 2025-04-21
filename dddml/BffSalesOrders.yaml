@@ -1,0 +1,421 @@
+# 销售订单相关
+valueObjects:
+  BffSalesOrderDto:
+    metadata:
+      JpaProjectionInterfaceName: BffSalesOrderProjection
+      JpaProjectionPropertyTypes:
+        OrderDate: java.time.Instant
+        CreatedAt: java.time.Instant
+        UpdatedAt: java.time.Instant
+    properties:
+      OrderId:
+        type: id
+      # OrderTypeId:
+      #   type: id
+      OrderName:
+        type: name
+      ExternalId:
+        type: id
+      # SalesChannelEnumId:
+      #   type: id
+      OrderDate:
+        type: date-time
+      # Priority:
+      #   description: Sets priority for Inventory Reservation
+      #   type: indicator
+      # EntryDate:
+      #   type: date-time
+      StatusId:
+        type: id
+      # FirstAttemptOrderId:
+      #   type: id
+      CurrencyUomId:
+        type: id
+      SyncStatusId:
+        type: id
+      # BillingAccountId:
+      #   type: id
+      OriginFacilityId:
+        type: id
+      # ---------------------------------
+      Memo:
+        # 订单备注
+        type: long-varchar
+      ContactDescription:
+        type: description
+      FulfillmentStatusId:
+        type: id
+      # ---------------------------------
+      CustomerId:
+        type: id
+      CustomerName:
+        type: name
+      CreatedAt:
+        type: date-time
+      CreatedBy:
+        type: id-long
+      UpdatedAt:
+        type: date-time
+      UpdatedBy:
+        type: id-long
+      OrderItems:
+        itemType: BffSalesOrderItemDto
+        isList: true
+
+  BffSalesOrderItemDto:
+    metadata:
+      JpaProjectionInterfaceName: BffSalesOrderItemProjection
+      JpaProjectionPropertyTypes:
+        EstimatedShipDate: java.time.Instant
+        EstimatedDeliveryDate: java.time.Instant
+      JpaProjectionPropertyAliases:
+        StatusId: ItemStatusId
+        SyncStatusId: ItemSyncStatusId
+        FulfillmentStatusId: ItemFulfillmentStatusId
+      NoFlattenedProperties: true
+    properties:
+      OrderItemSeqId:
+        type: id
+      ExternalId:
+        type: id
+      # OrderItemTypeId:
+      #   type: id
+      # OrderItemGroupSeqId:
+      #   type: id
+      # IsItemGroupPrimary:
+      #   type: indicator
+      ProductId:
+        type: id
+      CustomerProductId:
+        type: id-long
+      ProductName:
+        type: name
+      # AttributeSetInstanceId:
+      #   type: HashHex
+      Gtin:
+        description: "GTIN (Global Trade Item Number)"
+        type: id
+      Product:
+        type: BffProductDto
+      # ProductFeatureId:
+      #   type: id
+      # ProdCatalogId:
+      #   type: id
+      # ProductCategoryId:
+      #   type: id
+      # IsPromo:
+      #   type: indicator
+      # QuoteId:
+      #   type: id
+      # QuoteItemSeqId:
+      #   type: id
+      # ShoppingListId:
+      #   type: id
+      # ShoppingListItemSeqId:
+      #   type: id
+      # SubscriptionId:
+      #   type: id
+      # DeploymentId:
+      #   type: id
+      Quantity:
+        type: fixed-point
+        #enableAuditLog: true
+      CancelQuantity:
+        type: fixed-point
+      SelectedAmount:
+        type: fixed-point
+      UnitPrice:
+        type: currency-precise
+        # enableAuditLog: true
+      # UnitListPrice:
+      #   type: currency-precise
+      # UnitAverageCost:
+      #   type: currency-amount
+      # UnitRecurringPrice:
+      #   type: currency-amount
+      # DiscountRate:
+      #   type: fixed-point
+      # IsModifiedPrice:
+      #   type: indicator
+      # RecurringFreqUomId:
+      #   type: id
+      ItemDescription:
+        type: description
+      Comments:
+        type: comment
+      # <field name="correspondingPoId" type="id"></field>
+      StatusId:
+        type: id
+      SyncStatusId:
+        type: id
+      # ---------------------------------
+      FulfillmentStatusId:
+        type: id
+      # ---------------------------------
+      EstimatedShipDate:
+        type: date-time
+      EstimatedDeliveryDate:
+        type: date-time
+      Fulfillments:
+        itemType: BffSalesOrderFulfillmentDto
+        isList: true
+
+  BffSalesOrderFulfillmentDto:
+    metadata:
+      JpaProjectionInterfaceName: BffSalesOrderFulfillmentProjection
+      JpaProjectionPropertyTypes:
+        ReceivedAt: java.time.Instant
+    properties:
+      ReceiptId:
+        # 收货行项 Id
+        type: id-long
+      ShipmentId:
+        type: id
+      AllocatedQuantity:
+        type: fixed-point
+      ReceivedAt:
+        type: date-time
+      ShipmentQaStatusId:
+        type: id
+      ShipmentQaInspectionStatusId:
+        type: id
+        # Inspected, Partially Inspected, Pending Inspection
+      ShipmentStatusId:
+        type: id
+
+  #添加订单
+  SalesOrderVo:
+    properties:
+      OrderId:
+        type: id
+      OrderDate:
+        type: date-time
+      CurrencyUomId:
+        type: id
+      # ---------------------------------
+      Memo:
+        # 订单备注
+        type: long-varchar
+      # ---------------------------------
+      CustomerId:
+        type: id
+      OrderItems:
+        itemType: SalesOrderItemVo
+        isList: true
+
+  SalesOrderItemVo:
+    properties:
+      OrderItemSeqId:
+        type: id
+      ProductId:
+        type: id
+      CustomerProductId:
+        type: id-long
+      Quantity:
+        type: fixed-point
+
+services:
+  BffSalesOrderService:
+    restfulResourceName: BffSalesOrders
+    methods:
+      GetSalesOrders:
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        parameters:
+          OrderIdOrItem:
+            type: id
+          SupplierId:
+            type: id
+            optional: true # NOT required
+          OrderDateFrom:
+            type: date-time
+            optional: true # NOT required
+          OrderDateTo:
+            type: date-time
+            optional: true # NOT required
+          IncludesProductDetails:
+            type: bool
+            optional: true # NOT required
+        result:
+          itemType: BffSalesOrderDto
+
+      GetSalesOrder:
+        metadata:
+          RestfulPathVariable: OrderId
+        isQuery: true
+        result:
+          type: BffSalesOrderDto
+        parameters:
+          OrderId:
+            type: id
+          IncludesItemFulfillments:
+            # 是否包含行项的履行状态
+            type: bool
+            optional: true # NOT required
+          IncludesProductDetails:
+            type: bool
+            optional: true # NOT required
+
+      GetSalesOrderItem:
+        # 获取指定采购订单下指定行项的详情
+        restfulResourceName: "{OrderId}/Items/{OrderItemSeqId}"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+            - OrderItemSeqId
+        isQuery: true
+        result:
+          type: BffSalesOrderItemDto
+        parameters:
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id
+          IncludesFulfillments:
+            # 是否包含（当前行项的）履行状态
+            type: bool
+            optional: true # NOT required
+          IncludesProductDetails:
+            type: bool
+            optional: true # NOT required
+
+      GetSalesOrderItemOutstandingQuantity:
+        # 查询指定采购订单下指定行项的未履行数量
+        restfulResourceName: "{OrderId}/Items/{OrderItemSeqId}/OutstandingQuantity"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+            - OrderItemSeqId
+        isQuery: true
+        result:
+          type: fixed-point
+        parameters:
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id
+
+      GetSalesProductOutstandingQuantityByProductId:
+        # 查询指定采购订单下指定产品的未履行数量
+        restfulResourceName: "{OrderId}/getOutstandingQuantityByProduct"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+        isQuery: true
+        result:
+          type: fixed-point
+        parameters:
+          OrderId:
+            type: id
+          ProductId:
+            type: id
+            optional: false # Is required
+
+      CreateSalesOrder:
+        # 创建采购订单
+        httpMethod: POST
+        metadata:
+          HttpRequestBody: SalesOrder
+        parameters:
+          SalesOrder:
+            type: SalesOrderVo
+        result:
+          type: id # OrderId
+
+      UpdateSalesOrder:
+        httpMethod: PUT
+        metadata:
+          RestfulPathVariable: OrderId
+          HttpRequestBody: SalesOrder
+        parameters:
+          OrderId:
+            type: id
+          SalesOrder:
+            type: BffSalesOrderDto
+
+      RecalculateFulfillmentStatus:
+        description: "Recalculate the fulfillment status of a Sales order"
+        # 重新计算并更新订单的 fulfillmentStatusId（履行状态）
+        # 订单实体（表）的 FulfillmentStatusId 字段，是根据其他表计算出来的冗余信息，用于提高查询效率。
+        httpMethod: POST
+        restfulResourceName: "{OrderId}/recalculateFulfillmentStatus"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+        parameters:
+          OrderId:
+            type: id
+        result:
+          type: id
+          # New FulfillmentStatusId
+
+      CreateSalesOrderItem:
+        # 添加行项的方法
+        httpMethod: POST
+        restfulResourceName: "{OrderId}/Items"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+          HttpRequestBody: SalesOrderItem
+        parameters:
+          OrderId:
+            type: id
+          SalesOrderItem:
+            type: BffSalesOrderItemDto
+        result:
+          type: id
+          # OrderItemSeqId
+
+      DeleteSalesOrderItem:
+        # 删除行项的方法
+        httpMethod: DELETE
+        restfulResourceName: "{OrderId}/Items/{OrderItemSeqId}"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+            - OrderItemSeqId
+        parameters:
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id
+
+      UpdateSalesOrderItem:
+        # 更新行项的方法
+        httpMethod: PUT
+        restfulResourceName: "{OrderId}/Items/{OrderItemSeqId}"
+        metadata:
+          RestfulPathVariables:
+            - OrderId
+            - OrderItemSeqId
+        parameters:
+          OrderId:
+            type: id
+          OrderItemSeqId:
+            type: id-long
+          Quantity:
+            type: fixed-point
+          CancelQuantity:
+            type: fixed-point
+          # SelectedAmount:
+          #   type: fixed-point
+          UnitPrice:
+            type: currency-precise
+          ItemDescription:
+            type: description
+          Comments:
+            type: comment
+          # StatusId:
+          #   type: id
+          # SyncStatusId:
+          #   type: id
+          EstimatedShipDate:
+            type: date-time
+          EstimatedDeliveryDate:
+            type: date-time
+          SupplierProductId:
+            type: id-long
+
+    # TODO： 是否需要支持 PO 的 CSV 导入？

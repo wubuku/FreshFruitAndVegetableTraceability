@@ -1496,6 +1496,49 @@ curl -X 'PUT' \
 ```
 可以看到该产品的 BOM 已经如愿更新。
 
+## 七、销售订单 Sales order
+
+### 1. 创建销售订单
+使用 curl 创建销售订单如下：
+```shell
+curl -X 'POST' \
+  'http://localhost:8001/api/BffSalesOrders' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "orderId": "salesorderId",
+  "orderDate": "2025-04-21T06:33:11.514Z",
+  "memo": "memo",
+  "customerId": "14MESS61QA9BPQY0TH",
+  "orderItems": [
+    {
+      "orderItemSeqId": "orderItemSeqId1",
+      "productId": "14F8LJ5R5RFJA2U7VZ",
+      "quantity": 100
+    },
+    {
+      "productId": "14J32466F5ZZJY72S4",
+      "quantity": 200
+    }
+  ]
+}'
+```
+创建成功将返回该订单的Id(订单号)，如：
+```json
+"SO2025042100001"
+```
+* orderId：销售订单号，如果不提供系统会自动生成以 SO 开头的销售订单号，如：“SO2025042100001”；
+* memo：订单备注信息
+* customerId：Customer Id;
+* orderItems：订单行项；
+* orderItemSeqId：订单行项 Id，如果不提供系统将自动生成；
+* productId：产品 Id；
+* quantity：数量；
+
+
+
+
 
 
 
