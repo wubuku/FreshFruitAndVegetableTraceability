@@ -81,6 +81,15 @@ storage:
     public-bucket: ffvt-public
     public-endpoint: https://ffvt-public.cos.ap-guangzhou.myqcloud.com
   
+  tos:
+    access-key: your-tos-access-key
+    secret-key: your-tos-secret-key
+    endpoint: https://tos-cn-beijing.volces.com
+    region: cn-beijing
+    private-bucket: ffvt-private
+    public-bucket: ffvt-public
+    public-endpoint: https://ffvt-public.tos-cn-beijing.volces.com
+
   minio:
     endpoint: http://fp.ablueforce.com:9002  #minio服务的地址（端口为参数 --address的值，默认为9000），我们在启动docker的时候将其映射为宿主的 9002 端口 (-p 9002:9000)
     public-endpoint: https://fp.ablueforce.com #上传文件之后返回的url的前缀
