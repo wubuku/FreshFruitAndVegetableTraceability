@@ -101,7 +101,38 @@ public class BffSalesOrderApplicationServiceIml implements BffSalesOrderApplicat
 
     @Override
     public BffSalesOrderDto when(BffSalesOrderServiceCommands.GetSalesOrder c) {
-        return null;
+        List<BffSalesOrderAndItemProjection> projections =
+                bffSalesOrderRepository.findSalesOrderWithItems(c.getOrderId());
+
+        if (projections.isEmpty()) {
+            return null;
+        }
+        // 构建销售订单DTO
+        BffSalesOrderDto order = bffSalesOrderMapper.toBffSalesOrderDto(projections.get(0));
+        // 添加行项
+        order.setOrderItems(
+                projections.stream()
+                        .filter(p -> p.getOrderItemSeqId() != null)
+                        .map(bffSalesOrderMapper::toBffSalesOrderItemDto)
+                        .collect(Collectors.toList())
+        );
+//        if (c.getIncludesItemFulfillments() != null && c.getIncludesItemFulfillments()) {
+//            for (BffSalesOrderItemDto item : order.getOrderItems()) {
+//                item.setFulfillments(
+//                        bffReceivingRepository.findPurchaseOrderItemFulfillments(
+//                                        c.getOrderId(), item.getOrderItemSeqId()
+//                                ).stream()
+//                                .map(bffPurchaseOrderMapper::toBffPurchaseOrderFulfillmentDto)
+//                                .collect(Collectors.toList())
+//                );
+//            }
+//        }
+        if (c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
+            order.getOrderItems().forEach(orderItem -> {
+                orderItem.setProduct(productQueryService.getProduct(orderItem.getProductId()));
+            });
+        }
+        return order;
     }
 
     @Override
