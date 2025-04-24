@@ -1536,6 +1536,103 @@ curl -X 'POST' \
 * productId：产品 Id；
 * quantity：数量；
 
+### 2. 条件查询销售订单
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffSalesOrders?page=0&size=20&orderIdOrItem=14F8LJ5R5RFJA2U7VZ&customerId=14MG1V3N96FQ6YF88U&orderDateFrom=2025-04-21T00%3A00%3A00.000Z&orderDateTo=2025-04-22T00%3A00%3A00.000Z&includesProductDetails=true' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+目前可供使用的查询条件有：
+* orderIdOrItem 可以模糊查询以 orderIdOrItem 开头的销售订单Id,销售订单行项Id,产品Id以及产品GTIN；
+* customerId 
+* orderDateFrom & orderDateTo 下单时间范围
+* includesProductDetails 是否在结果中展示产品详情
+
+展示结果举例如下：
+```json
+{
+  "content": [
+    {
+      "orderId": "salesorderId",
+      "orderDate": "2025-04-21T06:33:11.514Z",
+      "memo": "memo",
+      "fulfillmentStatusId": "NOT_FULFILLED",
+      "customerId": "14MG1V3N96FQ6YF88U",
+      "customerName": "customerShortName",
+      "createdAt": "2025-04-24T03:28:47.023102Z",
+      "createdBy": "anonymousUser",
+      "orderItems": [
+        {
+          "orderItemSeqId": "1",
+          "productId": "14F8LJ5R5RFJA2U7VZ",
+          "productName": "P25041501",
+          "product": {
+            "productId": "14F8LJ5R5RFJA2U7VZ",
+            "productName": "P25041501",
+            "productTypeId": "FINISHED_GOOD",
+            "brandName": "brand1",
+            "description": "description1",
+            "quantityUomId": "KG",
+            "quantityIncluded": 21,
+            "piecesIncluded": 1,
+            "productWeight": 31,
+            "active": "Y",
+            "defaultShipmentBoxTypeId": "14F8MM34CHBD13A6Y8",
+            "defaultShipmentBoxType": {
+              "shipmentBoxTypeId": "14F8MM34CHBD13A6Y8"
+            },
+            "caseUomId": "PCS",
+            "internalId": "25041501",
+            "hsCode": "hscode1",
+            "organicCertifications": "organicCertification1",
+            "materialCompositionDescription": "materialComposition1",
+            "countryOfOrigin": "countryOfOrgin1",
+            "shelfLifeDescription": "shelfLife1",
+            "handlingInstructions": "handingInstructions1",
+            "storageConditions": "storageConditions1",
+            "certificationCodes": "certificationCode1",
+            "individualsPerPackage": 11,
+            "dimensionsDescription": "dimensions1"
+          },
+          "quantity": 100,
+          "fulfillmentStatusId": "NOT_FULFILLED"
+        },
+        {
+          "orderItemSeqId": "2",
+          "productId": "14J32466F5ZZJY72S4",
+          "productName": "p25041901",
+          "product": {
+            "productId": "14J32466F5ZZJY72S4",
+            "productName": "p25041901",
+            "productTypeId": "FINISHED_GOOD",
+            "smallImageUrl": "131562e0-c0c6-4301-9dcc-5dc6c86ac63c",
+            "quantityUomId": "LB",
+            "quantityIncluded": 10,
+            "piecesIncluded": 1,
+            "active": "Y",
+            "defaultShipmentBoxTypeId": "14J3245MHGULTZCYZ6",
+            "defaultShipmentBoxType": {
+              "shipmentBoxTypeId": "14J3245MHGULTZCYZ6"
+            },
+            "caseUomId": "PCS",
+            "internalId": "25041901"
+          },
+          "quantity": 200,
+          "fulfillmentStatusId": "NOT_FULFILLED"
+        }
+      ]
+    }
+  ],
+  "totalElements": 1,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+
+
 
 
 
