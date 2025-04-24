@@ -133,7 +133,7 @@ public class BffSalesOrderServiceResource {
     @PutMapping("{orderId}")
     public void updateSalesOrder(
         @PathVariable("orderId") String orderId,
-        @RequestBody BffSalesOrderDto salesOrder
+        @RequestBody UpdateSalesOrderVo salesOrder
     ) {
         BffSalesOrderServiceCommands.UpdateSalesOrder updateSalesOrder = new BffSalesOrderServiceCommands.UpdateSalesOrder();
         updateSalesOrder.setOrderId(orderId);

@@ -295,13 +295,13 @@ public class BffSalesOrderServiceCommands {
         /**
          * Sales Order
          */
-        private BffSalesOrderDto salesOrder;
+        private UpdateSalesOrderVo salesOrder;
 
-        public BffSalesOrderDto getSalesOrder() {
+        public UpdateSalesOrderVo getSalesOrder() {
             return salesOrder;
         }
 
-        public void setSalesOrder(BffSalesOrderDto salesOrder) {
+        public void setSalesOrder(UpdateSalesOrderVo salesOrder) {
             this.salesOrder = salesOrder;
         }
 

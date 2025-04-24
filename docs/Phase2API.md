@@ -1632,6 +1632,163 @@ curl -X 'GET' \
 }
 ```
 
+### 3. 获取销售订单详情
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffSalesOrders/{salesOrderId}?includesProductDetails=true' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+* 路径参数 {salesOrderId} 为销售订单Id;
+
+* includesProductDetails 是否在销售订单行项中显示产品详情。
+
+返回结果示例如下：
+
+```json
+{
+  "orderId": "salesorderId",
+  "orderDate": "2025-04-21T06:33:11.514Z",
+  "memo": "memo",
+  "fulfillmentStatusId": "NOT_FULFILLED",
+  "customerId": "14MG1V3N96FQ6YF88U",
+  "customerName": "customerShortName",
+  "createdAt": "2025-04-24T03:28:47.023102Z",
+  "createdBy": "anonymousUser",
+  "orderItems": [
+    {
+      "orderItemSeqId": "1",
+      "productId": "14F8LJ5R5RFJA2U7VZ",
+      "productName": "P25041501",
+      "product": {
+        "productId": "14F8LJ5R5RFJA2U7VZ",
+        "productName": "P25041501",
+        "productTypeId": "FINISHED_GOOD",
+        "brandName": "brand1",
+        "description": "description1",
+        "quantityUomId": "KG",
+        "quantityIncluded": 21,
+        "piecesIncluded": 1,
+        "productWeight": 31,
+        "active": "Y",
+        "defaultShipmentBoxTypeId": "14F8MM34CHBD13A6Y8",
+        "defaultShipmentBoxType": {
+          "shipmentBoxTypeId": "14F8MM34CHBD13A6Y8"
+        },
+        "caseUomId": "PCS",
+        "internalId": "25041501",
+        "hsCode": "hscode1",
+        "organicCertifications": "organicCertification1",
+        "materialCompositionDescription": "materialComposition1",
+        "countryOfOrigin": "countryOfOrgin1",
+        "shelfLifeDescription": "shelfLife1",
+        "handlingInstructions": "handingInstructions1",
+        "storageConditions": "storageConditions1",
+        "certificationCodes": "certificationCode1",
+        "individualsPerPackage": 11,
+        "dimensionsDescription": "dimensions1"
+      },
+      "quantity": 100,
+      "fulfillmentStatusId": "NOT_FULFILLED"
+    },
+    {
+      "orderItemSeqId": "2",
+      "productId": "14J32466F5ZZJY72S4",
+      "productName": "p25041901",
+      "product": {
+        "productId": "14J32466F5ZZJY72S4",
+        "productName": "p25041901",
+        "productTypeId": "FINISHED_GOOD",
+        "smallImageUrl": "131562e0-c0c6-4301-9dcc-5dc6c86ac63c",
+        "quantityUomId": "LB",
+        "quantityIncluded": 10,
+        "piecesIncluded": 1,
+        "active": "Y",
+        "defaultShipmentBoxTypeId": "14J3245MHGULTZCYZ6",
+        "defaultShipmentBoxType": {
+          "shipmentBoxTypeId": "14J3245MHGULTZCYZ6"
+        },
+        "caseUomId": "PCS",
+        "internalId": "25041901"
+      },
+      "quantity": 200,
+      "fulfillmentStatusId": "NOT_FULFILLED"
+    }
+  ]
+}
+```
+
+### 4. 修改销售订单
+我们以上面创建的订单号为 “saleorderId”的订单为例，它目前有两个行项：
+1. 产品Id为"14F8LJ5R5RFJA2U7VZ"，数量为100；
+2. 产品Id为“14J32466F5ZZJY72S4”，数量为200。
+
+现在：
+1. 将下单时间改为："2025-04-24T07:36:06.201Z"；
+2. 备注信息改为"updatedMemo"；
+3. 删除产品Id为“14J32466F5ZZJY72S4”的行项；
+4. 新增产品Id为“14F8LJ5BHUMW4VCCAS”的行项，数量为700；
+5. 将产品Id为“14F8LJ5R5RFJA2U7VZ”的行项的数量改为200；
+
+```shell
+curl -X 'PUT' \
+  'http://localhost:8001/api/BffSalesOrders/salesorderId' \
+  -H 'accept: */*' \
+  -H 'X-TenantID: X' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "orderDate": "2025-04-24T07:36:06.201Z",
+  "memo": "updatedMemo",
+  "customerId": "14MG1V3N96FQ6YF88U",
+  "orderItems": [
+    {
+      "orderItemSeqId": "1",
+      "productId": "14F8LJ5R5RFJA2U7VZ",
+      "quantity": 200
+    },
+    {
+      "productId": "14F8LJ5BHUMW4VCCAS",
+      "quantity": 700    
+    }
+  ]
+}'
+```
+操作成功（返回 HTTP 200 OK 状态码）后，再次查询订单号为"salesorderId"的订单，可以看到如下结果：
+```json
+{
+  "orderId": "salesorderId",
+  "orderDate": "2025-04-24T07:36:06.201Z",
+  "memo": "updatedMemo",
+  "fulfillmentStatusId": "NOT_FULFILLED",
+  "customerId": "14MG1V3N96FQ6YF88U",
+  "customerName": "customerShortName",
+  "createdAt": "2025-04-24T03:28:47.023102Z",
+  "createdBy": "anonymousUser",
+  "orderItems": [
+    {
+      "orderItemSeqId": "14QF8GFGC3WMYFEQVG",
+      "productId": "14F8LJ5BHUMW4VCCAS",
+      "productName": "P25041502",
+      "product": {
+        "defaultShipmentBoxType": {}
+      },
+      "quantity": 700,
+      "fulfillmentStatusId": "NOT_FULFILLED"
+    },
+    {
+      "orderItemSeqId": "1",
+      "productId": "14F8LJ5R5RFJA2U7VZ",
+      "productName": "P25041501",
+      "product": {
+        "defaultShipmentBoxType": {}
+      },
+      "quantity": 200,
+      "fulfillmentStatusId": "NOT_FULFILLED"
+    }
+  ]
+}
+```
 
 
 

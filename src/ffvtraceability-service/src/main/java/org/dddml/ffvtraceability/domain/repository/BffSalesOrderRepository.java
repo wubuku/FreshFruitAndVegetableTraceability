@@ -177,10 +177,10 @@ public interface BffSalesOrderRepository extends JpaRepository<AbstractOrderHead
             """ + ORDER_ITEM_JOIN + COMMON_JOINS + """
             WHERE o.order_id = :orderId
             """, nativeQuery = true)
-    List<BffPurchaseOrderAndItemProjection> findPurchaseOrderWithItems(@Param("orderId") String orderId);
+    List<BffSalesOrderAndItemProjection> findSalesOrderWithItems(@Param("orderId") String orderId);
 
     @Query(value = """
-            SELECT 
+            SELECT
                 o.order_id as orderId,
                 oi.order_item_seq_id as orderItemSeqId,
                 oi.product_id as productId,
