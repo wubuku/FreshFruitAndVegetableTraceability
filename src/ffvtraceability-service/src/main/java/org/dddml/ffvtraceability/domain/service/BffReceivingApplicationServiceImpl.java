@@ -61,7 +61,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
     @Autowired
     private CteReceivingEventSynchronizationService cteReceivingEventSynchronizationService;
     @Autowired
-    private BffOrderRepository bffOrderRepository;
+    private BffPurchaseOrderRepository bffPurchaseOrderRepository;
     @Autowired
     private DocumentNumberGeneratorApplicationService documentNumberGeneratorApplicationService;
     @Autowired
@@ -216,7 +216,7 @@ public class BffReceivingApplicationServiceImpl implements BffReceivingApplicati
                 && receivingDocument.getReceivingItems() != null
         ) {
             for (BffReceivingItemDto item : receivingDocument.getReceivingItems()) {
-                Optional<BigDecimal> oq = bffOrderRepository
+                Optional<BigDecimal> oq = bffPurchaseOrderRepository
                         .findReceiptAssociatedOrderItemOutstandingQuantity(item.getReceiptId());
                 oq.ifPresent(item::setOutstandingOrderQuantity);
             }

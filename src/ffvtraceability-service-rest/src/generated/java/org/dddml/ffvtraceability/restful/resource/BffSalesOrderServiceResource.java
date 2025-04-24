@@ -37,7 +37,7 @@ public class BffSalesOrderServiceResource {
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "orderIdOrItem", required = false) String orderIdOrItem,
-        @RequestParam(value = "supplierId", required = false) String supplierId,
+        @RequestParam(value = "customerId", required = false) String customerId,
         @RequestParam(value = "orderDateFrom", required = false) OffsetDateTime orderDateFrom,
         @RequestParam(value = "orderDateTo", required = false) OffsetDateTime orderDateTo,
         @RequestParam(value = "includesProductDetails", required = false) Boolean includesProductDetails
@@ -46,7 +46,7 @@ public class BffSalesOrderServiceResource {
         getSalesOrders.setPage(page);
         getSalesOrders.setSize(size);
         getSalesOrders.setOrderIdOrItem(orderIdOrItem);
-        getSalesOrders.setSupplierId(supplierId);
+        getSalesOrders.setCustomerId(customerId);
         getSalesOrders.setOrderDateFrom(orderDateFrom);
         getSalesOrders.setOrderDateTo(orderDateTo);
         getSalesOrders.setIncludesProductDetails(includesProductDetails);

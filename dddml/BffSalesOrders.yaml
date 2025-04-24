@@ -226,7 +226,7 @@ services:
         parameters:
           OrderIdOrItem:
             type: id
-          SupplierId:
+          CustomerId:
             type: id
             optional: true # NOT required
           OrderDateFrom:

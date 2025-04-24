@@ -7,7 +7,7 @@ import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGe
 import org.dddml.ffvtraceability.domain.mapper.BffPurchaseOrderMapper;
 import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
-import org.dddml.ffvtraceability.domain.repository.BffOrderRepository;
+import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderRepository;
 import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderAndItemProjection;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
@@ -35,7 +35,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     @Autowired
     private OrderApplicationService orderApplicationService;
     @Autowired
-    private BffOrderRepository bffOrderRepository;
+    private BffPurchaseOrderRepository bffPurchaseOrderRepository;
     @Autowired
     private BffPurchaseOrderMapper bffPurchaseOrderMapper;
     @Autowired
@@ -55,7 +55,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     @Transactional(readOnly = true)
     public Page<BffPurchaseOrderDto> when(BffPurchaseOrderServiceCommands.GetPurchaseOrders c) {
         int offset = c.getPage() * c.getSize();
-        long totalElements = bffOrderRepository.countTotalShipments(
+        long totalElements = bffPurchaseOrderRepository.countTotalShipments(
                 c.getOrderIdOrItem(),
                 c.getSupplierId(),
                 c.getOrderDateFrom(),
@@ -63,7 +63,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         );
 
         List<BffPurchaseOrderAndItemProjection> projections =
-                bffOrderRepository.findAllPurchaseOrdersWithItems(
+                bffPurchaseOrderRepository.findAllPurchaseOrdersWithItems(
                         offset,
                         c.getSize(),
                         c.getOrderIdOrItem(),
@@ -115,7 +115,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     @Transactional(readOnly = true)
     public BffPurchaseOrderDto when(BffPurchaseOrderServiceCommands.GetPurchaseOrder c) {
         List<BffPurchaseOrderAndItemProjection> projections =
-                bffOrderRepository.findPurchaseOrderWithItems(c.getOrderId());
+                bffPurchaseOrderRepository.findPurchaseOrderWithItems(c.getOrderId());
 
         if (projections.isEmpty()) {
             return null;
@@ -152,7 +152,7 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     @Transactional(readOnly = true)
     public BffPurchaseOrderItemDto when(BffPurchaseOrderServiceCommands.GetPurchaseOrderItem c) {
         BffPurchaseOrderAndItemProjection projection =
-                bffOrderRepository.findPurchaseOrderItem(c.getOrderId(), c.getOrderItemSeqId());
+                bffPurchaseOrderRepository.findPurchaseOrderItem(c.getOrderId(), c.getOrderItemSeqId());
         if (projection == null) {
             return null;
         }
@@ -174,13 +174,13 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
 
     @Override
     public BigDecimal when(BffPurchaseOrderServiceCommands.GetPurchaseOrderItemOutstandingQuantity c) {
-        return bffOrderRepository.findPurchaseOrderItemOutstandingQuantity(c.getOrderId(), c.getOrderItemSeqId())
+        return bffPurchaseOrderRepository.findPurchaseOrderItemOutstandingQuantity(c.getOrderId(), c.getOrderItemSeqId())
                 .orElse(null);
     }
 
     @Override
     public BigDecimal when(BffPurchaseOrderServiceCommands.GetPurchaseOrderProductOutstandingQuantityByProductId c) {
-        return bffOrderRepository.findPurchaseOrderItemOutstandingQuantityByProductId(c.getOrderId(), c.getProductId())
+        return bffPurchaseOrderRepository.findPurchaseOrderItemOutstandingQuantityByProductId(c.getOrderId(), c.getProductId())
                 .orElse(null);
     }
 

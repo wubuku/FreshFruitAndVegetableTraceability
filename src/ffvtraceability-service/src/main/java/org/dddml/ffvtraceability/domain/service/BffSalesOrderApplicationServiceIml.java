@@ -6,11 +6,14 @@ import org.dddml.ffvtraceability.domain.SalesOrderItemVo;
 import org.dddml.ffvtraceability.domain.SalesOrderVo;
 import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorApplicationService;
 import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorCommands;
+import org.dddml.ffvtraceability.domain.mapper.BffSalesOrderMapper;
 import org.dddml.ffvtraceability.domain.order.AbstractOrderCommand;
 import org.dddml.ffvtraceability.domain.order.OrderApplicationService;
 import org.dddml.ffvtraceability.domain.order.OrderItemCommand;
 import org.dddml.ffvtraceability.domain.order.OrderRoleCommand;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
+import org.dddml.ffvtraceability.domain.repository.BffSalesOrderAndItemProjection;
+import org.dddml.ffvtraceability.domain.repository.BffSalesOrderRepository;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.dddml.ffvtraceability.domain.constants.BffOrderConstants.*;
 
@@ -27,10 +33,70 @@ public class BffSalesOrderApplicationServiceIml implements BffSalesOrderApplicat
     private DocumentNumberGeneratorApplicationService documentNumberGeneratorApplicationService;
     @Autowired
     private OrderApplicationService orderApplicationService;
+    @Autowired
+    private BffSalesOrderRepository bffSalesOrderRepository;
+    @Autowired
+    private BffSalesOrderMapper bffSalesOrderMapper;
+    @Autowired
+    private ProductQueryService productQueryService;
 
     @Override
     public Page<BffSalesOrderDto> when(BffSalesOrderServiceCommands.GetSalesOrders c) {
-        return null;
+        int offset = c.getPage() * c.getSize();
+        long totalElements = bffSalesOrderRepository.countTotalSalesOrders(
+                c.getOrderIdOrItem(),
+                c.getCustomerId(),
+                c.getOrderDateFrom(),
+                c.getOrderDateTo()
+        );
+
+        List<BffSalesOrderAndItemProjection> projections =
+                bffSalesOrderRepository.findAllSalesOrdersWithItems(
+                        offset,
+                        c.getSize(),
+                        c.getOrderIdOrItem(),
+                        c.getCustomerId(),
+                        c.getOrderDateFrom(),
+                        c.getOrderDateTo()
+                );
+
+        List<BffSalesOrderDto> purchaseOrders = projections.stream()
+                .collect(Collectors.groupingBy(
+                        proj -> bffSalesOrderMapper.toBffSalesOrderDto(proj),
+                        Collectors.mapping(
+                                proj -> proj.getOrderItemSeqId() != null
+                                        ? bffSalesOrderMapper.toBffSalesOrderItemDto(proj)
+                                        : null,
+                                Collectors.collectingAndThen(
+                                        Collectors.toList(),
+                                        list -> list.stream()
+                                                .filter(Objects::nonNull)
+                                                .collect(Collectors.toList())
+                                )
+                        )
+                ))
+                .entrySet().stream()
+                .map(entry -> {
+                    BffSalesOrderDto d = entry.getKey();
+                    d.setOrderItems(entry.getValue());
+                    return d;
+                })
+                .collect(Collectors.toList());
+
+        if (c.getIncludesProductDetails() != null && c.getIncludesProductDetails()) {
+            purchaseOrders.forEach(po -> {
+                if (po.getOrderItems() != null) {
+                    po.getOrderItems().forEach(item -> {
+                        item.setProduct(productQueryService.getProduct(item.getProductId()));
+                    });
+                }
+            });
+        }
+        return Page.builder(purchaseOrders)
+                .totalElements(totalElements)
+                .size(c.getSize())
+                .number(c.getPage())
+                .build();
     }
 
     @Override
@@ -70,9 +136,9 @@ public class BffSalesOrderApplicationServiceIml implements BffSalesOrderApplicat
         OffsetDateTime now = OffsetDateTime.now();
         // Create order header
         AbstractOrderCommand.SimpleCreateOrder createOrder = new AbstractOrderCommand.SimpleCreateOrder();
-        if(salesOrder.getOrderId()!=null&&!salesOrder.getOrderId().isBlank()){
+        if (salesOrder.getOrderId() != null && !salesOrder.getOrderId().isBlank()) {
             createOrder.setOrderId(salesOrder.getOrderId());
-        }else{
+        } else {
             DocumentNumberGeneratorCommands.GenerateNextNumber generateNextNumber = new DocumentNumberGeneratorCommands.GenerateNextNumber();
             generateNextNumber.setGeneratorId(SALES_ORDER);
             generateNextNumber.setRequesterId(c.getRequesterId());

@@ -48,16 +48,16 @@ public class BffSalesOrderServiceCommands {
         }
 
         /**
-         * Supplier Id
+         * Customer Id
          */
-        private String supplierId;
+        private String customerId;
 
-        public String getSupplierId() {
-            return supplierId;
+        public String getCustomerId() {
+            return customerId;
         }
 
-        public void setSupplierId(String supplierId) {
-            this.supplierId = supplierId;
+        public void setCustomerId(String customerId) {
+            this.customerId = customerId;
         }
 
         /**

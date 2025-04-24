@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderState.SimpleOrderHeaderState, String> {
+public interface BffSalesOrderRepository extends JpaRepository<AbstractOrderHeaderState.SimpleOrderHeaderState, String> {
     String COMMON_SELECT = """
             SELECT 
                 o.order_id as orderId,
@@ -37,18 +37,18 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                 oi.unit_price as unitPrice,
                 oi.item_description as itemDescription,
                 oi.comments as comments,
-                oi.supplier_product_id as supplierProductId,
+                -- oi.supplier_product_id as supplierProductId,
                 oi.estimated_ship_date as estimatedShipDate,
                 oi.estimated_delivery_date as estimatedDeliveryDate,
                 oi.status_id as itemStatusId,
                 oi.sync_status_id as itemSyncStatusId,
                 oi.fulfillment_status_id as itemFulfillmentStatusId,
-                orole.party_id as supplierId,
-                COALESCE(p.short_description,p.organization_name, p.last_name) as supplierName
+                orole.party_id as customerId,
+                COALESCE(p.short_description,p.organization_name, p.last_name) as customerName
             """;
 
     String COMMON_JOINS = """
-            LEFT JOIN order_role orole ON o.order_id = orole.order_id AND orole.role_type_id = 'SUPPLIER'
+            LEFT JOIN order_role orole ON o.order_id = orole.order_id AND orole.role_type_id = 'CUSTOMER'
             LEFT JOIN party p ON orole.party_id = p.party_id
             LEFT JOIN facility f ON o.origin_facility_id = f.facility_id
             LEFT JOIN product prod ON oi.product_id = prod.product_id
@@ -62,14 +62,14 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
     // AND (oi.deleted IS NULL OR oi.deleted = false)
 
     String COMMON_WHERE = """
-            WHERE o.order_type_id = 'PURCHASE_ORDER'
-                AND (:orderIdOrItem IS NULL 
+            WHERE o.order_type_id = 'SALES_ORDER'
+                AND (:orderIdOrItem IS NULL
                 OR o.order_id LIKE CONCAT(:orderIdOrItem, '%')
                 OR oi.product_id LIKE CONCAT(:orderIdOrItem, '%')
                 OR gi.id_value LIKE CONCAT(:orderIdOrItem, '%'))
-                AND (:supplierId IS NULL OR o.order_id IN (
+                AND (:customerId IS NULL OR o.order_id IN (
                     SELECT order_id FROM order_role 
-                    WHERE party_id = :supplierId AND role_type_id = 'SUPPLIER'
+                    WHERE party_id = :customerId AND role_type_id = 'CUSTOMER'
                 ))
                 AND (CAST(:orderDateFrom AS timestamptz) IS NULL OR o.order_date >= :orderDateFrom)
                 AND (CAST(:orderDateTo AS timestamptz) IS NULL OR o.order_date <= :orderDateTo)
@@ -128,7 +128,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
             WITH filtered_orders AS (
                 SELECT DISTINCT o.order_id, o.order_date
                 FROM order_header o
-                """ + ORDER_ITEM_JOIN + PRODUCT_JOINS + COMMON_WHERE + """
+            """ + ORDER_ITEM_JOIN + PRODUCT_JOINS + COMMON_WHERE + """
                 ORDER BY o.order_date DESC
                 LIMIT :pageSize OFFSET :offset
             )
@@ -138,11 +138,11 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
             """ + ORDER_ITEM_JOIN + COMMON_JOINS + """
             ORDER BY o.order_date DESC
             """, nativeQuery = true)
-    List<BffPurchaseOrderAndItemProjection> findAllPurchaseOrdersWithItems(
+    List<BffSalesOrderAndItemProjection> findAllSalesOrdersWithItems(
             @Param("offset") int offset,
             @Param("pageSize") int pageSize,
             @Param("orderIdOrItem") String orderIdOrItem,
-            @Param("supplierId") String supplierId,
+            @Param("customerId") String customerId,
             @Param("orderDateFrom") OffsetDateTime orderDateFrom,
             @Param("orderDateTo") OffsetDateTime orderDateTo
     );
@@ -150,11 +150,26 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
     @Query(value = """
             SELECT COUNT(DISTINCT o.order_id)
             FROM order_header o
-            """ + ORDER_ITEM_JOIN + PRODUCT_JOINS + COMMON_WHERE, nativeQuery = true)
-    long countTotalShipments(@Param("orderIdOrItem") String orderIdOrItem,
-                             @Param("supplierId") String supplierId,
-                             @Param("orderDateFrom") OffsetDateTime orderDateFrom,
-                             @Param("orderDateTo") OffsetDateTime orderDateTo
+            LEFT JOIN order_item oi ON o.order_id = oi.order_id
+            LEFT JOIN product prod ON oi.product_id = prod.product_id
+            LEFT JOIN good_identification gi ON prod.product_id = gi.product_id 
+                AND gi.good_identification_type_id = 'GTIN'
+            WHERE o.order_type_id = 'SALES_ORDER'
+                AND (:orderIdOrItem IS NULL 
+                OR o.order_id LIKE CONCAT(:orderIdOrItem, '%')
+                OR oi.product_id LIKE CONCAT(:orderIdOrItem, '%')
+                OR gi.id_value LIKE CONCAT(:orderIdOrItem, '%'))
+                AND (:customerId IS NULL OR o.order_id IN (
+                    SELECT order_id FROM order_role 
+                    WHERE party_id = :customerId AND role_type_id = 'CUSTOMER'
+                ))
+                AND (CAST(:orderDateFrom AS timestamptz) IS NULL OR o.order_date >= :orderDateFrom)
+                AND (CAST(:orderDateTo AS timestamptz) IS NULL OR o.order_date <= :orderDateTo)
+            """, nativeQuery = true)
+    long countTotalSalesOrders(@Param("orderIdOrItem") String orderIdOrItem,
+                               @Param("customerId") String customerId,
+                               @Param("orderDateFrom") OffsetDateTime orderDateFrom,
+                               @Param("orderDateTo") OffsetDateTime orderDateTo
     );
 
     @Query(value = COMMON_SELECT + """
@@ -175,7 +190,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
                 oi.unit_price as unitPrice,
                 oi.item_description as itemDescription,
                 oi.comments as comments,
-                oi.supplier_product_id as supplierProductId,
+                -- oi.supplier_product_id as supplierProductId,
                 oi.estimated_ship_date as estimatedShipDate,
                 oi.estimated_delivery_date as estimatedDeliveryDate
             FROM order_header o
@@ -183,7 +198,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
             WHERE o.order_id = :orderId 
                 AND oi.order_item_seq_id = :orderItemSeqId
             """, nativeQuery = true)
-    BffPurchaseOrderAndItemProjection findPurchaseOrderItem(
+    BffPurchaseOrderAndItemProjection findSalesOrderItem(
             @Param("orderId") String orderId,
             @Param("orderItemSeqId") String orderItemSeqId);
 
@@ -192,7 +207,7 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
      */
     @Query(value = """
             SELECT 
-                """ + ORDER_ITEM_DEMAND_QUANTITY + """
+            """ + ORDER_ITEM_DEMAND_QUANTITY + """
             """ + ORDER_ITEM_BASE_WHERE, nativeQuery = true)
     Optional<BigDecimal> findOrderItemDemandQuantity(
             @Param("orderId") String orderId,
@@ -217,13 +232,13 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
     @Query(value = """
             WITH demand AS (
                 SELECT 
-                    """ + ORDER_ITEM_DEMAND_QUANTITY + """
+            """ + ORDER_ITEM_DEMAND_QUANTITY + """
             """ + ORDER_ITEM_BASE_WHERE + """
             ),
             fulfilled AS (
                 SELECT 
                     SUM(COALESCE(oa.quantity_allocated, 0)) as fulfilled_quantity
-                """ + RECEIPT_ALLOCATION_JOIN_AND_WHERE + """
+            """ + RECEIPT_ALLOCATION_JOIN_AND_WHERE + """
             )
             """ + OUTSTANDING_QUANTITY_SELECT, nativeQuery = true)
     Optional<BigDecimal> findPurchaseOrderItemOutstandingQuantity(
@@ -267,13 +282,13 @@ public interface BffOrderRepository extends JpaRepository<AbstractOrderHeaderSta
     @Query(value = """
             WITH demand AS (
                 SELECT 
-                    """ + ORDER_ITEM_DEMAND_QUANTITY + """
+            """ + ORDER_ITEM_DEMAND_QUANTITY + """
             """ + RECEIPT_ORDER_ITEMS_JOIN + """
             ),
             fulfilled AS (
                 SELECT 
                     SUM(COALESCE(oa.quantity_allocated, 0)) as fulfilled_quantity
-                """ + RECEIPT_ORDER_ITEMS_JOIN + """
+            """ + RECEIPT_ORDER_ITEMS_JOIN + """
                 LEFT JOIN shipment_receipt_order_allocation oa ON
                     oi.order_id = oa.order_id
                     AND oi.order_item_seq_id = oa.order_item_seq_id
