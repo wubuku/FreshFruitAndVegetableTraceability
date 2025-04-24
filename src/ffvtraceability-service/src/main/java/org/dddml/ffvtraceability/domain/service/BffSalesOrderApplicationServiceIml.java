@@ -1,16 +1,10 @@
 package org.dddml.ffvtraceability.domain.service;
 
-import org.dddml.ffvtraceability.domain.BffSalesOrderDto;
-import org.dddml.ffvtraceability.domain.BffSalesOrderItemDto;
-import org.dddml.ffvtraceability.domain.SalesOrderItemVo;
-import org.dddml.ffvtraceability.domain.SalesOrderVo;
+import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorApplicationService;
 import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGeneratorCommands;
 import org.dddml.ffvtraceability.domain.mapper.BffSalesOrderMapper;
-import org.dddml.ffvtraceability.domain.order.AbstractOrderCommand;
-import org.dddml.ffvtraceability.domain.order.OrderApplicationService;
-import org.dddml.ffvtraceability.domain.order.OrderItemCommand;
-import org.dddml.ffvtraceability.domain.order.OrderRoleCommand;
+import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
 import org.dddml.ffvtraceability.domain.repository.BffSalesOrderAndItemProjection;
 import org.dddml.ffvtraceability.domain.repository.BffSalesOrderRepository;
@@ -18,9 +12,11 @@ import org.dddml.ffvtraceability.domain.util.IdUtils;
 import org.dddml.ffvtraceability.specialization.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -41,6 +37,7 @@ public class BffSalesOrderApplicationServiceIml implements BffSalesOrderApplicat
     private ProductQueryService productQueryService;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<BffSalesOrderDto> when(BffSalesOrderServiceCommands.GetSalesOrders c) {
         int offset = c.getPage() * c.getSize();
         long totalElements = bffSalesOrderRepository.countTotalSalesOrders(
@@ -151,6 +148,7 @@ public class BffSalesOrderApplicationServiceIml implements BffSalesOrderApplicat
     }
 
     @Override
+    @Transactional
     public String when(BffSalesOrderServiceCommands.CreateSalesOrder c) {
         SalesOrderVo salesOrder = c.getSalesOrder();
         if (salesOrder == null) {
@@ -198,10 +196,10 @@ public class BffSalesOrderApplicationServiceIml implements BffSalesOrderApplicat
 
         // Create order items
         if (salesOrder.getOrderItems() != null) {
-            int itemSeq = 1;
+            //int itemSeq = 1;
             for (SalesOrderItemVo item : salesOrder.getOrderItems()) {
                 OrderItemCommand.CreateOrderItem createOrderItem = createOrder.newCreateOrderItem();
-                item.setOrderItemSeqId(itemSeq++ + "");
+                //item.setOrderItemSeqId(itemSeq++ + "");
                 setupCreateOrderItemCommand(createOrderItem, item);
                 createOrder.getCreateOrderItemCommands().add(createOrderItem);
             }
@@ -213,8 +211,7 @@ public class BffSalesOrderApplicationServiceIml implements BffSalesOrderApplicat
 
 
     private void setupCreateOrderItemCommand(OrderItemCommand.CreateOrderItem createOrderItem,
-                                             SalesOrderItemVo item
-    ) {
+                                             SalesOrderItemVo item) {
         //TODO 这里如果item.getOrderItemSeqId() != null，但是数据库里面已经存在了呢？
         createOrderItem.setOrderItemSeqId(
                 item.getOrderItemSeqId() != null ? item.getOrderItemSeqId() : IdUtils.randomId()
@@ -232,8 +229,82 @@ public class BffSalesOrderApplicationServiceIml implements BffSalesOrderApplicat
     }
 
     @Override
+    @Transactional
     public void when(BffSalesOrderServiceCommands.UpdateSalesOrder c) {
+        if (c.getOrderId() == null) {
+            throw new IllegalArgumentException("OrderId is required.");
+        }
+        OrderHeaderState orderHeaderState = getAndValidateOrder(c.getOrderId());
+        if (orderHeaderState.getOrderId() == null) {
+            throw new IllegalArgumentException("Order not found: " + c.getOrderId());
+        }
+        UpdateSalesOrderVo salesOrder = c.getSalesOrder();
+        AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
+        mergePatchOrder.setOrderId(c.getOrderId());
+        mergePatchOrder.setVersion(orderHeaderState.getVersion());
+        // Set order header fields
+//        mergePatchOrder.setOrderName(salesOrder.getOrderName());
+//        mergePatchOrder.setExternalId(salesOrder.getExternalId());
+        mergePatchOrder.setOrderDate(salesOrder.getOrderDate());
+        mergePatchOrder.setCurrencyUomId(salesOrder.getCurrencyUomId());
+//        mergePatchOrder.setOriginFacilityId(salesOrder.getOriginFacilityId());
+        mergePatchOrder.setMemo(salesOrder.getMemo());
 
+        List<String> orderItemSeqIds = new ArrayList<>();
+        if (salesOrder.getOrderItems() != null) {
+            for (SalesOrderItemVo item : salesOrder.getOrderItems()) {
+                if (item.getOrderItemSeqId() != null && !item.getOrderItemSeqId().isBlank()) {
+                    orderItemSeqIds.add(item.getOrderItemSeqId());
+                    orderHeaderState.getOrderItems().stream().filter(x ->
+                            item.getOrderItemSeqId().equals(x.getOrderItemSeqId())
+                    ).findFirst().ifPresentOrElse(orderItemState -> {
+                                OrderItemCommand.MergePatchOrderItem mergePatchOrderItem = mergePatchOrder.newMergePatchOrderItem();
+                                setupMergePatchOrderItemCommand(mergePatchOrderItem, item);
+                                mergePatchOrder.getOrderItemCommands().add(mergePatchOrderItem);
+                            },
+                            () -> {
+                                throw new IllegalArgumentException("Order item not found: " +
+                                        item.getOrderItemSeqId());
+                            }
+                    );
+                } else {
+                    OrderItemCommand.CreateOrderItem createOrderItem = mergePatchOrder.newCreateOrderItem();
+                    setupCreateOrderItemCommand(createOrderItem, item);
+                    mergePatchOrder.getOrderItemCommands().add(createOrderItem);
+                }
+            }
+        }
+        //原来存在的行项目，在这次前端传过来的行项中不存在
+        orderHeaderState.getOrderItems().forEach(orderItemState -> {
+            if (!orderItemSeqIds.contains(orderItemState.getOrderItemSeqId())) {
+                OrderItemCommand.RemoveOrderItem removeOrderItem = mergePatchOrder.newRemoveOrderItem();
+                removeOrderItem.setOrderItemSeqId(orderItemState.getOrderItemSeqId());
+                removeOrderItem.setRequesterId(c.getRequesterId());
+                mergePatchOrder.getOrderItemCommands().add(removeOrderItem);
+            }
+        });
+
+        mergePatchOrder.setCommandId(c.getCommandId() != null ? c.getCommandId() : IdUtils.randomId());
+        mergePatchOrder.setRequesterId(c.getRequesterId());
+
+        orderApplicationService.when(mergePatchOrder);
+
+    }
+
+
+    private void setupMergePatchOrderItemCommand(OrderItemCommand.MergePatchOrderItem mergePatchOrderItem,
+                                                 SalesOrderItemVo item
+    ) {
+        mergePatchOrderItem.setOrderItemSeqId(item.getOrderItemSeqId());
+        mergePatchOrderItem.setProductId(item.getProductId());
+        mergePatchOrderItem.setQuantity(item.getQuantity());
+//        mergePatchOrderItem.setUnitPrice(item.getUnitPrice());
+//        mergePatchOrderItem.setEstimatedShipDate(item.getEstimatedShipDate());
+//        mergePatchOrderItem.setEstimatedDeliveryDate(item.getEstimatedDeliveryDate());
+//        mergePatchOrderItem.setItemDescription(item.getItemDescription());
+//        mergePatchOrderItem.setComments(item.getComments());
+//        mergePatchOrderItem.setExternalId(item.getExternalId());
+//        mergePatchOrderItem.setSupplierProductId(item.getSupplierProductId());
     }
 
     @Override
@@ -254,5 +325,14 @@ public class BffSalesOrderApplicationServiceIml implements BffSalesOrderApplicat
     @Override
     public void when(BffSalesOrderServiceCommands.UpdateSalesOrderItem c) {
 
+    }
+
+
+    private OrderHeaderState getAndValidateOrder(String orderId) {
+        OrderHeaderState orderHeaderState = orderApplicationService.get(orderId);
+        if (orderHeaderState == null) {
+            throw new IllegalArgumentException("Order not found: " + orderId);
+        }
+        return orderHeaderState;
     }
 }

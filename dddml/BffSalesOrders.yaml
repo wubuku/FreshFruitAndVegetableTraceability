@@ -213,6 +213,23 @@ valueObjects:
         type: id-long
       Quantity:
         type: fixed-point
+  #修改订单
+  UpdateSalesOrderVo:
+    properties:
+      OrderDate:
+        type: date-time
+      CurrencyUomId:
+        type: id
+      # ---------------------------------
+      Memo:
+        # 订单备注
+        type: long-varchar
+      # ---------------------------------
+      CustomerId:
+        type: id
+      OrderItems:
+        itemType: SalesOrderItemVo
+        isList: true
 
 services:
   BffSalesOrderService:
@@ -333,7 +350,7 @@ services:
           OrderId:
             type: id
           SalesOrder:
-            type: BffSalesOrderDto
+            type: UpdateSalesOrderVo
 
       RecalculateFulfillmentStatus:
         description: "Recalculate the fulfillment status of a Sales order"
