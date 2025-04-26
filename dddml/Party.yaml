@@ -34,7 +34,7 @@
       ShortDescription:
         type: name
       Email:
-        type: id # todo: email?
+        type: id-long # todo: email?
       WebSite:
         type: url
       Telephone:

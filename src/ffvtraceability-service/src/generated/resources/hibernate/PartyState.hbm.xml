@@ -33,7 +33,7 @@
       <column name="short_description" sql-type="VARCHAR(100)" />
     </property>
     <property name="email">
-      <column name="email" sql-type="VARCHAR(20)" />
+      <column name="email" sql-type="VARCHAR(60)" />
     </property>
     <property name="webSite">
       <column name="web_site" sql-type="VARCHAR(2000)" />
