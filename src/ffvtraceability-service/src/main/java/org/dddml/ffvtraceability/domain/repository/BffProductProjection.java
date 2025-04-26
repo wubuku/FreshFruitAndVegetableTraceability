@@ -70,8 +70,6 @@ public interface BffProductProjection {
 
     String getActive();
 
-    String getDefaultShipmentBoxTypeId();
-
     String getCaseUomId();
 
     String getInternalId();
@@ -97,26 +95,6 @@ public interface BffProductProjection {
     Long getIndividualsPerPackage();
 
     String getDimensionsDescription();
-
-    String getDefaultShipmentBoxTypeShipmentBoxTypeId();
-
-    String getDefaultShipmentBoxTypeDescription();
-
-    String getDefaultShipmentBoxTypeDimensionUomId();
-
-    java.math.BigDecimal getDefaultShipmentBoxTypeBoxLength();
-
-    java.math.BigDecimal getDefaultShipmentBoxTypeBoxWidth();
-
-    java.math.BigDecimal getDefaultShipmentBoxTypeBoxHeight();
-
-    String getDefaultShipmentBoxTypeWeightUomId();
-
-    java.math.BigDecimal getDefaultShipmentBoxTypeBoxWeight();
-
-    String getDefaultShipmentBoxTypeActive();
-
-    String getDefaultShipmentBoxTypeBoxTypeName();
 
 }
 

@@ -73,13 +73,13 @@ valueObjects:
         type: fixed-point
       Active:
         type: indicator
-      DefaultShipmentBoxTypeId:
-        # 默认的装运箱类型 Id
-        type: id
-      # -------------------------------------------------------------------
-      DefaultShipmentBoxType:
-        # 在需要的时候，返回默认的装运箱类型的详细信息
-        type: BffShipmentBoxTypeDto
+#      DefaultShipmentBoxTypeId:
+#        # 默认的装运箱类型 Id
+#        type: id
+#      # -------------------------------------------------------------------
+#      DefaultShipmentBoxType:
+#        # 在需要的时候，返回默认的装运箱类型的详细信息
+#        type: BffShipmentBoxTypeDto
           # 在 DefaultShipmentBoxType 中包含“包装尺寸”和“包装重量”信息
           # DimensionUomId:
           #   type: id

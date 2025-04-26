@@ -69,21 +69,6 @@ public class BffRawItemDto implements Serializable {
         this.description = description;
     }
 
-    /**
-     * GTIN (Global Trade Item Number)
-     */
-    private String gtin;
-
-    public String getGtin()
-    {
-        return this.gtin;
-    }
-
-    public void setGtin(String gtin)
-    {
-        this.gtin = gtin;
-    }
-
     private String smallImageUrl;
 
     public String getSmallImageUrl()
@@ -132,33 +117,6 @@ public class BffRawItemDto implements Serializable {
         this.quantityUomId = quantityUomId;
     }
 
-    /**
-     * If you have a six-pack of 12oz soda cans you would have quantityIncluded=12, quantityUomId=oz, piecesIncluded=6.
-     */
-    private java.math.BigDecimal quantityIncluded;
-
-    public java.math.BigDecimal getQuantityIncluded()
-    {
-        return this.quantityIncluded;
-    }
-
-    public void setQuantityIncluded(java.math.BigDecimal quantityIncluded)
-    {
-        this.quantityIncluded = quantityIncluded;
-    }
-
-    private Long piecesIncluded;
-
-    public Long getPiecesIncluded()
-    {
-        return this.piecesIncluded;
-    }
-
-    public void setPiecesIncluded(Long piecesIncluded)
-    {
-        this.piecesIncluded = piecesIncluded;
-    }
-
     private String statusId;
 
     public String getStatusId()
@@ -169,69 +127,6 @@ public class BffRawItemDto implements Serializable {
     public void setStatusId(String statusId)
     {
         this.statusId = statusId;
-    }
-
-    private String supplierId;
-
-    public String getSupplierId()
-    {
-        return this.supplierId;
-    }
-
-    public void setSupplierId(String supplierId)
-    {
-        this.supplierId = supplierId;
-    }
-
-    private String supplierName;
-
-    public String getSupplierName()
-    {
-        return this.supplierName;
-    }
-
-    public void setSupplierName(String supplierName)
-    {
-        this.supplierName = supplierName;
-    }
-
-    private String weightUomId;
-
-    public String getWeightUomId()
-    {
-        return this.weightUomId;
-    }
-
-    public void setWeightUomId(String weightUomId)
-    {
-        this.weightUomId = weightUomId;
-    }
-
-    /**
-     * The shipping weight of the product.
-     */
-    private java.math.BigDecimal shippingWeight;
-
-    public java.math.BigDecimal getShippingWeight()
-    {
-        return this.shippingWeight;
-    }
-
-    public void setShippingWeight(java.math.BigDecimal shippingWeight)
-    {
-        this.shippingWeight = shippingWeight;
-    }
-
-    private java.math.BigDecimal productWeight;
-
-    public java.math.BigDecimal getProductWeight()
-    {
-        return this.productWeight;
-    }
-
-    public void setProductWeight(java.math.BigDecimal productWeight)
-    {
-        this.productWeight = productWeight;
     }
 
     private String heightUomId;
@@ -378,42 +273,6 @@ public class BffRawItemDto implements Serializable {
         this.active = active;
     }
 
-    private String defaultShipmentBoxTypeId;
-
-    public String getDefaultShipmentBoxTypeId()
-    {
-        return this.defaultShipmentBoxTypeId;
-    }
-
-    public void setDefaultShipmentBoxTypeId(String defaultShipmentBoxTypeId)
-    {
-        this.defaultShipmentBoxTypeId = defaultShipmentBoxTypeId;
-    }
-
-    private BffShipmentBoxTypeDto defaultShipmentBoxType = new BffShipmentBoxTypeDto();
-
-    public BffShipmentBoxTypeDto getDefaultShipmentBoxType()
-    {
-        return this.defaultShipmentBoxType;
-    }
-
-    public void setDefaultShipmentBoxType(BffShipmentBoxTypeDto defaultShipmentBoxType)
-    {
-        this.defaultShipmentBoxType = defaultShipmentBoxType;
-    }
-
-    private String caseUomId;
-
-    public String getCaseUomId()
-    {
-        return this.caseUomId;
-    }
-
-    public void setCaseUomId(String caseUomId)
-    {
-        this.caseUomId = caseUomId;
-    }
-
     private String internalId;
 
     public String getInternalId()
@@ -426,141 +285,6 @@ public class BffRawItemDto implements Serializable {
         this.internalId = internalId;
     }
 
-    private String produceVariety;
-
-    public String getProduceVariety()
-    {
-        return this.produceVariety;
-    }
-
-    public void setProduceVariety(String produceVariety)
-    {
-        this.produceVariety = produceVariety;
-    }
-
-    private String hsCode;
-
-    public String getHsCode()
-    {
-        return this.hsCode;
-    }
-
-    public void setHsCode(String hsCode)
-    {
-        this.hsCode = hsCode;
-    }
-
-    private String organicCertifications;
-
-    public String getOrganicCertifications()
-    {
-        return this.organicCertifications;
-    }
-
-    public void setOrganicCertifications(String organicCertifications)
-    {
-        this.organicCertifications = organicCertifications;
-    }
-
-    private String materialCompositionDescription;
-
-    public String getMaterialCompositionDescription()
-    {
-        return this.materialCompositionDescription;
-    }
-
-    public void setMaterialCompositionDescription(String materialCompositionDescription)
-    {
-        this.materialCompositionDescription = materialCompositionDescription;
-    }
-
-    private String countryOfOrigin;
-
-    public String getCountryOfOrigin()
-    {
-        return this.countryOfOrigin;
-    }
-
-    public void setCountryOfOrigin(String countryOfOrigin)
-    {
-        this.countryOfOrigin = countryOfOrigin;
-    }
-
-    private String shelfLifeDescription;
-
-    public String getShelfLifeDescription()
-    {
-        return this.shelfLifeDescription;
-    }
-
-    public void setShelfLifeDescription(String shelfLifeDescription)
-    {
-        this.shelfLifeDescription = shelfLifeDescription;
-    }
-
-    private String handlingInstructions;
-
-    public String getHandlingInstructions()
-    {
-        return this.handlingInstructions;
-    }
-
-    public void setHandlingInstructions(String handlingInstructions)
-    {
-        this.handlingInstructions = handlingInstructions;
-    }
-
-    private String storageConditions;
-
-    public String getStorageConditions()
-    {
-        return this.storageConditions;
-    }
-
-    public void setStorageConditions(String storageConditions)
-    {
-        this.storageConditions = storageConditions;
-    }
-
-    private String certificationCodes;
-
-    public String getCertificationCodes()
-    {
-        return this.certificationCodes;
-    }
-
-    public void setCertificationCodes(String certificationCodes)
-    {
-        this.certificationCodes = certificationCodes;
-    }
-
-    /**
-     * Number of individual units in one package (for products counted by individual pieces, e.g., fruits, eggs)
-     */
-    private Long individualsPerPackage;
-
-    public Long getIndividualsPerPackage()
-    {
-        return this.individualsPerPackage;
-    }
-
-    public void setIndividualsPerPackage(Long individualsPerPackage)
-    {
-        this.individualsPerPackage = individualsPerPackage;
-    }
-
-    private String dimensionsDescription;
-
-    public String getDimensionsDescription()
-    {
-        return this.dimensionsDescription;
-    }
-
-    public void setDimensionsDescription(String dimensionsDescription)
-    {
-        this.dimensionsDescription = dimensionsDescription;
-    }
-
     private java.util.List<BffSupplierRawItemDto> suppliers;
 
     public java.util.List<BffSupplierRawItemDto> getSuppliers() {
@@ -571,130 +295,22 @@ public class BffRawItemDto implements Serializable {
         this.suppliers = suppliers;
     }
 
-    protected String getDefaultShipmentBoxTypeShipmentBoxTypeId()
-    {
-        return getDefaultShipmentBoxType().getShipmentBoxTypeId();
-    }
-
-    protected void setDefaultShipmentBoxTypeShipmentBoxTypeId(String defaultShipmentBoxTypeShipmentBoxTypeId)
-    {
-        getDefaultShipmentBoxType().setShipmentBoxTypeId(defaultShipmentBoxTypeShipmentBoxTypeId);
-    }
-
-    protected String getDefaultShipmentBoxTypeDescription()
-    {
-        return getDefaultShipmentBoxType().getDescription();
-    }
-
-    protected void setDefaultShipmentBoxTypeDescription(String defaultShipmentBoxTypeDescription)
-    {
-        getDefaultShipmentBoxType().setDescription(defaultShipmentBoxTypeDescription);
-    }
-
-    protected String getDefaultShipmentBoxTypeDimensionUomId()
-    {
-        return getDefaultShipmentBoxType().getDimensionUomId();
-    }
-
-    protected void setDefaultShipmentBoxTypeDimensionUomId(String defaultShipmentBoxTypeDimensionUomId)
-    {
-        getDefaultShipmentBoxType().setDimensionUomId(defaultShipmentBoxTypeDimensionUomId);
-    }
-
-    protected java.math.BigDecimal getDefaultShipmentBoxTypeBoxLength()
-    {
-        return getDefaultShipmentBoxType().getBoxLength();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxLength(java.math.BigDecimal defaultShipmentBoxTypeBoxLength)
-    {
-        getDefaultShipmentBoxType().setBoxLength(defaultShipmentBoxTypeBoxLength);
-    }
-
-    protected java.math.BigDecimal getDefaultShipmentBoxTypeBoxWidth()
-    {
-        return getDefaultShipmentBoxType().getBoxWidth();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxWidth(java.math.BigDecimal defaultShipmentBoxTypeBoxWidth)
-    {
-        getDefaultShipmentBoxType().setBoxWidth(defaultShipmentBoxTypeBoxWidth);
-    }
-
-    protected java.math.BigDecimal getDefaultShipmentBoxTypeBoxHeight()
-    {
-        return getDefaultShipmentBoxType().getBoxHeight();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxHeight(java.math.BigDecimal defaultShipmentBoxTypeBoxHeight)
-    {
-        getDefaultShipmentBoxType().setBoxHeight(defaultShipmentBoxTypeBoxHeight);
-    }
-
-    protected String getDefaultShipmentBoxTypeWeightUomId()
-    {
-        return getDefaultShipmentBoxType().getWeightUomId();
-    }
-
-    protected void setDefaultShipmentBoxTypeWeightUomId(String defaultShipmentBoxTypeWeightUomId)
-    {
-        getDefaultShipmentBoxType().setWeightUomId(defaultShipmentBoxTypeWeightUomId);
-    }
-
-    protected java.math.BigDecimal getDefaultShipmentBoxTypeBoxWeight()
-    {
-        return getDefaultShipmentBoxType().getBoxWeight();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxWeight(java.math.BigDecimal defaultShipmentBoxTypeBoxWeight)
-    {
-        getDefaultShipmentBoxType().setBoxWeight(defaultShipmentBoxTypeBoxWeight);
-    }
-
-    protected String getDefaultShipmentBoxTypeActive()
-    {
-        return getDefaultShipmentBoxType().getActive();
-    }
-
-    protected void setDefaultShipmentBoxTypeActive(String defaultShipmentBoxTypeActive)
-    {
-        getDefaultShipmentBoxType().setActive(defaultShipmentBoxTypeActive);
-    }
-
-    protected String getDefaultShipmentBoxTypeBoxTypeName()
-    {
-        return getDefaultShipmentBoxType().getBoxTypeName();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxTypeName(String defaultShipmentBoxTypeBoxTypeName)
-    {
-        getDefaultShipmentBoxType().setBoxTypeName(defaultShipmentBoxTypeBoxTypeName);
-    }
-
     public BffRawItemDto()
     {
     }
 
-    public BffRawItemDto(String productId, String productName, String internalName, String brandName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight, String heightUomId, java.math.BigDecimal productHeight, java.math.BigDecimal shippingHeight, String widthUomId, java.math.BigDecimal productWidth, java.math.BigDecimal shippingWidth, String depthUomId, java.math.BigDecimal productDepth, java.math.BigDecimal shippingDepth, String diameterUomId, java.math.BigDecimal productDiameter, String active, String defaultShipmentBoxTypeId, BffShipmentBoxTypeDto defaultShipmentBoxType, String caseUomId, String internalId, String produceVariety, String hsCode, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String shelfLifeDescription, String handlingInstructions, String storageConditions, String certificationCodes, Long individualsPerPackage, String dimensionsDescription, java.util.List<BffSupplierRawItemDto> suppliers)
+    public BffRawItemDto(String productId, String productName, String internalName, String brandName, String description, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, String statusId, String heightUomId, java.math.BigDecimal productHeight, java.math.BigDecimal shippingHeight, String widthUomId, java.math.BigDecimal productWidth, java.math.BigDecimal shippingWidth, String depthUomId, java.math.BigDecimal productDepth, java.math.BigDecimal shippingDepth, String diameterUomId, java.math.BigDecimal productDiameter, String active, String internalId, java.util.List<BffSupplierRawItemDto> suppliers)
     {
         this.productId = productId;
         this.productName = productName;
         this.internalName = internalName;
         this.brandName = brandName;
         this.description = description;
-        this.gtin = gtin;
         this.smallImageUrl = smallImageUrl;
         this.mediumImageUrl = mediumImageUrl;
         this.largeImageUrl = largeImageUrl;
         this.quantityUomId = quantityUomId;
-        this.quantityIncluded = quantityIncluded;
-        this.piecesIncluded = piecesIncluded;
         this.statusId = statusId;
-        this.supplierId = supplierId;
-        this.supplierName = supplierName;
-        this.weightUomId = weightUomId;
-        this.shippingWeight = shippingWeight;
-        this.productWeight = productWeight;
         this.heightUomId = heightUomId;
         this.productHeight = productHeight;
         this.shippingHeight = shippingHeight;
@@ -707,21 +323,7 @@ public class BffRawItemDto implements Serializable {
         this.diameterUomId = diameterUomId;
         this.productDiameter = productDiameter;
         this.active = active;
-        this.defaultShipmentBoxTypeId = defaultShipmentBoxTypeId;
-        this.defaultShipmentBoxType = defaultShipmentBoxType;
-        this.caseUomId = caseUomId;
         this.internalId = internalId;
-        this.produceVariety = produceVariety;
-        this.hsCode = hsCode;
-        this.organicCertifications = organicCertifications;
-        this.materialCompositionDescription = materialCompositionDescription;
-        this.countryOfOrigin = countryOfOrigin;
-        this.shelfLifeDescription = shelfLifeDescription;
-        this.handlingInstructions = handlingInstructions;
-        this.storageConditions = storageConditions;
-        this.certificationCodes = certificationCodes;
-        this.individualsPerPackage = individualsPerPackage;
-        this.dimensionsDescription = dimensionsDescription;
         this.suppliers = suppliers;
     }
 
@@ -742,19 +344,11 @@ public class BffRawItemDto implements Serializable {
             && (internalName == other.internalName || (internalName != null && internalName.equals(other.internalName)))
             && (brandName == other.brandName || (brandName != null && brandName.equals(other.brandName)))
             && (description == other.description || (description != null && description.equals(other.description)))
-            && (gtin == other.gtin || (gtin != null && gtin.equals(other.gtin)))
             && (smallImageUrl == other.smallImageUrl || (smallImageUrl != null && smallImageUrl.equals(other.smallImageUrl)))
             && (mediumImageUrl == other.mediumImageUrl || (mediumImageUrl != null && mediumImageUrl.equals(other.mediumImageUrl)))
             && (largeImageUrl == other.largeImageUrl || (largeImageUrl != null && largeImageUrl.equals(other.largeImageUrl)))
             && (quantityUomId == other.quantityUomId || (quantityUomId != null && quantityUomId.equals(other.quantityUomId)))
-            && (quantityIncluded == other.quantityIncluded || (quantityIncluded != null && quantityIncluded.equals(other.quantityIncluded)))
-            && (piecesIncluded == other.piecesIncluded || (piecesIncluded != null && piecesIncluded.equals(other.piecesIncluded)))
             && (statusId == other.statusId || (statusId != null && statusId.equals(other.statusId)))
-            && (supplierId == other.supplierId || (supplierId != null && supplierId.equals(other.supplierId)))
-            && (supplierName == other.supplierName || (supplierName != null && supplierName.equals(other.supplierName)))
-            && (weightUomId == other.weightUomId || (weightUomId != null && weightUomId.equals(other.weightUomId)))
-            && (shippingWeight == other.shippingWeight || (shippingWeight != null && shippingWeight.equals(other.shippingWeight)))
-            && (productWeight == other.productWeight || (productWeight != null && productWeight.equals(other.productWeight)))
             && (heightUomId == other.heightUomId || (heightUomId != null && heightUomId.equals(other.heightUomId)))
             && (productHeight == other.productHeight || (productHeight != null && productHeight.equals(other.productHeight)))
             && (shippingHeight == other.shippingHeight || (shippingHeight != null && shippingHeight.equals(other.shippingHeight)))
@@ -767,21 +361,7 @@ public class BffRawItemDto implements Serializable {
             && (diameterUomId == other.diameterUomId || (diameterUomId != null && diameterUomId.equals(other.diameterUomId)))
             && (productDiameter == other.productDiameter || (productDiameter != null && productDiameter.equals(other.productDiameter)))
             && (active == other.active || (active != null && active.equals(other.active)))
-            && (defaultShipmentBoxTypeId == other.defaultShipmentBoxTypeId || (defaultShipmentBoxTypeId != null && defaultShipmentBoxTypeId.equals(other.defaultShipmentBoxTypeId)))
-            && (defaultShipmentBoxType == other.defaultShipmentBoxType || (defaultShipmentBoxType != null && defaultShipmentBoxType.equals(other.defaultShipmentBoxType)))
-            && (caseUomId == other.caseUomId || (caseUomId != null && caseUomId.equals(other.caseUomId)))
             && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
-            && (produceVariety == other.produceVariety || (produceVariety != null && produceVariety.equals(other.produceVariety)))
-            && (hsCode == other.hsCode || (hsCode != null && hsCode.equals(other.hsCode)))
-            && (organicCertifications == other.organicCertifications || (organicCertifications != null && organicCertifications.equals(other.organicCertifications)))
-            && (materialCompositionDescription == other.materialCompositionDescription || (materialCompositionDescription != null && materialCompositionDescription.equals(other.materialCompositionDescription)))
-            && (countryOfOrigin == other.countryOfOrigin || (countryOfOrigin != null && countryOfOrigin.equals(other.countryOfOrigin)))
-            && (shelfLifeDescription == other.shelfLifeDescription || (shelfLifeDescription != null && shelfLifeDescription.equals(other.shelfLifeDescription)))
-            && (handlingInstructions == other.handlingInstructions || (handlingInstructions != null && handlingInstructions.equals(other.handlingInstructions)))
-            && (storageConditions == other.storageConditions || (storageConditions != null && storageConditions.equals(other.storageConditions)))
-            && (certificationCodes == other.certificationCodes || (certificationCodes != null && certificationCodes.equals(other.certificationCodes)))
-            && (individualsPerPackage == other.individualsPerPackage || (individualsPerPackage != null && individualsPerPackage.equals(other.individualsPerPackage)))
-            && (dimensionsDescription == other.dimensionsDescription || (dimensionsDescription != null && dimensionsDescription.equals(other.dimensionsDescription)))
             && (suppliers == other.suppliers || (suppliers != null && suppliers.equals(other.suppliers)))
             ;
     }
@@ -805,9 +385,6 @@ public class BffRawItemDto implements Serializable {
         if (this.description != null) {
             hash += 13 * this.description.hashCode();
         }
-        if (this.gtin != null) {
-            hash += 13 * this.gtin.hashCode();
-        }
         if (this.smallImageUrl != null) {
             hash += 13 * this.smallImageUrl.hashCode();
         }
@@ -820,29 +397,8 @@ public class BffRawItemDto implements Serializable {
         if (this.quantityUomId != null) {
             hash += 13 * this.quantityUomId.hashCode();
         }
-        if (this.quantityIncluded != null) {
-            hash += 13 * this.quantityIncluded.hashCode();
-        }
-        if (this.piecesIncluded != null) {
-            hash += 13 * this.piecesIncluded.hashCode();
-        }
         if (this.statusId != null) {
             hash += 13 * this.statusId.hashCode();
-        }
-        if (this.supplierId != null) {
-            hash += 13 * this.supplierId.hashCode();
-        }
-        if (this.supplierName != null) {
-            hash += 13 * this.supplierName.hashCode();
-        }
-        if (this.weightUomId != null) {
-            hash += 13 * this.weightUomId.hashCode();
-        }
-        if (this.shippingWeight != null) {
-            hash += 13 * this.shippingWeight.hashCode();
-        }
-        if (this.productWeight != null) {
-            hash += 13 * this.productWeight.hashCode();
         }
         if (this.heightUomId != null) {
             hash += 13 * this.heightUomId.hashCode();
@@ -880,50 +436,8 @@ public class BffRawItemDto implements Serializable {
         if (this.active != null) {
             hash += 13 * this.active.hashCode();
         }
-        if (this.defaultShipmentBoxTypeId != null) {
-            hash += 13 * this.defaultShipmentBoxTypeId.hashCode();
-        }
-        if (this.defaultShipmentBoxType != null) {
-            hash += 13 * this.defaultShipmentBoxType.hashCode();
-        }
-        if (this.caseUomId != null) {
-            hash += 13 * this.caseUomId.hashCode();
-        }
         if (this.internalId != null) {
             hash += 13 * this.internalId.hashCode();
-        }
-        if (this.produceVariety != null) {
-            hash += 13 * this.produceVariety.hashCode();
-        }
-        if (this.hsCode != null) {
-            hash += 13 * this.hsCode.hashCode();
-        }
-        if (this.organicCertifications != null) {
-            hash += 13 * this.organicCertifications.hashCode();
-        }
-        if (this.materialCompositionDescription != null) {
-            hash += 13 * this.materialCompositionDescription.hashCode();
-        }
-        if (this.countryOfOrigin != null) {
-            hash += 13 * this.countryOfOrigin.hashCode();
-        }
-        if (this.shelfLifeDescription != null) {
-            hash += 13 * this.shelfLifeDescription.hashCode();
-        }
-        if (this.handlingInstructions != null) {
-            hash += 13 * this.handlingInstructions.hashCode();
-        }
-        if (this.storageConditions != null) {
-            hash += 13 * this.storageConditions.hashCode();
-        }
-        if (this.certificationCodes != null) {
-            hash += 13 * this.certificationCodes.hashCode();
-        }
-        if (this.individualsPerPackage != null) {
-            hash += 13 * this.individualsPerPackage.hashCode();
-        }
-        if (this.dimensionsDescription != null) {
-            hash += 13 * this.dimensionsDescription.hashCode();
         }
         if (this.suppliers != null) {
             hash += 13 * this.suppliers.hashCode();
@@ -939,19 +453,11 @@ public class BffRawItemDto implements Serializable {
                 ", internalName=" + '\'' + internalName + '\'' +
                 ", brandName=" + '\'' + brandName + '\'' +
                 ", description=" + '\'' + description + '\'' +
-                ", gtin=" + '\'' + gtin + '\'' +
                 ", smallImageUrl=" + '\'' + smallImageUrl + '\'' +
                 ", mediumImageUrl=" + '\'' + mediumImageUrl + '\'' +
                 ", largeImageUrl=" + '\'' + largeImageUrl + '\'' +
                 ", quantityUomId=" + '\'' + quantityUomId + '\'' +
-                ", quantityIncluded=" + quantityIncluded +
-                ", piecesIncluded=" + piecesIncluded +
                 ", statusId=" + '\'' + statusId + '\'' +
-                ", supplierId=" + '\'' + supplierId + '\'' +
-                ", supplierName=" + '\'' + supplierName + '\'' +
-                ", weightUomId=" + '\'' + weightUomId + '\'' +
-                ", shippingWeight=" + shippingWeight +
-                ", productWeight=" + productWeight +
                 ", heightUomId=" + '\'' + heightUomId + '\'' +
                 ", productHeight=" + productHeight +
                 ", shippingHeight=" + shippingHeight +
@@ -964,21 +470,7 @@ public class BffRawItemDto implements Serializable {
                 ", diameterUomId=" + '\'' + diameterUomId + '\'' +
                 ", productDiameter=" + productDiameter +
                 ", active=" + '\'' + active + '\'' +
-                ", defaultShipmentBoxTypeId=" + '\'' + defaultShipmentBoxTypeId + '\'' +
-                ", defaultShipmentBoxType=" + defaultShipmentBoxType +
-                ", caseUomId=" + '\'' + caseUomId + '\'' +
                 ", internalId=" + '\'' + internalId + '\'' +
-                ", produceVariety=" + '\'' + produceVariety + '\'' +
-                ", hsCode=" + '\'' + hsCode + '\'' +
-                ", organicCertifications=" + '\'' + organicCertifications + '\'' +
-                ", materialCompositionDescription=" + '\'' + materialCompositionDescription + '\'' +
-                ", countryOfOrigin=" + '\'' + countryOfOrigin + '\'' +
-                ", shelfLifeDescription=" + '\'' + shelfLifeDescription + '\'' +
-                ", handlingInstructions=" + '\'' + handlingInstructions + '\'' +
-                ", storageConditions=" + '\'' + storageConditions + '\'' +
-                ", certificationCodes=" + '\'' + certificationCodes + '\'' +
-                ", individualsPerPackage=" + individualsPerPackage +
-                ", dimensionsDescription=" + '\'' + dimensionsDescription + '\'' +
                 ", suppliers=" + suppliers +
                 '}';
     }

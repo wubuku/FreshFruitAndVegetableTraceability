@@ -1,7 +1,6 @@
 package org.dddml.ffvtraceability.domain.service;
 
 import org.dddml.ffvtraceability.domain.BffRawItemDto;
-import org.dddml.ffvtraceability.domain.BffShipmentBoxTypeDto;
 import org.dddml.ffvtraceability.domain.BffSupplierRawItemDto;
 import org.dddml.ffvtraceability.domain.Command;
 import org.dddml.ffvtraceability.domain.mapper.BffRawItemMapper;
@@ -12,7 +11,6 @@ import org.dddml.ffvtraceability.domain.party.PartyState;
 import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
 import org.dddml.ffvtraceability.domain.repository.BffSupplierRawItemProjection;
-import org.dddml.ffvtraceability.domain.shipmentboxtype.AbstractShipmentBoxTypeCommand;
 import org.dddml.ffvtraceability.domain.shipmentboxtype.ShipmentBoxTypeApplicationService;
 import org.dddml.ffvtraceability.domain.supplierproduct.AbstractSupplierProductCommand;
 import org.dddml.ffvtraceability.domain.supplierproduct.SupplierProductApplicationService;
@@ -33,9 +31,9 @@ import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.*;
+import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.GOOD_IDENTIFICATION_TYPE_INTERNAL_ID;
+import static org.dddml.ffvtraceability.domain.constants.BffProductConstants.PRODUCT_TYPE_RAW_MATERIAL;
 import static org.dddml.ffvtraceability.domain.constants.BffRawItemConstants.DEFAULT_CURRENCY_UOM_ID;
-import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_NO;
 import static org.dddml.ffvtraceability.domain.util.IndicatorUtils.INDICATOR_YES;
 
 @Service
@@ -74,10 +72,36 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
     @Override
     @Transactional(readOnly = true)
     public Page<BffRawItemDto> when(BffRawItemServiceCommands.GetRawItems c) {
-        return PageUtils.toPage(
-                bffRawItemRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize()), c.getSupplierId(),
+        Page<BffRawItemDto> page = PageUtils.toPage(
+                bffRawItemRepository.findAllRawItems(PageRequest.of(c.getPage(), c.getSize()), c.getProductId(), c.getSupplierId(),
                         c.getActive()),
                 bffRawItemMapper::toBffRawItemDto);
+        if (c.getSupplierId() != null && !c.getSupplierId().isBlank()) {
+            page.getContent().forEach(rawItem -> {
+                bffRawItemRepository.findSupplierRawItemByProductId(rawItem.getProductId(), c.getSupplierId()).ifPresent(
+                        projection -> {
+                            if (rawItem.getSuppliers() == null) {
+                                rawItem.setSuppliers(new ArrayList<>());
+                            }
+                            rawItem.getSuppliers().add(bffRawItemMapper.toBffSupplierRawItemDto(projection));
+                        }
+                );
+            });
+        }
+//        else {//当不提供供应商Id的时候也可以返回该产品所关联的所有供应商的信息
+//            page.getContent().forEach(rawItem -> {
+//                List<BffSupplierRawItemProjection> projections = bffRawItemRepository.findSupplierRawItemsByProductId(rawItem.getProductId());
+//                projections.forEach(
+//                        projection -> {
+//                            if (rawItem.getSuppliers() == null) {
+//                                rawItem.setSuppliers(new ArrayList<>());
+//                            }
+//                            rawItem.getSuppliers().add(bffRawItemMapper.toBffSupplierRawItemDto(projection));
+//                        }
+//                );
+//            });
+//        }
+        return page;
     }
 
     @Override
@@ -101,13 +125,6 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                 }
             }
         }
-//        String supplierId = rawItem.getSupplierId();
-//        if (supplierId == null || supplierId.isBlank()) {
-//            throw new IllegalArgumentException("Supplier can't be null");
-//        }
-//        if (partyApplicationService.get(supplierId) == null) {
-//            throw new IllegalArgumentException("SupplierId is not valid.");
-//        }
         AbstractProductCommand.SimpleCreateProduct createProduct = new AbstractProductCommand.SimpleCreateProduct();
         createProduct.setProductId(rawItem.getProductId() != null ? rawItem.getProductId() : IdUtils.randomId());
         // (rawItem.getProductId()); // NOTE: ignore the productId from the client side?
@@ -120,24 +137,24 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         // If you have a six-pack of 12oz soda cans you would have quantityIncluded=12,
         // quantityUomId=oz, piecesIncluded=6.
         //createProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
-        createProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
+        //createProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
         createProduct.setDescription(rawItem.getDescription());
         //createProduct.setBrandName(rawItem.getBrandName());
-        createProduct.setProduceVariety(rawItem.getProduceVariety());
+        //createProduct.setProduceVariety(rawItem.getProduceVariety());
         //createProduct.setOrganicCertifications(rawItem.getOrganicCertifications());
         //createProduct.setCountryOfOrigin(rawItem.getCountryOfOrigin());
-        createProduct.setShelfLifeDescription(rawItem.getShelfLifeDescription());
-        createProduct.setHandlingInstructions(rawItem.getHandlingInstructions());
-        createProduct.setStorageConditions(rawItem.getStorageConditions());
+        //createProduct.setShelfLifeDescription(rawItem.getShelfLifeDescription());
+        //createProduct.setHandlingInstructions(rawItem.getHandlingInstructions());
+        //createProduct.setStorageConditions(rawItem.getStorageConditions());
         //createProduct.setMaterialCompositionDescription(rawItem.getMaterialCompositionDescription());
         //createProduct.setCertificationCodes(rawItem.getCertificationCodes());
         //createProduct.setIndividualsPerPackage(rawItem.getIndividualsPerPackage());
         //createProduct.setCaseUomId(rawItem.getCaseUomId());
-        createProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
+        //createProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
 
         // Weight related fields
-        createProduct.setWeightUomId(rawItem.getWeightUomId());
-        createProduct.setShippingWeight(rawItem.getShippingWeight());
+        //createProduct.setWeightUomId(rawItem.getWeightUomId());
+        //createProduct.setShippingWeight(rawItem.getShippingWeight());
         //createProduct.setProductWeight(rawItem.getProductWeight());
         // Height related fields
         createProduct.setHeightUomId(rawItem.getHeightUomId());
@@ -169,16 +186,16 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
             }
             addGoodIdentification(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID, rawItem.getInternalId(), createProduct);
         }
-        if (rawItem.getHsCode() != null && !rawItem.getHsCode().isBlank()) {
-            rawItem.setHsCode(rawItem.getHsCode().trim());
-            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_HS_CODE, rawItem.getHsCode(), createProduct);
-        }
+//        if (rawItem.getHsCode() != null && !rawItem.getHsCode().isBlank()) {
+//            rawItem.setHsCode(rawItem.getHsCode().trim());
+//            addGoodIdentification(GOOD_IDENTIFICATION_TYPE_HS_CODE, rawItem.getHsCode(), createProduct);
+//        }
 
-        if (rawItem.getDefaultShipmentBoxTypeId() != null) {
-            createProduct.setDefaultShipmentBoxTypeId(rawItem.getDefaultShipmentBoxTypeId());
-        } else if (rawItem.getDefaultShipmentBoxType() != null) {
-            createProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
-        }
+//        if (rawItem.getDefaultShipmentBoxTypeId() != null) {
+//            createProduct.setDefaultShipmentBoxTypeId(rawItem.getDefaultShipmentBoxTypeId());
+//        } else if (rawItem.getDefaultShipmentBoxType() != null) {
+//            createProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
+//        }
         createProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : createProduct.getProductId());
         createProduct.setRequesterId(c.getRequesterId());
         productApplicationService.when(createProduct);
@@ -204,26 +221,26 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createProduct.getCreateGoodIdentificationCommands().add(createGoodIdentification);
     }
 
-    private String createShipmentBoxType(BffRawItemDto rawItem, Command c) {
-        BffShipmentBoxTypeDto shipmentBoxTypeDto = rawItem.getDefaultShipmentBoxType();
-        AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType createShipmentBoxType = new AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType();
-        createShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeDto.getShipmentBoxTypeId() != null
-                ? shipmentBoxTypeDto.getShipmentBoxTypeId()
-                : IdUtils.randomId());
-        createShipmentBoxType.setDescription(shipmentBoxTypeDto.getDescription());
-        createShipmentBoxType.setDimensionUomId(shipmentBoxTypeDto.getDimensionUomId());
-        createShipmentBoxType.setBoxLength(shipmentBoxTypeDto.getBoxLength());
-        createShipmentBoxType.setBoxHeight(shipmentBoxTypeDto.getBoxHeight());
-        createShipmentBoxType.setBoxWidth(shipmentBoxTypeDto.getBoxWidth());
-        createShipmentBoxType.setWeightUomId(shipmentBoxTypeDto.getWeightUomId());
-        createShipmentBoxType.setBoxWeight(shipmentBoxTypeDto.getBoxWeight());
-        createShipmentBoxType.setBoxTypeName(shipmentBoxTypeDto.getBoxTypeName());
-        createShipmentBoxType.setCommandId(
-                c.getCommandId() != null ? c.getCommandId() : createShipmentBoxType.getShipmentBoxTypeId());
-        createShipmentBoxType.setRequesterId(c.getRequesterId());
-        shipmentBoxTypeApplicationService.when(createShipmentBoxType);
-        return createShipmentBoxType.getShipmentBoxTypeId();
-    }
+//    private String createShipmentBoxType(BffRawItemDto rawItem, Command c) {
+//        BffShipmentBoxTypeDto shipmentBoxTypeDto = rawItem.getDefaultShipmentBoxType();
+//        AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType createShipmentBoxType = new AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType();
+//        createShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeDto.getShipmentBoxTypeId() != null
+//                ? shipmentBoxTypeDto.getShipmentBoxTypeId()
+//                : IdUtils.randomId());
+//        createShipmentBoxType.setDescription(shipmentBoxTypeDto.getDescription());
+//        createShipmentBoxType.setDimensionUomId(shipmentBoxTypeDto.getDimensionUomId());
+//        createShipmentBoxType.setBoxLength(shipmentBoxTypeDto.getBoxLength());
+//        createShipmentBoxType.setBoxHeight(shipmentBoxTypeDto.getBoxHeight());
+//        createShipmentBoxType.setBoxWidth(shipmentBoxTypeDto.getBoxWidth());
+//        createShipmentBoxType.setWeightUomId(shipmentBoxTypeDto.getWeightUomId());
+//        createShipmentBoxType.setBoxWeight(shipmentBoxTypeDto.getBoxWeight());
+//        createShipmentBoxType.setBoxTypeName(shipmentBoxTypeDto.getBoxTypeName());
+//        createShipmentBoxType.setCommandId(
+//                c.getCommandId() != null ? c.getCommandId() : createShipmentBoxType.getShipmentBoxTypeId());
+//        createShipmentBoxType.setRequesterId(c.getRequesterId());
+//        shipmentBoxTypeApplicationService.when(createShipmentBoxType);
+//        return createShipmentBoxType.getShipmentBoxTypeId();
+//    }
 
     @Override
     @Transactional
@@ -254,29 +271,29 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         mergePatchProduct.setMediumImageUrl(rawItem.getMediumImageUrl());
         mergePatchProduct.setLargeImageUrl(rawItem.getLargeImageUrl());
         //mergePatchProduct.setBrandName(rawItem.getBrandName());
-        mergePatchProduct.setProduceVariety(rawItem.getProduceVariety());
+        //mergePatchProduct.setProduceVariety(rawItem.getProduceVariety());
         //mergePatchProduct.setOrganicCertifications(rawItem.getOrganicCertifications());
         //mergePatchProduct.setMaterialCompositionDescription(rawItem.getMaterialCompositionDescription());
         //mergePatchProduct.setCountryOfOrigin(rawItem.getCountryOfOrigin());
         //mergePatchProduct.setCertificationCodes(rawItem.getCertificationCodes());
-        mergePatchProduct.setShelfLifeDescription(rawItem.getShelfLifeDescription());
-        mergePatchProduct.setHandlingInstructions(rawItem.getHandlingInstructions());
-        mergePatchProduct.setStorageConditions(rawItem.getStorageConditions());
-        mergePatchProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
-
-        if (rawItem.getCaseUomId() != null) {
-            mergePatchProduct.setCaseUomId(rawItem.getCaseUomId());
-        }
+//        mergePatchProduct.setShelfLifeDescription(rawItem.getShelfLifeDescription());
+//        mergePatchProduct.setHandlingInstructions(rawItem.getHandlingInstructions());
+//        mergePatchProduct.setStorageConditions(rawItem.getStorageConditions());
+//        mergePatchProduct.setDimensionsDescription(rawItem.getDimensionsDescription());
+//
+//        if (rawItem.getCaseUomId() != null) {
+//            mergePatchProduct.setCaseUomId(rawItem.getCaseUomId());
+//        }
         if (rawItem.getQuantityUomId() != null)
             mergePatchProduct.setQuantityUomId(rawItem.getQuantityUomId());
 //        if (rawItem.getQuantityIncluded() != null)
 //            mergePatchProduct.setQuantityIncluded(rawItem.getQuantityIncluded());
-        if (rawItem.getPiecesIncluded() != null)
-            mergePatchProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
-        if (rawItem.getWeightUomId() != null)
-            mergePatchProduct.setWeightUomId(rawItem.getWeightUomId());
-        if (rawItem.getShippingWeight() != null)
-            mergePatchProduct.setShippingWeight(rawItem.getShippingWeight());
+//        if (rawItem.getPiecesIncluded() != null)
+//            mergePatchProduct.setPiecesIncluded(rawItem.getPiecesIncluded() != null ? rawItem.getPiecesIncluded() : 1);
+//        if (rawItem.getWeightUomId() != null)
+//            mergePatchProduct.setWeightUomId(rawItem.getWeightUomId());
+//        if (rawItem.getShippingWeight() != null)
+//            mergePatchProduct.setShippingWeight(rawItem.getShippingWeight());
 //        if (rawItem.getProductWeight() != null)
 //            mergePatchProduct.setProductWeight(rawItem.getProductWeight());
 
@@ -312,11 +329,11 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
 
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchProduct.setRequesterId(c.getRequesterId());
-        if (rawItem.getDefaultShipmentBoxTypeId() != null) {
-            mergePatchProduct.setDefaultShipmentBoxTypeId(rawItem.getDefaultShipmentBoxTypeId());
-        } else if (rawItem.getDefaultShipmentBoxType() != null) {
-            mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
-        }
+//        if (rawItem.getDefaultShipmentBoxTypeId() != null) {
+//            mergePatchProduct.setDefaultShipmentBoxTypeId(rawItem.getDefaultShipmentBoxTypeId());
+//        } else if (rawItem.getDefaultShipmentBoxType() != null) {
+//            mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(rawItem, c));
+//        }
         if (rawItem.getInternalId() != null && !rawItem.getInternalId().isBlank()) {
             rawItem.setInternalId(rawItem.getInternalId().trim());
             String itemId = bffRawItemRepository
@@ -330,8 +347,8 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         //updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_GTIN, rawItem.getGtin());
         updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_INTERNAL_ID,
                 rawItem.getInternalId());
-        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE,
-                rawItem.getHsCode());
+//        updateProductIdentification(mergePatchProduct, productState, GOOD_IDENTIFICATION_TYPE_HS_CODE,
+//                rawItem.getHsCode());
 
         productApplicationService.when(mergePatchProduct);
 
@@ -389,6 +406,16 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                     mergePatchSupplierProduct.setCertificationCodes(supplierRawItemDto.getCertificationCodes());
                     mergePatchSupplierProduct.setCountryOfOrigin(supplierRawItemDto.getCountryOfOrigin());
                     mergePatchSupplierProduct.setIndividualsPerPackage(supplierRawItemDto.getIndividualsPerPackage());
+
+
+                    mergePatchSupplierProduct.setHsCode(supplierRawItemDto.getHsCode());
+                    mergePatchSupplierProduct.setProduceVariety(supplierRawItemDto.getProduceVariety());
+                    mergePatchSupplierProduct.setShelfLifeDescription(supplierRawItemDto.getShelfLifeDescription());
+                    mergePatchSupplierProduct.setStorageConditions(supplierRawItemDto.getHandlingInstructions());
+                    mergePatchSupplierProduct.setHandlingInstructions(supplierRawItemDto.getHandlingInstructions());
+                    mergePatchSupplierProduct.setWeightUomId(supplierRawItemDto.getWeightUomId());
+                    mergePatchSupplierProduct.setShippingWeight(supplierRawItemDto.getShippingWeight());
+                    mergePatchSupplierProduct.setProductWeight(supplierRawItemDto.getProductWeight());
                 }
             } else {
                 mergePatchSupplierProduct.setAvailableThruDate(now);//ThruDate改为当前时间
@@ -527,6 +554,17 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createSupplierProduct.setCountryOfOrigin(supplierRawItem.getCountryOfOrigin());
         createSupplierProduct.setIndividualsPerPackage(supplierRawItem.getIndividualsPerPackage());
         createSupplierProduct.setSupplierProductAssocId(supplierProductAssocId);
+
+        createSupplierProduct.setHsCode(supplierRawItem.getHsCode());
+        createSupplierProduct.setProduceVariety(supplierRawItem.getProduceVariety());
+        createSupplierProduct.setShelfLifeDescription(supplierRawItem.getShelfLifeDescription());
+        createSupplierProduct.setStorageConditions(supplierRawItem.getHandlingInstructions());
+        createSupplierProduct.setHandlingInstructions(supplierRawItem.getHandlingInstructions());
+        createSupplierProduct.setWeightUomId(supplierRawItem.getWeightUomId());
+        createSupplierProduct.setShippingWeight(supplierRawItem.getShippingWeight());
+        createSupplierProduct.setProductWeight(supplierRawItem.getProductWeight());
+
+
         createSupplierProduct.setAvailableThruDate(now.plusYears(100));
         createSupplierProduct.setCommandId(UUID.randomUUID().toString());
         createSupplierProduct.setRequesterId(c.getRequesterId());

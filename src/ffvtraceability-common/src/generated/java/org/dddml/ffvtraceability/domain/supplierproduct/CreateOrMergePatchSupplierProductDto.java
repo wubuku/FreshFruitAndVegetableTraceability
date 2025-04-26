@@ -86,21 +86,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
     }
 
     /**
-     * Product Weight
-     */
-    private java.math.BigDecimal productWeight;
-
-    public java.math.BigDecimal getProductWeight()
-    {
-        return this.productWeight;
-    }
-
-    public void setProductWeight(java.math.BigDecimal productWeight)
-    {
-        this.productWeight = productWeight;
-    }
-
-    /**
      * Case Uom Id
      */
     private String caseUomId;
@@ -188,6 +173,126 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
     public void setIndividualsPerPackage(Long individualsPerPackage)
     {
         this.individualsPerPackage = individualsPerPackage;
+    }
+
+    /**
+     * Produce Variety
+     */
+    private String produceVariety;
+
+    public String getProduceVariety()
+    {
+        return this.produceVariety;
+    }
+
+    public void setProduceVariety(String produceVariety)
+    {
+        this.produceVariety = produceVariety;
+    }
+
+    /**
+     * Hs Code
+     */
+    private String hsCode;
+
+    public String getHsCode()
+    {
+        return this.hsCode;
+    }
+
+    public void setHsCode(String hsCode)
+    {
+        this.hsCode = hsCode;
+    }
+
+    /**
+     * Storage Conditions
+     */
+    private String storageConditions;
+
+    public String getStorageConditions()
+    {
+        return this.storageConditions;
+    }
+
+    public void setStorageConditions(String storageConditions)
+    {
+        this.storageConditions = storageConditions;
+    }
+
+    /**
+     * Shelf Life Description
+     */
+    private String shelfLifeDescription;
+
+    public String getShelfLifeDescription()
+    {
+        return this.shelfLifeDescription;
+    }
+
+    public void setShelfLifeDescription(String shelfLifeDescription)
+    {
+        this.shelfLifeDescription = shelfLifeDescription;
+    }
+
+    /**
+     * Handling Instructions
+     */
+    private String handlingInstructions;
+
+    public String getHandlingInstructions()
+    {
+        return this.handlingInstructions;
+    }
+
+    public void setHandlingInstructions(String handlingInstructions)
+    {
+        this.handlingInstructions = handlingInstructions;
+    }
+
+    /**
+     * Weight Uom Id
+     */
+    private String weightUomId;
+
+    public String getWeightUomId()
+    {
+        return this.weightUomId;
+    }
+
+    public void setWeightUomId(String weightUomId)
+    {
+        this.weightUomId = weightUomId;
+    }
+
+    /**
+     * The shipping weight of the product.
+     */
+    private java.math.BigDecimal shippingWeight;
+
+    public java.math.BigDecimal getShippingWeight()
+    {
+        return this.shippingWeight;
+    }
+
+    public void setShippingWeight(java.math.BigDecimal shippingWeight)
+    {
+        this.shippingWeight = shippingWeight;
+    }
+
+    /**
+     * Product Weight
+     */
+    private java.math.BigDecimal productWeight;
+
+    public java.math.BigDecimal getProductWeight()
+    {
+        return this.productWeight;
+    }
+
+    public void setProductWeight(java.math.BigDecimal productWeight)
+    {
+        this.productWeight = productWeight;
     }
 
     /**
@@ -566,18 +671,6 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         this.isPropertyPiecesIncludedRemoved = removed;
     }
 
-    private Boolean isPropertyProductWeightRemoved;
-
-    public Boolean getIsPropertyProductWeightRemoved()
-    {
-        return this.isPropertyProductWeightRemoved;
-    }
-
-    public void setIsPropertyProductWeightRemoved(Boolean removed)
-    {
-        this.isPropertyProductWeightRemoved = removed;
-    }
-
     private Boolean isPropertyCaseUomIdRemoved;
 
     public Boolean getIsPropertyCaseUomIdRemoved()
@@ -648,6 +741,102 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
     public void setIsPropertyIndividualsPerPackageRemoved(Boolean removed)
     {
         this.isPropertyIndividualsPerPackageRemoved = removed;
+    }
+
+    private Boolean isPropertyProduceVarietyRemoved;
+
+    public Boolean getIsPropertyProduceVarietyRemoved()
+    {
+        return this.isPropertyProduceVarietyRemoved;
+    }
+
+    public void setIsPropertyProduceVarietyRemoved(Boolean removed)
+    {
+        this.isPropertyProduceVarietyRemoved = removed;
+    }
+
+    private Boolean isPropertyHsCodeRemoved;
+
+    public Boolean getIsPropertyHsCodeRemoved()
+    {
+        return this.isPropertyHsCodeRemoved;
+    }
+
+    public void setIsPropertyHsCodeRemoved(Boolean removed)
+    {
+        this.isPropertyHsCodeRemoved = removed;
+    }
+
+    private Boolean isPropertyStorageConditionsRemoved;
+
+    public Boolean getIsPropertyStorageConditionsRemoved()
+    {
+        return this.isPropertyStorageConditionsRemoved;
+    }
+
+    public void setIsPropertyStorageConditionsRemoved(Boolean removed)
+    {
+        this.isPropertyStorageConditionsRemoved = removed;
+    }
+
+    private Boolean isPropertyShelfLifeDescriptionRemoved;
+
+    public Boolean getIsPropertyShelfLifeDescriptionRemoved()
+    {
+        return this.isPropertyShelfLifeDescriptionRemoved;
+    }
+
+    public void setIsPropertyShelfLifeDescriptionRemoved(Boolean removed)
+    {
+        this.isPropertyShelfLifeDescriptionRemoved = removed;
+    }
+
+    private Boolean isPropertyHandlingInstructionsRemoved;
+
+    public Boolean getIsPropertyHandlingInstructionsRemoved()
+    {
+        return this.isPropertyHandlingInstructionsRemoved;
+    }
+
+    public void setIsPropertyHandlingInstructionsRemoved(Boolean removed)
+    {
+        this.isPropertyHandlingInstructionsRemoved = removed;
+    }
+
+    private Boolean isPropertyWeightUomIdRemoved;
+
+    public Boolean getIsPropertyWeightUomIdRemoved()
+    {
+        return this.isPropertyWeightUomIdRemoved;
+    }
+
+    public void setIsPropertyWeightUomIdRemoved(Boolean removed)
+    {
+        this.isPropertyWeightUomIdRemoved = removed;
+    }
+
+    private Boolean isPropertyShippingWeightRemoved;
+
+    public Boolean getIsPropertyShippingWeightRemoved()
+    {
+        return this.isPropertyShippingWeightRemoved;
+    }
+
+    public void setIsPropertyShippingWeightRemoved(Boolean removed)
+    {
+        this.isPropertyShippingWeightRemoved = removed;
+    }
+
+    private Boolean isPropertyProductWeightRemoved;
+
+    public Boolean getIsPropertyProductWeightRemoved()
+    {
+        return this.isPropertyProductWeightRemoved;
+    }
+
+    public void setIsPropertyProductWeightRemoved(Boolean removed)
+    {
+        this.isPropertyProductWeightRemoved = removed;
     }
 
     private Boolean isPropertySupplierPrefOrderIdRemoved;
@@ -910,13 +1099,20 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         command.setGtin(this.getGtin());
         command.setQuantityIncluded(this.getQuantityIncluded());
         command.setPiecesIncluded(this.getPiecesIncluded());
-        command.setProductWeight(this.getProductWeight());
         command.setCaseUomId(this.getCaseUomId());
         command.setOrganicCertifications(this.getOrganicCertifications());
         command.setMaterialCompositionDescription(this.getMaterialCompositionDescription());
         command.setCountryOfOrigin(this.getCountryOfOrigin());
         command.setCertificationCodes(this.getCertificationCodes());
         command.setIndividualsPerPackage(this.getIndividualsPerPackage());
+        command.setProduceVariety(this.getProduceVariety());
+        command.setHsCode(this.getHsCode());
+        command.setStorageConditions(this.getStorageConditions());
+        command.setShelfLifeDescription(this.getShelfLifeDescription());
+        command.setHandlingInstructions(this.getHandlingInstructions());
+        command.setWeightUomId(this.getWeightUomId());
+        command.setShippingWeight(this.getShippingWeight());
+        command.setProductWeight(this.getProductWeight());
         command.setSupplierPrefOrderId(this.getSupplierPrefOrderId());
         command.setSupplierRatingTypeId(this.getSupplierRatingTypeId());
         command.setStandardLeadTimeDays(this.getStandardLeadTimeDays());
@@ -987,13 +1183,20 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         command.setIsPropertyGtinRemoved(this.getIsPropertyGtinRemoved());
         command.setIsPropertyQuantityIncludedRemoved(this.getIsPropertyQuantityIncludedRemoved());
         command.setIsPropertyPiecesIncludedRemoved(this.getIsPropertyPiecesIncludedRemoved());
-        command.setIsPropertyProductWeightRemoved(this.getIsPropertyProductWeightRemoved());
         command.setIsPropertyCaseUomIdRemoved(this.getIsPropertyCaseUomIdRemoved());
         command.setIsPropertyOrganicCertificationsRemoved(this.getIsPropertyOrganicCertificationsRemoved());
         command.setIsPropertyMaterialCompositionDescriptionRemoved(this.getIsPropertyMaterialCompositionDescriptionRemoved());
         command.setIsPropertyCountryOfOriginRemoved(this.getIsPropertyCountryOfOriginRemoved());
         command.setIsPropertyCertificationCodesRemoved(this.getIsPropertyCertificationCodesRemoved());
         command.setIsPropertyIndividualsPerPackageRemoved(this.getIsPropertyIndividualsPerPackageRemoved());
+        command.setIsPropertyProduceVarietyRemoved(this.getIsPropertyProduceVarietyRemoved());
+        command.setIsPropertyHsCodeRemoved(this.getIsPropertyHsCodeRemoved());
+        command.setIsPropertyStorageConditionsRemoved(this.getIsPropertyStorageConditionsRemoved());
+        command.setIsPropertyShelfLifeDescriptionRemoved(this.getIsPropertyShelfLifeDescriptionRemoved());
+        command.setIsPropertyHandlingInstructionsRemoved(this.getIsPropertyHandlingInstructionsRemoved());
+        command.setIsPropertyWeightUomIdRemoved(this.getIsPropertyWeightUomIdRemoved());
+        command.setIsPropertyShippingWeightRemoved(this.getIsPropertyShippingWeightRemoved());
+        command.setIsPropertyProductWeightRemoved(this.getIsPropertyProductWeightRemoved());
         command.setIsPropertySupplierPrefOrderIdRemoved(this.getIsPropertySupplierPrefOrderIdRemoved());
         command.setIsPropertySupplierRatingTypeIdRemoved(this.getIsPropertySupplierRatingTypeIdRemoved());
         command.setIsPropertyStandardLeadTimeDaysRemoved(this.getIsPropertyStandardLeadTimeDaysRemoved());

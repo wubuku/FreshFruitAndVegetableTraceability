@@ -38,9 +38,6 @@
     <property name="piecesIncluded">
       <column name="pieces_included" sql-type="DECIMAL(20,0)" />
     </property>
-    <property name="productWeight">
-      <column name="product_weight" sql-type="DECIMAL(18,6)" />
-    </property>
     <property name="caseUomId">
       <column name="case_uom_id" sql-type="VARCHAR(20)" />
     </property>
@@ -58,6 +55,30 @@
     </property>
     <property name="individualsPerPackage">
       <column name="individuals_per_package" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="produceVariety">
+      <column name="produce_variety" sql-type="VARCHAR(100)" />
+    </property>
+    <property name="hsCode">
+      <column name="hs_code" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="storageConditions">
+      <column name="storage_conditions" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="shelfLifeDescription">
+      <column name="shelf_life_description" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="handlingInstructions">
+      <column name="handling_instructions" sql-type="VARCHAR(255)" />
+    </property>
+    <property name="weightUomId">
+      <column name="weight_uom_id" sql-type="VARCHAR(20)" />
+    </property>
+    <property name="shippingWeight">
+      <column name="shipping_weight" sql-type="DECIMAL(18,6)" />
+    </property>
+    <property name="productWeight">
+      <column name="product_weight" sql-type="DECIMAL(18,6)" />
     </property>
     <property name="supplierPrefOrderId">
       <column name="SUPPLIER_PREF_ORDER_ID" sql-type="VARCHAR(20)" />

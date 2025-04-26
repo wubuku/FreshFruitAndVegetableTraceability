@@ -192,11 +192,11 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
             addGoodIdentification(GOOD_IDENTIFICATION_TYPE_HS_CODE, product.getHsCode(), createProduct);
         }
 
-        if (product.getDefaultShipmentBoxTypeId() != null) {
-            createProduct.setDefaultShipmentBoxTypeId(product.getDefaultShipmentBoxTypeId());
-        } else if (product.getDefaultShipmentBoxType() != null) {
-            createProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(product, c));
-        }
+//        if (product.getDefaultShipmentBoxTypeId() != null) {
+//            createProduct.setDefaultShipmentBoxTypeId(product.getDefaultShipmentBoxTypeId());
+//        } else if (product.getDefaultShipmentBoxType() != null) {
+//            createProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(product, c));
+//        }
         createProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : createProduct.getProductId());
         createProduct.setRequesterId(c.getRequesterId());
         productApplicationService.when(createProduct);
@@ -214,23 +214,23 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
         createProduct.getCreateGoodIdentificationCommands().add(createGoodIdentification);
     }
 
-    private String createShipmentBoxType(BffProductDto Product, Command c) {
-        BffShipmentBoxTypeDto shipmentBoxTypeDto = Product.getDefaultShipmentBoxType();
-        AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType createShipmentBoxType = new AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType();
-        createShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeDto.getShipmentBoxTypeId() != null ? shipmentBoxTypeDto.getShipmentBoxTypeId() : IdUtils.randomId());
-        createShipmentBoxType.setDescription(shipmentBoxTypeDto.getDescription());
-        createShipmentBoxType.setDimensionUomId(shipmentBoxTypeDto.getDimensionUomId());
-        createShipmentBoxType.setBoxLength(shipmentBoxTypeDto.getBoxLength());
-        createShipmentBoxType.setBoxHeight(shipmentBoxTypeDto.getBoxHeight());
-        createShipmentBoxType.setBoxWidth(shipmentBoxTypeDto.getBoxWidth());
-        createShipmentBoxType.setWeightUomId(shipmentBoxTypeDto.getWeightUomId());
-        createShipmentBoxType.setBoxWeight(shipmentBoxTypeDto.getBoxWeight());
-        createShipmentBoxType.setBoxTypeName(shipmentBoxTypeDto.getBoxTypeName());
-        createShipmentBoxType.setCommandId(c.getCommandId() != null ? c.getCommandId() : createShipmentBoxType.getShipmentBoxTypeId());
-        createShipmentBoxType.setRequesterId(c.getRequesterId());
-        shipmentBoxTypeApplicationService.when(createShipmentBoxType);
-        return createShipmentBoxType.getShipmentBoxTypeId();
-    }
+//    private String createShipmentBoxType(BffProductDto Product, Command c) {
+//        BffShipmentBoxTypeDto shipmentBoxTypeDto = Product.getDefaultShipmentBoxType();
+//        AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType createShipmentBoxType = new AbstractShipmentBoxTypeCommand.SimpleCreateShipmentBoxType();
+//        createShipmentBoxType.setShipmentBoxTypeId(shipmentBoxTypeDto.getShipmentBoxTypeId() != null ? shipmentBoxTypeDto.getShipmentBoxTypeId() : IdUtils.randomId());
+//        createShipmentBoxType.setDescription(shipmentBoxTypeDto.getDescription());
+//        createShipmentBoxType.setDimensionUomId(shipmentBoxTypeDto.getDimensionUomId());
+//        createShipmentBoxType.setBoxLength(shipmentBoxTypeDto.getBoxLength());
+//        createShipmentBoxType.setBoxHeight(shipmentBoxTypeDto.getBoxHeight());
+//        createShipmentBoxType.setBoxWidth(shipmentBoxTypeDto.getBoxWidth());
+//        createShipmentBoxType.setWeightUomId(shipmentBoxTypeDto.getWeightUomId());
+//        createShipmentBoxType.setBoxWeight(shipmentBoxTypeDto.getBoxWeight());
+//        createShipmentBoxType.setBoxTypeName(shipmentBoxTypeDto.getBoxTypeName());
+//        createShipmentBoxType.setCommandId(c.getCommandId() != null ? c.getCommandId() : createShipmentBoxType.getShipmentBoxTypeId());
+//        createShipmentBoxType.setRequesterId(c.getRequesterId());
+//        shipmentBoxTypeApplicationService.when(createShipmentBoxType);
+//        return createShipmentBoxType.getShipmentBoxTypeId();
+//    }
 
     @Override
     @Transactional
@@ -309,11 +309,11 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
 
         mergePatchProduct.setCommandId(c.getCommandId() != null ? c.getCommandId() : UUID.randomUUID().toString());
         mergePatchProduct.setRequesterId(c.getRequesterId());
-        if (product.getDefaultShipmentBoxTypeId() != null) {
-            mergePatchProduct.setDefaultShipmentBoxTypeId(product.getDefaultShipmentBoxTypeId());
-        } else if (product.getDefaultShipmentBoxType() != null) {
-            mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(product, c));
-        }
+//        if (product.getDefaultShipmentBoxTypeId() != null) {
+//            mergePatchProduct.setDefaultShipmentBoxTypeId(product.getDefaultShipmentBoxTypeId());
+//        } else if (product.getDefaultShipmentBoxType() != null) {
+//            mergePatchProduct.setDefaultShipmentBoxTypeId(createShipmentBoxType(product, c));
+//        }
 
         if (product.getInternalId() != null && !product.getInternalId().isBlank()) {
             product.setInternalId(product.getInternalId().trim());

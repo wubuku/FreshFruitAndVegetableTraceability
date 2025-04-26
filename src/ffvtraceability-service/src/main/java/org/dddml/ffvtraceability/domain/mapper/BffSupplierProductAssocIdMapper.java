@@ -19,4 +19,6 @@ public interface BffSupplierProductAssocIdMapper {
     }
 
     SupplierProductAssocId toSupplierProductAssocId(BffSupplierProductAssocProjection supplierProductAssocProjection);
+
+
 }

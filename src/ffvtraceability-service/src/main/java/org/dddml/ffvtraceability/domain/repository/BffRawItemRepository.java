@@ -42,86 +42,53 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
      * @return
      */
     @Query(value = """
-            SELECT
-                p.product_id as productId,
-                p.product_name as productName,
-                p.description as description,
-                p.small_image_url as smallImageUrl,
-                p.medium_image_url as mediumImageUrl,
-                p.large_image_url as largeImageUrl,
-                p.quantity_uom_id as quantityUomId,
-                p.quantity_included as quantityIncluded,
-                p.pieces_included as piecesIncluded,
-                p.weight_uom_id as weightUomId,
-                p.shipping_weight as shippingWeight,
-                p.product_weight as productWeight,
-                p.height_uom_id as heightUomId,
-                p.product_height as productHeight,
-                p.shipping_height as shippingHeight,
-                p.width_uom_id as widthUomId,
-                p.product_width as productWidth,
-                p.shipping_width as shippingWidth,
-                p.depth_uom_id as depthUomId,
-                p.case_uom_id as caseUomId,
-                p.product_depth as productDepth,
-                p.shipping_depth as shippingDepth,
-                p.diameter_uom_id as diameterUomId,
-                p.product_diameter as productDiameter,
-                p.default_shipment_box_type_id as defaultShipmentBoxTypeId,
-                p.certification_codes as certificationCodes,
-                p.brand_name as brandName,
-                p.produce_variety as produceVariety,
-                p.organic_certifications as organicCertifications,
-                p.country_of_origin as countryOfOrigin,
-                p.shelf_life_description as shelfLifeDescription,
-                p.handling_instructions as handlingInstructions,
-                p.storage_conditions as storageConditions,
-                p.material_composition_description as materialCompositionDescription,
-                p.active as active,
-                p.individuals_per_package as individualsPerPackage,
-                gi.id_value as gtin,
-                ii.id_value as internalId,
-                priority_party.party_id as supplierId,
-                priority_party.supplier_name as supplierName
-            
-            FROM product p
-            LEFT JOIN (
-                SELECT
-                    gi.product_id,
-                    gi.id_value
-                FROM good_identification gi
-                WHERE gi.good_identification_type_id = 'GTIN'
-            ) gi ON gi.product_id = p.product_id
-            
-            LEFT JOIN (
+          SELECT
+          p.product_id as productId,
+          p.product_name as productName,
+          p.description as description,
+          p.small_image_url as smallImageUrl,
+          p.medium_image_url as mediumImageUrl,
+          p.large_image_url as largeImageUrl,
+          p.quantity_uom_id as quantityUomId,
+          p.active as active,
+          ii.id_value as internalId
+          FROM product p
+          LEFT JOIN (
                 SELECT
                     gi.product_id,
                     gi.id_value
                 FROM good_identification gi
                 WHERE gi.good_identification_type_id = 'INTERNAL_ID'
-            ) ii ON ii.product_id = p.product_id
-            
-            LEFT JOIN (
-            """ + PRIORITY_SUPPLIER_SUBQUERY + """
-            ) priority_party ON priority_party.product_id = p.product_id
-            """ + WHERE_CONDITIONS + """
+          ) ii ON ii.product_id = p.product_id
+          WHERE p.product_id IN
+            (SELECT distinct p.product_id FROM product p
+             LEFT JOIN supplier_product sp
+             ON p.product_id = sp.product_id
+             WHERE p.product_type_id='RAW_MATERIAL'
+             AND sp.available_from_date <= CURRENT_TIMESTAMP
+             AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
+             AND (:productId is null or p.product_Id = :productId)
+             AND (:supplierId is null or sp.party_id = :supplierId)
+             AND (:active IS NULL OR p.active = :active)
+            )
             ORDER BY p.created_at DESC
-            """,
+          """,
             countQuery = """
-                    SELECT COUNT(*)
-                    FROM product p
-                    LEFT JOIN (
-                    """ + PRIORITY_SUPPLIER_SUBQUERY + """
-                    ) priority_party ON priority_party.product_id = p.product_id
-                    """ + WHERE_CONDITIONS,
+            SELECT count(distinct p.product_id) FROM product p
+            LEFT JOIN supplier_product sp
+            ON p.product_id = sp.product_id
+            WHERE p.product_type_id='RAW_MATERIAL'
+            AND sp.available_from_date <= CURRENT_TIMESTAMP
+            AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
+            AND (:productId is null or p.product_Id = :productId)
+            AND (:supplierId is null or sp.party_id = :supplierId)
+            AND (:active IS NULL OR p.active = :active)
+            """,
             nativeQuery = true)
     Page<BffRawItemProjection> findAllRawItems(Pageable pageable,
+                                               @Param("productId") String productId,
                                                @Param("supplierId") String supplierId,
                                                @Param("active") String active);
-    //String tenantId
-    //todo AND p.tenant_id = :tenantId
-    //todo WHERE p.product_type_id = 'RAW_MATERIAL' ??? 这个地方应该过滤出"原材料"类型的产品？
-
 
     // NOTE: 这个查询保证了每个产品只返回一个供应商：
     // `DISTINCT ON (sp.product_id)` - PostgreSQL 特有的语法，它会为每个 product_id 只保留一行。
@@ -191,7 +158,6 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             gtin as gtin,
             quantity_included as quantityIncluded,
             pieces_included as piecesIncluded,
-            product_weight as productWeight,
             CASE
                WHEN available_thru_date > CURRENT_TIMESTAMP THEN 'Y' -- 有效期内
                ELSE 'N' -- 已过期
@@ -202,7 +168,15 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             material_composition_description as materialCompositionDescription,
             country_of_origin as countryOfOrigin,
             certification_codes as certificationCodes,
-            individuals_per_package as individualsPerPackage
+            individuals_per_package as individualsPerPackage,
+            hs_code as hsCode,
+            produce_variety as produceVariety,
+            storage_conditions as storageConditions,
+            shelf_life_description as shelfLifeDescription,
+            handling_instructions as handlingInstructions,
+            weight_uom_id as weightUomId,
+            shipping_weight as shippingWeight,
+            product_weight as productWeight
             from supplier_product sp
             left join party p on sp.party_id = p.party_id
             WHERE product_id = :productId
@@ -221,7 +195,6 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             gtin as gtin,
             quantity_included as quantityIncluded,
             pieces_included as piecesIncluded,
-            product_weight as productWeight,
             CASE
                WHEN available_thru_date > CURRENT_TIMESTAMP THEN 'Y' -- 有效期内
                ELSE 'N' -- 已过期
@@ -232,7 +205,15 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             material_composition_description as materialCompositionDescription,
             country_of_origin as countryOfOrigin,
             certification_codes as certificationCodes,
-            individuals_per_package as individualsPerPackage
+            individuals_per_package as individualsPerPackage,
+            hs_code as hsCode,
+            produce_variety as produceVariety,
+            storage_conditions as storageConditions,
+            shelf_life_description as shelfLifeDescription,
+            handling_instructions as handlingInstructions,
+            weight_uom_id as weightUomId,
+            shipping_weight as shippingWeight,
+            product_weight as productWeight
             from supplier_product
             WHERE product_id = :productId
             and party_id = :supplierId

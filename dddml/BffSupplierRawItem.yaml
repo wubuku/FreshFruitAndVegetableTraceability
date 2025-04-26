@@ -40,8 +40,6 @@ valueObjects:
         # 一个包装内包含的“件数”，如果包装内没有“分件”，则该值设置为 1（可以把 null 看作 1）
       SupplierName:
         type: name
-      ProductWeight: #Net Weight Per Package
-        type: fixed-point
       Active:
         type: indicator
       CaseUomId: #Packaging Type
@@ -58,3 +56,20 @@ valueObjects:
       IndividualsPerPackage: #Quantity Per Package
         description: Number of individual units in one package (for products counted by individual pieces, e.g., fruits, eggs)
         type: numeric
+      ProduceVariety:
+        type: name
+      HsCode:
+        type: id
+      StorageConditions:
+        type: description
+      ShelfLifeDescription:
+        type: description
+      HandlingInstructions:
+        type: description
+      WeightUomId:
+        type: id
+      ShippingWeight:
+        description: The shipping weight of the product.
+        type: fixed-point
+      ProductWeight:
+        type: fixed-point

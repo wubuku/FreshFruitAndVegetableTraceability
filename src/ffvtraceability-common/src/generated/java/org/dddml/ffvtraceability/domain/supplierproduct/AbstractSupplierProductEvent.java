@@ -209,18 +209,6 @@ public abstract class AbstractSupplierProductEvent extends AbstractEvent impleme
             this.piecesIncluded = piecesIncluded;
         }
 
-        private java.math.BigDecimal productWeight;
-
-        public java.math.BigDecimal getProductWeight()
-        {
-            return this.productWeight;
-        }
-
-        public void setProductWeight(java.math.BigDecimal productWeight)
-        {
-            this.productWeight = productWeight;
-        }
-
         private String caseUomId;
 
         public String getCaseUomId()
@@ -291,6 +279,102 @@ public abstract class AbstractSupplierProductEvent extends AbstractEvent impleme
         public void setIndividualsPerPackage(Long individualsPerPackage)
         {
             this.individualsPerPackage = individualsPerPackage;
+        }
+
+        private String produceVariety;
+
+        public String getProduceVariety()
+        {
+            return this.produceVariety;
+        }
+
+        public void setProduceVariety(String produceVariety)
+        {
+            this.produceVariety = produceVariety;
+        }
+
+        private String hsCode;
+
+        public String getHsCode()
+        {
+            return this.hsCode;
+        }
+
+        public void setHsCode(String hsCode)
+        {
+            this.hsCode = hsCode;
+        }
+
+        private String storageConditions;
+
+        public String getStorageConditions()
+        {
+            return this.storageConditions;
+        }
+
+        public void setStorageConditions(String storageConditions)
+        {
+            this.storageConditions = storageConditions;
+        }
+
+        private String shelfLifeDescription;
+
+        public String getShelfLifeDescription()
+        {
+            return this.shelfLifeDescription;
+        }
+
+        public void setShelfLifeDescription(String shelfLifeDescription)
+        {
+            this.shelfLifeDescription = shelfLifeDescription;
+        }
+
+        private String handlingInstructions;
+
+        public String getHandlingInstructions()
+        {
+            return this.handlingInstructions;
+        }
+
+        public void setHandlingInstructions(String handlingInstructions)
+        {
+            this.handlingInstructions = handlingInstructions;
+        }
+
+        private String weightUomId;
+
+        public String getWeightUomId()
+        {
+            return this.weightUomId;
+        }
+
+        public void setWeightUomId(String weightUomId)
+        {
+            this.weightUomId = weightUomId;
+        }
+
+        private java.math.BigDecimal shippingWeight;
+
+        public java.math.BigDecimal getShippingWeight()
+        {
+            return this.shippingWeight;
+        }
+
+        public void setShippingWeight(java.math.BigDecimal shippingWeight)
+        {
+            this.shippingWeight = shippingWeight;
+        }
+
+        private java.math.BigDecimal productWeight;
+
+        public java.math.BigDecimal getProductWeight()
+        {
+            return this.productWeight;
+        }
+
+        public void setProductWeight(java.math.BigDecimal productWeight)
+        {
+            this.productWeight = productWeight;
         }
 
         private String supplierPrefOrderId;
@@ -631,16 +715,6 @@ public abstract class AbstractSupplierProductEvent extends AbstractEvent impleme
             this.isPropertyPiecesIncludedRemoved = removed;
         }
 
-        private Boolean isPropertyProductWeightRemoved;
-
-        public Boolean getIsPropertyProductWeightRemoved() {
-            return this.isPropertyProductWeightRemoved;
-        }
-
-        public void setIsPropertyProductWeightRemoved(Boolean removed) {
-            this.isPropertyProductWeightRemoved = removed;
-        }
-
         private Boolean isPropertyCaseUomIdRemoved;
 
         public Boolean getIsPropertyCaseUomIdRemoved() {
@@ -699,6 +773,86 @@ public abstract class AbstractSupplierProductEvent extends AbstractEvent impleme
 
         public void setIsPropertyIndividualsPerPackageRemoved(Boolean removed) {
             this.isPropertyIndividualsPerPackageRemoved = removed;
+        }
+
+        private Boolean isPropertyProduceVarietyRemoved;
+
+        public Boolean getIsPropertyProduceVarietyRemoved() {
+            return this.isPropertyProduceVarietyRemoved;
+        }
+
+        public void setIsPropertyProduceVarietyRemoved(Boolean removed) {
+            this.isPropertyProduceVarietyRemoved = removed;
+        }
+
+        private Boolean isPropertyHsCodeRemoved;
+
+        public Boolean getIsPropertyHsCodeRemoved() {
+            return this.isPropertyHsCodeRemoved;
+        }
+
+        public void setIsPropertyHsCodeRemoved(Boolean removed) {
+            this.isPropertyHsCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyStorageConditionsRemoved;
+
+        public Boolean getIsPropertyStorageConditionsRemoved() {
+            return this.isPropertyStorageConditionsRemoved;
+        }
+
+        public void setIsPropertyStorageConditionsRemoved(Boolean removed) {
+            this.isPropertyStorageConditionsRemoved = removed;
+        }
+
+        private Boolean isPropertyShelfLifeDescriptionRemoved;
+
+        public Boolean getIsPropertyShelfLifeDescriptionRemoved() {
+            return this.isPropertyShelfLifeDescriptionRemoved;
+        }
+
+        public void setIsPropertyShelfLifeDescriptionRemoved(Boolean removed) {
+            this.isPropertyShelfLifeDescriptionRemoved = removed;
+        }
+
+        private Boolean isPropertyHandlingInstructionsRemoved;
+
+        public Boolean getIsPropertyHandlingInstructionsRemoved() {
+            return this.isPropertyHandlingInstructionsRemoved;
+        }
+
+        public void setIsPropertyHandlingInstructionsRemoved(Boolean removed) {
+            this.isPropertyHandlingInstructionsRemoved = removed;
+        }
+
+        private Boolean isPropertyWeightUomIdRemoved;
+
+        public Boolean getIsPropertyWeightUomIdRemoved() {
+            return this.isPropertyWeightUomIdRemoved;
+        }
+
+        public void setIsPropertyWeightUomIdRemoved(Boolean removed) {
+            this.isPropertyWeightUomIdRemoved = removed;
+        }
+
+        private Boolean isPropertyShippingWeightRemoved;
+
+        public Boolean getIsPropertyShippingWeightRemoved() {
+            return this.isPropertyShippingWeightRemoved;
+        }
+
+        public void setIsPropertyShippingWeightRemoved(Boolean removed) {
+            this.isPropertyShippingWeightRemoved = removed;
+        }
+
+        private Boolean isPropertyProductWeightRemoved;
+
+        public Boolean getIsPropertyProductWeightRemoved() {
+            return this.isPropertyProductWeightRemoved;
+        }
+
+        public void setIsPropertyProductWeightRemoved(Boolean removed) {
+            this.isPropertyProductWeightRemoved = removed;
         }
 
         private Boolean isPropertySupplierPrefOrderIdRemoved;

@@ -9803,13 +9803,20 @@ public class M {
             "gtin",
             "quantityIncluded",
             "piecesIncluded",
-            "productWeight",
             "caseUomId",
             "organicCertifications",
             "materialCompositionDescription",
             "countryOfOrigin",
             "certificationCodes",
             "individualsPerPackage",
+            "produceVariety",
+            "hsCode",
+            "storageConditions",
+            "shelfLifeDescription",
+            "handlingInstructions",
+            "weightUomId",
+            "shippingWeight",
+            "productWeight",
             "supplierPrefOrderId",
             "supplierRatingTypeId",
             "standardLeadTimeDays",
@@ -9852,13 +9859,20 @@ public class M {
             "String",
             "java.math.BigDecimal",
             "Long",
-            "java.math.BigDecimal",
             "String",
             "String",
             "String",
             "String",
             "String",
             "Long",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "String",
+            "java.math.BigDecimal",
+            "java.math.BigDecimal",
             "String",
             "String",
             "java.math.BigDecimal",
@@ -9917,8 +9931,6 @@ public class M {
         aliasMap.put("QuantityIncluded", "quantityIncluded");
         aliasMap.put("piecesIncluded", "piecesIncluded");
         aliasMap.put("PiecesIncluded", "piecesIncluded");
-        aliasMap.put("productWeight", "productWeight");
-        aliasMap.put("ProductWeight", "productWeight");
         aliasMap.put("caseUomId", "caseUomId");
         aliasMap.put("CaseUomId", "caseUomId");
         aliasMap.put("organicCertifications", "organicCertifications");
@@ -9931,6 +9943,22 @@ public class M {
         aliasMap.put("CertificationCodes", "certificationCodes");
         aliasMap.put("individualsPerPackage", "individualsPerPackage");
         aliasMap.put("IndividualsPerPackage", "individualsPerPackage");
+        aliasMap.put("produceVariety", "produceVariety");
+        aliasMap.put("ProduceVariety", "produceVariety");
+        aliasMap.put("hsCode", "hsCode");
+        aliasMap.put("HsCode", "hsCode");
+        aliasMap.put("storageConditions", "storageConditions");
+        aliasMap.put("StorageConditions", "storageConditions");
+        aliasMap.put("shelfLifeDescription", "shelfLifeDescription");
+        aliasMap.put("ShelfLifeDescription", "shelfLifeDescription");
+        aliasMap.put("handlingInstructions", "handlingInstructions");
+        aliasMap.put("HandlingInstructions", "handlingInstructions");
+        aliasMap.put("weightUomId", "weightUomId");
+        aliasMap.put("WeightUomId", "weightUomId");
+        aliasMap.put("shippingWeight", "shippingWeight");
+        aliasMap.put("ShippingWeight", "shippingWeight");
+        aliasMap.put("productWeight", "productWeight");
+        aliasMap.put("ProductWeight", "productWeight");
         aliasMap.put("supplierPrefOrderId", "supplierPrefOrderId");
         aliasMap.put("SupplierPrefOrderId", "supplierPrefOrderId");
         aliasMap.put("supplierRatingTypeId", "supplierRatingTypeId");

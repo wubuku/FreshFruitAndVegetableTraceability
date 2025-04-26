@@ -390,30 +390,6 @@ public class BffProductDto implements Serializable {
         this.active = active;
     }
 
-    private String defaultShipmentBoxTypeId;
-
-    public String getDefaultShipmentBoxTypeId()
-    {
-        return this.defaultShipmentBoxTypeId;
-    }
-
-    public void setDefaultShipmentBoxTypeId(String defaultShipmentBoxTypeId)
-    {
-        this.defaultShipmentBoxTypeId = defaultShipmentBoxTypeId;
-    }
-
-    private BffShipmentBoxTypeDto defaultShipmentBoxType = new BffShipmentBoxTypeDto();
-
-    public BffShipmentBoxTypeDto getDefaultShipmentBoxType()
-    {
-        return this.defaultShipmentBoxType;
-    }
-
-    public void setDefaultShipmentBoxType(BffShipmentBoxTypeDto defaultShipmentBoxType)
-    {
-        this.defaultShipmentBoxType = defaultShipmentBoxType;
-    }
-
     private String caseUomId;
 
     public String getCaseUomId()
@@ -573,111 +549,11 @@ public class BffProductDto implements Serializable {
         this.dimensionsDescription = dimensionsDescription;
     }
 
-    protected String getDefaultShipmentBoxTypeShipmentBoxTypeId()
-    {
-        return getDefaultShipmentBoxType().getShipmentBoxTypeId();
-    }
-
-    protected void setDefaultShipmentBoxTypeShipmentBoxTypeId(String defaultShipmentBoxTypeShipmentBoxTypeId)
-    {
-        getDefaultShipmentBoxType().setShipmentBoxTypeId(defaultShipmentBoxTypeShipmentBoxTypeId);
-    }
-
-    protected String getDefaultShipmentBoxTypeDescription()
-    {
-        return getDefaultShipmentBoxType().getDescription();
-    }
-
-    protected void setDefaultShipmentBoxTypeDescription(String defaultShipmentBoxTypeDescription)
-    {
-        getDefaultShipmentBoxType().setDescription(defaultShipmentBoxTypeDescription);
-    }
-
-    protected String getDefaultShipmentBoxTypeDimensionUomId()
-    {
-        return getDefaultShipmentBoxType().getDimensionUomId();
-    }
-
-    protected void setDefaultShipmentBoxTypeDimensionUomId(String defaultShipmentBoxTypeDimensionUomId)
-    {
-        getDefaultShipmentBoxType().setDimensionUomId(defaultShipmentBoxTypeDimensionUomId);
-    }
-
-    protected java.math.BigDecimal getDefaultShipmentBoxTypeBoxLength()
-    {
-        return getDefaultShipmentBoxType().getBoxLength();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxLength(java.math.BigDecimal defaultShipmentBoxTypeBoxLength)
-    {
-        getDefaultShipmentBoxType().setBoxLength(defaultShipmentBoxTypeBoxLength);
-    }
-
-    protected java.math.BigDecimal getDefaultShipmentBoxTypeBoxWidth()
-    {
-        return getDefaultShipmentBoxType().getBoxWidth();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxWidth(java.math.BigDecimal defaultShipmentBoxTypeBoxWidth)
-    {
-        getDefaultShipmentBoxType().setBoxWidth(defaultShipmentBoxTypeBoxWidth);
-    }
-
-    protected java.math.BigDecimal getDefaultShipmentBoxTypeBoxHeight()
-    {
-        return getDefaultShipmentBoxType().getBoxHeight();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxHeight(java.math.BigDecimal defaultShipmentBoxTypeBoxHeight)
-    {
-        getDefaultShipmentBoxType().setBoxHeight(defaultShipmentBoxTypeBoxHeight);
-    }
-
-    protected String getDefaultShipmentBoxTypeWeightUomId()
-    {
-        return getDefaultShipmentBoxType().getWeightUomId();
-    }
-
-    protected void setDefaultShipmentBoxTypeWeightUomId(String defaultShipmentBoxTypeWeightUomId)
-    {
-        getDefaultShipmentBoxType().setWeightUomId(defaultShipmentBoxTypeWeightUomId);
-    }
-
-    protected java.math.BigDecimal getDefaultShipmentBoxTypeBoxWeight()
-    {
-        return getDefaultShipmentBoxType().getBoxWeight();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxWeight(java.math.BigDecimal defaultShipmentBoxTypeBoxWeight)
-    {
-        getDefaultShipmentBoxType().setBoxWeight(defaultShipmentBoxTypeBoxWeight);
-    }
-
-    protected String getDefaultShipmentBoxTypeActive()
-    {
-        return getDefaultShipmentBoxType().getActive();
-    }
-
-    protected void setDefaultShipmentBoxTypeActive(String defaultShipmentBoxTypeActive)
-    {
-        getDefaultShipmentBoxType().setActive(defaultShipmentBoxTypeActive);
-    }
-
-    protected String getDefaultShipmentBoxTypeBoxTypeName()
-    {
-        return getDefaultShipmentBoxType().getBoxTypeName();
-    }
-
-    protected void setDefaultShipmentBoxTypeBoxTypeName(String defaultShipmentBoxTypeBoxTypeName)
-    {
-        getDefaultShipmentBoxType().setBoxTypeName(defaultShipmentBoxTypeBoxTypeName);
-    }
-
     public BffProductDto()
     {
     }
 
-    public BffProductDto(String productId, String productName, String productTypeId, String internalName, String brandName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight, String heightUomId, java.math.BigDecimal productHeight, java.math.BigDecimal shippingHeight, String widthUomId, java.math.BigDecimal productWidth, java.math.BigDecimal shippingWidth, String depthUomId, java.math.BigDecimal productDepth, java.math.BigDecimal shippingDepth, String diameterUomId, java.math.BigDecimal productDiameter, String active, String defaultShipmentBoxTypeId, BffShipmentBoxTypeDto defaultShipmentBoxType, String caseUomId, String internalId, String produceVariety, String hsCode, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String shelfLifeDescription, String handlingInstructions, String storageConditions, String certificationCodes, Long individualsPerPackage, String dimensionsDescription)
+    public BffProductDto(String productId, String productName, String productTypeId, String internalName, String brandName, String description, String gtin, String smallImageUrl, String mediumImageUrl, String largeImageUrl, String quantityUomId, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String statusId, String supplierId, String supplierName, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight, String heightUomId, java.math.BigDecimal productHeight, java.math.BigDecimal shippingHeight, String widthUomId, java.math.BigDecimal productWidth, java.math.BigDecimal shippingWidth, String depthUomId, java.math.BigDecimal productDepth, java.math.BigDecimal shippingDepth, String diameterUomId, java.math.BigDecimal productDiameter, String active, String caseUomId, String internalId, String produceVariety, String hsCode, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String shelfLifeDescription, String handlingInstructions, String storageConditions, String certificationCodes, Long individualsPerPackage, String dimensionsDescription)
     {
         this.productId = productId;
         this.productName = productName;
@@ -710,8 +586,6 @@ public class BffProductDto implements Serializable {
         this.diameterUomId = diameterUomId;
         this.productDiameter = productDiameter;
         this.active = active;
-        this.defaultShipmentBoxTypeId = defaultShipmentBoxTypeId;
-        this.defaultShipmentBoxType = defaultShipmentBoxType;
         this.caseUomId = caseUomId;
         this.internalId = internalId;
         this.produceVariety = produceVariety;
@@ -770,8 +644,6 @@ public class BffProductDto implements Serializable {
             && (diameterUomId == other.diameterUomId || (diameterUomId != null && diameterUomId.equals(other.diameterUomId)))
             && (productDiameter == other.productDiameter || (productDiameter != null && productDiameter.equals(other.productDiameter)))
             && (active == other.active || (active != null && active.equals(other.active)))
-            && (defaultShipmentBoxTypeId == other.defaultShipmentBoxTypeId || (defaultShipmentBoxTypeId != null && defaultShipmentBoxTypeId.equals(other.defaultShipmentBoxTypeId)))
-            && (defaultShipmentBoxType == other.defaultShipmentBoxType || (defaultShipmentBoxType != null && defaultShipmentBoxType.equals(other.defaultShipmentBoxType)))
             && (caseUomId == other.caseUomId || (caseUomId != null && caseUomId.equals(other.caseUomId)))
             && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
             && (produceVariety == other.produceVariety || (produceVariety != null && produceVariety.equals(other.produceVariety)))
@@ -885,12 +757,6 @@ public class BffProductDto implements Serializable {
         if (this.active != null) {
             hash += 13 * this.active.hashCode();
         }
-        if (this.defaultShipmentBoxTypeId != null) {
-            hash += 13 * this.defaultShipmentBoxTypeId.hashCode();
-        }
-        if (this.defaultShipmentBoxType != null) {
-            hash += 13 * this.defaultShipmentBoxType.hashCode();
-        }
         if (this.caseUomId != null) {
             hash += 13 * this.caseUomId.hashCode();
         }
@@ -967,8 +833,6 @@ public class BffProductDto implements Serializable {
                 ", diameterUomId=" + '\'' + diameterUomId + '\'' +
                 ", productDiameter=" + productDiameter +
                 ", active=" + '\'' + active + '\'' +
-                ", defaultShipmentBoxTypeId=" + '\'' + defaultShipmentBoxTypeId + '\'' +
-                ", defaultShipmentBoxType=" + defaultShipmentBoxType +
                 ", caseUomId=" + '\'' + caseUomId + '\'' +
                 ", internalId=" + '\'' + internalId + '\'' +
                 ", produceVariety=" + '\'' + produceVariety + '\'' +

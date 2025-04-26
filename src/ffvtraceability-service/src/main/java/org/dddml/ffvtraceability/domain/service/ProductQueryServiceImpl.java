@@ -54,19 +54,19 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         if (productState != null) {
             BffRawItemDto dto = bffRawItemMapper.toBffRawItemDto(productState);
             productState.getGoodIdentifications().stream().forEach(x -> {
-                if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN)) {
-                    dto.setGtin(x.getIdValue());
-                } else if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID)) {
+                if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_INTERNAL_ID)) {
                     dto.setInternalId(x.getIdValue());
-                } else if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_HS_CODE)) {
-                    dto.setHsCode(x.getIdValue());
+//                } else if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_GTIN)) {
+//                    dto.setGtin(x.getIdValue());
+//                } else if (x.getGoodIdentificationTypeId().equals(GOOD_IDENTIFICATION_TYPE_HS_CODE)) {
+//                   dto.setHsCode(x.getIdValue());
                 }
             });
-            if (productState.getDefaultShipmentBoxTypeId() != null) {
-                // 连带返回默认的发货箱类型信息？
-                dto.setDefaultShipmentBoxType(bffShipmentBoxTypeMapper.toBffShipmentBoxTypeDto(
-                        shipmentBoxTypeApplicationService.get(dto.getDefaultShipmentBoxTypeId())));
-            }
+//            if (productState.getDefaultShipmentBoxTypeId() != null) {
+//                // 连带返回默认的发货箱类型信息？
+//                dto.setDefaultShipmentBoxType(bffShipmentBoxTypeMapper.toBffShipmentBoxTypeDto(
+//                        shipmentBoxTypeApplicationService.get(dto.getDefaultShipmentBoxTypeId())));
+//            }
             List<BffSupplierRawItemProjection> supplierRawItems = bffRawItemRepository.findSupplierRawItemsByProductId(rawItemId);
             dto.setSuppliers(new ArrayList<>(supplierRawItems.size()));
             supplierRawItems.forEach(x -> {
@@ -105,11 +105,11 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                     dto.setHsCode(x.getIdValue());
                 }
             });
-            if (productState.getDefaultShipmentBoxTypeId() != null) {
-                // 连带返回默认的发货箱类型信息？
-                dto.setDefaultShipmentBoxType(bffShipmentBoxTypeMapper.toBffShipmentBoxTypeDto(
-                        shipmentBoxTypeApplicationService.get(dto.getDefaultShipmentBoxTypeId())));
-            }
+//            if (productState.getDefaultShipmentBoxTypeId() != null) {
+//                // 连带返回默认的发货箱类型信息？
+//                dto.setDefaultShipmentBoxType(bffShipmentBoxTypeMapper.toBffShipmentBoxTypeDto(
+//                        shipmentBoxTypeApplicationService.get(dto.getDefaultShipmentBoxTypeId())));
+//            }
             BffSupplierProductAssocProjection existingAssoc = bffProductRepository.
                     findSupplierProductAssociationByProductId(productId);
             if (existingAssoc != null) {

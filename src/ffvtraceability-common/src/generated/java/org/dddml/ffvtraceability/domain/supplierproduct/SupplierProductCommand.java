@@ -72,10 +72,6 @@ public interface SupplierProductCommand extends Command {
 
         void setPiecesIncluded(Long piecesIncluded);
 
-        java.math.BigDecimal getProductWeight();
-
-        void setProductWeight(java.math.BigDecimal productWeight);
-
         String getCaseUomId();
 
         void setCaseUomId(String caseUomId);
@@ -99,6 +95,38 @@ public interface SupplierProductCommand extends Command {
         Long getIndividualsPerPackage();
 
         void setIndividualsPerPackage(Long individualsPerPackage);
+
+        String getProduceVariety();
+
+        void setProduceVariety(String produceVariety);
+
+        String getHsCode();
+
+        void setHsCode(String hsCode);
+
+        String getStorageConditions();
+
+        void setStorageConditions(String storageConditions);
+
+        String getShelfLifeDescription();
+
+        void setShelfLifeDescription(String shelfLifeDescription);
+
+        String getHandlingInstructions();
+
+        void setHandlingInstructions(String handlingInstructions);
+
+        String getWeightUomId();
+
+        void setWeightUomId(String weightUomId);
+
+        java.math.BigDecimal getShippingWeight();
+
+        void setShippingWeight(java.math.BigDecimal shippingWeight);
+
+        java.math.BigDecimal getProductWeight();
+
+        void setProductWeight(java.math.BigDecimal productWeight);
 
         String getSupplierPrefOrderId();
 
@@ -210,10 +238,6 @@ public interface SupplierProductCommand extends Command {
 
         void setIsPropertyPiecesIncludedRemoved(Boolean removed);
 
-        Boolean getIsPropertyProductWeightRemoved();
-
-        void setIsPropertyProductWeightRemoved(Boolean removed);
-
         Boolean getIsPropertyCaseUomIdRemoved();
 
         void setIsPropertyCaseUomIdRemoved(Boolean removed);
@@ -237,6 +261,38 @@ public interface SupplierProductCommand extends Command {
         Boolean getIsPropertyIndividualsPerPackageRemoved();
 
         void setIsPropertyIndividualsPerPackageRemoved(Boolean removed);
+
+        Boolean getIsPropertyProduceVarietyRemoved();
+
+        void setIsPropertyProduceVarietyRemoved(Boolean removed);
+
+        Boolean getIsPropertyHsCodeRemoved();
+
+        void setIsPropertyHsCodeRemoved(Boolean removed);
+
+        Boolean getIsPropertyStorageConditionsRemoved();
+
+        void setIsPropertyStorageConditionsRemoved(Boolean removed);
+
+        Boolean getIsPropertyShelfLifeDescriptionRemoved();
+
+        void setIsPropertyShelfLifeDescriptionRemoved(Boolean removed);
+
+        Boolean getIsPropertyHandlingInstructionsRemoved();
+
+        void setIsPropertyHandlingInstructionsRemoved(Boolean removed);
+
+        Boolean getIsPropertyWeightUomIdRemoved();
+
+        void setIsPropertyWeightUomIdRemoved(Boolean removed);
+
+        Boolean getIsPropertyShippingWeightRemoved();
+
+        void setIsPropertyShippingWeightRemoved(Boolean removed);
+
+        Boolean getIsPropertyProductWeightRemoved();
+
+        void setIsPropertyProductWeightRemoved(Boolean removed);
 
         Boolean getIsPropertySupplierPrefOrderIdRemoved();
 

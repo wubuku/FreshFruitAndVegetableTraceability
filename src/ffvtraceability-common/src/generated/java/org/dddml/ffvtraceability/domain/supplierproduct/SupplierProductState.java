@@ -31,8 +31,6 @@ public interface SupplierProductState
 
     Long getPiecesIncluded();
 
-    java.math.BigDecimal getProductWeight();
-
     String getCaseUomId();
 
     String getOrganicCertifications();
@@ -44,6 +42,22 @@ public interface SupplierProductState
     String getCertificationCodes();
 
     Long getIndividualsPerPackage();
+
+    String getProduceVariety();
+
+    String getHsCode();
+
+    String getStorageConditions();
+
+    String getShelfLifeDescription();
+
+    String getHandlingInstructions();
+
+    String getWeightUomId();
+
+    java.math.BigDecimal getShippingWeight();
+
+    java.math.BigDecimal getProductWeight();
 
     String getSupplierPrefOrderId();
 
@@ -110,8 +124,6 @@ public interface SupplierProductState
 
         void setPiecesIncluded(Long piecesIncluded);
 
-        void setProductWeight(java.math.BigDecimal productWeight);
-
         void setCaseUomId(String caseUomId);
 
         void setOrganicCertifications(String organicCertifications);
@@ -123,6 +135,22 @@ public interface SupplierProductState
         void setCertificationCodes(String certificationCodes);
 
         void setIndividualsPerPackage(Long individualsPerPackage);
+
+        void setProduceVariety(String produceVariety);
+
+        void setHsCode(String hsCode);
+
+        void setStorageConditions(String storageConditions);
+
+        void setShelfLifeDescription(String shelfLifeDescription);
+
+        void setHandlingInstructions(String handlingInstructions);
+
+        void setWeightUomId(String weightUomId);
+
+        void setShippingWeight(java.math.BigDecimal shippingWeight);
+
+        void setProductWeight(java.math.BigDecimal productWeight);
 
         void setSupplierPrefOrderId(String supplierPrefOrderId);
 

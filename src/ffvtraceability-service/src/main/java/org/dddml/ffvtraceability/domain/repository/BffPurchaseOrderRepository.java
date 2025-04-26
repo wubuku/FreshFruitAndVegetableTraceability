@@ -128,7 +128,7 @@ public interface BffPurchaseOrderRepository extends JpaRepository<AbstractOrderH
             WITH filtered_orders AS (
                 SELECT DISTINCT o.order_id, o.order_date
                 FROM order_header o
-                """ + ORDER_ITEM_JOIN + PRODUCT_JOINS + COMMON_WHERE + """
+            """ + ORDER_ITEM_JOIN + PRODUCT_JOINS + COMMON_WHERE + """
                 ORDER BY o.order_date DESC
                 LIMIT :pageSize OFFSET :offset
             )
@@ -192,7 +192,7 @@ public interface BffPurchaseOrderRepository extends JpaRepository<AbstractOrderH
      */
     @Query(value = """
             SELECT 
-                """ + ORDER_ITEM_DEMAND_QUANTITY + """
+            """ + ORDER_ITEM_DEMAND_QUANTITY + """
             """ + ORDER_ITEM_BASE_WHERE, nativeQuery = true)
     Optional<BigDecimal> findOrderItemDemandQuantity(
             @Param("orderId") String orderId,
@@ -217,13 +217,13 @@ public interface BffPurchaseOrderRepository extends JpaRepository<AbstractOrderH
     @Query(value = """
             WITH demand AS (
                 SELECT 
-                    """ + ORDER_ITEM_DEMAND_QUANTITY + """
+            """ + ORDER_ITEM_DEMAND_QUANTITY + """
             """ + ORDER_ITEM_BASE_WHERE + """
             ),
             fulfilled AS (
                 SELECT 
                     SUM(COALESCE(oa.quantity_allocated, 0)) as fulfilled_quantity
-                """ + RECEIPT_ALLOCATION_JOIN_AND_WHERE + """
+            """ + RECEIPT_ALLOCATION_JOIN_AND_WHERE + """
             )
             """ + OUTSTANDING_QUANTITY_SELECT, nativeQuery = true)
     Optional<BigDecimal> findPurchaseOrderItemOutstandingQuantity(
@@ -267,13 +267,13 @@ public interface BffPurchaseOrderRepository extends JpaRepository<AbstractOrderH
     @Query(value = """
             WITH demand AS (
                 SELECT 
-                    """ + ORDER_ITEM_DEMAND_QUANTITY + """
+            """ + ORDER_ITEM_DEMAND_QUANTITY + """
             """ + RECEIPT_ORDER_ITEMS_JOIN + """
             ),
             fulfilled AS (
                 SELECT 
                     SUM(COALESCE(oa.quantity_allocated, 0)) as fulfilled_quantity
-                """ + RECEIPT_ORDER_ITEMS_JOIN + """
+            """ + RECEIPT_ORDER_ITEMS_JOIN + """
                 LEFT JOIN shipment_receipt_order_allocation oa ON
                     oi.order_id = oa.order_id
                     AND oi.order_item_seq_id = oa.order_item_seq_id

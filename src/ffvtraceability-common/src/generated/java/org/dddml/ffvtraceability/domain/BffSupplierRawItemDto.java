@@ -172,18 +172,6 @@ public class BffSupplierRawItemDto implements Serializable {
         this.supplierName = supplierName;
     }
 
-    private java.math.BigDecimal productWeight;
-
-    public java.math.BigDecimal getProductWeight()
-    {
-        return this.productWeight;
-    }
-
-    public void setProductWeight(java.math.BigDecimal productWeight)
-    {
-        this.productWeight = productWeight;
-    }
-
     private String active;
 
     public String getActive()
@@ -271,11 +259,110 @@ public class BffSupplierRawItemDto implements Serializable {
         this.individualsPerPackage = individualsPerPackage;
     }
 
+    private String produceVariety;
+
+    public String getProduceVariety()
+    {
+        return this.produceVariety;
+    }
+
+    public void setProduceVariety(String produceVariety)
+    {
+        this.produceVariety = produceVariety;
+    }
+
+    private String hsCode;
+
+    public String getHsCode()
+    {
+        return this.hsCode;
+    }
+
+    public void setHsCode(String hsCode)
+    {
+        this.hsCode = hsCode;
+    }
+
+    private String storageConditions;
+
+    public String getStorageConditions()
+    {
+        return this.storageConditions;
+    }
+
+    public void setStorageConditions(String storageConditions)
+    {
+        this.storageConditions = storageConditions;
+    }
+
+    private String shelfLifeDescription;
+
+    public String getShelfLifeDescription()
+    {
+        return this.shelfLifeDescription;
+    }
+
+    public void setShelfLifeDescription(String shelfLifeDescription)
+    {
+        this.shelfLifeDescription = shelfLifeDescription;
+    }
+
+    private String handlingInstructions;
+
+    public String getHandlingInstructions()
+    {
+        return this.handlingInstructions;
+    }
+
+    public void setHandlingInstructions(String handlingInstructions)
+    {
+        this.handlingInstructions = handlingInstructions;
+    }
+
+    private String weightUomId;
+
+    public String getWeightUomId()
+    {
+        return this.weightUomId;
+    }
+
+    public void setWeightUomId(String weightUomId)
+    {
+        this.weightUomId = weightUomId;
+    }
+
+    /**
+     * The shipping weight of the product.
+     */
+    private java.math.BigDecimal shippingWeight;
+
+    public java.math.BigDecimal getShippingWeight()
+    {
+        return this.shippingWeight;
+    }
+
+    public void setShippingWeight(java.math.BigDecimal shippingWeight)
+    {
+        this.shippingWeight = shippingWeight;
+    }
+
+    private java.math.BigDecimal productWeight;
+
+    public java.math.BigDecimal getProductWeight()
+    {
+        return this.productWeight;
+    }
+
+    public void setProductWeight(java.math.BigDecimal productWeight)
+    {
+        this.productWeight = productWeight;
+    }
+
     public BffSupplierRawItemDto()
     {
     }
 
-    public BffSupplierRawItemDto(String productId, String supplierId, String supplierShortName, Long version, String currencyUomId, java.math.BigDecimal minimumOrderQuantity, OffsetDateTime availableFromDate, OffsetDateTime availableThruDate, String brandName, String gtin, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String supplierName, java.math.BigDecimal productWeight, String active, String caseUomId, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String certificationCodes, Long individualsPerPackage)
+    public BffSupplierRawItemDto(String productId, String supplierId, String supplierShortName, Long version, String currencyUomId, java.math.BigDecimal minimumOrderQuantity, OffsetDateTime availableFromDate, OffsetDateTime availableThruDate, String brandName, String gtin, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String supplierName, String active, String caseUomId, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String certificationCodes, Long individualsPerPackage, String produceVariety, String hsCode, String storageConditions, String shelfLifeDescription, String handlingInstructions, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight)
     {
         this.productId = productId;
         this.supplierId = supplierId;
@@ -290,7 +377,6 @@ public class BffSupplierRawItemDto implements Serializable {
         this.quantityIncluded = quantityIncluded;
         this.piecesIncluded = piecesIncluded;
         this.supplierName = supplierName;
-        this.productWeight = productWeight;
         this.active = active;
         this.caseUomId = caseUomId;
         this.organicCertifications = organicCertifications;
@@ -298,6 +384,14 @@ public class BffSupplierRawItemDto implements Serializable {
         this.countryOfOrigin = countryOfOrigin;
         this.certificationCodes = certificationCodes;
         this.individualsPerPackage = individualsPerPackage;
+        this.produceVariety = produceVariety;
+        this.hsCode = hsCode;
+        this.storageConditions = storageConditions;
+        this.shelfLifeDescription = shelfLifeDescription;
+        this.handlingInstructions = handlingInstructions;
+        this.weightUomId = weightUomId;
+        this.shippingWeight = shippingWeight;
+        this.productWeight = productWeight;
     }
 
     @Override
@@ -325,7 +419,6 @@ public class BffSupplierRawItemDto implements Serializable {
             && (quantityIncluded == other.quantityIncluded || (quantityIncluded != null && quantityIncluded.equals(other.quantityIncluded)))
             && (piecesIncluded == other.piecesIncluded || (piecesIncluded != null && piecesIncluded.equals(other.piecesIncluded)))
             && (supplierName == other.supplierName || (supplierName != null && supplierName.equals(other.supplierName)))
-            && (productWeight == other.productWeight || (productWeight != null && productWeight.equals(other.productWeight)))
             && (active == other.active || (active != null && active.equals(other.active)))
             && (caseUomId == other.caseUomId || (caseUomId != null && caseUomId.equals(other.caseUomId)))
             && (organicCertifications == other.organicCertifications || (organicCertifications != null && organicCertifications.equals(other.organicCertifications)))
@@ -333,6 +426,14 @@ public class BffSupplierRawItemDto implements Serializable {
             && (countryOfOrigin == other.countryOfOrigin || (countryOfOrigin != null && countryOfOrigin.equals(other.countryOfOrigin)))
             && (certificationCodes == other.certificationCodes || (certificationCodes != null && certificationCodes.equals(other.certificationCodes)))
             && (individualsPerPackage == other.individualsPerPackage || (individualsPerPackage != null && individualsPerPackage.equals(other.individualsPerPackage)))
+            && (produceVariety == other.produceVariety || (produceVariety != null && produceVariety.equals(other.produceVariety)))
+            && (hsCode == other.hsCode || (hsCode != null && hsCode.equals(other.hsCode)))
+            && (storageConditions == other.storageConditions || (storageConditions != null && storageConditions.equals(other.storageConditions)))
+            && (shelfLifeDescription == other.shelfLifeDescription || (shelfLifeDescription != null && shelfLifeDescription.equals(other.shelfLifeDescription)))
+            && (handlingInstructions == other.handlingInstructions || (handlingInstructions != null && handlingInstructions.equals(other.handlingInstructions)))
+            && (weightUomId == other.weightUomId || (weightUomId != null && weightUomId.equals(other.weightUomId)))
+            && (shippingWeight == other.shippingWeight || (shippingWeight != null && shippingWeight.equals(other.shippingWeight)))
+            && (productWeight == other.productWeight || (productWeight != null && productWeight.equals(other.productWeight)))
             ;
     }
 
@@ -379,9 +480,6 @@ public class BffSupplierRawItemDto implements Serializable {
         if (this.supplierName != null) {
             hash += 13 * this.supplierName.hashCode();
         }
-        if (this.productWeight != null) {
-            hash += 13 * this.productWeight.hashCode();
-        }
         if (this.active != null) {
             hash += 13 * this.active.hashCode();
         }
@@ -403,6 +501,30 @@ public class BffSupplierRawItemDto implements Serializable {
         if (this.individualsPerPackage != null) {
             hash += 13 * this.individualsPerPackage.hashCode();
         }
+        if (this.produceVariety != null) {
+            hash += 13 * this.produceVariety.hashCode();
+        }
+        if (this.hsCode != null) {
+            hash += 13 * this.hsCode.hashCode();
+        }
+        if (this.storageConditions != null) {
+            hash += 13 * this.storageConditions.hashCode();
+        }
+        if (this.shelfLifeDescription != null) {
+            hash += 13 * this.shelfLifeDescription.hashCode();
+        }
+        if (this.handlingInstructions != null) {
+            hash += 13 * this.handlingInstructions.hashCode();
+        }
+        if (this.weightUomId != null) {
+            hash += 13 * this.weightUomId.hashCode();
+        }
+        if (this.shippingWeight != null) {
+            hash += 13 * this.shippingWeight.hashCode();
+        }
+        if (this.productWeight != null) {
+            hash += 13 * this.productWeight.hashCode();
+        }
         return hash;
     }
 
@@ -422,7 +544,6 @@ public class BffSupplierRawItemDto implements Serializable {
                 ", quantityIncluded=" + quantityIncluded +
                 ", piecesIncluded=" + piecesIncluded +
                 ", supplierName=" + '\'' + supplierName + '\'' +
-                ", productWeight=" + productWeight +
                 ", active=" + '\'' + active + '\'' +
                 ", caseUomId=" + '\'' + caseUomId + '\'' +
                 ", organicCertifications=" + '\'' + organicCertifications + '\'' +
@@ -430,6 +551,14 @@ public class BffSupplierRawItemDto implements Serializable {
                 ", countryOfOrigin=" + '\'' + countryOfOrigin + '\'' +
                 ", certificationCodes=" + '\'' + certificationCodes + '\'' +
                 ", individualsPerPackage=" + individualsPerPackage +
+                ", produceVariety=" + '\'' + produceVariety + '\'' +
+                ", hsCode=" + '\'' + hsCode + '\'' +
+                ", storageConditions=" + '\'' + storageConditions + '\'' +
+                ", shelfLifeDescription=" + '\'' + shelfLifeDescription + '\'' +
+                ", handlingInstructions=" + '\'' + handlingInstructions + '\'' +
+                ", weightUomId=" + '\'' + weightUomId + '\'' +
+                ", shippingWeight=" + shippingWeight +
+                ", productWeight=" + productWeight +
                 '}';
     }
 

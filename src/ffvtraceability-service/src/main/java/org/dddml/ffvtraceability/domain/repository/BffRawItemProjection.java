@@ -18,8 +18,6 @@ public interface BffRawItemProjection {
 
     String getDescription();
 
-    String getGtin();
-
     String getSmallImageUrl();
 
     String getMediumImageUrl();
@@ -28,21 +26,7 @@ public interface BffRawItemProjection {
 
     String getQuantityUomId();
 
-    java.math.BigDecimal getQuantityIncluded();
-
-    Long getPiecesIncluded();
-
     String getStatusId();
-
-    String getSupplierId();
-
-    String getSupplierName();
-
-    String getWeightUomId();
-
-    java.math.BigDecimal getShippingWeight();
-
-    java.math.BigDecimal getProductWeight();
 
     String getHeightUomId();
 
@@ -68,53 +52,7 @@ public interface BffRawItemProjection {
 
     String getActive();
 
-    String getDefaultShipmentBoxTypeId();
-
-    String getCaseUomId();
-
     String getInternalId();
-
-    String getProduceVariety();
-
-    String getHsCode();
-
-    String getOrganicCertifications();
-
-    String getMaterialCompositionDescription();
-
-    String getCountryOfOrigin();
-
-    String getShelfLifeDescription();
-
-    String getHandlingInstructions();
-
-    String getStorageConditions();
-
-    String getCertificationCodes();
-
-    Long getIndividualsPerPackage();
-
-    String getDimensionsDescription();
-
-    String getDefaultShipmentBoxTypeShipmentBoxTypeId();
-
-    String getDefaultShipmentBoxTypeDescription();
-
-    String getDefaultShipmentBoxTypeDimensionUomId();
-
-    java.math.BigDecimal getDefaultShipmentBoxTypeBoxLength();
-
-    java.math.BigDecimal getDefaultShipmentBoxTypeBoxWidth();
-
-    java.math.BigDecimal getDefaultShipmentBoxTypeBoxHeight();
-
-    String getDefaultShipmentBoxTypeWeightUomId();
-
-    java.math.BigDecimal getDefaultShipmentBoxTypeBoxWeight();
-
-    String getDefaultShipmentBoxTypeActive();
-
-    String getDefaultShipmentBoxTypeBoxTypeName();
 
 }
 

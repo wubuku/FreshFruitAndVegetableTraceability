@@ -33,8 +33,6 @@ public interface BffSupplierRawItemProjection {
 
     String getSupplierName();
 
-    java.math.BigDecimal getProductWeight();
-
     String getActive();
 
     String getCaseUomId();
@@ -48,6 +46,22 @@ public interface BffSupplierRawItemProjection {
     String getCertificationCodes();
 
     Long getIndividualsPerPackage();
+
+    String getProduceVariety();
+
+    String getHsCode();
+
+    String getStorageConditions();
+
+    String getShelfLifeDescription();
+
+    String getHandlingInstructions();
+
+    String getWeightUomId();
+
+    java.math.BigDecimal getShippingWeight();
+
+    java.math.BigDecimal getProductWeight();
 
 }
 

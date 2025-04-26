@@ -86,18 +86,6 @@ public class SupplierProductStateDto {
         this.piecesIncluded = piecesIncluded;
     }
 
-    private java.math.BigDecimal productWeight;
-
-    public java.math.BigDecimal getProductWeight()
-    {
-        return this.productWeight;
-    }
-
-    public void setProductWeight(java.math.BigDecimal productWeight)
-    {
-        this.productWeight = productWeight;
-    }
-
     private String caseUomId;
 
     public String getCaseUomId()
@@ -168,6 +156,102 @@ public class SupplierProductStateDto {
     public void setIndividualsPerPackage(Long individualsPerPackage)
     {
         this.individualsPerPackage = individualsPerPackage;
+    }
+
+    private String produceVariety;
+
+    public String getProduceVariety()
+    {
+        return this.produceVariety;
+    }
+
+    public void setProduceVariety(String produceVariety)
+    {
+        this.produceVariety = produceVariety;
+    }
+
+    private String hsCode;
+
+    public String getHsCode()
+    {
+        return this.hsCode;
+    }
+
+    public void setHsCode(String hsCode)
+    {
+        this.hsCode = hsCode;
+    }
+
+    private String storageConditions;
+
+    public String getStorageConditions()
+    {
+        return this.storageConditions;
+    }
+
+    public void setStorageConditions(String storageConditions)
+    {
+        this.storageConditions = storageConditions;
+    }
+
+    private String shelfLifeDescription;
+
+    public String getShelfLifeDescription()
+    {
+        return this.shelfLifeDescription;
+    }
+
+    public void setShelfLifeDescription(String shelfLifeDescription)
+    {
+        this.shelfLifeDescription = shelfLifeDescription;
+    }
+
+    private String handlingInstructions;
+
+    public String getHandlingInstructions()
+    {
+        return this.handlingInstructions;
+    }
+
+    public void setHandlingInstructions(String handlingInstructions)
+    {
+        this.handlingInstructions = handlingInstructions;
+    }
+
+    private String weightUomId;
+
+    public String getWeightUomId()
+    {
+        return this.weightUomId;
+    }
+
+    public void setWeightUomId(String weightUomId)
+    {
+        this.weightUomId = weightUomId;
+    }
+
+    private java.math.BigDecimal shippingWeight;
+
+    public java.math.BigDecimal getShippingWeight()
+    {
+        return this.shippingWeight;
+    }
+
+    public void setShippingWeight(java.math.BigDecimal shippingWeight)
+    {
+        this.shippingWeight = shippingWeight;
+    }
+
+    private java.math.BigDecimal productWeight;
+
+    public java.math.BigDecimal getProductWeight()
+    {
+        return this.productWeight;
+    }
+
+    public void setProductWeight(java.math.BigDecimal productWeight)
+    {
+        this.productWeight = productWeight;
     }
 
     private String supplierPrefOrderId;
@@ -529,9 +613,6 @@ public class SupplierProductStateDto {
             if (returnedFieldsContains("PiecesIncluded")) {
                 dto.setPiecesIncluded(state.getPiecesIncluded());
             }
-            if (returnedFieldsContains("ProductWeight")) {
-                dto.setProductWeight(state.getProductWeight());
-            }
             if (returnedFieldsContains("CaseUomId")) {
                 dto.setCaseUomId(state.getCaseUomId());
             }
@@ -549,6 +630,30 @@ public class SupplierProductStateDto {
             }
             if (returnedFieldsContains("IndividualsPerPackage")) {
                 dto.setIndividualsPerPackage(state.getIndividualsPerPackage());
+            }
+            if (returnedFieldsContains("ProduceVariety")) {
+                dto.setProduceVariety(state.getProduceVariety());
+            }
+            if (returnedFieldsContains("HsCode")) {
+                dto.setHsCode(state.getHsCode());
+            }
+            if (returnedFieldsContains("StorageConditions")) {
+                dto.setStorageConditions(state.getStorageConditions());
+            }
+            if (returnedFieldsContains("ShelfLifeDescription")) {
+                dto.setShelfLifeDescription(state.getShelfLifeDescription());
+            }
+            if (returnedFieldsContains("HandlingInstructions")) {
+                dto.setHandlingInstructions(state.getHandlingInstructions());
+            }
+            if (returnedFieldsContains("WeightUomId")) {
+                dto.setWeightUomId(state.getWeightUomId());
+            }
+            if (returnedFieldsContains("ShippingWeight")) {
+                dto.setShippingWeight(state.getShippingWeight());
+            }
+            if (returnedFieldsContains("ProductWeight")) {
+                dto.setProductWeight(state.getProductWeight());
             }
             if (returnedFieldsContains("SupplierPrefOrderId")) {
                 dto.setSupplierPrefOrderId(state.getSupplierPrefOrderId());

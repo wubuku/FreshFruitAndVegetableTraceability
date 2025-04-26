@@ -78,16 +78,6 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.piecesIncluded = piecesIncluded;
     }
 
-    private java.math.BigDecimal productWeight;
-
-    public java.math.BigDecimal getProductWeight() {
-        return this.productWeight;
-    }
-
-    public void setProductWeight(java.math.BigDecimal productWeight) {
-        this.productWeight = productWeight;
-    }
-
     private String caseUomId;
 
     public String getCaseUomId() {
@@ -146,6 +136,86 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
 
     public void setIndividualsPerPackage(Long individualsPerPackage) {
         this.individualsPerPackage = individualsPerPackage;
+    }
+
+    private String produceVariety;
+
+    public String getProduceVariety() {
+        return this.produceVariety;
+    }
+
+    public void setProduceVariety(String produceVariety) {
+        this.produceVariety = produceVariety;
+    }
+
+    private String hsCode;
+
+    public String getHsCode() {
+        return this.hsCode;
+    }
+
+    public void setHsCode(String hsCode) {
+        this.hsCode = hsCode;
+    }
+
+    private String storageConditions;
+
+    public String getStorageConditions() {
+        return this.storageConditions;
+    }
+
+    public void setStorageConditions(String storageConditions) {
+        this.storageConditions = storageConditions;
+    }
+
+    private String shelfLifeDescription;
+
+    public String getShelfLifeDescription() {
+        return this.shelfLifeDescription;
+    }
+
+    public void setShelfLifeDescription(String shelfLifeDescription) {
+        this.shelfLifeDescription = shelfLifeDescription;
+    }
+
+    private String handlingInstructions;
+
+    public String getHandlingInstructions() {
+        return this.handlingInstructions;
+    }
+
+    public void setHandlingInstructions(String handlingInstructions) {
+        this.handlingInstructions = handlingInstructions;
+    }
+
+    private String weightUomId;
+
+    public String getWeightUomId() {
+        return this.weightUomId;
+    }
+
+    public void setWeightUomId(String weightUomId) {
+        this.weightUomId = weightUomId;
+    }
+
+    private java.math.BigDecimal shippingWeight;
+
+    public java.math.BigDecimal getShippingWeight() {
+        return this.shippingWeight;
+    }
+
+    public void setShippingWeight(java.math.BigDecimal shippingWeight) {
+        this.shippingWeight = shippingWeight;
+    }
+
+    private java.math.BigDecimal productWeight;
+
+    public java.math.BigDecimal getProductWeight() {
+        return this.productWeight;
+    }
+
+    public void setProductWeight(java.math.BigDecimal productWeight) {
+        this.productWeight = productWeight;
     }
 
     private String supplierPrefOrderId;
@@ -491,13 +561,20 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setGtin(e.getGtin());
         this.setQuantityIncluded(e.getQuantityIncluded());
         this.setPiecesIncluded(e.getPiecesIncluded());
-        this.setProductWeight(e.getProductWeight());
         this.setCaseUomId(e.getCaseUomId());
         this.setOrganicCertifications(e.getOrganicCertifications());
         this.setMaterialCompositionDescription(e.getMaterialCompositionDescription());
         this.setCountryOfOrigin(e.getCountryOfOrigin());
         this.setCertificationCodes(e.getCertificationCodes());
         this.setIndividualsPerPackage(e.getIndividualsPerPackage());
+        this.setProduceVariety(e.getProduceVariety());
+        this.setHsCode(e.getHsCode());
+        this.setStorageConditions(e.getStorageConditions());
+        this.setShelfLifeDescription(e.getShelfLifeDescription());
+        this.setHandlingInstructions(e.getHandlingInstructions());
+        this.setWeightUomId(e.getWeightUomId());
+        this.setShippingWeight(e.getShippingWeight());
+        this.setProductWeight(e.getProductWeight());
         this.setSupplierPrefOrderId(e.getSupplierPrefOrderId());
         this.setSupplierRatingTypeId(e.getSupplierRatingTypeId());
         this.setStandardLeadTimeDays(e.getStandardLeadTimeDays());
@@ -534,13 +611,20 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setGtin(s.getGtin());
         this.setQuantityIncluded(s.getQuantityIncluded());
         this.setPiecesIncluded(s.getPiecesIncluded());
-        this.setProductWeight(s.getProductWeight());
         this.setCaseUomId(s.getCaseUomId());
         this.setOrganicCertifications(s.getOrganicCertifications());
         this.setMaterialCompositionDescription(s.getMaterialCompositionDescription());
         this.setCountryOfOrigin(s.getCountryOfOrigin());
         this.setCertificationCodes(s.getCertificationCodes());
         this.setIndividualsPerPackage(s.getIndividualsPerPackage());
+        this.setProduceVariety(s.getProduceVariety());
+        this.setHsCode(s.getHsCode());
+        this.setStorageConditions(s.getStorageConditions());
+        this.setShelfLifeDescription(s.getShelfLifeDescription());
+        this.setHandlingInstructions(s.getHandlingInstructions());
+        this.setWeightUomId(s.getWeightUomId());
+        this.setShippingWeight(s.getShippingWeight());
+        this.setProductWeight(s.getProductWeight());
         this.setSupplierPrefOrderId(s.getSupplierPrefOrderId());
         this.setSupplierRatingTypeId(s.getSupplierRatingTypeId());
         this.setStandardLeadTimeDays(s.getStandardLeadTimeDays());
@@ -602,13 +686,6 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         } else {
             this.setPiecesIncluded(e.getPiecesIncluded());
         }
-        if (e.getProductWeight() == null) {
-            if (e.getIsPropertyProductWeightRemoved() != null && e.getIsPropertyProductWeightRemoved()) {
-                this.setProductWeight(null);
-            }
-        } else {
-            this.setProductWeight(e.getProductWeight());
-        }
         if (e.getCaseUomId() == null) {
             if (e.getIsPropertyCaseUomIdRemoved() != null && e.getIsPropertyCaseUomIdRemoved()) {
                 this.setCaseUomId(null);
@@ -650,6 +727,62 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
             }
         } else {
             this.setIndividualsPerPackage(e.getIndividualsPerPackage());
+        }
+        if (e.getProduceVariety() == null) {
+            if (e.getIsPropertyProduceVarietyRemoved() != null && e.getIsPropertyProduceVarietyRemoved()) {
+                this.setProduceVariety(null);
+            }
+        } else {
+            this.setProduceVariety(e.getProduceVariety());
+        }
+        if (e.getHsCode() == null) {
+            if (e.getIsPropertyHsCodeRemoved() != null && e.getIsPropertyHsCodeRemoved()) {
+                this.setHsCode(null);
+            }
+        } else {
+            this.setHsCode(e.getHsCode());
+        }
+        if (e.getStorageConditions() == null) {
+            if (e.getIsPropertyStorageConditionsRemoved() != null && e.getIsPropertyStorageConditionsRemoved()) {
+                this.setStorageConditions(null);
+            }
+        } else {
+            this.setStorageConditions(e.getStorageConditions());
+        }
+        if (e.getShelfLifeDescription() == null) {
+            if (e.getIsPropertyShelfLifeDescriptionRemoved() != null && e.getIsPropertyShelfLifeDescriptionRemoved()) {
+                this.setShelfLifeDescription(null);
+            }
+        } else {
+            this.setShelfLifeDescription(e.getShelfLifeDescription());
+        }
+        if (e.getHandlingInstructions() == null) {
+            if (e.getIsPropertyHandlingInstructionsRemoved() != null && e.getIsPropertyHandlingInstructionsRemoved()) {
+                this.setHandlingInstructions(null);
+            }
+        } else {
+            this.setHandlingInstructions(e.getHandlingInstructions());
+        }
+        if (e.getWeightUomId() == null) {
+            if (e.getIsPropertyWeightUomIdRemoved() != null && e.getIsPropertyWeightUomIdRemoved()) {
+                this.setWeightUomId(null);
+            }
+        } else {
+            this.setWeightUomId(e.getWeightUomId());
+        }
+        if (e.getShippingWeight() == null) {
+            if (e.getIsPropertyShippingWeightRemoved() != null && e.getIsPropertyShippingWeightRemoved()) {
+                this.setShippingWeight(null);
+            }
+        } else {
+            this.setShippingWeight(e.getShippingWeight());
+        }
+        if (e.getProductWeight() == null) {
+            if (e.getIsPropertyProductWeightRemoved() != null && e.getIsPropertyProductWeightRemoved()) {
+                this.setProductWeight(null);
+            }
+        } else {
+            this.setProductWeight(e.getProductWeight());
         }
         if (e.getSupplierPrefOrderId() == null) {
             if (e.getIsPropertySupplierPrefOrderIdRemoved() != null && e.getIsPropertySupplierPrefOrderIdRemoved()) {
