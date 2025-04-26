@@ -37,53 +37,54 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
      * 根据条件分页查询原材料
      *
      * @param pageable
+     * @param productId
      * @param supplierId
      * @param active
      * @return
      */
     @Query(value = """
-          SELECT
-          p.product_id as productId,
-          p.product_name as productName,
-          p.description as description,
-          p.small_image_url as smallImageUrl,
-          p.medium_image_url as mediumImageUrl,
-          p.large_image_url as largeImageUrl,
-          p.quantity_uom_id as quantityUomId,
-          p.active as active,
-          ii.id_value as internalId
-          FROM product p
-          LEFT JOIN (
-                SELECT
-                    gi.product_id,
-                    gi.id_value
-                FROM good_identification gi
-                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
-          ) ii ON ii.product_id = p.product_id
-          WHERE p.product_id IN
-            (SELECT distinct p.product_id FROM product p
-             LEFT JOIN supplier_product sp
-             ON p.product_id = sp.product_id
-             WHERE p.product_type_id='RAW_MATERIAL'
-             AND sp.available_from_date <= CURRENT_TIMESTAMP
-             AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
-             AND (:productId is null or p.product_Id = :productId)
-             AND (:supplierId is null or sp.party_id = :supplierId)
-             AND (:active IS NULL OR p.active = :active)
-            )
-            ORDER BY p.created_at DESC
-          """,
-            countQuery = """
-            SELECT count(distinct p.product_id) FROM product p
-            LEFT JOIN supplier_product sp
-            ON p.product_id = sp.product_id
-            WHERE p.product_type_id='RAW_MATERIAL'
-            AND sp.available_from_date <= CURRENT_TIMESTAMP
-            AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
-            AND (:productId is null or p.product_Id = :productId)
-            AND (:supplierId is null or sp.party_id = :supplierId)
-            AND (:active IS NULL OR p.active = :active)
+            SELECT
+            p.product_id as productId,
+            p.product_name as productName,
+            p.description as description,
+            p.small_image_url as smallImageUrl,
+            p.medium_image_url as mediumImageUrl,
+            p.large_image_url as largeImageUrl,
+            p.quantity_uom_id as quantityUomId,
+            p.active as active,
+            ii.id_value as internalId
+            FROM product p
+            LEFT JOIN (
+                  SELECT
+                      gi.product_id,
+                      gi.id_value
+                  FROM good_identification gi
+                  WHERE gi.good_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.product_id = p.product_id
+            WHERE p.product_id IN
+              (SELECT distinct p.product_id FROM product p
+               LEFT JOIN supplier_product sp
+               ON p.product_id = sp.product_id
+               WHERE p.product_type_id='RAW_MATERIAL'
+               AND sp.available_from_date <= CURRENT_TIMESTAMP
+               AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
+               AND (:productId is null or p.product_Id = :productId)
+               AND (:supplierId is null or sp.party_id = :supplierId)
+               AND (:active IS NULL OR p.active = :active)
+              )
+              ORDER BY p.created_at DESC
             """,
+            countQuery = """
+                    SELECT count(distinct p.product_id) FROM product p
+                    LEFT JOIN supplier_product sp
+                    ON p.product_id = sp.product_id
+                    WHERE p.product_type_id='RAW_MATERIAL'
+                    AND sp.available_from_date <= CURRENT_TIMESTAMP
+                    AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
+                    AND (:productId is null or p.product_Id = :productId)
+                    AND (:supplierId is null or sp.party_id = :supplierId)
+                    AND (:active IS NULL OR p.active = :active)
+                    """,
             nativeQuery = true)
     Page<BffRawItemProjection> findAllRawItems(Pageable pageable,
                                                @Param("productId") String productId,
@@ -220,4 +221,16 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             """, nativeQuery = true)
     Optional<BffSupplierRawItemProjection> findSupplierRawItemByProductId(@Param("productId") String productId,
                                                                           @Param("supplierId") String supplierId);
+
+    @Query(value = """
+            SELECT
+            COUNT(*)
+            from supplier_product sp
+            WHERE product_id = :productId
+            and party_id = :supplierId
+            -- and sp.available_from_date <= CURRENT_TIMESTAMP
+            --    AND (sp.available_thru_date IS NULL OR sp.available_thru_date > CURRENT_TIMESTAMP)
+            """, nativeQuery = true)
+    Integer findSupplierRawItem(@Param("productId") String productId,
+                                @Param("supplierId") String supplierId);
 }

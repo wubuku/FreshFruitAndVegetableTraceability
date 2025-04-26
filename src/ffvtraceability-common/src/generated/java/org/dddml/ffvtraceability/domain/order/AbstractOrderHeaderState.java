@@ -1039,6 +1039,10 @@ public abstract class AbstractOrderHeaderState implements OrderHeaderState.SqlOr
         for (OrderRoleEvent innerEvent : e.getOrderRoleEvents()) {
             OrderRoleState innerState = ((EntityStateCollection.MutableEntityStateCollection<PartyRoleId, OrderRoleState>)this.getOrderRoles()).getOrAddDefault(((OrderRoleEvent.SqlOrderRoleEvent)innerEvent).getOrderRoleEventId().getPartyRoleId());
             ((OrderRoleState.SqlOrderRoleState)innerState).mutate(innerEvent);
+            if (innerEvent instanceof OrderRoleEvent.OrderRoleStateRemoved) {
+                //OrderRoleEvent.OrderRoleStateRemoved removed = (OrderRoleEvent.OrderRoleStateRemoved)innerEvent;
+                ((EntityStateCollection.MutableEntityStateCollection)this.getOrderRoles()).removeState(innerState);
+            }
         }
         for (OrderContactMechEvent innerEvent : e.getOrderContactMechEvents()) {
             OrderContactMechState innerState = ((EntityStateCollection.MutableEntityStateCollection<String, OrderContactMechState>)this.getOrderContactMechanisms()).getOrAddDefault(((OrderContactMechEvent.SqlOrderContactMechEvent)innerEvent).getOrderContactMechEventId().getContactMechPurposeTypeId());

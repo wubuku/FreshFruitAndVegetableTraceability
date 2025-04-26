@@ -251,6 +251,10 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         return new AbstractOrderRoleEvent.SimpleOrderRoleStateMergePatched(newOrderRoleEventId(partyRoleId));
     }
 
+    public OrderRoleEvent.OrderRoleStateRemoved newOrderRoleStateRemoved(PartyRoleId partyRoleId) {
+        return new AbstractOrderRoleEvent.SimpleOrderRoleStateRemoved(newOrderRoleEventId(partyRoleId));
+    }
+
     public OrderContactMechEvent.OrderContactMechStateCreated newOrderContactMechStateCreated(String contactMechPurposeTypeId) {
         return new AbstractOrderContactMechEvent.SimpleOrderContactMechStateCreated(newOrderContactMechEventId(contactMechPurposeTypeId));
     }

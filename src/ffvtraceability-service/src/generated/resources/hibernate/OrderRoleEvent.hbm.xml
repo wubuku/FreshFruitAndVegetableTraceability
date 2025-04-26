@@ -24,6 +24,7 @@
       <property name="version" column="version" not-null="true" />
       <subclass name="AbstractOrderRoleEvent$SimpleOrderRoleStateCreated" discriminator-value="Created"></subclass>
       <subclass name="AbstractOrderRoleEvent$SimpleOrderRoleStateMergePatched" discriminator-value="MergePatched"></subclass>
+      <subclass name="AbstractOrderRoleEvent$SimpleOrderRoleStateRemoved" discriminator-value="Removed"></subclass>
     </subclass>
   </class>
 </hibernate-mapping>

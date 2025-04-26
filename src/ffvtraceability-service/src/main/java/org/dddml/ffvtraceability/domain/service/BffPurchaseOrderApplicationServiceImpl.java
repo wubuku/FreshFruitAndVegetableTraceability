@@ -7,8 +7,9 @@ import org.dddml.ffvtraceability.domain.documentnumbergenerator.DocumentNumberGe
 import org.dddml.ffvtraceability.domain.mapper.BffPurchaseOrderMapper;
 import org.dddml.ffvtraceability.domain.order.*;
 import org.dddml.ffvtraceability.domain.partyrole.PartyRoleId;
-import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderRepository;
 import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderAndItemProjection;
+import org.dddml.ffvtraceability.domain.repository.BffPurchaseOrderRepository;
+import org.dddml.ffvtraceability.domain.repository.BffRawItemRepository;
 import org.dddml.ffvtraceability.domain.repository.BffReceivingRepository;
 import org.dddml.ffvtraceability.domain.shipmentreceipt.ShipmentReceiptApplicationService;
 import org.dddml.ffvtraceability.domain.util.IdUtils;
@@ -50,6 +51,8 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     private BffRawItemApplicationService rawItemApplicationService;
     @Autowired
     private ProductQueryService rawItemQueryService;
+    @Autowired
+    private BffRawItemRepository bffRawItemRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -199,11 +202,14 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
                 throw new IllegalArgumentException("The purchase order already exists:" + orderId);
             }
         }
+        if (purchaseOrder.getSupplierId() == null || purchaseOrder.getSupplierId().isBlank()) {
+            throw new IllegalArgumentException("Vendor is required.");
+        }
         // Create order header
         AbstractOrderCommand.SimpleCreateOrder createOrder = new AbstractOrderCommand.SimpleCreateOrder();
-        if(purchaseOrder.getOrderId()!=null&&!purchaseOrder.getOrderId().isBlank()){
+        if (purchaseOrder.getOrderId() != null && !purchaseOrder.getOrderId().isBlank()) {
             createOrder.setOrderId(purchaseOrder.getOrderId());
-        }else{
+        } else {
             DocumentNumberGeneratorCommands.GenerateNextNumber generateNextNumber = new DocumentNumberGeneratorCommands.GenerateNextNumber();
             generateNextNumber.setGeneratorId(PURCHASE_ORDER);
             generateNextNumber.setRequesterId(c.getRequesterId());
@@ -236,6 +242,9 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         if (purchaseOrder.getOrderItems() != null) {
             int itemSeq = 1;
             for (BffPurchaseOrderItemDto item : purchaseOrder.getOrderItems()) {
+                if (bffRawItemRepository.findSupplierRawItem(item.getProductId(), purchaseOrder.getSupplierId()) < 1) {
+                    throw new IllegalArgumentException("Product:" + item.getProductId() + " and supplier:" + purchaseOrder.getSupplierId() + " mismatch");
+                }
                 OrderItemCommand.CreateOrderItem createOrderItem = createOrder.newCreateOrderItem();
                 item.setOrderItemSeqId(itemSeq++ + "");
                 setupCreateOrderItemCommand(createOrderItem, item);
@@ -344,13 +353,16 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
     @Transactional
     public void when(BffPurchaseOrderServiceCommands.UpdatePurchaseOrder c) {
         if (c.getOrderId() == null) {
-            throw new IllegalArgumentException("OrderId is required.");
+            throw new IllegalArgumentException("Order Id is required.");
+        }
+        BffPurchaseOrderDto purchaseOrder = c.getPurchaseOrder();
+        if (purchaseOrder.getSupplierId() == null || purchaseOrder.getSupplierId().isBlank()) {
+            throw new IllegalArgumentException("Vendor is required.");
         }
         OrderHeaderState orderHeaderState = getAndValidateOrder(c.getOrderId());
         if (orderHeaderState.getOrderId() == null) {
             throw new IllegalArgumentException("Order not found: " + c.getOrderId());
         }
-        BffPurchaseOrderDto purchaseOrder = c.getPurchaseOrder();
         AbstractOrderCommand.SimpleMergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
         mergePatchOrder.setOrderId(c.getOrderId());
         mergePatchOrder.setVersion(orderHeaderState.getVersion());
@@ -362,9 +374,34 @@ public class BffPurchaseOrderApplicationServiceImpl implements BffPurchaseOrderA
         mergePatchOrder.setOriginFacilityId(purchaseOrder.getOriginFacilityId());
         mergePatchOrder.setMemo(purchaseOrder.getMemo());
 
+        if (orderHeaderState.getOrderRoles() != null) {
+            orderHeaderState.getOrderRoles().stream().findFirst().ifPresent(orderRoleState -> {
+                if (!orderRoleState.getPartyRoleId().getPartyId().equals(purchaseOrder.getSupplierId())) {
+                    OrderRoleCommand.RemoveOrderRole removeOrderRole = mergePatchOrder.newRemoveOrderRole();
+                    removeOrderRole.setPartyRoleId(orderRoleState.getPartyRoleId());
+                    removeOrderRole.setCommandId(IdUtils.randomId());
+                    removeOrderRole.setRequesterId(c.getRequesterId());
+                    mergePatchOrder.getOrderRoleCommands().add(removeOrderRole);
+                    OrderRoleCommand.CreateOrderRole mergePatchOrderRole = mergePatchOrder.newCreateOrderRole();
+                    mergePatchOrderRole.setPartyRoleId(new PartyRoleId(purchaseOrder.getSupplierId(), ROLE_TYPE_SUPPLIER));
+                    mergePatchOrderRole.setRequesterId(c.getRequesterId());
+                    mergePatchOrderRole.setCommandId(IdUtils.randomId());
+                    mergePatchOrder.getOrderRoleCommands().add(mergePatchOrderRole);
+                }
+            });
+        } else {
+            OrderRoleCommand.CreateOrderRole mergePatchOrderRole = mergePatchOrder.newCreateOrderRole();
+            mergePatchOrderRole.setPartyRoleId(new PartyRoleId(purchaseOrder.getSupplierId(), ROLE_TYPE_SUPPLIER));
+            mergePatchOrderRole.setRequesterId(c.getRequesterId());
+            mergePatchOrderRole.setCommandId(IdUtils.randomId());
+            mergePatchOrder.getOrderRoleCommands().add(mergePatchOrderRole);
+        }
         List<String> orderItemSeqIds = new ArrayList<>();
         if (purchaseOrder.getOrderItems() != null) {
             for (BffPurchaseOrderItemDto item : purchaseOrder.getOrderItems()) {
+                if (bffRawItemRepository.findSupplierRawItem(item.getProductId(), purchaseOrder.getSupplierId()) < 1) {
+                    throw new IllegalArgumentException("Product:" + item.getProductId() + " and supplier:" + purchaseOrder.getSupplierId() + " mismatch");
+                }
                 if (item.getOrderItemSeqId() != null && !item.getOrderItemSeqId().isBlank()) {
                     orderItemSeqIds.add(item.getOrderItemSeqId());
                     orderHeaderState.getOrderItems().stream().filter(x ->

@@ -124,6 +124,8 @@
 
     entities:
       OrderRole:
+        reservedPropertyMetadata:
+          noDeleted: false
         # 订单角色
         id:
           name: PartyRoleId

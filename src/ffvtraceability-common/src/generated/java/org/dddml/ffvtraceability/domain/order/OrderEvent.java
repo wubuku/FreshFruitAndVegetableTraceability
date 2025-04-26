@@ -334,6 +334,8 @@ public interface OrderEvent extends Event, OrderFulfillmentSyncable {
 
         OrderRoleEvent.OrderRoleStateMergePatched newOrderRoleStateMergePatched(PartyRoleId partyRoleId);
 
+        OrderRoleEvent.OrderRoleStateRemoved newOrderRoleStateRemoved(PartyRoleId partyRoleId);
+
         Iterable<OrderContactMechEvent> getOrderContactMechEvents();
         
         void addOrderContactMechEvent(OrderContactMechEvent e);

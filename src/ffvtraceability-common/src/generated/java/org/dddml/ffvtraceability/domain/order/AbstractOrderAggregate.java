@@ -240,6 +240,10 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             return mapMergePatch(merge, outerCommand, version, outerState);
         }
 
+        OrderRoleCommand.RemoveOrderRole remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((OrderRoleCommand.RemoveOrderRole)c) : null;
+        if (remove != null) {
+            return mapRemove(remove, outerCommand, version, outerState);
+        }
         throw new UnsupportedOperationException("Unsupported command type: " + c.getCommandType() + " for " + c.getClass().getName());
     }
 
@@ -269,6 +273,18 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         return e;
 
     }// END map(IMergePatch... ////////////////////////////
+
+    protected OrderRoleEvent.OrderRoleStateRemoved mapRemove(OrderRoleCommand.RemoveOrderRole c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
+        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
+        OrderRoleEventId stateEventId = new OrderRoleEventId(outerState.getOrderId(), c.getPartyRoleId(), version);
+        OrderRoleEvent.OrderRoleStateRemoved e = newOrderRoleStateRemoved(stateEventId);
+
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+
+        return e;
+
+    }// END map(IRemove... ////////////////////////////
 
 
     protected OrderContactMechEvent map(OrderContactMechCommand c, OrderCommand outerCommand, Long version, OrderHeaderState outerState) {
@@ -951,6 +967,10 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
     protected OrderRoleEvent.OrderRoleStateMergePatched newOrderRoleStateMergePatched(OrderRoleEventId stateEventId) {
         return new AbstractOrderRoleEvent.SimpleOrderRoleStateMergePatched(stateEventId);
+    }
+
+    protected OrderRoleEvent.OrderRoleStateRemoved newOrderRoleStateRemoved(OrderRoleEventId stateEventId) {
+        return new AbstractOrderRoleEvent.SimpleOrderRoleStateRemoved(stateEventId);
     }
 
     protected OrderContactMechEvent.OrderContactMechStateCreated newOrderContactMechStateCreated(OrderContactMechEventId stateEventId) {
