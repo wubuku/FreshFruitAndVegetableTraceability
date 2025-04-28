@@ -12,9 +12,6 @@
       </key-property>
     </composite-id>
     <version name="version" column="version" type="long" />
-    <many-to-one name="protectedInventoryItemState" class="org.dddml.ffvtraceability.domain.inventoryitem.AbstractInventoryItemState$SimpleInventoryItemState" insert="false" update="false">
-      <column name="INVENTORY_ITEM_ID" />
-    </many-to-one>
     <property name="effectiveDate">
       <column name="effective_date" sql-type="timestamptz" />
     </property>

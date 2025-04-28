@@ -348,16 +348,6 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
         return this.getVersion() == null;
     }
 
-    private Set<InventoryItemDetailState> protectedDetails = new HashSet<>();
-
-    protected Set<InventoryItemDetailState> getProtectedDetails() {
-        return this.protectedDetails;
-    }
-
-    protected void setProtectedDetails(Set<InventoryItemDetailState> protectedDetails) {
-        this.protectedDetails = protectedDetails;
-    }
-
     private EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState> details;
 
     public EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState> getDetails() {
@@ -407,7 +397,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
     }
     
     protected void initializeProperties() {
-        details = new SimpleInventoryItemDetailStateCollection();
+        details = new SimpleInventoryItemDetailStateCollection(this);
     }
 
     @Override
@@ -523,7 +513,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getDetails()).getRemovedStates() != null) {
                     for (InventoryItemDetailState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, InventoryItemDetailState>)s.getDetails()).getRemovedStates()) {
                         InventoryItemDetailState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(ss.getInventoryItemDetailSeqId());
-                        ((EntityStateCollection.MutableEntityStateCollection)this.getDetails()).removeState(thisInnerState);
+                        ((AbstractInventoryItemDetailStateCollection)this.getDetails()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -532,7 +522,7 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
                     s.getDetails().forEach(i -> removedStateIds.remove(i.getInventoryItemDetailSeqId()));
                     for (String i : removedStateIds) {
                         InventoryItemDetailState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>)this.getDetails()).getOrAddDefault(i);
-                        ((EntityStateCollection.MutableEntityStateCollection)this.getDetails()).removeState(thisInnerState);
+                        ((AbstractInventoryItemDetailStateCollection)this.getDetails()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -845,130 +835,9 @@ public abstract class AbstractInventoryItemState implements InventoryItemState.S
     }
 
 
-    class SimpleInventoryItemDetailStateCollection implements EntityStateCollection.MutableEntityStateCollection<String, InventoryItemDetailState>, Collection<InventoryItemDetailState> {
-
-        @Override
-        public InventoryItemDetailState get(String inventoryItemDetailSeqId) {
-            return protectedDetails.stream().filter(
-                            e -> e.getInventoryItemDetailSeqId().equals(inventoryItemDetailSeqId))
-                    .findFirst().orElse(null);
-        }
-
-        @Override
-        public boolean isLazy() {
-            return false;
-        }
-
-        @Override
-        public boolean isAllLoaded() {
-            return true;
-        }
-
-        @Override
-        public Collection<InventoryItemDetailState> getLoadedStates() {
-            return protectedDetails;
-        }
-
-        @Override
-        public InventoryItemDetailState getOrAddDefault(String inventoryItemDetailSeqId) {
-            InventoryItemDetailState s = get(inventoryItemDetailSeqId);
-            if (s == null) {
-                InventoryItemDetailId globalId = new InventoryItemDetailId(getInventoryItemId(), inventoryItemDetailSeqId);
-                AbstractInventoryItemDetailState state = new AbstractInventoryItemDetailState.SimpleInventoryItemDetailState();
-                state.setInventoryItemDetailId(globalId);
-                state.setCreatedBy(ApplicationContext.current.getRequesterId());
-                state.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-                add(state);
-                s = state;
-            } else {
-                AbstractInventoryItemDetailState state = (AbstractInventoryItemDetailState) s;
-                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
-                state.setUpdatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-            }
-            return s;
-        }
-
-        @Override
-        public int size() {
-            return protectedDetails.size();
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return protectedDetails.isEmpty();
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return protectedDetails.contains(o);
-        }
-
-        @Override
-        public Iterator<InventoryItemDetailState> iterator() {
-            return protectedDetails.iterator();
-        }
-
-        @Override
-        public java.util.stream.Stream<InventoryItemDetailState> stream() {
-            return protectedDetails.stream();
-        }
-
-        @Override
-        public Object[] toArray() {
-            return protectedDetails.toArray();
-        }
-
-        @Override
-        public <T> T[] toArray(T[] a) {
-            return protectedDetails.toArray(a);
-        }
-
-        @Override
-        public boolean add(InventoryItemDetailState s) {
-            if (s instanceof AbstractInventoryItemDetailState) {
-                AbstractInventoryItemDetailState state = (AbstractInventoryItemDetailState) s;
-                state.setProtectedInventoryItemState(AbstractInventoryItemState.this);
-            }
-            return protectedDetails.add(s);
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            if (o instanceof AbstractInventoryItemDetailState) {
-                AbstractInventoryItemDetailState s = (AbstractInventoryItemDetailState) o;
-                s.setProtectedInventoryItemState(null);
-            }
-            return protectedDetails.remove(o);
-        }
-
-        @Override
-        public boolean removeState(InventoryItemDetailState s) {
-            return remove(s);
-        }
-
-        @Override
-        public boolean containsAll(Collection<?> c) {
-            return protectedDetails.containsAll(c);
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends InventoryItemDetailState> c) {
-            return protectedDetails.addAll(c);
-        }
-
-        @Override
-        public boolean removeAll(Collection<?> c) {
-            return protectedDetails.removeAll(c);
-        }
-
-        @Override
-        public boolean retainAll(Collection<?> c) {
-            return protectedDetails.retainAll(c);
-        }
-
-        @Override
-        public void clear() {
-            protectedDetails.clear();
+    static class SimpleInventoryItemDetailStateCollection extends AbstractInventoryItemDetailStateCollection {
+        public SimpleInventoryItemDetailStateCollection(AbstractInventoryItemState outerState) {
+            super(outerState);
         }
     }
 

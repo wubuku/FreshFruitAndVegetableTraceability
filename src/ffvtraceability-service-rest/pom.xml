@@ -1,5 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ffvtraceability-service-rest</artifactId>
@@ -84,10 +85,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.github.ben-manes.caffeine</groupId>-->
-<!--            <artifactId>caffeine</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.ben-manes.caffeine</groupId>-->
+        <!--            <artifactId>caffeine</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -127,6 +128,14 @@
                         <configuration>
                             <sources>
                                 <source>${basedir}/src/generated/java</source>
+                                <!-- mvn -pl ffvtraceability-service-rest -am spring-boot:run -->
+                                <!-- 如果执行 spring-boot:run 命令报错“没有找到类型”，可以添加以下配置： -->
+                                <source>${project.basedir}/../ffvtraceability-service/src/generated/java</source>
+                                <!--
+                                    在Maven中，${basedir} 和 ${project.basedir} 在实际使用中指向相同的目录，没有功能上的区别：
+                                    ${basedir}：这是较早的Maven属性，表示当前正在执行的POM文件所在的目录
+                                    ${project.basedir}：这是Maven后来引入的更规范的写法，遵循Maven属性的命名约定（如project.version、project.groupId）
+                                -->
                             </sources>
                         </configuration>
                     </execution>

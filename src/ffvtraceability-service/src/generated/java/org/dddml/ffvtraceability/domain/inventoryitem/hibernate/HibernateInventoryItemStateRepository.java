@@ -81,17 +81,6 @@ public class HibernateInventoryItemStateRepository implements InventoryItemState
         entityManager.flush();
     }
 
-    public void merge(InventoryItemState detached) {
-        InventoryItemState persistent = getEntityManager().find(AbstractInventoryItemState.SimpleInventoryItemState.class, detached.getInventoryItemId());
-        if (persistent != null) {
-            merge(persistent, detached);
-            entityManager.merge(persistent);
-        } else {
-            entityManager.persist(detached);
-        }
-        entityManager.flush();
-    }
-
     private void merge(InventoryItemState persistent, InventoryItemState detached) {
         ((AbstractInventoryItemState) persistent).merge(detached);
     }

@@ -1,5 +1,7 @@
 aggregates:
   InventoryItem:
+    metadata:
+      AssociationMappingsEnabled: false
     id:
       name: InventoryItemId
       type: id-long
