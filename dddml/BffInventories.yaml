@@ -84,6 +84,8 @@ valueObjects:
     properties:
       ProductId:
         type: id
+      InternalId:
+        type: id
       LotId:
         type: id
       LotNo:

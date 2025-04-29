@@ -11,6 +11,8 @@ import org.dddml.ffvtraceability.domain.*;
 public interface BffRawItemInventoryItemProjection {
     String getProductId();
 
+    String getInternalId();
+
     String getLotId();
 
     String getLotNo();
