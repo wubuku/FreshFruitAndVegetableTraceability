@@ -126,17 +126,17 @@ public interface BffPurchaseOrderRepository extends JpaRepository<AbstractOrderH
 
     @Query(value = """
             WITH filtered_orders AS (
-                SELECT DISTINCT o.order_id, o.order_date
+                SELECT DISTINCT o.order_id, o.created_at
                 FROM order_header o
             """ + ORDER_ITEM_JOIN + PRODUCT_JOINS + COMMON_WHERE + """
-                ORDER BY o.order_date DESC
+                ORDER BY o.created_at DESC
                 LIMIT :pageSize OFFSET :offset
             )
             """ + COMMON_SELECT + """
             FROM filtered_orders fo
             JOIN order_header o ON fo.order_id = o.order_id
             """ + ORDER_ITEM_JOIN + COMMON_JOINS + """
-            ORDER BY o.order_date DESC
+            ORDER BY o.created_at DESC
             """, nativeQuery = true)
     List<BffPurchaseOrderAndItemProjection> findAllPurchaseOrdersWithItems(
             @Param("offset") int offset,

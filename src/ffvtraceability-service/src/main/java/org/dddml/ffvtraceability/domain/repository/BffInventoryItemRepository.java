@@ -74,6 +74,7 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                 i.lot_id AS lotId,
                 i.inventory_item_id AS inventoryItemId,
                 l.internal_id AS lotNo,
+                ii.id_value AS internalId,
                 p.quantity_uom_id AS quantityUomId,
                 sp.quantity_included AS quantityIncluded,
                 i.quantity_on_hand_total AS quantityOnHandTotal,
@@ -84,6 +85,13 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
             inventory_item i
             LEFT JOIN lot l ON i.lot_id = l.lot_id
             LEFT JOIN product p ON p.product_id = i.product_id
+            LEFT JOIN (
+                SELECT
+                    gi.product_id,
+                    gi.id_value
+                FROM good_identification gi
+                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
+            ) ii ON ii.product_id = p.product_id
             LEFT JOIN supplier_product sp ON l.supplier_id=sp.party_id AND i.product_id=sp.product_id
             LEFT JOIN facility_location fl ON i.location_seq_id = fl.location_seq_id
             WHERE i.product_id = :productId

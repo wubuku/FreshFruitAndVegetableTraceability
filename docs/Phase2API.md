@@ -548,6 +548,7 @@ curl -X 'GET' \
   "content": [
     {
       "productId": "14AG8L4GM6EKAWK277",
+      "internalId": "freshpointvendor1number55",
       "lotId": "14AMK06WKP804F2VN0",
       "lotNo": "Lot No3",
       "receivingDocumentId": "RC2025040100002",
@@ -562,6 +563,7 @@ curl -X 'GET' \
     },
     {
       "productId": "14AG8L4GM6EKAWK277",
+      "internalId": "freshpointvendor1number55",
       "lotId": "14AGPQ39F501D6RAZD",
       "lotNo": "Lot No1",
       "receivingDocumentId": "RC2025040100001",

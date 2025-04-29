@@ -22,6 +22,18 @@ public class BffRawItemInventoryItemDto implements Serializable {
         this.productId = productId;
     }
 
+    private String internalId;
+
+    public String getInternalId()
+    {
+        return this.internalId;
+    }
+
+    public void setInternalId(String internalId)
+    {
+        this.internalId = internalId;
+    }
+
     private String lotId;
 
     public String getLotId()
@@ -161,9 +173,10 @@ public class BffRawItemInventoryItemDto implements Serializable {
     {
     }
 
-    public BffRawItemInventoryItemDto(String productId, String lotId, String lotNo, String receivingDocumentId, OffsetDateTime receivedAt, String orderId, String qaStatusId, String locationCode, java.math.BigDecimal quantityOnHandTotal, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId)
+    public BffRawItemInventoryItemDto(String productId, String internalId, String lotId, String lotNo, String receivingDocumentId, OffsetDateTime receivedAt, String orderId, String qaStatusId, String locationCode, java.math.BigDecimal quantityOnHandTotal, String quantityUomId, java.math.BigDecimal quantityIncluded, String caseUomId)
     {
         this.productId = productId;
+        this.internalId = internalId;
         this.lotId = lotId;
         this.lotNo = lotNo;
         this.receivingDocumentId = receivingDocumentId;
@@ -190,6 +203,7 @@ public class BffRawItemInventoryItemDto implements Serializable {
         BffRawItemInventoryItemDto other = (BffRawItemInventoryItemDto)obj;
         return true 
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
+            && (internalId == other.internalId || (internalId != null && internalId.equals(other.internalId)))
             && (lotId == other.lotId || (lotId != null && lotId.equals(other.lotId)))
             && (lotNo == other.lotNo || (lotNo != null && lotNo.equals(other.lotNo)))
             && (receivingDocumentId == other.receivingDocumentId || (receivingDocumentId != null && receivingDocumentId.equals(other.receivingDocumentId)))
@@ -210,6 +224,9 @@ public class BffRawItemInventoryItemDto implements Serializable {
         int hash = 0;
         if (this.productId != null) {
             hash += 13 * this.productId.hashCode();
+        }
+        if (this.internalId != null) {
+            hash += 13 * this.internalId.hashCode();
         }
         if (this.lotId != null) {
             hash += 13 * this.lotId.hashCode();
@@ -251,6 +268,7 @@ public class BffRawItemInventoryItemDto implements Serializable {
     public String toString() {
         return "BffRawItemInventoryItemDto{" +
                 "productId=" + '\'' + productId + '\'' +
+                ", internalId=" + '\'' + internalId + '\'' +
                 ", lotId=" + '\'' + lotId + '\'' +
                 ", lotNo=" + '\'' + lotNo + '\'' +
                 ", receivingDocumentId=" + '\'' + receivingDocumentId + '\'' +
