@@ -12,7 +12,6 @@ import jakarta.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.transaction.annotation.Transactional;
 import org.dddml.support.criterion.*;
 import java.time.OffsetDateTime;
 import org.dddml.ffvtraceability.domain.*;
@@ -54,7 +53,6 @@ public class InventoryItemResource {
      * Retrieve InventoryItems
      */
     @GetMapping
-    @Transactional(readOnly = true)
     public InventoryItemStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -97,7 +95,6 @@ public class InventoryItemResource {
      * Retrieve InventoryItems in pages.
      */
     @GetMapping("_page")
-    @Transactional(readOnly = true)
     public Page<InventoryItemStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -142,7 +139,6 @@ public class InventoryItemResource {
      * Retrieves InventoryItem with the specified ID.
      */
     @GetMapping("{inventoryItemId}")
-    @Transactional(readOnly = true)
     public InventoryItemStateDto get(@PathVariable("inventoryItemId") String inventoryItemId, @RequestParam(value = "fields", required = false) String fields) {
         
             String idObj = inventoryItemId;
@@ -161,7 +157,6 @@ public class InventoryItemResource {
     }
 
     @GetMapping("_count")
-    @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
         
@@ -196,7 +191,6 @@ public class InventoryItemResource {
     }
 
     @GetMapping("{inventoryItemId}/_events/{version}")
-    @Transactional(readOnly = true)
     public InventoryItemEvent getEvent(@PathVariable("inventoryItemId") String inventoryItemId, @PathVariable("version") long version) {
         
 
@@ -208,7 +202,6 @@ public class InventoryItemResource {
     }
 
     @GetMapping("{inventoryItemId}/_historyStates/{version}")
-    @Transactional(readOnly = true)
     public InventoryItemStateDto getHistoryState(@PathVariable("inventoryItemId") String inventoryItemId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
         
 
@@ -229,7 +222,6 @@ public class InventoryItemResource {
      * Retrieves InventoryItemDetail with the specified InventoryItemDetailSeqId.
      */
     @GetMapping("{inventoryItemId}/InventoryItemDetails/{inventoryItemDetailSeqId}")
-    @Transactional(readOnly = true)
     public InventoryItemDetailStateDto getInventoryItemDetail(@PathVariable("inventoryItemId") String inventoryItemId, @PathVariable("inventoryItemDetailSeqId") String inventoryItemDetailSeqId) {
         
 
@@ -247,7 +239,6 @@ public class InventoryItemResource {
      * InventoryItemDetail List
      */
     @GetMapping("{inventoryItemId}/InventoryItemDetails")
-    @Transactional(readOnly = true)
     public InventoryItemDetailStateDto[] getInventoryItemDetails(@PathVariable("inventoryItemId") String inventoryItemId,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,

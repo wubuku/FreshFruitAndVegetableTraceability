@@ -34,16 +34,6 @@ public abstract class AbstractInventoryItemDetailState implements InventoryItemD
         inventoryItemState = s;
     }
     
-    private InventoryItemState protectedInventoryItemState;
-
-    protected InventoryItemState getProtectedInventoryItemState() {
-        return protectedInventoryItemState;
-    }
-
-    protected void setProtectedInventoryItemState(InventoryItemState protectedInventoryItemState) {
-        this.protectedInventoryItemState = protectedInventoryItemState;
-    }
-
     public String getInventoryItemId() {
         return this.getInventoryItemDetailId().getInventoryItemId();
     }

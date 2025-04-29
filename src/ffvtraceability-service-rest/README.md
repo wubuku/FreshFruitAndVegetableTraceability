@@ -16,6 +16,12 @@ mvn -pl ffvtraceability-service-rest -am spring-boot:run
 mvn -pl ffvtraceability-service-rest -am test
 ```
 
+只执行某个测试类的测试：
+
+```shell
+mvn -f ffvtraceability-service-rest/pom.xml test -Dtest=InventoryItemApplicationServiceTest
+```
+
 
 ## 测试前端 OAuth2 授权码流程
 

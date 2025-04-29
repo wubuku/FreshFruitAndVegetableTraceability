@@ -15,6 +15,5 @@ public interface InventoryItemStateRepository {
 
     void save(InventoryItemState state);
 
-    void merge(InventoryItemState detached);
 }
 

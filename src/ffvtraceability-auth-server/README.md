@@ -377,6 +377,45 @@ curl -X POST "http://localhost:9000/oauth2/token" \
     -d "code_verifier=$encoded_code_verifier"
 ```
 
+## 增加微信登录支持
+
+见[相关讨论](../../docs/微信登录支持.md)
+
+## 数据模型改进
+
+为了支持更多类型的“用户 ID”，以及支持更多的用户登录（认证）方式，考虑增加实体 `UserIdentification`。
+
+用 DDDML 描述，大致如下：
+
+```yaml
+aggregates:
+  User:
+    id:
+      name: Username
+      type: id
+    properties:
+      #Password:
+      #  type: ...
+      UserIdentifications:
+        itemType: UserIdentification
+
+    entities:
+      UserIdentification:
+        id:
+          name: UserIdentificationTypeId
+          type: id-ne
+        globalId:
+          name: UserIdentificationId
+          type: UserIdentificationId
+          columnNames:
+            - USERNAME
+            - USER_IDENTIFICATION_TYPE_ID
+        properties:
+          IdValue:
+            columnName: ID_VALUE
+            type: id-long
+```
+
 
 ## 更多参考信息
 

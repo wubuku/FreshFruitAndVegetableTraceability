@@ -1,5 +1,7 @@
 # Produce Traceability Implementation
 
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-Docs-blue?logo=read-the-docs)](https://deepwiki.com/wubuku/FreshFruitAndVegetableTraceability)
+
 ## Produce Traceability Initiative FSMA 204 Implementation Guidance
 
 https://producetraceability.org/wp-content/uploads/2024/02/PTI-FSMA-204-Implementation-Guidance-FINAL-2.12.24.pdf
