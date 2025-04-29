@@ -98,6 +98,9 @@
       <property name="productWeight">
         <column name="product_weight" sql-type="DECIMAL(18,6)" />
       </property>
+      <property name="dimensionsDescription">
+        <column name="dimensions_description" sql-type="VARCHAR(255)" />
+      </property>
       <property name="supplierPrefOrderId">
         <column name="SUPPLIER_PREF_ORDER_ID" sql-type="VARCHAR(20)" />
       </property>
@@ -182,6 +185,7 @@
         <property name="isPropertyWeightUomIdRemoved" column="is_property_weight_uom_id_removed" />
         <property name="isPropertyShippingWeightRemoved" column="is_property_shipping_weight_removed" />
         <property name="isPropertyProductWeightRemoved" column="is_property_product_weight_removed" />
+        <property name="isPropertyDimensionsDescriptionRemoved" column="is_property_dimensions_description_removed" />
         <property name="isPropertySupplierPrefOrderIdRemoved" column="is_property_supplier_pref_order_id_removed" />
         <property name="isPropertySupplierRatingTypeIdRemoved" column="is_property_supplier_rating_type_id_removed" />
         <property name="isPropertyStandardLeadTimeDaysRemoved" column="is_property_standard_lead_time_days_removed" />

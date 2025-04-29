@@ -177,7 +177,8 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             handling_instructions as handlingInstructions,
             weight_uom_id as weightUomId,
             shipping_weight as shippingWeight,
-            product_weight as productWeight
+            product_weight as productWeight,
+            dimensions_description as dimensionsDescription
             from supplier_product sp
             left join party p on sp.party_id = p.party_id
             WHERE product_id = :productId
@@ -214,7 +215,8 @@ public interface BffRawItemRepository extends JpaRepository<AbstractProductState
             handling_instructions as handlingInstructions,
             weight_uom_id as weightUomId,
             shipping_weight as shippingWeight,
-            product_weight as productWeight
+            product_weight as productWeight,
+            dimensions_description as dimensionsDescription
             from supplier_product
             WHERE product_id = :productId
             and party_id = :supplierId

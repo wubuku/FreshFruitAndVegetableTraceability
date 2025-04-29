@@ -254,6 +254,18 @@ public class SupplierProductStateDto {
         this.productWeight = productWeight;
     }
 
+    private String dimensionsDescription;
+
+    public String getDimensionsDescription()
+    {
+        return this.dimensionsDescription;
+    }
+
+    public void setDimensionsDescription(String dimensionsDescription)
+    {
+        this.dimensionsDescription = dimensionsDescription;
+    }
+
     private String supplierPrefOrderId;
 
     public String getSupplierPrefOrderId()
@@ -654,6 +666,9 @@ public class SupplierProductStateDto {
             }
             if (returnedFieldsContains("ProductWeight")) {
                 dto.setProductWeight(state.getProductWeight());
+            }
+            if (returnedFieldsContains("DimensionsDescription")) {
+                dto.setDimensionsDescription(state.getDimensionsDescription());
             }
             if (returnedFieldsContains("SupplierPrefOrderId")) {
                 dto.setSupplierPrefOrderId(state.getSupplierPrefOrderId());

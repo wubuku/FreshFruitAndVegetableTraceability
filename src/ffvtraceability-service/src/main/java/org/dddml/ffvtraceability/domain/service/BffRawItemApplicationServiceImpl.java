@@ -416,6 +416,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
                     mergePatchSupplierProduct.setWeightUomId(supplierRawItemDto.getWeightUomId());
                     mergePatchSupplierProduct.setShippingWeight(supplierRawItemDto.getShippingWeight());
                     mergePatchSupplierProduct.setProductWeight(supplierRawItemDto.getProductWeight());
+                    mergePatchSupplierProduct.setDimensionsDescription(supplierRawItemDto.getDimensionsDescription());
                 }
             } else {
                 mergePatchSupplierProduct.setAvailableThruDate(now);//ThruDate改为当前时间
@@ -563,6 +564,7 @@ public class BffRawItemApplicationServiceImpl implements BffRawItemApplicationSe
         createSupplierProduct.setWeightUomId(supplierRawItem.getWeightUomId());
         createSupplierProduct.setShippingWeight(supplierRawItem.getShippingWeight());
         createSupplierProduct.setProductWeight(supplierRawItem.getProductWeight());
+        createSupplierProduct.setDimensionsDescription(supplierRawItem.getDimensionsDescription());
 
 
         createSupplierProduct.setAvailableThruDate(now.plusYears(100));

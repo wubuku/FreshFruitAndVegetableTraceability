@@ -267,6 +267,18 @@ public abstract class AbstractSupplierProductCommand extends AbstractCommand imp
             this.productWeight = productWeight;
         }
 
+        private String dimensionsDescription;
+
+        public String getDimensionsDescription()
+        {
+            return this.dimensionsDescription;
+        }
+
+        public void setDimensionsDescription(String dimensionsDescription)
+        {
+            this.dimensionsDescription = dimensionsDescription;
+        }
+
         private String supplierPrefOrderId;
 
         public String getSupplierPrefOrderId()
@@ -763,6 +775,18 @@ public abstract class AbstractSupplierProductCommand extends AbstractCommand imp
         public void setIsPropertyProductWeightRemoved(Boolean removed)
         {
             this.isPropertyProductWeightRemoved = removed;
+        }
+
+        private Boolean isPropertyDimensionsDescriptionRemoved;
+
+        public Boolean getIsPropertyDimensionsDescriptionRemoved()
+        {
+            return this.isPropertyDimensionsDescriptionRemoved;
+        }
+
+        public void setIsPropertyDimensionsDescriptionRemoved(Boolean removed)
+        {
+            this.isPropertyDimensionsDescriptionRemoved = removed;
         }
 
         private Boolean isPropertySupplierPrefOrderIdRemoved;

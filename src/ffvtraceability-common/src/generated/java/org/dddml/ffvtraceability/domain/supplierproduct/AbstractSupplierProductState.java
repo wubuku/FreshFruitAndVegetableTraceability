@@ -218,6 +218,16 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.productWeight = productWeight;
     }
 
+    private String dimensionsDescription;
+
+    public String getDimensionsDescription() {
+        return this.dimensionsDescription;
+    }
+
+    public void setDimensionsDescription(String dimensionsDescription) {
+        this.dimensionsDescription = dimensionsDescription;
+    }
+
     private String supplierPrefOrderId;
 
     public String getSupplierPrefOrderId() {
@@ -575,6 +585,7 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setWeightUomId(e.getWeightUomId());
         this.setShippingWeight(e.getShippingWeight());
         this.setProductWeight(e.getProductWeight());
+        this.setDimensionsDescription(e.getDimensionsDescription());
         this.setSupplierPrefOrderId(e.getSupplierPrefOrderId());
         this.setSupplierRatingTypeId(e.getSupplierRatingTypeId());
         this.setStandardLeadTimeDays(e.getStandardLeadTimeDays());
@@ -625,6 +636,7 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
         this.setWeightUomId(s.getWeightUomId());
         this.setShippingWeight(s.getShippingWeight());
         this.setProductWeight(s.getProductWeight());
+        this.setDimensionsDescription(s.getDimensionsDescription());
         this.setSupplierPrefOrderId(s.getSupplierPrefOrderId());
         this.setSupplierRatingTypeId(s.getSupplierRatingTypeId());
         this.setStandardLeadTimeDays(s.getStandardLeadTimeDays());
@@ -783,6 +795,13 @@ public abstract class AbstractSupplierProductState implements SupplierProductSta
             }
         } else {
             this.setProductWeight(e.getProductWeight());
+        }
+        if (e.getDimensionsDescription() == null) {
+            if (e.getIsPropertyDimensionsDescriptionRemoved() != null && e.getIsPropertyDimensionsDescriptionRemoved()) {
+                this.setDimensionsDescription(null);
+            }
+        } else {
+            this.setDimensionsDescription(e.getDimensionsDescription());
         }
         if (e.getSupplierPrefOrderId() == null) {
             if (e.getIsPropertySupplierPrefOrderIdRemoved() != null && e.getIsPropertySupplierPrefOrderIdRemoved()) {

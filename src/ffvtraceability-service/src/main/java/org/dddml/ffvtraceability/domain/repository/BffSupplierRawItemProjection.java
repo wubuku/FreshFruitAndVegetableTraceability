@@ -63,5 +63,7 @@ public interface BffSupplierRawItemProjection {
 
     java.math.BigDecimal getProductWeight();
 
+    String getDimensionsDescription();
+
 }
 

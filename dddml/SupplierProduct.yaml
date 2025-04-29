@@ -66,6 +66,8 @@
         type: fixed-point
       ProductWeight:
         type: fixed-point
+      DimensionsDescription:
+        type: description
       SupplierPrefOrderId:
         columnName: SUPPLIER_PREF_ORDER_ID
         type: id

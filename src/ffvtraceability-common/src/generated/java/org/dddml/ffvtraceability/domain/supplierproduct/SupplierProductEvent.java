@@ -127,6 +127,10 @@ public interface SupplierProductEvent extends Event {
 
         void setProductWeight(java.math.BigDecimal productWeight);
 
+        String getDimensionsDescription();
+
+        void setDimensionsDescription(String dimensionsDescription);
+
         String getSupplierPrefOrderId();
 
         void setSupplierPrefOrderId(String supplierPrefOrderId);
@@ -296,6 +300,10 @@ public interface SupplierProductEvent extends Event {
         Boolean getIsPropertyProductWeightRemoved();
 
         void setIsPropertyProductWeightRemoved(Boolean removed);
+
+        Boolean getIsPropertyDimensionsDescriptionRemoved();
+
+        void setIsPropertyDimensionsDescriptionRemoved(Boolean removed);
 
         Boolean getIsPropertySupplierPrefOrderIdRemoved();
 

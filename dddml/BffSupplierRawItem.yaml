@@ -73,3 +73,5 @@ valueObjects:
         type: fixed-point
       ProductWeight:
         type: fixed-point
+      DimensionsDescription:
+        type: description

@@ -59,6 +59,8 @@ public interface SupplierProductState
 
     java.math.BigDecimal getProductWeight();
 
+    String getDimensionsDescription();
+
     String getSupplierPrefOrderId();
 
     String getSupplierRatingTypeId();
@@ -151,6 +153,8 @@ public interface SupplierProductState
         void setShippingWeight(java.math.BigDecimal shippingWeight);
 
         void setProductWeight(java.math.BigDecimal productWeight);
+
+        void setDimensionsDescription(String dimensionsDescription);
 
         void setSupplierPrefOrderId(String supplierPrefOrderId);
 

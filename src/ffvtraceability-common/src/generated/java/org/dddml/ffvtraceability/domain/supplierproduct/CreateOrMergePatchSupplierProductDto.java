@@ -296,6 +296,21 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
     }
 
     /**
+     * Dimensions Description
+     */
+    private String dimensionsDescription;
+
+    public String getDimensionsDescription()
+    {
+        return this.dimensionsDescription;
+    }
+
+    public void setDimensionsDescription(String dimensionsDescription)
+    {
+        this.dimensionsDescription = dimensionsDescription;
+    }
+
+    /**
      * Supplier Pref Order Id
      */
     private String supplierPrefOrderId;
@@ -839,6 +854,18 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         this.isPropertyProductWeightRemoved = removed;
     }
 
+    private Boolean isPropertyDimensionsDescriptionRemoved;
+
+    public Boolean getIsPropertyDimensionsDescriptionRemoved()
+    {
+        return this.isPropertyDimensionsDescriptionRemoved;
+    }
+
+    public void setIsPropertyDimensionsDescriptionRemoved(Boolean removed)
+    {
+        this.isPropertyDimensionsDescriptionRemoved = removed;
+    }
+
     private Boolean isPropertySupplierPrefOrderIdRemoved;
 
     public Boolean getIsPropertySupplierPrefOrderIdRemoved()
@@ -1113,6 +1140,7 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         command.setWeightUomId(this.getWeightUomId());
         command.setShippingWeight(this.getShippingWeight());
         command.setProductWeight(this.getProductWeight());
+        command.setDimensionsDescription(this.getDimensionsDescription());
         command.setSupplierPrefOrderId(this.getSupplierPrefOrderId());
         command.setSupplierRatingTypeId(this.getSupplierRatingTypeId());
         command.setStandardLeadTimeDays(this.getStandardLeadTimeDays());
@@ -1197,6 +1225,7 @@ public class CreateOrMergePatchSupplierProductDto extends AbstractSupplierProduc
         command.setIsPropertyWeightUomIdRemoved(this.getIsPropertyWeightUomIdRemoved());
         command.setIsPropertyShippingWeightRemoved(this.getIsPropertyShippingWeightRemoved());
         command.setIsPropertyProductWeightRemoved(this.getIsPropertyProductWeightRemoved());
+        command.setIsPropertyDimensionsDescriptionRemoved(this.getIsPropertyDimensionsDescriptionRemoved());
         command.setIsPropertySupplierPrefOrderIdRemoved(this.getIsPropertySupplierPrefOrderIdRemoved());
         command.setIsPropertySupplierRatingTypeIdRemoved(this.getIsPropertySupplierRatingTypeIdRemoved());
         command.setIsPropertyStandardLeadTimeDaysRemoved(this.getIsPropertyStandardLeadTimeDaysRemoved());

@@ -358,11 +358,23 @@ public class BffSupplierRawItemDto implements Serializable {
         this.productWeight = productWeight;
     }
 
+    private String dimensionsDescription;
+
+    public String getDimensionsDescription()
+    {
+        return this.dimensionsDescription;
+    }
+
+    public void setDimensionsDescription(String dimensionsDescription)
+    {
+        this.dimensionsDescription = dimensionsDescription;
+    }
+
     public BffSupplierRawItemDto()
     {
     }
 
-    public BffSupplierRawItemDto(String productId, String supplierId, String supplierShortName, Long version, String currencyUomId, java.math.BigDecimal minimumOrderQuantity, OffsetDateTime availableFromDate, OffsetDateTime availableThruDate, String brandName, String gtin, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String supplierName, String active, String caseUomId, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String certificationCodes, Long individualsPerPackage, String produceVariety, String hsCode, String storageConditions, String shelfLifeDescription, String handlingInstructions, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight)
+    public BffSupplierRawItemDto(String productId, String supplierId, String supplierShortName, Long version, String currencyUomId, java.math.BigDecimal minimumOrderQuantity, OffsetDateTime availableFromDate, OffsetDateTime availableThruDate, String brandName, String gtin, java.math.BigDecimal quantityIncluded, Long piecesIncluded, String supplierName, String active, String caseUomId, String organicCertifications, String materialCompositionDescription, String countryOfOrigin, String certificationCodes, Long individualsPerPackage, String produceVariety, String hsCode, String storageConditions, String shelfLifeDescription, String handlingInstructions, String weightUomId, java.math.BigDecimal shippingWeight, java.math.BigDecimal productWeight, String dimensionsDescription)
     {
         this.productId = productId;
         this.supplierId = supplierId;
@@ -392,6 +404,7 @@ public class BffSupplierRawItemDto implements Serializable {
         this.weightUomId = weightUomId;
         this.shippingWeight = shippingWeight;
         this.productWeight = productWeight;
+        this.dimensionsDescription = dimensionsDescription;
     }
 
     @Override
@@ -434,6 +447,7 @@ public class BffSupplierRawItemDto implements Serializable {
             && (weightUomId == other.weightUomId || (weightUomId != null && weightUomId.equals(other.weightUomId)))
             && (shippingWeight == other.shippingWeight || (shippingWeight != null && shippingWeight.equals(other.shippingWeight)))
             && (productWeight == other.productWeight || (productWeight != null && productWeight.equals(other.productWeight)))
+            && (dimensionsDescription == other.dimensionsDescription || (dimensionsDescription != null && dimensionsDescription.equals(other.dimensionsDescription)))
             ;
     }
 
@@ -525,6 +539,9 @@ public class BffSupplierRawItemDto implements Serializable {
         if (this.productWeight != null) {
             hash += 13 * this.productWeight.hashCode();
         }
+        if (this.dimensionsDescription != null) {
+            hash += 13 * this.dimensionsDescription.hashCode();
+        }
         return hash;
     }
 
@@ -559,6 +576,7 @@ public class BffSupplierRawItemDto implements Serializable {
                 ", weightUomId=" + '\'' + weightUomId + '\'' +
                 ", shippingWeight=" + shippingWeight +
                 ", productWeight=" + productWeight +
+                ", dimensionsDescription=" + '\'' + dimensionsDescription + '\'' +
                 '}';
     }
 

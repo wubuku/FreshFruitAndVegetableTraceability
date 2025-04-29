@@ -70,6 +70,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         e.setWeightUomId(c.getWeightUomId());
         e.setShippingWeight(c.getShippingWeight());
         e.setProductWeight(c.getProductWeight());
+        e.setDimensionsDescription(c.getDimensionsDescription());
         e.setSupplierPrefOrderId(c.getSupplierPrefOrderId());
         e.setSupplierRatingTypeId(c.getSupplierRatingTypeId());
         e.setStandardLeadTimeDays(c.getStandardLeadTimeDays());
@@ -119,6 +120,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         e.setWeightUomId(c.getWeightUomId());
         e.setShippingWeight(c.getShippingWeight());
         e.setProductWeight(c.getProductWeight());
+        e.setDimensionsDescription(c.getDimensionsDescription());
         e.setSupplierPrefOrderId(c.getSupplierPrefOrderId());
         e.setSupplierRatingTypeId(c.getSupplierRatingTypeId());
         e.setStandardLeadTimeDays(c.getStandardLeadTimeDays());
@@ -159,6 +161,7 @@ public abstract class AbstractSupplierProductAggregate extends AbstractAggregate
         e.setIsPropertyWeightUomIdRemoved(c.getIsPropertyWeightUomIdRemoved());
         e.setIsPropertyShippingWeightRemoved(c.getIsPropertyShippingWeightRemoved());
         e.setIsPropertyProductWeightRemoved(c.getIsPropertyProductWeightRemoved());
+        e.setIsPropertyDimensionsDescriptionRemoved(c.getIsPropertyDimensionsDescriptionRemoved());
         e.setIsPropertySupplierPrefOrderIdRemoved(c.getIsPropertySupplierPrefOrderIdRemoved());
         e.setIsPropertySupplierRatingTypeIdRemoved(c.getIsPropertySupplierRatingTypeIdRemoved());
         e.setIsPropertyStandardLeadTimeDaysRemoved(c.getIsPropertyStandardLeadTimeDaysRemoved());
