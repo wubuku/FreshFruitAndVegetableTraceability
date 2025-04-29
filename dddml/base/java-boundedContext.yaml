@@ -1,0 +1,49 @@
+configuration:
+  sequenceNumber: 1
+  boundedContextName: "Dddml.FfvTraceability"
+  defaultModule:
+    name: "Dddml.FfvTraceability"
+
+  metadata:
+    # Disable automatically generating Create, Update, Delete commands for the backend service
+    AutoGeneratingCrUDCommandsDisabled: false
+    AlwaysGeneratingEventClobProperties: false
+    AlwaysGeneratingClobEventProperties: false
+    IsJavaOffChainIndexer: false
+
+  isSurrogateIdMandatory: false
+
+  java:
+    eventProcessing: {}
+    eventLobPropertiesEnabled: true
+    eventLobPropertiesSqlType: json
+    #stateLobPropertiesEnabled: true
+    typeMappings:
+      OffsetDateTime: OffsetDateTime
+    typePackages:
+      OffsetDateTime: java.time
+    boundedContextPackage: "org.dddml.ffvtraceability"
+    specializationPackage: "org.dddml.ffvtraceability.specialization"
+
+  aggregateEventVersionProperty:
+    name: Version
+    type: long
+  defaultReservedPropertyMetadata:
+    version:
+      name: Version
+    active:
+      name: Active
+    createdBy:
+      name: CreatedBy
+    createdAt:
+      name: CreatedAt
+    updatedBy:
+      name: UpdatedBy
+    updatedAt:
+      name: UpdatedAt
+    deleted:
+      name: Deleted
+  defaultUserIdType: string
+  defaultTimestampType: OffsetDateTime
+
+

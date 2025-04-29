@@ -34,7 +34,8 @@ wubuku/dddappp-java:master \
 --boundedContextJavaPackageName org.dddml.ffvtraceability \
 --javaProjectsDirectoryPath /myapp/src \
 --javaProjectNamePrefix ffvtraceability \
---pomGroupId dddml.ffvtraceability
+--pomGroupId dddml.ffvtraceability \
+--exposeBaseDddmlFiles
 ```
 
 For Windows, use the following command:
