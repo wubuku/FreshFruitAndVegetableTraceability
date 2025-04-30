@@ -592,7 +592,7 @@ BOM做完提供
 
 生产完成或者发货确定了客户的时候才能提供
 
-### 6. 根据产品类型、仓库返回产品列表（支持分页）
+### 6. 根据产品类型 Id、仓库 Id 返回产品列表（支持分页）
 
 在进行Inventory Adjustment时，先选择产品类型得到产品下拉列表，由于使用原条件查询查询接口返回的信息太多（需要联合查询的表也多）所以响应速度肯定较慢，
 所以特别提供该接口。
@@ -641,7 +641,7 @@ curl -X 'GET' \
 
 其中最重要的应该是 productId 和 ProductName.
 
-### 7.根据产品类型、仓库和产品名称/Product Number 关键字查询产品（支持分页）
+### 7.根据产品类型 Id、仓库 Id 和产品名称/Product Number 关键字查询产品（支持分页）
 
 库存查询中，在过滤库存查询条件时，可以指定产品，而产品的选定是通过产品类型、产品名称或者Product Number的关键字来过滤的，特此提供该接口。
 
@@ -678,13 +678,13 @@ curl -X 'GET' \
 
 其中较重要的属性为：productId,productName,smallImageUrl 以及 internalId（Product number）.
 
-### 8. 根据产品(除原材料外) Id 和 LotId 查询库存（支持分页）
+### 8. 根据产品(除原材料外) Id、仓库 Id 和 LotId 查询库存（支持分页）
 
 在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems/Products/GroupByProductAndLot?page=0&size=20&productId=141L0K7AH7DL6W4948&lotId=14AMK06WKP804F2VN0' \
+  'http://localhost:8001/api/BffInventoryItems/RawItems/GroupByProductAndLot?page=0&size=20&productId=14W5Q52CKSMJCB565U&lotId=14W73F3B6QPKAGC48X&facilityId=14W5WHF6QUUD1FTUN5' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
@@ -733,13 +733,13 @@ curl -X 'GET' \
 * locationCode 仓位内部标识(Location Number)
 * quantityOnHandTotal 库存数量
 
-### 9. 根据原材料 Id 和 LotId 获取查询库存（支持分页）
+### 9. 根据原材料 Id、仓库 Id 和 LotId 获取查询库存（支持分页）
 
 在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems/RawItems/GroupByProductAndLot?page=0&size=20&productId=14AG8L4GM6EKAWK277&lotId=14AGPQ39F501D6RAZD' \
+  'http://localhost:8001/api/BffInventoryItems/Products/GroupByProductAndLot?page=0&size=20&productId=14W5NT22L8JXS8LERU&lotId=14W72Q52K6L7BQT58H&facilityId=14W5WHF6QUUD1FTUN5' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```

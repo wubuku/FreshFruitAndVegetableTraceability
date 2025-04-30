@@ -98,13 +98,15 @@ public class BffInventoryItemServiceResource {
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "productId", required = false) String productId,
-        @RequestParam(value = "lotId", required = false) String lotId
+        @RequestParam(value = "lotId", required = false) String lotId,
+        @RequestParam(value = "facilityId", required = false) String facilityId
     ) {
         BffInventoryItemServiceCommands.GetRawInventoriesByProductAndLot getRawInventoriesByProductAndLot = new BffInventoryItemServiceCommands.GetRawInventoriesByProductAndLot();
         getRawInventoriesByProductAndLot.setPage(page);
         getRawInventoriesByProductAndLot.setSize(size);
         getRawInventoriesByProductAndLot.setProductId(productId);
         getRawInventoriesByProductAndLot.setLotId(lotId);
+        getRawInventoriesByProductAndLot.setFacilityId(facilityId);
         
         getRawInventoriesByProductAndLot.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffInventoryItemApplicationService.when(getRawInventoriesByProductAndLot);
@@ -158,13 +160,15 @@ public class BffInventoryItemServiceResource {
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "productId", required = false) String productId,
-        @RequestParam(value = "lotId", required = false) String lotId
+        @RequestParam(value = "lotId", required = false) String lotId,
+        @RequestParam(value = "facilityId", required = false) String facilityId
     ) {
         BffInventoryItemServiceCommands.GetProductInventoriesByProductAndLot getProductInventoriesByProductAndLot = new BffInventoryItemServiceCommands.GetProductInventoriesByProductAndLot();
         getProductInventoriesByProductAndLot.setPage(page);
         getProductInventoriesByProductAndLot.setSize(size);
         getProductInventoriesByProductAndLot.setProductId(productId);
         getProductInventoriesByProductAndLot.setLotId(lotId);
+        getProductInventoriesByProductAndLot.setFacilityId(facilityId);
         
         getProductInventoriesByProductAndLot.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffInventoryItemApplicationService.when(getProductInventoriesByProductAndLot);

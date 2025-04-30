@@ -255,6 +255,19 @@ public class BffInventoryItemServiceCommands {
             this.lotId = lotId;
         }
 
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
     }
 
     public static class GetRawItemInventoryItems extends org.dddml.ffvtraceability.domain.AbstractCommand {
@@ -436,6 +449,19 @@ public class BffInventoryItemServiceCommands {
 
         public void setLotId(String lotId) {
             this.lotId = lotId;
+        }
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
         }
 
     }

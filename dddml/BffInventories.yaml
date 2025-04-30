@@ -300,6 +300,9 @@ services:
           LotId:
             type: id
             optional: true # NOT required
+          FacilityId:
+            type: id
+            optional: true # NOT required
         result:
           itemType: BffInventoryItemDto
 
@@ -356,6 +359,9 @@ services:
             type: id
             optional: true # NOT required
           LotId:
+            type: id
+            optional: true # NOT required
+          FacilityId:
             type: id
             optional: true # NOT required
         result:

@@ -145,15 +145,18 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
             ) ii ON ii.facility_id = f.facility_id
             WHERE (:productId is null or i.product_id = :productId)
                  AND (:lotId is null or i.lot_id = :lotId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
             """, countQuery = """
             SELECT COUNT(*)
             FROM inventory_item i
             WHERE (:productId is null or i.product_id = :productId)
                  AND (:lotId is null or i.lot_id = :lotId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
             """, nativeQuery = true)
     Page<BffInventoryItemProjection> findRawItemInventories(Pageable pageable,
                                                             @Param("productId") String productId,
-                                                            @Param("lotId") String lotId);
+                                                            @Param("lotId") String lotId,
+                                                            @Param("facilityId") String facilityId);
 
     @Query(value = """
             SELECT
@@ -229,15 +232,18 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
             ) ii ON ii.facility_id = f.facility_id
             WHERE (:productId is null or i.product_id = :productId)
                  AND (:lotId is null or i.lot_id = :lotId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
             """, countQuery = """
             SELECT COUNT(*)
             FROM inventory_item i
             WHERE (:productId is null or i.product_id = :productId)
                  AND (:lotId is null or i.lot_id = :lotId)
+                 AND (:facilityId is null or i.facility_id = :facilityId)
             """, nativeQuery = true)
     Page<BffInventoryItemProjection> findProductInventories(Pageable pageable,
                                                             @Param("productId") String productId,
-                                                            @Param("lotId") String lotId);
+                                                            @Param("lotId") String lotId,
+                                                            @Param("facilityId") String facilityId);
 
     @Query(value = """
             SELECT
