@@ -170,10 +170,68 @@ public interface BffReceivingRepository extends JpaRepository<AbstractShipmentRe
                              @Param("receivedAtTo") OffsetDateTime receivedAtTo
     );
 
-    @Query(value = COMMON_SELECT + """
-            FROM shipment s
-            """ + RECEIPT_JOIN + COMMON_JOINS + """
-            WHERE s.shipment_id = :documentId
+    @Query(value = """
+            SELECT
+                 s.shipment_id as documentId,
+                 s.status_id as statusId,
+                 s.qa_status_id as qaStatusId,
+                 s.party_id_to as partyIdTo,
+                 s.party_id_from as partyIdFrom,
+                 COALESCE(p.short_description,p.organization_name, p.last_name) as partyNameFrom,
+                 s.origin_facility_id as originFacilityId,
+                 f.facility_name as originFacilityName,
+                 s.destination_facility_id as destinationFacilityId,
+                 d.facility_name as destinationFacilityName,
+                 s.primary_order_id as primaryOrderId,
+                 s.created_at as createdAt,
+                 s.created_by as createdBy,
+                 s.received_by as receivedBy,
+                 s.datetime_received as receivedAt,
+                 sr.receipt_id as receiptId,
+                 sr.product_id as productId,
+                 prod.product_name as productName,
+                 prod.small_image_url as smallImageUrl,
+                 prod.quantity_uom_id as quantityUomId,
+                 sp.case_uom_id as caseUomId,
+                 sp.quantity_included as quantityIncluded,
+                 sp.pieces_included as piecesIncluded,
+                 sp.gtin as gtin,
+                 ii.id_value as internalId,
+                 qi.inspected_by as inspectedBy,
+                 qi.comments as comments,
+                 sr.lot_id as lotId,
+                 l.internal_id as lotNo,
+                 sr.location_seq_id as locationSeqId,
+                 fl.location_name as locationName,
+                 sr.item_description as itemDescription,
+                 sr.quantity_accepted as quantityAccepted,
+                 sr.quantity_rejected as quantityRejected,
+                 sr.cases_accepted as casesAccepted,
+                 sr.cases_rejected as casesRejected,
+                 sr.datetime_received as datetimeReceived,
+                 sr.order_id as orderId,
+                 sr.order_item_seq_id as orderItemSeqId,
+                 sr.return_id as returnId,
+                 sr.return_item_seq_id as returnItemSeqId,
+                 sr.rejection_id as rejectionId,
+                 sr.shipment_id as shipmentId,
+                 sr.shipment_item_seq_id as shipmentItemSeqId,
+                 sr.shipment_package_seq_id as shipmentPackageSeqId
+             FROM shipment s
+             LEFT JOIN shipment_receipt sr ON s.shipment_id = sr.shipment_id
+                 AND (sr.deleted IS NULL OR sr.deleted = false)
+             LEFT JOIN lot l ON sr.lot_id = l.lot_id
+             LEFT JOIN party p ON s.party_id_from = p.party_id
+             LEFT JOIN facility f ON s.origin_facility_id = f.facility_id
+             LEFT JOIN facility d ON s.destination_facility_id = d.facility_id
+             LEFT JOIN facility_location fl ON sr.location_seq_id = fl.location_seq_id
+                 AND s.destination_facility_id = fl.facility_id
+             LEFT JOIN product prod ON sr.product_id = prod.product_id
+             left join supplier_product sp ON sp.product_id = sr.product_id
+             LEFT JOIN qa_inspection qi ON qi.receipt_id = sr.receipt_id
+             LEFT JOIN good_identification ii ON prod.product_id = ii.product_id
+                 AND ii.good_identification_type_id = 'INTERNAL_ID'
+             WHERE s.shipment_id = :documentId
             """, nativeQuery = true)
     List<BffReceivingDocumentItemProjection> findReceivingDocumentWithItems(@Param("documentId") String documentId);
 
