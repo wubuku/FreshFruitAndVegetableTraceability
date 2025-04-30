@@ -18,8 +18,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 <entity-engine-xml>
-    <Uom abbreviation="BOX" description="Box - A container for packaging items" uomId="BOX" numericCode="2" uomTypeId="PACKAGE_TYPE_MEASURE"/>
-    <Uom abbreviation="PACK" description="Pack - A bundle or package of items" uomId="PACK" numericCode="4" uomTypeId="PACKAGE_TYPE_MEASURE"/>
-    <Uom abbreviation="PCS" description="Piece" uomId="PCS" numericCode="1" uomTypeId="PACKAGE_TYPE_MEASURE"/>
-    <Uom abbreviation="PLT" description="Pallet - A flat transport structure to support goods" uomId="PLT" numericCode="3" uomTypeId="PACKAGE_TYPE_MEASURE"/>
+    <Uom abbreviation="Box" description="Box - A container for packaging items" uomId="BOX" numericCode="1" uomTypeId="PACKAGE_TYPE_MEASURE"/>
+    <Uom abbreviation="Pack" description="Pack - A bundle or package of items" uomId="PACK" numericCode="3" uomTypeId="PACKAGE_TYPE_MEASURE"/>
+    <Uom abbreviation="Piece" description="Piece" uomId="PCS" numericCode="4" uomTypeId="PACKAGE_TYPE_MEASURE"/>
+    <Uom abbreviation="Pallet" description="Pallet - A flat transport structure to support goods" uomId="PLT" numericCode="2" uomTypeId="PACKAGE_TYPE_MEASURE"/>
 </entity-engine-xml>
