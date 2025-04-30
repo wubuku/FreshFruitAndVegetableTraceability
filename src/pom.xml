@@ -212,7 +212,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.14.0</version>
                     <configuration>
-                        <release>17</release> <!-- 推荐使用 <release> 替代 <source>/<target> -->
+                        <release>${java.version}</release> <!-- 推荐使用 <release> 替代 <source>/<target> -->
                     </configuration>
                 </plugin>
                 <plugin>
