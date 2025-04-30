@@ -80,7 +80,7 @@ public class BffProductApplicationServiceImpl implements BffProductApplicationSe
     @Override
     public Page<BffSimpleProductDto> when(BffProductServiceCommands.GetProductsByKeyword c) {
         return PageUtils.toPage(bffProductRepository.findSimpleProductsByKeyword(PageRequest.of(c.getPage(), c.getSize()),
-                        c.getProductTypeId(), c.getProductKeyword()),
+                        c.getProductTypeId(),c.getFacilityId(), c.getProductKeyword()),
                 bffProductMapper::toBffSimpleProductDto);
     }
 

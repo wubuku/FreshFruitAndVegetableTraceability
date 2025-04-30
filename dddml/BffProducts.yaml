@@ -198,6 +198,8 @@ services:
           ProductKeyword:
             type: name
             optional: true
+          FacilityId:
+            optional: true
         result:
           itemType: BffSimpleProductDto
 

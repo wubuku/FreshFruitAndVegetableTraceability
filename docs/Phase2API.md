@@ -641,18 +641,18 @@ curl -X 'GET' \
 
 其中最重要的应该是 productId 和 ProductName.
 
-### 7.根据产品类型和产品名称/Product Number 关键字查询产品（支持分页）
+### 7.根据产品类型、仓库和产品名称/Product Number 关键字查询产品（支持分页）
 
 库存查询中，在过滤库存查询条件时，可以指定产品，而产品的选定是通过产品类型、产品名称或者Product Number的关键字来过滤的，特此提供该接口。
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffProducts/GetProductsByKeyword?page=0&size=2&productTypeId=RAW_MATERIAL&productKeyword=freshpoint' \
+  'http://localhost:8001/api/BffProducts/GetProductsByKeyword?page=0&size=20&productTypeId=RAW_MATERIAL&productKeyword=25043002&facilityId=14W5WHF6QUUD1FTUN5' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
 
-其中查询参数 productTypeId 为产品类型，productKeyword 是为产品名称或 Product Number 指定的关键字（支持模糊查询）。
+其中查询参数 productTypeId 为产品类型，facilityId 为仓库 Id，productKeyword 是为产品名称或 Product Number 指定的关键字（支持模糊查询）。
 返回结果举例如下：
 
 ```json

@@ -112,41 +112,34 @@ public interface BffProductRepository extends JpaRepository<AbstractProductState
                                                @Param("active") String active);
 
     @Query(value = """
-            SELECT
+            SELECT distinct
             p.product_id as productId,
             p.product_name as productName,
             p.quantity_uom_id as quantityUomId,
             p.small_image_url as smallImageUrl,
             p.medium_image_url as mediumImageUrl,
             p.large_image_url as largeImageUrl,
-            ii.id_value as internalId,
+            gi.id_value as internalId,
             p.product_type_id as productTypeId
             from product p
-            LEFT JOIN (
-                SELECT
-                    gi.product_id,
-                    gi.id_value
-                FROM good_identification gi
-                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
-            ) ii ON ii.product_id = p.product_id
-            where p.product_type_id=:productTypeId
-            and (:keyword is null or (p.product_name like concat('%', :keyword, '%') OR ii.id_value like concat('%', :keyword, '%')))
+            inner join inventory_item ii on ii.product_id = p.product_id
+            left join good_identification gi on gi.product_id = p.product_id
+            WHERE  (:productTypeId is null or p.product_type_id=:productTypeId)
+            AND (:facilityId is null or ii.facility_id = :facilityId)
+            and (:keyword is null or (p.product_name like concat('%', :keyword, '%') OR gi.id_value like concat('%', :keyword, '%')))
             """, countQuery = """
             SELECT
-            count(*)
+            count(distinct p.product_id)
             from product p
-            LEFT JOIN (
-                SELECT
-                    gi.product_id,
-                    gi.id_value
-                FROM good_identification gi
-                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
-            ) ii ON ii.product_id = p.product_id
-            where p.product_type_id=:productTypeId
-            and (:keyword is null or (p.product_name like concat('%', :keyword, '%') OR ii.id_value like concat('%', :keyword, '%')))
+            inner join inventory_item ii on ii.product_id = p.product_id
+            left join good_identification gi on gi.product_id = p.product_id
+            WHERE  (:productTypeId is null or p.product_type_id=:productTypeId)
+            AND (:facilityId is null or ii.facility_id = :facilityId)
+            and (:keyword is null or (p.product_name like concat('%', :keyword, '%') OR gi.id_value like concat('%', :keyword, '%')))
             """, nativeQuery = true)
     Page<BffSimpleProductProjection> findSimpleProductsByKeyword(Pageable pageable,
                                                                  @Param("productTypeId") String productTypeId,
+                                                                 @Param("facilityId") String facilityId,
                                                                  @Param("keyword") String keyword);
 
     @Query(value = """

@@ -59,7 +59,7 @@ storage:
   security:
     allow-anonymous-upload: true
   
-  type: cos
+  type: minio
   
   gcs:
     project-id: woven-justice-441107-h8

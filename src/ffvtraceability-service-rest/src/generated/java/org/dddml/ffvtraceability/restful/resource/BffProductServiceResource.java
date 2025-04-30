@@ -74,13 +74,15 @@ public class BffProductServiceResource {
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "productTypeId", required = false) String productTypeId,
-        @RequestParam(value = "productKeyword", required = false) String productKeyword
+        @RequestParam(value = "productKeyword", required = false) String productKeyword,
+        @RequestParam(value = "facilityId", required = false) String facilityId
     ) {
         BffProductServiceCommands.GetProductsByKeyword getProductsByKeyword = new BffProductServiceCommands.GetProductsByKeyword();
         getProductsByKeyword.setPage(page);
         getProductsByKeyword.setSize(size);
         getProductsByKeyword.setProductTypeId(productTypeId);
         getProductsByKeyword.setProductKeyword(productKeyword);
+        getProductsByKeyword.setFacilityId(facilityId);
         
         getProductsByKeyword.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffProductApplicationService.when(getProductsByKeyword);
