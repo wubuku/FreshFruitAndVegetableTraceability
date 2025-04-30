@@ -146,17 +146,21 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
             WHERE (:productId is null or i.product_id = :productId)
                  AND (:lotId is null or i.lot_id = :lotId)
                  AND (:facilityId is null or i.facility_id = :facilityId)
+                 And (:supplierId is null or l.supplier_id = :supplierId)
             """, countQuery = """
             SELECT COUNT(*)
             FROM inventory_item i
+            left join lot l on i.lot_id = l.lot_id
             WHERE (:productId is null or i.product_id = :productId)
                  AND (:lotId is null or i.lot_id = :lotId)
                  AND (:facilityId is null or i.facility_id = :facilityId)
+                 And (:supplierId is null or l.supplier_id = :supplierId)
             """, nativeQuery = true)
     Page<BffInventoryItemProjection> findRawItemInventories(Pageable pageable,
                                                             @Param("productId") String productId,
                                                             @Param("lotId") String lotId,
-                                                            @Param("facilityId") String facilityId);
+                                                            @Param("facilityId") String facilityId,
+                                                            @Param("supplierId") String supplierId);
 
     @Query(value = """
             SELECT

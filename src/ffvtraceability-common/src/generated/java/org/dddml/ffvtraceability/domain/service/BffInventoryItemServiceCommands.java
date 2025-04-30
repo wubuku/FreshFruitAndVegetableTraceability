@@ -268,6 +268,19 @@ public class BffInventoryItemServiceCommands {
             this.facilityId = facilityId;
         }
 
+        /**
+         * Supplier Id
+         */
+        private String supplierId;
+
+        public String getSupplierId() {
+            return supplierId;
+        }
+
+        public void setSupplierId(String supplierId) {
+            this.supplierId = supplierId;
+        }
+
     }
 
     public static class GetRawItemInventoryItems extends org.dddml.ffvtraceability.domain.AbstractCommand {

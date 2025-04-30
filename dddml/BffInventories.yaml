@@ -303,6 +303,9 @@ services:
           FacilityId:
             type: id
             optional: true # NOT required
+          SupplierId:
+            type: id
+            optional: true # NOT required
         result:
           itemType: BffInventoryItemDto
 

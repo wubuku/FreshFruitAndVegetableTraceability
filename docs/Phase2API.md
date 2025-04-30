@@ -678,13 +678,13 @@ curl -X 'GET' \
 
 其中较重要的属性为：productId,productName,smallImageUrl 以及 internalId（Product number）.
 
-### 8. 根据产品(除原材料外) Id、仓库 Id 和 LotId 查询库存（支持分页）
+### 8. 根据产品(除原材料外) Id、仓库 Id、供应商 Id 和 LotId 查询库存（支持分页）
 
 在客户端进行库存调整时，总是先根据产品 Id 和 LotId 来查询库存，得到库存列表，因此提供该接口。
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffInventoryItems/RawItems/GroupByProductAndLot?page=0&size=20&productId=14W5Q52CKSMJCB565U&lotId=14W73F3B6QPKAGC48X&facilityId=14W5WHF6QUUD1FTUN5' \
+  'http://localhost:8001/api/BffInventoryItems/RawItems/GroupByProductAndLot?page=0&size=20&productId=14W5Q52CKSMJCB565U&lotId=14W73F3B6QPKAGC48X&facilityId=14W5WHF6QUUD1FTUN5&supplierId=14W5HQ4W7RJD341BKT' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```

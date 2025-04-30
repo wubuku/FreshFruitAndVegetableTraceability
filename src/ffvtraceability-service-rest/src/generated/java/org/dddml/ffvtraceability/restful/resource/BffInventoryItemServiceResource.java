@@ -99,7 +99,8 @@ public class BffInventoryItemServiceResource {
         @RequestParam(value = "size", defaultValue = "20") Integer size,
         @RequestParam(value = "productId", required = false) String productId,
         @RequestParam(value = "lotId", required = false) String lotId,
-        @RequestParam(value = "facilityId", required = false) String facilityId
+        @RequestParam(value = "facilityId", required = false) String facilityId,
+        @RequestParam(value = "supplierId", required = false) String supplierId
     ) {
         BffInventoryItemServiceCommands.GetRawInventoriesByProductAndLot getRawInventoriesByProductAndLot = new BffInventoryItemServiceCommands.GetRawInventoriesByProductAndLot();
         getRawInventoriesByProductAndLot.setPage(page);
@@ -107,6 +108,7 @@ public class BffInventoryItemServiceResource {
         getRawInventoriesByProductAndLot.setProductId(productId);
         getRawInventoriesByProductAndLot.setLotId(lotId);
         getRawInventoriesByProductAndLot.setFacilityId(facilityId);
+        getRawInventoriesByProductAndLot.setSupplierId(supplierId);
         
         getRawInventoriesByProductAndLot.setRequesterId(SecurityContextUtil.getRequesterId());
         return bffInventoryItemApplicationService.when(getRawInventoriesByProductAndLot);
