@@ -312,6 +312,35 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                                                                         @Param("facilityId") String facilityId);
 
     @Query(value = """
+            SELECT distinct
+            l.internal_id as lotNo,
+            l.lot_id as lotId,
+            l.product_id as productId,
+            l.supplier_id as supplierId
+            from lot l
+            inner join inventory_item i
+            on l.lot_id = i.lot_id
+            where(:productId is null or i.product_id = :productId)
+            and (:supplierId is null or l.supplier_id = :supplierId)
+            and (:lotNo is null or l.internal_id = :lotNo)
+            and (:facilityId is null or i.facility_id = :facilityId)
+            """, countQuery = """
+            SELECT distinct(l.lot_id as lotId)
+            from lot l
+            inner join  inventory_item i
+            on l.lot_id = i.lot_id
+            where(:productId is null or i.product_id = :productId)
+            and (:supplierId is null or l.supplier_id = :supplierId)
+            and (:lotNo is null or l.internal_id = :lotNo)
+            and (:facilityId is null or i.facility_id = :facilityId)
+            """, nativeQuery = true)
+    Page<BffInventoryLotProjection> findLots(Pageable pageable,
+                                             @Param("productId") String productId,
+                                             @Param("supplierId") String supplierId,
+                                             @Param("lotNo") String lotNo,
+                                             @Param("facilityId") String facilityId);
+
+    @Query(value = """
             SELECT
                iid.inventory_item_id as inventoryItemId,
                iid.inventory_item_detail_seq_id as inventoryItemDetailSeqId,
@@ -369,9 +398,9 @@ public interface BffInventoryItemRepository extends JpaRepository<AbstractInvent
                 AND (:facilityId is null or i.facility_id = :facilityId)
             """, nativeQuery = true)
     Page<BffInventoryItemDetailProjection> getInventoryItemDetails(Pageable pageable,
-                                                                    @Param("productTypeId") String productTypeId,
-                                                                    @Param("productId") String productId,
-                                                                    @Param("facilityId") String facilityId);
+                                                                   @Param("productTypeId") String productTypeId,
+                                                                   @Param("productId") String productId,
+                                                                   @Param("facilityId") String facilityId);
 
     @Query(value = """
               SELECT

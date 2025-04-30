@@ -479,6 +479,80 @@ public class BffInventoryItemServiceCommands {
 
     }
 
+    public static class GetLots extends org.dddml.ffvtraceability.domain.AbstractCommand {
+        private Integer page;
+        private Integer size;
+
+        public Integer getPage() {
+            return page;
+        }
+
+        public void setPage(Integer page) {
+            this.page = page;
+        }
+
+        public Integer getSize() {
+            return size;
+        }
+
+        public void setSize(Integer size) {
+            this.size = size;
+        }
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Lot No
+         */
+        private String lotNo;
+
+        public String getLotNo() {
+            return lotNo;
+        }
+
+        public void setLotNo(String lotNo) {
+            this.lotNo = lotNo;
+        }
+
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
+        /**
+         * Supplier Id
+         */
+        private String supplierId;
+
+        public String getSupplierId() {
+            return supplierId;
+        }
+
+        public void setSupplierId(String supplierId) {
+            this.supplierId = supplierId;
+        }
+
+    }
+
 
 }
 

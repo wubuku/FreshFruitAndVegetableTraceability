@@ -225,6 +225,19 @@ valueObjects:
       CreatedBy:
         type: id
 
+  BffInventoryLotDto:
+    metadata:
+      JpaProjectionInterfaceName: BffInventoryLotProjection
+    properties:
+      LotId:
+        type: id
+      ProductId:
+        type: id
+      SupplierId:
+        type: id
+      LotNo:
+        type: id
+
 services:
   BffInventoryItemService:
     restfulResourceName: BffInventoryItems
@@ -369,3 +382,25 @@ services:
             optional: true # NOT required
         result:
           itemType: BffInventoryItemDto
+
+      GetLots:
+        restfulResourceName: "GetLots"
+        metadata:
+          IsPageable: true
+          ReturnPageEnvelope: true
+        isQuery: true
+        parameters:
+          ProductId:
+            type: id
+            optional: true # NOT required
+          LotNo:
+            type: id
+            optional: true # NOT required
+          FacilityId:
+            type: id
+            optional: true # NOT required
+          SupplierId:
+            type: id
+            optional: true # NOT required
+        result:
+          itemType: BffInventoryLotDto

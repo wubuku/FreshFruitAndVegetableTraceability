@@ -91,4 +91,12 @@ public class BffInventoryItemApplicationServiceImpl implements BffInventoryItemA
                         c.getProductId(), c.getSupplierId(), c.getFacilityId()),
                 bffInventoryItemMapper::toBffInventoryByLotNoDto);
     }
+
+    @Override
+    public Page<BffInventoryLotDto> when(BffInventoryItemServiceCommands.GetLots c) {
+        return PageUtils.toPage(
+                bffInventoryItemRepository.findLots(PageRequest.of(c.getPage(), c.getSize()),
+                        c.getProductId(), c.getSupplierId(), c.getLotNo(), c.getFacilityId()),
+                bffInventoryItemMapper::toBffInventoryLotDto);
+    }
 }

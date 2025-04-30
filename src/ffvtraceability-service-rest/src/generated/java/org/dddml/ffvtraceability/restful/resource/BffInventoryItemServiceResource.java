@@ -177,5 +177,27 @@ public class BffInventoryItemServiceResource {
         
     }
 
+    @GetMapping("GetLots")
+    public Page<BffInventoryLotDto> getLots(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "20") Integer size,
+        @RequestParam(value = "productId", required = false) String productId,
+        @RequestParam(value = "lotNo", required = false) String lotNo,
+        @RequestParam(value = "facilityId", required = false) String facilityId,
+        @RequestParam(value = "supplierId", required = false) String supplierId
+    ) {
+        BffInventoryItemServiceCommands.GetLots getLots = new BffInventoryItemServiceCommands.GetLots();
+        getLots.setPage(page);
+        getLots.setSize(size);
+        getLots.setProductId(productId);
+        getLots.setLotNo(lotNo);
+        getLots.setFacilityId(facilityId);
+        getLots.setSupplierId(supplierId);
+        
+        getLots.setRequesterId(SecurityContextUtil.getRequesterId());
+        return bffInventoryItemApplicationService.when(getLots);
+        
+    }
+
 }
 

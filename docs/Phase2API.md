@@ -772,8 +772,39 @@ curl -X 'GET' \
   "totalPages": 1
 }
 ```
+### 10. 条件查询批次信息（支持分页）
+支持按照产品 Id、仓库 Id、供应商 Id 以及批次号(lotNo)进行查询：
 
-### 10. 库存调整-位置调整
+```shell
+curl -X 'GET' \
+  'http://localhost:8001/api/BffInventoryItems/GetLots?page=0&size=20&productId=14W5NT22L8JXS8LERU&lotNo=0430&facilityId=14W5WHF6QUUD1FTUN5&supplierId=14W5HQ4W7RJD341BKT' \
+  -H 'accept: application/json' \
+  -H 'X-TenantID: X'
+```
+返回结果举例如下：
+```json
+{
+  "content": [
+    {
+      "lotId": "14W72Q52K6L7BQT58H",
+      "productId": "14W5NT22L8JXS8LERU",
+      "supplierId": "14W5HQ4W7RJD341BKT",
+      "lotNo": "0430"
+    },
+    {
+      "lotId": "14W73F3B6QPKAGC48X",
+      "productId": "14W5Q52CKSMJCB565U",
+      "supplierId": "14W5HQ4W7RJD341BKT",
+      "lotNo": "0430-1"
+    }
+  ],
+  "totalElements": 2,
+  "size": 20,
+  "number": 0,
+  "totalPages": 1
+}
+```
+### 11. 库存调整-位置调整
 
 对应手持终端的 "Location adjustment".
 
@@ -836,7 +867,7 @@ curl -X 'POST' \
 
 productName、quantityUomId 等本身就可以从源信息获取。
 
-### 11. 库存调整-数量调整、退回供应商、作废
+### 12. 库存调整-数量调整、退回供应商、作废
 库存调整类型为数量调整、退回供应商、作废时，使用以下统一接口。
 
 针对这几种调整库存的方式，提供了 varianceReasonId 字段进行区分，注意不同的调整库存方式有不同的调整数量要求：
@@ -916,7 +947,7 @@ curl -X 'POST' \
   ]
 }
 ```
-### 12. ~~（已废弃）原材料库存按批次分组(支持分页)~~
+### 13. ~~（已废弃）原材料库存按批次分组(支持分页)~~
 该接口为在手机客户端得到原材料根据产品、供应商，仓库汇总后的库存列表后，继续进一步按照批次号汇总的库存列表。
 也就是对于确定产品Id、供应商Id和仓库Id的库存信息按照批次号（更小粒度）进行分解：
 
@@ -963,7 +994,7 @@ curl -X 'GET' \
 * caseUomId 包装单位
 * quantityIncluded 一包装单位含有多少主数量单位的数量
 
-### 13. 根据条件查询库存流水（支持分页）
+### 14. 根据条件查询库存流水（支持分页）
 当前支持按照产品类型、产品Id以及仓库Id查询库存流水。
 ```shell
 curl -X 'GET' \
