@@ -592,7 +592,7 @@ BOM做完提供
 
 生产完成或者发货确定了客户的时候才能提供
 
-### 6. 根据产品类型返回产品列表（支持分页）
+### 6. 根据产品类型、仓库返回产品列表（支持分页）
 
 在进行Inventory Adjustment时，先选择产品类型得到产品下拉列表，由于使用原条件查询查询接口返回的信息太多（需要联合查询的表也多）所以响应速度肯定较慢，
 所以特别提供该接口。
@@ -601,10 +601,14 @@ BOM做完提供
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8001/api/BffProducts/GetProductsForAdjustInventory?page=0&size=2&productTypeId=RAW_MATERIAL' \
+  'http://localhost:8001/api/BffProducts/GetProductsForAdjustInventory?page=0&size=20&productTypeId=RAW_MATERIAL&facilityId=13XM4J6CJBWD6FK64B' \
   -H 'accept: application/json' \
   -H 'X-TenantID: X'
 ```
+
+参数：
+* productTypeId：产品类型Id
+* facilityId：仓库Id
 
 返回结果举例如下：
 

@@ -107,6 +107,19 @@ public class BffProductServiceCommands {
             this.productTypeId = productTypeId;
         }
 
+        /**
+         * Facility Id
+         */
+        private String facilityId;
+
+        public String getFacilityId() {
+            return facilityId;
+        }
+
+        public void setFacilityId(String facilityId) {
+            this.facilityId = facilityId;
+        }
+
     }
 
     public static class GetProductsByKeyword extends org.dddml.ffvtraceability.domain.AbstractCommand {

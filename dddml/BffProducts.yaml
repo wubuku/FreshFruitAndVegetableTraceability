@@ -177,7 +177,10 @@ services:
         parameters:
           ProductTypeId:
             type: id
-            optional: false
+            optional: true
+          FacilityId:
+            type: id
+            optional: true
         result:
           itemType: BffSimpleProductDto
 

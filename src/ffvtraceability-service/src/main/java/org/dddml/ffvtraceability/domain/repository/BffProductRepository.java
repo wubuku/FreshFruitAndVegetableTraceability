@@ -150,32 +150,30 @@ public interface BffProductRepository extends JpaRepository<AbstractProductState
                                                                  @Param("keyword") String keyword);
 
     @Query(value = """
-            SELECT
+            SELECT distinct
             p.product_id as productId,
             p.product_name as productName,
             p.quantity_uom_id as quantityUomId,
             p.small_image_url as smallImageUrl,
             p.medium_image_url as mediumImageUrl,
             p.large_image_url as largeImageUrl,
-            ii.id_value as internalId,
+            gi.id_value as internalId,
             p.product_type_id as productTypeId
             from product p
-            LEFT JOIN (
-                SELECT
-                    gi.product_id,
-                    gi.id_value
-                FROM good_identification gi
-                WHERE gi.good_identification_type_id = 'INTERNAL_ID'
-            ) ii ON ii.product_id = p.product_id
-            where p.product_type_id=:productTypeId
+            inner join inventory_item ii on ii.product_id = p.product_id
+            left join good_identification gi on gi.product_id = p.product_id
+            where (:productTypeId is null or p.product_type_id=:productTypeId)
+            and (:facilityId is null or ii.facility_id = :facilityId)
             """, countQuery = """
-            SELECT
-            count(*)
-            from product p
-            where p.product_type_id=:productTypeId
+            SELECT COUNT(DISTINCT p.product_id)
+            FROM product p
+            INNER JOIN inventory_item ii ON p.product_id = ii.product_id
+            WHERE  (:productTypeId is null or p.product_type_id=:productTypeId)
+            AND (:facilityId is null or ii.facility_id = :facilityId)
             """, nativeQuery = true)
     Page<BffSimpleProductProjection> findAllSimpleProducts(Pageable pageable,
-                                                           @Param("productTypeId") String productTypeId);
+                                                           @Param("productTypeId") String productTypeId,
+                                                           @Param("facilityId") String facilityId);
     //String tenantId
     //todo AND p.tenant_id = :tenantId
     //todo WHERE p.product_type_id = 'RAW_MATERIAL' ??? 这个地方应该过滤出"原材料"类型的产品？
