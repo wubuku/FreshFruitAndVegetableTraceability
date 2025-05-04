@@ -49,7 +49,7 @@ DELETE FROM authorities WHERE username = '*';
 DELETE FROM users WHERE username = '*';
 
 -- 添加基础权限
-INSERT INTO permissions (permission_id, description, enabled) VALUES 
+INSERT INTO authority_definitions (authority_id, description, enabled) VALUES 
     ('Vendors_Read', 'Permission to read vendors', true),
     ('Vendors_Create', 'Permission to create vendors', true),
     ('Vendors_Update', 'Permission to update vendors', true),

@@ -70,10 +70,11 @@ CREATE TABLE group_members (
 
 -- 删除旧的权限表
 DROP TABLE IF EXISTS permissions;
+DROP TABLE IF EXISTS authority_definitions;
 
 -- 基础权限表
-CREATE TABLE permissions (
-    permission_id VARCHAR(50) NOT NULL PRIMARY KEY,
+CREATE TABLE authority_definitions (
+    authority_id VARCHAR(50) NOT NULL PRIMARY KEY,
     description VARCHAR(200),
     enabled BOOLEAN DEFAULT NULL
 );
@@ -149,3 +150,19 @@ CREATE TABLE if not EXISTS password_tokens (
     token_created_at TIMESTAMPTZ NOT NULL,
     password_created_at TIMESTAMPTZ DEFAULT NULL
 );
+
+-- User Identification Table for multiple login methods
+CREATE TABLE IF NOT EXISTS user_identifications (
+    user_identification_type_id VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    identifier VARCHAR(100) NOT NULL,
+    verified BOOLEAN DEFAULT FALSE,
+    verified_at TIMESTAMPTZ DEFAULT NULL,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_identification_type_id, username),
+    CONSTRAINT fk_user_identifications_users FOREIGN KEY(username) REFERENCES users(username)
+);
+
+-- Create an index on the identifier column for quick lookups
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_identifications_type_identifier ON user_identifications (user_identification_type_id, identifier);

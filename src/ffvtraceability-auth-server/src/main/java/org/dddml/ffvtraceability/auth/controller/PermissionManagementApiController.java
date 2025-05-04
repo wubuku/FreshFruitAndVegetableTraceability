@@ -50,9 +50,9 @@ public class PermissionManagementApiController {
     public List<Map<String, Object>> getBasePermissions() {
         logger.debug("Fetching base permissions...");
         String sql = """
-                SELECT permission_id, description, enabled 
-                FROM permissions 
-                ORDER BY permission_id
+                SELECT authority_id as permission_id, description, enabled 
+                FROM authority_definitions 
+                ORDER BY authority_id
                 """;
         List<Map<String, Object>> permissions = jdbcTemplate.queryForList(sql);
         logger.debug("Found {} base permissions: {}", permissions.size(), permissions);
@@ -65,7 +65,7 @@ public class PermissionManagementApiController {
         String sql = """
                 SELECT a.authority 
                 FROM authorities a
-                JOIN permissions p ON a.authority = p.permission_id
+                JOIN authority_definitions p ON a.authority = p.authority_id
                 WHERE a.username = ? 
                 AND (p.enabled IS NULL OR p.enabled = true)
                 ORDER BY a.authority
@@ -138,7 +138,7 @@ public class PermissionManagementApiController {
         String sql = """
                 SELECT ga.authority 
                 FROM group_authorities ga
-                JOIN permissions p ON ga.authority = p.permission_id
+                JOIN authority_definitions p ON ga.authority = p.authority_id
                 WHERE ga.group_id = ? 
                 AND (p.enabled IS NULL OR p.enabled = true)
                 ORDER BY ga.authority
@@ -200,7 +200,7 @@ public class PermissionManagementApiController {
         String permissionId = request.get("permissionId");
         String description = request.get("description");
         jdbcTemplate.update(
-                "INSERT INTO permissions (permission_id, description, enabled) VALUES (?, ?, NULL)",
+                "INSERT INTO authority_definitions (authority_id, description, enabled) VALUES (?, ?, NULL)",
                 permissionId, description
         );
     }
@@ -210,7 +210,7 @@ public class PermissionManagementApiController {
     public void togglePermissionEnabled(@PathVariable String permissionId) {
         // 先检查当前状态
         Boolean currentEnabled = jdbcTemplate.queryForObject(
-                "SELECT enabled FROM permissions WHERE permission_id = ?",
+                "SELECT enabled FROM authority_definitions WHERE authority_id = ?",
                 Boolean.class,
                 permissionId
         );
@@ -219,7 +219,7 @@ public class PermissionManagementApiController {
         Boolean newEnabled = (currentEnabled == null) ? false : null;
 
         jdbcTemplate.update(
-                "UPDATE permissions SET enabled = ? WHERE permission_id = ?",
+                "UPDATE authority_definitions SET enabled = ? WHERE authority_id = ?",
                 newEnabled, permissionId
         );
     }
@@ -232,7 +232,7 @@ public class PermissionManagementApiController {
         String description = request.get("description");
 
         jdbcTemplate.update(
-                "UPDATE permissions SET description = ? WHERE permission_id = ?",
+                "UPDATE authority_definitions SET description = ? WHERE authority_id = ?",
                 description, permissionId
         );
     }
@@ -293,9 +293,9 @@ public class PermissionManagementApiController {
 
                     // 更新或插入权限
                     jdbcTemplate.update("""
-                                    INSERT INTO permissions (permission_id, description, enabled)
+                                    INSERT INTO authority_definitions (authority_id, description, enabled)
                                     VALUES (?, ?, ?)
-                                    ON CONFLICT (permission_id) DO UPDATE
+                                    ON CONFLICT (authority_id) DO UPDATE
                                     SET description = EXCLUDED.description,
                                         enabled = EXCLUDED.enabled
                                     """,

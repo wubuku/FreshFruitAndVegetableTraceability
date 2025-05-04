@@ -182,6 +182,45 @@ public class UserService {
         return new PreRegisterUserResponse(username, oneTimePassword, now);
     }
 
+    /**
+     * Create a new user for social login (WeChat or SMS)
+     * @param userDto The user information
+     * @param password The password (will be encoded)
+     * @return The created user's username
+     */
+    @Transactional
+    public String createUser(UserDto userDto, String password) {
+        String username = userDto.getUsername();
+        if (userExists(username)) {
+            throw new BusinessException("User already exists: " + username);
+        }
+
+        String encodedPassword = passwordEncoder.encode(password);
+        OffsetDateTime now = OffsetDateTime.now();
+        
+        // Insert new user
+        jdbcTemplate.update("""
+                INSERT INTO users (
+                    username, password, enabled, password_change_required, 
+                    first_login, temp_password_last_generated, first_name, last_name,
+                    email, mobile_number, profile_image_url, created_at, updated_at
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """, 
+                username, encodedPassword, 
+                userDto.getEnabled() != null ? userDto.getEnabled() : true, 
+                false, false, now, 
+                userDto.getFirstName(), userDto.getLastName(),
+                userDto.getEmail(), userDto.getMobileNumber(),
+                userDto.getProfileImageUrl(), now, now);
+        
+        // Assign default group (USER_GROUP)
+        jdbcTemplate.update("""
+                INSERT INTO group_members (username, group_id)
+                SELECT ?, id FROM groups WHERE group_name = 'USER_GROUP'
+                """, username);
+        
+        return username;
+    }
 
     private boolean userExists(String username) {
         Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE username = ?", Integer.class, username);

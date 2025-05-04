@@ -127,3 +127,23 @@ auth:
       password: "your-strong-password-here"
       salt: "5c0744940b5c369b"  # 16位十六进制值
 
+# 微信登录配置
+wechat:
+  mp:
+    app-id: ${WECHAT_APP_ID:your-app-id}
+    app-secret: ${WECHAT_APP_SECRET:your-app-secret}
+    token: ${WECHAT_TOKEN:your-token}
+    aes-key: ${WECHAT_AES_KEY:your-aes-key}
+    redirect-uri: ${WECHAT_REDIRECT_URI:http://localhost:9000/wechat/callback}
+
+# 短信服务配置
+sms:
+  aliyun:
+    access-key-id: ${SMS_ACCESS_KEY_ID:your-access-key-id}
+    access-key-secret: ${SMS_ACCESS_KEY_SECRET:your-access-key-secret}
+    sign-name: ${SMS_SIGN_NAME:your-sign-name}
+    template-code: ${SMS_TEMPLATE_CODE:your-template-code}
+    region-id: ${SMS_REGION_ID:cn-hangzhou}
+  # 验证码有效期（分钟）
+  code-expiration-minutes: 5
+
