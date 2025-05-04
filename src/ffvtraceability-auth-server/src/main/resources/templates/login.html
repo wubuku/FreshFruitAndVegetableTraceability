@@ -3,8 +3,10 @@
 <head>
     <title>Login</title>
     <meta name="X-Auth-Token" th:if="${session != null}" th:content="${session.id}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* 基础样式 */
+        /* Base styles */
         body { 
             font-family: Arial, sans-serif; 
             margin: 20px; 
@@ -25,7 +27,7 @@
             font-size: 24px;
         }
         
-        /* 表单样式 */
+        /* Form styles */
         .form-group {
             margin-bottom: 20px;
         }
@@ -37,7 +39,8 @@
             font-size: 14px;
         }
         input[type="text"],
-        input[type="password"] {
+        input[type="password"],
+        input[type="tel"] {
             width: 100%;
             padding: 10px 12px;
             border: 1px solid #ddd;
@@ -47,13 +50,14 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         input[type="text"]:focus,
-        input[type="password"]:focus {
+        input[type="password"]:focus,
+        input[type="tel"]:focus {
             border-color: #007bff;
             outline: none;
             box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
         }
         
-        /* 按钮样式 */
+        /* Button styles */
         .submit-btn {
             width: 100%;
             padding: 12px;
@@ -70,7 +74,7 @@
             background: #0056b3;
         }
         
-        /* 提示消息样式 */
+        /* Alert message styles */
         .alert {
             padding: 12px 16px;
             margin-bottom: 20px;
@@ -90,21 +94,112 @@
             background-color: #d4edda;
             border: 1px solid #c3e6cb;
         }
+
+        /* Login tabs */
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .login-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #555;
+        }
+        .login-tab.active {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+        .login-form {
+            display: none;
+        }
+        .login-form.active {
+            display: block;
+        }
+
+        /* SMS verification */
+        .phone-input-group {
+            display: flex;
+            gap: 10px;
+        }
+        .phone-input-group input {
+            flex: 1;
+        }
+        .phone-input-group button {
+            width: 130px;
+            padding: 10px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .phone-input-group button:hover {
+            background: #5a6268;
+        }
+        .phone-input-group button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Social login options */
+        .social-login {
+            margin-top: 30px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .social-login-title {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+        .social-login-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .social-login-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        .social-login-option img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 8px;
+            border-radius: 50%;
+        }
+        .social-login-option span {
+            font-size: 12px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Login</h1>
+        <h1>Authentication System</h1>
         
-        <div th:if="${param.error}" class="alert alert-error">
-            <i>⚠️</i> Invalid username or password.
+        <div class="login-tabs">
+            <div class="login-tab active" onclick="switchTab('password')">Password Login</div>
+            <div class="login-tab" onclick="switchTab('sms')">SMS Verification</div>
         </div>
-        <div th:if="${param.logout}" class="alert alert-success">
-            <i>✓</i> You have been logged out successfully.
-        </div>
-
-        <form action="/login" method="post">
+        
+        <!-- Password login form -->
+        <form action="/login" method="post" class="login-form active" id="password-login">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            
+            <div th:if="${param.error}" class="alert alert-error">
+                <i>⚠️</i> Invalid username or password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                <i>✓</i> You have been logged out successfully.
+            </div>
             
             <div class="form-group">
                 <label for="username">Username</label>
@@ -122,6 +217,129 @@
             
             <button type="submit" class="submit-btn">Log in</button>
         </form>
+        
+        <!-- SMS verification login form -->
+        <form class="login-form" id="sms-login">
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <div class="phone-input-group">
+                    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+                    <button type="button" id="sendCodeBtn" onclick="sendVerificationCode()">Send Code</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="verificationCode">Verification Code</label>
+                <input type="text" id="verificationCode" name="verificationCode" placeholder="Enter verification code" required>
+            </div>
+            <button type="button" onclick="verifyCode()" class="submit-btn">Verify & Login</button>
+        </form>
+        
+        <!-- Social login options -->
+        <div class="social-login">
+            <div class="social-login-title">Or login with</div>
+            <div class="social-login-options">
+                <div class="social-login-option" onclick="window.location.href='/login/wechat'">
+                    <img src="/images/wechat-icon.png" alt="WeChat" onerror="this.src='/static/images/wechat-icon.png'">
+                    <span>WeChat</span>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <script th:inline="javascript">
+        // Define CSRF token variables
+        const csrfHeader = /*[[${_csrf != null ? _csrf.headerName : ''}]]*/ '';
+        const csrfToken = /*[[${_csrf != null ? _csrf.token : ''}]]*/ '';
+        
+        function switchTab(tabName) {
+            document.querySelectorAll('.login-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
+            
+            document.getElementById(tabName + '-login').classList.add('active');
+            document.querySelector(`.login-tab:nth-child(${tabName === 'password' ? 1 : 2})`).classList.add('active');
+        }
+        
+        function sendVerificationCode() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const sendCodeBtn = document.getElementById('sendCodeBtn');
+            
+            if (!phoneNumber) {
+                alert('Please enter your phone number');
+                return;
+            }
+            
+            // Disable button to prevent duplicate requests
+            sendCodeBtn.disabled = true;
+            sendCodeBtn.textContent = 'Sending...';
+            
+            fetch('/api/sms/send-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add CSRF token
+                    [csrfHeader]: csrfToken
+                },
+                body: JSON.stringify({ phoneNumber })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Countdown for 60 seconds
+                    let countdown = 60;
+                    const interval = setInterval(() => {
+                        sendCodeBtn.textContent = `Retry in ${countdown}s`;
+                        countdown--;
+                        
+                        if (countdown < 0) {
+                            clearInterval(interval);
+                            sendCodeBtn.disabled = false;
+                            sendCodeBtn.textContent = 'Send Code';
+                        }
+                    }, 1000);
+                } else {
+                    alert(data.message || 'Failed to send code. Please try again.');
+                    sendCodeBtn.disabled = false;
+                    sendCodeBtn.textContent = 'Send Code';
+                }
+            })
+            .catch(error => {
+                alert('Network error. Please try again later.');
+                sendCodeBtn.disabled = false;
+                sendCodeBtn.textContent = 'Send Code';
+            });
+        }
+        
+        function verifyCode() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const code = document.getElementById('verificationCode').value;
+            
+            if (!phoneNumber || !code) {
+                alert('Please enter both phone number and verification code');
+                return;
+            }
+            
+            fetch('/api/sms/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add CSRF token
+                    [csrfHeader]: csrfToken
+                },
+                body: JSON.stringify({ phoneNumber, code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect to home page after successful login
+                    window.location.href = '/';
+                } else {
+                    alert(data.message || 'Invalid verification code or expired');
+                }
+            })
+            .catch(error => {
+                alert('Verification failed. Please try again later.');
+            });
+        }
+    </script>
 </body>
 </html>
