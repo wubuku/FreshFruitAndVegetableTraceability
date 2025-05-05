@@ -138,12 +138,20 @@ wechat:
 
 # 短信服务配置
 sms:
+  provider: ${SMS_PROVIDER:simulator}
+  code-length: 6
+  code-expiration-minutes: 5
   aliyun:
     access-key-id: ${SMS_ACCESS_KEY_ID:your-access-key-id}
     access-key-secret: ${SMS_ACCESS_KEY_SECRET:your-access-key-secret}
     sign-name: ${SMS_SIGN_NAME:your-sign-name}
     template-code: ${SMS_TEMPLATE_CODE:your-template-code}
-    region-id: ${SMS_REGION_ID:cn-hangzhou}
-  # 验证码有效期（分钟）
-  code-expiration-minutes: 5
+    region: ${SMS_REGION:cn-hangzhou}
+  huoshan:
+    access-key-id: ${HUOSHAN_SMS_ACCESS_KEY_ID:your-huoshan-access-key-id}
+    secret-key: ${HUOSHAN_SMS_SECRET_KEY:your-huoshan-secret-key}
+    endpoint: ${HUOSHAN_SMS_ENDPOINT:https://sms.volcengineapi.com}
+    sign-name: ${HUOSHAN_SMS_SIGN_NAME:your-huoshan-sign-name}
+    template-id: ${HUOSHAN_SMS_TEMPLATE_ID:your-huoshan-template-id}
+    sms-account: ${HUOSHAN_SMS_ACCOUNT:your-huoshan-sms-account}
 

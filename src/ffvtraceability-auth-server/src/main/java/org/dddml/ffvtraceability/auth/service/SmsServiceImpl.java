@@ -1,6 +1,7 @@
 package org.dddml.ffvtraceability.auth.service;
 
 import org.dddml.ffvtraceability.auth.authentication.SmsLoginAuthenticationProvider;
+import org.dddml.ffvtraceability.auth.service.sms.SmsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class SmsServiceImpl implements SmsService {
     
     private final SmsVerificationService smsVerificationService;
     private final SmsLoginAuthenticationProvider smsLoginAuthenticationProvider;
+    private final SmsProvider smsProvider;
     
     @Value("${sms.code-length:6}")
     private int codeLength;
@@ -28,9 +30,11 @@ public class SmsServiceImpl implements SmsService {
     
     @Autowired
     public SmsServiceImpl(SmsVerificationService smsVerificationService, 
-                     SmsLoginAuthenticationProvider smsLoginAuthenticationProvider) {
+                     SmsLoginAuthenticationProvider smsLoginAuthenticationProvider,
+                     SmsProvider smsProvider) {
         this.smsVerificationService = smsVerificationService;
         this.smsLoginAuthenticationProvider = smsLoginAuthenticationProvider;
+        this.smsProvider = smsProvider;
     }
     
     @Override
@@ -45,21 +49,18 @@ public class SmsServiceImpl implements SmsService {
             // Save the code to the database
             smsVerificationService.saveVerificationCode(phoneNumber, code, expirationMinutes);
             
-            // Here we would integrate with an actual SMS provider
+            // Send the SMS using the configured provider
             logger.info("Sending SMS verification code to phone number: {}", phoneNumber);
-            
-            // Simulate a successful SMS sending
-            // In a real implementation, this would send the actual SMS through a provider
-            boolean success = true; 
-            String message = "SMS sent successfully";
+            boolean success = smsProvider.sendVerificationCode(phoneNumber, code);
             
             // Record the send attempt
-            smsVerificationService.recordSendAttempt(phoneNumber, "simulator", success, message);
+            smsVerificationService.recordSendAttempt(phoneNumber, smsProvider.getProviderName(), success, 
+                    success ? "SMS sent successfully" : "Failed to send SMS");
             
             return success;
         } catch (Exception e) {
             logger.error("Error sending SMS verification code", e);
-            smsVerificationService.recordSendAttempt(phoneNumber, "simulator", false, e.getMessage());
+            smsVerificationService.recordSendAttempt(phoneNumber, smsProvider.getProviderName(), false, e.getMessage());
             return false;
         }
     }
