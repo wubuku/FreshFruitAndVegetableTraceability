@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConfigurationProperties(prefix = "sms")
-public class SmsConfig {
+public class SmsProperties {
     
     private String provider = "simulator"; // Default provider
     private int codeLength = 6;

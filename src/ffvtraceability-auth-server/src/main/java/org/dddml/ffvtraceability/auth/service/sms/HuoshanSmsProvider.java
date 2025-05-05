@@ -1,6 +1,6 @@
 package org.dddml.ffvtraceability.auth.service.sms;
 
-import org.dddml.ffvtraceability.auth.config.SmsConfig;
+import org.dddml.ffvtraceability.auth.config.SmsProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -25,14 +25,14 @@ import java.util.Map;
 public class HuoshanSmsProvider implements SmsProvider {
     private static final Logger logger = LoggerFactory.getLogger(HuoshanSmsProvider.class);
     
-    private final SmsConfig.Huoshan config;
+    private final SmsProperties.Huoshan config;
     private final RestTemplate restTemplate;
     
     private static final String ACTION = "SendSms";
     private static final String VERSION = "2020-12-25";
     private static final String SERVICE = "volcSMS";
     
-    public HuoshanSmsProvider(SmsConfig.Huoshan config, RestTemplate restTemplate) {
+    public HuoshanSmsProvider(SmsProperties.Huoshan config, RestTemplate restTemplate) {
         this.config = config;
         this.restTemplate = restTemplate;
     }

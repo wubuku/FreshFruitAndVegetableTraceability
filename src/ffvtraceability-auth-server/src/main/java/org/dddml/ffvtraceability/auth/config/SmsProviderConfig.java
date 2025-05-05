@@ -20,8 +20,8 @@ import org.springframework.web.client.RestTemplate;
 public class SmsProviderConfig {
 
     @Bean
-    public IAcsClient acsClient(SmsConfig smsConfig) {
-        SmsConfig.Aliyun aliyunConfig = smsConfig.getAliyun();
+    public IAcsClient acsClient(SmsProperties smsProperties) {
+        SmsProperties.Aliyun aliyunConfig = smsProperties.getAliyun();
         return new DefaultAcsClient(
                 DefaultProfile.getProfile(
                         aliyunConfig.getRegion(),
@@ -42,13 +42,13 @@ public class SmsProviderConfig {
     }
     
     @Bean
-    public AliyunSmsProvider aliyunSmsProvider(IAcsClient acsClient, SmsConfig smsConfig) {
-        return new AliyunSmsProvider(acsClient, smsConfig.getAliyun());
+    public AliyunSmsProvider aliyunSmsProvider(IAcsClient acsClient, SmsProperties smsProperties) {
+        return new AliyunSmsProvider(acsClient, smsProperties.getAliyun());
     }
     
     @Bean
-    public HuoshanSmsProvider huoshanSmsProvider(SmsConfig smsConfig, RestTemplate restTemplate) {
-        return new HuoshanSmsProvider(smsConfig.getHuoshan(), restTemplate);
+    public HuoshanSmsProvider huoshanSmsProvider(SmsProperties smsProperties, RestTemplate restTemplate) {
+        return new HuoshanSmsProvider(smsProperties.getHuoshan(), restTemplate);
     }
     
     @Bean
@@ -59,12 +59,12 @@ public class SmsProviderConfig {
     @Bean
     @Primary
     public SmsProvider smsProvider(
-            SmsConfig smsConfig,
+            SmsProperties smsProperties,
             AliyunSmsProvider aliyunSmsProvider,
             HuoshanSmsProvider huoshanSmsProvider,
             SimulatorSmsProvider simulatorSmsProvider) {
         
-        String provider = smsConfig.getProvider();
+        String provider = smsProperties.getProvider();
         
         switch (provider.toLowerCase()) {
             case "aliyun":

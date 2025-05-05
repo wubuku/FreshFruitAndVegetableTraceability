@@ -2,13 +2,12 @@ package org.dddml.ffvtraceability.auth.service.sms;
 
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.CommonResponse;
-import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.dddml.ffvtraceability.auth.config.SmsConfig;
+import org.dddml.ffvtraceability.auth.config.SmsProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,14 +21,14 @@ public class AliyunSmsProvider implements SmsProvider {
     private static final Logger logger = LoggerFactory.getLogger(AliyunSmsProvider.class);
     
     private final IAcsClient client;
-    private final SmsConfig.Aliyun config;
+    private final SmsProperties.Aliyun config;
     private final ObjectMapper objectMapper;
     
     private static final String DOMAIN = "dysmsapi.aliyuncs.com";
     private static final String ACTION = "SendSms";
     private static final String VERSION = "2017-05-25";
     
-    public AliyunSmsProvider(IAcsClient client, SmsConfig.Aliyun config) {
+    public AliyunSmsProvider(IAcsClient client, SmsProperties.Aliyun config) {
         this.client = client;
         this.config = config;
         this.objectMapper = new ObjectMapper();
