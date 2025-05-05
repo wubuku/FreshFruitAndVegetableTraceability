@@ -99,7 +99,11 @@ public class SocialLoginController {
             return ResponseEntity.badRequest().body(response);
         }
         
-        boolean sent = smsService.sendVerificationCode(phoneNumber);
+        // Generate a verification code
+        String code = smsService.generateVerificationCode();
+        
+        // Send the verification code
+        boolean sent = smsService.sendVerificationCode(phoneNumber, code);
         
         if (sent) {
             response.put("success", true);
@@ -135,6 +139,10 @@ public class SocialLoginController {
         try {
             // Verify code and authenticate
             Authentication authentication = smsService.verifyCodeAndLogin(phoneNumber, code);
+            
+            if (authentication == null) {
+                throw new AuthenticationException("Invalid verification code");
+            }
             
             // Handle successful authentication
             successHandler.onAuthenticationSuccess(servletRequest, servletResponse, authentication);

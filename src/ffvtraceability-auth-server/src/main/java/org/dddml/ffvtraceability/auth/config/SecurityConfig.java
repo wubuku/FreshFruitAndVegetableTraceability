@@ -1,6 +1,7 @@
 package org.dddml.ffvtraceability.auth.config;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.dddml.ffvtraceability.auth.authentication.SmsLoginAuthenticationProvider;
 import org.dddml.ffvtraceability.auth.security.CustomUserDetails;
 import org.dddml.ffvtraceability.auth.security.handler.CustomAuthenticationSuccessHandler;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -58,6 +60,9 @@ public class SecurityConfig {
 
     @Autowired
     private CorsConfigurationSource corsConfigurationSource;
+
+    @Autowired
+    private SmsLoginAuthenticationProvider smsLoginAuthenticationProvider;
 
     private static OffsetDateTime toOffsetDateTime(Object dbValue) {
         OffsetDateTime passwordLastChanged = null;
@@ -314,4 +319,8 @@ public class SecurityConfig {
         return provider;
     }
 
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(smsLoginAuthenticationProvider);
+    }
 }
