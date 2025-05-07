@@ -257,8 +257,13 @@ public abstract class AbstractInventoryItemDetailStateCollection implements Enti
 
     //region Saveable Implements
 
-    public void save ()
-    {
+    public void save () {
+        for (InventoryItemDetailState s : this.getLoadedInventoryItemDetailStates()) {
+            getInventoryItemDetailStateDao().save(s);
+        }
+        for (InventoryItemDetailState s : this.removedInventoryItemDetailStates.values()) {
+            getInventoryItemDetailStateDao().delete(s);
+        }
     }
 
     //endregion
