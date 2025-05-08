@@ -40,13 +40,12 @@ public class SocialLoginController {
     /**
      * Start WeChat login process
      */
-    @GetMapping("/login/wechat")
+    @GetMapping("/wechat/login")
     public String startWeChatLogin(HttpServletRequest request) {
         // Generate a state parameter for CSRF protection
         String state = UUID.randomUUID().toString();
         HttpSession session = request.getSession();
         session.setAttribute("wechat_state", state);
-        
         // Redirect to WeChat authorization page
         String authUrl = weChatService.getAuthorizationUrl(state);
         return "redirect:" + authUrl;

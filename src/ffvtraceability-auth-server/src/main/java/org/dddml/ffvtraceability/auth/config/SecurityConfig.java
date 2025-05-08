@@ -21,7 +21,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -91,20 +90,20 @@ public class SecurityConfig {
         return passwordLastChanged;
     }
 
-    @Bean
-    @Order(1)
-    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .securityMatcher("/api/**")
-                .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().authenticated()
-                );
-        return http.build();
-    }
+//    @Bean
+//    @Order(1)
+//    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .securityMatcher("/api/**")
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated()
+//                );
+//        return http.build();
+//    }
 
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/web-clients/oauth2/**"))
@@ -131,6 +130,7 @@ public class SecurityConfig {
                                 .requestMatchers("/**").permitAll()
                         //.anyRequest().authenticated()
                 )
+                .authenticationProvider(authenticationProvider(userDetailsService))
                 .formLogin(form -> form
                         .loginPage("/login")
                         .failureHandler((request, response, exception) -> {
@@ -296,7 +296,7 @@ public class SecurityConfig {
         };
     }
 
-    @Bean
+    //@Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider() {
             @Override
