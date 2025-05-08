@@ -40,7 +40,7 @@ public class SocialLoginController {
     /**
      * Start WeChat login process
      */
-    @GetMapping("/wechat/login")
+    @GetMapping("/login/wechat")
     public String startWeChatLogin(HttpServletRequest request) {
         // Generate a state parameter for CSRF protection
         String state = UUID.randomUUID().toString();
