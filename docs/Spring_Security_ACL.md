@@ -34,6 +34,33 @@ ACL (Access Control List，访问控制列表) 是一种细粒度的权限控制
 
 ### 2.1 添加依赖
 
+#### Spring Boot 3.x 推荐依赖配置
+
+```xml
+<!-- Spring Security ACL -->
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-acl</artifactId>
+</dependency>
+
+<!-- Spring Boot 3.x缓存支持 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-cache</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context-support</artifactId>
+</dependency>
+<!-- Spring Boot 3.x推荐使用Caffeine作为缓存实现 -->
+<dependency>
+    <groupId>com.github.ben-manes.caffeine</groupId>
+    <artifactId>caffeine</artifactId>
+</dependency>
+```
+
+#### Spring Boot 2.x 依赖配置（仅供参考）
+
 ```xml
 <!-- Spring Security ACL -->
 <dependency>
@@ -125,11 +152,13 @@ CREATE INDEX idx_acl_object_identity_class ON acl_object_identity (object_id_cla
 
 ### 2.3 Spring Boot 配置
 
+#### Spring Boot 3.x 推荐配置
+
 创建 ACL 配置类：
 
 ```java
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true) // Spring Boot 3.x使用@EnableMethodSecurity
 public class AclConfig {
 
     @Autowired
@@ -157,45 +186,20 @@ public class AclConfig {
     }
 
     @Bean
-    public EhCacheBasedAclCache aclCache() {
-        return new EhCacheBasedAclCache(
-                aclEhCacheFactoryBean().getObject(),
+    public SpringCacheBasedAclCache aclCache() {
+        return new SpringCacheBasedAclCache(
+                cacheManager().getCache("aclCache"),
                 permissionGrantingStrategy(),
                 aclAuthorizationStrategy());
     }
 
     @Bean
-    public EhCacheFactoryBean aclEhCacheFactoryBean() {
-        EhCacheFactoryBean ehCacheFactoryBean = new EhCacheFactoryBean();
-        ehCacheFactoryBean.setCacheManager(aclCacheManager().getObject());
-        ehCacheFactoryBean.setCacheName("aclCache");
-        
-        // 设置缓存失效策略
-        ehCacheFactoryBean.setCacheEventListeners(Collections.singletonMap(
-                CacheEventType.EXPIRED, new LoggingCacheEventListener()));
-        
-        // 配置缓存属性
-        net.sf.ehcache.config.CacheConfiguration cacheConfig = new net.sf.ehcache.config.CacheConfiguration();
-        
-        // 缓存最大元素数量
-        cacheConfig.setMaxEntriesLocalHeap(10000);
-        
-        // 缓存元素过期时间（秒）
-        cacheConfig.setTimeToLiveSeconds(1800); // 30分钟
-        
-        // 空闲时间过期（秒）
-        cacheConfig.setTimeToIdleSeconds(600); // 10分钟
-        
-        ehCacheFactoryBean.setCacheConfiguration(cacheConfig);
-        
-        return ehCacheFactoryBean;
-    }
-
-    @Bean
-    public EhCacheManagerFactoryBean aclCacheManager() {
-        EhCacheManagerFactoryBean factoryBean = new EhCacheManagerFactoryBean();
-        factoryBean.setShared(true);
-        return factoryBean;
+    public CacheManager cacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("aclCache");
+        cacheManager.setCaffeine(Caffeine.newBuilder()
+                .expireAfterWrite(1, TimeUnit.HOURS)
+                .maximumSize(10000));
+        return cacheManager;
     }
 
     @Bean
@@ -264,6 +268,254 @@ class BatchBasicLookupStrategy extends BasicLookupStrategy {
     }
 }
 ```
+
+#### Spring Boot 2.x 配置（仅供参考）
+
+Spring Boot 2.x版本使用EhCache作为缓存实现，配置如下：
+
+```java
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // 注意: Spring Boot 2.x使用@EnableGlobalMethodSecurity
+public class AclConfig {
+
+    @Autowired
+    private DataSource dataSource;
+
+    // ... 其他配置与Spring Boot 3.x类似 ...
+
+    @Bean
+    public EhCacheBasedAclCache aclCache() {
+        return new EhCacheBasedAclCache(
+                aclEhCacheFactoryBean().getObject(),
+                permissionGrantingStrategy(),
+                aclAuthorizationStrategy());
+    }
+
+    @Bean
+    public EhCacheFactoryBean aclEhCacheFactoryBean() {
+        EhCacheFactoryBean ehCacheFactoryBean = new EhCacheFactoryBean();
+        ehCacheFactoryBean.setCacheManager(aclCacheManager().getObject());
+        ehCacheFactoryBean.setCacheName("aclCache");
+        
+        // 设置缓存失效策略
+        ehCacheFactoryBean.setCacheEventListeners(Collections.singletonMap(
+                CacheEventType.EXPIRED, new LoggingCacheEventListener()));
+        
+        // 配置缓存属性
+        net.sf.ehcache.config.CacheConfiguration cacheConfig = new net.sf.ehcache.config.CacheConfiguration();
+        
+        // 缓存最大元素数量
+        cacheConfig.setMaxEntriesLocalHeap(10000);
+        
+        // 缓存元素过期时间（秒）
+        cacheConfig.setTimeToLiveSeconds(1800); // 30分钟
+        
+        // 空闲时间过期（秒）
+        cacheConfig.setTimeToIdleSeconds(600); // 10分钟
+        
+        ehCacheFactoryBean.setCacheConfiguration(cacheConfig);
+        
+        return ehCacheFactoryBean;
+    }
+
+    @Bean
+    public EhCacheManagerFactoryBean aclCacheManager() {
+        EhCacheManagerFactoryBean factoryBean = new EhCacheManagerFactoryBean();
+        factoryBean.setShared(true);
+        return factoryBean;
+    }
+    
+    // ... 其他配置与Spring Boot 3.x类似 ...
+}
+```
+
+### 2.4 配置自定义权限工厂
+
+在ACL配置中注册自定义权限工厂：
+
+```java
+@Configuration
+@EnableMethodSecurity(prePostEnabled = true)
+public class AclConfig {
+    // ... 其他配置 ...
+    
+    @Bean
+    public PermissionFactory permissionFactory() {
+        return new CustomPermissionFactory();
+    }
+    
+    @Bean
+    public MethodSecurityExpressionHandler expressionHandler() {
+        DefaultMethodSecurityExpressionHandler expressionHandler = 
+            new DefaultMethodSecurityExpressionHandler();
+        AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(aclService());
+        // 设置自定义权限工厂
+        permissionEvaluator.setPermissionFactory(permissionFactory());
+        expressionHandler.setPermissionEvaluator(permissionEvaluator);
+        return expressionHandler;
+    }
+}
+```
+
+### 2.5 使用组合权限的实际示例
+
+以下是如何在实践中使用组合权限的示例：
+
+```java
+@Service
+public class DocumentService {
+    
+    @Autowired
+    private MutableAclService aclService;
+    
+    /**
+     * 为用户授予完全控制权限
+     */
+    @Transactional
+    public void grantFullControl(Document document, String username) {
+        ObjectIdentity oid = new ObjectIdentityImpl(Document.class, document.getId());
+        Sid sid = new PrincipalSid(username);
+        
+        MutableAcl acl;
+        try {
+            acl = (MutableAcl) aclService.readAclById(oid);
+        } catch (NotFoundException nfe) {
+            acl = aclService.createAcl(oid);
+        }
+        
+        // 使用组合权限
+        acl.insertAce(acl.getEntries().size(), CustomPermission.FULL_CONTROL, sid, true);
+        aclService.updateAcl(acl);
+    }
+    
+    /**
+     * 检查用户是否拥有特定权限
+     */
+    public boolean checkPermission(Document document, String username, Permission permission) {
+        ObjectIdentity oid = new ObjectIdentityImpl(Document.class, document.getId());
+        Sid sid = new PrincipalSid(username);
+        
+        try {
+            // 获取ACL
+            Acl acl = aclService.readAclById(oid);
+            
+            // 获取用户的所有ACE
+            List<AccessControlEntry> entries = acl.getEntries();
+            
+            for (AccessControlEntry entry : entries) {
+                if (entry.getSid().equals(sid) && entry.isGranting()) {
+                    // 检查权限掩码是否包含所需权限
+                    int entryMask = entry.getPermission().getMask();
+                    int requiredMask = permission.getMask();
+                    
+                    if (CustomPermission.containsPermission(entryMask, requiredMask)) {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * 使用自定义权限的方法示例
+     */
+    @PreAuthorize("hasPermission(#document, 'VIEW_CONFIDENTIAL')")
+    public String getConfidentialContent(Document document) {
+        return document.getConfidentialContent();
+    }
+    
+    /**
+     * 使用组合权限的方法示例
+     */
+    @PreAuthorize("hasPermission(#document, 'FULL_CONTROL')")
+    public void updateAndShare(Document document, String newContent) {
+        document.setContent(newContent);
+        // 执行分享操作...
+    }
+}
+```
+
+### 2.6 位掩码权限的正确处理
+
+为了正确处理位掩码权限，特别是在检查组合权限时，可以扩展`AclImpl`类来改进权限检查逻辑：
+
+```java
+public class CustomAclImpl extends AclImpl {
+    
+    public CustomAclImpl(ObjectIdentity objectIdentity, 
+                        Serializable id, 
+                        AclAuthorizationStrategy aclAuthorizationStrategy,
+                        AuditLogger auditLogger,
+                        Sid owner,
+                        List<Sid> loadedSids,
+                        boolean entriesInheriting) {
+        super(objectIdentity, id, aclAuthorizationStrategy, auditLogger, 
+              owner, loadedSids, entriesInheriting);
+    }
+    
+    @Override
+    protected boolean isGranted(AccessControlEntry ace, Permission permission) {
+        if (ace.isGranting()) {
+            // 使用位运算检查权限，而不是简单的相等性检查
+            int aceMask = ace.getPermission().getMask();
+            int requestedMask = permission.getMask();
+            
+            // 检查ACE的掩码是否包含请求的所有权限位
+            return (aceMask & requestedMask) == requestedMask;
+        }
+        
+        return false;
+    }
+}
+```
+
+要使用这个自定义实现，需要创建一个自定义的`LookupStrategy`：
+
+```java
+public class CustomLookupStrategy extends BasicLookupStrategy {
+    
+    public CustomLookupStrategy(DataSource dataSource, 
+                               AclCache aclCache,
+                               AclAuthorizationStrategy aclAuthorizationStrategy,
+                               AuditLogger auditLogger) {
+        super(dataSource, aclCache, aclAuthorizationStrategy, auditLogger);
+    }
+    
+    @Override
+    protected Acl convertToAcl(AclImpl acl) {
+        // 创建自定义ACL实现
+        return new CustomAclImpl(
+                acl.getObjectIdentity(),
+                acl.getId(),
+                acl.getAclAuthorizationStrategy(),
+                acl.getAuditLogger(),
+                acl.getOwner(),
+                acl.getLoadedSids(),
+                acl.isEntriesInheriting()
+        );
+    }
+}
+```
+
+最后，在配置中使用自定义的`LookupStrategy`：
+
+```java
+@Bean
+public LookupStrategy lookupStrategy() {
+    return new CustomLookupStrategy(
+            dataSource,
+            aclCache(),
+            aclAuthorizationStrategy(),
+            new ConsoleAuditLogger()
+    );
+}
+```
+
+通过这些改进，Spring Security ACL将能够正确处理复杂的位掩码权限组合，使权限系统更加灵活和强大。
 
 ## 3. ACL 内部机制
 
@@ -1293,7 +1545,189 @@ public void setupPermissionInheritance(Document parentDoc, Document childDoc) {
    - 实现自定义AuditLogger记录权限变更
    - 记录谁在什么时间对什么对象做了权限变更
 
-### 6.3 实际应用注意事项
+
+### 6.3 安全防护增强
+
+在实现ACL权限系统时，需特别注意防范权限提升攻击。以下是一些关键的安全防护措施：
+
+#### 6.3.1 权限修改防提权检测
+
+在修改ACL权限时，必须验证当前用户是否有权进行此操作：
+
+```java
+/**
+ * 安全的权限修改服务
+ */
+@Service
+public class SecureAclService {
+    
+    @Autowired
+    private MutableAclService aclService;
+    
+    /**
+     * 安全地修改权限，防止权限提升攻击
+     */
+    @Transactional
+    public void modifyPermission(ObjectIdentity objectIdentity, 
+                                 Sid targetSid,
+                                 Permission permission,
+                                 boolean granting,
+                                 Authentication currentAuth) {
+        
+        // 1. 获取ACL记录
+        MutableAcl acl;
+        try {
+            acl = (MutableAcl) aclService.readAclById(objectIdentity);
+        } catch (NotFoundException nfe) {
+            throw new AccessDeniedException("无法获取ACL记录");
+        }
+        
+        // 2. 权限检查 - 防提权
+        // 检查当前用户是否是对象所有者或管理员
+        Sid currentUserSid = new PrincipalSid(currentAuth.getName());
+        boolean isAdmin = currentAuth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean isOwner = acl.getOwner().equals(currentUserSid);
+        
+        // 关键防提权检测
+        if (!isOwner && !isAdmin) {
+            // 非所有者且非管理员，检查是否有ADMINISTRATION权限
+            boolean hasAdminPerm = false;
+            try {
+                hasAdminPerm = acl.isGranted(
+                        Collections.singletonList(BasePermission.ADMINISTRATION),
+                        Collections.singletonList(currentUserSid),
+                        false);
+            } catch (Exception e) {
+                hasAdminPerm = false;
+            }
+            
+            if (!hasAdminPerm) {
+                throw new AccessDeniedException("无权修改此对象的权限设置");
+            }
+        }
+        
+        // 3. 防止自我权限剥夺
+        // 如果当前用户正在移除自己的ADMINISTRATION权限，给出警告
+        if (targetSid.equals(currentUserSid) && 
+            permission.equals(BasePermission.ADMINISTRATION) && 
+            !granting) {
+            // 记录审计日志
+            log.warn("用户 {} 正在移除自己的管理权限", currentAuth.getName());
+        }
+        
+        // 4. 修改权限
+        // 查找是否已存在权限条目
+        boolean foundAce = false;
+        List<AccessControlEntry> entries = acl.getEntries();
+        for (int i = 0; i < entries.size(); i++) {
+            AccessControlEntry entry = entries.get(i);
+            if (entry.getSid().equals(targetSid) && 
+                entry.getPermission().equals(permission)) {
+                // 更新现有权限
+                if (entry.isGranting() != granting) {
+                    acl.updateAce(i, permission);
+                }
+                foundAce = true;
+                break;
+            }
+        }
+        
+        // 如果没有找到匹配的条目，创建新的
+        if (!foundAce) {
+            acl.insertAce(acl.getEntries().size(), permission, targetSid, granting);
+        }
+        
+        // 5. 保存修改
+        aclService.updateAcl(acl);
+        
+        // 6. 记录审计日志
+        // 在生产环境中应实现完整的审计日志
+        String operation = granting ? "授予" : "撤销";
+        log.info("用户 {} {} 了 {} 对象 {}({}) 的 {} 权限", 
+                currentAuth.getName(),
+                operation,
+                targetSid,
+                objectIdentity.getType(),
+                objectIdentity.getIdentifier(),
+                permission);
+    }
+}
+```
+
+#### 6.3.2 安全控制器示例
+
+在控制器层应用上述安全措施：
+
+```java
+@RestController
+@RequestMapping("/api/acl")
+public class SecureAclController {
+    
+    @Autowired
+    private SecureAclService secureAclService;
+    
+    /**
+     * 安全地修改对象权限
+     */
+    @PostMapping("/permissions")
+    public ResponseEntity<?> modifyPermission(
+            @RequestBody PermissionModificationRequest request,
+            Authentication authentication) {
+        
+        try {
+            // 构造对象标识
+            ObjectIdentity oid = new ObjectIdentityImpl(
+                    request.getObjectType(), 
+                    request.getObjectId());
+            
+            // 创建目标SID
+            Sid targetSid;
+            if (request.isTargetRole()) {
+                targetSid = new GrantedAuthoritySid(request.getTargetSid());
+            } else {
+                targetSid = new PrincipalSid(request.getTargetSid());
+            }
+            
+            // 获取权限
+            Permission permission = BasePermission.buildFromMask(request.getPermissionMask());
+            
+            // 安全地修改权限
+            secureAclService.modifyPermission(
+                    oid, 
+                    targetSid, 
+                    permission, 
+                    request.isGranting(), 
+                    authentication);
+            
+            return ResponseEntity.ok().build();
+            
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "权限修改失败: " + e.getMessage()));
+        }
+    }
+}
+
+/**
+ * 权限修改请求DTO
+ */
+class PermissionModificationRequest {
+    private String objectType;
+    private Serializable objectId;
+    private String targetSid;
+    private boolean targetRole;
+    private int permissionMask;
+    private boolean granting;
+    
+    // Getters and setters
+}
+```
+
+### 6.4 实际应用注意事项
 
 1. **前端集成**
    - 在UI上隐藏或禁用用户没有权限的功能
@@ -1386,51 +1820,429 @@ public class DatabaseAuditLogger implements AuditLogger {
 }
 ```
 
-## 7. 故障排除和调试
+## 7. 权限审计与安全实践
 
-### 7.1 常见问题及解决方案
+### 7.1 权限审计实现
 
-1. **"Access is denied" 异常**
-   - 检查用户是否有所需权限
-   - 验证SID创建方式是否正确（用户用PrincipalSid，角色用GrantedAuthoritySid）
-   - 确保ACL记录存在且包含正确的权限
+ACL权限变更审计对于安全合规和问题排查至关重要。以下是完整的权限审计实现方案：
 
-2. **无法找到ACL记录**
-   - 确保在分配权限之前创建了ACL
-   - 检查对象类型和ID是否正确
-   - 启用SQL日志查看实际执行的SQL语句
+#### 7.1.1 审计日志表设计
 
-3. **权限不生效**
-   - 检查用户加载时是否包含了所有权限和组信息
-   - 验证SecurityContext中是否有完整的Authentication对象
-   - 考虑是否有缓存干扰
+首先创建审计日志表来记录所有权限变更：
 
-### 7.2 调试技巧
-
-1. **启用调试日志**
-```properties
-logging.level.org.springframework.security.acls=DEBUG
-logging.level.org.springframework.jdbc=DEBUG
-```
-
-2. **检查数据库内容**
 ```sql
--- 查看用户的SID记录
-SELECT * FROM acl_sid WHERE sid = 'username';
-
--- 查看特定对象的ACL
-SELECT aoi.*, ac.class 
-FROM acl_object_identity aoi 
-JOIN acl_class ac ON aoi.object_id_class = ac.id
-WHERE ac.class = 'com.example.Document' AND aoi.object_id_identity = 123;
-
--- 查看权限条目
-SELECT ae.*, s.sid, s.principal
-FROM acl_entry ae
-JOIN acl_sid s ON ae.sid = s.id
-WHERE ae.acl_object_identity = 
-    (SELECT id FROM acl_object_identity WHERE object_id_identity = 123);
+CREATE TABLE acl_audit_log (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    timestamp TIMESTAMP NOT NULL,
+    principal VARCHAR(100) NOT NULL,         -- 执行操作的用户
+    action VARCHAR(50) NOT NULL,             -- 操作类型（GRANT/REVOKE）
+    object_type VARCHAR(255) NOT NULL,       -- 对象类型
+    object_id VARCHAR(255) NOT NULL,         -- 对象ID
+    target_sid VARCHAR(100) NOT NULL,        -- 目标用户/角色
+    target_sid_type VARCHAR(10) NOT NULL,    -- 用户/角色
+    permission VARCHAR(50) NOT NULL,         -- 权限
+    granted BOOLEAN NOT NULL,                -- 授予/撤销
+    INDEX idx_timestamp (timestamp),
+    INDEX idx_principal (principal),
+    INDEX idx_object (object_type, object_id)
+);
 ```
+
+#### 7.1.2 Spring Boot 3.x中的审计实现
+
+Spring Boot 3.x中实现权限审计，推荐使用自定义`AuditLogger`：
+
+```java
+/**
+ * 基于数据库的审计日志记录器 - Spring Boot 3.x实现
+ */
+@Component
+public class DatabaseAuditLogger implements AuditLogger {
+    
+    private final JdbcTemplate jdbcTemplate;
+    private static final Logger log = LoggerFactory.getLogger(DatabaseAuditLogger.class);
+    
+    // Spring Boot 3.x推荐构造函数注入
+    public DatabaseAuditLogger(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    // 使用Java 15+的文本块语法提高SQL可读性
+    private static final String INSERT_AUDIT_SQL = """
+        INSERT INTO acl_audit_log (
+            timestamp, principal, action, object_type, object_id, 
+            target_sid, target_sid_type, permission, granted
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+    
+    @Override
+    public void logIfNeeded(boolean granted, AccessControlEntry ace) {
+        try {
+            // 只有在配置了审计的情况下才记录
+            if ((granted && ace.isAuditSuccess()) || (!granted && ace.isAuditFailure())) {
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                if (auth == null) {
+                    log.warn("权限变更审计失败：无法获取认证信息");
+                    return;
+                }
+                
+                String principal = auth.getName();
+                ObjectIdentity oid = ace.getAcl().getObjectIdentity();
+                String action = granted ? "GRANT" : "REVOKE";
+                
+                // 处理SID信息
+                String sidName;
+                String sidType;
+                
+                Sid sid = ace.getSid();
+                if (sid instanceof PrincipalSid) {
+                    sidName = ((PrincipalSid) sid).getPrincipal();
+                    sidType = "USER";
+                } else if (sid instanceof GrantedAuthoritySid) {
+                    sidName = ((GrantedAuthoritySid) sid).getGrantedAuthority();
+                    sidType = "ROLE";
+                } else {
+                    sidName = sid.toString();
+                    sidType = "UNKNOWN";
+                }
+                
+                // 记录到数据库
+                jdbcTemplate.update(
+                    INSERT_AUDIT_SQL,
+                    Instant.now(),           // 使用Java 8+ 时间API
+                    principal,
+                    action,
+                    oid.getType(),
+                    oid.getIdentifier().toString(),
+                    sidName,
+                    sidType,
+                    ace.getPermission().toString(),
+                    granted
+                );
+                
+                log.debug("已记录ACL审计事件: {} 用户对 {}.{} 执行 {} 操作", 
+                        principal, oid.getType(), oid.getIdentifier(), action);
+            }
+        } catch (Exception e) {
+            // 确保审计失败不影响应用功能
+            log.error("记录ACL审计日志失败", e);
+        }
+    }
+}
+```
+
+#### 7.1.3 集成审计日志到权限管理流程
+
+在ACL配置中使用自定义审计日志记录器：
+
+```java
+@Configuration
+@EnableMethodSecurity(prePostEnabled = true)
+public class AclConfig {
+    
+    // ... 其他配置 ...
+    
+    @Bean
+    public PermissionGrantingStrategy permissionGrantingStrategy(DatabaseAuditLogger auditLogger) {
+        // 使用自定义审计记录器
+        return new DefaultPermissionGrantingStrategy(auditLogger);
+    }
+    
+    // ... 其余配置保持不变
+}
+```
+
+#### 7.1.4 增强型权限管理服务（带审计）
+
+为了确保权限变更都能被审计，应该通过专用服务进行权限管理：
+
+```java
+/**
+ * 增强型权限管理服务 - 支持完整审计
+ * Spring Boot 3.x最佳实践实现
+ */
+@Service
+@Transactional
+public class AuditedPermissionService {
+    
+    private final MutableAclService aclService;
+    private final ObjectIdentityRetrievalStrategy identityRetrieval;
+    private final JdbcTemplate jdbcTemplate;
+    
+    // Spring Boot 3.x推荐构造函数注入
+    public AuditedPermissionService(
+            MutableAclService aclService,
+            ObjectIdentityRetrievalStrategy identityRetrieval,
+            JdbcTemplate jdbcTemplate) {
+        this.aclService = aclService;
+        this.identityRetrieval = identityRetrieval;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    /**
+     * 授予权限（包含完整审计）
+     */
+    public void grantPermission(Object domainObject, Sid sid, Permission permission) {
+        ObjectIdentity oid = identityRetrieval.getObjectIdentity(domainObject);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        // 额外的审计记录，确保即使ACL审计配置错误也能留下记录
+        logPermissionChange(oid, auth, "GRANT", permission, sid, true);
+        
+        // 修改ACL权限
+        MutableAcl acl;
+        try {
+            acl = (MutableAcl) aclService.readAclById(oid);
+        } catch (NotFoundException nfe) {
+            acl = aclService.createAcl(oid);
+        }
+        
+        // 查找并更新现有ACE或创建新ACE
+        boolean found = false;
+        List<AccessControlEntry> entries = acl.getEntries();
+        for (int i = 0; i < entries.size(); i++) {
+            AccessControlEntry entry = entries.get(i);
+            if (entry.getSid().equals(sid) && entry.getPermission().equals(permission)) {
+                // 如果找到匹配的条目但授权状态不同，则更新
+                if (!entry.isGranting()) {
+                    acl.updateAce(i, permission);
+                }
+                found = true;
+                break;
+            }
+        }
+        
+        // 未找到匹配的ACE，创建新的
+        if (!found) {
+            acl.insertAce(acl.getEntries().size(), permission, sid, true);
+        }
+        
+        // 启用审计
+        acl.setEntriesInheriting(acl.isEntriesInheriting());
+        
+        // 保存更改
+        aclService.updateAcl(acl);
+    }
+    
+    /**
+     * 撤销权限
+     */
+    public void revokePermission(Object domainObject, Sid sid, Permission permission) {
+        ObjectIdentity oid = identityRetrieval.getObjectIdentity(domainObject);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        // 额外的审计记录
+        logPermissionChange(oid, auth, "REVOKE", permission, sid, false);
+        
+        // 修改ACL权限
+        MutableAcl acl;
+        try {
+            acl = (MutableAcl) aclService.readAclById(oid);
+        } catch (NotFoundException nfe) {
+            // 没有ACL记录，无需进一步操作
+            return;
+        }
+        
+        // 查找并删除匹配的ACE
+        List<AccessControlEntry> entries = acl.getEntries();
+        for (int i = 0; i < entries.size(); i++) {
+            AccessControlEntry entry = entries.get(i);
+            if (entry.getSid().equals(sid) && entry.getPermission().equals(permission)) {
+                acl.deleteAce(i);
+                break;
+            }
+        }
+        
+        // 保存更改
+        aclService.updateAcl(acl);
+    }
+    
+    /**
+     * 记录权限变更到审计日志
+     */
+    private void logPermissionChange(
+            ObjectIdentity oid, 
+            Authentication auth,
+            String action,
+            Permission permission,
+            Sid sid,
+            boolean granted) {
+        
+        // 获取SID信息
+        String sidName;
+        String sidType;
+        
+        if (sid instanceof PrincipalSid) {
+            sidName = ((PrincipalSid) sid).getPrincipal();
+            sidType = "USER";
+        } else if (sid instanceof GrantedAuthoritySid) {
+            sidName = ((GrantedAuthoritySid) sid).getGrantedAuthority();
+            sidType = "ROLE";
+        } else {
+            sidName = sid.toString();
+            sidType = "UNKNOWN";
+        }
+        
+        try {
+            // 使用Java 15+的文本块
+            String sql = """
+                INSERT INTO acl_audit_log (
+                    timestamp, principal, action, object_type, object_id, 
+                    target_sid, target_sid_type, permission, granted
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+            
+            jdbcTemplate.update(
+                sql,
+                Instant.now(),
+                auth.getName(),
+                action,
+                oid.getType(),
+                oid.getIdentifier().toString(),
+                sidName,
+                sidType,
+                permission.toString(),
+                granted
+            );
+        } catch (Exception e) {
+            // 记录失败但不中断主操作
+            // 在生产环境可能需要记录到单独的日志文件
+        }
+    }
+    
+    /**
+     * 查询特定对象的权限审计历史
+     */
+    public List<Map<String, Object>> getAuditHistory(Object domainObject) {
+        ObjectIdentity oid = identityRetrieval.getObjectIdentity(domainObject);
+        
+        String sql = """
+            SELECT * FROM acl_audit_log 
+            WHERE object_type = ? AND object_id = ?
+            ORDER BY timestamp DESC
+        """;
+        
+        return jdbcTemplate.queryForList(
+            sql, 
+            oid.getType(),
+            oid.getIdentifier().toString()
+        );
+    }
+}
+```
+
+#### 7.1.5 权限审计API
+
+添加API端点来查询权限审计历史：
+
+```java
+@RestController
+@RequestMapping("/api/security/audit")
+public class AclAuditController {
+    
+    private final AuditedPermissionService permissionService;
+    
+    // Spring Boot 3.x推荐构造函数注入
+    public AclAuditController(AuditedPermissionService permissionService) {
+        this.permissionService = permissionService;
+    }
+    
+    /**
+     * 获取特定文档的权限变更历史
+     */
+    @GetMapping("/documents/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasPermission(#id, 'com.example.Document', 'ADMINISTRATION')")
+    public ResponseEntity<List<Map<String, Object>>> getDocumentAuditHistory(@PathVariable Long id) {
+        // 根据ID加载文档
+        Document document = documentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Document not found"));
+        
+        // 获取审计历史
+        List<Map<String, Object>> auditHistory = permissionService.getAuditHistory(document);
+        
+        return ResponseEntity.ok(auditHistory);
+    }
+}
+```
+
+#### 7.1.6 权限审计UI集成
+
+可以通过Vue.js或React等前端框架，创建友好的权限审计查看界面：
+
+```javascript
+// Vue.js 3示例 (对应Spring Boot 3.x)
+const AuditLogViewer = {
+  data() {
+    return {
+      auditLogs: [],
+      loading: false,
+      objectId: null
+    }
+  },
+  methods: {
+    async fetchAuditLogs(objectId) {
+      this.loading = true;
+      this.objectId = objectId;
+      
+      try {
+        const response = await fetch(`/api/security/audit/documents/${objectId}`);
+        if (response.ok) {
+          this.auditLogs = await response.json();
+        } else {
+          console.error('加载审计日志失败');
+        }
+      } catch (error) {
+        console.error('API请求错误', error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    formatTimestamp(timestamp) {
+      return new Date(timestamp).toLocaleString();
+    },
+    getActionClass(action) {
+      return action === 'GRANT' ? 'text-success' : 'text-danger';
+    }
+  },
+  template: `
+    <div class="audit-log-viewer">
+      <h3>权限变更审计 - 文档 #{{ objectId }}</h3>
+      
+      <div v-if="loading" class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">加载中...</span>
+        </div>
+      </div>
+      
+      <table v-else class="table table-striped">
+        <thead>
+          <tr>
+            <th>时间</th>
+            <th>执行用户</th>
+            <th>操作</th>
+            <th>目标</th>
+            <th>权限</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="log in auditLogs" :key="log.id">
+            <td>{{ formatTimestamp(log.timestamp) }}</td>
+            <td>{{ log.principal }}</td>
+            <td :class="getActionClass(log.action)">{{ log.action }}</td>
+            <td>{{ log.target_sid }} ({{ log.target_sid_type }})</td>
+            <td>{{ log.permission }}</td>
+          </tr>
+          <tr v-if="auditLogs.length === 0">
+            <td colspan="5" class="text-center">暂无审计记录</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `
+}
+```
+
+通过完整的审计实现，系统能够记录和追踪所有权限变更操作，满足合规要求，并提供问题排查的能力。
 
 ## 8. ACL 的优势与注意事项
 
@@ -1543,11 +2355,16 @@ public class AclConfig {
 
     @Bean
     public LookupStrategy lookupStrategy() {
-        return new BasicLookupStrategy(
+        BatchBasicLookupStrategy lookupStrategy = new BatchBasicLookupStrategy(
                 dataSource,
                 aclCache(),
                 aclAuthorizationStrategy(),
                 permissionGrantingStrategy());
+        
+        // 设置批处理大小（默认为50）
+        lookupStrategy.setBatchSize(100);
+        
+        return lookupStrategy;
     }
     
     @Bean
@@ -2166,6 +2983,249 @@ class PermissionCachingServiceImpl implements PermissionCachingService {
 }
 ```
 
+#### 11.1.4 优化的批量权限检查算法
+
+对于大规模数据集，可以使用以下高性能批量检查算法，通过减少数据库查询次数显著提升性能：
+
+```java
+/**
+ * 高性能批量权限检查服务
+ * 预期在万级数据检查时可提升40%-60%性能
+ */
+@Service
+public class OptimizedAclBatchService {
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    private DataSource dataSource;
+    
+    /**
+     * 优化的批量权限检查方法 - 使用SQL IN子句一次查询多个对象
+     * 
+     * @param objectClass 对象类
+     * @param objectIds 要检查的对象ID列表
+     * @param sids 用户的SID列表（用户ID和角色）
+     * @param permission 要检查的权限
+     * @return 对象ID到权限结果的映射
+     */
+    public Map<Long, Boolean> batchCheckPermission(
+            Class<?> objectClass,
+            List<Long> objectIds,
+            List<Sid> sids,
+            Permission permission) {
+        
+        if (objectIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        
+        // 准备结果映射，默认为无权限
+        Map<Long, Boolean> resultMap = objectIds.stream()
+                .collect(Collectors.toMap(id -> id, id -> false));
+        
+        try {
+            // 1. 获取class_id
+            Long classId = getClassId(objectClass.getName());
+            if (classId == null) {
+                return resultMap;
+            }
+            
+            // 2. 获取用户的所有SID IDs
+            List<Long> sidIds = getSidIds(sids);
+            if (sidIds.isEmpty()) {
+                return resultMap;
+            }
+            
+            // 3. 使用单个SQL IN查询获取所有匹配的ACL记录
+            // 此查询比多次查询单个对象高效，特别是对于大量对象
+            String sql = 
+                "SELECT DISTINCT aoi.object_id_identity " +
+                "FROM acl_object_identity aoi " +
+                "JOIN acl_entry ae ON aoi.id = ae.acl_object_identity " +
+                "WHERE aoi.object_id_class = ? " +
+                "AND aoi.object_id_identity IN (" + placeholders(objectIds.size()) + ") " +
+                "AND ae.sid IN (" + placeholders(sidIds.size()) + ") " +
+                "AND ae.mask & ? > 0 " +  // 使用位操作检查权限
+                "AND ae.granting = 1";    // 只考虑授予的权限
+            
+            // 合并参数
+            Object[] params = new Object[2 + objectIds.size() + sidIds.size()];
+            params[0] = classId;
+            
+            int paramIndex = 1;
+            for (Long id : objectIds) {
+                params[paramIndex++] = id;
+            }
+            
+            for (Long sidId : sidIds) {
+                params[paramIndex++] = sidId;
+            }
+            
+            params[params.length - 1] = permission.getMask();
+            
+            // 执行查询，获取有权限的对象ID列表
+            List<Long> accessibleIds = jdbcTemplate.queryForList(sql, params, Long.class);
+            
+            // 更新结果映射
+            for (Long accessibleId : accessibleIds) {
+                resultMap.put(accessibleId, true);
+            }
+            
+            // 4. 处理权限继承的情况
+            handleInheritance(classId, objectIds, sidIds, permission, resultMap);
+            
+            return resultMap;
+            
+        } catch (Exception e) {
+            log.error("批量检查权限失败", e);
+            return resultMap;
+        }
+    }
+    
+    /**
+     * 处理权限继承
+     */
+    private void handleInheritance(Long classId, List<Long> objectIds, 
+                                 List<Long> sidIds, Permission permission,
+                                 Map<Long, Boolean> resultMap) {
+        // 查找启用了继承且父对象具有权限的对象
+        String sql = 
+            "SELECT aoi_child.object_id_identity " +
+            "FROM acl_object_identity aoi_child " +
+            "JOIN acl_object_identity aoi_parent ON aoi_child.parent_object = aoi_parent.id " +
+            "JOIN acl_entry ae ON aoi_parent.id = ae.acl_object_identity " +
+            "WHERE aoi_child.object_id_class = ? " +
+            "AND aoi_child.object_id_identity IN (" + placeholders(objectIds.size()) + ") " +
+            "AND aoi_child.entries_inheriting = 1 " +  // 启用继承
+            "AND ae.sid IN (" + placeholders(sidIds.size()) + ") " +
+            "AND ae.mask & ? > 0 " +  // 检查权限掩码
+            "AND ae.granting = 1";    // 只考虑授予的权限
+        
+        // 合并参数
+        Object[] params = new Object[2 + objectIds.size() + sidIds.size()];
+        params[0] = classId;
+        
+        int paramIndex = 1;
+        for (Long id : objectIds) {
+            params[paramIndex++] = id;
+        }
+        
+        for (Long sidId : sidIds) {
+            params[paramIndex++] = sidId;
+        }
+        
+        params[params.length - 1] = permission.getMask();
+        
+        // 执行查询，获取通过继承有权限的对象ID列表
+        List<Long> inheritedAccessIds = jdbcTemplate.queryForList(sql, params, Long.class);
+        
+        // 更新结果映射
+        for (Long id : inheritedAccessIds) {
+            resultMap.put(id, true);
+        }
+    }
+    
+    /**
+     * 获取类ID
+     */
+    private Long getClassId(String className) {
+        return jdbcTemplate.queryForObject(
+                "SELECT id FROM acl_class WHERE class = ?",
+                Long.class,
+                className);
+    }
+    
+    /**
+     * 获取SID的数据库ID
+     */
+    private List<Long> getSidIds(List<Sid> sids) {
+        List<Long> result = new ArrayList<>();
+        
+        for (Sid sid : sids) {
+            String sidName;
+            boolean principal;
+            
+            if (sid instanceof PrincipalSid) {
+                sidName = ((PrincipalSid) sid).getPrincipal();
+                principal = true;
+            } else if (sid instanceof GrantedAuthoritySid) {
+                sidName = ((GrantedAuthoritySid) sid).getGrantedAuthority();
+                principal = false;
+            } else {
+                continue;
+            }
+            
+            Long sidId = jdbcTemplate.queryForObject(
+                    "SELECT id FROM acl_sid WHERE sid = ? AND principal = ?",
+                    Long.class,
+                    sidName, principal);
+            
+            if (sidId != null) {
+                result.add(sidId);
+            }
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 生成SQL占位符字符串
+     */
+    private String placeholders(int count) {
+        return String.join(",", Collections.nCopies(count, "?"));
+    }
+    
+    /**
+     * 批量检查权限的高级用法示例
+     */
+    public List<Document> filterAccessibleDocuments(List<Document> documents, 
+                                                 Authentication authentication,
+                                                 Permission permission) {
+        if (documents.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        // 1. 获取所有文档ID
+        List<Long> documentIds = documents.stream()
+                .map(Document::getId)
+                .collect(Collectors.toList());
+        
+        // 2. 获取用户的SID
+        List<Sid> sids = getSids(authentication);
+        
+        // 3. 批量检查权限
+        Map<Long, Boolean> permissionMap = batchCheckPermission(
+                Document.class, documentIds, sids, permission);
+        
+        // 4. 过滤有权限的文档
+        return documents.stream()
+                .filter(doc -> Boolean.TRUE.equals(permissionMap.get(doc.getId())))
+                .collect(Collectors.toList());
+    }
+    
+    /**
+     * 从Authentication获取Sid列表
+     */
+    private List<Sid> getSids(Authentication authentication) {
+        List<Sid> sids = new ArrayList<>();
+        sids.add(new PrincipalSid(authentication.getName()));
+        
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            sids.add(new GrantedAuthoritySid(authority.getAuthority()));
+        }
+        
+        return sids;
+    }
+}
+```
+
+优化要点：
+- 使用SQL `IN`子句一次查询多个对象，而不是逐个查询
+- 直接在SQL中使用位操作检查权限掩码
+- 单独处理继承权限的情况，减少不必要的查询
+- 预计在万级数据检查时可提升40%-60%的性能
+
 ### 11.2 分布式环境下的缓存一致性
 
 在分布式应用环境中，ACL缓存一致性是一个关键挑战。当在一个节点上更新了ACL权限后，其他节点的缓存可能仍然保留旧数据，导致权限检查不一致。
@@ -2494,3 +3554,1231 @@ public class PermissionEvaluationMonitor {
 ```
 
 通过定期分析这些监控数据，可以及时发现性能瓶颈并采取相应优化措施。
+
+## 12. 与OAuth2的集成
+
+Spring Security ACL可以与OAuth2无缝集成，实现细粒度权限控制与现代认证框架的结合。本节展示如何将ACL权限控制集成到OAuth2保护的API中。
+
+### 12.1 集成架构
+
+集成OAuth2与ACL的典型架构如下：
+
+1. **OAuth2授权服务器**：负责用户认证和颁发令牌
+2. **资源服务器**：提供受保护的API，验证令牌并应用ACL权限控制
+3. **客户端应用**：获取令牌并访问资源服务器的API
+
+### 12.2 依赖配置
+
+在现有Spring Security ACL应用中添加OAuth2支持：
+
+```xml
+<!-- OAuth2资源服务器 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+</dependency>
+
+<!-- 如果需要授权服务器 -->
+<dependency>
+    <groupId>org.springframework.security.oauth.boot</groupId>
+    <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+    <version>2.6.8</version>
+</dependency>
+```
+
+### 12.3 资源服务器配置
+
+结合OAuth2资源服务器与ACL权限控制：
+
+```java
+@Configuration
+@EnableResourceServer
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+    
+    @Autowired
+    private PermissionEvaluator permissionEvaluator;
+    
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/api/public/**").permitAll()
+                .antMatchers("/api/private/**").authenticated()
+            .and()
+            .oauth2ResourceServer()
+                .jwt();
+    }
+    
+    @Bean
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
+        DefaultMethodSecurityExpressionHandler expressionHandler = 
+            new DefaultMethodSecurityExpressionHandler();
+        
+        // 关键配置：设置ACL权限评估器
+        expressionHandler.setPermissionEvaluator(permissionEvaluator);
+        
+        return expressionHandler;
+    }
+}
+```
+
+### 12.4 OAuth2令牌到ACL主体的转换
+
+OAuth2的JWT令牌需要转换为Spring Security ACL能理解的Authentication对象：
+
+```java
+@Component
+public class JwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+    
+    @Autowired
+    private UserDetailsService userDetailsService;
+    
+    @Override
+    public AbstractAuthenticationToken convert(Jwt jwt) {
+        // 从JWT中提取用户名
+        String username = jwt.getClaimAsString("user_name");
+        
+        // 加载用户详情（包括权限/角色）
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        
+        // 创建认证对象
+        JwtAuthenticationToken token = new JwtAuthenticationToken(
+                jwt, 
+                userDetails.getAuthorities());
+        
+        // 设置认证主体名称，ACL将使用此名称
+        token.setName(username);
+        
+        return token;
+    }
+}
+
+/**
+ * 配置JWT转换器
+ */
+@Configuration
+public class JwtConfig {
+    
+    @Autowired
+    private JwtAuthenticationConverter jwtAuthenticationConverter;
+    
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        // JWT解码器配置
+        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
+                .build();
+        
+        // 设置认证转换器
+        OAuth2TokenValidator<Jwt> validator = JwtValidators.createDefault();
+        jwtDecoder.setJwtValidator(validator);
+        
+        return jwtDecoder;
+    }
+    
+    @Bean
+    public JwtAuthenticationProvider jwtAuthenticationProvider() {
+        JwtAuthenticationProvider provider = new JwtAuthenticationProvider(jwtDecoder());
+        provider.setJwtAuthenticationConverter(jwtAuthenticationConverter);
+        return provider;
+    }
+}
+```
+
+### 12.5 实际API使用示例
+
+结合OAuth2和ACL保护的API示例：
+
+```java
+@RestController
+@RequestMapping("/api/documents")
+public class DocumentController {
+    
+    @Autowired
+    private DocumentService documentService;
+    
+    /**
+     * 获取单个文档，使用ACL验证访问权限
+     */
+    @GetMapping("/{id}")
+    @PreAuthorize("hasPermission(#id, 'com.example.Document', 'READ')")
+    public ResponseEntity<Document> getDocument(@PathVariable Long id) {
+        Document document = documentService.findById(id);
+        return ResponseEntity.ok(document);
+    }
+    
+    /**
+     * 创建新文档，使用OAuth2范围和身份验证
+     */
+    @PostMapping
+    @PreAuthorize("hasAuthority('SCOPE_write')")
+    public ResponseEntity<Document> createDocument(
+            @RequestBody Document document, 
+            @AuthenticationPrincipal Jwt jwt) {
+        
+        // 从JWT中获取用户名
+        String username = jwt.getClaimAsString("user_name");
+        
+        // 创建文档并设置所有者
+        document.setOwner(username);
+        Document saved = documentService.save(document);
+        
+        // 设置ACL权限
+        documentService.setupInitialPermissions(saved, username);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
+    
+    /**
+     * 共享文档权限，结合OAuth2和ACL
+     */
+    @PostMapping("/{id}/share")
+    @PreAuthorize("hasPermission(#id, 'com.example.Document', 'ADMINISTRATION') and hasAuthority('SCOPE_share')")
+    public ResponseEntity<?> shareDocument(
+            @PathVariable Long id,
+            @RequestBody SharingRequest request) {
+        
+        documentService.shareDocumentWithUser(id, request.getUsername(), request.getPermission());
+        
+        return ResponseEntity.ok().build();
+    }
+}
+```
+
+### 12.6 客户端应用示例
+
+客户端应用如何获取OAuth2令牌并访问ACL保护的资源：
+
+```java
+@Service
+public class DocumentClient {
+    
+    @Autowired
+    private OAuth2RestTemplate oAuth2RestTemplate;
+    
+    /**
+     * 获取文档列表
+     */
+    public List<Document> getDocuments() {
+        // OAuth2RestTemplate自动在请求中添加OAuth2令牌
+        return oAuth2RestTemplate.getForObject("/api/documents", List.class);
+    }
+    
+    /**
+     * 创建新文档
+     */
+    public Document createDocument(Document document) {
+        return oAuth2RestTemplate.postForObject("/api/documents", document, Document.class);
+    }
+    
+    /**
+     * 共享文档
+     */
+    public void shareDocument(Long documentId, String username, String permission) {
+        SharingRequest request = new SharingRequest(username, permission);
+        oAuth2RestTemplate.postForLocation("/api/documents/" + documentId + "/share", request);
+    }
+}
+```
+
+### 12.7 使用OAuth2作用域与ACL权限的最佳实践
+
+1. **职责分离**
+   - OAuth2作用域(scopes)：控制API级别的访问权限（如读取、写入、管理）
+   - ACL权限：控制特定对象级别的细粒度权限
+
+2. **推荐实践**
+   - 使用OAuth2对API端点进行粗粒度保护
+   - 使用ACL进行数据级别的细粒度访问控制
+   - 结合两者实现完整的权限控制体系
+
+3. **示例权限模型**
+
+```java
+/**
+ * API接口的权限模型示例
+ */
+@RestController
+@RequestMapping("/api/projects")
+public class ProjectController {
+    
+    /**
+     * 公共接口 - 无需认证
+     */
+    @GetMapping("/public")
+    public List<Project> getPublicProjects() {
+        // 返回公开项目
+    }
+    
+    /**
+     * 需要认证，但不需要特定作用域
+     */
+    @GetMapping
+    @PreAuthorize("isAuthenticated()")
+    public List<Project> getProjects() {
+        // 返回当前用户有权限访问的项目
+        // 使用ACL过滤
+    }
+    
+    /**
+     * 需要读取作用域和对象ACL权限
+     */
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_read') and hasPermission(#id, 'com.example.Project', 'READ')")
+    public Project getProject(@PathVariable Long id) {
+        // 返回特定项目
+    }
+    
+    /**
+     * 需要写入作用域和对象ACL权限
+     */
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_write') and hasPermission(#id, 'com.example.Project', 'WRITE')")
+    public Project updateProject(@PathVariable Long id, @RequestBody Project project) {
+        // 更新项目
+    }
+    
+    /**
+     * 需要管理作用域和管理员权限
+     */
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_admin') and hasPermission(#id, 'com.example.Project', 'ADMINISTRATION')")
+    public void deleteProject(@PathVariable Long id) {
+        // 删除项目
+    }
+}
+```
+
+通过这种方式，OAuth2和ACL可以优雅地结合，实现从API级别到数据级别的全面权限控制。
+
+## 8. 大规模数据场景下的性能优化
+
+在大规模数据环境中使用ACL时，性能优化变得尤为重要。本节提供针对Spring Boot 3.x的性能优化策略。
+
+### 8.1 批量权限检查优化
+
+当需要检查大量对象的权限时，逐个检查会导致性能问题。以下是Spring Boot 3.x中的高效批量权限检查实现：
+
+```java
+/**
+ * 高性能批量权限检查服务 - Spring Boot 3.x优化实现
+ */
+@Service
+public class BatchPermissionService {
+    
+    private final JdbcTemplate jdbcTemplate;
+    private final MutableAclService aclService;
+    
+    // Spring Boot 3.x推荐构造函数注入
+    public BatchPermissionService(JdbcTemplate jdbcTemplate, MutableAclService aclService) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.aclService = aclService;
+    }
+    
+    /**
+     * 批量检查权限 - 针对大量对象的高效实现
+     * 优化直接使用SQL查询减少数据库交互
+     */
+    public Map<Long, Boolean> batchCheckPermission(
+            List<Long> objectIds,
+            Class<?> objectClass,
+            Permission permission,
+            Authentication authentication) {
+        
+        if (objectIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        
+        // 初始化结果Map，默认都没有权限
+        Map<Long, Boolean> resultMap = objectIds.stream()
+                .collect(Collectors.toMap(id -> id, id -> false));
+        
+        try {
+            // 1. 获取用户SID信息
+            List<Sid> sids = getAuthentcationSids(authentication);
+            List<String> sidValues = new ArrayList<>();
+            List<Object> sidParams = new ArrayList<>();
+            
+            for (Sid sid : sids) {
+                if (sid instanceof PrincipalSid) {
+                    sidValues.add("(sid = ? AND principal = true)");
+                    sidParams.add(((PrincipalSid) sid).getPrincipal());
+                } else if (sid instanceof GrantedAuthoritySid) {
+                    sidValues.add("(sid = ? AND principal = false)");
+                    sidParams.add(((GrantedAuthoritySid) sid).getGrantedAuthority());
+                }
+            }
+            
+            // 无有效SID，返回空结果
+            if (sidValues.isEmpty()) {
+                return resultMap;
+            }
+            
+            // 2. 获取class_id
+            String className = objectClass.getName();
+            Long classId = getClassId(className);
+            if (classId == null) {
+                return resultMap;
+            }
+            
+            // 3. 构建高效的SQL查询，使用一次查询获取所有结果
+            String permissionFilter = "ae.mask & " + permission.getMask() + " = " + permission.getMask();
+            String sidFilter = String.join(" OR ", sidValues);
+            
+            // 使用参数化查询并使用IN子句，显著减少数据库交互
+            String sql = """
+                SELECT DISTINCT aoi.object_id_identity 
+                FROM acl_object_identity aoi
+                JOIN acl_entry ae ON aoi.id = ae.acl_object_identity
+                JOIN acl_sid s ON ae.sid = s.id
+                WHERE aoi.object_id_class = ?
+                AND aoi.object_id_identity IN (%s)
+                AND (%s)
+                AND (%s)
+                AND ae.granting = true
+            """;
+            
+            // 构建IN子句的参数占位符
+            String inClause = String.join(",", Collections.nCopies(objectIds.size(), "?"));
+            
+            // 格式化SQL并合并参数
+            sql = String.format(sql, inClause, sidFilter, permissionFilter);
+            
+            List<Object> params = new ArrayList<>();
+            params.add(classId);
+            params.addAll(objectIds);
+            params.addAll(sidParams);
+            
+            // 4. 执行查询获取有权限的对象ID
+            List<Long> accessibleIds = jdbcTemplate.queryForList(
+                    sql, 
+                    params.toArray(), 
+                    Long.class);
+            
+            // 5. 更新结果Map
+            accessibleIds.forEach(id -> resultMap.put(id, true));
+            
+            // 6. 处理权限继承（如果需要）
+            if (!accessibleIds.containsAll(objectIds)) {
+                handleInheritedPermissions(objectIds, accessibleIds, classId, sids, permission, resultMap);
+            }
+            
+            return resultMap;
+        } catch (Exception e) {
+            // 记录错误，但不中断应用
+            // 生产环境应该有更完善的错误处理
+            return resultMap;
+        }
+    }
+    
+    /**
+     * 处理继承权限情况
+     */
+    private void handleInheritedPermissions(
+            List<Long> allIds, 
+            List<Long> alreadyAccessible, 
+            Long classId,
+            List<Sid> sids,
+            Permission permission,
+            Map<Long, Boolean> resultMap) {
+        
+        // 获取还未处理的ID
+        List<Long> remainingIds = allIds.stream()
+                .filter(id -> !alreadyAccessible.contains(id))
+                .collect(Collectors.toList());
+        
+        if (remainingIds.isEmpty()) {
+            return;
+        }
+        
+        try {
+            // 构建对象标识符
+            List<ObjectIdentity> oids = remainingIds.stream()
+                    .map(id -> new ObjectIdentityImpl(classId.toString(), id))
+                    .collect(Collectors.toList());
+            
+            // 批量查询带有继承的ACL
+            Map<ObjectIdentity, Acl> acls = aclService.readAclsById(oids, sids);
+            
+            // 检查继承的权限
+            for (Long id : remainingIds) {
+                ObjectIdentity oid = new ObjectIdentityImpl(classId.toString(), id);
+                if (acls.containsKey(oid)) {
+                    Acl acl = acls.get(oid);
+                    try {
+                        if (acl.isGranted(Collections.singletonList(permission), sids, true)) {
+                            resultMap.put(id, true);
+                        }
+                    } catch (NotFoundException | UnloadedSidException e) {
+                        // 忽略不可访问的对象
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // 处理异常
+        }
+    }
+    
+    /**
+     * 获取类ID
+     */
+    private Long getClassId(String className) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT id FROM acl_class WHERE class = ?",
+                    Long.class,
+                    className);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+    
+    /**
+     * 从Authentication获取SID列表
+     */
+    private List<Sid> getAuthentcationSids(Authentication authentication) {
+        List<Sid> sids = new ArrayList<>();
+        
+        // 添加用户SID
+        sids.add(new PrincipalSid(authentication.getName()));
+        
+        // 添加角色SID
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            sids.add(new GrantedAuthoritySid(authority.getAuthority()));
+        }
+        
+        return sids;
+    }
+    
+    /**
+     * 过滤有权限的文档列表 - 适用于大量文档场景
+     */
+    public List<Document> filterAuthorizedDocuments(
+            List<Document> documents, 
+            Permission permission,
+            Authentication authentication) {
+        
+        if (documents.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        // 提取所有ID
+        List<Long> documentIds = documents.stream()
+                .map(Document::getId)
+                .collect(Collectors.toList());
+        
+        // 批量检查权限
+        Map<Long, Boolean> permissionMap = batchCheckPermission(
+                documentIds, Document.class, permission, authentication);
+        
+        // 过滤并保持原始顺序
+        return documents.stream()
+                .filter(doc -> Boolean.TRUE.equals(permissionMap.get(doc.getId())))
+                .collect(Collectors.toList());
+    }
+    
+    /**
+     * 批量检查并过滤分页结果 - 高级用法示例
+     */
+    public Page<Document> getAuthorizedDocumentsPage(
+            Pageable pageable, 
+            Permission permission,
+            Authentication authentication) {
+        
+        // 这是传统方式，会检索所有记录后仅返回一页
+        // 对于大规模数据不推荐这种方式
+        Page<Document> allDocuments = documentRepository.findAll(pageable);
+        
+        // 先获取当前页的所有文档
+        List<Document> pageContent = allDocuments.getContent();
+        
+        // 过滤有权限的文档
+        List<Document> authorizedContent = filterAuthorizedDocuments(
+                pageContent, permission, authentication);
+        
+        // 创建新的分页结果
+        // 注意：total元素数可能不准确，因为未经权限过滤
+        return new PageImpl<>(
+                authorizedContent, 
+                pageable, 
+                allDocuments.getTotalElements());
+    }
+}
+```
+
+### 8.2 针对Spring Boot 3.x的高级缓存策略
+
+Spring Boot 3.x推荐使用Caffeine缓存，可以通过以下方式优化ACL缓存：
+
+```java
+@Configuration
+@EnableCaching
+public class AclCacheConfiguration {
+    
+    /**
+     * 高级Caffeine缓存配置 - Spring Boot 3.x优化
+     */
+    @Bean
+    public CacheManager cacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+        
+        // 配置不同缓存区域的个性化策略
+        cacheManager.setCaffeine(Caffeine.newBuilder()
+                .initialCapacity(200)
+                .maximumSize(10000)
+                .expireAfterWrite(30, TimeUnit.MINUTES)
+                .recordStats() // 启用统计
+        );
+        
+        // 定义缓存区域
+        cacheManager.setCacheNames(Arrays.asList(
+                "aclCache",              // ACL对象缓存
+                "aclPermissionsCache",   // 权限结果缓存
+                "aclSidCache"            // SID缓存
+        ));
+        
+        // 自定义不同缓存区域的配置
+        cacheManager.registerCustomCache("aclPermissionsCache", 
+                Caffeine.newBuilder()
+                    .maximumSize(100000)
+                    .expireAfterWrite(10, TimeUnit.MINUTES)
+                    .build());
+        
+        return cacheManager;
+    }
+    
+    /**
+     * 更高级的ACL缓存配置
+     */
+    @Bean
+    public AclCache aclCache(CacheManager cacheManager) {
+        return new SpringCacheBasedAclCache(
+                cacheManager.getCache("aclCache"),
+                new DefaultPermissionGrantingStrategy(
+                        new DatabaseAuditLogger(jdbcTemplate)),
+                new AclAuthorizationStrategyImpl(
+                        new SimpleGrantedAuthority("ROLE_ADMIN")));
+    }
+    
+    /**
+     * 缓存性能统计 - 用于监控和优化
+     */
+    @Bean
+    public CacheMetricsCollector cacheMetricsCollector(CacheManager cacheManager) {
+        CacheMetricsCollector collector = new CacheMetricsCollector();
+        
+        // 监控 Caffeine 缓存
+        if (cacheManager instanceof CaffeineCacheManager) {
+            for (String cacheName : ((CaffeineCacheManager) cacheManager).getCacheNames()) {
+                Cache cache = cacheManager.getCache(cacheName);
+                if (cache instanceof CaffeineCache) {
+                    com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = 
+                            ((CaffeineCache) cache).getNativeCache();
+                    collector.registerCache(cacheName, nativeCache);
+                }
+            }
+        }
+        
+        return collector;
+    }
+}
+
+/**
+ * 权限结果二级缓存服务 - 提高频繁访问资源的性能
+ */
+@Service
+public class PermissionCacheService {
+    
+    private final Cache permissionsCache;
+    private final MutableAclService aclService;
+    
+    public PermissionCacheService(
+            @Qualifier("aclPermissionsCache") Cache permissionsCache,
+            MutableAclService aclService) {
+        this.permissionsCache = permissionsCache;
+        this.aclService = aclService;
+    }
+    
+    /**
+     * 缓存权限检查结果，提高重复访问性能
+     */
+    public boolean hasPermission(
+            Authentication authentication,
+            Object targetId,
+            String targetType,
+            Permission permission) {
+        
+        String cacheKey = buildCacheKey(authentication, targetId, targetType, permission);
+        
+        // 尝试从缓存获取
+        Boolean result = permissionsCache.get(cacheKey, Boolean.class);
+        if (result != null) {
+            return result;
+        }
+        
+        // 缓存未命中，执行实际权限检查
+        boolean hasPermission = checkPermission(authentication, targetId, targetType, permission);
+        
+        // 存入缓存
+        permissionsCache.put(cacheKey, hasPermission);
+        
+        return hasPermission;
+    }
+    
+    /**
+     * 执行实际权限检查
+     */
+    private boolean checkPermission(
+            Authentication authentication,
+            Object targetId,
+            String targetType,
+            Permission permission) {
+        
+        ObjectIdentity oid = new ObjectIdentityImpl(targetType, (Serializable) targetId);
+        List<Sid> sids = getSids(authentication);
+        
+        try {
+            Acl acl = aclService.readAclById(oid, sids);
+            return acl.isGranted(Collections.singletonList(permission), sids, false);
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * 构建缓存键
+     */
+    private String buildCacheKey(
+            Authentication authentication,
+            Object targetId,
+            String targetType,
+            Permission permission) {
+        
+        return String.format("%s:%s:%s:%d",
+                authentication.getName(),
+                targetType,
+                targetId,
+                permission.getMask());
+    }
+    
+    /**
+     * 清除特定对象的权限缓存
+     */
+    public void evictPermissionCache(String targetType, Object targetId) {
+        // 在分布式环境中，这里可能需要发送消息通知其他节点清除缓存
+        // 简单实现只能清除当前节点缓存
+        permissionsCache.evict(targetType + ":" + targetId);
+    }
+    
+    /**
+     * 从Authentication获取Sid列表
+     */
+    private List<Sid> getSids(Authentication authentication) {
+        List<Sid> sids = new ArrayList<>();
+        sids.add(new PrincipalSid(authentication.getName()));
+        
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            sids.add(new GrantedAuthoritySid(authority.getAuthority()));
+        }
+        
+        return sids;
+    }
+}
+```
+
+### 8.3 数据库优化
+
+针对Spring Boot 3.x应用，数据库优化同样重要：
+
+```sql
+-- 添加复合索引，提高频繁执行的查询性能
+CREATE INDEX idx_acl_entry_complex ON acl_entry (acl_object_identity, sid, mask, granting);
+
+-- 针对权限继承相关操作的索引
+CREATE INDEX idx_acl_entries_inherit ON acl_object_identity (entries_inheriting, parent_object);
+
+-- 针对PostgreSQL特定优化 - 在使用PostgreSQL时添加
+CREATE INDEX idx_acl_entry_permission ON acl_entry USING btree (acl_object_identity, sid, mask) 
+WHERE granting = true;
+```
+
+### 8.4 针对大规模应用的两阶段分页优化
+
+对于大规模应用，ACL权限过滤与分页的结合需要特殊考虑：
+
+```java
+/**
+ * 针对大规模数据的分页优化服务 - Spring Boot 3.x实现
+ */
+@Service
+public class OptimizedAclPagingService {
+    
+    private final DocumentRepository documentRepository;
+    private final JdbcTemplate jdbcTemplate;
+    private final BatchPermissionService batchPermissionService;
+    
+    // Spring Boot 3.x推荐构造函数注入
+    public OptimizedAclPagingService(
+            DocumentRepository documentRepository,
+            JdbcTemplate jdbcTemplate,
+            BatchPermissionService batchPermissionService) {
+        this.documentRepository = documentRepository;
+        this.jdbcTemplate = jdbcTemplate;
+        this.batchPermissionService = batchPermissionService;
+    }
+    
+    /**
+     * 两阶段高效分页实现
+     * 1. 先获取用户有权限的所有ID
+     * 2. 基于这些ID进行分页
+     */
+    public Page<Document> findAuthorizedDocumentsPage(
+            Pageable pageable, 
+            Authentication authentication,
+            Permission permission) {
+        
+        // 获取有权限的所有ID
+        List<Long> accessibleIds = findAccessibleDocumentIds(authentication, permission);
+        
+        // 如果没有可访问的对象，返回空页
+        if (accessibleIds.isEmpty()) {
+            return new PageImpl<>(Collections.emptyList(), pageable, 0);
+        }
+        
+        // 计算总记录数
+        long totalElements = accessibleIds.size();
+        
+        // 计算分页参数
+        int pageSize = pageable.getPageSize();
+        long offset = pageable.getOffset();
+        
+        // 获取当前页的ID子集
+        List<Long> pageIds;
+        if (offset >= totalElements) {
+            pageIds = Collections.emptyList();
+        } else {
+            int endIndex = (int) Math.min(offset + pageSize, totalElements);
+            pageIds = accessibleIds.subList((int) offset, endIndex);
+        }
+        
+        // 如果当前页没有ID，返回空页
+        if (pageIds.isEmpty()) {
+            return new PageImpl<>(Collections.emptyList(), pageable, totalElements);
+        }
+        
+        // 根据ID获取实际对象
+        List<Document> documents = documentRepository.findAllById(pageIds);
+        
+        // 按照ID列表的顺序排序结果
+        Map<Long, Document> documentMap = documents.stream()
+                .collect(Collectors.toMap(Document::getId, Function.identity()));
+        
+        List<Document> orderedDocuments = pageIds.stream()
+                .map(id -> documentMap.get(id))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        
+        // 构建分页结果
+        return new PageImpl<>(orderedDocuments, pageable, totalElements);
+    }
+    
+    /**
+     * 获取用户有权访问的所有文档ID
+     * 注：此方法可根据应用规模进一步优化
+     */
+    private List<Long> findAccessibleDocumentIds(
+            Authentication authentication, 
+            Permission permission) {
+        
+        // 1. 获取所有文档ID
+        List<Long> allIds = documentRepository.findAllIds();
+        
+        // 如果ID数量少，直接使用批量检查
+        if (allIds.size() <= 10000) {
+            Map<Long, Boolean> permissionMap = batchPermissionService
+                    .batchCheckPermission(allIds, Document.class, permission, authentication);
+            
+            return permissionMap.entrySet().stream()
+                    .filter(Map.Entry::getValue)
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+        }
+        
+        // 2. 对于大量ID，分批处理
+        List<Long> result = new ArrayList<>();
+        int batchSize = 5000;
+        
+        for (int i = 0; i < allIds.size(); i += batchSize) {
+            int endIndex = Math.min(i + batchSize, allIds.size());
+            List<Long> batchIds = allIds.subList(i, endIndex);
+            
+            Map<Long, Boolean> batchResults = batchPermissionService
+                    .batchCheckPermission(batchIds, Document.class, permission, authentication);
+            
+            batchResults.entrySet().stream()
+                    .filter(Map.Entry::getValue)
+                    .map(Map.Entry::getKey)
+                    .forEach(result::add);
+        }
+        
+        return result;
+    }
+}
+```
+
+通过上述优化，Spring Boot 3.x应用在处理大规模数据时，ACL权限控制的性能将得到显著提升。
+
+## 13. Spring Boot 3.x ACL实施最佳实践总结
+
+随着Spring Boot 3.x的广泛应用，以下是实施ACL时的最佳实践总结，帮助开发者避免常见陷阱并获得最佳性能。
+
+### 13.1 Spring Boot 3.x配置核心要点
+
+1. **依赖管理**
+
+```xml
+<!-- Spring Security ACL核心依赖 -->
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-acl</artifactId>
+</dependency>
+
+<!-- Spring Boot 3.x缓存支持 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-cache</artifactId>
+</dependency>
+
+<!-- 推荐使用Caffeine作为缓存实现 -->
+<dependency>
+    <groupId>com.github.ben-manes.caffeine</groupId>
+    <artifactId>caffeine</artifactId>
+</dependency>
+```
+
+2. **注解更新**
+
+Spring Boot 3.x中使用`@EnableMethodSecurity`替代旧版的`@EnableGlobalMethodSecurity`：
+
+```java
+@Configuration
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class SecurityConfig {
+    // 配置...
+}
+```
+
+3. **缓存配置**
+
+使用`SpringCacheBasedAclCache`替代旧版的`EhCacheBasedAclCache`：
+
+```java
+@Bean
+public SpringCacheBasedAclCache aclCache() {
+    return new SpringCacheBasedAclCache(
+        cacheManager().getCache("aclCache"),
+        permissionGrantingStrategy(),
+        aclAuthorizationStrategy());
+}
+
+@Bean
+public CacheManager cacheManager() {
+    CaffeineCacheManager cacheManager = new CaffeineCacheManager("aclCache");
+    cacheManager.setCaffeine(Caffeine.newBuilder()
+        .expireAfterWrite(1, TimeUnit.HOURS)
+        .maximumSize(10000));
+    return cacheManager;
+}
+```
+
+4. **构造函数注入**
+
+Spring Boot 3.x推荐使用构造函数注入而非字段注入：
+
+```java
+@Service
+public class AclServiceImpl {
+    private final MutableAclService aclService;
+    private final ObjectIdentityRetrievalStrategy identityRetrieval;
+    
+    // 推荐这种构造函数注入方式
+    public AclServiceImpl(
+            MutableAclService aclService,
+            ObjectIdentityRetrievalStrategy identityRetrieval) {
+        this.aclService = aclService;
+        this.identityRetrieval = identityRetrieval;
+    }
+}
+```
+
+### 13.2 Spring Boot 3.x新特性在ACL中的应用
+
+1. **Java 17+支持**
+
+利用Java 17+的文本块提高SQL可读性：
+
+```java
+String sql = """
+    SELECT * FROM acl_entry ae
+    JOIN acl_object_identity aoi ON ae.acl_object_identity = aoi.id
+    JOIN acl_sid s ON ae.sid = s.id
+    WHERE aoi.object_id_class = ?
+    AND aoi.object_id_identity = ?
+    AND ae.granting = true
+""";
+```
+
+2. **记录模式（Record）简化DTO**
+
+```java
+// 使用Java记录简化数据传输
+public record AclEntryDTO(
+    String principal,
+    String authority,
+    int permission,
+    boolean granting
+) {}
+
+// 使用示例
+List<AclEntryDTO> entries = acl.getEntries().stream()
+    .map(entry -> {
+        Sid sid = entry.getSid();
+        String principal = null;
+        String authority = null;
+        
+        if (sid instanceof PrincipalSid) {
+            principal = ((PrincipalSid) sid).getPrincipal();
+        } else if (sid instanceof GrantedAuthoritySid) {
+            authority = ((GrantedAuthoritySid) sid).getGrantedAuthority();
+        }
+        
+        return new AclEntryDTO(
+            principal,
+            authority,
+            entry.getPermission().getMask(),
+            entry.isGranting()
+        );
+    })
+    .collect(Collectors.toList());
+```
+
+3. **使用新的HTTP接口支持**
+
+```java
+@Bean
+public RouterFunction<ServerResponse> aclRoutes(AclPermissionService permissionService) {
+    return route()
+        .GET("/api/acl/objects/{type}/{id}",
+            req -> {
+                String type = req.pathVariable("type");
+                Long id = Long.valueOf(req.pathVariable("id"));
+                
+                List<AclEntryDTO> entries = permissionService.getAclEntries(type, id);
+                
+                return ServerResponse.ok().body(entries);
+            })
+        .build();
+}
+```
+
+### 13.3 性能优化重点
+
+1. **批量操作**
+
+Spring Boot 3.x中实现高效批量ACL操作：
+
+```java
+@Transactional
+public void grantPermissionBatch(
+        List<Document> documents, 
+        String username, 
+        Permission permission) {
+    
+    // 获取用户SID
+    PrincipalSid sid = new PrincipalSid(username);
+    
+    // 批量处理
+    for (Document document : documents) {
+        ObjectIdentity oid = new ObjectIdentityImpl(Document.class, document.getId());
+        
+        MutableAcl acl;
+        try {
+            acl = (MutableAcl) aclService.readAclById(oid);
+        } catch (NotFoundException nfe) {
+            acl = aclService.createAcl(oid);
+        }
+        
+        // 检查是否已存在相同权限
+        boolean exists = false;
+        for (AccessControlEntry entry : acl.getEntries()) {
+            if (entry.getSid().equals(sid) && 
+                entry.getPermission().equals(permission) &&
+                entry.isGranting()) {
+                exists = true;
+                break;
+            }
+        }
+        
+        // 不存在则添加
+        if (!exists) {
+            acl.insertAce(acl.getEntries().size(), permission, sid, true);
+            aclService.updateAcl(acl);
+        }
+    }
+}
+```
+
+2. **使用JdbcTemplate优化读取**
+
+直接使用JdbcTemplate优化性能关键路径：
+
+```java
+/**
+ * 高效检查单个权限
+ */
+public boolean hasPermissionOptimized(Long objectId, String objectType, String username, int permissionMask) {
+    String sql = """
+        SELECT COUNT(*) FROM acl_entry ae
+        JOIN acl_object_identity aoi ON ae.acl_object_identity = aoi.id
+        JOIN acl_class ac ON aoi.object_id_class = ac.id
+        JOIN acl_sid s ON ae.sid = s.id
+        WHERE ac.class = ?
+        AND aoi.object_id_identity = ?
+        AND s.sid = ?
+        AND s.principal = true
+        AND ae.mask & ? = ?
+        AND ae.granting = true
+    """;
+    
+    Integer count = jdbcTemplate.queryForObject(
+        sql,
+        Integer.class,
+        objectType,
+        objectId,
+        username,
+        permissionMask,
+        permissionMask
+    );
+    
+    return count != null && count > 0;
+}
+```
+
+3. **权限检查不生效**
+
+确保注解配置正确：
+
+```java
+// Spring Boot 3.x正确配置
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
+```
+
+4. **多租户数据隔离**
+
+Spring Boot 3.x下实现多租户ACL隔离：
+
+```java
+public class TenantAwarePermissionEvaluator implements PermissionEvaluator {
+    
+    private final AclPermissionEvaluator delegate;
+    private final TenantContextHolder tenantContextHolder;
+    
+    public TenantAwarePermissionEvaluator(
+            AclPermissionEvaluator delegate,
+            TenantContextHolder tenantContextHolder) {
+        this.delegate = delegate;
+        this.tenantContextHolder = tenantContextHolder;
+    }
+    
+    @Override
+    public boolean hasPermission(
+            Authentication authentication, 
+            Object targetDomainObject, 
+            Object permission) {
+        
+        if (targetDomainObject instanceof TenantAware) {
+            // 验证租户
+            String currentTenant = tenantContextHolder.getCurrentTenant();
+            String objectTenant = ((TenantAware) targetDomainObject).getTenantId();
+            
+            if (!currentTenant.equals(objectTenant)) {
+                return false; // 租户不匹配，拒绝访问
+            }
+        }
+        
+        return delegate.hasPermission(authentication, targetDomainObject, permission);
+    }
+    
+    @Override
+    public boolean hasPermission(
+            Authentication authentication, 
+            Serializable targetId, 
+            String targetType, 
+            Object permission) {
+        
+        // 对于ID，可能需要额外查询来验证租户
+        // 这里仅展示委托给默认实现的示例
+        return delegate.hasPermission(authentication, targetId, targetType, permission);
+    }
+}
+```
+
+5. **部署与监控最佳实践**
+
+1. **性能监控**
+
+使用Spring Boot Actuator监控ACL性能：
+
+```java
+@Configuration
+public class AclMetricsConfig {
+    
+    @Bean
+    public MeterBinder aclPermissionChecks(MeterRegistry registry) {
+        return registry -> {
+            // 添加ACL权限检查计数器
+            Counter permissionChecks = Counter.builder("acl.permission.checks")
+                    .description("计数ACL权限检查调用次数")
+                    .register(registry);
+            
+            // 记录检查耗时
+            Timer permissionCheckTimer = Timer.builder("acl.permission.check.time")
+                    .description("ACL权限检查耗时")
+                    .register(registry);
+            
+            // 可以通过AOP拦截hasPermission方法来记录这些指标
+        };
+    }
+}
+```
+
+2. **缓存监控**
+
+```java
+@Bean
+public MeterBinder aclCacheMetrics(CacheManager cacheManager) {
+    return registry -> {
+        for (String cacheName : Arrays.asList("aclCache", "aclPermissionsCache")) {
+            Cache cache = cacheManager.getCache(cacheName);
+            if (cache instanceof CaffeineCache) {
+                CaffeineCache caffeineCache = (CaffeineCache) cache;
+                // 记录命中率、大小等指标
+                com.github.benmanes.caffeine.cache.stats.CacheStats stats = 
+                        caffeineCache.getNativeCache().stats();
+                
+                Gauge.builder("cache.size", caffeineCache.getNativeCache(), c -> c.estimatedSize())
+                        .tag("name", cacheName)
+                        .description("缓存大小")
+                        .register(registry);
+                
+                Gauge.builder("cache.hit.ratio", () -> stats.hitRate())
+                        .tag("name", cacheName)
+                        .description("缓存命中率")
+                        .register(registry);
+            }
+        }
+    };
+}
+```
+
+通过遵循这些Spring Boot 3.x的最佳实践，您可以构建高性能、安全且可维护的ACL权限系统。
