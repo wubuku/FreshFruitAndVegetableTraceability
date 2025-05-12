@@ -134,8 +134,8 @@ public class BffReceivingServiceResource {
 
     @PostMapping("{documentId}/SubmitReceivingDocument")
     public void submitReceivingDocument(
-        @PathVariable("documentId") String documentId,
-        @RequestBody BffReceivingServiceCommands.SubmitReceivingDocument requestBody
+        @RequestBody BffReceivingServiceCommands.SubmitReceivingDocument requestBody,
+        @PathVariable("documentId") String documentId
     ) {
         requestBody.setDocumentId(documentId);
         
@@ -146,8 +146,8 @@ public class BffReceivingServiceResource {
 
     @PostMapping("{documentId}/ConfirmQaInspections")
     public void confirmQaInspections(
-        @PathVariable("documentId") String documentId,
-        @RequestBody BffReceivingServiceCommands.ConfirmQaInspections requestBody
+        @RequestBody BffReceivingServiceCommands.ConfirmQaInspections requestBody,
+        @PathVariable("documentId") String documentId
     ) {
         requestBody.setDocumentId(documentId);
         
@@ -244,9 +244,9 @@ public class BffReceivingServiceResource {
 
     @PutMapping("{documentId}/Items/{receiptId}")
     public void updateReceivingItem(
+        @RequestBody BffReceivingServiceCommands.UpdateReceivingItem requestBody,
         @PathVariable("documentId") String documentId,
-        @PathVariable("receiptId") String receiptId,
-        @RequestBody BffReceivingServiceCommands.UpdateReceivingItem requestBody
+        @PathVariable("receiptId") String receiptId
     ) {
         requestBody.setDocumentId(documentId);
         requestBody.setReceiptId(receiptId);
@@ -258,8 +258,8 @@ public class BffReceivingServiceResource {
 
     @PostMapping("{documentId}/synchronizeCteReceivingEvents")
     public void synchronizeCteReceivingEvents(
-        @PathVariable("documentId") String documentId,
-        @RequestBody BffReceivingServiceCommands.SynchronizeCteReceivingEvents requestBody
+        @RequestBody BffReceivingServiceCommands.SynchronizeCteReceivingEvents requestBody,
+        @PathVariable("documentId") String documentId
     ) {
         requestBody.setDocumentId(documentId);
         

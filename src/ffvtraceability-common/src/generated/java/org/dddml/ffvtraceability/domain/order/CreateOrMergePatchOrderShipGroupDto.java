@@ -654,6 +654,7 @@ public class CreateOrMergePatchOrderShipGroupDto extends AbstractOrderShipGroupC
             copyTo((AbstractOrderShipGroupCommand.AbstractCreateOrderShipGroup) command);
             if (this.getOrderItemShipGroupAssociations() != null) {
                 for (CreateOrMergePatchOrderItemShipGroupAssociationDto cmd : this.getOrderItemShipGroupAssociations()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getOrderItemShipGroupAssociations().add((OrderItemShipGroupAssociationCommand.CreateOrderItemShipGroupAssociation) cmd.toCommand());
                 }
             }

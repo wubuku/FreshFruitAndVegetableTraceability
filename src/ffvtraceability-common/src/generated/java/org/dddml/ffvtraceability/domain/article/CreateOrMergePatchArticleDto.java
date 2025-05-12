@@ -148,6 +148,7 @@ public class CreateOrMergePatchArticleDto extends AbstractArticleCommandDto impl
             copyTo((AbstractArticleCommand.AbstractCreateArticle) command);
             if (this.getComments() != null) {
                 for (CreateOrMergePatchCommentDto cmd : this.getComments()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getComments().add((CommentCommand.CreateComment) cmd.toCommand());
                 }
             }

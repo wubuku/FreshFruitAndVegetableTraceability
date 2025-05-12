@@ -91,9 +91,9 @@ public class BffRawItemServiceResource {
 
     @PutMapping("{productId}/SupplierRawItems/{supplierId}/active")
     public void activateSupplierRawItem(
+        @RequestBody BffRawItemServiceCommands.ActivateSupplierRawItem requestBody,
         @PathVariable("productId") String productId,
-        @PathVariable("supplierId") String supplierId,
-        @RequestBody BffRawItemServiceCommands.ActivateSupplierRawItem requestBody
+        @PathVariable("supplierId") String supplierId
     ) {
         requestBody.setProductId(productId);
         requestBody.setSupplierId(supplierId);
@@ -105,9 +105,9 @@ public class BffRawItemServiceResource {
 
     @PutMapping("{productId}/SupplierRawItems/{supplierId}/deactivate")
     public void deactivateSupplierRawItem(
+        @RequestBody BffRawItemServiceCommands.DeactivateSupplierRawItem requestBody,
         @PathVariable("productId") String productId,
-        @PathVariable("supplierId") String supplierId,
-        @RequestBody BffRawItemServiceCommands.DeactivateSupplierRawItem requestBody
+        @PathVariable("supplierId") String supplierId
     ) {
         requestBody.setProductId(productId);
         requestBody.setSupplierId(supplierId);

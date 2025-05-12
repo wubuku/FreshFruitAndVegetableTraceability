@@ -136,6 +136,18 @@ public interface ContactMechCommand extends Command {
 
         void setTelecomContactNumber2(String telecomContactNumber2);
 
+        String getCountryCode();
+
+        void setCountryCode(String countryCode);
+
+        String getAreaCode();
+
+        void setAreaCode(String areaCode);
+
+        String getContactNumber();
+
+        void setContactNumber(String contactNumber);
+
         String getToName();
 
         void setToName(String toName);
@@ -159,18 +171,6 @@ public interface ContactMechCommand extends Command {
         String getAssocTelecomContactMechId();
 
         void setAssocTelecomContactMechId(String assocTelecomContactMechId);
-
-        String getCountryCode();
-
-        void setCountryCode(String countryCode);
-
-        String getAreaCode();
-
-        void setAreaCode(String areaCode);
-
-        String getContactNumber();
-
-        void setContactNumber(String contactNumber);
 
     }
 
@@ -266,6 +266,18 @@ public interface ContactMechCommand extends Command {
 
         void setIsPropertyTelecomContactNumber2Removed(Boolean removed);
 
+        Boolean getIsPropertyCountryCodeRemoved();
+
+        void setIsPropertyCountryCodeRemoved(Boolean removed);
+
+        Boolean getIsPropertyAreaCodeRemoved();
+
+        void setIsPropertyAreaCodeRemoved(Boolean removed);
+
+        Boolean getIsPropertyContactNumberRemoved();
+
+        void setIsPropertyContactNumberRemoved(Boolean removed);
+
         Boolean getIsPropertyToNameRemoved();
 
         void setIsPropertyToNameRemoved(Boolean removed);
@@ -289,18 +301,6 @@ public interface ContactMechCommand extends Command {
         Boolean getIsPropertyAssocTelecomContactMechIdRemoved();
 
         void setIsPropertyAssocTelecomContactMechIdRemoved(Boolean removed);
-
-        Boolean getIsPropertyCountryCodeRemoved();
-
-        void setIsPropertyCountryCodeRemoved(Boolean removed);
-
-        Boolean getIsPropertyAreaCodeRemoved();
-
-        void setIsPropertyAreaCodeRemoved(Boolean removed);
-
-        Boolean getIsPropertyContactNumberRemoved();
-
-        void setIsPropertyContactNumberRemoved(Boolean removed);
 
 
     }

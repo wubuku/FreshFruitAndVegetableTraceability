@@ -188,9 +188,9 @@ public abstract class AbstractContactMechApplicationService implements ContactMe
         persist(eventStoreAggregateId, ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(PostalAddressEvent.PostalAddressStateCreated stateCreated) {
+    void initialize(TelecomNumberEvent.TelecomNumberStateCreated stateCreated) {
         String aggregateId = ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getContactMechId();
-        PostalAddressState.SqlPostalAddressState state = new AbstractPostalAddressState.SimplePostalAddressState();
+        TelecomNumberState.SqlTelecomNumberState state = new AbstractTelecomNumberState.SimpleTelecomNumberState();
         state.setContactMechId(aggregateId);
 
         ContactMechAggregate aggregate = getContactMechAggregate(state);
@@ -200,9 +200,9 @@ public abstract class AbstractContactMechApplicationService implements ContactMe
         persist(eventStoreAggregateId, ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getVersion(), aggregate, state);
     }
 
-    void initialize(TelecomNumberEvent.TelecomNumberStateCreated stateCreated) {
+    void initialize(PostalAddressEvent.PostalAddressStateCreated stateCreated) {
         String aggregateId = ((ContactMechEvent.SqlContactMechEvent)stateCreated).getContactMechEventId().getContactMechId();
-        TelecomNumberState.SqlTelecomNumberState state = new AbstractTelecomNumberState.SimpleTelecomNumberState();
+        PostalAddressState.SqlPostalAddressState state = new AbstractPostalAddressState.SimplePostalAddressState();
         state.setContactMechId(aggregateId);
 
         ContactMechAggregate aggregate = getContactMechAggregate(state);
@@ -228,11 +228,11 @@ public abstract class AbstractContactMechApplicationService implements ContactMe
                 case ContactMechTypeId.MISC_CONTACT_MECH:
                     clazz = MiscContactMechState.class;
                     break;
-                case ContactMechTypeId.POSTAL_ADDRESS:
-                    clazz = PostalAddressState.class;
-                    break;
                 case ContactMechTypeId.TELECOM_NUMBER:
                     clazz = TelecomNumberState.class;
+                    break;
+                case ContactMechTypeId.POSTAL_ADDRESS:
+                    clazz = PostalAddressState.class;
                     break;
             }
         }

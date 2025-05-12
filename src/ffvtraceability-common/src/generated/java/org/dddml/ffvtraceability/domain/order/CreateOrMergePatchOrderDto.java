@@ -899,26 +899,31 @@ public class CreateOrMergePatchOrderDto extends AbstractOrderCommandDto implemen
             copyTo((AbstractOrderCommand.AbstractCreateOrder) command);
             if (this.getOrderRoles() != null) {
                 for (CreateOrMergePatchOrderRoleDto cmd : this.getOrderRoles()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getOrderRoles().add((OrderRoleCommand.CreateOrderRole) cmd.toCommand());
                 }
             }
             if (this.getOrderContactMechanisms() != null) {
                 for (CreateOrMergePatchOrderContactMechDto cmd : this.getOrderContactMechanisms()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getOrderContactMechanisms().add((OrderContactMechCommand.CreateOrderContactMech) cmd.toCommand());
                 }
             }
             if (this.getOrderItems() != null) {
                 for (CreateOrMergePatchOrderItemDto cmd : this.getOrderItems()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getOrderItems().add((OrderItemCommand.CreateOrderItem) cmd.toCommand());
                 }
             }
             if (this.getOrderAdjustments() != null) {
                 for (CreateOrMergePatchOrderAdjustmentDto cmd : this.getOrderAdjustments()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getOrderAdjustments().add((OrderAdjustmentCommand.CreateOrderAdjustment) cmd.toCommand());
                 }
             }
             if (this.getOrderShipGroups() != null) {
                 for (CreateOrMergePatchOrderShipGroupDto cmd : this.getOrderShipGroups()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getOrderShipGroups().add((OrderShipGroupCommand.CreateOrderShipGroup) cmd.toCommand());
                 }
             }

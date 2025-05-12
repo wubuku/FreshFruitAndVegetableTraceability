@@ -290,6 +290,42 @@ public class ContactMechStateDto {
         this.telecomContactNumber2 = telecomContactNumber2;
     }
 
+    private String countryCode;
+
+    public String getCountryCode()
+    {
+        return this.countryCode;
+    }
+
+    public void setCountryCode(String countryCode)
+    {
+        this.countryCode = countryCode;
+    }
+
+    private String areaCode;
+
+    public String getAreaCode()
+    {
+        return this.areaCode;
+    }
+
+    public void setAreaCode(String areaCode)
+    {
+        this.areaCode = areaCode;
+    }
+
+    private String contactNumber;
+
+    public String getContactNumber()
+    {
+        return this.contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber)
+    {
+        this.contactNumber = contactNumber;
+    }
+
     private String toName;
 
     public String getToName()
@@ -360,42 +396,6 @@ public class ContactMechStateDto {
     public void setAssocTelecomContactMechId(String assocTelecomContactMechId)
     {
         this.assocTelecomContactMechId = assocTelecomContactMechId;
-    }
-
-    private String countryCode;
-
-    public String getCountryCode()
-    {
-        return this.countryCode;
-    }
-
-    public void setCountryCode(String countryCode)
-    {
-        this.countryCode = countryCode;
-    }
-
-    private String areaCode;
-
-    public String getAreaCode()
-    {
-        return this.areaCode;
-    }
-
-    public void setAreaCode(String areaCode)
-    {
-        this.areaCode = areaCode;
-    }
-
-    private String contactNumber;
-
-    public String getContactNumber()
-    {
-        return this.contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber)
-    {
-        this.contactNumber = contactNumber;
     }
 
     private Long version;
@@ -580,6 +580,22 @@ public class ContactMechStateDto {
           // ////////////////
 
           // ////////////////
+          if (state instanceof TelecomNumberState) {
+            TelecomNumberState ss = (TelecomNumberState) state;
+            dto.setContactMechTypeId(ContactMechTypeId.TELECOM_NUMBER);
+            if (returnedFieldsContains("CountryCode")) {
+                dto.setCountryCode(ss.getCountryCode());
+            }
+            if (returnedFieldsContains("AreaCode")) {
+                dto.setAreaCode(ss.getAreaCode());
+            }
+            if (returnedFieldsContains("ContactNumber")) {
+                dto.setContactNumber(ss.getContactNumber());
+            }
+          }
+          // ////////////////
+
+          // ////////////////
           if (state instanceof PostalAddressState) {
             PostalAddressState ss = (PostalAddressState) state;
             dto.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
@@ -600,22 +616,6 @@ public class ContactMechStateDto {
             }
             if (returnedFieldsContains("AssocTelecomContactMechId")) {
                 dto.setAssocTelecomContactMechId(ss.getAssocTelecomContactMechId());
-            }
-          }
-          // ////////////////
-
-          // ////////////////
-          if (state instanceof TelecomNumberState) {
-            TelecomNumberState ss = (TelecomNumberState) state;
-            dto.setContactMechTypeId(ContactMechTypeId.TELECOM_NUMBER);
-            if (returnedFieldsContains("CountryCode")) {
-                dto.setCountryCode(ss.getCountryCode());
-            }
-            if (returnedFieldsContains("AreaCode")) {
-                dto.setAreaCode(ss.getAreaCode());
-            }
-            if (returnedFieldsContains("ContactNumber")) {
-                dto.setContactNumber(ss.getContactNumber());
             }
           }
           // ////////////////

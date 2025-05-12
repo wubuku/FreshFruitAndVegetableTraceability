@@ -94,6 +94,7 @@ public class CreateOrMergePatchAttributeSetDto extends AbstractAttributeSetComma
             copyTo((AbstractAttributeSetCommand.AbstractCreateAttributeSet) command);
             if (this.getAttributeUses() != null) {
                 for (CreateOrMergePatchAttributeUseDto cmd : this.getAttributeUses()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getAttributeUses().add((AttributeUseCommand.CreateAttributeUse) cmd.toCommand());
                 }
             }

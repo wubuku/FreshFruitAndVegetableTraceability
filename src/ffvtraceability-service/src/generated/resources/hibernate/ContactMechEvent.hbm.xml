@@ -134,6 +134,36 @@
           <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
         </subclass>
       </subclass>
+      <subclass name="AbstractTelecomNumberEvent$AbstractTelecomNumberStateEvent" abstract="true">
+        <property name="countryCode">
+          <column name="country_code" sql-type="VARCHAR(10)" />
+        </property>
+        <property name="areaCode">
+          <column name="area_code" sql-type="VARCHAR(10)" />
+        </property>
+        <property name="contactNumber">
+          <column name="contact_number" sql-type="VARCHAR(60)" />
+        </property>
+        <subclass name="AbstractTelecomNumberEvent$SimpleTelecomNumberStateCreated" discriminator-value="TelecomNumberCreated"></subclass>
+        <subclass name="AbstractTelecomNumberEvent$SimpleTelecomNumberStateMergePatched" discriminator-value="TelecomNumberMergePatched">
+          <property name="isPropertyCountryCodeRemoved" column="is_property_country_code_removed" />
+          <property name="isPropertyAreaCodeRemoved" column="is_property_area_code_removed" />
+          <property name="isPropertyContactNumberRemoved" column="is_property_contact_number_removed" />
+          <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
+          <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
+          <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
+          <property name="isPropertyAddress1Removed" column="is_property_address1_removed" />
+          <property name="isPropertyAddress2Removed" column="is_property_address2_removed" />
+          <property name="isPropertyDirectionsRemoved" column="is_property_directions_removed" />
+          <property name="isPropertyCityRemoved" column="is_property_city_removed" />
+          <property name="isPropertyPostalCodeRemoved" column="is_property_postal_code_removed" />
+          <property name="isPropertyPostalCodeExtRemoved" column="is_property_postal_code_ext_removed" />
+          <property name="isPropertyCountryGeoIdRemoved" column="is_property_country_geo_id_removed" />
+          <property name="isPropertyStateProvinceGeoIdRemoved" column="is_property_state_province_geo_id_removed" />
+          <property name="isPropertyPostalCodeGeoIdRemoved" column="is_property_postal_code_geo_id_removed" />
+          <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
+        </subclass>
+      </subclass>
       <subclass name="AbstractPostalAddressEvent$AbstractPostalAddressStateEvent" abstract="true">
         <property name="toName">
           <column name="to_name" sql-type="VARCHAR(100)" />
@@ -161,36 +191,6 @@
           <property name="isPropertyCountyGeoIdRemoved" column="is_property_county_geo_id_removed" />
           <property name="isPropertyTownGeoIdRemoved" column="is_property_town_geo_id_removed" />
           <property name="isPropertyAssocTelecomContactMechIdRemoved" column="is_property_assoc_telecom_contact_mech_id_removed" />
-          <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
-          <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
-          <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />
-          <property name="isPropertyAddress1Removed" column="is_property_address1_removed" />
-          <property name="isPropertyAddress2Removed" column="is_property_address2_removed" />
-          <property name="isPropertyDirectionsRemoved" column="is_property_directions_removed" />
-          <property name="isPropertyCityRemoved" column="is_property_city_removed" />
-          <property name="isPropertyPostalCodeRemoved" column="is_property_postal_code_removed" />
-          <property name="isPropertyPostalCodeExtRemoved" column="is_property_postal_code_ext_removed" />
-          <property name="isPropertyCountryGeoIdRemoved" column="is_property_country_geo_id_removed" />
-          <property name="isPropertyStateProvinceGeoIdRemoved" column="is_property_state_province_geo_id_removed" />
-          <property name="isPropertyPostalCodeGeoIdRemoved" column="is_property_postal_code_geo_id_removed" />
-          <property name="isPropertyGeoPointIdRemoved" column="is_property_geo_point_id_removed" />
-        </subclass>
-      </subclass>
-      <subclass name="AbstractTelecomNumberEvent$AbstractTelecomNumberStateEvent" abstract="true">
-        <property name="countryCode">
-          <column name="country_code" sql-type="VARCHAR(10)" />
-        </property>
-        <property name="areaCode">
-          <column name="area_code" sql-type="VARCHAR(10)" />
-        </property>
-        <property name="contactNumber">
-          <column name="contact_number" sql-type="VARCHAR(60)" />
-        </property>
-        <subclass name="AbstractTelecomNumberEvent$SimpleTelecomNumberStateCreated" discriminator-value="TelecomNumberCreated"></subclass>
-        <subclass name="AbstractTelecomNumberEvent$SimpleTelecomNumberStateMergePatched" discriminator-value="TelecomNumberMergePatched">
-          <property name="isPropertyCountryCodeRemoved" column="is_property_country_code_removed" />
-          <property name="isPropertyAreaCodeRemoved" column="is_property_area_code_removed" />
-          <property name="isPropertyContactNumberRemoved" column="is_property_contact_number_removed" />
           <property name="isPropertyContactMechTypeIdRemoved" column="is_property_contact_mech_type_id_removed" />
           <property name="isPropertyInfoStringRemoved" column="is_property_info_string_removed" />
           <property name="isPropertyAskForNameRemoved" column="is_property_ask_for_name_removed" />

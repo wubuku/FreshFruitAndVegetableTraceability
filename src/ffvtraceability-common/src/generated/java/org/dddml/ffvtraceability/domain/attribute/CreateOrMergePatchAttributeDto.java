@@ -290,6 +290,7 @@ public class CreateOrMergePatchAttributeDto extends AbstractAttributeCommandDto 
             copyTo((AbstractAttributeCommand.AbstractCreateAttribute) command);
             if (this.getAttributeValues() != null) {
                 for (CreateOrMergePatchAttributeValueDto cmd : this.getAttributeValues()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getAttributeValues().add((AttributeValueCommand.CreateAttributeValue) cmd.toCommand());
                 }
             }

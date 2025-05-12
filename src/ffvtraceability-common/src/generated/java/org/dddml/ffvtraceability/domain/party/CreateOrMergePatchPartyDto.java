@@ -738,6 +738,7 @@ public class CreateOrMergePatchPartyDto extends AbstractPartyCommandDto implemen
             copyTo((AbstractPartyCommand.AbstractCreateParty) command);
             if (this.getPartyIdentifications() != null) {
                 for (CreateOrMergePatchPartyIdentificationDto cmd : this.getPartyIdentifications()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getPartyIdentifications().add((PartyIdentificationCommand.CreatePartyIdentification) cmd.toCommand());
                 }
             }

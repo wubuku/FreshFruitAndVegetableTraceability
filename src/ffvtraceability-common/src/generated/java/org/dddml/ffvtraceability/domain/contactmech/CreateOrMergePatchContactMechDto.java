@@ -341,6 +341,51 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     }
 
     /**
+     * Country Code
+     */
+    private String countryCode;
+
+    public String getCountryCode()
+    {
+        return this.countryCode;
+    }
+
+    public void setCountryCode(String countryCode)
+    {
+        this.countryCode = countryCode;
+    }
+
+    /**
+     * Area Code
+     */
+    private String areaCode;
+
+    public String getAreaCode()
+    {
+        return this.areaCode;
+    }
+
+    public void setAreaCode(String areaCode)
+    {
+        this.areaCode = areaCode;
+    }
+
+    /**
+     * Contact Number
+     */
+    private String contactNumber;
+
+    public String getContactNumber()
+    {
+        return this.contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber)
+    {
+        this.contactNumber = contactNumber;
+    }
+
+    /**
      * To Name
      */
     private String toName;
@@ -428,51 +473,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
     public void setAssocTelecomContactMechId(String assocTelecomContactMechId)
     {
         this.assocTelecomContactMechId = assocTelecomContactMechId;
-    }
-
-    /**
-     * Country Code
-     */
-    private String countryCode;
-
-    public String getCountryCode()
-    {
-        return this.countryCode;
-    }
-
-    public void setCountryCode(String countryCode)
-    {
-        this.countryCode = countryCode;
-    }
-
-    /**
-     * Area Code
-     */
-    private String areaCode;
-
-    public String getAreaCode()
-    {
-        return this.areaCode;
-    }
-
-    public void setAreaCode(String areaCode)
-    {
-        this.areaCode = areaCode;
-    }
-
-    /**
-     * Contact Number
-     */
-    private String contactNumber;
-
-    public String getContactNumber()
-    {
-        return this.contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber)
-    {
-        this.contactNumber = contactNumber;
     }
 
 
@@ -740,6 +740,42 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         this.isPropertyTelecomContactNumber2Removed = removed;
     }
 
+    private Boolean isPropertyCountryCodeRemoved;
+
+    public Boolean getIsPropertyCountryCodeRemoved()
+    {
+        return this.isPropertyCountryCodeRemoved;
+    }
+
+    public void setIsPropertyCountryCodeRemoved(Boolean removed)
+    {
+        this.isPropertyCountryCodeRemoved = removed;
+    }
+
+    private Boolean isPropertyAreaCodeRemoved;
+
+    public Boolean getIsPropertyAreaCodeRemoved()
+    {
+        return this.isPropertyAreaCodeRemoved;
+    }
+
+    public void setIsPropertyAreaCodeRemoved(Boolean removed)
+    {
+        this.isPropertyAreaCodeRemoved = removed;
+    }
+
+    private Boolean isPropertyContactNumberRemoved;
+
+    public Boolean getIsPropertyContactNumberRemoved()
+    {
+        return this.isPropertyContactNumberRemoved;
+    }
+
+    public void setIsPropertyContactNumberRemoved(Boolean removed)
+    {
+        this.isPropertyContactNumberRemoved = removed;
+    }
+
     private Boolean isPropertyToNameRemoved;
 
     public Boolean getIsPropertyToNameRemoved()
@@ -812,42 +848,6 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         this.isPropertyAssocTelecomContactMechIdRemoved = removed;
     }
 
-    private Boolean isPropertyCountryCodeRemoved;
-
-    public Boolean getIsPropertyCountryCodeRemoved()
-    {
-        return this.isPropertyCountryCodeRemoved;
-    }
-
-    public void setIsPropertyCountryCodeRemoved(Boolean removed)
-    {
-        this.isPropertyCountryCodeRemoved = removed;
-    }
-
-    private Boolean isPropertyAreaCodeRemoved;
-
-    public Boolean getIsPropertyAreaCodeRemoved()
-    {
-        return this.isPropertyAreaCodeRemoved;
-    }
-
-    public void setIsPropertyAreaCodeRemoved(Boolean removed)
-    {
-        this.isPropertyAreaCodeRemoved = removed;
-    }
-
-    private Boolean isPropertyContactNumberRemoved;
-
-    public Boolean getIsPropertyContactNumberRemoved()
-    {
-        return this.isPropertyContactNumberRemoved;
-    }
-
-    public void setIsPropertyContactNumberRemoved(Boolean removed)
-    {
-        this.isPropertyContactNumberRemoved = removed;
-    }
-
     public void copyTo(CreateOrMergePatchContactMech command)
     {
         ((AbstractContactMechCommandDto) this).copyTo(command);
@@ -873,15 +873,15 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setTelecomCountryCode2(this.getTelecomCountryCode2());
         command.setTelecomAreaCode2(this.getTelecomAreaCode2());
         command.setTelecomContactNumber2(this.getTelecomContactNumber2());
+        command.setCountryCode(this.getCountryCode());
+        command.setAreaCode(this.getAreaCode());
+        command.setContactNumber(this.getContactNumber());
         command.setToName(this.getToName());
         command.setAttnName(this.getAttnName());
         command.setPrefectureGeoId(this.getPrefectureGeoId());
         command.setCountyGeoId(this.getCountyGeoId());
         command.setTownGeoId(this.getTownGeoId());
         command.setAssocTelecomContactMechId(this.getAssocTelecomContactMechId());
-        command.setCountryCode(this.getCountryCode());
-        command.setAreaCode(this.getAreaCode());
-        command.setContactNumber(this.getContactNumber());
     }
 
     public ContactMechCommand toCommand()
@@ -948,15 +948,15 @@ public class CreateOrMergePatchContactMechDto extends AbstractContactMechCommand
         command.setIsPropertyTelecomCountryCode2Removed(this.getIsPropertyTelecomCountryCode2Removed());
         command.setIsPropertyTelecomAreaCode2Removed(this.getIsPropertyTelecomAreaCode2Removed());
         command.setIsPropertyTelecomContactNumber2Removed(this.getIsPropertyTelecomContactNumber2Removed());
+        command.setIsPropertyCountryCodeRemoved(this.getIsPropertyCountryCodeRemoved());
+        command.setIsPropertyAreaCodeRemoved(this.getIsPropertyAreaCodeRemoved());
+        command.setIsPropertyContactNumberRemoved(this.getIsPropertyContactNumberRemoved());
         command.setIsPropertyToNameRemoved(this.getIsPropertyToNameRemoved());
         command.setIsPropertyAttnNameRemoved(this.getIsPropertyAttnNameRemoved());
         command.setIsPropertyPrefectureGeoIdRemoved(this.getIsPropertyPrefectureGeoIdRemoved());
         command.setIsPropertyCountyGeoIdRemoved(this.getIsPropertyCountyGeoIdRemoved());
         command.setIsPropertyTownGeoIdRemoved(this.getIsPropertyTownGeoIdRemoved());
         command.setIsPropertyAssocTelecomContactMechIdRemoved(this.getIsPropertyAssocTelecomContactMechIdRemoved());
-        command.setIsPropertyCountryCodeRemoved(this.getIsPropertyCountryCodeRemoved());
-        command.setIsPropertyAreaCodeRemoved(this.getIsPropertyAreaCodeRemoved());
-        command.setIsPropertyContactNumberRemoved(this.getIsPropertyContactNumberRemoved());
     }
 
     public static class CreateContactMechDto extends CreateOrMergePatchContactMechDto implements ContactMechCommand.CreateContactMech

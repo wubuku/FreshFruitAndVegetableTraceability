@@ -38,7 +38,7 @@ public class HibernateContactMechStateRepository implements ContactMechStateRepo
         return em;
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ContactMechId", "ContactMechTypeId", "InfoString", "AskForName", "Address1", "Address2", "Directions", "City", "PostalCode", "PostalCodeExt", "CountryGeoId", "StateProvinceGeoId", "PostalCodeGeoId", "GeoPointId", "Email", "AskForRole", "TelecomCountryCode", "TelecomAreaCode", "TelecomContactNumber", "PhysicalLocationAddress", "TelecomCountryCode2", "TelecomAreaCode2", "TelecomContactNumber2", "ToName", "AttnName", "PrefectureGeoId", "CountyGeoId", "TownGeoId", "AssocTelecomContactMechId", "CountryCode", "AreaCode", "ContactNumber", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ContactMechId", "ContactMechTypeId", "InfoString", "AskForName", "Address1", "Address2", "Directions", "City", "PostalCode", "PostalCodeExt", "CountryGeoId", "StateProvinceGeoId", "PostalCodeGeoId", "GeoPointId", "Email", "AskForRole", "TelecomCountryCode", "TelecomAreaCode", "TelecomContactNumber", "PhysicalLocationAddress", "TelecomCountryCode2", "TelecomAreaCode2", "TelecomContactNumber2", "CountryCode", "AreaCode", "ContactNumber", "ToName", "AttnName", "PrefectureGeoId", "CountyGeoId", "TownGeoId", "AssocTelecomContactMechId", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -77,11 +77,11 @@ public class HibernateContactMechStateRepository implements ContactMechStateRepo
         else if (type.equals(MiscContactMechState.class)) {
             clazz = AbstractMiscContactMechState.SimpleMiscContactMechState.class;
         }
-        else if (type.equals(PostalAddressState.class)) {
-            clazz = AbstractPostalAddressState.SimplePostalAddressState.class;
-        }
         else if (type.equals(TelecomNumberState.class)) {
             clazz = AbstractTelecomNumberState.SimpleTelecomNumberState.class;
+        }
+        else if (type.equals(PostalAddressState.class)) {
+            clazz = AbstractPostalAddressState.SimplePostalAddressState.class;
         }
         else {
             throw new IllegalArgumentException("type");

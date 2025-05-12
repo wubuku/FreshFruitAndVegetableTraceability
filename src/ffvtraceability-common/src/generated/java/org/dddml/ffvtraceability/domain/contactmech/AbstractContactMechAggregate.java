@@ -64,11 +64,11 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         if(ContactMechTypeId.MISC_CONTACT_MECH.equals(c.getContactMechTypeId())) {
             return mapToMiscContactMechEvent(c);
         }
-        if(ContactMechTypeId.POSTAL_ADDRESS.equals(c.getContactMechTypeId())) {
-            return mapToPostalAddressEvent(c);
-        }
         if(ContactMechTypeId.TELECOM_NUMBER.equals(c.getContactMechTypeId())) {
             return mapToTelecomNumberEvent(c);
+        }
+        if(ContactMechTypeId.POSTAL_ADDRESS.equals(c.getContactMechTypeId())) {
+            return mapToPostalAddressEvent(c);
         }
         throw new IllegalArgumentException();
     }
@@ -104,6 +104,31 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         return e;
     }
 
+    protected TelecomNumberEvent mapToTelecomNumberEvent(ContactMechCommand.CreateContactMech c) {
+        ContactMechEventId stateEventId = new ContactMechEventId(c.getContactMechId(), c.getVersion());
+        TelecomNumberEvent.TelecomNumberStateCreated e = newTelecomNumberStateCreated(stateEventId);
+        e.setContactMechTypeId(c.getContactMechTypeId());
+        e.setInfoString(c.getInfoString());
+        e.setAskForName(c.getAskForName());
+        e.setAddress1(c.getAddress1());
+        e.setAddress2(c.getAddress2());
+        e.setDirections(c.getDirections());
+        e.setCity(c.getCity());
+        e.setPostalCode(c.getPostalCode());
+        e.setPostalCodeExt(c.getPostalCodeExt());
+        e.setCountryGeoId(c.getCountryGeoId());
+        e.setStateProvinceGeoId(c.getStateProvinceGeoId());
+        e.setPostalCodeGeoId(c.getPostalCodeGeoId());
+        e.setGeoPointId(c.getGeoPointId());
+        e.setCountryCode(c.getCountryCode());
+        e.setAreaCode(c.getAreaCode());
+        e.setContactNumber(c.getContactNumber());
+        ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        return e;
+    }
+
     protected PostalAddressEvent mapToPostalAddressEvent(ContactMechCommand.CreateContactMech c) {
         ContactMechEventId stateEventId = new ContactMechEventId(c.getContactMechId(), c.getVersion());
         PostalAddressEvent.PostalAddressStateCreated e = newPostalAddressStateCreated(stateEventId);
@@ -132,40 +157,15 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         return e;
     }
 
-    protected TelecomNumberEvent mapToTelecomNumberEvent(ContactMechCommand.CreateContactMech c) {
-        ContactMechEventId stateEventId = new ContactMechEventId(c.getContactMechId(), c.getVersion());
-        TelecomNumberEvent.TelecomNumberStateCreated e = newTelecomNumberStateCreated(stateEventId);
-        e.setContactMechTypeId(c.getContactMechTypeId());
-        e.setInfoString(c.getInfoString());
-        e.setAskForName(c.getAskForName());
-        e.setAddress1(c.getAddress1());
-        e.setAddress2(c.getAddress2());
-        e.setDirections(c.getDirections());
-        e.setCity(c.getCity());
-        e.setPostalCode(c.getPostalCode());
-        e.setPostalCodeExt(c.getPostalCodeExt());
-        e.setCountryGeoId(c.getCountryGeoId());
-        e.setStateProvinceGeoId(c.getStateProvinceGeoId());
-        e.setPostalCodeGeoId(c.getPostalCodeGeoId());
-        e.setGeoPointId(c.getGeoPointId());
-        e.setCountryCode(c.getCountryCode());
-        e.setAreaCode(c.getAreaCode());
-        e.setContactNumber(c.getContactNumber());
-        ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
     protected ContactMechEvent map(ContactMechCommand.MergePatchContactMech c) {
         if(c.getContactMechTypeId().equals(ContactMechTypeId.MISC_CONTACT_MECH)) {
             return mapToMiscContactMechEvent(c);
         }
-        if(c.getContactMechTypeId().equals(ContactMechTypeId.POSTAL_ADDRESS)) {
-            return mapToPostalAddressEvent(c);
-        }
         if(c.getContactMechTypeId().equals(ContactMechTypeId.TELECOM_NUMBER)) {
             return mapToTelecomNumberEvent(c);
+        }
+        if(c.getContactMechTypeId().equals(ContactMechTypeId.POSTAL_ADDRESS)) {
+            return mapToPostalAddressEvent(c);
         }
         throw new IllegalArgumentException();
     }
@@ -204,6 +204,47 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         e.setIsPropertyTelecomCountryCode2Removed(c.getIsPropertyTelecomCountryCode2Removed());
         e.setIsPropertyTelecomAreaCode2Removed(c.getIsPropertyTelecomAreaCode2Removed());
         e.setIsPropertyTelecomContactNumber2Removed(c.getIsPropertyTelecomContactNumber2Removed());
+        e.setIsPropertyContactMechTypeIdRemoved(c.getIsPropertyContactMechTypeIdRemoved());
+        e.setIsPropertyInfoStringRemoved(c.getIsPropertyInfoStringRemoved());
+        e.setIsPropertyAskForNameRemoved(c.getIsPropertyAskForNameRemoved());
+        e.setIsPropertyAddress1Removed(c.getIsPropertyAddress1Removed());
+        e.setIsPropertyAddress2Removed(c.getIsPropertyAddress2Removed());
+        e.setIsPropertyDirectionsRemoved(c.getIsPropertyDirectionsRemoved());
+        e.setIsPropertyCityRemoved(c.getIsPropertyCityRemoved());
+        e.setIsPropertyPostalCodeRemoved(c.getIsPropertyPostalCodeRemoved());
+        e.setIsPropertyPostalCodeExtRemoved(c.getIsPropertyPostalCodeExtRemoved());
+        e.setIsPropertyCountryGeoIdRemoved(c.getIsPropertyCountryGeoIdRemoved());
+        e.setIsPropertyStateProvinceGeoIdRemoved(c.getIsPropertyStateProvinceGeoIdRemoved());
+        e.setIsPropertyPostalCodeGeoIdRemoved(c.getIsPropertyPostalCodeGeoIdRemoved());
+        e.setIsPropertyGeoPointIdRemoved(c.getIsPropertyGeoPointIdRemoved());
+        ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
+        e.setCreatedBy(c.getRequesterId());
+        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
+        return e;
+    }
+
+    protected TelecomNumberEvent mapToTelecomNumberEvent(ContactMechCommand.MergePatchContactMech c) {
+        ContactMechEventId stateEventId = new ContactMechEventId(c.getContactMechId(), c.getVersion());
+        TelecomNumberEvent.TelecomNumberStateMergePatched e = newTelecomNumberStateMergePatched(stateEventId);
+        e.setContactMechTypeId(c.getContactMechTypeId());
+        e.setInfoString(c.getInfoString());
+        e.setAskForName(c.getAskForName());
+        e.setAddress1(c.getAddress1());
+        e.setAddress2(c.getAddress2());
+        e.setDirections(c.getDirections());
+        e.setCity(c.getCity());
+        e.setPostalCode(c.getPostalCode());
+        e.setPostalCodeExt(c.getPostalCodeExt());
+        e.setCountryGeoId(c.getCountryGeoId());
+        e.setStateProvinceGeoId(c.getStateProvinceGeoId());
+        e.setPostalCodeGeoId(c.getPostalCodeGeoId());
+        e.setGeoPointId(c.getGeoPointId());
+        e.setCountryCode(c.getCountryCode());
+        e.setAreaCode(c.getAreaCode());
+        e.setContactNumber(c.getContactNumber());
+        e.setIsPropertyCountryCodeRemoved(c.getIsPropertyCountryCodeRemoved());
+        e.setIsPropertyAreaCodeRemoved(c.getIsPropertyAreaCodeRemoved());
+        e.setIsPropertyContactNumberRemoved(c.getIsPropertyContactNumberRemoved());
         e.setIsPropertyContactMechTypeIdRemoved(c.getIsPropertyContactMechTypeIdRemoved());
         e.setIsPropertyInfoStringRemoved(c.getIsPropertyInfoStringRemoved());
         e.setIsPropertyAskForNameRemoved(c.getIsPropertyAskForNameRemoved());
@@ -270,47 +311,6 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         return e;
     }
 
-    protected TelecomNumberEvent mapToTelecomNumberEvent(ContactMechCommand.MergePatchContactMech c) {
-        ContactMechEventId stateEventId = new ContactMechEventId(c.getContactMechId(), c.getVersion());
-        TelecomNumberEvent.TelecomNumberStateMergePatched e = newTelecomNumberStateMergePatched(stateEventId);
-        e.setContactMechTypeId(c.getContactMechTypeId());
-        e.setInfoString(c.getInfoString());
-        e.setAskForName(c.getAskForName());
-        e.setAddress1(c.getAddress1());
-        e.setAddress2(c.getAddress2());
-        e.setDirections(c.getDirections());
-        e.setCity(c.getCity());
-        e.setPostalCode(c.getPostalCode());
-        e.setPostalCodeExt(c.getPostalCodeExt());
-        e.setCountryGeoId(c.getCountryGeoId());
-        e.setStateProvinceGeoId(c.getStateProvinceGeoId());
-        e.setPostalCodeGeoId(c.getPostalCodeGeoId());
-        e.setGeoPointId(c.getGeoPointId());
-        e.setCountryCode(c.getCountryCode());
-        e.setAreaCode(c.getAreaCode());
-        e.setContactNumber(c.getContactNumber());
-        e.setIsPropertyCountryCodeRemoved(c.getIsPropertyCountryCodeRemoved());
-        e.setIsPropertyAreaCodeRemoved(c.getIsPropertyAreaCodeRemoved());
-        e.setIsPropertyContactNumberRemoved(c.getIsPropertyContactNumberRemoved());
-        e.setIsPropertyContactMechTypeIdRemoved(c.getIsPropertyContactMechTypeIdRemoved());
-        e.setIsPropertyInfoStringRemoved(c.getIsPropertyInfoStringRemoved());
-        e.setIsPropertyAskForNameRemoved(c.getIsPropertyAskForNameRemoved());
-        e.setIsPropertyAddress1Removed(c.getIsPropertyAddress1Removed());
-        e.setIsPropertyAddress2Removed(c.getIsPropertyAddress2Removed());
-        e.setIsPropertyDirectionsRemoved(c.getIsPropertyDirectionsRemoved());
-        e.setIsPropertyCityRemoved(c.getIsPropertyCityRemoved());
-        e.setIsPropertyPostalCodeRemoved(c.getIsPropertyPostalCodeRemoved());
-        e.setIsPropertyPostalCodeExtRemoved(c.getIsPropertyPostalCodeExtRemoved());
-        e.setIsPropertyCountryGeoIdRemoved(c.getIsPropertyCountryGeoIdRemoved());
-        e.setIsPropertyStateProvinceGeoIdRemoved(c.getIsPropertyStateProvinceGeoIdRemoved());
-        e.setIsPropertyPostalCodeGeoIdRemoved(c.getIsPropertyPostalCodeGeoIdRemoved());
-        e.setIsPropertyGeoPointIdRemoved(c.getIsPropertyGeoPointIdRemoved());
-        ((AbstractContactMechEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((OffsetDateTime)ApplicationContext.current.getTimestampService().now(OffsetDateTime.class));
-        return e;
-    }
-
 
     ////////////////////////
     protected MiscContactMechEvent.MiscContactMechStateCreated newMiscContactMechStateCreated(ContactMechEventId stateEventId) {
@@ -321,20 +321,20 @@ public abstract class AbstractContactMechAggregate extends AbstractAggregate imp
         return new AbstractMiscContactMechEvent.SimpleMiscContactMechStateMergePatched(stateEventId);
     }
 
-    protected PostalAddressEvent.PostalAddressStateCreated newPostalAddressStateCreated(ContactMechEventId stateEventId) {
-        return new AbstractPostalAddressEvent.SimplePostalAddressStateCreated(stateEventId);
-    }
-
-    protected PostalAddressEvent.PostalAddressStateMergePatched newPostalAddressStateMergePatched(ContactMechEventId stateEventId) {
-        return new AbstractPostalAddressEvent.SimplePostalAddressStateMergePatched(stateEventId);
-    }
-
     protected TelecomNumberEvent.TelecomNumberStateCreated newTelecomNumberStateCreated(ContactMechEventId stateEventId) {
         return new AbstractTelecomNumberEvent.SimpleTelecomNumberStateCreated(stateEventId);
     }
 
     protected TelecomNumberEvent.TelecomNumberStateMergePatched newTelecomNumberStateMergePatched(ContactMechEventId stateEventId) {
         return new AbstractTelecomNumberEvent.SimpleTelecomNumberStateMergePatched(stateEventId);
+    }
+
+    protected PostalAddressEvent.PostalAddressStateCreated newPostalAddressStateCreated(ContactMechEventId stateEventId) {
+        return new AbstractPostalAddressEvent.SimplePostalAddressStateCreated(stateEventId);
+    }
+
+    protected PostalAddressEvent.PostalAddressStateMergePatched newPostalAddressStateMergePatched(ContactMechEventId stateEventId) {
+        return new AbstractPostalAddressEvent.SimplePostalAddressStateMergePatched(stateEventId);
     }
 
 

@@ -626,6 +626,7 @@ public class CreateOrMergePatchFacilityDto extends AbstractFacilityCommandDto im
             copyTo((AbstractFacilityCommand.AbstractCreateFacility) command);
             if (this.getFacilityIdentifications() != null) {
                 for (CreateOrMergePatchFacilityIdentificationDto cmd : this.getFacilityIdentifications()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getFacilityIdentifications().add((FacilityIdentificationCommand.CreateFacilityIdentification) cmd.toCommand());
                 }
             }

@@ -2110,6 +2110,7 @@ public class CreateOrMergePatchProductDto extends AbstractProductCommandDto impl
             copyTo((AbstractProductCommand.AbstractCreateProduct) command);
             if (this.getGoodIdentifications() != null) {
                 for (CreateOrMergePatchGoodIdentificationDto cmd : this.getGoodIdentifications()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getGoodIdentifications().add((GoodIdentificationCommand.CreateGoodIdentification) cmd.toCommand());
                 }
             }

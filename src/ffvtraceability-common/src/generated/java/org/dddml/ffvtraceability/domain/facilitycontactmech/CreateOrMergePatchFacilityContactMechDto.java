@@ -122,6 +122,7 @@ public class CreateOrMergePatchFacilityContactMechDto extends AbstractFacilityCo
             copyTo((AbstractFacilityContactMechCommand.AbstractCreateFacilityContactMech) command);
             if (this.getFacilityContactMechPurposes() != null) {
                 for (CreateOrMergePatchFacilityContactMechPurposeDto cmd : this.getFacilityContactMechPurposes()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getFacilityContactMechPurposes().add((FacilityContactMechPurposeCommand.CreateFacilityContactMechPurpose) cmd.toCommand());
                 }
             }

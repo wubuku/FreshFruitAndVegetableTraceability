@@ -11,8 +11,8 @@ public class ContactMechTypeId {
 
     public static final String MISC_CONTACT_MECH = "MISC_CONTACT_MECH";
 
-    public static final String POSTAL_ADDRESS = "POSTAL_ADDRESS";
-
     public static final String TELECOM_NUMBER = "TELECOM_NUMBER";
+
+    public static final String POSTAL_ADDRESS = "POSTAL_ADDRESS";
 
 }

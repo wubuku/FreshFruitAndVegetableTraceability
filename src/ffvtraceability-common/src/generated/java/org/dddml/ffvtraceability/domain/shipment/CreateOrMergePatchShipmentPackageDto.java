@@ -290,6 +290,7 @@ public class CreateOrMergePatchShipmentPackageDto extends AbstractShipmentPackag
             copyTo((AbstractShipmentPackageCommand.AbstractCreateShipmentPackage) command);
             if (this.getShipmentPackageContents() != null) {
                 for (CreateOrMergePatchShipmentPackageContentDto cmd : this.getShipmentPackageContents()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getShipmentPackageContents().add((ShipmentPackageContentCommand.CreateShipmentPackageContent) cmd.toCommand());
                 }
             }

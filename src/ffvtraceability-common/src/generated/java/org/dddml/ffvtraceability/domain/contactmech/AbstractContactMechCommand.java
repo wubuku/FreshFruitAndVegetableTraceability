@@ -303,6 +303,42 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
             this.telecomContactNumber2 = telecomContactNumber2;
         }
 
+        private String countryCode;
+
+        public String getCountryCode()
+        {
+            return this.countryCode;
+        }
+
+        public void setCountryCode(String countryCode)
+        {
+            this.countryCode = countryCode;
+        }
+
+        private String areaCode;
+
+        public String getAreaCode()
+        {
+            return this.areaCode;
+        }
+
+        public void setAreaCode(String areaCode)
+        {
+            this.areaCode = areaCode;
+        }
+
+        private String contactNumber;
+
+        public String getContactNumber()
+        {
+            return this.contactNumber;
+        }
+
+        public void setContactNumber(String contactNumber)
+        {
+            this.contactNumber = contactNumber;
+        }
+
         private String toName;
 
         public String getToName()
@@ -373,42 +409,6 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
         public void setAssocTelecomContactMechId(String assocTelecomContactMechId)
         {
             this.assocTelecomContactMechId = assocTelecomContactMechId;
-        }
-
-        private String countryCode;
-
-        public String getCountryCode()
-        {
-            return this.countryCode;
-        }
-
-        public void setCountryCode(String countryCode)
-        {
-            this.countryCode = countryCode;
-        }
-
-        private String areaCode;
-
-        public String getAreaCode()
-        {
-            return this.areaCode;
-        }
-
-        public void setAreaCode(String areaCode)
-        {
-            this.areaCode = areaCode;
-        }
-
-        private String contactNumber;
-
-        public String getContactNumber()
-        {
-            return this.contactNumber;
-        }
-
-        public void setContactNumber(String contactNumber)
-        {
-            this.contactNumber = contactNumber;
         }
 
     }
@@ -693,6 +693,42 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
             this.isPropertyTelecomContactNumber2Removed = removed;
         }
 
+        private Boolean isPropertyCountryCodeRemoved;
+
+        public Boolean getIsPropertyCountryCodeRemoved()
+        {
+            return this.isPropertyCountryCodeRemoved;
+        }
+
+        public void setIsPropertyCountryCodeRemoved(Boolean removed)
+        {
+            this.isPropertyCountryCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyAreaCodeRemoved;
+
+        public Boolean getIsPropertyAreaCodeRemoved()
+        {
+            return this.isPropertyAreaCodeRemoved;
+        }
+
+        public void setIsPropertyAreaCodeRemoved(Boolean removed)
+        {
+            this.isPropertyAreaCodeRemoved = removed;
+        }
+
+        private Boolean isPropertyContactNumberRemoved;
+
+        public Boolean getIsPropertyContactNumberRemoved()
+        {
+            return this.isPropertyContactNumberRemoved;
+        }
+
+        public void setIsPropertyContactNumberRemoved(Boolean removed)
+        {
+            this.isPropertyContactNumberRemoved = removed;
+        }
+
         private Boolean isPropertyToNameRemoved;
 
         public Boolean getIsPropertyToNameRemoved()
@@ -765,42 +801,6 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
             this.isPropertyAssocTelecomContactMechIdRemoved = removed;
         }
 
-        private Boolean isPropertyCountryCodeRemoved;
-
-        public Boolean getIsPropertyCountryCodeRemoved()
-        {
-            return this.isPropertyCountryCodeRemoved;
-        }
-
-        public void setIsPropertyCountryCodeRemoved(Boolean removed)
-        {
-            this.isPropertyCountryCodeRemoved = removed;
-        }
-
-        private Boolean isPropertyAreaCodeRemoved;
-
-        public Boolean getIsPropertyAreaCodeRemoved()
-        {
-            return this.isPropertyAreaCodeRemoved;
-        }
-
-        public void setIsPropertyAreaCodeRemoved(Boolean removed)
-        {
-            this.isPropertyAreaCodeRemoved = removed;
-        }
-
-        private Boolean isPropertyContactNumberRemoved;
-
-        public Boolean getIsPropertyContactNumberRemoved()
-        {
-            return this.isPropertyContactNumberRemoved;
-        }
-
-        public void setIsPropertyContactNumberRemoved(Boolean removed)
-        {
-            this.isPropertyContactNumberRemoved = removed;
-        }
-
 
     }
 
@@ -814,15 +814,15 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
         }
     }
 
-    public static class SimpleCreatePostalAddress extends SimpleCreateContactMech {
-        public SimpleCreatePostalAddress() {
-            super.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
-        }
-    }
-
     public static class SimpleCreateTelecomNumber extends SimpleCreateContactMech {
         public SimpleCreateTelecomNumber() {
             super.setContactMechTypeId(ContactMechTypeId.TELECOM_NUMBER);
+        }
+    }
+
+    public static class SimpleCreatePostalAddress extends SimpleCreateContactMech {
+        public SimpleCreatePostalAddress() {
+            super.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
         }
     }
 
@@ -837,15 +837,15 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
         }
     }
 
-    public static class SimpleMergePatchPostalAddress extends SimpleMergePatchContactMech {
-        public SimpleMergePatchPostalAddress() {
-            super.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
-        }
-    }
-
     public static class SimpleMergePatchTelecomNumber extends SimpleMergePatchContactMech {
         public SimpleMergePatchTelecomNumber() {
             super.setContactMechTypeId(ContactMechTypeId.TELECOM_NUMBER);
+        }
+    }
+
+    public static class SimpleMergePatchPostalAddress extends SimpleMergePatchContactMech {
+        public SimpleMergePatchPostalAddress() {
+            super.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
         }
     }
 
@@ -874,15 +874,15 @@ public abstract class AbstractContactMechCommand extends AbstractCommand impleme
         }
     }
 
-    public static class SimpleDeletePostalAddress extends SimpleDeleteContactMech {
-        public SimpleDeletePostalAddress() {
-            super.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
-        }
-    }
-
     public static class SimpleDeleteTelecomNumber extends SimpleDeleteContactMech {
         public SimpleDeleteTelecomNumber() {
             super.setContactMechTypeId(ContactMechTypeId.TELECOM_NUMBER);
+        }
+    }
+
+    public static class SimpleDeletePostalAddress extends SimpleDeleteContactMech {
+        public SimpleDeletePostalAddress() {
+            super.setContactMechTypeId(ContactMechTypeId.POSTAL_ADDRESS);
         }
     }
 

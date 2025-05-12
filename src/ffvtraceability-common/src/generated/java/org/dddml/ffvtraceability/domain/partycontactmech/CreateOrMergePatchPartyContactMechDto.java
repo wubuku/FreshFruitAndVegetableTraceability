@@ -262,6 +262,7 @@ public class CreateOrMergePatchPartyContactMechDto extends AbstractPartyContactM
             copyTo((AbstractPartyContactMechCommand.AbstractCreatePartyContactMech) command);
             if (this.getPartyContactMechPurposes() != null) {
                 for (CreateOrMergePatchPartyContactMechPurposeDto cmd : this.getPartyContactMechPurposes()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getPartyContactMechPurposes().add((PartyContactMechPurposeCommand.CreatePartyContactMechPurpose) cmd.toCommand());
                 }
             }

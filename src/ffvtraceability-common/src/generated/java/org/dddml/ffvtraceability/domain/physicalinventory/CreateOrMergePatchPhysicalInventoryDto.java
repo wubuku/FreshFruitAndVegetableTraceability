@@ -122,6 +122,7 @@ public class CreateOrMergePatchPhysicalInventoryDto extends AbstractPhysicalInve
             copyTo((AbstractPhysicalInventoryCommand.AbstractCreatePhysicalInventory) command);
             if (this.getInventoryItemVariances() != null) {
                 for (CreateOrMergePatchInventoryItemVarianceDto cmd : this.getInventoryItemVariances()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getInventoryItemVariances().add((InventoryItemVarianceCommand.CreateInventoryItemVariance) cmd.toCommand());
                 }
             }

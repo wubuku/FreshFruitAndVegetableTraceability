@@ -146,8 +146,8 @@ public class BffPurchaseOrderServiceResource {
 
     @PostMapping("{orderId}/recalculateFulfillmentStatus")
     public String recalculateFulfillmentStatus(
-        @PathVariable("orderId") String orderId,
-        @RequestBody BffPurchaseOrderServiceCommands.RecalculateFulfillmentStatus requestBody
+        @RequestBody BffPurchaseOrderServiceCommands.RecalculateFulfillmentStatus requestBody,
+        @PathVariable("orderId") String orderId
     ) {
         requestBody.setOrderId(orderId);
         
@@ -186,9 +186,9 @@ public class BffPurchaseOrderServiceResource {
 
     @PutMapping("{orderId}/Items/{orderItemSeqId}")
     public void updatePurchaseOrderItem(
+        @RequestBody BffPurchaseOrderServiceCommands.UpdatePurchaseOrderItem requestBody,
         @PathVariable("orderId") String orderId,
-        @PathVariable("orderItemSeqId") String orderItemSeqId,
-        @RequestBody BffPurchaseOrderServiceCommands.UpdatePurchaseOrderItem requestBody
+        @PathVariable("orderItemSeqId") String orderItemSeqId
     ) {
         requestBody.setOrderId(orderId);
         requestBody.setOrderItemSeqId(orderItemSeqId);

@@ -430,6 +430,7 @@ public class CreateOrMergePatchLotDto extends AbstractLotCommandDto implements L
             copyTo((AbstractLotCommand.AbstractCreateLot) command);
             if (this.getLotIdentifications() != null) {
                 for (CreateOrMergePatchLotIdentificationDto cmd : this.getLotIdentifications()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getLotIdentifications().add((LotIdentificationCommand.CreateLotIdentification) cmd.toCommand());
                 }
             }

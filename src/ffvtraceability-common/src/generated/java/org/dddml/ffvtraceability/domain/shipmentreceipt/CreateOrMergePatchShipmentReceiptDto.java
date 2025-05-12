@@ -584,11 +584,13 @@ public class CreateOrMergePatchShipmentReceiptDto extends AbstractShipmentReceip
             copyTo((AbstractShipmentReceiptCommand.AbstractCreateShipmentReceipt) command);
             if (this.getShipmentReceiptRoles() != null) {
                 for (CreateOrMergePatchShipmentReceiptRoleDto cmd : this.getShipmentReceiptRoles()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getShipmentReceiptRoles().add((ShipmentReceiptRoleCommand.CreateShipmentReceiptRole) cmd.toCommand());
                 }
             }
             if (this.getOrderAllocations() != null) {
                 for (CreateOrMergePatchShipmentReceiptOrderAllocationDto cmd : this.getOrderAllocations()) {
+                    cmd.setCommandType(COMMAND_TYPE_CREATE);
                     command.getOrderAllocations().add((ShipmentReceiptOrderAllocationCommand.CreateShipmentReceiptOrderAllocation) cmd.toCommand());
                 }
             }

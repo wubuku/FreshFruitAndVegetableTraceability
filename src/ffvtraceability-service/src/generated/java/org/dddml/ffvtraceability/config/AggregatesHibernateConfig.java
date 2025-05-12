@@ -5,186 +5,18 @@
 
 package org.dddml.ffvtraceability.config;
 
-import org.dddml.ffvtraceability.domain.attribute.*;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
 import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.attribute.hibernate.*;
-import org.dddml.ffvtraceability.domain.attributeset.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.attributeset.hibernate.*;
-import org.dddml.ffvtraceability.domain.attributesetinstance.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.attributesetinstance.hibernate.*;
-import org.dddml.ffvtraceability.domain.bffnotification.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.bffnotification.hibernate.*;
-import org.dddml.ffvtraceability.domain.article.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.article.hibernate.*;
-import org.dddml.ffvtraceability.domain.contactmech.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.contactmech.hibernate.*;
-import org.dddml.ffvtraceability.domain.contactmechpurposetype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.contactmechpurposetype.hibernate.*;
-import org.dddml.ffvtraceability.domain.shippingevent.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.shippingevent.hibernate.*;
-import org.dddml.ffvtraceability.domain.receivingevent.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.receivingevent.hibernate.*;
-import org.dddml.ffvtraceability.domain.transformationevent.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.transformationevent.hibernate.*;
-import org.dddml.ffvtraceability.domain.documentnumbergenerator.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.documentnumbergenerator.hibernate.*;
-import org.dddml.ffvtraceability.domain.document.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.document.hibernate.*;
-import org.dddml.ffvtraceability.domain.enumeration.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.enumeration.hibernate.*;
-import org.dddml.ffvtraceability.domain.enumerationtype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.enumerationtype.hibernate.*;
-import org.dddml.ffvtraceability.domain.facility.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.facility.hibernate.*;
-import org.dddml.ffvtraceability.domain.facilityidentificationtype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.facilityidentificationtype.hibernate.*;
-import org.dddml.ffvtraceability.domain.facilitytype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.facilitytype.hibernate.*;
-import org.dddml.ffvtraceability.domain.facilitycontactmech.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.facilitycontactmech.hibernate.*;
-import org.dddml.ffvtraceability.domain.facilitylocation.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.facilitylocation.hibernate.*;
-import org.dddml.ffvtraceability.domain.geo.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.geo.hibernate.*;
-import org.dddml.ffvtraceability.domain.geotype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.geotype.hibernate.*;
-import org.dddml.ffvtraceability.domain.geoassoc.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.geoassoc.hibernate.*;
-import org.dddml.ffvtraceability.domain.geoassoctype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.geoassoctype.hibernate.*;
-import org.dddml.ffvtraceability.domain.geopoint.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.geopoint.hibernate.*;
-import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.gs1applicationidentifier.hibernate.*;
-import org.dddml.ffvtraceability.domain.inventoryitem.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.inventoryitem.hibernate.*;
-import org.dddml.ffvtraceability.domain.inventoryitemtype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.inventoryitemtype.hibernate.*;
-import org.dddml.ffvtraceability.domain.inventorytransfer.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.inventorytransfer.hibernate.*;
-import org.dddml.ffvtraceability.domain.lot.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.lot.hibernate.*;
-import org.dddml.ffvtraceability.domain.lottype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.lottype.hibernate.*;
-import org.dddml.ffvtraceability.domain.lotidentificationtype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.lotidentificationtype.hibernate.*;
-import org.dddml.ffvtraceability.domain.order.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.order.hibernate.*;
-import org.dddml.ffvtraceability.domain.orderadjustmenttype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.orderadjustmenttype.hibernate.*;
-import org.dddml.ffvtraceability.domain.ordertype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.ordertype.hibernate.*;
-import org.dddml.ffvtraceability.domain.orderitemtype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.orderitemtype.hibernate.*;
-import org.dddml.ffvtraceability.domain.party.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.party.hibernate.*;
-import org.dddml.ffvtraceability.domain.partyidentificationtype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.partyidentificationtype.hibernate.*;
-import org.dddml.ffvtraceability.domain.partycontactmech.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.partycontactmech.hibernate.*;
-import org.dddml.ffvtraceability.domain.partyrole.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.partyrole.hibernate.*;
+import org.dddml.ffvtraceability.domain.shipmentreceipt.hibernate.*;
 import org.dddml.ffvtraceability.domain.physicalinventory.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.physicalinventory.hibernate.*;
 import org.dddml.ffvtraceability.domain.variancereason.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.variancereason.hibernate.*;
-import org.dddml.ffvtraceability.domain.product.*;
+import org.dddml.ffvtraceability.domain.facilitycontactmech.*;
 import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.product.hibernate.*;
-import org.dddml.ffvtraceability.domain.producttype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.producttype.hibernate.*;
-import org.dddml.ffvtraceability.domain.productassoc.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.productassoc.hibernate.*;
-import org.dddml.ffvtraceability.domain.productassoctype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.productassoctype.hibernate.*;
-import org.dddml.ffvtraceability.domain.productcategory.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.productcategory.hibernate.*;
-import org.dddml.ffvtraceability.domain.productcategorytype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.productcategorytype.hibernate.*;
-import org.dddml.ffvtraceability.domain.qainspection.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.qainspection.hibernate.*;
-import org.dddml.ffvtraceability.domain.roletype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.roletype.hibernate.*;
-import org.dddml.ffvtraceability.domain.shipment.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.shipment.hibernate.*;
-import org.dddml.ffvtraceability.domain.shipmenttype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.shipmenttype.hibernate.*;
-import org.dddml.ffvtraceability.domain.shipmentboxtype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.shipmentboxtype.hibernate.*;
-import org.dddml.ffvtraceability.domain.shipmentreceipt.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.shipmentreceipt.hibernate.*;
-import org.dddml.ffvtraceability.domain.shippingdocument.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.shippingdocument.hibernate.*;
-import org.dddml.ffvtraceability.domain.statusitem.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.statusitem.hibernate.*;
-import org.dddml.ffvtraceability.domain.statustype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.statustype.hibernate.*;
-import org.dddml.ffvtraceability.domain.supplierproduct.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.supplierproduct.hibernate.*;
-import org.dddml.ffvtraceability.domain.tenant.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.tenant.hibernate.*;
-import org.dddml.ffvtraceability.domain.uom.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.uom.hibernate.*;
-import org.dddml.ffvtraceability.domain.uomtype.*;
-import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.uomtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.facilitycontactmech.hibernate.*;
 import org.dddml.ffvtraceability.domain.workeffort.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.workeffort.hibernate.*;
@@ -200,18 +32,186 @@ import org.dddml.ffvtraceability.domain.workeffortpurposetype.hibernate.*;
 import org.dddml.ffvtraceability.domain.workeffortassoctype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.workeffortassoctype.hibernate.*;
+import org.dddml.ffvtraceability.domain.attribute.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.attribute.hibernate.*;
+import org.dddml.ffvtraceability.domain.attributeset.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.attributeset.hibernate.*;
+import org.dddml.ffvtraceability.domain.tenant.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.tenant.hibernate.*;
+import org.dddml.ffvtraceability.domain.lot.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.lot.hibernate.*;
+import org.dddml.ffvtraceability.domain.lottype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.lottype.hibernate.*;
+import org.dddml.ffvtraceability.domain.lotidentificationtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.lotidentificationtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.bffnotification.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.bffnotification.hibernate.*;
+import org.dddml.ffvtraceability.domain.facilitylocation.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.facilitylocation.hibernate.*;
+import org.dddml.ffvtraceability.domain.productcategory.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.productcategory.hibernate.*;
+import org.dddml.ffvtraceability.domain.productcategorytype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.productcategorytype.hibernate.*;
+import org.dddml.ffvtraceability.domain.inventoryitem.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.inventoryitem.hibernate.*;
+import org.dddml.ffvtraceability.domain.inventoryitemtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.inventoryitemtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.facility.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.facility.hibernate.*;
+import org.dddml.ffvtraceability.domain.facilityidentificationtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.facilityidentificationtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.facilitytype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.facilitytype.hibernate.*;
+import org.dddml.ffvtraceability.domain.geopoint.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.geopoint.hibernate.*;
+import org.dddml.ffvtraceability.domain.inventorytransfer.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.inventorytransfer.hibernate.*;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shipmentboxtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.documentnumbergenerator.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.documentnumbergenerator.hibernate.*;
+import org.dddml.ffvtraceability.domain.partyrole.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.partyrole.hibernate.*;
+import org.dddml.ffvtraceability.domain.statusitem.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.statusitem.hibernate.*;
+import org.dddml.ffvtraceability.domain.statustype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.statustype.hibernate.*;
+import org.dddml.ffvtraceability.domain.contactmech.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.contactmech.hibernate.*;
+import org.dddml.ffvtraceability.domain.contactmechpurposetype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.contactmechpurposetype.hibernate.*;
+import org.dddml.ffvtraceability.domain.qainspection.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.qainspection.hibernate.*;
+import org.dddml.ffvtraceability.domain.enumeration.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.enumeration.hibernate.*;
+import org.dddml.ffvtraceability.domain.enumerationtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.enumerationtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.shippingevent.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shippingevent.hibernate.*;
+import org.dddml.ffvtraceability.domain.receivingevent.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.receivingevent.hibernate.*;
+import org.dddml.ffvtraceability.domain.transformationevent.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.transformationevent.hibernate.*;
+import org.dddml.ffvtraceability.domain.supplierproduct.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.supplierproduct.hibernate.*;
+import org.dddml.ffvtraceability.domain.workeffortinventoryassign.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.workeffortinventoryassign.hibernate.*;
+import org.dddml.ffvtraceability.domain.productassoc.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.productassoc.hibernate.*;
+import org.dddml.ffvtraceability.domain.productassoctype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.productassoctype.hibernate.*;
+import org.dddml.ffvtraceability.domain.document.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.document.hibernate.*;
+import org.dddml.ffvtraceability.domain.gs1applicationidentifier.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.gs1applicationidentifier.hibernate.*;
+import org.dddml.ffvtraceability.domain.shippingdocument.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shippingdocument.hibernate.*;
+import org.dddml.ffvtraceability.domain.uom.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.uom.hibernate.*;
+import org.dddml.ffvtraceability.domain.uomtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.uomtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.attributesetinstance.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.attributesetinstance.hibernate.*;
+import org.dddml.ffvtraceability.domain.roletype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.roletype.hibernate.*;
+import org.dddml.ffvtraceability.domain.order.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.order.hibernate.*;
+import org.dddml.ffvtraceability.domain.orderadjustmenttype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.orderadjustmenttype.hibernate.*;
+import org.dddml.ffvtraceability.domain.ordertype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.ordertype.hibernate.*;
+import org.dddml.ffvtraceability.domain.orderitemtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.orderitemtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.shipment.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shipment.hibernate.*;
+import org.dddml.ffvtraceability.domain.shipmenttype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.shipmenttype.hibernate.*;
+import org.dddml.ffvtraceability.domain.party.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.party.hibernate.*;
+import org.dddml.ffvtraceability.domain.partyidentificationtype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.partyidentificationtype.hibernate.*;
+import org.dddml.ffvtraceability.domain.article.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.article.hibernate.*;
+import org.dddml.ffvtraceability.domain.workeffortinventoryproduced.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.workeffortinventoryproduced.hibernate.*;
+import org.dddml.ffvtraceability.domain.partycontactmech.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.partycontactmech.hibernate.*;
+import org.dddml.ffvtraceability.domain.geo.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.geo.hibernate.*;
+import org.dddml.ffvtraceability.domain.geotype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.geotype.hibernate.*;
+import org.dddml.ffvtraceability.domain.geoassoc.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.geoassoc.hibernate.*;
+import org.dddml.ffvtraceability.domain.geoassoctype.*;
+import org.dddml.ffvtraceability.domain.*;
+import org.dddml.ffvtraceability.domain.geoassoctype.hibernate.*;
 import org.dddml.ffvtraceability.domain.workeffortgoodstandard.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.workeffortgoodstandard.hibernate.*;
 import org.dddml.ffvtraceability.domain.workeffortgoodstandardtype.*;
 import org.dddml.ffvtraceability.domain.*;
 import org.dddml.ffvtraceability.domain.workeffortgoodstandardtype.hibernate.*;
-import org.dddml.ffvtraceability.domain.workeffortinventoryassign.*;
+import org.dddml.ffvtraceability.domain.product.*;
 import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.workeffortinventoryassign.hibernate.*;
-import org.dddml.ffvtraceability.domain.workeffortinventoryproduced.*;
+import org.dddml.ffvtraceability.domain.product.hibernate.*;
+import org.dddml.ffvtraceability.domain.producttype.*;
 import org.dddml.ffvtraceability.domain.*;
-import org.dddml.ffvtraceability.domain.workeffortinventoryproduced.hibernate.*;
+import org.dddml.ffvtraceability.domain.producttype.hibernate.*;
 import org.dddml.ffvtraceability.specialization.AggregateEventListener;
 import org.dddml.ffvtraceability.specialization.EventStore;
 import org.dddml.ffvtraceability.specialization.IdGenerator;
@@ -226,567 +226,15 @@ public class AggregatesHibernateConfig {
 
 
     @Bean
-    public AbstractAttributeApplicationService.SimpleAttributeApplicationService attributeApplicationService(
-            @Qualifier("attributeEventStore") EventStore attributeEventStore,
-            AttributeStateRepository attributeStateRepository,
-            AttributeStateQueryRepository attributeStateQueryRepository
+    public AbstractShipmentReceiptApplicationService.SimpleShipmentReceiptApplicationService shipmentReceiptApplicationService(
+            @Qualifier("shipmentReceiptEventStore") EventStore shipmentReceiptEventStore,
+            ShipmentReceiptStateRepository shipmentReceiptStateRepository,
+            ShipmentReceiptStateQueryRepository shipmentReceiptStateQueryRepository
     ) {
-        AbstractAttributeApplicationService.SimpleAttributeApplicationService applicationService = new AbstractAttributeApplicationService.SimpleAttributeApplicationService(
-                attributeEventStore,
-                attributeStateRepository,
-                attributeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractAttributeSetApplicationService.SimpleAttributeSetApplicationService attributeSetApplicationService(
-            @Qualifier("attributeSetEventStore") EventStore attributeSetEventStore,
-            AttributeSetStateRepository attributeSetStateRepository,
-            AttributeSetStateQueryRepository attributeSetStateQueryRepository
-    ) {
-        AbstractAttributeSetApplicationService.SimpleAttributeSetApplicationService applicationService = new AbstractAttributeSetApplicationService.SimpleAttributeSetApplicationService(
-                attributeSetEventStore,
-                attributeSetStateRepository,
-                attributeSetStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService attributeSetInstanceApplicationService(
-            @Qualifier("attributeSetInstanceEventStore") EventStore attributeSetInstanceEventStore,
-            AttributeSetInstanceStateRepository attributeSetInstanceStateRepository,
-            AttributeSetInstanceStateQueryRepository attributeSetInstanceStateQueryRepository
-            , IdGenerator<String, AttributeSetInstanceCommand.CreateAttributeSetInstance, AttributeSetInstanceState> attributeSetInstanceIdGenerator
-    ) {
-        AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService applicationService = new AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService(
-                attributeSetInstanceEventStore,
-                attributeSetInstanceStateRepository,
-                attributeSetInstanceStateQueryRepository
-                , attributeSetInstanceIdGenerator
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractBffNotificationApplicationService.SimpleBffNotificationApplicationService bffNotificationApplicationService(
-            @Qualifier("bffNotificationEventStore") EventStore bffNotificationEventStore,
-            BffNotificationStateRepository bffNotificationStateRepository,
-            BffNotificationStateQueryRepository bffNotificationStateQueryRepository
-    ) {
-        AbstractBffNotificationApplicationService.SimpleBffNotificationApplicationService applicationService = new AbstractBffNotificationApplicationService.SimpleBffNotificationApplicationService(
-                bffNotificationEventStore,
-                bffNotificationStateRepository,
-                bffNotificationStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractArticleApplicationService.SimpleArticleApplicationService articleApplicationService(
-            @Qualifier("articleEventStore") EventStore articleEventStore,
-            ArticleStateRepository articleStateRepository,
-            ArticleStateQueryRepository articleStateQueryRepository
-    ) {
-        AbstractArticleApplicationService.SimpleArticleApplicationService applicationService = new AbstractArticleApplicationService.SimpleArticleApplicationService(
-                articleEventStore,
-                articleStateRepository,
-                articleStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractContactMechApplicationService.SimpleContactMechApplicationService contactMechApplicationService(
-            @Qualifier("contactMechEventStore") EventStore contactMechEventStore,
-            ContactMechStateRepository contactMechStateRepository,
-            ContactMechStateQueryRepository contactMechStateQueryRepository
-    ) {
-        AbstractContactMechApplicationService.SimpleContactMechApplicationService applicationService = new AbstractContactMechApplicationService.SimpleContactMechApplicationService(
-                contactMechEventStore,
-                contactMechStateRepository,
-                contactMechStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractContactMechPurposeTypeApplicationService.SimpleContactMechPurposeTypeApplicationService contactMechPurposeTypeApplicationService(
-            ContactMechPurposeTypeStateRepository contactMechPurposeTypeStateRepository,
-            ContactMechPurposeTypeStateQueryRepository contactMechPurposeTypeStateQueryRepository
-    ) {
-        AbstractContactMechPurposeTypeApplicationService.SimpleContactMechPurposeTypeApplicationService applicationService = new AbstractContactMechPurposeTypeApplicationService.SimpleContactMechPurposeTypeApplicationService(
-                contactMechPurposeTypeStateRepository,
-                contactMechPurposeTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractShippingEventApplicationService.SimpleShippingEventApplicationService shippingEventApplicationService(
-            ShippingEventStateRepository shippingEventStateRepository,
-            ShippingEventStateQueryRepository shippingEventStateQueryRepository
-    ) {
-        AbstractShippingEventApplicationService.SimpleShippingEventApplicationService applicationService = new AbstractShippingEventApplicationService.SimpleShippingEventApplicationService(
-                shippingEventStateRepository,
-                shippingEventStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractReceivingEventApplicationService.SimpleReceivingEventApplicationService receivingEventApplicationService(
-            ReceivingEventStateRepository receivingEventStateRepository,
-            ReceivingEventStateQueryRepository receivingEventStateQueryRepository
-    ) {
-        AbstractReceivingEventApplicationService.SimpleReceivingEventApplicationService applicationService = new AbstractReceivingEventApplicationService.SimpleReceivingEventApplicationService(
-                receivingEventStateRepository,
-                receivingEventStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractTransformationEventApplicationService.SimpleTransformationEventApplicationService transformationEventApplicationService(
-            TransformationEventStateRepository transformationEventStateRepository,
-            TransformationEventStateQueryRepository transformationEventStateQueryRepository
-    ) {
-        AbstractTransformationEventApplicationService.SimpleTransformationEventApplicationService applicationService = new AbstractTransformationEventApplicationService.SimpleTransformationEventApplicationService(
-                transformationEventStateRepository,
-                transformationEventStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-
-
-    @Bean
-    public AbstractDocumentApplicationService.SimpleDocumentApplicationService documentApplicationService(
-            @Qualifier("documentEventStore") EventStore documentEventStore,
-            DocumentStateRepository documentStateRepository,
-            DocumentStateQueryRepository documentStateQueryRepository
-    ) {
-        AbstractDocumentApplicationService.SimpleDocumentApplicationService applicationService = new AbstractDocumentApplicationService.SimpleDocumentApplicationService(
-                documentEventStore,
-                documentStateRepository,
-                documentStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractEnumerationApplicationService.SimpleEnumerationApplicationService enumerationApplicationService(
-            EnumerationStateRepository enumerationStateRepository,
-            EnumerationStateQueryRepository enumerationStateQueryRepository
-    ) {
-        AbstractEnumerationApplicationService.SimpleEnumerationApplicationService applicationService = new AbstractEnumerationApplicationService.SimpleEnumerationApplicationService(
-                enumerationStateRepository,
-                enumerationStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractEnumerationTypeApplicationService.SimpleEnumerationTypeApplicationService enumerationTypeApplicationService(
-            EnumerationTypeStateRepository enumerationTypeStateRepository,
-            EnumerationTypeStateQueryRepository enumerationTypeStateQueryRepository
-    ) {
-        AbstractEnumerationTypeApplicationService.SimpleEnumerationTypeApplicationService applicationService = new AbstractEnumerationTypeApplicationService.SimpleEnumerationTypeApplicationService(
-                enumerationTypeStateRepository,
-                enumerationTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractFacilityApplicationService.SimpleFacilityApplicationService facilityApplicationService(
-            @Qualifier("facilityEventStore") EventStore facilityEventStore,
-            FacilityStateRepository facilityStateRepository,
-            FacilityStateQueryRepository facilityStateQueryRepository
-    ) {
-        AbstractFacilityApplicationService.SimpleFacilityApplicationService applicationService = new AbstractFacilityApplicationService.SimpleFacilityApplicationService(
-                facilityEventStore,
-                facilityStateRepository,
-                facilityStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractFacilityIdentificationTypeApplicationService.SimpleFacilityIdentificationTypeApplicationService facilityIdentificationTypeApplicationService(
-            FacilityIdentificationTypeStateRepository facilityIdentificationTypeStateRepository,
-            FacilityIdentificationTypeStateQueryRepository facilityIdentificationTypeStateQueryRepository
-    ) {
-        AbstractFacilityIdentificationTypeApplicationService.SimpleFacilityIdentificationTypeApplicationService applicationService = new AbstractFacilityIdentificationTypeApplicationService.SimpleFacilityIdentificationTypeApplicationService(
-                facilityIdentificationTypeStateRepository,
-                facilityIdentificationTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractFacilityTypeApplicationService.SimpleFacilityTypeApplicationService facilityTypeApplicationService(
-            FacilityTypeStateRepository facilityTypeStateRepository,
-            FacilityTypeStateQueryRepository facilityTypeStateQueryRepository
-    ) {
-        AbstractFacilityTypeApplicationService.SimpleFacilityTypeApplicationService applicationService = new AbstractFacilityTypeApplicationService.SimpleFacilityTypeApplicationService(
-                facilityTypeStateRepository,
-                facilityTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractFacilityContactMechApplicationService.SimpleFacilityContactMechApplicationService facilityContactMechApplicationService(
-            @Qualifier("facilityContactMechEventStore") EventStore facilityContactMechEventStore,
-            FacilityContactMechStateRepository facilityContactMechStateRepository,
-            FacilityContactMechStateQueryRepository facilityContactMechStateQueryRepository
-    ) {
-        AbstractFacilityContactMechApplicationService.SimpleFacilityContactMechApplicationService applicationService = new AbstractFacilityContactMechApplicationService.SimpleFacilityContactMechApplicationService(
-                facilityContactMechEventStore,
-                facilityContactMechStateRepository,
-                facilityContactMechStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractFacilityLocationApplicationService.SimpleFacilityLocationApplicationService facilityLocationApplicationService(
-            FacilityLocationStateRepository facilityLocationStateRepository,
-            FacilityLocationStateQueryRepository facilityLocationStateQueryRepository
-    ) {
-        AbstractFacilityLocationApplicationService.SimpleFacilityLocationApplicationService applicationService = new AbstractFacilityLocationApplicationService.SimpleFacilityLocationApplicationService(
-                facilityLocationStateRepository,
-                facilityLocationStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractGeoApplicationService.SimpleGeoApplicationService geoApplicationService(
-            GeoStateRepository geoStateRepository,
-            GeoStateQueryRepository geoStateQueryRepository
-    ) {
-        AbstractGeoApplicationService.SimpleGeoApplicationService applicationService = new AbstractGeoApplicationService.SimpleGeoApplicationService(
-                geoStateRepository,
-                geoStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractGeoTypeApplicationService.SimpleGeoTypeApplicationService geoTypeApplicationService(
-            GeoTypeStateRepository geoTypeStateRepository,
-            GeoTypeStateQueryRepository geoTypeStateQueryRepository
-    ) {
-        AbstractGeoTypeApplicationService.SimpleGeoTypeApplicationService applicationService = new AbstractGeoTypeApplicationService.SimpleGeoTypeApplicationService(
-                geoTypeStateRepository,
-                geoTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractGeoAssocApplicationService.SimpleGeoAssocApplicationService geoAssocApplicationService(
-            GeoAssocStateRepository geoAssocStateRepository,
-            GeoAssocStateQueryRepository geoAssocStateQueryRepository
-    ) {
-        AbstractGeoAssocApplicationService.SimpleGeoAssocApplicationService applicationService = new AbstractGeoAssocApplicationService.SimpleGeoAssocApplicationService(
-                geoAssocStateRepository,
-                geoAssocStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractGeoAssocTypeApplicationService.SimpleGeoAssocTypeApplicationService geoAssocTypeApplicationService(
-            GeoAssocTypeStateRepository geoAssocTypeStateRepository,
-            GeoAssocTypeStateQueryRepository geoAssocTypeStateQueryRepository
-    ) {
-        AbstractGeoAssocTypeApplicationService.SimpleGeoAssocTypeApplicationService applicationService = new AbstractGeoAssocTypeApplicationService.SimpleGeoAssocTypeApplicationService(
-                geoAssocTypeStateRepository,
-                geoAssocTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractGeoPointApplicationService.SimpleGeoPointApplicationService geoPointApplicationService(
-            GeoPointStateRepository geoPointStateRepository,
-            GeoPointStateQueryRepository geoPointStateQueryRepository
-    ) {
-        AbstractGeoPointApplicationService.SimpleGeoPointApplicationService applicationService = new AbstractGeoPointApplicationService.SimpleGeoPointApplicationService(
-                geoPointStateRepository,
-                geoPointStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractGs1ApplicationIdentifierApplicationService.SimpleGs1ApplicationIdentifierApplicationService gs1ApplicationIdentifierApplicationService(
-            Gs1ApplicationIdentifierStateRepository gs1ApplicationIdentifierStateRepository,
-            Gs1ApplicationIdentifierStateQueryRepository gs1ApplicationIdentifierStateQueryRepository
-    ) {
-        AbstractGs1ApplicationIdentifierApplicationService.SimpleGs1ApplicationIdentifierApplicationService applicationService = new AbstractGs1ApplicationIdentifierApplicationService.SimpleGs1ApplicationIdentifierApplicationService(
-                gs1ApplicationIdentifierStateRepository,
-                gs1ApplicationIdentifierStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractInventoryItemApplicationService.SimpleInventoryItemApplicationService inventoryItemApplicationService(
-            @Qualifier("inventoryItemEventStore") EventStore inventoryItemEventStore,
-            InventoryItemStateRepository inventoryItemStateRepository,
-            InventoryItemStateQueryRepository inventoryItemStateQueryRepository
-    ) {
-        AbstractInventoryItemApplicationService.SimpleInventoryItemApplicationService applicationService = new AbstractInventoryItemApplicationService.SimpleInventoryItemApplicationService(
-                inventoryItemEventStore,
-                inventoryItemStateRepository,
-                inventoryItemStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractInventoryItemTypeApplicationService.SimpleInventoryItemTypeApplicationService inventoryItemTypeApplicationService(
-            InventoryItemTypeStateRepository inventoryItemTypeStateRepository,
-            InventoryItemTypeStateQueryRepository inventoryItemTypeStateQueryRepository
-    ) {
-        AbstractInventoryItemTypeApplicationService.SimpleInventoryItemTypeApplicationService applicationService = new AbstractInventoryItemTypeApplicationService.SimpleInventoryItemTypeApplicationService(
-                inventoryItemTypeStateRepository,
-                inventoryItemTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractInventoryTransferApplicationService.SimpleInventoryTransferApplicationService inventoryTransferApplicationService(
-            @Qualifier("inventoryTransferEventStore") EventStore inventoryTransferEventStore,
-            InventoryTransferStateRepository inventoryTransferStateRepository,
-            InventoryTransferStateQueryRepository inventoryTransferStateQueryRepository
-    ) {
-        AbstractInventoryTransferApplicationService.SimpleInventoryTransferApplicationService applicationService = new AbstractInventoryTransferApplicationService.SimpleInventoryTransferApplicationService(
-                inventoryTransferEventStore,
-                inventoryTransferStateRepository,
-                inventoryTransferStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractLotApplicationService.SimpleLotApplicationService lotApplicationService(
-            @Qualifier("lotEventStore") EventStore lotEventStore,
-            LotStateRepository lotStateRepository,
-            LotStateQueryRepository lotStateQueryRepository
-    ) {
-        AbstractLotApplicationService.SimpleLotApplicationService applicationService = new AbstractLotApplicationService.SimpleLotApplicationService(
-                lotEventStore,
-                lotStateRepository,
-                lotStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractLotTypeApplicationService.SimpleLotTypeApplicationService lotTypeApplicationService(
-            LotTypeStateRepository lotTypeStateRepository,
-            LotTypeStateQueryRepository lotTypeStateQueryRepository
-    ) {
-        AbstractLotTypeApplicationService.SimpleLotTypeApplicationService applicationService = new AbstractLotTypeApplicationService.SimpleLotTypeApplicationService(
-                lotTypeStateRepository,
-                lotTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractLotIdentificationTypeApplicationService.SimpleLotIdentificationTypeApplicationService lotIdentificationTypeApplicationService(
-            LotIdentificationTypeStateRepository lotIdentificationTypeStateRepository,
-            LotIdentificationTypeStateQueryRepository lotIdentificationTypeStateQueryRepository
-    ) {
-        AbstractLotIdentificationTypeApplicationService.SimpleLotIdentificationTypeApplicationService applicationService = new AbstractLotIdentificationTypeApplicationService.SimpleLotIdentificationTypeApplicationService(
-                lotIdentificationTypeStateRepository,
-                lotIdentificationTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractOrderApplicationService.SimpleOrderApplicationService orderApplicationService(
-            @Qualifier("orderEventStore") EventStore orderEventStore,
-            OrderHeaderStateRepository orderHeaderStateRepository,
-            OrderHeaderStateQueryRepository orderHeaderStateQueryRepository
-    ) {
-        AbstractOrderApplicationService.SimpleOrderApplicationService applicationService = new AbstractOrderApplicationService.SimpleOrderApplicationService(
-                orderEventStore,
-                orderHeaderStateRepository,
-                orderHeaderStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService orderAdjustmentTypeApplicationService(
-            OrderAdjustmentTypeStateRepository orderAdjustmentTypeStateRepository,
-            OrderAdjustmentTypeStateQueryRepository orderAdjustmentTypeStateQueryRepository
-    ) {
-        AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService applicationService = new AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService(
-                orderAdjustmentTypeStateRepository,
-                orderAdjustmentTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractOrderTypeApplicationService.SimpleOrderTypeApplicationService orderTypeApplicationService(
-            OrderTypeStateRepository orderTypeStateRepository,
-            OrderTypeStateQueryRepository orderTypeStateQueryRepository
-    ) {
-        AbstractOrderTypeApplicationService.SimpleOrderTypeApplicationService applicationService = new AbstractOrderTypeApplicationService.SimpleOrderTypeApplicationService(
-                orderTypeStateRepository,
-                orderTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractOrderItemTypeApplicationService.SimpleOrderItemTypeApplicationService orderItemTypeApplicationService(
-            OrderItemTypeStateRepository orderItemTypeStateRepository,
-            OrderItemTypeStateQueryRepository orderItemTypeStateQueryRepository
-    ) {
-        AbstractOrderItemTypeApplicationService.SimpleOrderItemTypeApplicationService applicationService = new AbstractOrderItemTypeApplicationService.SimpleOrderItemTypeApplicationService(
-                orderItemTypeStateRepository,
-                orderItemTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractPartyApplicationService.SimplePartyApplicationService partyApplicationService(
-            @Qualifier("partyEventStore") EventStore partyEventStore,
-            PartyStateRepository partyStateRepository,
-            PartyStateQueryRepository partyStateQueryRepository
-    ) {
-        AbstractPartyApplicationService.SimplePartyApplicationService applicationService = new AbstractPartyApplicationService.SimplePartyApplicationService(
-                partyEventStore,
-                partyStateRepository,
-                partyStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractPartyIdentificationTypeApplicationService.SimplePartyIdentificationTypeApplicationService partyIdentificationTypeApplicationService(
-            PartyIdentificationTypeStateRepository partyIdentificationTypeStateRepository,
-            PartyIdentificationTypeStateQueryRepository partyIdentificationTypeStateQueryRepository
-    ) {
-        AbstractPartyIdentificationTypeApplicationService.SimplePartyIdentificationTypeApplicationService applicationService = new AbstractPartyIdentificationTypeApplicationService.SimplePartyIdentificationTypeApplicationService(
-                partyIdentificationTypeStateRepository,
-                partyIdentificationTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractPartyContactMechApplicationService.SimplePartyContactMechApplicationService partyContactMechApplicationService(
-            @Qualifier("partyContactMechEventStore") EventStore partyContactMechEventStore,
-            PartyContactMechStateRepository partyContactMechStateRepository,
-            PartyContactMechStateQueryRepository partyContactMechStateQueryRepository
-    ) {
-        AbstractPartyContactMechApplicationService.SimplePartyContactMechApplicationService applicationService = new AbstractPartyContactMechApplicationService.SimplePartyContactMechApplicationService(
-                partyContactMechEventStore,
-                partyContactMechStateRepository,
-                partyContactMechStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractPartyRoleApplicationService.SimplePartyRoleApplicationService partyRoleApplicationService(
-            @Qualifier("partyRoleEventStore") EventStore partyRoleEventStore,
-            PartyRoleStateRepository partyRoleStateRepository,
-            PartyRoleStateQueryRepository partyRoleStateQueryRepository
-    ) {
-        AbstractPartyRoleApplicationService.SimplePartyRoleApplicationService applicationService = new AbstractPartyRoleApplicationService.SimplePartyRoleApplicationService(
-                partyRoleEventStore,
-                partyRoleStateRepository,
-                partyRoleStateQueryRepository
+        AbstractShipmentReceiptApplicationService.SimpleShipmentReceiptApplicationService applicationService = new AbstractShipmentReceiptApplicationService.SimpleShipmentReceiptApplicationService(
+                shipmentReceiptEventStore,
+                shipmentReceiptStateRepository,
+                shipmentReceiptStateQueryRepository
         );
         return applicationService;
     }
@@ -824,289 +272,15 @@ public class AggregatesHibernateConfig {
 
 
     @Bean
-    public AbstractProductApplicationService.SimpleProductApplicationService productApplicationService(
-            @Qualifier("productEventStore") EventStore productEventStore,
-            ProductStateRepository productStateRepository,
-            ProductStateQueryRepository productStateQueryRepository
+    public AbstractFacilityContactMechApplicationService.SimpleFacilityContactMechApplicationService facilityContactMechApplicationService(
+            @Qualifier("facilityContactMechEventStore") EventStore facilityContactMechEventStore,
+            FacilityContactMechStateRepository facilityContactMechStateRepository,
+            FacilityContactMechStateQueryRepository facilityContactMechStateQueryRepository
     ) {
-        AbstractProductApplicationService.SimpleProductApplicationService applicationService = new AbstractProductApplicationService.SimpleProductApplicationService(
-                productEventStore,
-                productStateRepository,
-                productStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractProductTypeApplicationService.SimpleProductTypeApplicationService productTypeApplicationService(
-            ProductTypeStateRepository productTypeStateRepository,
-            ProductTypeStateQueryRepository productTypeStateQueryRepository
-    ) {
-        AbstractProductTypeApplicationService.SimpleProductTypeApplicationService applicationService = new AbstractProductTypeApplicationService.SimpleProductTypeApplicationService(
-                productTypeStateRepository,
-                productTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractProductAssocApplicationService.SimpleProductAssocApplicationService productAssocApplicationService(
-            @Qualifier("productAssocEventStore") EventStore productAssocEventStore,
-            ProductAssocStateRepository productAssocStateRepository,
-            ProductAssocStateQueryRepository productAssocStateQueryRepository
-    ) {
-        AbstractProductAssocApplicationService.SimpleProductAssocApplicationService applicationService = new AbstractProductAssocApplicationService.SimpleProductAssocApplicationService(
-                productAssocEventStore,
-                productAssocStateRepository,
-                productAssocStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractProductAssocTypeApplicationService.SimpleProductAssocTypeApplicationService productAssocTypeApplicationService(
-            ProductAssocTypeStateRepository productAssocTypeStateRepository,
-            ProductAssocTypeStateQueryRepository productAssocTypeStateQueryRepository
-    ) {
-        AbstractProductAssocTypeApplicationService.SimpleProductAssocTypeApplicationService applicationService = new AbstractProductAssocTypeApplicationService.SimpleProductAssocTypeApplicationService(
-                productAssocTypeStateRepository,
-                productAssocTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractProductCategoryApplicationService.SimpleProductCategoryApplicationService productCategoryApplicationService(
-            @Qualifier("productCategoryEventStore") EventStore productCategoryEventStore,
-            ProductCategoryStateRepository productCategoryStateRepository,
-            ProductCategoryStateQueryRepository productCategoryStateQueryRepository
-    ) {
-        AbstractProductCategoryApplicationService.SimpleProductCategoryApplicationService applicationService = new AbstractProductCategoryApplicationService.SimpleProductCategoryApplicationService(
-                productCategoryEventStore,
-                productCategoryStateRepository,
-                productCategoryStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractProductCategoryTypeApplicationService.SimpleProductCategoryTypeApplicationService productCategoryTypeApplicationService(
-            ProductCategoryTypeStateRepository productCategoryTypeStateRepository,
-            ProductCategoryTypeStateQueryRepository productCategoryTypeStateQueryRepository
-    ) {
-        AbstractProductCategoryTypeApplicationService.SimpleProductCategoryTypeApplicationService applicationService = new AbstractProductCategoryTypeApplicationService.SimpleProductCategoryTypeApplicationService(
-                productCategoryTypeStateRepository,
-                productCategoryTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractQaInspectionApplicationService.SimpleQaInspectionApplicationService qaInspectionApplicationService(
-            @Qualifier("qaInspectionEventStore") EventStore qaInspectionEventStore,
-            QaInspectionStateRepository qaInspectionStateRepository,
-            QaInspectionStateQueryRepository qaInspectionStateQueryRepository
-    ) {
-        AbstractQaInspectionApplicationService.SimpleQaInspectionApplicationService applicationService = new AbstractQaInspectionApplicationService.SimpleQaInspectionApplicationService(
-                qaInspectionEventStore,
-                qaInspectionStateRepository,
-                qaInspectionStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService roleTypeApplicationService(
-            RoleTypeStateRepository roleTypeStateRepository,
-            RoleTypeStateQueryRepository roleTypeStateQueryRepository
-    ) {
-        AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService applicationService = new AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService(
-                roleTypeStateRepository,
-                roleTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractShipmentApplicationService.SimpleShipmentApplicationService shipmentApplicationService(
-            @Qualifier("shipmentEventStore") EventStore shipmentEventStore,
-            ShipmentStateRepository shipmentStateRepository,
-            ShipmentStateQueryRepository shipmentStateQueryRepository
-    ) {
-        AbstractShipmentApplicationService.SimpleShipmentApplicationService applicationService = new AbstractShipmentApplicationService.SimpleShipmentApplicationService(
-                shipmentEventStore,
-                shipmentStateRepository,
-                shipmentStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService shipmentTypeApplicationService(
-            ShipmentTypeStateRepository shipmentTypeStateRepository,
-            ShipmentTypeStateQueryRepository shipmentTypeStateQueryRepository
-    ) {
-        AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService applicationService = new AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService(
-                shipmentTypeStateRepository,
-                shipmentTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService shipmentBoxTypeApplicationService(
-            @Qualifier("shipmentBoxTypeEventStore") EventStore shipmentBoxTypeEventStore,
-            ShipmentBoxTypeStateRepository shipmentBoxTypeStateRepository,
-            ShipmentBoxTypeStateQueryRepository shipmentBoxTypeStateQueryRepository
-    ) {
-        AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService applicationService = new AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService(
-                shipmentBoxTypeEventStore,
-                shipmentBoxTypeStateRepository,
-                shipmentBoxTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractShipmentReceiptApplicationService.SimpleShipmentReceiptApplicationService shipmentReceiptApplicationService(
-            @Qualifier("shipmentReceiptEventStore") EventStore shipmentReceiptEventStore,
-            ShipmentReceiptStateRepository shipmentReceiptStateRepository,
-            ShipmentReceiptStateQueryRepository shipmentReceiptStateQueryRepository
-    ) {
-        AbstractShipmentReceiptApplicationService.SimpleShipmentReceiptApplicationService applicationService = new AbstractShipmentReceiptApplicationService.SimpleShipmentReceiptApplicationService(
-                shipmentReceiptEventStore,
-                shipmentReceiptStateRepository,
-                shipmentReceiptStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractShippingDocumentApplicationService.SimpleShippingDocumentApplicationService shippingDocumentApplicationService(
-            @Qualifier("shippingDocumentEventStore") EventStore shippingDocumentEventStore,
-            ShippingDocumentStateRepository shippingDocumentStateRepository,
-            ShippingDocumentStateQueryRepository shippingDocumentStateQueryRepository
-    ) {
-        AbstractShippingDocumentApplicationService.SimpleShippingDocumentApplicationService applicationService = new AbstractShippingDocumentApplicationService.SimpleShippingDocumentApplicationService(
-                shippingDocumentEventStore,
-                shippingDocumentStateRepository,
-                shippingDocumentStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractStatusItemApplicationService.SimpleStatusItemApplicationService statusItemApplicationService(
-            StatusItemStateRepository statusItemStateRepository,
-            StatusItemStateQueryRepository statusItemStateQueryRepository
-    ) {
-        AbstractStatusItemApplicationService.SimpleStatusItemApplicationService applicationService = new AbstractStatusItemApplicationService.SimpleStatusItemApplicationService(
-                statusItemStateRepository,
-                statusItemStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractStatusTypeApplicationService.SimpleStatusTypeApplicationService statusTypeApplicationService(
-            StatusTypeStateRepository statusTypeStateRepository,
-            StatusTypeStateQueryRepository statusTypeStateQueryRepository
-    ) {
-        AbstractStatusTypeApplicationService.SimpleStatusTypeApplicationService applicationService = new AbstractStatusTypeApplicationService.SimpleStatusTypeApplicationService(
-                statusTypeStateRepository,
-                statusTypeStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractSupplierProductApplicationService.SimpleSupplierProductApplicationService supplierProductApplicationService(
-            @Qualifier("supplierProductEventStore") EventStore supplierProductEventStore,
-            SupplierProductStateRepository supplierProductStateRepository,
-            SupplierProductStateQueryRepository supplierProductStateQueryRepository
-    ) {
-        AbstractSupplierProductApplicationService.SimpleSupplierProductApplicationService applicationService = new AbstractSupplierProductApplicationService.SimpleSupplierProductApplicationService(
-                supplierProductEventStore,
-                supplierProductStateRepository,
-                supplierProductStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractTenantApplicationService.SimpleTenantApplicationService tenantApplicationService(
-            @Qualifier("tenantEventStore") EventStore tenantEventStore,
-            TenantStateRepository tenantStateRepository,
-            TenantStateQueryRepository tenantStateQueryRepository
-    ) {
-        AbstractTenantApplicationService.SimpleTenantApplicationService applicationService = new AbstractTenantApplicationService.SimpleTenantApplicationService(
-                tenantEventStore,
-                tenantStateRepository,
-                tenantStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractUomApplicationService.SimpleUomApplicationService uomApplicationService(
-            @Qualifier("uomEventStore") EventStore uomEventStore,
-            UomStateRepository uomStateRepository,
-            UomStateQueryRepository uomStateQueryRepository
-    ) {
-        AbstractUomApplicationService.SimpleUomApplicationService applicationService = new AbstractUomApplicationService.SimpleUomApplicationService(
-                uomEventStore,
-                uomStateRepository,
-                uomStateQueryRepository
-        );
-        return applicationService;
-    }
-
-
-
-    @Bean
-    public AbstractUomTypeApplicationService.SimpleUomTypeApplicationService uomTypeApplicationService(
-            @Qualifier("uomTypeEventStore") EventStore uomTypeEventStore,
-            UomTypeStateRepository uomTypeStateRepository,
-            UomTypeStateQueryRepository uomTypeStateQueryRepository
-    ) {
-        AbstractUomTypeApplicationService.SimpleUomTypeApplicationService applicationService = new AbstractUomTypeApplicationService.SimpleUomTypeApplicationService(
-                uomTypeEventStore,
-                uomTypeStateRepository,
-                uomTypeStateQueryRepository
+        AbstractFacilityContactMechApplicationService.SimpleFacilityContactMechApplicationService applicationService = new AbstractFacilityContactMechApplicationService.SimpleFacilityContactMechApplicationService(
+                facilityContactMechEventStore,
+                facilityContactMechStateRepository,
+                facilityContactMechStateQueryRepository
         );
         return applicationService;
     }
@@ -1188,6 +362,834 @@ public class AggregatesHibernateConfig {
 
 
     @Bean
+    public AbstractAttributeApplicationService.SimpleAttributeApplicationService attributeApplicationService(
+            @Qualifier("attributeEventStore") EventStore attributeEventStore,
+            AttributeStateRepository attributeStateRepository,
+            AttributeStateQueryRepository attributeStateQueryRepository
+    ) {
+        AbstractAttributeApplicationService.SimpleAttributeApplicationService applicationService = new AbstractAttributeApplicationService.SimpleAttributeApplicationService(
+                attributeEventStore,
+                attributeStateRepository,
+                attributeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractAttributeSetApplicationService.SimpleAttributeSetApplicationService attributeSetApplicationService(
+            @Qualifier("attributeSetEventStore") EventStore attributeSetEventStore,
+            AttributeSetStateRepository attributeSetStateRepository,
+            AttributeSetStateQueryRepository attributeSetStateQueryRepository
+    ) {
+        AbstractAttributeSetApplicationService.SimpleAttributeSetApplicationService applicationService = new AbstractAttributeSetApplicationService.SimpleAttributeSetApplicationService(
+                attributeSetEventStore,
+                attributeSetStateRepository,
+                attributeSetStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractTenantApplicationService.SimpleTenantApplicationService tenantApplicationService(
+            @Qualifier("tenantEventStore") EventStore tenantEventStore,
+            TenantStateRepository tenantStateRepository,
+            TenantStateQueryRepository tenantStateQueryRepository
+    ) {
+        AbstractTenantApplicationService.SimpleTenantApplicationService applicationService = new AbstractTenantApplicationService.SimpleTenantApplicationService(
+                tenantEventStore,
+                tenantStateRepository,
+                tenantStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractLotApplicationService.SimpleLotApplicationService lotApplicationService(
+            @Qualifier("lotEventStore") EventStore lotEventStore,
+            LotStateRepository lotStateRepository,
+            LotStateQueryRepository lotStateQueryRepository
+    ) {
+        AbstractLotApplicationService.SimpleLotApplicationService applicationService = new AbstractLotApplicationService.SimpleLotApplicationService(
+                lotEventStore,
+                lotStateRepository,
+                lotStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractLotTypeApplicationService.SimpleLotTypeApplicationService lotTypeApplicationService(
+            LotTypeStateRepository lotTypeStateRepository,
+            LotTypeStateQueryRepository lotTypeStateQueryRepository
+    ) {
+        AbstractLotTypeApplicationService.SimpleLotTypeApplicationService applicationService = new AbstractLotTypeApplicationService.SimpleLotTypeApplicationService(
+                lotTypeStateRepository,
+                lotTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractLotIdentificationTypeApplicationService.SimpleLotIdentificationTypeApplicationService lotIdentificationTypeApplicationService(
+            LotIdentificationTypeStateRepository lotIdentificationTypeStateRepository,
+            LotIdentificationTypeStateQueryRepository lotIdentificationTypeStateQueryRepository
+    ) {
+        AbstractLotIdentificationTypeApplicationService.SimpleLotIdentificationTypeApplicationService applicationService = new AbstractLotIdentificationTypeApplicationService.SimpleLotIdentificationTypeApplicationService(
+                lotIdentificationTypeStateRepository,
+                lotIdentificationTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractBffNotificationApplicationService.SimpleBffNotificationApplicationService bffNotificationApplicationService(
+            @Qualifier("bffNotificationEventStore") EventStore bffNotificationEventStore,
+            BffNotificationStateRepository bffNotificationStateRepository,
+            BffNotificationStateQueryRepository bffNotificationStateQueryRepository
+    ) {
+        AbstractBffNotificationApplicationService.SimpleBffNotificationApplicationService applicationService = new AbstractBffNotificationApplicationService.SimpleBffNotificationApplicationService(
+                bffNotificationEventStore,
+                bffNotificationStateRepository,
+                bffNotificationStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractFacilityLocationApplicationService.SimpleFacilityLocationApplicationService facilityLocationApplicationService(
+            FacilityLocationStateRepository facilityLocationStateRepository,
+            FacilityLocationStateQueryRepository facilityLocationStateQueryRepository
+    ) {
+        AbstractFacilityLocationApplicationService.SimpleFacilityLocationApplicationService applicationService = new AbstractFacilityLocationApplicationService.SimpleFacilityLocationApplicationService(
+                facilityLocationStateRepository,
+                facilityLocationStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractProductCategoryApplicationService.SimpleProductCategoryApplicationService productCategoryApplicationService(
+            @Qualifier("productCategoryEventStore") EventStore productCategoryEventStore,
+            ProductCategoryStateRepository productCategoryStateRepository,
+            ProductCategoryStateQueryRepository productCategoryStateQueryRepository
+    ) {
+        AbstractProductCategoryApplicationService.SimpleProductCategoryApplicationService applicationService = new AbstractProductCategoryApplicationService.SimpleProductCategoryApplicationService(
+                productCategoryEventStore,
+                productCategoryStateRepository,
+                productCategoryStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractProductCategoryTypeApplicationService.SimpleProductCategoryTypeApplicationService productCategoryTypeApplicationService(
+            ProductCategoryTypeStateRepository productCategoryTypeStateRepository,
+            ProductCategoryTypeStateQueryRepository productCategoryTypeStateQueryRepository
+    ) {
+        AbstractProductCategoryTypeApplicationService.SimpleProductCategoryTypeApplicationService applicationService = new AbstractProductCategoryTypeApplicationService.SimpleProductCategoryTypeApplicationService(
+                productCategoryTypeStateRepository,
+                productCategoryTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractInventoryItemApplicationService.SimpleInventoryItemApplicationService inventoryItemApplicationService(
+            @Qualifier("inventoryItemEventStore") EventStore inventoryItemEventStore,
+            InventoryItemStateRepository inventoryItemStateRepository,
+            InventoryItemStateQueryRepository inventoryItemStateQueryRepository
+    ) {
+        AbstractInventoryItemApplicationService.SimpleInventoryItemApplicationService applicationService = new AbstractInventoryItemApplicationService.SimpleInventoryItemApplicationService(
+                inventoryItemEventStore,
+                inventoryItemStateRepository,
+                inventoryItemStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractInventoryItemTypeApplicationService.SimpleInventoryItemTypeApplicationService inventoryItemTypeApplicationService(
+            InventoryItemTypeStateRepository inventoryItemTypeStateRepository,
+            InventoryItemTypeStateQueryRepository inventoryItemTypeStateQueryRepository
+    ) {
+        AbstractInventoryItemTypeApplicationService.SimpleInventoryItemTypeApplicationService applicationService = new AbstractInventoryItemTypeApplicationService.SimpleInventoryItemTypeApplicationService(
+                inventoryItemTypeStateRepository,
+                inventoryItemTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractFacilityApplicationService.SimpleFacilityApplicationService facilityApplicationService(
+            @Qualifier("facilityEventStore") EventStore facilityEventStore,
+            FacilityStateRepository facilityStateRepository,
+            FacilityStateQueryRepository facilityStateQueryRepository
+    ) {
+        AbstractFacilityApplicationService.SimpleFacilityApplicationService applicationService = new AbstractFacilityApplicationService.SimpleFacilityApplicationService(
+                facilityEventStore,
+                facilityStateRepository,
+                facilityStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractFacilityIdentificationTypeApplicationService.SimpleFacilityIdentificationTypeApplicationService facilityIdentificationTypeApplicationService(
+            FacilityIdentificationTypeStateRepository facilityIdentificationTypeStateRepository,
+            FacilityIdentificationTypeStateQueryRepository facilityIdentificationTypeStateQueryRepository
+    ) {
+        AbstractFacilityIdentificationTypeApplicationService.SimpleFacilityIdentificationTypeApplicationService applicationService = new AbstractFacilityIdentificationTypeApplicationService.SimpleFacilityIdentificationTypeApplicationService(
+                facilityIdentificationTypeStateRepository,
+                facilityIdentificationTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractFacilityTypeApplicationService.SimpleFacilityTypeApplicationService facilityTypeApplicationService(
+            FacilityTypeStateRepository facilityTypeStateRepository,
+            FacilityTypeStateQueryRepository facilityTypeStateQueryRepository
+    ) {
+        AbstractFacilityTypeApplicationService.SimpleFacilityTypeApplicationService applicationService = new AbstractFacilityTypeApplicationService.SimpleFacilityTypeApplicationService(
+                facilityTypeStateRepository,
+                facilityTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractGeoPointApplicationService.SimpleGeoPointApplicationService geoPointApplicationService(
+            GeoPointStateRepository geoPointStateRepository,
+            GeoPointStateQueryRepository geoPointStateQueryRepository
+    ) {
+        AbstractGeoPointApplicationService.SimpleGeoPointApplicationService applicationService = new AbstractGeoPointApplicationService.SimpleGeoPointApplicationService(
+                geoPointStateRepository,
+                geoPointStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractInventoryTransferApplicationService.SimpleInventoryTransferApplicationService inventoryTransferApplicationService(
+            @Qualifier("inventoryTransferEventStore") EventStore inventoryTransferEventStore,
+            InventoryTransferStateRepository inventoryTransferStateRepository,
+            InventoryTransferStateQueryRepository inventoryTransferStateQueryRepository
+    ) {
+        AbstractInventoryTransferApplicationService.SimpleInventoryTransferApplicationService applicationService = new AbstractInventoryTransferApplicationService.SimpleInventoryTransferApplicationService(
+                inventoryTransferEventStore,
+                inventoryTransferStateRepository,
+                inventoryTransferStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService shipmentBoxTypeApplicationService(
+            @Qualifier("shipmentBoxTypeEventStore") EventStore shipmentBoxTypeEventStore,
+            ShipmentBoxTypeStateRepository shipmentBoxTypeStateRepository,
+            ShipmentBoxTypeStateQueryRepository shipmentBoxTypeStateQueryRepository
+    ) {
+        AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService applicationService = new AbstractShipmentBoxTypeApplicationService.SimpleShipmentBoxTypeApplicationService(
+                shipmentBoxTypeEventStore,
+                shipmentBoxTypeStateRepository,
+                shipmentBoxTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+
+
+    @Bean
+    public AbstractPartyRoleApplicationService.SimplePartyRoleApplicationService partyRoleApplicationService(
+            @Qualifier("partyRoleEventStore") EventStore partyRoleEventStore,
+            PartyRoleStateRepository partyRoleStateRepository,
+            PartyRoleStateQueryRepository partyRoleStateQueryRepository
+    ) {
+        AbstractPartyRoleApplicationService.SimplePartyRoleApplicationService applicationService = new AbstractPartyRoleApplicationService.SimplePartyRoleApplicationService(
+                partyRoleEventStore,
+                partyRoleStateRepository,
+                partyRoleStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractStatusItemApplicationService.SimpleStatusItemApplicationService statusItemApplicationService(
+            StatusItemStateRepository statusItemStateRepository,
+            StatusItemStateQueryRepository statusItemStateQueryRepository
+    ) {
+        AbstractStatusItemApplicationService.SimpleStatusItemApplicationService applicationService = new AbstractStatusItemApplicationService.SimpleStatusItemApplicationService(
+                statusItemStateRepository,
+                statusItemStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractStatusTypeApplicationService.SimpleStatusTypeApplicationService statusTypeApplicationService(
+            StatusTypeStateRepository statusTypeStateRepository,
+            StatusTypeStateQueryRepository statusTypeStateQueryRepository
+    ) {
+        AbstractStatusTypeApplicationService.SimpleStatusTypeApplicationService applicationService = new AbstractStatusTypeApplicationService.SimpleStatusTypeApplicationService(
+                statusTypeStateRepository,
+                statusTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractContactMechApplicationService.SimpleContactMechApplicationService contactMechApplicationService(
+            @Qualifier("contactMechEventStore") EventStore contactMechEventStore,
+            ContactMechStateRepository contactMechStateRepository,
+            ContactMechStateQueryRepository contactMechStateQueryRepository
+    ) {
+        AbstractContactMechApplicationService.SimpleContactMechApplicationService applicationService = new AbstractContactMechApplicationService.SimpleContactMechApplicationService(
+                contactMechEventStore,
+                contactMechStateRepository,
+                contactMechStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractContactMechPurposeTypeApplicationService.SimpleContactMechPurposeTypeApplicationService contactMechPurposeTypeApplicationService(
+            ContactMechPurposeTypeStateRepository contactMechPurposeTypeStateRepository,
+            ContactMechPurposeTypeStateQueryRepository contactMechPurposeTypeStateQueryRepository
+    ) {
+        AbstractContactMechPurposeTypeApplicationService.SimpleContactMechPurposeTypeApplicationService applicationService = new AbstractContactMechPurposeTypeApplicationService.SimpleContactMechPurposeTypeApplicationService(
+                contactMechPurposeTypeStateRepository,
+                contactMechPurposeTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractQaInspectionApplicationService.SimpleQaInspectionApplicationService qaInspectionApplicationService(
+            @Qualifier("qaInspectionEventStore") EventStore qaInspectionEventStore,
+            QaInspectionStateRepository qaInspectionStateRepository,
+            QaInspectionStateQueryRepository qaInspectionStateQueryRepository
+    ) {
+        AbstractQaInspectionApplicationService.SimpleQaInspectionApplicationService applicationService = new AbstractQaInspectionApplicationService.SimpleQaInspectionApplicationService(
+                qaInspectionEventStore,
+                qaInspectionStateRepository,
+                qaInspectionStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractEnumerationApplicationService.SimpleEnumerationApplicationService enumerationApplicationService(
+            EnumerationStateRepository enumerationStateRepository,
+            EnumerationStateQueryRepository enumerationStateQueryRepository
+    ) {
+        AbstractEnumerationApplicationService.SimpleEnumerationApplicationService applicationService = new AbstractEnumerationApplicationService.SimpleEnumerationApplicationService(
+                enumerationStateRepository,
+                enumerationStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractEnumerationTypeApplicationService.SimpleEnumerationTypeApplicationService enumerationTypeApplicationService(
+            EnumerationTypeStateRepository enumerationTypeStateRepository,
+            EnumerationTypeStateQueryRepository enumerationTypeStateQueryRepository
+    ) {
+        AbstractEnumerationTypeApplicationService.SimpleEnumerationTypeApplicationService applicationService = new AbstractEnumerationTypeApplicationService.SimpleEnumerationTypeApplicationService(
+                enumerationTypeStateRepository,
+                enumerationTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShippingEventApplicationService.SimpleShippingEventApplicationService shippingEventApplicationService(
+            ShippingEventStateRepository shippingEventStateRepository,
+            ShippingEventStateQueryRepository shippingEventStateQueryRepository
+    ) {
+        AbstractShippingEventApplicationService.SimpleShippingEventApplicationService applicationService = new AbstractShippingEventApplicationService.SimpleShippingEventApplicationService(
+                shippingEventStateRepository,
+                shippingEventStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractReceivingEventApplicationService.SimpleReceivingEventApplicationService receivingEventApplicationService(
+            ReceivingEventStateRepository receivingEventStateRepository,
+            ReceivingEventStateQueryRepository receivingEventStateQueryRepository
+    ) {
+        AbstractReceivingEventApplicationService.SimpleReceivingEventApplicationService applicationService = new AbstractReceivingEventApplicationService.SimpleReceivingEventApplicationService(
+                receivingEventStateRepository,
+                receivingEventStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractTransformationEventApplicationService.SimpleTransformationEventApplicationService transformationEventApplicationService(
+            TransformationEventStateRepository transformationEventStateRepository,
+            TransformationEventStateQueryRepository transformationEventStateQueryRepository
+    ) {
+        AbstractTransformationEventApplicationService.SimpleTransformationEventApplicationService applicationService = new AbstractTransformationEventApplicationService.SimpleTransformationEventApplicationService(
+                transformationEventStateRepository,
+                transformationEventStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractSupplierProductApplicationService.SimpleSupplierProductApplicationService supplierProductApplicationService(
+            @Qualifier("supplierProductEventStore") EventStore supplierProductEventStore,
+            SupplierProductStateRepository supplierProductStateRepository,
+            SupplierProductStateQueryRepository supplierProductStateQueryRepository
+    ) {
+        AbstractSupplierProductApplicationService.SimpleSupplierProductApplicationService applicationService = new AbstractSupplierProductApplicationService.SimpleSupplierProductApplicationService(
+                supplierProductEventStore,
+                supplierProductStateRepository,
+                supplierProductStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractWorkEffortInventoryAssignApplicationService.SimpleWorkEffortInventoryAssignApplicationService workEffortInventoryAssignApplicationService(
+            @Qualifier("workEffortInventoryAssignEventStore") EventStore workEffortInventoryAssignEventStore,
+            WorkEffortInventoryAssignStateRepository workEffortInventoryAssignStateRepository,
+            WorkEffortInventoryAssignStateQueryRepository workEffortInventoryAssignStateQueryRepository
+    ) {
+        AbstractWorkEffortInventoryAssignApplicationService.SimpleWorkEffortInventoryAssignApplicationService applicationService = new AbstractWorkEffortInventoryAssignApplicationService.SimpleWorkEffortInventoryAssignApplicationService(
+                workEffortInventoryAssignEventStore,
+                workEffortInventoryAssignStateRepository,
+                workEffortInventoryAssignStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractProductAssocApplicationService.SimpleProductAssocApplicationService productAssocApplicationService(
+            @Qualifier("productAssocEventStore") EventStore productAssocEventStore,
+            ProductAssocStateRepository productAssocStateRepository,
+            ProductAssocStateQueryRepository productAssocStateQueryRepository
+    ) {
+        AbstractProductAssocApplicationService.SimpleProductAssocApplicationService applicationService = new AbstractProductAssocApplicationService.SimpleProductAssocApplicationService(
+                productAssocEventStore,
+                productAssocStateRepository,
+                productAssocStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractProductAssocTypeApplicationService.SimpleProductAssocTypeApplicationService productAssocTypeApplicationService(
+            ProductAssocTypeStateRepository productAssocTypeStateRepository,
+            ProductAssocTypeStateQueryRepository productAssocTypeStateQueryRepository
+    ) {
+        AbstractProductAssocTypeApplicationService.SimpleProductAssocTypeApplicationService applicationService = new AbstractProductAssocTypeApplicationService.SimpleProductAssocTypeApplicationService(
+                productAssocTypeStateRepository,
+                productAssocTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractDocumentApplicationService.SimpleDocumentApplicationService documentApplicationService(
+            @Qualifier("documentEventStore") EventStore documentEventStore,
+            DocumentStateRepository documentStateRepository,
+            DocumentStateQueryRepository documentStateQueryRepository
+    ) {
+        AbstractDocumentApplicationService.SimpleDocumentApplicationService applicationService = new AbstractDocumentApplicationService.SimpleDocumentApplicationService(
+                documentEventStore,
+                documentStateRepository,
+                documentStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractGs1ApplicationIdentifierApplicationService.SimpleGs1ApplicationIdentifierApplicationService gs1ApplicationIdentifierApplicationService(
+            Gs1ApplicationIdentifierStateRepository gs1ApplicationIdentifierStateRepository,
+            Gs1ApplicationIdentifierStateQueryRepository gs1ApplicationIdentifierStateQueryRepository
+    ) {
+        AbstractGs1ApplicationIdentifierApplicationService.SimpleGs1ApplicationIdentifierApplicationService applicationService = new AbstractGs1ApplicationIdentifierApplicationService.SimpleGs1ApplicationIdentifierApplicationService(
+                gs1ApplicationIdentifierStateRepository,
+                gs1ApplicationIdentifierStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShippingDocumentApplicationService.SimpleShippingDocumentApplicationService shippingDocumentApplicationService(
+            @Qualifier("shippingDocumentEventStore") EventStore shippingDocumentEventStore,
+            ShippingDocumentStateRepository shippingDocumentStateRepository,
+            ShippingDocumentStateQueryRepository shippingDocumentStateQueryRepository
+    ) {
+        AbstractShippingDocumentApplicationService.SimpleShippingDocumentApplicationService applicationService = new AbstractShippingDocumentApplicationService.SimpleShippingDocumentApplicationService(
+                shippingDocumentEventStore,
+                shippingDocumentStateRepository,
+                shippingDocumentStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractUomApplicationService.SimpleUomApplicationService uomApplicationService(
+            @Qualifier("uomEventStore") EventStore uomEventStore,
+            UomStateRepository uomStateRepository,
+            UomStateQueryRepository uomStateQueryRepository
+    ) {
+        AbstractUomApplicationService.SimpleUomApplicationService applicationService = new AbstractUomApplicationService.SimpleUomApplicationService(
+                uomEventStore,
+                uomStateRepository,
+                uomStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractUomTypeApplicationService.SimpleUomTypeApplicationService uomTypeApplicationService(
+            @Qualifier("uomTypeEventStore") EventStore uomTypeEventStore,
+            UomTypeStateRepository uomTypeStateRepository,
+            UomTypeStateQueryRepository uomTypeStateQueryRepository
+    ) {
+        AbstractUomTypeApplicationService.SimpleUomTypeApplicationService applicationService = new AbstractUomTypeApplicationService.SimpleUomTypeApplicationService(
+                uomTypeEventStore,
+                uomTypeStateRepository,
+                uomTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService attributeSetInstanceApplicationService(
+            @Qualifier("attributeSetInstanceEventStore") EventStore attributeSetInstanceEventStore,
+            AttributeSetInstanceStateRepository attributeSetInstanceStateRepository,
+            AttributeSetInstanceStateQueryRepository attributeSetInstanceStateQueryRepository
+            , IdGenerator<String, AttributeSetInstanceCommand.CreateAttributeSetInstance, AttributeSetInstanceState> attributeSetInstanceIdGenerator
+    ) {
+        AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService applicationService = new AbstractAttributeSetInstanceApplicationService.SimpleAttributeSetInstanceApplicationService(
+                attributeSetInstanceEventStore,
+                attributeSetInstanceStateRepository,
+                attributeSetInstanceStateQueryRepository
+                , attributeSetInstanceIdGenerator
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService roleTypeApplicationService(
+            RoleTypeStateRepository roleTypeStateRepository,
+            RoleTypeStateQueryRepository roleTypeStateQueryRepository
+    ) {
+        AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService applicationService = new AbstractRoleTypeApplicationService.SimpleRoleTypeApplicationService(
+                roleTypeStateRepository,
+                roleTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractOrderApplicationService.SimpleOrderApplicationService orderApplicationService(
+            @Qualifier("orderEventStore") EventStore orderEventStore,
+            OrderHeaderStateRepository orderHeaderStateRepository,
+            OrderHeaderStateQueryRepository orderHeaderStateQueryRepository
+    ) {
+        AbstractOrderApplicationService.SimpleOrderApplicationService applicationService = new AbstractOrderApplicationService.SimpleOrderApplicationService(
+                orderEventStore,
+                orderHeaderStateRepository,
+                orderHeaderStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService orderAdjustmentTypeApplicationService(
+            OrderAdjustmentTypeStateRepository orderAdjustmentTypeStateRepository,
+            OrderAdjustmentTypeStateQueryRepository orderAdjustmentTypeStateQueryRepository
+    ) {
+        AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService applicationService = new AbstractOrderAdjustmentTypeApplicationService.SimpleOrderAdjustmentTypeApplicationService(
+                orderAdjustmentTypeStateRepository,
+                orderAdjustmentTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractOrderTypeApplicationService.SimpleOrderTypeApplicationService orderTypeApplicationService(
+            OrderTypeStateRepository orderTypeStateRepository,
+            OrderTypeStateQueryRepository orderTypeStateQueryRepository
+    ) {
+        AbstractOrderTypeApplicationService.SimpleOrderTypeApplicationService applicationService = new AbstractOrderTypeApplicationService.SimpleOrderTypeApplicationService(
+                orderTypeStateRepository,
+                orderTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractOrderItemTypeApplicationService.SimpleOrderItemTypeApplicationService orderItemTypeApplicationService(
+            OrderItemTypeStateRepository orderItemTypeStateRepository,
+            OrderItemTypeStateQueryRepository orderItemTypeStateQueryRepository
+    ) {
+        AbstractOrderItemTypeApplicationService.SimpleOrderItemTypeApplicationService applicationService = new AbstractOrderItemTypeApplicationService.SimpleOrderItemTypeApplicationService(
+                orderItemTypeStateRepository,
+                orderItemTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShipmentApplicationService.SimpleShipmentApplicationService shipmentApplicationService(
+            @Qualifier("shipmentEventStore") EventStore shipmentEventStore,
+            ShipmentStateRepository shipmentStateRepository,
+            ShipmentStateQueryRepository shipmentStateQueryRepository
+    ) {
+        AbstractShipmentApplicationService.SimpleShipmentApplicationService applicationService = new AbstractShipmentApplicationService.SimpleShipmentApplicationService(
+                shipmentEventStore,
+                shipmentStateRepository,
+                shipmentStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService shipmentTypeApplicationService(
+            ShipmentTypeStateRepository shipmentTypeStateRepository,
+            ShipmentTypeStateQueryRepository shipmentTypeStateQueryRepository
+    ) {
+        AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService applicationService = new AbstractShipmentTypeApplicationService.SimpleShipmentTypeApplicationService(
+                shipmentTypeStateRepository,
+                shipmentTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractPartyApplicationService.SimplePartyApplicationService partyApplicationService(
+            @Qualifier("partyEventStore") EventStore partyEventStore,
+            PartyStateRepository partyStateRepository,
+            PartyStateQueryRepository partyStateQueryRepository
+    ) {
+        AbstractPartyApplicationService.SimplePartyApplicationService applicationService = new AbstractPartyApplicationService.SimplePartyApplicationService(
+                partyEventStore,
+                partyStateRepository,
+                partyStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractPartyIdentificationTypeApplicationService.SimplePartyIdentificationTypeApplicationService partyIdentificationTypeApplicationService(
+            PartyIdentificationTypeStateRepository partyIdentificationTypeStateRepository,
+            PartyIdentificationTypeStateQueryRepository partyIdentificationTypeStateQueryRepository
+    ) {
+        AbstractPartyIdentificationTypeApplicationService.SimplePartyIdentificationTypeApplicationService applicationService = new AbstractPartyIdentificationTypeApplicationService.SimplePartyIdentificationTypeApplicationService(
+                partyIdentificationTypeStateRepository,
+                partyIdentificationTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractArticleApplicationService.SimpleArticleApplicationService articleApplicationService(
+            @Qualifier("articleEventStore") EventStore articleEventStore,
+            ArticleStateRepository articleStateRepository,
+            ArticleStateQueryRepository articleStateQueryRepository
+    ) {
+        AbstractArticleApplicationService.SimpleArticleApplicationService applicationService = new AbstractArticleApplicationService.SimpleArticleApplicationService(
+                articleEventStore,
+                articleStateRepository,
+                articleStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractWorkEffortInventoryProducedApplicationService.SimpleWorkEffortInventoryProducedApplicationService workEffortInventoryProducedApplicationService(
+            @Qualifier("workEffortInventoryProducedEventStore") EventStore workEffortInventoryProducedEventStore,
+            WorkEffortInventoryProducedStateRepository workEffortInventoryProducedStateRepository,
+            WorkEffortInventoryProducedStateQueryRepository workEffortInventoryProducedStateQueryRepository
+    ) {
+        AbstractWorkEffortInventoryProducedApplicationService.SimpleWorkEffortInventoryProducedApplicationService applicationService = new AbstractWorkEffortInventoryProducedApplicationService.SimpleWorkEffortInventoryProducedApplicationService(
+                workEffortInventoryProducedEventStore,
+                workEffortInventoryProducedStateRepository,
+                workEffortInventoryProducedStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractPartyContactMechApplicationService.SimplePartyContactMechApplicationService partyContactMechApplicationService(
+            @Qualifier("partyContactMechEventStore") EventStore partyContactMechEventStore,
+            PartyContactMechStateRepository partyContactMechStateRepository,
+            PartyContactMechStateQueryRepository partyContactMechStateQueryRepository
+    ) {
+        AbstractPartyContactMechApplicationService.SimplePartyContactMechApplicationService applicationService = new AbstractPartyContactMechApplicationService.SimplePartyContactMechApplicationService(
+                partyContactMechEventStore,
+                partyContactMechStateRepository,
+                partyContactMechStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractGeoApplicationService.SimpleGeoApplicationService geoApplicationService(
+            GeoStateRepository geoStateRepository,
+            GeoStateQueryRepository geoStateQueryRepository
+    ) {
+        AbstractGeoApplicationService.SimpleGeoApplicationService applicationService = new AbstractGeoApplicationService.SimpleGeoApplicationService(
+                geoStateRepository,
+                geoStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractGeoTypeApplicationService.SimpleGeoTypeApplicationService geoTypeApplicationService(
+            GeoTypeStateRepository geoTypeStateRepository,
+            GeoTypeStateQueryRepository geoTypeStateQueryRepository
+    ) {
+        AbstractGeoTypeApplicationService.SimpleGeoTypeApplicationService applicationService = new AbstractGeoTypeApplicationService.SimpleGeoTypeApplicationService(
+                geoTypeStateRepository,
+                geoTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractGeoAssocApplicationService.SimpleGeoAssocApplicationService geoAssocApplicationService(
+            GeoAssocStateRepository geoAssocStateRepository,
+            GeoAssocStateQueryRepository geoAssocStateQueryRepository
+    ) {
+        AbstractGeoAssocApplicationService.SimpleGeoAssocApplicationService applicationService = new AbstractGeoAssocApplicationService.SimpleGeoAssocApplicationService(
+                geoAssocStateRepository,
+                geoAssocStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public AbstractGeoAssocTypeApplicationService.SimpleGeoAssocTypeApplicationService geoAssocTypeApplicationService(
+            GeoAssocTypeStateRepository geoAssocTypeStateRepository,
+            GeoAssocTypeStateQueryRepository geoAssocTypeStateQueryRepository
+    ) {
+        AbstractGeoAssocTypeApplicationService.SimpleGeoAssocTypeApplicationService applicationService = new AbstractGeoAssocTypeApplicationService.SimpleGeoAssocTypeApplicationService(
+                geoAssocTypeStateRepository,
+                geoAssocTypeStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
     public AbstractWorkEffortGoodStandardApplicationService.SimpleWorkEffortGoodStandardApplicationService workEffortGoodStandardApplicationService(
             @Qualifier("workEffortGoodStandardEventStore") EventStore workEffortGoodStandardEventStore,
             WorkEffortGoodStandardStateRepository workEffortGoodStandardStateRepository,
@@ -1218,15 +1220,15 @@ public class AggregatesHibernateConfig {
 
 
     @Bean
-    public AbstractWorkEffortInventoryAssignApplicationService.SimpleWorkEffortInventoryAssignApplicationService workEffortInventoryAssignApplicationService(
-            @Qualifier("workEffortInventoryAssignEventStore") EventStore workEffortInventoryAssignEventStore,
-            WorkEffortInventoryAssignStateRepository workEffortInventoryAssignStateRepository,
-            WorkEffortInventoryAssignStateQueryRepository workEffortInventoryAssignStateQueryRepository
+    public AbstractProductApplicationService.SimpleProductApplicationService productApplicationService(
+            @Qualifier("productEventStore") EventStore productEventStore,
+            ProductStateRepository productStateRepository,
+            ProductStateQueryRepository productStateQueryRepository
     ) {
-        AbstractWorkEffortInventoryAssignApplicationService.SimpleWorkEffortInventoryAssignApplicationService applicationService = new AbstractWorkEffortInventoryAssignApplicationService.SimpleWorkEffortInventoryAssignApplicationService(
-                workEffortInventoryAssignEventStore,
-                workEffortInventoryAssignStateRepository,
-                workEffortInventoryAssignStateQueryRepository
+        AbstractProductApplicationService.SimpleProductApplicationService applicationService = new AbstractProductApplicationService.SimpleProductApplicationService(
+                productEventStore,
+                productStateRepository,
+                productStateQueryRepository
         );
         return applicationService;
     }
@@ -1234,15 +1236,13 @@ public class AggregatesHibernateConfig {
 
 
     @Bean
-    public AbstractWorkEffortInventoryProducedApplicationService.SimpleWorkEffortInventoryProducedApplicationService workEffortInventoryProducedApplicationService(
-            @Qualifier("workEffortInventoryProducedEventStore") EventStore workEffortInventoryProducedEventStore,
-            WorkEffortInventoryProducedStateRepository workEffortInventoryProducedStateRepository,
-            WorkEffortInventoryProducedStateQueryRepository workEffortInventoryProducedStateQueryRepository
+    public AbstractProductTypeApplicationService.SimpleProductTypeApplicationService productTypeApplicationService(
+            ProductTypeStateRepository productTypeStateRepository,
+            ProductTypeStateQueryRepository productTypeStateQueryRepository
     ) {
-        AbstractWorkEffortInventoryProducedApplicationService.SimpleWorkEffortInventoryProducedApplicationService applicationService = new AbstractWorkEffortInventoryProducedApplicationService.SimpleWorkEffortInventoryProducedApplicationService(
-                workEffortInventoryProducedEventStore,
-                workEffortInventoryProducedStateRepository,
-                workEffortInventoryProducedStateQueryRepository
+        AbstractProductTypeApplicationService.SimpleProductTypeApplicationService applicationService = new AbstractProductTypeApplicationService.SimpleProductTypeApplicationService(
+                productTypeStateRepository,
+                productTypeStateQueryRepository
         );
         return applicationService;
     }
